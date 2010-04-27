@@ -6,33 +6,18 @@
  *  Description :  
  *
  *=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=*/
-
-#ifdef _WIN32
-#  include <windows.h>
-#endif
-
 // includes, GL
-#include "GL/glew.h"
-
-#ifdef __linux__
-#include <GL/glut.h>
-#endif
-
-#ifdef __APPLE__
-#include <glut.h>
-#endif
-
-#ifdef _WIN32
-#include "glut.h"
-#endif
-
 
 // includes, system
+#include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <time.h>
+
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 //--------------------------------------------------------------------------------------------------//
 //												#defines 
@@ -135,7 +120,7 @@ void initGL( int argc, char** argv )
 	glutInitWindowSize( WIN_W, WIN_H);
     
 	//fullsreen mode
-	glutGameModeString( "1440x900:32@60" );
+	glutGameModeString( "1920x1080:32@60" );
 		
 	glutEnterGameMode(); //set glut to fullscreen using the settings in the line above		
 		
