@@ -22,7 +22,8 @@
 //--------------------------------------------------------------------------------------------------//
 //												#defines 
 //--------------------------------------------------------------------------------------------------//
-#define PI (3.141592653589793)
+#define PI	3.141592653589793
+#define DTR 0.0174532925
 
 
 //--------------------------------------------------------------------------------------------------//
@@ -31,10 +32,11 @@
 const int win_x = 0;
 const int win_y = 0;
 
-const unsigned int WIN_W = 1440;
-const unsigned int WIN_H = 850;
+const unsigned int WIN_W = 1920;
+const unsigned int WIN_H = 1080;
 
-const float FOV = 45.0;
+//const float FOV = 45.0;
+//const float ASPECT = float(WIN_W)/float(WIN_H);
 
 const float COORD_X_MIN = 0.0;
 const float COORD_X_MAX = 17.0;
@@ -58,10 +60,33 @@ int g_mouse_buttons = 0;
 time_t g_clicktime;
 
 // view countrol 
-int g_zoom_animation = 0.0f;
-float g_translate[ ] = { init_trans[0], init_trans[1], init_trans[2] };
+GLdouble g_zoom_animation = 0.0f;
+GLdouble g_translate[ ] = { init_trans[0], init_trans[1], init_trans[2] };
 
-GLfloat angle = 0.0;
+GLfloat g_angle = 0.0;
+
+
+//--------------------------------------------------------------------------------------------------//
+//												Stereo Stuff 
+//--------------------------------------------------------------------------------------------------//
+struct camera
+{
+    GLdouble leftfrustum;
+    GLdouble rightfrustum;
+    GLdouble bottomfrustum;
+    GLdouble topfrustum;
+    GLdouble modeltranslation;
+} leftCam, rightCam;
+
+float depthZ = -10.0;										 //depth of the object drawing
+
+GLdouble fovy = 45;                                          //field of view in y-axis
+GLdouble aspect = GLdouble(WIN_W)/GLdouble(WIN_H);			 //screen aspect ratio
+GLdouble nearZ = 3.0;                                        //near clipping plane
+GLdouble farZ = 30.0;                                        //far clipping plane
+GLdouble screenZ = 10.0;                                     //screen projection plane
+GLdouble IOD = 0.5;                                          //intraocular distance
+
 
 //--------------------------------------------------------------------------------------------------//
 //							Prototypes
@@ -76,7 +101,7 @@ void doCamFocus( );
 void _beginWinCoords(void);
 void _endWinCoords(void);
 void _glPrint(int x, int y, const char *s, void *font, float r, float g, float b);
-void cube (void);
+void display_teapot (void);
 void display( void );
 
 void keyboard( unsigned char key, int x, int y);
@@ -84,6 +109,23 @@ void mouse(int button, int state, int x, int y);
 void motion(int x, int y);
 
 float coordPxToModel( float value);
+
+
+//--------------------------------------------------------------------------------------------------//
+//
+//									Stereo
+//
+//--------------------------------------------------------------------------------------------------//
+GLvoid reshape(int w, int h)
+{
+    if (h==0)
+    {
+        h=1;                                               //prevent divide by 0
+    }
+    aspect=double(w)/double(h);
+    glViewport(0, 0, w, h);
+}
+
 
 //--------------------------------------------------------------------------------------------------//
 //
@@ -121,9 +163,8 @@ void initGL( int argc, char** argv )
     
 	//fullsreen mode
 	glutGameModeString( "1920x1080:32@60" );
-		
 	glutEnterGameMode(); //set glut to fullscreen using the settings in the line above		
-		
+	
 	//lighting
 	glEnable (GL_DEPTH_TEST);
     glEnable (GL_LIGHTING);
@@ -141,21 +182,27 @@ void initGL( int argc, char** argv )
     // default initialization
     glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
 	
-    // viewport
-    glViewport( 0, 0, WIN_W, WIN_H);
-	
+ //   // viewport
+ //   glViewport( 0, 0, WIN_W, WIN_H);
+	//
+
     // projection
     glMatrixMode( GL_PROJECTION);
     glLoadIdentity();
-	gluPerspective(FOV, (GLfloat)WIN_W / (GLfloat)WIN_H, 0.1, 1000.0);
+
+	//gluPerspective(fovy, aspect, nearZ, farZ);
 	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();	
+
 }//CUTBoolean initGL()
 
 /************************************************************************************************
- *	void doCamFocus( float delta ) 
+ *	void doCamFocus( ) 
  */
 void doCamFocus( ) 
 {	
+/*
 	float fov_radians;
 	float z_Look = 0;
 	
@@ -166,7 +213,8 @@ void doCamFocus( )
 	gluLookAt(	COORD_X_MAX/2.0, COORD_Y_MAX/2.0, z_Look,
 				COORD_X_MAX/2.0, COORD_Y_MAX/2.0, 0.0,
 				0.0f,1.0f, 0.0f
-			  );	
+			  );
+*/
 }// void doCamFocus( float delta ) 
 
 /************************************************************************************************
@@ -224,38 +272,25 @@ void _glPrint(int x, int y, const char *s, void *font, float r, float g, float b
 /************************************************************************************************
  * void cube (void) {
  */
-void cube (void) {
+void display_teapot (void) {
 	glPushMatrix();
 	{
 		glColor3f(1.0, 0.0, 0.0);
 
-		glTranslatef( COORD_X_MAX/2, COORD_Y_MAX/2, 0.0); 
-
-		glRotatef(angle, 1.0, 0.0, 0.0); //rotate on the x axis
-		glRotatef(angle, 0.0, 1.0, 0.0); //rotate on the y axis
-		glRotatef(angle, 0.0, 0.0, 1.0); //rotate on the z axis
+		glRotatef(g_angle, 1.0, 0.0, 0.0); //rotate on the x axis
+		glRotatef(g_angle, 0.0, 1.0, 0.0); //rotate on the y axis
+		glRotatef(g_angle, 0.0, 0.0, 1.0); //rotate on the z axis
 		
-		glutSolidCube(2);
+		glutSolidTeapot(2);
 	}
 	glPopMatrix();
 }
 
 /************************************************************************************************
- * void display()
+ * void display_mouse_transforms (void)
  */
-void display()
-{		
-	glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
-	
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	doCamFocus();
-	
-    // set view matrix
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-	
-	//mouse controls
+void display_mouse_transforms (void) 
+{
 	if(g_zoom_animation > 0)
 	{
 		g_zoom_animation -= 0.1;
@@ -268,8 +303,13 @@ void display()
 		}
 	}
 	glTranslatef(g_translate[0], g_translate[1], g_translate[2]);
-	
-	//instructions 
+}
+
+/************************************************************************************************
+ * void display_2D (void)
+ */
+void display_2D (void)
+{
 	_beginWinCoords();
 	{
 		char str_line[128]; 
@@ -279,14 +319,94 @@ void display()
 		_glPrint( 0 , WIN_H, str_line, (void *) GLUT_BITMAP_9_BY_15, 1.0, 1.0, 1.0);
 	}
 	_endWinCoords();
-	
-	//cube
-	cube();
-	
-    glutSwapBuffers();
-    glutPostRedisplay();
+}
 
-	angle += .25;
+/************************************************************************************************
+ * void display_3D_toed_in( void )
+ */
+void display_3D_toed_in( void )
+{	
+	int sz = WIN_W / 2;
+
+	//left eye
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();                                        //reset modelview matrix
+	
+	//glViewport(0, WIN_H - (WIN_W/2),sz,sz);
+	glViewport(0, 0,sz,sz);
+
+	gluPerspective(fovy, aspect, nearZ, farZ);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();                                        //reset modelview matrix
+	gluLookAt(	-IOD/2,                                      //set camera position  x=-IOD/2
+		        0.0,                                         //                     y=0.0
+				0.0,                                         //                     z=0.0
+				0.0,                                         //set camera "look at" x=0.0
+				0.0,                                         //                     y=0.0
+				-screenZ,                                     //                     z=screenplane
+				0.0,                                         //set camera up vector x=0.0
+				1.0,                                         //                     y=1.0
+				0.0);		                                 //                     z=0.0
+	
+	glPushMatrix();
+	{
+	    glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
+	    display_teapot();
+	}
+	glPopMatrix();
+
+	//right eye
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();                                        //reset modelview matrix
+
+	//glViewport((WIN_W/2), WIN_H - (WIN_W / 2), sz, sz);
+	glViewport((WIN_W/2), 0, sz, sz);
+
+	gluPerspective(fovy, aspect, nearZ, farZ);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();                                        //reset modelview matrix
+	gluLookAt(	IOD/2,                                       //set camera position  x=-IOD/2
+		        0.0,                                         //                     y=0.0
+				0.0,                                         //                     z=0.0
+				0.0,                                         //set camera "look at" x=0.0
+				0.0,                                         //                     y=0.0
+				-screenZ,                                     //                     z=screenplane
+				0.0,                                         //set camera up vector x=0.0
+				1.0,                                         //                     y=1.0
+				0.0);		                                 //                     z=0.0
+	
+	glPushMatrix();
+	{
+		glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
+		display_teapot();
+	}
+	glPopMatrix();
+
+}
+
+/************************************************************************************************
+ * void display()
+ */
+void display()
+{		
+	glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	//doCamFocus();					//move the camera to the correct location
+	   
+	display_mouse_transforms();		//mouse transforms		
+	display_2D();					//Display 2D stuff
+	
+	display_3D_toed_in();			//Toed-in method of 3D
+	
+	g_angle += .05;
+
+	glutSwapBuffers();
+	glFlush();
+	glutPostRedisplay();
 }
 
 
@@ -297,7 +417,7 @@ void keyboard( unsigned char key, int /*x*/, int /*y*/)
 {
 	if (key==27) 
 	{
-		glutLeaveGameMode(); //set the resolution how it was
+		//glutLeaveGameMode(); //set the resolution how it was
 		exit( 0);
 	}
 }
