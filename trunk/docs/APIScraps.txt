@@ -1,0 +1,42 @@
+// DATA TYPES
+OMEvent
+{
+    uint id;
+    enum type {TOUCH, MOVE, NEW, CLICK, ...}
+    enum source {MULTITOUCH, TRACKER, COMPOSITE, ...)
+    float x, y, z;
+    // othet stuff.
+}
+
+OMState
+{
+    uint id;
+    float x, y, z;
+    // other stuff.
+}
+
+// APP SIDE API
+
+void omegaInit(const char* cfg, int size);
+void omegaDisplayFunction(func* func);
+void omegaMainLoop();
+int omegaGetEvents(OMEvent* ptr, int maxEvent, bool current);
+OMState* omegaGetState(uint id);
+int omegaGetNumEvents();
+int omegaLostEvents();
+
+
+// DRIVER SIDE API
+driverAddStuffToEventList
+driverAddStuffStateList
+
+
+// IMPLEMENTATION INTERNAL
+THREAD MANAGEMENT
+LINKED LIST MANAGEMENT
+DISPLAY MANAGEMENT
+(LATER) ASYNCRONOUS EVENT MANAGEMENT
+
+DRIVERS
+
+
