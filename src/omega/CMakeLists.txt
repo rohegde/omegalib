@@ -13,7 +13,8 @@
 #######################################################################################################################
 # Directories needed for compilation
 INCLUDE_DIRECTORIES(
-  ${OmegaLib_SOURCE_DIR}/3rdparty/libconfig
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig
+  ${OmegaLib_SOURCE_DIR}/include/
 )
 
 LINK_DIRECTORIES(
@@ -41,13 +42,14 @@ SET( srcs
 #######################################################################################################################
 # Headers
 SET( headers 
-        oclist.h
-        odisplay.h
-        oevent.h
-        oinput.h
-        omega.h
-        ostate.h
-        othread.h
+        ${OmegaLib_SOURCE_DIR}/include/oclist.h
+        ${OmegaLib_SOURCE_DIR}/include/odisplay.h
+        ${OmegaLib_SOURCE_DIR}/include/oevent.h
+        ${OmegaLib_SOURCE_DIR}/include/oinput.h
+        ${OmegaLib_SOURCE_DIR}/include/omega.h
+        ${OmegaLib_SOURCE_DIR}/include/ostate.h
+        ${OmegaLib_SOURCE_DIR}/include/othread.h
+        ${OmegaLib_SOURCE_DIR}/include/osystem.h
         display/oglsimple.h
         input/omouse.h
         ) 
