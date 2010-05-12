@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)include/&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,8 +58,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glew32.lib freeglut.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glut32.lib glew32.lib"
 				OutputFile="$(SolutionDir)bin\$(ProjectName).exe"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)lib\&quot;"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
