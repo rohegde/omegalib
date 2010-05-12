@@ -23,12 +23,12 @@ LINK_DIRECTORIES(
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( )
+ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
 
 #######################################################################################################################
 # Source files
 SET( srcs 
-        oclist.c
+        olist.c
         odisplay.c
         oevent.c
         oinput.c
@@ -36,6 +36,7 @@ SET( srcs
         ostate.c
         othread.c
         outil.c
+        olog.c
         display/oglsimple.c
         input/omouse.c
         )
@@ -43,7 +44,7 @@ SET( srcs
 #######################################################################################################################
 # Headers
 SET( headers 
-        ${OmegaLib_SOURCE_DIR}/include/oclist.h
+        ${OmegaLib_SOURCE_DIR}/include/olist.h
         ${OmegaLib_SOURCE_DIR}/include/odisplay.h
         ${OmegaLib_SOURCE_DIR}/include/oevent.h
         ${OmegaLib_SOURCE_DIR}/include/oinput.h
@@ -52,6 +53,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/othread.h
         ${OmegaLib_SOURCE_DIR}/include/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/outil.h
+        ${OmegaLib_SOURCE_DIR}/include/olog.h
         display/oglsimple.h
         input/omouse.h
         ) 
