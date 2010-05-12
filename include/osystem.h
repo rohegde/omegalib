@@ -12,6 +12,8 @@
 #ifndef __OSYSTEM_H__
 #define __OSYSTEM_H__
 
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 #endif

@@ -10,10 +10,21 @@
  * Test executable
  *********************************************************************************************************************/
 #include "omega.h"
+#include "othread.h"
+
+unsigned OM_THREADPROC test(void* d)
+{
+	int i = 0;
+	while(i < 1000)
+	{
+	printf("Hello World!\n");
+	i++;
+	}
+}
 
 /**********************************************************************************************************************
 */
 void main()
 {
-	omegaInit("blah", 4);
+	othreadCreate(test, NULL);
 }
