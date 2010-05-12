@@ -14,3 +14,4 @@
 # Add subdirectiories
 ADD_SUBDIRECTORY(3rdparty/libconfig)
 ADD_SUBDIRECTORY(omega)
+ADD_SUBDIRECTORY(otest)
