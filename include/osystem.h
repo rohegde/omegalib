@@ -12,8 +12,12 @@
 #ifndef __OSYSTEM_H__
 #define __OSYSTEM_H__
 
+#include <stdio.h>
+
 #ifdef WIN32
 #include <windows.h>
 #endif
+
+#define STDLEN 256 /* Standard string length */
 
 #endif

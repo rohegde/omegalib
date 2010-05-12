@@ -7,6 +7,17 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Simple logging support. (non-reentrant for now)
  *********************************************************************************************************************/
+#ifndef __OLOG_H__
+#define __OLOG_H__
+
 #include "osystem.h"
+
+void ologInitFileOutput(const char* filename);
+void ologCleanup();
+void ologMsg(const char* fmt, ...);
+void ologWarning(const char* fmt, ...);
+void ologError(const char* fmt, ...);
+
+#endif
