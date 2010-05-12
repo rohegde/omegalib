@@ -32,11 +32,14 @@ driverAddStuffStateList
 
 
 // IMPLEMENTATION INTERNAL
-THREAD MANAGEMENT
-LINKED LIST MANAGEMENT
-DISPLAY MANAGEMENT
+THREAD MANAGEMENT  (ot functions, othread.h olist.c)
+LINKED LIST MANAGEMENT (ol functions, olist.h olist.c)
+DISPLAY MANAGEMENT (od functions odisplay)
 (LATER) ASYNCRONOUS EVENT MANAGEMENT
 
-DRIVERS
+DRIVERS (od Functions)
+
+
+
 
 
