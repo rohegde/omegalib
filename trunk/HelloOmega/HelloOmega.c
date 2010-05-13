@@ -88,7 +88,7 @@ GLdouble fovy = 45;                                          //field of view in 
 GLdouble aspect = GLdouble(WIN_W)/GLdouble(WIN_H);			 //screen aspect ratio
 GLdouble nearZ = 3.0;                                        //near clipping plane
 GLdouble farZ = 30.0;                                        //far clipping plane
-GLdouble screenZ = 10.0;                                     //screen projection plane
+GLdouble screenZ = -10.0;                                     //screen projection plane
 GLdouble IOD = 0.5;                                          //intraocular distance
 
 
@@ -115,11 +115,25 @@ void motion(int x, int y);
 float coordPxToModel( float value);
 
 
-//--------------------------------------------------------------------------------------------------//
-//
-//									Stereo
-//
-//--------------------------------------------------------------------------------------------------//
+void setFrustum(void)
+{
+    double top = nearZ*tan(DTR*fovy/2);                    //sets top of frustum based on fovy and near clipping plane
+    double right = aspect*top;                             //sets right of frustum based on aspect ratio
+    double frustumshift = (IOD/2)*nearZ/screenZ;
+
+    leftCam.topfrustum = top;
+    leftCam.bottomfrustum = -top;
+    leftCam.leftfrustum = -right + frustumshift;
+    leftCam.rightfrustum = right + frustumshift;
+    leftCam.modeltranslation = IOD/2;
+
+    rightCam.topfrustum = top;
+    rightCam.bottomfrustum = -top;
+    rightCam.leftfrustum = -right - frustumshift;
+    rightCam.rightfrustum = right - frustumshift;
+    rightCam.modeltranslation = -IOD/2;
+}
+
 GLvoid reshape(int w, int h)
 {
     if (h==0)
@@ -128,8 +142,9 @@ GLvoid reshape(int w, int h)
     }
     aspect=double(w)/double(h);
     glViewport(0, 0, w, h);
+	
+	if ( g_frust ) setFrustum();
 }
-
 
 //--------------------------------------------------------------------------------------------------//
 //
@@ -144,10 +159,8 @@ int main( int argc, char** argv)
 	printf("[     %s     ]\n", title);
 	
 	initGL( argc, argv );
-	
-	// start rendering mainloop
-    glutMainLoop();
-	
+
+    glutMainLoop();							// start rendering mainloop
 }
 
 /************************************************************************************************
@@ -189,8 +202,6 @@ void initGL( int argc, char** argv )
     // projection
     glMatrixMode( GL_PROJECTION);
     glLoadIdentity();
-
-	//gluPerspective(fovy, aspect, nearZ, farZ);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();	
@@ -295,13 +306,20 @@ void display_2D (void)
 	{
 		char str_line[128]; 
 		memset(str_line, 0, 128);	
-		sprintf(str_line, "(esc) Exit");
+		if( g_frust ) sprintf(str_line, "(esc) Exit   frustrum view mode ");
+		else if( g_toed ) sprintf(str_line, "(esc) Exit   toed view mode ");
 		int len = (int) strlen(str_line);
 		_glPrint( 0 , WIN_H-9, str_line, (void *) GLUT_BITMAP_9_BY_15, 1.0, 1.0, 1.0);
 	}
 	_endWinCoords();
 }
 
+
+//--------------------------------------------------------------------------------------------------//
+//
+//									Stereo
+//
+//--------------------------------------------------------------------------------------------------//
 /************************************************************************************************
  * void display_3D_toed_in( void )
  */
@@ -309,11 +327,10 @@ void display_3D_toed_in( void )
 {	
 	int sz = WIN_W / 2;
 
-	//left eye
+	//-- left eye --//
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset modelview matrix
 	
-	//glViewport(0, WIN_H - (WIN_W/2),sz,sz);
 	glViewport(0, 0,sz,sz);
 
 	gluPerspective(fovy, aspect, nearZ, farZ);
@@ -325,20 +342,19 @@ void display_3D_toed_in( void )
 				0.0,                                         //                     z=0.0
 				0.0,                                         //set camera "look at" x=0.0
 				0.0,                                         //                     y=0.0
-				-screenZ,                                     //                     z=screenplane
+				screenZ,                                     //                     z=screenplane
 				0.0,                                         //set camera up vector x=0.0
 				1.0,                                         //                     y=1.0
 				0.0);		                                 //                     z=0.0
 	
-	glPushMatrix();
+	glPushMatrix();											//draw the scene
 	{
 	    glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
 	    display_teapot();
 	}
 	glPopMatrix();
 
-	//right eye
-	
+	//-- right eye --//
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset modelview matrix
 
@@ -354,7 +370,7 @@ void display_3D_toed_in( void )
 				0.0,                                         //                     z=0.0
 				0.0,                                         //set camera "look at" x=0.0
 				0.0,                                         //                     y=0.0
-				-screenZ,                                     //                     z=screenplane
+				screenZ,                                     //                     z=screenplane
 				0.0,                                         //set camera up vector x=0.0
 				1.0,                                         //                     y=1.0
 				0.0);		                                 //                     z=0.0
@@ -369,12 +385,52 @@ void display_3D_toed_in( void )
 }
 
 
+
+
 /************************************************************************************************
- * void display_3D_toed_in( void )
- */
+* void display_3D_toed_in( void )
+*/
 void display_3D_frust( void )
 {	
+	setFrustum();
+	int sz = WIN_W / 2;
+
+	//-- left eye --//
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();                                        //reset projection matrix
+	glViewport(0, 0, sz, sz);
+	glFrustum(leftCam.leftfrustum, leftCam.rightfrustum,     //set left view frustum
+		leftCam.bottomfrustum, leftCam.topfrustum,
+		nearZ, farZ);
+	glTranslatef(leftCam.modeltranslation, 0.0, 0.0);        //translate to cancel parallax
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glPushMatrix();
+	{
+		glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
+		display_teapot();
+	}
+	glPopMatrix();
 	
+	//-- right eye --//
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();                                        //reset projection matrix
+	glViewport((WIN_W/2), 0, sz, sz);
+	glFrustum(rightCam.leftfrustum, rightCam.rightfrustum,   //set left view frustum
+		rightCam.bottomfrustum, rightCam.topfrustum,
+		nearZ, farZ);
+	glTranslatef(rightCam.modeltranslation, 0.0, 0.0);       //translate to cancel parallax
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glPushMatrix();
+	{
+		glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
+		display_teapot();
+	}
+	glPopMatrix();
+
 }
 
 /************************************************************************************************
@@ -394,7 +450,6 @@ void display()
 	g_angle += .05;
 
 	glutSwapBuffers();
-	glFlush();
 	glutPostRedisplay();
 }
 
