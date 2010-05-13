@@ -25,18 +25,19 @@
 #define PI	3.141592653589793
 #define DTR 0.0174532925
 
-
 //--------------------------------------------------------------------------------------------------//
 //							Constants
 //--------------------------------------------------------------------------------------------------//
 const int win_x = 0;
 const int win_y = 0;
 
-const unsigned int WIN_W = 1920;
-const unsigned int WIN_H = 1080;
+//const char *resolution = "1920x1080:32@60";
+//const unsigned int WIN_W = 1920;
+//const unsigned int WIN_H = 1080;
 
-//const float FOV = 45.0;
-//const float ASPECT = float(WIN_W)/float(WIN_H);
+const char *resolution = "1440x900:32@60";
+const unsigned int WIN_W = 1440;
+const unsigned int WIN_H = 900;
 
 const float COORD_X_MIN = 0.0;
 const float COORD_X_MAX = 17.0;
@@ -57,6 +58,9 @@ int g_mouse[2];
 int g_mouse_old[2];
 int g_mouse_click[2];
 int g_mouse_buttons = 0;
+
+bool g_toed = false;
+bool g_frust = true;
 time_t g_clicktime;
 
 // view countrol 
@@ -162,7 +166,7 @@ void initGL( int argc, char** argv )
 	glutInitWindowSize( WIN_W, WIN_H);
     
 	//fullsreen mode
-	glutGameModeString( "1920x1080:32@60" );
+	glutGameModeString( resolution );
 	glutEnterGameMode(); //set glut to fullscreen using the settings in the line above		
 	
 	//lighting
@@ -182,10 +186,6 @@ void initGL( int argc, char** argv )
     // default initialization
     glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
 	
- //   // viewport
- //   glViewport( 0, 0, WIN_W, WIN_H);
-	//
-
     // projection
     glMatrixMode( GL_PROJECTION);
     glLoadIdentity();
@@ -197,25 +197,6 @@ void initGL( int argc, char** argv )
 
 }//CUTBoolean initGL()
 
-/************************************************************************************************
- *	void doCamFocus( ) 
- */
-void doCamFocus( ) 
-{	
-/*
-	float fov_radians;
-	float z_Look = 0;
-	
-	fov_radians = FOV * PI/180.0;
-	
-	z_Look = (COORD_X_MAX/2.0) / tan( (fov_radians / 2.0) ); 
-	
-	gluLookAt(	COORD_X_MAX/2.0, COORD_Y_MAX/2.0, z_Look,
-				COORD_X_MAX/2.0, COORD_Y_MAX/2.0, 0.0,
-				0.0f,1.0f, 0.0f
-			  );
-*/
-}// void doCamFocus( float delta ) 
 
 /************************************************************************************************
  * beginWinCoords(void)
@@ -316,7 +297,7 @@ void display_2D (void)
 		memset(str_line, 0, 128);	
 		sprintf(str_line, "(esc) Exit");
 		int len = (int) strlen(str_line);
-		_glPrint( 0 , WIN_H, str_line, (void *) GLUT_BITMAP_9_BY_15, 1.0, 1.0, 1.0);
+		_glPrint( 0 , WIN_H-9, str_line, (void *) GLUT_BITMAP_9_BY_15, 1.0, 1.0, 1.0);
 	}
 	_endWinCoords();
 }
@@ -387,6 +368,15 @@ void display_3D_toed_in( void )
 
 }
 
+
+/************************************************************************************************
+ * void display_3D_toed_in( void )
+ */
+void display_3D_frust( void )
+{	
+	
+}
+
 /************************************************************************************************
  * void display()
  */
@@ -394,14 +384,13 @@ void display()
 {		
 	glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	//doCamFocus();					//move the camera to the correct location
 	   
 	display_mouse_transforms();		//mouse transforms		
 	display_2D();					//Display 2D stuff
 	
-	display_3D_toed_in();			//Toed-in method of 3D
-	
+	if ( g_toed ) display_3D_toed_in();			//Toed-in method of 3D
+	else if ( g_frust ) display_3D_frust();	//Frust method of 3D
+
 	g_angle += .05;
 
 	glutSwapBuffers();
@@ -415,11 +404,18 @@ void display()
  */
 void keyboard( unsigned char key, int /*x*/, int /*y*/)
 {
+	if ( key == 'v')
+	{
+		g_frust = !g_frust;
+		g_toed = !g_toed;
+	}
 	if (key==27) 
 	{
-		//glutLeaveGameMode(); //set the resolution how it was
+		glutLeaveGameMode(); //set the resolution how it was
 		exit( 0);
 	}
+	
+
 }
 
 /************************************************************************************************
