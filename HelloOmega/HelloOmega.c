@@ -16,8 +16,15 @@
 #include <math.h>
 #include <time.h>
 
+#include "stdafx.h"
+#include "OmegaTouchAPI.h"
+#include <iostream>
+
 #include "GL/glew.h"
 #include "GL/glut.h"
+
+using namespace std;
+using namespace OmegaAPI;
 
 //--------------------------------------------------------------------------------------------------//
 //												#defines 
@@ -31,13 +38,13 @@
 const int win_x = 0;
 const int win_y = 0;
 
-//const char *resolution = "1920x1080:32@60";
-//const unsigned int WIN_W = 1920;
-//const unsigned int WIN_H = 1080;
+const char *resolution = "1920x1080:32@60";
+const unsigned int WIN_W = 1920;
+const unsigned int WIN_H = 1080;
 
-const char *resolution = "1440x900:32@60";
-const unsigned int WIN_W = 1440;
-const unsigned int WIN_H = 900;
+//const char *resolution = "1440x900:32@60";
+//const unsigned int WIN_W = 1440;
+//const unsigned int WIN_H = 900;
 
 const float COORD_X_MIN = 0.0;
 const float COORD_X_MAX = 17.0;
@@ -69,6 +76,9 @@ GLdouble g_translate[ ] = { init_trans[0], init_trans[1], init_trans[2] };
 
 GLfloat g_angle = 0.0;
 
+bool g_rot = true;
+
+OmegaTouchAPI omegaDesk;
 
 //--------------------------------------------------------------------------------------------------//
 //												Stereo Stuff 
@@ -88,7 +98,7 @@ GLdouble fovy = 45;                                          //field of view in 
 GLdouble aspect = GLdouble(WIN_W)/GLdouble(WIN_H);			 //screen aspect ratio
 GLdouble nearZ = 3.0;                                        //near clipping plane
 GLdouble farZ = 30.0;                                        //far clipping plane
-GLdouble screenZ = -10.0;                                     //screen projection plane
+GLdouble screenZ = -25.0;                                     //screen projection plane
 GLdouble IOD = 0.5;                                          //intraocular distance
 
 
@@ -119,7 +129,7 @@ void setFrustum(void)
 {
     double top = nearZ*tan(DTR*fovy/2);                    //sets top of frustum based on fovy and near clipping plane
     double right = aspect*top;                             //sets right of frustum based on aspect ratio
-    double frustumshift = (IOD/2)*nearZ/screenZ;
+    double frustumshift = (IOD/2)*nearZ/-screenZ;
 
     leftCam.topfrustum = top;
     leftCam.bottomfrustum = -top;
@@ -160,6 +170,16 @@ int main( int argc, char** argv)
 	
 	initGL( argc, argv );
 
+	// Tera 5: "131.193.77.116"
+	// OmegaDesk: "131.193.77.102"
+	int err_code = omegaDesk.Init("131.193.77.102");
+	if(err_code != PQMTE_SUCESS){
+		cout << "Connection Failed." << endl;
+		cout << "press any key to exit..." << endl;
+		getchar();
+		return 0;
+	}
+	
     glutMainLoop();							// start rendering mainloop
 }
 
@@ -399,9 +419,9 @@ void display_3D_frust( void )
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset projection matrix
 	glViewport(0, 0, sz, sz);
-	glFrustum(leftCam.leftfrustum, leftCam.rightfrustum,     //set left view frustum
-		leftCam.bottomfrustum, leftCam.topfrustum,
-		nearZ, farZ);
+	glFrustum(	leftCam.leftfrustum, leftCam.rightfrustum,     //set left view frustum
+				leftCam.bottomfrustum, leftCam.topfrustum,
+				nearZ, farZ);
 	glTranslatef(leftCam.modeltranslation, 0.0, 0.0);        //translate to cancel parallax
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -417,9 +437,9 @@ void display_3D_frust( void )
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset projection matrix
 	glViewport((WIN_W/2), 0, sz, sz);
-	glFrustum(rightCam.leftfrustum, rightCam.rightfrustum,   //set left view frustum
-		rightCam.bottomfrustum, rightCam.topfrustum,
-		nearZ, farZ);
+	glFrustum(	rightCam.leftfrustum, rightCam.rightfrustum,   //set left view frustum
+				rightCam.bottomfrustum, rightCam.topfrustum,
+				nearZ, farZ);
 	glTranslatef(rightCam.modeltranslation, 0.0, 0.0);       //translate to cancel parallax
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -441,13 +461,17 @@ void display()
 	glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	   
+
+	// Loop forever
+	if( omegaDesk.hasNewData() ) cout << omegaDesk.GetMostRecentDataString() << endl;
+
 	display_mouse_transforms();		//mouse transforms		
 	display_2D();					//Display 2D stuff
 	
 	if ( g_toed ) display_3D_toed_in();			//Toed-in method of 3D
 	else if ( g_frust ) display_3D_frust();	//Frust method of 3D
-
-	g_angle += .05;
+	
+	if( g_rot) g_angle += .05;
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -464,6 +488,9 @@ void keyboard( unsigned char key, int /*x*/, int /*y*/)
 		g_frust = !g_frust;
 		g_toed = !g_toed;
 	}
+
+	if  (key =='r') g_rot = !g_rot;
+
 	if (key==27) 
 	{
 		glutLeaveGameMode(); //set the resolution how it was

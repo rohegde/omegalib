@@ -178,6 +178,18 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\OmegaTouchAPI.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OmegaTouchAPI.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
