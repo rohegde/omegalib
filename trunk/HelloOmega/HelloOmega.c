@@ -456,18 +456,35 @@ void display_3D_frust( void )
 /************************************************************************************************
  * void display()
  */
+void display_touches()
+{
+	// Loop forever
+	if( omegaDesk.hasNewData() ) cout << omegaDesk.GetMostRecentDataString() << endl;
+	_beginWinCoords();					//enables 2d drawing 
+	{
+		glPointSize(5.0);				//if able insert intensity or area
+		glBegin(GL_POINTS);
+		glVertex2f( 5.0f, 5.0f );		//draw the finger that is being touched 
+		glEnd();
+	}
+	_endWinCoords();					//ends 2d Drawing 
+}
+
+
+/************************************************************************************************
+ * void display()
+ */
 void display()
 {		
 	glClearColor( BACK_GRD[0] , BACK_GRD[1] , BACK_GRD[2] , BACK_GRD[3] );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	   
-
-	// Loop forever
-	if( omegaDesk.hasNewData() ) cout << omegaDesk.GetMostRecentDataString() << endl;
-
 	display_mouse_transforms();		//mouse transforms		
+
+	display_touches();
+
 	display_2D();					//Display 2D stuff
-	
+
 	if ( g_toed ) display_3D_toed_in();			//Toed-in method of 3D
 	else if ( g_frust ) display_3D_frust();	//Frust method of 3D
 	
