@@ -7,7 +7,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Circular linked list implementation
+ * Generic linked list implementation
  *********************************************************************************************************************/
 #include "olist.h"
 
@@ -18,6 +18,7 @@ OMNode* olistCreateNode(void* data, const char* name, char flags)
 	OMNode* node;
 	
 	node = (OMNode*)malloc(sizeof(OMNode));
+	memset(node, 0, sizeof(OMNode));
 
 	if(!name) name = "<undefined>";
 	strcpy(node->name, name);
@@ -35,32 +36,59 @@ void olistDestroyNode(OMNode* node)
 
 /**********************************************************************************************************************
 */
-OMNode* olistInit(int numNodes)
+void olistInit(OMList* list, int numNodes, const char* nodeName, enum OMListFlags flags)
 {
-	OMNode* head = NULL;
+	char name[OM_NODE_NAME_LEN];
+
 	OMNode* cur = NULL;
-	while(numNodes != 0)
+	OMNode* head = NULL;
+	
+	int i = 0;
+
+	name[0] = '\0';
+
+	while(i < numNodes)
 	{
 		OMNode* prev = cur;
-		cur = olistCreateNode(NULL, NULL, 0);
+
+		// Set node name
+		if(nodeName != NULL) sprintf(name, nodeName, i);
+
+		cur = olistCreateNode(NULL, name, 0);
 		if(!head) head = cur;
-		if(!prev) prev->next = cur;
-		numNodes--;
+		if(prev) prev->next = cur;
+		i++;
 	}
-	cur->next = head;
-	return head;
+	list->head = head;
+	list->tail = cur;
+
+	// Setup circular list.
+	if(flags & OM_LIST_CIRCULAR) list->tail->next = list->head;
 }
 
 /**********************************************************************************************************************
 */
-void olistDestroy(OMNode* head)
+OMList* olistCreate()
 {
-	OMNode* cur = head;
+	OMList* list = (OMList*)malloc(sizeof(OMList));
+	memset(list, 0, sizeof(OMList));
+	return list;
+}
+
+/**********************************************************************************************************************
+*/
+void olistDestroy(OMList** list)
+{
+	OMNode* head = (*list)->head;
+	OMNode* cur = (*list)->head;
 	do
 	{
 		OMNode* tmp = cur->next;
 		olistDestroyNode(tmp);
 		cur = tmp;
 	}
-	while(cur != head);
+	while(cur && cur != head);
+
+	free(list);
+	(*list) = NULL;
 }
