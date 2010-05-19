@@ -7,17 +7,24 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Linked list (normal & circular) implementation
+ * Generic linked list implementation
  *********************************************************************************************************************/
 #include "osystem.h"
 
-#define OM_CLIST_NAME_LEN 20
+#define OM_NODE_NAME_LEN 20
+
+/**********************************************************************************************************************
+*/
+enum OMListFlags
+{
+	OM_LIST_CIRCULAR
+};
 
 /**********************************************************************************************************************
 */
 struct _OMNode
 {
-    char name[OM_CLIST_NAME_LEN];
+    char name[OM_NODE_NAME_LEN];
     char flags;
     struct _OMNode* next;
 	void* data;
@@ -34,25 +41,31 @@ struct _OMList
 typedef struct _OMList OMList;
 
 /**********************************************************************************************************************
- * oclistCreateNode
+ * olistCreateNode
  *	Creates a new node.
  */
 OMNode* olistCreateNode(void* data, const char* name, char flags);
 
 /**********************************************************************************************************************
- * oclistDestroyNode
+ * olistDestroyNode
  *  Deallocates a list node.
  *  NOTE: this function just frees up node memory, it does not fix list links.
  */
 void olistDestroyNode(OMNode* node);
 
 /**********************************************************************************************************************
- * oclistInit
- *	Initialized a linked list with the specified number of elements.
+ * olistDestroy
  */
-OMNode* olistInit(int numNodes);
+OMList* olistCreate();
 
 /**********************************************************************************************************************
- * oclistDestroy
+ * olistDestroy
  */
-void olistDestroy(OMNode* head);
+void olistDestroy(OMList** list);
+
+/**********************************************************************************************************************
+ * olistInit
+ *	Initializes a linked list with the specified number of elements.
+ */
+void olistInit(OMList* list, int numNodes, const char* nodeName, enum OMListFlags flags);
+

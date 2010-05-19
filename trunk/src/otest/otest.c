@@ -11,6 +11,7 @@
  *********************************************************************************************************************/
 #include "omega.h"
 #include "othread.h"
+#include "olist.h"
 
 unsigned OM_THREADPROC test(void* d)
 {
@@ -26,5 +27,7 @@ unsigned OM_THREADPROC test(void* d)
 */
 void main()
 {
-	othreadCreate(test, NULL);
+	//othreadCreate(test, NULL);
+	OMList* list = olistCreate();
+	olistInit(list, 4, "Node %d", 0);
 }
