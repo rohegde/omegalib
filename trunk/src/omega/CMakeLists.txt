@@ -22,12 +22,18 @@ LINK_DIRECTORIES(
 )
 
 #######################################################################################################################
+# Find required packages
+find_package(GLUT)
+find_package(OpenGL)
+
+#######################################################################################################################
 # Compile definitions
 ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
 
 #######################################################################################################################
 # Source files
 SET( srcs 
+		ocfg.c
         olist.c
         odisplay.c
         oevent.c
@@ -37,13 +43,14 @@ SET( srcs
         othread.c
         outil.c
         olog.c
-        display/oglsimple.c
+        display/ogl.c
         input/omouse.c
         )
     
 #######################################################################################################################
 # Headers
 SET( headers 
+        ${OmegaLib_SOURCE_DIR}/include/ocfg.h
         ${OmegaLib_SOURCE_DIR}/include/olist.h
         ${OmegaLib_SOURCE_DIR}/include/odisplay.h
         ${OmegaLib_SOURCE_DIR}/include/oevent.h
@@ -54,7 +61,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/outil.h
         ${OmegaLib_SOURCE_DIR}/include/olog.h
-        display/oglsimple.h
+        display/ogl.h
         input/omouse.h
         ) 
         
@@ -66,6 +73,8 @@ ADD_LIBRARY( omega ${srcs} ${headers})
 # Setup link info.
 TARGET_LINK_LIBRARIES( omega
     libconfig
+    ${GLUT_LIBRARY} 
+    ${OPENGL_LIBRARY}
 )
 
 

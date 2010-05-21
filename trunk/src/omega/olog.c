@@ -13,25 +13,27 @@
 
 #define LOG_STR_LEN 1024
 
-FILE* logFile = NULL;
+/**********************************************************************************************************************
+*/
+FILE* gLogFile = NULL;
 
 /**********************************************************************************************************************
 */
 void ologInitFileOutput(const char* filename)
 {
 	if(!filename) filename = "./log.txt";
-	logFile = fopen(filename, "w");
+	gLogFile = fopen(filename, "w");
 }
 
 /**********************************************************************************************************************
 */
 void ologCleanup()
 {
-	if(logFile)
+	if(gLogFile)
 	{
-		fflush(logFile);
-		fclose(logFile);
-		logFile = NULL;
+		fflush(gLogFile);
+		fclose(gLogFile);
+		gLogFile = NULL;
 	}
 }
 
@@ -46,9 +48,9 @@ void ologMsg(const char* fmt, ...)
 	strcat(str, "\n");
 
 	printf(str);
-	if(logFile)
+	if(gLogFile)
 	{
-		fprintf(logFile, str);
+		fprintf(gLogFile, str);
 	}
 }
 
@@ -66,9 +68,9 @@ void ologWarning(const char* fmt, ...)
 	sprintf(str, "WARNING: %s\n", tmpstr);
 
 	printf(str);
-	if(logFile)
+	if(gLogFile)
 	{
-		fprintf(logFile, str);
+		fprintf(gLogFile, str);
 	}
 }
 
@@ -86,8 +88,8 @@ void ologError(const char* fmt, ...)
 	sprintf(tmpstr, "ERROR: %s\n", tmpstr);
 
 	printf(str);
-	if(logFile)
+	if(gLogFile)
 	{
-		fprintf(logFile, str);
+		fprintf(gLogFile, str);
 	}
 }

@@ -13,5 +13,12 @@
 #define __OGLSIMPLE_H__
 
 #include "osystem.h"
+#include "ocfg.h"
+
+void oglInit(const OMConfig* cfg);
+void oglStart();
+void oglStop();
+void oglCleanup();
+
 
 #endif

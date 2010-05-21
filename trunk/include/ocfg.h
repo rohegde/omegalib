@@ -7,23 +7,22 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * This file contains system / platform defines and is included in every other file.
+ * Omegalib configuration
  *********************************************************************************************************************/
-#ifndef __OSYSTEM_H__
-#define __OSYSTEM_H__
+#ifndef __OCFG_H__
+#define __OCFG_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "osystem.h"
 
-#ifdef WIN32
-#include <windows.h>
-#endif
+enum OMDisplayDriver
+{
+	OM_DISPLAY_DRIVER_NONE,
+	OM_DISPLAY_DRIVER_GL
+};
 
-// OpenGL includes
-#include <GL/gl.h>
-#include <GL/glut.h>
-
-#define STDLEN 256 /* Standard string length */
+typedef struct _OMConfig
+{
+	enum OMDisplayDriver displayDriver;
+} OMConfig;
 
 #endif

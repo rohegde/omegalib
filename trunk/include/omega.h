@@ -13,8 +13,32 @@
 #define __OMEGA_H__
 
 #include "osystem.h"
+#include "ocfg.h"
 
-void omegaInit(const char* cfg, int size);
+/**********************************************************************************************************************
+ * Devices enum. A device has its own unique id here if it needs a specific driver. If two different physical devices
+ * share the same omegalib driver, they will have a single device id here.
+ */
+enum OMDevice
+{
+	OM_DEVICE_MOUSE,
+	OM_DEVICE_MULTITOUCH,
+	OM_DEVICE_TRACKER,
+	OM_DEVICE_COMPOSITE
+};
+
+/**********************************************************************************************************************
+*/
+void omegaInit(const OMConfig* cfg);
+
+/**********************************************************************************************************************
+*/
+void omegaSetUpdateCallback(void (*func)(float));
+
+/**********************************************************************************************************************
+*/
+void omegaRun();
+
 
 
 #endif
