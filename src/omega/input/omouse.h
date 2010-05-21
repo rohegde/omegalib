@@ -13,5 +13,12 @@
 #define __OMOUSE_H__
 
 #include "osystem.h"
+#include "ocfg.h"
+
+void omouseInit(const OMConfig* cfg);
+void omouseCleanup();
+void omouseStart();
+void omouseStop();
+
 
 #endif
