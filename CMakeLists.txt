@@ -16,5 +16,29 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 #######################################################################################################################
+# Setup output Directories 
+SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
+   ${PROJECT_SOURCE_DIR}/bin
+   CACHE PATH
+   "Single Directory for all Libraries"
+   )
+
+#######################################################################################################################
+# Setup the Executable output Directory 
+SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY
+   ${PROJECT_SOURCE_DIR}/bin
+   CACHE PATH
+   "Single Directory for all Executables."
+   )
+
+#######################################################################################################################
+# Setup the Executable output Directory 
+SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+   ${PROJECT_SOURCE_DIR}/lib
+   CACHE PATH
+   "Single Directory for all static libraries."
+   )
+   
+#######################################################################################################################
 # Add subdirectiories
 ADD_SUBDIRECTORY(src)
