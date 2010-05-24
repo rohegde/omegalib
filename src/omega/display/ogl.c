@@ -28,7 +28,7 @@ void displayCallback(void)
 		float dt = t - lt;
 		lt = t;
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gUpdateCallback(dt);
 		glutPostRedisplay();
 	}
@@ -43,9 +43,9 @@ void oglInit(const OMConfig* cfg)
 
 	glutInit(&argcp, &argv);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500,500);
+	glutInitWindowSize(cfg->width,cfg->height);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
-	glutCreateWindow("OmegaLib Window"); 
+	glutCreateWindow(cfg->appName); 
 
 	glutDisplayFunc(displayCallback); 
 }

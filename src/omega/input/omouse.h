@@ -15,6 +15,8 @@
 #include "osystem.h"
 #include "ocfg.h"
 
+#define OM_ID_MOUSE (OM_DC_POINTER << 8)
+
 void omouseInit(const OMConfig* cfg);
 void omouseCleanup();
 void omouseStart();
