@@ -41,7 +41,7 @@ void olistInit(OMList* list, int numNodes, const char* nodeName, enum OMListFlag
 	char name[OM_NODE_NAME_LEN];
 
 	OMNode* cur = NULL;
-	OMNode* head = NULL;
+	OMNode* tail = NULL;
 	
 	int i = 0;
 
@@ -55,15 +55,23 @@ void olistInit(OMList* list, int numNodes, const char* nodeName, enum OMListFlag
 		if(nodeName != NULL) sprintf(name, nodeName, i);
 
 		cur = olistCreateNode(NULL, name, 0);
-		if(!head) head = cur;
-		if(prev) prev->next = cur;
+		if(!tail) tail= cur;
+		if(prev)
+		{
+			prev->next = cur;
+			cur->prev = prev;
+		}
 		i++;
 	}
-	list->head = head;
-	list->tail = cur;
+	list->tail = tail;
+	list->head = cur;
 
 	// Setup circular list.
-	if(flags & OM_LIST_CIRCULAR) list->tail->next = list->head;
+	if((flags & OM_LIST_CIRCULAR) == OM_LIST_CIRCULAR) 
+	{
+		list->head->next = list->tail;
+		list->tail->prev = list->head;
+	}
 }
 
 /**********************************************************************************************************************
