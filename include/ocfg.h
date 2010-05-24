@@ -16,13 +16,19 @@
 
 enum OMDisplayDriver
 {
-	OM_DISPLAY_DRIVER_NONE,
-	OM_DISPLAY_DRIVER_GL
+	OM_DD_NONE,
+	OM_DD_GL
 };
 
 typedef struct _OMConfig
 {
+	char appName[OM_STDLEN];
+
 	enum OMDisplayDriver displayDriver;
+	int height;
+	int width;
 } OMConfig;
+
+void ocfgInitDefault(OMConfig* cfg);
 
 #endif
