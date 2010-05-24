@@ -7,7 +7,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Generic linked list implementation
+ * Generic double linked list implementation
  *********************************************************************************************************************/
 #include "osystem.h"
 
@@ -22,23 +22,20 @@ enum OMListFlags
 
 /**********************************************************************************************************************
 */
-struct _OMNode
+typedef struct _OMNode
 {
     char name[OM_NODE_NAME_LEN];
     char flags;
     struct _OMNode* next;
+    struct _OMNode* prev;
 	void* data;
-};
+} OMNode;
 
-typedef struct _OMNode OMNode;
-
-struct _OMList
+typedef struct _OMList
 {
 	OMNode* head;
 	OMNode* tail;
-};
-
-typedef struct _OMList OMList;
+} OMList;
 
 /**********************************************************************************************************************
  * olistCreateNode

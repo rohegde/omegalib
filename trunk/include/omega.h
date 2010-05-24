@@ -14,17 +14,14 @@
 
 #include "osystem.h"
 #include "ocfg.h"
+#include "oevent.h"
+#include "olog.h"
 
 /**********************************************************************************************************************
- * Devices enum. A device has its own unique id here if it needs a specific driver. If two different physical devices
- * share the same omegalib driver, they will have a single device id here.
- */
-enum OMDevice
+*/
+enum OMGetEventsFlags
 {
-	OM_DEVICE_MOUSE,
-	OM_DEVICE_MULTITOUCH,
-	OM_DEVICE_TRACKER,
-	OM_DEVICE_COMPOSITE
+	OM_GEF_FIFO = 1
 };
 
 /**********************************************************************************************************************
@@ -39,6 +36,16 @@ void omegaSetUpdateCallback(void (*func)(float));
 */
 void omegaRun();
 
+/**********************************************************************************************************************
+*/
+int omegaAvailableEvents();
 
+/**********************************************************************************************************************
+*/
+int omegaLostEvents();
+
+/**********************************************************************************************************************
+*/
+int omegaGetEvents(OMEvent* ptr, int maxEvent, unsigned int flags);
 
 #endif
