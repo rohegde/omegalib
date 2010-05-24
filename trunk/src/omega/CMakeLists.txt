@@ -35,6 +35,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
 SET( srcs 
 		ocfg.c
         olist.c
+        ogfx.c
         odisplay.c
         oevent.c
         oinput.c
@@ -52,6 +53,7 @@ SET( srcs
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/ocfg.h
         ${OmegaLib_SOURCE_DIR}/include/olist.h
+        ${OmegaLib_SOURCE_DIR}/include/ogfx.h
         ${OmegaLib_SOURCE_DIR}/include/odisplay.h
         ${OmegaLib_SOURCE_DIR}/include/oevent.h
         ${OmegaLib_SOURCE_DIR}/include/oinput.h
