@@ -11,17 +11,6 @@
 # *********************************************************************************************************************/
 
 #######################################################################################################################
-# Directories needed for compilation
-INCLUDE_DIRECTORIES(
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig
-  ${OmegaLib_SOURCE_DIR}/include/
-)
-
-LINK_DIRECTORIES(
-  ${OmegaLib_BINARY_DIR}/3rdparty/libconfig
-)
-
-#######################################################################################################################
 # Find required packages
 find_package(GLUT)
 find_package(OpenGL)
@@ -45,7 +34,9 @@ SET( srcs
         outil.c
         olog.c
         display/ogl.c
+        display/oeq.cpp
         input/omouse.c
+        input/opq.c
         )
     
 #######################################################################################################################
@@ -64,7 +55,9 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/outil.h
         ${OmegaLib_SOURCE_DIR}/include/olog.h
         display/ogl.h
+        display/oeq.h
         input/omouse.h
+        input/opq.h
         ) 
         
 #######################################################################################################################
@@ -75,6 +68,9 @@ ADD_LIBRARY( omega ${srcs} ${headers})
 # Setup link info.
 TARGET_LINK_LIBRARIES( omega
     libconfig
+    pthreadVC2
+    rpcrt4
+    equalizer
     ${GLUT_LIBRARY} 
     ${OPENGL_LIBRARY}
 )

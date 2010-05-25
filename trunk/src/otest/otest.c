@@ -65,7 +65,7 @@ void update(float dt)
 
 /**********************************************************************************************************************
 */
-void main()
+void main(int argc, char** argv)
 {
 	//othreadCreate(test, NULL);
 	//OMList* list = olistCreate();
@@ -74,6 +74,9 @@ void main()
 	OMConfig cfg;
 
 	ocfgInitDefault(&cfg);
+
+	cfg.argc = argc;
+	cfg.argv = argv;
 
 	omegaInit(&cfg);
 	omegaSetUpdateCallback(update);

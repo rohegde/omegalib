@@ -35,7 +35,14 @@ void omegaInit(const OMConfig* cfg)
 {
 	memcpy(&gCfg, cfg, sizeof(OMConfig));
 
-	oglInit(&gCfg);
+	if(gCfg.displayDriver == OM_DD_EQUALIZER)
+	{
+		oeqInit(&gCfg);
+	}
+	else
+	{
+		oglInit(&gCfg);
+	}
 	oinputInit(&gCfg);
 }
 
@@ -50,8 +57,16 @@ void omegaCleanup()
 */
 void omegaRun()
 {
-	oglStart();
 	oinputStart();
+
+	if(gCfg.displayDriver == OM_DD_EQUALIZER)
+	{
+		oeqStart();
+	}
+	else
+	{
+		oglStart();
+	}
 }
 
 /**********************************************************************************************************************
