@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary One-This pages gives an overview of how the omegaLib will interact with an application.
 
 = Introduction =
 
