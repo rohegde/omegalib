@@ -38,7 +38,7 @@ void displayCallback(void)
 */
 void oglInit(const OMConfig* cfg)
 {
-	char* argv = "undefined";
+	char* argv = "";
 	int argcp = 1;
 
 	glutInit(&argcp, &argv);
