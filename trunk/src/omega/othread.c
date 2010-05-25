@@ -53,3 +53,63 @@ void othreadKill(OMThread thread)
     thread = 0;
 #endif
 }
+
+/**********************************************************************************************************************
+ */
+void othreadMutexInit(OMMutex* m)
+{
+#ifdef WIN32
+    InitializeCriticalSection( m );
+#else
+    const int error = pthread_mutex_init( m, 0 );
+    if( error )
+    {
+		ologError("Error creating pthread mutex: %s", strerror(error));
+        return;
+    }
+#endif
+}
+
+/**********************************************************************************************************************
+ */
+void othreadMutexDelete(OMMutex* m)
+{
+#ifdef WIN32
+    DeleteCriticalSection( m ); 
+#else
+    pthread_mutex_destroy( m );
+#endif
+}
+
+/**********************************************************************************************************************
+ */
+void othreadMutexLock(OMMutex* m)
+{
+#ifdef WIN32
+    EnterCriticalSection( m );
+#else
+    pthread_mutex_lock( m );
+#endif
+}
+
+/**********************************************************************************************************************
+ */
+void othreadMutexUnlock(OMMutex* m)
+{
+#ifdef WIN32
+    LeaveCriticalSection( m );
+#else
+    pthread_mutex_unlock( m );
+#endif
+}
+
+/**********************************************************************************************************************
+ */
+int othreadMutexTryLock(OMMutex* m)
+{
+#ifdef WIN32
+    return TryEnterCriticalSection( m );
+#else
+    return ( pthread_mutex_trylock( m ) == 0 );
+#endif
+}
