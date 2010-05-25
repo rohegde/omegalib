@@ -1,17 +1,28 @@
-#summary This page gives an overview of how the omegaLib will interact with an application.
+#summary This page gives an overview of how the OmegaLib will interact with an application.
 
 = Introduction =
 
-As mentioned previously, the OmegaLib is a C++ library.
+As mentioned previously, the OmegaLib is a C++ library that will serve as a middleware for various unique devices. 
+This page will briefly summaries the functionality of each element of the library and describe how it interacts with other elements.  Below is a diagram of the overall architecture.
 
-<a href="http://higherechelongames.com/omegaTable/APIGeneral.jpg">
-<img src="http://higherechelongames.com/omegaTable/APIGeneral.jpg" width="50%" height="50%">
+<a href="http://higherechelongames.com/omegaTable/LibGen.jpg">
+<img src="http://higherechelongames.com/omegaTable/LibGen.jpg" width="296" height="512">
+<a>
+
+= Applications Layer =
+*_Function Calls_*
+
+*_Configuration File_*
 
 
+= OmegaLib Layer =
+*_General_*
+The library consist of two major layers:
+ * Manager Layer
+ * Driver Layer
 
-= Details =
+*_Manager Layer_*
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+*_Driver Layer_*
+
+*_Data Structure_*
