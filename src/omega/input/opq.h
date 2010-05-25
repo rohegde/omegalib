@@ -9,5 +9,18 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#include "osystem.h"
+#ifndef __OPQ_H__
+#define __OPQ_H__
 
+#include "osystem.h"
+#include "ocfg.h"
+
+//#define OM_ID_MOUSE (OM_DC_POINTER << 8)
+
+void opqInit(const OMConfig* cfg);
+void opqCleanup();
+void opqStart();
+void opqStop();
+
+
+#endif

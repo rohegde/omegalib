@@ -9,5 +9,15 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#include "osystem.h"
+#ifndef __OEQ_H__
+#define __OEQ_H__
 
+#include "osystem.h"
+#include "ocfg.h"
+
+void oeqInit(const OMConfig* cfg);
+void oeqStart();
+void oeqStop();
+void oeqCleanup();
+
+#endif
