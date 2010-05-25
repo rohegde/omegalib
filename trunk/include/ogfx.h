@@ -7,43 +7,22 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Omegalib configuration
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __OCFG_H__
-#define __OCFG_H__
+#ifndef __ODISPLAY_H__
+#define __ODISPLAY_H__
 
 #include "osystem.h"
 
-enum OMDisplayDriver
+#ifdef __cplusplus
+extern "C"
 {
-	OM_DD_NONE,
-	OM_DD_GL,
-	OM_DD_EQUALIZER
-};
+#endif
 
-enum OMGLDisplayFlags
-{
-	OM_GDF_NONE = 0,
-	OM_GDF_STEREO = 1
-};
+	void testCppCodeCall();
 
-typedef struct _OMConfig
-{
-	char appName[OM_STDLEN];
-
-	enum OMDisplayDriver displayDriver;
-
-	// OpenGl driver-specific options
-	int height;
-	int width;
-	enum OMGLDisplayFlags glDisplayFlags;
-
-	// Equalizer driver-specific options
-	char displayCfgName[OM_STDLEN];
-	char** argv;
-	int argc;
-} OMConfig;
-
-void ocfgInitDefault(OMConfig* cfg);
+#ifdef __cplusplus
+}
+#endif
 
 #endif
