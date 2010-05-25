@@ -5,8 +5,7 @@
 As mentioned previously, the OmegaLib is a C++ library.
 
 <a href="http://higherechelongames.com/omegaTable/APIGeneral.jpg">
-<img src="http://higherechelongames.com/omegaTable/APIGeneral.jpg" width="500" height="500">
-</a>
+<img src="http://higherechelongames.com/omegaTable/APIGeneral.jpg" width="50%" height="50%">
 
 
 
