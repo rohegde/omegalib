@@ -2,7 +2,7 @@
 
 = Introduction =
 
-As mentioned previously, the OmegaLib is a C++ library that will serve as a middleware for various unique devices. 
+As mentioned previously, the Omega Library is a C++ library that will serve as a middleware for various unique devices. 
 This page will briefly summaries the functionality of each element of the library and describe how it interacts with other elements.  Below is a diagram of the overall architecture.
 
 <a href="http://higherechelongames.com/omegaTable/LibGen.jpg">
@@ -15,7 +15,7 @@ This page will briefly summaries the functionality of each element of the librar
 *_Configuration File_*
 
 
-= OmegaLib Layer =
+= Omega Library Layer =
 *_General_*
 The library consist of two major layers:
  * Manager Layer
