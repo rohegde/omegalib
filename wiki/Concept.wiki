@@ -2,27 +2,50 @@
 
 = Introduction =
 
-As mentioned previously, the Omega Library is a C++ library that will serve as a middleware for various unique devices. 
-This page will briefly summaries the functionality of each element of the library and describe how it interacts with other elements.  Below is a diagram of the overall architecture.
+As mentioned previously, the Omega Library is a C++ library that will serve as a middleware for various unique devices.  This page will briefly summaries the functionality of each element of the library and describe how it interacts with other elements.  Below is a diagram of the overall architecture.  Additionally definitions for the pseudo-functions will be describe at the end. 
 
 <a href="http://higherechelongames.com/omegaTable/LibGen.jpg">
 <img src="http://higherechelongames.com/omegaTable/LibGen.jpg" width="296" height="512">
 <a>
 
-= Applications Layer =
-*_Function Calls_*
-
-*_Configuration File_*
-
-
 = Omega Library Layer =
-*_General_*
+==General==
 The library consist of two major layers:
  * Manager Layer
+ The Manager Layer is responsible for:
+    * Initializing various connections to device servers
+    * Managing the Update Thread and Rendering Thread.
+ The Update Thread constantly sends an update instruction to both Device Servers and Aggregation Drivers.  In the case of the Device Servers, data for this device is sent via network to their respective Device Drivers.  The case of the Aggregation Drivers will be covered in the following section.
+
  * Driver Layer
+  The Driver Layer is comprised of various drivers written for specific devices.  The goal was to encapsulate each device such that new drivers can be implemented as technology improves.  Drivers are separated into three categories:
+   * Device Drivers  
+   * Render Drivers
+   * Aggregation Drivers 
 
-*_Manager Layer_*
 
-*_Driver Layer_*
 
-*_Data Structure_*
+The Manager Layer is responsible for:
+        * Initializing various connections to device servers
+        * Managing the Update Thread and Rendering Thread.
+
+
+==Manager Layer==
+
+==Driver Layer==
+
+==Data Structure==
+
+
+= Applications Layer =
+==Function Calls==
+ * void omegaInit(const char*cfg, int size);
+        Initialize all the devices within the configuration file "char*cfg".  This will help determine the capabilities the current device.  Within the configuration file a user can specify whether to block, terminate or continue if a device does respond.
+
+ * void omegaDisplayFunction(func*func);
+ * void omegaMainLoop();
+
+ * int omegaGetNumEvents( enum TYPE);
+ * int omegaLostEvents();
+ * OMState*omegaGetState(uint id)
+ * int omegaGetEvents( OMEvent*ptr, int maxEvent, bool current, enum TYPE);
