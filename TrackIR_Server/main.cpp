@@ -73,6 +73,10 @@ int _tmain(int argc, TCHAR* argv[])
 	
 	if(cameraCount>0)
 	{
+		SOCKET sd;							/* Socket descriptor of server */
+		struct sockaddr_in server;			/* Information about the client */
+		tracker_frame frameData;
+		char filename[100]="server.config";
 		CComVariant x, y, z, yaw, pitch, roll;
 		VariantInit(&x);
 		VariantInit(&y);
@@ -80,13 +84,13 @@ int _tmain(int argc, TCHAR* argv[])
 		VariantInit(&yaw);
 		VariantInit(&pitch);
 		VariantInit(&roll);
-		
 		HRESULT hr;
 		
 		printf("\nPress Return To Exit\n\n");
 		
 		cameraCollection->Item(0, &camera);
 		{
+			sd = setupSocketClient(filename,&server);
 			camera->Open();
 			camera->Start();
             {
@@ -106,7 +110,24 @@ int _tmain(int argc, TCHAR* argv[])
 							hr = vector->get_Yaw(&yaw);
 							hr = vector->get_Pitch(&pitch);
 							hr = vector->get_Roll(&roll);
+
+							frameData.x = (float)x.dblVal;
+							frameData.y = (float)y.dblVal;
+							frameData.z = (float)z.dblVal;
+							frameData.yaw = (float)yaw.dblVal;
+							frameData.pitch = (float)pitch.dblVal;
+							frameData.roll = (float)roll.dblVal;
+
 							printf("x=%.3f  y=%.3f  z=%.3f   yaw=%.3f  pitch=%.3f  roll=%.3f \n", x.dblVal, y.dblVal, z.dblVal, yaw.dblVal, pitch.dblVal, roll.dblVal);
+							if(sendData(sd, &frameData, sizeof(frameData), (struct sockaddr *)&server) != sizeof(frameData)) {
+								camera->Stop();
+								camera->Close();
+								camera.Release();
+								cameraCollection.Release();
+								vector.Release();
+								CoUninitialize();
+								exit(1);
+							}
 						}
 						frame->Free();
 						frame.Release();
