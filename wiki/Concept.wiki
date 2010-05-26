@@ -24,9 +24,12 @@ The library consist of two major layers:
     * IPad - Multitouch Device 
     * Natural Point's TrackIR - Head tracking device
     * OptiTrack's Tracking Tools - Head and 3D Gesture Tracking Device
-   These drivers collect data form the Device Servers, parse it and package it into either an OmegaEvent (OMEvent) or an OmegaState (OMState).  These structures will be elaborated on more further down.
+   These drivers collect data form the Device Servers, parse it and package it into either an OmegaEvent (OMEvent) or an OmegaState (OMState).  These structures will be elaborated in the Data Structure section.
   * Render Drivers
+  Render Drivers will we used to render graphical scenes into stereo.  There will also be support for parallel rendering.  This section is still a little vague.  Research and brainstorming sessions are underway to determine how this will be implemented.  Currently there are plans to integrate the DVC as a means to render stereo.  Equalizer is another avenue that will be pursued. 
   * Aggregation Drivers 
+  Aggregations Drivers will serve two functions.
+  One function assumes that more than one iteration of the same input device is running.  For example there are two wall sized tile displays, each with its own PQLabs multitouch overlay.  
 
 Data Structure
 
