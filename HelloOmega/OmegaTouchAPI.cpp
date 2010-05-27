@@ -31,9 +31,21 @@ OmegaTouchAPI::OmegaTouchAPI()
 	server_ip = "131.193.77.102";
 	mostRecentDataString[0] = NULL; // Cleans up string
 	newDataFlag = false;
+	Init();
 }
+
+OmegaTouchAPI::OmegaTouchAPI( char* local_ip )
+{
+	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
+	server_ip = local_ip;
+	mostRecentDataString[0] = NULL; // Cleans up string
+	newDataFlag = false;
+	Init();
+}
+
 OmegaTouchAPI::~OmegaTouchAPI()
 {
+	CloseHandle(listSem);
 	DisconnectServer();
 }
 /////////////////////////// functions ///////////////////////////////////
@@ -46,6 +58,11 @@ int OmegaTouchAPI::Init( char* local_ip )
 int OmegaTouchAPI::Init()
 {
 	int err_code = PQMTE_SUCESS;
+	mostRecentTouch = new Touches();
+	listSem = CreateSemaphore( NULL, 1, 1, NULL ); // security, initial count, max count, name
+	if( listSem == NULL ){
+		printf("Semaphore creation error: %d\n", GetLastError() );
+	}
 
 	// initialize the handle functions of gestures;
 	InitFuncOnTG();
@@ -163,6 +180,15 @@ void OmegaTouchAPI:: OnGetServerResolution(int x, int y, void * call_back_object
 //	you can do mouse map like "OnTG_Down" etc;
 void OmegaTouchAPI:: OnTouchPoint(const TouchPoint & tp)
 {
+	timeb tb;
+	ftime( &tb );
+	int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+
+	Touches newTouch = Touches( tp.point_event, nCount, tp.x, tp.y, tp.dx, tp.dy, tp.id );
+	touchList.push_back( newTouch );
+	ReleaseSemaphore( listSem, 1, NULL ); // semaphore handle, increase count, not interested in prev count
+	mostRecentTouch->updateTouch(newTouch);
+
 	char buffer[5];
 
 	ClearDataString();
@@ -171,18 +197,12 @@ void OmegaTouchAPI:: OnTouchPoint(const TouchPoint & tp)
 	{
 	case TP_DOWN:
 		strcat(mostRecentDataString,"TP_DOWN ");
-		//cout << "  point " << tp.id << " come at (" << tp.x << "," << tp.y 
-		//	<< ") width:" << tp.dx << " height:" << tp.dy << endl;
 		break;
 	case TP_MOVE:
 		strcat(mostRecentDataString,"TP_MOVE ");
-		//cout << "  point " << tp.id << " move at (" << tp.x << "," << tp.y 
-		//	<< ") width:" << tp.dx << " height:" << tp.dy << endl;
 		break;
 	case TP_UP:
 		strcat(mostRecentDataString,"TP_UP ");
-		//cout << "  point " << tp.id << " leave at (" << tp.x << "," << tp.y 
-		//	<< ") width:" << tp.dx << " height:" << tp.dy << endl;
 		break;
 	}
 
@@ -214,6 +234,7 @@ void OmegaTouchAPI:: OnTouchPoint(const TouchPoint & tp)
 	itoa(tp.dy,buffer,10);
 	strcat(mostRecentDataString,buffer);
 	newDataFlag = true;
+	//printf("%s \n",mostRecentDataString);
 }
 void OmegaTouchAPI:: OnTouchGesture(const TouchGesture & tg)
 {
@@ -325,6 +346,24 @@ char* OmegaTouchAPI::GetMostRecentDataString()
 {
 	newDataFlag = false;
 	return mostRecentDataString;
+}
+
+Touches* OmegaTouchAPI::GetMostRecentTouch(){
+	newDataFlag = false;
+	return mostRecentTouch;
+}
+
+vector<Touches> OmegaTouchAPI::getTouchList(){
+	vector<Touches> emptyList;
+	dwWaitResult = WaitForSingleObject( listSem, 0L );
+	switch( dwWaitResult ){
+		case WAIT_OBJECT_0:
+			//printf("Got list \n");
+			return touchList;
+		case WAIT_TIMEOUT:
+			//printf("Refused list \n");
+			return emptyList;
+	}
 }
 
 bool OmegaTouchAPI::hasNewData()
