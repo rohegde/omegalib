@@ -42,12 +42,18 @@ const int win_y = 0;
 //const unsigned int WIN_W = 1920;
 //const unsigned int WIN_H = 1080;
 
+//Mac Book Pro 15"
 //const char *resolution = "1440x900:32@60";
 //const unsigned int WIN_W = 1440;
 //const unsigned int WIN_H = 900;
 
-const char *resolution = "1280x768:32@60";
-const unsigned int WIN_W = 1280;
+//const char *resolution = "1280x768:32@60";
+//const unsigned int WIN_W = 1280;
+//const unsigned int WIN_H = 768;
+
+//terra 5
+const char *resolution = "1024x768:32@60";
+const unsigned int WIN_W = 1024;
 const unsigned int WIN_H = 768;
 
 const float COORD_X_MIN = 0.0;
@@ -178,7 +184,7 @@ int main( int argc, char** argv)
 
 	// Tera 5: "131.193.77.116"
 	// OmegaDesk: "131.193.77.102"
-	int err_code = omegaDesk.Init("131.193.77.102");
+	int err_code = omegaDesk.Init("131.193.77.116");
 	if(err_code != PQMTE_SUCESS){
 		cout << "Connection Failed." << endl;
 		//cout << "press any key to exit..." << endl;
@@ -496,24 +502,26 @@ void display_touches()
 			// May cause iterator error (semaphore not working?)
 			vector<Touches> list = omegaDesk.getTouchList();
 			if( list.size() > 0 )
+			{
 				touchList = list;
 
-			for(unsigned int i = 0; i < touchList.size(); i++)
-			{
-				Touches touch = touchList[i];
-				int typeID = 0;
-				int ID = touch.getFinger();
-				float xPos = touch.getXPos();
-				float yPos = touch.getYPos();
-				float xWidth = 1;
-				float yWidth = 1;
+				for(unsigned int i = 0; i < touchList.size(); i++)
+				{
+					Touches touch = touchList[i];
+					int typeID = 0;
+					int ID = touch.getFinger();
+					float xPos = touch.getXPos();
+					float yPos = touch.getYPos();
+					float xWidth = 1;
+					float yWidth = 1;
 
-				//printf("Client received: %i %i %f %f %f %f",typeID, ID, xPos, yPos, xWidth, yWidth);
+					printf("Client received: %i %i %f %f %f %f \n",typeID, ID, xPos, yPos, xWidth, yWidth);
 
-				glPointSize(5.0);				//if able insert intensity or area
-				glBegin(GL_POINTS);
-				glVertex2f( xPos, yPos );		//draw the finger that is being touched 
-				glEnd();
+					glPointSize(5.0);				//if able insert intensity or area
+					glBegin(GL_POINTS);
+					glVertex2f( xPos, yPos );		//draw the finger that is being touched 
+					glEnd();
+				}
 			}
 		}
 		_endWinCoords();					//ends 2d Drawing 
@@ -533,11 +541,17 @@ void display()
 
 	display_touches();
 
+	//display 2D content
+	int sz = WIN_W / 2;
+	glViewport(0, 0,sz,sz);
+	display_2D();					//Display 2D stuff
+	glViewport((WIN_W/2), 0, sz, sz);
 	display_2D();					//Display 2D stuff
 
+	//display 3D content 
 	if ( g_toed ) display_3D_toed_in();			//Toed-in method of 3D
 	else if ( g_frust ) display_3D_frust();	//Frust method of 3D
-	
+
 	if( g_rot) g_angle += .05;
 
 	glutSwapBuffers();
