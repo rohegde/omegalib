@@ -38,13 +38,17 @@ using namespace OmegaAPI;
 const int win_x = 0;
 const int win_y = 0;
 
-const char *resolution = "1920x1080:32@60";
-const unsigned int WIN_W = 1920;
-const unsigned int WIN_H = 1080;
+//const char *resolution = "1920x1080:32@60";
+//const unsigned int WIN_W = 1920;
+//const unsigned int WIN_H = 1080;
 
 //const char *resolution = "1440x900:32@60";
 //const unsigned int WIN_W = 1440;
 //const unsigned int WIN_H = 900;
+
+const char *resolution = "1280x768:32@60";
+const unsigned int WIN_W = 1280;
+const unsigned int WIN_H = 768;
 
 const float COORD_X_MIN = 0.0;
 const float COORD_X_MAX = 17.0;
@@ -78,7 +82,9 @@ GLfloat g_angle = 0.0;
 
 bool g_rot = true;
 
+// touches
 OmegaTouchAPI omegaDesk;
+vector<Touches> touchList;
 
 //--------------------------------------------------------------------------------------------------//
 //												Stereo Stuff 
@@ -123,7 +129,7 @@ void mouse(int button, int state, int x, int y);
 void motion(int x, int y);
 
 float coordPxToModel( float value);
-
+vector<string> lineToVector( string line );
 
 void setFrustum(void)
 {
@@ -175,11 +181,13 @@ int main( int argc, char** argv)
 	int err_code = omegaDesk.Init("131.193.77.102");
 	if(err_code != PQMTE_SUCESS){
 		cout << "Connection Failed." << endl;
-		cout << "press any key to exit..." << endl;
-		getchar();
-		return 0;
+		//cout << "press any key to exit..." << endl;
+		//getchar();
+		//return 0;
 	}
+	// Sets up semaphore for touchList
 	
+
     glutMainLoop();							// start rendering mainloop
 }
 
@@ -458,16 +466,58 @@ void display_3D_frust( void )
  */
 void display_touches()
 {
-	// Loop forever
-	if( omegaDesk.hasNewData() ) cout << omegaDesk.GetMostRecentDataString() << endl;
-	_beginWinCoords();					//enables 2d drawing 
-	{
-		glPointSize(5.0);				//if able insert intensity or area
-		glBegin(GL_POINTS);
-		glVertex2f( 5.0f, 5.0f );		//draw the finger that is being touched 
-		glEnd();
-	}
-	_endWinCoords();					//ends 2d Drawing 
+	// Draw if has new data
+	if( omegaDesk.hasNewData() ){
+		_beginWinCoords();					//enables 2d drawing 
+		{
+			
+			/* // Without touch list, just parsing the data string
+			vector<string> input = lineToVector( omegaDesk.GetMostRecentDataString() );
+			string typeString = input[0].c_str();
+			int typeID = -1;
+			if( typeString.compare("TP_DOWN") )
+				typeID = 0;
+			else if( typeString.compare("TP_MOVE") )
+				typeID = 1;
+			else if( typeString.compare("TP_UP") )
+				typeID = 2;
+			int ID = atoi(input[1].c_str());
+			float xPos = atoi(input[2].c_str());
+			float yPos = atoi(input[3].c_str());
+			float xWidth = atoi(input[4].c_str());
+			float yWidth = atoi(input[5].c_str());
+			glPointSize(5.0);				//if able insert intensity or area
+			glBegin(GL_POINTS);
+			glVertex2f( xPos, yPos );		//draw the finger that is being touched 
+			glEnd();
+			*/
+			
+			// Get touches from touchList (similar to TacTile)
+			// May cause iterator error (semaphore not working?)
+			vector<Touches> list = omegaDesk.getTouchList();
+			if( list.size() > 0 )
+				touchList = list;
+
+			for(unsigned int i = 0; i < touchList.size(); i++)
+			{
+				Touches touch = touchList[i];
+				int typeID = 0;
+				int ID = touch.getFinger();
+				float xPos = touch.getXPos();
+				float yPos = touch.getYPos();
+				float xWidth = 1;
+				float yWidth = 1;
+
+				//printf("Client received: %i %i %f %f %f %f",typeID, ID, xPos, yPos, xWidth, yWidth);
+
+				glPointSize(5.0);				//if able insert intensity or area
+				glBegin(GL_POINTS);
+				glVertex2f( xPos, yPos );		//draw the finger that is being touched 
+				glEnd();
+			}
+		}
+		_endWinCoords();					//ends 2d Drawing 
+	}// if has touch
 }
 
 
@@ -607,3 +657,28 @@ float coordPxToModel( float value)
 	return value = ( value  - 0 ) / ( WIN_W - 0 ) * ( COORD_X_MAX - COORD_X_MIN) + COORD_X_MIN; 
 }//void coordPxToModel( float &value)
 
+vector<string> lineToVector( string line )
+{
+	string tempLine = line;
+	string swapLine;
+	vector<string> lineVector;
+	for( unsigned int x = 0; x < tempLine.size(); x++ ){
+
+		if( tempLine.at(x) == ' ' || ( tempLine.at(x) == '\t' ) ){
+			swapLine = tempLine.substr(0,x);
+
+			// Removes blank lines (In the case of multiple white spaces)
+			if( swapLine.size() != 0 )
+				lineVector.push_back(swapLine);
+
+			tempLine = tempLine.substr(x+1,tempLine.size());
+			x = 0;
+		}// if
+
+		// Removes any leading spaces
+		if( tempLine.at(0) == ' ' && tempLine.size() > 1 )
+			tempLine = tempLine.substr(1,tempLine.size());
+	}// for
+	lineVector.push_back(tempLine); // inserts last section of line
+	return lineVector;
+}// lineToVector

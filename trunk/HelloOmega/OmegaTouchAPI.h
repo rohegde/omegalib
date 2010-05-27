@@ -2,8 +2,22 @@
 #define OMEGA_TOUCH_API_H_
 
 #include "PQMTClient.h"
+#include "Touches.h"
+#include <vector>
+#include <sys/timeb.h>
+
+// Semaphores
+#using<System.dll> // may need yo set /clr option
+// Project->Properties->Configuration Properties->General->Common Language Runtime Support
+#include<windows.h>
+#define MAX_SEM_COUNT 1
+
+
+using namespace System;
+using namespace System::Threading;
 
 using namespace PQ_SDK_MultiTouch;
+using namespace std;
 
 namespace OmegaAPI
 {
@@ -11,18 +25,27 @@ namespace OmegaAPI
 class OmegaTouchAPI{
 public:
 	OmegaTouchAPI();
+	OmegaTouchAPI(char*);
 	~OmegaTouchAPI();
 	// Init: the entry of sample codes;
 	//		demonstrate: ConnectServer, SendRequest etc;
 	int Init();
 	int Init(char*);
 	char* GetMostRecentDataString();
+	Touches* GetMostRecentTouch();
+	vector<Touches> getTouchList();
 	bool hasNewData();
 private:
 	char* server_ip;
 	char mostRecentDataString[100];
 	bool newDataFlag;
+	vector<Touches> touchList;
+	Touches* mostRecentTouch;
+	HANDLE listSem;
+	DWORD dwWaitResult;
+
 	void ClearDataString();
+
 //////////////////////call back functions///////////////////////
 	// OnReceivePointFrame: function to handle when recieve touch point frame
 	//	the unmoving touch point won't be sent from server. The new touch point with its pointevent is TP_DOWN
