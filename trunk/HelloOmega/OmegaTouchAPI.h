@@ -34,6 +34,7 @@ public:
 	char* GetMostRecentDataString();
 	Touches* GetMostRecentTouch();
 	vector<Touches> getTouchList();
+	void clearList();
 	bool hasNewData();
 private:
 	char* server_ip;

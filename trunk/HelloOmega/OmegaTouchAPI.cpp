@@ -366,6 +366,10 @@ vector<Touches> OmegaTouchAPI::getTouchList(){
 	}
 }
 
+void OmegaTouchAPI::clearList(){
+	touchList.clear();
+}
+
 bool OmegaTouchAPI::hasNewData()
 {
 	return newDataFlag;

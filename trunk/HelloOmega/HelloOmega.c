@@ -38,9 +38,10 @@ using namespace OmegaAPI;
 const int win_x = 0;
 const int win_y = 0;
 
+//Omeaga Desk
 //const char *resolution = "1920x1080:32@60";
-//const unsigned int WIN_W = 1920;
-//const unsigned int WIN_H = 1080;
+const unsigned int WIN_W = 1920;
+const unsigned int WIN_H = 2160;
 
 //Mac Book Pro 15"
 //const char *resolution = "1440x900:32@60";
@@ -52,9 +53,9 @@ const int win_y = 0;
 //const unsigned int WIN_H = 768;
 
 //terra 5
-const char *resolution = "1024x768:32@60";
-const unsigned int WIN_W = 1024;
-const unsigned int WIN_H = 768;
+//const char *resolution = "1024x768:32@60";
+//const unsigned int WIN_W = 1024;
+//const unsigned int WIN_H = 768;
 
 const float COORD_X_MIN = 0.0;
 const float COORD_X_MAX = 17.0;
@@ -156,18 +157,6 @@ void setFrustum(void)
     rightCam.modeltranslation = -IOD/2;
 }
 
-GLvoid reshape(int w, int h)
-{
-    if (h==0)
-    {
-        h=1;                                               //prevent divide by 0
-    }
-    aspect=double(w)/double(h);
-    glViewport(0, 0, w, h);
-	
-	if ( g_frust ) setFrustum();
-}
-
 //--------------------------------------------------------------------------------------------------//
 //
 //									Main
@@ -184,12 +173,12 @@ int main( int argc, char** argv)
 
 	// Tera 5: "131.193.77.116"
 	// OmegaDesk: "131.193.77.102"
-	int err_code = omegaDesk.Init("131.193.77.116");
+	int err_code = omegaDesk.Init("131.193.77.102");
 	if(err_code != PQMTE_SUCESS){
 		cout << "Connection Failed." << endl;
-		//cout << "press any key to exit..." << endl;
-		//getchar();
-		//return 0;
+		cout << "press any key to exit..." << endl;
+		getchar();
+		return 0;
 	}
 	// Sets up semaphore for touchList
 	
@@ -213,9 +202,12 @@ void initGL( int argc, char** argv )
 	glutInitWindowSize( WIN_W, WIN_H);
     
 	//fullsreen mode
-	glutGameModeString( resolution );
-	glutEnterGameMode(); //set glut to fullscreen using the settings in the line above		
-	
+	//glutGameModeString( resolution );
+	//glutEnterGameMode(); //set glut to fullscreen using the settings in the line above		
+
+	//non-fullscreen mode
+	glutCreateWindow("HelloOmega");
+
 	//lighting
 	glEnable (GL_DEPTH_TEST);
     glEnable (GL_LIGHTING);
@@ -365,7 +357,7 @@ void display_3D_toed_in( void )
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset modelview matrix
 	
-	glViewport(0, 0,sz,sz);
+	glViewport(0, WIN_H-sz ,sz,sz);
 
 	gluPerspective(fovy, aspect, nearZ, farZ);
 
@@ -393,7 +385,7 @@ void display_3D_toed_in( void )
 	glLoadIdentity();                                        //reset modelview matrix
 
 	//glViewport((WIN_W/2), WIN_H - (WIN_W / 2), sz, sz);
-	glViewport((WIN_W/2), 0, sz, sz);
+	glViewport((WIN_W/2), WIN_H-sz, sz, sz);
 
 	gluPerspective(fovy, aspect, nearZ, farZ);
 
@@ -432,7 +424,8 @@ void display_3D_frust( void )
 	//-- left eye --//
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset projection matrix
-	glViewport(0, 0, sz, sz);
+	glViewport(0, WIN_H - sz, sz, sz);
+	
 	glFrustum(	leftCam.leftfrustum, leftCam.rightfrustum,     //set left view frustum
 				leftCam.bottomfrustum, leftCam.topfrustum,
 				nearZ, farZ);
@@ -450,7 +443,7 @@ void display_3D_frust( void )
 	//-- right eye --//
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset projection matrix
-	glViewport((WIN_W/2), 0, sz, sz);
+	glViewport((WIN_W/2), WIN_H - sz, sz, sz);
 	glFrustum(	rightCam.leftfrustum, rightCam.rightfrustum,   //set left view frustum
 				rightCam.bottomfrustum, rightCam.topfrustum,
 				nearZ, farZ);
@@ -476,7 +469,6 @@ void display_touches()
 	if( omegaDesk.hasNewData() ){
 		_beginWinCoords();					//enables 2d drawing 
 		{
-			
 			/* // Without touch list, just parsing the data string
 			vector<string> input = lineToVector( omegaDesk.GetMostRecentDataString() );
 			string typeString = input[0].c_str();
@@ -500,8 +492,9 @@ void display_touches()
 			
 			// Get touches from touchList (similar to TacTile)
 			// May cause iterator error (semaphore not working?)
+
 			vector<Touches> list = omegaDesk.getTouchList();
-			if( list.size() > 0 )
+			if( !list.empty() )
 			{
 				touchList = list;
 
@@ -515,13 +508,15 @@ void display_touches()
 					float xWidth = 1;
 					float yWidth = 1;
 
-					printf("Client received: %i %i %f %f %f %f \n",typeID, ID, xPos, yPos, xWidth, yWidth);
+					//printf("Client received: %i %i %f %f %f %f \n",typeID, ID, xPos, yPos, xWidth, yWidth);
 
+					glColor3f( 1.0, 0.0, 0.0);
 					glPointSize(5.0);				//if able insert intensity or area
 					glBegin(GL_POINTS);
 					glVertex2f( xPos, yPos );		//draw the finger that is being touched 
 					glEnd();
 				}
+				omegaDesk.clearList();
 			}
 		}
 		_endWinCoords();					//ends 2d Drawing 
@@ -539,18 +534,15 @@ void display()
 	   
 	display_mouse_transforms();		//mouse transforms		
 
-	display_touches();
-
-	//display 2D content
-	int sz = WIN_W / 2;
-	glViewport(0, 0,sz,sz);
-	display_2D();					//Display 2D stuff
-	glViewport((WIN_W/2), 0, sz, sz);
-	display_2D();					//Display 2D stuff
-
 	//display 3D content 
 	if ( g_toed ) display_3D_toed_in();			//Toed-in method of 3D
 	else if ( g_frust ) display_3D_frust();	//Frust method of 3D
+
+	//display 2D content
+	glViewport(0, 0, WIN_W, WIN_H);
+	display_2D();					//Display 2D stuff
+	display_touches();
+
 
 	if( g_rot) g_angle += .05;
 
