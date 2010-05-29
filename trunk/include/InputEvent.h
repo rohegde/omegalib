@@ -9,15 +9,33 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __OEQ_H__
-#define __OEQ_H__
+#ifndef __INPUT_EVENT_H__
+#define __INPUT_EVENT_H__
 
 #include "osystem.h"
-#include "ocfg.h"
 
-void oeqInit(const OMConfig* cfg);
-void oeqStart();
-void oeqStop();
-void oeqCleanup();
+namespace omega
+{
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct InputEvent
+{
+	enum Type {Move, Down, Up, Trace, Untrace};
+	enum Class {Pointer, Mocap, Touc, Keyboard};
+
+    unsigned int id;
+	unsigned int flags;
+	unsigned int timestamp;
+    enum InputType type;
+    enum InputClass source;
+    float x;
+	float y;
+	float z;
+    float rx;
+	float ry;
+	float rz;
+};
+
+}; // namespace omega
 
 #endif

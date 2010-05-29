@@ -7,20 +7,18 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Implementation of Config class methods. See Config.h for detailed information.
  *********************************************************************************************************************/
-#ifndef __OMOUSE_H__
-#define __OMOUSE_H__
+#include "Config.h"
 
-#include "osystem.h"
-#include "ocfg.h"
+using namespace omega;
 
-#define OM_ID_MOUSE (OM_DC_POINTER << 8)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Config::Config()
+{
+}
 
-void omouseInit(const OMConfig* cfg);
-void omouseCleanup();
-void omouseStart();
-void omouseStop();
-
-
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Config::~Config()
+{
+}

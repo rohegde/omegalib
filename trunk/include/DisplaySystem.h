@@ -9,20 +9,38 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __ODISPLAY_H__
-#define __ODISPLAY_H__
+#ifndef __DISPLAY_SYSTEM_H__
+#define __DISPLAY_SYSTEM_H__
 
 #include "osystem.h"
 
-#ifdef __cplusplus
-extern "C"
+namespace omega
 {
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward declarations
+class SystemManager;
 
-	void testCppCodeCall();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class DisplaySystem
+{
+public:
+	virtual ~DisplaySystem() {}
 
-#ifdef __cplusplus
-}
-#endif
+	// Initializes the display system
+	virtual void Initialize(SystemManager* sys) {}
+
+	// Starts display system rendering. This call does not return until the current omegalib application sends an
+	// exit request to the system manager.
+	virtual void Run() = 0;
+
+	virtual void Cleanup() {}
+
+	virtual unsigned int GetId() { return -1; }
+
+protected:
+	DisplaySystem() {}
+};
+
+}; // namespace omega
 
 #endif

@@ -22,42 +22,28 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
 #######################################################################################################################
 # Source files
 SET( srcs 
-		ocfg.c
-        olist.c
-        ogfx.c
-        odisplay.c
-        oevent.c
-        oinput.c
-        omega.c
-        ostate.c
-        othread.c
-        outil.c
-        olog.c
-        display/ogl.c
-        display/oeq.cpp
-        input/omouse.c
-        input/opq.c
+		Config.cpp
+		GLUTDisplaySystem.cpp
+		InputManager.cpp
+		Log.cpp
+		SystemManager.cpp
+		input/GLUTMouseService.cpp
         )
     
 #######################################################################################################################
 # Headers
 SET( headers 
-        ${OmegaLib_SOURCE_DIR}/include/ocfg.h
-        ${OmegaLib_SOURCE_DIR}/include/olist.h
-        ${OmegaLib_SOURCE_DIR}/include/ogfx.h
-        ${OmegaLib_SOURCE_DIR}/include/odisplay.h
-        ${OmegaLib_SOURCE_DIR}/include/oevent.h
-        ${OmegaLib_SOURCE_DIR}/include/oinput.h
         ${OmegaLib_SOURCE_DIR}/include/omega.h
-        ${OmegaLib_SOURCE_DIR}/include/ostate.h
-        ${OmegaLib_SOURCE_DIR}/include/othread.h
         ${OmegaLib_SOURCE_DIR}/include/osystem.h
-        ${OmegaLib_SOURCE_DIR}/include/outil.h
-        ${OmegaLib_SOURCE_DIR}/include/olog.h
-        display/ogl.h
-        display/oeq.h
-        input/omouse.h
-        input/opq.h
+        ${OmegaLib_SOURCE_DIR}/include/Application.h
+        ${OmegaLib_SOURCE_DIR}/include/Config.h
+        ${OmegaLib_SOURCE_DIR}/include/DisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/GLUTDisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/InputEvent.h
+        ${OmegaLib_SOURCE_DIR}/include/InputManager.h
+        ${OmegaLib_SOURCE_DIR}/include/Log.h
+        ${OmegaLib_SOURCE_DIR}/include/SystemManager.h
+		${OmegaLib_SOURCE_DIR}/include/input/GLUTMouseService.h
         ) 
         
 #######################################################################################################################

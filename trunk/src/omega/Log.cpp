@@ -7,39 +7,37 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Simple logging support. (non-reentrant for now)
+ * Log class members implementation. See Log.h for more details.
  *********************************************************************************************************************/
-#include "olog.h"
+#include "osystem.h"
 
 #define LOG_STR_LEN 1024
 
-/**********************************************************************************************************************
-*/
-FILE* gLogFile = NULL;
+using namespace omega;
 
-/**********************************************************************************************************************
-*/
-void ologInitFileOutput(const char* filename)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+FILE* Log::myLogFile = NULL;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Log::Initialize(const char* filename)
 {
 	if(!filename) filename = "./log.txt";
-	gLogFile = fopen(filename, "w");
+	myLogFile = fopen(filename, "w");
 }
 
-/**********************************************************************************************************************
-*/
-void ologCleanup()
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Log::Terminate()
 {
-	if(gLogFile)
+	if(myLogFile)
 	{
-		fflush(gLogFile);
-		fclose(gLogFile);
-		gLogFile = NULL;
+		fflush(myLogFile);
+		fclose(myLogFile);
+		myLogFile = NULL;
 	}
 }
 
-/**********************************************************************************************************************
-*/
-void ologMsg(const char* fmt, ...)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Log::Message(const char* fmt, ...)
 {
 	char str[LOG_STR_LEN];
 	va_list args;
@@ -48,15 +46,14 @@ void ologMsg(const char* fmt, ...)
 	strcat(str, "\n");
 
 	printf(str);
-	if(gLogFile)
+	if(myLogFile)
 	{
-		fprintf(gLogFile, str);
+		fprintf(myLogFile, str);
 	}
 }
 
-/**********************************************************************************************************************
-*/
-void ologWarning(const char* fmt, ...)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Log::Warning(const char* fmt, ...)
 {
 	char tmpstr[LOG_STR_LEN];
 	char str[LOG_STR_LEN];
@@ -68,15 +65,14 @@ void ologWarning(const char* fmt, ...)
 	sprintf(str, "WARNING: %s\n", tmpstr);
 
 	printf(str);
-	if(gLogFile)
+	if(myLogFile)
 	{
-		fprintf(gLogFile, str);
+		fprintf(myLogFile, str);
 	}
 }
 
-/**********************************************************************************************************************
-*/
-void ologError(const char* fmt, ...)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Log::Error(const char* fmt, ...)
 {
 	char tmpstr[LOG_STR_LEN];
 	char str[LOG_STR_LEN];
@@ -85,11 +81,12 @@ void ologError(const char* fmt, ...)
 	va_start(args, fmt);
 	vsprintf(tmpstr, fmt, args);
 
-	sprintf(tmpstr, "ERROR: %s\n", tmpstr);
+	sprintf(str, "WARNING: %s\n", tmpstr);
 
 	printf(str);
-	if(gLogFile)
+	if(myLogFile)
 	{
-		fprintf(gLogFile, str);
+		fprintf(myLogFile, str);
 	}
 }
+
