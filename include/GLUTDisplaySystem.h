@@ -7,17 +7,36 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Simple logging support. (non-reentrant for now)
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __OLOG_H__
-#define __OLOG_H__
+#ifndef __GLUT_DISPLAY_SYSTEM_H__
+#define __GLUT_DISPLAY_SYSTEM_H__
 
 #include "osystem.h"
+#include "DisplaySystem.h"
 
-void ologInitFileOutput(const char* filename);
-void ologCleanup();
-void ologMsg(const char* fmt, ...);
-void ologWarning(const char* fmt, ...);
-void ologError(const char* fmt, ...);
+namespace omega
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class GLUTDisplaySystem: public DisplaySystem
+{
+public:
+	GLUTDisplaySystem();
+	virtual ~GLUTDisplaySystem();
+
+	virtual void Initialize(SystemManager* sys); 
+	virtual void Run(); 
+	virtual void Cleanup(); 
+
+	virtual unsigned int GetId() { return Id; }
+
+public:
+	static const unsigned int Id; 
+
+private:
+	SystemManager* mySys;
+};
+
+}; // namespace omega
 
 #endif

@@ -7,35 +7,36 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * This file contains system / platform defines and is included in every other file.
+ * Omegalib configuration
  *********************************************************************************************************************/
-#ifndef __OSYSTEM_H__
-#define __OSYSTEM_H__
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "osystem.h"
+#include "SystemManager.h"
 
-#include <string>
-
-#include <eq/eq.h>
-
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-// OpenGL includes
-#include <GL/gl.h>
-#include <GL/glut.h>
-
-#include "Log.h"
+namespace omega
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward declarations
+class SystemManager;
+class InputManager;
+class DisplaySystem;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The current omegalib version string.
-#define OM_VERSION "0.1"
+class Application
+{
+public:
+	virtual const char* GetName() { return "OmegaLib " OM_VERSION; }
 
-#define OM_STRLEN 256 /* Standard string length */
+	virtual void Draw(float dt) {}
+	virtual void Update(float dt) {}
 
-#define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
+	SystemManager*  GetSystemManager()  { return SystemManager::GetInstance(); }
+	InputManager*   GetInputManager()   { return SystemManager::GetInstance()->GetInputManager(); }
+	DisplaySystem*  GetDisplaySystem() { return SystemManager::GetInstance()->GetDisplaySystem(); }
+};
+
+}; // namespace omega
 
 #endif

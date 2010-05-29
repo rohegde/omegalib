@@ -7,11 +7,29 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Omegalib configuration
  *********************************************************************************************************************/
-#ifndef __ODISPLAY_H__
-#define __ODISPLAY_H__
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
 
 #include "osystem.h"
+
+namespace omega
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Config
+{
+public:
+	Config();
+	~Config();
+
+	const char* GetDisplayConfigName() { return myDisplayConfigName.c_str(); }
+	void SetDisplayConfigName(const char* value) { myDisplayConfigName = value; }
+
+private:
+	std::string myDisplayConfigName;
+};
+
+}; // namespace omega
 
 #endif
