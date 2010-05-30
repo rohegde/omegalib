@@ -23,6 +23,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
 # Source files
 SET( srcs 
 		Config.cpp
+		EqualizerDisplaySystem.cpp
 		GLUTDisplaySystem.cpp
 		InputManager.cpp
 		Log.cpp
@@ -38,6 +39,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/Application.h
         ${OmegaLib_SOURCE_DIR}/include/Config.h
         ${OmegaLib_SOURCE_DIR}/include/DisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/EqualizerDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/GLUTDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/InputManager.h

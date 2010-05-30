@@ -7,9 +7,36 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Implementation of Config class methods. See Config.h for detailed information.
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#include "Config.h"
+#ifndef __EQUALIZER_DISPLAY_SYSTEM_H__
+#define __EQUALIZER_DISPLAY_SYSTEM_H__
 
-using namespace omega;
+#include "osystem.h"
+#include "DisplaySystem.h"
 
+namespace omega
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class EqualizerDisplaySystem: public DisplaySystem
+{
+public:
+	EqualizerDisplaySystem();
+	virtual ~EqualizerDisplaySystem();
+
+	virtual void Initialize(SystemManager* sys); 
+	virtual void Run(); 
+	virtual void Cleanup(); 
+
+	virtual unsigned int GetId() { return Id; }
+
+public:
+	static const unsigned int Id; 
+
+private:
+	SystemManager* mySys;
+};
+
+}; // namespace omega
+
+#endif

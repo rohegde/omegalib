@@ -14,6 +14,7 @@
 
 #include "Application.h"
 #include "Config.h"
+#include "EqualizerDisplaySystem.h"
 #include "GLUTDisplaySystem.h"
 #include "InputManager.h"
 #include "Log.h"

@@ -7,21 +7,44 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * omega functions implementation. See omega.h for more details.
+ * EqualizerDisplaySystem method implementation. See EqualizerDisplaySystem.h for more details.
  *********************************************************************************************************************/
 #include "Application.h"
 #include "SystemManager.h"
 #include "Config.h"
-#include "GLUTDisplaySystem.h"
+#include "EqualizerDisplaySystem.h"
 
 using namespace omega;
+using namespace eq::base;
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const unsigned int GLUTDisplaySystem::Id = OID("GLUT");
+const unsigned int EqualizerDisplaySystem::Id = OID("EQLZ");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void displayCallback(void) 
+class Channel : public eq::Channel
 {
+public:
+    Channel( eq::Window* parent ) : eq::Channel( parent ) {}
+
+protected:
+    virtual void frameDraw( const uint32_t spin );
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class NodeFactory : public eq::NodeFactory
+{
+public:
+    virtual eq::Channel* createChannel( eq::Window* parent )
+        { return new Channel( parent ); }
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Channel::frameDraw( const uint32_t spin )
+{
+    // setup OpenGL State
+    eq::Channel::frameDraw( spin );
+
 	static float lt = 0.0f;
 	Application* app = SystemManager::GetInstance()->GetApplication();
 	if(app)
@@ -32,14 +55,9 @@ void displayCallback(void)
 		lt = t;
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable (GL_DEPTH_TEST);
-		glLoadIdentity();
 
 		app->Update(dt);
 		app->Draw(dt);
-
-		glFlush();
-		glutPostRedisplay();
 
 		if(SystemManager::GetInstance()->IsExitRequested())
 		{
@@ -49,40 +67,65 @@ void displayCallback(void)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GLUTDisplaySystem::GLUTDisplaySystem():
+EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GLUTDisplaySystem::~GLUTDisplaySystem()
+EqualizerDisplaySystem::~EqualizerDisplaySystem()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::Initialize(SystemManager* sys)
+void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 {
 	mySys = sys;
-
-	char* argv = "";
-	int argcp = 1;
-
-	glutInit(&argcp, &argv);
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500, 500);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
-	glutCreateWindow(sys->GetApplication()->GetName()); 
-
-	glutDisplayFunc(displayCallback); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::Run()
+void EqualizerDisplaySystem::Run()
 {
-	glutMainLoop();
+    NodeFactory nodeFactory;
+    if( !eq::init( mySys->GetConfig()->GetArgc(), mySys->GetConfig()->GetArgv(), &nodeFactory ))
+    {
+		Log::Error("Equalizer init failed");
+    }
+
+    bool error  = false;
+	eq::Config* config = eq::getConfig( mySys->GetConfig()->GetArgc(), mySys->GetConfig()->GetArgv() );
+    if( config )
+    {
+        if( config->init( 0 ))
+        {
+            uint32_t spin = 0;
+            while( config->isRunning( ))
+            {
+                config->startFrame( ++spin );
+                config->finishFrame();
+            }
+        
+            // 5. exit config
+            config->exit();
+        }
+        else
+        {
+            Log::Error("Config initialization failed: %s", config->getErrorMessage());
+            error = true;
+        }
+
+        eq::releaseConfig( config );
+    }
+    else
+    {
+        Log::Error("Cannot get config");
+        error = true;
+    }    
+
+    eq::exit();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::Cleanup()
+void EqualizerDisplaySystem::Cleanup()
 {
 }
