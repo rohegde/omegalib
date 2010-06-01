@@ -24,14 +24,16 @@ public:
 	Config(int argc, char** argv) { myArgc = argc; myArgv = argv; }
 	~Config() {}
 
-	const char* GetDisplayConfigName() { return myDisplayConfigName.c_str(); }
-	void SetDisplayConfigName(const char* value) { myDisplayConfigName = value; }
+	const char* GetDisplayConfig() { return myDisplayConfig.c_str(); }
+	void SetDisplayConfig(const char* value) { myDisplayConfig = value; }
 
 	int GetArgc() { return myArgc; }
 	char** GetArgv() { return myArgv; }
 
+	static std::vector<char*> StringToArgv(std::string appName, std::string args);
+
 private:
-	std::string myDisplayConfigName;
+	std::string myDisplayConfig;
 	char** myArgv;
 	int myArgc;
 };

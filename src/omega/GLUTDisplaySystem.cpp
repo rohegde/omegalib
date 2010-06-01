@@ -32,8 +32,14 @@ void displayCallback(void)
 		lt = t;
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable (GL_DEPTH_TEST);
+
+		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+		gluPerspective (50, 1, 0.1, 10);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(0, 0, 2.0f, 0, 0, 0, 0, 1.0f, 0);
 
 		app->Update(dt);
 		app->Draw(dt);
@@ -74,6 +80,10 @@ void GLUTDisplaySystem::Initialize(SystemManager* sys)
 	glutCreateWindow(sys->GetApplication()->GetName()); 
 
 	glutDisplayFunc(displayCallback); 
+
+	// Enable lighting by default to keep consistent with equalizer rendering)
+	//glEnable(GL_LIGHTING);
+	glEnable (GL_DEPTH_TEST);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

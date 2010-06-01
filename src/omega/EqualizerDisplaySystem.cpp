@@ -54,7 +54,10 @@ void Channel::frameDraw( const uint32_t spin )
 		float dt = t - lt;
 		lt = t;
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Setup POV and other GL parameters to keep consistency with GLUT renderer
+		glDisable(GL_COLOR_MATERIAL);
+		glDisable(GL_LIGHTING);
+		glTranslatef(0, 0, -2.0f);
 
 		app->Update(dt);
 		app->Draw(dt);
@@ -87,13 +90,16 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 void EqualizerDisplaySystem::Run()
 {
     NodeFactory nodeFactory;
-    if( !eq::init( mySys->GetConfig()->GetArgc(), mySys->GetConfig()->GetArgv(), &nodeFactory ))
+
+	std::vector<char*> argv = Config::StringToArgv( mySys->GetApplication()->GetName(), mySys->GetConfig()->GetDisplayConfig());
+
+    if( !eq::init( argv.size(), &argv[0], &nodeFactory ))
     {
 		Log::Error("Equalizer init failed");
     }
 
     bool error  = false;
-	eq::Config* config = eq::getConfig( mySys->GetConfig()->GetArgc(), mySys->GetConfig()->GetArgv() );
+	eq::Config* config = eq::getConfig( argv.size(), &argv[0] );
     if( config )
     {
         if( config->init( 0 ))

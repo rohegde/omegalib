@@ -1,0 +1,141 @@
+#Equalizer 1.0 ascii
+
+# single pipe, multi-level DPlex / 2D load-balanced configuration. 
+
+global
+{
+    EQ_WINDOW_IATTR_PLANES_STENCIL 1
+    EQ_WINDOW_IATTR_HINT_SWAPSYNC  0
+}
+
+server
+{
+    config
+    {
+        latency 3
+        appNode
+        {
+            pipe
+            {
+                window
+                {
+                    viewport [ 10 450 300 300 ]
+                    name "Even Half 1"
+
+                    channel { name "channel-even-1" }
+                }
+                window
+                {
+                    viewport [ 318 450 300 300 ]
+                    name "Even Half 2"
+
+                    channel { name "channel-even-2" }
+                }
+                window
+                {
+                    viewport [ 164 100 300 300 ]
+                    name "Even Frames"
+
+                    channel { name "channel-even" }
+                }
+            }
+            pipe
+            {
+                window
+                {
+                    viewport [ 626 450 300 300 ]
+                    name "Odd Half 1"
+
+                    channel { name "channel-odd-1" }
+                }
+                window
+                {
+                    viewport [ 934 450 300 300 ]
+                    name "Odd Half 2"
+
+                    channel { name "channel-odd-2" }
+                }
+                window
+                {
+                    viewport [ 780 100 300 300 ]
+                    name "Odd Frames"
+
+                    channel { name "channel-odd" }
+                }
+            }
+            pipe
+            {
+
+                window
+                {
+                    viewport [ 472 50 300 300 ]
+                    name "Result"
+                    attributes { hint_swapsync 1 }
+                    channel { name "channel-all" }
+                }
+            }
+        }
+        compound
+        {
+            channel "channel-all"
+            task    [ CLEAR ASSEMBLE ] 
+
+            wall
+            {
+                bottom_left  [ -.32 -.2 -.75 ]
+                bottom_right [  .32 -.2 -.75 ]
+                top_left     [ -.32  .2 -.75 ]
+            }
+            framerate_equalizer {}
+
+            compound
+            {
+                channel "channel-even"
+                task    [ CLEAR ASSEMBLE ] 
+                period 2 phase 0
+
+                load_equalizer { mode 2D }
+
+                compound
+                {
+                    channel  "channel-even-1"
+                    outputframe {}
+                }
+                compound
+                {
+                    channel  "channel-even-2"
+                    outputframe {}
+                }
+
+                inputframe{ name "frame.channel-even-1" }
+                inputframe{ name "frame.channel-even-2" }
+            }
+            compound
+            {
+                channel "channel-odd"
+                task    [ CLEAR ASSEMBLE ] 
+                period 2 phase 1
+                load_equalizer { mode 2D }
+
+                compound
+                {
+                    channel  "channel-odd-1"
+                    outputframe {}
+                }
+                compound
+                {
+                    channel  "channel-odd-2"
+                    outputframe {}
+                }
+
+                inputframe{ name "frame.channel-odd-1" }
+                inputframe{ name "frame.channel-odd-2" }
+            }
+
+            inputframe{ name "frame.channel-even-1" }
+            inputframe{ name "frame.channel-even-2" }
+            inputframe{ name "frame.channel-odd-1" }
+            inputframe{ name "frame.channel-odd-2" }
+        }
+    }    
+}

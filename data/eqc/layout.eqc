@@ -1,0 +1,70 @@
+#Equalizer 1.0 ascii
+
+# 'Hello, World!' config: one window rendering from the application process.
+server
+{
+    config
+    {
+        appNode
+        {
+            pipe
+            {
+                window
+                {
+                    viewport [ 0.25 0.25 0.5 0.5 ]
+                    
+                    channel { name "channel" }
+                }
+            }
+        }
+
+        observer {}
+        layout
+        {
+            name "Simple"
+            view { observer 0 }
+        }
+
+        layout # Note: all views are untracked (no observer)
+        {
+            name "2x1"
+            view
+            {
+                viewport [ 0 0 .5 1 ]
+                wall
+                {
+                    bottom_left  [ -.32 -.40 -.75 ]
+                    bottom_right [  .32 -.40 -.75 ]
+                    top_left     [ -.32  .40 -.75 ]
+                }
+            }
+            view
+            {
+                viewport [ .5 0 .5 1 ]
+                wall
+                {
+                    bottom_left  [ -.32 -.40 -.75 ]
+                    bottom_right [  .32 -.40 -.75 ]
+                    top_left     [ -.32  .40 -.75 ]
+                }
+            }
+        }
+
+        canvas
+        {
+            layout "Simple"
+            layout "2x1"
+            wall
+            {
+                bottom_left  [ -.32 -.20 -.75 ]
+                bottom_right [  .32 -.20 -.75 ]
+                top_left     [ -.32  .20 -.75 ]
+            }
+
+            segment
+            {
+                channel "channel"
+            }
+        }
+    }    
+}

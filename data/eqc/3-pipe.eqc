@@ -1,0 +1,84 @@
+#Equalizer 1.0 ascii
+
+# Simulating a three pipe system on a single pipe. Projections are set up for a
+# 1.5m high wall, 4x3 aspect ratio and 10% overlap. Add pipe device numbers and
+# use fullscreen windows to get a production setup.
+
+server
+{
+    config
+    {
+        appNode
+        {
+            pipe
+            {
+                window
+                {
+                    viewport [ 10 200 400 300 ]
+                    channel
+                    {
+                        name "channel-left"
+                    }
+                }
+            }
+            pipe
+            {
+                window
+                {
+                    viewport [ 420 200 400 300 ]
+                    channel
+                    {
+                        name "channel-middle"
+                    }
+                }
+            }
+            pipe
+            {
+                window
+                {
+                    viewport [ 830 200 400 300 ]
+                    channel
+                    {
+                        name "channel-right"
+                    }
+                }
+            }
+        }
+        compound
+        { 
+            compound
+            { 
+                channel "channel-left"
+                wall
+                {
+                    bottom_left  [ -2.8 -1.5 -2 ]
+                    bottom_right [  -.8 -1.5 -2 ]
+                    top_left     [ -2.8  1.5 -2 ]
+                }
+                swapbarrier {}
+            }
+            compound
+            { 
+                channel "channel-middle"
+                wall
+                {
+                    bottom_left  [ -1 -1.5 -2 ]
+                    bottom_right [  1 -1.5 -2 ]
+                    top_left     [ -1  1.5 -2 ]
+                }
+                swapbarrier {}
+            }
+            compound
+            { 
+                channel "channel-right"
+                wall
+                {
+                    bottom_left  [  .8 -1.5 -2 ]
+                    bottom_right [ 2.8 -1.5 -2 ]
+                    top_left     [  .8  1.5 -2 ]
+                }
+                swapbarrier {}
+            }
+        }
+    }    
+}
