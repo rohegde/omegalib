@@ -66,11 +66,11 @@ private:
 	// Singleton instance.
 	static SystemManager* myInstance;
 
-	Config* myConfig;
-	DisplaySystem* myDisplaySystem;
-	InputManager* myInputManager;
-	Application* myApplication;
-	bool myExitRequested;
+	Config*			myConfig;
+	DisplaySystem*	myDisplaySystem;
+	InputManager*	myInputManager;
+	Application*	myApplication;
+	bool			myExitRequested;
 };
 
 }; // namespace omega
