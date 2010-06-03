@@ -69,15 +69,15 @@ void main(int argc, char** argv)
 
 	Config* cfg = new Config(argc, argv);
 
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/layout.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/4-window.all.eqc");
 
 	sys->Setup(cfg);
 
 	TestApplication app;
 	sys->SetApplication(&app);
 
-	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	sys->SetDisplaySystem(new GLUTDisplaySystem());
+	sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	//sys->SetDisplaySystem(new GLUTDisplaySystem());
 	sys->GetInputManager()->AddService(new MouseService());
 
 	sys->Initialize();
