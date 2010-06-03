@@ -230,9 +230,9 @@ server
         # Canvas using all layouts
         canvas
         {
-            layout "wall"
             layout "MultiView"
             layout "2D"
+            layout "wall"
             layout "WallLB"
             layout "DB"
             layout "DB_Stream"
