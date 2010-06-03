@@ -9,28 +9,9 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __GLUT_MOUSE__SERVICE_H__
-#define __GLUT_MOUSE__SERVICE_H__
+#include "gfx/GfxUtils.h"
 
-#include "osystem.h"
-#include "InputManager.h"
+using namespace omega;
+using namespace omega::gfx;
 
-namespace omega
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class GLUTMouseService: public InputService
-{
-public:
-	virtual void Initialize();
-	virtual void Dispose();
-
-private:
-	static void mouseMotionCallback(int x, int y);
-
-private:
-	static GLUTMouseService* myInstance;
-};
-
-}; // namespace omega
-
-#endif

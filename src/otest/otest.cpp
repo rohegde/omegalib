@@ -13,6 +13,9 @@
 
 using namespace omega;
 
+void drawSolidTeapot(GLdouble scale);
+void drawWireTeapot(GLdouble scale);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
 {
@@ -22,6 +25,8 @@ public:
 		static float t;
 
 		t += dt;
+		static float rx;
+		static float ry;
 
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
@@ -30,12 +35,10 @@ public:
 			InputEvent evt;
 			GetInputManager()->GetEvents(&evt, 1);
 		
-			float rx = evt.x;
-			float ry = evt.y;
+			rx = evt.x;
+			ry = evt.y;
 
 			//glLoadIdentity();
-			glRotated(rx, 0, 1, 0);
-			glRotated(ry, 1, 0, 0);
 		}
 
 		glEnable(GL_LIGHTING);
@@ -47,9 +50,11 @@ public:
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 
 		// rotate scene around the origin
-		glRotatef( static_cast< float >( t ) * 4.0f, 1.0f, 0.5f, 0.25f );
+		//glRotatef( static_cast< float >( t ) * 4.0f, 1.0f, 0.5f, 0.25f );
+		glRotated(rx, 0, 1, 0);
+		glRotated(ry, 1, 0, 0);
 
-		glutSolidTeapot(0.3f);
+		drawSolidTeapot(0.3f);
 
 		//printf("available: %d    lost: %d    dt: %f\n", av, ls, dt);
 	}
@@ -58,20 +63,22 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
+	OM_INIT_EQUALIZER_LOG();
+
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config(argc, argv);
 
-	//cfg->SetDisplayConfig("--eq-config ../../data/eqc/layout.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/layout.eqc");
 
 	sys->Setup(cfg);
 
 	TestApplication app;
 	sys->SetApplication(&app);
 
-	sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	//sys->GetInputManager()->AddService(new GLUTMouseService());
+	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	sys->SetDisplaySystem(new GLUTDisplaySystem());
+	sys->GetInputManager()->AddService(new MouseService());
 
 	sys->Initialize();
 	sys->Run();

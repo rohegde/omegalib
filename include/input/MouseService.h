@@ -9,43 +9,25 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DISPLAY_SYSTEM_H__
-#define __DISPLAY_SYSTEM_H__
+#ifndef __GLUT_MOUSE__SERVICE_H__
+#define __GLUT_MOUSE__SERVICE_H__
 
 #include "osystem.h"
+#include "InputManager.h"
 
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class DisplaySystem
+class MouseService: public InputService
 {
 public:
-	// Supported display system parameters.
-	enum DisplayParam { GlobalWidth, GlobalHeight, LocalWidth, LocalHeight };
+	static void mouseMotionCallback(int x, int y);
 
-public:
-	virtual ~DisplaySystem() {}
+	virtual void Initialize();
+	virtual void Dispose();
 
-	// Initializes the display system
-	virtual void Initialize(SystemManager* sys) {}
-
-	// Starts display system rendering. This call does not return until the current omegalib application sends an
-	// exit request to the system manager.
-	virtual void Run() = 0;
-	
-	// Returns the value of the specified parameter for the display system.
-	virtual float GetValue(DisplayParam param) = 0;
-
-	virtual void Cleanup() {}
-
-	virtual unsigned int GetId() { return -1; }
-
-protected:
-	DisplaySystem() {}
+private:
+	static MouseService* myInstance;
 };
 
 }; // namespace omega

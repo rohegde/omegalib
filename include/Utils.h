@@ -9,45 +9,20 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DISPLAY_SYSTEM_H__
-#define __DISPLAY_SYSTEM_H__
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
 #include "osystem.h"
 
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class DisplaySystem
+class Utils
 {
 public:
-	// Supported display system parameters.
-	enum DisplayParam { GlobalWidth, GlobalHeight, LocalWidth, LocalHeight };
-
-public:
-	virtual ~DisplaySystem() {}
-
-	// Initializes the display system
-	virtual void Initialize(SystemManager* sys) {}
-
-	// Starts display system rendering. This call does not return until the current omegalib application sends an
-	// exit request to the system manager.
-	virtual void Run() = 0;
-	
-	// Returns the value of the specified parameter for the display system.
-	virtual float GetValue(DisplayParam param) = 0;
-
-	virtual void Cleanup() {}
-
-	virtual unsigned int GetId() { return -1; }
-
-protected:
-	DisplaySystem() {}
+private:
+	Utils() {};
 };
-
 }; // namespace omega
 
 #endif

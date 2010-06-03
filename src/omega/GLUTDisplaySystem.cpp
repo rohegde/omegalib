@@ -33,6 +33,9 @@ void displayCallback(void)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// Setup stuff to maintain consistency across different display systems (i.e. Equalizer).
+		// These settings make sure that even when switching display systems, the scene will be
+		// rendered similarly (even if not exactly the same)
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		gluPerspective (50, 1, 0.1, 10);
@@ -84,6 +87,25 @@ void GLUTDisplaySystem::Initialize(SystemManager* sys)
 	// Enable lighting by default to keep consistent with equalizer rendering)
 	//glEnable(GL_LIGHTING);
 	glEnable (GL_DEPTH_TEST);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+float GLUTDisplaySystem::GetValue(DisplayParam param)
+{
+	switch(param)
+	{
+	case DisplaySystem::GlobalHeight:
+	case DisplaySystem::LocalHeight:
+		return glutGet(GLUT_WINDOW_HEIGHT);
+		break;
+	case DisplaySystem::GlobalWidth:
+	case DisplaySystem::LocalWidth:
+		return glutGet(GLUT_WINDOW_WIDTH);
+		break;
+	default:
+		Log::Warning("GLUTDisplaySystem::GetValue: unsupported display param, %d", param);
+		return 0;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

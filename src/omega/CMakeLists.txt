@@ -28,7 +28,9 @@ SET( srcs
 		InputManager.cpp
 		Log.cpp
 		SystemManager.cpp
-		input/GLUTMouseService.cpp
+        Utils.cpp
+        gfx/GfxUtils.cpp
+		input/MouseService.cpp
         )
     
 #######################################################################################################################
@@ -45,7 +47,9 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/Log.h
         ${OmegaLib_SOURCE_DIR}/include/SystemManager.h
-		${OmegaLib_SOURCE_DIR}/include/input/GLUTMouseService.h
+        ${OmegaLib_SOURCE_DIR}/include/Utils.h
+        ${OmegaLib_SOURCE_DIR}/include/gfx/GfxUtils.h
+		${OmegaLib_SOURCE_DIR}/include/input/MouseService.h
         ) 
         
 #######################################################################################################################
