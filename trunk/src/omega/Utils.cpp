@@ -9,35 +9,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __GLUT_DISPLAY_SYSTEM_H__
-#define __GLUT_DISPLAY_SYSTEM_H__
+#include "Utils.h"
 
-#include "osystem.h"
-#include "DisplaySystem.h"
+using namespace omega;
 
-namespace omega
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class GLUTDisplaySystem: public DisplaySystem
-{
-public:
-	GLUTDisplaySystem();
-	virtual ~GLUTDisplaySystem();
-
-	virtual void Initialize(SystemManager* sys); 
-	virtual void Run(); 
-	virtual void Cleanup(); 
-
-	virtual float GetValue(DisplayParam param);
-	virtual unsigned int GetId() { return Id; }
-
-public:
-	static const unsigned int Id; 
-
-private:
-	SystemManager* mySys;
-};
-
-}; // namespace omega
-
-#endif

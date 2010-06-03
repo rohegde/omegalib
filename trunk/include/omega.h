@@ -19,6 +19,6 @@
 #include "InputManager.h"
 #include "Log.h"
 #include "SystemManager.h"
-#include "input/GLUTMouseService.h"
+#include "input/MouseService.h"
 
 #endif

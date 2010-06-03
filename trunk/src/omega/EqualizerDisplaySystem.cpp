@@ -10,9 +10,10 @@
  * EqualizerDisplaySystem method implementation. See EqualizerDisplaySystem.h for more details.
  *********************************************************************************************************************/
 #include "Application.h"
-#include "SystemManager.h"
 #include "Config.h"
 #include "EqualizerDisplaySystem.h"
+#include "SystemManager.h"
+#include "input/MouseService.h"
 
 using namespace omega;
 using namespace eq::base;
@@ -22,25 +23,50 @@ using namespace std;
 const unsigned int EqualizerDisplaySystem::Id = OID("EQLZ");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Channel : public eq::Channel
+class EqualizerChannel: public eq::Channel
 {
 public:
-    Channel( eq::Window* parent ) : eq::Channel( parent ) {}
+    EqualizerChannel( eq::Window* parent ) : eq::Channel( parent ) {}
 
 protected:
     virtual void frameDraw( const uint32_t spin );
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class NodeFactory : public eq::NodeFactory
+class EqualizerConfig: public eq::Config
 {
 public:
-    virtual eq::Channel* createChannel( eq::Window* parent )
-        { return new Channel( parent ); }
+	EqualizerConfig( eq::base::RefPtr< eq::Server > parent): eq::Config(parent) {}
+	virtual bool handleEvent(const eq::ConfigEvent* event)
+	{
+		static int x;
+		static int y;
+		switch( event->data.type )
+		{
+        case eq::Event::POINTER_MOTION:
+			{
+				x += event->data.pointerMotion.dx;
+				y += event->data.pointerMotion.dy;
+				MouseService::mouseMotionCallback(x, y);
+				return true;
+			}
+		}
+		return false;
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Channel::frameDraw( const uint32_t spin )
+class EqualizerNodeFactory: public eq::NodeFactory
+{
+public:
+    virtual eq::Config*  createConfig( eq::ServerPtr parent )
+		{ return new EqualizerConfig( parent ); }
+    virtual eq::Channel* createChannel(eq::Window* parent)
+        { return new EqualizerChannel( parent ); }
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerChannel::frameDraw( const uint32_t spin )
 {
     // setup OpenGL State
     eq::Channel::frameDraw( spin );
@@ -84,12 +110,37 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 {
 	mySys = sys;
+
+	// Setup log rerouting.
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+float EqualizerDisplaySystem::GetValue(DisplayParam param)
+{
+	switch(param)
+	{
+	case DisplaySystem::GlobalHeight:
+		return 500;
+		break;
+	case DisplaySystem::LocalHeight:
+		return 500;
+		break;
+	case DisplaySystem::GlobalWidth:
+		return 500;
+		break;
+	case DisplaySystem::LocalWidth:
+		return 500;
+		break;
+	default:
+		Log::Warning("EqualizerDisplaySystem::GetValue: unsupported display param, %d", param);
+		return 0;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::Run()
 {
-    NodeFactory nodeFactory;
+    EqualizerNodeFactory nodeFactory;
 
 	std::vector<char*> argv = Config::StringToArgv( mySys->GetApplication()->GetName(), mySys->GetConfig()->GetDisplayConfig());
 

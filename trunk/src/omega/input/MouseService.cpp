@@ -7,9 +7,9 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "input/GLUTMouseService.h"
+#include "input/MouseService.h"
 #include "GLUTDisplaySystem.h"
 #include "SystemManager.h"
 #include "Log.h"
@@ -17,34 +17,38 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GLUTMouseService* GLUTMouseService::myInstance = NULL;
+MouseService* MouseService::myInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTMouseService::mouseMotionCallback(int x, int y)
+void MouseService::mouseMotionCallback(int x, int y)
 {
-	myInstance->LockEvents();
+	if(myInstance)
+	{
+		myInstance->LockEvents();
 
-	InputEvent* evt = myInstance->WriteHead();
-	//	evt->id = OM_ID_MOUSE;
-	//	evt->source = OM_DC_POINTER;
-	//	evt->type = OM_EVENT_MOVE;
-	evt->x = x;
-	evt->y = y;
+		InputEvent* evt = myInstance->WriteHead();
+		//	evt->id = OM_ID_MOUSE;
+		//	evt->source = OM_DC_POINTER;
+		//	evt->type = OM_EVENT_MOVE;
+		evt->x = x;
+		evt->y = y;
 
-	myInstance->UnlockEvents();
+		myInstance->UnlockEvents();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTMouseService::Initialize() 
+void MouseService::Initialize() 
 {
-	OASSERT(SystemManager::GetInstance()->GetDisplaySystem()->GetId() == GLUTDisplaySystem::Id);
-
 	myInstance = this;
-	glutPassiveMotionFunc(mouseMotionCallback);
+	if(SystemManager::GetInstance()->GetDisplaySystem()->GetId() == GLUTDisplaySystem::Id)
+	{
+		glutPassiveMotionFunc(mouseMotionCallback);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTMouseService::Dispose() 
+void MouseService::Dispose() 
 {
 	myInstance = NULL;
 }
