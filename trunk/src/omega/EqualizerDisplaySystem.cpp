@@ -53,6 +53,24 @@ public:
 		}
 		return false;
 	}
+
+	virtual uint32_t finishFrame()
+	{
+		SystemManager::GetInstance()->GetInputManager()->Poll();
+		return eq::Config::finishFrame();
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class EqualizerView: public eq::View
+{
+public:
+	EqualizerView(): eq::View() 
+	{
+		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
+	}
+private:
+	bool myEnabledLayers[Application::MaxLayers];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +81,8 @@ public:
 		{ return new EqualizerConfig( parent ); }
     virtual eq::Channel* createChannel(eq::Window* parent)
         { return new EqualizerChannel( parent ); }
+    virtual eq::View* createView()
+        { return new EqualizerView(); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
