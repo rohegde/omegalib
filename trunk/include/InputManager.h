@@ -42,6 +42,9 @@ public:
 	void Stop();
 	void Dispose();
 
+	// TEMPORARY: this will run in a thread in the future.
+	void Poll();
+
 	int GetAvailableEvents() { return myAvailableEvents; }
 	int GetDroppedEvents() { return myDroppedEvents; }
 	void ResetDroppedEvents() { myDroppedEvents = 0; }
@@ -88,6 +91,7 @@ public:
 
 	virtual void Initialize() {}
 	virtual void Start() {}
+	virtual void Poll() {}
 	virtual void Stop() {}
 	virtual void Dispose() {}
 
