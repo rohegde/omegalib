@@ -10,6 +10,7 @@
  * omega functions implementation. See omega.h for more details.
  *********************************************************************************************************************/
 #include "Application.h"
+#include "InputManager.h"
 #include "SystemManager.h"
 #include "Config.h"
 #include "GLUTDisplaySystem.h"
@@ -45,10 +46,20 @@ void displayCallback(void)
 		gluLookAt(0, 0, 2.0f, 0, 0, 0, 0, 1.0f, 0);
 
 		app->Update(dt);
-		app->Draw(dt);
+
+		for(int layer = 0; layer < Application::MaxLayers; layer++)
+		{
+			if(SystemManager::GetInstance()->GetDisplaySystem()->IsLayerEnabled(layer))
+			{
+				app->Draw(dt);
+			}
+		}
 
 		glFlush();
 		glutPostRedisplay();
+
+		// Poll the input manager for new events.
+		SystemManager::GetInstance()->GetInputManager()->Poll();
 
 		if(SystemManager::GetInstance()->IsExitRequested())
 		{
@@ -61,11 +72,14 @@ void displayCallback(void)
 GLUTDisplaySystem::GLUTDisplaySystem():
 	mySys(NULL)
 {
+	myLayerEnabled = new bool[Application::MaxLayers];
+	memset(myLayerEnabled, 0, Application::MaxLayers * sizeof(bool));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GLUTDisplaySystem::~GLUTDisplaySystem()
 {
+	delete myLayerEnabled;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,3 +132,16 @@ void GLUTDisplaySystem::Run()
 void GLUTDisplaySystem::Cleanup()
 {
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GLUTDisplaySystem::SetLayerEnabled(int layerNum, const char* viewName, bool enabled)
+{
+	myLayerEnabled[layerNum] = enabled;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool GLUTDisplaySystem::IsLayerEnabled(int layerNum, const char* viewName)
+{
+	return myLayerEnabled[layerNum];
+}
+
