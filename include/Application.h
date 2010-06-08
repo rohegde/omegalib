@@ -27,9 +27,12 @@ class DisplaySystem;
 class Application
 {
 public:
+	static const int MaxLayers = 16;
+
+public:
 	virtual const char* GetName() { return "OmegaLib " OM_VERSION; }
 
-	virtual void Draw(float dt) {}
+	virtual void Draw(int layer) {}
 	virtual void Update(float dt) {}
 
 	SystemManager*  GetSystemManager()  { return SystemManager::GetInstance(); }
