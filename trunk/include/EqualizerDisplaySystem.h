@@ -13,6 +13,7 @@
 #define __EQUALIZER_DISPLAY_SYSTEM_H__
 
 #include "osystem.h"
+#include "Application.h"
 #include "DisplaySystem.h"
 
 #define OM_INIT_EQUALIZER_LOG() eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); 
