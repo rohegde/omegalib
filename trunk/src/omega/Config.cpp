@@ -20,11 +20,11 @@ std::vector<char*> Config::StringToArgv(std::string appName, std::string args)
 	std::string arg;
 	std::vector<std::string> v1;
 	std::vector<char*> v2;
-	v2.push_back(strdup(appName.c_str()));
+	v2.push_back(_strdup(appName.c_str()));
 	while (ss >> arg)
 	{
 	   v1.push_back(arg); 
-	   v2.push_back(strdup(v1.back().c_str()));
+	   v2.push_back(_strdup(v1.back().c_str()));
 	}
 	//v2.add(0);  // need terminating null pointer
 	return v2;
