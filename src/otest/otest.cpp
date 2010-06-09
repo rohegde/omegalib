@@ -27,6 +27,9 @@ public:
 		static float ry;
 		static float rz;
 
+		static float x = 0;
+		static float y = 0;
+
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
@@ -34,9 +37,21 @@ public:
 			InputEvent evt;
 			GetInputManager()->GetEvents(&evt, 1);
 		
-			rx = evt.rx;
-			ry = evt.ry;
-			rz = evt.rz;
+			switch(evt.source)
+			{
+				case InputEvent::Touch:
+					x = evt.x;
+					y = evt.y;
+					printf("touchin x:%f, y:%f\n", x ,y);
+					break;
+
+				case InputEvent::Mocap:
+					printf("head \n");
+					rx = evt.rx;
+					ry = evt.ry;
+					rz = evt.rz;
+					break;
+			}
 		}
 
 		glEnable(GL_LIGHTING);
@@ -52,6 +67,12 @@ public:
 		glRotated(rz, 0, 0, 1);
 
 		drawSolidTeapot(0.3f);
+
+		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
+		glBegin(GL_POINTS);
+			glVertex2f( x, y);    // lower left vertex
+		glEnd();
+		
 
 		glDisable(GL_LIGHTING);
 		//glDisable(GL_DEPTH_TEST);
@@ -90,8 +111,9 @@ void main(int argc, char** argv)
 
 	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	sys->SetDisplaySystem(new GLUTDisplaySystem());
-	sys->GetInputManager()->AddService(new MouseService());
-	//sys->GetInputManager()->AddService(new TrackIRService());
+	//sys->GetInputManager()->AddService(new MouseService());
+	sys->GetInputManager()->AddService(new TrackIRService());
+	sys->GetInputManager()->AddService(new PQService());
 
 	sys->GetDisplaySystem()->SetLayerEnabled(0, "default", true);
 

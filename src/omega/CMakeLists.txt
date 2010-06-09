@@ -68,6 +68,7 @@ TARGET_LINK_LIBRARIES( omega
     rpcrt4
     equalizer
     optitrackuuid.lib
+    PQMTClient
     ${GLUT_LIBRARY} 
     ${OPENGL_LIBRARY}
 )
