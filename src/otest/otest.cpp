@@ -12,6 +12,7 @@
 #include "omega.h"
 
 using namespace omega;
+using namespace omega::gfx;
 
 void drawSolidTeapot(GLdouble scale);
 void drawWireTeapot(GLdouble scale);
@@ -20,13 +21,11 @@ void drawWireTeapot(GLdouble scale);
 class TestApplication: public Application
 {
 public:
-	virtual void Draw(float dt)
+	virtual void Draw(int layer)
 	{
-		static float t;
-
-		t += dt;
 		static float rx;
 		static float ry;
+		static float rz;
 
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
@@ -35,10 +34,9 @@ public:
 			InputEvent evt;
 			GetInputManager()->GetEvents(&evt, 1);
 		
-			rx = evt.x;
-			ry = evt.y;
-
-			//glLoadIdentity();
+			rx = evt.rx;
+			ry = evt.ry;
+			rz = evt.rz;
 		}
 
 		glEnable(GL_LIGHTING);
@@ -49,12 +47,26 @@ public:
 		const float lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 
-		// rotate scene around the origin
-		//glRotatef( static_cast< float >( t ) * 4.0f, 1.0f, 0.5f, 0.25f );
-		glRotated(rx, 0, 1, 0);
-		glRotated(ry, 1, 0, 0);
+		glRotated(rx, 1, 0, 0);
+		glRotated(ry + 3.14f / 2, 0, 1, 0);
+		glRotated(rz, 0, 0, 1);
 
 		drawSolidTeapot(0.3f);
+
+		glDisable(GL_LIGHTING);
+		//glDisable(GL_DEPTH_TEST);
+		//glEnable(GL_BLEND);
+		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		GfxUtils::Begin2DCoords();
+
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		GfxUtils::Print(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+
+		GfxUtils::End2DCoords();
+
+		glEnable(GL_LIGHTING);
+		//glEnable(GL_LIGHTING);
 
 		//printf("available: %d    lost: %d    dt: %f\n", av, ls, dt);
 	}
@@ -76,9 +88,12 @@ void main(int argc, char** argv)
 	TestApplication app;
 	sys->SetApplication(&app);
 
-	sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	//sys->SetDisplaySystem(new GLUTDisplaySystem());
+	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	sys->SetDisplaySystem(new GLUTDisplaySystem());
 	sys->GetInputManager()->AddService(new MouseService());
+	//sys->GetInputManager()->AddService(new TrackIRService());
+
+	sys->GetDisplaySystem()->SetLayerEnabled(0, "default", true);
 
 	sys->Initialize();
 	sys->Run();

@@ -19,6 +19,8 @@
 #include "InputManager.h"
 #include "Log.h"
 #include "SystemManager.h"
+#include "gfx/GfxUtils.h"
 #include "input/MouseService.h"
+#include "input/TrackIRService.h"
 
 #endif

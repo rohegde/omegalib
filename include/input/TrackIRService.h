@@ -9,31 +9,31 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __INPUT_EVENT_H__
-#define __INPUT_EVENT_H__
+#ifndef __TRACKIR__SERVICE_H__
+#define __TRACKIR__SERVICE_H__
 
 #include "osystem.h"
+#include "InputManager.h"
+
+#include "optitrack.h"
+#import  "optitrack.tlb"
 
 namespace omega
 {
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct InputEvent
+class TrackIRService: public InputService
 {
-	enum Type {Move, Down, Up, Trace, Untrace};
-	enum Source {Pointer, Mocap, Touch, Keyboard};
+public:
 
-    unsigned int id;
-	unsigned int flags;
-	unsigned int timestamp;
-    enum Type type;
-    enum Source source;
-    float x;
-	float y;
-	float z;
-    float rx;
-	float ry;
-	float rz;
+	virtual void Initialize();
+	virtual void Start();
+	virtual void Poll();
+	virtual void Stop();
+	virtual void Dispose();
+
+private:
+    CComPtr<INPCamera>	myCamera;
+	CComPtr<INPVector3> myVector;
 };
 
 }; // namespace omega

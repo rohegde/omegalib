@@ -31,6 +31,7 @@ SET( srcs
         Utils.cpp
         gfx/GfxUtils.cpp
 		input/MouseService.cpp
+		input/TrackIRService.cpp
 		input/PQService.cpp
         )
     
@@ -51,6 +52,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/Utils.h
         ${OmegaLib_SOURCE_DIR}/include/gfx/GfxUtils.h
 		${OmegaLib_SOURCE_DIR}/include/input/MouseService.h
+		${OmegaLib_SOURCE_DIR}/include/input/TrackIRService.h
 		${OmegaLib_SOURCE_DIR}/include/input/PQService.h	
         ) 
         
@@ -65,6 +67,7 @@ TARGET_LINK_LIBRARIES( omega
     pthreadVC2
     rpcrt4
     equalizer
+    optitrackuuid.lib
     ${GLUT_LIBRARY} 
     ${OPENGL_LIBRARY}
 )
