@@ -33,6 +33,7 @@ SET( srcs
 		input/MouseService.cpp
 		input/TrackIRService.cpp
 		input/PQService.cpp
+		input/MoCapService.cpp
         )
     
 #######################################################################################################################
@@ -54,6 +55,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/input/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/input/TrackIRService.h
 		${OmegaLib_SOURCE_DIR}/include/input/PQService.h	
+		${OmegaLib_SOURCE_DIR}/include/input/MoCapService.h
         ) 
         
 #######################################################################################################################
@@ -69,6 +71,8 @@ TARGET_LINK_LIBRARIES( omega
     equalizer
     optitrackuuid.lib
     PQMTClient
+    NatNetLibStatic
+    ws2_32
     ${GLUT_LIBRARY} 
     ${OPENGL_LIBRARY}
 )
