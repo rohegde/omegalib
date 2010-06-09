@@ -16,12 +16,14 @@ INCLUDE_DIRECTORIES(
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/equalizer/include
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/gl/include
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/pqlabs/include
   ${OmegaLib_SOURCE_DIR}/include/
 )
 
 LINK_DIRECTORIES(
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/equalizer/lib
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/gl/lib
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/pqlabs/lib
   ${OmegaLib_BINARY_DIR}/3rdparty/libconfig
 )
 

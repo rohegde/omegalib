@@ -21,13 +21,15 @@ namespace omega
 struct InputEvent
 {
 	enum Type {Move, Down, Up, Trace, Untrace};
-	enum Class {Pointer, Mocap, Touch, Keyboard};
+	enum Source {Pointer, Mocap, Touch, Keyboard};
 
     unsigned int id;
 	unsigned int flags;
 	unsigned int timestamp;
     enum InputType type;
     enum InputClass source;
+    enum Type type;
+    enum Source source;
     float x;
 	float y;
 	float z;

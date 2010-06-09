@@ -1,49 +1,44 @@
-#ifndef OMEGA_TOUCH_API_H_
-#define OMEGA_TOUCH_API_H_
-
+/********************************************************************************************************************** 
+* THE OMEGA LIB PROJECT
+*---------------------------------------------------------------------------------------------------------------------
+* Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+* Authors:										
+*  [Author]									[Mail]
+*---------------------------------------------------------------------------------------------------------------------
+* [LICENSE NOTE]
+*---------------------------------------------------------------------------------------------------------------------
+* [SUMMARY OF FILE CONTENTS]
+*********************************************************************************************************************/
+#include "osystem.h"
+#include "InputManager.h"
 #include "PQMTClient.h"
-#include "Touches.h"
+
+//#include "input/Touches.h"
 #include <vector>
 #include <sys/timeb.h>
 
-// Semaphores
-#using<System.dll> // may need yo set /clr option
-// Project->Properties->Configuration Properties->General->Common Language Runtime Support
-#include<windows.h>
-#define MAX_SEM_COUNT 1
-
-
-using namespace System;
-using namespace System::Threading;
+#ifndef __PQ_LAB_TOUCH__SERVICE_H__
+#define __PQ_LAB_TOUCH__SERVICE_H__
 
 using namespace PQ_SDK_MultiTouch;
-using namespace std;
 
-namespace OmegaAPI
+namespace omega
 {
-
-	class OmegaTouchAPI{
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class PQService: public InputService
+	{
 	public:
-		OmegaTouchAPI();
-		OmegaTouchAPI(char*);
-		~OmegaTouchAPI();
-		// Init: the entry of sample codes;
-		//		demonstrate: ConnectServer, SendRequest etc;
+		virtual void Initialize();
+		virtual void Dispose();
+
+		void Initialize(  char* local_ip );
 		int Init();
-		int Init(char*);
-		char* GetMostRecentDataString();
-		Touches* GetMostRecentTouch();
-		vector<Touches> getTouchList();
-		void clearList();
-		bool hasNewData();
+	
 	private:
+		static PQService* myInstance;	
 		char* server_ip;
 		char mostRecentDataString[100];
 		bool newDataFlag;
-		vector<Touches> touchList;
-		Touches* mostRecentTouch;
-		HANDLE listSem;
-		DWORD dwWaitResult;
 
 		void ClearDataString();
 
@@ -64,6 +59,7 @@ namespace OmegaAPI
 
 		// functions to handle TouchGestures, attention the means of the params
 		void InitFuncOnTG();
+		
 		// set the call back functions while reciving touch data;
 		void SetFuncsOnReceiveProc();
 
@@ -75,33 +71,22 @@ namespace OmegaAPI
 
 		//here use function pointer table to handle the different gesture type;
 		typedef void (*PFuncOnTouchGesture)(const TouchGesture & tg,void * call_object);
+		PFuncOnTouchGesture m_pf_on_tges[TG_TOUCH_END + 1];
 		static void DefaultOnTG(const TouchGesture & tg,void * call_object); // just show the gesture
-
 		static void OnTG_TouchStart(const TouchGesture & tg,void * call_object);
 		static void OnTG_Down(const TouchGesture & tg,void * call_object);
 		static void OnTG_Move(const TouchGesture & tg,void * call_object);
 		static void OnTG_Up(const TouchGesture & tg,void * call_object);
-
-		//
 		static void OnTG_SecondDown(const TouchGesture & tg,void * call_object);
 		static void OnTG_SecondUp(const TouchGesture & tg,void * call_object);
-
-		//
 		static void OnTG_SplitStart(const TouchGesture & tg,void * call_object);
 		static void OnTG_SplitApart(const TouchGesture & tg,void * call_object);
 		static void OnTG_SplitClose(const TouchGesture & tg,void * call_object);
 		static void OnTG_SplitEnd(const TouchGesture & tg,void * call_object);
-
-		// OnTG_TouchEnd: to clear what need to clear;
 		static void OnTG_TouchEnd(const TouchGesture & tg,void * call_object);
-	private:
-		PFuncOnTouchGesture m_pf_on_tges[TG_TOUCH_END + 1];
 
-		// sample code end
-		////////////////////////////////////assistant functions /////////////////////////////////
-
-		////////////////////////////////////assistant functions /////////////////////////////////
 	};
 
-}; // end of namespace
-#endif // end of header
+}; // namespace omega
+
+#endif

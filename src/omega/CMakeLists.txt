@@ -31,6 +31,7 @@ SET( srcs
         Utils.cpp
         gfx/GfxUtils.cpp
 		input/MouseService.cpp
+		input/PQService.cpp
         )
     
 #######################################################################################################################
@@ -50,6 +51,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/Utils.h
         ${OmegaLib_SOURCE_DIR}/include/gfx/GfxUtils.h
 		${OmegaLib_SOURCE_DIR}/include/input/MouseService.h
+		${OmegaLib_SOURCE_DIR}/include/input/PQService.h	
         ) 
         
 #######################################################################################################################
