@@ -23,8 +23,8 @@ void PQService::Initialize( )
 {
 	myInstance = this;
 	
-	//memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
-	server_ip = "131.193.77.102";
+	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
+	server_ip = "131.193.77.116";
 	mostRecentDataString[0] = NULL; // Cleans up string
 	newDataFlag = false;
 	Init();
@@ -35,7 +35,7 @@ void PQService::Initialize(  char* local_ip )
 {
 	myInstance = this;
 	
-	//memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
+	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
 	server_ip = local_ip;
 	mostRecentDataString[0] = NULL; // Cleans up string
 	newDataFlag = false;
@@ -110,6 +110,14 @@ void PQService:: OnTG_TouchStart(const TouchGesture & tg,void * call_object)
 {
 	assert(tg.type == TG_TOUCH_START);
 	//printf("  here, the touch start, initialize something.\n");;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PQService:: DefaultOnTG(const TouchGesture & tg,void * call_object) // just show the gesture
+{
+	//cout <<"ges,name:"<< GetGestureName(tg) << " type:" << tg.type << ",param size:" << tg.param_size << " ";
+	//for(int i = 0; i < tg.param_size; ++ i)
+	//	cout << tg.params[i] << " ";
+	//cout << endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,6 +277,20 @@ void PQService::OnReceiveError(int err_code, void * call_back_object)
 void PQService:: OnGetServerResolution(int x, int y, void * call_back_object)
 {
 	printf(" server resolution: %d , %d \n",x ,y );
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PQService:: OnTouchGesture(const TouchGesture & tg)
+{
+	if(TG_NO_ACTION == tg.type)
+		return ;
+	
+	assert(tg.type <= TG_TOUCH_END);
+	DefaultOnTG(tg,this);
+	PFuncOnTouchGesture pf = m_pf_on_tges[tg.type];
+	if(NULL != pf){
+		pf(tg,this);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

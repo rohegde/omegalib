@@ -137,6 +137,8 @@ void TrackIRService::Poll()
 		//	evt->id = OM_ID_MOUSE;
 		//	evt->source = OM_DC_POINTER;
 		//	evt->type = OM_EVENT_MOVE;
+		evt->source = InputEvent::Mocap;
+
 		evt->x = x.dblVal;
 		evt->y = y.dblVal;
 		evt->z = z.dblVal;
