@@ -117,40 +117,47 @@ void TrackIRService::Poll()
 	VariantInit(&yaw);
 	VariantInit(&pitch);
 	VariantInit(&roll);
-
+	
+	VARIANT_BOOL empty = VARIANT_FALSE;
+	
 	myCamera->GetFrame(0, &frame);
-	if(frame != NULL) 
+	
+	if(frame != NULL)
 	{
-		hr = myVector->Update(myCamera, frame);
-		hr = myVector->get_X(&x);
-		hr = myVector->get_Y(&y);
-		hr = myVector->get_Z(&z);
-		hr = myVector->get_Yaw(&yaw);
-		hr = myVector->get_Pitch(&pitch);
-		hr = myVector->get_Roll(&roll);
+		frame->get_IsEmpty(&empty);
 
-		//printf("x=%.3f  y=%.3f  z=%.3f   yaw=%.3f  pitch=%.3f  roll=%.3f \n", x.dblVal, y.dblVal, z.dblVal, yaw.dblVal, pitch.dblVal, roll.dblVal);
+		if(empty == VARIANT_FALSE )
+		{
+			hr = myVector->Update(myCamera, frame);
+			hr = myVector->get_X(&x);
+			hr = myVector->get_Y(&y);
+			hr = myVector->get_Z(&z);
+			hr = myVector->get_Yaw(&yaw);
+			hr = myVector->get_Pitch(&pitch);
+			hr = myVector->get_Roll(&roll);
 
-		LockEvents();
+			//printf("x=%.3f  y=%.3f  z=%.3f   yaw=%.3f  pitch=%.3f  roll=%.3f \n", x.dblVal, y.dblVal, z.dblVal, yaw.dblVal, pitch.dblVal, roll.dblVal);
+			LockEvents();
 
-		InputEvent* evt = WriteHead();
-		//	evt->id = OM_ID_MOUSE;
-		//	evt->source = OM_DC_POINTER;
-		//	evt->type = OM_EVENT_MOVE;
-		evt->source = InputEvent::Mocap;
+			InputEvent* evt = WriteHead();
+			//	evt->id = OM_ID_MOUSE;
+			//	evt->source = OM_DC_POINTER;
+			//	evt->type = OM_EVENT_MOVE;
+			evt->source = InputEvent::Mocap;
 
-		evt->x = x.dblVal;
-		evt->y = y.dblVal;
-		evt->z = z.dblVal;
-		evt->rx = pitch.dblVal;
-		evt->ry = yaw.dblVal;
-		evt->rz = roll.dblVal;
+			evt->x = x.dblVal;
+			evt->y = y.dblVal;
+			evt->z = z.dblVal;
+			evt->rx = pitch.dblVal;
+			evt->ry = yaw.dblVal;
+			evt->rz = roll.dblVal;
 
-		UnlockEvents();
+			UnlockEvents();
 
 
-		frame->Free();
-		frame.Release();
+			frame->Free();
+			frame.Release();
+		}
 	}
 }
 
