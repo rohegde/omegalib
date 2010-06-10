@@ -34,23 +34,30 @@ public:
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
 		{
-			InputEvent evt;
-			GetInputManager()->GetEvents(&evt, 1);
+			InputEvent evts[16];
+			GetInputManager()->GetEvents(evts, 16);
 		
-			switch(evt.source)
+			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
+				InputEvent &evt = evts[evtNum];
+				switch(evt.source)
+				{
 				case InputEvent::Touch:
 					x = evt.x;
 					y = evt.y;
-					printf("touchin x:%f, y:%f\n", x ,y);
+					//printf("touchin x:%f, y:%f\n", x ,y);
 					break;
 
 				case InputEvent::Mocap:
-					printf("head \n");
 					rx = evt.rx;
 					ry = evt.ry;
 					rz = evt.rz;
+					//printf("head rx:%f, ry:%f, rz:%f \n", rx, ry, rz);
+					//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
 					break;
+
+				default: break;
+				}
 			}
 		}
 
@@ -68,12 +75,6 @@ public:
 
 		drawSolidTeapot(0.3f);
 
-		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
-		glBegin(GL_POINTS);
-			glVertex2f( x, y);    // lower left vertex
-		glEnd();
-		
-
 		glDisable(GL_LIGHTING);
 		//glDisable(GL_DEPTH_TEST);
 		//glEnable(GL_BLEND);
@@ -83,6 +84,13 @@ public:
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		GfxUtils::Print(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+
+		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
+		glPointSize (5.0);
+		glBegin(GL_POINTS);
+			glVertex2f( x, y);    // lower left vertex
+		glEnd();
+		
 
 		GfxUtils::End2DCoords();
 
