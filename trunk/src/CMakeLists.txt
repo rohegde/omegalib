@@ -28,7 +28,7 @@ LINK_DIRECTORIES(
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/optitrack/lib
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/pqlabs/lib
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/natnet/lib
-  ${OmegaLib_BINARY_DIR}/3rdparty/libconfig
+  ${OmegaLib_BINARY_DIR}/src/3rdparty/libconfig
 )
 
 #######################################################################################################################
