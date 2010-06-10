@@ -11,6 +11,9 @@
  *********************************************************************************************************************/
 #include "Config.h"
 
+// Libconfig
+#include "libconfig.hh"
+
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +29,87 @@ std::vector<char*> Config::StringToArgv(std::string appName, std::string args)
 	   v1.push_back(arg); 
 	   v2.push_back(_strdup(v1.back().c_str()));
 	}
-	//v2.add(0);  // need terminating null pointer
 	return v2;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Config::Load()
+{
+	myCfgFile = new libconfig::Config();
+	FILE* stream = fopen(myCfgFilename.c_str(), "r");
+	try
+	{
+		myCfgFile->read(stream);
+	}
+	catch(libconfig::ParseException e)
+	{
+		Log::Error("Profile loading: %s at line %d", e.getError(), e.getLine());
+		OASSERT(false);
+	}
+	fclose(stream);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const char* Config::GetValue(const char* name, const char* defaultValue)
+{
+	if(myCfgFile->exists(name)) return (const char*)myCfgFile->lookup(name);
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int Config::GetValue(const char* name, int defaultValue)
+{
+	if(myCfgFile->exists(name)) return (int)myCfgFile->lookup(name);
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+float Config::GetValue(const char* name, float defaultValue)
+{
+	if(myCfgFile->exists(name)) return (float)myCfgFile->lookup(name);
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Config::GetValue(const char* name, bool defaultValue)
+{
+	if(myCfgFile->exists(name)) return (bool)myCfgFile->lookup(name);
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Config::GetArray(const char* name, std::vector<const char*>& data)
+{
+	if(!myCfgFile->exists(name)) return false;
+	libconfig::Setting& ar = myCfgFile->lookup(name);
+	for(int i = 0; i < ar.getLength(); i++)
+	{
+		data.push_back((const char*)ar[i]);
+	}
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Config::GetArray(const char* name, std::vector<int>& data)
+{
+	if(!myCfgFile->exists(name)) return false;
+	libconfig::Setting& ar = myCfgFile->lookup(name);
+	for(int i = 0; i < ar.getLength(); i++)
+	{
+		data.push_back((int)ar[i]);
+	}
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Config::GetArray(const char* name, std::vector<float>& data)
+{
+	if(!myCfgFile->exists(name)) return false;
+	libconfig::Setting& ar = myCfgFile->lookup(name);
+	for(int i = 0; i < ar.getLength(); i++)
+	{
+		data.push_back((float)ar[i]);
+	}
+	return true;
+}
+

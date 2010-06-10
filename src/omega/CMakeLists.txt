@@ -17,7 +17,7 @@ find_package(OpenGL)
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
+ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC)
 
 #######################################################################################################################
 # Source files
