@@ -43,6 +43,7 @@ public:
 				switch(evt.source)
 				{
 				case InputEvent::Touch:
+				case InputEvent::Pointer:
 					x = evt.x;
 					y = evt.y;
 					//printf("touchin x:%f, y:%f\n", x ,y);
@@ -104,12 +105,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
+	// TODO: Logging does not work with visual studio 2010, apparently because of incompatibilities betwen VC9 and VC10 standard
+	// libraries (Equalizer included binaries are compiled with VC9 as for now).
 	OM_INIT_EQUALIZER_LOG();
 
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/4-window.all.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
 
 	cfg->Load();
 
@@ -132,8 +135,8 @@ void main(int argc, char** argv)
 
 	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	sys->SetDisplaySystem(new GLUTDisplaySystem());
-	//sys->GetInputManager()->AddService(new MouseService());
-	sys->GetInputManager()->AddService(new TrackIRService());
+	sys->GetInputManager()->AddService(new MouseService());
+	//sys->GetInputManager()->AddService(new TrackIRService());
 	sys->GetInputManager()->AddService(new PQService());
 
 	sys->GetDisplaySystem()->SetLayerEnabled(0, "default", true);

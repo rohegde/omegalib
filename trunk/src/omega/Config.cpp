@@ -33,25 +33,36 @@ std::vector<char*> Config::StringToArgv(std::string appName, std::string args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Config::Load()
+bool Config::Load()
 {
 	myCfgFile = new libconfig::Config();
 	FILE* stream = fopen(myCfgFilename.c_str(), "r");
+	if(stream == NULL)
+	{
+		Log::Error("Config::Load - Opening file failed: %s", myCfgFilename.c_str());
+		return false;
+	}
+
+	Log::Message("Opened config file: %s", myCfgFilename.c_str());
+
 	try
 	{
 		myCfgFile->read(stream);
 	}
 	catch(libconfig::ParseException e)
 	{
-		Log::Error("Profile loading: %s at line %d", e.getError(), e.getLine());
-		OASSERT(false);
+		Log::Error("Config loading: %s at line %d", e.getError(), e.getLine());
+		fclose(stream);
+		return false;
 	}
 	fclose(stream);
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const char* Config::GetValue(const char* name, const char* defaultValue)
 {
+	if(!myCfgFile) return defaultValue;
 	if(myCfgFile->exists(name)) return (const char*)myCfgFile->lookup(name);
 	return defaultValue;
 }
@@ -59,6 +70,7 @@ const char* Config::GetValue(const char* name, const char* defaultValue)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Config::GetValue(const char* name, int defaultValue)
 {
+	if(!myCfgFile) return defaultValue;
 	if(myCfgFile->exists(name)) return (int)myCfgFile->lookup(name);
 	return defaultValue;
 }
@@ -66,6 +78,7 @@ int Config::GetValue(const char* name, int defaultValue)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 float Config::GetValue(const char* name, float defaultValue)
 {
+	if(!myCfgFile) return defaultValue;
 	if(myCfgFile->exists(name)) return (float)myCfgFile->lookup(name);
 	return defaultValue;
 }
@@ -73,6 +86,7 @@ float Config::GetValue(const char* name, float defaultValue)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Config::GetValue(const char* name, bool defaultValue)
 {
+	if(!myCfgFile) return defaultValue;
 	if(myCfgFile->exists(name)) return (bool)myCfgFile->lookup(name);
 	return defaultValue;
 }
@@ -80,6 +94,7 @@ bool Config::GetValue(const char* name, bool defaultValue)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Config::GetArray(const char* name, std::vector<const char*>& data)
 {
+	if(!myCfgFile) return false;
 	if(!myCfgFile->exists(name)) return false;
 	libconfig::Setting& ar = myCfgFile->lookup(name);
 	for(int i = 0; i < ar.getLength(); i++)
@@ -92,6 +107,7 @@ bool Config::GetArray(const char* name, std::vector<const char*>& data)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Config::GetArray(const char* name, std::vector<int>& data)
 {
+	if(!myCfgFile) return false;
 	if(!myCfgFile->exists(name)) return false;
 	libconfig::Setting& ar = myCfgFile->lookup(name);
 	for(int i = 0; i < ar.getLength(); i++)
@@ -104,6 +120,7 @@ bool Config::GetArray(const char* name, std::vector<int>& data)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Config::GetArray(const char* name, std::vector<float>& data)
 {
+	if(!myCfgFile) return false;
 	if(!myCfgFile->exists(name)) return false;
 	libconfig::Setting& ar = myCfgFile->lookup(name);
 	for(int i = 0; i < ar.getLength(); i++)
