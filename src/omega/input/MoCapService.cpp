@@ -17,8 +17,6 @@ MoCapService::~MoCapService()
 {
 	pClient->Uninitialize();
 	delete pClient;
-	delete[] localIP;
-	delete[] serverIP;
 }
 
 void MoCapService::Start()

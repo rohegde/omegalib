@@ -30,9 +30,9 @@ public:
 	static std::vector<char*> StringToArgv(std::string appName, std::string args);
 
 public:
-	Config(): myArgv(NULL), myArgc(1) {}
-	Config(int argc, char** argv) { myArgc = argc; myArgv = argv; }
-	Config(const char* filename) { myCfgFilename = filename; }
+	Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL) {}
+	Config(int argc, char** argv): myCfgFile(NULL) { myArgc = argc; myArgv = argv; }
+	Config(const char* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL) { myCfgFilename = filename; }
 	~Config() {}
 
 	const char* GetConfigFilename() { return myCfgFilename.c_str(); }
@@ -44,7 +44,7 @@ public:
 	int GetArgc() { return myArgc; }
 	char** GetArgv() { return myArgv; }
 
-	void Load();
+	bool Load();
 
 	// Read string value.
 	const char* GetValue(const char* name, const char* defaultValue);

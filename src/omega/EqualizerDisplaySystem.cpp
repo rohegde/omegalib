@@ -130,8 +130,6 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 {
 	mySys = sys;
-
-	// Setup log rerouting.
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
