@@ -55,8 +55,15 @@ void __cdecl MoCapService::MessageController( int msgType, char* msg)
 	//this is where you would write messages, from the NatNet server, to the log
 }
 
+/**********************************************************************************************
+ *	For a better idea of what is going on in the quaternion to euler conversion check out:
+ *		http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+ *		http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
+ **********************************************************************************************/
 void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUserData)
 {
+	double verticalTest; //used to handle special case of body pointing straight along vertical axis
+
 	if( myMoCap )
 	{
 		myMoCap->LockEvents();
@@ -67,6 +74,24 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			InputEvent* theEvent = myMoCap->WriteHead();
 
 			theEvent->id = data->RigidBodies[i].ID;
+			theEvent->source = InputEvent::Mocap;
+
+			//checks to see if the rigid body is being tracked, if all positional data is set to zero then it is more than likely not being tracked
+			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )
+			{
+				theEvent->type = InputEvent::Untrace;
+				theEvent->x = 0;
+				theEvent->y = 0;
+				theEvent->z = 0;
+				theEvent->rx = 0;
+				theEvent->ry = 0;
+				theEvent->rz = 0;
+				continue;
+			}
+
+			//Set event type
+			//for now only trace and untraced are going to be supported with more complex types being implemented soon
+			theEvent->type = InputEvent::Trace;
 
 			//get x,y,z coordinates
 			theEvent->x = data->RigidBodies[i].x;
@@ -76,20 +101,36 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
 			
 			//check for a position that is at either of the poles (pointing straight up or straight down)
+			verticalTest = ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw );
 			//check for pointing North
-			/*
-			if( ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw ) = 0.5 )
+			if( verticalTest = 0.499 )
 			{
 				theEvent->rx = 0;
 				theEvent->ry = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 				theEvent->rz = PI/2;
 			}
-			else if( ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw ) = -0.5 )
+			//check for pointing South
+			else if( verticalTest = -0.499 )
 			{
 				theEvent->rx = 0;
 				theEvent->ry = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 				theEvent->rz = -PI/2;
-			}*/
+			}
+			else
+			{
+				double sqw = data->RigidBodies[i].qw * data->RigidBodies[i].qw;
+				double sqx = data->RigidBodies[i].qx * data->RigidBodies[i].qx;
+				double sqy = data->RigidBodies[i].qy * data->RigidBodies[i].qy;
+				double sqz = data->RigidBodies[i].qz * data->RigidBodies[i].qz;
+				//roll
+				theEvent->rx = atan2( (double) ( ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qz ) ),
+										1 - 2*sqx - 2*sqz );
+				//yaw
+				theEvent->ry = atan2( (double) ( ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qz ) ),
+										1 - 2*sqy - 2*sqz );
+				//pitch
+				theEvent->rz = asin( 2 * verticalTest );
+			}
 		}
 		myMoCap->UnlockEvents();
 	}

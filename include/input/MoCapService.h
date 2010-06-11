@@ -18,6 +18,8 @@
 #include "NatNetClient.h"
 #include "winsock2.h"
 
+#define PI 3.14159265
+
 namespace omega
 {
 
