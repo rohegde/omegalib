@@ -21,6 +21,7 @@
 #include "SystemManager.h"
 #include "gfx/GfxUtils.h"
 #include "input/MouseService.h"
+#include "input/MoCapService.h"
 #include "input/TrackIRService.h"
 #include "input/PQService.h"
 #endif
