@@ -6,6 +6,7 @@ using namespace omega;
 MoCapService* MoCapService :: myMoCap = NULL;
 //int MoCapService :: PI =  = 3.14159265;
 
+
 MoCapService::MoCapService()
 {
 	pClient = NULL;
@@ -17,7 +18,15 @@ MoCapService::~MoCapService()
 {
 	pClient->Uninitialize();
 	delete pClient;
+	delete[] localIP;
+	delete[] serverIP;
 }
+
+void MoCapService::Initialize()
+{
+	myMoCap = this;
+}
+
 
 void MoCapService::Start()
 {
@@ -36,12 +45,20 @@ void MoCapService::Start()
 	
 	if ( retCode != ErrorCode_OK)
 	{
-		//printf("Unable to connect to server. Error code: %d. Exiting", retCode);
-		//put error printing to log here
+		Log::Error("MOCAP: Unable to connect to server. Error code: %d. Exiting", retCode);
 		exit(1);
 	}
-	//printf("Initialization succeeded\n");
-	//put success message to log here
+	Log::Message("MOCAP: Initialization succeeded\n");
+
+	// send/receive test request
+	Log::Message("MOCAP: Sending Test Request\n");
+	void* response;
+	int nBytes;
+	int iResult = pClient->SendMessageAndWait("TestRequest", &response, &nBytes);
+	if (iResult == ErrorCode_OK)
+	{
+		printf("MOCAP: Received: %s", (char*)response);
+	}
 
 }
 
@@ -50,9 +67,17 @@ void MoCapService::Stop()
 	pClient->Uninitialize();
 }
 
+void MoCapService::Dispose()
+{
+	delete myMoCap;
+}
+
 void __cdecl MoCapService::MessageController( int msgType, char* msg)
 {
-	//this is where you would write messages, from the NatNet server, to the log
+	//this is where you write messages, from the NatNet server, to the log
+	//Log::Message("MOCAP: %s", msg);
+
+	//this is commented out b/c it is printing messages at every frame and I am unsure if they are worth while
 }
 
 /**********************************************************************************************
