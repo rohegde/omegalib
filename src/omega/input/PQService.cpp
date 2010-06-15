@@ -17,6 +17,7 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PQService* PQService::myInstance = NULL;
+int PQService::maxBlobSize = 60;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::Initialize( ) 
@@ -361,16 +362,23 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 
 	strcat(mostRecentDataString," ");
 	
+	int xWidth = tp.dx;
+	int yWidth = tp.dy;
+
 	// Add xWidth
-	itoa(tp.dx,buffer,10);
+	itoa(xWidth,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");
 	
 	// Add yWidth
-	itoa(tp.dy,buffer,10);
+	itoa(yWidth,buffer,10);
 	strcat(mostRecentDataString,buffer);
-	newDataFlag = true;
+
+	if( xWidth <= maxBlobSize && yWidth <= maxBlobSize )
+		newDataFlag = true;
+	else
+		newDataFlag = false;
 	//printf("%s \n",mostRecentDataString);
 }
 
