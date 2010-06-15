@@ -136,8 +136,9 @@ void main(int argc, char** argv)
 	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	sys->SetDisplaySystem(new GLUTDisplaySystem());
 	sys->GetInputManager()->AddService(new MouseService());
+	//sys->GetInputManager()->AddService(new MoCapService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
-	sys->GetInputManager()->AddService(new PQService());
+	//sys->GetInputManager()->AddService(new PQService());
 
 	sys->GetDisplaySystem()->SetLayerEnabled(0, "default", true);
 

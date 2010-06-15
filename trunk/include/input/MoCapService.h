@@ -30,8 +30,10 @@ namespace omega
 		~MoCapService();
 		static void __cdecl FrameController(sFrameOfMocapData* data, void* pUserData);
 		static void __cdecl MessageController(int msgType, char* msg);
+		virtual void Initialize();
 		virtual void Start();//initialize and start service here
 		virtual void Stop();//destroy service instance to stop
+		virtual void Dispose();
 		void setLocalIP (char* theAdress);
 		void setServerIP (char* theAdress);
 		//may want to support the option to choose whether to have unicast or multicast networking
