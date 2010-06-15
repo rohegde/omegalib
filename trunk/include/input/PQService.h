@@ -36,10 +36,11 @@ namespace omega
 	
 	private:
 		static PQService* myInstance;	
+		static int maxBlobSize;
 		char* server_ip;
 		char mostRecentDataString[100];
 		bool newDataFlag;
-
+		
 		void ClearDataString();
 
 		//////////////////////call back functions///////////////////////
