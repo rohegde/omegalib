@@ -17,7 +17,7 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PQService* PQService::myInstance = NULL;
-int PQService::maxBlobSize = 60;
+int PQService::maxBlobSize = 15;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::Initialize( ) 
@@ -302,8 +302,12 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	timeb tb;
 	ftime( &tb );
 	int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+	
+	int tEvent = tp.point_event;
+	int xWidth = tp.dx;
+	int yWidth = tp.dy;
 
-	if(myInstance)
+	if(myInstance && xWidth <= maxBlobWidth && yWidth <= maxBlobWidth)
 	{
 		myInstance->LockEvents();
 
@@ -325,6 +329,8 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->y = tp.y;
 
 		myInstance->UnlockEvents();
+		
+		newDataFlag = true;
 	}
 
 	char buffer[5];
@@ -361,9 +367,6 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");
-	
-	int xWidth = tp.dx;
-	int yWidth = tp.dy;
 
 	// Add xWidth
 	itoa(xWidth,buffer,10);
@@ -375,11 +378,8 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	itoa(yWidth,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
-	if( xWidth <= maxBlobSize && yWidth <= maxBlobSize )
-		newDataFlag = true;
-	else
-		newDataFlag = false;
-	//printf("%s \n",mostRecentDataString);
+	if( newDataFlag )
+		printf("%s \n",mostRecentDataString);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
