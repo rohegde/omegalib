@@ -307,7 +307,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	int xWidth = tp.dx;
 	int yWidth = tp.dy;
 
-	if(myInstance && xWidth <= maxBlobWidth && yWidth <= maxBlobWidth)
+	if(myInstance && xWidth <= maxBlobSize && yWidth <= maxBlobSize)
 	{
 		myInstance->LockEvents();
 
