@@ -50,11 +50,14 @@ public:
 					break;
 
 				case InputEvent::Mocap:
-					rx = evt.rx;
-					ry = evt.ry;
-					rz = evt.rz;
-					//printf("head rx:%f, ry:%f, rz:%f \n", rx, ry, rz);
-					//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
+					//if ( evt.id == 2 )
+					//{
+						rx = evt.rx;
+						ry = evt.ry;
+						rz = evt.rz;
+						//printf("head rx:%f, ry:%f, rz:%f \n", rx, ry, rz);
+						//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
+					//}
 					break;
 
 				default: break;
