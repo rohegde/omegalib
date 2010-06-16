@@ -4,7 +4,7 @@
 using namespace omega;
 
 MoCapService* MoCapService :: myMoCap = NULL;
-//int MoCapService :: PI =  = 3.14159265;
+double MoCapService :: PI = 3.14159265;
 
 
 MoCapService::MoCapService()
@@ -88,6 +88,7 @@ void __cdecl MoCapService::MessageController( int msgType, char* msg)
 void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUserData)
 {
 	double verticalTest; //used to handle special case of body pointing straight along vertical axis
+	double radianConv = 180.0 / PI;
 
 	if( myMoCap )
 	{
@@ -128,15 +129,17 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			//check for a position that is at either of the poles (pointing straight up or straight down)
 			verticalTest = ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw );
 			//check for pointing North
-			if( verticalTest = 0.499 )
+			if( verticalTest == 0.499 )
 			{
+				Log::Warning("MOCAP: Pointing North");
 				theEvent->rx = 0;
 				theEvent->ry = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 				theEvent->rz = PI/2;
 			}
 			//check for pointing South
-			else if( verticalTest = -0.499 )
+			else if( verticalTest == -0.499 )
 			{
+				Log::Warning("MOCAP: Pointing South");
 				theEvent->rx = 0;
 				theEvent->ry = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 				theEvent->rz = -PI/2;
@@ -156,6 +159,10 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				//pitch
 				theEvent->rz = asin( 2 * verticalTest );
 			}
+			//convert rotation from radians to degrees
+			theEvent->rx = (theEvent->rx) * radianConv;
+			theEvent->ry = (theEvent->ry) * radianConv;
+			theEvent->rz = (theEvent->rz) * radianConv;
 		}
 		myMoCap->UnlockEvents();
 	}

@@ -18,7 +18,7 @@
 #include "NatNetClient.h"
 #include "winsock2.h"
 
-#define PI 3.14159265
+//#define PI 3.14159265
 
 namespace omega
 {
@@ -39,7 +39,7 @@ namespace omega
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:
-		//static const int PI;
+		static double PI;
 		static MoCapService* myMoCap;
 		NatNetClient* pClient;
 		char localIP[128];			//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
