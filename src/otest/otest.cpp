@@ -21,15 +21,52 @@ void drawWireTeapot(GLdouble scale);
 class TestApplication: public Application
 {
 public:
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void Draw3D()
+	{
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		const float lightPos[] = { 0.0f, 1.0f, 1.0f, 0.0f };
+		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
+
+		const float lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
+
+		glRotated(rx, 1, 0, 0);
+		glRotated(ry + 3.14f / 2, 0, 1, 0);
+		glRotated(rz, 0, 0, 1);
+
+		drawSolidTeapot(0.3f);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void Draw2D()
+	{
+		glDisable(GL_LIGHTING);
+		//glDisable(GL_DEPTH_TEST);
+		//glEnable(GL_BLEND);
+		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		GfxUtils::Begin2DCoords();
+
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		GfxUtils::Print(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+
+		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
+		glPointSize (5.0);
+		glBegin(GL_POINTS);
+			glVertex2f(x, y);    // lower left vertex
+		glEnd();
+		
+
+		GfxUtils::End2DCoords();
+
+		glEnable(GL_LIGHTING);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void Draw(int layer)
 	{
-		static float rx;
-		static float ry;
-		static float rz;
-
-		static float x = 0;
-		static float y = 0;
-
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
@@ -65,44 +102,23 @@ public:
 			}
 		}
 
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		const float lightPos[] = { 0.0f, 1.0f, 1.0f, 0.0f };
-		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
-
-		const float lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
-
-		glRotated(rx, 1, 0, 0);
-		glRotated(ry + 3.14f / 2, 0, 1, 0);
-		glRotated(rz, 0, 0, 1);
-
-		drawSolidTeapot(0.3f);
-
-		glDisable(GL_LIGHTING);
-		//glDisable(GL_DEPTH_TEST);
-		//glEnable(GL_BLEND);
-		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		GfxUtils::Begin2DCoords();
-
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::Print(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
-
-		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
-		glPointSize (5.0);
-		glBegin(GL_POINTS);
-			glVertex2f( x, y);    // lower left vertex
-		glEnd();
-		
-
-		GfxUtils::End2DCoords();
-
-		glEnable(GL_LIGHTING);
-		//glEnable(GL_LIGHTING);
-
-		//printf("available: %d    lost: %d    dt: %f\n", av, ls, dt);
+		switch(layer)
+		{
+			case 0:
+				Draw3D();
+				break;
+			case 1:
+				Draw2D();
+		}
 	}
+
+private:
+	float rx;
+	float ry;
+	float rz;
+
+	float x;
+	float y;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,16 +152,18 @@ void main(int argc, char** argv)
 	TestApplication app;
 	sys->SetApplication(&app);
 
-	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	sys->SetDisplaySystem(new GLUTDisplaySystem());
+	sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	//sys->SetDisplaySystem(new GLUTDisplaySystem());
 	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new MoCapService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
 
-	sys->GetDisplaySystem()->SetLayerEnabled(0, "default", true);
-
 	sys->Initialize();
+
+	sys->GetDisplaySystem()->SetLayerEnabled(0, "view3D", true);
+	sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+
 	sys->Run();
 
 	sys->Cleanup();

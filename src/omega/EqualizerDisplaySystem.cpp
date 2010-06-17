@@ -33,6 +33,61 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class EqualizerView: public eq::View
+{
+public:
+	/** The changed parts of the view. */
+    enum DirtyBits
+    {
+        DIRTY_LAYER = eq::View::DIRTY_CUSTOM << 0,
+    };
+
+public:
+	EqualizerView(): eq::View() 
+	{
+		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
+	}
+
+	bool IsLayerEnabled(int layer) 
+	{ 
+		return myEnabledLayers[layer]; 
+	}
+
+	void SetLayerEnabled(int layer, bool enabled) 
+	{ 
+		myEnabledLayers[layer] = enabled; 
+	    setDirty( DIRTY_LAYER );
+	}
+
+	virtual void serialize( eq::net::DataOStream& os, const uint64_t dirtyBits )
+	{
+		eq::View::serialize( os, dirtyBits );
+	    if( dirtyBits & DIRTY_LAYER )
+		{
+			for(int i = 0; i < Application::MaxLayers; i++)
+			{
+				os << myEnabledLayers[i];
+			}
+		}
+	}
+
+	virtual void deserialize( eq::net::DataIStream& is, const uint64_t dirtyBits )
+	{
+		eq::View::deserialize( is, dirtyBits );
+	    if( dirtyBits & DIRTY_LAYER )
+		{
+			for(int i = 0; i < Application::MaxLayers; i++)
+			{
+				is >> myEnabledLayers[i];
+			}
+		}
+	}
+
+private:
+	bool myEnabledLayers[Application::MaxLayers];
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class EqualizerConfig: public eq::Config
 {
 public:
@@ -59,23 +114,22 @@ public:
 		SystemManager::GetInstance()->GetInputManager()->Poll();
 		return eq::Config::finishFrame();
 	}
-};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerView: public eq::View
-{
-public:
-	EqualizerView(): eq::View() 
+	void SetLayerEnabled(int viewId, int layerId, bool enabled)
 	{
-		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
+	    EqualizerView* view  = static_cast< EqualizerView* >( findView(viewId));
+		if(view != NULL)
+		{
+			view->SetLayerEnabled(layerId, enabled);
+		}
 	}
-private:
-	bool myEnabledLayers[Application::MaxLayers];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class EqualizerNodeFactory: public eq::NodeFactory
 {
+public:
+	EqualizerNodeFactory() {}
 public:
     virtual eq::Config*  createConfig( eq::ServerPtr parent )
 		{ return new EqualizerConfig( parent ); }
@@ -88,6 +142,8 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerChannel::frameDraw( const uint32_t spin )
 {
+    EqualizerView* view  = static_cast< EqualizerView* > (const_cast< eq::View* >( getView( )));
+
     // setup OpenGL State
     eq::Channel::frameDraw( spin );
 
@@ -106,7 +162,14 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 		glTranslatef(0, 0, -2.0f);
 
 		app->Update(dt);
-		app->Draw(dt);
+
+		for(int layer = 0; layer < Application::MaxLayers; layer++)
+		{
+			if(view->IsLayerEnabled(layer))
+			{
+				app->Draw(layer);
+			}
+		}
 
 		if(SystemManager::GetInstance()->IsExitRequested())
 		{
@@ -117,7 +180,9 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 EqualizerDisplaySystem::EqualizerDisplaySystem():
-	mySys(NULL)
+	mySys(NULL),
+	myConfig(NULL),
+	myNodeFactory(NULL)
 {
 }
 
@@ -130,6 +195,17 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 {
 	mySys = sys;
+	std::vector<char*> argv = Config::StringToArgv( mySys->GetApplication()->GetName(), mySys->GetConfig()->GetDisplayConfig());
+
+	myNodeFactory = new EqualizerNodeFactory();
+
+    if( !eq::init( argv.size(), &argv[0], myNodeFactory ))
+    {
+		Log::Error("Equalizer init failed");
+    }
+
+    bool error  = false;
+	myConfig = eq::getConfig( argv.size(), &argv[0] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,38 +234,28 @@ float EqualizerDisplaySystem::GetValue(DisplayParam param)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::Run()
 {
-    EqualizerNodeFactory nodeFactory;
-
-	std::vector<char*> argv = Config::StringToArgv( mySys->GetApplication()->GetName(), mySys->GetConfig()->GetDisplayConfig());
-
-    if( !eq::init( argv.size(), &argv[0], &nodeFactory ))
+	bool error = false;
+    if( myConfig )
     {
-		Log::Error("Equalizer init failed");
-    }
-
-    bool error  = false;
-	eq::Config* config = eq::getConfig( argv.size(), &argv[0] );
-    if( config )
-    {
-        if( config->init( 0 ))
+        if( myConfig->init( 0 ))
         {
             uint32_t spin = 0;
-            while( config->isRunning( ))
+            while( myConfig->isRunning( ))
             {
-                config->startFrame( ++spin );
-                config->finishFrame();
+                myConfig->startFrame( ++spin );
+                myConfig->finishFrame();
             }
         
             // 5. exit config
-            config->exit();
+            myConfig->exit();
         }
         else
         {
-            Log::Error("Config initialization failed: %s", config->getErrorMessage());
+            Log::Error("Config initialization failed: %s", myConfig->getErrorMessage());
             error = true;
         }
 
-        eq::releaseConfig( config );
+        eq::releaseConfig( myConfig );
     }
     else
     {
@@ -203,4 +269,62 @@ void EqualizerDisplaySystem::Run()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::Cleanup()
 {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+EqualizerView* EqualizerDisplaySystem::FindView(const char* viewName)
+{
+    const eq::CanvasVector& canvases = myConfig->getCanvases();
+	eq::Canvas* currentCanvas = canvases.front();
+
+    if(!currentCanvas) return NULL;
+
+    const eq::Layout* layout = currentCanvas->getActiveLayout();
+    if(!layout) return NULL;
+
+    const eq::ViewVector& views = layout->getViews();
+	EqualizerView* view = NULL;
+	for(int i = 0; i < views.size(); i++)
+	{
+		eq::View* v = views[i];
+		if(v->getName() == viewName) 
+		{
+			view = static_cast < EqualizerView* > (v);
+			break;
+		}
+	}
+	return view;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::SetLayerEnabled(int layerNum, const char* viewName, bool enabled) 
+{
+	if(!myConfig)
+	{
+		Log::Error("EqualizerDisplaySystem::SetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
+		return;
+	}
+
+	EqualizerView* view = FindView(viewName);
+	if(view != NULL)
+	{
+		view->SetLayerEnabled(layerNum, enabled);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool EqualizerDisplaySystem::IsLayerEnabled(int layerNum,const char* viewName) 
+{ 
+	if(!myConfig)
+	{
+		Log::Error("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
+		return false;
+	}
+
+	EqualizerView* view = FindView(viewName);
+	if(view != NULL)
+	{
+		return view->IsLayerEnabled(layerNum);
+	}
+	return false;
 }

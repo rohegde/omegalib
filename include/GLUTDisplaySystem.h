@@ -31,8 +31,6 @@ public:
 	// Layer and view management.
 	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
 	virtual bool IsLayerEnabled(int layerNum, const char* viewName);
-	virtual bool IsLayerEnabled(int layerNum) { return IsLayerEnabled(layerNum, "default"); }
-	virtual const char* GetActiveView() { return "default"; }
 
 	virtual float GetValue(DisplayParam param);
 	virtual unsigned int GetId() { return Id; }
