@@ -49,9 +49,9 @@ void displayCallback(void)
 
 		for(int layer = 0; layer < Application::MaxLayers; layer++)
 		{
-			if(SystemManager::GetInstance()->GetDisplaySystem()->IsLayerEnabled(layer))
+			if(SystemManager::GetInstance()->GetDisplaySystem()->IsLayerEnabled(layer, 0))
 			{
-				app->Draw(dt);
+				app->Draw(layer);
 			}
 		}
 

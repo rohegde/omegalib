@@ -18,8 +18,14 @@
 
 #define OM_INIT_EQUALIZER_LOG() eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward Declarations.
+class EqualizerNodeFactory;
+class EqualizerView;
+
 namespace omega
 {
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This class is used to route equalizer log into the omega log system.
 class EqualizerLogStreamBuf: public std::streambuf
@@ -56,11 +62,22 @@ public:
 	virtual float GetValue(DisplayParam param);
 	virtual unsigned int GetId() { return Id; }
 
+	// Layer and view management.
+	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
+	virtual bool IsLayerEnabled(int layerNum, const char* viewName);
+
 public:
 	static const unsigned int Id; 
 
 private:
+	EqualizerView* FindView(const char* viewName);
+
+private:
 	SystemManager* mySys;
+
+	// Equalizer stuff.
+    EqualizerNodeFactory* myNodeFactory;
+	eq::Config* myConfig;
 };
 
 }; // namespace omega
