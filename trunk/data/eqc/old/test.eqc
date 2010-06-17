@@ -41,8 +41,6 @@ server
             name "MultiView"
             view
             {
-                name "view3D"
-                
                 viewport [ 0 0 .5 1 ]
                 wall
                 {
@@ -53,8 +51,6 @@ server
             }
             view
             {
-                name "view2D"
-                
                 viewport [ .5 0 .5 1 ]
                 wall
                 {
