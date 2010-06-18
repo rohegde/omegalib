@@ -142,6 +142,8 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerChannel::frameDraw( const uint32_t spin )
 {
+	static DrawContext context;
+
     EqualizerView* view  = static_cast< EqualizerView* > (const_cast< eq::View* >( getView( )));
 
     // setup OpenGL State
@@ -163,11 +165,20 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 
 		app->Update(dt);
 
+		eq::PixelViewport pvp = getPixelViewport();
+
+		// Setup the context viewport.
+		context.viewportX = pvp.x;
+		context.viewportY = pvp.y;
+		context.viewportWidth = pvp.w;
+		context.viewportHeight = pvp.h;
+
 		for(int layer = 0; layer < Application::MaxLayers; layer++)
 		{
 			if(view->IsLayerEnabled(layer))
 			{
-				app->Draw(layer);
+				context.layer = layer;
+				app->Draw(context);
 			}
 		}
 
@@ -206,29 +217,6 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 
     bool error  = false;
 	myConfig = eq::getConfig( argv.size(), &argv[0] );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float EqualizerDisplaySystem::GetValue(DisplayParam param)
-{
-	switch(param)
-	{
-	case DisplaySystem::GlobalHeight:
-		return 500;
-		break;
-	case DisplaySystem::LocalHeight:
-		return 500;
-		break;
-	case DisplaySystem::GlobalWidth:
-		return 500;
-		break;
-	case DisplaySystem::LocalWidth:
-		return 500;
-		break;
-	default:
-		Log::Warning("EqualizerDisplaySystem::GetValue: unsupported display param, %d", param);
-		return 0;
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

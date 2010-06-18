@@ -23,6 +23,7 @@ const unsigned int GLUTDisplaySystem::Id = OID("GLUT");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void displayCallback(void) 
 {
+	static DrawContext context;
 	static float lt = 0.0f;
 	Application* app = SystemManager::GetInstance()->GetApplication();
 	if(app)
@@ -47,11 +48,18 @@ void displayCallback(void)
 
 		app->Update(dt);
 
+		// Setup the context viewport.
+		context.viewportX = 0;
+		context.viewportY = 0;
+		context.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
+		context.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
 		for(int layer = 0; layer < Application::MaxLayers; layer++)
 		{
 			if(SystemManager::GetInstance()->GetDisplaySystem()->IsLayerEnabled(layer, 0))
 			{
-				app->Draw(layer);
+				context.layer = layer;
+				app->Draw(context);
 			}
 		}
 
@@ -101,25 +109,6 @@ void GLUTDisplaySystem::Initialize(SystemManager* sys)
 	// Enable lighting by default to keep consistent with equalizer rendering)
 	//glEnable(GL_LIGHTING);
 	glEnable (GL_DEPTH_TEST);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float GLUTDisplaySystem::GetValue(DisplayParam param)
-{
-	switch(param)
-	{
-	case DisplaySystem::GlobalHeight:
-	case DisplaySystem::LocalHeight:
-		return glutGet(GLUT_WINDOW_HEIGHT);
-		break;
-	case DisplaySystem::GlobalWidth:
-	case DisplaySystem::LocalWidth:
-		return glutGet(GLUT_WINDOW_WIDTH);
-		break;
-	default:
-		Log::Warning("GLUTDisplaySystem::GetValue: unsupported display param, %d", param);
-		return 0;
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

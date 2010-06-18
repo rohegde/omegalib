@@ -32,7 +32,6 @@ public:
 	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
 	virtual bool IsLayerEnabled(int layerNum, const char* viewName);
 
-	virtual float GetValue(DisplayParam param);
 	virtual unsigned int GetId() { return Id; }
 
 public:

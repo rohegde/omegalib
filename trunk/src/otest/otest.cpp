@@ -22,7 +22,7 @@ class TestApplication: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw3D()
+	void Draw3D(DrawContext& context)
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
@@ -49,14 +49,14 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw2D()
+	void Draw2D(DrawContext& context)
 	{
 		glDisable(GL_LIGHTING);
 		//glDisable(GL_DEPTH_TEST);
 		//glEnable(GL_BLEND);
 		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		GfxUtils::Begin2DCoords();
+		GfxUtils::Begin2DCoords(context);
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		GfxUtils::Print(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
@@ -74,7 +74,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void Draw(int layer)
+	virtual void Draw(DrawContext& context)
 	{
 		double radToDegree = 180.0 / 3.14159265;
 		int av = GetInputManager()->GetAvailableEvents();
@@ -112,13 +112,15 @@ public:
 			}
 		}
 
-		switch(layer)
+		printf("Viewport: %d %d %d %d\n", context.viewportX, context.viewportY, context.viewportWidth, context.viewportHeight);
+
+		switch(context.layer)
 		{
 			case 0:
-				Draw3D();
+				Draw3D(context);
 				break;
 			case 1:
-				Draw2D();
+				Draw2D(context);
 		}
 	}
 

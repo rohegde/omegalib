@@ -24,10 +24,6 @@ class SystemManager;
 class DisplaySystem
 {
 public:
-	// Supported display system parameters.
-	enum DisplayParam { GlobalWidth, GlobalHeight, LocalWidth, LocalHeight };
-
-public:
 	virtual ~DisplaySystem() {}
 
 	// Initializes the display system
@@ -41,9 +37,6 @@ public:
 	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
 	virtual bool IsLayerEnabled(int layerNum, const char* viewName) { return true;}
 	
-	// Returns the value of the specified parameter for the display system.
-	virtual float GetValue(DisplayParam param) = 0;
-
 	virtual void Cleanup() {}
 
 	virtual unsigned int GetId() { return -1; }

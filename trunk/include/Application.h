@@ -14,6 +14,8 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
+#include "Application.h"
+#include "DrawContext.h"
 
 namespace omega
 {
@@ -32,7 +34,7 @@ public:
 public:
 	virtual const char* GetName() { return "OmegaLib " OM_VERSION; }
 
-	virtual void Draw(int layer) {}
+	virtual void Draw(DrawContext& context) {}
 	virtual void Update(float dt) {}
 
 	SystemManager*  GetSystemManager()  { return SystemManager::GetInstance(); }
