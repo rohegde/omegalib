@@ -31,6 +31,7 @@ struct InputEvent
     float x;
 	float y;
 	float z;
+	float rw;
     float rx;
 	float ry;
 	float rz;
