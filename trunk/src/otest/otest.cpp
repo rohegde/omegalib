@@ -81,8 +81,8 @@ public:
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
 		{
-			InputEvent evts[16];
-			GetInputManager()->GetEvents(evts, 16);
+			InputEvent evts[InputManager::MaxEvents];
+			GetInputManager()->GetEvents(evts, InputManager::MaxEvents);
 		
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
@@ -112,7 +112,7 @@ public:
 			}
 		}
 
-		printf("Viewport: %d %d %d %d\n", context.viewportX, context.viewportY, context.viewportWidth, context.viewportHeight);
+		//printf("Viewport: %d %d %d %d\n", context.viewportX, context.viewportY, context.viewportWidth, context.viewportHeight);
 
 		switch(context.layer)
 		{
@@ -143,9 +143,9 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
 
-	cfg->Load();
+	//cfg->Load();
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// EXAMPLE: HOW TO READ CONFIGURATION VALUES.
@@ -164,10 +164,10 @@ void main(int argc, char** argv)
 	TestApplication app;
 	sys->SetApplication(&app);
 
-	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	sys->SetDisplaySystem(new GLUTDisplaySystem());
-	sys->GetInputManager()->AddService(new MouseService());
+	sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	//sys->SetDisplaySystem(new GLUTDisplaySystem());
 	sys->GetInputManager()->AddService(new MoCapService());
+	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
 

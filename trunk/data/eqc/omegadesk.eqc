@@ -2,7 +2,7 @@
 
 global
 {
-    EQ_CONFIG_FATTR_EYE_BASE        0.025
+    EQ_CONFIG_FATTR_EYE_BASE        1.025
     EQ_WINDOW_IATTR_PLANES_STENCIL ON
 }
 
@@ -51,7 +51,7 @@ server
             {
                 name "view2D"
                 
-                viewport [ 0 0 1 .1 ]
+                viewport [ 0 0 1 .5 ]
                 wall
                 {
                     bottom_left  [ -.5 -.5 -1 ]
@@ -63,7 +63,7 @@ server
             {
                 name "view3D"
                 
-                viewport [ 0 .1 1 .9 ]
+                viewport [ 0 .5 1 .5 ]
                 wall
                 {
                     bottom_left  [ -.5 -.5 -1 ]
