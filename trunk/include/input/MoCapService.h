@@ -36,6 +36,8 @@ namespace omega
 		virtual void Dispose();
 		void setLocalIP (char* theAdress);
 		void setServerIP (char* theAdress);
+		void useQuaternion ();
+		void useEuler ();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:
@@ -44,6 +46,7 @@ namespace omega
 		NatNetClient* pClient;
 		char localIP[128];			//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
 		char serverIP[128];		//Server's IP address assumed to be local if left blank
+		static bool isEuler;			//tells whether Euler or Quaternion angles are used. TRUE = Euler  FALSE = Quaternion
 	};//class MoCapService
 
 };//namespace omega
