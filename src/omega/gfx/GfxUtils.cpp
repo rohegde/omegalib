@@ -17,32 +17,20 @@ using namespace omega;
 using namespace omega::gfx;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::Begin2DCoords(int width, int height)
+void GfxUtils::Begin2DCoords(DrawContext& context)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef(0.0, height - 1, 0.0);
+    glTranslatef(0.0, context.viewportHeight - 1, 0.0);
     glScalef(1.0, -1.0, 1.0);
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, width, 0, height, -1, 1);
+    glOrtho(0, context.viewportWidth, 0, context.viewportHeight, -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::Begin2DCoords()
-{
-	SystemManager* sys = SystemManager::GetInstance();
-	DisplaySystem* disp = sys->GetDisplaySystem();
-
-	int width = disp->GetValue(DisplaySystem::LocalWidth);
-	int height = disp->GetValue(DisplaySystem::LocalHeight);
-
-	Begin2DCoords(width, height);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

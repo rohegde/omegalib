@@ -14,6 +14,7 @@
 #define __GFX_UTILS_H__
 
 #include "osystem.h"
+#include "DrawContext.h"
 
 namespace omega
 {
@@ -27,8 +28,7 @@ public:
 	enum Font { Helvetica12, Helvetica18 };
 
 public:
-	static void Begin2DCoords(int width, int height);
-	static void Begin2DCoords();
+	static void Begin2DCoords(DrawContext& context);
 	static void End2DCoords();
 	static void Print(int x, int y, const char* s, Font f = Helvetica12);
 

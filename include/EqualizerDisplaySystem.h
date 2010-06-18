@@ -59,7 +59,6 @@ public:
 	virtual void Run(); 
 	virtual void Cleanup(); 
 
-	virtual float GetValue(DisplayParam param);
 	virtual unsigned int GetId() { return Id; }
 
 	// Layer and view management.

@@ -43,6 +43,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/Application.h
         ${OmegaLib_SOURCE_DIR}/include/Config.h
+        ${OmegaLib_SOURCE_DIR}/include/DrawContext.h
         ${OmegaLib_SOURCE_DIR}/include/DisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/EqualizerDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/GLUTDisplaySystem.h
