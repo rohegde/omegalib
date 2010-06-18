@@ -1,10 +1,9 @@
 #Equalizer 1.0 ascii
 
-# four-window configuration showing all Equalizer features
 global
 {
+    EQ_CONFIG_FATTR_EYE_BASE        0.025
     EQ_WINDOW_IATTR_PLANES_STENCIL ON
-    EQ_COMPOUND_IATTR_STEREO_MODE ANAGLYPH
 }
 
 server
@@ -19,7 +18,7 @@ server
                 window
                 {
                     name     "window1"
-                    viewport [ 25 25 400 400 ]
+                    viewport [ 0 0 1920 1080 ]
                     channel { name "channel1"  }
                 }
             }
@@ -29,8 +28,17 @@ server
                 window
                 {
                     name     "window2"
-                    viewport [ 450 25 400 400 ]
-                    channel { name "channel2"  }
+                    viewport [ 0 -1080 1920 1080 ]
+                    channel 
+                    { 
+						viewport [0 0 .5 1]
+						name "channel2left"  
+					}
+                    channel 
+                    { 
+						viewport [.5 0 .5 1]
+						name "channel2right"  
+					}
                 }
             }
         }
@@ -41,9 +49,9 @@ server
             name "MultiView"
             view
             {
-                name "view3D"
+                name "view2D"
                 
-                viewport [ 0 0 .5 1 ]
+                viewport [ 0 0 1 .1 ]
                 wall
                 {
                     bottom_left  [ -.5 -.5 -1 ]
@@ -53,14 +61,14 @@ server
             }
             view
             {
-                name "view2D"
+                name "view3D"
                 
-                viewport [ .5 0 .5 1 ]
+                viewport [ 0 .1 1 .9 ]
                 wall
                 {
-                    bottom_left  [ -.6 -.4 -1 ]
-                    bottom_right [  .6 -.4 -1 ]
-                    top_left     [ -.6  .4 -1 ]
+                    bottom_left  [ -.5 -.5 -1 ]
+                    bottom_right [  .5 -.5 -1 ]
+                    top_left     [ -.5  .5 -1 ]
                 }
             }
         }
@@ -79,13 +87,18 @@ server
 
             segment
             {
-                viewport [ 0 0 .5 1 ]
+                viewport [ 0 0 1 .5 ]
                 channel "channel1"
             }
             segment
             {
-                viewport [ .5 0 .5 1 ]
-                channel "channel2"
+                viewport [ 0 .5 1 .5 ]
+                channel "channel2left"
+            }
+            segment
+            {
+                viewport [ 0 .5 1 .5 ]
+                channel "channel2right"
             }
         }
 
@@ -99,8 +112,14 @@ server
             }
             compound
             {
+				eye [ LEFT ]
                 channel ( segment 1 layout "MultiView" view 1 )
                 swapbarrier {}
+            }
+            compound
+            {
+				eye [ RIGHT ]
+                channel ( segment 2 layout "MultiView" view 1 )
             }
         }
     }
