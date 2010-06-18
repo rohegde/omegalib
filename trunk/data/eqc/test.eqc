@@ -1,0 +1,107 @@
+#Equalizer 1.0 ascii
+
+# four-window configuration showing all Equalizer features
+global
+{
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+    EQ_COMPOUND_IATTR_STEREO_MODE ANAGLYPH
+}
+
+server
+{
+    config
+    {
+        appNode
+        {
+            pipe
+            {
+                name "GPU 1"
+                window
+                {
+                    name     "window1"
+                    viewport [ 25 25 400 400 ]
+                    channel { name "channel1"  }
+                }
+            }
+            pipe
+            {
+                name "GPU 2"
+                window
+                {
+                    name     "window2"
+                    viewport [ 450 25 400 400 ]
+                    channel { name "channel2"  }
+                }
+            }
+        }
+
+        # Layouts - one for each demo mode
+        layout
+        {
+            name "MultiView"
+            view
+            {
+                name "view3D"
+                
+                viewport [ 0 0 .5 1 ]
+                wall
+                {
+                    bottom_left  [ -.5 -.5 -1 ]
+                    bottom_right [  .5 -.5 -1 ]
+                    top_left     [ -.5  .5 -1 ]
+                }
+            }
+            view
+            {
+                name "view2D"
+                
+                viewport [ .5 0 .5 1 ]
+                wall
+                {
+                    bottom_left  [ -.6 -.4 -1 ]
+                    bottom_right [  .6 -.4 -1 ]
+                    top_left     [ -.6  .4 -1 ]
+                }
+            }
+        }
+
+        # Canvas using all layouts
+        canvas
+        {
+            layout "MultiView"
+
+            wall
+            {
+                bottom_left  [ -.5 -.5 -1 ]
+                bottom_right [  .5 -.5 -1 ]
+                top_left     [ -.5  .5 -1 ]
+            }
+
+            segment
+            {
+                viewport [ 0 0 .5 1 ]
+                channel "channel1"
+            }
+            segment
+            {
+                viewport [ .5 0 .5 1 ]
+                channel "channel2"
+            }
+        }
+
+        # wall compound - need swap barrier
+        compound
+        {
+            compound
+            {
+                channel ( segment 0 layout "MultiView" view 0 )
+                swapbarrier {}
+            }
+            compound
+            {
+                channel ( segment 1 layout "MultiView" view 1 )
+                swapbarrier {}
+            }
+        }
+    }
+}
