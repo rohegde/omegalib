@@ -5,6 +5,7 @@ using namespace omega;
 
 MoCapService* MoCapService :: myMoCap = NULL;
 double MoCapService :: PI = 3.14159265;
+bool MoCapService :: isEuler = true;
 
 
 MoCapService::MoCapService()
@@ -12,7 +13,6 @@ MoCapService::MoCapService()
 	pClient = NULL;
 	strcpy ( localIP, "" );
 	strcpy ( serverIP, "" );
-	isEuler = true;
 }
 
 MoCapService::~MoCapService()
@@ -89,6 +89,7 @@ void __cdecl MoCapService::MessageController( int msgType, char* msg)
 void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUserData)
 {
 	double verticalTest; //used to handle special case of body pointing straight along vertical axis
+	double unit;
 
 	if( myMoCap )
 	{
@@ -128,11 +129,19 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
 			if ( isEuler )
 			{
+				double sqw = data->RigidBodies[i].qw * data->RigidBodies[i].qw;
+				double sqx = data->RigidBodies[i].qx * data->RigidBodies[i].qx;
+				double sqy = data->RigidBodies[i].qy * data->RigidBodies[i].qy;
+				double sqz = data->RigidBodies[i].qz * data->RigidBodies[i].qz;
+
 				theEvent->rw = 0;
 				//check for a position that is at either of the poles (pointing straight up or straight down)
 				verticalTest = ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw );
+
+				unit = sqx + sqy + sqz + sqw;
+
 				//check for pointing North
-				if( verticalTest == 0.499 )
+				if( verticalTest > ( 0.499 * unit ) )
 				{
 					Log::Warning("MOCAP: Pointing North");
 					theEvent->rx = 0;
@@ -140,7 +149,7 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 					theEvent->rz = PI/2;
 				}
 				//check for pointing South
-				else if( verticalTest == -0.499 )
+				else if( verticalTest < ( -0.499 * unit ) )
 				{
 					Log::Warning("MOCAP: Pointing South");
 					theEvent->rx = 0;
@@ -149,18 +158,15 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				}
 				else
 				{
-					double sqw = data->RigidBodies[i].qw * data->RigidBodies[i].qw;
-					double sqx = data->RigidBodies[i].qx * data->RigidBodies[i].qx;
-					double sqy = data->RigidBodies[i].qy * data->RigidBodies[i].qy;
-					double sqz = data->RigidBodies[i].qz * data->RigidBodies[i].qz;
-					//roll
+					//pitch
 					theEvent->rx = atan2( (double) ( ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qz ) ),
-											1 - 2*sqx - 2*sqz );
+											-sqx + sqy - sqz + sqw );
+					//roll
+					theEvent->rz = asin( 2 * verticalTest / unit );
+
 					//yaw
 					theEvent->ry = atan2( (double) ( ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qz ) ),
-											1 - 2*sqy - 2*sqz );
-					//pitch
-					theEvent->rz = asin( 2 * verticalTest );
+											sqx - sqy - sqz + sqw );
 				}
 			}
 			else //if the user wants quaternion data

@@ -32,9 +32,18 @@ public:
 		const float lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 
-		glRotated(rx, 1, 0, 0);
+		/*******************************************************************
+		*	NOTE:
+		*		Rotations must be performed in this ordering:
+		*			First pitch(rx)
+		*			Second roll(rz)
+		*			Third yaw(ry)
+		*		However, because of the way opengl parses the arguements
+		*		they must be entered in code in reverse order as seen below.
+		********************************************************************/
 		glRotated(ry + 3.14f / 2, 0, 1, 0);
 		glRotated(rz, 0, 0, 1);
+		glRotated(rx, 1, 0, 0);
 
 		drawSolidTeapot(0.3f);
 	}
@@ -67,6 +76,7 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void Draw(int layer)
 	{
+		double radToDegree = 180.0 / 3.14159265;
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
@@ -87,14 +97,14 @@ public:
 					break;
 
 				case InputEvent::Mocap:
-					//if ( evt.id == 2 )
-					//{
-						rx = evt.rx;
-						ry = evt.ry;
-						rz = evt.rz;
+					if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
+					{
+						rx = evt.rx * radToDegree;
+						ry = evt.ry * radToDegree;
+						rz = evt.rz * radToDegree;
 						//printf("head rx:%f, ry:%f, rz:%f \n", rx, ry, rz);
 						//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
-					//}
+					}
 					break;
 
 				default: break;
@@ -152,10 +162,10 @@ void main(int argc, char** argv)
 	TestApplication app;
 	sys->SetApplication(&app);
 
-	sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	//sys->SetDisplaySystem(new GLUTDisplaySystem());
+	//sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	sys->SetDisplaySystem(new GLUTDisplaySystem());
 	sys->GetInputManager()->AddService(new MouseService());
-	//sys->GetInputManager()->AddService(new MoCapService());
+	sys->GetInputManager()->AddService(new MoCapService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
 
