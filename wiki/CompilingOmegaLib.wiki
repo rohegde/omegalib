@@ -1,0 +1,11 @@
+= Introduction =
+
+This page will give brief instructions on how to build OmegaLib.  Additionally instructions will be given on how to develop new service drivers for OmegaLib.
+
+= Building the Source =
+
+A successful compilation of the source requires:
+ * SVN Client
+ * Cmake
+ * Visual Studios
+ 
