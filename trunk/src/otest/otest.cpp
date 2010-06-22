@@ -14,9 +14,6 @@
 using namespace omega;
 using namespace omega::gfx;
 
-void drawSolidTeapot(GLdouble scale);
-void drawWireTeapot(GLdouble scale);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
 {
@@ -45,7 +42,7 @@ public:
 		glRotated(rz, 0, 0, 1);
 		glRotated(rx, 1, 0, 0);
 
-		drawSolidTeapot(0.3f);
+		GfxUtils::DrawSolidTeapot(0.3f);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +56,7 @@ public:
 		GfxUtils::Begin2DCoords(context);
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::Print(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+		GfxUtils::RasterPrint(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (5.0);
@@ -76,7 +73,6 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void Draw(DrawContext& context)
 	{
-		double radToDegree = 180.0 / 3.14159265;
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
@@ -97,14 +93,17 @@ public:
 					break;
 
 				case InputEvent::Mocap:
-					if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
-					{
-						rx = evt.rx * radToDegree;
-						ry = evt.ry * radToDegree;
-						rz = evt.rz * radToDegree;
-						//printf("head rx:%f, ry:%f, rz:%f \n", rx, ry, rz);
-						//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
-					}
+					//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
+					//{
+					//	rx = evt.rx * radToDegree;
+					//	ry = evt.ry * radToDegree;
+					//	rz = evt.rz * radToDegree;
+					printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
+					printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
+					//}
+					GetDisplaySystem()->SetObserver(0, evt.x, evt.y, evt.z, -evt.ry, evt.rx, evt.rz);
+					//GetDisplaySystem()->SetObserver(0, 0, 0, 0, evt.ry, evt.rx, evt.rz);
+					//GetDisplaySystem()->SetObserver(0, 0, 0, 10, 0, 0, 0);
 					break;
 
 				default: break;

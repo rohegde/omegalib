@@ -30,6 +30,7 @@ SET( srcs
 		SystemManager.cpp
         Utils.cpp
         gfx/GfxUtils.cpp
+        gfx/teapot.cpp
 		input/MouseService.cpp
 		input/TrackIRService.cpp
 		input/PQService.cpp

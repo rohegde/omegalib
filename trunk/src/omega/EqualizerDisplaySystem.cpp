@@ -316,3 +316,29 @@ bool EqualizerDisplaySystem::IsLayerEnabled(int layerNum,const char* viewName)
 	}
 	return false;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::SetObserver(int observerId, float x, float y, float z, float yaw, float pitch, float roll)
+{
+    const eq::ObserverVector& observers = myConfig->getObservers();
+
+	eq::Vector3f pos;
+	eq::Matrix4f matrix = eq::Matrix4f::IDENTITY;
+
+    eq::Matrix4f m = eq::Matrix4f::IDENTITY;
+	m.scale( 1.f, -1.f, 1.f );
+
+	matrix.rotate_x(pitch);
+	matrix.rotate_z(roll);
+	matrix.rotate_y(yaw);
+
+	pos.x() = x;
+	pos.y() = y;
+	pos.z() = z;
+
+	matrix.set_translation(pos);
+
+	matrix = m * matrix;
+
+	observers.at(observerId)->setHeadMatrix(matrix);
+}
