@@ -11,15 +11,17 @@ A successful compilation of the source requires:
 
 Once all the components are gathered:
 
-# Using the chosen SVN client checkout a version from Google Code.
-# Open the cmake gui
+1) Using the chosen SVN client checkout a version from Google Code.
+
+2) Open the cmake gui
    * Set source_path to where OmegaLib source was placed at checkout
    * Set build_path to ./source_Path/build.
    * Configure
    * Choose version of Visual Studio installed
    * Generate
-# Go into ./source_Path/build directory open .snl using Visual Studio
+
+3) Go into ./source_Path/build directory open .snl using Visual Studio
    * Need to assign otest as startup project by right clicking on otest in solution view
    * Set the debug path:
-   # Right click of solution
-   # Debug -> working Directory -> $(TargetDir)
+        * Right click of solution
+        * Debug -> working Directory -> $(TargetDir)
