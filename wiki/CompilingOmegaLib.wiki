@@ -1,6 +1,7 @@
 = Introduction =
 
 This page will give brief instructions on how to build OmegaLib.
+A brief overview of the cmake structure in the source will be given. 
 
 = Building the Source =
 
@@ -25,3 +26,13 @@ Once all the components are gathered:
    * Set the debug path:
         * Right click of solution
         * Debug -> working Directory -> $(TargetDir)
+
+= Adding a service driver =
+
+Cmake is a cross platform build system.  It is capable of generating makefiles and workspaces that can be used in the compiler environment of your choice.  Cmake uses configuration files named "CMakeLists.txt"  This file is found at every level of the source.  The image below describes how to configure the various CMakeList.txt to add and link a new service driver to omegaLib.
+
+<a href="http://higherechelongames.com/omegaTable/cmake_spec.jpg">
+<img src="http://higherechelongames.com/omegaTable/cmake_spec.jpg" width="501" height="521">
+<a>
+
+
