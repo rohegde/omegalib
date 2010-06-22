@@ -142,7 +142,7 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
+	//cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
 
 	//cfg->Load();
 
@@ -165,7 +165,7 @@ void main(int argc, char** argv)
 
 	sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	sys->GetInputManager()->AddService(new MoCapService());
+	//sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());

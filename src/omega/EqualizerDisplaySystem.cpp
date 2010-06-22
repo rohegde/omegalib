@@ -212,7 +212,7 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 
     if( !eq::init( argv.size(), &argv[0], myNodeFactory ))
     {
-		Log::Error("Equalizer init failed");
+		oerror("Equalizer init failed");
     }
 
     bool error  = false;
@@ -239,7 +239,7 @@ void EqualizerDisplaySystem::Run()
         }
         else
         {
-            Log::Error("Config initialization failed: %s", myConfig->getErrorMessage());
+            oerror("Config initialization failed: %s", myConfig->getErrorMessage());
             error = true;
         }
 
@@ -247,7 +247,7 @@ void EqualizerDisplaySystem::Run()
     }
     else
     {
-        Log::Error("Cannot get config");
+        oerror("Cannot get config");
         error = true;
     }    
 
@@ -289,7 +289,7 @@ void EqualizerDisplaySystem::SetLayerEnabled(int layerNum, const char* viewName,
 {
 	if(!myConfig)
 	{
-		Log::Error("EqualizerDisplaySystem::SetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
+		oerror("EqualizerDisplaySystem::SetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
 		return;
 	}
 
@@ -305,7 +305,7 @@ bool EqualizerDisplaySystem::IsLayerEnabled(int layerNum,const char* viewName)
 { 
 	if(!myConfig)
 	{
-		Log::Error("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
+		oerror("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
 		return false;
 	}
 

@@ -11,7 +11,6 @@
  *********************************************************************************************************************/
 #include "DisplaySystem.h"
 #include "InputManager.h"
-#include "Log.h"
 #include "SystemManager.h"
 
 using namespace omega;
@@ -66,7 +65,7 @@ void SystemManager::Run()
 	}
 	else
 	{
-		Log::Warning("SystemManager::Run - no display system specified, returning immediately");
+		owarn("SystemManager::Run - no display system specified, returning immediately");
 	}
 }
 

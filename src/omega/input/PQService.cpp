@@ -11,7 +11,6 @@
  *********************************************************************************************************************/
 #include "input/PQService.h"
 #include "SystemManager.h"
-#include "Log.h"
 
 using namespace omega;
 
@@ -351,31 +350,31 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	}
 
 	// Add ID to string
-	itoa(tp.id,buffer,10); // int to char
+	_itoa(tp.id,buffer,10); // int to char
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");
 	
 	// Add xPos
-	itoa(tp.x,buffer,10);
+	_itoa(tp.x,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");
 	
 	// Add yPos
-	itoa(tp.y,buffer,10);
+	_itoa(tp.y,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");
 
 	// Add xWidth
-	itoa(xWidth,buffer,10);
+	_itoa(xWidth,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");
 	
 	// Add yWidth
-	itoa(yWidth,buffer,10);
+	_itoa(yWidth,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
 	if( newDataFlag )

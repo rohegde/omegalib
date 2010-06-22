@@ -36,7 +36,7 @@ void InputManager::Initialize()
 	ODBG("InputManager::Initialize");
 
 	myEventBuffer = new InputEvent[MaxEvents];
-	Log::Message("Event buffer allocated. Max events: %d", MaxEvents);
+	omsg("Event buffer allocated. Max events: %d", MaxEvents);
 
 	for(int i = 0; i < myServices.size(); i++)
 	{
