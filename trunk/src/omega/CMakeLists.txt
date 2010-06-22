@@ -22,11 +22,11 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC)
 #######################################################################################################################
 # Source files
 SET( srcs 
+        osystem.cpp
 		Config.cpp
 		EqualizerDisplaySystem.cpp
 		GLUTDisplaySystem.cpp
 		InputManager.cpp
-		Log.cpp
 		SystemManager.cpp
         Utils.cpp
         gfx/GfxUtils.cpp
@@ -50,7 +50,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/GLUTDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/InputManager.h
-        ${OmegaLib_SOURCE_DIR}/include/Log.h
         ${OmegaLib_SOURCE_DIR}/include/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/Utils.h
         ${OmegaLib_SOURCE_DIR}/include/gfx/GfxUtils.h

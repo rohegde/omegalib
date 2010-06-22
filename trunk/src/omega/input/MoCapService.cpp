@@ -19,8 +19,6 @@ MoCapService::~MoCapService()
 {
 	pClient->Uninitialize();
 	delete pClient;
-	delete[] localIP;
-	delete[] serverIP;
 }
 
 void MoCapService::Initialize()
@@ -46,13 +44,13 @@ void MoCapService::Start()
 	
 	if ( retCode != ErrorCode_OK)
 	{
-		Log::Error("MOCAP: Unable to connect to server. Error code: %d. Exiting", retCode);
+		oerror("MOCAP: Unable to connect to server. Error code: %d. Exiting", retCode);
 		exit(1);
 	}
-	Log::Message("MOCAP: Initialization succeeded\n");
+	omsg("MOCAP: Initialization succeeded\n");
 
 	// send/receive test request
-	Log::Message("MOCAP: Sending Test Request\n");
+	omsg("MOCAP: Sending Test Request\n");
 	void* response;
 	int nBytes;
 	int iResult = pClient->SendMessageAndWait("TestRequest", &response, &nBytes);
@@ -143,7 +141,7 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				//check for pointing North
 				if( verticalTest > ( 0.499 * unit ) )
 				{
-					Log::Warning("MOCAP: Pointing North");
+					owarn("MOCAP: Pointing North");
 					theEvent->rx = 0;
 					theEvent->ry = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 					theEvent->rz = PI/2;
@@ -151,7 +149,7 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				//check for pointing South
 				else if( verticalTest < ( -0.499 * unit ) )
 				{
-					Log::Warning("MOCAP: Pointing South");
+					owarn("MOCAP: Pointing South");
 					theEvent->rx = 0;
 					theEvent->ry = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 					theEvent->rz = -PI/2;

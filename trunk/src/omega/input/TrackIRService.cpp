@@ -11,7 +11,6 @@
  *********************************************************************************************************************/
 #include "input/TrackIRService.h"
 #include "SystemManager.h"
-#include "Log.h"
 
 using namespace omega;
 
@@ -56,7 +55,7 @@ void TrackIRService::Initialize()
 	//== Determine Available Cameras =====================----
     cameraCollection->get_Count(&cameraCount);
 
-	Log::Message("Optitrack: %d Camera(s) Detected:\n\n", cameraCount);
+	omsg("Optitrack: %d Camera(s) Detected:\n\n", cameraCount);
 	
 	//== Display Camera Information for All Cameras ======----
 	for(int index=0; index<cameraCount; index++)
@@ -72,12 +71,12 @@ void TrackIRService::Initialize()
 		camera->get_Revision    (&revision);
 		camera->get_FrameRate   (&rate);
 
-		Log::Message("  Camera %d",serial);
-		Log::Message("  =========================");
-		Log::Message("  Resolution: %dx%d",width,height);
-		Log::Message("  Revision  : 0x%8x",revision);
-		Log::Message("  Model     : 0x%8x",model);
-		Log::Message("  Frame rate: %d" ,rate);
+		omsg("  Camera %d",serial);
+		omsg("  =========================");
+		omsg("  Resolution: %dx%d",width,height);
+		omsg("  Revision  : 0x%8x",revision);
+		omsg("  Model     : 0x%8x",model);
+		omsg("  Frame rate: %d" ,rate);
 
 		//== Set Some Camera Options ====================----
 

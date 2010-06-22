@@ -12,7 +12,6 @@
 #include "input/MouseService.h"
 #include "GLUTDisplaySystem.h"
 #include "SystemManager.h"
-#include "Log.h"
 
 using namespace omega;
 

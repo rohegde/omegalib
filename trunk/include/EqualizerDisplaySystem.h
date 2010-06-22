@@ -35,7 +35,7 @@ protected:
 	{
 		if(c == '\n')
 		{
-			omega::Log::Message(myStringStream.str().c_str());
+			omsg(myStringStream.str().c_str());
 			myStringStream.str(""); 
 		}
 		else

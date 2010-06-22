@@ -39,11 +39,11 @@ bool Config::Load()
 	FILE* stream = fopen(myCfgFilename.c_str(), "r");
 	if(stream == NULL)
 	{
-		Log::Error("Config::Load - Opening file failed: %s", myCfgFilename.c_str());
+		oerror("Config::Load - Opening file failed: %s", myCfgFilename.c_str());
 		return false;
 	}
 
-	Log::Message("Opened config file: %s", myCfgFilename.c_str());
+	omsg("Opened config file: %s", myCfgFilename.c_str());
 
 	try
 	{
@@ -51,7 +51,7 @@ bool Config::Load()
 	}
 	catch(libconfig::ParseException e)
 	{
-		Log::Error("Config loading: %s at line %d", e.getError(), e.getLine());
+		oerror("Config loading: %s at line %d", e.getError(), e.getLine());
 		fclose(stream);
 		return false;
 	}
