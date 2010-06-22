@@ -71,7 +71,6 @@ server
             compound
             {
                 channel ( segment 0 layout "MultiView" view 0 )
-                swapbarrier {}
             }
         }
     }

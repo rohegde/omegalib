@@ -107,6 +107,9 @@ void TrackIRService::Start()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TrackIRService::Poll() 
 {
+	double radToDegree = 180.0 / 3.14159265;
+	double degreeToRad =  3.14159265 / 180.0;
+
 	HRESULT hr;
 	CComPtr<INPCameraFrame> frame;
 
@@ -145,12 +148,12 @@ void TrackIRService::Poll()
 			//	evt->type = OM_EVENT_MOVE;
 			evt->source = InputEvent::Mocap;
 
-			evt->x = x.dblVal;
-			evt->y = y.dblVal;
-			evt->z = z.dblVal;
-			evt->rx = pitch.dblVal;
-			evt->ry = yaw.dblVal;
-			evt->rz = roll.dblVal;
+			evt->x = x.dblVal / 100.0f;
+			evt->y = y.dblVal  / 100.0f;
+			evt->z = z.dblVal  / 100.0f;
+			evt->rx = pitch.dblVal * degreeToRad;
+			evt->ry = yaw.dblVal  * degreeToRad;
+			evt->rz = roll.dblVal  * degreeToRad;
 
 			UnlockEvents();
 

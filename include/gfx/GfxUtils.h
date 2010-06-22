@@ -28,9 +28,20 @@ public:
 	enum Font { Helvetica12, Helvetica18 };
 
 public:
+
+	// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
+	// viewport parameters specified in the draw context.
 	static void Begin2DCoords(DrawContext& context);
+
+	// Restores the coordinate system specified before a Begin2DCoords call.
 	static void End2DCoords();
-	static void Print(int x, int y, const char* s, Font f = Helvetica12);
+
+	// Prints text. The text position is specified in raster coordinates and does not take into account any viewport
+	// specification.
+	static void RasterPrint(int x, int y, const char* s, Font f = Helvetica12);
+
+	static void DrawSolidTeapot(float size);
+	static void DrawWireTeapot(float size);
 
 private:
 	GfxUtils() {};
