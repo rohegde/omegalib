@@ -34,5 +34,3 @@ Cmake is a cross platform build system.  It is capable of generating makefiles a
 <a href="http://higherechelongames.com/omegaTable/cmake_spec.jpg">
 <img src="http://higherechelongames.com/omegaTable/cmake_spec.jpg" width="501" height="521">
 <a>
-
-
