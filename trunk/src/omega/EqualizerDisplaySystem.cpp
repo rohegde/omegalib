@@ -111,6 +111,15 @@ public:
 
 	virtual uint32_t finishFrame()
 	{
+		DisplaySystem* ds = SystemManager::GetInstance()->GetDisplaySystem();
+
+		// Update observer head matrices.
+		for( unsigned int i = 0; i < getObservers().size(); i++) 
+		{
+			Observer* obs  = ds->GetObserver(i);
+			getObservers().at(i)->setHeadMatrix(obs->GetHeadMatrix());
+		}
+
 		SystemManager::GetInstance()->GetInputManager()->Poll();
 		return eq::Config::finishFrame();
 	}
@@ -219,6 +228,11 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
     bool error  = false;
 	myConfig = eq::getConfig( argv.size(), &argv[0] );
 	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
+
+	// Create observers.
+	int numObservers = myConfig->getObservers().size();
+	for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
+	omsg("Initialized %d observer(s).", numObservers);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,6 +245,7 @@ void EqualizerDisplaySystem::Run()
         if( myConfig->init( 0 ))
         {
 			omsg("--- Equalizer display system startup [DONE] -----------------------------------\n\n");
+
             uint32_t spin = 0;
             while( myConfig->isRunning( ))
             {
@@ -322,27 +337,7 @@ bool EqualizerDisplaySystem::IsLayerEnabled(int layerNum,const char* viewName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::SetObserver(int observerId, float x, float y, float z, float yaw, float pitch, float roll)
+Observer* EqualizerDisplaySystem::GetObserver(int observerId)
 {
-    const eq::ObserverVector& observers = myConfig->getObservers();
-
-	eq::Vector3f pos;
-	eq::Matrix4f matrix = eq::Matrix4f::IDENTITY;
-
-    eq::Matrix4f m = eq::Matrix4f::IDENTITY;
-	m.scale( 1.f, -1.f, 1.f );
-
-	matrix.rotate_x(pitch);
-	matrix.rotate_z(roll);
-	matrix.rotate_y(yaw);
-
-	pos.x() = x;
-	pos.y() = y;
-	pos.z() = z;
-
-	matrix.set_translation(pos);
-
-	matrix = m * matrix;
-
-	observers.at(observerId)->setHeadMatrix(matrix);
+	return myObservers[observerId];
 }

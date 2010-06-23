@@ -17,6 +17,7 @@
 #include "EqualizerDisplaySystem.h"
 #include "GLUTDisplaySystem.h"
 #include "InputManager.h"
+#include "Observer.h"
 #include "SystemManager.h"
 #include "gfx/GfxUtils.h"
 #include "input/MouseService.h"

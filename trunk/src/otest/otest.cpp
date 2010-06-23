@@ -38,11 +38,26 @@ public:
 		*		However, because of the way opengl parses the arguements
 		*		they must be entered in code in reverse order as seen below.
 		********************************************************************/
-		glRotated(ry + 3.14f / 2, 0, 1, 0);
-		glRotated(rz, 0, 0, 1);
-		glRotated(rx, 1, 0, 0);
+		//glRotated(ry + 3.14f / 2, 0, 1, 0);
+		//glRotated(rz, 0, 0, 1);
+		//glRotated(rx, 1, 0, 0);
 
-		GfxUtils::DrawSolidTeapot(0.3f);
+		glPushMatrix();
+		glTranslatef(0, 0, 0);
+		GfxUtils::DrawSolidTeapot(0.2f);
+		glPopMatrix();
+
+
+		glPushMatrix();
+		glTranslatef(0, 0, 2);
+		glutSolidSphere(0.2f, 20, 20);
+		glPopMatrix();
+
+		glColor3f(0.3, 1.0, 0.3);
+		glPushMatrix();
+		glTranslatef(0, 0, 4);
+		GfxUtils::DrawWireTeapot(0.2f);
+		glPopMatrix();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,18 +108,20 @@ public:
 					break;
 
 				case InputEvent::Mocap:
+				{
 					//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
 					//{
 					//	rx = evt.rx * radToDegree;
 					//	ry = evt.ry * radToDegree;
 					//	rz = evt.rz * radToDegree;
-					printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
-					printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
+					//printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
+					evt.z = 0;
+					//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
 					//}
-					GetDisplaySystem()->SetObserver(0, evt.x, evt.y, evt.z, -evt.ry, evt.rx, evt.rz);
-					//GetDisplaySystem()->SetObserver(0, 0, 0, 0, evt.ry, evt.rx, evt.rz);
-					//GetDisplaySystem()->SetObserver(0, 0, 0, 10, 0, 0, 0);
+					Observer* obs = GetDisplaySystem()->GetObserver(0);
+					obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 					break;
+				}
 
 				default: break;
 				}
@@ -142,7 +159,7 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/hd.eqc");
 
 	//cfg->Load();
 
@@ -167,13 +184,28 @@ void main(int argc, char** argv)
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
 	//sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
-	//sys->GetInputManager()->AddService(new TrackIRService());
+	sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
 
 	sys->Initialize();
 
 	sys->GetDisplaySystem()->SetLayerEnabled(0, "view3D", true);
-	sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+	//sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+
+	Observer* obs = sys->GetDisplaySystem()->GetObserver(0);
+    Matrix4f m( eq::Matrix4f::IDENTITY );
+    //m.scale( 1.f, 1.f, -1.f );
+	Vector3f pos;
+	pos.x() = 0;
+	pos.y() = 0;
+	pos.z() = -2;
+	//m.set_translation(pos);
+
+	obs->SetWorldToEmitter(m);
+
+    m = eq::Matrix4f::IDENTITY;
+    m.rotate_z( -M_PI_2 );
+	obs->SetSensorToObject(m);
 
 	sys->Run();
 
