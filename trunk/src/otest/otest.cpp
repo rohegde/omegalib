@@ -63,15 +63,10 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void Draw2D(DrawContext& context)
 	{
-		glDisable(GL_LIGHTING);
-		//glDisable(GL_DEPTH_TEST);
-		//glEnable(GL_BLEND);
-		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		GfxUtils::Begin2DCoords(context);
+		GfxUtils::BeginOverlayMode(context);
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::RasterPrint(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+		GfxUtils::DrawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (5.0);
@@ -80,14 +75,21 @@ public:
 		glEnd();
 		
 
-		GfxUtils::End2DCoords();
-
-		glEnable(GL_LIGHTING);
+		GfxUtils::EndOverlayMode();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void Draw(DrawContext& context)
 	{
+		switch(context.layer)
+		{
+			case 0:
+				Draw3D(context);
+				break;
+			case 1:
+				Draw2D(context);
+		}
+
 		int av = GetInputManager()->GetAvailableEvents();
 		int ls = GetInputManager()->GetDroppedEvents();
 		if(av != 0)
@@ -109,15 +111,17 @@ public:
 
 				case InputEvent::Mocap:
 				{
-					//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
-					//{
-					//	rx = evt.rx * radToDegree;
-					//	ry = evt.ry * radToDegree;
-					//	rz = evt.rz * radToDegree;
-					//printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
+
+					GfxUtils::BeginOverlayMode(context);
+
+					char str[1024];
+					glColor4f(1.0, 1.0, 0.4, 1.0);
+					sprintf(str, "head x:%.3f, y:%.3f, z:%.3f rx:%.3f, ry:%.3f, rz:%.3f", evt.x, evt.y, evt.z, evt.rx, evt.ry, evt.rz);
+					GfxUtils::DrawText(10, 20, str, GfxUtils::Helvetica12);
+
+					GfxUtils::EndOverlayMode();
+					
 					evt.z = 0;
-					//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
-					//}
 					Observer* obs = GetDisplaySystem()->GetObserver(0);
 					obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 					break;
@@ -126,17 +130,6 @@ public:
 				default: break;
 				}
 			}
-		}
-
-		//printf("Viewport: %d %d %d %d\n", context.viewportX, context.viewportY, context.viewportWidth, context.viewportHeight);
-
-		switch(context.layer)
-		{
-			case 0:
-				Draw3D(context);
-				break;
-			case 1:
-				Draw2D(context);
 		}
 	}
 

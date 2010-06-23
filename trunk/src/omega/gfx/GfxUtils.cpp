@@ -20,7 +20,7 @@ using namespace omega::gfx;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::Begin2DCoords(DrawContext& context)
+void GfxUtils::BeginOverlayMode(DrawContext& context)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -34,11 +34,17 @@ void GfxUtils::Begin2DCoords(DrawContext& context)
     glOrtho(0, context.viewportWidth, 0, context.viewportHeight, -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
+
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::End2DCoords()
+void GfxUtils::EndOverlayMode()
 {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
@@ -47,7 +53,7 @@ void GfxUtils::End2DCoords()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::RasterPrint(int x, int y, const char* s, Font f)
+void GfxUtils::DrawText(int x, int y, const char* s, Font f)
 {
 	void* font = NULL;
 
