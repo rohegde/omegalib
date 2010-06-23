@@ -19,7 +19,7 @@ server
                 window
                 {
                     name     "window1"
-                    viewport [ 1920 0 1920 1080 ]
+                    viewport [ 50 50 800 600 ]
                     channel { name "channel1"  }
                 }
             }
@@ -71,7 +71,6 @@ server
             compound
             {
                 channel ( segment 0 layout "MultiView" view 0 )
-                swapbarrier {}
             }
         }
     }
