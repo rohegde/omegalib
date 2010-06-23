@@ -69,11 +69,17 @@ typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
+void ologopen(const char* filename);
+void ologclose();
 void omsg(const char* fmt, ...);
 void owarn(const char* fmt, ...);
 void oerror(const char* fmt, ...);
+void oexit(int code);
 
-#define ODBG(str) omsg(str);
-#define OASSERT(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, ##c); exit(1); }
+#define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }
+#define OMEGA_LOG_CLOSE() { ologclose(); }
+
+#define odbg(str) omsg(str);
+#define oassert(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, ##c); exit(1); }
 
 #endif

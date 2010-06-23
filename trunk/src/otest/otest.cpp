@@ -137,12 +137,12 @@ void main(int argc, char** argv)
 {
 	// TODO: Logging does not work with visual studio 2010, apparently because of incompatibilities betwen VC9 and VC10 standard
 	// libraries (Equalizer included binaries are compiled with VC9 as for now).
-	OM_INIT_EQUALIZER_LOG();
+	OMEGA_LOG_INIT_FILE("otest.txt");
 
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	//cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
 
 	//cfg->Load();
 
@@ -178,4 +178,6 @@ void main(int argc, char** argv)
 	sys->Run();
 
 	sys->Cleanup();
+
+	OMEGA_LOG_CLOSE();
 }
