@@ -24,7 +24,7 @@ Once all the components are gathered:
 3) Go into ./source_Path/build directory open .snl using Visual Studio
    * Need to assign otest as startup project by right clicking on otest in solution view
    * Set the debug path:
-        * Right click on omega
+        * Right click on otest
         * Properties -> Configuration Properties -> Debugging -> Working Directory -> $(TargetDir)
 
 = Adding a service driver =
