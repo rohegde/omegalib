@@ -9,43 +9,34 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DISPLAY_SYSTEM_H__
-#define __DISPLAY_SYSTEM_H__
+#ifndef __OBSERVER_H__
+#define __OBSERVER_H__
 
 #include "osystem.h"
-#include "Observer.h"
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class DisplaySystem
+class Observer
 {
 public:
-	virtual ~DisplaySystem() {}
+	Observer();
 
-	// Initializes the display system
-	virtual void Initialize(SystemManager* sys) {}
+	Matrix4f GetWorldToEmitter() { return myWorldToEmitter; }
+	void SetWorldToEmitter(Matrix4f value) { myWorldToEmitter = value; }
 
-	// Starts display system rendering. This call does not return until the current omegalib application sends an
-	// exit request to the system manager.
-	virtual void Run() = 0;
+	Matrix4f GetSensorToObject() { return mySensorToObject; }
+	void SetSensorToObject(Matrix4f value) { mySensorToObject = value; }
 
-	// Layer and view management.
-	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
-	virtual bool IsLayerEnabled(int layerNum, const char* viewName) { return true;}
+	Matrix4f GetHeadMatrix() { return myHeadMatrix; }
 
-	virtual Observer* GetObserver(int observerId) { return NULL; }
-	
-	virtual void Cleanup() {}
+	void Update(float x, float y, float z, float yaw, float pitch, float roll);
 
-	virtual unsigned int GetId() { return -1; }
-
-protected:
-	DisplaySystem() {}
+private:
+	Matrix4f myWorldToEmitter;
+	Matrix4f mySensorToObject;
+	Matrix4f myHeadMatrix;
 };
 
 }; // namespace omega

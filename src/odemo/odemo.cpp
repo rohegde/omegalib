@@ -101,9 +101,6 @@ public:
 					printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
 					printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
 					//}
-					GetDisplaySystem()->SetObserver(0, evt.x, evt.y, evt.z, -evt.ry, evt.rx, evt.rz);
-					//GetDisplaySystem()->SetObserver(0, 0, 0, 0, evt.ry, evt.rx, evt.rz);
-					//GetDisplaySystem()->SetObserver(0, 0, 0, 10, 0, 0, 0);
 					break;
 
 				default: break;

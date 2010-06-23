@@ -59,7 +59,7 @@ public:
 
 	virtual unsigned int GetId() { return Id; }
 
-	virtual void SetObserver(int observerId, float x, float y, float z, float yaw, float pitch, float roll);
+	virtual Observer* GetObserver(int observerId);
 
 	// Layer and view management.
 	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
@@ -77,6 +77,9 @@ private:
 	// Equalizer stuff.
     EqualizerNodeFactory* myNodeFactory;
 	eq::Config* myConfig;
+
+	// Observers.
+	std::vector<Observer*> myObservers;
 };
 
 }; // namespace omega
