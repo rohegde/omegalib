@@ -16,8 +16,6 @@
 #include "Application.h"
 #include "DisplaySystem.h"
 
-#define OM_INIT_EQUALIZER_LOG() eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward Declarations.
 class EqualizerNodeFactory;

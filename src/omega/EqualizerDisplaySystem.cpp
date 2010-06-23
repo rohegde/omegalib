@@ -210,6 +210,7 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 
 	myNodeFactory = new EqualizerNodeFactory();
 
+	omsg("\n\n--- Equalizer initialization --------------------------------------------------");
     if( !eq::init( argv.size(), &argv[0], myNodeFactory ))
     {
 		oerror("Equalizer init failed");
@@ -217,6 +218,7 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 
     bool error  = false;
 	myConfig = eq::getConfig( argv.size(), &argv[0] );
+	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,8 +227,10 @@ void EqualizerDisplaySystem::Run()
 	bool error = false;
     if( myConfig )
     {
+		omsg("\n\n--- Equalizer display system startup ------------------------------------------");
         if( myConfig->init( 0 ))
         {
+			omsg("--- Equalizer display system startup [DONE] -----------------------------------\n\n");
             uint32_t spin = 0;
             while( myConfig->isRunning( ))
             {

@@ -41,7 +41,7 @@ SystemManager::~SystemManager()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::Setup(Config* cfg)
 {
-	ODBG("SystemManager::Initialize");
+	omsg("SystemManager::Initialize");
 
 	myConfig = cfg;
 	myInputManager = new InputManager(this);

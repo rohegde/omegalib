@@ -137,7 +137,7 @@ void main(int argc, char** argv)
 {
 	// TODO: Logging does not work with visual studio 2010, apparently because of incompatibilities betwen VC9 and VC10 standard
 	// libraries (Equalizer included binaries are compiled with VC9 as for now).
-	OM_INIT_EQUALIZER_LOG();
+	OMEGA_LOG_INIT_FILE("odemo.txt");
 
 	SystemManager* sys = SystemManager::GetInstance();
 
