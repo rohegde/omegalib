@@ -53,10 +53,10 @@ public:
 		//glEnable(GL_BLEND);
 		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		GfxUtils::Begin2DCoords(context);
+		GfxUtils::BeginOverlayMode(context);
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::RasterPrint(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+		GfxUtils::DrawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (5.0);
@@ -65,7 +65,7 @@ public:
 		glEnd();
 		
 
-		GfxUtils::End2DCoords();
+		GfxUtils::EndOverlayMode();
 
 		glEnable(GL_LIGHTING);
 	}
