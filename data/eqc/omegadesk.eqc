@@ -10,9 +10,10 @@ server
 {
     config
     {
-        appNode
+        appNode											
         {
-            pipe
+            
+            pipe									#Bottom Window
             {
                 name "GPU 1"
                 window
@@ -22,7 +23,8 @@ server
                     channel { name "channel1"  }
                 }
             }
-            pipe
+            
+            pipe									#Top Window
             {
                 name "GPU 2"
                 window
@@ -42,6 +44,12 @@ server
                 }
             }
         }
+
+		observer 
+		{ 
+			name "observer0" 
+			eyeBase 0.063
+		}
 
         # Layouts - one for each demo mode
         layout
@@ -63,12 +71,18 @@ server
             {
                 name "view3D"
                 
+                observer "observer0"
+                
                 viewport [ 0 .5 1 .5 ]
                 wall
                 {
-                    bottom_left  [ -.5 -.5 -1 ]
-                    bottom_right [  .5 -.5 -1 ]
-                    top_left     [ -.5  .5 -1 ]
+                    #bottom_left  [ -.5 -.5 -1 ]
+                    #bottom_right [  .5 -.5 -1 ]
+                    #top_left     [ -.5  .5 -1 ]
+                    
+                    bottom_left  [ -.4074 1.16 -0.8128 ]
+                    bottom_right [  .6106 1.16 -0.8128 ]
+                    top_left     [ -.4074 1.80 -0.8128 ]
                 }
             }
         }
