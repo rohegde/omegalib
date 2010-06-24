@@ -1,3 +1,5 @@
+#summary This page will give brief instructions on how to build OmegaLib and add in a new service driver.
+
 = Introduction =
 
 This page will give brief instructions on how to build OmegaLib.
