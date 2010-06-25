@@ -46,6 +46,9 @@ void displayCallback(void)
 		glLoadIdentity();
 		gluLookAt(0, 0, 2.0f, 0, 0, 0, 0, 1.0f, 0);
 
+		// Process events.
+		InputManager* im = SystemManager::GetInstance()->GetInputManager();
+		im->ProcessEvents(app);	
 		app->Update(dt);
 
 		// Setup the context viewport.

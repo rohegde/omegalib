@@ -323,7 +323,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				evt->type  = InputEvent::Up;
 				break;
 		}		
-		evt->source = InputEvent::Touch;
+		evt->serviceId = InputService::Touch;
 		evt->x = tp.x;
 		evt->y = tp.y;
 

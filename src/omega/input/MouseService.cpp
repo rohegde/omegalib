@@ -29,7 +29,7 @@ void MouseService::mouseMotionCallback(int x, int y)
 		//	evt->id = OM_ID_MOUSE;
 		//	evt->source = OM_DC_POINTER;
 		//	evt->type = OM_EVENT_MOVE;
-		evt->source = InputEvent::Pointer;
+		evt->serviceId = InputService::Pointer;
 		evt->type = InputEvent::Move;
 		evt->x = x;
 		evt->y = y;

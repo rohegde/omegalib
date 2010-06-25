@@ -7,43 +7,55 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Omegalib configuration
+ * Input service definition
  *********************************************************************************************************************/
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+#ifndef __INPUT_SERVICE_H__
+#define __INPUT_SERVICE_H__
 
 #include "osystem.h"
-#include "SystemManager.h"
-#include "InputEvent.h"
-#include "DrawContext.h"
-#include "Application.h"
 
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations
-class SystemManager;
-class InputManager;
-class DisplaySystem;
+struct InputEvent;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Application
+class InputService
 {
+friend class InputManager;
 public:
-	static const int MaxLayers = 16;
+	enum ServiceType { Pointer, Mocap, Touch, Keyboard }; 
 
 public:
-	virtual const char* GetName() { return "OmegaLib " OM_VERSION; }
+	// Class constructor
+	//	@param manager: The input manager owning this service
+	InputService(): myManager(NULL) {}
 
-	virtual void Draw(DrawContext& context) {}
-	virtual bool HandleEvent(const InputEvent& evt) { return false; }
-	virtual void Update(float dt) {}
+   // Class destructor
+	~InputService() {}
 
-	SystemManager*  GetSystemManager()  { return SystemManager::GetInstance(); }
-	InputManager*   GetInputManager()   { return SystemManager::GetInstance()->GetInputManager(); }
-	DisplaySystem*  GetDisplaySystem() { return SystemManager::GetInstance()->GetDisplaySystem(); }
+	InputManager* GetManager() { return myManager; }
+
+	virtual void Initialize() {}
+	virtual void Start() {}
+	virtual void Poll() {}
+	virtual void Stop() {}
+	virtual void Dispose() {}
+
+protected:
+	void LockEvents();
+	void UnlockEvents();
+	InputEvent* WriteHead();
+	InputEvent* ReadHead();
+	InputEvent* ReadTail();
+
+private:
+	void SetManager(InputManager* mng) { myManager = mng; }
+
+private:
+	InputManager* myManager;
 };
-
 }; // namespace omega
 
 #endif

@@ -9,6 +9,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * InputManager members implementation. See InputManager.h for more details.
  *********************************************************************************************************************/
+#include "Application.h"
 #include "InputManager.h"
 
 using namespace omega;
@@ -187,4 +188,22 @@ InputEvent* InputManager::ReadTail()
 		return evt;
 	}
 	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void InputManager::ProcessEvents(Application* app)
+{
+	oassert(app);
+
+	int av = GetAvailableEvents();
+	if(av != 0)
+	{
+		// TODO: Instead of copying the event list, we can lock the main one.
+		InputEvent evts[InputManager::MaxEvents];
+		GetEvents(evts, InputManager::MaxEvents);
+		for( int evtNum = 0; evtNum < av; evtNum++)
+		{
+			app->HandleEvent(evts[evtNum]);
+		}
+	}
 }

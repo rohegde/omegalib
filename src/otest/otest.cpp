@@ -43,20 +43,20 @@ public:
 		//glRotated(rx, 1, 0, 0);
 
 		glPushMatrix();
-		glTranslatef(0, 0, 0);
-		GfxUtils::DrawSolidTeapot(0.2f);
+		glTranslatef(0, -.2, -1);
+		GfxUtils::DrawSolidTeapot(0.1f);
 		glPopMatrix();
 
 
 		glPushMatrix();
-		glTranslatef(0, 0, 2);
-		glutSolidSphere(0.2f, 20, 20);
+		glTranslatef(0, -.2, -1.3);
+		glutSolidSphere(0.1f, 20, 20);
 		glPopMatrix();
 
 		glColor3f(0.3, 1.0, 0.3);
 		glPushMatrix();
-		glTranslatef(0, 0, 4);
-		GfxUtils::DrawWireTeapot(0.2f);
+		glTranslatef(0, -.2, -1.5);
+		GfxUtils::DrawWireTeapot(0.1f);
 		glPopMatrix();
 	}
 
@@ -89,48 +89,40 @@ public:
 			case 1:
 				Draw2D(context);
 		}
+	}
 
-		int av = GetInputManager()->GetAvailableEvents();
-		int ls = GetInputManager()->GetDroppedEvents();
-		if(av != 0)
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual bool HandleEvent(const InputEvent& evt)
+	{
+		switch(evt.serviceType)
 		{
-			InputEvent evts[InputManager::MaxEvents];
-			GetInputManager()->GetEvents(evts, InputManager::MaxEvents);
-		
-			for( int evtNum = 0; evtNum < av; evtNum++)
-			{
-				InputEvent &evt = evts[evtNum];
-				switch(evt.source)
-				{
-				case InputEvent::Touch:
-				case InputEvent::Pointer:
-					x = evt.x;
-					y = evt.y;
-					//printf("touchin x:%f, y:%f\n", x ,y);
-					break;
+		case InputService::Touch:
+		case InputService::Pointer:
+			x = evt.x;
+			y = evt.y;					break;
 
-				case InputEvent::Mocap:
-				{
+		case InputService::Mocap:
+		{
 
-					GfxUtils::BeginOverlayMode(context);
+			//GfxUtils::BeginOverlayMode(context);
 
-					char str[1024];
-					glColor4f(1.0, 1.0, 0.4, 1.0);
-					sprintf(str, "head x:%.3f, y:%.3f, z:%.3f rx:%.3f, ry:%.3f, rz:%.3f", evt.x, evt.y, evt.z, evt.rx, evt.ry, evt.rz);
-					GfxUtils::DrawText(10, 20, str, GfxUtils::Helvetica12);
+			//char str[1024];
+			//glColor4f(1.0, 1.0, 0.4, 1.0);
+			//sprintf(str, "head x:%.3f, y:%.3f, z:%.3f rx:%.3f, ry:%.3f, rz:%.3f", evt.x, evt.y, evt.z, evt.rx, evt.ry, evt.rz);
+			//GfxUtils::DrawText(10, 20, str, GfxUtils::Helvetica12);
 
-					GfxUtils::EndOverlayMode();
-					
-					evt.z = 0;
-					Observer* obs = GetDisplaySystem()->GetObserver(0);
-					obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
-					break;
-				}
+			//GfxUtils::EndOverlayMode();
+			
+			//evt.z = 0;
+			Observer* obs = GetDisplaySystem()->GetObserver(0);
+			obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 
-				default: break;
-				}
-			}
+			break;
 		}
+
+		default: break;
+		}
+		return true;
 	}
 
 private:
@@ -177,7 +169,7 @@ void main(int argc, char** argv)
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
 	//sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
-	sys->GetInputManager()->AddService(new TrackIRService());
+	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
 
 	sys->Initialize();
@@ -193,6 +185,8 @@ void main(int argc, char** argv)
 	pos.y() = 0;
 	pos.z() = -2;
 	//m.set_translation(pos);
+
+	//Vector3f rr = Vector3f(;
 
 	obs->SetWorldToEmitter(m);
 
