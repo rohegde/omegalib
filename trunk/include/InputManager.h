@@ -13,6 +13,7 @@
 #define __INPUT_MANAGER_H__
 
 #include "osystem.h"
+#include "Application.h"
 #include "InputEvent.h"
 
 namespace omega
@@ -45,6 +46,8 @@ public:
 	// TEMPORARY: this will run in a thread in the future.
 	void Poll();
 
+	void ProcessEvents(Application* app);
+
 	int GetAvailableEvents() { return myAvailableEvents; }
 	int GetDroppedEvents() { return myDroppedEvents; }
 	void ResetDroppedEvents() { myDroppedEvents = 0; }
@@ -73,40 +76,6 @@ private:
 
 	int myAvailableEvents;
 	int myDroppedEvents;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class InputService
-{
-friend class InputManager;
-public:
-	// Class constructor
-	//	@param manager: The input manager owning this service
-	InputService(): myManager(NULL) {}
-
-   // Class destructor
-	~InputService() {}
-
-	InputManager* GetManager() { return myManager; }
-
-	virtual void Initialize() {}
-	virtual void Start() {}
-	virtual void Poll() {}
-	virtual void Stop() {}
-	virtual void Dispose() {}
-
-protected:
-	void LockEvents() { myManager->LockEvents(); }
-	void UnlockEvents() { myManager->UnlockEvents(); }
-	InputEvent* WriteHead() { return myManager->WriteHead(); }
-	InputEvent* ReadHead() { return myManager->ReadHead(); }
-	InputEvent* ReadTail() { return myManager->ReadTail(); }
-
-private:
-	void SetManager(InputManager* mng) { myManager = mng; }
-
-private:
-	InputManager* myManager;
 };
 }; // namespace omega
 

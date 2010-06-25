@@ -1,6 +1,7 @@
 #include "input/MoCapService.h"
 #include "SystemManager.h"
 #include <math.h>
+
 using namespace omega;
 
 MoCapService* MoCapService :: myMoCap = NULL;
@@ -98,8 +99,8 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			//actions to process each rigid body into an event
 			InputEvent* theEvent = myMoCap->WriteHead();
 
-			theEvent->id = data->RigidBodies[i].ID;
-			theEvent->source = InputEvent::Mocap;
+			theEvent->sourceId = data->RigidBodies[i].ID;
+			theEvent->serviceType = InputService::Mocap;
 
 			//checks to see if the rigid body is being tracked, if all positional data is set to zero then it is more than likely not being tracked
 			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )

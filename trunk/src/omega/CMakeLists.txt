@@ -27,6 +27,7 @@ SET( srcs
 		EqualizerDisplaySystem.cpp
 		GLUTDisplaySystem.cpp
 		InputManager.cpp
+		InputService.cpp
         Observer.cpp
 		SystemManager.cpp
         Utils.cpp
@@ -51,6 +52,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/GLUTDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/InputManager.h
+        ${OmegaLib_SOURCE_DIR}/include/InputService.h
         ${OmegaLib_SOURCE_DIR}/include/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/Utils.h

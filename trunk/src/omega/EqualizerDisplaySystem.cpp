@@ -112,6 +112,7 @@ public:
 	virtual uint32_t finishFrame()
 	{
 		DisplaySystem* ds = SystemManager::GetInstance()->GetDisplaySystem();
+		InputManager* im = SystemManager::GetInstance()->GetInputManager();
 
 		// Update observer head matrices.
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
@@ -120,13 +121,21 @@ public:
 			getObservers().at(i)->setHeadMatrix(obs->GetHeadMatrix());
 		}
 
+		// Process events.
+		Application* app = SystemManager::GetInstance()->GetApplication();
+		if(app != NULL)
+		{
+			im->ProcessEvents(app);	
+			app->Update(0);
+		}
+
 		SystemManager::GetInstance()->GetInputManager()->Poll();
 		return eq::Config::finishFrame();
 	}
 
 	void SetLayerEnabled(int viewId, int layerId, bool enabled)
 	{
-	    EqualizerView* view  = static_cast< EqualizerView* >( findView(viewId));
+	    EqualizerView* view  = static_cast< EqualizerView* >(findView(viewId));
 		if(view != NULL)
 		{
 			view->SetLayerEnabled(layerId, enabled);
@@ -170,7 +179,6 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 		// Setup POV and other GL parameters to keep consistency with GLUT renderer
 		glDisable(GL_COLOR_MATERIAL);
 		glDisable(GL_LIGHTING);
-		glTranslatef(0, 0, -2.0f);
 
 		app->Update(dt);
 

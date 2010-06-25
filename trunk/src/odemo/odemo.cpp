@@ -83,16 +83,16 @@ public:
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
 				InputEvent &evt = evts[evtNum];
-				switch(evt.source)
+				switch(evt.serviceType)
 				{
-				case InputEvent::Touch:
-				case InputEvent::Pointer:
+				case InputService::Touch:
+				case InputService::Pointer:
 					x = evt.x;
 					y = evt.y;
 					//printf("touchin x:%f, y:%f\n", x ,y);
 					break;
 
-				case InputEvent::Mocap:
+				case InputService::Mocap:
 					//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
 					//{
 					//	rx = evt.rx * radToDegree;

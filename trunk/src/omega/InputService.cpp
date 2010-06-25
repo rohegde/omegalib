@@ -7,43 +7,40 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Omegalib configuration
+ * InputService members implementation. See InputManager.h for more details.
  *********************************************************************************************************************/
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+#include "InputService.h"
+#include "InputManager.h"
 
-#include "osystem.h"
-#include "SystemManager.h"
-#include "InputEvent.h"
-#include "DrawContext.h"
-#include "Application.h"
-
-namespace omega
-{
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
-class InputManager;
-class DisplaySystem;
+using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Application
-{
-public:
-	static const int MaxLayers = 16;
+void InputService::LockEvents() 
+{ 
+	myManager->LockEvents(); 
+}
 
-public:
-	virtual const char* GetName() { return "OmegaLib " OM_VERSION; }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void InputService::UnlockEvents() 
+{ 
+	myManager->UnlockEvents(); 
+}
 
-	virtual void Draw(DrawContext& context) {}
-	virtual bool HandleEvent(const InputEvent& evt) { return false; }
-	virtual void Update(float dt) {}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InputEvent* InputService::WriteHead()
+{ 
+	return myManager->WriteHead(); 
 
-	SystemManager*  GetSystemManager()  { return SystemManager::GetInstance(); }
-	InputManager*   GetInputManager()   { return SystemManager::GetInstance()->GetInputManager(); }
-	DisplaySystem*  GetDisplaySystem() { return SystemManager::GetInstance()->GetDisplaySystem(); }
-};
+}
 
-}; // namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InputEvent* InputService::ReadHead()
+{ 
+	return myManager->ReadHead();
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InputEvent* InputService::ReadTail()
+{ 
+	return myManager->ReadTail(); 
+}
