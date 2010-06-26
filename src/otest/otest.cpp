@@ -23,41 +23,69 @@ public:
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
-		const float lightPos[] = { 0.0f, 1.0f, 1.0f, 0.0f };
+		const float lightPos[] = { 0.0f, 0.6f, 1.0f, 0.0f };
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
 
-		const float lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+		const float lightAmbient[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 
-		/*******************************************************************
-		*	NOTE:
-		*		Rotations must be performed in this ordering:
-		*			First pitch(rx)
-		*			Second roll(rz)
-		*			Third yaw(ry)
-		*		However, because of the way opengl parses the arguements
-		*		they must be entered in code in reverse order as seen below.
-		********************************************************************/
+		glEnable(GL_FOG);
+
+		const float fogCol[] = { 0.0f, 0.0f, 0.0f };
+		glFogfv( GL_FOG_COLOR, fogCol );
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogf(GL_FOG_START, 1);
+		glFogf(GL_FOG_END, 3);
+
+
 		//glRotated(ry + 3.14f / 2, 0, 1, 0);
 		//glRotated(rz, 0, 0, 1);
 		//glRotated(rx, 1, 0, 0);
 
+		static float i = 0;
+		float zz = sin(i) * 0.4;
+		float xx = cos(i * 1.2) * 0.3;
+		float yy = cos(i * 0.7) * 0.1;
+		i += 0.03;
+
 		glPushMatrix();
-		glTranslatef(0, -.2, -1);
+		glTranslatef(x, y, -1.2 + z * 2);
+		glRotated(i * 3, 0, 1, 0);
 		GfxUtils::DrawSolidTeapot(0.1f);
 		glPopMatrix();
 
 
 		glPushMatrix();
-		glTranslatef(0, -.2, -1.3);
+		glTranslatef(0.3 + xx, 1.3 + yy, -2 + zz);
 		glutSolidSphere(0.1f, 20, 20);
 		glPopMatrix();
 
 		glColor3f(0.3, 1.0, 0.3);
-		glPushMatrix();
-		glTranslatef(0, -.2, -1.5);
-		GfxUtils::DrawWireTeapot(0.1f);
-		glPopMatrix();
+		glBegin(GL_TRIANGLE_STRIP);
+		glVertex3f(-0.4074, 1.16, -0.8128);
+		glVertex3f( 0.6106, 1.16, -0.8128);
+		glVertex3f(-0.4074, 1.16, -3.8128);
+		glVertex3f( 0.6106, 1.16, -3.8128);
+		glEnd();
+
+		glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_LINES);
+		for(float y = 1.16; y < 1.8; y += 0.05)
+		{
+			glVertex3f(-0.4074, y, -0.8128);
+			glVertex3f(-0.4074, y, -10.8128);
+			glVertex3f( 0.6106, y, -0.8128);
+			glVertex3f( 0.6106, y, -10.8128);
+		}
+
+		glEnd();
+		glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_TRIANGLE_STRIP);
+		glVertex3f(-0.4074, 1.8, -0.8128);
+		glVertex3f( 0.6106, 1.8, -0.8128);
+		glVertex3f(-0.4074, 1.8, -3.8128);
+		glVertex3f( 0.6106, 1.8, -3.8128);
+		glEnd();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,8 +142,20 @@ public:
 			//GfxUtils::EndOverlayMode();
 			
 			//evt.z = 0;
-			Observer* obs = GetDisplaySystem()->GetObserver(0);
-			obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+			if(evt.sourceId == 1)
+			{
+				Observer* obs = GetDisplaySystem()->GetObserver(0);
+				obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+			}
+			else if(evt.sourceId == 3)
+			{
+				if(evt.x != 0 || evt.y != 0)
+				{
+					x = evt.x;
+					y = evt.y;
+					z = evt.z;
+				}
+			}
 
 			break;
 		}
@@ -132,6 +172,7 @@ private:
 
 	float x;
 	float y;
+	float z;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +185,7 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/hd.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
 
 	//cfg->Load();
 
@@ -167,7 +208,7 @@ void main(int argc, char** argv)
 
 	sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	//sys->GetInputManager()->AddService(new MoCapService());
+	sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
@@ -178,20 +219,20 @@ void main(int argc, char** argv)
 	//sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
 
 	Observer* obs = sys->GetDisplaySystem()->GetObserver(0);
+	float s = 1;
     Matrix4f m( eq::Matrix4f::IDENTITY );
-    //m.scale( 1.f, 1.f, -1.f );
+    m.scale( s, s, 1 );
 	Vector3f pos;
 	pos.x() = 0;
 	pos.y() = 0;
-	pos.z() = -2;
-	//m.set_translation(pos);
+	pos.z() = 0;
+	m.set_translation(pos);
 
-	//Vector3f rr = Vector3f(;
 
 	obs->SetWorldToEmitter(m);
 
     m = eq::Matrix4f::IDENTITY;
-    m.rotate_z( -M_PI_2 );
+    //m.rotate_z( -M_PI_2 );
 	obs->SetSensorToObject(m);
 
 	sys->Run();

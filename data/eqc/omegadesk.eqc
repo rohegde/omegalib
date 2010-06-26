@@ -48,7 +48,6 @@ server
 		observer 
 		{ 
 			name "observer0" 
-			eyeBase 0.063
 		}
 
         # Layouts - one for each demo mode
@@ -74,16 +73,16 @@ server
                 observer "observer0"
                 
                 viewport [ 0 .5 1 .5 ]
-                wall
-                {
-                    #bottom_left  [ -.5 -.5 -1 ]
-                    #bottom_right [  .5 -.5 -1 ]
-                    #top_left     [ -.5  .5 -1 ]
-                    
-                    bottom_left  [ -.4074 1.16 -0.8128 ]
-                    bottom_right [  .6106 1.16 -0.8128 ]
-                    top_left     [ -.4074 1.80 -0.8128 ]
-                }
+                #wall
+                #{
+                #    #bottom_left  [ -.5 -.5 -1 ]
+                #    #bottom_right [  .5 -.5 -1 ]
+                #    #top_left     [ -.5  .5 -1 ]
+                #    
+                #    bottom_left  [ -.4074 1.16 -0.8128 ]
+                #    bottom_right [  .6106 1.16 -0.8128 ]
+                #    top_left     [ -.4074 1.80 -0.8128 ]
+                #}
             }
         }
 
@@ -92,12 +91,12 @@ server
         {
             layout "MultiView"
 
-            wall
-            {
-                bottom_left  [ -.5 -.5 -1 ]
-                bottom_right [  .5 -.5 -1 ]
-                top_left     [ -.5  .5 -1 ]
-            }
+            #wall
+            #{
+            #        bottom_left  [ -.4074 1.16 -0.8128 ]
+            #        bottom_right [  .6106 1.16 -0.8128 ]
+            #        top_left     [ -.4074 1.80 -0.8128 ]
+            #}
 
             segment
             {
@@ -108,11 +107,23 @@ server
             {
                 viewport [ 0 .5 1 .5 ]
                 channel "channel2left"
+				wall
+				{
+						bottom_left  [ -.4074 1.16 -0.8128 ]
+						bottom_right [  .6106 1.16 -0.8128 ]
+						top_left     [ -.4074 1.80 -0.8128 ]
+				}
             }
             segment
             {
                 viewport [ 0 .5 1 .5 ]
                 channel "channel2right"
+				wall
+				{
+						bottom_left  [ -.4074 1.16 -0.8128 ]
+						bottom_right [  .6106 1.16 -0.8128 ]
+						top_left     [ -.4074 1.80 -0.8128 ]
+				}
             }
         }
 

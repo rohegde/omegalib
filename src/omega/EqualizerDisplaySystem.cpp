@@ -119,6 +119,7 @@ public:
 		{
 			Observer* obs  = ds->GetObserver(i);
 			getObservers().at(i)->setHeadMatrix(obs->GetHeadMatrix());
+			getObservers().at(i)->setEyeBase(0.03f);
 		}
 
 		// Process events.
