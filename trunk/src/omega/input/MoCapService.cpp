@@ -106,13 +106,21 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )
 			{
 				theEvent->type = InputEvent::Untrace;
-				theEvent->x = 0;
-				theEvent->y = 0;
-				theEvent->z = 0;
-				theEvent->rw = 0;
-				theEvent->rx = 0;
-				theEvent->ry = 0;
-				theEvent->rz = 0;
+				theEvent->x = 0.0;
+				theEvent->y = 0.0;
+				theEvent->z = 0.0;
+				theEvent->rw = 0.0;
+				theEvent->rx = 0.0;
+				theEvent->ry = 0.0;
+				theEvent->rz = 0.0;
+				for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
+				{
+					Point aPoint;
+					aPoint.x = 0.0;
+					aPoint.y = 0.0;
+					aPoint.z = 0.0;
+					theEvent->markerSet.push_back ( aPoint);
+				}
 				continue;
 			}
 
@@ -124,6 +132,17 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 			theEvent->x = data->RigidBodies[i].x;
 			theEvent->y = data->RigidBodies[i].y;
 			theEvent->z = data->RigidBodies[i].z;
+
+			//get makerset data (the points that define the rigid body)
+			int numberOfMarkers = data->RigidBodies[i].nMarkers;
+			for( int j = 0; j < numberOfMarkers; j++)
+			{
+				Point aPoint;
+				aPoint.x = data->RigidBodies[i].Markers[j][0];
+				aPoint.y = data->RigidBodies[i].Markers[j][1];
+				aPoint.z = data->RigidBodies[i].Markers[j][2];
+				theEvent->markerSet.push_back ( aPoint);
+			}
 
 			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
 			if ( isEuler )
@@ -142,7 +161,7 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				//check for pointing North
 				if( verticalTest > ( 0.499 * unit ) )
 				{
-					owarn("MOCAP: Pointing North");
+					//owarn("MOCAP: Pointing North");
 					theEvent->rx = 0;
 					theEvent->ry = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 					theEvent->rz = PI/2;
@@ -150,7 +169,7 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				//check for pointing South
 				else if( verticalTest < ( -0.499 * unit ) )
 				{
-					owarn("MOCAP: Pointing South");
+					//owarn("MOCAP: Pointing South");
 					theEvent->rx = 0;
 					theEvent->ry = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
 					theEvent->rz = -PI/2;
