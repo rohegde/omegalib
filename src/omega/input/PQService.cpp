@@ -326,6 +326,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->serviceId = InputService::Touch;
 		evt->x = tp.x;
 		evt->y = tp.y;
+		evt->id = tp.id;
 
 		myInstance->UnlockEvents();
 		
