@@ -20,8 +20,5 @@
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
 #include "omega/gfx/GfxUtils.h"
-#include "omega/input/MouseService.h"
-#include "omega/input/MoCapService.h"
-#include "omega/input/TrackIRService.h"
-#include "omega/input/PQService.h"
+
 #endif

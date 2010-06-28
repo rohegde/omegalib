@@ -10,6 +10,7 @@
  * Test executable
  *********************************************************************************************************************/
 #include "omega.h"
+#include "omega/input/MouseService.h"
 
 using namespace omega;
 using namespace omega::gfx;
@@ -178,14 +179,10 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	// TODO: Logging does not work with visual studio 2010, apparently because of incompatibilities betwen VC9 and VC10 standard
-	// libraries (Equalizer included binaries are compiled with VC9 as for now).
-	OMEGA_LOG_INIT_FILE("otest.txt");
-
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
 
 	//cfg->Load();
 
@@ -208,7 +205,7 @@ void main(int argc, char** argv)
 
 	sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	sys->GetInputManager()->AddService(new MoCapService());
+	//sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
@@ -235,9 +232,9 @@ void main(int argc, char** argv)
     //m.rotate_z( -M_PI_2 );
 	obs->SetSensorToObject(m);
 
+	obs->Update(0, 1.5, 0, 0, 0, 0);
+
 	sys->Run();
 
 	sys->Cleanup();
-
-	OMEGA_LOG_CLOSE();
 }
