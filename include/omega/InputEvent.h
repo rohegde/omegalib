@@ -12,11 +12,20 @@
 #ifndef __INPUT_EVENT_H__
 #define __INPUT_EVENT_H__
 
+#include <vector>
 #include "osystem.h"
 #include "InputService.h"
 
 namespace omega
 {
+
+//will be used to store point data for the markers that make up MoCap rigid bodies
+struct Point
+{
+	float x;
+	float y;
+	float z;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct InputEvent
@@ -52,6 +61,9 @@ struct InputEvent
     float rx;
 	float ry;
 	float rz;
+
+	//Rigid Body Markerset
+	std::vector<Point> markerSet;
 };
 
 }; // namespace omega
