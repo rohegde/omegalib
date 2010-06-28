@@ -42,7 +42,7 @@ namespace omega
 		bool newDataFlag;
 		int touchID[1000]; // Max IDs assigned before resetting
 		static int maxTouches; // Should be same number as touchID array init
-		static int nextID;
+		int nextID;
 
 		void ClearDataString();
 

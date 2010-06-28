@@ -18,21 +18,21 @@
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-OMEGA_API class GLUTDisplaySystem: public DisplaySystem
+class GLUTDisplaySystem: public DisplaySystem
 {
 public:
-	GLUTDisplaySystem();
-	virtual ~GLUTDisplaySystem();
+	OMEGA_API GLUTDisplaySystem();
+	OMEGA_API virtual ~GLUTDisplaySystem();
 
-	virtual void Initialize(SystemManager* sys); 
-	virtual void Run(); 
-	virtual void Cleanup(); 
+	OMEGA_API virtual void Initialize(SystemManager* sys); 
+	OMEGA_API virtual void Run(); 
+	OMEGA_API virtual void Cleanup(); 
 
 	// Layer and view management.
-	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
-	virtual bool IsLayerEnabled(int layerNum, const char* viewName);
+	OMEGA_API virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
+	OMEGA_API virtual bool IsLayerEnabled(int layerNum, const char* viewName);
 
-	virtual unsigned int GetId() { return Id; }
+	OMEGA_API virtual unsigned int GetId() { return Id; }
 
 public:
 	static const unsigned int Id; 
