@@ -18,7 +18,7 @@
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class GLUTDisplaySystem: public DisplaySystem
+OMEGA_API class GLUTDisplaySystem: public DisplaySystem
 {
 public:
 	GLUTDisplaySystem();

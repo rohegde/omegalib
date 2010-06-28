@@ -28,35 +28,35 @@ class SystemManager
 {
 public:
 	// Get the singleton instance of the system manager.
-	static SystemManager* GetInstance();
+	OMEGA_API static SystemManager* GetInstance();
 
 	// Initializes the system manager
-	void Setup(Config* cfg);
+	OMEGA_API void Setup(Config* cfg);
 
-	void Initialize();
+	OMEGA_API void Initialize();
 
 	// Starts running the current application.
 	// This method does not return until the application is done running.
-	void Run();
+	OMEGA_API void Run();
 
 	// Sends an exit request to the system manager.
-	void PostExitRequest();
+	OMEGA_API void PostExitRequest();
 
 	// Cleans up runtime resources, performs final debug checks etc.
-	void Cleanup();
+	OMEGA_API void Cleanup();
 
 	// Get the system configuration.
-	Config* GetConfig() { return myConfig; }
+	OMEGA_API Config* GetConfig() { return myConfig; }
 
-	InputManager* GetInputManager() { return myInputManager; }
+	OMEGA_API InputManager* GetInputManager() { return myInputManager; }
 
-	DisplaySystem* GetDisplaySystem() { return myDisplaySystem; }
-	void SetDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
+	OMEGA_API DisplaySystem* GetDisplaySystem() { return myDisplaySystem; }
+	OMEGA_API void SetDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
 
-	Application* GetApplication() { return myApplication; }
-	void SetApplication(Application* value) { myApplication = value; }
+	OMEGA_API Application* GetApplication() { return myApplication; }
+	OMEGA_API void SetApplication(Application* value) { myApplication = value; }
 
-	bool IsExitRequested() { return myExitRequested; }
+	OMEGA_API bool IsExitRequested() { return myExitRequested; }
 
 private:
 	SystemManager();

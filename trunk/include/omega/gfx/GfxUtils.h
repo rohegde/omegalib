@@ -31,16 +31,16 @@ public:
 
 	// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
 	// viewport parameters specified in the draw context.
-	static void BeginOverlayMode(DrawContext& context);
+	OMEGA_API static void BeginOverlayMode(DrawContext& context);
 
 	// Restores the coordinate system specified before a Begin2DCoords call.
-	static void EndOverlayMode();
+	OMEGA_API static void EndOverlayMode();
 
 	// Prints text. 
-	static void DrawText(int x, int y, const char* s, Font f = Helvetica12);
+	OMEGA_API static void DrawText(int x, int y, const char* s, Font f = Helvetica12);
 
-	static void DrawSolidTeapot(float size);
-	static void DrawWireTeapot(float size);
+	OMEGA_API static void DrawSolidTeapot(float size);
+	OMEGA_API static void DrawWireTeapot(float size);
 
 private:
 	GfxUtils() {};

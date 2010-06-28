@@ -28,11 +28,11 @@ namespace omega
 	class PQService: public InputService
 	{
 	public:
-		virtual void Initialize();
-		virtual void Dispose();
+		OMEGA_API virtual void Initialize();
+		OMEGA_API virtual void Dispose();
 
-		void Initialize(  char* local_ip );
-		int Init();
+		OMEGA_API void Initialize(  char* local_ip );
+		OMEGA_API int Init();
 	
 	private:
 		static PQService* myInstance;	

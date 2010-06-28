@@ -18,7 +18,7 @@ find_package(OpenGL)
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC)
+ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING)
 
 #######################################################################################################################
 # Source files
@@ -66,7 +66,7 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-ADD_LIBRARY( omega ${srcs} ${headers})
+ADD_LIBRARY( omega SHARED ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup link info.

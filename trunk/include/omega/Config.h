@@ -30,42 +30,42 @@ public:
 	static std::vector<char*> StringToArgv(std::string appName, std::string args);
 
 public:
-	Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL) {}
-	Config(int argc, char** argv): myCfgFile(NULL) { myArgc = argc; myArgv = argv; }
-	Config(const char* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL) { myCfgFilename = filename; }
-	~Config() {}
+	OMEGA_API Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL) {}
+	OMEGA_API Config(int argc, char** argv): myCfgFile(NULL) { myArgc = argc; myArgv = argv; }
+	OMEGA_API Config(const char* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL) { myCfgFilename = filename; }
+	OMEGA_API ~Config() {}
 
-	const char* GetConfigFilename() { return myCfgFilename.c_str(); }
-	void SetConfigFilename(const char* value) { myCfgFilename = value; }
+	OMEGA_API const char* GetConfigFilename() { return myCfgFilename.c_str(); }
+	OMEGA_API void SetConfigFilename(const char* value) { myCfgFilename = value; }
 
-	const char* GetDisplayConfig() { return myDisplayConfig.c_str(); }
-	void SetDisplayConfig(const char* value) { myDisplayConfig = value; }
+	OMEGA_API const char* GetDisplayConfig() { return myDisplayConfig.c_str(); }
+	OMEGA_API void SetDisplayConfig(const char* value) { myDisplayConfig = value; }
 
-	int GetArgc() { return myArgc; }
-	char** GetArgv() { return myArgv; }
+	OMEGA_API int GetArgc() { return myArgc; }
+	OMEGA_API char** GetArgv() { return myArgv; }
 
-	bool Load();
+	OMEGA_API bool Load();
 
 	// Read string value.
-	const char* GetValue(const char* name, const char* defaultValue);
+	OMEGA_API const char* GetValue(const char* name, const char* defaultValue);
 
 	// read int value.
-	int GetValue(const char* name, int defaultValue);
+	OMEGA_API int GetValue(const char* name, int defaultValue);
 
 	// Read float value
-	float GetValue(const char* name, float defaultValue);
+	OMEGA_API float GetValue(const char* name, float defaultValue);
 
 	// Read bool value
-	bool GetValue(const char* name, bool defaultValue);
+	OMEGA_API bool GetValue(const char* name, bool defaultValue);
 
 	// Read string array.
-	bool GetArray(const char* name, std::vector<const char*>& data);
+	OMEGA_API bool GetArray(const char* name, std::vector<const char*>& data);
 
 	// Read int array.
-	bool GetArray(const char* name, std::vector<int>& data);
+	OMEGA_API bool GetArray(const char* name, std::vector<int>& data);
 
 	// Read float array.
-	bool GetArray(const char* name, std::vector<float>& data);
+	OMEGA_API bool GetArray(const char* name, std::vector<float>& data);
 
 private:
 	std::string myDisplayConfig;
