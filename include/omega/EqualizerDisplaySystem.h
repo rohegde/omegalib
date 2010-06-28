@@ -50,20 +50,20 @@ private:
 class EqualizerDisplaySystem: public DisplaySystem
 {
 public:
-	EqualizerDisplaySystem();
-	virtual ~EqualizerDisplaySystem();
+	OMEGA_API EqualizerDisplaySystem();
+	OMEGA_API virtual ~EqualizerDisplaySystem();
 
-	virtual void Initialize(SystemManager* sys); 
-	virtual void Run(); 
-	virtual void Cleanup(); 
+	OMEGA_API virtual void Initialize(SystemManager* sys); 
+	OMEGA_API virtual void Run(); 
+	OMEGA_API virtual void Cleanup(); 
 
-	virtual unsigned int GetId() { return Id; }
+	OMEGA_API virtual unsigned int GetId() { return Id; }
 
-	virtual Observer* GetObserver(int observerId);
+	OMEGA_API virtual Observer* GetObserver(int observerId);
 
 	// Layer and view management.
-	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
-	virtual bool IsLayerEnabled(int layerNum, const char* viewName);
+	OMEGA_API virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
+	OMEGA_API virtual bool IsLayerEnabled(int layerNum, const char* viewName);
 
 public:
 	static const unsigned int Id; 

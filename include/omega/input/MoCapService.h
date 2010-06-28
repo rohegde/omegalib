@@ -22,22 +22,21 @@
 
 namespace omega
 {
-
 	class MoCapService : public InputService
 	{
 	public:
-		MoCapService();
-		~MoCapService();
-		static void __cdecl FrameController(sFrameOfMocapData* data, void* pUserData);
-		static void __cdecl MessageController(int msgType, char* msg);
-		virtual void Initialize();
-		virtual void Start();//initialize and start service here
-		virtual void Stop();//destroy service instance to stop
-		virtual void Dispose();
-		void setLocalIP (char* theAdress);
-		void setServerIP (char* theAdress);
-		void useQuaternion ();
-		void useEuler ();
+		OMEGA_API MoCapService();
+		OMEGA_API ~MoCapService();
+		OMEGA_API static void __cdecl FrameController(sFrameOfMocapData* data, void* pUserData);
+		OMEGA_API static void __cdecl MessageController(int msgType, char* msg);
+		OMEGA_API virtual void Initialize();
+		OMEGA_API virtual void Start();//initialize and start service here
+		OMEGA_API virtual void Stop();//destroy service instance to stop
+		OMEGA_API virtual void Dispose();
+		OMEGA_API void setLocalIP (char* theAdress);
+		OMEGA_API void setServerIP (char* theAdress);
+		OMEGA_API void useQuaternion ();
+		OMEGA_API void useEuler ();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:

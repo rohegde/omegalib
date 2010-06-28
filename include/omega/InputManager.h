@@ -28,30 +28,30 @@ friend class InputService;
 
 public:
 	// Class constructor.
-	InputManager(SystemManager* sys);
+	OMEGA_API InputManager(SystemManager* sys);
 
 	// Class destructor
-	~InputManager();
+	OMEGA_API ~InputManager();
 
 	// Add a new input service to the manager.
-	void AddService(InputService* svc);
-	void RemoveService(InputService* svc);
+	OMEGA_API void AddService(InputService* svc);
+	OMEGA_API void RemoveService(InputService* svc);
 
 	// Initialize
-	void Initialize();
-	void Start();
-	void Stop();
-	void Dispose();
+	OMEGA_API void Initialize();
+	OMEGA_API void Start();
+	OMEGA_API void Stop();
+	OMEGA_API void Dispose();
 
 	// TEMPORARY: this will run in a thread in the future.
-	void Poll();
+	OMEGA_API void Poll();
 
-	void ProcessEvents(Application* app);
+	OMEGA_API void ProcessEvents(Application* app);
 
-	int GetAvailableEvents() { return myAvailableEvents; }
-	int GetDroppedEvents() { return myDroppedEvents; }
-	void ResetDroppedEvents() { myDroppedEvents = 0; }
-	int GetEvents(InputEvent* ptr, int maxEvents);
+	OMEGA_API int GetAvailableEvents() { return myAvailableEvents; }
+	OMEGA_API int GetDroppedEvents() { return myDroppedEvents; }
+	OMEGA_API void ResetDroppedEvents() { myDroppedEvents = 0; }
+	OMEGA_API int GetEvents(InputEvent* ptr, int maxEvents);
 
 public:
 	// The maximum number of events stored in the event buffer.

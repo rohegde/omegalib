@@ -21,17 +21,17 @@ namespace omega
 class Observer
 {
 public:
-	Observer();
+	OMEGA_API Observer();
 
-	Matrix4f GetWorldToEmitter() { return myWorldToEmitter; }
-	void SetWorldToEmitter(Matrix4f value) { myWorldToEmitter = value; }
+	OMEGA_API Matrix4f GetWorldToEmitter() { return myWorldToEmitter; }
+	OMEGA_API void SetWorldToEmitter(Matrix4f value) { myWorldToEmitter = value; }
 
-	Matrix4f GetSensorToObject() { return mySensorToObject; }
-	void SetSensorToObject(Matrix4f value) { mySensorToObject = value; }
+	OMEGA_API Matrix4f GetSensorToObject() { return mySensorToObject; }
+	OMEGA_API void SetSensorToObject(Matrix4f value) { mySensorToObject = value; }
 
-	Matrix4f GetHeadMatrix() { return myHeadMatrix; }
+	OMEGA_API Matrix4f GetHeadMatrix() { return myHeadMatrix; }
 
-	void Update(float x, float y, float z, float yaw, float pitch, float roll);
+	OMEGA_API void Update(float x, float y, float z, float yaw, float pitch, float roll);
 
 private:
 	Matrix4f myWorldToEmitter;
