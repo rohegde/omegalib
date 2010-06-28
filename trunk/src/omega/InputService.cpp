@@ -9,8 +9,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * InputService members implementation. See InputManager.h for more details.
  *********************************************************************************************************************/
-#include "InputService.h"
-#include "InputManager.h"
+#include "omega/InputService.h"
+#include "omega/InputManager.h"
 
 using namespace omega;
 

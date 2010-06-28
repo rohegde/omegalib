@@ -9,8 +9,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "input/TrackIRService.h"
-#include "SystemManager.h"
+#include "omega/input/TrackIRService.h"
+#include "omega/SystemManager.h"
 
 using namespace omega;
 

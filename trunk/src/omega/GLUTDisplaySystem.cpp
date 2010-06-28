@@ -9,11 +9,11 @@
  *---------------------------------------------------------------------------------------------------------------------
  * omega functions implementation. See omega.h for more details.
  *********************************************************************************************************************/
-#include "Application.h"
-#include "InputManager.h"
-#include "SystemManager.h"
-#include "Config.h"
-#include "GLUTDisplaySystem.h"
+#include "omega/Application.h"
+#include "omega/InputManager.h"
+#include "omega/SystemManager.h"
+#include "omega/Config.h"
+#include "omega/GLUTDisplaySystem.h"
 
 using namespace omega;
 

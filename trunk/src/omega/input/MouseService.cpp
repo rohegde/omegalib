@@ -9,9 +9,9 @@
  *---------------------------------------------------------------------------------------------------------------------
  * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "input/MouseService.h"
-#include "GLUTDisplaySystem.h"
-#include "SystemManager.h"
+#include "omega/GLUTDisplaySystem.h"
+#include "omega/SystemManager.h"
+#include "omega/input/MouseService.h"
 
 using namespace omega;
 

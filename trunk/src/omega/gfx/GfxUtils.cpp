@@ -9,9 +9,9 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Implementatio of GfxU
  *********************************************************************************************************************/
-#include "gfx/GfxUtils.h"
-#include "SystemManager.h"
-#include "DisplaySystem.h"
+#include "omega/gfx/GfxUtils.h"
+#include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 
 using namespace omega;
 using namespace omega::gfx;

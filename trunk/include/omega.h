@@ -12,16 +12,16 @@
 #ifndef __OMEGA_H__
 #define __OMEGA_H__
 
-#include "Application.h"
-#include "Config.h"
-#include "EqualizerDisplaySystem.h"
-#include "GLUTDisplaySystem.h"
-#include "InputManager.h"
-#include "Observer.h"
-#include "SystemManager.h"
-#include "gfx/GfxUtils.h"
-#include "input/MouseService.h"
-#include "input/MoCapService.h"
-#include "input/TrackIRService.h"
-#include "input/PQService.h"
+#include "omega/Application.h"
+#include "omega/Config.h"
+#include "omega/EqualizerDisplaySystem.h"
+#include "omega/GLUTDisplaySystem.h"
+#include "omega/InputManager.h"
+#include "omega/Observer.h"
+#include "omega/SystemManager.h"
+#include "omega/gfx/GfxUtils.h"
+#include "omega/input/MouseService.h"
+#include "omega/input/MoCapService.h"
+#include "omega/input/TrackIRService.h"
+#include "omega/input/PQService.h"
 #endif

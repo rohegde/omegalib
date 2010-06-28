@@ -1,5 +1,5 @@
-#include "input/MoCapService.h"
-#include "SystemManager.h"
+#include "omega/input/MoCapService.h"
+#include "omega/SystemManager.h"
 #include <math.h>
 
 using namespace omega;

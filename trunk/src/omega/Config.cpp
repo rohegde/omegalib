@@ -9,10 +9,10 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Implementation of Config class methods. See Config.h for detailed information.
  *********************************************************************************************************************/
-#include "Config.h"
+#include "omega/Config.h"
 
 // Libconfig
-#include "libconfig.hh"
+#include "libconfig/libconfig.hh"
 
 using namespace omega;
 

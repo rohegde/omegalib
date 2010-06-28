@@ -9,8 +9,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "input/PQService.h"
-#include "SystemManager.h"
+#include "omega/input/PQService.h"
+#include "omega/SystemManager.h"
 
 using namespace omega;
 
@@ -326,7 +326,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->serviceId = InputService::Touch;
 		evt->x = tp.x;
 		evt->y = tp.y;
-		evt->id = tp.id;
+		evt->sourceId = tp.id;
 
 		myInstance->UnlockEvents();
 		

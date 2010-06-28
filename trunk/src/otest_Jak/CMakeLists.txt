@@ -31,8 +31,15 @@ ADD_EXECUTABLE( otest ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( otest
-    omega
-)
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+	SET(LIBS ${PROJECT_SOURCE_DIR}/lib/${OUT_DIR_DEBUG});
+	TARGET_LINK_LIBRARIES( otest
+		${LIBS}/omega)
+ELSE
+	SET(LIBS ${PROJECT_SOURCE_DIR}/lib/${OUT_DIR_RELEASE});
+	TARGET_LINK_LIBRARIES( otest
+		${LIBS}/omega)
+ENDIF(CMAKE_BUILD_TYPE MATCHES Debug)
+
 
 
