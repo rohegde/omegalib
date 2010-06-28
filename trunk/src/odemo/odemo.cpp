@@ -42,7 +42,19 @@ public:
 		glRotated(rz, 0, 0, 1);
 		glRotated(rx, 1, 0, 0);
 
-		GfxUtils::DrawSolidTeapot(0.3f);
+		glPushMatrix();
+		glTranslatef(-2.0,5.0,0.0);
+
+		switch( CURRENT_OBJECT ){
+			case(TEAPOT):
+				GfxUtils::DrawSolidTeapot(0.3f);
+				break;
+			default:
+				DrawBox();
+				break;
+		}// switch
+
+		glPopMatrix();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +70,40 @@ public:
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		GfxUtils::DrawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
+		// Control Panel Boundary
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		glBegin(GL_LINES);
+			glVertex2f(200, 0);
+			glVertex2f(200, 1080);
+		glEnd();
+		glBegin(GL_LINES);
+			glVertex2f(0, 540);
+			glVertex2f(200, 540);
+		glEnd();
+		
+		// Create texture from viewport
+		int viewport[4];
+		glGetIntegerv(GL_VIEWPORT,(int*)viewport);
+
+		// Region that should be painted on
+		// Canvas upper left is at (800,400), canvas width/height is 400
+		glEnable( GL_TEXTURE_2D );
+		glBindTexture( GL_TEXTURE_2D, texture );
+
+		glBegin(GL_LINE_LOOP);
+			glTexCoord2d(0.0,1.0); glVertex2f(800, 400);
+			glTexCoord2d(0.0,0.0); glVertex2f(800, 800);
+			glTexCoord2d(1.0,0.0); glVertex2f(1200, 800);
+			glTexCoord2d(1.0,1.0); glVertex2f(1200, 400);
+		glEnd();
+		glDisable( GL_TEXTURE_2D );
+
+		glBindTexture( GL_TEXTURE_2D, texture );
+		glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 0, 0, xSize, ySize, 0 );
+
+		glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
+
+		// Last Touch/Mouse point
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (5.0);
 		glBegin(GL_POINTS);
@@ -89,7 +135,8 @@ public:
 				case InputService::Pointer:
 					x = evt.x;
 					y = evt.y;
-					//printf("touchin x:%f, y:%f\n", x ,y);
+					ControlPanel_OnInput( x, y );
+					printf("received touchevent x:%f, y:%f\n", x ,y);
 					break;
 
 				case InputService::Mocap:
@@ -120,6 +167,113 @@ public:
 		}
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void ControlPanel_OnInput( float x, float y ){
+		if( x <= 200 ){ // Panel width
+			if( y < 540 ){ // Top button
+				CURRENT_OBJECT = TEAPOT;
+			} else if( y > 540 ){ //Bottom button
+				CURRENT_OBJECT = -1;
+			}// if-else
+		}// if
+	}// ControlPanel_OnInput
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void DrawBox(){
+		bool isWire = false;
+		float baseWidth = 0.5;
+		float height = 0.5;
+
+		GLfloat border_color[] = { 0.0, 1.0, 1.0, 1.0 };
+		glTexParameterfv(GL_TEXTURE_2D,GL_TEXTURE_BORDER_COLOR, border_color );
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+		glEnable( GL_TEXTURE_2D );
+		glBindTexture( GL_TEXTURE_2D, texture );
+
+			// base
+		if(isWire) glBegin(GL_LINE_LOOP);
+		else glBegin(GL_POLYGON);
+		glNormal3d( 0.0, -1.0, 0.0 );
+		glTexCoord2d(0.0,0.0); glVertex3d(  baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 1
+		glTexCoord2d(1.0,0.0); glVertex3d( -baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 0
+		glTexCoord2d(1.0,1.0); glVertex3d( -baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 3
+		glTexCoord2d(0.0,1.0); glVertex3d(  baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 2
+		glEnd( );
+
+		// top
+		if(isWire) glBegin(GL_LINE_LOOP);
+		else glBegin(GL_POLYGON);
+		glNormal3d( 0.0, 1.0, 0.0 );
+		glTexCoord2d(0.0,0.0); glVertex3d( -baseWidth/2.0, height,  baseWidth/2.0 ); // 4
+		glTexCoord2d(1.0,0.0); glVertex3d(  baseWidth/2.0, height,  baseWidth/2.0 ); // 5
+		glTexCoord2d(1.0,1.0); glVertex3d(  baseWidth/2.0, height, -baseWidth/2.0 ); // 6
+		glTexCoord2d(0.0,1.0); glVertex3d( -baseWidth/2.0, height, -baseWidth/2.0 ); // 7
+		glEnd( );
+
+		// back
+		if(isWire) glBegin(GL_LINE_LOOP);
+		else glBegin(GL_POLYGON);
+		glNormal3d( 0.0, 0.0, -1.0 );
+		glTexCoord2d(0.0,0.0); glVertex3d(  baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 2
+		glTexCoord2d(1.0,0.0); glVertex3d( -baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 3
+		glTexCoord2d(1.0,1.0); glVertex3d( -baseWidth/2.0, height, -baseWidth/2.0 ); // 7
+		glTexCoord2d(0.0,1.0); glVertex3d(  baseWidth/2.0, height, -baseWidth/2.0 ); // 6
+		glEnd( );
+
+		// left
+		if(isWire) glBegin(GL_LINE_LOOP);
+		else glBegin(GL_POLYGON);
+		glNormal3d( -1.0, 0.0, 0.0 );
+		glTexCoord2d(0.0,0.0); glVertex3d(  baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 1
+		glTexCoord2d(1.0,0.0); glVertex3d(  baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 2
+		glTexCoord2d(1.0,1.0); glVertex3d(  baseWidth/2.0, height, -baseWidth/2.0 ); // 6
+		glTexCoord2d(0.0,1.0); glVertex3d(  baseWidth/2.0, height,  baseWidth/2.0 ); // 5
+		glEnd( );
+
+		// front
+		if(isWire) glBegin(GL_LINE_LOOP);
+		else glBegin(GL_POLYGON);
+		glNormal3d( 0.0, 0.0, 1.0 );
+		glTexCoord2d(0.0,0.0); glVertex3d( -baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 0
+		glTexCoord2d(1.0,0.0); glVertex3d(  baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 1
+		glTexCoord2d(1.0,1.0); glVertex3d(  baseWidth/2.0, height,  baseWidth/2.0 ); // 5
+		glTexCoord2d(0.0,1.0); glVertex3d( -baseWidth/2.0, height,  baseWidth/2.0 ); // 4
+		glEnd( );
+
+		// right
+		if(isWire) glBegin(GL_LINE_LOOP);
+		else glBegin(GL_POLYGON);
+		glNormal3d( 1.0, 0.0, 0.0 );
+		glTexCoord2d(0.0,0.0); glVertex3d( -baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 3
+		glTexCoord2d(1.0,0.0); glVertex3d( -baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 0
+		glTexCoord2d(1.0,1.0); glVertex3d( -baseWidth/2.0, height,  baseWidth/2.0 ); // 4
+		glTexCoord2d(0.0,1.0); glVertex3d( -baseWidth/2.0, height, -baseWidth/2.0 ); // 7
+		glEnd( );
+
+		glDisable( GL_TEXTURE_2D );
+	}// DrawBox
+
+	// Creates a texture that will be mapped to object
+	void CreateTexture(){
+		xSize = ySize = 256;
+		char* colorBits = new char[ xSize * ySize * 3];
+
+		// Generate texture
+		glGenTextures( 1, &texture );
+		glBindTexture( GL_TEXTURE_2D, texture );
+
+		glTexImage2D( GL_TEXTURE_2D, 0, 3, xSize, ySize, 0, GL_RGB, GL_UNSIGNED_BYTE, colorBits );
+
+		delete[] colorBits;
+
+	}// Create Texture
+
 private:
 	float rx;
 	float ry;
@@ -127,6 +281,15 @@ private:
 
 	float x;
 	float y;
+
+	static const int TEAPOT = 0;
+	static const int BOX = 1;
+	int CURRENT_OBJECT;
+
+	// Texture Drawing
+	int xSize, ySize; // Size of texture
+	unsigned int texture;
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,6 +321,7 @@ void main(int argc, char** argv)
 	sys->Setup(cfg);
 
 	TestApplication app;
+	app.CreateTexture();
 	sys->SetApplication(&app);
 
 	sys->SetDisplaySystem(new EqualizerDisplaySystem());
@@ -165,7 +329,7 @@ void main(int argc, char** argv)
 	sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
-	//sys->GetInputManager()->AddService(new PQService());
+	sys->GetInputManager()->AddService(new PQService());
 
 	sys->Initialize();
 
