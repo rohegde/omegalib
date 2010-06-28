@@ -9,7 +9,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Implementation of Config class methods. See Config.h for detailed information.
  *********************************************************************************************************************/
-#include "Observer.h"
+#include "omega/Observer.h"
 
 using namespace omega;
 

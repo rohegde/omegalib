@@ -32,7 +32,6 @@ ADD_EXECUTABLE( otest ${srcs} ${headers})
 #######################################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( otest
-    omega
-)
+	omega)
 
 

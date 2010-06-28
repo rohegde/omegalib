@@ -9,11 +9,12 @@
  *---------------------------------------------------------------------------------------------------------------------
  * EqualizerDisplaySystem method implementation. See EqualizerDisplaySystem.h for more details.
  *********************************************************************************************************************/
-#include "Application.h"
-#include "Config.h"
-#include "EqualizerDisplaySystem.h"
-#include "SystemManager.h"
-#include "input/MouseService.h"
+#include "omega/Application.h"
+#include "omega/Config.h"
+#include "omega/EqualizerDisplaySystem.h"
+#include "omega/SystemManager.h"
+
+#include "omega/input/MouseService.h"
 
 using namespace omega;
 using namespace eq::base;

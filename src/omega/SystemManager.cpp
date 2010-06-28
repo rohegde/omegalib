@@ -9,9 +9,9 @@
  *---------------------------------------------------------------------------------------------------------------------
  * omega functions implementation. See omega.h for more details.
  *********************************************************************************************************************/
-#include "DisplaySystem.h"
-#include "InputManager.h"
-#include "SystemManager.h"
+#include "omega/DisplaySystem.h"
+#include "omega/InputManager.h"
+#include "omega/SystemManager.h"
 
 using namespace omega;
 

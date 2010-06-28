@@ -1,8 +1,6 @@
 #Equalizer 1.0 ascii
 
-# Simple tracked 3d view for a laptop.
-# assuming we have a standard 15.4'' 16:10 screen on a desk, about 50cm away from the user.
-# screen resolution is considered full HD (1920 * 1080). Change the viewport entry in the window section if your laptop screen resolution is different.
+# four-window configuration showing all Equalizer features
 global
 {
     EQ_WINDOW_IATTR_PLANES_STENCIL ON
@@ -21,7 +19,7 @@ server
                 window
                 {
                     name     "window1"
-                    viewport [ 1920 0 1920 1080 ]
+                    viewport [ 0 0 1920 1080 ]
                     channel { name "channel1"  }
                 }
             }
@@ -39,12 +37,6 @@ server
                 observer "observer1"
                 
                 viewport [ 0 0 1 1 ]
-                wall
-                {
-                    bottom_left  [ -.5 -.5 -1 ]
-                    bottom_right [  .5 -.5 -1 ]
-                    top_left     [ -.5  .5 -1 ]
-                }
             }
         }
 
@@ -55,9 +47,9 @@ server
 
             wall
             {
-                bottom_left  [ -.5 -.5 -1 ]
-                bottom_right [  .5 -.5 -1 ]
-                top_left     [ -.5  .5 -1 ]
+                bottom_left  [ -.4 -.3 -.5 ]
+                bottom_right [  .4 -.3 -.5 ]
+                top_left     [ -.4  .0 -.5 ]
             }
 
             segment

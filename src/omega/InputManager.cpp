@@ -9,8 +9,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * InputManager members implementation. See InputManager.h for more details.
  *********************************************************************************************************************/
-#include "Application.h"
-#include "InputManager.h"
+#include "omega/Application.h"
+#include "omega/InputManager.h"
 
 using namespace omega;
 using namespace std;
