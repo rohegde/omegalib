@@ -92,12 +92,12 @@ IF(OMEGA_USE_PQLABS)
 	ADD_DEFINITIONS( -DOMEGA_USE_PQLABS)
 ENDIF(OMEGA_USE_PQLABS)
 
-#SET(OMEGA_USE_NETINPUT true CACHE BOOL "Enable/disable Network input support")
-#IF(OMEGA_USE_NETINPUT)
-#	SET( srcs	 ${srcs} input/PQService.cpp )
-#	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/PQService.h )
-#	ADD_DEFINITIONS( -DOMEGA_USE_PQLABS)
-#ENDIF(OMEGA_USE_NETINPUT)
+SET(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
+IF(OMEGA_USE_NETINPUT)
+	SET( srcs	 ${srcs} input/NetService.cpp )
+	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
+	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
+ENDIF(OMEGA_USE_NETSERVICE)
 
 #######################################################################################################################
 # Setup compile info

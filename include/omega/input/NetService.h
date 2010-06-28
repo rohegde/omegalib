@@ -9,25 +9,22 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __GLUT_MOUSE__SERVICE_H__
-#define __GLUT_MOUSE__SERVICE_H__
+#ifndef __NET_SERVICE_H__
+#define __NET_SERVICE_H__
 
-#include "osystem.h"
-#include "InputManager.h"
+#include "omega/osystem.h"
+#include "omega/InputManager.h"
 
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class MouseService: public InputService
+class NetService: public InputService
 {
 public:
-	static void mouseMotionCallback(int x, int y);
-
-	virtual void Initialize();
-	virtual void Dispose();
+	OMEGA_API virtual void Initialize();
+	OMEGA_API virtual void Dispose();
 
 private:
-	static MouseService* myInstance;
 };
 
 }; // namespace omega
