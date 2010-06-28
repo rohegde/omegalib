@@ -37,12 +37,6 @@ server
                 observer "observer1"
                 
                 viewport [ 0 0 1 1 ]
-                wall
-                {
-                    bottom_left  [ -.5 -.5 -1 ]
-                    bottom_right [  .5 -.5 -1 ]
-                    top_left     [ -.5  .5 -1 ]
-                }
             }
         }
 
@@ -51,12 +45,12 @@ server
         {
             layout "MultiView"
 
-            wall
-            {
-                bottom_left  [ -.5 -.5 -1 ]
-                bottom_right [  .5 -.5 -1 ]
-                top_left     [ -.5  .5 -1 ]
-            }
+			wall
+			{
+					bottom_left  [ -.4074 1.16 -0.8128 ]
+					bottom_right [  .6106 1.16 -0.8128 ]
+					top_left     [ -.4074 1.80 -0.8128 ]
+			}
 
             segment
             {
