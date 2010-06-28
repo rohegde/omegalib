@@ -10,6 +10,8 @@
  * Test executable
  *********************************************************************************************************************/
 #include "omega.h"
+#include "omega/input/MouseService.h"
+#include "omega/input/PQService.h"
 
 using namespace omega;
 using namespace omega::gfx;
@@ -326,10 +328,10 @@ void main(int argc, char** argv)
 
 	sys->SetDisplaySystem(new EqualizerDisplaySystem());
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	sys->GetInputManager()->AddService(new MoCapService());
+	//sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
 	//sys->GetInputManager()->AddService(new TrackIRService());
-	sys->GetInputManager()->AddService(new PQService());
+	//sys->GetInputManager()->AddService(new PQService());
 
 	sys->Initialize();
 
