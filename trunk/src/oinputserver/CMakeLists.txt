@@ -11,15 +11,27 @@
 # *********************************************************************************************************************/
 
 #######################################################################################################################
-# Directories needed for compilation
-INCLUDE_DIRECTORIES(
-  ${OmegaLib_SOURCE_DIR}/include/
-)
+# Compile definitions
+ADD_DEFINITIONS( )
 
 #######################################################################################################################
-# Add subdirectiories
-ADD_SUBDIRECTORY(3rdparty/libconfig)
-ADD_SUBDIRECTORY(omega)
-ADD_SUBDIRECTORY(otest)
-ADD_SUBDIRECTORY(odemo)
-ADD_SUBDIRECTORY(oinputserver)
+# Source files
+SET( srcs 
+        oinputserver.cpp
+        )
+    
+#######################################################################################################################
+# Headers
+SET( headers 
+        ) 
+        
+#######################################################################################################################
+# Setup compile info
+ADD_EXECUTABLE( oinputserver ${srcs} ${headers})
+
+#######################################################################################################################
+# Setup link info.
+TARGET_LINK_LIBRARIES( oinputserver
+	omega)
+
+

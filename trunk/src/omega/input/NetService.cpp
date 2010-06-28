@@ -7,35 +7,18 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#ifndef __TRACKIR__SERVICE_H__
-#define __TRACKIR__SERVICE_H__
+#include "omega/input/NetService.h"
 
-#include "osystem.h"
-#include "InputManager.h"
+using namespace omega;
 
-#include "optitrack.h"
-#import  "optitrack.tlb"
-
-namespace omega
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class TrackIRService: public InputService
+void NetService::Initialize() 
 {
-public:
+}
 
-	virtual void Initialize();
-	virtual void Start();
-	virtual void Poll();
-	virtual void Stop();
-	virtual void Dispose();
-
-private:
-    CComPtr<INPCamera>	myCamera;
-	CComPtr<INPVector3> myVector;
-};
-
-}; // namespace omega
-
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void NetService::Dispose() 
+{
+}
