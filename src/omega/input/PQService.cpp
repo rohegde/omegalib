@@ -16,7 +16,7 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PQService* PQService::myInstance = NULL;
-int PQService::maxBlobSize = 15;
+int PQService::maxBlobSize = 1000;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::Initialize( ) 
@@ -24,7 +24,7 @@ void PQService::Initialize( )
 	myInstance = this;
 	
 	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
-	server_ip = "131.193.77.116";
+	server_ip = "131.193.77.102";
 	mostRecentDataString[0] = NULL; // Cleans up string
 	newDataFlag = false;
 	Init();
