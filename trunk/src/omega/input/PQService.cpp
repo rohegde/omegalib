@@ -17,6 +17,7 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PQService* PQService::myInstance = NULL;
 int PQService::maxBlobSize = 1000;
+int PQService::maxTouches = 1000; // Number of IDs assigned before resetting. Should match touchID array initialization
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::Initialize( ) 
@@ -27,6 +28,12 @@ void PQService::Initialize( )
 	server_ip = "131.193.77.102";
 	mostRecentDataString[0] = NULL; // Cleans up string
 	newDataFlag = false;
+
+	nextID = 0;
+	for(int i = 0; i < maxTouches; i++){
+		touchID[i] = 0;
+	}
+
 	Init();
 }
 
@@ -315,6 +322,12 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		{
 			case TP_DOWN:
 				evt->type = InputEvent::Down;
+				touchID[tp.id] = nextID;
+				if( nextID < maxTouches - 100 ){
+					nextID++;
+				} else {
+					nextID = 0;
+				}
 				break;
 			case TP_MOVE:
 				evt->type = InputEvent::Move;
@@ -326,7 +339,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->serviceId = InputService::Touch;
 		evt->x = tp.x;
 		evt->y = tp.y;
-		evt->sourceId = tp.id;
+		evt->sourceId = touchID[tp.id];
 
 		myInstance->UnlockEvents();
 		
@@ -351,7 +364,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	}
 
 	// Add ID to string
-	_itoa(tp.id,buffer,10); // int to char
+	_itoa(touchID[tp.id],buffer,10); // int to char
 	strcat(mostRecentDataString,buffer);
 
 	strcat(mostRecentDataString," ");

@@ -40,7 +40,10 @@ namespace omega
 		char* server_ip;
 		char mostRecentDataString[100];
 		bool newDataFlag;
-		
+		int touchID[1000]; // Max IDs assigned before resetting
+		static int maxTouches; // Should be same number as touchID array init
+		static int nextID;
+
 		void ClearDataString();
 
 		//////////////////////call back functions///////////////////////
