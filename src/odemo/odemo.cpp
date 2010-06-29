@@ -121,44 +121,6 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void Draw(DrawContext& context)
 	{
-		int av = GetInputManager()->GetAvailableEvents();
-		int ls = GetInputManager()->GetDroppedEvents();
-		if(av != 0)
-		{
-			InputEvent evts[InputManager::MaxEvents];
-			GetInputManager()->GetEvents(evts, InputManager::MaxEvents);
-		
-			for( int evtNum = 0; evtNum < av; evtNum++)
-			{
-				InputEvent &evt = evts[evtNum];
-				switch(evt.serviceType)
-				{
-				case InputService::Touch:
-				case InputService::Pointer:
-					x = evt.x;
-					y = evt.y;
-					ControlPanel_OnInput( x, y );
-					printf("received touchevent x:%f, y:%f\n", x ,y);
-					break;
-
-				case InputService::Mocap:
-					//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
-					//{
-					//	rx = evt.rx * radToDegree;
-					//	ry = evt.ry * radToDegree;
-					//	rz = evt.rz * radToDegree;
-					printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
-					printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
-					//}
-					break;
-
-				default: break;
-				}
-			}
-		}
-
-		//printf("Viewport: %d %d %d %d\n", context.viewportX, context.viewportY, context.viewportWidth, context.viewportHeight);
-
 		switch(context.layer)
 		{
 			case 0:
@@ -167,6 +129,33 @@ public:
 			case 1:
 				Draw2D(context);
 		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual bool HandleEvent(const InputEvent& evt)
+	{
+		switch(evt.serviceType)
+		{
+		case InputService::Touch:
+		case InputService::Pointer:
+			x = evt.x;
+			y = evt.y;
+			ControlPanel_OnInput( x, y );
+			printf("received touchevent x:%f, y:%f\n", x ,y);
+			return true;
+
+		case InputService::Mocap:
+			//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
+			//{
+			//	rx = evt.rx * radToDegree;
+			//	ry = evt.ry * radToDegree;
+			//	rz = evt.rz * radToDegree;
+			printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
+			printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
+			//}
+			return true;
+		}
+		return false;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,14 +286,10 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	// TODO: Logging does not work with visual studio 2010, apparently because of incompatibilities betwen VC9 and VC10 standard
-	// libraries (Equalizer included binaries are compiled with VC9 as for now).
-	OMEGA_LOG_INIT_FILE("odemo.txt");
-
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegalaptop.eqc");
 
 	//cfg->Load();
 
