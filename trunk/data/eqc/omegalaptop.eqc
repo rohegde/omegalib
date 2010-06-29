@@ -20,7 +20,7 @@ server
                 window
                 {
                     name     "window1"
-                    viewport [ 0 0 960 1080 ]
+                    viewport [ 0 540 1920 540 ]
                     channel { name "channel1"  }
                 }
             }
@@ -31,16 +31,11 @@ server
                 window
                 {
                     name     "window2"
-                    viewport [ 960 0 960 1080 ]
+                    viewport [ 0 0 1920 540 ]
                     channel 
                     { 
-						viewport [0 0 .5 1]
-						name "channel2left"  
-					}
-                    channel 
-                    { 
-						viewport [.5 0 .5 1]
-						name "channel2right"  
+						viewport [0 0 1 1]
+						name "channel2"  
 					}
                 }
             }
@@ -58,21 +53,13 @@ server
             view
             {
                 name "view2D"
-                
+                observer "observer0"
                 viewport [ 0 0 1 .5 ]
-                wall
-                {
-                    bottom_left  [ -.5 -.5 -1 ]
-                    bottom_right [  .5 -.5 -1 ]
-                    top_left     [ -.5  .5 -1 ]
-                }
             }
             view
             {
                 name "view3D"
-                
                 observer "observer0"
-                
                 viewport [ 0 .5 1 .5 ]
             }
         }
@@ -86,22 +73,17 @@ server
             {
                 viewport [ 0 0 1 .5 ]
                 channel "channel1"
-            }
-            segment
-            {
-                viewport [ 0 .5 1 .5 ]
-                channel "channel2left"
 				wall
 				{
-						bottom_left  [ -.4074 1.16 -0.8128 ]
-						bottom_right [  .6106 1.16 -0.8128 ]
-						top_left     [ -.4074 1.80 -0.8128 ]
+						bottom_left  [ -.4074 .52 -0.8128 ]
+						bottom_right [  .6106 .52 -0.8128 ]
+						top_left     [ -.4074 1.16 -0.8128 ]
 				}
             }
             segment
             {
                 viewport [ 0 .5 1 .5 ]
-                channel "channel2right"
+                channel "channel2"
 				wall
 				{
 						bottom_left  [ -.4074 1.16 -0.8128 ]
@@ -121,14 +103,8 @@ server
             }
             compound
             {
-				eye [ LEFT ]
                 channel ( segment 1 layout "MultiView" view 1 )
                 swapbarrier {}
-            }
-            compound
-            {
-				eye [ RIGHT ]
-                channel ( segment 2 layout "MultiView" view 1 )
             }
         }
     }

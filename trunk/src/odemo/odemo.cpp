@@ -85,7 +85,7 @@ public:
 		
 		// Create texture from viewport
 		int viewport[4];
-		glGetIntegerv(GL_VIEWPORT,(int*)viewport);
+		//glGetIntegerv(GL_VIEWPORT,(int*)viewport);
 
 		// Region that should be painted on
 		// Canvas upper left is at (800,400), canvas width/height is 400
@@ -103,7 +103,7 @@ public:
 		glBindTexture( GL_TEXTURE_2D, texture );
 		glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 0, 0, xSize, ySize, 0 );
 
-		glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
+		//glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
 
 		// Last Touch/Mouse point
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
@@ -150,8 +150,8 @@ public:
 			//	rx = evt.rx * radToDegree;
 			//	ry = evt.ry * radToDegree;
 			//	rz = evt.rz * radToDegree;
-			printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
-			printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
+			//printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
+			//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
 			//}
 			return true;
 		}

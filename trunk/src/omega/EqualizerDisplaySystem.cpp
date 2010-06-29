@@ -101,8 +101,8 @@ public:
 		{
         case eq::Event::POINTER_MOTION:
 			{
-				x += event->data.pointerMotion.dx;
-				y += event->data.pointerMotion.dy;
+				x = event->data.pointerMotion.x;
+				y = event->data.pointerMotion.y;
 				MouseService::mouseMotionCallback(x, y);
 				return true;
 			}

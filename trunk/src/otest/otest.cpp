@@ -11,9 +11,13 @@
  *********************************************************************************************************************/
 #include "omega.h"
 #include "omega/input/MouseService.h"
+#include "omega/input/MoCapService.h"
+#include "omega/input/TrackIRService.h"
 
 using namespace omega;
 using namespace omega::gfx;
+
+#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
@@ -47,45 +51,50 @@ public:
 		float zz = sin(i) * 0.4;
 		float xx = cos(i * 1.2) * 0.3;
 		float yy = cos(i * 0.7) * 0.1;
-		i += 0.03;
+		i += 0.02;
 
 		glPushMatrix();
-		glTranslatef(x, y, -1.2 + z * 2);
+		glTranslatef(x, y, -1.6 + z * 2);
 		glRotated(i * 3, 0, 1, 0);
 		GfxUtils::DrawSolidTeapot(0.1f);
 		glPopMatrix();
 
-
 		glPushMatrix();
-		glTranslatef(0.3 + xx, 1.3 + yy, -2 + zz);
+		glTranslatef(0.3 + xx, 0.8 + yy, -1.6 + zz);
 		glutSolidSphere(0.1f, 20, 20);
 		glPopMatrix();
 
+		DrawRoom(0.5f, 1.9f, -0.407f, 0.61f, 0, -3);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void DrawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
+	{
 		glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_TRIANGLE_STRIP);
-		glVertex3f(-0.4074, 1.16, -0.8128);
-		glVertex3f( 0.6106, 1.16, -0.8128);
-		glVertex3f(-0.4074, 1.16, -3.8128);
-		glVertex3f( 0.6106, 1.16, -3.8128);
+		glVertex3f(left, bottom, nearEnd);
+		glVertex3f(right, bottom, nearEnd);
+		glVertex3f(left, bottom, farEnd);
+		glVertex3f(right, bottom, farEnd);
 		glEnd();
 
 		glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_LINES);
-		for(float y = 1.16; y < 1.8; y += 0.05)
+		for(float y = bottom; y < top; y += 0.05)
 		{
-			glVertex3f(-0.4074, y, -0.8128);
-			glVertex3f(-0.4074, y, -10.8128);
-			glVertex3f( 0.6106, y, -0.8128);
-			glVertex3f( 0.6106, y, -10.8128);
+			glVertex3f(left, y, nearEnd);
+			glVertex3f(left, y, farEnd);
+			glVertex3f(right, y, nearEnd);
+			glVertex3f(right, y, farEnd);
 		}
 
 		glEnd();
 		glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_TRIANGLE_STRIP);
-		glVertex3f(-0.4074, 1.8, -0.8128);
-		glVertex3f( 0.6106, 1.8, -0.8128);
-		glVertex3f(-0.4074, 1.8, -3.8128);
-		glVertex3f( 0.6106, 1.8, -3.8128);
+		glVertex3f(left, top, nearEnd);
+		glVertex3f(right, top, nearEnd);
+		glVertex3f(left, top, farEnd);
+		glVertex3f(right, top, farEnd);
 		glEnd();
 	}
 
@@ -182,7 +191,7 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegalaptop.eqc");
 
 	//cfg->Load();
 
@@ -207,32 +216,25 @@ void main(int argc, char** argv)
 	//sys->SetDisplaySystem(new GLUTDisplaySystem());
 	//sys->GetInputManager()->AddService(new MoCapService());
 	sys->GetInputManager()->AddService(new MouseService());
-	//sys->GetInputManager()->AddService(new TrackIRService());
+	sys->GetInputManager()->AddService(new TrackIRService());
 	//sys->GetInputManager()->AddService(new PQService());
 
 	sys->Initialize();
 
 	sys->GetDisplaySystem()->SetLayerEnabled(0, "view3D", true);
-	//sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+	sys->GetDisplaySystem()->SetLayerEnabled(0, "view2D", true);
+	sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
 
+#ifdef LAPTOP
 	Observer* obs = sys->GetDisplaySystem()->GetObserver(0);
-	float s = 1;
     Matrix4f m( eq::Matrix4f::IDENTITY );
-    m.scale( s, s, 1 );
 	Vector3f pos;
 	pos.x() = 0;
-	pos.y() = 0;
+	pos.y() = 1.7f;
 	pos.z() = 0;
 	m.set_translation(pos);
-
-
 	obs->SetWorldToEmitter(m);
-
-    m = eq::Matrix4f::IDENTITY;
-    //m.rotate_z( -M_PI_2 );
-	obs->SetSensorToObject(m);
-
-	obs->Update(0, 1.5, 0, 0, 0, 0);
+#endif LAPTOP
 
 	sys->Run();
 
