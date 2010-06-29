@@ -147,9 +147,10 @@ void TrackIRService::Poll()
 			//	evt->type = OM_EVENT_MOVE;
 			evt->serviceType = InputService::Mocap;
 
-			evt->x = x.dblVal / 100.0f;
-			evt->y = y.dblVal  / 100.0f;
-			evt->z = z.dblVal  / 100.0f;
+			evt->sourceId = 1;
+			evt->x = -x.dblVal / 1000.0f;
+			evt->y = y.dblVal  / 1000.0f;
+			evt->z = z.dblVal  / 1000.0f;
 			evt->rx = pitch.dblVal * degreeToRad;
 			evt->ry = yaw.dblVal  * degreeToRad;
 			evt->rz = roll.dblVal  * degreeToRad;
