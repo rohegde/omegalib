@@ -336,7 +336,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				evt->type  = InputEvent::Up;
 				break;
 		}		
-		evt->serviceId = InputService::Touch;
+		evt->serviceType = InputService::Touch;
 		evt->x = tp.x;
 		evt->y = tp.y;
 		evt->sourceId = touchID[tp.id];
@@ -391,8 +391,8 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	_itoa(yWidth,buffer,10);
 	strcat(mostRecentDataString,buffer);
 
-	if( newDataFlag )
-		printf("%s \n",mostRecentDataString);
+	/*if( newDataFlag )
+		printf("%s \n",mostRecentDataString);*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

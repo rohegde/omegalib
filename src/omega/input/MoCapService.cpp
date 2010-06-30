@@ -113,14 +113,14 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				theEvent->rx = 0.0;
 				theEvent->ry = 0.0;
 				theEvent->rz = 0.0;
-				for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
-				{
-					Point aPoint;
-					aPoint.x = 0.0;
-					aPoint.y = 0.0;
-					aPoint.z = 0.0;
-					theEvent->markerSet.push_back ( aPoint);
-				}
+				//for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
+				//{
+				//	Point aPoint;
+				//	aPoint.x = 0.0;
+				//	aPoint.y = 0.0;
+				//	aPoint.z = 0.0;
+				//	theEvent->markerSet.push_back ( aPoint);
+				//}
 				continue;
 			}
 
@@ -135,14 +135,14 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 
 			//get makerset data (the points that define the rigid body)
 			int numberOfMarkers = data->RigidBodies[i].nMarkers;
-			for( int j = 0; j < numberOfMarkers; j++)
-			{
-				Point aPoint;
-				aPoint.x = data->RigidBodies[i].Markers[j][0];
-				aPoint.y = data->RigidBodies[i].Markers[j][1];
-				aPoint.z = data->RigidBodies[i].Markers[j][2];
-				theEvent->markerSet.push_back ( aPoint);
-			}
+			//for( int j = 0; j < numberOfMarkers; j++)
+			//{
+			//	Point aPoint;
+			//	aPoint.x = data->RigidBodies[i].Markers[j][0];
+			//	aPoint.y = data->RigidBodies[i].Markers[j][1];
+			//	aPoint.z = data->RigidBodies[i].Markers[j][2];
+			//	theEvent->markerSet.push_back ( aPoint);
+			//}
 
 			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
 			if ( isEuler )
