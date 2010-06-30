@@ -31,6 +31,9 @@ public:
 
 protected:
     virtual void frameDraw( const uint32_t spin );
+
+private:
+	DrawContext context;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +123,7 @@ public:
 		{
 			Observer* obs  = ds->GetObserver(i);
 			getObservers().at(i)->setHeadMatrix(obs->GetHeadMatrix());
-			getObservers().at(i)->setEyeBase(0.03f);
+			getObservers().at(i)->setEyeBase(0.008f);
 		}
 
 		// Process events.
@@ -162,7 +165,6 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerChannel::frameDraw( const uint32_t spin )
 {
-	static DrawContext context;
 
     EqualizerView* view  = static_cast< EqualizerView* > (const_cast< eq::View* >( getView( )));
 
@@ -178,15 +180,12 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 		float dt = t - lt;
 		lt = t;
 
-		// Setup POV and other GL parameters to keep consistency with GLUT renderer
-		glDisable(GL_COLOR_MATERIAL);
-		glDisable(GL_LIGHTING);
-
 		app->Update(dt);
 
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// Setup the context viewport.
+		context.frameNum = spin;
 		context.viewportX = pvp.x;
 		context.viewportY = pvp.y;
 		context.viewportWidth = pvp.w;

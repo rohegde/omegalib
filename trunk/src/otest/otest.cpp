@@ -12,12 +12,13 @@
 #include "omega.h"
 #include "omega/input/MouseService.h"
 #include "omega/input/MoCapService.h"
+#include "omega/input/PQService.h"
 #include "omega/input/TrackIRService.h"
 
 using namespace omega;
 using namespace omega::gfx;
 
-#define LAPTOP
+//#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
@@ -28,11 +29,19 @@ public:
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
-		const float lightPos[] = { 0.0f, 0.6f, 1.0f, 0.0f };
+
+
+
+		//const float lightPos[] = { 0.0f, 1.6f, 0.0f, 0.0f };
+		const float lightPos[] = { lx, ly, lz, 1.0f };
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
 
-		const float lightAmbient[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const float lightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
+		glLightfv( GL_LIGHT0, GL_DIFFUSE, lightDiffuse );
+
+		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
 
 		glEnable(GL_FOG);
 
@@ -43,42 +52,60 @@ public:
 		glFogf(GL_FOG_END, 3);
 
 
-		//glRotated(ry + 3.14f / 2, 0, 1, 0);
-		//glRotated(rz, 0, 0, 1);
-		//glRotated(rx, 1, 0, 0);
-
-		static float i = 0;
-		float zz = sin(i) * 0.4;
+		float i = (float)context.frameNum / 40;
+		float zz = sin(i) * 0.7;
 		float xx = cos(i * 1.2) * 0.3;
-		float yy = cos(i * 0.7) * 0.1;
-		i += 0.02;
+		float yy = 0.5f; //cos(i * 0.7) * 0.1;
 
+		glColor3f(0.5, 0.4, 0.7);
+		glColor3f(0.8, 1.0, 0.8);
 		glPushMatrix();
-		glTranslatef(x, y, -1.6 + z * 2);
+		glTranslatef(-0.2, 0.5, -2.0);
 		glRotated(i * 3, 0, 1, 0);
 		GfxUtils::DrawSolidTeapot(0.1f);
 		glPopMatrix();
 
+		glColor3f(0.7, 0.4, 0.4);
 		glPushMatrix();
-		glTranslatef(0.3 + xx, 0.8 + yy, -1.6 + zz);
+		glTranslatef(0.0, 0.5, -0.7);
+		GfxUtils::DrawSolidTeapot(0.1f);
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslatef(0.3 + xx, 0.0 + yy, -1.6 + zz);
 		glutSolidSphere(0.1f, 20, 20);
 		glPopMatrix();
 
-		DrawRoom(0.5f, 1.9f, -0.407f, 0.61f, 0, -3);
+		glPushMatrix();
+		glTranslatef(mx, my, mz);
+		glRotatef(ry , 0, 1, 0);
+		glRotated(rz, 0, 0, 1);
+		glRotated(rx, 1, 0, 0);
+		glTranslatef(0, 0.1f, 0);
+		GfxUtils::DrawSolidTeapot(0.05f);
+		glPopMatrix();
+
+		glColor3f(1.0, 1.0, 1.0);
+		//DrawRoom(0.0f, 1.9f, -0.407f, 0.61f, 0, -3);
+		DrawRoom(0.2f, 1.8f, -0.59f, 0.59f, 0, -3);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void DrawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
 	{
-		glColor3f(0.3, 1.0, 0.3);
+		//glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3f(0, 1, 0);
 		glVertex3f(left, bottom, nearEnd);
+		glNormal3f(0, 1, 0);
 		glVertex3f(right, bottom, nearEnd);
+		glNormal3f(0, 1, 0);
 		glVertex3f(left, bottom, farEnd);
+		glNormal3f(0, 1, 0);
 		glVertex3f(right, bottom, farEnd);
 		glEnd();
 
-		glColor3f(0.3, 1.0, 0.3);
+		//glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_LINES);
 		for(float y = bottom; y < top; y += 0.05)
 		{
@@ -89,12 +116,24 @@ public:
 		}
 
 		glEnd();
-		glColor3f(0.3, 1.0, 0.3);
+		//glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_TRIANGLE_STRIP);
 		glVertex3f(left, top, nearEnd);
 		glVertex3f(right, top, nearEnd);
 		glVertex3f(left, top, farEnd);
 		glVertex3f(right, top, farEnd);
+		glEnd();
+
+		//glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3f(0, 0, 1);
+		glVertex3f(left, top, farEnd);
+		glNormal3f(0, 0, 1);
+		glVertex3f(right, top, farEnd);
+		glNormal3f(0, 0, 1);
+		glVertex3f(left, bottom, farEnd);
+		glNormal3f(0, 0, 1);
+		glVertex3f(right, bottom, farEnd);
 		glEnd();
 	}
 
@@ -107,7 +146,7 @@ public:
 		GfxUtils::DrawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
-		glPointSize (5.0);
+		glPointSize (8.0);
 		glBegin(GL_POINTS);
 			glVertex2f(x, y);    // lower left vertex
 		glEnd();
@@ -126,50 +165,58 @@ public:
 				break;
 			case 1:
 				Draw2D(context);
+				break;
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual bool HandleEvent(const InputEvent& evt)
 	{
+		double radToDegree = 180.0 / 3.14159265;
+
 		switch(evt.serviceType)
 		{
 		case InputService::Touch:
 		case InputService::Pointer:
 			x = evt.x;
-			y = evt.y;					break;
+			y = evt.y;					
+		break;
 
 		case InputService::Mocap:
 		{
-
-			//GfxUtils::BeginOverlayMode(context);
-
-			//char str[1024];
-			//glColor4f(1.0, 1.0, 0.4, 1.0);
-			//sprintf(str, "head x:%.3f, y:%.3f, z:%.3f rx:%.3f, ry:%.3f, rz:%.3f", evt.x, evt.y, evt.z, evt.rx, evt.ry, evt.rz);
-			//GfxUtils::DrawText(10, 20, str, GfxUtils::Helvetica12);
-
-			//GfxUtils::EndOverlayMode();
-			
-			//evt.z = 0;
 			if(evt.sourceId == 1)
-			{
-				Observer* obs = GetDisplaySystem()->GetObserver(0);
-				obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
-			}
-			else if(evt.sourceId == 3)
 			{
 				if(evt.x != 0 || evt.y != 0)
 				{
-					x = evt.x;
-					y = evt.y;
-					z = evt.z;
+					Observer* obs = GetDisplaySystem()->GetObserver(0);
+					obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 				}
 			}
+			else if(evt.sourceId == 3) //handheld
+			{
+				if(evt.x != 0 || evt.y != 0)
+				{
+					lx = evt.x;
+					ly = evt.y;
+					lz = evt.z;
+				}
+			}
+			else if(evt.sourceId ==2) //glove
+			{
+				if(evt.x != 0 || evt.y != 0)
+				{
+					mx = evt.x;
+					my = evt.y;
+					mz = evt.z;
+					rx = evt.rx * radToDegree;
+					ry = evt.ry * radToDegree;
+					rz = evt.rz * radToDegree;
+				}
+			}
+			break;
 
 			break;
 		}
-
 		default: break;
 		}
 		return true;
@@ -183,6 +230,14 @@ private:
 	float x;
 	float y;
 	float z;
+
+	float mx;
+	float my;
+	float mz;
+
+	float lx;
+	float ly;
+	float lz;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +246,12 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::GetInstance();
 
 	Config* cfg = new Config("../../data/test.cfg");
+
+#ifdef LAPTOP
 	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegalaptop.eqc");
+#else
+	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
+#endif
 
 	//cfg->Load();
 
@@ -213,11 +273,14 @@ void main(int argc, char** argv)
 	sys->SetApplication(&app);
 
 	sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	//sys->GetInputManager()->AddService(new MoCapService());
-	sys->GetInputManager()->AddService(new MouseService());
+
+#ifdef LAPTOP
 	sys->GetInputManager()->AddService(new TrackIRService());
-	//sys->GetInputManager()->AddService(new PQService());
+	sys->GetInputManager()->AddService(new MouseService());
+#else
+	sys->GetInputManager()->AddService(new MoCapService());
+	sys->GetInputManager()->AddService(new PQService());
+#endif
 
 	sys->Initialize();
 
@@ -237,6 +300,5 @@ void main(int argc, char** argv)
 #endif LAPTOP
 
 	sys->Run();
-
 	sys->Cleanup();
 }
