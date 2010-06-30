@@ -18,7 +18,7 @@
 using namespace omega;
 using namespace omega::gfx;
 
-//#define LAPTOP
+#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
@@ -33,7 +33,13 @@ public:
 
 
 		//const float lightPos[] = { 0.0f, 1.6f, 0.0f, 0.0f };
+#ifdef LAPTOP
+		const float lightPos[] = { 0, 1.8, 0, 1.0f };
+		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0 );
+#else
 		const float lightPos[] = { lx, ly, lz, 1.0f };
+		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
+#endif
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
 
 		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -41,7 +47,6 @@ public:
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 		glLightfv( GL_LIGHT0, GL_DIFFUSE, lightDiffuse );
 
-		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
 
 		glEnable(GL_FOG);
 
@@ -293,7 +298,7 @@ void main(int argc, char** argv)
     Matrix4f m( eq::Matrix4f::IDENTITY );
 	Vector3f pos;
 	pos.x() = 0;
-	pos.y() = 1.7f;
+	pos.y() = 1.5f;
 	pos.z() = 0;
 	m.set_translation(pos);
 	obs->SetWorldToEmitter(m);
