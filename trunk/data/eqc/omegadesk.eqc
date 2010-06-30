@@ -57,32 +57,14 @@ server
             view
             {
                 name "view2D"
-                
+				observer "observer0"                
                 viewport [ 0 0 1 .5 ]
-                wall
-                {
-                    bottom_left  [ -.5 -.5 -1 ]
-                    bottom_right [  .5 -.5 -1 ]
-                    top_left     [ -.5  .5 -1 ]
-                }
             }
             view
             {
                 name "view3D"
-                
                 observer "observer0"
-                
                 viewport [ 0 .5 1 .5 ]
-                #wall
-                #{
-                #    #bottom_left  [ -.5 -.5 -1 ]
-                #    #bottom_right [  .5 -.5 -1 ]
-                #    #top_left     [ -.5  .5 -1 ]
-                #    
-                #    bottom_left  [ -.4074 1.16 -0.8128 ]
-                #    bottom_right [  .6106 1.16 -0.8128 ]
-                #    top_left     [ -.4074 1.80 -0.8128 ]
-                #}
             }
         }
 
@@ -91,17 +73,16 @@ server
         {
             layout "MultiView"
 
-            #wall
-            #{
-            #        bottom_left  [ -.4074 1.16 -0.8128 ]
-            #        bottom_right [  .6106 1.16 -0.8128 ]
-            #        top_left     [ -.4074 1.80 -0.8128 ]
-            #}
-
             segment
             {
                 viewport [ 0 0 1 .5 ]
                 channel "channel1"
+				wall
+				{
+						bottom_left  [ -.590 .835 -0.15 ]
+						bottom_right [  .562 .835 -0.15 ]
+						top_left     [ -.590 1.07 -0.75 ]
+				}
             }
             segment
             {
@@ -109,9 +90,9 @@ server
                 channel "channel2left"
 				wall
 				{
-						bottom_left  [ -.4074 1.16 -0.8128 ]
-						bottom_right [  .6106 1.16 -0.8128 ]
-						top_left     [ -.4074 1.80 -0.8128 ]
+						bottom_left  [ -.509 1.13 -0.8 ]
+						bottom_right [  .509 1.13 -0.8 ]
+						top_left     [ -.509 1.78 -0.8 ]
 				}
             }
             segment
@@ -120,9 +101,9 @@ server
                 channel "channel2right"
 				wall
 				{
-						bottom_left  [ -.4074 1.16 -0.8128 ]
-						bottom_right [  .6106 1.16 -0.8128 ]
-						top_left     [ -.4074 1.80 -0.8128 ]
+						bottom_left  [ -.509 1.13 -0.8 ]
+						bottom_right [  .509 1.13 -0.8 ]
+						top_left     [ -.509 1.78 -0.8 ]
 				}
             }
         }

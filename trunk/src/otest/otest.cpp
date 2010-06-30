@@ -192,7 +192,7 @@ public:
 					obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 				}
 			}
-			else if(evt.sourceId == 3) //handheld
+			else if(evt.sourceId == 3) //glove
 			{
 				if(evt.x != 0 || evt.y != 0)
 				{
@@ -201,7 +201,7 @@ public:
 					lz = evt.z;
 				}
 			}
-			else if(evt.sourceId ==2) //glove
+			else if(evt.sourceId ==2) //handheld
 			{
 				if(evt.x != 0 || evt.y != 0)
 				{
