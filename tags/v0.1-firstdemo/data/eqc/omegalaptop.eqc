@@ -1,0 +1,111 @@
+#Equalizer 1.0 ascii
+
+# A laptop configuration for OmegaDesk emulation. Assumes an HD screen laptop.
+global
+{
+    EQ_CONFIG_FATTR_EYE_BASE        1.025
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+
+server
+{
+    config
+    {
+        appNode											
+        {
+            
+            pipe									#Bottom Window
+            {
+                name "GPU 1"
+                window
+                {
+                    name     "window1"
+                    viewport [ 0 540 1920 540 ]
+                    channel { name "channel1"  }
+                }
+            }
+            
+            pipe									#Top Window
+            {
+                name "GPU 2"
+                window
+                {
+                    name     "window2"
+                    viewport [ 0 0 1920 540 ]
+                    channel 
+                    { 
+						viewport [0 0 1 1]
+						name "channel2"  
+					}
+                }
+            }
+        }
+
+		observer 
+		{ 
+			name "observer0" 
+		}
+
+        # Layouts - one for each demo mode
+        layout
+        {
+            name "MultiView"
+            view
+            {
+                name "view2D"
+                observer "observer0"
+                viewport [ 0 0 1 .5 ]
+            }
+            view
+            {
+                name "view3D"
+                observer "observer0"
+                viewport [ 0 .5 1 .5 ]
+            }
+        }
+
+        # Canvas using all layouts
+        canvas
+        {
+            layout "MultiView"
+
+            segment
+            {
+                viewport [ 0 0 1 .5 ]
+                channel "channel1"
+				wall
+				{
+						bottom_left  [ -.4074 .52 -0.8128 ]
+						bottom_right [  .6106 .52 -0.8128 ]
+						top_left     [ -.4074 1.16 -0.8128 ]
+				}
+            }
+            segment
+            {
+                viewport [ 0 .5 1 .5 ]
+                channel "channel2"
+				wall
+				{
+						bottom_left  [ -.4074 1.16 -0.8128 ]
+						bottom_right [  .6106 1.16 -0.8128 ]
+						top_left     [ -.4074 1.80 -0.8128 ]
+				}
+            }
+        }
+
+        # wall compound - need swap barrier
+        compound
+        {
+            compound
+            {
+                channel ( segment 0 layout "MultiView" view 0 )
+                swapbarrier {}
+            }
+            compound
+            {
+                channel ( segment 1 layout "MultiView" view 1 )
+                swapbarrier {}
+            }
+        }
+    }
+}

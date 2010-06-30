@@ -1,0 +1,16 @@
+OMState
+{
+    uint id;
+    float x, y, z;
+    // other stuff.
+}
+
+// APP SIDE API
+
+int omegaGetEvents(OMEvent* ptr, int maxEvent, bool current);
+OMState* omegaGetState(uint id);
+
+
+
+
+

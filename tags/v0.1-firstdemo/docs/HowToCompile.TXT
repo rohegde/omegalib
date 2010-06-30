@@ -1,0 +1,11 @@
+How To Compile OmegaLib
+-------------------------------------------------------------------------------
+This guide briefly explains how to compile OmegaLib
+
+1 - PREREQUISITES:
+-------------------------------------------------------------------------------
+...
+
+2 - COMPILING OMEGALIB
+-------------------------------------------------------------------------------
+Just generate your platform specific build files using CMake and build.
