@@ -1,0 +1,26 @@
+#summary One-This page is a pseudo blog of what progress is being made on OmegaLib.
+
+= 07.01.2009 =
+
+==<u> Dennis </u>== 
+ * Convert oTest to oDemo
+ * Tweek perspective for oDemo
+  Make the stereo look better while keeping depth and proper distortion 
+ * Think about how to integrate touch and gesture to oDemo
+  Do some story boards
+
+==<u> Alessandro </u>==
+ * < insert here> 
+  <details here>
+    
+==<u> Brad </u>==
+ * < insert here> 
+  <details here>
+
+==<u> Arthur </u>==
+ * < insert here> 
+  <details here>
+
+==<u> Jakub </u>==
+ * < insert here> 
+  <details here>
