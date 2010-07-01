@@ -25,7 +25,7 @@ void displayCallback(void)
 {
 	static DrawContext context;
 	static float lt = 0.0f;
-	Application* app = SystemManager::GetInstance()->GetApplication();
+	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
 		// Compute dt.
@@ -35,7 +35,7 @@ void displayCallback(void)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Setup stuff to maintain consistency across different display systems (i.e. Equalizer).
+		// setup stuff to maintain consistency across different display systems (i.e. Equalizer).
 		// These settings make sure that even when switching display systems, the scene will be
 		// rendered similarly (even if not exactly the same)
 		glMatrixMode(GL_PROJECTION);
@@ -47,11 +47,11 @@ void displayCallback(void)
 		gluLookAt(0, 0, 2.0f, 0, 0, 0, 0, 1.0f, 0);
 
 		// Process events.
-		InputManager* im = SystemManager::GetInstance()->GetInputManager();
-		im->ProcessEvents(app);	
-		app->Update(dt);
+		InputManager* im = SystemManager::instance()->getInputManager();
+		im->processEvents(app);	
+		app->update(dt);
 
-		// Setup the context viewport.
+		// setup the context viewport.
 		context.viewportX = 0;
 		context.viewportY = 0;
 		context.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
@@ -59,20 +59,20 @@ void displayCallback(void)
 
 		for(int layer = 0; layer < Application::MaxLayers; layer++)
 		{
-			if(SystemManager::GetInstance()->GetDisplaySystem()->IsLayerEnabled(layer, 0))
+			if(SystemManager::instance()->getDisplaySystem()->isLayerEnabled(layer, 0))
 			{
 				context.layer = layer;
-				app->Draw(context);
+				app->draw(context);
 			}
 		}
 
 		glFlush();
 		glutPostRedisplay();
 
-		// Poll the input manager for new events.
-		SystemManager::GetInstance()->GetInputManager()->Poll();
+		// poll the input manager for new events.
+		SystemManager::instance()->getInputManager()->poll();
 
-		if(SystemManager::GetInstance()->IsExitRequested())
+		if(SystemManager::instance()->isExitRequested())
 		{
 			exit(0);
 		}
@@ -94,7 +94,7 @@ GLUTDisplaySystem::~GLUTDisplaySystem()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::Initialize(SystemManager* sys)
+void GLUTDisplaySystem::initialize(SystemManager* sys)
 {
 	mySys = sys;
 
@@ -105,7 +105,7 @@ void GLUTDisplaySystem::Initialize(SystemManager* sys)
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(500, 500);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
-	glutCreateWindow(sys->GetApplication()->GetName()); 
+	glutCreateWindow(sys->getApplication()->getName()); 
 
 	glutDisplayFunc(displayCallback); 
 
@@ -115,24 +115,24 @@ void GLUTDisplaySystem::Initialize(SystemManager* sys)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::Run()
+void GLUTDisplaySystem::run()
 {
 	glutMainLoop();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::Cleanup()
+void GLUTDisplaySystem::cleanup()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GLUTDisplaySystem::SetLayerEnabled(int layerNum, const char* viewName, bool enabled)
+void GLUTDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled)
 {
 	myLayerEnabled[layerNum] = enabled;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool GLUTDisplaySystem::IsLayerEnabled(int layerNum, const char* viewName)
+bool GLUTDisplaySystem::isLayerEnabled(int layerNum, const char* viewName)
 {
 	return myLayerEnabled[layerNum];
 }

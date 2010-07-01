@@ -17,30 +17,30 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void MouseService::mouseMotionCallback(int x, int y)
 //{
-//	if(myInstance)
+//	if(mysInstance)
 //	{
-//		myInstance->LockEvents();
+//		mysInstance->lockEvents();
 //
-//		InputEvent* evt = myInstance->WriteHead();
+//		InputEvent* evt = mysInstance->writeHead();
 //		//	evt->id = OM_ID_MOUSE;
 //		//	evt->source = OM_DC_POINTER;
 //		//	evt->type = OM_EVENT_MOVE;
 //		evt->x = x;
 //		evt->y = y;
 //
-//		myInstance->UnlockEvents();
+//		mysInstance->unlockEvents();
 //	}
 //}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::Initialize() 
+void TrackIRService::initialize() 
 {
-	//== Initialize Microsoft COM Interop ================----
+	//== initialize Microsoft COM Interop ================----
 	CoInitialize(NULL);
 
 	myVector.CoCreateInstance(CLSID_NPVector);
 
-	//== Initialize OptiTrack COM Component ==============----
+	//== initialize OptiTrack COM Component ==============----
 	CComPtr<INPCameraCollection> cameraCollection;
     CComPtr<INPCamera>           camera;
 
@@ -94,7 +94,7 @@ void TrackIRService::Initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::Start()
+void TrackIRService::start()
 {
 	if(myCamera != NULL)
 	{
@@ -104,7 +104,7 @@ void TrackIRService::Start()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::Poll() 
+void TrackIRService::poll() 
 {
 	double radToDegree = 180.0 / 3.14159265;
 	double degreeToRad =  3.14159265 / 180.0;
@@ -139,9 +139,9 @@ void TrackIRService::Poll()
 			hr = myVector->get_Roll(&roll);
 
 			//printf("x=%.3f  y=%.3f  z=%.3f   yaw=%.3f  pitch=%.3f  roll=%.3f \n", x.dblVal, y.dblVal, z.dblVal, yaw.dblVal, pitch.dblVal, roll.dblVal);
-			LockEvents();
+			lockEvents();
 
-			InputEvent* evt = WriteHead();
+			InputEvent* evt = writeHead();
 			//	evt->id = OM_ID_MOUSE;
 			//	evt->source = OM_DC_POINTER;
 			//	evt->type = OM_EVENT_MOVE;
@@ -155,7 +155,7 @@ void TrackIRService::Poll()
 			evt->ry = yaw.dblVal  * degreeToRad;
 			evt->rz = roll.dblVal  * degreeToRad;
 
-			UnlockEvents();
+			unlockEvents();
 
 
 			frame->Free();
@@ -165,12 +165,12 @@ void TrackIRService::Poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::Stop()
+void TrackIRService::stop()
 {
 	myCamera->Stop();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::Dispose() 
+void TrackIRService::dispose() 
 {
 }

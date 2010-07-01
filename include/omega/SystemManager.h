@@ -28,35 +28,44 @@ class SystemManager
 {
 public:
 	// Get the singleton instance of the system manager.
-	OMEGA_API static SystemManager* GetInstance();
+	OMEGA_API static SystemManager* instance();
 
-	// Initializes the system manager
-	OMEGA_API void Setup(Config* cfg);
+	// initializes the system manager
+	OMEGA_API void setup(Config* cfg);
 
-	OMEGA_API void Initialize();
+	OMEGA_API void registerInputService(const char* svcName, InputManager* (creationFunc)());
+
+	OMEGA_API void initialize();
 
 	// Starts running the current application.
 	// This method does not return until the application is done running.
-	OMEGA_API void Run();
+	OMEGA_API void	run();
 
 	// Sends an exit request to the system manager.
-	OMEGA_API void PostExitRequest();
+	OMEGA_API void postExitRequest();
 
 	// Cleans up runtime resources, performs final debug checks etc.
-	OMEGA_API void Cleanup();
+	OMEGA_API void cleanup();
 
-	// Get the system configuration.
-	OMEGA_API Config* GetConfig() { return myConfig; }
+	// Gets the system configuration.
+	OMEGA_API Config* getConfig() { return myConfig; }
 
-	OMEGA_API InputManager* GetInputManager() { return myInputManager; }
+	// Gets the InputManager object
+	OMEGA_API InputManager* getInputManager() { return myInputManager; }
 
-	OMEGA_API DisplaySystem* GetDisplaySystem() { return myDisplaySystem; }
-	OMEGA_API void SetDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
+	// Gets the DisplaySystem object
+	OMEGA_API DisplaySystem* getDisplaySystem() { return myDisplaySystem; }
 
-	OMEGA_API Application* GetApplication() { return myApplication; }
-	OMEGA_API void SetApplication(Application* value) { myApplication = value; }
+	// Sets the DisplaySystem object
+	OMEGA_API void setDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
 
-	OMEGA_API bool IsExitRequested() { return myExitRequested; }
+	// Gets the Application object
+	OMEGA_API Application* getApplication() { return myApplication; }
+
+	// Sets the Application object
+	OMEGA_API void setApplication(Application* value) { myApplication = value; }
+
+	OMEGA_API bool isExitRequested() { return myExitRequested; }
 
 private:
 	SystemManager();
@@ -64,7 +73,7 @@ private:
 
 private:
 	// Singleton instance.
-	static SystemManager* myInstance;
+	static SystemManager* mysInstance;
 
 	Config*			myConfig;
 	DisplaySystem*	myDisplaySystem;

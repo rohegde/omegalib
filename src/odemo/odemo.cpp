@@ -21,7 +21,7 @@ class TestApplication: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw3D(DrawContext& context)
+	void draw3D(DrawContext& context)
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
@@ -60,7 +60,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw2D(DrawContext& context)
+	void draw2D(DrawContext& context)
 	{
 		glDisable(GL_LIGHTING);
 		//glDisable(GL_DEPTH_TEST);
@@ -119,20 +119,20 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void Draw(DrawContext& context)
+	virtual void draw(DrawContext& context)
 	{
 		switch(context.layer)
 		{
 			case 0:
-				Draw3D(context);
+				draw3D(context);
 				break;
 			case 1:
-				Draw2D(context);
+				draw2D(context);
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual bool HandleEvent(const InputEvent& evt)
+	virtual bool handleEvent(const InputEvent& evt)
 	{
 		switch(evt.serviceType)
 		{
@@ -286,7 +286,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	SystemManager* sys = SystemManager::GetInstance();
+	SystemManager* sys = SystemManager::instance();
 
 	Config* cfg = new Config("../../data/test.cfg");
 	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegalaptop.eqc");
@@ -305,25 +305,25 @@ void main(int argc, char** argv)
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	sys->Setup(cfg);
+	sys->setup(cfg);
 
 	TestApplication app;
 	app.CreateTexture();
-	sys->SetApplication(&app);
+	sys->setApplication(&app);
 
-	sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	//sys->GetInputManager()->AddService(new MoCapService());
-	sys->GetInputManager()->AddService(new MouseService());
-	//sys->GetInputManager()->AddService(new TrackIRService());
-	//sys->GetInputManager()->AddService(new PQService());
+	sys->setDisplaySystem(new EqualizerDisplaySystem());
+	//sys->setDisplaySystem(new GLUTDisplaySystem());
+	//sys->getInputManager()->addService(new MoCapService());
+	sys->getInputManager()->addService(new MouseService());
+	//sys->getInputManager()->addService(new TrackIRService());
+	//sys->getInputManager()->addService(new PQService());
 
-	sys->Initialize();
+	sys->initialize();
 
-	sys->GetDisplaySystem()->SetLayerEnabled(0, "view3D", true);
-	sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+	sys->getDisplaySystem()->setLayerEnabled(0, "view3D", true);
+	sys->getDisplaySystem()->setLayerEnabled(1, "view2D", true);
 
-	sys->Run();
+	sys->run();
 
-	sys->Cleanup();
+	sys->cleanup();
 }

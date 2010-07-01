@@ -15,14 +15,14 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-PQService* PQService::myInstance = NULL;
+PQService* PQService::mysInstance = NULL;
 int PQService::maxBlobSize = 1000;
 int PQService::maxTouches = 1000; // Number of IDs assigned before resetting. Should match touchID array initialization
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService::Initialize( ) 
+void PQService::initialize( ) 
 {
-	myInstance = this;
+	mysInstance = this;
 	
 	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
 	server_ip = "131.193.77.102";
@@ -34,23 +34,23 @@ void PQService::Initialize( )
 		touchID[i] = 0;
 	}
 
-	Init();
+	init();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService::Initialize(  char* local_ip ) 
+void PQService::initialize(  char* local_ip ) 
 {
-	myInstance = this;
+	mysInstance = this;
 	
 	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
 	server_ip = local_ip;
 	mostRecentDataString[0] = NULL; // Cleans up string
 	newDataFlag = false;
-	Init();
+	init();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int PQService::Init()
+int PQService::init()
 {
 	int err_code = PQMTE_SUCESS;	
 	// initialize the handle functions of gestures;
@@ -223,14 +223,14 @@ void PQService:: OnTG_TouchEnd(const TouchGesture & tg,void * call_object)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::SetFuncsOnReceiveProc()
 {
-	PFuncOnReceivePointFrame old_rf_func = SetOnReceivePointFrame(&PQService::OnReceivePointFrame,this);
-	PFuncOnReceiveGesture old_rg_func = SetOnReceiveGesture(&PQService::OnReceiveGesture,this);
-	PFuncOnServerBreak old_svr_break = SetOnServerBreak(&PQService::OnServerBreak,NULL);
-	PFuncOnReceiveError old_rcv_err_func = SetOnReceiveError(&PQService::OnReceiveError,NULL);
+	PFuncOnReceivePointFrame old_rf_func = SetOnReceivePointFrame(&PQService::onReceivePointFrame,this);
+	PFuncOnReceiveGesture old_rg_func = SetOnReceiveGesture(&PQService::onReceiveGesture,this);
+	PFuncOnServerBreak old_svr_break = SetOnServerBreak(&PQService::onServerBreak,NULL);
+	PFuncOnReceiveError old_rcv_err_func = SetOnReceiveError(&PQService::onReceiveError,NULL);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService:: OnReceivePointFrame(int frame_id, int time_stamp, int moving_point_count, const TouchPoint * moving_point_array, void * call_back_object)
+void PQService:: onReceivePointFrame(int frame_id, int time_stamp, int moving_point_count, const TouchPoint * moving_point_array, void * call_back_object)
 {
 	PQService * omegaDesk = static_cast<PQService*>(call_back_object);
 	assert(omegaDesk != NULL);
@@ -249,7 +249,7 @@ void PQService:: OnReceivePointFrame(int frame_id, int time_stamp, int moving_po
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService:: OnReceiveGesture(const TouchGesture & ges, void * call_back_object)
+void PQService:: onReceiveGesture(const TouchGesture & ges, void * call_back_object)
 {
 	PQService * omegaDesk = static_cast<PQService*>(call_back_object);
 	assert(omegaDesk != NULL);
@@ -257,7 +257,7 @@ void PQService:: OnReceiveGesture(const TouchGesture & ges, void * call_back_obj
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService:: OnServerBreak(void * param, void * call_back_object)
+void PQService:: onServerBreak(void * param, void * call_back_object)
 {
 	// when the server break, disconenct server;
 	printf("server break, disconnect here\n");;
@@ -265,7 +265,7 @@ void PQService:: OnServerBreak(void * param, void * call_back_object)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService::OnReceiveError(int err_code, void * call_back_object)
+void PQService::onReceiveError(int err_code, void * call_back_object)
 {
 	switch(err_code)
 	{
@@ -313,11 +313,11 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	int xWidth = tp.dx;
 	int yWidth = tp.dy;
 
-	if(myInstance && xWidth <= maxBlobSize && yWidth <= maxBlobSize)
+	if(mysInstance && xWidth <= maxBlobSize && yWidth <= maxBlobSize)
 	{
-		myInstance->LockEvents();
+		mysInstance->lockEvents();
 
-		InputEvent* evt = myInstance->WriteHead();
+		InputEvent* evt = mysInstance->writeHead();
 		switch(tp.point_event)
 		{
 			case TP_DOWN:
@@ -341,14 +341,14 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->y = tp.y;
 		evt->sourceId = touchID[tp.id];
 
-		myInstance->UnlockEvents();
+		mysInstance->unlockEvents();
 		
 		newDataFlag = true;
 	}
 
 	char buffer[5];
 
-	ClearDataString();
+	clearDataString();
 	
 	switch(tp.point_event)
 	{
@@ -396,14 +396,14 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService::ClearDataString(){
+void PQService::clearDataString(){
 	mostRecentDataString[0] = NULL; // Cleans up string
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService::Dispose() 
+void PQService::dispose() 
 {
-	myInstance = NULL;
+	mysInstance = NULL;
 	DisconnectServer();
 }

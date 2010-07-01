@@ -28,14 +28,14 @@ namespace omega
 	class PQService: public InputService
 	{
 	public:
-		OMEGA_API virtual void Initialize();
-		OMEGA_API virtual void Dispose();
+		OMEGA_API virtual void initialize();
+		OMEGA_API virtual void dispose();
 
-		OMEGA_API void Initialize(  char* local_ip );
-		OMEGA_API int Init();
+		OMEGA_API void initialize(  char* local_ip );
+		OMEGA_API int init();
 	
 	private:
-		static PQService* myInstance;	
+		static PQService* mysInstance;	
 		static int maxBlobSize;
 		char* server_ip;
 		char mostRecentDataString[100];
@@ -44,19 +44,19 @@ namespace omega
 		static int maxTouches; // Should be same number as touchID array init
 		int nextID;
 
-		void ClearDataString();
+		void clearDataString();
 
 		//////////////////////call back functions///////////////////////
-		// OnReceivePointFrame: function to handle when recieve touch point frame
+		// onReceivePointFrame: function to handle when recieve touch point frame
 		//	the unmoving touch point won't be sent from server. The new touch point with its pointevent is TP_DOWN
 		//	and the leaving touch point with its pointevent will be always sent from server;
-		static void OnReceivePointFrame(int frame_id,int time_stamp,int moving_point_count,const TouchPoint * moving_point_array, void * call_back_object);
-		// OnReceivePointFrame: function to handle when recieve touch gesture
-		static void OnReceiveGesture(const TouchGesture & ges, void * call_back_object);
-		// OnServerBreak: function to handle when server break(disconnect or network error)
-		static void OnServerBreak(void * param, void * call_back_object);
-		// OnReceiveError: function to handle when some errors occur on the process of receiving touch datas.
-		static void OnReceiveError(int err_code,void * call_back_object);
+		static void onReceivePointFrame(int frame_id,int time_stamp,int moving_point_count,const TouchPoint * moving_point_array, void * call_back_object);
+		// onReceivePointFrame: function to handle when recieve touch gesture
+		static void onReceiveGesture(const TouchGesture & ges, void * call_back_object);
+		// onServerBreak: function to handle when server break(disconnect or network error)
+		static void onServerBreak(void * param, void * call_back_object);
+		// onReceiveError: function to handle when some errors occur on the process of receiving touch datas.
+		static void onReceiveError(int err_code,void * call_back_object);
 		//
 		static void OnGetServerResolution(int x, int y, void * call_back_object);
 		//////////////////////call back functions end ///////////////////////

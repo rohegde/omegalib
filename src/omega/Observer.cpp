@@ -21,7 +21,7 @@ Observer::Observer()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::Update(float x, float y, float z, float yaw, float pitch, float roll)
+void Observer::update(float x, float y, float z, float yaw, float pitch, float roll)
 {
 	eq::Vector3f pos;
 	myHeadMatrix = eq::Matrix4f::IDENTITY;

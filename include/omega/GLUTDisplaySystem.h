@@ -24,15 +24,15 @@ public:
 	OMEGA_API GLUTDisplaySystem();
 	OMEGA_API virtual ~GLUTDisplaySystem();
 
-	OMEGA_API virtual void Initialize(SystemManager* sys); 
-	OMEGA_API virtual void Run(); 
-	OMEGA_API virtual void Cleanup(); 
+	OMEGA_API virtual void initialize(SystemManager* sys); 
+	OMEGA_API virtual void run(); 
+	OMEGA_API virtual void cleanup(); 
 
 	// Layer and view management.
-	OMEGA_API virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
-	OMEGA_API virtual bool IsLayerEnabled(int layerNum, const char* viewName);
+	OMEGA_API virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
+	OMEGA_API virtual bool isLayerEnabled(int layerNum, const char* viewName);
 
-	OMEGA_API virtual unsigned int GetId() { return Id; }
+	OMEGA_API virtual unsigned int getId() { return Id; }
 
 public:
 	static const unsigned int Id; 

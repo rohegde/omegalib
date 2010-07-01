@@ -53,23 +53,23 @@ public:
 	OMEGA_API EqualizerDisplaySystem();
 	OMEGA_API virtual ~EqualizerDisplaySystem();
 
-	OMEGA_API virtual void Initialize(SystemManager* sys); 
-	OMEGA_API virtual void Run(); 
-	OMEGA_API virtual void Cleanup(); 
+	OMEGA_API virtual void initialize(SystemManager* sys); 
+	OMEGA_API virtual void run(); 
+	OMEGA_API virtual void cleanup(); 
 
-	OMEGA_API virtual unsigned int GetId() { return Id; }
+	OMEGA_API virtual unsigned int getId() { return Id; }
 
-	OMEGA_API virtual Observer* GetObserver(int observerId);
+	OMEGA_API virtual Observer* getObserver(int observerId);
 
 	// Layer and view management.
-	OMEGA_API virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled);
-	OMEGA_API virtual bool IsLayerEnabled(int layerNum, const char* viewName);
+	OMEGA_API virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
+	OMEGA_API virtual bool isLayerEnabled(int layerNum, const char* viewName);
 
 public:
 	static const unsigned int Id; 
 
 private:
-	EqualizerView* FindView(const char* viewName);
+	EqualizerView* findView(const char* viewName);
 
 private:
 	SystemManager* mySys;

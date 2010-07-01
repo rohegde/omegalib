@@ -33,15 +33,15 @@ public:
 	static const int MaxLayers = 16;
 
 public:
-	virtual const char* GetName() { return "OmegaLib " OM_VERSION; }
+	virtual const char* getName() { return "OmegaLib " OM_VERSION; }
 
-	virtual void Draw(DrawContext& context) {}
-	virtual bool HandleEvent(const InputEvent& evt) { return false; }
-	virtual void Update(float dt) {}
+	virtual void draw(DrawContext& context) {}
+	virtual bool handleEvent(const InputEvent& evt) { return false; }
+	virtual void update(float dt) {}
 
-	SystemManager*  GetSystemManager()  { return SystemManager::GetInstance(); }
-	InputManager*   GetInputManager()   { return SystemManager::GetInstance()->GetInputManager(); }
-	DisplaySystem*  GetDisplaySystem() { return SystemManager::GetInstance()->GetDisplaySystem(); }
+	SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+	InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
+	DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 };
 
 }; // namespace omega

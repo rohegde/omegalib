@@ -25,11 +25,11 @@ class TrackIRService: public InputService
 {
 public:
 
-	OMEGA_API virtual void Initialize();
-	OMEGA_API virtual void Start();
-	OMEGA_API virtual void Poll();
-	OMEGA_API virtual void Stop();
-	OMEGA_API virtual void Dispose();
+	OMEGA_API virtual void initialize();
+	OMEGA_API virtual void start();
+	OMEGA_API virtual void poll();
+	OMEGA_API virtual void stop();
+	OMEGA_API virtual void dispose();
 
 private:
     CComPtr<INPCamera>	myCamera;

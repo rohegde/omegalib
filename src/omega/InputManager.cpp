@@ -32,72 +32,72 @@ InputManager::~InputManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::Initialize()
+void InputManager::initialize()
 {
-	omsg("InputManager::Initialize");
+	omsg("InputManager::initialize");
 
 	myEventBuffer = new InputEvent[MaxEvents];
 	omsg("Event buffer allocated. Max events: %d", MaxEvents);
 
 	for(int i = 0; i < myServices.size(); i++)
 	{
-		myServices[i]->Initialize();
+		myServices[i]->initialize();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::Dispose()
+void InputManager::dispose()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
-		myServices[i]->Dispose();
+		myServices[i]->dispose();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::Start()
+void InputManager::start()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
-		myServices[i]->Start();
+		myServices[i]->start();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::Stop()
+void InputManager::stop()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
-		myServices[i]->Stop();
+		myServices[i]->stop();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::Poll()
+void InputManager::poll()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
-		myServices[i]->Poll();
+		myServices[i]->poll();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::AddService(InputService* svc)
+void InputManager::addService(InputService* svc)
 {
 	oassert(svc != NULL);
 
 	myServices.push_back(svc);
-	svc->SetManager(this);
+	svc->setManager(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::RemoveService(InputService* svc)
+void InputManager::removeService(InputService* svc)
 {
 	oassert(false | !"Not Implemented");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int InputManager::IncrementBufferIndex(int index)
+int InputManager::incrementBufferIndex(int index)
 {
 	index++;
 	if(index == InputManager::MaxEvents) index = 0;
@@ -105,7 +105,7 @@ int InputManager::IncrementBufferIndex(int index)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int InputManager::DecrementBufferIndex(int index)
+int InputManager::decrementBufferIndex(int index)
 {
 	if(index == 0) index = InputManager::MaxEvents;
 	index--;
@@ -113,43 +113,43 @@ int InputManager::DecrementBufferIndex(int index)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int InputManager::GetEvents(InputEvent* ptr, int maxEvents)
+int InputManager::getEvents(InputEvent* ptr, int maxEvents)
 {
 	int returnedEvents = 0;
 	InputEvent* evt;
 	
-	LockEvents();
+	lockEvents();
 	do
 	{
-		evt = ReadTail();
+		evt = readTail();
 		if(evt)	
 		{
 			memcpy(&ptr[returnedEvents], evt, sizeof(InputEvent));
 			returnedEvents++;
 		}
 	} while(evt && returnedEvents < maxEvents);
-	UnlockEvents();
+	unlockEvents();
 
 	return returnedEvents;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::LockEvents()
+void InputManager::lockEvents()
 {
 	myEventBufferLock.set();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::UnlockEvents()
+void InputManager::unlockEvents()
 {
 	myEventBufferLock.unset();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputEvent* InputManager::WriteHead()
+InputEvent* InputManager::writeHead()
 {
 	InputEvent* evt = &myEventBuffer[myEventBufferHead];
-	myEventBufferHead = IncrementBufferIndex(myEventBufferHead);
+	myEventBufferHead = incrementBufferIndex(myEventBufferHead);
 
 	// This is not totally exact, we would need an event more to actually start dropping..
 	if(myAvailableEvents == MaxEvents)
@@ -165,12 +165,12 @@ InputEvent* InputManager::WriteHead()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputEvent* InputManager::ReadHead()
+InputEvent* InputManager::readHead()
 {
 	if(myAvailableEvents > 0)
 	{
 		InputEvent* evt = &myEventBuffer[myEventBufferHead];
-		myEventBufferHead = DecrementBufferIndex(myEventBufferHead);
+		myEventBufferHead = decrementBufferIndex(myEventBufferHead);
 		myAvailableEvents--;
 		return evt;
 	}
@@ -178,12 +178,12 @@ InputEvent* InputManager::ReadHead()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputEvent* InputManager::ReadTail()
+InputEvent* InputManager::readTail()
 {
 	if(myAvailableEvents > 0)
 	{
 		InputEvent* evt = &myEventBuffer[myEventBufferTail];
-		myEventBufferTail = IncrementBufferIndex(myEventBufferTail);
+		myEventBufferTail = incrementBufferIndex(myEventBufferTail);
 		myAvailableEvents--;
 		return evt;
 	}
@@ -191,19 +191,19 @@ InputEvent* InputManager::ReadTail()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::ProcessEvents(Application* app)
+void InputManager::processEvents(Application* app)
 {
 	oassert(app);
 
-	int av = GetAvailableEvents();
+	int av = getAvailableEvents();
 	if(av != 0)
 	{
 		// TODO: Instead of copying the event list, we can lock the main one.
 		InputEvent evts[InputManager::MaxEvents];
-		GetEvents(evts, InputManager::MaxEvents);
+		getEvents(evts, InputManager::MaxEvents);
 		for( int evtNum = 0; evtNum < av; evtNum++)
 		{
-			app->HandleEvent(evts[evtNum]);
+			app->handleEvent(evts[evtNum]);
 		}
 	}
 }

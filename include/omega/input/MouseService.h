@@ -23,11 +23,11 @@ class MouseService: public InputService
 public:
 	static void mouseMotionCallback(int x, int y);
 
-	OMEGA_API virtual void Initialize();
-	OMEGA_API virtual void Dispose();
+	OMEGA_API virtual void initialize();
+	OMEGA_API virtual void dispose();
 
 private:
-	static MouseService* myInstance;
+	static MouseService* mysInstance;
 };
 
 }; // namespace omega
