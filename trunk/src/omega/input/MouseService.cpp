@@ -16,16 +16,16 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MouseService* MouseService::myInstance = NULL;
+MouseService* MouseService::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseMotionCallback(int x, int y)
 {
-	if(myInstance)
+	if(mysInstance)
 	{
-		myInstance->LockEvents();
+		mysInstance->lockEvents();
 
-		InputEvent* evt = myInstance->WriteHead();
+		InputEvent* evt = mysInstance->writeHead();
 		//	evt->id = OM_ID_MOUSE;
 		//	evt->source = OM_DC_POINTER;
 		//	evt->type = OM_EVENT_MOVE;
@@ -34,22 +34,22 @@ void MouseService::mouseMotionCallback(int x, int y)
 		evt->x = x;
 		evt->y = y;
 
-		myInstance->UnlockEvents();
+		mysInstance->unlockEvents();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MouseService::Initialize() 
+void MouseService::initialize() 
 {
-	myInstance = this;
-	if(SystemManager::GetInstance()->GetDisplaySystem()->GetId() == GLUTDisplaySystem::Id)
+	mysInstance = this;
+	if(SystemManager::instance()->getDisplaySystem()->getId() == GLUTDisplaySystem::Id)
 	{
 		glutPassiveMotionFunc(mouseMotionCallback);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MouseService::Dispose() 
+void MouseService::dispose() 
 {
-	myInstance = NULL;
+	mysInstance = NULL;
 }

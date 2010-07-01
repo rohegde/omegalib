@@ -22,13 +22,13 @@ MoCapService::~MoCapService()
 	delete pClient;
 }
 
-void MoCapService::Initialize()
+void MoCapService::initialize()
 {
 	myMoCap = this;
 }
 
 
-void MoCapService::Start()
+void MoCapService::start()
 {
 	if( pClient == NULL)
 	{
@@ -36,9 +36,9 @@ void MoCapService::Start()
 	}
 	
 	//set call back functions
-	pClient->SetMessageCallback(MessageController);
+	pClient->SetMessageCallback(messageController);
 	pClient->SetVerbosityLevel(Verbosity_Debug);
-	pClient->SetDataCallback( FrameController, pClient);
+	pClient->SetDataCallback( frameController, pClient);
 
 	//initialize pClient and ensure that it completed successfully
 	int retCode = pClient->Initialize( localIP, serverIP);
@@ -62,17 +62,17 @@ void MoCapService::Start()
 
 }
 
-void MoCapService::Stop()
+void MoCapService::stop()
 {
 	pClient->Uninitialize();
 }
 
-void MoCapService::Dispose()
+void MoCapService::dispose()
 {
 	delete myMoCap;
 }
 
-void __cdecl MoCapService::MessageController( int msgType, char* msg)
+void __cdecl MoCapService::messageController( int msgType, char* msg)
 {
 	//this is where you write messages, from the NatNet server, to the log
 	//Log::Message("MOCAP: %s", msg);
@@ -85,19 +85,19 @@ void __cdecl MoCapService::MessageController( int msgType, char* msg)
  *		http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
  *		http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
  **********************************************************************************************/
-void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUserData)
+void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUserData)
 {
 	double verticalTest; //used to handle special case of body pointing straight along vertical axis
 	double unit;
 
 	if( myMoCap )
 	{
-		myMoCap->LockEvents();
+		myMoCap->lockEvents();
 		//process the frame data and store it in events, one event per rigid body
 		for( int i = 0; i < data->nRigidBodies; i++)
 		{
 			//actions to process each rigid body into an event
-			InputEvent* theEvent = myMoCap->WriteHead();
+			InputEvent* theEvent = myMoCap->writeHead();
 
 			theEvent->sourceId = data->RigidBodies[i].ID;
 			theEvent->serviceType = InputService::Mocap;
@@ -195,7 +195,7 @@ void __cdecl MoCapService::FrameController( sFrameOfMocapData* data, void *pUser
 				theEvent->rz = data->RigidBodies[i].qz;
 			}
 		}
-		myMoCap->UnlockEvents();
+		myMoCap->unlockEvents();
 	}
 }
 

@@ -23,15 +23,15 @@ class Observer
 public:
 	OMEGA_API Observer();
 
-	OMEGA_API Matrix4f GetWorldToEmitter() { return myWorldToEmitter; }
-	OMEGA_API void SetWorldToEmitter(Matrix4f value) { myWorldToEmitter = value; }
+	OMEGA_API Matrix4f getWorldToEmitter() { return myWorldToEmitter; }
+	OMEGA_API void setWorldToEmitter(Matrix4f value) { myWorldToEmitter = value; }
 
-	OMEGA_API Matrix4f GetSensorToObject() { return mySensorToObject; }
-	OMEGA_API void SetSensorToObject(Matrix4f value) { mySensorToObject = value; }
+	OMEGA_API Matrix4f getSensorToObject() { return mySensorToObject; }
+	OMEGA_API void setSensorToObject(Matrix4f value) { mySensorToObject = value; }
 
-	OMEGA_API Matrix4f GetHeadMatrix() { return myHeadMatrix; }
+	OMEGA_API Matrix4f getHeadMatrix() { return myHeadMatrix; }
 
-	OMEGA_API void Update(float x, float y, float z, float yaw, float pitch, float roll);
+	OMEGA_API void update(float x, float y, float z, float yaw, float pitch, float roll);
 
 private:
 	Matrix4f myWorldToEmitter;

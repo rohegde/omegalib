@@ -27,22 +27,22 @@ class DisplaySystem
 public:
 	virtual ~DisplaySystem() {}
 
-	// Initializes the display system
-	virtual void Initialize(SystemManager* sys) {}
+	// initializes the display system
+	virtual void initialize(SystemManager* sys) {}
 
 	// Starts display system rendering. This call does not return until the current omegalib application sends an
 	// exit request to the system manager.
-	virtual void Run() = 0;
+	virtual void run() = 0;
 
 	// Layer and view management.
-	virtual void SetLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
-	virtual bool IsLayerEnabled(int layerNum, const char* viewName) { return true;}
+	virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
+	virtual bool isLayerEnabled(int layerNum, const char* viewName) { return true;}
 
-	virtual Observer* GetObserver(int observerId) { return NULL; }
+	virtual Observer* getObserver(int observerId) { return NULL; }
 	
-	virtual void Cleanup() {}
+	virtual void cleanup() {}
 
-	virtual unsigned int GetId() { return -1; }
+	virtual unsigned int getId() { return -1; }
 
 protected:
 	DisplaySystem() {}

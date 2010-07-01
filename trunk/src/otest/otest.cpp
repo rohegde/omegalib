@@ -25,7 +25,7 @@ class TestApplication: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw3D(DrawContext& context)
+	void draw3D(DrawContext& context)
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
@@ -35,15 +35,17 @@ public:
 		//const float lightPos[] = { 0.0f, 1.6f, 0.0f, 0.0f };
 #ifdef LAPTOP
 		const float lightPos[] = { 0, 1.8, 0, 1.0f };
+		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const float lightAmbient[] = { 0.3f, 0.3f, 0.3f, 1.0f };
 		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0 );
 #else
 		const float lightPos[] = { lx, ly, lz, 1.0f };
+		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const float lightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
 #endif
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
 
-		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		const float lightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 		glLightfv( GL_LIGHT0, GL_DIFFUSE, lightDiffuse );
 
@@ -92,7 +94,7 @@ public:
 
 		glColor3f(1.0, 1.0, 1.0);
 		//DrawRoom(0.0f, 1.9f, -0.407f, 0.61f, 0, -3);
-		DrawRoom(0.2f, 1.8f, -0.59f, 0.59f, 0, -3);
+		DrawRoom(0.3f, 2.0f, -0.59f, 0.59f, 0, -3);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +145,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw2D(DrawContext& context)
+	void draw2D(DrawContext& context)
 	{
 		GfxUtils::BeginOverlayMode(context);
 
@@ -161,21 +163,21 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void Draw(DrawContext& context)
+	virtual void draw(DrawContext& context)
 	{
 		switch(context.layer)
 		{
 			case 0:
-				Draw3D(context);
+				draw3D(context);
 				break;
 			case 1:
-				Draw2D(context);
+				draw2D(context);
 				break;
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual bool HandleEvent(const InputEvent& evt)
+	virtual bool handleEvent(const InputEvent& evt)
 	{
 		double radToDegree = 180.0 / 3.14159265;
 
@@ -189,12 +191,16 @@ public:
 
 		case InputService::Mocap:
 		{
+#ifdef LAPTOP
+			Observer* obs = getDisplaySystem()->getObserver(0);
+			obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+#else
 			if(evt.sourceId == 1)
 			{
 				if(evt.x != 0 || evt.y != 0)
 				{
-					Observer* obs = GetDisplaySystem()->GetObserver(0);
-					obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+					Observer* obs = getDisplaySystem()->getObserver(0);
+					obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 				}
 			}
 			else if(evt.sourceId == 3) //glove
@@ -218,6 +224,7 @@ public:
 					rz = evt.rz * radToDegree;
 				}
 			}
+#endif
 			break;
 
 			break;
@@ -248,7 +255,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	SystemManager* sys = SystemManager::GetInstance();
+	SystemManager* sys = SystemManager::instance();
 
 	Config* cfg = new Config("../../data/test.cfg");
 
@@ -272,38 +279,39 @@ void main(int argc, char** argv)
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	sys->Setup(cfg);
+	sys->setup(cfg);
 
 	TestApplication app;
-	sys->SetApplication(&app);
+	sys->setApplication(&app);
 
-	sys->SetDisplaySystem(new EqualizerDisplaySystem());
+	sys->setDisplaySystem(new EqualizerDisplaySystem());
 
 #ifdef LAPTOP
-	sys->GetInputManager()->AddService(new TrackIRService());
-	sys->GetInputManager()->AddService(new MouseService());
+	sys->getInputManager()->addService(new TrackIRService());
+	sys->getInputManager()->addService(new MouseService());
 #else
-	sys->GetInputManager()->AddService(new MoCapService());
-	sys->GetInputManager()->AddService(new PQService());
+	sys->getInputManager()->addService(new MoCapService());
+	sys->getInputManager()->addService(new PQService());
 #endif
 
-	sys->Initialize();
+	sys->initialize();
 
-	sys->GetDisplaySystem()->SetLayerEnabled(0, "view3D", true);
-	sys->GetDisplaySystem()->SetLayerEnabled(0, "view2D", true);
-	sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+	sys->getDisplaySystem()->setLayerEnabled(0, "view3D", true);
+	sys->getDisplaySystem()->setLayerEnabled(0, "view2D", true);
+	sys->getDisplaySystem()->setLayerEnabled(1, "view2D", true);
 
 #ifdef LAPTOP
-	Observer* obs = sys->GetDisplaySystem()->GetObserver(0);
+	Observer* obs = sys->getDisplaySystem()->getObserver(0);
     Matrix4f m( eq::Matrix4f::IDENTITY );
+	m.scale(1.3, -1, 0.3);
 	Vector3f pos;
 	pos.x() = 0;
 	pos.y() = 1.5f;
 	pos.z() = 0;
 	m.set_translation(pos);
-	obs->SetWorldToEmitter(m);
+	obs->setWorldToEmitter(m);
 #endif LAPTOP
 
-	sys->Run();
-	sys->Cleanup();
+	sys->run();
+	sys->cleanup();
 }

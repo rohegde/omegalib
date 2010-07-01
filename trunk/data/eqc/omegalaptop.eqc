@@ -20,7 +20,7 @@ server
                 window
                 {
                     name     "window1"
-                    viewport [ 0 540 1920 540 ]
+                    viewport [ 0 512 1280 512 ]
                     channel { name "channel1"  }
                 }
             }
@@ -31,7 +31,7 @@ server
                 window
                 {
                     name     "window2"
-                    viewport [ 0 0 1920 540 ]
+                    viewport [ 0 0 1280 512 ]
                     channel 
                     { 
 						viewport [0 0 1 1]

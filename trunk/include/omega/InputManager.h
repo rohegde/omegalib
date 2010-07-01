@@ -34,37 +34,37 @@ public:
 	OMEGA_API ~InputManager();
 
 	// Add a new input service to the manager.
-	OMEGA_API void AddService(InputService* svc);
-	OMEGA_API void RemoveService(InputService* svc);
+	OMEGA_API void addService(InputService* svc);
+	OMEGA_API void removeService(InputService* svc);
 
-	// Initialize
-	OMEGA_API void Initialize();
-	OMEGA_API void Start();
-	OMEGA_API void Stop();
-	OMEGA_API void Dispose();
+	// initialize
+	OMEGA_API void initialize();
+	OMEGA_API void start();
+	OMEGA_API void stop();
+	OMEGA_API void dispose();
 
 	// TEMPORARY: this will run in a thread in the future.
-	OMEGA_API void Poll();
+	OMEGA_API void poll();
 
-	OMEGA_API void ProcessEvents(Application* app);
+	OMEGA_API void processEvents(Application* app);
 
-	OMEGA_API int GetAvailableEvents() { return myAvailableEvents; }
-	OMEGA_API int GetDroppedEvents() { return myDroppedEvents; }
-	OMEGA_API void ResetDroppedEvents() { myDroppedEvents = 0; }
-	OMEGA_API int GetEvents(InputEvent* ptr, int maxEvents);
+	OMEGA_API int getAvailableEvents() { return myAvailableEvents; }
+	OMEGA_API int getDroppedEvents() { return myDroppedEvents; }
+	OMEGA_API void resetDroppedEvents() { myDroppedEvents = 0; }
+	OMEGA_API int getEvents(InputEvent* ptr, int maxEvents);
 
 public:
 	// The maximum number of events stored in the event buffer.
 	static const int MaxEvents = 1024;
 
 private:
-	int IncrementBufferIndex(int index);
-	int DecrementBufferIndex(int index);
-	void LockEvents();
-	void UnlockEvents();
-	InputEvent* WriteHead();
-	InputEvent* ReadHead();
-	InputEvent* ReadTail();
+	int incrementBufferIndex(int index);
+	int decrementBufferIndex(int index);
+	void lockEvents();
+	void unlockEvents();
+	InputEvent* writeHead();
+	InputEvent* readHead();
+	InputEvent* readTail();
 
 private:
 	SystemManager*	mySys;

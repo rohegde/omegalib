@@ -35,23 +35,23 @@ public:
    // Class destructor
 	~InputService() {}
 
-	InputManager* GetManager() { return myManager; }
+	InputManager* getManager() { return myManager; }
 
-	virtual void Initialize() {}
-	virtual void Start() {}
-	virtual void Poll() {}
-	virtual void Stop() {}
-	virtual void Dispose() {}
+	virtual void initialize() {}
+	virtual void start() {}
+	virtual void poll() {}
+	virtual void stop() {}
+	virtual void dispose() {}
 
 protected:
-	void LockEvents();
-	void UnlockEvents();
-	InputEvent* WriteHead();
-	InputEvent* ReadHead();
-	InputEvent* ReadTail();
+	void lockEvents();
+	void unlockEvents();
+	InputEvent* writeHead();
+	InputEvent* readHead();
+	InputEvent* readTail();
 
 private:
-	void SetManager(InputManager* mng) { myManager = mng; }
+	void setManager(InputManager* mng) { myManager = mng; }
 
 private:
 	InputManager* myManager;

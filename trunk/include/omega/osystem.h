@@ -49,9 +49,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
-#define OM_VERSION "0.1"
-
-#define OM_STRLEN 256 /* Standard string length */
+#define OM_VERSION "0.2"
 
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
@@ -83,8 +81,10 @@ OMEGA_API void owarn(const char* fmt, ...);
 OMEGA_API void oerror(const char* fmt, ...);
 OMEGA_API void oexit(int code);
 
+// TODO: stupid macros bleah go away.
 #define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }
 #define OMEGA_LOG_CLOSE() { ologclose(); }
+#define OM_STRLEN 256 /* Standard string length */
 
 #define odbg(str) omsg(str);
 #define oassert(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, ##c); exit(1); }

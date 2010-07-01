@@ -21,8 +21,8 @@ namespace omega
 class NetService: public InputService
 {
 public:
-	OMEGA_API virtual void Initialize();
-	OMEGA_API virtual void Dispose();
+	OMEGA_API virtual void initialize();
+	OMEGA_API virtual void dispose();
 
 private:
 };

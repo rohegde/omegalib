@@ -16,13 +16,13 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-SystemManager* SystemManager::myInstance = NULL;
+SystemManager* SystemManager::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-SystemManager* SystemManager::GetInstance()
+SystemManager* SystemManager::instance()
 {
-	if(!myInstance) myInstance = new SystemManager();
-	return myInstance;
+	if(!mysInstance) mysInstance = new SystemManager();
+	return mysInstance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,9 +39,9 @@ SystemManager::~SystemManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::Setup(Config* cfg)
+void SystemManager::setup(Config* cfg)
 {
-	omsg("SystemManager::Initialize");
+	omsg("SystemManager::initialize");
 
 	myConfig = cfg;
 	myInputManager = new InputManager(this);
@@ -49,35 +49,39 @@ void SystemManager::Setup(Config* cfg)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::Initialize()
+void SystemManager::initialize()
 {
-	if(myDisplaySystem) myDisplaySystem->Initialize(this);
-	myInputManager->Initialize();
+	if(myDisplaySystem) myDisplaySystem->initialize(this);
+	myInputManager->initialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::Run()
+void SystemManager::run()
 {
-	myInputManager->Start();
+	myInputManager->start();
 	if(myDisplaySystem)
 	{
-		myDisplaySystem->Run();
+		myDisplaySystem->run();
 	}
 	else
 	{
-		owarn("SystemManager::Run - no display system specified, returning immediately");
+		owarn("SystemManager::run - no display system specified, returning immediately");
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::Cleanup()
+void SystemManager::cleanup()
 {
-	if(myDisplaySystem) myDisplaySystem->Cleanup();
+	if(myDisplaySystem) myDisplaySystem->cleanup();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::PostExitRequest()
+void SystemManager::postExitRequest()
 {
 	myExitRequested = true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::registerInputService(const char* svcName, InputManager* (creationFunc)())
+{
+}

@@ -20,7 +20,7 @@ class TestApplication: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw3D(DrawContext& context)
+	void draw3D(DrawContext& context)
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
@@ -90,7 +90,7 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void Draw2D(DrawContext& context)
+	void draw2D(DrawContext& context)
 	{
 		GfxUtils::BeginOverlayMode(context);
 
@@ -108,20 +108,20 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void Draw(DrawContext& context)
+	virtual void draw(DrawContext& context)
 	{
 		switch(context.layer)
 		{
 			case 0:
-				Draw3D(context);
+				draw3D(context);
 				break;
 			case 1:
-				Draw2D(context);
+				draw2D(context);
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual bool HandleEvent(const InputEvent& evt)
+	virtual bool handleEvent(const InputEvent& evt)
 	{
 		switch(evt.serviceType)
 		{
@@ -145,8 +145,8 @@ public:
 			//evt.z = 0;
 			if(evt.sourceId == 1)
 			{
-				Observer* obs = GetDisplaySystem()->GetObserver(0);
-				obs->Update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+				Observer* obs = getDisplaySystem()->getObserver(0);
+				obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
 			}
 			else if(evt.sourceId == 3)
 			{
@@ -179,7 +179,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	SystemManager* sys = SystemManager::GetInstance();
+	SystemManager* sys = SystemManager::instance();
 
 	Config* cfg = new Config("../../data/test.cfg");
 	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
@@ -198,43 +198,24 @@ void main(int argc, char** argv)
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	sys->Setup(cfg);
+	sys->setup(cfg);
 
 	TestApplication app;
-	sys->SetApplication(&app);
+	sys->setApplication(&app);
 
-	sys->SetDisplaySystem(new EqualizerDisplaySystem());
-	//sys->SetDisplaySystem(new GLUTDisplaySystem());
-	//sys->GetInputManager()->AddService(new MoCapService());
-	sys->GetInputManager()->AddService(new MouseService());
-	//sys->GetInputManager()->AddService(new TrackIRService());
-	//sys->GetInputManager()->AddService(new PQService());
+	sys->setDisplaySystem(new EqualizerDisplaySystem());
+	//sys->setDisplaySystem(new GLUTDisplaySystem());
+	//sys->getInputManager()->addService(new MoCapService());
+	sys->getInputManager()->addService(new MouseService());
+	//sys->getInputManager()->addService(new TrackIRService());
+	//sys->getInputManager()->addService(new PQService());
 
-	sys->Initialize();
+	sys->initialize();
 
-	sys->GetDisplaySystem()->SetLayerEnabled(0, "view3D", true);
-	//sys->GetDisplaySystem()->SetLayerEnabled(1, "view2D", true);
+	sys->getDisplaySystem()->setLayerEnabled(0, "view3D", true);
+	//sys->getDisplaySystem()->setLayerEnabled(1, "view2D", true);
 
-	Observer* obs = sys->GetDisplaySystem()->GetObserver(0);
-	float s = 1;
-    Matrix4f m( eq::Matrix4f::IDENTITY );
-    m.scale( s, s, 1 );
-	Vector3f pos;
-	pos.x() = 0;
-	pos.y() = 0;
-	pos.z() = 0;
-	m.set_translation(pos);
+	sys->run();
 
-
-	obs->SetWorldToEmitter(m);
-
-    m = eq::Matrix4f::IDENTITY;
-    //m.rotate_z( -M_PI_2 );
-	obs->SetSensorToObject(m);
-
-	obs->Update(0, 1.5, 0, 0, 0, 0);
-
-	sys->Run();
-
-	sys->Cleanup();
+	sys->cleanup();
 }

@@ -52,12 +52,12 @@ public:
 		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
 	}
 
-	bool IsLayerEnabled(int layer) 
+	bool isLayerEnabled(int layer) 
 	{ 
 		return myEnabledLayers[layer]; 
 	}
 
-	void SetLayerEnabled(int layer, bool enabled) 
+	void setLayerEnabled(int layer, bool enabled) 
 	{ 
 		myEnabledLayers[layer] = enabled; 
 	    setDirty( DIRTY_LAYER );
@@ -115,35 +115,35 @@ public:
 
 	virtual uint32_t finishFrame()
 	{
-		DisplaySystem* ds = SystemManager::GetInstance()->GetDisplaySystem();
-		InputManager* im = SystemManager::GetInstance()->GetInputManager();
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		InputManager* im = SystemManager::instance()->getInputManager();
 
-		// Update observer head matrices.
+		// update observer head matrices.
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
 		{
-			Observer* obs  = ds->GetObserver(i);
-			getObservers().at(i)->setHeadMatrix(obs->GetHeadMatrix());
+			Observer* obs  = ds->getObserver(i);
+			getObservers().at(i)->setHeadMatrix(obs->getHeadMatrix());
 			getObservers().at(i)->setEyeBase(0.008f);
 		}
 
 		// Process events.
-		Application* app = SystemManager::GetInstance()->GetApplication();
+		Application* app = SystemManager::instance()->getApplication();
 		if(app != NULL)
 		{
-			im->ProcessEvents(app);	
-			app->Update(0);
+			im->processEvents(app);	
+			app->update(0);
 		}
 
-		SystemManager::GetInstance()->GetInputManager()->Poll();
+		SystemManager::instance()->getInputManager()->poll();
 		return eq::Config::finishFrame();
 	}
 
-	void SetLayerEnabled(int viewId, int layerId, bool enabled)
+	void setLayerEnabled(int viewId, int layerId, bool enabled)
 	{
 	    EqualizerView* view  = static_cast< EqualizerView* >(findView(viewId));
 		if(view != NULL)
 		{
-			view->SetLayerEnabled(layerId, enabled);
+			view->setLayerEnabled(layerId, enabled);
 		}
 	}
 };
@@ -172,7 +172,7 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
     eq::Channel::frameDraw( spin );
 
 	static float lt = 0.0f;
-	Application* app = SystemManager::GetInstance()->GetApplication();
+	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
 		// Compute dt.
@@ -180,11 +180,11 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 		float dt = t - lt;
 		lt = t;
 
-		app->Update(dt);
+		app->update(dt);
 
 		eq::PixelViewport pvp = getPixelViewport();
 
-		// Setup the context viewport.
+		// setup the context viewport.
 		context.frameNum = spin;
 		context.viewportX = pvp.x;
 		context.viewportY = pvp.y;
@@ -193,14 +193,14 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 
 		for(int layer = 0; layer < Application::MaxLayers; layer++)
 		{
-			if(view->IsLayerEnabled(layer))
+			if(view->isLayerEnabled(layer))
 			{
 				context.layer = layer;
-				app->Draw(context);
+				app->draw(context);
 			}
 		}
 
-		if(SystemManager::GetInstance()->IsExitRequested())
+		if(SystemManager::instance()->isExitRequested())
 		{
 			exit(0);
 		}
@@ -221,10 +221,10 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::Initialize(SystemManager* sys)
+void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
 	mySys = sys;
-	std::vector<char*> argv = Config::StringToArgv( mySys->GetApplication()->GetName(), mySys->GetConfig()->GetDisplayConfig());
+	std::vector<char*> argv = Config::StringToArgv( mySys->getApplication()->getName(), mySys->getConfig()->GetDisplayConfig());
 
 	myNodeFactory = new EqualizerNodeFactory();
 
@@ -241,11 +241,11 @@ void EqualizerDisplaySystem::Initialize(SystemManager* sys)
 	// Create observers.
 	int numObservers = myConfig->getObservers().size();
 	for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
-	omsg("Initialized %d observer(s).", numObservers);
+	omsg("initialized %d observer(s).", numObservers);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::Run()
+void EqualizerDisplaySystem::run()
 {
 	bool error = false;
     if( myConfig )
@@ -283,12 +283,12 @@ void EqualizerDisplaySystem::Run()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::Cleanup()
+void EqualizerDisplaySystem::cleanup()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-EqualizerView* EqualizerDisplaySystem::FindView(const char* viewName)
+EqualizerView* EqualizerDisplaySystem::findView(const char* viewName)
 {
     const eq::CanvasVector& canvases = myConfig->getCanvases();
 	eq::Canvas* currentCanvas = canvases.front();
@@ -313,40 +313,40 @@ EqualizerView* EqualizerDisplaySystem::FindView(const char* viewName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::SetLayerEnabled(int layerNum, const char* viewName, bool enabled) 
+void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
 {
 	if(!myConfig)
 	{
-		oerror("EqualizerDisplaySystem::SetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
+		oerror("EqualizerDisplaySystem::setLayerEnabled - must be called AFTER EqualizerDisplaySystem::initialize");
 		return;
 	}
 
-	EqualizerView* view = FindView(viewName);
+	EqualizerView* view = findView(viewName);
 	if(view != NULL)
 	{
-		view->SetLayerEnabled(layerNum, enabled);
+		view->setLayerEnabled(layerNum, enabled);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool EqualizerDisplaySystem::IsLayerEnabled(int layerNum,const char* viewName) 
+bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
 { 
 	if(!myConfig)
 	{
-		oerror("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::Initialize");
+		oerror("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::initialize");
 		return false;
 	}
 
-	EqualizerView* view = FindView(viewName);
+	EqualizerView* view = findView(viewName);
 	if(view != NULL)
 	{
-		return view->IsLayerEnabled(layerNum);
+		return view->isLayerEnabled(layerNum);
 	}
 	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Observer* EqualizerDisplaySystem::GetObserver(int observerId)
+Observer* EqualizerDisplaySystem::getObserver(int observerId)
 {
 	return myObservers[observerId];
 }

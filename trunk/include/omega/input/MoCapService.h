@@ -27,12 +27,12 @@ namespace omega
 	public:
 		OMEGA_API MoCapService();
 		OMEGA_API ~MoCapService();
-		OMEGA_API static void __cdecl FrameController(sFrameOfMocapData* data, void* pUserData);
-		OMEGA_API static void __cdecl MessageController(int msgType, char* msg);
-		OMEGA_API virtual void Initialize();
-		OMEGA_API virtual void Start();//initialize and start service here
-		OMEGA_API virtual void Stop();//destroy service instance to stop
-		OMEGA_API virtual void Dispose();
+		OMEGA_API static void __cdecl frameController(sFrameOfMocapData* data, void* pUserData);
+		OMEGA_API static void __cdecl messageController(int msgType, char* msg);
+		OMEGA_API virtual void initialize();
+		OMEGA_API virtual void start();//initialize and start service here
+		OMEGA_API virtual void stop();//destroy service instance to stop
+		OMEGA_API virtual void dispose();
 		OMEGA_API void setLocalIP (char* theAdress);
 		OMEGA_API void setServerIP (char* theAdress);
 		OMEGA_API void useQuaternion ();
