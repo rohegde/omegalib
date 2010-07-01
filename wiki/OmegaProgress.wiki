@@ -1,4 +1,4 @@
-#summary One-This page is a pseudo blog of what progress is being made on OmegaLib.
+#This page is a pseudo blog of what progress is being made on OmegaLib.
 
 = 07.01.2009 =
 
