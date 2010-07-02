@@ -10,8 +10,8 @@
   Do some story boards
 
 ==<u> Alessandro </u>==
- * < insert here> 
-  <details here>
+ * Configuration system support (*delivery*: beginning of next week)
+  Omega applications should be set up through configuration files and not through code. Working on config file support. 
     
 ==<u> Brad </u>==
  * < insert here> 
