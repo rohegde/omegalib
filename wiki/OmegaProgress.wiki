@@ -1,6 +1,6 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 
-= OmegaLib v0.2 =
+= [OmegaLib] v0.2 =
 
 ==<u> Dennis </u>== 
  * Convert oTest to oDemo
