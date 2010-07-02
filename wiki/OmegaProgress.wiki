@@ -3,13 +3,13 @@
 = omegalib v0.2 =
 
 ==<u> Dennis </u>== 
-*delivery*: beginning of next week
+(*delivery*: beginning of next week)
  * Convert oTest to oDemo 
  * Think about how to integrate touch and gesture to oDemo
   Do some story boards
  * Documentation for Cristian and Shannon (optiTrack support)
 
-*delivery*: working on next week
+(*delivery*: working on next week)
  * Tweek perspective for oDemo
   Make the stereo look better while keeping depth and proper distortion 
  
