@@ -30,6 +30,8 @@ Once all the components are gathered:
         * Right click on otest
         * Properties -> Configuration Properties -> Debugging -> Working Directory -> $(TargetDir)
 
+4) Make sure it is in "Release" Mode.
+
 = Adding a service driver =
 
 Cmake is a cross platform build system.  It is capable of generating makefiles and workspaces that can be used in the compiler environment of your choice.  Cmake uses configuration files named "CMakeLists.txt"  This file is found at every level of the source.  The image below describes how to configure the various CMakeList.txt to add and link a new service driver to omegaLib.
