@@ -41,7 +41,8 @@ SystemManager* SystemManager::instance()
 SystemManager::SystemManager():
 	myConfig(NULL),
 	myDisplaySystem(NULL),
-	myExitRequested(false)
+	myExitRequested(false),
+	myIsInitialized(false)
 {
 }
 
@@ -56,6 +57,9 @@ void SystemManager::setup(Config* cfg)
 	omsg("SystemManager::setup");
 
 	myConfig = cfg;
+
+	// Make sure the configuration is loaded.
+	if(!myConfig->isLoaded()) myConfig->load();
 
 	setupInputManager();
 	setupDisplaySystem();
@@ -142,11 +146,16 @@ void SystemManager::initialize()
 {
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
 	myInputManager->initialize();
+
+	myIsInitialized = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::run()
 {
+	// If the system manager has not been initialized yet, do it now.
+	if(!myIsInitialized) initialize();
+
 	myInputManager->start();
 	if(myDisplaySystem)
 	{

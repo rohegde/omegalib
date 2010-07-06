@@ -23,9 +23,9 @@ public:
 	static std::vector<char*> stringToArgv(String appName, String args);
 
 public:
-	OMEGA_API Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL) {}
-	OMEGA_API Config(int argc, char** argv): myCfgFile(NULL) { myArgc = argc; myArgv = argv; }
-	OMEGA_API Config(const char* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL) { myCfgFilename = filename; }
+	OMEGA_API Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false) {}
+	OMEGA_API Config(int argc, char** argv): myCfgFile(NULL), myIsLoaded(false) { myArgc = argc; myArgv = argv; }
+	OMEGA_API Config(const char* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false) { myCfgFilename = filename; }
 	OMEGA_API ~Config() {}
 
 	OMEGA_API const char* getConfigFilename() { return myCfgFilename.c_str(); }
@@ -36,9 +36,12 @@ public:
 
 	OMEGA_API bool load();
 
+	OMEGA_API bool isLoaded() { return myIsLoaded; }
+
 	OMEGA_API Setting& getRootSetting();
 
 private:
+	bool myIsLoaded;
 	char** myArgv;
 	int myArgc;
 

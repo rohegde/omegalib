@@ -211,7 +211,8 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL),
 	myConfig(NULL),
-	myNodeFactory(NULL)
+	myNodeFactory(NULL),
+	mySetting(NULL)
 {
 }
 
@@ -224,6 +225,7 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
 	setting.lookupValue("DisplayConfig", myDisplayConfig);
+	mySetting = &setting;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,6 +250,71 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	int numObservers = myConfig->getObservers().size();
 	for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
 	omsg("initialized %d observer(s).", numObservers);
+
+	// Initialize layers and observers from configuration settings.
+	initLayers();
+
+	initObservers();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::initObservers()
+{
+	if(mySetting->exists("Observers"))
+	{
+		Setting& stObservers = (*mySetting)["Observers"];
+		for(int i = 0; i < stObservers.getLength(); i++)
+		{
+			Setting& stObserver = stObservers[i];
+			Observer* obs = getObserver(i);
+
+			Matrix4f emitterMatrix( eq::Matrix4f::IDENTITY );
+
+			if(stObserver.exists("EmitterScale"))
+			{
+				Setting& stEmitterScale = stObserver["EmitterScale"];
+				emitterMatrix.scale((float)stEmitterScale[0], (float)stEmitterScale[1], (float)stEmitterScale[2]);
+			}
+			if(stObserver.exists("EmitterTranslation"))
+			{
+				Setting& stEmitterTranslation = stObserver["EmitterTranslation"];
+				Vector3f pos;
+				pos.x() = (float)stEmitterTranslation[0];
+				pos.y() = (float)stEmitterTranslation[1];
+				pos.z() = (float)stEmitterTranslation[2];
+				emitterMatrix.set_translation(pos);
+			}
+			/*if(stObserver.exists("EmitterRotation"))
+			{
+				Setting& stEmitterRotation = stObserver["EmitterRotation"];
+				emitterMatrix.rotate((float)stEmitterRotation[0], 1, 0, 0);
+				emitterMatrix.rotate((float)stEmitterRotation[1], 0, 1, 0);
+				emitterMatrix.rotate((float)stEmitterRotation[2], 0, 0, 1);
+			}*/
+
+			// Set observer initial position to origin, neutral orientation.
+			obs->setWorldToEmitter(emitterMatrix);
+			obs->update(0, 0, 0, 0, 0, 0);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::initLayers()
+{
+	if(mySetting->exists("Views"))
+	{
+		Setting& stViews = (*mySetting)["Views"];
+		for(int i = 0; i < stViews.getLength(); i++)
+		{
+			Setting& stView = stViews[i];
+			Setting& stLayers = stView["Layers"];
+			for(int j = 0; j < stLayers.getLength(); j++)
+			{
+				setLayerEnabled(stLayers[j], stView.getName(), true);
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
