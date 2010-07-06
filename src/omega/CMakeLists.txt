@@ -82,7 +82,7 @@ IF(OMEGA_USE_OPTITRACK)
 	SET( srcs	 ${srcs} input/OptiTrackService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OptiTrackService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_OPTITRACK)
-ENDIF(OMEGA_USE_TRACKIR)
+ENDIF(OMEGA_USE_OPTITRACK)
 
 SET(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
 IF(OMEGA_USE_PQLABS)
@@ -92,7 +92,7 @@ IF(OMEGA_USE_PQLABS)
 ENDIF(OMEGA_USE_PQLABS)
 
 SET(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
-IF(OMEGA_USE_NETINPUT)
+IF(OMEGA_USE_NETSERVICE)
 	SET( srcs	 ${srcs} input/NetService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
@@ -108,24 +108,24 @@ ADD_LIBRARY( omega SHARED ${srcs} ${headers})
 #######################################################################################################################
 # Setup module-specific link info
 IF(OMEGA_USE_MOCAP)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/NatNetLibStatic optimized ${LIB_RELEASE}/NatNetLibStatic )
+	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/NatNetLibStatic.lib optimized ${LIB_RELEASE}/NatNetLibStatic.lib)
 ENDIF(OMEGA_USE_MOCAP)
 
-IF(OMEGA_USE_TRACKIR)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/optitrackuuid optimized ${LIB_RELEASE}/optitrackuuid )
-ENDIF(OMEGA_USE_TRACKIR)
+IF(OMEGA_USE_OPTITRACK)
+	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/optitrackuuid.lib optimized ${LIB_RELEASE}/optitrackuuid.lib)
+ENDIF(OMEGA_USE_OPTITRACK)
 
 IF(OMEGA_USE_PQLABS)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/PQMTClient optimized ${LIB_RELEASE}/PQMTClient )
+	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/PQMTClient.lib optimized ${LIB_RELEASE}/PQMTClient.lib)
 ENDIF(OMEGA_USE_PQLABS)
 
 #######################################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( omega
 	libconfig
-	debug ${LIB_DEBUG}/pthreadVC2 optimized ${LIB_RELEASE}/pthreadVC2
-	debug ${LIB_DEBUG}/rpcrt4 optimized ${LIB_RELEASE}/rpcrt4
-	debug ${LIB_DEBUG}/equalizer optimized ${LIB_RELEASE}/equalizer
+	debug ${LIB_DEBUG}/pthreadVC2.lib optimized ${LIB_RELEASE}/pthreadVC2.lib
+#	debug ${LIB_DEBUG}/rpcrt4.lib optimized ${LIB_RELEASE}/rpcrt4.lib
+	debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
 	debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32
-	debug ${LIB_DEBUG}/glut32 optimized ${LIB_RELEASE}/glut32
+	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
 	${OPENGL_LIBRARY})
