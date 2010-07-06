@@ -75,12 +75,15 @@ public:
 	static const unsigned int Id; 
 
 private:
+	void initLayers();
+	void initObservers();
 	EqualizerView* findView(const char* viewName);
 
 private:
 	SystemManager* mySys;
 
 	// Display config
+	Setting* mySetting;
 	String myDisplayConfig;
 
 	// Equalizer stuff.

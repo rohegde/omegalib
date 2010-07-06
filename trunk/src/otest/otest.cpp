@@ -251,35 +251,14 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	SystemManager* sys = SystemManager::instance();
-
 	Config* cfg = new Config("../../data/test.cfg");
 
-	cfg->load();
-
+	SystemManager* sys = SystemManager::instance();
 	sys->setup(cfg);
 
 	TestApplication app;
 	sys->setApplication(&app);
-
-	sys->initialize();
-
-	sys->getDisplaySystem()->setLayerEnabled(0, "view3D", true);
-	sys->getDisplaySystem()->setLayerEnabled(0, "view2D", true);
-	sys->getDisplaySystem()->setLayerEnabled(1, "view2D", true);
-
-#ifdef LAPTOP
-	Observer* obs = sys->getDisplaySystem()->getObserver(0);
-    Matrix4f m( eq::Matrix4f::IDENTITY );
-	m.scale(1.3, -1, 0.3);
-	Vector3f pos;
-	pos.x() = 0;
-	pos.y() = 1.5f;
-	pos.z() = 0;
-	m.set_translation(pos);
-	obs->setWorldToEmitter(m);
-#endif LAPTOP
-
 	sys->run();
+
 	sys->cleanup();
 }

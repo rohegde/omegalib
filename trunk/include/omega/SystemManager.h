@@ -75,6 +75,8 @@ public:
 
 	OMEGA_API bool isExitRequested() { return myExitRequested; }
 
+	OMEGA_API bool isInitialized() { return myIsInitialized; }
+
 private:
 	SystemManager();
 	~SystemManager();
@@ -85,6 +87,8 @@ private:
 private:
 	// Singleton instance.
 	static SystemManager* mysInstance;
+
+	bool myIsInitialized;
 
 	// The input manager registry.
 	InputServiceDictionary myInputServiceRegistry;

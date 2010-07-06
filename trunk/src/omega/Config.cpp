@@ -32,29 +32,32 @@ std::vector<char*> Config::stringToArgv(std::string appName, std::string args)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Config::load()
 {
-	myCfgFile = new libconfig::Config();
-	FILE* stream = fopen(myCfgFilename.c_str(), "r");
-	if(stream == NULL)
+	if(!myIsLoaded)
 	{
-		oerror("Config::Load - Opening file failed: %s", myCfgFilename.c_str());
-		return false;
-	}
+		myCfgFile = new libconfig::Config();
+		FILE* stream = fopen(myCfgFilename.c_str(), "r");
+		if(stream == NULL)
+		{
+			oerror("Config::Load - Opening file failed: %s", myCfgFilename.c_str());
+			return false;
+		}
 
-	omsg("Opened config file: %s", myCfgFilename.c_str());
+		omsg("Opened config file: %s", myCfgFilename.c_str());
 
-	try
-	{
-		myCfgFile->read(stream);
-	}
-	catch(libconfig::ParseException e)
-	{
-		oerror("Config loading: %s at line %d", e.getError(), e.getLine());
+		try
+		{
+			myCfgFile->read(stream);
+		}
+		catch(libconfig::ParseException e)
+		{
+			oerror("Config loading: %s at line %d", e.getError(), e.getLine());
+			fclose(stream);
+			return false;
+		}
 		fclose(stream);
-		return false;
+
+		myIsLoaded = true;
 	}
-	fclose(stream);
-
-
 
 	return true;
 }
