@@ -9,7 +9,7 @@ A brief overview of the cmake structure in the source will be given.
 
 A successful compilation of the source requires:
  * SVN Client
- * OptiTrack SDK
+ * OptiTrack SDK (http://www.naturalpoint.com/optitrack/support/downloads.html)
  * Cmake
  * Visual Studios 2008
 
