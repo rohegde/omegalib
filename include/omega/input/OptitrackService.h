@@ -21,11 +21,11 @@
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class TrackIRService: public InputService
+class OptiTrackService: public InputService
 {
 public:
 	// Allocator function
-	static TrackIRService* New() { return new TrackIRService(); }
+	static OptiTrackService* New() { return new OptiTrackService(); }
 
 public:
 

@@ -13,7 +13,7 @@
 #include "omega/input/MouseService.h"
 #include "omega/input/MoCapService.h"
 #include "omega/input/PQService.h"
-#include "omega/input/TrackIRService.h"
+#include "omega/input/OptiTrackService.h"
 
 using namespace omega;
 using namespace omega::gfx;

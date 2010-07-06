@@ -9,7 +9,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "omega/input/TrackIRService.h"
+#include "omega/input/OptiTrackService.h"
 #include "omega/SystemManager.h"
 
 using namespace omega;
@@ -33,7 +33,7 @@ using namespace omega;
 //}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::initialize() 
+void OptiTrackService::initialize() 
 {
 	//== initialize Microsoft COM Interop ================----
 	CoInitialize(NULL);
@@ -94,7 +94,7 @@ void TrackIRService::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::start()
+void OptiTrackService::start()
 {
 	if(myCamera != NULL)
 	{
@@ -104,7 +104,7 @@ void TrackIRService::start()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::poll() 
+void OptiTrackService::poll() 
 {
 	double radToDegree = 180.0 / 3.14159265;
 	double degreeToRad =  3.14159265 / 180.0;
@@ -165,12 +165,12 @@ void TrackIRService::poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::stop()
+void OptiTrackService::stop()
 {
 	myCamera->Stop();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TrackIRService::dispose() 
+void OptiTrackService::dispose() 
 {
 }
