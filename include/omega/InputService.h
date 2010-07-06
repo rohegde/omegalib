@@ -37,6 +37,7 @@ public:
 
 	InputManager* getManager() { return myManager; }
 
+	virtual void setup(Setting& settings) {}
 	virtual void initialize() {}
 	virtual void start() {}
 	virtual void poll() {}

@@ -40,7 +40,7 @@ SET( srcs
         gfx/GfxUtils.cpp
         gfx/teapot.cpp
         )
-    
+		
 #######################################################################################################################
 # Headers
 SET( headers 
@@ -61,7 +61,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/gfx/GfxUtils.h
         ) 
         
-
 #######################################################################################################################
 # Enable / disable specific modules within omegalib
 SET(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
@@ -98,6 +97,9 @@ IF(OMEGA_USE_NETINPUT)
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
+
+#######################################################################################################################
+SOURCE_GROUP(input REGULAR_EXPRESSION input/)		
 
 #######################################################################################################################
 # Setup compile info

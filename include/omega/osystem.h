@@ -29,27 +29,36 @@
 // Equalizer includes
 #include <eq/eq.h>
 
-// Platform-specific includes.
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// WIN32 Platform-specific includes & macros.
 #ifdef WIN32
-#include <windows.h>
-#include <objbase.h>
-#include <atlbase.h>
+	#include <windows.h>
+	#include <objbase.h>
+	#include <atlbase.h>
 
-#ifdef OMEGA_EXPORTING
-   #define OMEGA_API    __declspec(dllexport)
-#else
-   #define OMEGA_API    __declspec(dllimport)
-#endif
-
+	// Omega DLL import / export macros
+	#ifdef OMEGA_EXPORTING
+	   #define OMEGA_API    __declspec(dllexport)
+	#else
+	   #define OMEGA_API    __declspec(dllimport)
+	#endif
 #endif
 
 // OpenGL includes
 #include <GL/gl.h>
 #include <GL/glut.h>
 
+// Libconfig
+#include "libconfig/libconfig.hh"
+
+// Boost foreach support
+#include "boost/foreach.hpp"
+// Let's use a nicer lowercase sytax for this macro.
+#define boost_foreach BOOST_FOREACH
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
-#define OM_VERSION "0.2"
+#define OMEGA_VERSION "0.2"
 
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
@@ -70,6 +79,13 @@ typedef vmml::vector< 4, double >Vector4d; //!< A four-component double vector
 typedef vmml::vector< 2, float > Vector2f; //!< A four-component float vector
 typedef vmml::vector< 3, float > Vector3f; //!< A four-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
+
+// String
+typedef std::string String;
+
+// Setting
+typedef libconfig::Setting Setting;
+
 }; // namespace omega
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +100,6 @@ OMEGA_API void oexit(int code);
 // TODO: stupid macros bleah go away.
 #define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }
 #define OMEGA_LOG_CLOSE() { ologclose(); }
-#define OM_STRLEN 256 /* Standard string length */
 
 #define odbg(str) omsg(str);
 #define oassert(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, ##c); exit(1); }

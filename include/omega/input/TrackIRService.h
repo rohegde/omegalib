@@ -24,6 +24,10 @@ namespace omega
 class TrackIRService: public InputService
 {
 public:
+	// Allocator function
+	static TrackIRService* New() { return new TrackIRService(); }
+
+public:
 
 	OMEGA_API virtual void initialize();
 	OMEGA_API virtual void start();

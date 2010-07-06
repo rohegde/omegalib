@@ -33,7 +33,7 @@ public:
 	static const int MaxLayers = 16;
 
 public:
-	virtual const char* getName() { return "OmegaLib " OM_VERSION; }
+	virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
 
 	virtual void draw(DrawContext& context) {}
 	virtual bool handleEvent(const InputEvent& evt) { return false; }

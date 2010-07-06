@@ -18,12 +18,14 @@
 #include "natnet/NatNetClient.h"
 #include "winsock2.h"
 
-//#define PI 3.14159265
-
 namespace omega
 {
 	class MoCapService : public InputService
 	{
+	public:
+		// Allocator function
+		static MoCapService* New() { return new MoCapService(); }
+
 	public:
 		OMEGA_API MoCapService();
 		OMEGA_API ~MoCapService();
