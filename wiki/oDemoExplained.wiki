@@ -47,7 +47,9 @@ Within test.cfg:
          };
       };
     }}}
-    EmitterTranslation is an offset that can be placed on the head tracked data that is gathered.
+    EmitterTranslation is an offset that can be placed on the head tracked data that is gathered. <br>
+    The current setup assumes that the origin is on the floor somewhere.<br>
+    This is probably not what the camera assumes.  Thus we translate it up 1.8 meters.<br>
 
 3) The input services available can be found under InputServices:
 {{{
