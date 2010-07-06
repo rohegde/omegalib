@@ -11,114 +11,168 @@
  *********************************************************************************************************************/
 #include "omega.h"
 #include "omega/input/MouseService.h"
+#include "omega/input/MoCapService.h"
 #include "omega/input/PQService.h"
+#include "omega/input/OptiTrackService.h"
 
 using namespace omega;
 using namespace omega::gfx;
+
+#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	 *		
+	 */
 	void draw3D(DrawContext& context)
 	{
+		
+
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
-		const float lightPos[] = { 0.0f, 1.0f, 1.0f, 0.0f };
+
+#ifdef LAPTOP
+		const float lightPos[] = { 0, 1.8, 0, 1.0f };
+		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const float lightAmbient[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0 );
+#else
+		const float lightPos[] = { lx, ly, lz, 1.0f };
+		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const float lightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
+#endif
+
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
-
-		const float lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
+		glLightfv( GL_LIGHT0, GL_DIFFUSE, lightDiffuse );
 
-		/*******************************************************************
-		*	NOTE:
-		*		Rotations must be performed in this ordering:
-		*			First pitch(rx)
-		*			Second roll(rz)
-		*			Third yaw(ry)
-		*		However, because of the way opengl parses the arguements
-		*		they must be entered in code in reverse order as seen below.
-		********************************************************************/
-		glRotated(ry + 3.14f / 2, 0, 1, 0);
-		glRotated(rz, 0, 0, 1);
-		glRotated(rx, 1, 0, 0);
+		//Generate Fog effect
+		glEnable(GL_FOG);
+		const float fogCol[] = { 0.0f, 0.0f, 0.0f };
+		glFogfv( GL_FOG_COLOR, fogCol );
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogf(GL_FOG_START, 1);
+		glFogf(GL_FOG_END, 3);
+
+
+		float i = (float)context.frameNum / 40;
+		float zz = sin(i) * 0.7;
+		float xx = cos(i * 1.2) * 0.3;
+		float yy = 0.5f; //cos(i * 0.7) * 0.1;
+
+		glColor3f(0.5, 0.4, 0.7);
+		glColor3f(0.8, 1.0, 0.8);
+		glPushMatrix();
+		glTranslatef(-0.2, 0.5, -2.0);
+		glRotated(i * 3, 0, 1, 0);
+		GfxUtils::DrawSolidTeapot(0.1f);
+		glPopMatrix();
+
+		glColor3f(0.7, 0.4, 0.4);
+		glPushMatrix();
+		glTranslatef(0.0, 0.5, -0.7);
+		GfxUtils::DrawSolidTeapot(0.1f);
+		glPopMatrix();
 
 		glPushMatrix();
-		glTranslatef(-2.0,5.0,0.0);
-
-		switch( CURRENT_OBJECT ){
-			case(TEAPOT):
-				GfxUtils::DrawSolidTeapot(0.3f);
-				break;
-			default:
-				DrawBox();
-				break;
-		}// switch
-
+		glTranslatef(0.3 + xx, 0.0 + yy, -1.6 + zz);
+		glutSolidSphere(0.1f, 20, 20);
 		glPopMatrix();
+
+		glPushMatrix();
+		glTranslatef(mx, my, mz);
+		glRotatef(ry , 0, 1, 0);
+		glRotated(rz, 0, 0, 1);
+		glRotated(rx, 1, 0, 0);
+		glTranslatef(0, 0.1f, 0);
+		GfxUtils::DrawSolidTeapot(0.05f);
+		glPopMatrix();
+
+		glColor3f(1.0, 1.0, 1.0);
+		//DrawRoom(0.0f, 1.9f, -0.407f, 0.61f, 0, -3);
+		DrawRoom(0.3f, 2.0f, -0.59f, 0.59f, 0, -3);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	 *		
+	 */
+	void DrawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
+	{
+		//glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3f(0, 1, 0);
+		glVertex3f(left, bottom, nearEnd);
+		glNormal3f(0, 1, 0);
+		glVertex3f(right, bottom, nearEnd);
+		glNormal3f(0, 1, 0);
+		glVertex3f(left, bottom, farEnd);
+		glNormal3f(0, 1, 0);
+		glVertex3f(right, bottom, farEnd);
+		glEnd();
+
+		//glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_LINES);
+		for(float y = bottom; y < top; y += 0.05)
+		{
+			glVertex3f(left, y, nearEnd);
+			glVertex3f(left, y, farEnd);
+			glVertex3f(right, y, nearEnd);
+			glVertex3f(right, y, farEnd);
+		}
+
+		glEnd();
+		//glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_TRIANGLE_STRIP);
+		glVertex3f(left, top, nearEnd);
+		glVertex3f(right, top, nearEnd);
+		glVertex3f(left, top, farEnd);
+		glVertex3f(right, top, farEnd);
+		glEnd();
+
+		//glColor3f(0.3, 1.0, 0.3);
+		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3f(0, 0, 1);
+		glVertex3f(left, top, farEnd);
+		glNormal3f(0, 0, 1);
+		glVertex3f(right, top, farEnd);
+		glNormal3f(0, 0, 1);
+		glVertex3f(left, bottom, farEnd);
+		glNormal3f(0, 0, 1);
+		glVertex3f(right, bottom, farEnd);
+		glEnd();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	 *		
+	 */
 	void draw2D(DrawContext& context)
 	{
-		glDisable(GL_LIGHTING);
-		//glDisable(GL_DEPTH_TEST);
-		//glEnable(GL_BLEND);
-		//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 		GfxUtils::BeginOverlayMode(context);
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		GfxUtils::DrawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
-		// Control Panel Boundary
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glBegin(GL_LINES);
-			glVertex2f(200, 0);
-			glVertex2f(200, 1080);
-		glEnd();
-		glBegin(GL_LINES);
-			glVertex2f(0, 540);
-			glVertex2f(200, 540);
-		glEnd();
-		
-		// Create texture from viewport
-		int viewport[4];
-		//glGetIntegerv(GL_VIEWPORT,(int*)viewport);
-
-		// Region that should be painted on
-		// Canvas upper left is at (800,400), canvas width/height is 400
-		glEnable( GL_TEXTURE_2D );
-		glBindTexture( GL_TEXTURE_2D, texture );
-
-		glBegin(GL_LINE_LOOP);
-			glTexCoord2d(0.0,1.0); glVertex2f(800, 400);
-			glTexCoord2d(0.0,0.0); glVertex2f(800, 800);
-			glTexCoord2d(1.0,0.0); glVertex2f(1200, 800);
-			glTexCoord2d(1.0,1.0); glVertex2f(1200, 400);
-		glEnd();
-		glDisable( GL_TEXTURE_2D );
-
-		glBindTexture( GL_TEXTURE_2D, texture );
-		glCopyTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 0, 0, xSize, ySize, 0 );
-
-		//glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
-
-		// Last Touch/Mouse point
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
-		glPointSize (5.0);
+		glPointSize (8.0);
 		glBegin(GL_POINTS);
 			glVertex2f(x, y);    // lower left vertex
 		glEnd();
 		
 
 		GfxUtils::EndOverlayMode();
-
-		glEnable(GL_LIGHTING);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	 *		
+	 */
 	virtual void draw(DrawContext& context)
 	{
 		switch(context.layer)
@@ -128,10 +182,16 @@ public:
 				break;
 			case 1:
 				draw2D(context);
+				break;
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/*
+	 *	virtual bool handleEvent(const InputEvent& evt)
+	 *		
+	 *		This is a virtual function that can be implemented to handle input events
+	 */
 	virtual bool handleEvent(const InputEvent& evt)
 	{
 		switch(evt.serviceType)
@@ -139,131 +199,55 @@ public:
 		case InputService::Touch:
 		case InputService::Pointer:
 			x = evt.x;
-			y = evt.y;
-			ControlPanel_OnInput( x, y );
-			printf("received touchevent x:%f, y:%f\n", x ,y);
-			return true;
+			y = evt.y;					
+		break;
 
 		case InputService::Mocap:
-			//if ( ( evt.id == 2 ) && ( evt.type == InputEvent::Trace ) )
-			//{
-			//	rx = evt.rx * radToDegree;
-			//	ry = evt.ry * radToDegree;
-			//	rz = evt.rz * radToDegree;
-			//printf("head rx:%f, ry:%f, rz:%f \n", evt.rx, evt.ry, evt.rz);
-			//printf("     x:%f, y:%f, z:%f \n", evt.x, evt.y, evt.z);
-			//}
-			return true;
+		{
+#ifdef LAPTOP
+			/* better calculations for tracker done here before passing */
+			
+			Observer* obs = getDisplaySystem()->getObserver(0);
+			obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+#else
+			if(evt.sourceId == 1)
+			{
+				if(evt.x != 0 || evt.y != 0)
+				{
+					Observer* obs = getDisplaySystem()->getObserver(0);
+					obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+				}
+			}
+			else if(evt.sourceId == 3) //glove
+			{
+				if(evt.x != 0 || evt.y != 0)
+				{
+					lx = evt.x;
+					ly = evt.y;
+					lz = evt.z;
+				}
+			}
+			else if(evt.sourceId ==2) //handheld
+			{
+				if(evt.x != 0 || evt.y != 0)
+				{
+					mx = evt.x;
+					my = evt.y;
+					mz = evt.z;
+					rx = evt.rx * radToDegree;
+					ry = evt.ry * radToDegree;
+					rz = evt.rz * radToDegree;
+				}
+			}
+#endif
+			break;
+
+			break;
 		}
-		return false;
+		default: break;
+		}
+		return true;
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void ControlPanel_OnInput( float x, float y ){
-		if( x <= 200 ){ // Panel width
-			if( y < 540 ){ // Top button
-				CURRENT_OBJECT = TEAPOT;
-			} else if( y > 540 ){ //Bottom button
-				CURRENT_OBJECT = -1;
-			}// if-else
-		}// if
-	}// ControlPanel_OnInput
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void DrawBox(){
-		bool isWire = false;
-		float baseWidth = 0.5;
-		float height = 0.5;
-
-		GLfloat border_color[] = { 0.0, 1.0, 1.0, 1.0 };
-		glTexParameterfv(GL_TEXTURE_2D,GL_TEXTURE_BORDER_COLOR, border_color );
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-
-		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
-		glEnable( GL_TEXTURE_2D );
-		glBindTexture( GL_TEXTURE_2D, texture );
-
-			// base
-		if(isWire) glBegin(GL_LINE_LOOP);
-		else glBegin(GL_POLYGON);
-		glNormal3d( 0.0, -1.0, 0.0 );
-		glTexCoord2d(0.0,0.0); glVertex3d(  baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 1
-		glTexCoord2d(1.0,0.0); glVertex3d( -baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 0
-		glTexCoord2d(1.0,1.0); glVertex3d( -baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 3
-		glTexCoord2d(0.0,1.0); glVertex3d(  baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 2
-		glEnd( );
-
-		// top
-		if(isWire) glBegin(GL_LINE_LOOP);
-		else glBegin(GL_POLYGON);
-		glNormal3d( 0.0, 1.0, 0.0 );
-		glTexCoord2d(0.0,0.0); glVertex3d( -baseWidth/2.0, height,  baseWidth/2.0 ); // 4
-		glTexCoord2d(1.0,0.0); glVertex3d(  baseWidth/2.0, height,  baseWidth/2.0 ); // 5
-		glTexCoord2d(1.0,1.0); glVertex3d(  baseWidth/2.0, height, -baseWidth/2.0 ); // 6
-		glTexCoord2d(0.0,1.0); glVertex3d( -baseWidth/2.0, height, -baseWidth/2.0 ); // 7
-		glEnd( );
-
-		// back
-		if(isWire) glBegin(GL_LINE_LOOP);
-		else glBegin(GL_POLYGON);
-		glNormal3d( 0.0, 0.0, -1.0 );
-		glTexCoord2d(0.0,0.0); glVertex3d(  baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 2
-		glTexCoord2d(1.0,0.0); glVertex3d( -baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 3
-		glTexCoord2d(1.0,1.0); glVertex3d( -baseWidth/2.0, height, -baseWidth/2.0 ); // 7
-		glTexCoord2d(0.0,1.0); glVertex3d(  baseWidth/2.0, height, -baseWidth/2.0 ); // 6
-		glEnd( );
-
-		// left
-		if(isWire) glBegin(GL_LINE_LOOP);
-		else glBegin(GL_POLYGON);
-		glNormal3d( -1.0, 0.0, 0.0 );
-		glTexCoord2d(0.0,0.0); glVertex3d(  baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 1
-		glTexCoord2d(1.0,0.0); glVertex3d(  baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 2
-		glTexCoord2d(1.0,1.0); glVertex3d(  baseWidth/2.0, height, -baseWidth/2.0 ); // 6
-		glTexCoord2d(0.0,1.0); glVertex3d(  baseWidth/2.0, height,  baseWidth/2.0 ); // 5
-		glEnd( );
-
-		// front
-		if(isWire) glBegin(GL_LINE_LOOP);
-		else glBegin(GL_POLYGON);
-		glNormal3d( 0.0, 0.0, 1.0 );
-		glTexCoord2d(0.0,0.0); glVertex3d( -baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 0
-		glTexCoord2d(1.0,0.0); glVertex3d(  baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 1
-		glTexCoord2d(1.0,1.0); glVertex3d(  baseWidth/2.0, height,  baseWidth/2.0 ); // 5
-		glTexCoord2d(0.0,1.0); glVertex3d( -baseWidth/2.0, height,  baseWidth/2.0 ); // 4
-		glEnd( );
-
-		// right
-		if(isWire) glBegin(GL_LINE_LOOP);
-		else glBegin(GL_POLYGON);
-		glNormal3d( 1.0, 0.0, 0.0 );
-		glTexCoord2d(0.0,0.0); glVertex3d( -baseWidth/2.0,   0.0, -baseWidth/2.0 ); // 3
-		glTexCoord2d(1.0,0.0); glVertex3d( -baseWidth/2.0,   0.0,  baseWidth/2.0 ); // 0
-		glTexCoord2d(1.0,1.0); glVertex3d( -baseWidth/2.0, height,  baseWidth/2.0 ); // 4
-		glTexCoord2d(0.0,1.0); glVertex3d( -baseWidth/2.0, height, -baseWidth/2.0 ); // 7
-		glEnd( );
-
-		glDisable( GL_TEXTURE_2D );
-	}// DrawBox
-
-	// Creates a texture that will be mapped to object
-	void CreateTexture(){
-		xSize = ySize = 256;
-		char* colorBits = new char[ xSize * ySize * 3];
-
-		// Generate texture
-		glGenTextures( 1, &texture );
-		glBindTexture( GL_TEXTURE_2D, texture );
-
-		glTexImage2D( GL_TEXTURE_2D, 0, 3, xSize, ySize, 0, GL_RGB, GL_UNSIGNED_BYTE, colorBits );
-
-		delete[] colorBits;
-
-	}// Create Texture
 
 private:
 	float rx;
@@ -272,44 +256,43 @@ private:
 
 	float x;
 	float y;
+	float z;
 
-	static const int TEAPOT = 0;
-	static const int BOX = 1;
-	int CURRENT_OBJECT;
+	float mx;
+	float my;
+	float mz;
 
-	// Texture Drawing
-	int xSize, ySize; // Size of texture
-	unsigned int texture;
-
+	float lx;
+	float ly;
+	float lz;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ *	void main(int argc, char** argv)
+ *
+ *    This is the main for oDemo.  Here is where to setup :
+ *       - the configuration file and application to pass to OmegaLib
+ *       - data structures for data that will be manipulated before relinquishing control to OmegaLib
+ *		 - relingquish control to Omegalib for rendering.
+ *
+ *    The paradigm that drives OmegaLib is much like OpenGL.  Data structures and setup functionality is setup in the
+ *      Main Program.  Control is then relinquished to OmegaLib where rendering and data manipulation will take place.
+ *		
+ */
 void main(int argc, char** argv)
 {
-	SystemManager* sys = SystemManager::instance();
+	SystemManager* sys = SystemManager::instance();		//Setup the system manager for OmegaLib
+	
+	Config* cfg = new Config("../../data/test.cfg");	//define the config file and its path
+	sys->setup(cfg);									//notify OmegaLib's sys mngr of the configuration file
 
-	Config* cfg = new Config("../../data/test.cfg");
-	//cfg->setDisplayConfig("--eq-config ../../data/eqc/omegalaptop.eqc");
+	TestApplication app;								//inialize the app that will will be passed to OmegaLib
+	sys->setApplication(&app);							//notify OmegaLib's sys mngr of the app
+	
+	/* Setup data structures for data that will be manipulated before relinquishing control to OmegaLib*/
 
-	sys->setup(cfg);
+	sys->run();											//Pass control to OmegaLib's sys mngr
 
-	TestApplication app;
-	app.CreateTexture();
-	sys->setApplication(&app);
-
-	sys->setDisplaySystem(new EqualizerDisplaySystem());
-	//sys->setDisplaySystem(new GLUTDisplaySystem());
-	//sys->getInputManager()->addService(new MoCapService());
-	sys->getInputManager()->addService(new MouseService());
-	//sys->getInputManager()->addService(new OptiTrackService());
-	//sys->getInputManager()->addService(new PQService());
-
-	sys->initialize();
-
-	sys->getDisplaySystem()->setLayerEnabled(0, "view3D", true);
-	sys->getDisplaySystem()->setLayerEnabled(1, "view2D", true);
-
-	sys->run();
-
-	sys->cleanup();
+	sys->cleanup();										//cleanup
 }
