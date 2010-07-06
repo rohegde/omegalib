@@ -18,9 +18,13 @@
 using namespace omega;
 using namespace omega::gfx;
 
-#define LAPTOP
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ *	class TestApplication: public Application
+ *		
+ *		This class will contain the draw and event handler functions that OmegaLib's System Manager will use.
+ *      Additional functions can be added to handle any data that will be required by the applicaiton.
+ */
 class TestApplication: public Application
 {
 public:
@@ -35,17 +39,10 @@ public:
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 
-#ifdef LAPTOP
 		const float lightPos[] = { 0, 1.8, 0, 1.0f };
 		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		const float lightAmbient[] = { 0.3f, 0.3f, 0.3f, 1.0f };
 		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0 );
-#else
-		const float lightPos[] = { lx, ly, lz, 1.0f };
-		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		const float lightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
-#endif
 
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
@@ -171,7 +168,10 @@ public:
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
+	 *	virtual void draw(DrawContext& context)
 	 *		
+	 *		This is a virtual function that can be implemented to handle drawing.
+	 *      This exmaple breaks it up into 3d and 2d drawingA.
 	 */
 	virtual void draw(DrawContext& context)
 	{
@@ -204,44 +204,9 @@ public:
 
 		case InputService::Mocap:
 		{
-#ifdef LAPTOP
-			/* better calculations for tracker done here before passing */
-			
+			/* better calculations for tracker done here before passing */			
 			Observer* obs = getDisplaySystem()->getObserver(0);
 			obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
-#else
-			if(evt.sourceId == 1)
-			{
-				if(evt.x != 0 || evt.y != 0)
-				{
-					Observer* obs = getDisplaySystem()->getObserver(0);
-					obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
-				}
-			}
-			else if(evt.sourceId == 3) //glove
-			{
-				if(evt.x != 0 || evt.y != 0)
-				{
-					lx = evt.x;
-					ly = evt.y;
-					lz = evt.z;
-				}
-			}
-			else if(evt.sourceId ==2) //handheld
-			{
-				if(evt.x != 0 || evt.y != 0)
-				{
-					mx = evt.x;
-					my = evt.y;
-					mz = evt.z;
-					rx = evt.rx * radToDegree;
-					ry = evt.ry * radToDegree;
-					rz = evt.rz * radToDegree;
-				}
-			}
-#endif
-			break;
-
 			break;
 		}
 		default: break;
