@@ -1,5 +1,7 @@
 #summary This page will give brief instructions on how to build OmegaLib and add in a new service driver.
 
+= *Updated Jul 6 2010* =
+
 = Introduction =
 
 This page will give brief instructions on how to build OmegaLib.
@@ -25,9 +27,9 @@ Once all the components are gathered:
    * Generate
 
 3) Go into ./source_Path/build directory open .snl using Visual Studio
-   * Need to assign otest as startup project by right clicking on otest in solution view
+   * Need to assign *odemo* as startup project by right clicking on *odemo* in solution view
    * Set the debug path:
-        * Right click on otest
+        * Right click on *odemo*
         * Properties -> Configuration Properties -> Debugging -> Working Directory -> $(TargetDir)
 
 4) Make sure it is in "Release" Mode.
