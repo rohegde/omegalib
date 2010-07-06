@@ -1,9 +1,79 @@
 #summary Brief summary of how oDemo is structured and how to adapt it.
 
-= Introduction =
-  This page will give information on how odemo is structured and how to adapt it to other projects.
+= *Updated Jul 6 2010* =
 
-  OmegaLib will eventually allow for an application to seamlessly port from a high tech device, like OmegaTable, to a lower tech device, like a personal laptop.  Currently odemo will support a laptop based implementation.  
-Fully functional configuration files support is currently being implemented.  In the meantime, users can familiarize themselves with how the library works.  These concepts can be easily translated to more complex devices.
+= Introduction =
+This page will give information on how odemo is structured and how to adapt it to other projects.<br>
+<br>
+OmegaLib will eventually allow for an application to seamlessly port from a high tech device, like OmegaTable, to a lower tech device, like a personal laptop.  Currently odemo will support a laptop based implementation.  
+Fully functional configuration files support is currently being implemented.  In the meantime, users can familiarize themselves with how the library works.  These concepts can be easily translated to more complex devices.<br>
+<br>
+Please read through the comments in odemo.cpp.  This is document is an extension of those comments.
 
 = odemo =
+
+==Main==
+As discussed in odemo.cpp, the paradigm that drives OmegaLib is much like OpenGL.  Data structures and setup functionality is setup in the Main Program.  Control is then relinquished to OmegaLib where rendering and data manipulation will take place.
+
+We will discuss more about the configuration files in this section.
+{{{ 
+Config* cfg = new Config("../../data/test.cfg");	//define the config file and its path
+}}}
+
+Within test.cfg:
+
+1) This example leverages off of Equalizer for rendering.  The Equalizer renderer's config is specified via:
+   {{{
+      DisplayConfig = "--eq-config ../../data/eqc/test.eqc"; 
+   }}}
+   Within test.eqc Equalizer sets up a frustum via:
+   {{{
+	wall
+       {
+          bottom_left  [ -.4074 1.16 -0.8128 ]
+          bottom_right [  .6106 1.16 -0.8128 ]
+          top_left     [ -.4074 1.80 -0.8128 ]
+       }
+   }}}
+   This describes the viewing volume.  In order to view objects, they must be drawn into this viewing volume.   A user can simply change the coordinate system to reflect their personal setup or personal preference.  Further tutorials will be posted on how to implement Equalizer configuration files. 
+
+2) Equalizer has built in head tracking.  This is accessed via the Observer class.  This example has one Observer defined.  This can be seen in test.cfg:
+   {{{
+      Observers:
+      {
+         Observer0:
+         {
+             EmitterTranslation = [ 0.0,  1.8,  0.0 ];
+         };
+      };
+    }}}
+    EmitterTranslation is an offset that can be placed on the head tracked data that is gathered.
+
+3) The input services available can be found under InputServices:
+{{{
+	InputServices:
+	{
+		MouseService:{};
+		OptiTrackService:{};
+	};
+}}}
+   This example has MouseService and OptiTrackService enabled.  The convention for enabling a service is: <br>
+    (insert name here):{};<br>
+   The list of services can be found in the Solution Explorer : omega : Source Files : SystemManager.cpp : //InputServices
+
+==Application Class ==
+As discussed in odemo.cpp, this class will contain the draw and event handler functions that OmegaLib's System Manager will use.  Additional functions can be added to handle any data that will be required by the application. 
+Please look into the following virtual functions used by OmegaLib's SystemManger once the Main Program relinquishes control.  These can be implemented based on the user's preference:
+{{{
+   virtual void draw(DrawContext& context)
+}}}
+  Objects must be in the viewing frustum defined in test.eqc
+
+{{{
+   virtual bool handleEvent(const InputEvent& evt)
+}}}
+  In this function the InputEvents are parsed to determine what kind of input they are.
+  The current inputs that are supported are :  <br>
+    Mocap  - OptiTrackService<br>
+    Touch   - PQService<br>
+    Pointer - MouseService<br>
