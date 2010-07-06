@@ -1,11 +1,11 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 
 = omegalib v?.? (*far future plans go here*) =
-* omegalib / Vtk integration?
+ * omegalib / Vtk integration?
 
 
 = omegalib v0.3 (*near future plans go here*) =
-* omegalib / Ogre integration?
+ * omegalib / Ogre integration?
 
 
 = omegalib v0.2 (*delivery*: when it's ready) =
