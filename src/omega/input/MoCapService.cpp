@@ -99,6 +99,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 		{
 			//actions to process each rigid body into an event
 			InputEvent* theEvent = myMoCap->writeHead();
+			theEvent->pointSet.clear(); //always clear pointSet b/c events are reused and will overflow if not cleared
 
 			theEvent->sourceId = data->RigidBodies[i].ID;
 			theEvent->serviceType = InputService::Mocap;
@@ -114,14 +115,14 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 				theEvent->rx = 0.0;
 				theEvent->ry = 0.0;
 				theEvent->rz = 0.0;
-				//for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
-				//{
-				//	Point aPoint;
-				//	aPoint.x = 0.0;
-				//	aPoint.y = 0.0;
-				//	aPoint.z = 0.0;
-				//	theEvent->markerSet.push_back ( aPoint);
-				//}
+				for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
+				{
+					Point aPoint;
+					aPoint.x = 0.0; //x
+					aPoint.y = 0.0; //y
+					aPoint.z = 0.0; //z
+					//theEvent->pointSet.push_back ( aPoint);
+				}
 				continue;
 			}
 
@@ -136,14 +137,15 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 
 			//get makerset data (the points that define the rigid body)
 			int numberOfMarkers = data->RigidBodies[i].nMarkers;
-			//for( int j = 0; j < numberOfMarkers; j++)
-			//{
-			//	Point aPoint;
-			//	aPoint.x = data->RigidBodies[i].Markers[j][0];
-			//	aPoint.y = data->RigidBodies[i].Markers[j][1];
-			//	aPoint.z = data->RigidBodies[i].Markers[j][2];
-			//	theEvent->markerSet.push_back ( aPoint);
-			//}
+			for( int j = 0; j < numberOfMarkers; j++)
+			{
+				Point aPoint;
+				aPoint.x = data->RigidBodies[i].Markers[j][0];//x
+				aPoint.y = data->RigidBodies[i].Markers[j][1];//y
+				aPoint.z = data->RigidBodies[i].Markers[j][2];//z
+				printf("Test: x[%d] = %f\n", i, aPoint.x);
+				//theEvent->pointSet.push_back ( aPoint);
+			}
 
 			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
 			if ( isEuler )

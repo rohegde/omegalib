@@ -63,7 +63,7 @@ struct InputEvent
 	float rz;
 
 	//Rigid Body Markerset
-	std::vector<Point> markerSet;
+	std::vector<Point> pointSet;
 };
 
 }; // namespace omega
