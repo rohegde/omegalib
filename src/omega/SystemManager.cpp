@@ -79,10 +79,10 @@ void SystemManager::setupInputManager()
 	registerInputService("OptiTrackService", (InputServiceAllocator)OptiTrackService::New);
 
 	// Instantiate input services
-	Setting& stRoot = myConfig->getRootSetting();
-	if(stRoot.exists("Config/InputServices"))
+	Setting& stRoot = myConfig->getRootSetting()["Config"];
+	if(stRoot.exists("InputServices"))
 	{
-		Setting& stServices = stRoot["Config/InputServices"][0];
+		Setting& stServices = stRoot["InputServices"];
 		for(int i = 0; i < stServices.getLength(); i++)
 		{
 			Setting& stSvc = stServices[i];
