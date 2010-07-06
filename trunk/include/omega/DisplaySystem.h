@@ -27,6 +27,9 @@ class DisplaySystem
 public:
 	virtual ~DisplaySystem() {}
 
+	// sets up the display system. Called before initalize.
+	virtual void setup(Setting& setting) {}
+
 	// initializes the display system
 	virtual void initialize(SystemManager* sys) {}
 

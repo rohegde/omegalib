@@ -14,6 +14,8 @@
 
 #include "osystem.h"
 
+#include "boost/unordered_map.hpp"
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,6 +24,10 @@ class Application;
 class Config;
 class DisplaySystem;
 class InputManager;
+class InputService;
+
+typedef InputService* (*InputServiceAllocator)();
+typedef boost::unordered_map<String, InputServiceAllocator> InputServiceDictionary;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SystemManager
@@ -33,7 +39,9 @@ public:
 	// initializes the system manager
 	OMEGA_API void setup(Config* cfg);
 
-	OMEGA_API void registerInputService(const char* svcName, InputManager* (creationFunc)());
+	OMEGA_API void registerInputService(String svcName, InputServiceAllocator creationFunc);
+
+	OMEGA_API InputServiceAllocator findInputService(String svcName);
 
 	OMEGA_API void initialize();
 
@@ -71,9 +79,15 @@ private:
 	SystemManager();
 	~SystemManager();
 
+	void setupInputManager();
+	void setupDisplaySystem();
+
 private:
 	// Singleton instance.
 	static SystemManager* mysInstance;
+
+	// The input manager registry.
+	InputServiceDictionary myInputServiceRegistry;
 
 	Config*			myConfig;
 	DisplaySystem*	myDisplaySystem;

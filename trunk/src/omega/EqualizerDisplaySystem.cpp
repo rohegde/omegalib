@@ -221,10 +221,16 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::setup(Setting& setting) 
+{
+	setting.lookupValue("DisplayConfig", myDisplayConfig);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
 	mySys = sys;
-	std::vector<char*> argv = Config::StringToArgv( mySys->getApplication()->getName(), mySys->getConfig()->GetDisplayConfig());
+	std::vector<char*> argv = Config::stringToArgv( mySys->getApplication()->getName(), myDisplayConfig);
 
 	myNodeFactory = new EqualizerNodeFactory();
 

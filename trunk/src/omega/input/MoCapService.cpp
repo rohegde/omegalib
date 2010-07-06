@@ -2,10 +2,11 @@
 #include "omega/SystemManager.h"
 #include <math.h>
 
+#include "omega/Utils.h"
+
 using namespace omega;
 
 MoCapService* MoCapService :: myMoCap = NULL;
-double MoCapService :: PI = 3.14159265;
 bool MoCapService :: isEuler = true;
 
 
@@ -164,7 +165,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 					//owarn("MOCAP: Pointing North");
 					theEvent->rx = 0;
 					theEvent->ry = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
-					theEvent->rz = PI/2;
+					theEvent->rz = Math::Pi/2;
 				}
 				//check for pointing South
 				else if( verticalTest < ( -0.499 * unit ) )
@@ -172,7 +173,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 					//owarn("MOCAP: Pointing South");
 					theEvent->rx = 0;
 					theEvent->ry = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
-					theEvent->rz = -PI/2;
+					theEvent->rz = -Math::Pi/2;
 				}
 				else
 				{

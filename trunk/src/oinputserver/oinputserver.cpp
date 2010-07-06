@@ -182,21 +182,8 @@ void main(int argc, char** argv)
 	SystemManager* sys = SystemManager::instance();
 
 	Config* cfg = new Config("../../data/test.cfg");
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/test.eqc");
-
-	//cfg->Load();
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// EXAMPLE: HOW TO READ CONFIGURATION VALUES.
-	printf("Reading float: %f\n", cfg->GetValue("config/floatVal", 0.0f));
-	printf("Reading string: %s\n", cfg->GetValue("config/stringVal", "DEFAULT"));
-	printf("Reading dafault string: %s\n", cfg->GetValue("config/NOTTHERE", "DEFAULT"));
-
-	std::vector<int> v;
-	cfg->GetArray("config/subsection/intArray", v);
-	printf("Reading vector: size is %d\n", v.size());
-	///////////////////////////////////////////////////////////////////////////////////////////////
-
+	//cfg->setDisplayConfig("--eq-config ../../data/eqc/test.eqc");
+	cfg->load();
 
 	sys->setup(cfg);
 

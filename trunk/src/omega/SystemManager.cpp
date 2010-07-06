@@ -12,6 +12,18 @@
 #include "omega/DisplaySystem.h"
 #include "omega/InputManager.h"
 #include "omega/SystemManager.h"
+#include "omega/Config.h"
+
+// Input services
+#include "omega/input/MoCapService.h"
+#include "omega/input/MouseService.h"
+#include "omega/input/NetService.h"
+#include "omega/input/PQService.h"
+#include "omega/input/TrackIRService.h"
+
+// Display systems
+#include "omega/EqualizerDisplaySystem.h"
+#include "omega/GLUTDisplaySystem.h"
 
 using namespace omega;
 
@@ -41,11 +53,88 @@ SystemManager::~SystemManager()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::setup(Config* cfg)
 {
-	omsg("SystemManager::initialize");
+	omsg("SystemManager::setup");
 
 	myConfig = cfg;
+
+	setupInputManager();
+	setupDisplaySystem();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::setupInputManager()
+{
 	myInputManager = new InputManager(this);
 
+	// register standard input services.
+	// TODO: I don't understand why a static_cast does not work here.
+	registerInputService("MouseService", (InputServiceAllocator)MouseService::New);
+	registerInputService("MoCapService", (InputServiceAllocator)MoCapService::New);
+	registerInputService("NetService", (InputServiceAllocator)NetService::New);
+	registerInputService("PQService", (InputServiceAllocator)PQService::New);
+	registerInputService("TrackIRService", (InputServiceAllocator)TrackIRService::New);
+
+	// Instantiate input services
+	Setting& stRoot = myConfig->getRootSetting();
+	if(stRoot.exists("Config/InputServices"))
+	{
+		Setting& stServices = stRoot["Config/InputServices"][0];
+		for(int i = 0; i < stServices.getLength(); i++)
+		{
+			Setting& stSvc = stServices[i];
+			InputServiceAllocator svcAllocator = findInputService(stSvc.getName());
+			if(svcAllocator != NULL)
+			{
+				// Input service found: create and setup it.
+				InputService* svc = svcAllocator();
+				svc->setup(stSvc);
+				myInputManager->addService(svc);
+
+				omsg("Input service added: %s", stSvc.getName());
+			}
+			else
+			{
+				owarn("Input service not found: %s", stSvc.getName());
+			}
+		}
+	}
+	else
+	{
+		owarn("Config/InputServices section missing from config file: No input services created.");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::setupDisplaySystem()
+{
+	// Instantiate input services
+	Setting& stRoot = myConfig->getRootSetting();
+	if(stRoot.exists("Config/DisplaySystem"))
+	{
+		DisplaySystem* ds = NULL;
+		Setting& stDS = stRoot["Config/DisplaySystem"][0];
+		String displaySystemType = "NULL";
+
+		stDS.lookupValue("Type", displaySystemType);
+		if(displaySystemType == "Equalizer")
+		{
+			ds = new EqualizerDisplaySystem();
+		}
+		else if(displaySystemType == "GLUT")
+		{
+			ds = new GLUTDisplaySystem();
+		}
+		else
+		{
+			owarn("Unknown display system type: %s", displaySystemType.c_str());
+		}
+
+		if(ds != NULL)
+		{
+			ds->setup(stDS);
+			setDisplaySystem(ds);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,6 +171,15 @@ void SystemManager::postExitRequest()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::registerInputService(const char* svcName, InputManager* (creationFunc)())
+void SystemManager::registerInputService(String svcName, InputServiceAllocator creationFunc)
 {
+	myInputServiceRegistry.insert(InputServiceDictionary::value_type(std::string(svcName), creationFunc));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InputServiceAllocator SystemManager::findInputService(String svcName)
+{
+	InputServiceDictionary::const_iterator elem = myInputServiceRegistry.find(svcName);
+	if(elem == myInputServiceRegistry.end()) return NULL;
+	return elem->second;
 }

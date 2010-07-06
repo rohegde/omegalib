@@ -53,9 +53,15 @@ public:
 	OMEGA_API EqualizerDisplaySystem();
 	OMEGA_API virtual ~EqualizerDisplaySystem();
 
+	// sets up the display system. Called before initalize.
+	OMEGA_API virtual void setup(Setting& setting);
+
 	OMEGA_API virtual void initialize(SystemManager* sys); 
 	OMEGA_API virtual void run(); 
 	OMEGA_API virtual void cleanup(); 
+
+	OMEGA_API String getDisplayConfig() { return myDisplayConfig; }
+	OMEGA_API void setDisplayConfig(const String& value) { myDisplayConfig = value; }
 
 	OMEGA_API virtual unsigned int getId() { return Id; }
 
@@ -73,6 +79,9 @@ private:
 
 private:
 	SystemManager* mySys;
+
+	// Display config
+	String myDisplayConfig;
 
 	// Equalizer stuff.
     EqualizerNodeFactory* myNodeFactory;

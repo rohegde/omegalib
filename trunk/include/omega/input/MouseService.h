@@ -21,6 +21,10 @@ namespace omega
 class MouseService: public InputService
 {
 public:
+	// Allocator function
+	static MouseService* New() { return new MouseService(); }
+
+public:
 	static void mouseMotionCallback(int x, int y);
 
 	OMEGA_API virtual void initialize();

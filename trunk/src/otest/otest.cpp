@@ -30,8 +30,6 @@ public:
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 
-
-
 		//const float lightPos[] = { 0.0f, 1.6f, 0.0f, 0.0f };
 #ifdef LAPTOP
 		const float lightPos[] = { 0, 1.8, 0, 1.0f };
@@ -179,8 +177,6 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual bool handleEvent(const InputEvent& evt)
 	{
-		double radToDegree = 180.0 / 3.14159265;
-
 		switch(evt.serviceType)
 		{
 		case InputService::Touch:
@@ -259,40 +255,12 @@ void main(int argc, char** argv)
 
 	Config* cfg = new Config("../../data/test.cfg");
 
-#ifdef LAPTOP
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegalaptop.eqc");
-#else
-	cfg->SetDisplayConfig("--eq-config ../../data/eqc/omegadesk.eqc");
-#endif
-
-	//cfg->Load();
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// EXAMPLE: HOW TO READ CONFIGURATION VALUES.
-	printf("Reading float: %f\n", cfg->GetValue("config/floatVal", 0.0f));
-	printf("Reading string: %s\n", cfg->GetValue("config/stringVal", "DEFAULT"));
-	printf("Reading dafault string: %s\n", cfg->GetValue("config/NOTTHERE", "DEFAULT"));
-
-	std::vector<int> v;
-	cfg->GetArray("config/subsection/intArray", v);
-	printf("Reading vector: size is %d\n", v.size());
-	///////////////////////////////////////////////////////////////////////////////////////////////
-
+	cfg->load();
 
 	sys->setup(cfg);
 
 	TestApplication app;
 	sys->setApplication(&app);
-
-	sys->setDisplaySystem(new EqualizerDisplaySystem());
-
-#ifdef LAPTOP
-	sys->getInputManager()->addService(new TrackIRService());
-	sys->getInputManager()->addService(new MouseService());
-#else
-	sys->getInputManager()->addService(new MoCapService());
-	sys->getInputManager()->addService(new PQService());
-#endif
 
 	sys->initialize();
 
