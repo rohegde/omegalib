@@ -194,7 +194,7 @@ void main(int argc, char** argv)
 	//sys->setDisplaySystem(new GLUTDisplaySystem());
 	//sys->getInputManager()->addService(new MoCapService());
 	sys->getInputManager()->addService(new MouseService());
-	//sys->getInputManager()->addService(new TrackIRService());
+	//sys->getInputManager()->addService(new OptiTrackService());
 	//sys->getInputManager()->addService(new PQService());
 
 	sys->initialize();

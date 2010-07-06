@@ -19,7 +19,7 @@
 #include "omega/input/MouseService.h"
 #include "omega/input/NetService.h"
 #include "omega/input/PQService.h"
-#include "omega/input/TrackIRService.h"
+#include "omega/input/OptiTrackService.h"
 
 // Display systems
 #include "omega/EqualizerDisplaySystem.h"
@@ -76,7 +76,7 @@ void SystemManager::setupInputManager()
 	registerInputService("MoCapService", (InputServiceAllocator)MoCapService::New);
 	registerInputService("NetService", (InputServiceAllocator)NetService::New);
 	registerInputService("PQService", (InputServiceAllocator)PQService::New);
-	registerInputService("TrackIRService", (InputServiceAllocator)TrackIRService::New);
+	registerInputService("OptiTrackService", (InputServiceAllocator)OptiTrackService::New);
 
 	// Instantiate input services
 	Setting& stRoot = myConfig->getRootSetting();
