@@ -106,6 +106,9 @@ void OptiTrackService::start()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void OptiTrackService::poll() 
 {
+	// If an optitrack camera has not been set, just return.
+	if(!myCamera) return;
+
 	double radToDegree = 180.0 / 3.14159265;
 	double degreeToRad =  3.14159265 / 180.0;
 
