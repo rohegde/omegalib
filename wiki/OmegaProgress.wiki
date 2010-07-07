@@ -34,6 +34,13 @@
  * TacTile integration: cmake setup (*delivery*: ?)
   Implement TacTileService: prepare cmake files for TacTileService integration.
 
+==<u> Victor </u>==
+* Integrate newest omegalib with PigProject visualization
+
+* Waiting for:
+** Gestures
+** Rigid body movements (will it work on 64bit?)
+
 ==<u> Brad </u>==
  * < insert here> 
   <details here>
