@@ -38,8 +38,8 @@
  * Integrate newest omegalib with PigProject visualization
 
  * Waiting for:
- ** Gestures
- ** Rigid body movements (will it work on 64bit?)
+  * Gestures
+  * Rigid body movements (will it work on 64bit?)
 
 ==<u> Brad </u>==
  * < insert here> 
