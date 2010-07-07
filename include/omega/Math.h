@@ -7,9 +7,28 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Exposes some basic math functions / constants.
  *********************************************************************************************************************/
-#include "omega/Utils.h"
+#ifndef __MATH_H__
+#define __MATH_H__
 
-using namespace omega;
+#include "osystem.h"
 
+#include <math.h>
+
+namespace omega
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Math
+{
+public:
+	static const float Pi;
+	static const float DegToRad;
+	static const float RadToDeg;
+
+private:
+	Math() {}
+};
+}; // namespace omega
+
+#endif
