@@ -11,13 +11,12 @@
 = omegalib v0.2 (*delivery*: when it's ready) =
 
 ==<u> Dennis </u>== 
-(*delivery*: beginning of next week)
- * Convert oTest to oDemo 
- * Think about how to integrate touch and gesture to oDemo
-  Do some story boards
- * Documentation for Cristian and Shannon (optiTrack support)
+ * Convert oTest to oDemo (*DONE*)
+ * Documentation for Cristian and Shannon (optiTrack support) (*DONE*)
 
 (*delivery*: working on next week)
+ * Think about how to integrate touch and gesture to oDemo
+  Do some story boards
  * Tweek perspective for oDemo
   Make the stereo look better while keeping depth and proper distortion 
  
