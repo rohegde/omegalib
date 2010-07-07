@@ -46,8 +46,8 @@
   <details here>
 
 ==<u> Arthur </u>==
- * < insert here> 
-  <details here>
+ * Evaluate PQLabs gestures (*delivery*: next week)
+  Determine accuracy and usefulness. Integrate into PQService if so.
 
 ==<u> Jakub </u>==
  * < insert here> 
