@@ -6,6 +6,7 @@
 
 = omegalib v0.3 (*near future plans go here*) =
  * omegalib / Ogre integration?
+ * omegalib >> Processing.
 
 
 = omegalib v0.2 (*delivery*: when it's ready) =
@@ -24,12 +25,15 @@
  * Configuration system support (*done*)
   Omega applications should be set up through configuration files and not through code. Working on config file support. 
     
- * Lay down basic omega utility toolkit (*delivery*: by this week)
+ * Lay down basic omega utility toolkit (*done*)
   outk will offer some additional functionality to applications that need it (i.e. basic GUI support, a simple graphics library, etc.)
 
  * Start work on outk GUI system (*delivery*: next week?)
   Add a couple of basic GUI widgets (Button, Scrollbar)
     
+ * TacTile integration: cmake setup (*delivery*: ?)
+  Implement TacTileService: prepare cmake files for TacTileService integration.
+
 ==<u> Brad </u>==
  * < insert here> 
   <details here>
@@ -41,3 +45,7 @@
 ==<u> Jakub </u>==
  * < insert here> 
   <details here>
+
+==<u> Unassigned </u>==
+ * TacTile integration (*delivery*: ?)
+  Implement TacTileService.
