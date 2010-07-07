@@ -9,16 +9,9 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Includes all the classes and functionalities implemented in the omega namespace.
  *********************************************************************************************************************/
-#ifndef __OMEGA_H__
-#define __OMEGA_H__
+#ifndef __OUTK_H__
+#define __OUTK_H__
 
-#include "omega/Application.h"
-#include "omega/Config.h"
-#include "omega/EqualizerDisplaySystem.h"
-#include "omega/GLUTDisplaySystem.h"
-#include "omega/InputManager.h"
-#include "omega/Math.h"
-#include "omega/Observer.h"
-#include "omega/SystemManager.h"
+#include "outk/gfx/GfxUtils.h"
 
 #endif

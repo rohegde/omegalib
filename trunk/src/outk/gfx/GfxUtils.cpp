@@ -9,12 +9,13 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Implementatio of GfxU
  *********************************************************************************************************************/
-#include "omega/gfx/GfxUtils.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 
+#include "outk/gfx/GfxUtils.h"
+
 using namespace omega;
-using namespace omega::gfx;
+using namespace outk::gfx;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void teapot(GLint grid, GLdouble scale, GLenum type);

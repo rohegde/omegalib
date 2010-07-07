@@ -32,6 +32,6 @@ ADD_EXECUTABLE( odemo ${srcs} ${headers})
 #######################################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( odemo
-	omega)
+	omega outk)
 
 

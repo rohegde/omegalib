@@ -16,7 +16,7 @@
 #include "omega/osystem.h"
 #include "omega/DrawContext.h"
 
-namespace omega
+namespace outk
 {
 namespace gfx
 {
@@ -31,7 +31,7 @@ public:
 
 	// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
 	// viewport parameters specified in the draw context.
-	OMEGA_API static void BeginOverlayMode(DrawContext& context);
+	OMEGA_API static void BeginOverlayMode(omega::DrawContext& context);
 
 	// Restores the coordinate system specified before a Begin2DCoords call.
 	OMEGA_API static void EndOverlayMode();
