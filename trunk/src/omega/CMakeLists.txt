@@ -34,6 +34,7 @@ SET( srcs
 		GLUTDisplaySystem.cpp
 		InputManager.cpp
 		InputService.cpp
+		Math.cpp
         Observer.cpp
 		SystemManager.cpp
         Utils.cpp
@@ -55,6 +56,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Math.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h

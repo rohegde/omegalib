@@ -17,6 +17,7 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/GLUTDisplaySystem.h"
 #include "omega/InputManager.h"
+#include "omega/Math.h"
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
 #include "omega/gfx/GfxUtils.h"

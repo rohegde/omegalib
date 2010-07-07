@@ -1,8 +1,8 @@
 #include "omega/input/MoCapService.h"
 #include "omega/SystemManager.h"
-#include <math.h>
 
 #include "omega/Utils.h"
+#include "omega/Math.h"
 
 using namespace omega;
 
