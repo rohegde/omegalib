@@ -10,13 +10,10 @@
  * Test executable
  *********************************************************************************************************************/
 #include "omega.h"
-#include "omega/input/MouseService.h"
-#include "omega/input/MoCapService.h"
-#include "omega/input/PQService.h"
-#include "omega/input/OptiTrackService.h"
+#include "outk.h"
 
 using namespace omega;
-using namespace omega::gfx;
+using namespace outk::gfx;
 
 #define LAPTOP
 

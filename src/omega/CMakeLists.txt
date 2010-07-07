@@ -38,8 +38,6 @@ SET( srcs
         Observer.cpp
 		SystemManager.cpp
         Utils.cpp
-        gfx/GfxUtils.cpp
-        gfx/teapot.cpp
         )
 		
 #######################################################################################################################
@@ -60,7 +58,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/gfx/GfxUtils.h
         ) 
         
 #######################################################################################################################
