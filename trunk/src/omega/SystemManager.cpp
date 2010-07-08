@@ -15,11 +15,21 @@
 #include "omega/Config.h"
 
 // Input services
-#include "omega/input/MoCapService.h"
-#include "omega/input/MouseService.h"
+#ifdef OMEGA_USE_MOCAP
+	#include "omega/input/MoCapService.h"
+#endif
+#ifdef OMEGA_USE_MOUSE
+	#include "omega/input/MouseService.h"
+#endif
+#ifdef OMEGA_USE_NETSERVICE
 #include "omega/input/NetService.h"
+#endif
+#ifdef OMEGA_USE_PQLABS
 #include "omega/input/PQService.h"
+#endif
+#ifdef OMEGA_USE_OPTITRACK
 #include "omega/input/OptiTrackService.h"
+#endif
 
 // Display systems
 #include "omega/EqualizerDisplaySystem.h"
@@ -72,11 +82,21 @@ void SystemManager::setupInputManager()
 
 	// register standard input services.
 	// TODO: I don't understand why a static_cast does not work here.
+#ifdef OMEGA_USE_MOUSE
 	registerInputService("MouseService", (InputServiceAllocator)MouseService::New);
+#endif
+#ifdef OMEGA_USE_MOCAP
 	registerInputService("MoCapService", (InputServiceAllocator)MoCapService::New);
+#endif
+#ifdef OMEGA_USE_NETSERVICE
 	registerInputService("NetService", (InputServiceAllocator)NetService::New);
+#endif
+#ifdef OMEGA_USE_PQLABS
 	registerInputService("PQService", (InputServiceAllocator)PQService::New);
+#endif
+#ifdef OMEGA_USE_OPTITRACK
 	registerInputService("OptiTrackService", (InputServiceAllocator)OptiTrackService::New);
+#endif
 
 	// Instantiate input services
 	Setting& stRoot = myConfig->getRootSetting()["Config"];

@@ -64,13 +64,13 @@ public:
 		glPushMatrix();
 		glTranslatef(-0.2, 0.5, -2.0);
 		glRotated(i * 3, 0, 1, 0);
-		GfxUtils::DrawSolidTeapot(0.1f);
+		GfxUtils::drawSolidTeapot(0.1f);
 		glPopMatrix();
 
 		glColor3f(0.7, 0.4, 0.4);
 		glPushMatrix();
 		glTranslatef(0.0, 0.5, -0.7);
-		GfxUtils::DrawSolidTeapot(0.1f);
+		GfxUtils::drawSolidTeapot(0.1f);
 		glPopMatrix();
 
 		glPushMatrix();
@@ -84,19 +84,19 @@ public:
 		glRotated(rz, 0, 0, 1);
 		glRotated(rx, 1, 0, 0);
 		glTranslatef(0, 0.1f, 0);
-		GfxUtils::DrawSolidTeapot(0.05f);
+		GfxUtils::drawSolidTeapot(0.05f);
 		glPopMatrix();
 
 		glColor3f(1.0, 1.0, 1.0);
 		//DrawRoom(0.0f, 1.9f, -0.407f, 0.61f, 0, -3);
-		DrawRoom(0.3f, 2.0f, -0.59f, 0.59f, 0, -3);
+		drawRoom(0.3f, 2.0f, -0.59f, 0.59f, 0, -3);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
 	 *		
 	 */
-	void DrawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
+	void drawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
 	{
 		//glColor3f(0.3, 1.0, 0.3);
 		glBegin(GL_TRIANGLE_STRIP);
@@ -148,10 +148,10 @@ public:
 	 */
 	void draw2D(DrawContext& context)
 	{
-		GfxUtils::BeginOverlayMode(context);
+		GfxUtils::beginOverlayMode(context);
 
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::DrawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
+		GfxUtils::drawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (8.0);
@@ -160,7 +160,7 @@ public:
 		glEnd();
 		
 
-		GfxUtils::EndOverlayMode();
+		GfxUtils::endOverlayMode();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

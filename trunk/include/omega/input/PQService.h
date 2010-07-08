@@ -35,6 +35,7 @@ public:
 	OMEGA_API virtual void initialize();
 	OMEGA_API virtual void dispose();
 
+	OMEGA_API void setup(Setting& settings);
 	OMEGA_API void initialize(  char* local_ip );
 	OMEGA_API int init();
 
