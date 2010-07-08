@@ -80,6 +80,9 @@ typedef vmml::vector< 2, float > Vector2f; //!< A four-component float vector
 typedef vmml::vector< 3, float > Vector3f; //!< A four-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
 
+// Color type (may be redefined using a Vector4f derived class in the future)
+typedef vmml::vector< 4, float > Color;
+
 // String
 typedef std::string String;
 

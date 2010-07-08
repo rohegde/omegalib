@@ -29,7 +29,6 @@ public:
 
 public:
 	// Class constructor
-	//	@param manager: The input manager owning this service
 	InputService(): myManager(NULL) {}
 
    // Class destructor

@@ -20,6 +20,15 @@ int PQService::maxBlobSize = 1000;
 int PQService::maxTouches = 1000; // Number of IDs assigned before resetting. Should match touchID array initialization
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PQService::setup(Setting& settings)
+{
+	if(settings.exists("serverIp"))
+	{
+		const char* blah=  (const char*)settings["serverIp"];
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::initialize( ) 
 {
 	mysInstance = this;

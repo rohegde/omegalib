@@ -54,6 +54,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/InputFilter.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Math.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h

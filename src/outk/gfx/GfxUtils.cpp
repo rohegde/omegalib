@@ -21,7 +21,7 @@ using namespace outk::gfx;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::BeginOverlayMode(DrawContext& context)
+void GfxUtils::beginOverlayMode(DrawContext& context)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -41,7 +41,7 @@ void GfxUtils::BeginOverlayMode(DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::EndOverlayMode()
+void GfxUtils::endOverlayMode()
 {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
@@ -54,7 +54,7 @@ void GfxUtils::EndOverlayMode()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::DrawText(int x, int y, const char* s, Font f)
+void GfxUtils::drawText(int x, int y, const char* s, Font f)
 {
 	void* font = NULL;
 
@@ -86,13 +86,80 @@ void GfxUtils::DrawText(int x, int y, const char* s, Font f)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::DrawSolidTeapot(float scale)
+void GfxUtils::drawSolidTeapot(float scale)
 {
   teapot(14, scale, GL_FILL);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::DrawWireTeapot(float scale)
+void GfxUtils::drawWireTeapot(float scale)
 {
   teapot(10, scale, GL_LINE);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Vector4f startColor, Vector4f endColor, float pc)
+{
+	int x = pos.x();
+	int y = pos.y();
+	int width = size.x();
+	int height = size.y();
+
+	float h1 = int(height * pc);
+
+	glColor4fv(startColor.begin());
+	glRecti(x, y, x + width, y + h1);
+
+	y += h1;
+	height -= h1;
+
+	glBegin(GL_QUADS);
+
+	glVertex2i(x, y);
+	glVertex2i(x + width, y);
+
+	glColor4fv(endColor.begin());
+	glVertex2i(x + width, y + height);
+	glVertex2i(x, y + height);
+
+	glEnd(); 
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Vector4f startColor, Vector4f endColor, float pc)
+{
+	int x = pos.x();
+	int y = pos.y();
+	int width = size.x();
+	int height = size.y();
+
+	float w1 = int(width * pc);
+
+	glColor4fv(startColor.begin());
+	glRecti(x, y, x + w1, y + height);
+
+	x += w1;
+	width -= w1;
+
+	glBegin(GL_QUADS);
+
+	glVertex2i(x, y + height);
+	glVertex2i(x, y);
+
+	glColor4fv(endColor.begin());
+	glVertex2i(x + width, y);
+	glVertex2i(x + width, y + height);
+
+	glEnd();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::drawBox(Vector2i pos, Vector2i size, int dx, Color color)
+{
+	//strokeWeight(1);
+	//stroke(c, sa);
+	//line(x, y - dx, x + width, y - dx);
+	//line(x, y + height + dx, x + width, y + height + dx);
+	//line(x - dx, y, x - dx, y + height);
+	//line(x + width + dx, y, x + width + dx, y + height);
 }
