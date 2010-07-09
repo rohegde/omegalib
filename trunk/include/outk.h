@@ -13,5 +13,7 @@
 #define __OUTK_H__
 
 #include "outk/gfx/GfxUtils.h"
+#include "outk/ui/Box.h"
+#include "outk/ui/Widget.h"
 
 #endif

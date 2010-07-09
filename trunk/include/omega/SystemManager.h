@@ -3,11 +3,12 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * SystemManager class declaration.
  *********************************************************************************************************************/
 #ifndef __SYSTEM_MANAGER_H__
 #define __SYSTEM_MANAGER_H__
@@ -25,11 +26,16 @@ class Config;
 class DisplaySystem;
 class InputManager;
 class InputService;
+class InputFilter;
 
 typedef InputService* (*InputServiceAllocator)();
 typedef boost::unordered_map<String, InputServiceAllocator> InputServiceDictionary;
 
+typedef InputFilter* (*InputFilterAllocator)();
+typedef boost::unordered_map<String, InputFilterAllocator> InputFilterDictionary;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// The SystemManager class is the root object of the omegalib architecture.
 class SystemManager
 {
 public:
@@ -41,6 +47,8 @@ public:
 
 	OMEGA_API void registerInputService(String svcName, InputServiceAllocator creationFunc);
 
+	// Find an input service allocator given the input service name.
+	// See registerInputService for additional information.
 	OMEGA_API InputServiceAllocator findInputService(String svcName);
 
 	OMEGA_API void initialize();
@@ -92,6 +100,9 @@ private:
 
 	// The input manager registry.
 	InputServiceDictionary myInputServiceRegistry;
+
+	// The input service registry.
+	InputFilterDictionary myInputFilterRegistry;
 
 	Config*			myConfig;
 	DisplaySystem*	myDisplaySystem;

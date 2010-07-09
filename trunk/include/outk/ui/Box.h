@@ -3,31 +3,51 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
+ *  [Author]									[Mail]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DRAWCONTEXT_H__
-#define __DRAWCONTEXT_H__
+#ifndef __BOX_H__
+#define __BOX_H__
 
-#include "osystem.h"
+#include "omega.h"
+#include "outk/ui/Widget.h"
 
-namespace omega
+namespace outk
+{
+namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DrawContext
+class Box: public Widget
 {
-	unsigned int frameNum;
-	int layer;
-	int viewportX;
-	int viewportY;
-	int viewportWidth;
-	int viewportHeight;
-};
+public: 
+	enum Layout { LayoutNone, LayoutHorizontal, LayoutVertical };
+public:
+	OMEGA_API Box(omega::String name, Layout layout);
+	OMEGA_API virtual ~Box();
 
-}; // namespace omega
+	// Gets the widget size
+	Layout getLayout() { return myLayout; }
+	// Sets the widget size.
+	void setLayout(Layout value) { myLayout = value; }
+
+	float getPadding() { return myPadding; }
+	void setPadding(float value) { myPadding = value; }
+
+public:
+	// Drawing function for this widget.
+	virtual void draw();
+
+	// Drawing function for this widget.
+	virtual void layoutChildren();
+
+private:
+	Layout myLayout;
+	float myPadding;
+};
+}; // namespace gfx
+}; // namespace outk
 
 #endif

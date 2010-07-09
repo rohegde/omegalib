@@ -3,7 +3,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------

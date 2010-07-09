@@ -3,31 +3,32 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
+ *  [Author]									[Mail]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DRAWCONTEXT_H__
-#define __DRAWCONTEXT_H__
+#ifndef __BUTTON_H__
+#define __BUTTON_H__
 
-#include "osystem.h"
+#include "omega.h"
+#include "outk/ui/AbstractButton.h"
 
-namespace omega
+namespace outk
+{
+namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DrawContext
+class Button: public AbstractButton
 {
-	unsigned int frameNum;
-	int layer;
-	int viewportX;
-	int viewportY;
-	int viewportWidth;
-	int viewportHeight;
-};
+public:
+	OMEGA_API Button(omega::String name);
+	OMEGA_API virtual ~Button();
 
-}; // namespace omega
+private:
+};
+}; // namespace gfx
+}; // namespace outk
 
 #endif

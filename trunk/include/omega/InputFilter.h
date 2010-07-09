@@ -8,26 +8,50 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
+ * Input filter definition
  *********************************************************************************************************************/
-#ifndef __DRAWCONTEXT_H__
-#define __DRAWCONTEXT_H__
+#ifndef __INPUT_FILTER_H__
+#define __INPUT_FILTER_H__
 
 #include "osystem.h"
 
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DrawContext
-{
-	unsigned int frameNum;
-	int layer;
-	int viewportX;
-	int viewportY;
-	int viewportWidth;
-	int viewportHeight;
-};
+// Forward declarations
+struct InputEvent;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class InputFilter
+{
+friend class InputManager;
+public:
+	enum FilterPriority { PriorityLow, PriorityMedium, PriorityHigh };
+
+public:
+	// Class constructor
+	InputFilter(): myManager(NULL) {}
+
+   // Class destructor
+	virtual ~InputFilter() {}
+
+	InputManager* getManager() { return myManager; }
+
+	virtual void setup(Setting& settings) {}
+	virtual void initialize() {}
+	virtual void start() {}
+	virtual void poll() {}
+	virtual void stop() {}
+	virtual void dispose() {}
+
+protected:
+
+private:
+	void setManager(InputManager* mng) { myManager = mng; }
+
+private:
+	InputManager* myManager;
+};
 }; // namespace omega
 
 #endif
