@@ -96,7 +96,7 @@ void GfxUtils::drawWireTeapot(float scale)
 {
   teapot(10, scale, GL_LINE);
 }
-
+  
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Vector4f startColor, Vector4f endColor, float pc)
 {

@@ -3,31 +3,29 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
+ *  [Author]									[Mail]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DRAWCONTEXT_H__
-#define __DRAWCONTEXT_H__
+#ifndef __UI_MANAGER_H__
+#define __UI_MANAGER_H__
 
-#include "osystem.h"
+#include "omega.h"
 
-namespace omega
+namespace outk
+{
+namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DrawContext
+class UIManager
 {
-	unsigned int frameNum;
-	int layer;
-	int viewportX;
-	int viewportY;
-	int viewportWidth;
-	int viewportHeight;
+public:
+	UIManager() {};
+private:
 };
-
+};
 }; // namespace omega
 
 #endif

@@ -14,6 +14,7 @@
 
 using namespace omega;
 using namespace outk::gfx;
+using namespace outk::ui;
 
 #define LAPTOP
 
@@ -21,6 +22,32 @@ using namespace outk::gfx;
 class TestApplication: public Application
 {
 public:
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	TestApplication()
+	{
+		myBox = new Box("box1", Box::LayoutHorizontal);
+		myBox->setPosition(Vector2f(100, 100));
+		myBox->setSize(Vector2f(400, 100));
+
+		Box* b2 = new Box("box2", Box::LayoutVertical);
+		myBox->addChild(b2);
+
+		Box* b3 = new Box("box3", Box::LayoutVertical);
+		myBox->addChild(b3);
+		b3->setPadding(2);
+
+		Box* b4 = new Box("box4", Box::LayoutHorizontal);
+		Box* b5 = new Box("box5", Box::LayoutHorizontal);
+		Box* b6 = new Box("box6", Box::LayoutHorizontal);
+		b3->addChild(b4);
+		b3->addChild(b5);
+		b3->addChild(b6);
+
+		myBox->layoutChildren();
+		b2->layoutChildren();
+		b3->layoutChildren();
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void draw3D(DrawContext& context)
 	{
@@ -155,6 +182,7 @@ public:
 
 		GfxUtils::drawHGradient(Vector2i(10, 20), Vector2i(100, 200), Color(0.0f, 1.0f, 0.0f, 1.0f), Color(1.0f, 0.5f, 0.5f, 1.0f), 0.0f);
 		
+		myBox->draw();
 
 		GfxUtils::endOverlayMode();
 	}
@@ -245,6 +273,8 @@ private:
 	float lx;
 	float ly;
 	float lz;
+
+	Box* myBox;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

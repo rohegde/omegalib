@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------------------------------------------------
 # Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
 # Authors:										
-#  [Author]									[Mail]
+#  Alessandro Febretti							febret@gmail.com
 #---------------------------------------------------------------------------------------------------------------------
 # [LICENSE NOTE]
 #---------------------------------------------------------------------------------------------------------------------
@@ -30,17 +30,30 @@ ENDIF()
 SET( srcs 
         gfx/GfxUtils.cpp
         gfx/teapot.cpp
+        ui/AbstractButton.cpp
+        ui/Box.cpp
+        ui/Button.cpp
+        ui/UIManager.cpp
+        ui/Widget.cpp
         )
 		
 #######################################################################################################################
 # Headers
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GfxUtils.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/ui/AbstractButton.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/ui/Box.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/ui/Button.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/ui/UIManager.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/ui/Widget.h
         ${OmegaLib_SOURCE_DIR}/include/outk.h
         ) 
         
 #######################################################################################################################
 SOURCE_GROUP(gfx REGULAR_EXPRESSION gfx/)		
+
+#######################################################################################################################
+SOURCE_GROUP(ui REGULAR_EXPRESSION ui/)		
 
 #######################################################################################################################
 # Setup compile info

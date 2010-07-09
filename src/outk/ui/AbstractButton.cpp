@@ -3,31 +3,29 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
+ *  [Author]									[Mail]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DRAWCONTEXT_H__
-#define __DRAWCONTEXT_H__
+#include "outk/ui/AbstractButton.h"
 
-#include "osystem.h"
+using namespace omega;
+using namespace outk::ui;
 
-namespace omega
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DrawContext
+AbstractButton::AbstractButton(omega::String name):
+	Widget(name),
+	myCheckable(false),
+	myChecked(false)
 {
-	unsigned int frameNum;
-	int layer;
-	int viewportX;
-	int viewportY;
-	int viewportWidth;
-	int viewportHeight;
-};
 
-}; // namespace omega
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+AbstractButton::~AbstractButton()
+{
+
+}
+
