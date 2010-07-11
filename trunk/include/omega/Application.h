@@ -18,6 +18,7 @@
 #include "InputEvent.h"
 #include "DrawContext.h"
 #include "Application.h"
+#include "UpdateContext.h"
 
 namespace omega
 {
@@ -36,9 +37,9 @@ public:
 public:
 	virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
 
-	virtual void draw(DrawContext& context) {}
+	virtual void draw(const DrawContext& context) {}
 	virtual bool handleEvent(const InputEvent& evt) { return false; }
-	virtual void update(float dt) {}
+	virtual void update(const UpdateContext& context) {}
 
 	SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 	InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }

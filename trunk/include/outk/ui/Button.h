@@ -3,7 +3,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
@@ -23,8 +24,8 @@ namespace ui
 class Button: public AbstractButton
 {
 public:
-	OMEGA_API Button(omega::String name);
-	OMEGA_API virtual ~Button();
+	OUTK_API Button(omega::String name);
+	OUTK_API virtual ~Button();
 
 private:
 };

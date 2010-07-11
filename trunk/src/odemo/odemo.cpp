@@ -29,7 +29,7 @@ public:
 	/*
 	 *		
 	 */
-	void draw3D(DrawContext& context)
+	void draw3D(const DrawContext& context)
 	{
 		
 

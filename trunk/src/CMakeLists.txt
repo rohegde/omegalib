@@ -17,10 +17,16 @@ INCLUDE_DIRECTORIES(
 )
 
 #######################################################################################################################
+# Options
+SET(OMEGA_BUILD_OUTK true CACHE BOOL "Enable build of the Omega Utility Toolkit (outk)")
+
+#######################################################################################################################
 # Add subdirectiories
 ADD_SUBDIRECTORY(3rdparty/libconfig)
 ADD_SUBDIRECTORY(omega)
+IF(OMEGA_BUILD_OUTK)
 ADD_SUBDIRECTORY(outk)
+ENDIF(OMEGA_BUILD_OUTK)
 ADD_SUBDIRECTORY(otest)
 ADD_SUBDIRECTORY(odemo)
 ADD_SUBDIRECTORY(oinputserver)

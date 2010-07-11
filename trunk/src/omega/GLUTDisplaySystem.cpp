@@ -30,7 +30,8 @@ void displayCallback(void)
 	{
 		// Compute dt.
 		float t = (float)((double)clock() / CLOCKS_PER_SEC);
-		float dt = t - lt;
+		UpdateContext uc;
+		uc.dt = t - lt;
 		lt = t;
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -49,7 +50,7 @@ void displayCallback(void)
 		// Process events.
 		InputManager* im = SystemManager::instance()->getInputManager();
 		im->processEvents(app);	
-		app->update(dt);
+		app->update(uc);
 
 		// setup the context viewport.
 		context.viewportX = 0;

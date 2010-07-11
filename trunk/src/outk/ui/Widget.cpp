@@ -12,15 +12,18 @@
  *********************************************************************************************************************/
 #include "outk/ui/Widget.h"
 
+#include "FTGL/ftgl.h"
+
 using namespace omega;
 using namespace outk::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(omega::String name):
+	myUI(NULL),
 	myName(name),
 	myParent(NULL),
 	myVisible(true),
-	myDebugModeColor(Color(1.0f, 0.0f, 1.0f)),
+	myDebugModeColor(Color(1.0f, 0.0f, 1.0f, 1.0f)),
 	myDebugModeEnabled(true)
 {
 
@@ -40,6 +43,7 @@ void Widget::addChild(Widget* child)
 		child->myParent->removeChild(child);
 	}
 	myChildren.push_back(child);
+	child->myUI = myUI;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +51,7 @@ void Widget::removeChild(Widget* child)
 {
 	myChildren.remove(child);
 	child->myParent = NULL;
+	child->myUI = NULL;
 }
 
 
@@ -83,5 +88,14 @@ void Widget::draw()
 	boost_foreach(Widget* child, myChildren)
 	{
 		child->draw();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::layoutChildren()
+{
+	boost_foreach(Widget* child, myChildren)
+	{
+		child->layoutChildren();
 	}
 }
