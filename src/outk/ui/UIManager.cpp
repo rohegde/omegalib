@@ -3,7 +3,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
@@ -15,3 +16,27 @@ using namespace omega;
 using namespace outk::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+UIManager::UIManager():
+	myRootWidget(new Widget("")),
+	myDefaultFont(NULL)
+{
+	myRootWidget->myUI = this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+UIManager::~UIManager() 
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void UIManager::update(const UpdateContext& context)
+{
+	myRootWidget->update(context);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void UIManager::draw()
+{
+	myRootWidget->layoutChildren();
+	myRootWidget->draw();
+}

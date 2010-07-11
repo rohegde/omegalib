@@ -21,7 +21,7 @@ using namespace outk::gfx;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::beginOverlayMode(DrawContext& context)
+void GfxUtils::beginOverlayMode(const DrawContext& context)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();

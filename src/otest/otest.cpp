@@ -25,15 +25,24 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	TestApplication()
 	{
-		myBox = new Box("box1", Box::LayoutHorizontal);
-		myBox->setPosition(Vector2f(100, 100));
-		myBox->setSize(Vector2f(400, 100));
+		myFontMng = new FontManager();
+		myFontMng->createFont("arial30", "../../data/fonts/Arial.ttf", 22);
+
+		myFont = myFontMng->getFont("arial30");
+
+		myUI = new UIManager();
+		myUI->setDefaultFont(myFont);
+
+		Box* b1 = new Box("box1", Box::LayoutHorizontal);
+		myUI->getRootWidget()->addChild(b1);
+		b1->setPosition(Vector2f(100, 100));
+		b1->setSize(Vector2f(400, 100));
 
 		Box* b2 = new Box("box2", Box::LayoutVertical);
-		myBox->addChild(b2);
+		b1->addChild(b2);
 
 		Box* b3 = new Box("box3", Box::LayoutVertical);
-		myBox->addChild(b3);
+		b1->addChild(b3);
 		b3->setPadding(2);
 
 		Box* b4 = new Box("box4", Box::LayoutHorizontal);
@@ -43,13 +52,28 @@ public:
 		b3->addChild(b5);
 		b3->addChild(b6);
 
-		myBox->layoutChildren();
+		b1->layoutChildren();
 		b2->layoutChildren();
 		b3->layoutChildren();
+
+		Label* l1 = new Label("L1");
+		l1->setDebugModeEnabled(true);
+		l1->setDebugColor(Color(0.0f, 1.0f, 1.0f, 1.0f));
+		b4->addChild(l1);
+
+		Label* l2 = new Label("L2");
+		l2->setDebugModeEnabled(true);
+		l2->setDebugColor(Color(1.0f, 1.0f, 0.0f, 1.0f));
+		b5->addChild(l2);
+
+		Label* l3 = new Label("L3");
+		l3->setDebugModeEnabled(true);
+		l3->setDebugColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+		b6->addChild(l3);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void draw3D(DrawContext& context)
+	void draw3D(const DrawContext& context)
 	{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
@@ -167,12 +191,9 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void draw2D(DrawContext& context)
+	void draw2D(const DrawContext& context)
 	{
 		GfxUtils::beginOverlayMode(context);
-
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::drawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (8.0);
@@ -180,15 +201,15 @@ public:
 			glVertex2f(x, y);    // lower left vertex
 		glEnd();
 
-		GfxUtils::drawHGradient(Vector2i(10, 20), Vector2i(100, 200), Color(0.0f, 1.0f, 0.0f, 1.0f), Color(1.0f, 0.5f, 0.5f, 1.0f), 0.0f);
-		
-		myBox->draw();
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		myUI->draw();
 
 		GfxUtils::endOverlayMode();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void draw(DrawContext& context)
+	virtual void draw(const DrawContext& context)
 	{
 		switch(context.layer)
 		{
@@ -199,6 +220,12 @@ public:
 				draw2D(context);
 				break;
 		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void update(const UpdateContext& context)
+	{
+		myUI->update(context);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +301,9 @@ private:
 	float ly;
 	float lz;
 
-	Box* myBox;
+	UIManager* myUI;
+	FontManager* myFontMng;
+	Font* myFont;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

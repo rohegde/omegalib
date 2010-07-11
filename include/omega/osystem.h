@@ -43,6 +43,13 @@
 	#else
 	   #define OMEGA_API    __declspec(dllimport)
 	#endif
+
+	// OUTK DLL import / export macros (NOTE, THIS IS PART OF OUTK, SHOULD BE PLACED IN A OUTK SYSTEM HEADER FOR CONSISTENCY!)
+	#ifdef OUTK_EXPORTING
+	   #define OUTK_API    __declspec(dllexport)
+	#else
+	   #define OUTK_API    __declspec(dllimport)
+	#endif
 #endif
 
 // OpenGL includes

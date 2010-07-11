@@ -131,7 +131,15 @@ public:
 		if(app != NULL)
 		{
 			im->processEvents(app);	
-			app->update(0);
+
+			static float lt = 0.0f;
+			// Compute dt.
+			float t = (float)((double)clock() / CLOCKS_PER_SEC);
+			lt = t;
+			UpdateContext uc;
+			uc.dt = t - lt;
+
+			app->update(uc);
 		}
 
 		SystemManager::instance()->getInputManager()->poll();
@@ -171,17 +179,9 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
     // setup OpenGL State
     eq::Channel::frameDraw( spin );
 
-	static float lt = 0.0f;
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		// Compute dt.
-		float t = (float)((double)clock() / CLOCKS_PER_SEC);
-		float dt = t - lt;
-		lt = t;
-
-		app->update(dt);
-
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// setup the context viewport.
