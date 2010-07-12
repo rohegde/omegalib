@@ -65,7 +65,7 @@ struct InputEvent
 
 	//Point set
 	int numberOfPoints;
-	Point pointSet[32];
+	Vector3f pointSet[32];
 };
 
 }; // namespace omega

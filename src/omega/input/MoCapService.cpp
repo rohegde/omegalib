@@ -117,10 +117,10 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 				theEvent->rz = 0.0;
 				for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
 				{
-					Point aPoint;
-					aPoint.x = 0.0; //x
-					aPoint.y = 0.0; //y
-					aPoint.z = 0.0; //z
+					Vector3f aPoint;
+					aPoint[0] = 0.0; //x
+					aPoint[1] = 0.0; //y
+					aPoint[2] = 0.0; //z
 					theEvent->pointSet[k] = aPoint;
 				}
 				continue;
@@ -139,10 +139,10 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 			int numberOfMarkers = data->RigidBodies[i].nMarkers;
 			for( int j = 0; j < numberOfMarkers; j++)
 			{
-				Point aPoint;
-				aPoint.x = data->RigidBodies[i].Markers[j][0];//x
-				aPoint.y = data->RigidBodies[i].Markers[j][1];//y
-				aPoint.z = data->RigidBodies[i].Markers[j][2];//z
+				Vector3f aPoint;
+				aPoint[0] = data->RigidBodies[i].Markers[j][0];//x
+				aPoint[1] = data->RigidBodies[i].Markers[j][1];//y
+				aPoint[2] = data->RigidBodies[i].Markers[j][2];//z
 				theEvent->pointSet[j] = aPoint;
 			}
 
