@@ -99,7 +99,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 		{
 			//actions to process each rigid body into an event
 			InputEvent* theEvent = myMoCap->writeHead();
-			theEvent->pointSet.clear(); //always clear pointSet b/c events are reused and will overflow if not cleared
+			theEvent->numberOfPoints = data->RigidBodies[i].nMarkers;
 
 			theEvent->sourceId = data->RigidBodies[i].ID;
 			theEvent->serviceType = InputService::Mocap;
@@ -121,7 +121,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 					aPoint.x = 0.0; //x
 					aPoint.y = 0.0; //y
 					aPoint.z = 0.0; //z
-					//theEvent->pointSet.push_back ( aPoint);
+					theEvent->pointSet[k] = aPoint;
 				}
 				continue;
 			}
@@ -143,8 +143,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 				aPoint.x = data->RigidBodies[i].Markers[j][0];//x
 				aPoint.y = data->RigidBodies[i].Markers[j][1];//y
 				aPoint.z = data->RigidBodies[i].Markers[j][2];//z
-				printf("Test: x[%d] = %f\n", i, aPoint.x);
-				//theEvent->pointSet.push_back ( aPoint);
+				theEvent->pointSet[j] = aPoint;
 			}
 
 			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
