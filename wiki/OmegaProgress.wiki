@@ -45,8 +45,9 @@
   * Rigid body movements (will it work on 64bit?)
 
 ==<u> Brad </u>==
- * < insert here> 
-  <details here>
+ * Getting MoCap driver to read config files. 
+
+ * Always playing with glove/rigid body arrangements.
 
 ==<u> Arthur </u>==
  * Paint 3D teapot by painting 2D texture map via multi-touch (*delivery*: ?)
