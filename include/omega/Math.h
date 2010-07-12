@@ -23,9 +23,9 @@ namespace omega
 class Math
 {
 public:
-	static const float Pi;
-	static const float DegToRad;
-	static const float RadToDeg;
+	OMEGA_API static const float Pi;
+	OMEGA_API static const float DegToRad;
+	OMEGA_API static const float RadToDeg;
 
 private:
 	Math() {}

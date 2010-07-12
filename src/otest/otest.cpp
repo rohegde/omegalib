@@ -269,9 +269,9 @@ public:
 					mx = evt.x;
 					my = evt.y;
 					mz = evt.z;
-					rx = evt.rx * radToDegree;
-					ry = evt.ry * radToDegree;
-					rz = evt.rz * radToDegree;
+					rx = evt.rx * Math::RadToDeg;
+					ry = evt.ry * Math::RadToDeg;
+					rz = evt.rz * Math::RadToDeg;
 				}
 			}
 #endif
