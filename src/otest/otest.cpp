@@ -16,7 +16,7 @@ using namespace omega;
 using namespace outk::gfx;
 using namespace outk::ui;
 
-#define LAPTOP
+//#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application
@@ -272,6 +272,10 @@ public:
 					rx = evt.rx * Math::RadToDeg;
 					ry = evt.ry * Math::RadToDeg;
 					rz = evt.rz * Math::RadToDeg;
+					for( int i = 0; i < evt.numberOfPoints; i++)
+					{
+						printf("point%d: x = %f, y = %f, z = %f\n", i, evt.pointSet[i].x, evt.pointSet[i].y, evt.pointSet[i].z);
+					}
 				}
 			}
 #endif
@@ -309,7 +313,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	Config* cfg = new Config("../../data/test.cfg");
+	Config* cfg = new Config("../../data/omegadesk.cfg");
 
 	SystemManager* sys = SystemManager::instance();
 	sys->setup(cfg);
