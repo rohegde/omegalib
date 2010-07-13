@@ -4,6 +4,7 @@
 * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
 * Authors:										
 *  Alessandro Febretti							febret@gmail.com
+*  Arthur Nishimoto								anishimoto42@gmail.com
 *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
 *---------------------------------------------------------------------------------------------------------------------
 * [LICENSE NOTE]
@@ -43,14 +44,10 @@ public:
 private:
 	static PQService* mysInstance;	
 	static int maxBlobSize;
-	char* server_ip;
-	char mostRecentDataString[100];
-	bool newDataFlag;
+	const char* server_ip;
 	int touchID[1000]; // Max IDs assigned before resetting
 	static int maxTouches; // Should be same number as touchID array init
 	int nextID;
-
-	void clearDataString();
 
 	//////////////////////call back functions///////////////////////
 	// onReceivePointFrame: function to handle when recieve touch point frame
