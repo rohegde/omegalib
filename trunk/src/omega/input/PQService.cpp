@@ -3,11 +3,11 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Arthur Nishimoto								anishimoto42@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * MouseService method definitions. See MouseService.h for more details.
+ * PQService method definitions. See PQService.h for more details.
  *********************************************************************************************************************/
 #include "omega/input/PQService.h"
 #include "omega/SystemManager.h"
@@ -22,9 +22,13 @@ int PQService::maxTouches = 1000; // Number of IDs assigned before resetting. Sh
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::setup(Setting& settings)
 {
-	if(settings.exists("serverIp"))
+	if(settings.exists("serverIP"))
 	{
-		const char* blah=  (const char*)settings["serverIp"];
+		server_ip =  (const char*)settings["serverIP"];
+	}
+	if(settings.exists("maxBlobSize"))
+	{
+		maxBlobSize =  atoi((const char*)settings["maxBlobSize"]);
 	}
 }
 
@@ -34,9 +38,7 @@ void PQService::initialize( )
 	mysInstance = this;
 	
 	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
-	server_ip = "131.193.77.102";
-	mostRecentDataString[0] = NULL; // Cleans up string
-	newDataFlag = false;
+	//server_ip = "131.193.77.102";
 
 	nextID = 0;
 	for(int i = 0; i < maxTouches; i++){
@@ -53,8 +55,6 @@ void PQService::initialize(  char* local_ip )
 	
 	memset(m_pf_on_tges,0, sizeof(m_pf_on_tges));
 	server_ip = local_ip;
-	mostRecentDataString[0] = NULL; // Cleans up string
-	newDataFlag = false;
 	init();
 }
 
@@ -67,18 +67,18 @@ int PQService::init()
 	// set the functions on server callback
 	SetFuncsOnReceiveProc();
 	// connect server
-	printf(" connect to server...\n");
+	printf("PQService: connect to server on %s \n", server_ip);
 	if((err_code = ConnectServer(server_ip)) != PQMTE_SUCESS){
-		printf("connect server fail, socket error code: %d\n", err_code);
+		printf("PQService: connect server fail, socket error code: %d\n", err_code);
 		return err_code;
 	}
 	// send request to server
-	printf("connect success, send request.");
+	printf("PQService: connect success, send request.");
 	TouchClientRequest tcq = {0};
 	tcq.app_id = GetTrialAppID();
 	tcq.type = RQST_RAWDATA_ALL | RQST_GESTURE_ALL;
 	if((err_code = SendRequest(tcq)) != PQMTE_SUCESS){
-		printf(" send request fail, error code: %d\n", err_code);
+		printf("PQService: send request fail, error code: %d\n", err_code);
 		return err_code;
 	}
 	//////////////you can set the move_threshold when the tcq.type is RQST_RAWDATA_INSIDE;
@@ -92,12 +92,13 @@ int PQService::init()
 	////////////////////////
 	//get server resolution
 	if((err_code = GetServerResolution(OnGetServerResolution, NULL)) != PQMTE_SUCESS){
-		printf(" get server resolution fail,error code: %d\n", err_code);
+		printf("PQService: get server resolution fail,error code: %d\n", err_code);
 		return err_code;
 	};
 	//
 	// start receiving
-	printf(" send request success, start recv.\n");
+	printf("PQService: send request success, start recv.\n");
+	printf("PQService: Maximum blob size set to %i pixels \n", maxBlobSize);
 	return err_code;
 }
 
@@ -269,7 +270,7 @@ void PQService:: onReceiveGesture(const TouchGesture & ges, void * call_back_obj
 void PQService:: onServerBreak(void * param, void * call_back_object)
 {
 	// when the server break, disconenct server;
-	printf("server break, disconnect here\n");;
+	printf("PQService: server break, disconnect here\n");;
 	DisconnectServer();
 }
 
@@ -279,20 +280,20 @@ void PQService::onReceiveError(int err_code, void * call_back_object)
 	switch(err_code)
 	{
 	case PQMTE_RCV_INVALIDATE_DATA:
-		printf(" error: receive invalidate data.\n");;
+		printf("PQService: error: receive invalidate data.\n");;
 		break;
 	case PQMTE_SERVER_VERSION_OLD:
-		printf(" error: the multi-touch server is old for this client, please update the multi-touch server.\n");;
+		printf("PQService: error: the multi-touch server is old for this client, please update the multi-touch server.\n");;
 		break;
 	default:
-		printf(" socket error, socket error code:%d\n", err_code);
+		printf("PQService: socket error, socket error code:%d\n", err_code);
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService:: OnGetServerResolution(int x, int y, void * call_back_object)
 {
-	printf(" server resolution: %d , %d \n",x ,y );
+	printf("PQService: server resolution: %d , %d \n",x ,y );
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -351,64 +352,8 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->sourceId = touchID[tp.id];
 
 		mysInstance->unlockEvents();
-		
-		newDataFlag = true;
 	}
-
-	char buffer[5];
-
-	clearDataString();
-	
-	switch(tp.point_event)
-	{
-	case TP_DOWN:
-		strcat(mostRecentDataString,"TP_DOWN ");
-		break;
-	case TP_MOVE:
-		strcat(mostRecentDataString,"TP_MOVE ");
-		break;
-	case TP_UP:
-		strcat(mostRecentDataString,"TP_UP ");
-		break;
-	}
-
-	// Add ID to string
-	_itoa(touchID[tp.id],buffer,10); // int to char
-	strcat(mostRecentDataString,buffer);
-
-	strcat(mostRecentDataString," ");
-	
-	// Add xPos
-	_itoa(tp.x,buffer,10);
-	strcat(mostRecentDataString,buffer);
-
-	strcat(mostRecentDataString," ");
-	
-	// Add yPos
-	_itoa(tp.y,buffer,10);
-	strcat(mostRecentDataString,buffer);
-
-	strcat(mostRecentDataString," ");
-
-	// Add xWidth
-	_itoa(xWidth,buffer,10);
-	strcat(mostRecentDataString,buffer);
-
-	strcat(mostRecentDataString," ");
-	
-	// Add yWidth
-	_itoa(yWidth,buffer,10);
-	strcat(mostRecentDataString,buffer);
-
-	/*if( newDataFlag )
-		printf("%s \n",mostRecentDataString);*/
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void PQService::clearDataString(){
-	mostRecentDataString[0] = NULL; // Cleans up string
-}
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::dispose() 
