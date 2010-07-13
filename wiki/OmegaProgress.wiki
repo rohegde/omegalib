@@ -52,7 +52,7 @@
 ==<u> Arthur </u>==
  * Paint 3D teapot by painting 2D texture map via multi-touch (*delivery*: ?)
 
- * Update PQService to use config files (*delivery*: July 13-15)
+ * Update PQService to use config files (*done*)
 
  * Evaluate PQLabs gestures (*delivery*: July 13-15)
   Determine accuracy and usefulness. Integrate into PQService if so.
