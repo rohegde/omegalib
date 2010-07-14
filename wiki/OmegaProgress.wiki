@@ -7,6 +7,7 @@
 = omegalib v0.3 (*near future plans go here*) =
  * omegalib / Ogre integration?
  * omegalib >> Processing.
+ * support linux builds (i386 only for now)
 
 
 = omegalib v0.2 (*delivery*: when it's ready) =
@@ -29,13 +30,20 @@
   outk will offer some additional functionality to applications that need it (i.e. basic GUI support, a simple graphics library, etc.)
 
  * Start work on outk GUI system (*delivery*: 25-30July)
-  Add a couple of basic GUI widgets (Button, Scrollbar)
+  Add a couple of basic GUI widgets
+  * Button (*done*)
+  * Slider
+  * Image
 
  * Add basic support for Input filter creation (*delivery*: 12-15July)
   Input filters will be used to process and mangle input event coming from services, before they get delivered to an omegalib application. Filters can implement functionalities like noise reduction, improved finger / object tracking and gesture support.
     
  * TacTile integration: cmake setup (*delivery*: ?)
   Implement TacTileService: prepare cmake files for TacTileService integration.
+
+ * x64 support (*delivery*: ?)
+ Right now omegalib supports limited x64 builds (i.e. no outk support).
+ Make the entire lib support 64bit builds
 
 ==<u> Victor </u>==
  * Integrate newest omegalib with PigProject visualization
