@@ -20,7 +20,8 @@ using namespace outk::ui;
 Label::Label(omega::String name):
 	Widget(name),
 	myText(name),
-	myFont(NULL)
+	myFont(NULL),
+	myColor(255, 255, 255)
 {
 
 }
@@ -43,6 +44,7 @@ void Label::draw()
 	{
 		if(myFont)
 		{
+			glColor4ubv(myColor);
 			myFont->render(myText, myPosition);
 		}
 	}

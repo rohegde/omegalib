@@ -34,9 +34,13 @@ public:
 	void setChecked(bool value) { myChecked = value; }
 
 protected:
+	virtual void update(const omega::UpdateContext& context);
+
+protected:
 	bool myCheckable;
 	bool myChecked;
-
+	bool myPressed;
+	bool myPressedStateChanged;
 };
 }; // namespace gfx
 }; // namespace outk

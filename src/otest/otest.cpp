@@ -19,7 +19,7 @@ using namespace outk::ui;
 #define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class TestApplication: public Application
+class TestApplication: public Application, IUIEventHandler
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,45 +31,35 @@ public:
 		myFont = myFontMng->getFont("arial30");
 
 		myUI = new UIManager();
+		myUI->setEventHandler(this);
 		myUI->setDefaultFont(myFont);
 
-		Box* b1 = new Box("box1", Box::LayoutHorizontal);
-		myUI->getRootWidget()->addChild(b1);
+		WidgetFactory* wf = myUI->getWidgetFactory();
+
+		Box* b1 = wf->createBox("box1", myUI->getRootWidget(), Box::LayoutHorizontal);
+		b1->setUserMoveEnabled(true);
+		b1->setDebugModeEnabled(true);
 		b1->setPosition(Vector2f(100, 100));
 		b1->setSize(Vector2f(400, 100));
+		b1->setRotation(20);
 
-		Box* b2 = new Box("box2", Box::LayoutVertical);
-		b1->addChild(b2);
+		Box* b2 = wf->createBox("box2", b1, Box::LayoutVertical);
 
-		Box* b3 = new Box("box3", Box::LayoutVertical);
-		b1->addChild(b3);
+		Box* b3 = wf->createBox("box3", b1, Box::LayoutVertical);
+		b3->setUserMoveEnabled(true);
+		b3->setDebugModeEnabled(true);
 		b3->setPadding(2);
 
-		Box* b4 = new Box("box4", Box::LayoutHorizontal);
-		Box* b5 = new Box("box5", Box::LayoutHorizontal);
-		Box* b6 = new Box("box6", Box::LayoutHorizontal);
-		b3->addChild(b4);
-		b3->addChild(b5);
-		b3->addChild(b6);
+		Box* b4 = wf->createBox("box4", b3, Box::LayoutHorizontal);
+		Box* b5 = wf->createBox("box5", b3, Box::LayoutHorizontal);
+		Box* b6 = wf->createBox("box6", b3, Box::LayoutHorizontal);
 
 		b1->layoutChildren();
 		b2->layoutChildren();
 		b3->layoutChildren();
 
-		Label* l1 = new Label("L1");
-		l1->setDebugModeEnabled(true);
-		l1->setDebugColor(Color(0.0f, 1.0f, 1.0f, 1.0f));
-		b4->addChild(l1);
-
-		Label* l2 = new Label("L2");
-		l2->setDebugModeEnabled(true);
-		l2->setDebugColor(Color(1.0f, 1.0f, 0.0f, 1.0f));
-		b5->addChild(l2);
-
-		Label* l3 = new Label("L3");
-		l3->setDebugModeEnabled(true);
-		l3->setDebugColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
-		b6->addChild(l3);
+		Button* l1 = wf->createButton("L1", b4);
+		l1->setText("Hello Button!");
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,29 +94,10 @@ public:
 		glFogf(GL_FOG_START, 1);
 		glFogf(GL_FOG_END, 3);
 
-
-		float i = (float)context.frameNum / 40;
-		float zz = sin(i) * 0.7;
-		float xx = cos(i * 1.2) * 0.3;
-		float yy = 0.5f; //cos(i * 0.7) * 0.1;
-
-		glColor3f(0.5, 0.4, 0.7);
-		glColor3f(0.8, 1.0, 0.8);
-		glPushMatrix();
-		glTranslatef(-0.2, 0.5, -2.0);
-		glRotated(i * 3, 0, 1, 0);
-		GfxUtils::drawSolidTeapot(0.1f);
-		glPopMatrix();
-
 		glColor3f(0.7, 0.4, 0.4);
 		glPushMatrix();
 		glTranslatef(0.0, 0.5, -0.7);
 		GfxUtils::drawSolidTeapot(0.1f);
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslatef(0.3 + xx, 0.0 + yy, -1.6 + zz);
-		glutSolidSphere(0.1f, 20, 20);
 		glPopMatrix();
 
 		glPushMatrix();
@@ -203,7 +174,7 @@ public:
 
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		myUI->draw();
+		myUI->draw(context);
 
 		GfxUtils::endOverlayMode();
 	}
@@ -236,7 +207,8 @@ public:
 		case InputService::Touch:
 		case InputService::Pointer:
 			x = evt.x;
-			y = evt.y;					
+			y = evt.y;	
+			myUI->processInputEvent(evt);
 		break;
 
 		case InputService::Mocap:
@@ -286,6 +258,12 @@ public:
 		default: break;
 		}
 		return true;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void handleUIEvent(const UIEvent& evt)
+	{
+		printf("click yay!\n");
 	}
 
 private:

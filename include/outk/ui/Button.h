@@ -15,6 +15,7 @@
 
 #include "omega.h"
 #include "outk/ui/AbstractButton.h"
+#include "outk/ui/Label.h"
 
 namespace outk
 {
@@ -27,7 +28,18 @@ public:
 	OUTK_API Button(omega::String name);
 	OUTK_API virtual ~Button();
 
+	omega::String getText() { return myLabel.getText(); }
+	void setText(omega::String value) { myLabel.setText(value); }
+
+	// Gets the label subobject used by the button.
+	Label* getLabel() { return &myLabel; }
+
+protected:
+		virtual bool processInputEvent(const omega::InputEvent& evt);
+		virtual void draw();
+
 private:
+	Label myLabel;
 };
 }; // namespace gfx
 }; // namespace outk

@@ -14,8 +14,7 @@
 #ifndef __GFX_UTILS_H__
 #define __GFX_UTILS_H__
 
-#include "omega/osystem.h"
-#include "omega/DrawContext.h"
+#include "omega.h"
 
 namespace outk
 {
@@ -32,22 +31,21 @@ public:
 
 	// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
 	// viewport parameters specified in the draw context.
-	OMEGA_API static void beginOverlayMode(const omega::DrawContext& context);
+	OUTK_API static void beginOverlayMode(const omega::DrawContext& context);
 
 	// Restores the coordinate system specified before a Begin2DCoords call.
-	OMEGA_API static void endOverlayMode();
+	OUTK_API static void endOverlayMode();
 
 	// Prints text. 
-	OMEGA_API static void drawText(int x, int y, const char* s, Font f = Helvetica12);
+	OUTK_API static void drawText(int x, int y, const char* s, Font f = Helvetica12);
 
-	OMEGA_API static void drawSolidTeapot(float size);
-	OMEGA_API static void drawWireTeapot(float size);
+	OUTK_API static void drawSolidTeapot(float size);
+	OUTK_API static void drawWireTeapot(float size);
 
-	OMEGA_API static void drawHGradient(omega::Vector2i pos, omega::Vector2i size, omega::Color startColor, omega::Color endColor, float pc = 0.0f);
-	OMEGA_API static void drawVGradient(omega::Vector2i pos, omega::Vector2i size, omega::Color startColor, omega::Color endColor, float pc = 0.0f);
+	OUTK_API static void drawHGradient(omega::Vector2i pos, omega::Vector2i size, omega::Color startColor, omega::Color endColor, float pc = 0.0f);
+	OUTK_API static void drawVGradient(omega::Vector2i pos, omega::Vector2i size, omega::Color startColor, omega::Color endColor, float pc = 0.0f);
 
-	OMEGA_API static void drawBox(omega::Vector2i pos, omega::Vector2i size, int dx, omega::Color color);
-
+	OUTK_API static void drawDRect(omega::Vector2f pos, omega::Vector2f size, int d);
 private:
 	GfxUtils() {};
 };

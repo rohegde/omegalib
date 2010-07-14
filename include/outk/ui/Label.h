@@ -25,8 +25,8 @@ namespace ui
 class Label: public Widget
 {
 public:
-	OMEGA_API Label(omega::String name);
-	OMEGA_API virtual ~Label();
+	OUTK_API Label(omega::String name);
+	OUTK_API virtual ~Label();
 
 	omega::String getText() { return myText; }
 	void setText(const omega::String& value) { myText = value; }
@@ -34,12 +34,16 @@ public:
 	outk::gfx::Font* getFont() { return myFont; }
 	void setFont(outk::gfx::Font* value) { myFont = value; }
 
+	omega::Color getColor() { return myColor; }
+	void setColor(const omega::Color& value) { myColor = value; }
+
 protected:
 	virtual void draw();
 
 protected:
 	omega::String myText;
 	outk::gfx::Font* myFont;
+	omega::Color myColor;
 };
 }; // namespace gfx
 }; // namespace outk

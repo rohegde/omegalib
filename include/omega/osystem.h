@@ -71,6 +71,9 @@
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
 
+typedef unsigned char byte;
+typedef unsigned int uint32;
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,9 +90,6 @@ typedef vmml::vector< 4, double >Vector4d; //!< A four-component double vector
 typedef vmml::vector< 2, float > Vector2f; //!< A four-component float vector
 typedef vmml::vector< 3, float > Vector3f; //!< A four-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
-
-// Color type (may be redefined using a Vector4f derived class in the future)
-typedef vmml::vector< 4, float > Color;
 
 // String
 typedef std::string String;

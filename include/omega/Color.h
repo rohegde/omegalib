@@ -3,23 +3,35 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Includes all the classes and functionalities implemented in the omega namespace.
+ * DrawContext
  *********************************************************************************************************************/
-#ifndef __OUTK_H__
-#define __OUTK_H__
+#ifndef __COLOR_H__
+#define __COLOR_H__
 
-#include "outk/gfx/GfxUtils.h"
-#include "outk/gfx/FontManager.h"
-#include "outk/ui/AbstractButton.h"
-#include "outk/ui/Box.h"
-#include "outk/ui/Button.h"
-#include "outk/ui/Label.h"
-#include "outk/ui/UIManager.h"
-#include "outk/ui/Widget.h"
-#include "outk/ui/WidgetFactory.h"
+#include "osystem.h"
+
+namespace omega
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class Color: public vmml::vector< 4, byte >
+	{
+	public:
+	public:
+		Color(byte r, byte g, byte b, byte a = 255):
+		  vmml::vector< 4, byte >(r, g, b, a) {}
+
+		static Color floats(float r, float g, float b, float a)
+		{
+		  return Color((byte)(r * 256), (byte)(g * 256), (byte)(b * 256), (byte)(a * 256));
+		}
+
+		operator byte* () { return begin(); }
+	};
+}; // namespace omega
 
 #endif

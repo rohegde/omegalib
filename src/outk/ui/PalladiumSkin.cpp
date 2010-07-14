@@ -7,20 +7,29 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Implements the Palladium UI skin.
  *********************************************************************************************************************/
-#ifndef __UI_EVENT_H__
-#define __UI_EVENT_H__
+#include "outk/gfx/GfxUtils.h"
+#include "outk/ui/PalladiumSkin.h"
 
-#include "osystem.h"
+using namespace omega;
+using namespace outk::gfx;
+using namespace outk::ui;
 
-namespace omega { namespace ui 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PalladiumButton::draw()
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	struct UIEvent
-	{
-	};
+	Button::draw();
 
-};}; // namespace omega::ui
+	float d = 0.5f;
+	if(myPressed) d = 1.0f;
 
-#endif
+	GfxUtils::drawVGradient(myPosition, mySize, Color(50, 50, 100, 255), Color(100, 100, 150, 255), d);
+
+	glColor4ub(100, 100, 100, 255);
+	GfxUtils::drawDRect(myPosition, mySize, 0);
+	glColor4ub(255, 255, 255, 255);
+	GfxUtils::drawDRect(myPosition, mySize, 1);
+	glColor4ub(255, 255, 255, 128);
+	GfxUtils::drawDRect(myPosition, mySize, 2);
+}

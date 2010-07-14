@@ -23,8 +23,12 @@ Widget::Widget(omega::String name):
 	myName(name),
 	myParent(NULL),
 	myVisible(true),
-	myDebugModeColor(Color(1.0f, 0.0f, 1.0f, 1.0f)),
-	myDebugModeEnabled(true)
+	myDebugModeColor(255, 0, 255),
+	myDebugModeEnabled(false),
+	myRotation(0),
+	//myScale(1.0f),
+	myUserMoveEnabled(false),
+	myMoving(false)
 {
 
 }
@@ -36,6 +40,16 @@ Widget::~Widget()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setUI(UIManager* ui)
+{
+	myUI = ui;
+	boost_foreach(Widget* child, myChildren)
+	{
+		child->setUI(ui);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::addChild(Widget* child)
 {
 	if(child->myParent != NULL)
@@ -43,7 +57,8 @@ void Widget::addChild(Widget* child)
 		child->myParent->removeChild(child);
 	}
 	myChildren.push_back(child);
-	child->myUI = myUI;
+	child->myParent = this;
+	child->setUI(myUI);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,9 +66,37 @@ void Widget::removeChild(Widget* child)
 {
 	myChildren.remove(child);
 	child->myParent = NULL;
-	child->myUI = NULL;
+	child->setUI(NULL);
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::render()
+{
+	glPushMatrix();
+
+	// Setup transformation.
+	Vector2f center = myPosition + (mySize / 2);
+	Vector2f mcenter = -center;
+
+	glTranslatef(center[0], center[1], 0.0f);
+
+	glRotatef(myRotation, 0, 0, 1);
+
+	glTranslatef(mcenter[0], mcenter[1], 0.0f);
+
+    // draw myself.
+	draw();
+
+	// render children.
+	boost_foreach(Widget* child, myChildren)
+	{
+		child->render();
+	}
+
+	// reset transform.
+	glPopMatrix();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::draw()
@@ -66,7 +109,7 @@ void Widget::draw()
 		float width = mySize.x();
 		float height = mySize.y();
 
-		glColor4fv(myDebugModeColor.begin());
+		glColor4ubv(myDebugModeColor.begin());
 
 		glBegin(GL_LINES);
 
@@ -84,11 +127,6 @@ void Widget::draw()
 
 		glEnd();
 	}
-
-	boost_foreach(Widget* child, myChildren)
-	{
-		child->draw();
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,4 +136,100 @@ void Widget::layoutChildren()
 	{
 		child->layoutChildren();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::update(const omega::UpdateContext& context)
+{
+	boost_foreach(Widget* child, myChildren)
+	{
+		child->update(context);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::hitTest(Vector2f point)
+{
+	float x1 = myPosition[0];
+	float y1 = myPosition[1];
+	float x2 = myPosition[0] + mySize[0];
+	float y2 = myPosition[1] + mySize[1];
+
+	if(point[0] >= x1 && point[1] >= y1 && point[0] < x2 && point[1] < y2) return true;
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::transformPoint(Vector2f& point)
+{
+	if(myParent)
+	{
+		myParent->transformPoint(point);
+	}
+
+	if(myRotation != 0)
+	{
+		Vector2f center = myPosition + (mySize / 2);
+		point -= center;
+		float s = sin(-myRotation * omega::Math::DegToRad);
+		float c = cos(-myRotation * omega::Math::DegToRad);
+		float x = point[0];
+		float y = point[1];
+		point[0] = x * c - y * s;;
+		point[1] = y * c + x * s;
+		point += center;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::processInputEvent(const InputEvent& evt)
+{
+	myLastEvent = evt;
+	bool processed = false;
+
+	Vector2f point(evt.x, evt.y);
+	
+	transformPoint(point);
+
+	boost_foreach(Widget* child, myChildren)
+	{
+		processed |= child->processInputEvent(evt);
+	}
+	if(hitTest(point))
+	{
+		if(!processed)
+		{
+			if(myUserMoveEnabled)
+			{
+				if(evt.type == InputEvent::Down)
+				{
+					myUserMovePosition = Vector2f(evt.x, evt.y);
+					processed = true;
+					myMoving = true;
+				}
+				else if(evt.type == InputEvent::Move && myMoving)
+				{
+					Vector2f cur(evt.x, evt.y);
+					Vector2f delta = cur - myUserMovePosition;
+					myUserMovePosition = cur;
+
+					myPosition += delta;
+					processed = true;
+				}
+				else if(myMoving && evt.type == InputEvent::Up)
+				{
+					myMoving = false;
+					processed = true;
+				}
+			}
+		}
+	}
+	return processed;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::dispatchUIEvent(UIEvent& evt)
+{
+	if(myParent) myParent->dispatchUIEvent(evt);
+	else myUI->dispatchUIEvent(evt);
 }

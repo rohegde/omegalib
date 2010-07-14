@@ -7,13 +7,41 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Implements the Palladium UI skin.
  *********************************************************************************************************************/
-#include "omega/Math.h"
+#ifndef __PALLADIUM_SKIN_H__
+#define __PALLADIUM_SKIN_H__
 
-using namespace omega;
+#include "outk/ui/WidgetFactory.h"
+
+namespace outk
+{
+namespace ui
+{
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const float Math::Pi = 3.14159265;
-const float Math::DegToRad = 3.14159265 / 180.0;
-const float Math::RadToDeg = 180.0 / 3.14159265;
+	class PalladiumButton: public Button
+{
+public:
+	PalladiumButton(omega::String name): Button(name) {}
+protected:
+	OUTK_API void draw();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class PalladiumWidgetFactory: public WidgetFactory
+{
+public:
+	virtual Button* createButton(omega::String name, Widget* parent)
+	{
+		Button* button = new PalladiumButton(name);
+		parent->addChild(button);
+		return button;
+	}
+};
+
+
+}; // namespace ui
+}; // namespace outk
+
+#endif
