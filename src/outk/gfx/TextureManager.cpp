@@ -4,74 +4,85 @@
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#include "outk/gfx/FontManager.h"
+#include "outk/gfx/TextureManager.h"
+
+#include "FreeImage.h"
 
 using namespace omega;
 using namespace outk::gfx;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Font::render(const omega::String& text, omega::Vector2f position, unsigned int align) 
-{ 
-	glPushMatrix();
-	glScalef(1.0f, -1.0f, 1.0f);
-
-	FTBBox bbox = myFontImpl->BBox(text.c_str());
-
-	// string height
-	float ht = bbox.Upper().Yf() - bbox.Lower().Yf();
-
-	// string width
-	float wt = bbox.Upper().Xf() - bbox.Lower().Xf();
-
-	myFontImpl->Render(text.c_str(), text.length(), FTPoint(position[0], -position[1] - ht, 0.0f)); 
-	glPopMatrix();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FontManager::FontManager()
+TextureManager::TextureManager()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FontManager::~FontManager() 
+TextureManager::~TextureManager()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void FontManager::createFont(omega::String fontName, omega::String filename, int size)
+void TextureManager::loadTexture(omega::String textureName, omega::String filename)
 {
-	if(getFont(fontName))
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(), 0);
+	FIBITMAP* image = FreeImage_Load(format, filename.c_str());
+	
+	FIBITMAP* temp = image;
+	image = FreeImage_ConvertTo32Bits(image);
+	FreeImage_Unload(temp);
+	
+	int w = FreeImage_GetWidth(image);
+	int h = FreeImage_GetHeight(image);
+
+	omsg("Image loaded: %s. Size: %dx%d", filename, w, h);
+	
+	GLubyte* data = new GLubyte[4*w*h];
+	char* pixels = (char*)FreeImage_GetBits(image);
+	
+	for(int j= 0; j<w*h; j++){
+		data[j*4+0]= pixels[j*4+2];
+		data[j*4+1]= pixels[j*4+1];
+		data[j*4+2]= pixels[j*4+0];
+		data[j*4+3]= pixels[j*4+3];
+	}
+	
+	FreeImage_Unload(image);
+
+	//Now generate the OpenGL texture object 
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)data );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
+	GLenum huboError = glGetError();
+	if(huboError)
 	{
-		owarn("FontManager::createFont: font '%s' already existing.", fontName);
+		oerror("There was an error loading the texture");
 		return;
 	}
 
-	FTFont* fontImpl = new FTTextureFont(filename.c_str());
-	if(fontImpl->Error())
-	{
-		owarn("Font %s failed to open", filename.c_str());
-		delete fontImpl;
-	}
+	Texture* tx = new Texture();
+	tx->id = textureID;
+	tx->data = data;
 
-	if(!fontImpl->FaceSize(size))
-	{
-		owarn("Font %s failed to set size %i", filename, size);
-		delete fontImpl;
-	}
+	// TODO: Check for already existing textures with same name & notify + deallocate.
 
-	Font* font = new Font(fontImpl);
-
-	myFonts[fontName] = font;
+	myTextures[textureName] = tx;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Font* FontManager::getFont(omega::String fontName)
+Texture* TextureManager::getTexture(omega::String fontName)
 {
-	return myFonts[fontName];
+	return myTextures[fontName];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void TextureManager::cleanup()
+{
 }

@@ -31,6 +31,7 @@ SET( srcs
         gfx/FontManager.cpp
         gfx/GfxUtils.cpp
         gfx/teapot.cpp
+        gfx/TextureManager.cpp
         ui/AbstractButton.cpp
         ui/Box.cpp
         ui/Button.cpp
@@ -45,6 +46,7 @@ SET( srcs
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/FontManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GfxUtils.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/gfx/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/AbstractButton.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Box.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Button.h
@@ -73,5 +75,6 @@ TARGET_LINK_LIBRARIES( outk
 	omega
 	debug ${LIB_DEBUG}/freetype2312_D.lib optimized ${LIB_RELEASE}/freetype2312.lib
 	debug ${LIB_DEBUG}/ftgl_static_D.lib optimized ${LIB_RELEASE}/ftgl_static.lib
+	debug ${LIB_DEBUG}/FreeImage.lib optimized ${LIB_RELEASE}/FreeImage.lib
 	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
 	${OPENGL_LIBRARY})
