@@ -35,7 +35,7 @@
   * Slider
   * Image
 
- * Add basic support for Input filter creation (*delivery*: 12-15July)
+ * Add basic support for Input filter creation (*delivery*: 19-22July)
   Input filters will be used to process and mangle input event coming from services, before they get delivered to an omegalib application. Filters can implement functionalities like noise reduction, improved finger / object tracking and gesture support.
     
  * TacTile integration: cmake setup (*delivery*: ?)
