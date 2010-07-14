@@ -98,11 +98,12 @@ SOCKET setupSocketClient(char * config,struct sockaddr_in *server)
 	pServerConfig = fopen(config,"r");
 	if (pServerConfig != NULL)
 	{
+		printf("Server Config was opened\n");
 		fscanf(pServerConfig,"Server=%s\nPort=%d",serverName,&portnum);
 	}
 	else
 	{
-		printf("Unable to open client config file\n");
+		fprintf(stderr, "ERROR : Unable to open client config file\n");
 		exit(0);
 	}
 

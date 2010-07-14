@@ -10,6 +10,45 @@
 #include "inc/optitrack.h"
 #import  "lib/optitrack.tlb"
 
+int SLOW_POL_RATE = 15;
+int FAST_POL_RATE = 1;
+
+bool show_out = true;
+bool calibrate = false;
+bool slow_frame = false;
+float x_offset, y_offset, z_offset;
+float rx_offset, ry_offset, rz_offset;
+
+
+
+void processkey()
+{
+	int character = getch();
+	switch ( character )
+	{
+		case 27 : exit(0);	break;
+
+		case 99 :	//c
+			calibrate = true;
+			break;
+
+			case 100 :	//d
+			slow_frame = !slow_frame;
+			break;
+
+		case 115 :	//s
+			show_out = !show_out;
+			if(show_out) printf( "Showing output\n");
+			else printf( "Not Showing output\n");
+			break;
+
+		default : 
+			printf( "key %d \n", character );
+			break;
+	}
+
+}
+
 int _tmain(int argc, TCHAR* argv[])
 {
 	printf("OptiTrack WIN32 Sample Application ============================================\n");
@@ -86,39 +125,67 @@ int _tmain(int argc, TCHAR* argv[])
 		VariantInit(&roll);
 		HRESULT hr;
 		
-		printf("\nPress Return To Exit\n\n");
-		
+		printf("\nPress:\n");
+		printf("  Esc: \t Exit\n");
+		printf("  s:   \t Show output\n");
+		printf("  c:   \t Calibrate\n");
+
 		cameraCollection->Item(0, &camera);
 		{
 			sd = setupSocketClient(filename,&server);
 			camera->Open();
 			camera->Start();
             {
-			    while(!_kbhit())
+			    while( 1 )
 			    {
+					if ( kbhit() ) processkey();
+					
 				    Sleep(5);
 					
 					camera->GetFrame(0, &frame);
 					if(frame != 0) {
 						frameCounter++;
-						if(frameCounter % 30 == 0) {
-							printf("Frame data ok.\n");
+						
+						int polRate;
+						if ( slow_frame ) polRate = SLOW_POL_RATE;
+						else polRate = FAST_POL_RATE;
+
+						if(frameCounter % polRate == 0) {
+							//Grab Data 
 							hr = vector->Update(camera, frame);
 							hr = vector->get_X(&x);
 							hr = vector->get_Y(&y);
 							hr = vector->get_Z(&z);
-							hr = vector->get_Yaw(&yaw);
 							hr = vector->get_Pitch(&pitch);
+							hr = vector->get_Yaw(&yaw);
 							hr = vector->get_Roll(&roll);
 
-							frameData.x = (float)x.dblVal;
-							frameData.y = (float)y.dblVal;
-							frameData.z = (float)z.dblVal;
-							frameData.yaw = (float)yaw.dblVal;
-							frameData.pitch = (float)pitch.dblVal;
-							frameData.roll = (float)roll.dblVal;
+							if( calibrate )
+							{
+								calibrate = false;
+								x_offset = -(float)x.dblVal;
+								y_offset = -(float)y.dblVal;
+								z_offset = -(float)z.dblVal;
+								rx_offset = -(float)pitch.dblVal;
+								ry_offset = -(float)yaw.dblVal;
+								rz_offset = -(float)roll.dblVal;
+							}
 
-							printf("x=%.3f  y=%.3f  z=%.3f   yaw=%.3f  pitch=%.3f  roll=%.3f \n", x.dblVal, y.dblVal, z.dblVal, yaw.dblVal, pitch.dblVal, roll.dblVal);
+							//store data 
+							frameData.x = (float)x.dblVal + x_offset;
+							frameData.y = (float)y.dblVal + y_offset;
+							frameData.z = (float)z.dblVal + z_offset;
+							frameData.pitch = (float)pitch.dblVal + rx_offset;
+							frameData.yaw = (float)yaw.dblVal + ry_offset;
+							frameData.roll = (float)roll.dblVal + rz_offset;
+
+							if(show_out)
+							{
+								printf("Pos: {%.2f, %.2f, %.2f}      Rot: { %.2f, %.2f, %.2f } \n", 
+									frameData.x, frameData.y, frameData.z,
+									frameData.pitch, frameData.yaw, frameData.roll);
+							}
+
 							if(sendData(sd, &frameData, sizeof(frameData), (struct sockaddr *)&server) != sizeof(frameData)) {
 								camera->Stop();
 								camera->Close();
@@ -133,17 +200,6 @@ int _tmain(int argc, TCHAR* argv[])
 						frame.Release();
 					}
 					
-					/* Is this necessary?
-	                MSG msg;
-                    if( PeekMessage( &msg, NULL, 0, 0, PM_NOREMOVE ) )
-                    {
-                        if(GetMessage( &msg, NULL, 0, 0 ) )
-                        {
-                            TranslateMessage(&msg);
-                            DispatchMessage(&msg);
-                        }
-                    }
-					*/
 			    }	
             }
 			camera->Stop();
