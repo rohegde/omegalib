@@ -187,8 +187,9 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerChannel::frameDraw( const uint32_t spin )
 {
-
     EqualizerView* view  = static_cast< EqualizerView* > (const_cast< eq::View* >( getView( )));
+
+	glewSetContext(this->glewGetContext());
 
     // setup OpenGL State
     eq::Channel::frameDraw( spin );
@@ -196,6 +197,15 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
+		// TODO: This is just a hack for application pipe initialization. This should be moved
+		// into Pipe::initialize() or something.
+		static bool pipeInitialized = false;
+		if(!pipeInitialized)
+		{
+			app->initializePipe();
+			pipeInitialized = true;
+		}
+
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// setup the context viewport.
@@ -245,6 +255,9 @@ void EqualizerDisplaySystem::setup(Setting& setting)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
+	// Init glew
+	glewInit();
+
 	mySys = sys;
 	std::vector<char*> argv = Config::stringToArgv( mySys->getApplication()->getName(), myDisplayConfig);
 

@@ -25,8 +25,18 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	TestApplication()
 	{
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void initialize()
+	{
 		myFontMng = new FontManager();
 		myFontMng->createFont("arial30", "../../data/fonts/Arial.ttf", 22);
+
+		myTexMng = new TextureManager();
+		myTexMng->loadTexture("mario", "../../data/images/mario.png");
+
+		Texture* tx = myTexMng->getTexture("mario");
 
 		myFont = myFontMng->getFont("arial30");
 
@@ -35,6 +45,14 @@ public:
 		myUI->setDefaultFont(myFont);
 
 		WidgetFactory* wf = myUI->getWidgetFactory();
+
+		Image* i1 = wf->createImage("i1", myUI->getRootWidget());
+		i1->setTexture(tx);
+		i1->setRotation(-20);
+		i1->setUserMoveEnabled(true);
+		i1->setPosition(Vector2f(400, 400));
+		i1->setSize(Vector2f(300, 300));
+
 
 		Box* b1 = wf->createBox("box1", myUI->getRootWidget(), Box::LayoutHorizontal);
 		b1->setUserMoveEnabled(true);
@@ -285,6 +303,7 @@ private:
 
 	UIManager* myUI;
 	FontManager* myFontMng;
+	TextureManager* myTexMng;
 	Font* myFont;
 };
 

@@ -17,6 +17,40 @@ using namespace omega;
 using namespace outk::gfx;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::refresh()
+{
+	if(!myInitialized)
+	{
+		//Now generate the OpenGL texture object 
+		glGenTextures(1, &myId);
+		
+		GLenum glErr = glGetError();
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oerror("Texture initialization: %s", str);
+			return;
+		}
+		myInitialized = true;
+	}
+	if(myDirty)
+	{
+		glBindTexture(GL_TEXTURE_2D, myId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		GLenum glErr = glGetError();
+
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oerror("Texture refresh: %s", str);
+			return;
+		}
+		myDirty = false;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TextureManager::TextureManager()
 {
 }
@@ -39,7 +73,7 @@ void TextureManager::loadTexture(omega::String textureName, omega::String filena
 	int w = FreeImage_GetWidth(image);
 	int h = FreeImage_GetHeight(image);
 
-	omsg("Image loaded: %s. Size: %dx%d", filename, w, h);
+	omsg("Image loaded: %s. Size: %dx%d", filename.c_str(), w, h);
 	
 	GLubyte* data = new GLubyte[4*w*h];
 	char* pixels = (char*)FreeImage_GetBits(image);
@@ -53,23 +87,8 @@ void TextureManager::loadTexture(omega::String textureName, omega::String filena
 	
 	FreeImage_Unload(image);
 
-	//Now generate the OpenGL texture object 
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)data );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	
-	GLenum huboError = glGetError();
-	if(huboError)
-	{
-		oerror("There was an error loading the texture");
-		return;
-	}
-
 	Texture* tx = new Texture();
-	tx->id = textureID;
-	tx->data = data;
+	tx->setData(data, w, h);
 
 	// TODO: Check for already existing textures with same name & notify + deallocate.
 

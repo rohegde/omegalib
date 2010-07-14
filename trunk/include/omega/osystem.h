@@ -55,6 +55,7 @@
 // OpenGL includes
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <GL/glew.h>
 
 // Libconfig
 #include "libconfig/libconfig.hh"
@@ -101,6 +102,9 @@ typedef libconfig::Setting Setting;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
+OMEGA_API GLEWContext* glewGetContext();
+OMEGA_API void glewSetContext(GLEWContext* context);
+
 OMEGA_API void ologopen(const char* filename);
 OMEGA_API void ologclose();
 OMEGA_API void omsg(const char* fmt, ...);
