@@ -15,6 +15,7 @@ MoCapService::MoCapService()
 	pClient = NULL;
 	strcpy ( localIP, "" );
 	strcpy ( serverIP, "" );
+	castType = 0;
 }
 
 MoCapService::~MoCapService()
@@ -29,11 +30,28 @@ void MoCapService::initialize()
 }
 
 
+void MoCapService::setup(Setting& settings)
+{
+	if( settings.extists( "serverIP" ) )
+	{
+		strcpy( serverIP, settings[ "serverIP" ] );
+	}
+
+	if( settings.exists( "localIP" ) )
+	{
+		strcpy( serverIP, settings[ "localIP" ] );
+	}
+
+	if( settings.exists( "castingType" ) )
+	{
+		castType = atoi( (const char*) settings[ "castingType" ] );
+	}
+}
 void MoCapService::start()
 {
 	if( pClient == NULL)
 	{
-		pClient = new NatNetClient( 0 ); //0 indicates that it is operating in multicast, if it is changed to 1 it will operate in unicast
+		pClient = new NatNetClient( castType ); //0 indicates that it is operating in multicast, if it is changed to 1 it will operate in unicast
 	}
 	
 	//set call back functions
@@ -201,15 +219,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 	}
 }
 
-void MoCapService::setLocalIP(	char* theAdress)
-{
-	strcpy( localIP, theAdress);
-}
 
-void MoCapService::setServerIP( char* theAdress)
-{
-	strcpy( serverIP, theAdress);
-}
 
 void MoCapService::useEuler()
 {
