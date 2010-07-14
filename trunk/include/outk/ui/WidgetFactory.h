@@ -9,20 +9,43 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __UTILS_H__
-#define __UTILS_H__
+#ifndef __WIDGET_FACTORY_H__
+#define __WIDGET_FACTORY_H__
 
-#include "osystem.h"
+#include "outk/ui/Box.h"
+#include "outk/ui/Button.h"
+#include "outk/ui/Widget.h"
 
-namespace omega
+namespace outk
+{
+namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Utils
+class WidgetFactory
 {
 public:
-private:
-	Utils() {};
+	virtual Widget* createWidget(omega::String name, Widget* parent)
+	{
+		Widget* widget = new Widget(name);
+		parent->addChild(widget);
+		return widget;
+	}
+
+	virtual Box* createBox(omega::String name, Widget* parent, Box::Layout layout)
+	{
+		Box* box = new Box(name, layout);
+		parent->addChild(box);
+		return box;
+	}
+
+	virtual Button* createButton(omega::String name, Widget* parent)
+	{
+		Button* button = new Button(name);
+		parent->addChild(button);
+		return button;
+	}
 };
-}; // namespace omega
+}; // namespace ui
+}; // namespace outk
 
 #endif

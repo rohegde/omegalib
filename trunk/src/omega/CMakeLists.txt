@@ -29,6 +29,7 @@ ENDIF()
 # Source files
 SET( srcs 
         osystem.cpp
+		Color.cpp
 		Config.cpp
 		EqualizerDisplaySystem.cpp
 		GLUTDisplaySystem.cpp
@@ -46,6 +47,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h

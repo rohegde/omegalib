@@ -19,7 +19,8 @@ using namespace outk::ui;
 AbstractButton::AbstractButton(omega::String name):
 	Widget(name),
 	myCheckable(false),
-	myChecked(false)
+	myChecked(false),
+	myPressed(false)
 {
 
 }
@@ -30,3 +31,17 @@ AbstractButton::~AbstractButton()
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void AbstractButton::update(const omega::UpdateContext& context) 
+{
+	if(myPressedStateChanged)
+	{
+		if(myPressed)
+		{
+			// Create and dispatch an ui event.
+			UIEvent evt(this, UIEvent::Click, &myLastEvent);
+			dispatchUIEvent(evt);
+		}
+		myPressedStateChanged = false;
+	}
+};

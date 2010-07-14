@@ -109,6 +109,20 @@ public:
 				MouseService::mouseMotionCallback(x, y);
 				return true;
 			}
+		case eq::Event::POINTER_BUTTON_PRESS:
+			{
+				x = event->data.pointerButtonPress.x;
+				y = event->data.pointerButtonPress.y;
+				MouseService::mouseButtonCallback(0, 1, x, y);
+				return true;
+			}
+		case eq::Event::POINTER_BUTTON_RELEASE:
+			{
+				x = event->data.pointerButtonPress.x;
+				y = event->data.pointerButtonPress.y;
+				MouseService::mouseButtonCallback(0, 0, x, y);
+				return true;
+			}
 		}
 		return false;
 	}

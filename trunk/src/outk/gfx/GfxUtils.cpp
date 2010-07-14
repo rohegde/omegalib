@@ -98,7 +98,7 @@ void GfxUtils::drawWireTeapot(float scale)
 }
   
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Vector4f startColor, Vector4f endColor, float pc)
+void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Color startColor, Color endColor, float pc)
 {
 	int x = pos.x();
 	int y = pos.y();
@@ -107,7 +107,7 @@ void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Vector4f startColor, V
 
 	float h1 = int(height * pc);
 
-	glColor4fv(startColor.begin());
+	glColor4ubv(startColor);
 	glRecti(x, y, x + width, y + h1);
 
 	y += h1;
@@ -118,15 +118,15 @@ void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Vector4f startColor, V
 	glVertex2i(x, y);
 	glVertex2i(x + width, y);
 
-	glColor4fv(endColor.begin());
+	glColor4ubv(endColor);
 	glVertex2i(x + width, y + height);
 	glVertex2i(x, y + height);
 
 	glEnd(); 
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Vector4f startColor, Vector4f endColor, float pc)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Color startColor, Color endColor, float pc)
 {
 	int x = pos.x();
 	int y = pos.y();
@@ -135,7 +135,7 @@ void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Vector4f startColor, V
 
 	float w1 = int(width * pc);
 
-	glColor4fv(startColor.begin());
+	glColor4ubv(startColor);
 	glRecti(x, y, x + w1, y + height);
 
 	x += w1;
@@ -146,20 +146,33 @@ void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Vector4f startColor, V
 	glVertex2i(x, y + height);
 	glVertex2i(x, y);
 
-	glColor4fv(endColor.begin());
+	glColor4ubv(endColor);
 	glVertex2i(x + width, y);
 	glVertex2i(x + width, y + height);
 
 	glEnd();
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::drawBox(Vector2i pos, Vector2i size, int dx, Color color)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::drawDRect(omega::Vector2f pos, omega::Vector2f size, int d)
 {
-	//strokeWeight(1);
-	//stroke(c, sa);
-	//line(x, y - dx, x + width, y - dx);
-	//line(x, y + height + dx, x + width, y + height + dx);
-	//line(x - dx, y, x - dx, y + height);
-	//line(x + width + dx, y, x + width + dx, y + height);
+	float x = pos[0];
+	float y = pos[1];
+
+	float w = size[0];
+	float h = size[1];
+
+	glBegin(GL_LINE_LOOP);
+
+	glVertex2f(x, y - d);
+	glVertex2f(x + w, y - d);
+	glVertex2f(x + w + d, y);
+	glVertex2f(x + w + d, y + h);
+	glVertex2f(x + w, y + h + d);
+	glVertex2f(x, y + h + d);
+	glVertex2f(x - d, y + h);
+	glVertex2f(x - d, y);
+	glVertex2f(x, y - d);
+
+	glEnd();
 }

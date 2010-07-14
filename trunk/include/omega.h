@@ -15,6 +15,7 @@
 
 #include "omega/Application.h"
 #include "omega/Config.h"
+#include "omega/Color.h"
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/GLUTDisplaySystem.h"
 #include "omega/InputManager.h"
