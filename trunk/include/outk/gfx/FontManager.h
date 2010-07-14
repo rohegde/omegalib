@@ -47,6 +47,8 @@ namespace gfx
 		OUTK_API FontManager();
 		OUTK_API ~FontManager();
 
+		OUTK_API void cleanup();
+
 		OUTK_API void createFont(omega::String fontName, omega::String filename, int size);
 		OUTK_API Font* getFont(omega::String fontName);
 
