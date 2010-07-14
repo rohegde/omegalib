@@ -97,6 +97,9 @@ GLUTDisplaySystem::~GLUTDisplaySystem()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GLUTDisplaySystem::initialize(SystemManager* sys)
 {
+	// Init glew
+	glewInit();
+
 	mySys = sys;
 
 	char* argv = "";

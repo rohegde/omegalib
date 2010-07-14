@@ -167,6 +167,9 @@ void SystemManager::initialize()
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
 	myInputManager->initialize();
 
+	// Initialize the application object (if present)
+	if(myApplication) myApplication->initialize();
+
 	myIsInitialized = true;
 }
 

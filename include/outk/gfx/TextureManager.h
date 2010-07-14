@@ -9,8 +9,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __FONT_MANAGER_H__
-#define __FONT_MANAGER_H__
+#ifndef __TEXTURE_MANAGER_H__
+#define __TEXTURE_MANAGER_H__
 
 #include "omega.h"
 
@@ -21,10 +21,34 @@ namespace outk
 namespace gfx
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	struct Texture
+	class Texture
 	{
-		GLuint id;
-		GLubyte* data;
+	public:
+		Texture(): 
+		  myInitialized(false), 
+		  myDirty(true),
+		  myData(NULL) {}
+
+		bool isDirty() { return myDirty; }
+		void setDirty() { myDirty = true; }
+
+		byte* getData() { return myData; }
+		void setData(byte* data, int width, int height) { myData = data; myWidth = width; myHeight = height; }
+
+		int getWidth() { return myWidth; }
+		int getHeight() { return myHeight; }
+
+		GLuint getGLTexture() { if(myDirty) refresh(); return myId; }
+
+		OUTK_API virtual void refresh();
+
+	private:
+		bool myInitialized;
+		bool myDirty;
+		GLuint myId;
+		GLubyte* myData;
+		int myWidth;
+		int myHeight;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

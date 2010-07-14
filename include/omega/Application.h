@@ -37,6 +37,13 @@ public:
 public:
 	virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
 
+	//! Called once for entire application initialization tasks.
+	virtual void initialize() {}
+
+	//! Called once for every initialized pipe (a graphic card, or any other resource
+	//! seen as one logical graphic card)
+	virtual void initializePipe() {}
+
 	virtual void draw(const DrawContext& context) {}
 	virtual bool handleEvent(const InputEvent& evt) { return false; }
 	virtual void update(const UpdateContext& context) {}

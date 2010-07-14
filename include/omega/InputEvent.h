@@ -34,20 +34,24 @@ struct InputEvent
 	// Supported event types.
 	enum Type 
 	{ 
-		// Move: Generated whenever the source of an event moves.
+		//! Move: Generated whenever the source of an event moves.
 		Move, 
-		// Down: generated when the source of an event goes to a logical 'down' state (i.e. touch on a surface or 
-		// a mouse button press count as Down events)
+		//! Down: generated when the source of an event goes to a logical 'down' state (i.e. touch on a surface or 
+		//! a mouse button press count as Down events)
 		Down, 
-		// Up: generated when the source of an event goes to a logical 'up' state (i.e. remove touch from a surface or 
-		// a mouse button release count as Up events)
+		//! Up: generated when the source of an event goes to a logical 'up' state (i.e. remove touch from a surface or 
+		//! a mouse button release count as Up events)
 		Up, 
-		// Trace: generated when a new object is identified by the device managed by the input service 
-		// (i.e head tracking, or a mocap system rigid body).
+		//! Trace: generated when a new object is identified by the device managed by the input service 
+		//! (i.e head tracking, or a mocap system rigid body).
 		Trace, 
-		// Trace: generated when a traced object is lost by the device managed by the input service 
-		// (i.e head tracking, or a mocap system rigid body).
-		Untrace
+		//! Trace: generated when a traced object is lost by the device managed by the input service 
+		//! (i.e head tracking, or a mocap system rigid body).
+		Untrace,
+
+		Zoom,
+
+		Rotate
 	};
 
 	// id of the source of this event. Input services associate unique ids to each of their event sources.

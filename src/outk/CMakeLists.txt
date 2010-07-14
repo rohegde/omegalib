@@ -35,6 +35,7 @@ SET( srcs
         ui/AbstractButton.cpp
         ui/Box.cpp
         ui/Button.cpp
+        ui/Image.cpp
         ui/Label.cpp
         ui/PalladiumSkin.cpp
         ui/UIManager.cpp
@@ -50,6 +51,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/AbstractButton.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Box.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Button.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/ui/Image.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Label.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/IUIEventHandler.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/PalladiumSkin.h
