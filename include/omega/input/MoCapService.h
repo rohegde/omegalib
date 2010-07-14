@@ -30,14 +30,13 @@ namespace omega
 	public:
 		OMEGA_API MoCapService();
 		OMEGA_API ~MoCapService();
+		OMEGA_API void setup( Setting& settings);
 		OMEGA_API static void __cdecl frameController(sFrameOfMocapData* data, void* pUserData);
 		OMEGA_API static void __cdecl messageController(int msgType, char* msg);
 		OMEGA_API virtual void initialize();
 		OMEGA_API virtual void start();//initialize and start service here
 		OMEGA_API virtual void stop();//destroy service instance to stop
 		OMEGA_API virtual void dispose();
-		OMEGA_API void setLocalIP (char* theAdress);
-		OMEGA_API void setServerIP (char* theAdress);
 		OMEGA_API void useQuaternion ();
 		OMEGA_API void useEuler ();
 		//may want to support the option to choose whether to have unicast or multicast networking
@@ -46,7 +45,8 @@ namespace omega
 		static double PI;
 		static MoCapService* myMoCap;
 		NatNetClient* pClient;
-		char localIP[128];			//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
+		int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
+		char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
 		char serverIP[128];		//Server's IP address assumed to be local if left blank
 		static bool isEuler;			//tells whether Euler or Quaternion angles are used. TRUE = Euler  FALSE = Quaternion
 	};//class MoCapService
