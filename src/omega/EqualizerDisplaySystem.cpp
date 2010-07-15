@@ -47,7 +47,7 @@ public:
     };
 
 public:
-	EqualizerView(): eq::View() 
+	EqualizerView(): eq::View()
 	{
 		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
 	}
