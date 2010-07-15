@@ -49,12 +49,11 @@
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a193ea71cd217abff73cd99fb5b62026b">MoCapService</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a158c319f385c5b3aa92fb88cbb1d5d06">~MoCapService</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a9e834f3394aa67e3cf9692c8c98925b0">setup</a> (<a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;settings)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a91a5a19a018dfe3aa0662381b2336f61">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#aeec28c08b7185cf454b6e076fa018d09">start</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a7d501cc55333bf11b887b05b906b533a">stop</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#acd55a78af62898c3462cd2628fb0c12b">dispose</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a39344400a47238071d353108cc998efb">setLocalIP</a> (char *theAdress)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#ae65d16a587888458a446da805aec1c71">setServerIP</a> (char *theAdress)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#a9524a963c55239624d75269e1af5f1e0">useQuaternion</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_mo_cap_service.html#abba54d630a08bc4d7fa351f149e09058">useEuler</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
@@ -208,39 +207,23 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a39344400a47238071d353108cc998efb"></a><!-- doxytag: member="omega::MoCapService::setLocalIP" ref="a39344400a47238071d353108cc998efb" args="(char *theAdress)" -->
+<a class="anchor" id="a9e834f3394aa67e3cf9692c8c98925b0"></a><!-- doxytag: member="omega::MoCapService::setup" ref="a9e834f3394aa67e3cf9692c8c98925b0" args="(Setting &amp;settings)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API void omega::MoCapService::setLocalIP </td>
+          <td class="memname">OMEGA_API void omega::MoCapService::setup </td>
           <td>(</td>
-          <td class="paramtype">char *&nbsp;</td>
-          <td class="paramname"> <em>theAdress</em></td>
+          <td class="paramtype"><a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>settings</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td></td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-</div>
-</div>
-<a class="anchor" id="ae65d16a587888458a446da805aec1c71"></a><!-- doxytag: member="omega::MoCapService::setServerIP" ref="ae65d16a587888458a446da805aec1c71" args="(char *theAdress)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">OMEGA_API void omega::MoCapService::setServerIP </td>
-          <td>(</td>
-          <td class="paramtype">char *&nbsp;</td>
-          <td class="paramname"> <em>theAdress</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<p>Reimplemented from <a class="el" href="classomega_1_1_input_service.html#aac60942319f0d8bb13a2c7041243c9b6">omega::InputService</a>.</p>
 
 </div>
 </div>
@@ -320,7 +303,7 @@ Static Public Member Functions</h2></td></tr>
 <li>D:/Workspace/omegalib/include/omega/input/<a class="el" href="_mo_cap_service_8h_source.html">MoCapService.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jul 13 2010 23:57:50 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

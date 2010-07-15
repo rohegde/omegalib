@@ -63,62 +63,76 @@
 <a name="l00034"></a>00034         <span class="comment">// Supported event types.</span>
 <a name="l00035"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cd">00035</a>         <span class="keyword">enum</span> <a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cd">Type</a> 
 <a name="l00036"></a>00036         { 
-<a name="l00037"></a>00037                 <span class="comment">// Move: Generated whenever the source of an event moves.</span>
 <a name="l00038"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdaa6faed0d50d1092dacc14b49cf05c190">00038</a>                 Move, 
-<a name="l00039"></a>00039                 <span class="comment">// Down: generated when the source of an event goes to a logical &#39;down&#39; state (i.e. touch on a surface or </span>
-<a name="l00040"></a>00040                 <span class="comment">// a mouse button press count as Down events)</span>
 <a name="l00041"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdaf57fd1206536c40e968704b4e687c975">00041</a>                 Down, 
-<a name="l00042"></a>00042                 <span class="comment">// Up: generated when the source of an event goes to a logical &#39;up&#39; state (i.e. remove touch from a surface or </span>
-<a name="l00043"></a>00043                 <span class="comment">// a mouse button release count as Up events)</span>
 <a name="l00044"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda976bc64d6e98123b6170d54c9610873d">00044</a>                 Up, 
-<a name="l00045"></a>00045                 <span class="comment">// Trace: generated when a new object is identified by the device managed by the input service </span>
-<a name="l00046"></a>00046                 <span class="comment">// (i.e head tracking, or a mocap system rigid body).</span>
 <a name="l00047"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdade1c96e8687025c17e56700222602fa9">00047</a>                 Trace, 
-<a name="l00048"></a>00048                 <span class="comment">// Trace: generated when a traced object is lost by the device managed by the input service </span>
-<a name="l00049"></a>00049                 <span class="comment">// (i.e head tracking, or a mocap system rigid body).</span>
-<a name="l00050"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdaa4c9f5f1c92fa0793645c9c8f0a9048e">00050</a>                 <a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdaa4c9f5f1c92fa0793645c9c8f0a9048e">Untrace</a>
-<a name="l00051"></a>00051         };
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053         <span class="comment">// id of the source of this event. Input services associate unique ids to each of their event sources.</span>
-<a name="l00054"></a><a class="code" href="structomega_1_1_input_event.html#a86e551c5bf910f4bb919f676ce19a647">00054</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#a86e551c5bf910f4bb919f676ce19a647">sourceId</a>;
-<a name="l00055"></a>00055         
-<a name="l00056"></a>00056         <span class="comment">// Type of the service that generated this event.</span>
-<a name="l00057"></a><a class="code" href="structomega_1_1_input_event.html#a68251feff01481595ddd30c6ea7fe324">00057</a>         <span class="keyword">enum</span> <a class="code" href="classomega_1_1_input_service.html#aced20a9bc730a624880541313f5a479c">InputService::ServiceType</a> <a class="code" href="structomega_1_1_input_event.html#a68251feff01481595ddd30c6ea7fe324">serviceType</a>;
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059         <span class="comment">// Unique id of the service that generated this event.</span>
-<a name="l00060"></a><a class="code" href="structomega_1_1_input_event.html#a7e22b8b67dd3e2502db4ba3960025a60">00060</a>         <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#a7e22b8b67dd3e2502db4ba3960025a60">serviceId</a>;
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         <span class="comment">// The event type.</span>
-<a name="l00063"></a><a class="code" href="structomega_1_1_input_event.html#ac17738e07246bb28d9db8eeb22aa7c8d">00063</a>     <span class="keyword">enum</span> <a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cd">Type</a> <a class="code" href="structomega_1_1_input_event.html#ac17738e07246bb28d9db8eeb22aa7c8d">type</a>;
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065         <span class="comment">// Event flags.</span>
-<a name="l00066"></a><a class="code" href="structomega_1_1_input_event.html#ae34cc65c1e57a562ff6fea4f8c25553c">00066</a>         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#ae34cc65c1e57a562ff6fea4f8c25553c">flags</a>;
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068         <span class="comment">// Event timestamp.</span>
-<a name="l00069"></a><a class="code" href="structomega_1_1_input_event.html#afb210f4cadef4c1f23d0d21fbd610135">00069</a>         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#afb210f4cadef4c1f23d0d21fbd610135">timestamp</a>;
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071         <span class="comment">// Position.</span>
-<a name="l00072"></a><a class="code" href="structomega_1_1_input_event.html#a08cc72854f527130ac6da4f1c34ac2f5">00072</a>     <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a08cc72854f527130ac6da4f1c34ac2f5">x</a>;
-<a name="l00073"></a><a class="code" href="structomega_1_1_input_event.html#aeeaae5da03eb36686976eafb56f41dda">00073</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#aeeaae5da03eb36686976eafb56f41dda">y</a>;
-<a name="l00074"></a><a class="code" href="structomega_1_1_input_event.html#a60eee8497c30bd2f46ee2054155ac9e0">00074</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a60eee8497c30bd2f46ee2054155ac9e0">z</a>;
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076         <span class="comment">// Rotation.</span>
-<a name="l00077"></a><a class="code" href="structomega_1_1_input_event.html#a04d20120edd06c0974a85094cea6c68c">00077</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a04d20120edd06c0974a85094cea6c68c">rw</a>;
-<a name="l00078"></a><a class="code" href="structomega_1_1_input_event.html#aecbab242b62fee4e67facb4241d81425">00078</a>     <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#aecbab242b62fee4e67facb4241d81425">rx</a>;
-<a name="l00079"></a><a class="code" href="structomega_1_1_input_event.html#abc2650d097b77e0db8cab08eccbedfa7">00079</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#abc2650d097b77e0db8cab08eccbedfa7">ry</a>;
-<a name="l00080"></a><a class="code" href="structomega_1_1_input_event.html#ae4bee1e62109d04f5d79dfb48f13bff2">00080</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#ae4bee1e62109d04f5d79dfb48f13bff2">rz</a>;
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082         <span class="comment">//Point set</span>
-<a name="l00083"></a><a class="code" href="structomega_1_1_input_event.html#af119905c5eac69d85d0abb444c317248">00083</a>         <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#af119905c5eac69d85d0abb444c317248">numberOfPoints</a>;
-<a name="l00084"></a><a class="code" href="structomega_1_1_input_event.html#a62c2dc5f8647c8be62de6b357a1fd1da">00084</a>         <a class="code" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb" title="A four-component float vector.">Vector3f</a> <a class="code" href="structomega_1_1_input_event.html#a62c2dc5f8647c8be62de6b357a1fd1da">pointSet</a>[32];
-<a name="l00085"></a>00085 };
-<a name="l00086"></a>00086 
-<a name="l00087"></a>00087 }; <span class="comment">// namespace omega</span>
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089 <span class="preprocessor">#endif</span>
+<a name="l00050"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdaa4c9f5f1c92fa0793645c9c8f0a9048e">00050</a>                 Untrace,
+<a name="l00051"></a>00051 
+<a name="l00054"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda24e66eef8d31e03ab5f47727e70614fc">00054</a>                 Click,
+<a name="l00057"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda20d7797a3ccf9137ae8ef1fccfa1bd2d">00057</a>                 DB_Click,
+<a name="l00060"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda780e7e49f0d6f78406221f08f0a23765">00060</a>                 Move_Left,
+<a name="l00063"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda8f1e4454e6d6c43f3e9a905f989c1d6c">00063</a>                 Move_Right,
+<a name="l00066"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdad2b114d38b725632bfd9e1057200ec61">00066</a>                 Move_Up,
+<a name="l00069"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda16c75071c2732f6b2215d755d4fb27fd">00069</a>                 Move_Down,
+<a name="l00072"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda8efb1bcda98a23fb48af6cc44239d9d9">00072</a>                 Split_Start,
+<a name="l00075"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdab121ca0ca9eab35d16dda75b0814c5b2">00075</a>                 Split_End,
+<a name="l00078"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdab1fd838c2e77c7c0c3ca620dc41050c7">00078</a>                 Split_Apart,
+<a name="l00081"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdaef953b0bbcbafc2f07006bd040622cb9">00081</a>                 Split_Close,
+<a name="l00084"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdab2b04679200f5bcc6d88e1aa6608f2e5">00084</a>                 Rotate_Start,
+<a name="l00087"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda0f2cd487eee1dcfed8db2be4a4f1711e">00087</a>                 Rotate_End,
+<a name="l00091"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cda4e523686150b8b61d98ae9c698a87204">00091</a>                 Rotate_Counterclock,
+<a name="l00095"></a><a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdab4a1b77b3425d0f13bce8674a2fd2b1f">00095</a>                 <a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cdab4a1b77b3425d0f13bce8674a2fd2b1f" title="Rotate_Clock: generated when an event source is stationary while a second source is rotating around t...">Rotate_Clock</a>
+<a name="l00096"></a>00096         };
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098         <span class="comment">// id of the source of this event. Input services associate unique ids to each of their event sources.</span>
+<a name="l00099"></a><a class="code" href="structomega_1_1_input_event.html#a86e551c5bf910f4bb919f676ce19a647">00099</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#a86e551c5bf910f4bb919f676ce19a647">sourceId</a>;
+<a name="l00100"></a>00100         
+<a name="l00101"></a>00101         <span class="comment">// Type of the service that generated this event.</span>
+<a name="l00102"></a><a class="code" href="structomega_1_1_input_event.html#a68251feff01481595ddd30c6ea7fe324">00102</a>         <span class="keyword">enum</span> <a class="code" href="classomega_1_1_input_service.html#aced20a9bc730a624880541313f5a479c">InputService::ServiceType</a> <a class="code" href="structomega_1_1_input_event.html#a68251feff01481595ddd30c6ea7fe324">serviceType</a>;
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104         <span class="comment">// Unique id of the service that generated this event.</span>
+<a name="l00105"></a><a class="code" href="structomega_1_1_input_event.html#a7e22b8b67dd3e2502db4ba3960025a60">00105</a>         <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#a7e22b8b67dd3e2502db4ba3960025a60">serviceId</a>;
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107         <span class="comment">// The event type.</span>
+<a name="l00108"></a><a class="code" href="structomega_1_1_input_event.html#ac17738e07246bb28d9db8eeb22aa7c8d">00108</a>     <span class="keyword">enum</span> <a class="code" href="structomega_1_1_input_event.html#a368f5ececb3830f40989eb986ea248cd">Type</a> <a class="code" href="structomega_1_1_input_event.html#ac17738e07246bb28d9db8eeb22aa7c8d">type</a>;
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110         <span class="comment">// Event flags.</span>
+<a name="l00111"></a><a class="code" href="structomega_1_1_input_event.html#ae34cc65c1e57a562ff6fea4f8c25553c">00111</a>         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#ae34cc65c1e57a562ff6fea4f8c25553c">flags</a>;
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113         <span class="comment">// Event timestamp.</span>
+<a name="l00114"></a><a class="code" href="structomega_1_1_input_event.html#afb210f4cadef4c1f23d0d21fbd610135">00114</a>         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#afb210f4cadef4c1f23d0d21fbd610135">timestamp</a>;
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116         <span class="comment">// Position.</span>
+<a name="l00117"></a><a class="code" href="structomega_1_1_input_event.html#a08cc72854f527130ac6da4f1c34ac2f5">00117</a>     <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a08cc72854f527130ac6da4f1c34ac2f5">x</a>;
+<a name="l00118"></a><a class="code" href="structomega_1_1_input_event.html#aeeaae5da03eb36686976eafb56f41dda">00118</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#aeeaae5da03eb36686976eafb56f41dda">y</a>;
+<a name="l00119"></a><a class="code" href="structomega_1_1_input_event.html#a60eee8497c30bd2f46ee2054155ac9e0">00119</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a60eee8497c30bd2f46ee2054155ac9e0">z</a>;
+<a name="l00120"></a>00120         
+<a name="l00121"></a>00121         <span class="comment">// Second finger position.</span>
+<a name="l00122"></a><a class="code" href="structomega_1_1_input_event.html#a68be82a886fe31b2e232f3d52c258bc8">00122</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a68be82a886fe31b2e232f3d52c258bc8">x2</a>;
+<a name="l00123"></a><a class="code" href="structomega_1_1_input_event.html#a9183e7fda0bc2775e003939521bc738f">00123</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a9183e7fda0bc2775e003939521bc738f">y2</a>;
+<a name="l00124"></a>00124         
+<a name="l00125"></a>00125         <span class="comment">// 2D Split/Zoom gestures.</span>
+<a name="l00126"></a><a class="code" href="structomega_1_1_input_event.html#ae8c185911560098827119da682d9fc60">00126</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#ae8c185911560098827119da682d9fc60">deltaDist</a>; <span class="comment">// Delta distance in pixels.</span>
+<a name="l00127"></a><a class="code" href="structomega_1_1_input_event.html#a6a22dcab45d1047487113d1f06612806">00127</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a6a22dcab45d1047487113d1f06612806">deltaRatio</a>; <span class="comment">// Delta ratio to the last last distance of the two fingers.</span>
+<a name="l00128"></a>00128 
+<a name="l00129"></a>00129         <span class="comment">// Rotation.</span>
+<a name="l00130"></a><a class="code" href="structomega_1_1_input_event.html#a04d20120edd06c0974a85094cea6c68c">00130</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#a04d20120edd06c0974a85094cea6c68c">rw</a>;
+<a name="l00131"></a><a class="code" href="structomega_1_1_input_event.html#aecbab242b62fee4e67facb4241d81425">00131</a>     <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#aecbab242b62fee4e67facb4241d81425">rx</a>;
+<a name="l00132"></a><a class="code" href="structomega_1_1_input_event.html#abc2650d097b77e0db8cab08eccbedfa7">00132</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#abc2650d097b77e0db8cab08eccbedfa7">ry</a>;
+<a name="l00133"></a><a class="code" href="structomega_1_1_input_event.html#ae4bee1e62109d04f5d79dfb48f13bff2">00133</a>         <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_input_event.html#ae4bee1e62109d04f5d79dfb48f13bff2">rz</a>;
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135         <span class="comment">//Point set</span>
+<a name="l00136"></a><a class="code" href="structomega_1_1_input_event.html#af119905c5eac69d85d0abb444c317248">00136</a>         <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_input_event.html#af119905c5eac69d85d0abb444c317248">numberOfPoints</a>;
+<a name="l00137"></a><a class="code" href="structomega_1_1_input_event.html#a62c2dc5f8647c8be62de6b357a1fd1da">00137</a>         <a class="code" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb" title="A four-component float vector.">Vector3f</a> <a class="code" href="structomega_1_1_input_event.html#a62c2dc5f8647c8be62de6b357a1fd1da">pointSet</a>[32];
+<a name="l00138"></a>00138 };
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140 }; <span class="comment">// namespace omega</span>
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jul 13 2010 23:57:50 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
