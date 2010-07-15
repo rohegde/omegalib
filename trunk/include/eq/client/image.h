@@ -1,5 +1,6 @@
 
 /* Copyright (c) 2006-2009, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -20,13 +21,13 @@
 
 #include <eq/client/frame.h>         // for Frame::Buffer enum
 #include <eq/client/pixelViewport.h> // member
-#include <eq/client/texture.h>       // member
 #include <eq/client/viewport.h>      // member
 #include <eq/client/windowSystem.h>  // for OpenGL types
+#include <eq/util/texture.h>         // member
+#include <eq/base/compressor.h>
 
 namespace eq
 {
-    class Compressor;
 
     /**
      * A holder for pixel data.
@@ -206,15 +207,19 @@ namespace eq
         /** Disable compression and transport of alpha data. */
         EQ_EXPORT void disableAlphaUsage();
 
+        /** Set the compressor quality. */
+        EQ_EXPORT void setQuality( const Frame::Buffer buffer,
+                                   const float quality );
+
         /** @return true if alpha data can be ignored. */
         bool ignoreAlpha() const { return _ignoreAlpha; }
         //@}
 
-
         /** @name Texture access */
         //@{
         /** Get the texture of this image. */
-        EQ_EXPORT const Texture& getTexture( const Frame::Buffer buffer ) const;
+        EQ_EXPORT const util::Texture& getTexture( const Frame::Buffer buffer )
+            const;
 
         /**
          * @return true if the image has texture data for the buffer, false if
@@ -345,7 +350,11 @@ namespace eq
         /** The individual parameters for a buffer. */
         class Attachment
         {
-        public:  
+        public:
+            Attachment() : compressor( &fullCompressor )
+                         , quality( 1.f )
+                         {}
+  
             struct CompressorData
             {
                 CompressorData();
@@ -353,17 +362,21 @@ namespace eq
 
                 uint32_t name;      //!< the name of the (de)compressor
                 void* instance;     //!< the instance of the (de)compressor
-                Compressor* plugin; //!< Plugin handling the allocation
+                base::Compressor* plugin; //!< Plugin handling the allocation
                 bool isCompressor;  //!< compressor (true), decompressor (false)
-            }
-                compressor;
+            } *compressor;
+
+            float quality;
+
+            CompressorData fullCompressor;
+            CompressorData lossyCompressor;
 
             /** The texture name for this image component (texture images). */
-            Texture texture;
+            util::Texture texture;
 
             /** Current pixel data (memory images). */
             Memory memory;
-        }; 
+        };
         
         Attachment _color;
         Attachment _depth;

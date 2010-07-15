@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,8 +18,12 @@
 #ifndef EQNET_SESSION_H
 #define EQNET_SESSION_H
 
-#include <eq/net/dispatcher.h>  // base class
-#include <eq/net/object.h>      // Object::VERSION_NONE enum
+#include <eq/net/dispatcher.h>    // base class
+#include <eq/net/instanceCache.h> // member
+#include <eq/net/node.h>          // used in inline method
+#include <eq/net/objectVersion.h> // member
+#include <eq/net/packets.h>       // used in inline method
+#include <eq/net/version.h>       // enum
 
 #include <eq/base/base.h>
 #include <eq/base/idPool.h>
@@ -227,11 +231,11 @@ namespace net
          * @sa registerObject
          */
         EQ_EXPORT bool mapObject( Object* object, const uint32_t id, 
-                        const uint32_t version = Object::VERSION_OLDEST );
+                                  const uint32_t version = VERSION_OLDEST );
 
         /** Start mapping a distributed object. */
         EQ_EXPORT uint32_t mapObjectNB( Object* object, const uint32_t id, 
-                              const uint32_t version = Object::VERSION_OLDEST );
+                                      const uint32_t version = VERSION_OLDEST );
         /** Finalize the mapping of a distributed object. */
         EQ_EXPORT bool mapObjectSync( const uint32_t requestID );
 
@@ -354,6 +358,10 @@ namespace net
         base::RequestHandler _requestHandler;
         //@}
 
+        /** @internal */
+        void expireInstanceData( const int64_t age )
+            { _instanceCache.expire( age ); }
+
     private:
         /** Set the local node to which this session is mapped */
         void _setLocalNode( NodePtr node );
@@ -375,7 +383,7 @@ namespace net
         base::IDPool _idPool;
 
         /** The identifiers for node-local instance identifiers. */
-        uint32_t _instanceIDs;
+        base::a_int32_t _instanceIDs;
 
         typedef stde::hash_map< uint32_t, NodeID > NodeIDHash;
         /** The id->master mapping table. */
@@ -383,8 +391,9 @@ namespace net
         base::Lock _idMasterMutex;
         
         /** All registered and mapped objects. */
-        ObjectVectorHash _objects;
-        base::Lock       _objectsMutex;
+        base::Lockable< ObjectVectorHash > _objects;
+
+        InstanceCache _instanceCache; //!< cached object mapping data
 
         const NodeID& _pollIDMaster( const uint32_t id ) const;
         NodePtr _pollIDMasterNode( const uint32_t id ) const;
@@ -417,10 +426,12 @@ namespace net
         CommandResult _cmdAttachObject( Command& command );
         CommandResult _cmdDetachObject( Command& command );
         CommandResult _cmdMapObject( Command& command );
+        CommandResult _cmdUnmapObject( Command& command );
         CommandResult _cmdSubscribeObject( Command& command );
         CommandResult _cmdSubscribeObjectSuccess( Command& command );
         CommandResult _cmdSubscribeObjectReply( Command& command );
         CommandResult _cmdUnsubscribeObject( Command& command );
+        CommandResult _cmdInstance( Command& command );
 
         CHECK_THREAD_DECLARE( _receiverThread );
         CHECK_THREAD_DECLARE( _commandThread );

@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2007, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -53,7 +53,6 @@ namespace net
         /** @return the working directory of the program. */
         static const std::string& getWorkDir() { return _workDir; }
 
-
         /** 
          * Sets the default listening port.
          * 
@@ -65,10 +64,58 @@ namespace net
         /** @return the default listening port. */
         static uint16_t getDefaultPort() { return _defaultPort; }
 
+        /** 
+         * Set the minimum buffer size for Object serialization.
+         *
+         * The buffer size is used during serialization. When a DataOStream has
+         * buffered at least size bytes, the data is send to the slave
+         * nodes. The default is 60.000 bytes.
+         *
+         * @param size the treshold before the DataOStream sends a buffer.
+         */
+        static void setObjectBufferSize( const uint32_t size )
+            { _objectBufferSize = size; }
+
+        /** @return the minimum buffer size for Object serialization. */
+        static uint32_t getObjectBufferSize() { return  _objectBufferSize; }
+
+        /** @name Attributes */
+        //@{
+        // Note: also update string array initialization in global.cpp
+        /** Global integer attributes. */
+        enum IAttribute
+        {
+            IATTR_INSTANCE_CACHE_SIZE,   //!< @internal max size in MB 
+            IATTR_RSP_ACK_TIMEOUT,       //!< @internal time out for ack req
+            IATTR_RSP_MAX_TIMEOUTS,      //!< @internal timeouts before close
+            IATTR_RSP_NACK_DELAY,        //!< @internal sleep before nack merge
+            IATTR_RSP_ERROR_BASE_RATE,   //!< @internal normal error percentage
+            IATTR_RSP_ERROR_DOWNSCALE,   //!< @internal send rate down scale (/)
+            IATTR_RSP_ERROR_UPSCALE,     //!< @internal send rate up scale (*)
+            IATTR_RSP_ERROR_MAX,         //!< @internal max delta for send rate
+            IATTR_RSP_NUM_BUFFERS,       //!< @internal data buffers
+            IATTR_UDP_MTU,               //!< @internal max send size on UDP
+            IATTR_UDP_PACKET_RATE,       //!< @internal ack frequency
+            IATTR_ALL
+        };
+
+        /** Set an integer attribute. */
+        static void setIAttribute( const IAttribute attr, const int32_t value )
+            { _iAttributes[ attr ] = value; }
+
+        /** @return the value of an integer attribute. */
+        static int32_t getIAttribute( const IAttribute attr )
+            { return _iAttributes[ attr ]; }
+        //@}
+
     private:
         static std::string _programName;
         static std::string _workDir;
+        static uint32_t    _objectBufferSize;
         static uint16_t    _defaultPort;
+
+        /** Integer attributes. */
+        static int32_t _iAttributes[IATTR_ALL];
     };
 }
 }

@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder <cedric Stalder@gmail.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -69,6 +70,7 @@ namespace eq
     struct ServerChooseConfigPacket : public ServerPacket
     {
         ServerChooseConfigPacket()
+                : fill ( 0 )
             {
                 command = CMD_SERVER_CHOOSE_CONFIG;
                 size    = sizeof( ServerChooseConfigPacket );
@@ -76,6 +78,7 @@ namespace eq
             }
 
         uint32_t requestID;
+        uint32_t fill;
         EQ_ALIGN8( char rendererInfo[8] );
     };
 
@@ -95,18 +98,20 @@ namespace eq
     struct ServerCreateConfigPacket : public ServerPacket
     {
         ServerCreateConfigPacket()
+                : requestID( EQ_ID_INVALID )
+                , objectID( EQ_ID_INVALID ) 
+                , fill( 0 )
             {
                 command   = CMD_SERVER_CREATE_CONFIG;
                 size      = sizeof( ServerCreateConfigPacket );
-                requestID = EQ_ID_INVALID;
-                objectID  = EQ_ID_INVALID;                
                 name[0]   = '\0';
             }
 
+        net::NodeID appNodeID;
         uint32_t    configID;
         uint32_t    requestID;
         uint32_t    objectID;
-        net::NodeID appNodeID;
+        uint32_t    fill;
         EQ_ALIGN8( char name[8] );
     };
 
@@ -218,6 +223,17 @@ namespace eq
             }
 
         uint32_t nodeID;
+    };
+
+    struct ConfigChangeLatency : public ConfigPacket
+    {
+        ConfigChangeLatency()
+            {
+                command = CMD_CONFIG_CHANGE_LATENCY;
+                size    = sizeof( ConfigChangeLatency );
+            }
+
+        uint32_t latency;
     };
 
     struct ConfigDestroyNodePacket : public ConfigPacket
@@ -540,6 +556,7 @@ namespace eq
         uint32_t      device;
         uint32_t      frameNumber;
         int32_t       tasks;
+        bool          cudaGLInterop;
         PixelViewport pvp;
         EQ_ALIGN8( char name[8] );
     };
@@ -652,9 +669,9 @@ namespace eq
                 error[0]  = '\0';
             }
 
-        PixelViewport           pvp;
-        Window::DrawableConfig  drawableConfig;
-        bool                    result;
+        PixelViewport   pvp;
+        DrawableConfig  drawableConfig;
+        bool            result;
         EQ_ALIGN8( char error[8] );
     };
 
@@ -1120,7 +1137,8 @@ namespace eq
     {
         os << (net::ObjectPacket*)packet << " init id " << packet->initID
            << " port " << packet->port << " device " << packet->device
-           << " tasks " << packet->tasks << " frame " << packet->frameNumber;
+           << " tasks " << packet->tasks << " frame " << packet->frameNumber
+		   << " cuda GL interop " << packet->cudaGLInterop;
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 

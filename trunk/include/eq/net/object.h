@@ -21,6 +21,7 @@
 #include <eq/net/dispatcher.h>    // base class
 #include <eq/net/node.h>          // used in RefPtr
 #include <eq/net/types.h>         // for NodeVector
+#include <eq/net/version.h>       // used as default parameter
 
 namespace eq
 {
@@ -52,16 +53,7 @@ namespace net
             AUTO_OBSOLETE_COUNT_COMMITS  = 1
         };
 
-        /** Special version enums */
-        enum Version
-        {
-            VERSION_NONE    = 0,
-            VERSION_INVALID = 0xfffffffeu,
-            VERSION_OLDEST  = VERSION_INVALID,
-            VERSION_HEAD    = 0xffffffffu
-        };
-
-        /** Object change handling characteristics */
+        /** Object change handling characteristics, see Programming Guide */
         enum ChangeType
         {
             STATIC,            //!< non-versioned, static object.
@@ -96,7 +88,7 @@ namespace net
          */
         EQ_EXPORT virtual void makeThreadSafe();  
         
-        /** @return true if the object has been made threadsafe, false if not. */
+        /** @return true if the object has been made threadsafe, false if not.*/
         bool isThreadSafe() const      { return _threadSafe; }
 
         /**
@@ -331,16 +323,6 @@ namespace net
         EQ_EXPORT uint32_t getMasterInstanceID() const;
 
         /** 
-         * Add a slave subscriber.
-         * 
-         * @param node the slave node.
-         * @param instanceID the object instance identifier on the slave node.
-         * @param version the initial version.
-         */
-        EQ_EXPORT void addSlave( NodePtr node, const uint32_t instanceID, 
-                                 const uint32_t version );
-
-        /** 
          * Remove a subscribed slave.
          * 
          * @param node the slave node. 
@@ -367,9 +349,8 @@ namespace net
         friend class Session;
 
         friend class DeltaMasterCM;
-        friend class DeltaSlaveCM;
         friend class FullMasterCM;
-        friend class FullSlaveCM;
+        friend class VersionedSlaveCM;
         friend class StaticMasterCM;
         friend class StaticSlaveCM;
         friend class UnbufferedMasterCM;
@@ -387,6 +368,7 @@ namespace net
         bool _threadSafe;
 
         void _setChangeManager( ObjectCM* cm );
+        const NodeVector* _getSlaveNodes() const;
 
         /* The command handlers. */
         CommandResult _cmdForward( Command& command );

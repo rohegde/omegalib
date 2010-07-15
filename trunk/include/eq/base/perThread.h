@@ -35,37 +35,65 @@ namespace base
      * Implements thread-specific storage for C++ objects.
      * 
      * The object has to implement notifyPerThreadDelete().
+     *
+     * To instantiate the template code for this class, applications have to
+     * include pthread.h before this file. pthread.h is not automatically
+     * included to avoid hard to resolve type conflicts with other header files
+     * on Windows.
      */
     template<typename T> class PerThread : public ExecutionListener, 
                                            public NonCopyable
     {
     public:
-        /** Construct a new per-thread variable. */
+        /** Construct a new per-thread variable. @version 1.0 */
         PerThread();
-        /** Destruct the per-thread variable. */
+        /** Destruct the per-thread variable. @version 1.0 */
         ~PerThread();
 
-        /** Assign an object to the thread-local storage. */        
+        /** Assign an object to the thread-local storage. @version 1.0 */ 
         PerThread<T>& operator = ( const T* data );
-        /** Assign an object from another thread-local storage. */
+        /** Assign an object from another thread-local storage. @version 1.0 */
         PerThread<T>& operator = ( const PerThread<T>& rhs );
 
-        /** @return the held object pointer. */
+        /** @return the held object pointer. @version 1.0 */
         T* get();
-        /** @return the held object pointer. */
+        /** @return the held object pointer. @version 1.0 */
         const T* get() const;
-        /** Access the thread-local object. */
+        /** Access the thread-local object. @version 1.0 */
         T* operator->();
-        /** Access the thread-local object. */
+        /** Access the thread-local object. @version 1.0 */
         const T* operator->() const;
 
-        /** @return true if the thread-local variables hold the same object. */
+        /**
+         * @return true if the thread-local variables hold the same object.
+         * @version 1.0
+         */
         bool operator == ( const PerThread& rhs ) const 
             { return ( get() == rhs.get( )); }
-        /** @return true if the thread-local variable holds the same object. */
+
+        /**
+         * @return true if the thread-local variable holds the same object.
+         * @version 1.0
+         */
         bool operator == ( const T* rhs ) const { return ( get()==rhs ); }
-        /** @return true if the thread-local variable holds another object. */
+
+        /**
+         * @return true if the thread-local variable holds another object.
+         * @version 1.0
+         */
         bool operator != ( const T* rhs ) const { return ( get()!=rhs ); }
+
+        /**
+         * @return true if the thread-local storage holds a 0 pointer.
+         * @version 1.0
+         */
+        bool operator ! () const;
+
+        /**
+         * @return true if the thread-local storage holds a non-0 pointer.
+         * @version 1.0
+         */
+        bool isValid() const;
 
     protected:
         virtual void notifyExecutionStopping();
@@ -86,10 +114,6 @@ namespace base
 #    define HAVE_PTHREAD_H
 #  endif
 #endif
-
-// The application has to include pthread.h if it wants to instantiate new
-// types, since on Windows the use of pthreads-Win32 library includes might
-// create hard to resolve type conflicts with other header files.
 
 #ifdef HAVE_PTHREAD_H
 
@@ -181,6 +205,19 @@ const T* PerThread<T>::operator->() const
 { 
     return static_cast< const T* >( pthread_getspecific( _data->key )); 
 }
+
+template< typename T >
+bool PerThread<T>::operator ! () const
+{
+    return pthread_getspecific( _data->key ) == 0;
+}
+
+template< typename T >
+bool PerThread<T>::isValid() const
+{
+    return pthread_getspecific( _data->key ) != 0;
+}
+
 
 }
 }

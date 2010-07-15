@@ -26,6 +26,9 @@
 #include <eq/base/defines.h>
 
 #ifdef WIN32
+#  ifndef WIN32_VC
+#    define USE_SYS_TYPES_FD_SET
+#  endif
 #  define _USE_MATH_DEFINES
 #  define _WIN32_WINNT 0x500
 #  define WIN32_LEAN_AND_MEAN
@@ -33,6 +36,9 @@
 #  include <Winsock2.h>
 #  include <Windows.h>
 #  include <windef.h>
+#endif
+
+#ifdef WIN32_VC
 #  define EQ_DLLEXPORT __declspec(dllexport) 
 #  define EQ_DLLIMPORT __declspec(dllimport)
 #  ifdef EQUALIZER_EXPORTS
@@ -79,7 +85,7 @@
 #include <eq/base/types.h>
 
 // defines
-/** A 'NULL' value for an uint32, typically used for identifiers an versions. */
+/** A 'NULL' value for an uint32, typically used for identifiers and versions.*/
 #define EQ_UNDEFINED_UINT32   (0xffffffffu)
 //#define EQ_UNDEFINED_FLOAT    (std::numeric_limits<float>::quiet_NaN( ))
 //#define EQ_UNDEFINED_INT32    (0x7fffffffu)
@@ -99,6 +105,31 @@
 #  define EQ_ALIGN16( var ) var __attribute__ ((aligned (16)));
 #endif
 
+#define VMMLIB_CUSTOM_CONFIG
+#ifndef NDEBUG
+#  define VMMLIB_SAFE_ACCESSORS
+#endif
+#define VMMLIB_ALIGN( var ) var
 
+#ifdef __GNUC__
+#  if (( __GNUC__ > 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 0)) )
+#    define EQ_GCC_4_0_OR_LATER
+#  endif
+#  if (( __GNUC__ > 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 1)) )
+#    define EQ_GCC_4_1_OR_LATER
+#  endif
+#  if (( __GNUC__ > 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 2)) )
+#    define EQ_GCC_4_2_OR_LATER
+#  endif
+#  if (( __GNUC__ > 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 3)) )
+#    define EQ_GCC_4_3_OR_LATER
+#  endif
+#  if (( __GNUC__ > 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4)) )
+#    define EQ_GCC_4_4_OR_LATER
+#  endif
+#  if (( __GNUC__ > 4 ) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 5)) )
+#    define EQ_GCC_4_5_OR_LATER
+#  endif
+#endif // GCC
 
 #endif //EQBASE_BASE_H

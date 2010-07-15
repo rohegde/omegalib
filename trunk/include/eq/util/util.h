@@ -18,7 +18,21 @@
 #ifndef EQUTIL_H
 #define EQUTIL_H
 
+#include <eq/util/accum.h>
+#include <eq/util/accumBufferObject.h>
 #include <eq/util/bitmapFont.h>
+#include <eq/util/frameBufferObject.h>
+#include <eq/util/objectManager.h>
+
+/** 
+ * @namespace eq::util
+ * @brief Equalizer utility classes
+ *
+ * The eq::util namespace groups common utility classes, which mostly facilitate
+ * the usage of OpenGL functions. Most of the classes in this namespace are used
+ * by the core client classes, but are implemented without a depency to the core
+ * classes.
+ */
 
 #endif // EQUTIL_H
 

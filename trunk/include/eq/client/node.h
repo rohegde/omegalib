@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -121,7 +121,9 @@ namespace eq
         /** Node attributes. */
         enum IAttribute
         {
-            IATTR_THREAD_MODEL,           //!< Threading model
+            /** <a href="http://www.equalizergraphics.com/documents/design/threads.html#sync">Threading model</a> */
+            IATTR_THREAD_MODEL,
+            IATTR_LAUNCH_TIMEOUT,         //!< Launch timeout
             IATTR_FILL1,
             IATTR_FILL2,
             IATTR_ALL
@@ -324,10 +326,10 @@ namespace eq
         base::Monitor<uint32_t> _currentFrame;
 
         /** The number of the last locally released frame. */
-        uint32_t                  _unlockedFrame;
+        uint32_t _unlockedFrame;
 
         /** The number of the last finished frame. */
-        uint32_t                  _finishedFrame;
+        uint32_t _finishedFrame;
 
         typedef stde::hash_map< uint32_t, net::Barrier* > BarrierHash;
         /** All barriers mapped by the node. */

@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -26,10 +26,11 @@
 #include <eq/base/monitor.h>
 
 #include <eq/client/eye.h>            // Eye enum
+#include <eq/client/os.h>             // WGLEWContext
 #include <eq/client/pixelViewport.h>  // member
 #include <eq/client/types.h>
 #include <eq/client/visitorResult.h>  // enum
-#include <eq/client/windowSystem.h>   // WGLEWContext
+#include <eq/client/windowSystem.h>   // enum
 
 #include <eq/net/object.h>
 #include <eq/net/objectVersion.h>
@@ -41,8 +42,10 @@
 namespace eq
 {
     class CommandQueue;
+    class MessagePump;
     class OSPipe;
     class PipeVisitor;
+    class ComputeContext;
 
     /**
      * A Pipe represents a graphics card (GPU) on a Node.
@@ -152,9 +155,6 @@ namespace eq
 
         /** @return the time in ms elapsed since the frame started. */
         EQ_EXPORT int64_t getFrameTime() const;
-
-        /** @return the generic WGL function table for the pipe. */
-        EQ_EXPORT WGLEWContext* wglewGetContext();
         //@}
 
         /**
@@ -229,6 +229,21 @@ namespace eq
 
         //@}
 
+		/** 
+         * @name Interface to and from the ComputeContext
+         */
+        //@{
+        /** Set the compute-specific context. */
+        void setComputeContext( ComputeContext* ctx ) { _computeContext = ctx; }
+
+        /** @return the compute context. */
+        const ComputeContext* getComputeContext() const
+            { return _computeContext; }
+
+        /** @return the compute context. */
+		ComputeContext* getComputeContext() { return _computeContext; }		
+        //@}
+		
         /** @name Error information. */
         //@{
         /** 
@@ -240,6 +255,34 @@ namespace eq
          * @param message the error message.
          */
         void setErrorMessage( const std::string& message ) { _error = message; }
+        //@}
+
+        /** @name Configuration. */
+        //@{
+#ifdef EQ_USE_DEPRECATED
+        /** 
+         * Enable or disable automatic or external OS event dispatch for the
+         * pipe thread.
+         *
+         * @return true if Equalizer shall dispatch OS events, false if the
+         *         application dispatches OS events.
+         * @sa Event handling documentation on website.
+         */
+        virtual bool useMessagePump() { return true; }
+#endif
+
+        /** 
+         * Create a new MessagePump for this pipe.
+         *
+         * At most one message pump per execution thread is created. Each pipe
+         * render thread creates one message pump for its window system, and the
+         * process main thread creates a message pump for AGL pipes or if
+         * non-threaded pipes are used. Applications which do their own message
+         * pumping outside of Equalizer should return 0 here.
+         *
+         * @return the message pump, or 0.
+         */
+        EQ_EXPORT virtual MessagePump* createMessagePump();
         //@}
 
     protected:
@@ -304,7 +347,7 @@ namespace eq
         EQ_EXPORT virtual WindowSystem selectWindowSystem() const;
 
         /** 
-         * Initialises this pipe.
+         * Initialize this pipe.
          * 
          * @param initID the init identifier.
          */
@@ -362,19 +405,6 @@ namespace eq
         EQ_EXPORT virtual void frameDrawFinish( const uint32_t frameID, 
                                                 const uint32_t frameNumber );
 
-        /** @name Configuration. */
-        //@{
-        /** 
-         * Enable or disable automatic or external OS event dispatch for the
-         * pipe thread.
-         *
-         * @return true if Equalizer shall dispatch OS events, false if the
-         *         application dispatches OS events.
-         * @sa Event handling documentation on website.
-         */
-        virtual bool useMessagePump() { return true; }
-        //@}
-
         /** @sa net::Object::attachToSession. */
         EQ_EXPORT virtual void attachToSession( const uint32_t id, 
                                                 const uint32_t instanceID, 
@@ -402,6 +432,9 @@ namespace eq
 
         /** The size (and location) of the pipe. */
         PixelViewport _pvp;
+		
+        /** CUDA GL interop mode. */
+		bool _cudaGLInterop;
 
         /** Worst-case set of tasks. */
         uint32_t _tasks;
@@ -469,6 +502,9 @@ namespace eq
         /** The last window made current. */
         const mutable Window* _currentWindow;
 
+		/** GPU Computing context */
+        ComputeContext *_computeContext;
+				
         union // placeholder for binary-compatible changes
         {
             char dummy[64];
@@ -477,6 +513,7 @@ namespace eq
         //-------------------- Methods --------------------
         void* _runThread();
         void _setupCommandQueue();
+        void _exitCommandQueue();
 
         friend class Window;
         void _addWindow( Window* window );

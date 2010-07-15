@@ -29,10 +29,17 @@
 
 //----- Common extensions of the STL
 #ifdef __GNUC__              // GCC 3.1 and later
-#  include <ext/hash_map>
-#  include <ext/hash_set>
+#  ifdef EQ_GCC_4_2_OR_LATER
+#    include <tr1/unordered_map>
+#    include <tr1/unordered_set>
+/* Alias stde namespace to uniformly access stl extensions. */
+namespace stde = std::tr1;
+#  else
+#    include <ext/hash_map>
+#    include <ext/hash_set>
 /* Alias stde namespace to uniformly access stl extensions. */
 namespace stde = __gnu_cxx; 
+#  endif
 #else                        //  other compilers
 #  include <hash_map>
 #  include <hash_set>
@@ -48,7 +55,11 @@ namespace stde = std;
 
 //----- Our extensions of the STL 
 #ifdef __GNUC__              // GCC 3.1 and later
+#  ifdef EQ_GCC_4_2_OR_LATER
+namespace std { namespace tr1
+#  else
 namespace __gnu_cxx
+#  endif
 #elif defined (WIN32)
 namespace stdext
 #else //  other compilers
@@ -56,46 +67,63 @@ namespace std
 #endif
 {
 #  ifdef __GNUC__
-#    ifndef EQ_HAVE_STRING_HASH
-    /** std::string hash function. */
-    template<> 
-    struct hash< std::string >
+#    ifdef EQ_GCC_4_2_OR_LATER
+    template<class K, class T, class H = hash< K >, 
+             class P = std::equal_to< K >, class A = std::allocator< K > >
+    class hash_map : public unordered_map< K, T, H, P, A >
+    {
+    };
+#    else
+#      ifndef EQ_HAVE_STRING_HASH
+    /** std::string hash function. @version 1.0 */
+    template<> struct hash< std::string >
     {
         size_t operator()( const std::string& str ) const
         {
             return hash< const char* >()( str.c_str() );
         }
     };
+#      endif
+
+    /** uint64_t hash function. @version 1.0 */
+    template<> struct hash< uint64_t >
+    {
+        size_t operator()( const uint64_t& val ) const
+        {
+            // OPT: tr1 does the same, however it seems suboptimal on 32 bits
+            // if the lower 32 bits never change, e.g., for ObjectVersion
+            return static_cast< size_t >( val );
+        }
+    };
+
 #    endif
 
 #    ifndef EQ_HAVE_VOID_PTR_HASH
-    /** void* hash functions. */
-    template<> 
-    struct hash< void* >
+    /** void* hash functions. @version 1.0 */
+    template<> struct hash< void* >
     {
         template< typename P >
         size_t operator()( const P& key ) const
         {
-            return reinterpret_cast<size_t>(key);	 
+            return reinterpret_cast<size_t>(key);
         }
     };
-    template<> 
-    struct hash< const void* >
+
+    template<> struct hash< const void* >
     {
         template< typename P >
         size_t operator()( const P& key ) const
         {
-            return reinterpret_cast<size_t>(key);	 
+            return reinterpret_cast<size_t>(key);
         }
     };
-#    endif
+#    endif // EQ_HAVE_VOID_PTR_HASH
 
 #  else // WIN32
 #    ifndef EQ_HAVE_STRING_HASH
 
-    /** std::string hash function. */
-    template<>
-    inline size_t hash_compare< std::string >::operator()
+    /** std::string hash function. @version 1.0 */
+    template<> inline size_t hash_compare< std::string >::operator()
         ( const std::string& key ) const
     {
         return hash_value( key.c_str( ));
@@ -104,13 +132,18 @@ namespace std
 #    endif
 #  endif
 
-    /** Uniquely sorts and eliminates duplicates in a STL container. */
-    template< typename C >
-    void usort( C& c )
+    /**
+     * Uniquely sorts and eliminates duplicates in a STL container.
+     * @version 1.0
+     */
+    template< typename C > void usort( C& c )
     {
         std::sort( c.begin(), c.end( ));
         c.erase( std::unique( c.begin(), c.end( )), c.end( ));
     }
+#ifdef EQ_GCC_4_2_OR_LATER
+}
+#endif
 }
 
 #endif // EQBASE_STDEXT_H

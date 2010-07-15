@@ -1,6 +1,6 @@
 
 /* Copyright (c) 2009, Stefan Eilemann <eile@equalizergraphics.com>
-                     , Makhinya Maxim
+                     , Maxim Makhinya
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -19,8 +19,6 @@
 #ifndef EQ_OS_PIPE_H
 #define EQ_OS_PIPE_H
 
-#include <eq/client/windowSystem.h> // GLEW
-
 #include <eq/base/base.h>
 #include <string>
 
@@ -29,16 +27,20 @@ namespace eq
     class Pipe;
 
     /**
-     * The interface definition for OS-specific pipe code.
+     * The interface definition for OS-specific GPU handling.
      *
-     * The OSPipe abstracts all pipe system specific code and facilitates
-     * porting to new windowing systems. Each Pipe uses one OSPipe, which
-     * is initialized in Pipe::configInitOSPipe.
+     * The OSPipe abstracts all OS-system specific code for handling a GPU,
+     * which facilitates porting to new windowing systems. Each Pipe uses one
+     * OSPipe, which is initialized in Pipe::configInit. The OSPipe has to set
+     * the pipe's PixelViewport if it is invalid during configInit().
      */
     class EQ_EXPORT OSPipe
     {
     public:
+        /** Create a new OSPipe for the given eq::Pipe.*/
         OSPipe( Pipe* parent );
+
+        /** Destroy the OSPipe. */
         virtual ~OSPipe( );
 
         /** @name Methods forwarded from eq::Pipe */
@@ -50,7 +52,7 @@ namespace eq
         virtual void configExit( ) = 0;
         //@}
 
-        /** @return the reason of the last error. */
+        /** @return the reason of the last failed operation. */
         const std::string & getErrorMessage() const { return _error; }
 
         /** @return the parent Pipe. */
@@ -58,9 +60,6 @@ namespace eq
         
         /** @return the parent Pipe. */
         const Pipe* getPipe() const { return _pipe; }
-
-        /** @return the generic WGL function table for the pipe. */
-        WGLEWContext* wglewGetContext() { return _wglewContext; }
 
     protected:
         /** @name Error information. */
@@ -82,9 +81,7 @@ namespace eq
         /** The reason for the last error. */
         std::string _error;
 
-        /** Extended OpenGL function entries - WGL. */
-        WGLEWContext*   _wglewContext;
-
+    private:
         union // placeholder for binary-compatible changes
         {
             char dummy[64];

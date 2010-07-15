@@ -30,13 +30,10 @@ namespace net
     struct Packet;
 
     /**
-     * A class managing commands and the ownership of packets.
+     * A class managing command packets.
      *
      * A RefPtr<Packet> can't be used, since Packets are plain C structs send
-     * over the network. The Command manages the ownership of packet by
-     * claiming them so that only one can hold a given packet at a time.
-     * A packet passed to a holder is owned by it and will be deleted
-     * automatically when necessary.
+     * over the network.
      */
     class Command 
     {
@@ -45,9 +42,9 @@ namespace net
         const Packet* getPacket() const        { return _packet; }
 
         template< class P > P* getPacket()
-            { EQASSERT( _packet ); return reinterpret_cast<P*>( _packet ); }
+            { EQASSERT( _packet ); return static_cast<P*>( _packet ); }
         template< class P > const P* getPacket() const
-            { EQASSERT( _packet ); return reinterpret_cast<P*>( _packet ); }
+            { EQASSERT( _packet ); return static_cast<P*>( _packet ); }
 
         NodePtr getNode()      const { return _node; }
         NodePtr getLocalNode() const { return _localNode; }
@@ -67,7 +64,7 @@ namespace net
 #ifdef NDEBUG
                 --_refCount;
 #else
-                if( --_refCount==0 )
+                if( --_refCount == 0 )
                 {
                     // Unref nodes in command to keep node ref counts easier for
                     // debugging.  Release builds will unref the nodes at
@@ -96,7 +93,7 @@ namespace net
         NodePtr  _node;
         NodePtr  _localNode;
         Packet*  _packet;
-        base::mtLong _refCount;
+        base::a_int32_t _refCount;
         uint64_t _packetAllocSize;
     };
 

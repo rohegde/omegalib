@@ -40,7 +40,7 @@ namespace base
     class Clock
     {
     public :
-        /** Construct a new clock. */
+        /** Construct a new clock. @version 1.0 */
         Clock() 
             {
                 reset();
@@ -51,11 +51,14 @@ namespace base
 #endif
             }
 
-        /** Destroy the clock. */
+        /** Destroy the clock. @version 1.0 */
         ~Clock() {}
 
-        /** Reset the base time of the clock to the current time. */
-        void reset()   
+        /**
+         * Reset the base time of the clock to the current time.
+         * @version 1.0
+         */
+        void reset()
             {
 #ifdef Darwin
                 _start = mach_absolute_time();
@@ -66,38 +69,7 @@ namespace base
 #endif
             }
 
-        /** 
-         * Set an alarm.
-         *
-         * The clock will return negative, decreasing times when the alarm has
-         * not been reached.
-         * 
-         * @param time The time in milliseconds when the alarm happens.
-         */
-        void setAlarm( const float time )
-            {
-                reset();
-#ifdef Darwin
-                _start += static_cast<uint64_t>(
-                              time / _timebaseInfo.numer * _timebaseInfo.denom *
-                                     1000000.f );
-#elif defined (WIN32)
-                _start.QuadPart += static_cast<long long>( 0.001f * time * 
-                                                           _frequency.QuadPart);
-#else
-                const int sec   = static_cast<int>( time * 0.001f );
-                _start.tv_sec  += sec;
-                _start.tv_nsec += static_cast<int>(
-                    (time - sec * 1000) * 1000000 );
-                if( _start.tv_nsec > 1000000000 )
-                {
-                    _start.tv_sec  += 1;
-                    _start.tv_nsec -= 1000000000;
-                }
-#endif
-            }
-
-        /** Set the current time of the clock. */
+        /** Set the current time of the clock. @version 1.0 */
         void set( const int64_t time )
             {
                 reset();
@@ -123,6 +95,7 @@ namespace base
 
         /** 
          * @return the elapsed time in milliseconds since the last clock reset.
+         * @version 1.0
          */
         float getTimef() const
             {
@@ -144,7 +117,38 @@ namespace base
             }
 
         /** 
+         * @return the elapsed time in milliseconds since the last clock reset
+         *         and atomically reset the clock.
+         * @version 1.0
+         */
+        float getResetTimef()
+            {
+#ifdef Darwin
+                const uint64_t now = mach_absolute_time();
+                const int64_t elapsed = now - _start;
+                _start = now;
+                return ( elapsed * _timebaseInfo.numer / _timebaseInfo.denom /
+                         1000000.f );
+#elif defined (WIN32)
+                LARGE_INTEGER now;
+                QueryPerformanceCounter( &now );
+                const float time = 1000.0f * (now.QuadPart - _start.QuadPart) / 
+                                   _frequency.QuadPart;
+                _start = now;
+                return time;
+#else
+                struct timespec now;
+                clock_gettime( CLOCK_REALTIME, &now );
+                const float time = ( 1000.0f * (now.tv_sec - _start.tv_sec) +
+                                    0.000001f * (now.tv_nsec - _start.tv_nsec));
+                _start = now;
+                return time;
+#endif
+            }
+
+        /** 
          * @return the elapsed time in milliseconds since the last clock reset.
+         * @version 1.0
          */
         int64_t getTime64() const
             {
@@ -168,6 +172,7 @@ namespace base
 
         /** 
          * @return the elapsed time in milliseconds since the last clock reset.
+         * @version 1.0
          */
         double getTimed() const
             {
@@ -178,7 +183,8 @@ namespace base
 #elif defined (WIN32)
                 LARGE_INTEGER now;
                 QueryPerformanceCounter( &now );
-                return 1000.0 * (now.QuadPart - _start.QuadPart) / _frequency.QuadPart;
+                return 1000.0 * (now.QuadPart - _start.QuadPart) /
+                                                            _frequency.QuadPart;
 #else
                 struct timespec now;
                 clock_gettime( CLOCK_REALTIME, &now );
@@ -194,8 +200,9 @@ namespace base
          * Obviously the returned time overflows once per second.
          * 
          * @return the millisecond part of the time elapsed. 
+         * @version 1.0
          */
-        float getMSf() const
+        float getMilliSecondsf() const
             {
 #if defined (Darwin) || defined (WIN32)
                 double time = getTimed();

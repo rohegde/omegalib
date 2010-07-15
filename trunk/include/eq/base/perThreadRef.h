@@ -28,46 +28,82 @@ namespace base
 {
     class PerThreadRefPrivate;
 
-    /** Thread-specific storage for a RefPtr. */
+    /** 
+     * Thread-specific storage for a RefPtr.
+     * 
+     * To instantiate the template code for this class, applications have to
+     * include pthread.h before this file. pthread.h is not automatically
+     * included to avoid hard to resolve type conflicts with other header files
+     * on Windows.
+     */
     template< typename T > class PerThreadRef : public NonCopyable
     {
     public:
-        /** Construct a new per-thread reference pointer. */
+        /** Construct a new per-thread RefPtr. @version 1.0 */
         PerThreadRef();
-        /** Destruct a per-thread reference pointer. */
+        /** Destruct a per-thread RefPtr. @version 1.0 */
         ~PerThreadRef();
 
-        /** Assign a reference pointer to the thread-local storage. */
+        /** Assign a RefPtr to the thread-local storage. @version 1.0 */
         PerThreadRef<T>& operator = ( RefPtr< T > data );
-        /** Assign a reference pointer to the thread-local storage. */
+
+        /** Assign a RefPtr to the thread-local storage. @version 1.0 */
         PerThreadRef<T>& operator = ( const PerThreadRef<T>& rhs );
 
-        /** @return the reference pointer from the thread-local storage. */
+        /** @return the RefPtr from the thread-local storage. @version 1.0 */
         RefPtr< const T > get() const;
-        /** @return the reference pointer from the thread-local storage. */
+        /** @return the RefPtr from the thread-local storage. @version 1.0 */
         RefPtr< T > get();
 
-        /** @return the C pointer of the RefPtr from the thread-local storage.*/
+        /**
+         * @return the C pointer of the RefPtr from the thread-local storage.
+         * @version 1.0
+         */
         T* getPointer();
-        /** Access the object held by the RefPtr in the thread-local storage.*/
+
+        /**
+         * @return the object held by the RefPtr in the thread-local storage.
+         * @version 1.0
+         */
         T* operator->();
-        /** Access the object held by the RefPtr in the thread-local storage.*/
+
+        /**
+         * @return the object held by the RefPtr in the thread-local storage.
+         * @version 1.0
+         */
         const T* operator->() const;
 
-        /** @return true if the two objects hold the same C pointer. */
+        /**
+         * @return true if the two objects hold the same C pointer.
+         * @version 1.0
+         */
         bool operator == ( const PerThreadRef& rhs ) const 
             { return ( get() == rhs.get( )); }
-        /** @return true if the two objects hold the same C pointer. */
+
+        /**
+         * @return true if the two objects hold the same C pointer.
+         * @version 1.0
+         */
         bool operator == ( const RefPtr< T >& rhs ) const
             { return ( get()==rhs ); }
-        /** @return false if the two objects hold the same C pointer. */
+
+        /**
+         * @return true if the two objects hold the same C pointer.
+         * @version 1.0
+         */
         bool operator != ( const RefPtr< T >& rhs ) const
             { return ( get()!=rhs ); }
 
-        /** @return true if the thread-local storage holds a 0 pointer. */
+        /**
+         * @return true if the thread-local storage holds a 0 pointer.
+         * @version 1.0
+         */
         bool operator ! () const;
 
-        /** @return true if the thread-local storage holds a non-0 pointer. */
+        /**
+         * @return true if the thread-local storage holds a non-0 pointer.
+         * @version 1.0
+         */
         bool isValid() const;
 
     private:
@@ -85,10 +121,6 @@ namespace base
 #    define HAVE_PTHREAD_H
 #  endif
 #endif
-
-// The application has to include pthread.h if it wants to instantiate new
-// types, since on Windows the use of pthreads-Win32 library includes might
-// create hard to resolve type conflicts with other header files.
 
 #ifdef HAVE_PTHREAD_H
 
