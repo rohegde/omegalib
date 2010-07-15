@@ -308,6 +308,122 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 	if(NULL != pf){
 		pf(tg,this);
 	}
+
+	mysInstance->lockEvents();
+
+	InputEvent* evt = mysInstance->writeHead();
+	switch(tg.type)
+	{
+		case TG_DOWN:
+			evt->type = InputEvent::Down;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_MOVE:
+			evt->type = InputEvent::Move;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_UP:
+			evt->type  = InputEvent::Up;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_CLICK:
+			evt->type  = InputEvent::Click;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_DB_CLICK:
+			evt->type  = InputEvent::DB_Click;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_MOVE_RIGHT:
+			evt->type  = InputEvent::Move_Right;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_MOVE_UP:
+			evt->type  = InputEvent::Move_Up;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_MOVE_LEFT:
+			evt->type  = InputEvent::Move_Left;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_MOVE_DOWN:
+			evt->type  = InputEvent::Move_Down;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			break;
+		case TG_SPLIT_START:
+			evt->type  = InputEvent::Split_Start;
+			evt->x2 = tg.params[0];
+			evt->y2 = tg.params[1];
+			evt->x = tg.params[2];
+			evt->y = tg.params[3];
+			break;
+		case TG_SPLIT_END:
+			evt->type  = InputEvent::Split_End;
+			evt->x2 = tg.params[0];
+			evt->y2 = tg.params[1];
+			evt->x = tg.params[2];
+			evt->y = tg.params[3];
+			break;
+		case TG_SPLIT_APART:
+			evt->type  = InputEvent::Split_Apart;
+			evt->deltaDist = tg.params[0];
+			evt->deltaRatio = tg.params[1];
+			evt->x2 = tg.params[2];
+			evt->y2 = tg.params[3];
+			evt->x = tg.params[4];
+			evt->y = tg.params[5];
+			break;
+		case TG_SPLIT_CLOSE:
+			evt->type  = InputEvent::Split_Close;
+			evt->deltaDist = tg.params[0];
+			evt->deltaRatio = tg.params[1];
+			evt->x2 = tg.params[2];
+			evt->y2 = tg.params[3];
+			evt->x = tg.params[4];
+			evt->y = tg.params[5];
+			break;
+		case TG_ROTATE_START:
+			evt->type  = InputEvent::Rotate_Start;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			evt->x2 = tg.params[2];
+			evt->y2 = tg.params[3];
+			break;
+		case TG_ROTATE_END:
+			evt->type  = InputEvent::Rotate_End;
+			evt->x = tg.params[0];
+			evt->y = tg.params[1];
+			evt->x2 = tg.params[2];
+			evt->y2 = tg.params[3];
+			break;
+		case TG_ROTATE_ANTICLOCK:
+			evt->type  = InputEvent::Rotate_Counterclock;
+			evt->rw = tg.params[0];
+			evt->x = tg.params[1];
+			evt->y = tg.params[2];
+			evt->x2 = tg.params[3];
+			evt->y2 = tg.params[4];
+			break;
+		case TG_ROTATE_CLOCK:
+			evt->type  = InputEvent::Rotate_Clock;
+			evt->rw = tg.params[0];
+			evt->x = tg.params[1];
+			evt->y = tg.params[2];
+			evt->x2 = tg.params[3];
+			evt->y2 = tg.params[4];
+			break;
+	}// switch		
+	evt->serviceType = InputService::Touch;
+	mysInstance->unlockEvents();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
