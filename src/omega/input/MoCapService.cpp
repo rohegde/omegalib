@@ -32,7 +32,7 @@ void MoCapService::initialize()
 
 void MoCapService::setup(Setting& settings)
 {
-	if( settings.extists( "serverIP" ) )
+	if( settings.exists( "serverIP" ) )
 	{
 		strcpy( serverIP, settings[ "serverIP" ] );
 	}
@@ -44,7 +44,7 @@ void MoCapService::setup(Setting& settings)
 
 	if( settings.exists( "castingType" ) )
 	{
-		castType = atoi( (const char*) settings[ "castingType" ] );
+		castType = (int) settings[ "castingType" ];
 	}
 }
 void MoCapService::start()
