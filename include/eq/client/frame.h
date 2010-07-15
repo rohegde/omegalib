@@ -88,6 +88,9 @@ namespace server
         /** @return the pixel parameters relative to the destination channel. */
         EQ_EXPORT const Pixel& getPixel() const;
 
+        /** @return the subpixel parameters relative to the destination channel. */
+        EQ_EXPORT const SubPixel& getSubPixel() const;
+
         /** @return the zoom factor for readback or assemble. */
         const Zoom& getZoom() const { return _data.zoom; }
 
@@ -190,10 +193,14 @@ namespace server
         EQ_EXPORT void disableBuffer( const Buffer buffer );
 
         /** Set color buffer type to read */
-        EQ_EXPORT void setColorType( const GLuint colorType );
+        EQ_EXPORT void setColorFormat( const GLuint colorFormat );
 
         /** Enable/disable alpha usage for newly allocated images. */
         EQ_EXPORT void setAlphaUsage( const bool useAlpha );
+
+        /** Set the compressor quality value. */
+        EQ_EXPORT void setQuality( const Frame::Buffer buffer, 
+                                   const float quality );
 
         /** @internal */
         void useSendToken( const bool use );

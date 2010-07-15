@@ -1,6 +1,6 @@
 
 /* Copyright (c) 2009, Stefan Eilemann <eile@equalizergraphics.com>
- *                   , Makhinya Maxim
+ *                   , Maxim Makhinya
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -20,6 +20,7 @@
 #define EQ_OS_PIPE_WGL_H
 
 #include <eq/client/osPipe.h> // base class
+#include <eq/client/os.h>     // GLEW
 
 namespace eq
 {
@@ -69,11 +70,17 @@ namespace eq
          */
         HDC createWGLDisplayDC();
 
+        /** @return the generic WGL function table for the pipe. */
+        WGLEWContext* wglewGetContext() { return _wglewContext; }
+
     private:
 
         void _configInitWGLEW();
 
         bool _getGPUHandle( HGPUNV& handle );
+
+        /** Extended WGL function entries. */
+        WGLEWContext* _wglewContext;
 
         union // placeholder for binary-compatible changes
         {

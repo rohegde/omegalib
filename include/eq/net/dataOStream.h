@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,8 +18,10 @@
 #ifndef EQNET_DATAOSTREAM_H
 #define EQNET_DATAOSTREAM_H
 
-#include <eq/base/buffer.h> // member
 #include <eq/net/types.h>   // ConnectionVector member
+#include "dataStream.h"     // base class
+
+#include <eq/base/buffer.h> // member
 
 #include <iostream>
 #include <vector>
@@ -28,6 +30,10 @@ namespace eq
 {
 namespace net
 {
+namespace DataStreamTest
+{
+    class Sender;
+}
     class Connection;
 
     /**
@@ -35,22 +41,22 @@ namespace net
      *
      * Derived classes send the data using the appropriate command packets.
      */
-    class DataOStream
+    class DataOStream : public DataStream
     {
     public:
         /** @name Internal */
         //@{
         DataOStream();
+        DataOStream( const DataOStream& from ) : DataStream( from ){}
         virtual ~DataOStream();
 
         /** Enable output, locks the connections to the receivers */ 
         void enable( const NodeVector& receivers );
-        void enable( const ConnectionVector& receivers );
-        void enable( const NodePtr node );
+        void enable( NodePtr node );
         void enable();
 
         /** Resend the saved buffer. */
-        void resend( const NodePtr node );
+        void resend( NodePtr node );
 
         /** Disable, flush and unlock the output to the current receivers. */
         void disable();
@@ -75,9 +81,6 @@ namespace net
 
         /** @name Data output */
         //@{
-        /** Flush remaining data in the buffer. */
-        void flush();
-
         /** Write a plain data item by copying it to the stream. */
         template< typename T >
         DataOStream& operator << ( const T& value )
@@ -103,29 +106,51 @@ namespace net
 
  
     protected:
+
+        /** Flush remaining data in the buffer. */
+        void _flush();
+
         /** @name Packet sending, implemented by the subclasses */
         //@{
-        /** Send the leading data (packet) to the receivers */
-        virtual void sendHeader( const void* buffer, const uint64_t size ) = 0;
         /** Send a data buffer (packet) to the receivers. */
-        virtual void sendBuffer( const void* buffer, const uint64_t size ) = 0;
+        virtual void sendBuffer( const uint32_t name, 
+                                 const uint32_t nChunks,
+                                 const void* const* buffer, 
+                                 const uint64_t* size,
+                                 const uint64_t sizeUncompressed ) = 0;
+                                 
         /** Send the trailing data (packet) to the receivers */
-        virtual void sendFooter( const void* buffer, const uint64_t size ) = 0;
-        /** Send only one data item (packet) to the receivers */
-        virtual void sendSingle( const void* buffer, const uint64_t size )
-            { sendHeader( buffer, size ); sendFooter( 0, 0 ); }
+        virtual void sendFooter( const uint32_t name, 
+                                 const uint32_t nChunks,
+                                 const void* const* buffer, 
+                                 const uint64_t* size,
+                                 const uint64_t sizeUncompressed ) = 0;
         //@}
+
+
+        /** Reset the whole stream. */
+        virtual void reset();
 
         /** Locked connections to the receivers, if _enabled */
         ConnectionVector _connections;
+        friend class DataStreamTest::Sender;
+        
 
     private:
+        void*  _compressor;   //!< the instance of the compressor
+        
+        enum BufferType
+        {
+            BUFFER_NONE = 0,
+            BUFFER_PARTIAL,
+            BUFFER_ALL
+        };
+        BufferType _bufferType;
+        
         /** The buffer used for saving and buffering */
         base::Bufferb  _buffer;
         /** The start position of the buffering, always 0 if !_save */
         uint64_t _bufferStart;
-        /** The threshold for the buffer to flush */
-        static uint64_t _highWaterMark;
         
         /** The output stream is enabled for writing */
         bool _enabled;
@@ -139,8 +164,8 @@ namespace net
         /** Helper function calling sendHeader and sendBuffer as needed. */
         void _sendBuffer( const void* data, const uint64_t size );
         
-        /** Reset the start position after sending a buffer. */
-        void _resetStart();
+        /** Reset after sending a buffer. */
+        void _resetBuffer();
 
         /** Unlock all connections during disable. */
         void _unlockConnections();
@@ -155,7 +180,27 @@ namespace net
                 write( &value.front(), nElems * sizeof( T ));
             return *this;
         }
+        /** Send the trailing data (packet) to the receivers */
+        void _sendFooter( const void* buffer, const uint64_t size );
+
+        /** intanciate compressor */
+        void _initCompressor( );
+
+        /** find the better compressor for the given token type */
+        uint32_t _chooseCompressor( const uint32_t tokenType );
+      
+        /** take data in compressor and send it */
+        bool _getCompressedData( uint64_t sizeUncompressed, 
+                                 void** chunks, 
+                                 uint64_t* chunkSizes );
+
+        /** compress data, if compressor found */
+        void _compress( const void* src, const uint64_t  sizeSrc );
+
     };
+
+    std::ostream& operator << ( std::ostream& os,
+                                const DataOStream& dataOStream );
 
 }
 }
@@ -175,16 +220,6 @@ namespace net
         if ( nElems > 0 )
             write( str.c_str(), nElems );
 
-        return *this;
-    }
-
-    /** Write a base::UUID. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const base::UUID& id )
-    { 
-        base::UUID out( id );
-        out.convertToNetwork();
-        write( &out, sizeof( out ));
         return *this;
     }
 

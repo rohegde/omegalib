@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2008, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2008-2009, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -19,45 +19,41 @@
 #define EQUTIL_BITMAPFONT_H
 
 #include <eq/base/base.h>
-#include <eq/client/windowSystem.h> // GL prototypes
+#include <eq/client/os.h>           // GL prototypes
+#include <eq/client/windowSystem.h> // enum used
 
 #include <string>
 
 namespace eq
 {
-class Window;
-
-/** 
- * @namespace eq::util
- * @brief Equalizer utility classes
- *
- * The eq::util namespace groups common utility classes.
- */
+    class Window;
 namespace util
 {
-    /** A wrapper around agl, wgl and glx bitmap fonts. */
-    class EQ_EXPORT BitmapFont
+    template< typename T > class ObjectManager;
+
+    /** A wrapper around AGL, WGL and GLX bitmap fonts. */
+    template< typename OMT > class BitmapFont
     {
     public:
-        BitmapFont( Window* window );
-        ~BitmapFont();
+        /** Construct a new bitmap font. */
+        EQ_EXPORT BitmapFont( ObjectManager< OMT >& gl, const OMT& key );
+        EQ_EXPORT ~BitmapFont();
 
-        const static std::string normal; //!< a normal default font
-
-        bool initFont( const std::string& name = normal,
-                       const uint32_t size = 12 );
-        void draw( const std::string& text ) const;
+        // needs current context or XGetCurrentDisplay()
+        EQ_EXPORT bool init( const WindowSystem ws, const std::string& name,
+                             const uint32_t size = 12 );
+        EQ_EXPORT void exit();
+        EQ_EXPORT void draw( const std::string& text ) const;
 
     private:
+        ObjectManager< OMT > _gl;
+        const OMT            _key;
 
-        Window* const _window;
-        GLuint        _lists;
+        bool _initGLX( const std::string& name, const uint32_t size );
+        bool _initWGL( const std::string& name, const uint32_t size );
+        bool _initAGL( const std::string& name, const uint32_t size );
 
-        bool _initFontGLX( const std::string& name, const uint32_t size );
-        bool _initFontWGL( const std::string& name, const uint32_t size );
-        bool _initFontAGL( const std::string& name, const uint32_t size );
-
-        void _setupLists( const GLsizei num );
+        GLuint _setupLists( const GLsizei num );
     };
 }
 }

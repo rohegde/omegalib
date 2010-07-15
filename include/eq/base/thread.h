@@ -18,12 +18,15 @@
 #ifndef EQBASE_THREAD_H
 #define EQBASE_THREAD_H
 
+#ifdef EQUALIZER_EXPORTS
+   // We need to instantiate a Monitor< State > when compiling the library,
+   // but we don't want to have <pthread.h> for a normal build, hence this hack
+#  include <pthread.h>
+#endif
+
 #include <eq/base/base.h>     // EQ_EXPORT definition
 #include <eq/base/lock.h>     // member
-
-#ifdef EQ_WIN32_SDP_JOIN_WAR
-#  include <eq/base/monitor.h> // member
-#endif
+#include <eq/base/monitor.h> // member
 
 #include <vector>
 #include <typeinfo>
@@ -36,29 +39,26 @@ namespace base
     class ExecutionListener;
     class ThreadPrivate;
 
-    /**
-     * An abstraction for an execution thread.
-     */
+    /** An utility class to execute code in a separate execution thread. */
     class Thread 
     {
     public:
-        /** 
-         * Constructs a new thread.
-         */
+        /** Construct a new thread. @version 1.0 */
         EQ_EXPORT Thread();
 
-        /** Destructs the thread. */
+        /** Destruct the thread. @version 1.0 */
         EQ_EXPORT virtual ~Thread();
 
         /** 
-         * Starts the thread.
+         * Start the thread.
          *
-         * All thread state listeners will be notified from the running thread,
+         * All thread state listeners will be notified from the new thread,
          * after the thread was initialized successfully.
          * 
-         * @return <code>true</code> if the thread was launched,
-         *         <code>false</code> otherwise.
+         * @return <code>true</code> if the thread was launched and initialized
+         *         successfully, <code>false</code> otherwise.
          * @sa init(), run(), addListener()
+         * @version 1.0
          */
         EQ_EXPORT bool start();
 
@@ -67,10 +67,11 @@ namespace base
          *
          * The parent thread will not be unlocked before this function has been
          * executed. If the thread initialization fails, that is, this method
-         * did return false, the thread will be stopped and the start() method
+         * does return false, the thread will be stopped and the start() method
          * will return false.
          * 
          * @return the success value of the thread initialization.
+         * @version 1.0
          */
         virtual bool init(){ return true; }
 
@@ -81,6 +82,7 @@ namespace base
          * and is called after a successful init().
          * 
          * @return the return value of the child thread.
+         * @version 1.0
          */
         virtual void* run() = 0;
 
@@ -91,6 +93,7 @@ namespace base
          * thread. The thread listeners will be notified.
          *
          * @param retVal the return value of the thread.
+         * @version 1.0
          */
         EQ_EXPORT virtual void exit( void* retVal = 0 );
 
@@ -98,6 +101,7 @@ namespace base
          * Cancel (stop) the child thread.
          *
          * This function is not to be called from the child thread.
+         * @version 1.0
          */
         EQ_EXPORT void cancel();
 
@@ -106,8 +110,8 @@ namespace base
          *
          * @param retVal output value for the return value of the child, can be
          *               <code>0</code>.
-         * @return <code>true</code> if the thread was joined,
-         *         <code>false</code> otherwise.
+         * @return true if the thread was joined, false otherwise.
+         * @version 1.0
          */
         EQ_EXPORT bool join( void** retVal=0 );
 
@@ -117,8 +121,8 @@ namespace base
          * Note that the thread may be neither running nor stopped if it is
          * currently starting or stopping.
          *
-         * @return <code>true</code> if the thread is stopped,
-         * <code>false</code> if not.
+         * @return true if the thread is stopped, false if not.
+         * @version 1.0
          */
         bool isStopped() const { return ( _state == STATE_STOPPED ); }
 
@@ -128,16 +132,17 @@ namespace base
          * Note that the thread may be neither running nor stopped if it is
          * currently starting or stopping.
          *
-         * @return <code>true</code> if the thread is running,
-         * <code>false</code> if not.
+         * @return true if the thread is running, false if not.
+         * @version 1.0
          */
         bool isRunning() const { return ( _state == STATE_RUNNING ); }
 
         /** 
          * Returns if this thread object is the current (calling) thread.
          * 
-         * @return <code>true</code> if the current thread has is the same
-         *         thread as this thread, <code>false</code> if not.
+         * @return true if the current thread has is the same thread as this
+         *         thread, false if not.
+         * @version 1.0
          */
         EQ_EXPORT bool isCurrent() const;
 
@@ -145,6 +150,7 @@ namespace base
          * Add a new thread state listener.
          * 
          * @param listener the listener.
+         * @version 1.0
          */
         EQ_EXPORT static void addListener( ExecutionListener* listener );
 
@@ -152,20 +158,22 @@ namespace base
          * Remove a thread state listener.
          * 
          * @param listener the listener.
+         * @version 1.0
          */
         EQ_EXPORT static bool removeListener( ExecutionListener* listener );
 
-        /** Remove all registered listeners, used at exit. */
+        /** Remove all registered listeners, used at exit. @version 1.0 */
         EQ_EXPORT static void removeAllListeners();
 
-        /** @return a unique identifier for the calling thread. */
+        /** @return a unique identifier for the calling thread. @version 1.0 */
         EQ_EXPORT static size_t getSelfThreadID();
 
         /** @internal */
         static void pinCurrentThread();
 
     private:
-		ThreadPrivate* _data;
+        ThreadPrivate* _data;
+
         /** The current state of this thread. */
         enum State
         {
@@ -175,12 +183,10 @@ namespace base
             STATE_STOPPING  // child no longer active, join() not yet called
         };
 
-        State _state;
-        Lock  _syncChild;
+        Monitor< State > _state;
 
 #ifdef EQ_WIN32_SDP_JOIN_WAR
-        Monitor<bool> _running;
-        void*         _retVal;
+        void* _retVal;
 #endif
 
         static void* runChild( void* arg );
@@ -204,15 +210,20 @@ namespace base
 // development may cause false positives, e.g., when threadsafety is ensured
 // outside of the objects by the application.
 
+#ifndef NDEBUG
+#  define EQ_CHECK_THREADSAFETY
+#endif
+
 /** Declare a thread id variable to be used for thread-safety checks. */
 #define CHECK_THREAD_DECLARE( NAME )                        \
     struct NAME ## Struct                                   \
     {                                                       \
         NAME ## Struct ()                                   \
-            : id( 0 ), extMutex( false )                    \
+            : id( 0 ), extMutex( false ), inRegion( false ) \
             {}                                              \
         mutable size_t id;                                  \
         bool extMutex;                                      \
+        bool inRegion;                                      \
     } NAME;                                                 \
 
 #ifdef EQ_CHECK_THREADSAFETY
@@ -222,7 +233,7 @@ namespace base
     {                                                                   \
         if( NAME.id == 0 )                                              \
         {                                                               \
-            NAME.id = eq::base::Thread::getSelfThreadID();                \
+            NAME.id = eq::base::Thread::getSelfThreadID();              \
             EQVERB << "Functions for " << #NAME                         \
                    << " locked to this thread" << std::endl;            \
         }                                                               \
@@ -248,10 +259,36 @@ namespace base
             }                                                           \
         }                                                               \
     }
+
+    /** @internal */
+    template< typename T > class ScopedThreadCheck : public NonCopyable
+    {
+    public:
+        explicit ScopedThreadCheck( T& data )
+                : _data( data )
+            {
+                EQASSERTINFO( !data.inRegion,
+                              "Another thread already in critical region" );
+                data.inRegion = true;
+            }
+        ~ScopedThreadCheck() 
+            {
+                EQASSERTINFO( _data.inRegion,
+                              "Another thread was in critical region" );
+                _data.inRegion = false;
+            }
+    private:
+        T& _data;
+    };
+
+# define CHECK_THREAD_SCOPED( NAME ) \
+    eq::base::ScopedThreadCheck< NAME ## Struct > scoped ## NAME ## Check(NAME);
+
 #else
-#  define CHECK_THREAD_RESET( NAME )
-#  define CHECK_THREAD( NAME )
-#  define CHECK_NOT_THREAD( NAME )
+#  define CHECK_THREAD_RESET( NAME ) {}
+#  define CHECK_THREAD( NAME ) {}
+#  define CHECK_NOT_THREAD( NAME ) {}
+#  define CHECK_THREAD_SCOPED( NAME ) {}
 #endif
 
 }

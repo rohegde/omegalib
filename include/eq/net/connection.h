@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -31,10 +31,6 @@
 #include <sys/types.h>
 #include <string.h>
 #include <vector>
-
-#ifdef WIN32_API
-#  include <malloc.h>     // for alloca()
-#endif
 
 #ifdef WIN32
 #  define EQ_DEFAULT_PORT (4242)
@@ -74,7 +70,8 @@ namespace net
             STATE_CLOSED,     //!< Closed, initial state
             STATE_CONNECTING, //!< A connect() or listen() is in progress
             STATE_CONNECTED,  //!< The connection has been connected and is open
-            STATE_LISTENING   //!< The connection is listening for connects
+            STATE_LISTENING,  //!< The connection is listening for connects
+            STATE_CLOSING     //!< A close() is in progress
         };
 
         /** 
@@ -142,7 +139,7 @@ namespace net
         /** 
          * Close a connected or listening connection.
          */
-        virtual void close(){};
+        virtual void close() {}
         //@}
 
         /** @name Listener Interface */
@@ -172,8 +169,7 @@ namespace net
          *
          * @return the new connection, 0 on error.
          */        
-        virtual ConnectionPtr acceptSync()
-            { EQUNIMPLEMENTED; return 0; }
+        virtual ConnectionPtr acceptSync() { EQUNIMPLEMENTED; return 0; }
         //@}
 
 
@@ -334,28 +330,24 @@ namespace net
         static bool send( const ConnectionVector& connections, Packet& packet,
                           const void* data, const uint64_t size,
                           const bool isLocked = false );
-        //@}
-
-        /**
-         * The Notifier used by the ConnectionSet to dedect readyness of a
-         * Connection.
+        /** 
+         * Sends a packaged message including additional multiple data to multiple
+         * connections.
+         *
+         * @param connections The connections.
+         * @param packet the message packet.
+         * @param data the multiple buffer data.
+         * @param dataSize the datas size for each buffer in bytes.
+         * @param nData the number of data elements.
+         * @param allDataSize the total data size in bytes.
+         * @param isLocked true if the connection is locked externally.
+         * @return true if the packet was sent successfully to all receivers.
          */
-#ifdef WIN32
-        typedef HANDLE Notifier;
-#else
-        typedef int Notifier;
-#endif
-        /** @return the notifier signalling events on the connection. */
-        virtual Notifier getNotifier() const { return 0; }
+        static bool send( const ConnectionVector& connections, Packet& packet,
+                          const void* const* data, const uint64_t* dataSize, 
+                          const size_t nData, const uint64_t allDataSize,
+                          const bool isLocked );
 
-    protected:
-        Connection();
-        virtual ~Connection();
-
-        void _fireStateChanged();
-
-        /** @name Input/Output */
-        //@{
         /** 
          * Write data to the connection.
          * 
@@ -365,6 +357,24 @@ namespace net
          */
         virtual int64_t write( const void* buffer, const uint64_t bytes ) = 0;
         //@}
+
+        /**
+         * The Notifier used by the ConnectionSet to detect readiness of a
+         * Connection.
+         */
+#ifdef WIN32
+        typedef HANDLE Notifier;
+#else
+        typedef int Notifier;
+#endif
+        /** @return the notifier signaling events on the connection. */
+        virtual Notifier getNotifier() const = 0;
+
+    protected:
+        Connection();
+        virtual ~Connection();
+
+        void _fireStateChanged();
 
         State                    _state; //!< The connection state
         ConnectionDescriptionPtr _description; //!< The connection parameters
@@ -378,8 +388,6 @@ namespace net
 
         /** The listeners on state changes */
         std::vector< ConnectionListener* > _listeners;
-
-        friend class PairConnection; //!< for access to read/write
     };
 
     std::ostream& operator << ( std::ostream&, const Connection* );

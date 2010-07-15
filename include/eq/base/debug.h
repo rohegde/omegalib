@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -28,11 +28,26 @@ namespace eq
 {
 namespace base
 {
-/** Used to trap into an infinite loop to allow debugging of assertions */
+/**
+ * Used to trap into an infinite loop to allow debugging of assertions
+ * @internal
+ */
 EQ_EXPORT void abort();
 
-/** Check the consistency of the heap and abort on error (Win32 only). */
+/**
+ * Check the consistency of the heap and abort on error (Win32 only).
+ * @internal
+ */
 EQ_EXPORT void checkHeap();
+
+/** 
+ * Print a textual description of the current system error.
+ *
+ * The current system error is OS-specific, e.g., errno or GetLastError().
+ * @version 1.0
+ */
+EQ_EXPORT std::ostream& sysError( std::ostream& os );
+
 }
 }
 
@@ -53,7 +68,7 @@ EQ_EXPORT void checkHeap();
                     << std::endl << eq::base::forceFlush;               \
         eq::base::checkHeap();                                          \
     }
-#    define EQCHECK(x) { const bool eqResult = x; EQASSERTINFO( eqResult, #x ) }
+#    define EQCHECK(x) { const bool eqOk = x; EQASSERTINFO( eqOk, #x ) }
 #  else
 #    define EQASSERT(x)
 #    define EQASSERTINFO(x, info)
@@ -106,7 +121,7 @@ EQ_EXPORT void checkHeap();
               << typeid(*this).name() << std::endl << eq::base::forceFlush; \
         eq::base::abort(); }
 
-#  define EQCHECK(x) { const bool eqResult = x; EQASSERTINFO( eqResult, #x ) }
+#  define EQCHECK(x) { const bool eqOk = x; EQASSERTINFO( eqOk, #x ) }
 #  define EQABORT( info ) {                                             \
         EQERROR << "Abort: " << info << std::endl << eq::base::forceFlush; \
         eq::base::abort(); }

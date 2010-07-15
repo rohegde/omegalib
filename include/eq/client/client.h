@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -30,67 +30,78 @@ namespace eq
     class Server;
 
     /** 
-     * The client represents a network node in the cluster.
+     * The client represents a network node of the application in the cluster.
+     *
+     * The methods initLocal() and exitLocal() should be used to set up and exit
+     * the listening node instance for each application process.
      */
     class Client : public net::Node
     {
     public:
-        /** 
-         * Constructs a new client.
-         */
+        /** Construct a new client. @version 1.0 */
         EQ_EXPORT Client();
 
-        /**
-         * Destructs the client.
-         */
+        /** Destruct the client. @version 1.0 */
         EQ_EXPORT virtual ~Client();
 
         /** 
          * Open and connect an Equalizer server to the local client.
-         * 
+         *
+         * The client has to be in the listening state, see initLocal().
+         *
          * @param server the server.
          * @return true if the server was connected, false if not.
+         * @version 1.0 
          */
         EQ_EXPORT bool connectServer( ServerPtr server );
 
         /** 
-         * Disconnect and close the connection of an Equalizer server to the
-         * local client.
+         * Disconnect and close the connection to an Equalizer server.
          * 
          * @param server the server.
          * @return true if the server was disconnected, false if not.
+         * @version 1.0 
          */
         EQ_EXPORT bool disconnectServer( ServerPtr server );
 
-        /** @return true if the client has commands pending, false otherwise. */
+        /**
+         * @return true if the client has commands pending, false otherwise.
+         * @version 1.0 
+         */
         EQ_EXPORT bool hasCommands();
 
         /** 
-         * Get and process one command from the node command queue. Used
-         * internally to run node commands.
+         * Get and process one pending command from the node command queue.
+         *
+         * @version 1.0 
          */
         EQ_EXPORT void processCommand();
 
-        /** @sa net::Node::listen() */
-        EQ_EXPORT virtual bool listen();
-        /** @sa net::Node::stopListening() */
-        EQ_EXPORT virtual bool stopListening();
-
-        /** 
-         * Set the window system for the client's message pump, used by
-         * non-threaded pipes.
-         * @internal
-         */
-        EQ_EXPORT void setWindowSystem( const WindowSystem windowSystem );
-
-        /** Return the command queue to the main node thread. */
+        /** @return the command queue to the main node thread. @internal */
         CommandQueue* getNodeThreadQueue() { return _nodeThreadQueue; }
 
     protected:
-        /** @sa net::Node::clientLoop */
+        /**
+         * Implements the processing loop for render clients. 
+         *
+         * As long as the node is running, that is, between initLocal() and an
+         * exit send from the server, this method executes received commands
+         * using processCommand() and triggers the message pump between
+         * commands.
+         *
+         * @sa net::Node::clientLoop(), Pipe::createMessagePump()
+         * @version 1.0 
+         */
         EQ_EXPORT virtual bool clientLoop();
-        /** @sa net::Node::exitClient(). */
+
+        /** Reimplemented to also call eq::exit() on render clients. */
         EQ_EXPORT virtual bool exitClient();
+
+        /** @sa net::Node::listen() */
+        EQ_EXPORT virtual bool listen();
+
+        /** @sa net::Node::close() */
+        EQ_EXPORT virtual bool close();
 
     private:
         /** The command->node command queue. */

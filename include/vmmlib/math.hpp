@@ -88,6 +88,40 @@ inline T sign( T a, T b )
 }
 
 
+template< typename T >
+inline T absolute( T a )
+{
+    return fabs( a );
+}
+
+
+template<>
+inline float absolute( float a )
+{
+    return fabsf( a );
+}
+
+
+template< typename T >
+struct abs_less
+{
+    T operator()( const T& a, const T& b )
+    {
+        return absolute(a) < absolute( b );
+    }
+};
+
+
+template< typename T >
+struct abs_greater
+{
+    T operator()( const T& a, const T& b )
+    {
+        return absolute(a) > absolute( b );
+    }
+};
+
+
 } // namespace math
 
 } // namespace vmml

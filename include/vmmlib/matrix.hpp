@@ -377,13 +377,7 @@ public:
 
     // protected:
     // column_by_column
-    T array[ M * N ]
-    #ifndef VMMLIB_DONT_FORCE_ALIGNMENT
-        #ifdef __GNUC__
-                    __attribute__((aligned(16)))
-        #endif
-    #endif
-    ;
+    VMMLIB_ALIGN( T array[ M * N ] );
     
     // static members
     static const matrix< M, N, T > IDENTITY;
@@ -1740,40 +1734,8 @@ template< size_t M, size_t N, typename T >
 template< typename TT >
 void
 matrix< M, N, T >::
-pre_rotate_x( const TT angle_, typename enable_if< M == N && M == 4, TT >::type* )
-{
-    const T angle = static_cast< T >( angle_ );
-
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
-
-    T tmp;
-    
-    tmp         = array[ 0 ];
-    array[ 0 ]  = array[ 0 ] * cosine - array[ 2 ] * sine;
-    array[ 2 ]  = tmp * sine + array[ 2 ] * cosine;
-
-    tmp         = array[ 4 ];
-    array[ 4 ]  = array[ 4 ] * cosine - array[ 6 ] * sine;
-    array[ 6 ]  = tmp * sine + array[ 6 ] * cosine;
-
-    tmp         = array[ 8 ];
-    array[ 8 ]  = array[ 8 ] * cosine - array[ 10 ] * sine;
-    array[ 10 ] = tmp * sine + array[ 10 ] * cosine;
-
-    tmp         = array[ 12 ];
-    array[ 12 ] = array[ 12 ] * cosine - array[ 14 ] * sine;
-    array[ 14 ] = tmp * sine + array[ 14 ] * cosine;
-    
-}
-
-
-
-template< size_t M, size_t N, typename T >
-template< typename TT >
-void
-matrix< M, N, T >::
-pre_rotate_y( const TT angle_, typename enable_if< M == N && M == 4, TT >::type* )
+pre_rotate_x( const TT angle_, 
+              typename enable_if< M == N && M == 4, TT >::type* )
 {
     const T angle = static_cast< T >( angle_ );
 
@@ -1797,7 +1759,38 @@ pre_rotate_y( const TT angle_, typename enable_if< M == N && M == 4, TT >::type*
     tmp         = array[ 13 ];
     array[ 13 ] = array[ 13 ] * cosine + array[ 14 ] * sine;
     array[ 14 ] = tmp * -sine + array[ 14 ] * cosine;
-    
+}
+
+
+
+template< size_t M, size_t N, typename T >
+template< typename TT >
+void
+matrix< M, N, T >::
+pre_rotate_y( const TT angle_, typename enable_if< M == N && M == 4, TT >::type* )
+{
+    const T angle = static_cast< T >( angle_ );
+
+    const T sine      = math::sine( angle );
+    const T cosine    = math::cosine( angle );
+
+    T tmp;
+
+    tmp         = array[ 0 ];
+    array[ 0 ]  = array[ 0 ] * cosine - array[ 2 ] * sine;
+    array[ 2 ]  = tmp * sine + array[ 2 ] * cosine;
+
+    tmp         = array[ 4 ];
+    array[ 4 ]  = array[ 4 ] * cosine - array[ 6 ] * sine;
+    array[ 6 ]  = tmp * sine + array[ 6 ] * cosine;
+
+    tmp         = array[ 8 ];
+    array[ 8 ]  = array[ 8 ] * cosine - array[ 10 ] * sine;
+    array[ 10 ] = tmp * sine + array[ 10 ] * cosine;
+
+    tmp         = array[ 12 ];
+    array[ 12 ] = array[ 12 ] * cosine - array[ 14 ] * sine;
+    array[ 14 ] = tmp * sine + array[ 14 ] * cosine;
 }
 
 

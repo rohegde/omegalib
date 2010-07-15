@@ -21,6 +21,7 @@
 #include <eq/client/colorMask.h>        // member
 #include <eq/client/eye.h>              // member
 #include <eq/client/pixel.h>            // member
+#include <eq/client/subPixel.h>         // member
 #include <eq/client/pixelViewport.h>    // member
 #include <eq/client/range.h>            // member
 #include <eq/client/types.h>
@@ -41,31 +42,29 @@ namespace eq
     public: 
         EQ_EXPORT RenderContext();
 
-        uint32_t       frameID;        //<! identifier from Config::beginFrame
-
-        uint32_t       buffer;         //<! buffer as passed to glDrawBuffer() 
-        ColorMask      bufferMask;     //<! color mask for anaglyph stereo
-        PixelViewport  pvp;            //<! pixel viewport of channel wrt window
-        Frustumf       frustum;        //<! frustum for projection matrix
-        Frustumf       ortho;          //<! ortho frustum for projection matrix
         Matrix4f       headTransform;  //<! frustum transform for modelview
 
-        Viewport       vp;             //<! fractional viewport wrt dest channel
-        Range          range;          //<! database-range wrt to dest channel
+        PixelViewport  pvp;            //<! pixel viewport of channel wrt window
         Pixel          pixel;          //<! pixel decomposition wrt to dest
-        Zoom           zoom;           //<! up/downsampling wrt to dest
+        Vector4i       overdraw;       //<! @internal for pw pp filters
+        Viewport       vp;             //<! fractional viewport wrt dest channel
+
         Vector2i       offset;         //<! absolute position wrt dest channel
-
-        Eye            eye;            //<! current eye pass
         net::ObjectVersion view;       //<! destination view id and version
+        Range          range;          //<! database-range wrt to dest channel
+        SubPixel       subpixel;       //<! subpixel decomposition wrt to dest
+        Zoom           zoom;           //<! up/downsampling wrt to dest
 
-        Vector4i overdraw;
-        uint32_t       taskID;
+        uint32_t       frameID;        //<! identifier from Config::beginFrame
+        uint32_t       buffer;         //<! buffer as passed to glDrawBuffer() 
+        uint32_t       taskID;         //<! @internal per-channel task counter
+        Eye            eye;            //<! current eye pass
 
-        union // placeholder for binary-compatible changes
-        {
-            char dummy[16];
-        };
+        Frustumf       frustum;        //<! frustum for projection matrix
+        Frustumf       ortho;          //<! ortho frustum for projection matrix
+
+        ColorMask      bufferMask;     //<! color mask for anaglyph stereo
+        bool           alignDummy[29]; //<! @internal padding
     };
 
     EQ_EXPORT std::ostream& operator << ( std::ostream& os, 

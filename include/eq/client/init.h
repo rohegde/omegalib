@@ -76,21 +76,32 @@
  * for images and links the input with the output frames. An Image represents a
  * 2D framebuffer area, containing color and/or depth information.
  *
- * The ObjectManager, Texture and FrameBufferObject are helper classes for
- * OpenGL functionality.
+ * <img src="http://www.equalizergraphics.com/documents/design/images/clientUML.png">
  */
 namespace eq
 {
     class Config;
-	class NodeFactory;
+    class NodeFactory;
 
     /** 
      * Initialize the Equalizer client library.
      *
+     * The following command line options are recognized by this function:
+     * <ul>
+     *   <li>--eq-server &lt;hostname&gt; to specify an explicit server
+     *         address (cf. Global::setServer())</li>
+     *   <li>--eq-config &lt;filename&gt; to specify the configuration file if
+     *         an application-specific server is used (cf.
+     *         Global::setConfigFile())</li>
+     * </ul>
+     *
+     * Please note that further command line parameters are recognized by
+     * net::Node::initLocal().
+     *
      * @param argc the command line argument count.
      * @param argv the command line argument values.
-	 * @param nodeFactory the factory for allocating Equalizer objects.
-	 *
+     * @param nodeFactory the factory for allocating Equalizer objects.
+     *
      * @return <code>true</code> if the library was successfully initialised,
      *         <code>false</code> otherwise.
      */

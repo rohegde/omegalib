@@ -66,6 +66,9 @@ namespace server
         /** The pixel decomposition relative to the destination channel. */
         const Pixel& getPixel() const { return _data.pixel; }
         
+        /** The subpixel decomposition relative to the destination channel. */
+        const SubPixel& getSubPixel() const { return _data.subpixel; }
+
         /** The images of this frame data holder */
         const ImageVector& getImages() const { return _images; }
 
@@ -73,10 +76,14 @@ namespace server
         void setPixelViewport( const PixelViewport& pvp ) { _data.pvp = pvp; }
 
         /* Set color buffer type to read */
-        void setColorType( const GLuint colorType ) { _colorType = colorType; }
+        void setColorFormat( const GLuint colorFormat )
+            { _colorFormat = colorFormat; }
         
         /** Enable/disable alpha usage for newly allocated images. */
         void setAlphaUsage( const bool useAlpha ) { _useAlpha = useAlpha; }
+
+        /** Set the compressor quality value. */
+        void setQuality( const Frame::Buffer buffer, const float quality );
         //@}
 
         /**
@@ -191,6 +198,7 @@ namespace server
             Frame::Type   frameType;
             Range         range;     //<! database-range of src wrt to dest
             Pixel         pixel;     //<! pixel decomposition of source
+            SubPixel      subpixel;  //<! subpixel decomposition of source
         } _data;
 
         friend class eq::server::FrameData;
@@ -199,7 +207,7 @@ namespace server
         ImageVector  _imageCache;
         base::Lock   _imageCacheLock;
 
-        GLuint     _colorType; 
+        GLuint     _colorFormat; 
         ROIFinder* _roiFinder;
 
         struct ImageVersion
@@ -222,6 +230,8 @@ namespace server
 
         bool _useAlpha;
         bool _useSendToken;
+        float _colorQuality;
+        float _depthQuality;
         
         union // placeholder for binary-compatible changes
         {

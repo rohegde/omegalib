@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -26,6 +26,7 @@
 #include <eq/net/types.h>
 
 #include <eq/base/base.h>
+#include <eq/base/lockable.h>
 #include <eq/base/perThread.h>
 #include <eq/base/requestHandler.h>
 #include <eq/base/thread.h>
@@ -80,14 +81,55 @@ namespace net
         bool  isConnected() const 
             { return (_state == STATE_CONNECTED || _state == STATE_LISTENING); }
 
-        void setAutoLaunch( const bool autoLaunch ) { _autoLaunch = autoLaunch;}
-
         /** 
+         * Get a node by identifier.
+         *
+         * The node might not be connected.
+         *
+         * @param id the node identifier.
+         * @return the node.
+         */
+        NodePtr getNode( const NodeID& id ) const;
+        //@}
+
+        /** @ Auto-launch parameters. */
+        //@{
+        /** 
+         * Set the command to spawn the process for this node.
+         *
+         * The default is '"ssh -n %h %c >& %h.%n.log"', with:
+         * 
+         * %h - hostname
+         * %c - command (work dir + program name)
+         * %n - unique node identifier
+         */
+        EQ_EXPORT void setLaunchCommand( const std::string& launchCommand );
+
+        /** @return the command to spawn the process for this node. */
+        EQ_EXPORT const std::string& getLaunchCommand() const;
+
+        /** Set the launch timeout in milliseconds. */
+        void setLaunchTimeout( const uint32_t time ) { _launchTimeout = time; }
+
+        /** @return the current launch timeout in milliseconds. */
+        uint32_t getLaunchTimeout() const { return _launchTimeout; }
+
+        /** Set the quote charactor for the launch command arguments */
+        void setLaunchCommandQuote( const char quote )
+            { _launchCommandQuote = quote; }
+
+        /* @return the quote charactor for the launch command arguments */
+        char getLaunchCommandQuote() const { return _launchCommandQuote; }
+
+        /**
          * Set the program name to start this node.
          * 
          * @param name the program name to start this node.
          */
         EQ_EXPORT void setProgramName( const std::string& name );
+
+        /** @return the program name to start the node. */
+        const std::string& getProgramName() const { return _programName; }
 
         /** 
          * Set the working directory to start this node.
@@ -96,13 +138,16 @@ namespace net
          */
         EQ_EXPORT void setWorkDir( const std::string& name );
 
+        /** @return the working directory to start the node. */
+        const std::string& getWorkDir() const { return _workDir; }
+
         /** 
-         * Get a node by identifier.
-         * 
-         * @param id the node identifier.
-         * @return the node.
+         * Set if this node should be launched automatically.
+         *
+         * This determines if the launch command is used to start the node when
+         * it can not be reached using its connections. The default is false.
          */
-        NodePtr getNode( const NodeID& id ) const;
+        void setAutoLaunch( const bool autoLaunch ) { _autoLaunch = autoLaunch;}
         //@}
 
         /**
@@ -115,11 +160,19 @@ namespace net
         /** 
          * Initialize a local, listening node.
          *
-         * This function does not return when the command line option
-         * '--eq-client' is present. This is used for remote nodes which have
-         * been auto-launched by another node, e.g., remote render clients. One
-         * or more '--eq-listen &lt;connection description&gt;' parameters might
-         * be used to add listening connections to this node.
+         * The following command line options are recognized by this method:
+         * <ul>
+         *   <li>--eq-client to launch a client. This is used for remote nodes
+         *         which have  been auto-launched by another node, e.g., remote
+         *         render clients. This method does not return when this command
+         *         line option is present.</li>
+         *   <li>'--eq-listen &lt;connection description&gt;' to add listening
+         *         connections to this node. This parameter might be used
+         *         multiple times (cf. ConnectionDescription::fromString).</li>
+         * </ul>
+         *
+         * Please note that further command line parameters are recognized by
+         * eq::init().
          *
          * @param argc the command line argument count.
          * @param argv the command line argument values.
@@ -129,7 +182,7 @@ namespace net
         EQ_EXPORT virtual bool initLocal( const int argc, char** argv );
 
         /** Exit a local, listening node. */
-        virtual bool exitLocal() { return stopListening(); }
+        virtual bool exitLocal() { return close(); }
 
         /** Exit a client node. */
         virtual bool exitClient() { return exitLocal(); }
@@ -137,10 +190,10 @@ namespace net
         /** 
          * Open all connections and put this node into the listening state.
          *
-         * The node will spawn a thread locally and listen on all connections
-         * described for incoming commands. The node will be in the listening
-         * state if the method completed successfully. A listening node can
-         * connect to other nodes.
+         * The node will spawn a receiver and command thread, and listen on all
+         * connections described for incoming commands. The node will be in the
+         * listening state if the method completed successfully. A listening
+         * node can connect other nodes.
          * 
          * @return <code>true</code> if the node could be initialized,
          *         <code>false</code> if not.
@@ -149,47 +202,41 @@ namespace net
         EQ_EXPORT virtual bool listen();
 
         /** 
-         * Stop this node.
+         * Close a listening node.
          * 
-         * If this node is listening, the node will stop listening and terminate
-         * its receiver thread.
+         * Disconnects all connected node proxies, closes the listening
+         * connections and terminates all threads created in listen().
          * 
          * @return <code>true</code> if the node was stopped, <code>false</code>
          *         if it was not stopped.
          */
-        EQ_EXPORT virtual bool stopListening();
+        EQ_EXPORT virtual bool close();
 
         /** 
-         * Connect a node proxy to this node.
+         * Connect a proxy node to this listening node.
          *
-         * This node has to be in the listening state. The node proxy will be
-         * put in the connected state upon success. The connection has to be
-         * connected.
-         *
-         * @param node the remote node.
-         * @param connection the connection to the remote node.
-         * @return <code>true</code> if the node was connected correctly,
-         *         <code>false</code> otherwise.
-         */
-        bool connect( NodePtr node, ConnectionPtr connection );
-
-        /** 
-         * Connect and potentially launch a node to this listening node, using
-         * the connection descriptions of the node.
+         * The connection descriptions of the node are used to connect the
+         * node. If this fails, and auto launch is true, the node is started
+         * using the launch command.
          *
          * On success, the node is in the connected state, otherwise its state
          * is unchanged.
          *
+         * This method is one-sided, that is, the node to be connected should
+         * not initiate a connection to this node at the same time.
+         *
          * @param node the remote node.
-         * @return <code>true</code> if this node was connected,
-         *         <code>false</code> otherwise.
+         * @return true if this node was connected, false otherwise.
          * @sa initConnect, syncConnect
          */
         EQ_EXPORT bool connect( NodePtr node );
 
         /** 
-         * Start connecting and potentially launching a node using the
-         * available connection descriptions.
+         * Start connecting a node using the available connection descriptions.
+         *
+         * The connection descriptions of the node are used to connect the
+         * node. If this fails, and auto launch is true, the node is started
+         * using the launch command.
          *
          * On success, the node is in the launched or connected state, otherwise
          * its state is unchanged.
@@ -208,14 +255,20 @@ namespace net
          * is unchanged.
          *
          * @param node the remote node.
+         * @param timeout the timeout, in milliseconds, before the launch
+         *                process is considered to have failed.
          * @return <code>true</code> if this node is connected,
          *         <code>false</code> otherwise.
          * @sa initConnect
          */
-        EQ_EXPORT bool syncConnect( NodePtr node );
+        EQ_EXPORT bool syncConnect( NodePtr node, const uint32_t timeout );
 
         /** 
          * Create and connect a node given by an identifier.
+         *
+         * This method is two-sided and thread-safe, that is, it can be called
+         * by mulltiple threads on the same node with the same nodeID, or
+         * concurrently on two nodes with each others' nodeID.
          * 
          * @param nodeID the identifier of the node to connect.
          * @return the connected node, or an invalid RefPtr if the node could
@@ -230,7 +283,7 @@ namespace net
          * @return <code>true</code> if the node was disconnected correctly,
          *         <code>false</code> otherwise.
          */
-        EQ_EXPORT bool disconnect( NodePtr node );
+        EQ_EXPORT bool close( NodePtr node );
         //@}
 
 
@@ -256,9 +309,11 @@ namespace net
         /** 
          * Removes a connection description.
          * 
-         * @param index the index of the connection description.
+         * @param cd the connection description.
+         * @return true if the connection description was removed, false
+         *         otherwise.
          */
-        void removeConnectionDescription( const uint32_t index );
+        EQ_EXPORT bool removeConnectionDescription(ConnectionDescriptionPtr cd);
 
         /** 
          * Returns the number of stored connection descriptions. 
@@ -267,32 +322,18 @@ namespace net
          */
         EQ_EXPORT const ConnectionDescriptionVector& getConnectionDescriptions()
                             const;
-        /** 
-         * Returns the connection to this node.
-         * 
-         * @return the connection to this node. 
-         */
-        ConnectionPtr getConnection() const { return _connection; }
+
+        /** @return the connection to this node. */
+        ConnectionPtr getConnection() const { return _outgoing; }
+
+        /** @return the multicast connection to this node, or 0. */
+        ConnectionPtr getMulticast();
         //@}
 
         /**
          * @name Messaging API
          */
         //@{
-        /** 
-         * Ensures the connectivity of this node.
-         *
-         * @return <code>true</code> if this node is connected,
-         *         <code>false</code> otherwise.
-         */
-        ConnectionPtr checkConnection()
-            {
-                ConnectionPtr connection = _connection;
-                if( _state == STATE_CONNECTED || _state == STATE_LISTENING )
-                    return _connection;
-                return 0;
-            }
-
         /** 
          * Sends a packet to this node.
          * 
@@ -301,7 +342,7 @@ namespace net
          */
         bool send( const Packet& packet )
             {
-                ConnectionPtr connection = checkConnection();
+                ConnectionPtr connection = _getConnection();
                 if( !connection )
                     return false;
                 return connection->send( packet );
@@ -324,7 +365,7 @@ namespace net
          */
         bool send( Packet& packet, const std::string& string )
             {
-                ConnectionPtr connection = checkConnection();
+                ConnectionPtr connection = _getConnection();
                 if( !connection )
                     return false;
                 return connection->send( packet, string );
@@ -346,7 +387,7 @@ namespace net
         template< class T >
         bool send( Packet& packet, const std::vector<T>& data )
             {
-                ConnectionPtr connection = checkConnection();
+                ConnectionPtr connection = _getConnection();
                 if( !connection )
                     return false;
                 return connection->send( packet, data );
@@ -370,10 +411,24 @@ namespace net
          */
         bool send( Packet& packet, const void* data, const uint64_t size )
             {
-                ConnectionPtr connection = checkConnection();
+                ConnectionPtr connection = _getConnection();
                 if( !connection )
                     return false;
                 return connection->send( packet, data, size );
+            }
+
+        /** 
+         * Multicasts a packet to the multicast group of this node.
+         * 
+         * @param packet the packet.
+         * @return the success status of the transaction.
+         */
+        bool multicast( const Packet& packet )
+            {
+                ConnectionPtr connection = getMulticast();
+                if( !connection )
+                    return false;
+                return connection->send( packet );
             }
 
         /**
@@ -382,7 +437,7 @@ namespace net
          * This causes the receiver thread to redispatch all pending commands,
          * which are normally only redispatched when a new command is received.
          */
-        void flushCommands() { _connectionSet.interrupt(); }
+        void flushCommands() { _incoming.interrupt(); }
 
         void acquireSendToken( NodePtr toNode );
         void releaseSendToken( NodePtr toNode );
@@ -468,6 +523,21 @@ namespace net
         EQ_EXPORT virtual ~Node();
 
         /** 
+         * Connect a node proxy to this node.
+         *
+         * This node has to be in the listening state. The node proxy will be
+         * put in the connected state upon success. The connection has to be
+         * connected.
+         *
+         * @param node the remote node.
+         * @param connection the connection to the remote node.
+         * @return <code>true</code> if the node was connected correctly,
+         *         <code>false</code> otherwise.
+         * @internal
+         */
+        bool _connect( NodePtr node, ConnectionPtr connection );
+
+        /** 
          * Dispatches a packet to the registered command queue.
          * 
          * @param command the command.
@@ -508,9 +578,6 @@ namespace net
         base::RequestHandler _requestHandler;
 
     private:
-        /** Determines if the node should be launched automatically. */
-        bool _autoLaunch;
-
         /** Globally unique node identifier. */
         NodeID _id;
 
@@ -520,20 +587,40 @@ namespace net
         /** The current mapped sessions of this node. */
         SessionHash _sessions;
 
-        /** The connection to this node, for remote nodes. */
-        ConnectionPtr _connection;
+        /** The connection to this node. */
+        ConnectionPtr _outgoing;
+
+        /** The multicast connection to this node, can be 0. */
+        base::Lockable< ConnectionPtr > _outMulticast;
 
         /** The connection set of all connections from/to this node. */
-        ConnectionSet _connectionSet;
-        friend eq::net::ConnectionPtr (::eqsStartLocalServer(const
-                                                             std::string& ));
+        ConnectionSet _incoming;
+        friend net::ConnectionPtr (::eqsStartLocalServer( const std::string& ));
+
+        struct MCData
+        {
+            ConnectionPtr connection;
+            NodePtr       node;
+        };
+        typedef std::vector< MCData > MCDatas;
+
+        /** 
+         * Unused multicast connections for this node.
+         *
+         * On the first multicast send usage, the connection is 'primed' by
+         * sending our node identifier to the MC group, removed from this vector
+         * and set as _outMulticast.
+         */
+        MCDatas _multicasts;
+
+        typedef base::UUIDHash< NodePtr > NodeHash;
 
         /** The connected nodes. */
-        base::UUIDHash< NodePtr > _nodes;
+        base::Lockable< NodeHash > _nodes; // read: all, write: recv only
 
         /** The node for each connection. */
         typedef base::RefPtrHash< Connection, NodePtr > ConnectionNodeHash;
-        ConnectionNodeHash _connectionNodes;
+        ConnectionNodeHash _connectionNodes; // read and write: recv only
 
         /** The receiver->command command queue. */
         CommandQueue _commandThreadQueue;
@@ -541,11 +628,23 @@ namespace net
         /** Needed for thread-safety during nodeID-based connect() */
         base::Lock _connectMutex;
 
+        /** Determines if the node should be launched automatically. */
+        bool _autoLaunch;
+
         /** The request id for the async launch operation. */
         uint32_t _launchID;
 
-        /** The remaining timeout for the launch operation. */
-        base::Clock _launchTimeout;
+        /** 
+         * The amount of time in milliseconds to wait before a node is
+         * considered unreachable during start.
+         */
+        int32_t _launchTimeout;
+
+        /** The character to quote the launch command arguments */
+        char _launchCommandQuote;
+
+        /** Command to launch node process. */
+        std::string _launchCommand; 
 
         /** Commands re-scheduled for dispatch. */
         CommandList  _pendingCommands;
@@ -569,6 +668,7 @@ namespace net
                     : _node( node )
                 {}
             
+            virtual bool init(){ return _node->_commandThread->start(); }
             virtual void* run(){ return _node->_runReceiverThread(); }
 
         private:
@@ -593,8 +693,10 @@ namespace net
 
         /** true if the send token can be granted, false otherwise. */
         bool _hasSendToken;
+        std::deque< Command* > _sendTokenQueue;
 
         bool _connectSelf();
+        void _connectMulticast( NodePtr node );
         EQ_EXPORT void _addConnection( ConnectionPtr connection );
         void _removeConnection( ConnectionPtr connection );
         void _cleanup();
@@ -654,6 +756,15 @@ namespace net
 
         NodePtr _connect( const NodeID& nodeID, NodePtr server );
 
+        /** Ensures the connectivity of this node. */
+        ConnectionPtr _getConnection()
+            {
+                ConnectionPtr connection = _outgoing;
+                if( _state == STATE_CONNECTED || _state == STATE_LISTENING )
+                    return connection;
+                return 0;
+            }
+
         void* _runReceiverThread();
         void    _handleConnect();
         void    _handleDisconnect();
@@ -672,6 +783,8 @@ namespace net
         CommandResult _cmdUnmapSessionReply( Command& command );
         CommandResult _cmdConnect( Command& command );
         CommandResult _cmdConnectReply( Command& command );
+        CommandResult _cmdConnectAck( Command& command );
+        CommandResult _cmdID( Command& command );
         CommandResult _cmdDisconnect( Command& command );
         CommandResult _cmdGetNodeData( Command& command );
         CommandResult _cmdGetNodeDataReply( Command& command );

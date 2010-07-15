@@ -18,7 +18,8 @@
 #ifndef EQNET_CONNECTIONDESCRIPTION_H
 #define EQNET_CONNECTIONDESCRIPTION_H
 
-#include <eq/net/connectionType.h>
+#include <eq/net/connectionType.h> // member
+#include <eq/net/types.h>
 
 #include <eq/base/base.h>
 #include <eq/base/referenced.h>
@@ -38,10 +39,8 @@ namespace net
         ConnectionDescription() 
                 : type( CONNECTIONTYPE_TCPIP )
                 , bandwidth( 0 )
-                , launchTimeout( 10000 )
-                , launchCommandQuote( '\'' )
+                , port( 0 )
             {
-                TCPIP.port = 0;
             }
 
         /** The network protocol for the connection. */
@@ -50,26 +49,8 @@ namespace net
         /** The bandwidth in kilobyte per second for this connection. */
         int32_t bandwidth;
 
-        /** 
-         * The amount of time in milliseconds to wait before a node is
-         * considered unreachable during start.
-         */
-        int32_t launchTimeout;
-
-        /** The individual parameters for the connection. */
-        union
-        {
-            /** TCP/IP parameters */
-            struct
-            {
-                /** The listening port. */
-                uint16_t port;
-
-            } TCPIP, SDP;
-        };
-
-        /** The character to quote the launch command arguments */
-        char launchCommandQuote;
+        /** The listening port (TCPIP, SDP, IB, MCIP). */
+        uint16_t port;
 
         /** @return this description as a string. */
         EQ_EXPORT std::string toString() const;
@@ -78,7 +59,13 @@ namespace net
         /** 
          * Reads the connection description from a string.
          * 
-         * The string is consumed as the description is parsed.
+         * The string is consumed as the description is parsed. Two different
+         * formats are recognized, a human-readable and a machine-readable. The
+         * human-readable version has the format
+         * <code>hostname[:port][:type]</code> or
+         * <code>filename:PIPE</code>. The <code>type</code> parameter can be
+         * TCPIP, SDP, IB, MCIP, PGM or RSP. The machine-readable format
+         * contains all connection description parameters and is not documented.
          *
          * @param data the string containing the connection description.
          * @return <code>true</code> if the information was read correctly, 
@@ -93,28 +80,25 @@ namespace net
         //@{
         EQ_EXPORT void setHostname( const std::string& hostname );
         EQ_EXPORT const std::string& getHostname() const;
-        EQ_EXPORT void setLaunchCommand( const std::string& launchCommand );
-        EQ_EXPORT const std::string& getLaunchCommand() const;
+
+        EQ_EXPORT void setInterface( const std::string& interface );
+        EQ_EXPORT const std::string& getInterface() const;
+
         EQ_EXPORT void setFilename( const std::string& filename );
         EQ_EXPORT const std::string& getFilename() const;
+
+        EQ_EXPORT bool isSameMulticastGroup( ConnectionDescriptionPtr rhs );
         //@}
 
     protected:
         EQ_EXPORT virtual ~ConnectionDescription() {}
 
     private:
-        /** 
-         * The command to spawn a new process on the node, e.g., 
-         * "ssh eile@node1".
-         * 
-         * %h - hostname
-         * %c - command
-         * %n - unique node identifier
-         */
-        std::string _launchCommand; 
-
         /** The host name. */
         std::string _hostname;
+
+        /** The host name of the interface (multicast). */
+        std::string _interface;
 
         /** The name file using for a pipe. */
         std::string _filename;

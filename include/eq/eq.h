@@ -18,11 +18,14 @@
 #ifndef EQ_H
 #define EQ_H
 
-#include <eq/base/defines.h>
+#pragma warning(push)
+#pragma warning(disable : 4244) //conversion from .. to ..,possible loss of data
 
+#include <eq/base/base.h>
+
+#include <eq/client/canvas.h>
 #include <eq/client/channelStatistics.h>
 #include <eq/client/client.h>
-#include <eq/client/canvas.h>
 #include <eq/client/compositor.h>
 #include <eq/client/config.h>
 #include <eq/client/configEvent.h>
@@ -38,7 +41,6 @@
 #include <eq/client/log.h>
 #include <eq/client/node.h>
 #include <eq/client/nodeFactory.h>
-#include <eq/client/objectManager.h>
 #include <eq/client/observer.h>
 #include <eq/client/packets.h>
 #include <eq/client/pipe.h>
@@ -50,19 +52,23 @@
 #include <eq/client/windowSystem.h>
 
 #ifdef AGL
-#  include <eq/client/aglWindow.h>
 #  include <eq/client/aglEventHandler.h>
+#  include <eq/client/aglPipe.h>
+#  include <eq/client/aglWindow.h>
 #endif
 #ifdef GLX
-#  include <eq/client/glXWindow.h>
 #  include <eq/client/glXEventHandler.h>
+#  include <eq/client/glXPipe.h>
+#  include <eq/client/glXWindow.h>
 #endif
 #ifdef WGL
-#  include <eq/client/wglWindow.h>
 #  include <eq/client/wglEventHandler.h>
+#  include <eq/client/wglPipe.h>
+#  include <eq/client/wglWindow.h>
 #endif
 
-#include <eq/base/fileSearch.h>
+#include <eq/base/file.h>
+#include <eq/base/rng.h>
 #include <eq/base/sleep.h>
 #include <eq/net/net.h>
 #include <eq/util/util.h>
@@ -75,7 +81,8 @@ namespace eqNet  = ::eq::net;
 #endif
 
 /** \mainpage Equalizer API Documentation
-\htmlinclude "RelNotes.dox"
+    \htmlinclude "RelNotes.dox"
 */
 
+#pragma warning(pop)
 #endif // EQ_H

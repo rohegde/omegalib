@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,10 +18,9 @@
 #ifndef EQNET_DATAISTREAM_H
 #define EQNET_DATAISTREAM_H
 
-#include <eq/net/object.h>  // nested VERSION_NONE enum
 #include <eq/net/types.h>
 #include <eq/base/buffer.h> // member
-
+#include "dataStream.h"     // Base Class
 #include <iostream>
 #include <vector>
 
@@ -29,19 +28,21 @@ namespace eq
 {
 namespace net
 {
+    
     /** A std::istream-like input data stream for binary data. */
-    class DataIStream
+    class DataIStream : public DataStream
     {
     public:
         /** @name Internal */
         //@{ 
         DataIStream();
+        DataIStream( const DataIStream& from );
         virtual ~DataIStream();
 
         /** Get the number of remaining buffers. */
         virtual size_t nRemainingBuffers() const = 0;
 
-        virtual uint32_t getVersion() const { return Object::VERSION_NONE; }
+        virtual uint32_t getVersion() const = 0;
 
         virtual void reset();
         //@}
@@ -92,6 +93,12 @@ namespace net
     protected:
         virtual bool getNextBuffer( const uint8_t** buffer, uint64_t* size ) =0;
 
+        void _decompress( void* src, 
+                          const uint8_t** dst, 
+                          const uint32_t name,
+                          const uint32_t nChunks,
+                          const uint64_t dataSize );
+
     private:
         /** The current input buffer */
         const uint8_t* _input;
@@ -100,6 +107,10 @@ namespace net
         /** The current read position in the buffer */
         uint64_t  _position;
 
+        void* _decompressor;   //!< the instance of the decompressor
+        eq::base::Bufferb _datas; //!< a buffer for decompress datas
+
+        void _initDecompressor( const uint32_t name );
         /**
          * Check that the current buffer has data left, get the next buffer is
          * necessary, return false if no data is left. 
@@ -143,15 +154,6 @@ namespace net
             advanceBuffer( nElems );
         }
         return *this; 
-    }
-
-    /** Read a base::UUID */
-    template<>
-    inline DataIStream& DataIStream::operator >> ( base::UUID& id )
-    { 
-        read( &id, sizeof( id ));
-        id.convertToHost();
-        return *this;
     }
 
     /** Optimized specialization to read a std::vector of uint8_t. */

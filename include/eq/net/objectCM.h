@@ -21,6 +21,11 @@
 #include <eq/net/dispatcher.h>   // base class
 #include <eq/net/types.h>
 
+#define EQ_INSTRUMENT_MULTICAST
+#ifdef EQ_INSTRUMENT_MULTICAST
+#  include <eq/base/atomic.h>
+#endif
+
 namespace eq
 {
 namespace net
@@ -121,12 +126,10 @@ namespace net
         /** 
          * Add a subscribed slave to the managed object.
          * 
-         * @param node the slave node.
-         * @param instanceID the object instance identifier on the slave node.
-         * @param version the initial version.
+         * @param command the subscribe command initiating the add.
+         * @return the first version the slave has to use from its cache.
          */
-        virtual void addSlave( NodePtr node, const uint32_t instanceID,
-                               const uint32_t version ) = 0;
+        virtual uint32_t addSlave( Command& command ) = 0;
 
         /** 
          * Remove a subscribed slave.
@@ -135,14 +138,28 @@ namespace net
          */
         virtual void removeSlave( NodePtr node ) = 0;
 
+        /** @return the vector of current slave nodes. */
+        virtual const NodeVector* getSlaveNodes() const { return 0; }
+
         /** Apply the initial data after mapping. */
         virtual void applyMapData() = 0;
+
+        /** Add existing instance data to the object (from session cache) */
+        virtual void addInstanceDatas( const InstanceDataDeque& cache, 
+                                       const uint32_t startVersion )
+            { EQDONTCALL; }
 
         /** Add the old master as a slave. */
         virtual void addOldMaster( NodePtr node, const uint32_t instanceID ) =0;
 
         /** The default CM for unattached objects. */
         static ObjectCM* ZERO;
+
+    protected:
+#ifdef EQ_INSTRUMENT_MULTICAST
+        static base::a_int32_t _hit;
+        static base::a_int32_t _miss;
+#endif        
     };
 }
 }

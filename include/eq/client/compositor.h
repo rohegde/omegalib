@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -27,10 +27,24 @@
 
 namespace eq
 {
+namespace util
+{
+    class Accum;
+}
     class Channel;
     class Image;
 
-    /** A facility class for image assembly operations */
+    /** 
+     * A set of functions performing compositing for a set of input frames.
+     *
+     * The following diagram depicts the call flow within the
+     * compositor. Typically, an application uses one of the entry functions
+     * assembleFrames() or assembleFramesUnsorted(), but the various lower-level
+     * functions are still useful for advanced tasks, e.g., mergeFramesCPU() to
+     * perform compositing on the CPU into a main memory buffer.
+     * 
+     * <img src="http://www.equalizergraphics.com/documents/design/images/compositor.png">
+     */
     class EQ_EXPORT Compositor
     {
     public:
@@ -40,39 +54,46 @@ namespace eq
             ImageOp() : channel( 0 ), buffers( 0 )
                       , offset( Vector2i::ZERO ) {}
 
-            Channel*       channel; //!< The destination channel
-            uint32_t       buffers; //!< The Frame buffer attachments to use
+            Channel* channel; //!< The destination channel
+            uint32_t buffers; //!< The Frame buffer attachments to use
             Vector2i offset;  //!< The offset wrt destination window
-            Pixel          pixel;   //!< The pixel decomposition parameters
-            Zoom           zoom;    //!< The zoom factor
+            Pixel pixel;      //!< The pixel decomposition parameters
+            Zoom zoom;        //!< The zoom factor
         };
 
         /** @name Frame-based operations. */
         //@{
         /** 
-         * Assemble all frames in an arbitrary order using the best algorithm
-         * on the given channel
+         * Assemble all frames in an arbitrary order using the fastest
+         * implemented algorithm on the given channel.
          *
          * @param frames the frames to assemble.
          * @param channel the destination channel.
+         * @param accum the accumulation buffer.
+         * @return the number of different subpixel steps assembled.
+         * @version 1.0
          */
-        static void assembleFrames( const FrameVector& frames,
-                                    Channel* channel );
+        static uint32_t assembleFrames( const FrameVector& frames,
+                                        Channel* channel, util::Accum* accum );
 
         /** 
-         * Assemble all frames in the given order using the default algorithm
-         * on the given channel.
+         * Assemble all frames in the given order using the fastest implemented
+         * algorithm on the given channel.
          *
          * For alpha-blending see comment for assembleFramesCPU().
          *
          * @param frames the frames to assemble.
          * @param channel the destination channel.
+         * @param accum the accumulation buffer.
          * @param blendAlpha blend color-only images if they have an alpha
          *                   channel
+         * @return the number of different subpixel steps assembled.
+         * @version 1.0
          */
-        static void assembleFramesSorted( const FrameVector& frames,
-                                          Channel* channel,
-                                          const bool blendAlpha = false );
+        static uint32_t assembleFramesSorted( const FrameVector& frames,
+                                              Channel* channel, 
+                                              util::Accum* accum,
+                                              const bool blendAlpha = false );
 
         /** 
          * Assemble all frames in the order they become available directly on
@@ -80,12 +101,16 @@ namespace eq
          *
          * @param frames the frames to assemble.
          * @param channel the destination channel.
+         * @param accum the accumulation buffer.
+         * @return the number of different subpixel steps assembled.
+         * @version 1.0
          */
-        static void assembleFramesUnsorted( const FrameVector& frames,
-                                              Channel* channel );
+        static uint32_t assembleFramesUnsorted( const FrameVector& frames,
+                                                Channel* channel,
+                                                util::Accum* accum );
 
         /** 
-         * Assemble all frames in arbitrary order in a memory buffer using the
+         * Assemble all frames in the given order in a memory buffer using the
          * CPU before assembling the result on the given channel.
          *
          * If alpha-blending is enabled, the images are blended into the
@@ -99,19 +124,30 @@ namespace eq
          * @param channel the destination channel.
          * @param blendAlpha blend color-only images if they have an alpha
          *                   channel
+         * @return the number of different subpixel steps assembled (0 or 1).
+         * @version 1.0
          */
-        static void assembleFramesCPU( const FrameVector& frames,
-                                       Channel* channel,
-                                       const bool blendAlpha = false );
+        static uint32_t assembleFramesCPU( const FrameVector& frames,
+                                           Channel* channel,
+                                           const bool blendAlpha = false );
 
-        /** Merge the provided frames into one image in main memory. */
+        /**
+         * Merge the provided frames in the given order into one image in main
+         * memory.
+         *
+         * The returned image does not have to be freed. The compositor
+         * maintains one image per thread, that is, the returned image is valid
+         * until the next usage of the compositor in the current thread.
+         *
+         * @version 1.0
+         */
         static const Image* mergeFramesCPU( const FrameVector& frames,
                                             const bool blendAlpha = false );
 
         /** 
          * Merge the provided frames into one main memory buffer.
          *
-         * The called has to allocate and clear (if needed) the output buffers
+         * The callee has to allocate and clear (if needed) the output buffers
          * to hold the necessary data. All input images have to use the same
          * format and type, which will also be the output format. The depth
          * buffer and depth buffer size may be 0, if the images contain no depth
@@ -122,6 +158,7 @@ namespace eq
          *
          * @return true if the compositing was successful, false otherwise,
          *         e.g., a buffer is too small.
+         * @version 1.0
          */
         static bool mergeFramesCPU( const FrameVector& frames,
                                     const bool blendAlpha,
@@ -131,7 +168,10 @@ namespace eq
                                     const uint32_t depthBufferSize,
                                     PixelViewport& outPVP );
 
-        /** Assemble a frame using the default algorithm. */
+        /**
+         * Assemble a frame into the frame buffer using the default algorithm.
+         * @version 1.0
+         */
         static void assembleFrame( const Frame* frame, Channel* channel );
         //@}
 
@@ -139,7 +179,7 @@ namespace eq
         /** @name Image-based operations. */
         //@{
         /** 
-         * Start assembling an image.
+         * Assemble an image into the frame buffer.
          * 
          * @param image the input image.
          * @param operation an ImageOp struct describing the operation.
@@ -155,6 +195,24 @@ namespace eq
          */
         static void setupStencilBuffer( const Image* image, 
                                         const ImageOp& operation );
+
+        /** 
+         * Clear the stencil buffer after a pixel compound recomposition.
+         * 
+         * @param operation the assembly parameters.
+         */
+        static void clearStencilBuffer( const ImageOp& operation );
+
+        /**
+         * Setup the OpenGL state.
+         * @param pvp the current pixel viewport.
+         */
+        static void setupAssemblyState( const PixelViewport& pvp );
+        
+        /**
+         * Reset the OpenGL state.
+         */
+        static void resetAssemblyState();
 
         /** Start a tile-based assembly of the image color attachment. */
         static void assembleImage2D( const Image* image, const ImageOp& op );
@@ -177,6 +235,9 @@ namespace eq
                                 
       private:
         typedef std::pair< const Frame*, const Image* > FrameImage;
+
+        static bool _isSubPixelDecomposition( const FrameVector& frames );
+        static const FrameVector _extractOneSubPixel( FrameVector& frames );
 
         static bool _collectOutputData( const FrameVector& frames,
                                         PixelViewport& destPVP, 
@@ -212,6 +273,8 @@ namespace eq
         static void _drawPixels( const Image* image, const ImageOp& op,
                                  const Frame::Buffer which );
 
+        /** @return the accumulation buffer used for subpixel compositing. */
+        static util::Accum* _obtainAccum( Channel* channel );
     };
 }
 

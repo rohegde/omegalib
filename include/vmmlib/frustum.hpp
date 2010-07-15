@@ -9,6 +9,7 @@
 #ifndef __VMML__FRUSTUM__HPP__
 #define __VMML__FRUSTUM__HPP__
 
+#include <vmmlib/vmmlib_config.hpp>
 #include <vmmlib/matrix.hpp>
 
 #include <cmath>
@@ -22,7 +23,7 @@ template< typename T >
 class frustum
 {
 public:
-    T array[6];
+    VMMLIB_ALIGN( T array[6] );
        
     // contructors
     frustum(); // warning: components NOT initialised ( for performance )
@@ -54,6 +55,7 @@ public:
 
     void compute_matrix( matrix< 4, 4, T >& matrix_ ) const;
     void compute_ortho_matrix( matrix< 4, 4, T >& matrix_ ) const;
+    void apply_jitter( const vector< 2, T >& jitter_ );
 
     // 'move' the frustum. this function changes the near_plane, and adjusts the
     // other parameters in a way that the 'perspective pyramid' stays the same.
@@ -76,6 +78,9 @@ public:
 
     inline T& far_plane();
     inline const T& far_plane() const;
+
+    inline T get_width() const;
+    inline T get_height() const;
 
     friend std::ostream& operator << ( std::ostream& os, const frustum& frustum_ )
     {
@@ -309,7 +314,15 @@ frustum< T >::compute_ortho_matrix( matrix< 4, 4, T >& M ) const
     M( 3,3 ) = 1.0f;
 }
 
-
+template < typename T >
+void
+frustum< T >::apply_jitter( const vector< 2, T >& jitter_ )
+{
+    left()   = left() + jitter_.x();
+    right()  = right() + jitter_.x();
+    bottom() = bottom() + jitter_.y();
+    top()    = top() + jitter_.y();
+}
 
 template< typename T >
 inline T&
@@ -415,6 +428,16 @@ inline const T&
 frustum< T >::far_plane() const
 {
     return array[ 5 ];
+}
+
+template< typename T > inline T frustum< T >::get_width() const
+{
+    return fabs( right() - left( ));
+}
+
+template< typename T > inline T frustum< T >::get_height() const
+{
+    return fabs( top() - bottom( ));
 }
 
 

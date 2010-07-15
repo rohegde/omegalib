@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -25,8 +26,6 @@
 #include <map>
 #include <vector>
 
-struct EqCompressorInfo;
-
 namespace eq
 {
 
@@ -34,7 +33,6 @@ class Canvas;
 class Channel;
 class Client;
 class Config;
-class Compressor;
 class Frame;
 class Image;
 class Layout;
@@ -44,7 +42,6 @@ class Pipe;
 class PixelViewport;
 class Segment;
 class Server;
-class Texture;
 class View;
 class Viewport;
 class Window;
@@ -64,8 +61,6 @@ typedef std::vector< Channel* >  ChannelVector;
 typedef std::vector< Frame* >    FrameVector;
 /** A vector of pointers to eq::Image */
 typedef std::vector< Image* >    ImageVector;
-/** A vector of pointers to eq::Texture */
-typedef std::vector< Texture* >  TextureVector;
 /** A vector of pointers to eq::Observer */
 typedef std::vector< Observer* > ObserverVector;
 /** A vector of pointers to eq::Canvas */
@@ -97,8 +92,8 @@ typedef vmml::vector< 3, int > Vector3i; //!< A three-component integer vector
 typedef vmml::vector< 4, int > Vector4i; //!< A four-component integer vector
 typedef vmml::vector< 3, double >Vector3d; //!< A three-component double vector
 typedef vmml::vector< 4, double >Vector4d; //!< A four-component double vector
-typedef vmml::vector< 2, float > Vector2f; //!< A four-component float vector
-typedef vmml::vector< 3, float > Vector3f; //!< A four-component float vector
+typedef vmml::vector< 2, float > Vector2f; //!< A two-component float vector
+typedef vmml::vector< 3, float > Vector3f; //!< A three-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
 /** A three-component byte vector */
 typedef vmml::vector< 3, unsigned char > Vector3ub;
@@ -109,16 +104,14 @@ typedef vmml::frustum_culler< float >  FrustumCullerf;
 /** A vector of std::string */
 typedef std::vector< std::string >   StringVector;
 /** A vector of bytes */
-typedef std::vector<uint8_t>    UByteVector;
+typedef std::vector<uint8_t>    Vectorub;
 /** A vector of unsigned shorts */
-typedef std::vector<uint16_t>   UShortVector;
+typedef std::vector<uint16_t>   Vectorus;
 
 
 /** @cond IGNORE */
 typedef base::RefPtr< X11Connection > X11ConnectionPtr;
-typedef std::vector< EqCompressorInfo >  CompressorInfoVector;
-typedef std::vector< Compressor* >   CompressorVector;
-
+    
 // originator id -> statistics
 typedef std::map< uint32_t, Statistics >        SortedStatistics;
 
