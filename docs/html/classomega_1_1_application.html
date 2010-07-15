@@ -48,6 +48,10 @@
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">getName</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27">initialize</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Called once for entire application initialization tasks.  <a href="#af6d539bada1db094aedd8cd88563eb27"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a2bcd2b501ad975b2e0af969fa89a7b96">initializePipe</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Called once for every initialized pipe (a graphic card, or any other resource seen as one logical graphic card).  <a href="#a2bcd2b501ad975b2e0af969fa89a7b96"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a12235e7053689a0e270f1f6e97cfd737">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">handleEvent</a> (const <a class="el" href="structomega_1_1_input_event.html">InputEvent</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
@@ -163,6 +167,44 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af6d539bada1db094aedd8cd88563eb27"></a><!-- doxytag: member="omega::Application::initialize" ref="af6d539bada1db094aedd8cd88563eb27" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void omega::Application::initialize </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Called once for entire application initialization tasks. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2bcd2b501ad975b2e0af969fa89a7b96"></a><!-- doxytag: member="omega::Application::initializePipe" ref="a2bcd2b501ad975b2e0af969fa89a7b96" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void omega::Application::initializePipe </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Called once for every initialized pipe (a graphic card, or any other resource seen as one logical graphic card). </p>
+
+</div>
+</div>
 <a class="anchor" id="a4b55f725a1b38f963c2933aa6c513096"></a><!-- doxytag: member="omega::Application::update" ref="a4b55f725a1b38f963c2933aa6c513096" args="(const UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +241,7 @@ Static Public Attributes</h2></td></tr>
 <li>D:/Workspace/omegalib/include/omega/<a class="el" href="_application_8h_source.html">Application.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jul 13 2010 23:57:50 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

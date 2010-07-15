@@ -62,24 +62,28 @@
 <a name="l00034"></a>00034 <span class="keyword">public</span>:
 <a name="l00035"></a><a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">00035</a>         <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_application.html#ad8550f31f75c6c3ac250da17d411e1eb">MaxLayers</a> = 16;
 <a name="l00036"></a>00036 
-<a name="l00037"></a><a class="code" href="classomega_1_1_application.html#a12235e7053689a0e270f1f6e97cfd737">00037</a> <span class="keyword">public</span>:
-<a name="l00038"></a><a class="code" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">00038</a>         <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">getName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;OmegaLib &quot;</span> OMEGA_VERSION; }
-<a name="l00039"></a><a class="code" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">00039</a> 
-<a name="l00040"></a>00040         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a12235e7053689a0e270f1f6e97cfd737">draw</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">DrawContext</a>&amp; context) {}
-<a name="l00041"></a><a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">00041</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">handleEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">InputEvent</a>&amp; evt) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }
-<a name="l00042"></a><a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">00042</a>         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">UpdateContext</a>&amp; context) {}
-<a name="l00043"></a><a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">00043</a> 
-<a name="l00044"></a>00044         <a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>*  <a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">getSystemManager</a>()  { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>(); }
-<a name="l00045"></a>00045         <a class="code" href="classomega_1_1_input_manager.html">InputManager</a>*   <a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">getInputManager</a>()   { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>()-&gt;<a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db">getInputManager</a>(); }
-<a name="l00046"></a>00046         DisplaySystem*  <a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">getDisplaySystem</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>()-&gt;getDisplaySystem(); }
-<a name="l00047"></a>00047 };
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049 }; <span class="comment">// namespace omega</span>
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="preprocessor">#endif</span>
+<a name="l00037"></a>00037 <span class="keyword">public</span>:
+<a name="l00038"></a><a class="code" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27">00038</a>         <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">getName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;OmegaLib &quot;</span> OMEGA_VERSION; }
+<a name="l00039"></a>00039 
+<a name="l00041"></a>00041         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27" title="Called once for entire application initialization tasks.">initialize</a>() {}
+<a name="l00042"></a><a class="code" href="classomega_1_1_application.html#a2bcd2b501ad975b2e0af969fa89a7b96">00042</a> 
+<a name="l00045"></a><a class="code" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">00045</a>         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a2bcd2b501ad975b2e0af969fa89a7b96" title="Called once for every initialized pipe (a graphic card, or any other resource seen as one logical gra...">initializePipe</a>() {}
+<a name="l00046"></a><a class="code" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">00046</a> 
+<a name="l00047"></a>00047         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a12235e7053689a0e270f1f6e97cfd737">draw</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">DrawContext</a>&amp; context) {}
+<a name="l00048"></a><a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">00048</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">handleEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">InputEvent</a>&amp; evt) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }
+<a name="l00049"></a><a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">00049</a>         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">UpdateContext</a>&amp; context) {}
+<a name="l00050"></a><a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">00050</a> 
+<a name="l00051"></a>00051         <a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>*  <a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">getSystemManager</a>()  { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>(); }
+<a name="l00052"></a>00052         <a class="code" href="classomega_1_1_input_manager.html">InputManager</a>*   <a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">getInputManager</a>()   { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>()-&gt;<a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db">getInputManager</a>(); }
+<a name="l00053"></a>00053         DisplaySystem*  <a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">getDisplaySystem</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>()-&gt;getDisplaySystem(); }
+<a name="l00054"></a>00054 };
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056 }; <span class="comment">// namespace omega</span>
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jul 13 2010 23:57:50 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
