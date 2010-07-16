@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -25,8 +25,9 @@
 #endif
 
 #include <eq/base/base.h>     // EQ_EXPORT definition
+#include <eq/base/debug.h>    // debug macros in thread-safety checks
 #include <eq/base/lock.h>     // member
-#include <eq/base/monitor.h> // member
+#include <eq/base/monitor.h>  // member
 
 #include <vector>
 #include <typeinfo>
@@ -81,10 +82,9 @@ namespace base
          * This method should contain the main execution routine for the thread
          * and is called after a successful init().
          * 
-         * @return the return value of the child thread.
          * @version 1.0
          */
-        virtual void* run() = 0;
+        virtual void run() = 0;
 
         /** 
          * Exit the child thread immediately.
@@ -92,10 +92,9 @@ namespace base
          * This function does not return. It is only to be called from the child
          * thread. The thread listeners will be notified.
          *
-         * @param retVal the return value of the thread.
          * @version 1.0
          */
-        EQ_EXPORT virtual void exit( void* retVal = 0 );
+        EQ_EXPORT virtual void exit();
 
         /** 
          * Cancel (stop) the child thread.
@@ -108,12 +107,10 @@ namespace base
         /** 
          * Wait for the exit of the child thread.
          *
-         * @param retVal output value for the return value of the child, can be
-         *               <code>0</code>.
          * @return true if the thread was joined, false otherwise.
          * @version 1.0
          */
-        EQ_EXPORT bool join( void** retVal=0 );
+        EQ_EXPORT bool join();
 
         /** 
          * Return if the thread is stopped.
@@ -169,7 +166,13 @@ namespace base
         EQ_EXPORT static size_t getSelfThreadID();
 
         /** @internal */
+        static void yield();
+
+        /** @internal */
         static void pinCurrentThread();
+
+        /** @internal */
+        EQ_EXPORT static void setDebugName( const std::string& name );
 
     private:
         ThreadPrivate* _data;
@@ -184,10 +187,6 @@ namespace base
         };
 
         Monitor< State > _state;
-
-#ifdef EQ_WIN32_SDP_JOIN_WAR
-        void* _retVal;
-#endif
 
         static void* runChild( void* arg );
         void        _runChild();

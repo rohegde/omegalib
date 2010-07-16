@@ -151,12 +151,12 @@ void OptiTrackService::poll()
 			evt->serviceType = InputService::Mocap;
 
 			evt->sourceId = 1;
-			evt->x = -x.dblVal / 1000.0f;
-			evt->y = y.dblVal  / 1000.0f;
-			evt->z = z.dblVal  / 1000.0f;
-			evt->rx = pitch.dblVal * degreeToRad;
-			evt->ry = yaw.dblVal  * degreeToRad;
-			evt->rz = roll.dblVal  * degreeToRad;
+			evt->position[0] = -x.dblVal / 1000.0f;
+			evt->position[1] = y.dblVal  / 1000.0f;
+			evt->position[2] = z.dblVal  / 1000.0f;
+			evt->rotation[0] = pitch.dblVal * degreeToRad;
+			evt->rotation[1] = yaw.dblVal  * degreeToRad;
+			evt->rotation[2] = roll.dblVal  * degreeToRad;
 
 			unlockEvents();
 

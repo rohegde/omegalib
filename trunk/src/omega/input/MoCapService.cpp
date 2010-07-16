@@ -126,13 +126,14 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )
 			{
 				theEvent->type = InputEvent::Untrace;
-				theEvent->x = 0.0;
-				theEvent->y = 0.0;
-				theEvent->z = 0.0;
-				theEvent->rw = 0.0;
-				theEvent->rx = 0.0;
-				theEvent->ry = 0.0;
-				theEvent->rz = 0.0;
+				theEvent->position[0] = 0.0;
+				theEvent->position[1] = 0.0;
+				theEvent->position[2] = 0.0;
+
+				theEvent->rotation[0] = 0.0;
+				theEvent->rotation[1] = 0.0;
+				theEvent->rotation[2] = 0.0;
+				theEvent->rotation[3] = 0.0;
 				for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
 				{
 					Vector3f aPoint;
@@ -149,9 +150,9 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 			theEvent->type = InputEvent::Trace;
 
 			//get x,y,z coordinates
-			theEvent->x = data->RigidBodies[i].x;
-			theEvent->y = data->RigidBodies[i].y;
-			theEvent->z = data->RigidBodies[i].z;
+			theEvent->position[0] = data->RigidBodies[i].x;
+			theEvent->position[1] = data->RigidBodies[i].y;
+			theEvent->position[3] = data->RigidBodies[i].z;
 
 			//get makerset data (the points that define the rigid body)
 			int numberOfMarkers = data->RigidBodies[i].nMarkers;
@@ -172,7 +173,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 				double sqy = data->RigidBodies[i].qy * data->RigidBodies[i].qy;
 				double sqz = data->RigidBodies[i].qz * data->RigidBodies[i].qz;
 
-				theEvent->rw = 0;
+				theEvent->rotation[3] = 0;
 				//check for a position that is at either of the poles (pointing straight up or straight down)
 				verticalTest = ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw );
 
@@ -182,37 +183,37 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 				if( verticalTest > ( 0.499 * unit ) )
 				{
 					//owarn("MOCAP: Pointing North");
-					theEvent->rx = 0;
-					theEvent->ry = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
-					theEvent->rz = Math::Pi/2;
+					theEvent->rotation[0] = 0;
+					theEvent->rotation[1] = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
+					theEvent->rotation[2] = Math::Pi/2;
 				}
 				//check for pointing South
 				else if( verticalTest < ( -0.499 * unit ) )
 				{
 					//owarn("MOCAP: Pointing South");
-					theEvent->rx = 0;
-					theEvent->ry = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
-					theEvent->rz = -Math::Pi/2;
+					theEvent->rotation[0] = 0;
+					theEvent->rotation[1] = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
+					theEvent->rotation[2] = -Math::Pi/2;
 				}
 				else
 				{
 					//pitch
-					theEvent->rx = atan2( (double) ( ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qz ) ),
+					theEvent->rotation[0] = atan2( (double) ( ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qz ) ),
 											-sqx + sqy - sqz + sqw );
 					//roll
-					theEvent->rz = asin( 2 * verticalTest / unit );
+					theEvent->rotation[2] = asin( 2 * verticalTest / unit );
 
 					//yaw
-					theEvent->ry = atan2( (double) ( ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qz ) ),
+					theEvent->rotation[1] = atan2( (double) ( ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qz ) ),
 											sqx - sqy - sqz + sqw );
 				}
 			}
 			else //if the user wants quaternion data
 			{
-				theEvent->rw = data->RigidBodies[i].qw;
-				theEvent->rx = data->RigidBodies[i].qx;
-				theEvent->ry = data->RigidBodies[i].qy;
-				theEvent->rz = data->RigidBodies[i].qz;
+				theEvent->rotation[3] = data->RigidBodies[i].qw;
+				theEvent->rotation[0] = data->RigidBodies[i].qx;
+				theEvent->rotation[1] = data->RigidBodies[i].qy;
+				theEvent->rotation[2] = data->RigidBodies[i].qz;
 			}
 		}
 		myMoCap->unlockEvents();

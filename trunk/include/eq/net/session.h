@@ -28,6 +28,7 @@
 #include <eq/base/base.h>
 #include <eq/base/idPool.h>
 #include <eq/base/requestHandler.h>
+#include <eq/base/spinLock.h>
 
 namespace eq
 {
@@ -56,7 +57,7 @@ namespace net
         /** @name Data Access */
         //@{
         /** @return the identifier of this session. */
-        uint32_t getID() const { return _id; }
+        const SessionID& getID() const { return _id; }
 
         /**
          * @return the local node to which this session is mapped, or 0 if the
@@ -353,9 +354,6 @@ namespace net
                 packet.sessionID = _id;
                 node->send( packet, data, size );
             }
-
-        /** Registers request for packets awaiting a return value. */
-        base::RequestHandler _requestHandler;
         //@}
 
         /** @internal */
@@ -374,7 +372,7 @@ namespace net
         NodePtr _server;
 
         /** The session's identifier. */
-        uint32_t _id;
+        SessionID _id;
 
         /** The state (master/client) of this session instance. */
         bool _isMaster;
@@ -391,7 +389,7 @@ namespace net
         base::Lock _idMasterMutex;
         
         /** All registered and mapped objects. */
-        base::Lockable< ObjectVectorHash > _objects;
+        base::Lockable< ObjectVectorHash, base::SpinLock > _objects;
 
         InstanceCache _instanceCache; //!< cached object mapping data
 

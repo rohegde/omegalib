@@ -187,7 +187,7 @@ bool Widget::processInputEvent(const InputEvent& evt)
 	myLastEvent = evt;
 	bool processed = false;
 
-	Vector2f point(evt.x, evt.y);
+	Vector2f point = evt.position;
 	
 	transformPoint(point);
 
@@ -203,13 +203,13 @@ bool Widget::processInputEvent(const InputEvent& evt)
 			{
 				if(evt.type == InputEvent::Down)
 				{
-					myUserMovePosition = Vector2f(evt.x, evt.y);
+					myUserMovePosition = evt.position;
 					processed = true;
 					myMoving = true;
 				}
 				else if(evt.type == InputEvent::Move && myMoving)
 				{
-					Vector2f cur(evt.x, evt.y);
+					Vector2f cur = evt.position;
 					Vector2f delta = cur - myUserMovePosition;
 					myUserMovePosition = cur;
 

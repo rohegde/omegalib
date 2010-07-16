@@ -104,6 +104,9 @@ namespace eq
          */
         EQ_EXPORT VisitorResult accept( PipeVisitor& visitor );
 
+        /** Const-version of accept(). */
+        EQ_EXPORT VisitorResult accept( PipeVisitor& visitor ) const;
+
         /**
          * Set the pipes's pixel viewport.
          *
@@ -180,6 +183,9 @@ namespace eq
 
         /** Set the window as current window. */
         void setCurrent( const Window* window ) const;
+
+        /** @internal @return the view for the given identifier and version. */
+        const View* getView( const net::ObjectVersion& viewVersion ) const;
 
         /** @internal @return the view for the given identifier and version. */
         View* getView( const net::ObjectVersion& viewVersion );
@@ -489,7 +495,7 @@ namespace eq
                     : _pipe( pipe )
                 {}
             
-            virtual void* run(){ return _pipe->_runThread(); }
+            virtual void run(){ _pipe->_runThread(); }
 
         private:
             Pipe* _pipe;
@@ -511,7 +517,7 @@ namespace eq
         };
 
         //-------------------- Methods --------------------
-        void* _runThread();
+        void _runThread();
         void _setupCommandQueue();
         void _exitCommandQueue();
 

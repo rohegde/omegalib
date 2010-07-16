@@ -36,7 +36,7 @@ namespace eq
     struct ConfigEvent;
 
     /**
-     * A configuration is one visualization session driven by an application.
+     * A configuration is a visualization session driven by an application.
      *
      * The application Client can choose a configuration from a Server. The
      * Config will be instantiated though the NodeFactory. The Config groups all
@@ -91,7 +91,16 @@ namespace eq
          */
         uint32_t getLatency() const { return _latency; }
 
+        /**
+         * Change the latency of the configuration.
+         *
+         * The config has to be running. Pending rendering frames are finished
+         * by this method, making it relatively expensive.
+         *
+         * @warning Experimental - may not be supported in the future
+         */
         EQ_EXPORT void changeLatency( const uint32_t latency );
+
         /**
          * @return the vector of nodes instantiated on this process.
          * @version 1.0
@@ -103,6 +112,9 @@ namespace eq
 
         /** @return the observer of the given identifier, or 0. @version 1.0 */
         Observer* findObserver( const uint32_t id );
+
+        /** @return the observer of the given identifier, or 0. @version 1.0 */
+        const Observer* findObserver( const uint32_t id ) const;
 
         /** @return the vector of layouts, app-node only. @version 1.0 */
         const LayoutVector& getLayouts() const { return _layouts; }
@@ -125,12 +137,15 @@ namespace eq
          */
         EQ_EXPORT VisitorResult accept( ConfigVisitor& visitor );
 
+        /** Const-version of accept(). @version 1.0 */
+        EQ_EXPORT VisitorResult accept( ConfigVisitor& visitor ) const;
+
         /** Get all received statistics. @internal */
         EQ_EXPORT void getStatistics( std::vector< FrameStatistics >& stats );
 
         /**
          * @return true while the config is initialized and no exit event
-         *         happened.
+         *         has happened.
          * @version 1.0
          */
         bool isRunning() const { return _running; }
@@ -351,9 +366,6 @@ namespace eq
 
     protected:
 
-        /** The maximum number of outstanding frames. */
-        uint32_t _latency;
-        
         /** @internal */
         //@{
         /** @internal */
@@ -399,6 +411,9 @@ namespace eq
         std::deque< FrameStatistics > _statistics;
         base::Lock                    _statisticsMutex;
 
+        /** The maximum number of outstanding frames. */
+        uint32_t _latency;
+        
         /** The last started frame. */
         uint32_t _currentFrame;
         /** The last locally released frame. */

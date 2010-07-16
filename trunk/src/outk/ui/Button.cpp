@@ -34,7 +34,7 @@ Button::~Button()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Button::processInputEvent(const InputEvent& evt)
 {
-	Vector2f point(evt.x, evt.y);
+	Vector2f point  = evt.position;
 	
 	transformPoint(point);
 

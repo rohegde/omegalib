@@ -316,110 +316,113 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 	{
 		case TG_DOWN:
 			evt->type = InputEvent::Down;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_MOVE:
 			evt->type = InputEvent::Move;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_UP:
 			evt->type  = InputEvent::Up;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_CLICK:
 			evt->type  = InputEvent::Click;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_DB_CLICK:
-			evt->type  = InputEvent::DB_Click;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->type  = InputEvent::DoubleClick;
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_MOVE_RIGHT:
-			evt->type  = InputEvent::Move_Right;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->type  = InputEvent::MoveRight;
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_MOVE_UP:
-			evt->type  = InputEvent::Move_Up;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->type  = InputEvent::MoveUp;
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_MOVE_LEFT:
-			evt->type  = InputEvent::Move_Left;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->type  = InputEvent::MoveLeft;
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_MOVE_DOWN:
-			evt->type  = InputEvent::Move_Down;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
+			evt->type  = InputEvent::MoveDown;
+			evt->position[0] = tg.params[0];
+			evt->position[1] = tg.params[1];
 			break;
 		case TG_SPLIT_START:
-			evt->type  = InputEvent::Split_Start;
-			evt->x2 = tg.params[0];
-			evt->y2 = tg.params[1];
-			evt->x = tg.params[2];
-			evt->y = tg.params[3];
+			evt->type  = InputEvent::SplitStart;
+
+			evt->numberOfPoints = 2;
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
+
+			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
 		case TG_SPLIT_END:
-			evt->type  = InputEvent::Split_End;
-			evt->x2 = tg.params[0];
-			evt->y2 = tg.params[1];
-			evt->x = tg.params[2];
-			evt->y = tg.params[3];
+			evt->type  = InputEvent::SplitEnd;
+
+			evt->numberOfPoints = 2;
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
+
+			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
 		case TG_SPLIT_APART:
-			evt->type  = InputEvent::Split_Apart;
-			evt->deltaDist = tg.params[0];
-			evt->deltaRatio = tg.params[1];
-			evt->x2 = tg.params[2];
-			evt->y2 = tg.params[3];
-			evt->x = tg.params[4];
-			evt->y = tg.params[5];
-			break;
 		case TG_SPLIT_CLOSE:
-			evt->type  = InputEvent::Split_Close;
-			evt->deltaDist = tg.params[0];
-			evt->deltaRatio = tg.params[1];
-			evt->x2 = tg.params[2];
-			evt->y2 = tg.params[3];
-			evt->x = tg.params[4];
-			evt->y = tg.params[5];
+			evt->type  = InputEvent::Split;
+			evt->numberOfPoints = 2;
+			evt->pointSet[0][0] = tg.params[2];
+			evt->pointSet[0][1] = tg.params[3];
+			evt->pointSet[1][0] = tg.params[4];
+			evt->pointSet[1][1] = tg.params[5];
+
+			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
+
+			evt->value[0] = tg.params[0];
+			evt->value[1] = tg.params[1];
 			break;
 		case TG_ROTATE_START:
-			evt->type  = InputEvent::Rotate_Start;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
-			evt->x2 = tg.params[2];
-			evt->y2 = tg.params[3];
+			evt->type  = InputEvent::RotateStart;
+			evt->numberOfPoints = 2;
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
+			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
 		case TG_ROTATE_END:
-			evt->type  = InputEvent::Rotate_End;
-			evt->x = tg.params[0];
-			evt->y = tg.params[1];
-			evt->x2 = tg.params[2];
-			evt->y2 = tg.params[3];
+			evt->type  = InputEvent::RotateEnd;
+			evt->numberOfPoints = 2;
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
+			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
 		case TG_ROTATE_ANTICLOCK:
-			evt->type  = InputEvent::Rotate_Counterclock;
-			evt->rw = tg.params[0];
-			evt->x = tg.params[1];
-			evt->y = tg.params[2];
-			evt->x2 = tg.params[3];
-			evt->y2 = tg.params[4];
-			break;
 		case TG_ROTATE_CLOCK:
-			evt->type  = InputEvent::Rotate_Clock;
-			evt->rw = tg.params[0];
-			evt->x = tg.params[1];
-			evt->y = tg.params[2];
-			evt->x2 = tg.params[3];
-			evt->y2 = tg.params[4];
+			evt->type  = InputEvent::Rotate;
+			evt->rotation[0] = tg.params[0];
+			evt->numberOfPoints = 2;
+			evt->pointSet[0][0] = tg.params[1];
+			evt->pointSet[0][1] = tg.params[2];
+			evt->pointSet[1][0] = tg.params[3];
+			evt->pointSet[1][1] = tg.params[4];
+			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
 	}// switch		
 	evt->serviceType = InputService::Touch;
@@ -463,8 +466,8 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				break;
 		}		
 		evt->serviceType = InputService::Touch;
-		evt->x = tp.x;
-		evt->y = tp.y;
+		evt->position[0] = tp.x;
+		evt->position[1] = tp.y;
 		evt->sourceId = touchID[tp.id];
 
 		mysInstance->unlockEvents();

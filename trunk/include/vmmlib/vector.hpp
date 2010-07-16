@@ -138,7 +138,6 @@ public:
     vector( const vector< N, T >& source_,
         typename enable_if< N == M - 1 >::type* = 0 );
 
-    // from-homogenous-coordinates ctor
     template< size_t N >
     vector( const vector< N, T >& source_,
         typename enable_if< N == M + 1 >::type* = 0  );
@@ -455,7 +454,7 @@ template< size_t N >
 vector< M, T >::
 vector( const vector< N, T >& source_, typename enable_if< N == M - 1 >::type* )
 {
-    (*this) = source_;
+	for(int i = 0; i < N; i++) array[i] = source_[i];
 }
 
 
@@ -467,7 +466,10 @@ template< size_t N >
 vector< M, T >::
 vector( const vector< N, T >& source_, typename enable_if< N == M + 1 >::type*  )
 {
-    (*this) = source_;
+	for(int i = 0; i < M; i++)
+	{
+		array[i] = source_[i];
+	}
 }
 
 
@@ -1250,35 +1252,25 @@ equals( const vector< M, T >& other, T tolerance ) const
 
 
 
-// to-homogenous-coordinates assignment operator
-// non-chainable because of sfinae
 template< size_t M, typename T >
 template< size_t N >
 typename enable_if< N == M - 1 >::type*
 vector< M, T >::
 operator=( const vector< N, T >& source_ )
 {
-    std::copy( source_.begin(), source_.end(), begin() );
-    at( M - 1 ) = static_cast< T >( 1.0 );
+	for(int i = 0; i < N; i++) array[i] = source_[i];
     return 0;
 }
 
     
-// from-homogenous-coordinates assignment operator
-// non-chainable because of sfinae
 template< size_t M, typename T >
 template< size_t N >
 typename enable_if< N == M + 1 >::type*
 vector< M, T >::
 operator=( const vector< N, T >& source_ )
 {
-    const T w_reci = static_cast< T >( 1.0 ) / source_( M );
-    iterator it = begin(), it_end = end();
-    for( size_t index = 0; it != it_end; ++it, ++index )
-    {
-        *it = source_( index ) * w_reci;
-    }
-    return 0;
+	for(int i = 0; i < M; i++) array[i] = source_[i];
+	return 0;
 }
 
 

@@ -28,8 +28,8 @@ void MouseService::mouseMotionCallback(int x, int y)
 		InputEvent* evt = mysInstance->writeHead();
 		evt->serviceType = InputService::Pointer;
 		evt->type = InputEvent::Move;
-		evt->x = x;
-		evt->y = y;
+		evt->position[0] = x;
+		evt->position[1] = y;
 
 		mysInstance->unlockEvents();
 	}
@@ -47,14 +47,14 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		if(SystemManager::instance()->getDisplaySystem()->getId() == GLUTDisplaySystem::Id)
 		{
 			evt->type = InputEvent::Down;
-			evt->x = x;
-			evt->y = y;
+			evt->position[0] = x;
+			evt->position[1] = y;
 		}
 		else
 		{
 			evt->type = state ? InputEvent::Down : InputEvent::Up;
-			evt->x = x;
-			evt->y = y;
+			evt->position[0] = x;
+			evt->position[1] = y;
 		}
 
 		mysInstance->unlockEvents();
