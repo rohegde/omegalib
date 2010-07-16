@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2006-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2006-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -88,8 +88,14 @@ namespace server
         /** @return the pixel parameters relative to the destination channel. */
         EQ_EXPORT const Pixel& getPixel() const;
 
-        /** @return the subpixel parameters relative to the destination channel. */
+        /** @return the subpixel parameters wrt the destination channel. */
         EQ_EXPORT const SubPixel& getSubPixel() const;
+
+        /** @return the DPlex period relative to the destination channel. */
+        EQ_EXPORT uint32_t getPeriod() const;
+
+        /** @return the DPlex phase relative to the destination channel. */
+        EQ_EXPORT uint32_t getPhase() const;
 
         /** @return the zoom factor for readback or assemble. */
         const Zoom& getZoom() const { return _data.zoom; }
@@ -129,8 +135,10 @@ namespace server
          * The images are added to the frame, existing images are retained.
          *
          * @param glObjects the GL object manager for the current GL context.
+         * @param config the configuration of the source frame buffer.
          */
-        EQ_EXPORT void startReadback( Window::ObjectManager* glObjects );
+        EQ_EXPORT void startReadback( Window::ObjectManager* glObjects,
+                                      const DrawableConfig& config );
         
         /** Synchronize the image readback. */
         EQ_EXPORT void syncReadback();
@@ -191,9 +199,6 @@ namespace server
          * @param buffer the buffer to disable.
          */
         EQ_EXPORT void disableBuffer( const Buffer buffer );
-
-        /** Set color buffer type to read */
-        EQ_EXPORT void setColorFormat( const GLuint colorFormat );
 
         /** Enable/disable alpha usage for newly allocated images. */
         EQ_EXPORT void setAlphaUsage( const bool useAlpha );

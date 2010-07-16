@@ -93,19 +93,6 @@ namespace net
         uint32_t requestID;
     };
 
-    struct NodeRegisterSessionReplyPacket : public NodePacket
-    {
-        NodeRegisterSessionReplyPacket(const NodeRegisterSessionPacket* request)
-            {
-                command   = CMD_NODE_REGISTER_SESSION_REPLY;
-                size      = sizeof( NodeRegisterSessionReplyPacket );
-                requestID = request->requestID;
-            }
-            
-        uint32_t requestID;
-        uint32_t sessionID;
-    };
-
     struct NodeMapSessionPacket : public NodePacket
     {
         NodeMapSessionPacket()
@@ -115,7 +102,7 @@ namespace net
             }
 
         uint32_t requestID;
-        uint32_t sessionID;
+        SessionID sessionID;
     };
 
     struct NodeMapSessionReplyPacket : public NodePacket
@@ -129,7 +116,7 @@ namespace net
             }
             
         uint32_t requestID;
-        uint32_t sessionID;
+        SessionID sessionID;
     };
 
     struct NodeUnmapSessionPacket : public NodePacket
@@ -138,11 +125,11 @@ namespace net
             {
                 command   = CMD_NODE_UNMAP_SESSION;
                 size      = sizeof(NodeUnmapSessionPacket);
-                sessionID = EQ_ID_INVALID;
+                sessionID = SessionID::ZERO;
             }
 
         uint32_t requestID;
-        uint32_t sessionID;
+        SessionID sessionID;
     };
 
     struct NodeUnmapSessionReplyPacket : public NodePacket
@@ -298,10 +285,8 @@ namespace net
     //------------------------------------------------------------
     struct SessionPacket : public NodePacket
     {
-        SessionPacket() : paddingSession( 0 )
-            { datatype = DATATYPE_EQNET_SESSION; }
-        uint32_t sessionID;
-        uint32_t paddingSession; // pad to multiple-of-8
+        SessionPacket() { datatype = DATATYPE_EQNET_SESSION; }
+        base::UUID sessionID;
     };
 
 /** @cond IGNORE */
@@ -581,13 +566,11 @@ namespace net
             {
                 command = CMD_OBJECT_INSTANCE;
                 size    = sizeof( ObjectInstancePacket );
-                data[0] = '\0';
             }
 
         NodeID nodeID;
         uint32_t masterInstanceID;
         uint32_t fill;
-        EQ_ALIGN8( uint8_t data[8] );
     };
 
     struct ObjectDeltaPacket : public ObjectDataPacket
@@ -598,8 +581,17 @@ namespace net
                 size       = sizeof( ObjectDeltaPacket ); 
                 instanceID = EQ_ID_NONE; // multicasted
             }
-        
-        EQ_ALIGN8( uint8_t delta[8] );
+    };
+
+    struct ObjectSlaveDeltaPacket : public ObjectDataPacket
+    {
+        ObjectSlaveDeltaPacket()
+            {
+                command    = CMD_OBJECT_SLAVE_DELTA;
+                size       = sizeof( ObjectSlaveDeltaPacket ); 
+            }
+
+        base::UUID commit;
     };
 
     struct ObjectNewMasterPacket : public ObjectPacket

@@ -129,6 +129,9 @@ namespace util
         /** @return the window's object manager instance. @version 1.0 */
         EQ_EXPORT Window::ObjectManager* getObjectManager();
 
+        /** @return the channel's drawable config. @version 1.0 */
+        EQ_EXPORT const DrawableConfig& getDrawableConfig() const;
+
         /** 
          * Return the set of tasks this channel might execute in the worst case.
          * 
@@ -148,6 +151,9 @@ namespace util
          * @version 1.0
          */
         EQ_EXPORT VisitorResult accept( ChannelVisitor& visitor );
+
+        /** Const-version of accept(). @version 1.0 */
+        EQ_EXPORT VisitorResult accept( ChannelVisitor& visitor ) const;
 
         /** 
          * Set the near and far planes for this channel.
@@ -176,7 +182,10 @@ namespace util
          * @sa getView()
          * @version 1.0
          */
-        EQ_EXPORT const View* getNativeView();
+        EQ_EXPORT View* getNativeView();
+
+        /** const-version of getNativeView() @version 1.0 */
+        EQ_EXPORT const View* getNativeView() const;
 
         /** @return the channel's native pixel viewport. @version 1.0 */
         const PixelViewport& getNativePixelViewPort() const
@@ -194,7 +203,7 @@ namespace util
          * 
          * The data returned by these methods depends on the context (callback)
          * they are called from, typically the data for the current rendering
-         * task. If they are called outside of a frameFoo task method, they
+         * task. If they are called outside of a frame task method, they
          * return the channel's native parameter, e.g., a placeholder value for
          * the task decomposition parameters.
          */
@@ -274,6 +283,18 @@ namespace util
         EQ_EXPORT const Zoom& getZoom() const;
 
         /**
+         * @return the DPlex period for the current rendering task.
+         * @version 1.0
+         */
+        EQ_EXPORT uint32_t getPeriod() const;
+
+        /**
+         * @return the DPlex phase for the current rendering task.
+         * @version 1.0
+         */
+        EQ_EXPORT uint32_t getPhase() const;
+
+        /**
          * Get the channel's current position wrt the destination channel.
          *
          * Note that computing this value from the current viewport and pixel
@@ -313,7 +334,10 @@ namespace util
          * @sa getNativeView()
          * @version 1.0
          */
-        EQ_EXPORT const View* getView();
+        EQ_EXPORT View* getView();
+
+        /** Const version of getView(). @version 1.0 */
+        EQ_EXPORT const View* getView() const;
 
         /** 
          * Returns an orthographic frustum for 2D operations on the view.
@@ -592,7 +616,7 @@ namespace util
         EQ_EXPORT virtual void frameDraw( const uint32_t frameID );
 
         /** 
-         * Assemble input frames.
+         * Assemble all input frames.
          * 
          * Called 0 to n times during one frame.
          * 
@@ -603,7 +627,7 @@ namespace util
         EQ_EXPORT virtual void frameAssemble( const uint32_t frameID );
 
         /** 
-         * Read back the rendered frame buffer.
+         * Read back the rendered frame buffer into all output frames.
          * 
          * Called 0 to n times during one frame.
          * 
@@ -630,7 +654,7 @@ namespace util
          *
          * Called once on each destination channel, e.g., channels which are
          * defined by a view/segment intersection, before frameFinish to update
-         * a part of a display.
+         * a part of a view.
          * 
          * This is typically used to do operations on the output channel after
          * it has been fully updated, e.g., to draw a 2D overlay.
@@ -661,15 +685,18 @@ namespace util
         Window* const _window;
         friend class Window;
 
+        /** The name. */
+        std::string    _name;
+
         /** The native render context parameters of this channel. */
         RenderContext _nativeContext;
 
         /** The rendering parameters for the current operation. */
         RenderContext* _context;
-            
-        /** The name. */
-        std::string    _name;
-        
+
+        /** The channel's drawable config (FBO). */
+        DrawableConfig _drawableConfig;
+
         /** A unique color assigned by the server during config init. */
         Vector3ub _color;
 
@@ -750,6 +777,9 @@ namespace util
 
         /** Initialize the FBO */
         bool _configInitFBO();
+
+        /** Initialize the channel's drawable config. */
+        void _initDrawableConfig();
 
         virtual void getInstanceData( net::DataOStream& os ) { EQDONTCALL }
         virtual void applyInstanceData( net::DataIStream& is ) { EQDONTCALL }

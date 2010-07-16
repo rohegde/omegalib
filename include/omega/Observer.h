@@ -32,7 +32,7 @@ public:
 
 	OMEGA_API Matrix4f getHeadMatrix() { return myHeadMatrix; }
 
-	OMEGA_API void update(float x, float y, float z, float yaw, float pitch, float roll);
+	OMEGA_API void update(Vector3f position, Vector3f rotation);
 
 private:
 	Matrix4f myWorldToEmitter;

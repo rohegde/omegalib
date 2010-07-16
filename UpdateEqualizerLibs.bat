@@ -12,6 +12,6 @@ copy %EQPATH%\build\VS2005\Win32\Release\*.dll  .\bin\win-x86-vs9-release
 copy %EQPATH%\build\VS2005\x64\Debug\*.dll  .\bin\win-x64-vs9-debug
 copy %EQPATH%\build\VS2005\x64\Release\*.dll  .\bin\win-x64-vs9-release
 
-xcopy %EQPATH%\build\VS2005\Win32\Release\Headers .\include /s
+xcopy %EQPATH%\build\VS2005\Win32\Release\Headers\eq .\include\eq /s
 
 pause

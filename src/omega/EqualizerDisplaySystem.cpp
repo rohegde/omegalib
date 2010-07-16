@@ -321,7 +321,7 @@ void EqualizerDisplaySystem::initObservers()
 
 			// Set observer initial position to origin, neutral orientation.
 			obs->setWorldToEmitter(emitterMatrix);
-			obs->update(0, 0, 0, 0, 0, 0);
+			obs->update(Vector3f::ZERO, Vector3f::ZERO);
 		}
 	}
 }

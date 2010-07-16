@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2009-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -96,6 +96,9 @@ namespace server
          */
         EQ_EXPORT VisitorResult accept( CanvasVisitor& visitor );
 
+        /** Const-version of accept(). */
+        EQ_EXPORT VisitorResult accept( CanvasVisitor& visitor ) const;
+
         /** @return true if the layout has changed. @internal */
         bool hasDirtyLayout() const { return getDirty() & DIRTY_LAYOUT; }
         //@}
@@ -114,6 +117,7 @@ namespace server
             DIRTY_CHILDREN   = Frustum::DIRTY_CUSTOM << 1,
             DIRTY_FILL1      = Frustum::DIRTY_CUSTOM << 2,
             DIRTY_FILL2      = Frustum::DIRTY_CUSTOM << 3,
+            /** First usable dirty bit for sub-classes of a canvas. */
             DIRTY_CUSTOM     = Frustum::DIRTY_CUSTOM << 4
         };
 

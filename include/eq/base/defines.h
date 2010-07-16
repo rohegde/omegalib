@@ -7,9 +7,6 @@
 #ifndef WIN32
 #  define WIN32
 #endif
-#ifndef WIN32_VC
-#  define WIN32_VC
-#endif
 #ifndef WIN32_API
 #  define WIN32_API
 #endif
@@ -29,12 +26,15 @@
 #  define LITTLE_ENDIAN
 #endif
 
+#if 0
+#  ifndef EQ_USE_BOOST
+#    define EQ_USE_BOOST
+#  endif
+#endif
+
 #if 0 // Enable for IB builds (needs WinOF 2.0 installed)
 #  ifndef EQ_INFINIBAND
 #    define EQ_INFINIBAND
-#  endif
-#  ifndef EQ_WIN32_SDP_JOIN_WAR // see thread.cpp
-#    define EQ_WIN32_SDP_JOIN_WAR
 #  endif
 #endif
 

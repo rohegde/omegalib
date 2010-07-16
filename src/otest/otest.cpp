@@ -224,8 +224,8 @@ public:
 		{
 		case InputService::Touch:
 		case InputService::Pointer:
-			x = evt.x;
-			y = evt.y;	
+			x = evt.position[0];
+			y = evt.position[1];	
 			myUI->processInputEvent(evt);
 		break;
 
@@ -233,7 +233,7 @@ public:
 		{
 #ifdef LAPTOP
 			Observer* obs = getDisplaySystem()->getObserver(0);
-			obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+			obs->update(evt.position, evt.rotation);
 #else
 			if(evt.sourceId == 1)
 			{

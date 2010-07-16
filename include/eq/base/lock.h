@@ -64,7 +64,7 @@ namespace base
          *         it is not set.
          * @version 1.0
          */
-        EQ_EXPORT bool isSet(); 
+        EQ_EXPORT bool isSet();
 
     private:
         LockPrivate* _data;

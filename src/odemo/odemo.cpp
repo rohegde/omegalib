@@ -195,15 +195,15 @@ public:
 		{
 		case InputService::Touch:
 		case InputService::Pointer:
-			x = evt.x;
-			y = evt.y;					
+			x = evt.position[0];
+			y = evt.position[1];					
 		break;
 
 		case InputService::Mocap:
 		{
 			/* better calculations for tracker done here before passing */			
 			Observer* obs = getDisplaySystem()->getObserver(0);
-			obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+			obs->update(evt.position, evt.rotation);
 			break;
 		}
 		default: break;

@@ -81,6 +81,9 @@ namespace eq
          */
         EQ_EXPORT VisitorResult accept( NodeVisitor& visitor );
 
+        /** Const-version of accept(). */
+        EQ_EXPORT VisitorResult accept( NodeVisitor& visitor ) const;
+
         /** 
          * Get a network barrier. 
          * 
@@ -146,7 +149,7 @@ namespace eq
                        const uint32_t frameNumber );
             
         protected:
-            virtual void* run();
+            virtual void run();
 
         private:
             struct Task

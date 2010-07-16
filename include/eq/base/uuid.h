@@ -66,7 +66,7 @@ namespace base
         UUID& operator = ( const std::string& from )
             {
                 char* next = 0;
-#ifdef WIN32_VC
+#ifdef _MSC_VER
                 _high = ::_strtoui64( from.c_str(), &next, 16 );
 #else
                 _high = ::strtoull( from.c_str(), &next, 16 );
@@ -75,7 +75,7 @@ namespace base
                 EQASSERTINFO( *next == ':', from << ", " << next );
 
                 ++next;
-#ifdef WIN32_VC
+#ifdef _MSC_VER
                 _low = ::_strtoui64( next, 0, 16 );
 #else
                 _low = ::strtoull( next, 0, 16 );
@@ -129,7 +129,7 @@ namespace base
 
         friend std::ostream& operator << ( std::ostream& os, const UUID& id );
 
-#ifdef WIN32_VC
+#ifdef _MSC_VER
         friend size_t stde::hash_compare< eq::base::UUID >::operator() 
             ( const eq::base::UUID& key ) const;
         friend size_t stde::hash_value( const eq::base::UUID& key );
@@ -150,7 +150,7 @@ namespace base
 }
 }
 
-#ifdef WIN32_VC
+#ifdef _MSC_VER
 template<> inline size_t stde::hash_compare< eq::base::UUID >::operator() 
     ( const eq::base::UUID& key ) const
 {
@@ -178,7 +178,7 @@ namespace __gnu_cxx
 #else // POSIX
 
 #  ifdef __GNUC__              // GCC 3.1 and later
-#    ifdef EQ_GCC_4_2_OR_LATER
+#    if defined EQ_GCC_4_2_OR_LATER && !defined __INTEL_COMPILER
 namespace std { namespace tr1
 #    else
 namespace __gnu_cxx
@@ -194,10 +194,10 @@ namespace std
             return key._low;
         }
     };
-#ifdef EQ_GCC_4_2_OR_LATER
+#if defined EQ_GCC_4_2_OR_LATER && !defined __INTEL_COMPILER
 }
 #endif
 }
 
-#endif // WIN32_VC
+#endif // _MSC_VER
 #endif // EQBASE_NODE_H

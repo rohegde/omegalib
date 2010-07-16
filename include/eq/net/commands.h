@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -29,7 +29,6 @@ namespace net
         CMD_NODE_STOP,
         CMD_NODE_MESSAGE,
         CMD_NODE_REGISTER_SESSION,
-        CMD_NODE_REGISTER_SESSION_REPLY,
         CMD_NODE_MAP_SESSION,
         CMD_NODE_MAP_SESSION_REPLY,
         CMD_NODE_UNMAP_SESSION,
@@ -82,6 +81,7 @@ namespace net
     {
         CMD_OBJECT_INSTANCE,
         CMD_OBJECT_DELTA,
+        CMD_OBJECT_SLAVE_DELTA,
         CMD_OBJECT_COMMIT,
         CMD_OBJECT_NEW_MASTER,
         CMD_OBJECT_VERSION,

@@ -29,6 +29,7 @@
 #include <eq/base/lockable.h>
 #include <eq/base/perThread.h>
 #include <eq/base/requestHandler.h>
+#include <eq/base/spinLock.h>
 #include <eq/base/thread.h>
 
 #include <list>
@@ -57,7 +58,8 @@ namespace net
      * sessions, that is, one or more Session can be mapped to a Node, in which
      * case the node will dispatch packets to these sessions.
      */
-    class Node : public Dispatcher, public base::Referenced
+    class Node : public Dispatcher, public base::RequestHandler,
+                 public base::Referenced
     {
     public:
         /** The state of the node. */
@@ -453,10 +455,8 @@ namespace net
          * This method assigns the session identifier. The node has to be local.
          *
          * @param session the session.
-         * @return <code>true</code> if the session was mapped,
-         *         <code>false</code> if not.
          */
-        EQ_EXPORT bool registerSession( Session* session );
+        EQ_EXPORT void registerSession( Session* session );
 
         /** Deregister a (master) session. */
         bool deregisterSession( Session* session )
@@ -475,7 +475,7 @@ namespace net
          *         <code>false</code> if not.
          */
         bool mapSession( NodePtr server, Session* session, 
-                         const uint32_t id );
+                         const SessionID& id );
 
         /** 
          * Unmaps a mapped session.
@@ -487,9 +487,9 @@ namespace net
         EQ_EXPORT bool unmapSession( Session* session );
 
         /** @return the mapped session with the given identifier, or 0. */
-        Session* getSession( const uint32_t id );
+        Session* getSession( const SessionID& id );
 
-        bool hasSessions() const { return !_sessions.empty(); }
+        bool hasSessions() const { return !_sessions->empty(); }
         //@}
 
         /** 
@@ -574,9 +574,6 @@ namespace net
          */
         EQ_EXPORT virtual NodePtr createNode( const uint32_t type );
 
-        /** Registers request packets waiting for a return value. */
-        base::RequestHandler _requestHandler;
-
     private:
         /** Globally unique node identifier. */
         NodeID _id;
@@ -584,8 +581,9 @@ namespace net
         /** The current state of this node. */
         State _state;
 
+        typedef base::UUIDHash< Session* > SessionHash;
         /** The current mapped sessions of this node. */
-        SessionHash _sessions;
+        base::Lockable< SessionHash, base::SpinLock > _sessions;
 
         /** The connection to this node. */
         ConnectionPtr _outgoing;
@@ -669,7 +667,7 @@ namespace net
                 {}
             
             virtual bool init(){ return _node->_commandThread->start(); }
-            virtual void* run(){ return _node->_runReceiverThread(); }
+            virtual void run(){ _node->_runReceiverThread(); }
 
         private:
             Node* _node;
@@ -684,7 +682,7 @@ namespace net
                     : _node( node )
                 {}
             
-            virtual void* run(){ return _node->_runCommandThread(); }
+            virtual void run(){ _node->_runCommandThread(); }
 
         private:
             Node* _node;
@@ -742,7 +740,7 @@ namespace net
          * @param sessionID the identifier of the session.
          */
         void _addSession( Session* session, NodePtr server,
-                          const uint32_t sessionID );
+                          const SessionID& sessionID );
 
         /** 
          * Removes an unmapped session from this node.
@@ -750,9 +748,6 @@ namespace net
          * @param session the session.
          */
         void _removeSession( Session* session );
-
-        /** Generates a new, unique session identifier. */
-        uint32_t _generateSessionID();
 
         NodePtr _connect( const NodeID& nodeID, NodePtr server );
 
@@ -765,13 +760,13 @@ namespace net
                 return 0;
             }
 
-        void* _runReceiverThread();
-        void    _handleConnect();
-        void    _handleDisconnect();
-        bool    _handleData();
+        void _runReceiverThread();
+        void   _handleConnect();
+        void   _handleDisconnect();
+        bool   _handleData();
 
-        void* _runCommandThread();
-        void    _redispatchCommands();
+        void _runCommandThread();
+        void   _redispatchCommands();
 
         /** The command functions. */
         CommandResult _cmdStop( Command& command );
@@ -792,7 +787,8 @@ namespace net
         CommandResult _cmdAcquireSendTokenReply( Command& command );
         CommandResult _cmdReleaseSendToken( Command& command );
 
-        CHECK_THREAD_DECLARE( _thread );
+        CHECK_THREAD_DECLARE( _cmdThread );
+        CHECK_THREAD_DECLARE( _recvThread );
     };
 
     inline std::ostream& operator << ( std::ostream& os, const Node* node )

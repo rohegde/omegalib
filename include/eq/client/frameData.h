@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2006-2009, Stefan Eilemann <eile@equalizergraphics.com>
+/* Copyright (c) 2006-2010, Stefan Eilemann <eile@equalizergraphics.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -55,29 +55,31 @@ namespace server
          * @name Data Access
          */
         //@{
-        /** The enabled frame buffer attachments. */
+        /** @return the enabled frame buffer attachments. */
         uint32_t getBuffers() const { return _data.buffers; }
         void     setBuffers( const uint32_t buffers ){ _data.buffers = buffers;}
 
-        /** The database-range relative to the destination channel. */
+        /** @return the database-range relative to the destination channel. */
         const Range& getRange() const { return _data.range; }
         void setRange( const Range& range ) { _data.range = range; }
         
-        /** The pixel decomposition relative to the destination channel. */
+        /** @return the pixel decomposition wrt the destination channel. */
         const Pixel& getPixel() const { return _data.pixel; }
         
-        /** The subpixel decomposition relative to the destination channel. */
+        /** @return the subpixel decomposition wrt the destination channel. */
         const SubPixel& getSubPixel() const { return _data.subpixel; }
+
+        /** @return the DPlex period relative to the destination channel. */
+        uint32_t getPeriod() const { return _data.period; }
+
+        /** @return the DPlex phase relative to the destination channel. */
+        uint32_t getPhase() const { return _data.phase; }
 
         /** The images of this frame data holder */
         const ImageVector& getImages() const { return _images; }
 
         /** The covered area. */
         void setPixelViewport( const PixelViewport& pvp ) { _data.pvp = pvp; }
-
-        /* Set color buffer type to read */
-        void setColorFormat( const GLuint colorFormat )
-            { _colorFormat = colorFormat; }
         
         /** Enable/disable alpha usage for newly allocated images. */
         void setAlphaUsage( const bool useAlpha ) { _useAlpha = useAlpha; }
@@ -99,7 +101,8 @@ namespace server
          * 
          * @return the image.
          */
-        EQ_EXPORT Image* newImage( const Frame::Type type = Frame::TYPE_MEMORY);
+        EQ_EXPORT Image* newImage( const Frame::Type type,
+                                   const DrawableConfig& config );
 
         /** Clear the frame by recycling the attached images. */
         EQ_EXPORT void clear();
@@ -112,9 +115,11 @@ namespace server
          *
          * @param frame the corresponding output frame holder.
          * @param glObjects the GL object manager for the current GL context.
+         * @param config the configuration of the source frame buffer.
          */
         void startReadback( const Frame& frame, 
-                            Window::ObjectManager* glObjects );
+                            Window::ObjectManager* glObjects,
+                            const DrawableConfig& config );
 
         /** Synchronize the last image readback. */
         void syncReadback();
@@ -188,13 +193,16 @@ namespace server
         struct Data
         {
             Data() : offset( Vector2i::ZERO ), buffers( 0 ), format( 0 )
-                   , type( 0 ), frameType( Frame::TYPE_MEMORY ){}
+                   , type( 0 ), period( 1 ), phase( 0 )
+                   , frameType( Frame::TYPE_MEMORY ) {}
 
             PixelViewport pvp;
             Vector2i      offset;
             uint32_t      buffers;
             uint32_t      format;
             uint32_t      type;
+            uint32_t      period;
+            uint32_t      phase;
             Frame::Type   frameType;
             Range         range;     //<! database-range of src wrt to dest
             Pixel         pixel;     //<! pixel decomposition of source
@@ -207,7 +215,6 @@ namespace server
         ImageVector  _imageCache;
         base::Lock   _imageCacheLock;
 
-        GLuint     _colorFormat; 
         ROIFinder* _roiFinder;
 
         struct ImageVersion
@@ -224,7 +231,7 @@ namespace server
         /** Data ready monitor synchronization primitive. */
         base::Monitor<uint32_t> _readyVersion;
 
-        /** External monitors for readyness synchronization. */
+        /** External monitors for readiness synchronization. */
         std::vector< base::Monitor<uint32_t>* > _listeners;
         base::Lock                              _listenersMutex;
 
@@ -235,11 +242,12 @@ namespace server
         
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
 
         /** Allocate or reuse an image. */
-        Image* _allocImage( const eq::Frame::Type type );
+        Image* _allocImage( const eq::Frame::Type type,
+                            const DrawableConfig& config );
 
         /** Apply all received images of the given version. */
         void _applyVersion( const uint32_t version );

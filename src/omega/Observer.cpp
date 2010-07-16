@@ -21,20 +21,15 @@ Observer::Observer()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::update(float x, float y, float z, float yaw, float pitch, float roll)
+void Observer::update(Vector3f position, Vector3f rotation)
 {
-	eq::Vector3f pos;
 	myHeadMatrix = eq::Matrix4f::IDENTITY;
 
-	myHeadMatrix.rotate_x(pitch);
-	myHeadMatrix.rotate_z(roll);
-	myHeadMatrix.rotate_y(yaw);
+	myHeadMatrix.rotate_x(rotation[0]);
+	myHeadMatrix.rotate_z(rotation[2]);
+	myHeadMatrix.rotate_y(rotation[1]);
 
-	pos.x() = x;
-	pos.y() = y;
-	pos.z() = z;
-
-	myHeadMatrix.set_translation(pos);
+	myHeadMatrix.set_translation(position);
 
 	myHeadMatrix = myWorldToEmitter * myHeadMatrix * mySensorToObject;
 }
