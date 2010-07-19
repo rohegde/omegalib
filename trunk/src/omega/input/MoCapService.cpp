@@ -44,7 +44,7 @@ void MoCapService::setup(Setting& settings)
 
 	if( settings.exists( "castingType" ) )
 	{
-		castType = (int) settings[ "castingType" ];
+		castType = atoi( (const char*) settings[ "castingType" ] );
 	}
 }
 void MoCapService::start()
@@ -152,7 +152,7 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 			//get x,y,z coordinates
 			theEvent->position[0] = data->RigidBodies[i].x;
 			theEvent->position[1] = data->RigidBodies[i].y;
-			theEvent->position[3] = data->RigidBodies[i].z;
+			theEvent->position[2] = data->RigidBodies[i].z;
 
 			//get makerset data (the points that define the rigid body)
 			int numberOfMarkers = data->RigidBodies[i].nMarkers;

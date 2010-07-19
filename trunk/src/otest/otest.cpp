@@ -237,35 +237,35 @@ public:
 #else
 			if(evt.sourceId == 1)
 			{
-				if(evt.x != 0 || evt.y != 0)
+				if(evt.position[0] != 0 || evt.position[1] != 0)
 				{
 					Observer* obs = getDisplaySystem()->getObserver(0);
-					obs->update(evt.x, evt.y, evt.z, evt.ry, evt.rx, evt.rz);
+					obs->update(evt.position, evt.rotation);
 				}
 			}
 			else if(evt.sourceId == 3) //glove
 			{
-				if(evt.x != 0 || evt.y != 0)
+				if(evt.position[0] != 0 || evt.position[1] != 0)
 				{
-					lx = evt.x;
-					ly = evt.y;
-					lz = evt.z;
+					lx = evt.position[0];
+					ly = evt.position[1];
+					lz = evt.position[2];
 				}
 			}
 			else if(evt.sourceId ==2) //handheld
 			{
-				if(evt.x != 0 || evt.y != 0)
+				if(evt.position[0] != 0 || evt.position[1] != 0)
 				{
-					mx = evt.x;
-					my = evt.y;
-					mz = evt.z;
-					rx = evt.rx * Math::RadToDeg;
-					ry = evt.ry * Math::RadToDeg;
-					rz = evt.rz * Math::RadToDeg;
-					for( int i = 0; i < evt.numberOfPoints; i++)
+					mx = evt.position[0];
+					my = evt.position[1];
+					mz = evt.position[2];
+					rx = evt.rotation[0] * Math::RadToDeg;
+					ry = evt.rotation[1] * Math::RadToDeg;
+					rz = evt.rotation[2] * Math::RadToDeg;
+					/*for( int i = 0; i < evt.numberOfPoints; i++)
 					{
 						printf("point%d: x = %f, y = %f, z = %f\n", i, evt.pointSet[i][0], evt.pointSet[i][1], evt.pointSet[i][2]);
-					}
+					}*/
 				}
 			}
 #endif
