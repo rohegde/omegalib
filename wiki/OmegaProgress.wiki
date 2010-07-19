@@ -53,9 +53,11 @@
   * Rigid body movements (will it work on 64bit?)
 
 ==<u> Brad </u>==
- * Getting MoCap driver to read config files. 
-
- * Always playing with glove/rigid body arrangements.
+ * Reading papers on 3D gesturing and gesture disambiguation.
+ 
+ * Start working on a simple application to have pattern recognition for
+   3D gesturing.
+  * Going to try to get a wave and a rotate/pivot gesture working first.
 
 ==<u> Arthur </u>==
  * Paint 3D teapot by painting 2D texture map via multi-touch (*delivery*: ?)
