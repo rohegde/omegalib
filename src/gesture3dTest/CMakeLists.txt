@@ -27,11 +27,11 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE( odemo ${srcs} ${headers})
+ADD_EXECUTABLE( gesture3dTest ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( odemo
+TARGET_LINK_LIBRARIES( gesture3dTest
 	omega outk)
 
 
