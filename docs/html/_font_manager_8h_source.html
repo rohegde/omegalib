@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -61,7 +62,7 @@
 <a name="l00032"></a>00032         <span class="keyword">public</span>:
 <a name="l00033"></a><a class="code" href="classoutk_1_1gfx_1_1_font.html#a8531b381b1926a72cc800b7edec55da5">00033</a>                 <a class="code" href="classoutk_1_1gfx_1_1_font.html#a8531b381b1926a72cc800b7edec55da5">Font</a>(FTFont* fontImpl): myFontImpl(fontImpl) {}
 <a name="l00034"></a>00034 
-<a name="l00035"></a>00035                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_font.html#a07f5f9efa15c829bd1d8711e642bc74d">render</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; text, <a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> position, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> align = <a class="code" href="classoutk_1_1gfx_1_1_font.html#aa77d95c73f7c9dcc1037b5a35f7e02e6af0f1c144696f45237376bd551bde72c0">HALeft</a> | <a class="code" href="classoutk_1_1gfx_1_1_font.html#aa77d95c73f7c9dcc1037b5a35f7e02e6aac8b1d098db2ce23643c8fa9f5376d01">VATop</a>);
+<a name="l00035"></a>00035                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_font.html#ae2253557b790eafa190a43e1a54e08fc">render</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; text, <a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> position, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> align = <a class="code" href="classoutk_1_1gfx_1_1_font.html#aa77d95c73f7c9dcc1037b5a35f7e02e6af0f1c144696f45237376bd551bde72c0">HALeft</a> | <a class="code" href="classoutk_1_1gfx_1_1_font.html#aa77d95c73f7c9dcc1037b5a35f7e02e6aac8b1d098db2ce23643c8fa9f5376d01">VATop</a>);
 <a name="l00036"></a>00036         <span class="keyword">private</span>:
 <a name="l00037"></a>00037                 FTFont* myFontImpl;
 <a name="l00038"></a>00038         };
@@ -71,13 +72,13 @@
 <a name="l00044"></a><a class="code" href="classoutk_1_1gfx_1_1_font_manager.html">00044</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_font_manager.html">FontManager</a>
 <a name="l00045"></a>00045         {
 <a name="l00046"></a>00046         <span class="keyword">public</span>:
-<a name="l00047"></a>00047                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a41514d827b0bc3e422ef338a309e27ae">FontManager</a>();
-<a name="l00048"></a>00048                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a914b6cb82ea8f33be25aa8497025b0e9">~FontManager</a>();
+<a name="l00047"></a>00047                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a2f89acd28b5bd24e747aacd3208131ef">FontManager</a>();
+<a name="l00048"></a>00048                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#aa190bb023b4cf2ad28e24c69ef57f380">~FontManager</a>();
 <a name="l00049"></a>00049 
-<a name="l00050"></a>00050                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a8879ef9ba2679ac33d8d0a70f7989f16">cleanup</a>();
+<a name="l00050"></a>00050                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#aeaac1f9d3809e2bee89be789415ca673">cleanup</a>();
 <a name="l00051"></a>00051 
-<a name="l00052"></a>00052                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a9303b30f8bf1e1a92a376a7f85e18f45">createFont</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> fontName, <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> filename, <span class="keywordtype">int</span> size);
-<a name="l00053"></a>00053                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_font.html">Font</a>* <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a830cdf1544e2808c64b87309914a1962">getFont</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> fontName);
+<a name="l00052"></a>00052                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#a7984e1ddbbe4c362a97b46d5c5c4f269">createFont</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> fontName, <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> filename, <span class="keywordtype">int</span> size);
+<a name="l00053"></a>00053                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_font.html">Font</a>* <a class="code" href="classoutk_1_1gfx_1_1_font_manager.html#ab4effbe14e3f283a94f1c06124dd6b93">getFont</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> fontName);
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055         <span class="keyword">private</span>:
 <a name="l00056"></a>00056                 <a class="code" href="namespaceoutk_1_1gfx.html#af6f6c814593a7b891833fc1fbd9b9527">FontDictionary</a> myFonts;
@@ -88,7 +89,7 @@
 <a name="l00061"></a>00061 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

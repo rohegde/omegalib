@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -54,7 +55,7 @@
 <a name="l00025"></a>00025 <span class="keyword">public</span>:
 <a name="l00026"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#a3f303107118dc790e2b50910e1b12edb">00026</a>         <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#a3f303107118dc790e2b50910e1b12edb">PalladiumButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name): <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>(name) {}
 <a name="l00027"></a>00027 <span class="keyword">protected</span>:
-<a name="l00028"></a>00028         OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#a9cd3af6a1f3afe2abd4eb4adf7e23d5b">draw</a>();
+<a name="l00028"></a>00028         OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#aed16c48520f42d9fec0c101b410e4925">draw</a>();
 <a name="l00029"></a>00029 };
 <a name="l00030"></a>00030 
 <a name="l00032"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html">00032</a> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html">PalladiumWidgetFactory</a>: <span class="keyword">public</span> <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html">WidgetFactory</a>
@@ -63,7 +64,7 @@
 <a name="l00035"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html#ab1da3bb03d8d05d5e442d860f1b82b10">00035</a>         <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>* <a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html#ab1da3bb03d8d05d5e442d860f1b82b10">createButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* parent)
 <a name="l00036"></a>00036         {
 <a name="l00037"></a>00037                 <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>* button = <span class="keyword">new</span> <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html">PalladiumButton</a>(name);
-<a name="l00038"></a>00038                 parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#aee6979cd814a2a15a4712c9838c3d31d">addChild</a>(button);
+<a name="l00038"></a>00038                 parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(button);
 <a name="l00039"></a>00039                 <span class="keywordflow">return</span> button;
 <a name="l00040"></a>00040         }
 <a name="l00041"></a>00041 };
@@ -75,7 +76,7 @@
 <a name="l00047"></a>00047 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

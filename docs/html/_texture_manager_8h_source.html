@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -67,9 +68,9 @@
 <a name="l00038"></a><a class="code" href="classoutk_1_1gfx_1_1_texture.html#ab63adb0f794cec7a0e45a294ac5b94d3">00038</a>                 <span class="keywordtype">int</span> <a class="code" href="classoutk_1_1gfx_1_1_texture.html#ab63adb0f794cec7a0e45a294ac5b94d3">getWidth</a>() { <span class="keywordflow">return</span> myWidth; }
 <a name="l00039"></a><a class="code" href="classoutk_1_1gfx_1_1_texture.html#a4bd3656d3c4d1091c03f2ed2ad30be45">00039</a>                 <span class="keywordtype">int</span> <a class="code" href="classoutk_1_1gfx_1_1_texture.html#a4bd3656d3c4d1091c03f2ed2ad30be45">getHeight</a>() { <span class="keywordflow">return</span> myHeight; }
 <a name="l00040"></a>00040 
-<a name="l00041"></a><a class="code" href="classoutk_1_1gfx_1_1_texture.html#a1d9a646c94ccbfcc2423ff0c7a29531b">00041</a>                 GLuint <a class="code" href="classoutk_1_1gfx_1_1_texture.html#a1d9a646c94ccbfcc2423ff0c7a29531b">getGLTexture</a>() { <span class="keywordflow">if</span>(myDirty) <a class="code" href="classoutk_1_1gfx_1_1_texture.html#af412ffa760264c7358af491391ee34b9">refresh</a>(); <span class="keywordflow">return</span> myId; }
+<a name="l00041"></a><a class="code" href="classoutk_1_1gfx_1_1_texture.html#a1d9a646c94ccbfcc2423ff0c7a29531b">00041</a>                 GLuint <a class="code" href="classoutk_1_1gfx_1_1_texture.html#a1d9a646c94ccbfcc2423ff0c7a29531b">getGLTexture</a>() { <span class="keywordflow">if</span>(myDirty) <a class="code" href="classoutk_1_1gfx_1_1_texture.html#a6169cae39408f818f07f932eb844d8b3">refresh</a>(); <span class="keywordflow">return</span> myId; }
 <a name="l00042"></a>00042 
-<a name="l00043"></a>00043                 OUTK_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_texture.html#af412ffa760264c7358af491391ee34b9">refresh</a>();
+<a name="l00043"></a>00043                 OUTK_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_texture.html#a6169cae39408f818f07f932eb844d8b3">refresh</a>();
 <a name="l00044"></a>00044 
 <a name="l00045"></a>00045         <span class="keyword">private</span>:
 <a name="l00046"></a>00046                 <span class="keywordtype">bool</span> myInitialized;
@@ -85,13 +86,13 @@
 <a name="l00060"></a><a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html">00060</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html" title="Loads images and manages OpenGL textures.">TextureManager</a>
 <a name="l00061"></a>00061         {
 <a name="l00062"></a>00062         <span class="keyword">public</span>:
-<a name="l00063"></a>00063                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a5938ec9edd261380e503c96c57e2df9b">TextureManager</a>();
-<a name="l00064"></a>00064                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a5ebb33f360982c7d78f8c5b72bac2fbe">~TextureManager</a>();
+<a name="l00063"></a>00063                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#ad76abb178b37cedf4514eb0154349935">TextureManager</a>();
+<a name="l00064"></a>00064                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a001d6d74674961db79987e3222682576">~TextureManager</a>();
 <a name="l00065"></a>00065 
-<a name="l00066"></a>00066                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a03011f5045ace73f86067f62188eb534">cleanup</a>();
+<a name="l00066"></a>00066                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a56f80424cfdb3a5d7cf93cfd415ea16c">cleanup</a>();
 <a name="l00067"></a>00067 
-<a name="l00068"></a>00068                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a47a20472ab62ec92251b2937b7d0ff1c">loadTexture</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> textureName, <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> filename);
-<a name="l00069"></a>00069                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_texture.html">Texture</a>* <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a0353df0c104f250a2559b49bc9251cac">getTexture</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> fontName);
+<a name="l00068"></a>00068                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a1cdd0fed8ff9ba34ea84edf52bf490c4">loadTexture</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> textureName, <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> filename);
+<a name="l00069"></a>00069                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_texture.html">Texture</a>* <a class="code" href="classoutk_1_1gfx_1_1_texture_manager.html#a50e765a364309582d0c2fc51d153f5c2">getTexture</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> fontName);
 <a name="l00070"></a>00070 
 <a name="l00071"></a>00071         <span class="keyword">private</span>:
 <a name="l00072"></a>00072                 <a class="code" href="namespaceoutk_1_1gfx.html#a3830b9da4034d27210f3275b7dd3d53f" title="A dictionary containing &amp;lt;String, Texture*&amp;gt; pairs.">TextureDictionary</a> myTextures;
@@ -102,7 +103,7 @@
 <a name="l00077"></a>00077 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

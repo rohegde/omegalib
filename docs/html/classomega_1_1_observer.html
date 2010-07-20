@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -46,21 +47,21 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a3c3658f6c45efa02a518e66a0f8f3bad">Observer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a19c43f80a38a332a6f694783df3c9835">Observer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="namespaceomega.html#a6c646faccba212a8e9c05ac4b0754d7c">Matrix4f</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a3c166b0d46e640200a63fdaf042bf805">getWorldToEmitter</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#aa15830ce267e91bfc1e37543bf4772e7">setWorldToEmitter</a> (<a class="el" href="namespaceomega.html#a6c646faccba212a8e9c05ac4b0754d7c">Matrix4f</a> value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="namespaceomega.html#a6c646faccba212a8e9c05ac4b0754d7c">Matrix4f</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#aa398c699ee94c9aa92ed70e08a325edb">getSensorToObject</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a691bb3f40bce3488ff76efa5b1c7fc28">setSensorToObject</a> (<a class="el" href="namespaceomega.html#a6c646faccba212a8e9c05ac4b0754d7c">Matrix4f</a> value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="namespaceomega.html#a6c646faccba212a8e9c05ac4b0754d7c">Matrix4f</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a51ca310ec6790e64ca3bfb863f11ae79">getHeadMatrix</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a6c8ddf0bab90c5ba4532e7acec237b33">update</a> (float x, float y, float z, float yaw, float pitch, float roll)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a6f8863ebc5a0b85118645b80be173fda">update</a> (<a class="el" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb">Vector3f</a> position, <a class="el" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb">Vector3f</a> rotation)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a3c3658f6c45efa02a518e66a0f8f3bad"></a><!-- doxytag: member="omega::Observer::Observer" ref="a3c3658f6c45efa02a518e66a0f8f3bad" args="()" -->
+<a class="anchor" id="a19c43f80a38a332a6f694783df3c9835"></a><!-- doxytag: member="omega::Observer::Observer" ref="a19c43f80a38a332a6f694783df3c9835" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API omega::Observer::Observer </td>
+          <td class="memname">Observer::Observer </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -160,45 +161,21 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6c8ddf0bab90c5ba4532e7acec237b33"></a><!-- doxytag: member="omega::Observer::update" ref="a6c8ddf0bab90c5ba4532e7acec237b33" args="(float x, float y, float z, float yaw, float pitch, float roll)" -->
+<a class="anchor" id="a6f8863ebc5a0b85118645b80be173fda"></a><!-- doxytag: member="omega::Observer::update" ref="a6f8863ebc5a0b85118645b80be173fda" args="(Vector3f position, Vector3f rotation)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API void omega::Observer::update </td>
+          <td class="memname">void Observer::update </td>
           <td>(</td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>x</em>, </td>
+          <td class="paramtype"><a class="el" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb">Vector3f</a>&nbsp;</td>
+          <td class="paramname"> <em>position</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>z</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>yaw</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>pitch</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>roll</em></td><td>&nbsp;</td>
+          <td class="paramtype"><a class="el" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb">Vector3f</a>&nbsp;</td>
+          <td class="paramname"> <em>rotation</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -211,11 +188,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>D:/Workspace/omegalib/include/omega/<a class="el" href="_observer_8h_source.html">Observer.h</a></li>
+<li>D:/Workspace/omegalib/src/omega/<a class="el" href="_observer_8cpp.html">Observer.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:20 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

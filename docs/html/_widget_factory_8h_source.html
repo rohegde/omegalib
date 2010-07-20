@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -57,28 +58,28 @@
 <a name="l00028"></a><a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#a0215e78ff404ba44c238737bc0c32884">00028</a>                 <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#a0215e78ff404ba44c238737bc0c32884">createWidget</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* parent)
 <a name="l00029"></a>00029                 {
 <a name="l00030"></a>00030                         <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* widget = <span class="keyword">new</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>(name);
-<a name="l00031"></a>00031                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#aee6979cd814a2a15a4712c9838c3d31d">addChild</a>(widget);
+<a name="l00031"></a>00031                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(widget);
 <a name="l00032"></a>00032                         <span class="keywordflow">return</span> widget;
 <a name="l00033"></a>00033                 }
 <a name="l00034"></a>00034 
 <a name="l00035"></a><a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#a0d3e9304e444d201276eb35b85a77a4b">00035</a>                 <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_box.html">Box</a>* <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#a0d3e9304e444d201276eb35b85a77a4b">createBox</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* parent, <a class="code" href="classoutk_1_1ui_1_1_box.html#a7650c5beed7cfecdd8639b719f4b0a27">Box::Layout</a> layout)
 <a name="l00036"></a>00036                 {
 <a name="l00037"></a>00037                         <a class="code" href="classoutk_1_1ui_1_1_box.html">Box</a>* box = <span class="keyword">new</span> <a class="code" href="classoutk_1_1ui_1_1_box.html">Box</a>(name, layout);
-<a name="l00038"></a>00038                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#aee6979cd814a2a15a4712c9838c3d31d">addChild</a>(box);
+<a name="l00038"></a>00038                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(box);
 <a name="l00039"></a>00039                         <span class="keywordflow">return</span> box;
 <a name="l00040"></a>00040                 }
 <a name="l00041"></a>00041 
 <a name="l00042"></a><a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#aa98bd94af0237050c2ac318b6a9db103">00042</a>                 <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>* <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#aa98bd94af0237050c2ac318b6a9db103">createButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* parent)
 <a name="l00043"></a>00043                 {
 <a name="l00044"></a>00044                         <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>* button = <span class="keyword">new</span> <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>(name);
-<a name="l00045"></a>00045                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#aee6979cd814a2a15a4712c9838c3d31d">addChild</a>(button);
+<a name="l00045"></a>00045                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(button);
 <a name="l00046"></a>00046                         <span class="keywordflow">return</span> button;
 <a name="l00047"></a>00047                 }
 <a name="l00048"></a>00048 
 <a name="l00049"></a><a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#ab739ce03dc8de504e8462b93c740af83">00049</a>                 <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_image.html">Image</a>* <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html#ab739ce03dc8de504e8462b93c740af83">createImage</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* parent)
 <a name="l00050"></a>00050                 {
 <a name="l00051"></a>00051                         <a class="code" href="classoutk_1_1ui_1_1_image.html">Image</a>* image = <span class="keyword">new</span> <a class="code" href="classoutk_1_1ui_1_1_image.html">Image</a>(name);
-<a name="l00052"></a>00052                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#aee6979cd814a2a15a4712c9838c3d31d">addChild</a>(image);
+<a name="l00052"></a>00052                         parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(image);
 <a name="l00053"></a>00053                         <span class="keywordflow">return</span> image;
 <a name="l00054"></a>00054                 }
 <a name="l00055"></a>00055         };
@@ -88,7 +89,7 @@
 <a name="l00059"></a>00059 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
