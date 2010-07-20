@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -54,8 +55,8 @@
 <a name="l00025"></a>00025         {
 <a name="l00026"></a><a class="code" href="classoutk_1_1ui_1_1_widget.html#ab811b36cd63b54fe42b6acb231ea21bc">00026</a>         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html">UIManager</a>;
 <a name="l00027"></a>00027         <span class="keyword">public</span>:
-<a name="l00028"></a>00028                 OUTK_API <a class="code" href="classoutk_1_1ui_1_1_widget.html#a235a20fe26df7b1d8a2b50efb0abad95">Widget</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name);
-<a name="l00029"></a>00029                 <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a8d295037a34a3a75b56ad1441dad8dc1">~Widget</a>();
+<a name="l00028"></a>00028                 OUTK_API <a class="code" href="classoutk_1_1ui_1_1_widget.html#ae593365ab66f3a1f35d8ce43d2658cd2">Widget</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name);
+<a name="l00029"></a>00029                 <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#aa24f66bcbaaec6d458b0980e8c8eae65">~Widget</a>();
 <a name="l00030"></a>00030 
 <a name="l00032"></a><a class="code" href="classoutk_1_1ui_1_1_widget.html#a17554f311d5508c045eaf408c0336c5e">00032</a>                 <a class="code" href="classomega_1_1_color.html">omega::Color</a> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a17554f311d5508c045eaf408c0336c5e" title="Gets the color used when widget debug mode is enabled.">getDebugColor</a>() { <span class="keywordflow">return</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a16e701dd9ec082bdc195fe987aca4def">myDebugModeColor</a>; }
 <a name="l00033"></a>00033 
@@ -100,29 +101,29 @@
 <a name="l00093"></a><a class="code" href="classoutk_1_1ui_1_1_widget.html#aaea10639002956e0bc3f31d59fd9c928">00093</a>                 <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#aaea10639002956e0bc3f31d59fd9c928">setUserMoveEnabled</a>(<span class="keywordtype">bool</span> value) { <a class="code" href="classoutk_1_1ui_1_1_widget.html#ac89c06afe941110248021bfb0b2794d5">myUserMoveEnabled</a> = value; }
 <a name="l00094"></a>00094 
 <a name="l00095"></a>00095 
-<a name="l00096"></a>00096                 OUTK_API <span class="keywordtype">bool</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a3e0bbde59efd818331b135d19dd669fd">hitTest</a>(<a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> point);
+<a name="l00096"></a>00096                 OUTK_API <span class="keywordtype">bool</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a16d8480f5a936ff3b99811a0ebf7cb06">hitTest</a>(<a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> point);
 <a name="l00097"></a>00097 
 <a name="l00098"></a>00098                 <span class="comment">// Add a child to this widget.</span>
-<a name="l00099"></a>00099                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#aee6979cd814a2a15a4712c9838c3d31d">addChild</a>(<a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* child);
+<a name="l00099"></a>00099                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(<a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* child);
 <a name="l00100"></a>00100 
 <a name="l00101"></a>00101                 <span class="comment">// Remove a child from this widget.</span>
-<a name="l00102"></a>00102                 OUTK_API  <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a2a0ba6069a17d6c8a98ebfbd791063a1">removeChild</a>(<a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* child);
+<a name="l00102"></a>00102                 OUTK_API  <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a80bf42ba61b799beb7fbdd990860691b">removeChild</a>(<a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* child);
 <a name="l00103"></a>00103 
 <a name="l00104"></a>00104         <span class="keyword">protected</span>:
-<a name="l00105"></a>00105                 <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a8d31c5ac8326279b9321250350c63b0c">render</a>();
+<a name="l00105"></a>00105                 <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a7def275d48a5bb870ba444fb036c4e3d">render</a>();
 <a name="l00106"></a>00106 
-<a name="l00107"></a>00107                 <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#ac54b64095664692bcfe988c75bfe7c2d">transformPoint</a>(<a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a>&amp; point);
+<a name="l00107"></a>00107                 <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a395bb7216a46b43f3cc9101a5860daaa">transformPoint</a>(<a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a>&amp; point);
 <a name="l00108"></a>00108 
-<a name="l00109"></a>00109                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a55fc05f12bba420d784b2c0a71b42840">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">omega::UpdateContext</a>&amp; context);
+<a name="l00109"></a>00109                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a7166968a0ecf699f6a6a9cf88d3c3456">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">omega::UpdateContext</a>&amp; context);
 <a name="l00110"></a>00110 
 <a name="l00111"></a>00111                 <span class="comment">// Drawing function for this widget.</span>
-<a name="l00112"></a>00112                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a3eae8c310b3e8014414d6df62d074889">layoutChildren</a>();
+<a name="l00112"></a>00112                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a1e52593e0698843e8a7157afb1743fee">layoutChildren</a>();
 <a name="l00113"></a>00113 
-<a name="l00114"></a>00114                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#aac6add803e0b0883305028e4a53eccf6">draw</a>();
+<a name="l00114"></a>00114                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a6ea4feac4bdee76a57d666d7241f7422">draw</a>();
 <a name="l00115"></a>00115 
-<a name="l00116"></a>00116                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a1942d8ce7b57efda84d1d2f666fe10c6">processInputEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">omega::InputEvent</a>&amp; evt);
+<a name="l00116"></a>00116                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#adc3914233996c61298d7b620e7a3f3db">processInputEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">omega::InputEvent</a>&amp; evt);
 <a name="l00117"></a>00117 
-<a name="l00118"></a>00118                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#ac3b547065bee73370537df061b49fb9c">dispatchUIEvent</a>(<a class="code" href="structoutk_1_1ui_1_1_u_i_event.html">UIEvent</a>&amp; evt);
+<a name="l00118"></a>00118                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html#a81bb88d40770da1ffc4aabea8d3278d0">dispatchUIEvent</a>(<a class="code" href="structoutk_1_1ui_1_1_u_i_event.html">UIEvent</a>&amp; evt);
 <a name="l00119"></a>00119 
 <a name="l00120"></a>00120         <span class="keyword">protected</span>:
 <a name="l00121"></a><a class="code" href="classoutk_1_1ui_1_1_widget.html#af39e942f885e34c9e708ad8d04503074">00121</a>                 <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html">UIManager</a>* <a class="code" href="classoutk_1_1ui_1_1_widget.html#af39e942f885e34c9e708ad8d04503074">myUI</a>;
@@ -158,7 +159,7 @@
 <a name="l00151"></a>00151 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

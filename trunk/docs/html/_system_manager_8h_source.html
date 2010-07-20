@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -51,7 +52,7 @@
 <a name="l00021"></a>00021 {
 <a name="l00023"></a>00023 <span class="comment">// Forward declarations</span>
 <a name="l00024"></a>00024 <span class="keyword">class </span>Application;
-<a name="l00025"></a>00025 <span class="keyword">class </span>Config;
+<a name="l00025"></a>00025 <span class="keyword">class </span><a class="code" href="classeq_1_1_config.html">Config</a>;
 <a name="l00026"></a>00026 <span class="keyword">class </span>DisplaySystem;
 <a name="l00027"></a>00027 <span class="keyword">class </span>InputManager;
 <a name="l00028"></a>00028 <span class="keyword">class </span>InputService;
@@ -68,46 +69,33 @@
 <a name="l00040"></a>00040 {
 <a name="l00041"></a>00041 <span class="keyword">public</span>:
 <a name="l00042"></a>00042         <span class="comment">// Get the singleton instance of the system manager.</span>
-<a name="l00043"></a>00043         OMEGA_API <span class="keyword">static</span> <a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>* <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">instance</a>();
+<a name="l00043"></a>00043         OMEGA_API <span class="keyword">static</span> <a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>* <a class="code" href="classomega_1_1_system_manager.html#aefb1daba6a0ea15ba4ef97f0e2428b35">instance</a>();
 <a name="l00044"></a>00044 
-<a name="l00045"></a>00045         <span class="comment">// initializes the system manager</span>
-<a name="l00046"></a>00046         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a6e6f49eb1a40c770778cb4c90acbd7d8">setup</a>(<a class="code" href="classomega_1_1_config.html">Config</a>* cfg);
+<a name="l00046"></a>00046         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#aec783a00a03e4674d792cdee920e9326" title="Initializes the system manager.">setup</a>(<a class="code" href="classomega_1_1_config.html">Config</a>* cfg);
 <a name="l00047"></a>00047 
-<a name="l00048"></a>00048         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#ad5744d8c3ce4437309540c81e2c7ee62">registerInputService</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName, <a class="code" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> creationFunc);
+<a name="l00048"></a>00048         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#ab412bbfa2aed30ef0a07ab22a305c822">registerInputService</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName, <a class="code" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> creationFunc);
 <a name="l00049"></a>00049 
-<a name="l00050"></a>00050         <span class="comment">// Find an input service allocator given the input service name.</span>
-<a name="l00051"></a>00051         <span class="comment">// See registerInputService for additional information.</span>
-<a name="l00052"></a>00052         OMEGA_API <a class="code" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> <a class="code" href="classomega_1_1_system_manager.html#a6afb6f1e08024f8194b0445c63ce0eea">findInputService</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName);
+<a name="l00052"></a>00052         OMEGA_API <a class="code" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> <a class="code" href="classomega_1_1_system_manager.html#aea68f59e83bdc269a7c8d3dd11da8474" title="Find an input service allocator given the input service name.">findInputService</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName);
 <a name="l00053"></a>00053 
-<a name="l00054"></a>00054         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#ab887b2906b98f010c8a2ab253a2dc1e8">initialize</a>();
+<a name="l00054"></a>00054         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#af40b45c958865de2ff03d0a8a7eafafa">initialize</a>();
 <a name="l00055"></a>00055 
-<a name="l00056"></a>00056         <span class="comment">// Starts running the current application.</span>
-<a name="l00057"></a>00057         <span class="comment">// This method does not return until the application is done running.</span>
-<a name="l00058"></a>00058         OMEGA_API <span class="keywordtype">void</span>  <a class="code" href="classomega_1_1_system_manager.html#adb5fa2c8090bb328a12b32d8058c6214">run</a>();
+<a name="l00058"></a>00058         OMEGA_API <span class="keywordtype">void</span>  <a class="code" href="classomega_1_1_system_manager.html#a51eb11945f7445275abb45b1fa7f028d" title="Starts running the current application.">run</a>();
 <a name="l00059"></a>00059 
-<a name="l00060"></a>00060         <span class="comment">// Sends an exit request to the system manager.</span>
-<a name="l00061"></a>00061         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#ae8d2319753c63aeb1b874b7c6d044260">postExitRequest</a>();
+<a name="l00061"></a>00061         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#affd639d6b8aa21fc204bccff9adbfb72" title="Sends an exit request to the system manager.">postExitRequest</a>();
 <a name="l00062"></a>00062 
-<a name="l00063"></a>00063         <span class="comment">// Cleans up runtime resources, performs final debug checks etc.</span>
-<a name="l00064"></a>00064         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a6f7e70177c181e4331a3326c537170e8">cleanup</a>();
+<a name="l00064"></a>00064         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a65dbd70d07db2f5141e24ddcbcf99d05" title="Cleans up runtime resources, performs final debug checks etc.">cleanup</a>();
 <a name="l00065"></a>00065 
-<a name="l00066"></a>00066         <span class="comment">// Gets the system configuration.</span>
-<a name="l00067"></a><a class="code" href="classomega_1_1_system_manager.html#a3c6f23f3d5b3247f2b100997a68e6b16">00067</a>         OMEGA_API <a class="code" href="classomega_1_1_config.html">Config</a>* <a class="code" href="classomega_1_1_system_manager.html#a3c6f23f3d5b3247f2b100997a68e6b16">getConfig</a>() { <span class="keywordflow">return</span> myConfig; }
+<a name="l00067"></a><a class="code" href="classomega_1_1_system_manager.html#a3c6f23f3d5b3247f2b100997a68e6b16">00067</a>         OMEGA_API <a class="code" href="classomega_1_1_config.html">Config</a>* <a class="code" href="classomega_1_1_system_manager.html#a3c6f23f3d5b3247f2b100997a68e6b16" title="Gets the system configuration.">getConfig</a>() { <span class="keywordflow">return</span> myConfig; }
 <a name="l00068"></a>00068 
-<a name="l00069"></a>00069         <span class="comment">// Gets the InputManager object</span>
-<a name="l00070"></a><a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db">00070</a>         OMEGA_API <a class="code" href="classomega_1_1_input_manager.html">InputManager</a>* <a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db">getInputManager</a>() { <span class="keywordflow">return</span> myInputManager; }
+<a name="l00070"></a><a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db">00070</a>         OMEGA_API <a class="code" href="classomega_1_1_input_manager.html">InputManager</a>* <a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db" title="Gets the InputManager object.">getInputManager</a>() { <span class="keywordflow">return</span> myInputManager; }
 <a name="l00071"></a>00071 
-<a name="l00072"></a>00072         <span class="comment">// Gets the DisplaySystem object</span>
-<a name="l00073"></a><a class="code" href="classomega_1_1_system_manager.html#a542bf3572aa4f55000541e6efc8b43bb">00073</a>         OMEGA_API <a class="code" href="classomega_1_1_display_system.html">DisplaySystem</a>* <a class="code" href="classomega_1_1_system_manager.html#a542bf3572aa4f55000541e6efc8b43bb">getDisplaySystem</a>() { <span class="keywordflow">return</span> myDisplaySystem; }
+<a name="l00073"></a><a class="code" href="classomega_1_1_system_manager.html#a542bf3572aa4f55000541e6efc8b43bb">00073</a>         OMEGA_API <a class="code" href="classomega_1_1_display_system.html">DisplaySystem</a>* <a class="code" href="classomega_1_1_system_manager.html#a542bf3572aa4f55000541e6efc8b43bb" title="Gets the DisplaySystem object.">getDisplaySystem</a>() { <span class="keywordflow">return</span> myDisplaySystem; }
 <a name="l00074"></a>00074 
-<a name="l00075"></a>00075         <span class="comment">// Sets the DisplaySystem object</span>
-<a name="l00076"></a><a class="code" href="classomega_1_1_system_manager.html#a416ce5f01c2e616fd88af1384f8eb71a">00076</a>         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a416ce5f01c2e616fd88af1384f8eb71a">setDisplaySystem</a>(<a class="code" href="classomega_1_1_display_system.html">DisplaySystem</a>* value) { myDisplaySystem = value; }
+<a name="l00076"></a><a class="code" href="classomega_1_1_system_manager.html#a416ce5f01c2e616fd88af1384f8eb71a">00076</a>         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a416ce5f01c2e616fd88af1384f8eb71a" title="Sets the DisplaySystem object.">setDisplaySystem</a>(<a class="code" href="classomega_1_1_display_system.html">DisplaySystem</a>* value) { myDisplaySystem = value; }
 <a name="l00077"></a>00077 
-<a name="l00078"></a>00078         <span class="comment">// Gets the Application object</span>
-<a name="l00079"></a><a class="code" href="classomega_1_1_system_manager.html#a66b2f6745a24060e91f22bd3afe3de1d">00079</a>         OMEGA_API <a class="code" href="classomega_1_1_application.html">Application</a>* <a class="code" href="classomega_1_1_system_manager.html#a66b2f6745a24060e91f22bd3afe3de1d">getApplication</a>() { <span class="keywordflow">return</span> myApplication; }
+<a name="l00079"></a><a class="code" href="classomega_1_1_system_manager.html#a66b2f6745a24060e91f22bd3afe3de1d">00079</a>         OMEGA_API <a class="code" href="classomega_1_1_application.html">Application</a>* <a class="code" href="classomega_1_1_system_manager.html#a66b2f6745a24060e91f22bd3afe3de1d" title="Gets the Application object.">getApplication</a>() { <span class="keywordflow">return</span> myApplication; }
 <a name="l00080"></a>00080 
-<a name="l00081"></a>00081         <span class="comment">// Sets the Application object</span>
-<a name="l00082"></a><a class="code" href="classomega_1_1_system_manager.html#a0a08c852926528cf10e87c7aed4f2f64">00082</a>         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a0a08c852926528cf10e87c7aed4f2f64">setApplication</a>(<a class="code" href="classomega_1_1_application.html">Application</a>* value) { myApplication = value; }
+<a name="l00082"></a><a class="code" href="classomega_1_1_system_manager.html#a0a08c852926528cf10e87c7aed4f2f64">00082</a>         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_system_manager.html#a0a08c852926528cf10e87c7aed4f2f64" title="Sets the Application object.">setApplication</a>(<a class="code" href="classomega_1_1_application.html">Application</a>* value) { myApplication = value; }
 <a name="l00083"></a>00083 
 <a name="l00084"></a><a class="code" href="classomega_1_1_system_manager.html#a0a6ace2009515887623a7d8c8d373126">00084</a>         OMEGA_API <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_system_manager.html#a0a6ace2009515887623a7d8c8d373126">isExitRequested</a>() { <span class="keywordflow">return</span> myExitRequested; }
 <a name="l00085"></a>00085 
@@ -144,7 +132,7 @@
 <a name="l00116"></a>00116 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

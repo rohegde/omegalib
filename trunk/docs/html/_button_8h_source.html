@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -54,8 +55,8 @@
 <a name="l00025"></a><a class="code" href="classoutk_1_1ui_1_1_button.html">00025</a> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>: <span class="keyword">public</span> <a class="code" href="classoutk_1_1ui_1_1_abstract_button.html">AbstractButton</a>
 <a name="l00026"></a>00026 {
 <a name="l00027"></a>00027 <span class="keyword">public</span>:
-<a name="l00028"></a>00028         OUTK_API <a class="code" href="classoutk_1_1ui_1_1_button.html#a64982f2e4ed5a5abb80ac6ebf4f86cae">Button</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name);
-<a name="l00029"></a>00029         OUTK_API <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#ac1fc4d48ab40749abc0c6a70398bd1f7">~Button</a>();
+<a name="l00028"></a>00028         OUTK_API <a class="code" href="classoutk_1_1ui_1_1_button.html#a98049e01fc969c8b1ee9cbfc42b20ab8">Button</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name);
+<a name="l00029"></a>00029         OUTK_API <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#a2a001eb9c3cc8ae54768a850dd345002">~Button</a>();
 <a name="l00030"></a>00030 
 <a name="l00031"></a><a class="code" href="classoutk_1_1ui_1_1_button.html#ae26aa3e8270a7b1869bb4317c2312509">00031</a>         <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classoutk_1_1ui_1_1_button.html#ae26aa3e8270a7b1869bb4317c2312509">getText</a>() { <span class="keywordflow">return</span> myLabel.<a class="code" href="classoutk_1_1ui_1_1_label.html#a1485486de1ccfbe5810492879d5a412d">getText</a>(); }
 <a name="l00032"></a><a class="code" href="classoutk_1_1ui_1_1_button.html#aeced686408778418a4fb4dd7afc49686">00032</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#aeced686408778418a4fb4dd7afc49686">setText</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> value) { myLabel.<a class="code" href="classoutk_1_1ui_1_1_label.html#a2fccfbcfb4c23eafcb37114b33dd605f">setText</a>(value); }
@@ -64,8 +65,8 @@
 <a name="l00035"></a><a class="code" href="classoutk_1_1ui_1_1_button.html#a2362099f89af3f74ca678c3adcf8c334">00035</a>         <a class="code" href="classoutk_1_1ui_1_1_label.html">Label</a>* <a class="code" href="classoutk_1_1ui_1_1_button.html#a2362099f89af3f74ca678c3adcf8c334">getLabel</a>() { <span class="keywordflow">return</span> &amp;myLabel; }
 <a name="l00036"></a>00036 
 <a name="l00037"></a>00037 <span class="keyword">protected</span>:
-<a name="l00038"></a>00038                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#aaeccded718ecf932cf035cfe03435a86">processInputEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">omega::InputEvent</a>&amp; evt);
-<a name="l00039"></a>00039                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#af6f2f6cf94738ce5624f76ee50f128c4">draw</a>();
+<a name="l00038"></a>00038                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#a9f7e1aba9595af1fbcd2f39e3f865c46">processInputEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">omega::InputEvent</a>&amp; evt);
+<a name="l00039"></a>00039                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_button.html#a0380207dc9e4edcd0272207a39c7cdeb">draw</a>();
 <a name="l00040"></a>00040 
 <a name="l00041"></a>00041 <span class="keyword">private</span>:
 <a name="l00042"></a>00042         <a class="code" href="classoutk_1_1ui_1_1_label.html">Label</a> myLabel;
@@ -76,7 +77,7 @@
 <a name="l00047"></a>00047 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 15 2010 17:28:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
