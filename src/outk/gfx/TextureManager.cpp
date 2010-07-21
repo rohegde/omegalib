@@ -90,7 +90,7 @@ void TextureManager::loadTexture(omega::String textureName, omega::String filena
 	Texture* tx = new Texture();
 	tx->setData(data, w, h);
 
-	// TODO: Check for already existing textures with same name & notify + deallocate.
+	// @todo: Check for already existing textures with same name & notify + deallocate.
 
 	myTextures[textureName] = tx;
 }

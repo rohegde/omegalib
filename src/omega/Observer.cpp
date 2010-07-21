@@ -10,6 +10,7 @@
  * Implementation of Config class methods. See Config.h for detailed information.
  *********************************************************************************************************************/
 #include "omega/Observer.h"
+#include "omega/Math.h"
 
 using namespace omega;
 
@@ -25,9 +26,9 @@ void Observer::update(Vector3f position, Vector3f rotation)
 {
 	myHeadMatrix = eq::Matrix4f::IDENTITY;
 
-	myHeadMatrix.rotate_x(rotation[0]);
-	myHeadMatrix.rotate_z(rotation[2]);
-	myHeadMatrix.rotate_y(rotation[1]);
+	myHeadMatrix.rotate_x(rotation[0] * Math::DegToRad);
+	myHeadMatrix.rotate_z(rotation[2] * Math::DegToRad);
+	myHeadMatrix.rotate_y(rotation[1] * Math::DegToRad);
 
 	myHeadMatrix.set_translation(position);
 

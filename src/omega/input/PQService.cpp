@@ -11,6 +11,7 @@
  *********************************************************************************************************************/
 #include "omega/input/PQService.h"
 #include "omega/SystemManager.h"
+#include "omega/Math.h"
 
 using namespace omega;
 
@@ -416,7 +417,9 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_ROTATE_ANTICLOCK:
 		case TG_ROTATE_CLOCK:
 			evt->type  = InputEvent::Rotate;
-			evt->rotation[0] = tg.params[0];
+
+			evt->rotation[0] = tg.params[0] * Math::RadToDeg;
+
 			evt->numberOfPoints = 2;
 			evt->pointSet[0][0] = tg.params[1];
 			evt->pointSet[0][1] = tg.params[2];

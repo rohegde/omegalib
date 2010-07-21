@@ -197,7 +197,7 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		// TODO: This is just a hack for application pipe initialization. This should be moved
+		// @todo: This is just a hack for application pipe initialization. This should be moved
 		// into Pipe::initialize() or something.
 		static bool pipeInitialized = false;
 		if(!pipeInitialized)
