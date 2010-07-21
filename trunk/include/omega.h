@@ -22,5 +22,6 @@
 #include "omega/Math.h"
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
+#include "omega/Utils.h"
 
 #endif

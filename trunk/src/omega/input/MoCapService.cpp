@@ -206,6 +206,11 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 					//yaw
 					theEvent->rotation[1] = atan2( (double) ( ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qz ) ),
 											sqx - sqy - sqz + sqw );
+
+					// Convert to degrees.
+					theEvent->rotation[0] *= Math::RadToDeg;
+					theEvent->rotation[1] *= Math::RadToDeg;
+					theEvent->rotation[2] *= Math::RadToDeg;
 				}
 			}
 			else //if the user wants quaternion data

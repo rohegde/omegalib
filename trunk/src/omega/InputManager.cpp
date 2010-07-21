@@ -198,7 +198,7 @@ void InputManager::processEvents(Application* app)
 	int av = getAvailableEvents();
 	if(av != 0)
 	{
-		// TODO: Instead of copying the event list, we can lock the main one.
+		// @todo: Instead of copying the event list, we can lock the main one.
 		InputEvent evts[InputManager::MaxEvents];
 		getEvents(evts, InputManager::MaxEvents);
 		for( int evtNum = 0; evtNum < av; evtNum++)

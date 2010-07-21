@@ -1654,11 +1654,6 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 {
     struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
 
-	/* TODO. We should be able to replace this entire function body
-	 * with
-	 *		libconfig_yypop_buffer_state();
-	 *		libconfig_yypush_buffer_state(new_buffer);
-     */
 	libconfig_yyensure_buffer_stack (yyscanner);
 	if ( YY_CURRENT_BUFFER == new_buffer )
 		return;

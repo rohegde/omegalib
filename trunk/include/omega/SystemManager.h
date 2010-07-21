@@ -42,43 +42,43 @@ public:
 	// Get the singleton instance of the system manager.
 	OMEGA_API static SystemManager* instance();
 
-	// initializes the system manager
+	//! Initializes the system manager
 	OMEGA_API void setup(Config* cfg);
 
 	OMEGA_API void registerInputService(String svcName, InputServiceAllocator creationFunc);
 
-	// Find an input service allocator given the input service name.
-	// See registerInputService for additional information.
+	//! Find an input service allocator given the input service name.
+	//! See registerInputService for additional information.
 	OMEGA_API InputServiceAllocator findInputService(String svcName);
 
 	OMEGA_API void initialize();
 
-	// Starts running the current application.
-	// This method does not return until the application is done running.
+	//! Starts running the current application.
+	//! This method does not return until the application is done running.
 	OMEGA_API void	run();
 
-	// Sends an exit request to the system manager.
+	//! Sends an exit request to the system manager.
 	OMEGA_API void postExitRequest();
 
-	// Cleans up runtime resources, performs final debug checks etc.
+	//! Cleans up runtime resources, performs final debug checks etc.
 	OMEGA_API void cleanup();
 
-	// Gets the system configuration.
+	//! Gets the system configuration.
 	OMEGA_API Config* getConfig() { return myConfig; }
 
-	// Gets the InputManager object
+	//! Gets the InputManager object
 	OMEGA_API InputManager* getInputManager() { return myInputManager; }
 
-	// Gets the DisplaySystem object
+	//! Gets the DisplaySystem object
 	OMEGA_API DisplaySystem* getDisplaySystem() { return myDisplaySystem; }
 
-	// Sets the DisplaySystem object
+	//! Sets the DisplaySystem object
 	OMEGA_API void setDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
 
-	// Gets the Application object
+	//! Gets the Application object
 	OMEGA_API Application* getApplication() { return myApplication; }
 
-	// Sets the Application object
+	//! Sets the Application object
 	OMEGA_API void setApplication(Application* value) { myApplication = value; }
 
 	OMEGA_API bool isExitRequested() { return myExitRequested; }

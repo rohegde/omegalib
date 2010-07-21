@@ -81,7 +81,7 @@ void SystemManager::setupInputManager()
 	myInputManager = new InputManager(this);
 
 	// register standard input services.
-	// TODO: I don't understand why a static_cast does not work here.
+	// @todo: I don't understand why a static_cast does not work here.
 #ifdef OMEGA_USE_MOUSE
 	registerInputService("MouseService", (InputServiceAllocator)MouseService::New);
 #endif

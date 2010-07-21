@@ -109,9 +109,6 @@ void OptiTrackService::poll()
 	// If an optitrack camera has not been set, just return.
 	if(!myCamera) return;
 
-	double radToDegree = 180.0 / 3.14159265;
-	double degreeToRad =  3.14159265 / 180.0;
-
 	HRESULT hr;
 	CComPtr<INPCameraFrame> frame;
 
@@ -154,9 +151,9 @@ void OptiTrackService::poll()
 			evt->position[0] = -x.dblVal / 1000.0f;
 			evt->position[1] = y.dblVal  / 1000.0f;
 			evt->position[2] = z.dblVal  / 1000.0f;
-			evt->rotation[0] = pitch.dblVal * degreeToRad;
-			evt->rotation[1] = yaw.dblVal  * degreeToRad;
-			evt->rotation[2] = roll.dblVal  * degreeToRad;
+			evt->rotation[0] = pitch.dblVal;
+			evt->rotation[1] = yaw.dblVal;
+			evt->rotation[2] = roll.dblVal;
 
 			unlockEvents();
 

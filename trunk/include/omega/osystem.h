@@ -113,7 +113,7 @@ OMEGA_API void owarn(const char* fmt, ...);
 OMEGA_API void oerror(const char* fmt, ...);
 OMEGA_API void oexit(int code);
 
-// TODO: stupid macros bleah go away.
+// @todo: stupid macros bleah go away.
 #define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }
 #define OMEGA_LOG_CLOSE() { ologclose(); }
 
