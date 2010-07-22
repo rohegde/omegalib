@@ -16,7 +16,7 @@ using namespace omega;
 using namespace outk::gfx;
 using namespace outk::ui;
 
-#define LAPTOP
+//#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TestApplication: public Application, IUIEventHandler
@@ -259,9 +259,9 @@ public:
 					mx = evt.position[0];
 					my = evt.position[1];
 					mz = evt.position[2];
-					rx = evt.rotation[0] * Math::RadToDeg;
-					ry = evt.rotation[1] * Math::RadToDeg;
-					rz = evt.rotation[2] * Math::RadToDeg;
+					rx = evt.rotation[0];
+					ry = evt.rotation[1];
+					rz = evt.rotation[2];
 					/*for( int i = 0; i < evt.numberOfPoints; i++)
 					{
 						printf("point%d: x = %f, y = %f, z = %f\n", i, evt.pointSet[i][0], evt.pointSet[i][1], evt.pointSet[i][2]);
@@ -310,7 +310,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	Config* cfg = new Config("../../data/test.cfg");
+	Config* cfg = new Config("../../data/omegadesk.cfg");
 
 	SystemManager* sys = SystemManager::instance();
 	sys->setup(cfg);
