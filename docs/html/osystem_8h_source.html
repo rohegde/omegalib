@@ -12,7 +12,6 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -145,12 +144,12 @@
 <a name="l00118"></a><a class="code" href="osystem_8h.html#a0e027e9e9bc4515026103eec0f430951">00118</a> <span class="preprocessor"></span><span class="preprocessor">#define OMEGA_LOG_CLOSE() { ologclose(); }</span>
 <a name="l00119"></a>00119 <span class="preprocessor"></span>
 <a name="l00120"></a><a class="code" href="osystem_8h.html#a4a481dfc3e9af54c4fd87c5d0a6d45ba">00120</a> <span class="preprocessor">#define odbg(str) omsg(str);</span>
-<a name="l00121"></a><a class="code" href="osystem_8h.html#a007bd259e00c9e367839cb8f31eb19f9">00121</a> <span class="preprocessor"></span><span class="preprocessor">#define oassert(c) if(!(c)) { oerror(&quot;Assertion failed at %s:%d - %s&quot;, __FILE__, __LINE__, ##c); exit(1); }</span>
+<a name="l00121"></a><a class="code" href="osystem_8h.html#a007bd259e00c9e367839cb8f31eb19f9">00121</a> <span class="preprocessor"></span><span class="preprocessor">#define oassert(c) if(!(c)) { oerror(&quot;Assertion failed at %s:%d - %s&quot;, __FILE__, __LINE__, #c); exit(1); }</span>
 <a name="l00122"></a>00122 <span class="preprocessor"></span>
 <a name="l00123"></a>00123 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -12,7 +12,6 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li class="current"><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -34,7 +33,8 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <h1>outk::gfx Namespace Reference</h1>  </div>
 </div>
@@ -45,11 +45,18 @@ Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_font.html">Font</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_font_manager.html">FontManager</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gfx_utils.html">GfxUtils</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_buffer.html">GpuBuffer</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html">VertexBuffer</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_index_buffer.html">IndexBuffer</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_environment.html">GpuEnvironment</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Loads images and manages OpenGL textures.  <a href="classoutk_1_1gfx_1_1_gpu_manager.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Loads images and manages OpenGL textures.  <a href="classoutk_1_1gfx_1_1_gpu_manager.html#_details">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_compute_shader.html">ComputeShader</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html">GpuProgram</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Represents a program runnable on a Gpu unit.  <a href="classoutk_1_1gfx_1_1_gpu_program.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_texture.html">Texture</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_texture_manager.html">TextureManager</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Loads images and manages OpenGL textures.  <a href="classoutk_1_1gfx_1_1_texture_manager.html#_details">More...</a><br/></td></tr>
@@ -61,14 +68,20 @@ Typedefs</h2></td></tr>
 &lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#a524adf4c510f5db390fc3b65598a811e">VertexShaderDictionary</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A dictionary containing &lt;String, VertexShader*&gt; pairs.  <a href="#a524adf4c510f5db390fc3b65598a811e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef boost::unordered_map<br class="typebreak"/>
-&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#aebf7d96b7111b6b7e646526dec7b7789">FragmentShaderDictionary</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A dictionary containing &lt;String, FragmentShader*&gt; pairs.  <a href="#aebf7d96b7111b6b7e646526dec7b7789"></a><br/></td></tr>
+&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <br class="typebreak"/>
+<a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#a9462c8a7ef70faeb61d15aa2bb28d2b3">FragmentShaderDictionary</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A dictionary containing &lt;String, FragmentShader*&gt; pairs.  <a href="#a9462c8a7ef70faeb61d15aa2bb28d2b3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef boost::unordered_map<br class="typebreak"/>
-&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#a1816b146521172fa107acc8738ffbae4">GeometryShaderDictionary</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A dictionary containing &lt;String, GeometryShader*&gt; pairs.  <a href="#a1816b146521172fa107acc8738ffbae4"></a><br/></td></tr>
+&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <br class="typebreak"/>
+<a class="el" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#a46292cbde5b3ad7feced55d20eac7676">GeometryShaderDictionary</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A dictionary containing &lt;String, GeometryShader*&gt; pairs.  <a href="#a46292cbde5b3ad7feced55d20eac7676"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef boost::unordered_map<br class="typebreak"/>
 &lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_texture.html">Texture</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#a3830b9da4034d27210f3275b7dd3d53f">TextureDictionary</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A dictionary containing &lt;String, Texture*&gt; pairs.  <a href="#a3830b9da4034d27210f3275b7dd3d53f"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceoutk_1_1gfx.html#a17908fcd1a86c7da1d45e23488449bbc">__clCheck</a> (const char *file, int line, int status)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Checks safety of OpenCL calls.  <a href="#a17908fcd1a86c7da1d45e23488449bbc"></a><br/></td></tr>
 </table>
 <hr/><h2>Typedef Documentation</h2>
 <a class="anchor" id="af6f6c814593a7b891833fc1fbd9b9527"></a><!-- doxytag: member="outk::gfx::FontDictionary" ref="af6f6c814593a7b891833fc1fbd9b9527" args="" -->
@@ -84,12 +97,12 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aebf7d96b7111b6b7e646526dec7b7789"></a><!-- doxytag: member="outk::gfx::FragmentShaderDictionary" ref="aebf7d96b7111b6b7e646526dec7b7789" args="" -->
+<a class="anchor" id="a9462c8a7ef70faeb61d15aa2bb28d2b3"></a><!-- doxytag: member="outk::gfx::FragmentShaderDictionary" ref="a9462c8a7ef70faeb61d15aa2bb28d2b3" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef boost::unordered_map&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a>*&gt; <a class="el" href="namespaceoutk_1_1gfx.html#aebf7d96b7111b6b7e646526dec7b7789">outk::gfx::FragmentShaderDictionary</a></td>
+          <td class="memname">typedef boost::unordered_map&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a>*&gt; <a class="el" href="namespaceoutk_1_1gfx.html#a9462c8a7ef70faeb61d15aa2bb28d2b3">outk::gfx::FragmentShaderDictionary</a></td>
         </tr>
       </table>
 </div>
@@ -99,12 +112,12 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1816b146521172fa107acc8738ffbae4"></a><!-- doxytag: member="outk::gfx::GeometryShaderDictionary" ref="a1816b146521172fa107acc8738ffbae4" args="" -->
+<a class="anchor" id="a46292cbde5b3ad7feced55d20eac7676"></a><!-- doxytag: member="outk::gfx::GeometryShaderDictionary" ref="a46292cbde5b3ad7feced55d20eac7676" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef boost::unordered_map&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a>*&gt; <a class="el" href="namespaceoutk_1_1gfx.html#a1816b146521172fa107acc8738ffbae4">outk::gfx::GeometryShaderDictionary</a></td>
+          <td class="memname">typedef boost::unordered_map&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>, <a class="el" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a>*&gt; <a class="el" href="namespaceoutk_1_1gfx.html#a46292cbde5b3ad7feced55d20eac7676">outk::gfx::GeometryShaderDictionary</a></td>
         </tr>
       </table>
 </div>
@@ -144,8 +157,44 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a17908fcd1a86c7da1d45e23488449bbc"></a><!-- doxytag: member="outk::gfx::__clCheck" ref="a17908fcd1a86c7da1d45e23488449bbc" args="(const char *file, int line, int status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void outk::gfx::__clCheck </td>
+          <td>(</td>
+          <td class="paramtype">const char *&nbsp;</td>
+          <td class="paramname"> <em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>status</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:20 for OmegaLib by&nbsp;
+<div class="memdoc">
+
+<p>Checks safety of OpenCL calls. </p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

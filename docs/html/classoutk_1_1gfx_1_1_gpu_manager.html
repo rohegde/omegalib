@@ -12,7 +12,6 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -53,9 +52,13 @@
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OUTK_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#a7a010f28aa8b096bc3f0d95933cd64f5">GpuManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OUTK_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#ad3dd12e584f769fe953cd954aa49f47e">~GpuManager</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#aeba18c22cb2e4e4d902bb818952f0c40">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#a6e7c40a7a5498489c8e8ef66c26d1cb8">loadVertexShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;filename)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#a240064a99b55273aad5e6ab27c25d302">loadFragmentShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;filename)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#a0b76ecad211cc4580f51e7fd669afd92">loadGeometryShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;filename)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API <a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#a75c7f7fe1a95d53b8584325f8505fa31">getVertexShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API <a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#a06a272a1ffc2c40617d7c4f9b93ff4ea">getFragmentShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API <a class="el" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html#aaa0a2d412ddb71f58b03d2c6d79d4872">getGeometryShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Loads images and manages OpenGL textures. </p>
@@ -95,6 +98,77 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a06a272a1ffc2c40617d7c4f9b93ff4ea"></a><!-- doxytag: member="outk::gfx::GpuManager::getFragmentShader" ref="a06a272a1ffc2c40617d7c4f9b93ff4ea" args="(const omega::String &amp;name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a> * GpuManager::getFragmentShader </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>name</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aaa0a2d412ddb71f58b03d2c6d79d4872"></a><!-- doxytag: member="outk::gfx::GpuManager::getGeometryShader" ref="aaa0a2d412ddb71f58b03d2c6d79d4872" args="(const omega::String &amp;name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a> * GpuManager::getGeometryShader </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>name</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a75c7f7fe1a95d53b8584325f8505fa31"></a><!-- doxytag: member="outk::gfx::GpuManager::getVertexShader" ref="a75c7f7fe1a95d53b8584325f8505fa31" args="(const omega::String &amp;name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a> * GpuManager::getVertexShader </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>name</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aeba18c22cb2e4e4d902bb818952f0c40"></a><!-- doxytag: member="outk::gfx::GpuManager::initialize" ref="aeba18c22cb2e4e4d902bb818952f0c40" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GpuManager::initialize </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a240064a99b55273aad5e6ab27c25d302"></a><!-- doxytag: member="outk::gfx::GpuManager::loadFragmentShader" ref="a240064a99b55273aad5e6ab27c25d302" args="(const omega::String &amp;name, const omega::String &amp;filename)" -->
 <div class="memitem">
 <div class="memproto">
@@ -181,7 +255,7 @@ Public Member Functions</h2></td></tr>
 <li>D:/Workspace/omegalib/src/outk/gfx/<a class="el" href="_gpu_manager_8cpp.html">GpuManager.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:20 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:18 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
