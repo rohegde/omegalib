@@ -31,6 +31,7 @@ SET( srcs
         gfx/FontManager.cpp
         gfx/GfxUtils.cpp
         gfx/GpuManager.cpp
+        gfx/GpuBuffer.cpp
         gfx/teapot.cpp
         gfx/TextureManager.cpp
         ui/AbstractButton.cpp
@@ -49,6 +50,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/FontManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GfxUtils.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuManager.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuBuffer.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/AbstractButton.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Box.h
@@ -81,4 +83,5 @@ TARGET_LINK_LIBRARIES( outk
 	debug ${LIB_DEBUG}/ftgl_static_D.lib optimized ${LIB_RELEASE}/ftgl_static.lib
 	debug ${LIB_DEBUG}/FreeImage.lib optimized ${LIB_RELEASE}/FreeImage.lib
 	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
+	debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
 	${OPENGL_LIBRARY})

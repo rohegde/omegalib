@@ -14,6 +14,8 @@
 
 #include "outk/gfx/GfxUtils.h"
 #include "outk/gfx/FontManager.h"
+#include "outk/gfx/GpuManager.h"
+#include "outk/gfx/GpuBuffer.h"
 #include "outk/ui/AbstractButton.h"
 #include "outk/ui/Box.h"
 #include "outk/ui/Button.h"

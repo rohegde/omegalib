@@ -11,23 +11,27 @@
 # *********************************************************************************************************************/
 
 #######################################################################################################################
-# Directories needed for compilation
-INCLUDE_DIRECTORIES(
-  ${OmegaLib_SOURCE_DIR}/include/
-)
+# Compile definitions
+ADD_DEFINITIONS( )
 
 #######################################################################################################################
-# Options
-SET(OMEGA_BUILD_OUTK true CACHE BOOL "Enable build of the Omega Utility Toolkit (outk)")
+# Source files
+SET( srcs 
+        nightfield.cpp
+        )
+    
+#######################################################################################################################
+# Headers
+SET( headers 
+        ) 
+        
+#######################################################################################################################
+# Setup compile info
+ADD_EXECUTABLE( nightfield ${srcs} ${headers})
 
 #######################################################################################################################
-# Add subdirectiories
-ADD_SUBDIRECTORY(3rdparty/libconfig)
-ADD_SUBDIRECTORY(omega)
-IF(OMEGA_BUILD_OUTK)
-ADD_SUBDIRECTORY(outk)
-ENDIF(OMEGA_BUILD_OUTK)
-ADD_SUBDIRECTORY(otest)
-ADD_SUBDIRECTORY(odemo)
-ADD_SUBDIRECTORY(nightfield)
-ADD_SUBDIRECTORY(oinputserver)
+# Setup link info.
+TARGET_LINK_LIBRARIES( nightfield
+	omega outk)
+
+

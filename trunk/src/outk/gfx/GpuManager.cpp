@@ -14,6 +14,73 @@
 using namespace omega;
 using namespace outk::gfx;
 
+#define clCheck(s) clSafe(__FILE__,__LINE__,s);
+
+#define HANDLE_STATUS(id) case id: { oerror(#id"\n"); break; }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void clSafe(const char* file, int line, int status)
+{
+	if(status == CL_SUCCESS) return;
+	
+	oerror("At %s:%d ", file, line);
+	
+	switch(status)
+	{
+		HANDLE_STATUS(CL_SUCCESS                                  )
+		HANDLE_STATUS(CL_DEVICE_NOT_FOUND                         )
+		HANDLE_STATUS(CL_DEVICE_NOT_AVAILABLE                     )
+		HANDLE_STATUS(CL_COMPILER_NOT_AVAILABLE                   )
+		HANDLE_STATUS(CL_MEM_OBJECT_ALLOCATION_FAILURE            )
+		HANDLE_STATUS(CL_OUT_OF_RESOURCES                         )
+		HANDLE_STATUS(CL_OUT_OF_HOST_MEMORY                       )
+		HANDLE_STATUS(CL_PROFILING_INFO_NOT_AVAILABLE             )
+		HANDLE_STATUS(CL_MEM_COPY_OVERLAP                         )
+		HANDLE_STATUS(CL_IMAGE_FORMAT_MISMATCH                    )
+		HANDLE_STATUS(CL_IMAGE_FORMAT_NOT_SUPPORTED               )
+		HANDLE_STATUS(CL_BUILD_PROGRAM_FAILURE                    )
+		HANDLE_STATUS(CL_MAP_FAILURE                              )
+		HANDLE_STATUS(CL_INVALID_VALUE                            )
+		HANDLE_STATUS(CL_INVALID_DEVICE_TYPE                      )
+		HANDLE_STATUS(CL_INVALID_PLATFORM                         )
+		HANDLE_STATUS(CL_INVALID_DEVICE                           )
+		HANDLE_STATUS(CL_INVALID_CONTEXT                          )
+		HANDLE_STATUS(CL_INVALID_QUEUE_PROPERTIES                 )
+		HANDLE_STATUS(CL_INVALID_COMMAND_QUEUE                    )
+		HANDLE_STATUS(CL_INVALID_HOST_PTR                         )
+		HANDLE_STATUS(CL_INVALID_MEM_OBJECT                       )
+		HANDLE_STATUS(CL_INVALID_IMAGE_FORMAT_DESCRIPTOR          )
+		HANDLE_STATUS(CL_INVALID_IMAGE_SIZE                       )
+		HANDLE_STATUS(CL_INVALID_SAMPLER                          )
+		HANDLE_STATUS(CL_INVALID_BINARY                           )
+		HANDLE_STATUS(CL_INVALID_BUILD_OPTIONS                    )
+		HANDLE_STATUS(CL_INVALID_PROGRAM                          )
+		HANDLE_STATUS(CL_INVALID_PROGRAM_EXECUTABLE               )
+		HANDLE_STATUS(CL_INVALID_KERNEL_NAME                      )
+		HANDLE_STATUS(CL_INVALID_KERNEL_DEFINITION                )
+		HANDLE_STATUS(CL_INVALID_KERNEL                           )
+		HANDLE_STATUS(CL_INVALID_ARG_INDEX                        )
+		HANDLE_STATUS(CL_INVALID_ARG_VALUE                        )
+		HANDLE_STATUS(CL_INVALID_ARG_SIZE                         )
+		HANDLE_STATUS(CL_INVALID_KERNEL_ARGS                      )
+		HANDLE_STATUS(CL_INVALID_WORK_DIMENSION                   )
+		HANDLE_STATUS(CL_INVALID_WORK_GROUP_SIZE                  )
+		HANDLE_STATUS(CL_INVALID_WORK_ITEM_SIZE                   )
+		HANDLE_STATUS(CL_INVALID_GLOBAL_OFFSET                    )
+		HANDLE_STATUS(CL_INVALID_EVENT_WAIT_LIST                  )
+		HANDLE_STATUS(CL_INVALID_EVENT                            )
+		HANDLE_STATUS(CL_INVALID_OPERATION                        )
+		HANDLE_STATUS(CL_INVALID_GL_OBJECT                        )
+		HANDLE_STATUS(CL_INVALID_BUFFER_SIZE                      )
+		HANDLE_STATUS(CL_INVALID_MIP_LEVEL                        )
+		HANDLE_STATUS(CL_INVALID_GLOBAL_WORK_SIZE                 )
+	}
+	
+	exit(1);
+}
+
+#undef HANDLE_STATUS
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 VertexShader::VertexShader(GLuint GLShader, const omega::String& name):
 	myGLShader(GLShader), 
@@ -153,6 +220,86 @@ GpuManager::GpuManager()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::~GpuManager()
 {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuManager::initialize()
+{
+	cl_int status = 0;
+    size_t deviceListSize;
+
+    /*
+     * Have a look at the available platforms and pick either
+     * the AMD one if available or a reasonable default.
+     */
+
+    cl_uint numPlatforms;
+    cl_platform_id platform = NULL;
+    
+    status = clGetPlatformIDs(0, NULL, &numPlatforms);
+    clCheck(status);
+    
+    if(numPlatforms > 0)
+    {
+        cl_platform_id* platforms = (cl_platform_id *)malloc(numPlatforms*sizeof(cl_platform_id));
+        status = clGetPlatformIDs(numPlatforms, platforms, NULL);
+        clCheck(status);
+        for(unsigned int i=0; i < numPlatforms; ++i)
+        {
+            char pbuff[100];
+            status = clGetPlatformInfo(
+                        platforms[i],
+                        CL_PLATFORM_VENDOR,
+                        sizeof(pbuff),
+                        pbuff,
+                        NULL);
+			clCheck(status);
+            platform = platforms[i];
+            if(!strcmp(pbuff, "Advanced Micro Devices, Inc."))
+            {
+                break;
+            }
+        }
+        delete platforms;
+    }
+    /* 
+     * If we could find our platform, use it. Otherwise pass a NULL and get whatever the
+     * implementation thinks we should be using.
+     */
+
+    cl_context_properties cps[3] = { CL_CONTEXT_PLATFORM, (cl_context_properties)platform, 0 };
+    cl_context_properties* cprops = (NULL == platform) ? NULL : cps;
+
+
+	/////////////////////////////////////////////////////////////////
+	// Create an OpenCL context
+	/////////////////////////////////////////////////////////////////
+    myCLContext = clCreateContextFromType(cprops, CL_DEVICE_TYPE_GPU, NULL, NULL, &status);
+    clCheck(status);
+
+    /* First, get the size of device list data */
+    status = clGetContextInfo(myCLContext, CL_CONTEXT_DEVICES, 0, NULL, &deviceListSize);
+    clCheck(status);
+
+	/////////////////////////////////////////////////////////////////
+	// Detect OpenCL devices
+	/////////////////////////////////////////////////////////////////
+    myCLDevices = (cl_device_id *)malloc(deviceListSize);
+	if(myCLDevices == 0)
+	{
+		printf("Error: No devices found.\n");
+		return;
+	}
+
+    /* Now, get the device list data */
+    status = clGetContextInfo(myCLContext, CL_CONTEXT_DEVICES, deviceListSize, myCLDevices, NULL);
+    clCheck(status);
+
+	/////////////////////////////////////////////////////////////////
+	// Create an OpenCL command queue
+	/////////////////////////////////////////////////////////////////
+    myCLCommandQueue = clCreateCommandQueue(myCLContext, myCLDevices[0], 0, &status);
+    clCheck(status);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
