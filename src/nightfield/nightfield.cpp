@@ -20,9 +20,9 @@ using namespace outk::ui;
 struct Settings
 {
 	Settings():
-		numAgents(2000),
-		areaMin(Vector3f(-0.5, 0.0, -1.0)),
-		areaMax(Vector3f(0.5, 1.8, -3.0))
+		numAgents(5000),
+		areaMin(Vector3f(-0.5, 0.5, -1.0)),
+		areaMax(Vector3f(0.8, 2.0, -3.0))
 		{}
 
 	int numAgents;
@@ -70,6 +70,8 @@ public:
 		myAgentBuffer = NULL;
 
 		myGpu.initialize();
+
+		myAgentProgram = new GpuProgram();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +98,7 @@ public:
 		int bufSize = mySettings.numAgents * sizeof(Agent);
 
 		myAgentBuffer = new VertexBuffer();
-		myAgentBuffer->initialize(bufSize, agentData);
+		myAgentBuffer->initialize(bufSize, sizeof(Agent), agentData);
 
 		delete[] agentData;
 	}
@@ -129,61 +131,11 @@ public:
 		glFogf(GL_FOG_END, 3);
 
 		glColor3f(1.0, 1.0, 1.0);
-		drawRoom(0.3f, 2.0f, -0.59f, 0.59f, 0, -3);
-
 
 		//glDisable(GL_LIGHTING);
-		glPointSize(3);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glVertexPointer(3, GL_FLOAT, 64, 0);
-		glDrawArrays(GL_POINTS, 0, mySettings.numAgents);
-	}
+		glPointSize(1);
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void drawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
-	{
-		//glColor3f(0.3, 1.0, 0.3);
-		glBegin(GL_TRIANGLE_STRIP);
-		glNormal3f(0, 1, 0);
-		glVertex3f(left, bottom, nearEnd);
-		glNormal3f(0, 1, 0);
-		glVertex3f(right, bottom, nearEnd);
-		glNormal3f(0, 1, 0);
-		glVertex3f(left, bottom, farEnd);
-		glNormal3f(0, 1, 0);
-		glVertex3f(right, bottom, farEnd);
-		glEnd();
-
-		//glColor3f(0.3, 1.0, 0.3);
-		glBegin(GL_LINES);
-		for(float y = bottom; y < top; y += 0.05)
-		{
-			glVertex3f(left, y, nearEnd);
-			glVertex3f(left, y, farEnd);
-			glVertex3f(right, y, nearEnd);
-			glVertex3f(right, y, farEnd);
-		}
-
-		glEnd();
-		//glColor3f(0.3, 1.0, 0.3);
-		glBegin(GL_TRIANGLE_STRIP);
-		glVertex3f(left, top, nearEnd);
-		glVertex3f(right, top, nearEnd);
-		glVertex3f(left, top, farEnd);
-		glVertex3f(right, top, farEnd);
-		glEnd();
-
-		//glColor3f(0.3, 1.0, 0.3);
-		glBegin(GL_TRIANGLE_STRIP);
-		glNormal3f(0, 0, 1);
-		glVertex3f(left, top, farEnd);
-		glNormal3f(0, 0, 1);
-		glVertex3f(right, top, farEnd);
-		glNormal3f(0, 0, 1);
-		glVertex3f(left, bottom, farEnd);
-		glNormal3f(0, 0, 1);
-		glVertex3f(right, bottom, farEnd);
-		glEnd();
+		myAgentProgram->run(myAgentBuffer, NULL, GpuProgram::PrimPoints);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +199,7 @@ private:
 
 	GpuManager myGpu;
 	VertexBuffer* myAgentBuffer;
+	GpuProgram* myAgentProgram;
 
 	// User interface stuff.
 	UIManager myUI;
@@ -259,7 +212,7 @@ void main(int argc, char** argv)
 {
 	ologopen("nightfield-log.txt");
 
-	Config* cfg = new Config("../../data/nightfield-omegadesk.cfg");
+	Config* cfg = new Config(argv[1]);
 
 	SystemManager* sys = SystemManager::instance();
 	sys->setup(cfg);

@@ -22,14 +22,27 @@ OUTK_API GpuBuffer::GpuBuffer():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-OUTK_API GpuBuffer::~GpuBuffer()
+GpuBuffer::~GpuBuffer()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-OUTK_API void GpuBuffer::initialize(int size, void* data)
+void GpuBuffer::initialize(int size, int elementSize, void* data)
 {
 	glGenBuffers(1, &myGLBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+
+	mySize = size;
+	myElementSize = elementSize;
+	myLength = mySize / myElementSize;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void VertexBuffer::activate()
+{
+	// Should I go somewhere else?
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, getGLBuffer());
+	glVertexPointer(myPositionComponents, GL_FLOAT, getElementSize(), 0);
 }
