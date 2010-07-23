@@ -12,7 +12,6 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -45,102 +44,58 @@
 <a name="l00014"></a>00014 <span class="preprocessor"></span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &quot;omega.h&quot;</span>
 <a name="l00016"></a>00016 
-<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;boost/unordered_map.hpp&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="_gpu_program_8h.html">outk/gfx/GpuProgram.h</a>&quot;</span>
 <a name="l00018"></a>00018 
-<a name="l00019"></a>00019 <span class="keyword">namespace </span>outk
-<a name="l00020"></a>00020 {
-<a name="l00021"></a>00021 <span class="keyword">namespace </span>gfx
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;boost/unordered_map.hpp&quot;</span>
+<a name="l00020"></a>00020 
+<a name="l00021"></a>00021 <span class="keyword">namespace </span>outk
 <a name="l00022"></a>00022 {
-<a name="l00024"></a><a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html">00024</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a>
-<a name="l00025"></a>00025         {
-<a name="l00026"></a>00026         <span class="keyword">public</span>:
-<a name="l00027"></a>00027                 <a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html#a7d837231011152c0f1a40eae99cb0987">VertexShader</a>(GLuint glShader, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name);
-<a name="l00028"></a>00028 
-<a name="l00029"></a><a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html#a3d75c2d480f3e90c185180bd5ff04440">00029</a>                 GLuint <a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html#a3d75c2d480f3e90c185180bd5ff04440">getGLShader</a>() { <span class="keywordflow">return</span> myGLShader; }
-<a name="l00030"></a><a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html#ade76635c7e1f262b2587ee54d83c4077">00030</a>                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html#ade76635c7e1f262b2587ee54d83c4077">getName</a>() { <span class="keywordflow">return</span> myName; }
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html#acb8abe76d27b67cdd7f4a116b3e19bb8">dispose</a>();
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034         <span class="keyword">private</span>:
-<a name="l00035"></a>00035                 GLuint myGLShader;
-<a name="l00036"></a>00036                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> myName;
-<a name="l00037"></a>00037         };
-<a name="l00038"></a>00038 
-<a name="l00040"></a>00040         <span class="comment">// @todo implement</span>
-<a name="l00041"></a><a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html">00041</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a>
-<a name="l00042"></a>00042         {
-<a name="l00043"></a>00043         <span class="keyword">public</span>:
-<a name="l00044"></a>00044                 <a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html#abef0535cccf56e665a821f35728fdf2c">FragmentShader</a>(GLuint glShader, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name);
-<a name="l00045"></a>00045 
-<a name="l00046"></a><a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html#a0ac034e8aaa88f4c22469cc4d2d34cb0">00046</a>                 GLuint <a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html#a0ac034e8aaa88f4c22469cc4d2d34cb0">getGLShader</a>() { <span class="keywordflow">return</span> myGLShader; }
-<a name="l00047"></a><a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html#a604d99149ba82f467ca9a7ba5286c215">00047</a>                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html#a604d99149ba82f467ca9a7ba5286c215">getName</a>() { <span class="keywordflow">return</span> myName; }
-<a name="l00048"></a>00048 
-<a name="l00050"></a>00050                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html#a2b21cbba8c76fa837631e50459f72169">dispose</a>();
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052         <span class="keyword">private</span>:
-<a name="l00053"></a>00053                 GLuint myGLShader;
-<a name="l00054"></a>00054                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> myName;
-<a name="l00055"></a>00055         };
-<a name="l00056"></a>00056 
-<a name="l00058"></a><a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html">00058</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a>
-<a name="l00059"></a>00059         {
-<a name="l00060"></a>00060         <span class="keyword">public</span>:
-<a name="l00061"></a>00061                 <a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html#a42dbff7c298c743ed1e8defc27d13c6f">GeometryShader</a>(GLuint glShader, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name);
+<a name="l00023"></a>00023 <span class="keyword">namespace </span>gfx
+<a name="l00024"></a>00024 {
+<a name="l00027"></a><a class="code" href="namespaceoutk_1_1gfx.html#a524adf4c510f5db390fc3b65598a811e">00027</a>         <span class="keyword">typedef</span> boost::unordered_map&lt;omega::String, VertexShader*&gt; VertexShaderDictionary;
+<a name="l00029"></a><a class="code" href="namespaceoutk_1_1gfx.html#a9462c8a7ef70faeb61d15aa2bb28d2b3">00029</a>         <span class="keyword">typedef</span> boost::unordered_map&lt;omega::String, FragmentShader*&gt; FragmentShaderDictionary;
+<a name="l00031"></a><a class="code" href="namespaceoutk_1_1gfx.html#a46292cbde5b3ad7feced55d20eac7676">00031</a>         <span class="keyword">typedef</span> boost::unordered_map&lt;omega::String, GeometryShader*&gt; GeometryShaderDictionary;
+<a name="l00032"></a>00032 
+<a name="l00035"></a><a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html">00035</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html" title="Loads images and manages OpenGL textures.">GpuManager</a>
+<a name="l00036"></a>00036         {
+<a name="l00037"></a>00037         <span class="keyword">public</span>:
+<a name="l00038"></a>00038                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a7a010f28aa8b096bc3f0d95933cd64f5">GpuManager</a>();
+<a name="l00039"></a>00039                 OUTK_API <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#ad3dd12e584f769fe953cd954aa49f47e">~GpuManager</a>();
+<a name="l00040"></a>00040 
+<a name="l00041"></a>00041                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#aeba18c22cb2e4e4d902bb818952f0c40">initialize</a>();
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a6e7c40a7a5498489c8e8ef66c26d1cb8">loadVertexShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename);
+<a name="l00044"></a>00044                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a240064a99b55273aad5e6ab27c25d302">loadFragmentShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename);
+<a name="l00045"></a>00045                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a0b76ecad211cc4580f51e7fd669afd92">loadGeometryShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename);
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_vertex_shader.html">VertexShader</a>* <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a75c7f7fe1a95d53b8584325f8505fa31">getVertexShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name);
+<a name="l00048"></a>00048                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a>* <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a06a272a1ffc2c40617d7c4f9b93ff4ea">getFragmentShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name);
+<a name="l00049"></a>00049                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html">GeometryShader</a>* <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#aaa0a2d412ddb71f58b03d2c6d79d4872">getGeometryShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name);
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051         <span class="keyword">private</span>:
+<a name="l00052"></a>00052                 GLuint loadGlShader(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename, GLenum type);
+<a name="l00053"></a>00053                 <span class="keywordtype">void</span> printShaderLog(GLuint shader);
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055         <span class="keyword">private</span>:
+<a name="l00056"></a>00056                 <a class="code" href="namespaceoutk_1_1gfx.html#a524adf4c510f5db390fc3b65598a811e" title="A dictionary containing &amp;lt;String, VertexShader*&amp;gt; pairs.">VertexShaderDictionary</a> myVertexShaders;
+<a name="l00057"></a>00057                 <a class="code" href="namespaceoutk_1_1gfx.html#a9462c8a7ef70faeb61d15aa2bb28d2b3" title="A dictionary containing &amp;lt;String, FragmentShader*&amp;gt; pairs.">FragmentShaderDictionary</a> myFragmentShaders;
+<a name="l00058"></a>00058                 <a class="code" href="namespaceoutk_1_1gfx.html#a46292cbde5b3ad7feced55d20eac7676" title="A dictionary containing &amp;lt;String, GeometryShader*&amp;gt; pairs.">GeometryShaderDictionary</a> myGeometryShaders;
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060                 <span class="comment">// Active gpu program</span>
+<a name="l00061"></a>00061                 <a class="code" href="classoutk_1_1gfx_1_1_gpu_program.html" title="Represents a program runnable on a Gpu unit.">GpuProgram</a>* myActiveProgram;
 <a name="l00062"></a>00062 
-<a name="l00063"></a><a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html#a4c8a4b624727c0d7e30550c9a3b525a1">00063</a>                 GLuint <a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html#a4c8a4b624727c0d7e30550c9a3b525a1">getGLShader</a>() { <span class="keywordflow">return</span> myGLShader; }
-<a name="l00064"></a><a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html#a59e6e842202b4ffc1dca46f3326eea01">00064</a>                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html#a59e6e842202b4ffc1dca46f3326eea01">getName</a>() { <span class="keywordflow">return</span> myName; }
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_geometry_shader.html#af03d36c02a51c80ed5c0dd56abcb2258">dispose</a>();
-<a name="l00067"></a>00067 
-<a name="l00068"></a>00068         <span class="keyword">private</span>:
-<a name="l00069"></a>00069                 GLuint myGLShader;
-<a name="l00070"></a>00070                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> myName;
-<a name="l00071"></a>00071         };
-<a name="l00072"></a>00072 
-<a name="l00074"></a>00074         <span class="comment">/*class ComputeShader</span>
-<a name="l00075"></a>00075 <span class="comment">        {</span>
-<a name="l00076"></a>00076 <span class="comment">        public:</span>
-<a name="l00077"></a>00077 <span class="comment">                ComputeShader(GLuint glShader, const omega::String&amp; name);</span>
-<a name="l00078"></a>00078 <span class="comment"></span>
-<a name="l00079"></a>00079 <span class="comment">                //GLUint getGLShader() { return myGLShader; }</span>
-<a name="l00080"></a>00080 <span class="comment">                String getName() { return myName; }</span>
-<a name="l00081"></a>00081 <span class="comment"></span>
-<a name="l00082"></a>00082 <span class="comment">                OUTK_API dispose();</span>
-<a name="l00083"></a>00083 <span class="comment"></span>
-<a name="l00084"></a>00084 <span class="comment">        private:</span>
-<a name="l00085"></a>00085 <span class="comment">                //GLuint myGLShader;</span>
-<a name="l00086"></a>00086 <span class="comment">                omega::String myName;</span>
-<a name="l00087"></a>00087 <span class="comment">        }*/</span>
-<a name="l00088"></a>00088 
-<a name="l00091"></a><a class="code" href="namespaceoutk_1_1gfx.html#a524adf4c510f5db390fc3b65598a811e">00091</a>         <span class="keyword">typedef</span> boost::unordered_map&lt;omega::String, VertexShader*&gt; VertexShaderDictionary;
-<a name="l00093"></a><a class="code" href="namespaceoutk_1_1gfx.html#aebf7d96b7111b6b7e646526dec7b7789">00093</a>         <span class="keyword">typedef</span> boost::unordered_map&lt;omega::String, VertexShader*&gt; FragmentShaderDictionary;
-<a name="l00095"></a><a class="code" href="namespaceoutk_1_1gfx.html#a1816b146521172fa107acc8738ffbae4">00095</a>         <span class="keyword">typedef</span> boost::unordered_map&lt;omega::String, VertexShader*&gt; GeometryShaderDictionary;
-<a name="l00096"></a>00096 
-<a name="l00099"></a><a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html">00099</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html" title="Loads images and manages OpenGL textures.">GpuManager</a>
-<a name="l00100"></a>00100         {
-<a name="l00101"></a>00101         <span class="keyword">public</span>:
-<a name="l00102"></a>00102                 OUTK_API <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a7a010f28aa8b096bc3f0d95933cd64f5">GpuManager</a>();
-<a name="l00103"></a>00103                 OUTK_API <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#ad3dd12e584f769fe953cd954aa49f47e">~GpuManager</a>();
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a6e7c40a7a5498489c8e8ef66c26d1cb8">loadVertexShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename);
-<a name="l00106"></a>00106                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a240064a99b55273aad5e6ab27c25d302">loadFragmentShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename);
-<a name="l00107"></a>00107                 OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gpu_manager.html#a0b76ecad211cc4580f51e7fd669afd92">loadGeometryShader</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; name, <span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; filename);
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109         <span class="keyword">private</span>:
-<a name="l00110"></a>00110                 OUTK_API <span class="keywordtype">void</span> printShaderLog(GLuint shader);
-<a name="l00111"></a>00111 
-<a name="l00112"></a>00112         <span class="keyword">private</span>:
-<a name="l00113"></a>00113                 <a class="code" href="namespaceoutk_1_1gfx.html#a524adf4c510f5db390fc3b65598a811e" title="A dictionary containing &amp;lt;String, VertexShader*&amp;gt; pairs.">VertexShaderDictionary</a> myVertexShaders;
-<a name="l00114"></a>00114                 <a class="code" href="namespaceoutk_1_1gfx.html#aebf7d96b7111b6b7e646526dec7b7789" title="A dictionary containing &amp;lt;String, FragmentShader*&amp;gt; pairs.">FragmentShaderDictionary</a> myFragmentShaders;
-<a name="l00115"></a>00115                 <a class="code" href="namespaceoutk_1_1gfx.html#a1816b146521172fa107acc8738ffbae4" title="A dictionary containing &amp;lt;String, GeometryShader*&amp;gt; pairs.">GeometryShaderDictionary</a> myGeometryShaders;
-<a name="l00116"></a>00116         };
-<a name="l00117"></a>00117 };
-<a name="l00118"></a>00118 }; <span class="comment">// namespace omega</span>
-<a name="l00119"></a>00119 
-<a name="l00120"></a>00120 <span class="preprocessor">#endif</span>
+<a name="l00063"></a>00063                 <span class="comment">// OpenCL stuff.</span>
+<a name="l00064"></a>00064                 cl_context myCLContext;
+<a name="l00065"></a>00065                 cl_device_id* myCLDevices;
+<a name="l00066"></a>00066                 cl_command_queue myCLCommandQueue;
+<a name="l00067"></a>00067         };
+<a name="l00068"></a>00068 };
+<a name="l00069"></a>00069 }; <span class="comment">// namespace omega</span>
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Mon Jul 19 2010 19:26:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
