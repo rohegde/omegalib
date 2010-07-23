@@ -15,6 +15,7 @@
 #include "omega.h"
 
 #include "boost/unordered_map.hpp"
+#include "CL/cl.h"
 
 namespace outk
 {
@@ -165,6 +166,8 @@ namespace gfx
 		OUTK_API GpuManager();
 		OUTK_API virtual ~GpuManager();
 
+		OUTK_API void initialize();
+
 		OUTK_API void loadVertexShader(const omega::String& name, const omega::String& filename);
 		OUTK_API void loadFragmentShader(const omega::String& name, const omega::String& filename);
 		OUTK_API void loadGeometryShader(const omega::String& name, const omega::String& filename);
@@ -181,6 +184,11 @@ namespace gfx
 		VertexShaderDictionary myVertexShaders;
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
+
+		// OpenCL stuff.
+		cl_context myCLContext;
+		cl_device_id* myCLDevices;
+		cl_command_queue myCLCommandQueue;
 	};
 };
 }; // namespace omega

@@ -118,6 +118,6 @@ OMEGA_API void oexit(int code);
 #define OMEGA_LOG_CLOSE() { ologclose(); }
 
 #define odbg(str) omsg(str);
-#define oassert(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, ##c); exit(1); }
+#define oassert(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, #c); exit(1); }
 
 #endif

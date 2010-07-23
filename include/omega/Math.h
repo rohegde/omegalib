@@ -27,6 +27,8 @@ public:
 	OMEGA_API static const float DegToRad;
 	OMEGA_API static const float RadToDeg;
 
+	OMEGA_API static float rnd();
+
 private:
 	Math() {}
 };

@@ -17,3 +17,9 @@ using namespace omega;
 const float Math::Pi = 3.14159265;
 const float Math::DegToRad = 3.14159265 / 180.0;
 const float Math::RadToDeg = 180.0 / 3.14159265;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+float Math::rnd()
+{
+	return ((float)rand() / RAND_MAX);
+}

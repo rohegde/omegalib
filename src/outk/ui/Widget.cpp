@@ -221,6 +221,11 @@ bool Widget::processInputEvent(const InputEvent& evt)
 					myMoving = false;
 					processed = true;
 				}
+				if(evt.type == InputEvent::Rotate)
+				{
+					myRotation += evt.rotation[0];
+					processed = true;
+				}
 			}
 		}
 	}

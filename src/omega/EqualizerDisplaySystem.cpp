@@ -448,5 +448,6 @@ bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Observer* EqualizerDisplaySystem::getObserver(int observerId)
 {
+	oassert(myObservers.size() > observerId);
 	return myObservers[observerId];
 }

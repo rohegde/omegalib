@@ -4,7 +4,6 @@
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
@@ -54,6 +53,11 @@ void UIManager::processInputEvent(const InputEvent& evt)
 	// UI widgets only manage touch and pointer events.
 	if(evt.serviceType == InputService::Touch || evt.serviceType == InputService::Pointer)
 	{
+		//if(evt.type == InputEvent::Move) 
+		//	printf("move! at %f %f\n", evt.position[0], evt.position[1]);
+		//if(evt.type == InputEvent::Rotate) 
+		//	printf("rotate! at %f %f, deg:%f\n", evt.position[0], evt.position[1], evt.rotation[0]);
+		//if(evt.type == InputEvent::Split) printf("split!\n");
 		myRootWidget->processInputEvent(evt);
 	}
 }
