@@ -9,17 +9,24 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __GPU_MANAGER_H__
-#define __GPU_MANAGER_H__
+#ifndef __GPU_PROGRAM_H__
+#define __GPU_PROGRAM_H__
 
 #include "omega.h"
 
-#include "boost/unordered_map.hpp"
+#include "outk/gfx/GpuBuffer.h"
+
+#include "CL/cl.h"
 
 namespace outk
 {
 namespace gfx
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! @interal Checks safety of OpenCL calls.
+	void __clCheck(const char* file, int line, int status);
+	#define clCheck(s) __clCheck(__FILE__,__LINE__,s);
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class VertexShader
 	{
@@ -85,20 +92,23 @@ namespace gfx
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*class ComputeShader
+	class ComputeShader
 	{
 	public:
-		ComputeShader(GLuint glShader, const omega::String& name);
+		OUTK_API ComputeShader(cl_program program, const omega::String& kernelEntryPoint, const omega::String& name);
 
-		//GLUint getGLShader() { return myGLShader; }
-		String getName() { return myName; }
+		cl_program getCLProgram() { return myCLProgram; }
+		cl_kernel getCLKernel() { return myCLKernel; }
+		omega::String getName() { return myName; }
 
-		OUTK_API dispose();
+		OUTK_API void dispose();
 
 	private:
-		//GLuint myGLShader;
+		cl_program myCLProgram;
+		cl_kernel myCLKernel;
+
 		omega::String myName;
-	}*/
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Represents a program runnable on a Gpu unit.
@@ -106,7 +116,15 @@ namespace gfx
 	class GpuProgram
 	{
 	public:
-		GpuProgram();
+		enum PrimType { PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
+
+	public:
+		OUTK_API GpuProgram();
+
+		//! Sets the compute shader for this program.
+		//! Must be called before initialize()
+		void setComputeShader(ComputeShader* shader) { myComputeShader = shader; }
+		ComputeShader* getComputeShader() { return myComputeShader; }
 
 		//! Sets the geometry shader for this program.
 		//! Must be called before initialize()
@@ -115,12 +133,12 @@ namespace gfx
 
 		//! Sets the vertex shader for this program.
 		//! Must be called before initialize()
-		void setVertexShader(GeometryShader* shader) { myVertexShader = shader; }
+		void setVertexShader(VertexShader* shader) { myVertexShader = shader; }
 		VertexShader* getVertexShader() { return myVertexShader; }
 
 		//! Sets the fragment shader for this program.
 		//! Must be called before initialize()
-		void setFragmentShader(GeometryShader* shader) { myFragmentShader = shader; }
+		void setFragmentShader(FragmentShader* shader) { myFragmentShader = shader; }
 		FragmentShader* getFragmentShader() { return myFragmentShader; }
 
 		void setParameter(const omega::String& name, int value);
@@ -136,6 +154,8 @@ namespace gfx
 		OUTK_API void initialize();
 		OUTK_API void activate();
 
+		OUTK_API void run(VertexBuffer* vertexBuffer, IndexBuffer* indexBuffer = NULL, PrimType primType = PrimPoints);
+
 	private:
 		void printProgramLog(GLuint program);
 
@@ -143,44 +163,11 @@ namespace gfx
 		GeometryShader* myGeometryShader;
 		VertexShader* myVertexShader;
 		FragmentShader* myFragmentShader;
+		ComputeShader* myComputeShader;
 
 		GLuint myGLProgram;
 
 		omega::String myName;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, VertexShader*> pairs.
-	typedef boost::unordered_map<omega::String, VertexShader*> VertexShaderDictionary;
-	//! A dictionary containing <String, FragmentShader*> pairs.
-	typedef boost::unordered_map<omega::String, FragmentShader*> FragmentShaderDictionary;
-	//! A dictionary containing <String, GeometryShader*> pairs.
-	typedef boost::unordered_map<omega::String, GeometryShader*> GeometryShaderDictionary;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class GpuManager
-	{
-	public:
-		OUTK_API GpuManager();
-		OUTK_API virtual ~GpuManager();
-
-		OUTK_API void loadVertexShader(const omega::String& name, const omega::String& filename);
-		OUTK_API void loadFragmentShader(const omega::String& name, const omega::String& filename);
-		OUTK_API void loadGeometryShader(const omega::String& name, const omega::String& filename);
-
-		OUTK_API VertexShader* getVertexShader(const omega::String& name);
-		OUTK_API FragmentShader* getFragmentShader(const omega::String& name);
-		OUTK_API GeometryShader* getGeometryShader(const omega::String& name);
-
-	private:
-		GLuint loadGlShader(const omega::String& filename, GLenum type);
-		void printShaderLog(GLuint shader);
-
-	private:
-		VertexShaderDictionary myVertexShaders;
-		FragmentShaderDictionary myFragmentShaders;
-		GeometryShaderDictionary myGeometryShaders;
 	};
 };
 }; // namespace omega

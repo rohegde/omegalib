@@ -14,12 +14,10 @@
 using namespace omega;
 using namespace outk::gfx;
 
-#define clCheck(s) clSafe(__FILE__,__LINE__,s);
-
 #define HANDLE_STATUS(id) case id: { oerror(#id"\n"); break; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void clSafe(const char* file, int line, int status)
+void outk::gfx::__clCheck(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return;
 	
@@ -80,137 +78,6 @@ void clSafe(const char* file, int line, int status)
 }
 
 #undef HANDLE_STATUS
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-VertexShader::VertexShader(GLuint GLShader, const omega::String& name):
-	myGLShader(GLShader), 
-	myName(name)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void VertexShader::dispose()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FragmentShader::FragmentShader(GLuint GLShader, const omega::String& name):
-	myGLShader(GLShader), 
-	myName(name)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void FragmentShader::dispose()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GeometryShader::GeometryShader(GLuint GLShader, const omega::String& name):
-	myGLShader(GLShader), 
-	myName(name)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::initialize()
-{
-	myGLProgram = glCreateProgram();
-
-	// Attach shaders.
-	if(myGeometryShader != NULL)
-		glAttachShader(myGLProgram, myGeometryShader->getGLShader());
-
-	if(myVertexShader != NULL)
-		glAttachShader(myGLProgram, myVertexShader->getGLShader());
-
-	if(myFragmentShader != NULL)
-		glAttachShader(myGLProgram, myFragmentShader->getGLShader());
-
-	// Link the GL program.
-	glLinkProgram(myGLProgram);
-	printProgramLog(myGLProgram);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, int value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-    glUniform1i(uid, value);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, omega::Vector2i value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform2iv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector3i value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform3iv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector4i value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform4iv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, float value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform1f(uid, value);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector2f value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform2fv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector3f value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform3fv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector4f value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform4fv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::activate()
-{
-	glUseProgram(myGLProgram);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::printProgramLog(GLuint program)
-{
-    GLint infoLogLength = 0;
-    GLsizei charsWritten  = 0;
-    GLchar *infoLog;
-
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-    if (infoLogLength > 0)
-    {
-        infoLog = (char *) malloc(infoLogLength);
-        glGetProgramInfoLog(program, infoLogLength, &charsWritten, infoLog);
-		omsg(infoLog);
-        free(infoLog);
-    }
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager()
@@ -300,6 +167,8 @@ void GpuManager::initialize()
 	/////////////////////////////////////////////////////////////////
     myCLCommandQueue = clCreateCommandQueue(myCLContext, myCLDevices[0], 0, &status);
     clCheck(status);
+
+	omsg("OpenCL: initialization successful!");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

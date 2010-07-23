@@ -9,7 +9,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#include "outk/gfx/GpuManager.h"
+#include "outk/gfx/GpuProgram.h"
 
 using namespace omega;
 using namespace outk::gfx;
@@ -46,6 +46,30 @@ GeometryShader::GeometryShader(GLuint GLShader, const omega::String& name):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ComputeShader::ComputeShader(cl_program program, const omega::String& kernelEntryPoint, const omega::String& name)
+{
+	cl_int status;
+	myCLProgram = program;
+	myCLKernel = clCreateKernel(myCLProgram, kernelEntryPoint.c_str(), &status);
+	clCheck(status);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void ComputeShader::dispose()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+GpuProgram::GpuProgram():
+	myComputeShader(NULL),
+	myGeometryShader(NULL),
+	myVertexShader(NULL),
+	myFragmentShader(NULL)
+{
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::initialize()
 {
 	myGLProgram = glCreateProgram();
@@ -76,21 +100,21 @@ void GpuProgram::setParameter(const omega::String& name, int value)
 void GpuProgram::setParameter(const omega::String& name, omega::Vector2i value)
 {
 	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform2iv(uid, value.begin());
+	glUniform2iv(uid, 1, value.begin());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::setParameter(const omega::String& name, Vector3i value)
 {
 	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform3iv(uid, value.begin());
+	glUniform3iv(uid, 1, value.begin());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::setParameter(const omega::String& name, Vector4i value)
 {
 	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform4iv(uid, value.begin());
+	glUniform4iv(uid, 1, value.begin());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,21 +128,21 @@ void GpuProgram::setParameter(const omega::String& name, float value)
 void GpuProgram::setParameter(const omega::String& name, Vector2f value)
 {
 	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform2fv(uid, value.begin());
+	glUniform2fv(uid, 1, value.begin());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::setParameter(const omega::String& name, Vector3f value)
 {
 	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform3fv(uid, value.begin());
+	glUniform3fv(uid, 1, value.begin());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void setParameter(const omega::String& name, Vector4f value)
+void GpuProgram::setParameter(const omega::String& name, Vector4f value)
 {
 	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform4fv(uid, value.begin());
+	glUniform4fv(uid, 1, value.begin());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,85 +170,17 @@ void GpuProgram::printProgramLog(GLuint program)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GpuManager::GpuManager()
+void GpuProgram::run(VertexBuffer* vertexBuffer, IndexBuffer* indexBuffer, PrimType primType)
 {
+	oassert(vertexBuffer);	
+	
+	vertexBuffer->activate();
+
+	GLenum mode = GL_POINTS;
+	switch(primType)
+	{
+	case PrimPoints: mode = GL_POINTS;
+	}
+
+	glDrawArrays(mode, 0, vertexBuffer->getLength());
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GpuManager::~GpuManager()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadVertexShader(const omega::String& name, const omega::String& filename)
-{
-	GLuint s = loadGlShader(filename, GL_VERTEX_SHADER);
-	VertexShader* sh = new VertexShader(s, name);
-	myVertexShaders[name] = sh;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadFragmentShader(const omega::String& name, const omega::String& filename)
-{
-	GLuint s = loadGlShader(filename, GL_FRAGMENT_SHADER);
-	FragmentShader* sh = new FragmentShader(s, name);
-	myFragmentShaders[name] = sh;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadGeometryShader(const omega::String& name, const omega::String& filename)
-{
-	GLuint s = loadGlShader(filename, GL_GEOMETRY_SHADER);
-	GeometryShader* sh = new GeometryShader(s, name);
-	myGeometryShaders[name] = sh;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-VertexShader* getVertexShader(const omega::String& name)
-{
-	return myVertexShaders[fontName];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FragmentShader* getFragmentShader(const omega::String& name)
-{
-	return myFragmentShaders[fontName];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GeometryShader* getGeometryShader(const omega::String& name)
-{
-	return myGeometryShaders[fontName];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GLuint GpuManager::loadGlShader(const omega::String& filename, GLenum type)
-{
-	GLuint s = glCreateShader(type);
-	String ss = Utils::readTextFile(filename);
-	const char* cstr = ss.c_str();
-	glShaderSource(s, 1, &cstr, NULL);
-	glCompileShader(s);
-	printShaderLog(s);
-
-	return s;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::printShaderLog(GLuint shader)
-{
-    GLint infoLogLength = 0;
-    GLsizei charsWritten  = 0;
-    GLchar *infoLog;
-
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-    if (infoLogLength > 0)
-    {
-        infoLog = (char *) malloc(infoLogLength);
-        glGetShaderInfoLog(shader, infoLogLength, &charsWritten, infoLog);
-		omsg(infoLog);
-        free(infoLog);
-    }
-}
-

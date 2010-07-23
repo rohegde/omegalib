@@ -14,142 +14,14 @@
 
 #include "omega.h"
 
+#include "outk/gfx/GpuProgram.h"
+
 #include "boost/unordered_map.hpp"
-#include "CL/cl.h"
 
 namespace outk
 {
 namespace gfx
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class VertexShader
-	{
-	public:
-		//! @internal Class contructor.
-		//! @param glShader - the OpenGl vertex shader id.
-		//! @param name - the unique shader name.
-		VertexShader(GLuint glShader, const omega::String& name);
-
-		//! @internal Gets the OpenGl vertex shader id.
-		GLuint getGLShader() { return myGLShader; }
-
-		omega::String getName() { return myName; }
-
-		OUTK_API void dispose();
-
-	private:
-		GLuint myGLShader;
-		omega::String myName;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// @todo implement
-	class FragmentShader
-	{
-	public:
-		//! @internal Class contructor.
-		//! @param glShader - the OpenGl fragment shader id.
-		//! @param name - the unique shader name.
-		FragmentShader(GLuint glShader, const omega::String& name);
-
-		//! @internal Gets the OpenGl fragment shader id.
-		GLuint getGLShader() { return myGLShader; }
-
-		omega::String getName() { return myName; }
-
-		OUTK_API void dispose();
-
-	private:
-		GLuint myGLShader;
-		omega::String myName;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class GeometryShader
-	{
-	public:
-		//! @internal Class contructor.
-		//! @param glShader - the OpenGl geometry shader id.
-		//! @param name - the unique shader name.
-		GeometryShader(GLuint glShader, const omega::String& name);
-
-		//! @internal Gets the OpenGl geometry shader id.
-		GLuint getGLShader() { return myGLShader; }
-
-		omega::String getName() { return myName; }
-
-		OUTK_API void dispose();
-
-	private:
-		GLuint myGLShader;
-		omega::String myName;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*class ComputeShader
-	{
-	public:
-		ComputeShader(GLuint glShader, const omega::String& name);
-
-		//GLUint getGLShader() { return myGLShader; }
-		String getName() { return myName; }
-
-		OUTK_API dispose();
-
-	private:
-		//GLuint myGLShader;
-		omega::String myName;
-	}*/
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! Represents a program runnable on a Gpu unit.
-	//! A program is composed by a geometry, vertex and fragment shader. Not all programs need to be present.
-	class GpuProgram
-	{
-	public:
-		GpuProgram();
-
-		//! Sets the geometry shader for this program.
-		//! Must be called before initialize()
-		void setGeometryShader(GeometryShader* shader) { myGeometryShader = shader; }
-		GeometryShader* getGeometryShader() { return myGeometryShader; }
-
-		//! Sets the vertex shader for this program.
-		//! Must be called before initialize()
-		void setVertexShader(VertexShader* shader) { myVertexShader = shader; }
-		VertexShader* getVertexShader() { return myVertexShader; }
-
-		//! Sets the fragment shader for this program.
-		//! Must be called before initialize()
-		void setFragmentShader(FragmentShader* shader) { myFragmentShader = shader; }
-		FragmentShader* getFragmentShader() { return myFragmentShader; }
-
-		void setParameter(const omega::String& name, int value);
-		void setParameter(const omega::String& name, omega::Vector2i value);
-		void setParameter(const omega::String& name, omega::Vector3i value);
-		void setParameter(const omega::String& name, omega::Vector4i value);
-
-		void setParameter(const omega::String& name, float value);
-		void setParameter(const omega::String& name, omega::Vector2f value);
-		void setParameter(const omega::String& name, omega::Vector3f value);
-		void setParameter(const omega::String& name, omega::Vector4f value);
-
-		OUTK_API void initialize();
-		OUTK_API void activate();
-
-	private:
-		void printProgramLog(GLuint program);
-
-	private:
-		GeometryShader* myGeometryShader;
-		VertexShader* myVertexShader;
-		FragmentShader* myFragmentShader;
-
-		GLuint myGLProgram;
-
-		omega::String myName;
-	};
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, VertexShader*> pairs.
 	typedef boost::unordered_map<omega::String, VertexShader*> VertexShaderDictionary;
@@ -184,6 +56,9 @@ namespace gfx
 		VertexShaderDictionary myVertexShaders;
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
+
+		// Active gpu program
+		GpuProgram* myActiveProgram;
 
 		// OpenCL stuff.
 		cl_context myCLContext;

@@ -30,8 +30,10 @@ ENDIF()
 SET( srcs 
         gfx/FontManager.cpp
         gfx/GfxUtils.cpp
-        gfx/GpuManager.cpp
         gfx/GpuBuffer.cpp
+        gfx/GpuEnvironment.cpp
+        gfx/GpuManager.cpp
+        gfx/GpuProgram.cpp
         gfx/teapot.cpp
         gfx/TextureManager.cpp
         ui/AbstractButton.cpp
@@ -49,8 +51,10 @@ SET( srcs
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/FontManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GfxUtils.h
-        ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuBuffer.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuEnvironment.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuManager.h
+        ${OmegaLib_SOURCE_DIR}/include/outk/gfx/GpuProgram.h
         ${OmegaLib_SOURCE_DIR}/include/outk/gfx/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/AbstractButton.h
         ${OmegaLib_SOURCE_DIR}/include/outk/ui/Box.h
