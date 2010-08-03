@@ -59,8 +59,12 @@
 
  * Update PQService to use config files (*done*)
 
- * Evaluate PQLabs gestures (*delivery*: July 13-15)
+ * Evaluate PQLabs gestures (*done*)
   Determine accuracy and usefulness. Integrate into PQService if so.
+  Basic gestures added.
+
+ * oinputservice / NetService implementation (*delivery*: ?)
+  Support streaming of events to remote omegalib instances.
 
 ==<u> Jakub </u>==
  * < insert here> 
