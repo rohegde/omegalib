@@ -24,13 +24,13 @@
  * Lay down basic omega utility toolkit (*done*)
   outk will offer some additional functionality to applications that need it (i.e. basic GUI support, a simple graphics library, etc.)
 
- * Start work on outk GUI system (*delivery*: 25-30July)
+ * Start work on outk GUI system (*delivery*: ?)
   Add a couple of basic GUI widgets
   * Button (*done*)
   * Slider
   * Image
 
- * Add basic support for Input filter creation (*delivery*: 19-22July)
+ * Add basic support for Input filter creation (*delivery*: ?)
   Input filters will be used to process and mangle input event coming from services, before they get delivered to an omegalib application. Filters can implement functionalities like noise reduction, improved finger / object tracking and gesture support.
     
  * TacTile integration: cmake setup (*delivery*: ?)
@@ -73,5 +73,3 @@
 ==<u> Unassigned </u>==
  * TacTile integration (*delivery*: ?)
   Implement TacTileService.
- * oinputservice / NetService implementation (*delivery*: ?)
-  Support streaming of events to remote omegalib instances.
