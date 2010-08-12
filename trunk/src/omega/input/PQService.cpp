@@ -312,9 +312,11 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 
 	mysInstance->lockEvents();
 
-	// Magin numbers yay!
-    float specialDividerX = 2.562f;
-    float specialDividerY = 3.418f;
+	// Magic numbers for split and rotate gestures yay! Not needed for start/end events.
+    float specialDividerX = 4096.0f;
+	float specialDividerY = 4096.0f;
+	float screenX = 1920.0f;
+	float screenY = 1080.0f;
 
 	InputEvent* evt = mysInstance->writeHead();
 	switch(tg.type)
@@ -368,10 +370,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->type  = InputEvent::SplitStart;
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[1] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[2]  / specialDividerX;
-			evt->pointSet[1][1] = tg.params[3]  / specialDividerY;
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
 
 			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
@@ -379,10 +381,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->type  = InputEvent::SplitEnd;
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[1] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[2] / specialDividerX;
-			evt->pointSet[1][1] = tg.params[3] / specialDividerY;
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
 
 			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			break;
@@ -390,10 +392,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_SPLIT_CLOSE:
 			evt->type  = InputEvent::Split;
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[2] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[3] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[4] / specialDividerX;
-			evt->pointSet[1][1] = tg.params[5] / specialDividerY;
+			evt->pointSet[0][0] = tg.params[2] * screenX / specialDividerX;
+			evt->pointSet[0][1] = tg.params[3] * screenY / specialDividerY;
+			evt->pointSet[1][0] = tg.params[4] * screenX / specialDividerX;
+			evt->pointSet[1][1] = tg.params[5] * screenY / specialDividerY;
 
 			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 
@@ -403,21 +405,21 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_ROTATE_START:
 			evt->type  = InputEvent::RotateStart;
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[1] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[2] / specialDividerX;
-			evt->pointSet[1][1] = tg.params[3] / specialDividerY;
-			// Point 0 is the center of rotation / specialDividerX.
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
+			// Point 0 is the center of rotation.
 			evt->position = evt->pointSet[0];
 			break;
 		case TG_ROTATE_END:
 			evt->type  = InputEvent::RotateEnd;
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[1] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[2] / specialDividerX;
-			evt->pointSet[1][1] = tg.params[3] / specialDividerY;
-			// Point 0 is the center of rotation / specialDividerX.
+			evt->pointSet[0][0] = tg.params[0];
+			evt->pointSet[0][1] = tg.params[1];
+			evt->pointSet[1][0] = tg.params[2];
+			evt->pointSet[1][1] = tg.params[3];
+			// Point 0 is the center of rotation.
 			evt->position = evt->pointSet[0];
 			break;
 		case TG_ROTATE_ANTICLOCK:
@@ -426,10 +428,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->rotation[0] = -tg.params[0] * Math::RadToDeg;
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[1] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[2] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[3] / specialDividerX;
-			evt->pointSet[1][1] = tg.params[4] / specialDividerY;
+			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX;
+			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY;
+			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX;
+			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY;
 			//evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			// Point 0 is the center of rotation.
 			evt->position = evt->pointSet[0];
@@ -440,10 +442,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->rotation[0] = tg.params[0] * Math::RadToDeg;
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[1] / specialDividerX;
-			evt->pointSet[0][1] = tg.params[2] / specialDividerY;
-			evt->pointSet[1][0] = tg.params[3] / specialDividerX;
-			evt->pointSet[1][1] = tg.params[4] / specialDividerY;
+			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX;
+			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY;
+			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX;
+			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY;
 			// Point 0 is the center of rotation / specialDividerX.
 			evt->position = evt->pointSet[0];
 			break;
