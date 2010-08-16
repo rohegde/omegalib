@@ -58,32 +58,34 @@ public:
 	OMEGA_API void	run();
 
 	//! Sends an exit request to the system manager.
-	OMEGA_API void postExitRequest();
+	OMEGA_API void postExitRequest(const String& reason = "Undefined reason");
 
 	//! Cleans up runtime resources, performs final debug checks etc.
 	OMEGA_API void cleanup();
 
 	//! Gets the system configuration.
-	OMEGA_API Config* getConfig() { return myConfig; }
+	Config* getConfig() { return myConfig; }
 
 	//! Gets the InputManager object
-	OMEGA_API InputManager* getInputManager() { return myInputManager; }
+	InputManager* getInputManager() { return myInputManager; }
 
 	//! Gets the DisplaySystem object
-	OMEGA_API DisplaySystem* getDisplaySystem() { return myDisplaySystem; }
+	DisplaySystem* getDisplaySystem() { return myDisplaySystem; }
 
 	//! Sets the DisplaySystem object
-	OMEGA_API void setDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
+	void setDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
 
 	//! Gets the Application object
-	OMEGA_API Application* getApplication() { return myApplication; }
+	Application* getApplication() { return myApplication; }
 
 	//! Sets the Application object
-	OMEGA_API void setApplication(Application* value) { myApplication = value; }
+	void setApplication(Application* value) { myApplication = value; }
 
-	OMEGA_API bool isExitRequested() { return myExitRequested; }
+	bool isExitRequested() { return myExitRequested; }
 
-	OMEGA_API bool isInitialized() { return myIsInitialized; }
+	const String& getExitReason() { return myExitReason; }
+
+	bool isInitialized() { return myIsInitialized; }
 
 private:
 	SystemManager();
@@ -109,6 +111,7 @@ private:
 	InputManager*	myInputManager;
 	Application*	myApplication;
 	bool			myExitRequested;
+	String			myExitReason;
 };
 
 }; // namespace omega

@@ -29,36 +29,53 @@ namespace gfx
 	typedef boost::unordered_map<omega::String, FragmentShader*> FragmentShaderDictionary;
 	//! A dictionary containing <String, GeometryShader*> pairs.
 	typedef boost::unordered_map<omega::String, GeometryShader*> GeometryShaderDictionary;
+	//! A dictionary containing <String, ComputeShader*> pairs.
+	typedef boost::unordered_map<omega::String, ComputeShader*> ComputeShaderDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads images and manages OpenGL textures.
 	class GpuManager
 	{
 	public:
+		enum InitFlags { InitCL = 1 << 1, InitGL = 1 << 2};
+
+	public:
 		OUTK_API GpuManager();
 		OUTK_API virtual ~GpuManager();
 
-		OUTK_API void initialize();
+		bool isInitialized() { return myInitialized; }
+		bool isCLEnabled() { return ((myInitFlags & InitCL) == InitCL); }
+		bool isGLEnabled() { return ((myInitFlags & InitGL) == InitGL); }
+
+		OUTK_API void initialize(unsigned int initFlags = InitCL | InitGL);
 
 		OUTK_API void loadVertexShader(const omega::String& name, const omega::String& filename);
 		OUTK_API void loadFragmentShader(const omega::String& name, const omega::String& filename);
 		OUTK_API void loadGeometryShader(const omega::String& name, const omega::String& filename);
+		OUTK_API void loadComputeShaders(const omega::String& filename, const std::vector<omega::String>& shaderNames);
 
 		OUTK_API VertexShader* getVertexShader(const omega::String& name);
 		OUTK_API FragmentShader* getFragmentShader(const omega::String& name);
 		OUTK_API GeometryShader* getGeometryShader(const omega::String& name);
+		OUTK_API ComputeShader* getComputeShader(const omega::String& name);
+
+		cl_context getCLContext() { return myCLContext; }
+		cl_command_queue getCLCommandQueue() { return myCLCommandQueue; }
 
 	private:
+		void  initCL();
+
 		GLuint loadGlShader(const omega::String& filename, GLenum type);
 		void printShaderLog(GLuint shader);
 
 	private:
+		bool myInitialized;
+		unsigned int myInitFlags;
+
 		VertexShaderDictionary myVertexShaders;
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
-
-		// Active gpu program
-		GpuProgram* myActiveProgram;
+		ComputeShaderDictionary myComputeShaders;
 
 		// OpenCL stuff.
 		cl_context myCLContext;

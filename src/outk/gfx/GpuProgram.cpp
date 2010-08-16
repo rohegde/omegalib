@@ -10,6 +10,7 @@
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
 #include "outk/gfx/GpuProgram.h"
+#include "outk/gfx/GpuManager.h"
 
 using namespace omega;
 using namespace outk::gfx;
@@ -51,7 +52,7 @@ ComputeShader::ComputeShader(cl_program program, const omega::String& kernelEntr
 	cl_int status;
 	myCLProgram = program;
 	myCLKernel = clCreateKernel(myCLProgram, kernelEntryPoint.c_str(), &status);
-	clCheck(status);
+	if(!clSuccessOrDie(status)) return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,13 +61,15 @@ void ComputeShader::dispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GpuProgram::GpuProgram():
+GpuProgram::GpuProgram(GpuManager* gpuMng):
 	myComputeShader(NULL),
 	myGeometryShader(NULL),
 	myVertexShader(NULL),
-	myFragmentShader(NULL)
+	myFragmentShader(NULL),
+	myGpuMng(gpuMng)
 {
-
+	oassert(gpuMng != NULL);
+	clearInput();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,59 +93,15 @@ void GpuProgram::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, int value)
+OUTK_API void GpuProgram::setInput(int index, GpuData* inputData)
 {
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-    glUniform1i(uid, value);
+	myInput[index] = inputData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, omega::Vector2i value)
+void GpuProgram::clearInput()
 {
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform2iv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector3i value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform3iv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector4i value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform4iv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, float value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform1f(uid, value);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector2f value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform2fv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector3f value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform3fv(uid, 1, value.begin());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setParameter(const omega::String& name, Vector4f value)
-{
-	GLint uid = glGetUniformLocation(myGLProgram, name.c_str());
-	glUniform4fv(uid, 1, value.begin());
+	memset(myInput, 0, MaxInputs * sizeof(GpuData*));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,17 +129,79 @@ void GpuProgram::printProgramLog(GLuint program)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::run(VertexBuffer* vertexBuffer, IndexBuffer* indexBuffer, PrimType primType)
+void GpuProgram::runComputeShader()
 {
-	oassert(vertexBuffer);	
-	
-	vertexBuffer->activate();
+	cl_event events;
+	cl_int status;
 
-	GLenum mode = GL_POINTS;
-	switch(primType)
+	cl_kernel kern = myComputeShader->getCLKernel();
+	cl_command_queue clqueue = myGpuMng->getCLCommandQueue();
+
+	status = clEnqueueNDRangeKernel(
+					clqueue,
+					kern,
+					myComputeDimensions,
+					NULL,
+					myGlobalComputeThreads,
+					myLocalComputeThreads,
+					0,
+					NULL,
+					&events);
+	if(!clSuccessOrDie(status)) return;
+	status = clWaitForEvents(1, &events);
+	if(!clSuccessOrDie(status)) return;
+	clReleaseEvent(events);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuProgram::run(PrimType primType)
+{
+	// If a compute shader is present, run it.
+	if(myComputeShader != NULL)
 	{
-	case PrimPoints: mode = GL_POINTS;
+		for(int i = 0; i < MaxInputs; i++)
+		{
+			GpuData* data = myInput[i];
+			if(data != NULL)
+			{
+				data->bind(this, i, GpuData::BindToComputeStage);
+			}
+		}
+		runComputeShader();
+		for(int i = 0; i < MaxInputs; i++)
+		{
+			GpuData* data = myInput[i];
+			if(data != NULL)
+			{
+				data->unbind(this, i, GpuData::BindToComputeStage);
+			}
+		}
 	}
 
-	glDrawArrays(mode, 0, vertexBuffer->getLength());
+	if(primType != PrimNone)
+	{
+		GLenum mode = GL_POINTS;
+		switch(primType)
+		{
+		case PrimPoints: mode = GL_POINTS;
+		}
+
+		for(int i = 0; i < MaxInputs; i++)
+		{
+			GpuData* data = myInput[i];
+			if(data != NULL)
+			{
+				data->bind(this, i, GpuData::BindToRenderStage);
+			}
+		}
+		glDrawArrays(mode, 0, myNumRenderItems);
+		for(int i = 0; i < MaxInputs; i++)
+		{
+			GpuData* data = myInput[i];
+			if(data != NULL)
+			{
+				data->unbind(this, i, GpuData::BindToRenderStage);
+			}
+		}
+	}
 }

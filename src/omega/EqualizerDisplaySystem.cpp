@@ -28,6 +28,7 @@ class EqualizerChannel: public eq::Channel
 {
 public:
     EqualizerChannel( eq::Window* parent ) : eq::Channel( parent ) {}
+	virtual ~EqualizerChannel() {}
 
 protected:
     virtual void frameDraw( const uint32_t spin );
@@ -37,19 +38,85 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class EqualizerWindow: public eq::Window
+{
+public:
+    EqualizerWindow(eq::Pipe* parent) : eq::Window(parent) {}
+	virtual ~EqualizerWindow() {}
+
+protected:
+	virtual bool configInit(const uint32_t initID)
+	{
+		Window::configInit(initID);
+
+		glewSetContext(this->glewGetContext());
+		Application* app = SystemManager::instance()->getApplication();
+		if(app) app->initializeWindow();
+
+		return true;
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class EqualizerView: public eq::View
 {
 public:
-	/** The changed parts of the view. */
-    enum DirtyBits
-    {
-        DIRTY_LAYER = eq::View::DIRTY_CUSTOM << 0,
-    };
+        class Proxy : public eq::fabric::Serializable
+        {
+        public:
+            Proxy( EqualizerView* view ) : myView( view ) {}
+
+        protected:
+            /** The changed parts of the view. */
+            enum DirtyBits
+            {
+                DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
+            };
+
+            virtual void serialize( eq::net::DataOStream& os, const uint64_t dirtyBits )
+			{
+				if( dirtyBits & DIRTY_LAYER )
+				{
+					for(int i = 0; i < Application::MaxLayers; i++)
+					{
+						os << myView->myEnabledLayers[i];
+					}
+				}
+			}
+
+            virtual void deserialize( eq::net::DataIStream& is, const uint64_t dirtyBits )
+			{
+				if( dirtyBits & DIRTY_LAYER )
+				{
+					for(int i = 0; i < Application::MaxLayers; i++)
+					{
+						is >> myView->myEnabledLayers[i];
+					}
+				}
+			}
+
+            virtual void notifyNewVersion() { sync(); }
+
+        private:
+            EqualizerView* myView;
+            friend class EqualizerView;
+        };
 
 public:
-	EqualizerView(): eq::View()
+	EqualizerView(eq::Layout* parent): 
+	  eq::View(parent)
+#pragma warning( push )
+#pragma warning( disable : 4355 )
+	, myProxy( this )
+#pragma warning( pop )
 	{
 		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
+		setUserData(&myProxy);
+	}
+
+	~EqualizerView()
+	{
+		this->setUserData(NULL);
 	}
 
 	bool isLayerEnabled(int layer) 
@@ -60,35 +127,13 @@ public:
 	void setLayerEnabled(int layer, bool enabled) 
 	{ 
 		myEnabledLayers[layer] = enabled; 
-	    setDirty( DIRTY_LAYER );
-	}
-
-	virtual void serialize( eq::net::DataOStream& os, const uint64_t dirtyBits )
-	{
-		eq::View::serialize( os, dirtyBits );
-	    if( dirtyBits & DIRTY_LAYER )
-		{
-			for(int i = 0; i < Application::MaxLayers; i++)
-			{
-				os << myEnabledLayers[i];
-			}
-		}
-	}
-
-	virtual void deserialize( eq::net::DataIStream& is, const uint64_t dirtyBits )
-	{
-		eq::View::deserialize( is, dirtyBits );
-	    if( dirtyBits & DIRTY_LAYER )
-		{
-			for(int i = 0; i < Application::MaxLayers; i++)
-			{
-				is >> myEnabledLayers[i];
-			}
-		}
+	    myProxy.setDirty( Proxy::DIRTY_LAYER );
 	}
 
 private:
 	bool myEnabledLayers[Application::MaxLayers];
+	Proxy myProxy;
+	friend class myProxy;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,17 +202,39 @@ public:
 		}
 
 		SystemManager::instance()->getInputManager()->poll();
+
+		// Process exit requests.
+		if(SystemManager::instance()->isExitRequested())
+		{
+			const char* ereason = SystemManager::instance()->getExitReason().c_str();
+			if(this->exit())
+			{
+				omsg("Application exit request (reason: %s) successful", ereason);
+			}
+			else
+			{
+				oerror("Application exit request (reason: %s) FAILED!", ereason);
+			}
+		}
+
 		return eq::Config::finishFrame();
 	}
 
-	void setLayerEnabled(int viewId, int layerId, bool enabled)
+	EqualizerView* findView(const String& viewName)
 	{
-	    EqualizerView* view  = static_cast< EqualizerView* >(findView(viewId));
+		eq::Layout* layout = this->ohGetLayout(0);
+		return static_cast< EqualizerView* >(layout->ohFindView(viewName));
+	}
+	
+	void setLayerEnabled(const String& viewName, int layerId, bool enabled)
+	{
+	    EqualizerView* view  = findView(viewName);
 		if(view != NULL)
 		{
 			view->setLayerEnabled(layerId, enabled);
 		}
 	}
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,8 +247,10 @@ public:
 		{ return new EqualizerConfig( parent ); }
     virtual eq::Channel* createChannel(eq::Window* parent)
         { return new EqualizerChannel( parent ); }
-    virtual eq::View* createView()
-        { return new EqualizerView(); }
+	virtual eq::View* createView(eq::Layout* parent)
+        { return new EqualizerView(parent); }
+	virtual eq::Window* createWindow(eq::Pipe* parent)
+        { return new EqualizerWindow(parent); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,15 +266,6 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		// @todo: This is just a hack for application pipe initialization. This should be moved
-		// into Pipe::initialize() or something.
-		static bool pipeInitialized = false;
-		if(!pipeInitialized)
-		{
-			app->initializePipe();
-			pipeInitialized = true;
-		}
-
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// setup the context viewport.
@@ -224,10 +284,10 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 			}
 		}
 
-		if(SystemManager::instance()->isExitRequested())
+		/*if(SystemManager::instance()->isExitRequested())
 		{
 			exit(0);
-		}
+		}*/
 	}
 }
 
@@ -270,7 +330,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
     }
 
     bool error  = false;
-	myConfig = eq::getConfig( argv.size(), &argv[0] );
+	myConfig = static_cast<EqualizerConfig*>(eq::getConfig( argv.size(), &argv[0] ));
 	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
 
 	// Create observers.
@@ -388,31 +448,6 @@ void EqualizerDisplaySystem::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-EqualizerView* EqualizerDisplaySystem::findView(const char* viewName)
-{
-    const eq::CanvasVector& canvases = myConfig->getCanvases();
-	eq::Canvas* currentCanvas = canvases.front();
-
-    if(!currentCanvas) return NULL;
-
-    const eq::Layout* layout = currentCanvas->getActiveLayout();
-    if(!layout) return NULL;
-
-    const eq::ViewVector& views = layout->getViews();
-	EqualizerView* view = NULL;
-	for(int i = 0; i < views.size(); i++)
-	{
-		eq::View* v = views[i];
-		if(v->getName() == viewName) 
-		{
-			view = static_cast < EqualizerView* > (v);
-			break;
-		}
-	}
-	return view;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
 {
 	if(!myConfig)
@@ -421,7 +456,7 @@ void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName,
 		return;
 	}
 
-	EqualizerView* view = findView(viewName);
+	EqualizerView* view = myConfig->findView(viewName);
 	if(view != NULL)
 	{
 		view->setLayerEnabled(layerNum, enabled);
@@ -437,7 +472,7 @@ bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName)
 		return false;
 	}
 
-	EqualizerView* view = findView(viewName);
+	EqualizerView* view = myConfig->findView(viewName);
 	if(view != NULL)
 	{
 		return view->isLayerEnabled(layerNum);

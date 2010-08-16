@@ -29,6 +29,11 @@ std::vector<char*> Config::stringToArgv(std::string appName, std::string args)
 	return v2;
 }
 
+Config::Config(const char* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false)
+{
+	oassert(filename != NULL);
+	myCfgFilename = filename; 
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Config::load()
 {
