@@ -14,7 +14,7 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define LOG_STR_LEN 1024
+#define LOG_STR_LEN 65536
 
 using namespace omega;
 
@@ -97,7 +97,7 @@ void oerror(const char* fmt, ...)
 	va_start(args, fmt);
 	vsprintf(tmpstr, fmt, args);
 
-	sprintf(str, "WARNING: %s\n", tmpstr);
+	sprintf(str, "ERROR: %s\n", tmpstr);
 
 	printf(str);
 	if(sLogFile)

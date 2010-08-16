@@ -53,8 +53,8 @@ SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/bin/${ARCH}-${
 
 #######################################################################################################################
 # Couple utility variables for library linking
-SET (LIB_DEBUG ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-debug CACHE STRING "bsd")
-SET (LIB_RELEASE ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-release  CACHE STRING "bsd")
+SET (LIB_DEBUG ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-debug)
+SET (LIB_RELEASE ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-release)
 
 #######################################################################################################################
 # Add subdirectiories

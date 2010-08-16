@@ -21,6 +21,7 @@
 // Forward Declarations.
 class EqualizerNodeFactory;
 class EqualizerView;
+class EqualizerConfig;
 
 namespace omega
 {
@@ -78,7 +79,6 @@ public:
 private:
 	void initLayers();
 	void initObservers();
-	EqualizerView* findView(const char* viewName);
 
 private:
 	SystemManager* mySys;
@@ -89,7 +89,7 @@ private:
 
 	// Equalizer stuff.
     EqualizerNodeFactory* myNodeFactory;
-	eq::Config* myConfig;
+	EqualizerConfig* myConfig;
 
 	// Observers.
 	std::vector<Observer*> myObservers;

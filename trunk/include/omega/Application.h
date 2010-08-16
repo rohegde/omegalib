@@ -42,7 +42,7 @@ public:
 
 	//! Called once for every initialized pipe (a graphic card, or any other resource
 	//! seen as one logical graphic card)
-	virtual void initializePipe() {}
+	virtual void initializeWindow() {}
 
 	virtual void draw(const DrawContext& context) {}
 	virtual bool handleEvent(const InputEvent& evt) { return false; }

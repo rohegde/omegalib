@@ -16,16 +16,14 @@
 
 #include "outk/gfx/GpuBuffer.h"
 
-#include "CL/cl.h"
-
 namespace outk
 {
 namespace gfx
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @interal Checks safety of OpenCL calls.
-	void __clCheck(const char* file, int line, int status);
-	#define clCheck(s) __clCheck(__FILE__,__LINE__,s);
+	bool __clSuccessOrDie(const char* file, int line, int status);
+	#define clSuccessOrDie(s) __clSuccessOrDie(__FILE__,__LINE__,s)
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class VertexShader
@@ -116,10 +114,14 @@ namespace gfx
 	class GpuProgram
 	{
 	public:
-		enum PrimType { PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
+		enum PrimType { PrimNone, PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
+		static const int MaxInputs = 64;
 
 	public:
-		OUTK_API GpuProgram();
+		OUTK_API GpuProgram(GpuManager* gpuMng);
+
+		//! Returns the Gpu manager owning this program.
+		GpuManager* getManager() { return myGpuMng; }
 
 		//! Sets the compute shader for this program.
 		//! Must be called before initialize()
@@ -141,33 +143,52 @@ namespace gfx
 		void setFragmentShader(FragmentShader* shader) { myFragmentShader = shader; }
 		FragmentShader* getFragmentShader() { return myFragmentShader; }
 
-		void setParameter(const omega::String& name, int value);
-		void setParameter(const omega::String& name, omega::Vector2i value);
-		void setParameter(const omega::String& name, omega::Vector3i value);
-		void setParameter(const omega::String& name, omega::Vector4i value);
+		//! Add a Gpu constant to the program.
+		OUTK_API void setInput(int index, GpuData* input);
 
-		void setParameter(const omega::String& name, float value);
-		void setParameter(const omega::String& name, omega::Vector2f value);
-		void setParameter(const omega::String& name, omega::Vector3f value);
-		void setParameter(const omega::String& name, omega::Vector4f value);
+		//! Clear the program constant table.
+		OUTK_API void clearInput();
+
+		int getComputeDimensions() { return myComputeDimensions; }
+		void setComputeDimensions(int value) { myComputeDimensions = value; }
+
+		size_t getGlobalComputeThreads(int dim) { return myGlobalComputeThreads[dim]; }
+		size_t getLocalComputeThreads(int dim) { return myLocalComputeThreads[dim]; }
+		void setGlobalComputeThreads(int dim, size_t value) { myGlobalComputeThreads[dim] = value; }
+		void setLocalComputeThreads(int dim, size_t value) { myLocalComputeThreads[dim] = value; }
+		
+		void setNumRenderItems(int size) { myNumRenderItems = size; }
+		int getNumrenderItems() { return myNumRenderItems; }
 
 		OUTK_API void initialize();
 		OUTK_API void activate();
 
-		OUTK_API void run(VertexBuffer* vertexBuffer, IndexBuffer* indexBuffer = NULL, PrimType primType = PrimPoints);
+		OUTK_API void run(PrimType primType = PrimNone);
 
 	private:
 		void printProgramLog(GLuint program);
+		void runComputeShader();
 
 	private:
+		omega::String myName;
+
+		GpuManager* myGpuMng;
+
+		// Program inputs.
+		GpuData* myInput[MaxInputs];
+
+		// OpenGL program stuff
+		GLuint myGLProgram;
 		GeometryShader* myGeometryShader;
 		VertexShader* myVertexShader;
 		FragmentShader* myFragmentShader;
+		int myNumRenderItems;
+
+		// OpenCL program stuff.
 		ComputeShader* myComputeShader;
-
-		GLuint myGLProgram;
-
-		omega::String myName;
+		int myComputeDimensions;
+	    size_t myGlobalComputeThreads[3];
+	    size_t myLocalComputeThreads[3];
 	};
 };
 }; // namespace omega

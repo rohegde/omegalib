@@ -20,11 +20,13 @@ using namespace outk::ui;
 struct Settings
 {
 	Settings():
-		numAgents(5000),
+		numAgents(3000),
+		totGroups(5),
 		areaMin(Vector3f(-0.5, 0.5, -1.0)),
 		areaMax(Vector3f(0.8, 2.0, -3.0))
 		{}
 
+	int totGroups;
 	int numAgents;
 	Vector3f areaMin;
 	Vector3f areaMax;
@@ -36,6 +38,14 @@ struct Agent
 	float x, y, z; // Position
 	float vx, vy, vz; // Velocity
 	float s1, s2; // State values
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct InteractorRay
+{
+	// These parameters determine a ray in the
+	float x, y; // Origin on the z = 0 plane
+	float dx, dy; // x, y increment for unitary z increment.
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +63,11 @@ public:
 		myFontMng.createFont("arial30", "../../data/fonts/Arial.ttf", 22);
 		myFont = myFontMng.getFont("arial30");
 
+		myTexMng = new TextureManager();
+		myTexMng->loadTexture("glow", "../../data/images/glow2.png");
+
+		myGlowTexture = myTexMng->getTexture("glow");
+
 		myUI.setEventHandler(this);
 		myUI.setDefaultFont(myFont);
 
@@ -68,15 +83,19 @@ public:
 		btn1->setText("Hello Button!");
 
 		myAgentBuffer = NULL;
-
-		myGpu.initialize();
-
-		myAgentProgram = new GpuProgram();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void initAgentData()
+	virtual void initializeWindow()
 	{
+		myGpu = new GpuManager();
+		myGpu->initialize();
+
+		std::vector<String> shaderNames;
+		shaderNames.push_back("behavior");
+		shaderNames.push_back("update");
+		myGpu->loadComputeShaders("../../data/shaders/agentsim.cl", shaderNames);
+
 		// Setup the agent buffer.
 		Agent* agentData = new Agent[mySettings.numAgents];
 
@@ -93,23 +112,73 @@ public:
 			agentData[i].x = minx + Math::rnd() * dx;
 			agentData[i].y = miny + Math::rnd() * dy;
 			agentData[i].z = minz + Math::rnd() * dz;
+			agentData[i].vx = 0;
+			agentData[i].vy = 0;
+			agentData[i].vz = 0;
 		}
 
+		// Create the gpu buffers and constants.
 		int bufSize = mySettings.numAgents * sizeof(Agent);
 
-		myAgentBuffer = new VertexBuffer();
+		myAgentBuffer = new VertexBuffer(myGpu);
+		myAgentBuffer->addAttribute(VertexAttribute(VertexAttribute::TargetPosition, VertexAttribute::TypeFloat, 0, 3));
 		myAgentBuffer->initialize(bufSize, sizeof(Agent), agentData);
 
 		delete[] agentData;
+
+		myDt = new GpuConstant();
+
+		myNumAgents = new GpuConstant();
+		myNumAgents->setIntValue(mySettings.numAgents);
+
+		myGroupId = new GpuConstant();
+
+		myTotGroups = new GpuConstant();
+		myTotGroups->setIntValue(mySettings.totGroups);
+
+		myInteractorBuffer = new GpuBuffer(myGpu);
+		myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay));
+
+		myNumInteractors = new GpuConstant();
+		myNumInteractors->setIntValue(0);
+
+		// Setup data and parameters for the agent behavior program
+		myAgentBehavior = new GpuProgram(myGpu);
+		myAgentBehavior->setComputeShader(myGpu->getComputeShader("behavior"));
+		myAgentBehavior->setInput(0, myAgentBuffer);
+		myAgentBehavior->setInput(1, myDt);
+		myAgentBehavior->setInput(2, myNumAgents);
+		myAgentBehavior->setInput(3, myTotGroups);
+		myAgentBehavior->setInput(4, myGroupId);
+		myAgentBehavior->setInput(5, myNumInteractors);
+		myAgentBehavior->setInput(6, myInteractorBuffer);
+		myAgentBehavior->setComputeDimensions(1);
+		myAgentBehavior->setLocalComputeThreads(0, 100);
+		myAgentBehavior->setGlobalComputeThreads(0, mySettings.numAgents / mySettings.totGroups);
+
+		// Setup data and parameters for the agent update program
+		myAgentUpdate = new GpuProgram(myGpu);
+		myAgentUpdate->setComputeShader(myGpu->getComputeShader("update"));
+		myAgentUpdate->setInput(0, myAgentBuffer);
+		myAgentUpdate->setInput(1, myDt);
+		myAgentUpdate->setComputeDimensions(1);
+		myAgentUpdate->setLocalComputeThreads(0, 100);
+		myAgentUpdate->setGlobalComputeThreads(0, mySettings.numAgents);
+		myAgentUpdate->setNumRenderItems(mySettings.numAgents);
+
+		// Setup data and parameters for the agent render program
+		myAgentRenderer = new GpuProgram(myGpu);
+		myAgentRenderer->setInput(0, myAgentBuffer);
+		myAgentRenderer->setNumRenderItems(mySettings.numAgents);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void draw3D(const DrawContext& context)
 	{
-		if(!myAgentBuffer) initAgentData();
-
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
+
+		static int groupId = 0;
 
 		//const float lightPos[] = { 0.0f, 1.6f, 0.0f, 0.0f };
 		const float lightPos[] = { 0, 1.8, 0, 1.0f };
@@ -124,7 +193,7 @@ public:
 
 		glEnable(GL_FOG);
 
-		const float fogCol[] = { 0.0f, 0.0f, 0.0f };
+		const float fogCol[] = { 0.1f, 0.1f, 1.0f };
 		glFogfv( GL_FOG_COLOR, fogCol );
 		glFogi(GL_FOG_MODE, GL_LINEAR);
 		glFogf(GL_FOG_START, 1);
@@ -132,10 +201,68 @@ public:
 
 		glColor3f(1.0, 1.0, 1.0);
 
-		//glDisable(GL_LIGHTING);
-		glPointSize(1);
+		glDisable(GL_LIGHTING);
 
-		myAgentProgram->run(myAgentBuffer, NULL, GpuProgram::PrimPoints);
+		myGroupId->setIntValue(groupId);
+
+		groupId++;
+		if(groupId == mySettings.totGroups) groupId = 0;
+
+		//glTranslatef(0.2, 1.5, -2);
+		//glRotatef(myMouseX, 0, 1, 0);
+		//glRotatef(myMouseY, 1, 0, 0);
+		//glTranslatef(-0.2, -1.5, 2);
+
+		if(context.frameNum < 200)
+		{
+			myDt->setFloatValue(0.04f);
+			myAgentBehavior->run();
+			myAgentUpdate->run();
+
+			char txt[256];
+			sprintf(txt, "Initializing simulation: %d%%", context.frameNum / 2);
+			GfxUtils::beginOverlayMode(context);
+			GfxUtils::drawText(0, 10, txt);
+			GfxUtils::endOverlayMode();
+		}
+		else
+		{
+			GLdouble modelview[16];
+			GLdouble projection[16];
+			GLint viewport[4];
+
+			glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+			glGetDoublev( GL_PROJECTION_MATRIX, projection );
+			glGetIntegerv( GL_VIEWPORT, viewport );
+
+			double mx, my, mz;
+			gluUnProject(myMouseX, viewport[3] - myMouseY, 0.01f, modelview, projection, viewport, &mx, &my, &mz);
+
+			glEnable(GL_TEXTURE_2D);
+			glEnable(GL_POINT_SPRITE);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, myGlowTexture->getGLTexture());
+			glTexEnvi(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
+
+			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+			myDt->setFloatValue(0.005f);
+			myNumInteractors->setIntValue(0);
+
+			myAgentBehavior->run();
+			myAgentUpdate->run();
+
+
+			glPointSize(64);
+			myAgentRenderer->run(GpuProgram::PrimPoints);
+
+			glDisable(GL_BLEND);
+
+			glEnable(GL_DEPTH_TEST);
+		}
+
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,6 +305,8 @@ public:
 		case InputService::Touch:
 		case InputService::Pointer:
 			myUI.processInputEvent(evt);
+			myMouseX = evt.position.x();
+			myMouseY = evt.position.y();
 		break;
 
 		case InputService::Mocap:
@@ -194,17 +323,37 @@ public:
 	}
 
 private:
+	static const int MaxInteractors = 32;
+
 	// Application settings.
 	Settings mySettings;
 
-	GpuManager myGpu;
+	GpuManager* myGpu;
+	GpuProgram* myAgentBehavior;
+	GpuProgram* myAgentUpdate;
+	GpuProgram* myAgentRenderer;
+
+	// Gpu data
 	VertexBuffer* myAgentBuffer;
-	GpuProgram* myAgentProgram;
+	GpuConstant* myDt;
+	GpuConstant* myNumAgents;
+	GpuConstant* myGroupId;
+	GpuConstant* myTotGroups;
+
+	GpuBuffer* myInteractorBuffer;
+	GpuConstant* myNumInteractors;
+
+	// Textures
+	TextureManager* myTexMng;
+	Texture* myGlowTexture;
 
 	// User interface stuff.
 	UIManager myUI;
 	FontManager myFontMng;
 	Font* myFont;
+
+	float myMouseX;
+	float myMouseY;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

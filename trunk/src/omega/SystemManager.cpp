@@ -71,6 +71,8 @@ void SystemManager::setup(Config* cfg)
 	// Make sure the configuration is loaded.
 	if(!myConfig->isLoaded()) myConfig->load();
 
+	oassert(myConfig->isLoaded());
+
 	setupInputManager();
 	setupDisplaySystem();
 }
@@ -197,9 +199,10 @@ void SystemManager::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::postExitRequest()
+void SystemManager::postExitRequest(const String& reason)
 {
 	myExitRequested = true;
+	myExitReason = reason;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
