@@ -29,12 +29,12 @@ namespace eq
 {
 namespace net
 {
-    enum
+    enum PacketType
     {
-        DATATYPE_EQNET_NODE,
-        DATATYPE_EQNET_SESSION,
-        DATATYPE_EQNET_OBJECT,
-        DATATYPE_EQNET_CUSTOM = 1<<7
+        PACKETTYPE_EQNET_NODE,
+        PACKETTYPE_EQNET_SESSION,
+        PACKETTYPE_EQNET_OBJECT,
+        PACKETTYPE_EQNET_CUSTOM = 1<<7
     };
 
     /**
@@ -44,7 +44,7 @@ namespace net
     {
         Packet(){}
         uint64_t size;
-        uint32_t datatype;
+        uint32_t type;
         uint32_t command;
         
 #if 0
@@ -69,7 +69,7 @@ namespace net
     //------------------------------------------------------------
     struct NodePacket: public Packet
     {
-        NodePacket(){ datatype = DATATYPE_EQNET_NODE; }
+        NodePacket(){ type = PACKETTYPE_EQNET_NODE; }
     };
 
 /** @cond IGNORE */
@@ -159,7 +159,7 @@ namespace net
 
         NodeID   nodeID;
         uint32_t requestID;
-        uint32_t type;
+        uint32_t nodeType;
         uint32_t launchID;
         uint32_t fill;
         EQ_ALIGN8( char nodeData[8] );
@@ -177,7 +177,7 @@ namespace net
 
         NodeID   nodeID;
         uint32_t requestID;
-        uint32_t type;
+        uint32_t nodeType;
         EQ_ALIGN8( char nodeData[8] );
     };
 
@@ -200,7 +200,7 @@ namespace net
             }
 
         NodeID   id;
-        uint32_t type;
+        uint32_t nodeType;
         EQ_ALIGN8( char data[8] );
     };
 
@@ -241,7 +241,7 @@ namespace net
 
         NodeID   nodeID;
         uint32_t requestID;
-        uint32_t type;        
+        uint32_t nodeType; 
         EQ_ALIGN8( char nodeData[8] );
     };
 
@@ -285,7 +285,7 @@ namespace net
     //------------------------------------------------------------
     struct SessionPacket : public NodePacket
     {
-        SessionPacket() { datatype = DATATYPE_EQNET_SESSION; }
+        SessionPacket() { type = PACKETTYPE_EQNET_SESSION; }
         base::UUID sessionID;
     };
 
@@ -333,13 +333,26 @@ namespace net
     struct SessionSetIDMasterPacket : public SessionPacket
     {
         SessionSetIDMasterPacket()
+                : requestID( EQ_ID_INVALID )
             {
                 command   = CMD_SESSION_SET_ID_MASTER;
                 size      = sizeof( SessionSetIDMasterPacket ); 
-                requestID = EQ_ID_INVALID;
             }
 
         NodeID   masterID;
+        uint32_t identifier;
+        uint32_t requestID;
+    };
+
+    struct SessionUnsetIDMasterPacket : public SessionPacket
+    {
+        SessionUnsetIDMasterPacket()
+                : requestID( EQ_ID_INVALID )
+            {
+                command   = CMD_SESSION_UNSET_ID_MASTER;
+                size      = sizeof( SessionUnsetIDMasterPacket ); 
+            }
+
         uint32_t identifier;
         uint32_t requestID;
     };
@@ -523,7 +536,7 @@ namespace net
     {
         ObjectPacket()
             {
-                datatype   = DATATYPE_EQNET_OBJECT; 
+                type   = PACKETTYPE_EQNET_OBJECT; 
                 instanceID = EQ_ID_ANY;
             }
         uint32_t objectID;
@@ -546,6 +559,7 @@ namespace net
     struct ObjectDataPacket : public ObjectPacket
     {
         ObjectDataPacket() : dataSize( 0 )
+                           , sequence( 0 )
                            , compressorName( 0 )
                            , nChunks( 0 )
                            , last( false ) {}
@@ -594,41 +608,19 @@ namespace net
         base::UUID commit;
     };
 
-    struct ObjectNewMasterPacket : public ObjectPacket
-    {
-        ObjectNewMasterPacket()
-            {
-                command = CMD_OBJECT_NEW_MASTER;
-                size    = sizeof( ObjectNewMasterPacket );
-            };
-
-        uint32_t newMasterID;
-        uint32_t newMasterInstanceID;
-        uint32_t changeType;
-    };
-
-    struct ObjectVersionPacket : public ObjectPacket
-    {
-        ObjectVersionPacket()
-            {
-                command = CMD_OBJECT_VERSION;
-                size    = sizeof( ObjectVersionPacket );
-            };
-
-        uint32_t version;
-    };
-
     //------------------------------------------------------------
     // Barrier
     //------------------------------------------------------------
     struct BarrierEnterPacket : public ObjectPacket
     {
         BarrierEnterPacket()
+                : handled( false )
             {
                 command = CMD_BARRIER_ENTER;
                 size    = sizeof( BarrierEnterPacket );
             }
         uint32_t version;
+        bool handled;
     };
 
     struct BarrierEnterReplyPacket : public ObjectPacket
@@ -647,7 +639,7 @@ namespace net
     inline std::ostream& operator << ( std::ostream& os, 
                                        const Packet* packet )
     {
-        os << "packet dt " << packet->datatype << " cmd "
+        os << "packet dt " << packet->type << " cmd "
            << packet->command;
         return os;
     }
@@ -675,7 +667,7 @@ namespace net
                                        const NodeConnectPacket* packet )
     {
         os << (NodePacket*)packet << " req " << packet->requestID << " type "
-           << packet->type << " launchID " << packet->launchID << " data "
+           << packet->nodeType << " launchID " << packet->launchID << " data "
            << packet->nodeData;
         return os;
     }
@@ -683,7 +675,7 @@ namespace net
                                        const NodeConnectReplyPacket* packet )
     {
         os << (NodePacket*)packet << " req " << packet->requestID << " type "
-           << packet->type << " data " << packet->nodeData;
+           << packet->nodeType << " data " << packet->nodeData;
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 
@@ -705,7 +697,7 @@ namespace net
     inline std::ostream& operator << ( std::ostream& os, 
                                        const SessionPacket* packet )
     {
-        os << (NodePacket*)packet << " session id " << packet->sessionID;
+        os << (NodePacket*)packet << " session " << packet->sessionID;
         return os;
     }
 
@@ -732,7 +724,7 @@ namespace net
                                        const SessionMapObjectPacket* packet )
     {
         os << (SessionPacket*)packet << " id " << packet->objectID << " req "
-           << packet->requestID;
+           << packet->requestID << " v" << packet->version;
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 
@@ -753,7 +745,7 @@ namespace net
                                const SessionSubscribeObjectReplyPacket* packet )
     {
         os << (SessionPacket*)packet << " id " << packet->objectID << " req "
-           << packet->requestID;
+           << packet->requestID << " v" << packet->cachedVersion;
         return os;
     }
 
@@ -761,7 +753,7 @@ namespace net
     inline std::ostream& operator << ( std::ostream& os, 
                                        const ObjectPacket* packet )
     {
-        os << (SessionPacket*)packet << " objectID " << packet->objectID
+        os << (SessionPacket*)packet << " object " << packet->objectID
            << "." << packet->instanceID;
         return os;
     }

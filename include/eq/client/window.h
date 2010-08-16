@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ * Copyright (c) 2010, Cedric Stalder <cedric.stalder@gmail.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,29 +19,35 @@
 #ifndef EQ_WINDOW_H
 #define EQ_WINDOW_H
 
-#include <eq/client/drawableConfig.h> // member
-#include <eq/client/pixelViewport.h>  // member
-#include <eq/client/renderContext.h>  // member
+#include <eq/fabric/window.h>         // base class
+
 #include <eq/client/types.h>
 #include <eq/client/visitorResult.h> // enum
 
 #include <eq/util/bitmapFont.h>      // member
 #include <eq/util/objectManager.h>   // member
-#include <eq/net/object.h>           // base class
+#include <eq/fabric/channel.h>       // friend
+#include <eq/fabric/renderContext.h> // member
+
+
+/** @file client/window.h */
 
 namespace eq
 {
+namespace fabric
+{
+    template< typename T, typename W > class Channel;
+}
     class OSPipe;
     class OSWindow;
-    class WindowVisitor;
     struct Event;
 
     /**
-     * A Window represents an on-screen or off-screen drawable, and manages an
-     * OpenGL context.
+     * A Window represents an on-screen or off-screen drawable.
      *
-     * A window uses an OSWindow implementation to manage the operating system
-     * specific handling of window and context creation.
+     * A drawable is a 2D rendering surface, typically attached to an OpenGL
+     * context. A window uses an OSWindow implementation to manage the operating
+     * system specific handling of window and context creation.
      *
      * A Window is a child of a Pipe. The task methods for all windows of a pipe
      * are executed in the same pipe thread. All window and subsequent channel
@@ -59,38 +66,37 @@ namespace eq
      * buffer, thus glFlush is needed to synchronize the state of OpenGL objects
      * between windows. Therefore, Equalizer calls flush() at the end of each
      * frame for each window.
+     *
+     * @sa fabric::Window
      */
-    class Window : public net::Object
+    class Window : public fabric::Window< Pipe, Window, Channel >
     {
     public:
-        /** The per-window object manager. */
+        /** The per-window object manager. @version 1.0 */
         typedef util::ObjectManager< const void* > ObjectManager;
 
-        /** Fonts used for overlays. */
+        /** Fonts used for overlays. @version 1.0 */
         typedef util::BitmapFont< const void* > Font;
 
-        /** Construct a new window. */
+        /** Construct a new window. @version 1.0 */
         EQ_EXPORT Window( Pipe* parent );
 
-        /** Destruct the window. */
+        /** Destruct the window. @version 1.0 */
         EQ_EXPORT virtual ~Window();
 
         /** @name Data Access */
         //@{
         EQ_EXPORT net::CommandQueue* getPipeThreadQueue(); //!< @internal
 
-        /** @return the Pipe of this window. */
-        const Pipe* getPipe() const { return _pipe; }
-        /** @return the Pipe of this window. */
-        Pipe*       getPipe()       { return _pipe; }
-
         /** @return the Node of this window. */
         EQ_EXPORT const Node* getNode() const; 
+
         /** @return the Node of this window. */
         EQ_EXPORT Node*       getNode();
 
         /** @return the Config of this window. */
         EQ_EXPORT const Config* getConfig() const;
+
         /** @return the Config of this window. */
         EQ_EXPORT Config*       getConfig();
 
@@ -100,55 +106,8 @@ namespace eq
         /** @return the Server of this window. */
         EQ_EXPORT ServerPtr getServer();
 
-        /** @return a vector of all channels of this window. */
-        const ChannelVector& getChannels() const { return _channels; }
-
-        /** @return the name of this window. */
-        const std::string& getName() const { return _name; }
-
         /** @return true if this window is running, false otherwise. */
         bool isRunning() const { return (_state == STATE_RUNNING); }
-
-        /** 
-         * Return the set of tasks this window's channels might execute in the
-         * worst case.
-         * 
-         * It is not guaranteed that all the tasks will be actually executed
-         * during rendering.
-         * 
-         * @warning Not finalized, might change in the future.
-         * @return the tasks.
-         */
-        uint32_t getTasks() const { return _tasks; }
-
-        /** 
-         * Traverse this window and all children using a window visitor.
-         * 
-         * @param visitor the visitor.
-         * @return the result of the visitor traversal.
-         */
-        EQ_EXPORT VisitorResult accept( WindowVisitor& visitor );
-
-        /** Const-version of accept(). */
-        EQ_EXPORT VisitorResult accept( WindowVisitor& visitor ) const;
-
-        /** 
-         * Set the window's pixel viewport wrt its parent pipe.
-         *
-         * Updates the fractional viewport of the window and its channels
-         * accordingly.
-         * 
-         * @param pvp the viewport in pixels.
-         */
-        EQ_EXPORT void setPixelViewport( const PixelViewport& pvp );
-        
-        /** 
-         * @return the window's pixel viewport
-         */
-        EQ_EXPORT const PixelViewport& getPixelViewport() const { return _pvp; }
-
-        /** @return the window's fractional viewport. */
-        const Viewport& getViewport() const { return _vp; }
 
         /** 
          * Get the last rendering context at the x, y position.
@@ -211,61 +170,14 @@ namespace eq
          */
         EQ_EXPORT GLEWContext* glewGetContext();
 
-        /** @return information about the current drawable. */
-        const DrawableConfig& getDrawableConfig() const
-            { return _drawableConfig; }
+        /** Const version of glewGetContext(). */
+        EQ_EXPORT const GLEWContext* glewGetContext() const;
 
         /**
          * @return the OpenGL texture format corresponding to the window's color
          *         drawable configuration
          */
-        EQ_EXPORT uint32_t getColorFormat();
-        //@}
-
-        /**
-         * @name Attributes
-         */
-        //@{
-        // Note: also update string array initialization in window.cpp
-        /** 
-         * Window attributes.
-         *
-         * Most of these attributes are used by the OSWindow implementation to
-         * configure the window during configInit(). An OSWindow implementation
-         * might not respect all attributes, e.g., IATTR_HINT_SWAPSYNC is not
-         * implemented by the GLXWindow.
-         */
-        enum IAttribute
-        {
-            IATTR_HINT_STEREO,           //!< Active stereo
-            IATTR_HINT_DOUBLEBUFFER,     //!< Front and back buffer
-            IATTR_HINT_FULLSCREEN,       //!< Fullscreen drawable
-            IATTR_HINT_DECORATION,       //!< Window decorations
-            IATTR_HINT_SWAPSYNC,         //!< Swap sync on vertical retrace
-            IATTR_HINT_DRAWABLE,         //!< Window, pbuffer or FBO
-            IATTR_HINT_STATISTICS,       //!< Statistics gathering hint
-            IATTR_HINT_SCREENSAVER,      //!< Screensaver (de)activation (WGL)
-            IATTR_PLANES_COLOR,          //!< No of per-component color planes
-            IATTR_PLANES_ALPHA,          //!< No of alpha planes
-            IATTR_PLANES_DEPTH,          //!< No of z-buffer planes
-            IATTR_PLANES_STENCIL,        //!< No of stencil planes
-            IATTR_PLANES_ACCUM,          //!< No of accumulation buffer planes
-            IATTR_PLANES_ACCUM_ALPHA,    //!< No of alpha accum buffer planes
-            IATTR_PLANES_SAMPLES,        //!< No of multisample (AA) planes
-            IATTR_FILL1,                 //!< Reserved for future extensions
-            IATTR_FILL2,                 //!< Reserved for future extensions
-            IATTR_ALL
-        };
-
-        /** Set a window attribute. */
-        EQ_EXPORT void setIAttribute( const IAttribute attr,
-                                      const int32_t value );
-
-        /** @return the value of a window attribute. */
-        EQ_EXPORT int32_t  getIAttribute( const IAttribute attr ) const;
-        /** @return the name of a window attribute. */
-        EQ_EXPORT static const std::string& getIAttributeString(
-                                                        const IAttribute attr );
+        EQ_EXPORT uint32_t getColorFormat() const;
         //@}
 
         /** @name Actions */
@@ -327,22 +239,6 @@ namespace eq
         const OSPipe* getOSPipe() const;
         /** @return the OS-specific pipe implementation. */
         OSPipe*       getOSPipe(); 
-        //@}
-
-        /** @name Error information. */
-        //@{
-        /** 
-         * Set a message why the last operation failed.
-         * 
-         * The message will be transmitted to the originator of the request, for
-         * example to Config::init when called from the configInit() method.
-         *
-         * @param message the error message.
-         */
-        EQ_EXPORT void setErrorMessage( const std::string& message );
-
-        /** @return the current error message. */
-        EQ_EXPORT const std::string& getErrorMessage() const;
         //@}
 
         /**
@@ -482,40 +378,11 @@ namespace eq
         //@}
 
     private:
-        /** The parent pipe. */
-        Pipe* const   _pipe;
-
-        /** The name. */
-        std::string    _name;
-
         /** The window sharing the OpenGL context. */
         Window* _sharedContextWindow;
 
-        /** The reason for the last error. */
-        std::string    _error;
-
         /** Window-system specific functions class */
         OSWindow* _osWindow;
-
-        /** Integer attributes. */
-        int32_t _iAttributes[IATTR_ALL];
-        /** String representation of integer attributes. */
-        static std::string _iAttributeStrings[IATTR_ALL];
-
-        /** Worst-case set of tasks. */
-        uint32_t _tasks;
-
-        /** The channels of this window. */
-        ChannelVector     _channels;
-
-        /** The pixel viewport wrt the pipe. */
-        eq::PixelViewport _pvp;
-
-        /** The fractional viewport wrt the pipe. */
-        eq::Viewport      _vp;
-
-        /** Drawable characteristics of this window */
-        DrawableConfig _drawableConfig;
 
         enum State
         {
@@ -548,19 +415,13 @@ namespace eq
 
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
 
         friend class Channel;
-        void _addChannel( Channel* channel );
-        void _removeChannel( Channel* channel );
-        Channel* _findChannel( const uint32_t id );
-
+        
         /** Add a channel's rendering context to the current frame's list */
         void _addRenderContext( const RenderContext& context );
-
-        bool _setPixelViewport( const PixelViewport& pvp );
-        void _setViewport( const Viewport& vp );
 
         /** Set up object manager during initialization. */
         void _setupObjectManager();
@@ -573,22 +434,19 @@ namespace eq
         /** Enter the given barrier. */
         void _enterBarrier( net::ObjectVersion barrier );
 
-        virtual void getInstanceData( net::DataOStream& os ) { EQDONTCALL }
-        virtual void applyInstanceData( net::DataIStream& is ) { EQDONTCALL }
-
         /* The command functions. */
-        net::CommandResult _cmdCreateChannel( net::Command& command );
-        net::CommandResult _cmdDestroyChannel(net::Command& command );
-        net::CommandResult _cmdConfigInit( net::Command& command );
-        net::CommandResult _cmdConfigExit( net::Command& command );
-        net::CommandResult _cmdFrameStart( net::Command& command );
-        net::CommandResult _cmdFrameFinish( net::Command& command );
-        net::CommandResult _cmdThrottleFramerate( net::Command& command );
-        net::CommandResult _cmdFinish( net::Command& command );
-        net::CommandResult _cmdBarrier( net::Command& command );
-        net::CommandResult _cmdNVBarrier( net::Command& command );
-        net::CommandResult _cmdSwap( net::Command& command );
-        net::CommandResult _cmdFrameDrawFinish( net::Command& command );
+        bool _cmdCreateChannel( net::Command& command );
+        bool _cmdDestroyChannel(net::Command& command );
+        bool _cmdConfigInit( net::Command& command );
+        bool _cmdConfigExit( net::Command& command );
+        bool _cmdFrameStart( net::Command& command );
+        bool _cmdFrameFinish( net::Command& command );
+        bool _cmdThrottleFramerate( net::Command& command );
+        bool _cmdFinish( net::Command& command );
+        bool _cmdBarrier( net::Command& command );
+        bool _cmdNVBarrier( net::Command& command );
+        bool _cmdSwap( net::Command& command );
+        bool _cmdFrameDrawFinish( net::Command& command );
 
         CHECK_THREAD_DECLARE( _pipeThread );
     };

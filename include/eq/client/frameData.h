@@ -19,13 +19,14 @@
 #define EQ_FRAMEDATA_H
 
 #include <eq/client/frame.h>         // enum Frame::Buffer
-#include <eq/client/pixelViewport.h> // member
-#include <eq/client/pixel.h>         // member
-#include <eq/client/range.h>         // member
 #include <eq/client/types.h>         // member
 
-#include <eq/base/monitor.h>         // member
+#include <eq/fabric/pixelViewport.h> // member
+#include <eq/fabric/pixel.h>         // member
+#include <eq/fabric/range.h>         // member
+#include <eq/fabric/subPixel.h>      // member
 #include <eq/net/object.h>           // base class
+#include <eq/base/monitor.h>         // member
 
 #include <set>                       // member
 
@@ -36,10 +37,8 @@ namespace server
 {
     class FrameData;
 }
-
     class  Image;
     class  ROIFinder;
-    struct FrameDataTransmitPacket;
 
     /**
      * A frame data holds multiple images and is used by frames.
@@ -61,6 +60,8 @@ namespace server
 
         /** @return the database-range relative to the destination channel. */
         const Range& getRange() const { return _data.range; }
+
+        /** @internal */
         void setRange( const Range& range ) { _data.range = range; }
         
         /** @return the pixel decomposition wrt the destination channel. */
@@ -76,7 +77,7 @@ namespace server
         uint32_t getPhase() const { return _data.phase; }
 
         /** The images of this frame data holder */
-        const ImageVector& getImages() const { return _images; }
+        const Images& getImages() const { return _images; }
 
         /** The covered area. */
         void setPixelViewport( const PixelViewport& pvp ) { _data.pvp = pvp; }
@@ -84,18 +85,20 @@ namespace server
         /** Enable/disable alpha usage for newly allocated images. */
         void setAlphaUsage( const bool useAlpha ) { _useAlpha = useAlpha; }
 
-        /** Set the compressor quality value. */
+        /** Set the minimum quality after compression. */
         void setQuality( const Frame::Buffer buffer, const float quality );
+
+        /** Set additional zoom during compositing, distributed. @internal */
+        void setZoom( const Zoom& zoom ) { _zoom = zoom; }
+
+        /** @return the additional zoom. @internal */
+        const Zoom& getZoom() const { return _zoom; }
         //@}
 
         /**
          * @name Operations
          */
         //@{
-
-        /** Flush the frame by deleting all images. */
-        void flush();
-
         /** 
          * Allocate and add a new image.
          * 
@@ -103,6 +106,9 @@ namespace server
          */
         EQ_EXPORT Image* newImage( const Frame::Type type,
                                    const DrawableConfig& config );
+
+        /** Flush the frame by deleting all images. */
+        void flush();
 
         /** Clear the frame by recycling the attached images. */
         EQ_EXPORT void clear();
@@ -117,12 +123,9 @@ namespace server
          * @param glObjects the GL object manager for the current GL context.
          * @param config the configuration of the source frame buffer.
          */
-        void startReadback( const Frame& frame, 
-                            Window::ObjectManager* glObjects,
-                            const DrawableConfig& config );
-
-        /** Synchronize the last image readback. */
-        void syncReadback();
+        void readback( const Frame& frame, 
+                       util::ObjectManager< const void* >* glObjects,
+                       const DrawableConfig& config );
 
         /** 
          * Transmit the frame data to the specified node.
@@ -132,8 +135,10 @@ namespace server
          * 
          * @param toNode the receiving node.
          * @param frameNumber the current frame number
+         * @param originator the sender object id for statistics
          */        
-        void transmit( net::NodePtr toNode, const uint32_t frameNumber );
+        void transmit( net::NodePtr toNode, const uint32_t frameNumber,
+                       const uint32_t originator );
 
         /** 
          * Set the frame data ready.
@@ -211,9 +216,9 @@ namespace server
 
         friend class eq::server::FrameData;
 
-        ImageVector  _images;
-        ImageVector  _imageCache;
-        base::Lock   _imageCacheLock;
+        Images _images;
+        Images _imageCache;
+        base::Lock _imageCacheLock;
 
         ROIFinder* _roiFinder;
 
@@ -226,7 +231,9 @@ namespace server
             uint32_t version;
         };
         std::list<ImageVersion> _pendingImages;
-        std::set< uint32_t >    _readyVersions;
+
+        typedef std::deque< net::Command* > Commands;
+        Commands _readyVersions;
 
         /** Data ready monitor synchronization primitive. */
         base::Monitor<uint32_t> _readyVersion;
@@ -239,7 +246,8 @@ namespace server
         bool _useSendToken;
         float _colorQuality;
         float _depthQuality;
-        
+        Zoom  _zoom;
+
         union // placeholder for binary-compatible changes
         {
             char dummy[32];
@@ -256,9 +264,9 @@ namespace server
         void _setReady( const uint32_t version );
 
         /* The command handlers. */
-        net::CommandResult _cmdTransmit( net::Command& command );
-        net::CommandResult _cmdReady( net::Command& command );
-        net::CommandResult _cmdUpdate( net::Command& command );
+        bool _cmdTransmit( net::Command& command );
+        bool _cmdReady( net::Command& command );
+        bool _cmdUpdate( net::Command& command );
 
         CHECK_THREAD_DECLARE( _commandThread );
     };

@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -46,11 +46,29 @@ namespace eq
          */
         WNDPROC getPreviousWndProc() { return _prevWndProc; }
 
+        /**
+         * Initialize space mouse event handling for this process.
+         *
+         * Received space mouse events are directly send to the application.
+         * @sa Node::configInit, Config::sendEvent
+         * @version 1.0
+         */
+       static bool initMagellan(Node* node);
+
+       /**
+         * De-initialize space mouse event handling for this process.
+         * @sa Node::configInit
+         * @version 1.0
+         */
+       static void exitMagellan( Node* node );
+
     private:
         WGLWindowIF* _window;
         HWND         _hWnd;
         WNDPROC      _prevWndProc;
         uint32_t     _buttonState;
+
+        int32_t      _wheelDeltaPerLine;
 
         union // placeholder for binary-compatible changes
         {
@@ -61,9 +79,11 @@ namespace eq
                                          LPARAM lParam );
         LRESULT CALLBACK _wndProc( HWND hWnd, UINT uMsg, WPARAM wParam, 
                                    LPARAM lParam );
+        void _magellanEventHandler(LPARAM lParam);
 
         void      _syncButtonState( WPARAM wParam );
         uint32_t  _getKey( LPARAM lParam, WPARAM wParam );
+        int32_t   _getWheelDelta( WPARAM wParam ) const;
     };
 }
 

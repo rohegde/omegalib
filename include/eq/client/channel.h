@@ -18,14 +18,14 @@
 #ifndef EQ_CHANNEL_H
 #define EQ_CHANNEL_H
 
-#include <eq/client/event.h>         // member
-#include <eq/client/renderContext.h> // member
+#include <eq/client/event.h>          // member
+#include <eq/client/eye.h>            // enum
 #include <eq/client/types.h>
-#include <eq/client/visitorResult.h> // enum
-#include <eq/client/windowSystem.h>  // GLEWContext
-#include <eq/client/window.h>
+#include <eq/client/visitorResult.h>  // enum
+#include <eq/client/window.h>         // nested Window::ObjectManager class
+#include <eq/client/windowSystem.h>   // GLEWContext
 
-#include <eq/net/object.h>           // base class
+#include <eq/fabric/channel.h>        // base class
 
 namespace eq
 {
@@ -33,12 +33,6 @@ namespace util
 {
     class FrameBufferObject;
 }
-    class ChannelVisitor;
-    class Pixel;
-    class Range;
-    class SceneObject;
-    struct RenderContext;
-
     /**
      * A channel represents a two-dimensional viewport within a Window.
      *
@@ -47,42 +41,20 @@ namespace util
      * clear, draw, assemble and readback. Each rendering task is using its own
      * RenderContext, which is computed by the server based on the rendering
      * description of the current configuration.
+     *
+     * @sa fabric::Channel
      */
-    class Channel : public net::Object
+    class Channel : public fabric::Channel< Window, Channel >
     {
     public:
-    
-        /** 
-         * The drawable format defines the components used as an alternate
-         * drawable for this cannel. If an alternate drawable is configured, the
-         * channel uses the appropriate targets in place of the window's frame
-         * buffer.
-         * @version 1.0
-         */
-        enum Drawable
-        {
-            FB_WINDOW   = EQ_BIT_NONE, //!< Use the window's frame buffer
-            FBO_COLOR   = EQ_BIT1,     //!< Use an FBO for color values
-            FBO_DEPTH   = EQ_BIT2,     //!< Use an FBO for depth values
-            FBO_STENCIL = EQ_BIT3      //!< Use an FBO for stencil values
-        };
-        
         /** Construct a new channel. @version 1.0 */
         EQ_EXPORT Channel( Window* parent );
 
         /** Destruct the channel. @version 1.0 */
         EQ_EXPORT virtual ~Channel();
 
-        /**
-         * @name Data Access
-         */
+        /** @name Data Access */
         //@{
-        /** @return the parent window. @version 1.0 */
-        Window* getWindow() { return _window; }
-
-        /** @return the parent window. @version 1.0 */
-        const Window* getWindow() const { return _window; }
-
         /** @return the parent pipe. @version 1.0 */
         EQ_EXPORT Pipe* getPipe();
 
@@ -103,9 +75,6 @@ namespace util
 
         /** @return the parent server. @version 1.0 */
         EQ_EXPORT ServerPtr getServer();
-
-        /** @return the name of the window. @version 1.0 */
-        const std::string& getName() const { return _name; }
 
         /** 
          * Get the GLEW context for this channel.
@@ -132,45 +101,6 @@ namespace util
         /** @return the channel's drawable config. @version 1.0 */
         EQ_EXPORT const DrawableConfig& getDrawableConfig() const;
 
-        /** 
-         * Return the set of tasks this channel might execute in the worst case.
-         * 
-         * It is not guaranteed that all the tasks will be actually executed
-         * during rendering.
-         * 
-         * @return the tasks.
-         * @warning Experimental - may not be supported in the future
-         */
-        uint32_t getTasks() const { return _tasks; }
-
-        /** 
-         * Traverse this channel using a channel visitor.
-         * 
-         * @param visitor the visitor.
-         * @return the result of the visitor traversal.
-         * @version 1.0
-         */
-        EQ_EXPORT VisitorResult accept( ChannelVisitor& visitor );
-
-        /** Const-version of accept(). @version 1.0 */
-        EQ_EXPORT VisitorResult accept( ChannelVisitor& visitor ) const;
-
-        /** 
-         * Set the near and far planes for this channel.
-         * 
-         * The given near and far planes update the current perspective and
-         * orthographics frustum accordingly. Furthermore, they will be used in
-         * the future by the server to compute the frusta.
-         *
-         * @param nearPlane the near plane.
-         * @param farPlane the far plane.
-         * @version 1.0
-         */
-        EQ_EXPORT void setNearFar( const float nearPlane, const float farPlane);
-
-        /** Return a fixed unique color for this channel. @version 1.0 */
-        const Vector3ub& getUniqueColor() const { return _color; }
-
         /**
          * Get the channel's native view.
          *
@@ -186,10 +116,6 @@ namespace util
 
         /** const-version of getNativeView() @version 1.0 */
         EQ_EXPORT const View* getNativeView() const;
-
-        /** @return the channel's native pixel viewport. @version 1.0 */
-        const PixelViewport& getNativePixelViewPort() const
-            { return _nativeContext.pvp; }
 
         /** @return the FBO used as an alternate frame buffer. @version 1.0*/
         EQ_EXPORT util::FrameBufferObject* getFrameBufferObject();
@@ -208,33 +134,6 @@ namespace util
          * the task decomposition parameters.
          */
         //@{
-        /** @return the current draw buffer for glDrawBuffer. @version 1.0 */
-        EQ_EXPORT uint32_t getDrawBuffer() const;
-
-        /** @return the current read buffer for glReadBuffer. @version 1.0 */
-        EQ_EXPORT uint32_t getReadBuffer() const;
-
-        /** @return the current color mask for glColorMask. @version 1.0 */
-        EQ_EXPORT const ColorMask& getDrawBufferMask() const;
-
-        /**
-         * @return the current pixel viewport for glViewport and glScissor.
-         * @version 1.0
-         */
-        EQ_EXPORT const PixelViewport& getPixelViewport() const;
-
-        /**
-         * @return the current perspective frustum for glFrustum.
-         * @version 1.0
-         */
-        EQ_EXPORT const Frustumf& getFrustum() const;
-
-        /**
-         * @return the current orthographic frustum for glOrtho.
-         * @version 1.0
-         */
-        EQ_EXPORT const Frustumf& getOrtho() const;
-
         /**
          * @return the jitter vector for the current subpixel decomposition.
          * @version 1.0
@@ -242,84 +141,16 @@ namespace util
         EQ_EXPORT Vector2f getJitter() const;
 
         /**
-         * Return the view matrix.
-         *
-         * The view matrix is part of the GL_MODEL*VIEW* matrix, and is
-         * typically applied first to the GL_MODELVIEW matrix.
-         * 
-         * @return the head transformation matrix
-         * @version 1.0
-         */
-        EQ_EXPORT const Matrix4f& getHeadTransform() const;
-
-        /**
-         * @return the fractional viewport wrt the destination view.
-         * @version 1.0
-         */
-        EQ_EXPORT const Viewport& getViewport() const;
-
-        /**
-         * @return the database range for the current rendering task.
-         * @version 1.0
-         */
-        EQ_EXPORT const Range& getRange() const;
-
-        /**
-         * @return the pixel decomposition for the current rendering task.
-         * @version 1.0
-         */
-        EQ_EXPORT const Pixel& getPixel() const;
-
-        /**
-         * @return the subpixel decomposition for the current rendering task.
-         * @version 1.0
-         */
-        EQ_EXPORT const SubPixel& getSubPixel() const;
-
-        /**
-         * @return the up/downscale zoom factor for the current rendering task.
-         * @version 1.0
-         */
-        EQ_EXPORT const Zoom& getZoom() const;
-
-        /**
-         * @return the DPlex period for the current rendering task.
-         * @version 1.0
-         */
-        EQ_EXPORT uint32_t getPeriod() const;
-
-        /**
-         * @return the DPlex phase for the current rendering task.
-         * @version 1.0
-         */
-        EQ_EXPORT uint32_t getPhase() const;
-
-        /**
-         * Get the channel's current position wrt the destination channel.
-         *
-         * Note that computing this value from the current viewport and pixel
-         * viewport is inaccurate because it neglects rounding errors of the
-         * pixel viewport done by the server.
-         *
-         * @return the channel's current position wrt the destination channel.
-         * @version 1.0
-         */
-        EQ_EXPORT const Vector2i& getPixelOffset() const;
-
-        /** @return the currently rendered eye pass. @version 1.0 */
-        EQ_EXPORT Eye getEye() const;
-
-        /**
          * @return the list of input frames, used from frameAssemble().
          * @version 1.0
          */
-        const FrameVector& getInputFrames() { return _inputFrames; }
+        const Frames& getInputFrames() { return _inputFrames; }
 
         /**
          * @return the list of output frames, used from frameReadback().
          * @version 1.0
          */
-        const FrameVector& getOutputFrames() { return _outputFrames; }
+        const Frames& getOutputFrames() { return _outputFrames; }
 
         /** 
          * Get the channel's current View.
@@ -349,15 +180,6 @@ namespace util
          * @version 1.0
          */
         EQ_EXPORT Frustumf getScreenFrustum() const;
-
-        /** @internal  Undocumented - may not be supported in the future */
-        EQ_EXPORT const Vector4i& getOverdraw() const;
-
-        /** @internal  Undocumented - may not be supported in the future */
-        EQ_EXPORT void setMaxSize( const Vector2i& size );
-
-        /** @internal  Undocumented - may not be supported in the future */
-        EQ_EXPORT uint32_t getTaskID() const;
         //@}
 
         /**
@@ -460,36 +282,11 @@ namespace util
         /** Outline the current pixel viewport. @version 1.0 */
         EQ_EXPORT virtual void outlineViewport();
 
-        /**
-         * @name Attributes
-         */
-        //@{
-        // Note: also update string array initialization in channel.cpp
-        /** Integer attributes for a channel. @version 1.0 */
-        enum IAttribute
-        {
-            /** Statistics gathering mode (OFF, FASTEST [ON], NICEST) */
-            IATTR_HINT_STATISTICS,
-            /** Use a send token for output frames (OFF, ON) */
-            IATTR_HINT_SENDTOKEN,
-            IATTR_FILL1,
-            IATTR_FILL2,
-            IATTR_ALL
-        };
-        
-        /** @return the value of an integer attribute. @version 1.0 */
-        EQ_EXPORT int32_t getIAttribute( const IAttribute attr ) const;
-        /** @return the name of an integer attribute. @version 1.0 */
-        EQ_EXPORT static const std::string& getIAttributeString(
-                                                        const IAttribute attr );
-        //@}
-
     protected:
         /** @internal */
         EQ_EXPORT void attachToSession( const uint32_t id, 
                                         const uint32_t instanceID, 
                                         net::Session* session );
-
         /** @name Actions */
         //@{
         /** 
@@ -665,51 +462,15 @@ namespace util
         virtual void frameViewFinish( const uint32_t frameID ) { /* nop */ }
         //@}
 
-        /** @name Error information. */
-        //@{
-        /** 
-         * Set a message why the last operation failed.
-         * 
-         * The message will be transmitted to the originator of the request, for
-         * example to Config::init when set from within the configInit method.
-         *
-         * @param message the error message.
-         * @version 1.0
-         */
-        EQ_EXPORT void setErrorMessage( const std::string& message );
-        //@}
+        /** Notification that parameters influencing the vp/pvp have changed.*/
+        EQ_EXPORT virtual void notifyViewportChanged();
 
     private:
         //-------------------- Members --------------------
-        /** The parent window. */
-        Window* const _window;
-        friend class Window;
-
-        /** The name. */
-        std::string    _name;
-
-        /** The native render context parameters of this channel. */
-        RenderContext _nativeContext;
-
-        /** The rendering parameters for the current operation. */
-        RenderContext* _context;
+        friend class fabric::Window< Pipe, Window, Channel >;
 
         /** The channel's drawable config (FBO). */
         DrawableConfig _drawableConfig;
-
-        /** A unique color assigned by the server during config init. */
-        Vector3ub _color;
-
-        /** The reason for the last error. */
-        std::string     _error;
-
-        /** Integer attributes. */
-        int32_t _iAttributes[IATTR_ALL];
-        /** String representation of integer attributes. */
-        static std::string _iAttributeStrings[IATTR_ALL];
-
-        /** Worst-case set of tasks. */
-        uint32_t _tasks;
 
         enum State
         {
@@ -722,19 +483,13 @@ namespace util
         State _state;
 
         /** server-supplied vector of output frames for current task. */
-        FrameVector _outputFrames;
+        Frames _outputFrames;
 
         /** server-supplied vector of input frames for current task. */
-        FrameVector _inputFrames;
-
-        /** true if the pvp is immutable, false if the vp is immutable */
-        bool _fixedPVP;
+        Frames _inputFrames;
 
         /** Used as an alternate drawable. */       
         util::FrameBufferObject* _fbo; 
-        
-        /** Alternate drawable definition. */
-        uint32_t _drawable;
         
         /** The statistics events gathered during the current frame. */
         std::vector< Statistic > _statistics;
@@ -742,36 +497,12 @@ namespace util
         /** The initial channel size, used for view resize events. */
         Vector2i _initialSize;
 
-        /** The maximum size (used to clamp overdraw right now) */
-        Vector2i _maxSize;
-
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
 
         //-------------------- Methods --------------------
-        /** 
-         * Set the channel's fractional viewport wrt its parent pipe.
-         *
-         * Updates the pixel viewport accordingly.
-         * 
-         * @param vp the fractional viewport.
-         */
-        void _setViewport( const Viewport& vp );
-
-        /** 
-         * Set the channel's pixel viewport wrt its parent pipe.
-         *
-         * Updates the fractional viewport accordingly.
-         * 
-         * @param pvp the viewport in pixels.
-         */
-        void _setPixelViewport( const PixelViewport& pvp );
-
-        /** Notification of window pvp change. */
-        void _notifyViewportChanged();
-
         /** Setup the current rendering context. */
         void _setRenderContext( RenderContext& context );
 
@@ -781,22 +512,19 @@ namespace util
         /** Initialize the channel's drawable config. */
         void _initDrawableConfig();
 
-        virtual void getInstanceData( net::DataOStream& os ) { EQDONTCALL }
-        virtual void applyInstanceData( net::DataIStream& is ) { EQDONTCALL }
-
         /* The command handler functions. */
-        net::CommandResult _cmdConfigInit( net::Command& command );
-        net::CommandResult _cmdConfigExit( net::Command& command );
-        net::CommandResult _cmdFrameStart( net::Command& command );
-        net::CommandResult _cmdFrameFinish( net::Command& command );
-        net::CommandResult _cmdFrameClear( net::Command& command );
-        net::CommandResult _cmdFrameDraw( net::Command& command );
-        net::CommandResult _cmdFrameDrawFinish( net::Command& command );
-        net::CommandResult _cmdFrameAssemble( net::Command& command );
-        net::CommandResult _cmdFrameReadback( net::Command& command );
-        net::CommandResult _cmdFrameTransmit( net::Command& command );
-        net::CommandResult _cmdFrameViewStart( net::Command& command );
-        net::CommandResult _cmdFrameViewFinish( net::Command& command );
+        bool _cmdConfigInit( net::Command& command );
+        bool _cmdConfigExit( net::Command& command );
+        bool _cmdFrameStart( net::Command& command );
+        bool _cmdFrameFinish( net::Command& command );
+        bool _cmdFrameClear( net::Command& command );
+        bool _cmdFrameDraw( net::Command& command );
+        bool _cmdFrameDrawFinish( net::Command& command );
+        bool _cmdFrameAssemble( net::Command& command );
+        bool _cmdFrameReadback( net::Command& command );
+        bool _cmdFrameTransmit( net::Command& command );
+        bool _cmdFrameViewStart( net::Command& command );
+        bool _cmdFrameViewFinish( net::Command& command );
     };
 }
 

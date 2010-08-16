@@ -78,8 +78,11 @@ namespace net
          */
         virtual uint32_t commitSync( const uint32_t commitID ) = 0;
 
+        /** Increase the count of how often commit() was called. */
+        virtual void increaseCommitCount() { /* NOP */ }
+
         /** 
-         * Explicitily obsolete all versions.
+         * Explicitily obsolete versions.
          * 
          * @param version the version to obsolete
          */
@@ -90,10 +93,8 @@ namespace net
          * 
          * @param count the number of versions to retain, excluding the head
          *              version.
-         * @param flags additional flags for the auto-obsoletion mechanism
          */
-        virtual void setAutoObsolete( const uint32_t count,
-                                      const uint32_t flags ) = 0;
+        virtual void setAutoObsolete( const uint32_t count ) = 0;
  
         /** @return get the number of versions this object retains. */
         virtual uint32_t getAutoObsoleteCount() const = 0;
@@ -142,7 +143,7 @@ namespace net
         virtual void removeSlave( NodePtr node ) = 0;
 
         /** @return the vector of current slave nodes. */
-        virtual const NodeVector* getSlaveNodes() const { return 0; }
+        virtual const Nodes* getSlaveNodes() const { return 0; }
 
         /** Apply the initial data after mapping. */
         virtual void applyMapData() = 0;
@@ -151,9 +152,6 @@ namespace net
         virtual void addInstanceDatas( const InstanceDataDeque& cache, 
                                        const uint32_t startVersion )
             { EQDONTCALL; }
-
-        /** Add the old master as a slave. */
-        virtual void addOldMaster( NodePtr node, const uint32_t instanceID ) =0;
 
         /** The default CM for unattached objects. */
         static ObjectCM* ZERO;

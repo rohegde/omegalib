@@ -18,7 +18,7 @@
 #ifndef EQNET_CONNECTION_SET_H
 #define EQNET_CONNECTION_SET_H
 
-#ifdef EQUALIZER_EXPORTS
+#ifdef EQ_EXPORTS
    // We need to instantiate a Monitor< Event > when compiling the library,
    // but we don't want to have <pthread.h> for a normal build, hence this hack
 #  include <pthread.h>
@@ -77,7 +77,7 @@ namespace net
         size_t getSize()  const { return _connections.size(); }
         bool   isEmpty() const { return _connections.empty(); }
 
-        const ConnectionVector& getConnections() const{ return _allConnections;}
+        const Connections& getConnections() const{ return _allConnections; }
 
         /** 
          * Selects a Connection which is ready for I/O.
@@ -95,6 +95,9 @@ namespace net
          * Interrupt the current or next select call.
          */
         EQ_EXPORT void interrupt();
+
+        /** @internal Trigger rebuilding of internal caches. */
+        void setDirty();
 
         int           getError()     { return _error; }
         ConnectionPtr getConnection(){ return _connection; }
@@ -122,9 +125,9 @@ namespace net
         };
 
 
-        typedef std::vector< Thread* > ThreadVector;
+        typedef std::vector< Thread* > Threads;
         /** Threads used to handle more than MAXIMUM_WAIT_OBJECTS connections */
-        ThreadVector _threads;
+        Threads _threads;
 
         /** Result thread. */
         Thread* _thread;
@@ -146,10 +149,10 @@ namespace net
         base::Lock _mutex;
 
         /** The connections of this set */
-        ConnectionVector _allConnections;
+        Connections _allConnections;
 
         /** The connections to handle */
-        ConnectionVector _connections;
+        Connections _connections;
 
         // Note: std::vector had to much overhead here
 #ifdef WIN32
@@ -170,7 +173,6 @@ namespace net
         /** FD sets need rebuild. */
         bool _dirty;
 
-        void _dirtyFDSet();
         bool _setupFDSet();
         bool _buildFDSet();
         virtual void notifyStateChanged( Connection* ) { _dirty = true; }

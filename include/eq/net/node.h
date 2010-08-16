@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,12 +19,12 @@
 #ifndef EQNET_NODE_H
 #define EQNET_NODE_H
 
-#include <eq/net/dispatcher.h>               // base class
-#include <eq/net/commandCache.h>             // member
-#include <eq/net/commandQueue.h>             // member
-#include <eq/net/connectionSet.h>            // member
-#include <eq/net/nodeType.h>                 // for TYPE_EQNET_NODE enum
-#include <eq/net/types.h>
+#include "dispatcher.h"               // base class
+#include "commandCache.h"             // member
+#include "commandQueue.h"             // member
+#include "connectionSet.h"            // member
+#include "nodeType.h"                 // for NODETYPE_EQNET_NODE enum
+#include "types.h"
 
 #include <eq/base/base.h>
 #include <eq/base/lockable.h>
@@ -62,15 +63,6 @@ namespace net
                  public base::Referenced
     {
     public:
-        /** The state of the node. */
-        enum State 
-        {
-            STATE_STOPPED,   //!< initial state
-            STATE_LAUNCHED,  //!< proxy for a remote node, launched
-            STATE_CONNECTED, //!< proxy for a remote node, connected  
-            STATE_LISTENING  //!< local node, listening
-        };
-
         /** Construct a new Node. */
         EQ_EXPORT Node();
 
@@ -78,10 +70,10 @@ namespace net
         //@{
         bool operator == ( const Node* n ) const;
 
-        /**  @return the state of this node. */
-        State getState()    const { return _state; }
         bool  isConnected() const 
             { return (_state == STATE_CONNECTED || _state == STATE_LISTENING); }
+        bool  isClosed() const { return _state == STATE_CLOSED; }
+        bool  isListening() const { return _state == STATE_LISTENING; }
 
         /** 
          * Get a node by identifier.
@@ -293,13 +285,8 @@ namespace net
          * @name Connectivity information. 
          */
         //@{
-        /** 
-         * Returns if the node is local.
-         * 
-         * @return <code>true</code> if the node is local, <code>false</code>
-         *         otherwise.
-         */
-        bool isLocal() const { return (_state==STATE_LISTENING); }
+        /** @return true if the node is local (listening), false otherwise. */
+        bool isLocal() const { return isListening(); }
 
         /** 
          * Adds a new description how this node can be reached.
@@ -322,7 +309,7 @@ namespace net
          * 
          * @return the number of stored connection descriptions. 
          */
-        EQ_EXPORT const ConnectionDescriptionVector& getConnectionDescriptions()
+        EQ_EXPORT const ConnectionDescriptions& getConnectionDescriptions()
                             const;
 
         /** @return the connection to this node. */
@@ -441,6 +428,10 @@ namespace net
          */
         void flushCommands() { _incoming.interrupt(); }
 
+        /** @internal Clone the given command. */
+        Command& cloneCommand( Command& command )
+            { return _commandCache.clone( command ); }
+
         void acquireSendToken( NodePtr toNode );
         void releaseSendToken( NodePtr toNode );
         //@}
@@ -474,8 +465,8 @@ namespace net
          * @return <code>true</code> if the session was mapped,
          *         <code>false</code> if not.
          */
-        bool mapSession( NodePtr server, Session* session, 
-                         const SessionID& id );
+        EQ_EXPORT bool mapSession( NodePtr server, Session* session, 
+                                   const SessionID& id );
 
         /** 
          * Unmaps a mapped session.
@@ -487,7 +478,7 @@ namespace net
         EQ_EXPORT bool unmapSession( Session* session );
 
         /** @return the mapped session with the given identifier, or 0. */
-        Session* getSession( const SessionID& id );
+        EQ_EXPORT Session* getSession( const SessionID& id );
 
         bool hasSessions() const { return !_sessions->empty(); }
         //@}
@@ -550,10 +541,10 @@ namespace net
          * Invokes the command handler method for the packet.
          * 
          * @param command the command.
-         * @return the result of the operation.
+         * @return true if the result of the operation is handled.
          * @sa Dispatcher::invokeCommand
          */
-        EQ_EXPORT virtual CommandResult invokeCommand( Command& command );
+        EQ_EXPORT virtual bool invokeCommand( Command& command );
 
         /** 
          * The main loop for auto-launched clients. 
@@ -563,7 +554,7 @@ namespace net
         virtual bool clientLoop() { return true; }
 
         /** @return the type of the node, used during connect(). */
-        virtual uint32_t getType() const { return TYPE_EQNET_NODE; }
+        virtual uint32_t getType() const { return NODETYPE_EQNET_NODE; }
 
         /** 
          * Factory method to create a new node.
@@ -575,6 +566,20 @@ namespace net
         EQ_EXPORT virtual NodePtr createNode( const uint32_t type );
 
     private:
+        /** The state of the node. */
+        enum State
+        {
+            STATE_CLOSED,    //!< initial state
+            STATE_LAUNCHED,  //!< proxy for a remote node, launched
+            STATE_CONNECTED, //!< proxy for a remote node, connected  
+            STATE_LISTENING  //!< local node, listening
+        };
+
+        friend EQ_EXPORT std::ostream& operator << ( std::ostream& os, 
+                                                     const Node& node );
+        friend EQ_EXPORT std::ostream& operator << ( std::ostream&,
+                                                     const State );
+
         /** Globally unique node identifier. */
         NodeID _id;
 
@@ -651,7 +656,7 @@ namespace net
         CommandCache _commandCache;
 
         /** The list of descriptions on how this node is reachable. */
-        ConnectionDescriptionVector _connectionDescriptions;
+        ConnectionDescriptions _connectionDescriptions;
 
         /** The name of the program to autolaunch. */
         std::string _programName;
@@ -769,40 +774,30 @@ namespace net
         void   _redispatchCommands();
 
         /** The command functions. */
-        CommandResult _cmdStop( Command& command );
-        CommandResult _cmdRegisterSession( Command& command );
-        CommandResult _cmdRegisterSessionReply( Command& command );
-        CommandResult _cmdMapSession( Command& command );
-        CommandResult _cmdMapSessionReply( Command& command );
-        CommandResult _cmdUnmapSession( Command& command );
-        CommandResult _cmdUnmapSessionReply( Command& command );
-        CommandResult _cmdConnect( Command& command );
-        CommandResult _cmdConnectReply( Command& command );
-        CommandResult _cmdConnectAck( Command& command );
-        CommandResult _cmdID( Command& command );
-        CommandResult _cmdDisconnect( Command& command );
-        CommandResult _cmdGetNodeData( Command& command );
-        CommandResult _cmdGetNodeDataReply( Command& command );
-        CommandResult _cmdAcquireSendToken( Command& command );
-        CommandResult _cmdAcquireSendTokenReply( Command& command );
-        CommandResult _cmdReleaseSendToken( Command& command );
+        bool _cmdStop( Command& command );
+        bool _cmdRegisterSession( Command& command );
+        bool _cmdRegisterSessionReply( Command& command );
+        bool _cmdMapSession( Command& command );
+        bool _cmdMapSessionReply( Command& command );
+        bool _cmdUnmapSession( Command& command );
+        bool _cmdUnmapSessionReply( Command& command );
+        bool _cmdConnect( Command& command );
+        bool _cmdConnectReply( Command& command );
+        bool _cmdConnectAck( Command& command );
+        bool _cmdID( Command& command );
+        bool _cmdDisconnect( Command& command );
+        bool _cmdGetNodeData( Command& command );
+        bool _cmdGetNodeDataReply( Command& command );
+        bool _cmdAcquireSendToken( Command& command );
+        bool _cmdAcquireSendTokenReply( Command& command );
+        bool _cmdReleaseSendToken( Command& command );
 
         CHECK_THREAD_DECLARE( _cmdThread );
         CHECK_THREAD_DECLARE( _recvThread );
     };
 
-    inline std::ostream& operator << ( std::ostream& os, const Node* node )
-    {
-        if( node )
-            os << "node " << node->getNodeID();
-        else
-            os << "NULL node";
-        
-        return os;
-    }
-
-    EQ_EXPORT std::ostream& operator << ( std::ostream& os, 
-                                          const Node::State state );
+    EQ_EXPORT std::ostream& operator << ( std::ostream& os, const Node& node );
+    EQ_EXPORT std::ostream& operator << ( std::ostream&, const Node::State );
 }
 }
 

@@ -18,15 +18,12 @@
 #ifndef EQ_CLIENT_H
 #define EQ_CLIENT_H
 
+#include <eq/client/commandQueue.h> // member
 #include <eq/client/types.h>        // basic types
-#include <eq/client/windowSystem.h> // WindowSystem enum
-
-#include <eq/net/command.h>         // member
-#include <eq/net/node.h>            // base class
+#include <eq/fabric/client.h>       // base class
 
 namespace eq
 {
-    class CommandQueue;
     class Server;
 
     /** 
@@ -34,8 +31,10 @@ namespace eq
      *
      * The methods initLocal() and exitLocal() should be used to set up and exit
      * the listening node instance for each application process.
+     *
+     * @sa fabric::Client for public methods
      */
-    class Client : public net::Node
+    class Client : public fabric::Client
     {
     public:
         /** Construct a new client. @version 1.0 */
@@ -70,17 +69,14 @@ namespace eq
          */
         EQ_EXPORT bool hasCommands();
 
-        /** 
-         * Get and process one pending command from the node command queue.
-         *
-         * @version 1.0 
-         */
-        EQ_EXPORT void processCommand();
-
         /** @return the command queue to the main node thread. @internal */
-        CommandQueue* getNodeThreadQueue() { return _nodeThreadQueue; }
+        virtual net::CommandQueue* getMainThreadQueue()
+            { return &_mainThreadQueue; }
 
     protected:
+        /** @sa net::Node::listen() @internal */
+        EQ_EXPORT virtual bool listen();
+
         /**
          * Implements the processing loop for render clients. 
          *
@@ -97,34 +93,22 @@ namespace eq
         /** Reimplemented to also call eq::exit() on render clients. @internal*/
         EQ_EXPORT virtual bool exitClient();
 
-        /** @internal */
-        EQ_EXPORT virtual bool listen();
-
-        /** @internal */
-        EQ_EXPORT virtual bool close();
-
     private:
         /** The command->node command queue. */
-        CommandQueue* _nodeThreadQueue;
+        CommandQueue _mainThreadQueue;
         
         bool _running;
 
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
 
         /** @sa net::Node::createNode */
         EQ_EXPORT virtual net::NodePtr createNode( const uint32_t type );
-        
-        /** @sa net::Node::dispatchCommand */
-        EQ_EXPORT virtual bool dispatchCommand( net::Command& command );
-
-        /** @sa net::Node::invokeCommand */
-        EQ_EXPORT virtual net::CommandResult invokeCommand( net::Command& );
 
         /** The command functions. */
-        net::CommandResult _cmdExit( net::Command& command );
+        bool _cmdExit( net::Command& command );
     };
 }
 

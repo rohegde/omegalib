@@ -1,47 +1,35 @@
-/* Eq-Specific Defines */
-#ifndef EQ_DEFINES_H
-#define EQ_DEFINES_H
-#ifndef WGL
-#  define WGL
-#endif
-#ifndef WIN32
-#  define WIN32
-#endif
-#ifndef WIN32_API
-#  define WIN32_API
-#endif
-#ifndef WIN32_LEAN_AND_MEAN
-#  define WIN32_LEAN_AND_MEAN
-#endif
-#ifndef GLEW_MX
-#  define GLEW_MX
-#endif
-#ifdef _OPENMP
-#  define EQ_USE_OPENMP
-#endif
-#ifndef EQ_PGM
-#  define EQ_PGM
-#endif
-#ifndef LITTLE_ENDIAN
-#  define LITTLE_ENDIAN
-#endif
+ 
+/* Copyright (c) 2010, Stefan Eilemann <eile@eyescale.ch> 
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License version 2.1 as published
+ * by the Free Software Foundation.
+ *  
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
-#if 0
-#  ifndef EQ_USE_BOOST
-#    define EQ_USE_BOOST
+#ifndef EQBASE_DEFINES_H
+#define EQBASE_DEFINES_H
+
+#ifdef __APPLE__
+#  ifdef Darwin
+#    include "definesDarwin.h"
+#  else // must be XCode build
+#    include "definesXCode.h"
 #  endif
 #endif
-
-#if 0 // Enable for IB builds (needs WinOF 2.0 installed)
-#  ifndef EQ_INFINIBAND
-#    define EQ_INFINIBAND
-#  endif
+#ifdef __linux
+#  include "definesLinux.h"
+#endif
+#ifdef _MSC_VER
+#  include "definesWin32.h"
 #endif
 
-#if 0
-#  ifndef EQ_COMPRESS_STREAM
-#    define EQ_COMPRESS_STREAM
-#  endif
-#endif
-
-#endif // EQ_DEFINES_H
+#endif // EQBASE_DEFINES_H

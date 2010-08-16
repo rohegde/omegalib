@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2009, Cedric Stalder <cedric.stalder@gmail.com> 
+/* Copyright (c) 2009-2010, Cedric Stalder <cedric.stalder@gmail.com> 
  *               2009-2010, Stefan Eilemann <eile@equalizergraphics.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
@@ -38,8 +38,8 @@ namespace base
      * @internal
      */
     class Compressor;
-    typedef std::vector< EqCompressorInfo > CompressorInfoVector;
-    typedef std::vector< Compressor* > CompressorVector;
+    typedef std::vector< EqCompressorInfo > CompressorInfos;
+    typedef std::vector< Compressor* > Compressors;
 
     class Compressor
     {
@@ -63,6 +63,16 @@ namespace base
                                            const unsigned, void* const, 
                                            uint64_t* const, 
                                            const uint64_t );
+        typedef bool ( *IsCompatible_t ) ( const unsigned, GLEWContext* );
+        typedef void ( *Download_t )( void* const, const unsigned, 
+                                      GLEWContext*, const uint64_t*,
+                                      const unsigned, const uint64_t,
+                                      uint64_t*, void** );
+        typedef void ( *Upload_t )( void* const, const unsigned, 
+                                    GLEWContext*, const void*,
+                                    const uint64_t*,
+                                    const uint64_t, const uint64_t*,
+                                    const unsigned  );
 
         Compressor(){}
 
@@ -98,15 +108,21 @@ namespace base
 
         /** get the number compressor found in the plugin  */
         GetResult_t   getResult;
-      
+
+        IsCompatible_t isCompatible;
+
+        Download_t  download;
+        
+        Upload_t  upload;
+
         /** @return true if name is found in the DSO compressor */
         bool implementsType( const uint32_t name );
 
         /** @return the information for all compressors contained in the DSO. */
-        const CompressorInfoVector& getInfos() const { return _infos; }
+        const CompressorInfos& getInfos() const { return _infos; }
 
     private:
-        CompressorInfoVector _infos;
+        CompressorInfos _infos;
         base::DSO _dso;   
     };
 

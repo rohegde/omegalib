@@ -18,9 +18,9 @@
 #ifndef EQNET_CONNECTION_H
 #define EQNET_CONNECTION_H
 
-#include <eq/net/connectionDescription.h> // member
+#include <eq/net/connectionType.h>        // enum
 #include <eq/net/packets.h>               // used in inline method
-#include <eq/net/types.h>                 // ConnectionVector type
+#include <eq/net/types.h>                 // Connections type
 
 #include <eq/base/base.h>
 #include <eq/base/refPtr.h>
@@ -42,8 +42,8 @@ namespace eq
 {
 namespace net
 {
+    class ConnectionDescription;
     class ConnectionListener;
-    enum ConnectionType;
 
     /**
      * An interface definition for communication between hosts.
@@ -192,15 +192,18 @@ namespace net
          * Finish reading data from the connection.
          * 
          * This function may block even if data availability was signaled, i.e.,
-         * when only a part of the data requested has been received.  The buffer
+         * when only a part of the data requested has been received. The buffer
          * and bytes return value pointers can be 0. This method uses readNB()
          * and readSync() to fill a buffer, potentially by using multiple reads.
          *
          * @param buffer return value, the buffer pointer passed to recvNB().
          * @param bytes return value, the number of bytes read.
+         * @param block internal WAR parameter, do not use unless you know
+         *              exactly why.
          * @return true if all requested data has been read, false otherwise.
          */
-        EQ_EXPORT bool recvSync( void** buffer, uint64_t* bytes );
+        EQ_EXPORT bool recvSync( void** buffer, uint64_t* bytes,
+                                 const bool block = true );
 
         void getRecvData( void** buffer, uint64_t* bytes )
             { *buffer = _aioBuffer; *bytes = _aioBytes; }
@@ -228,9 +231,12 @@ namespace net
          * 
          * @param buffer the buffer receiving the data.
          * @param bytes the number of bytes to read.
+         * @param block internal WAR parameter, ignore it in the implementation
+         *              unless you know exactly why not.
          * @return the number of bytes read, or -1 upon error.
          */
-        virtual int64_t readSync( void* buffer, const uint64_t bytes ) = 0;
+        virtual int64_t readSync( void* buffer, const uint64_t bytes,
+                                  const bool block ) = 0;
         //@}
 
         /** @name Synchronous write to the connection */
@@ -264,7 +270,7 @@ namespace net
          * @return true if all data has been read, false if not.
          */
         bool send( const Packet& packet )
-            { return send( &packet, packet.size); }
+            { return send( &packet, packet.size ); }
 
         /** 
          * Sends a packaged message including a string using the connection.
@@ -314,7 +320,7 @@ namespace net
          * @param isLocked true if the connection is locked externally.
          * @return true if the packet was sent successfully to all connections.
          */
-        static bool send( const ConnectionVector& connections,
+        static EQ_EXPORT bool send( const Connections& connections,
                           const Packet& packet, const bool isLocked = false );
         /** 
          * Sends a packaged message including additional data to multiple
@@ -327,9 +333,10 @@ namespace net
          * @param isLocked true if the connection is locked externally.
          * @return true if the packet was sent successfully to all receivers.
          */
-        static bool send( const ConnectionVector& connections, Packet& packet,
-                          const void* data, const uint64_t size,
-                          const bool isLocked = false );
+        static EQ_EXPORT bool send( const Connections& connections,
+                                    Packet& packet, const void* data,
+                                    const uint64_t size,
+                                    const bool isLocked = false );
         /** 
          * Sends a packaged message including additional, multiple data items to
          * multiple connections.
@@ -346,7 +353,7 @@ namespace net
          * @param nItems the number of data elements.
          * @return true if the packet was sent successfully to all receivers.
          */
-        static bool send( const ConnectionVector& connections, Packet& packet,
+        static bool send( const Connections& connections, Packet& packet,
                           const void* const* items, const uint64_t* itemSizes, 
                           const size_t nItems );
 
@@ -384,6 +391,13 @@ namespace net
         /** The lock used to protect multiple write calls. */
         mutable base::Lock _sendLock;
 
+        enum ReadStatus
+        {
+            READ_TIMEOUT = -2,
+            READ_ERROR   = -1
+            // >= 0: nBytes read
+        };
+
     private:
         void*         _aioBuffer;
         uint64_t      _aioBytes;
@@ -392,7 +406,7 @@ namespace net
         std::vector< ConnectionListener* > _listeners;
     };
 
-    std::ostream& operator << ( std::ostream&, const Connection* );
+    std::ostream& operator << ( std::ostream&, const Connection& );
 
 #   include "connection.ipp" // template implementation
 

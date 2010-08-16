@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -103,13 +103,19 @@ typedef SSIZE_T    ssize_t;
 #define EQ_100MB (104857600)
 
 #define EQ_64KB  (65536)
+#define EQ_48MB  (50331648)
+#define EQ_64MB  (67108864)
 
 namespace eq
 {
 namespace base
 {
-/** A vector of std::string @version 1.0 */
-typedef std::vector< std::string >   StringVector;
+/** A vector of std::strings @version 1.0 */
+typedef std::vector< std::string >   Strings;
+
+#ifdef EQ_USE_DEPRECATED
+typedef Strings StringVector
+#endif
 
 }
 }

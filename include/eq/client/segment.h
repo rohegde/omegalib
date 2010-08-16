@@ -18,89 +18,44 @@
 #ifndef EQ_SEGMENT_H
 #define EQ_SEGMENT_H
 
-#include <eq/client/frustum.h>        // base class
 #include <eq/client/types.h>
-#include <eq/client/viewport.h>       // member
-#include <eq/client/visitorResult.h>  // enum
+#include <eq/fabric/segment.h>        // base class
 
 namespace eq
 {
-namespace server
-{
-    class Segment;
-}
-
     class Canvas;
-    class SegmentVisitor;
+    class Channel;
 
     /**
      * A segment covers a sub-area of a Canvas. It has a Frustum, and defines
      * one output Channel of the whole projection area, typically a projector or
      * screen.
      */
-    class Segment : public eq::Frustum
+    class Segment : public fabric::Segment< Canvas, Segment, Channel >
     {
     public:
-        /** Construct a new Segment. */
-        EQ_EXPORT Segment();
+        /** Construct a new segment. @version 1.0 */
+        EQ_EXPORT Segment( Canvas* parent );
 
-        /** Destruct this segment. */
+        /** Destruct a segment. @version 1.0 */
         EQ_EXPORT virtual ~Segment();
 
         /** @name Data Access */
         //@{
-        /** @return the config of this view. */
+        /** @return the config of this segment. */
         EQ_EXPORT Config* getConfig();
 
-        /** @return the config of this view. */
+        /** @return the config of this segment. */
         EQ_EXPORT const Config* getConfig() const;
 
-        /** @return the segment's viewport. */
-        const eq::Viewport& getViewport() const { return _vp; }
+        /** @return the Server of this segment. */
+        EQ_EXPORT ServerPtr getServer();
         //@}
-        
-        /** @name Operations */
-        //@{
-        /** 
-         * Traverse this segment using a segment visitor.
-         * 
-         * @param visitor the visitor.
-         * @return the result of the visitor traversal.
-         */
-        EQ_EXPORT VisitorResult accept( SegmentVisitor& visitor );
-
-        /** Const-version of accept(). */
-        EQ_EXPORT VisitorResult accept( SegmentVisitor& visitor ) const;
-        //@}
-
-    protected:
-        /** @sa Frustum::serialize */
-        EQ_EXPORT virtual void serialize( net::DataOStream& os, 
-                                          const uint64_t dirtyBits );
-        /** @sa Frustum::deserialize */
-        EQ_EXPORT virtual void deserialize( net::DataIStream& is, 
-                                            const uint64_t dirtyBits );
-
-        enum DirtyBits
-        {
-            DIRTY_VIEWPORT   = Frustum::DIRTY_CUSTOM << 0,
-            DIRTY_FILL1      = Frustum::DIRTY_CUSTOM << 1,
-            DIRTY_FILL2      = Frustum::DIRTY_CUSTOM << 2,
-            DIRTY_CUSTOM     = Frustum::DIRTY_CUSTOM << 3
-        };
 
     private:
-        /** The parent canvas. */
-        Canvas* _canvas;
-        friend class Canvas;
-
-        /** The 2D area of this segment wrt to the canvas. */
-        eq::Viewport _vp;
-        friend class server::Segment;
-
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
     };
 

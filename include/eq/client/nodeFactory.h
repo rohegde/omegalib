@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -59,7 +59,7 @@ namespace eq
          * 
          * @return the observer.
          */
-        virtual Observer* createObserver();
+        virtual Observer* createObserver( Config* parent );
 
         /** Release a observer. */
         virtual void releaseObserver( Observer* observer );
@@ -69,7 +69,7 @@ namespace eq
          * 
          * @return the layout.
          */
-        virtual Layout* createLayout();
+        virtual Layout* createLayout( Config* parent );
 
         /** Release a layout. */
         virtual void releaseLayout( Layout* layout );
@@ -79,7 +79,7 @@ namespace eq
          * 
          * @return the view.
          */
-        virtual View* createView();
+        virtual View* createView( Layout* parent );
 
         /** Release a view. */
         virtual void releaseView( View* view );
@@ -89,7 +89,7 @@ namespace eq
          * 
          * @return the canvas.
          */
-        virtual Canvas* createCanvas();
+        virtual Canvas* createCanvas( Config* parent );
 
         /** Release a canvas. */
         virtual void releaseCanvas( Canvas* canvas );
@@ -99,7 +99,7 @@ namespace eq
          * 
          * @return the segment.
          */
-        virtual Segment* createSegment();
+        virtual Segment* createSegment( Canvas* parent );
 
         /** Release a segment. */
         virtual void releaseSegment( Segment* segment );

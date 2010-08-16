@@ -58,6 +58,7 @@ namespace net
         CMD_SESSION_GEN_IDS,
         CMD_SESSION_GEN_IDS_REPLY,
         CMD_SESSION_SET_ID_MASTER,
+        CMD_SESSION_UNSET_ID_MASTER,
         CMD_SESSION_GET_ID_MASTER,
         CMD_SESSION_GET_ID_MASTER_REPLY,
         CMD_SESSION_ATTACH_OBJECT,
@@ -69,12 +70,7 @@ namespace net
         CMD_SESSION_SUBSCRIBE_OBJECT_REPLY,
         CMD_SESSION_UNSUBSCRIBE_OBJECT,
         CMD_SESSION_INSTANCE,
-        CMD_SESSION_FILL1, // some buffer for binary-compatible patches
-        CMD_SESSION_FILL2,
-        CMD_SESSION_FILL3,
-        CMD_SESSION_FILL4,
-        CMD_SESSION_FILL5,
-        CMD_SESSION_CUSTOM // must be last
+        CMD_SESSION_CUSTOM = 30  // some buffer for binary-compatible patches
     };
 
     enum ObjectCommand
@@ -83,14 +79,7 @@ namespace net
         CMD_OBJECT_DELTA,
         CMD_OBJECT_SLAVE_DELTA,
         CMD_OBJECT_COMMIT,
-        CMD_OBJECT_NEW_MASTER,
-        CMD_OBJECT_VERSION,
-        CMD_OBJECT_FILL1, // some buffer for binary-compatible patches
-        CMD_OBJECT_FILL2,
-        CMD_OBJECT_FILL3,
-        CMD_OBJECT_FILL4,
-        CMD_OBJECT_FILL5,
-        CMD_OBJECT_CUSTOM // must be last
+        CMD_OBJECT_CUSTOM = 10 // some buffer for binary-compatible patches
     };
 
     enum BarrierCommand
