@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,7 +18,7 @@
 #ifndef EQNET_CONNECTIONDESCRIPTION_H
 #define EQNET_CONNECTIONDESCRIPTION_H
 
-#include <eq/net/connectionType.h> // member
+#include <eq/net/connectionType.h> // member enum
 #include <eq/net/types.h>
 
 #include <eq/base/base.h>
@@ -40,8 +40,8 @@ namespace net
                 : type( CONNECTIONTYPE_TCPIP )
                 , bandwidth( 0 )
                 , port( 0 )
-            {
-            }
+                , _filename( "default" )
+            {}
 
         /** The network protocol for the connection. */
         ConnectionType type;
@@ -81,7 +81,7 @@ namespace net
         EQ_EXPORT void setHostname( const std::string& hostname );
         EQ_EXPORT const std::string& getHostname() const;
 
-        EQ_EXPORT void setInterface( const std::string& interface );
+        EQ_EXPORT void setInterface( const std::string& interfacename );
         EQ_EXPORT const std::string& getInterface() const;
 
         EQ_EXPORT void setFilename( const std::string& filename );
@@ -89,6 +89,38 @@ namespace net
 
         EQ_EXPORT bool isSameMulticastGroup( ConnectionDescriptionPtr rhs );
         //@}
+
+        /**
+         * @name Attributes
+         */
+        //@{
+        // Note: also update string array init in connectionDescription.cpp
+        /** String attributes */
+        enum SAttribute
+        {
+            SATTR_HOSTNAME,
+            SATTR_FILENAME,
+            SATTR_FILL1,
+            SATTR_FILL2,
+            SATTR_ALL
+        };
+
+        /** Integer attributes */
+        enum IAttribute
+        {
+            IATTR_TYPE,
+            IATTR_PORT,
+            IATTR_BANDWIDTH,
+            IATTR_FILL1,
+            IATTR_FILL2,
+            IATTR_ALL
+        };
+        //@}
+
+        EQ_EXPORT static const std::string&
+        getSAttributeString( const SAttribute attr );
+        EQ_EXPORT static const std::string&
+        getIAttributeString( const IAttribute attr );
 
     protected:
         EQ_EXPORT virtual ~ConnectionDescription() {}
@@ -105,7 +137,7 @@ namespace net
     };
 
     EQ_EXPORT std::ostream& operator << ( std::ostream&,
-                                          const ConnectionDescription* );
+                                          const ConnectionDescription& );
 }
 }
 

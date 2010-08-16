@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder <cedric.stalder@gmail.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,11 +19,11 @@
 #ifndef EQNET_DATAOSTREAM_H
 #define EQNET_DATAOSTREAM_H
 
-#include <eq/net/types.h>   // ConnectionVector member
-#include "dataStream.h"     // base class
+
+#include <eq/net/types.h>   // Connections member
 
 #include <eq/base/buffer.h> // member
-
+#include <eq/base/compressorDataCPU.h>
 #include <iostream>
 #include <vector>
 
@@ -41,25 +42,25 @@ namespace DataStreamTest
      *
      * Derived classes send the data using the appropriate command packets.
      */
-    class DataOStream : public DataStream
+    class DataOStream
     {
     public:
         /** @name Internal */
         //@{
-        DataOStream();
-        DataOStream( const DataOStream& from ) : DataStream( from ){}
-        virtual ~DataOStream();
+        EQ_EXPORT DataOStream();
+        DataOStream( const DataOStream& from );
+        virtual EQ_EXPORT ~DataOStream();
 
         /** Enable output, locks the connections to the receivers */ 
-        void enable( const NodeVector& receivers );
+        void enable( const Nodes& receivers );
         void enable( NodePtr node, const bool useMulticast );
-        void enable();
+        EQ_EXPORT void enable();
 
         /** Resend the saved buffer. */
         void resend( NodePtr node );
 
         /** Disable, flush and unlock the output to the current receivers. */
-        void disable();
+        EQ_EXPORT void disable();
 
         /** Enable copying of all data into a saved buffer. */
         void enableSave();
@@ -77,30 +78,30 @@ namespace DataStreamTest
         /** @name Data output */
         //@{
         /** Write a plain data item by copying it to the stream. */
-        template< typename T >
-        DataOStream& operator << ( const T& value )
+        template< typename T > DataOStream& operator << ( const T& value )
             { write( &value, sizeof( value )); return *this; }
 
         /** Write a std::vector of serializable items. */
         template< typename T >
-        DataOStream& operator << ( const std::vector< T >& value )
-            {
-                const uint64_t nElems = value.size();
-                write( &nElems, sizeof( nElems ));
-                for( uint64_t i =0; i < nElems; ++i )
-                    (*this) << value[i];
-                return *this;
-            }
+        DataOStream& operator << ( const std::vector< T >& value );
 
         /** Write a number of bytes from data into the stream. */
         EQ_EXPORT void write( const void* data, uint64_t size );
 
-        /** Write one block of data into the stream and close it immediately. */
-        EQ_EXPORT void writeOnce( const void* data, uint64_t size );
+        /**
+         * Serialize child objects.
+         *
+         * The DataIStream has a deserialize counterpart to this method. All
+         * child objects have to be registered or mapped beforehand.
+         */
+        template< typename O, typename C >
+        void serializeChildren( O* object, const std::vector< C* >& children );
         //@}
 
  
     protected:
+
+        base::CompressorDataCPU compressor;
 
         /** Flush remaining data in the buffer. */
         void _flush();
@@ -122,17 +123,14 @@ namespace DataStreamTest
                                  const uint64_t sizeUncompressed ) = 0;
         //@}
 
-
         /** Reset the whole stream. */
-        virtual void reset();
+        virtual EQ_EXPORT void reset();
 
         /** Locked connections to the receivers, if _enabled */
-        ConnectionVector _connections;
+        Connections _connections;
         friend class DataStreamTest::Sender;
-        
 
     private:
-        void*  _compressor;   //!< the instance of the compressor
         
         enum BufferType
         {
@@ -174,9 +172,6 @@ namespace DataStreamTest
         /** Send the trailing data (packet) to the receivers */
         void _sendFooter( const void* buffer, const uint64_t size );
 
-        /** intanciate compressor */
-        void _initCompressor( );
-
         /**
          * Collect compressed data.
          * @return the total size of the compressed data.
@@ -193,6 +188,9 @@ namespace DataStreamTest
 
 }
 }
+
+#include <eq/net/object.h>
+#include <eq/net/objectVersion.h>
 
 namespace eq
 {
@@ -212,61 +210,83 @@ namespace net
         return *this;
     }
 
-    /** Optimized specialization to write a std::vector of uint8_t. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< uint8_t >&
-                                                   value )
+    /** Write an object identifier and version. */
+    template<> inline DataOStream& 
+    DataOStream::operator << ( const Object* const& object )
     {
-        return _writeFlatVector( value );
+        EQASSERT( !object || object->isAttached( ));
+        (*this) << ObjectVersion( object );
+        return *this;
     }
+ 
+/** @cond IGNORE */
+    /** Write a std::vector of serializable items. */
+    template< typename T > inline DataOStream& 
+    DataOStream::operator << ( const std::vector< T >& value )
+    {
+        const uint64_t nElems = value.size();
+        (*this) << nElems;
+        for( uint64_t i = 0; i < nElems; ++i )
+            (*this) << value[i];
+        return *this;
+    }
+ 
+    template< typename O, typename C > inline void
+    DataOStream::serializeChildren( O* object, const std::vector<C*>& children )
+    {
+        const uint64_t nElems = children.size();
+        (*this) << nElems;
+
+        for( typename std::vector< C* >::const_iterator i = children.begin();
+             i != children.end(); ++i )
+        {
+            C* child = *i;
+            (*this) << ObjectVersion( child );
+            EQASSERTINFO( !child || child->getID() <= EQ_ID_MAX,
+                          "Found unmapped object during serialization" );
+        }
+    }
+/** @endcond */
+
+    /** Optimized specialization to write a std::vector of uint8_t. */
+    template<> inline DataOStream& 
+    DataOStream::operator << ( const std::vector< uint8_t >& value )
+    { return _writeFlatVector( value ); }
 
     /** Optimized specialization to write a std::vector of uint32_t. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< uint32_t>&
-                                                   value )
-    {
-        return _writeFlatVector( value );
-    }
+    template<> inline DataOStream& 
+    DataOStream::operator << ( const std::vector< uint32_t >& value )
+    { return _writeFlatVector( value ); }
 
     /** Optimized specialization to write a std::vector of int32_t. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< int32_t >&
-                                                   value )
-    {
-        return _writeFlatVector( value );
-    }
+    template<> inline DataOStream&
+    DataOStream::operator << ( const std::vector< int32_t >& value )
+    { return _writeFlatVector( value ); }
 
     /** Optimized specialization to write a std::vector of uint64_t. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< uint64_t>&
-                                                   value )
-    {
-        return _writeFlatVector( value );
-    }
+    template<> inline DataOStream&
+    DataOStream::operator << ( const std::vector< uint64_t >& value )
+    { return _writeFlatVector( value ); }
 
     /** Optimized specialization to write a std::vector of int64_t. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< int64_t >&
-                                                   value )
-    {
-        return _writeFlatVector( value );
-    }
+    template<> inline DataOStream&
+    DataOStream::operator << ( const std::vector< int64_t >& value )
+    { return _writeFlatVector( value ); }
 
     /** Optimized specialization to write a std::vector of float. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< float >& 
-                                                   value )
-    {
-        return _writeFlatVector( value );
-    }
+    template<> inline DataOStream&
+    DataOStream::operator << ( const std::vector< float >& value )
+    { return _writeFlatVector( value ); }
 
     /** Optimized specialization to write a std::vector of double. */
-    template<>
-    inline DataOStream& DataOStream::operator << ( const std::vector< double >& 
-                                                   value )
-    {
-        return _writeFlatVector( value );
-    }
+    template<> inline DataOStream&
+    DataOStream::operator << ( const std::vector< double >& value )
+    { return _writeFlatVector( value ); }
+
+    /** Optimized specialization to write a std::vector of ObjectVersion. */
+    template<> inline DataOStream&
+    DataOStream::operator << ( const std::vector< ObjectVersion >& value )
+    { return _writeFlatVector( value ); }
     //@}
 }
 }

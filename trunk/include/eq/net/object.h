@@ -20,7 +20,7 @@
 
 #include <eq/net/dispatcher.h>    // base class
 #include <eq/net/node.h>          // used in RefPtr
-#include <eq/net/types.h>         // for NodeVector
+#include <eq/net/types.h>         // for Nodes
 #include <eq/net/version.h>       // used as default parameter
 
 namespace eq
@@ -44,15 +44,6 @@ namespace net
     class Object : public Dispatcher
     {
     public:
-        /**
-         * Flags for auto obsoletion.
-         */
-        enum ObsoleteFlags
-        {
-            AUTO_OBSOLETE_COUNT_VERSIONS = 0,
-            AUTO_OBSOLETE_COUNT_COMMITS  = 1
-        };
-
         /** Object change handling characteristics, see Programming Guide */
         enum ChangeType
         {
@@ -71,14 +62,6 @@ namespace net
         /** Destruct the distributed object. */
         EQ_EXPORT virtual ~Object();
 
-        /** Called when object is attached to session. @internal */
-        EQ_EXPORT virtual void attachToSession( const uint32_t id, 
-                                                const uint32_t instanceID, 
-                                                Session* session );
-
-        /** Called when object is detached from session. @internal */
-        EQ_EXPORT virtual void detachFromSession();
-
         /** 
          * Make this object thread safe.
          * 
@@ -87,15 +70,23 @@ namespace net
          * certain operations, e.g., sync(), are not-threadsafe.
          */
         EQ_EXPORT virtual void makeThreadSafe();  
-        
+
+        /** @sa Dispatcher::dispatchCommand(). */
+        EQ_EXPORT virtual bool dispatchCommand( Command& command );
+
+        /** @name Data Access */
+        //@{
         /** @return true if the object has been made threadsafe, false if not.*/
         bool isThreadSafe() const      { return _threadSafe; }
+
+        /** @return true if the object is attached, mapped or registered. */
+        bool isAttached() const { return getID() <= EQ_ID_MAX; }
 
         /**
          * @return the local node to which this object is mapped, or 0 if the
          *         object is not mapped.
          */
-        NodePtr getLocalNode();
+        EQ_EXPORT NodePtr getLocalNode();
 
         /**
          * @return the session to which this object is mapped, or 0 if the
@@ -122,36 +113,21 @@ namespace net
          * @return true if this instance is the master version, false otherwise.
          */
         EQ_EXPORT bool isMaster() const;
+        //@}
 
-        /**
-         * @name Versioning
-         */
+        /** @name Versioning */
         //@{
         /** @return how the changes are to be handled. */
         virtual ChangeType getChangeType() const { return STATIC; }
 
         /** 
-         * Switches a slave object to become the master instance.
-         * 
-         * This function unmaps and registers this instance, making it a master
-         * instance with a new identifier. The old master is informed of this
-         * change and becomes a slave.
-         *
-         * Additional slaves are not informed. The object is synced to the head
-         * version before switching.
-         */
-        void becomeMaster();
-
-        /** 
          * Return if this object needs a commit.
          * 
          * This function is used for optimization, to detect early that no
-         * commit() is needed. If it returns true, pack() or getInstanceData()
-         * will be executed. These functions can still decide to not write any
-         * data, upon which no new version will be created. If it returns false,
-         * commit() will exit early. Applications using asynchronous commits
-         * (commitNB(), commitSync()) should use isDirty() to decide if
-         * commitNB() should be called.
+         * commit is needed. If it returns true, pack() or getInstanceData()
+         * will be executed. The serialization methods can still decide to not
+         * write any data, upon which no new version will be created. If it
+         * returns false, commitNB() and commitSync() will exit early.
          * 
          * @return true if a commit is needed.
          */
@@ -162,12 +138,17 @@ namespace net
          * 
          * If the object has not changed no new version will be generated, that
          * is, the previous version number is returned. This method is a
-         * convenience function for commitNB(); commitSync()
+         * convenience function for <code>commitNB(); commitSync();</code>
+         *
+         * Objects using the change type STATIC can not be committed. Slave
+         * objects can be commited, but have certain caveats for
+         * serialization. Please refer to the Programming Guide for more
+         * details.
          *
          * @return the new head version.
          * @sa commitNB, commitSync
          */
-        EQ_EXPORT virtual uint32_t commit();
+        EQ_EXPORT uint32_t commit();
 
         /** 
          * Start committing a new version of this object.
@@ -178,7 +159,7 @@ namespace net
          * @return the commit identifier to be passed to commitSync
          * @sa commitSync
          */
-        EQ_EXPORT uint32_t commitNB();
+        EQ_EXPORT virtual uint32_t commitNB();
         
         /** 
          * Finalizes a commit transaction.
@@ -186,7 +167,7 @@ namespace net
          * @param commitID the commit identifier returned from commitNB
          * @return the new head version.
          */
-        EQ_EXPORT uint32_t commitSync( const uint32_t commitID );
+        EQ_EXPORT virtual uint32_t commitSync( const uint32_t commitID );
 
         /** 
          * Explicitly obsoletes all versions including version.
@@ -200,20 +181,14 @@ namespace net
         /** 
          * Automatically obsolete old versions.
          *
-         * Flags are a bitwise combination of the following values:
-         *
-         * AUTO_OBSOLETE_COUNT_VERSIONS: count 'full' versions are retained.
-         * AUTO_OBSOLETE_COUNT_COMMIT: The versions for the last count commits
-         *   are retained. Note that the number of versions may be less since
-         *   commit may not generate a new version. This flags takes precedence
-         *   over AUTO_OBSOLETE_COUNT_VERSIONS.
+         * The versions for the last count commits are retained. Note that the
+         * number of versions may be less since a commit may not generate a new
+         * version.
          * 
          * @param count the number of versions to retain, excluding the head
          *              version.
-         * @param flags additional flags for the auto-obsoletion mechanism
          */
-        EQ_EXPORT void setAutoObsolete( const uint32_t count, 
-                          const uint32_t flags = AUTO_OBSOLETE_COUNT_VERSIONS );
+        EQ_EXPORT void setAutoObsolete( const uint32_t count );
 
         /** @return get the number of versions this object retains. */
         EQ_EXPORT uint32_t getAutoObsoleteCount() const;
@@ -222,7 +197,12 @@ namespace net
          * Sync to a given version.
          *
          * Syncing to VERSION_HEAD syncs to the last received version, does
-         * not block, ignores the timeout and always returns true.
+         * not block, ignores the timeout and always returns true. Syncing to
+         * VERSION_NEXT applies one new version, potentially blocking.
+         *
+         * Objects using the change type STATIC can not be synced. Master
+         * objects can only be synced to VERSION_HEAD or VERSION_NEXT, since
+         * slave objects commit do not generate a new version.
          * 
          * @param version the version to synchronize, must be bigger than the
          *                current version.
@@ -260,36 +240,10 @@ namespace net
         virtual void notifyNewVersion() {}
         //@}
 
-        /** @name Methods used by session during mapping. */
+        /** @name Serialization methods for instantiation and versioning. */
         //@{
         /** 
-         * Setup the change manager.
-         * 
-         * @param type the type of the change manager.
-         * @param master true if this object is the master.
-         * @param masterInstanceID the instance identifier of the master object,
-         *                         when master == false.
-         */
-        void setupChangeManager( const Object::ChangeType type, 
-                                  const bool master, 
-                              const uint32_t masterInstanceID = EQ_ID_INVALID );
-        //@}
-
-    protected:
-        /** Copy constructor. */
-        EQ_EXPORT Object( const Object& );
-
-        /** NOP assignment operator. */
-        EQ_EXPORT const Object& operator = ( const Object& ) { return *this; }
-
-        /**
-         * @name Automatic Instantiation and Versioning
-         */
-        //@{
-        /** 
-         * Serialize the instance information about this managed object.
-         *
-         * The default implementation uses the data provided by setInstanceData.
+         * Serialize all instance information of this distributed object.
          *
          * @param os The output stream.
          */
@@ -299,8 +253,7 @@ namespace net
          * Deserialize the instance data.
          *
          * This method is called during object mapping to populate slave
-         * instances with the master object's data. The default implementation
-         * writes the data into the memory declared by setInstanceData.
+         * instances with the master object's data.
          * 
          * @param is the input stream.
          */
@@ -310,8 +263,7 @@ namespace net
          * Serialize the modifications since the last call to commit().
          * 
          * No new version will be created if no data is written to the
-         * ostream. The default implementation uses the data provided by
-         * setDeltaData or setInstanceData.
+         * output stream.
          * 
          * @param os the output stream.
          */
@@ -320,34 +272,78 @@ namespace net
         /**
          * Deserialize a change.
          *
-         * The default implementation writes the data into the memory declared
-         * by setDeltaData or setInstanceData.
-         *
          * @param is the input data stream.
          */
         virtual void unpack( DataIStream& is ) { applyInstanceData( is ); }
         //@}
 
-        /** 
-         * Remove a subscribed slave.
-         * 
-         * @param node the slave node. 
-         */
-        EQ_EXPORT void removeSlave( NodePtr node );
-
         /** @name Packet Transmission */
         //@{
         /** Send a packet to peer object instance(s) on another node. */
-        bool send( NodePtr node, ObjectPacket& packet );
+        EQ_EXPORT bool send( NodePtr node, ObjectPacket& packet );
 
         /** Send a packet to peer object instance(s) on another node. */
-        bool send( NodePtr node, ObjectPacket& packet,
-                   const std::string& string );
+        EQ_EXPORT bool send( NodePtr node, ObjectPacket& packet,
+                             const std::string& string );
 
         /** Send a packet to peer object instance(s) on another node. */
-        bool send( NodePtr node, ObjectPacket& packet, 
-                   const void* data, const uint64_t size );
+        EQ_EXPORT bool send( NodePtr node, ObjectPacket& packet, 
+                             const void* data, const uint64_t size );
         //@}
+
+        /** @name Notifications */
+        /**
+         * Notify that this object has been registered or mapped.
+         *
+         * The method is called from the thread initiating the registration or
+         * mapping, after the operation has been completed successfully.
+         * @sa isMaster()
+         */
+        virtual void notifyAttached() {};
+
+        /**
+         * Notify that this object will be deregistered or unmapped.
+         *
+         * The method is called from the thread initiating the deregistration or
+         * unmapping, before the operation is executed.
+         * @sa isMaster()
+         */
+        virtual void notifyDetach() {};
+        //@}
+
+    protected:
+        /** Copy constructor. */
+        EQ_EXPORT Object( const Object& );
+
+        /** NOP assignment operator. */
+        EQ_EXPORT const Object& operator = ( const Object& ) { return *this; }
+
+        /** 
+         * Setup the change manager.
+         * 
+         * @param type the type of the change manager.
+         * @param master true if this object is the master.
+         * @param masterInstanceID the instance identifier of the master object,
+         *                         when master == false.
+         * @internal
+         */
+        void setupChangeManager( const Object::ChangeType type, 
+                                  const bool master, 
+                              const uint32_t masterInstanceID = EQ_ID_INVALID );
+
+        /**
+         * Called when object is attached to session from the receiver thread.
+         * @internal
+         */
+        EQ_EXPORT virtual void attachToSession( const uint32_t id, 
+                                                const uint32_t instanceID, 
+                                                Session* session );
+
+        /**
+         * Called when the object is detached from the session from the receiver
+         * thread. @internal
+         */
+        EQ_EXPORT virtual void detachFromSession();
 
     private:
         /** Indicates if this instance is the copy on the server node. */
@@ -375,14 +371,14 @@ namespace net
         bool _threadSafe;
 
         void _setChangeManager( ObjectCM* cm );
-        const NodeVector* _getSlaveNodes() const;
+        const Nodes* _getSlaveNodes() const;
 
         /* The command handlers. */
-        CommandResult _cmdForward( Command& command );
-        CommandResult _cmdNewMaster( Command& command );
+        bool _cmdForward( Command& command );
 
         CHECK_THREAD_DECLARE( _thread );
     };
+    EQ_EXPORT std::ostream& operator << ( std::ostream&, const Object& );
 }
 }
 

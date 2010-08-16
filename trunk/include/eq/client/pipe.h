@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ * Copyright (c) 2010,      Cedric Stalder <cedric.stalder@gmail.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,7 +19,7 @@
 #ifndef EQ_PIPE_H
 #define EQ_PIPE_H
 
-#ifdef EQUALIZER_EXPORTS
+#ifdef EQ_EXPORTS
    // We need to instantiate a Monitor< State > when compiling the library,
    // but we don't want to have <pthread.h> for a normal build, hence this hack
 #  include <pthread.h>
@@ -27,16 +28,16 @@
 
 #include <eq/client/eye.h>            // Eye enum
 #include <eq/client/os.h>             // WGLEWContext
-#include <eq/client/pixelViewport.h>  // member
 #include <eq/client/types.h>
 #include <eq/client/visitorResult.h>  // enum
 #include <eq/client/windowSystem.h>   // enum
 
-#include <eq/net/object.h>
+#include <eq/fabric/pipe.h>           // base class
+
 #include <eq/net/objectVersion.h>
 
-#include <eq/base/refPtr.h>
 #include <eq/base/lock.h>
+#include <eq/base/refPtr.h>
 #include <eq/base/thread.h>
 
 namespace eq
@@ -44,7 +45,6 @@ namespace eq
     class CommandQueue;
     class MessagePump;
     class OSPipe;
-    class PipeVisitor;
     class ComputeContext;
 
     /**
@@ -55,7 +55,7 @@ namespace eq
      * the pipe is non-threaded, in which case the tasks are executed on the
      * Node's main thread.
      */
-    class Pipe : public net::Object
+    class Pipe : public fabric::Pipe< Node, Pipe, eq::Window, PipeVisitor >
     {
     public:
         /** Constructs a new pipe. */
@@ -66,9 +66,8 @@ namespace eq
 
         /** @name Data Access. */
         //@{
-        EQ_EXPORT net::CommandQueue* getPipeThreadQueue();
-        Node*       getNode()       { return _node; }
-        const Node* getNode() const { return _node; }
+        EQ_EXPORT net::CommandQueue* getPipeThreadQueue(); //!< @internal
+        net::CommandQueue* getMainThreadQueue(); //!< @internal
 
         EQ_EXPORT Config* getConfig();
         EQ_EXPORT const Config* getConfig() const;
@@ -76,76 +75,10 @@ namespace eq
         EQ_EXPORT ClientPtr getClient();
         EQ_EXPORT ServerPtr getServer();
 
-        const WindowVector& getWindows() const { return _windows; }
-
-        const std::string& getName() const { return _name; }
-
-        /** 
-         * Return the set of tasks this pipe's channels might execute in the
-         * worst case.
-         * 
-         * It is not guaranteed that all the tasks will be actually executed
-         * during rendering.
-         * 
-         * @warning Not finalized, might change in the future.
-         * @return the tasks.
-         */
-        uint32_t getTasks() const { return _tasks; }
-
-        bool isThreaded() const { return ( _thread != 0 ); }
         uint32_t getCurrentFrame()  const { return _currentFrame; }
         EQ_EXPORT uint32_t getFinishedFrame() const;
 
-        /** 
-         * Traverse this pipe and all children using a pipe visitor.
-         * 
-         * @param visitor the visitor.
-         * @return the result of the visitor traversal.
-         */
-        EQ_EXPORT VisitorResult accept( PipeVisitor& visitor );
-
-        /** Const-version of accept(). */
-        EQ_EXPORT VisitorResult accept( PipeVisitor& visitor ) const;
-
         /**
-         * Set the pipes's pixel viewport.
-         *
-         *  Used from _osPipe calls
-         *
-         * @param pvp the viewport in pixels.
-         */
-         void setPixelViewport( const eq::PixelViewport& pvp ){ _pvp = pvp; }
-
-        /** 
-         * @return the pipe's pixel viewport
-         */
-        const PixelViewport& getPixelViewport() const { return _pvp; }
-
-        /**
-         * Returns the port number of this pipe.
-         * 
-         * The port number identifies the X server for systems using the
-         * X11/GLX window system. It currently has no meaning on other systems.
-         *
-         * @return the port number of this pipe, or
-         *         <code>EQ_UNDEFINED_UINT32</code>.
-         */
-        uint32_t getPort() const { return _port; }
-
-        /** 
-         * Returns the device number of this pipe.
-         * 
-         * The device number identifies the X screen for systems using the
-         * X11/GLX window system, or the number of the virtual screen for the
-         * AGL window system. On Windows systems it identifies the graphics
-         * adapter. Normally the device identifies a GPU.
-         *
-         * @return the device number of this pipe, or 
-         *         <code>EQ_UNDEFINED_UINT32</code>.
-         */
-        uint32_t getDevice() const { return _device; }
-
-        /** 
          * Return the window system used by this pipe. 
          * 
          * The return value is quaranteed to be constant for an initialized
@@ -191,9 +124,10 @@ namespace eq
         View* getView( const net::ObjectVersion& viewVersion );
         //@}
 
-        /** Wait for the pipe to be exited. */
-        EQ_EXPORT void waitExited() const;
-        EQ_EXPORT bool isRunning() const;
+        /** Wait for the pipe to be exited. @internal */
+        void waitExited() const;
+        bool isRunning() const; //!< @internal
+        void notifyMapped(); //!< @internal
         
         /** 
          * Wait for a frame to be finished.
@@ -211,10 +145,10 @@ namespace eq
          */
         EQ_EXPORT void waitFrameLocal( const uint32_t frameNumber ) const;
 
-        /** Start the pipe thread. */
+        /** Start the pipe thread. @internal */
         void startThread();
 
-        /** Wait for the pipe thread to exit. */
+        /** Wait for the pipe thread to exit. @internal */
         void joinThread();
 
         /** 
@@ -235,7 +169,7 @@ namespace eq
 
         //@}
 
-		/** 
+        /** 
          * @name Interface to and from the ComputeContext
          */
         //@{
@@ -247,36 +181,11 @@ namespace eq
             { return _computeContext; }
 
         /** @return the compute context. */
-		ComputeContext* getComputeContext() { return _computeContext; }		
-        //@}
-		
-        /** @name Error information. */
-        //@{
-        /** 
-         * Set a message why the last operation failed.
-         * 
-         * The message will be transmitted to the originator of the request, for
-         * example to Config::init when set from within the configInit method.
-         *
-         * @param message the error message.
-         */
-        void setErrorMessage( const std::string& message ) { _error = message; }
+        ComputeContext* getComputeContext() { return _computeContext; }		
         //@}
 
         /** @name Configuration. */
         //@{
-#ifdef EQ_USE_DEPRECATED
-        /** 
-         * Enable or disable automatic or external OS event dispatch for the
-         * pipe thread.
-         *
-         * @return true if Equalizer shall dispatch OS events, false if the
-         *         application dispatches OS events.
-         * @sa Event handling documentation on website.
-         */
-        virtual bool useMessagePump() { return true; }
-#endif
-
         /** 
          * Create a new MessagePump for this pipe.
          *
@@ -293,7 +202,6 @@ namespace eq
 
     protected:
         friend class Node;
-
         /** @name Actions */
         //@{
         /** 
@@ -418,42 +326,16 @@ namespace eq
 
     private:
         //-------------------- Members --------------------
-        /** The reason for the last error. */
-        std::string _error;
-
         /** Window-system specific functions class */
         OSPipe *_osPipe;
-
-        /** The parent node. */
-        Node* const    _node;
-
-        /** The name. */
-        std::string    _name;
-
-        /** The windows of this pipe. */
-        WindowVector   _windows;
 
         /** The current window system. */
         WindowSystem _windowSystem;
 
-        /** The size (and location) of the pipe. */
-        PixelViewport _pvp;
-		
-        /** CUDA GL interop mode. */
-		bool _cudaGLInterop;
-
-        /** Worst-case set of tasks. */
-        uint32_t _tasks;
-
-        /** The display (GLX) or ignored (Win32, AGL). */
-        uint32_t _port;
-
-        /** The screen (GLX), GPU (Win32) or virtual screen (AGL). */
-        uint32_t _device;
-
         enum State
         {
             STATE_STOPPED,
+            STATE_MAPPED,
             STATE_INITIALIZING,
             STATE_RUNNING
         };
@@ -508,9 +390,9 @@ namespace eq
         /** The last window made current. */
         const mutable Window* _currentWindow;
 
-		/** GPU Computing context */
+        /** GPU Computing context */
         ComputeContext *_computeContext;
-				
+
         union // placeholder for binary-compatible changes
         {
             char dummy[64];
@@ -522,12 +404,6 @@ namespace eq
         void _exitCommandQueue();
 
         friend class Window;
-        void _addWindow( Window* window );
-        void _removeWindow( Window* window );
-        Window* _findWindow( const uint32_t id );
-
-        virtual void getInstanceData( net::DataOStream& os ) { EQDONTCALL }
-        virtual void applyInstanceData( net::DataIStream& is ) { EQDONTCALL }
 
         /** @internal Release the views not used for some revisions. */
         void _releaseViews();
@@ -536,14 +412,14 @@ namespace eq
         void _flushViews();
 
         /* The command functions. */
-        net::CommandResult _cmdCreateWindow( net::Command& command );
-        net::CommandResult _cmdDestroyWindow( net::Command& command );
-        net::CommandResult _cmdConfigInit( net::Command& command );
-        net::CommandResult _cmdConfigExit( net::Command& command );
-        net::CommandResult _cmdFrameStartClock( net::Command& command );
-        net::CommandResult _cmdFrameStart( net::Command& command );
-        net::CommandResult _cmdFrameFinish( net::Command& command );
-        net::CommandResult _cmdFrameDrawFinish( net::Command& command );
+        bool _cmdCreateWindow( net::Command& command );
+        bool _cmdDestroyWindow( net::Command& command );
+        bool _cmdConfigInit( net::Command& command );
+        bool _cmdConfigExit( net::Command& command );
+        bool _cmdFrameStartClock( net::Command& command );
+        bool _cmdFrameStart( net::Command& command );
+        bool _cmdFrameFinish( net::Command& command );
+        bool _cmdFrameDrawFinish( net::Command& command );
 
         CHECK_THREAD_DECLARE( _pipeThread );
     };

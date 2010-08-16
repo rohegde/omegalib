@@ -19,15 +19,32 @@
 #ifndef EQ_TYPES_H
 #define EQ_TYPES_H
 
+#include <eq/fabric/types.h>
 #include <eq/base/refPtr.h>
-
-#include <vmmlib/vmmlib.hpp>
 
 #include <map>
 #include <vector>
 
 namespace eq
 {
+namespace fabric
+{
+class ColorMask;
+struct DrawableConfig;
+class Frustum;
+class Pixel;
+class PixelViewport;
+class Projection;
+class Range;
+class RenderContext;
+class SubPixel;
+class Viewport;
+class Wall;
+class Zoom;
+template< class C, class OV, class LV, class CV, class NV > class ConfigVisitor;
+template< class T, class C > class ElementVisitor;
+template< class T > class LeafVisitor;
+}
 
 class Canvas;
 class Channel;
@@ -39,74 +56,121 @@ class Layout;
 class Node;
 class Observer;
 class Pipe;
-class PixelViewport;
 class Segment;
 class Server;
 class View;
-class Viewport;
 class Window;
 class X11Connection;
 struct Statistic;
 
+typedef fabric::ColorMask ColorMask;
+typedef fabric::DrawableConfig DrawableConfig;
+typedef fabric::Frustum Frustum;
+typedef fabric::Pixel Pixel;
+typedef fabric::PixelViewport PixelViewport;
+typedef fabric::Projection Projection;
+typedef fabric::Range Range;
+typedef fabric::RenderContext RenderContext;
+typedef fabric::SubPixel SubPixel;
+typedef fabric::Viewport Viewport;
+typedef fabric::Wall Wall;
+typedef fabric::Zoom Zoom;
+
+/** A visitor to traverse segments. @sa  Segment ::accept() */
+typedef fabric::LeafVisitor< Segment > SegmentVisitor;
+
+/** A visitor to traverse views. @sa View::accept() */
+typedef fabric::LeafVisitor< View > ViewVisitor;
+
+/** A visitor to traverse channels. @sa Channel::accept() */
+typedef fabric::LeafVisitor< Observer > ObserverVisitor;
+
+/** A visitor to traverse channels. @sa Channel::accept() */
+typedef fabric::LeafVisitor< Channel > ChannelVisitor;
+
+/** A visitor to traverse Canvas and children. */
+typedef fabric::ElementVisitor< Canvas, SegmentVisitor > CanvasVisitor;
+
+/** A visitor to traverse windows and children. */
+typedef fabric::ElementVisitor< Window, ChannelVisitor > WindowVisitor;   
+    
+/** A visitor to traverse pipes and children. */
+typedef fabric::ElementVisitor< Pipe, WindowVisitor > PipeVisitor;
+
+/** A visitor to traverse nodes and children. */
+typedef fabric::ElementVisitor< Node, PipeVisitor > NodeVisitor;
+
+/** A visitor to traverse layouts and children. */
+typedef fabric::ElementVisitor< Layout, ViewVisitor > LayoutVisitor;
+
+/** A visitor to traverse configs and children. */
+typedef fabric::ConfigVisitor< Config, ObserverVisitor, LayoutVisitor,
+                               CanvasVisitor, NodeVisitor > ConfigVisitor;
+
+
 //----- Vectors
+/** A vector of pointers to eq::Config */
+typedef std::vector< Config* >     Configs;
 /** A vector of pointers to eq::Node */
-typedef std::vector< Node* >     NodeVector;
+typedef std::vector< Node* >     Nodes;
 /** A vector of pointers to eq::Pipe */
-typedef std::vector< Pipe* >     PipeVector;
+typedef std::vector< Pipe* >     Pipes;
 /** A vector of pointers to eq::Window */
-typedef std::vector< Window* >   WindowVector;
+typedef std::vector< Window* >   Windows;
 /** A vector of pointers to eq::Channel */
-typedef std::vector< Channel* >  ChannelVector;
+typedef std::vector< Channel* >  Channels;
 /** A vector of pointers to eq::Frame */
-typedef std::vector< Frame* >    FrameVector;
+typedef std::vector< Frame* >    Frames;
 /** A vector of pointers to eq::Image */
-typedef std::vector< Image* >    ImageVector;
+typedef std::vector< Image* >    Images;
 /** A vector of pointers to eq::Observer */
-typedef std::vector< Observer* > ObserverVector;
+typedef std::vector< Observer* > Observers;
 /** A vector of pointers to eq::Canvas */
-typedef std::vector< Canvas* >   CanvasVector;
+typedef std::vector< Canvas* >   Canvases;
 /** A vector of pointers to eq::Layout */
-typedef std::vector< Layout* >   LayoutVector;
+typedef std::vector< Layout* >   Layouts;
 /** A vector of pointers to eq::Segment */
-typedef std::vector< Segment* >  SegmentVector;
+typedef std::vector< Segment* >  Segments;
 /** A vector of pointers to eq::View */
-typedef std::vector< View* >     ViewVector;
+typedef std::vector< View* >     Views;
 /** A vector of eq::Viewport */
-typedef std::vector< Viewport >      ViewportVector;
+typedef std::vector< Viewport >      Viewports;
 /** A vector of eq::PixelViewport */
-typedef std::vector< PixelViewport > PixelViewportVector;
+typedef std::vector< PixelViewport > PixelViewports;
 /** A vector of eq::Statistic events */
 typedef std::vector< Statistic >         Statistics;
 
 /** A reference-counted pointer to an eq::Client */
 typedef base::RefPtr< Client >        ClientPtr;
+/** A reference-counted pointer to a const eq::Client */
+typedef base::RefPtr< const Client >  ConstClientPtr;
 /** A reference-counted pointer to an eq::Server */
 typedef base::RefPtr< Server >        ServerPtr;
 
-typedef vmml::matrix< 3, 3, double > Matrix3d; //!< A 3x3 double matrix
-typedef vmml::matrix< 4, 4, double > Matrix4d; //!< A 4x4 double matrix
-typedef vmml::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
-typedef vmml::matrix< 4, 4, float >  Matrix4f; //!< A 4x4 float matrix
-typedef vmml::vector< 2, int > Vector2i; //!< A two-component integer vector
-typedef vmml::vector< 3, int > Vector3i; //!< A three-component integer vector
-typedef vmml::vector< 4, int > Vector4i; //!< A four-component integer vector
-typedef vmml::vector< 3, double >Vector3d; //!< A three-component double vector
-typedef vmml::vector< 4, double >Vector4d; //!< A four-component double vector
-typedef vmml::vector< 2, float > Vector2f; //!< A two-component float vector
-typedef vmml::vector< 3, float > Vector3f; //!< A three-component float vector
-typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
-/** A three-component byte vector */
-typedef vmml::vector< 3, unsigned char > Vector3ub;
-typedef vmml::frustum< float >  Frustumf; //!< A frustum definition
+typedef fabric::Matrix3d Matrix3d;   //!< A 3x3 double matrix
+typedef fabric::Matrix4d Matrix4d;   //!< A 4x4 double matrix
+typedef fabric::Matrix3f Matrix3f;   //!< A 3x3 float matrix
+typedef fabric::Matrix4f Matrix4f;   //!< A 4x4 float matrix
+typedef fabric::Vector2i Vector2i;   //!< A two-component integer vector
+typedef fabric::Vector3i Vector3i;   //!< A three-component integer vector
+typedef fabric::Vector4i Vector4i;   //!< A four-component integer vector
+typedef fabric::Vector3d Vector3d;   //!< A three-component double vector
+typedef fabric::Vector4d Vector4d;   //!< A four-component double vector
+typedef fabric::Vector2f Vector2f;   //!< A two-component float vector
+typedef fabric::Vector3f Vector3f;   //!< A three-component float vector
+typedef fabric::Vector4f Vector4f;   //!< A four-component float vector
+typedef fabric::Vector3ub Vector3ub; //!< A three-component byte vector
+typedef fabric::Frustumf Frustumf;   //!< A frustum definition
+
 /** Frustum culling helper */
 typedef vmml::frustum_culler< float >  FrustumCullerf;
 
 /** A vector of std::string */
-typedef std::vector< std::string >   StringVector;
+typedef std::vector< std::string >   Strings;
 /** A vector of bytes */
-typedef std::vector<uint8_t>    Vectorub;
+typedef std::vector< uint8_t >    Vectorub;
 /** A vector of unsigned shorts */
-typedef std::vector<uint16_t>   Vectorus;
+typedef std::vector< uint16_t >   Vectorus;
 
 
 /** @cond IGNORE */
@@ -118,5 +182,24 @@ typedef std::map< uint32_t, Statistics >        SortedStatistics;
 // frame id, config statistics
 typedef std::pair< uint32_t, SortedStatistics > FrameStatistics;
 /** @endcond */
+
+#ifdef EQ_USE_DEPRECATED
+typedef Configs ConfigVector;
+typedef Nodes NodeVector;
+typedef Pipes PipeVector;
+typedef Windows WindowVector;
+typedef Channels ChannelVector;
+typedef Frames FrameVector;
+typedef Images ImageVector;
+typedef Observers ObserverVector;
+typedef Canvases CanvasVector;
+typedef Layouts LayoutVector;
+typedef Segments SegmentVector;
+typedef Views ViewVector;
+typedef Viewports ViewportVector;
+typedef PixelViewports PixelViewportVector;
+typedef Statistics StatisticVector;
+typedef Strings StringVector
+#endif
 }
 #endif // EQ_TYPES_H

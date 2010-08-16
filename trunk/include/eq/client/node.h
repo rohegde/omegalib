@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder<cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -20,6 +21,7 @@
 
 #include <eq/client/types.h>
 #include <eq/client/visitorResult.h>  // enum
+#include <eq/fabric/node.h>           // base class
 
 #include <eq/net/barrier.h>
 #include <eq/net/objectVersion.h>
@@ -29,14 +31,13 @@ namespace eq
 {
     class CommandQueue;
     class FrameData;
-    class NodeVisitor;
 
     /**
      * A Node represents a single computer in the cluster.
      *
      * Each node is executed in a seperate process.
      */
-    class Node : public net::Object
+    class Node : public fabric::Node< Config, Node, Pipe, NodeVisitor >
     {
     public:
         /** Constructs a new node. */
@@ -45,44 +46,10 @@ namespace eq
         /** Destructs the node. */
         EQ_EXPORT virtual ~Node();
 
-        /** 
-         * Returns the config of this node.
-         * 
-         * @return the config of this node. 
-         */
-        Config*       getConfig()       { return _config; }
-        const Config* getConfig() const { return _config; }
-
         EQ_EXPORT ClientPtr getClient();
         EQ_EXPORT ServerPtr getServer();
 
-        const PipeVector& getPipes() const { return _pipes; }
-        const std::string& getName() const { return _name; }
-
-        /** 
-         * Return the set of tasks this nodes's channels might execute in the
-         * worst case.
-         * 
-         * It is not guaranteed that all the tasks will be actually executed
-         * during rendering.
-         * 
-         * @warning Not finalized, might change in the future.
-         * @return a bitwise combination of the Task enum.
-         */
-        uint32_t getTasks() const { return _tasks; }
-
-        EQ_EXPORT CommandQueue* getNodeThreadQueue();
-
-        /** 
-         * Traverse this node and all children using a node visitor.
-         * 
-         * @param visitor the visitor.
-         * @return the result of the visitor traversal.
-         */
-        EQ_EXPORT VisitorResult accept( NodeVisitor& visitor );
-
-        /** Const-version of accept(). */
-        EQ_EXPORT VisitorResult accept( NodeVisitor& visitor ) const;
+        EQ_EXPORT net::CommandQueue* getMainThreadQueue();
 
         /** 
          * Get a network barrier. 
@@ -114,30 +81,8 @@ namespace eq
          */
         EQ_EXPORT void waitFrameStarted( const uint32_t frameNumber ) const;
 
+        /** @return the number of the last finished frame. @internal */
         uint32_t getFinishedFrame() const { return _finishedFrame; }
-
-        /**
-         * @name Attributes
-         */
-        //@{
-        // Note: also update string array initialization in node.cpp
-        /** Node attributes. */
-        enum IAttribute
-        {
-            /** <a href="http://www.equalizergraphics.com/documents/design/threads.html#sync">Threading model</a> */
-            IATTR_THREAD_MODEL,
-            IATTR_LAUNCH_TIMEOUT,         //!< Launch timeout
-            IATTR_FILL1,
-            IATTR_FILL2,
-            IATTR_ALL
-        };
-
-        EQ_EXPORT void setIAttribute( const IAttribute attr,
-                                      const int32_t value );
-        EQ_EXPORT int32_t getIAttribute( const IAttribute attr ) const;
-        EQ_EXPORT static const std::string& getIAttributeString(
-                                                        const IAttribute attr );
-        //@}
 
         class TransmitThread : public base::Thread
         {
@@ -281,39 +226,7 @@ namespace eq
                                                  const uint32_t frameNumber );
         //@}
 
-        /** @name Error information. */
-        //@{
-        /** 
-         * Set a message why the last operation failed.
-         * 
-         * The message will be transmitted to the originator of the request, for
-         * example to Config::init when set from within the init method.
-         *
-         * @param message the error message.
-         */
-        EQ_EXPORT void setErrorMessage( const std::string& message );
-        //@}
-
     private:
-        /** The parent config */
-        Config* const          _config;
-
-        /** The name. */
-        std::string            _name;
-
-        /** Integer attributes. */
-        int32_t _iAttributes[IATTR_ALL];
-        /** String representation of integer attributes. */
-        static std::string _iAttributeStrings[IATTR_ALL];
-
-        /** Worst-case set of tasks. */
-        uint32_t _tasks;
-
-        /** Pipe children. */
-        PipeVector             _pipes;
-
-        /** The reason for the last error. */
-        std::string            _error;
 
         enum State
         {
@@ -328,11 +241,11 @@ namespace eq
         /** The number of the last started frame. */
         base::Monitor<uint32_t> _currentFrame;
 
-        /** The number of the last locally released frame. */
-        uint32_t _unlockedFrame;
-
         /** The number of the last finished frame. */
         uint32_t _finishedFrame;
+
+        /** The number of the last locally released frame. */
+        uint32_t _unlockedFrame;
 
         typedef stde::hash_map< uint32_t, net::Barrier* > BarrierHash;
         /** All barriers mapped by the node. */
@@ -346,31 +259,23 @@ namespace eq
 
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
-
-        friend class Pipe;
-        void _addPipe( Pipe* pipe );
-        void _removePipe( Pipe* pipe );
-        Pipe* _findPipe( const uint32_t id );
 
         void _finishFrame( const uint32_t frameNumber ) const;
         void _frameFinish( const uint32_t frameID, const uint32_t frameNumber );
 
         void _flushObjects();
 
-        virtual void getInstanceData( net::DataOStream& os ) { EQDONTCALL }
-        virtual void applyInstanceData( net::DataIStream& is ) { EQDONTCALL }
-
         /** The command functions. */
-        net::CommandResult _cmdCreatePipe( net::Command& command );
-        net::CommandResult _cmdDestroyPipe( net::Command& command );
-        net::CommandResult _cmdConfigInit( net::Command& command );
-        net::CommandResult _cmdConfigExit( net::Command& command );
-        net::CommandResult _cmdFrameStart( net::Command& command );
-        net::CommandResult _cmdFrameFinish( net::Command& command );
-        net::CommandResult _cmdFrameDrawFinish( net::Command& command );
-        net::CommandResult _cmdFrameTasksFinish( net::Command& command );
+        bool _cmdCreatePipe( net::Command& command );
+        bool _cmdDestroyPipe( net::Command& command );
+        bool _cmdConfigInit( net::Command& command );
+        bool _cmdConfigExit( net::Command& command );
+        bool _cmdFrameStart( net::Command& command );
+        bool _cmdFrameFinish( net::Command& command );
+        bool _cmdFrameDrawFinish( net::Command& command );
+        bool _cmdFrameTasksFinish( net::Command& command );
 
         CHECK_THREAD_DECLARE( _nodeThread );
     };

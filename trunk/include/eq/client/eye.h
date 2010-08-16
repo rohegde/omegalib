@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2007-2009, Stefan Eilemann <eile@equalizergraphics.com>
+ * Copyright (c) 2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,23 +19,19 @@
 #ifndef EQ_EYE_H
 #define EQ_EYE_H
 
-#include <eq/base/base.h>
-#include <iostream>
+#include <eq/fabric/eye.h> // 'base' class
 
 namespace eq
 {
-    /**
-     * Defines an eye pass.
-     */
-    enum Eye
-    {
-        EYE_CYCLOP = 0,
-        EYE_LEFT,
-        EYE_RIGHT,
-        EYE_ALL   // must be last
-    };
+    /** Defines an eye pass. */
+    typedef fabric::Eye Eye;
 
-    EQ_EXPORT std::ostream& operator << ( std::ostream& os, const Eye& eye );
+    /** @cond IGNORE */
+    using fabric::EYE_CYCLOP;
+    using fabric::EYE_LEFT;
+    using fabric::EYE_RIGHT;
+    using fabric::NUM_EYES;
+    /** @endcond */
 }
 
 #endif // EQ_EYE_H

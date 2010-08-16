@@ -1,5 +1,5 @@
  
-/* Copyright (c) 2005-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -30,7 +30,13 @@
 #    define USE_SYS_TYPES_FD_SET
 #  endif
 #  define _USE_MATH_DEFINES
-#  define _WIN32_WINNT 0x500
+#  ifndef _WIN32_WINNT
+#    ifdef EQ_USE_MAGELLAN
+#      define _WIN32_WINNT 0x501 // XP
+#    else
+#      define _WIN32_WINNT 0x500 // 2000
+#    endif
+#  endif
 #  define WIN32_LEAN_AND_MEAN
 #  define NOMINMAX
 #  include <Winsock2.h>
@@ -41,32 +47,32 @@
 #ifdef _MSC_VER
 #  define EQ_DLLEXPORT __declspec(dllexport) 
 #  define EQ_DLLIMPORT __declspec(dllimport)
-#  ifdef EQUALIZER_EXPORTS
+#  ifdef EQ_EXPORTS
 #    define EQ_EXPORT EQ_DLLEXPORT
-#    define EQ_STLEXTERN 
 #    define GLEW_BUILD
+#    define EQFABRIC_EXPORT EQ_EXPORT
 #  else
 #    define EQ_EXPORT EQ_DLLIMPORT
-#    define EQ_STLEXTERN extern
 #  endif
    // Need to predefine server library exports for forward declaration of 
    // eqsStartLocalServer
-#  ifdef EQUALIZERSERVERLIBRARY_EXPORTS
+#  ifdef EQSERVER_EXPORTS
 #    define EQSERVER_EXPORT EQ_DLLEXPORT
-#    define EQSERVER_STLEXTERN 
+#    define EQFABRIC_EXPORT EQSERVER_EXPORT
 #  else
 #    define EQSERVER_EXPORT EQ_DLLIMPORT
-#    define EQSERVER_STLEXTERN extern
+#  endif
+#  ifdef EQADMIN_EXPORTS
+#    define EQFABRIC_EXPORT EQ_DLLEXPORT
+#  endif
+#  ifndef EQFABRIC_EXPORT
+#    define EQFABRIC_EXPORT EQ_DLLIMPORT
 #  endif
 #else // WIN32
-#  define EQ_DLLEXPORT //!< @internal
-#  define EQ_DLLIMPORT //!< @internal
 /** Mark the following function as exported in the Equalizer DSO. @internal */
 #  define EQ_EXPORT
-#  define EQSERVER_DLLEXPORT //!< @internal
-#  define EQSERVER_DLLIMPORT //!< @internal
-/** Mark the following function as exported in the server DSO. @internal */
 #  define EQSERVER_EXPORT
+#  define EQFABRIC_EXPORT
 #endif
 
 // Defining our own min/max macros seems to be the only sane way to get this

@@ -102,7 +102,7 @@ namespace net
          * @return the result of the operation.
          * @sa Dispatcher::invokeCommand
          */
-        EQ_EXPORT virtual CommandResult invokeCommand( Command& packet );
+        EQ_EXPORT virtual bool invokeCommand( Command& packet );
         //@}
 
 
@@ -171,7 +171,7 @@ namespace net
          * @return the master node, or Node::ZERO if no master node is
          *         set for the identifier.
          */
-        EQ_EXPORT const NodeID& getIDMaster( const uint32_t id );
+        EQ_EXPORT const NodeID getIDMaster( const uint32_t id );
         //@}
 
 
@@ -240,6 +240,14 @@ namespace net
         /** Finalize the mapping of a distributed object. */
         EQ_EXPORT bool mapObjectSync( const uint32_t requestID );
 
+        /** Convenience wrapper for mapObject(). */
+        bool mapObject( Object* object, const ObjectVersion& v )
+            { return mapObject( object, v.identifier, v.version ); }
+
+        /** Convenience wrapper for mapObjectNB(). */
+        uint32_t mapObjectNB( Object* object, const ObjectVersion& v )
+            { return mapObjectNB( object, v.identifier, v.version ); }
+
         /** 
          * Unmap a mapped object.
          * 
@@ -268,6 +276,9 @@ namespace net
          * @param object the attached object.
          */
         EQ_EXPORT void detachObject( Object* object );
+
+        /** Convenience method to deregister or unmap an object. */
+        EQ_EXPORT void releaseObject( Object* object );
         //@}
 
 
@@ -284,7 +295,6 @@ namespace net
         EQ_EXPORT virtual void notifyMapped( NodePtr node );
         //@}
 
-    protected:
         /** @name Sending session packets */
         //@{
         /** 
@@ -324,7 +334,6 @@ namespace net
                 _server->send( packet, data );
             }
 
-
         /** 
          * Send a packet containing a string to a node.
          * 
@@ -356,6 +365,7 @@ namespace net
             }
         //@}
 
+    protected:
         /** @internal */
         void expireInstanceData( const int64_t age )
             { _instanceCache.expire( age ); }
@@ -385,15 +395,14 @@ namespace net
 
         typedef stde::hash_map< uint32_t, NodeID > NodeIDHash;
         /** The id->master mapping table. */
-        NodeIDHash _idMasters;
-        base::Lock _idMasterMutex;
+        base::Lockable< NodeIDHash, base::SpinLock > _idMasters;
         
         /** All registered and mapped objects. */
-        base::Lockable< ObjectVectorHash, base::SpinLock > _objects;
+        base::Lockable< ObjectsHash, base::SpinLock > _objects;
 
         InstanceCache _instanceCache; //!< cached object mapping data
 
-        const NodeID& _pollIDMaster( const uint32_t id ) const;
+        const NodeID _pollIDMaster( const uint32_t id ) const;
         NodePtr _pollIDMasterNode( const uint32_t id ) const;
 
         void _registerThreadObject( Object* object, const uint32_t id );
@@ -405,31 +414,39 @@ namespace net
                 _localNode->send( packet );
             }
 
-        CommandResult _invokeObjectCommand( Command& packet );
+        template< class P > void _ackRequest( Command& command );
+
+        bool _dispatchObjectCommand( Command& command );
+        bool _invokeObjectCommand( Command& packet );
+        Object* _findObject( Command& command );
+
         void _attachObject( Object* object, const uint32_t id, 
                             const uint32_t instanceID );
         void _detachObject( Object* object );
 
         uint32_t _setIDMasterNB( const uint32_t id, const NodeID& master );
         void _setIDMasterSync( const uint32_t requestID );
+        uint32_t _unsetIDMasterNB( const uint32_t id );
+        void _unsetIDMasterSync( const uint32_t requestID );
 
 
         /** The command handler functions. */
-        CommandResult _cmdAckRequest( Command& packet );
-        CommandResult _cmdGenIDs( Command& packet );
-        CommandResult _cmdGenIDsReply( Command& packet );
-        CommandResult _cmdSetIDMaster( Command& packet );
-        CommandResult _cmdGetIDMaster( Command& packet );
-        CommandResult _cmdGetIDMasterReply( Command& packet );
-        CommandResult _cmdAttachObject( Command& command );
-        CommandResult _cmdDetachObject( Command& command );
-        CommandResult _cmdMapObject( Command& command );
-        CommandResult _cmdUnmapObject( Command& command );
-        CommandResult _cmdSubscribeObject( Command& command );
-        CommandResult _cmdSubscribeObjectSuccess( Command& command );
-        CommandResult _cmdSubscribeObjectReply( Command& command );
-        CommandResult _cmdUnsubscribeObject( Command& command );
-        CommandResult _cmdInstance( Command& command );
+        bool _cmdAckRequest( Command& packet );
+        bool _cmdGenIDs( Command& packet );
+        bool _cmdGenIDsReply( Command& packet );
+        bool _cmdSetIDMaster( Command& packet );
+        bool _cmdUnsetIDMaster( Command& packet );
+        bool _cmdGetIDMaster( Command& packet );
+        bool _cmdGetIDMasterReply( Command& packet );
+        bool _cmdAttachObject( Command& command );
+        bool _cmdDetachObject( Command& command );
+        bool _cmdMapObject( Command& command );
+        bool _cmdUnmapObject( Command& command );
+        bool _cmdSubscribeObject( Command& command );
+        bool _cmdSubscribeObjectSuccess( Command& command );
+        bool _cmdSubscribeObjectReply( Command& command );
+        bool _cmdUnsubscribeObject( Command& command );
+        bool _cmdInstance( Command& command );
 
         CHECK_THREAD_DECLARE( _receiverThread );
         CHECK_THREAD_DECLARE( _commandThread );

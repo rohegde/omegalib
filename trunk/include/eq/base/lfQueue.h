@@ -48,8 +48,7 @@ namespace base
     public:
         /** Construct a new queue. @version 1.0 */
         LFQueue( const int32_t size )
-                : _data( size + 1 ), _readPos( 0 ), _writePos( 0 )
-            { EQASSERT( size > 0 ); }
+                : _data( size + 1 ), _readPos( 0 ), _writePos( 0 ) {}
 
         /** Destruct this queue. @version 1.0 */
         ~LFQueue() {}
@@ -63,6 +62,20 @@ namespace base
                 CHECK_THREAD_SCOPED( _reader );
                 _readPos = 0;
                 _writePos = 0;
+            }
+            
+        /**
+         * Resize and reset the queue.
+         * 
+         * This method is not thread-safe. The queue has to be empty.
+         * @version 1.0
+         */
+        void resize( const int32_t size )
+            {
+                EQASSERT( isEmpty( ));
+                _readPos = 0;
+                _writePos = 0;
+                _data.resize( size + 1 );
             }
 
         /** 

@@ -20,19 +20,17 @@
 #define EQ_CONFIG_H
 
 #include <eq/client/commandQueue.h>  // member
-#include <eq/client/observer.h>      // member
 #include <eq/client/types.h>         // typedefs
 #include <eq/client/visitorResult.h> // enum
 
-#include <eq/net/session.h>          // base class
+#include <eq/fabric/config.h>        // base class
 #include <eq/base/monitor.h>         // member
 
 namespace eq
 {
-    class ConfigDeserializer;
-    class ConfigVisitor;
+    class Layout;
     class Node;
-    class SceneObject;
+    class Observer;
     struct ConfigEvent;
 
     /**
@@ -54,29 +52,33 @@ namespace eq
      *
      * The render client processes have only access to the current View for each
      * of their channels.
+     *
+     * @sa fabric::Config for public methods
      */
-    class Config : public net::Session
+    class Config : public fabric::Config< Server, Config, Observer, Layout,
+                                          Canvas, Node, ConfigVisitor >
     {
     public:
+        typedef fabric::Config< Server, Config, Observer, Layout, Canvas, Node,
+                                ConfigVisitor > Super; //!< base class
+
         /** Construct a new config. @version 1.0 */
         EQ_EXPORT Config( ServerPtr parent );
 
         /** Destruct a config. @version 1.0 */
         EQ_EXPORT virtual ~Config();
 
+		EQ_EXPORT Layout* ohGetLayout(int id);
+
         /** @name Data Access */
         //@{
-        /** @return the name of this config. @version 1.0 */
-        const std::string& getName() const { return _name; }
-
         /** @return the local client node. @version 1.0 */
         EQ_EXPORT ClientPtr getClient();
-        
-        /** @return the local server proxy. @version 1.0 */
-        EQ_EXPORT ServerPtr getServer();
 
-        /** @internal */
-        EQ_EXPORT CommandQueue* getNodeThreadQueue();
+        /** @return the local client node. @version 1.0 */
+        EQ_EXPORT ConstClientPtr getClient() const;
+
+        EQ_EXPORT net::CommandQueue* getMainThreadQueue(); //!< @internal
 
         /** @return the frame number of the last frame started. @version 1.0 */
         uint32_t getCurrentFrame()  const { return _currentFrame; }
@@ -84,63 +86,7 @@ namespace eq
         /** @return the frame number of the last frame finished. @version 1.0 */
         uint32_t getFinishedFrame() const { return _finishedFrame.get(); }
 
-        /**
-         * @return the latency, i.e., the maximum distance between the finished
-         *          and started frame.
-         * @version 1.0
-         */
-        uint32_t getLatency() const { return _latency; }
-
-        /**
-         * Change the latency of the configuration.
-         *
-         * The config has to be running. Pending rendering frames are finished
-         * by this method, making it relatively expensive.
-         *
-         * @warning Experimental - may not be supported in the future
-         */
-        EQ_EXPORT void changeLatency( const uint32_t latency );
-
-        /**
-         * @return the vector of nodes instantiated on this process.
-         * @version 1.0
-         */
-        const NodeVector& getNodes() const { return _nodes; }
-
-        /** @return the vector of observers, app-node only. @version 1.0 */
-        const ObserverVector& getObservers() const { return _observers; }
-
-        /** @return the observer of the given identifier, or 0. @version 1.0 */
-        Observer* findObserver( const uint32_t id );
-
-        /** @return the observer of the given identifier, or 0. @version 1.0 */
-        const Observer* findObserver( const uint32_t id ) const;
-
-        /** @return the vector of layouts, app-node only. @version 1.0 */
-        const LayoutVector& getLayouts() const { return _layouts; }
-
-        /** @return the layout of the given identifier, or 0. @version 1.0 */
-        EQ_EXPORT Layout* findLayout( const uint32_t id );
-
-        /** @return the view of the given identifier, or 0. @version 1.0 */
-        EQ_EXPORT View* findView( const uint32_t id );
-
-        /** @return the vector of canvases, app-node only. @version 1.0 */
-        const CanvasVector& getCanvases() const { return _canvases; }
-
-        /** 
-         * Traverse this config and all children using a config visitor.
-         * 
-         * @param visitor the visitor.
-         * @return the result of the visitor traversal.
-         * @version 1.0
-         */
-        EQ_EXPORT VisitorResult accept( ConfigVisitor& visitor );
-
-        /** Const-version of accept(). @version 1.0 */
-        EQ_EXPORT VisitorResult accept( ConfigVisitor& visitor ) const;
-
-        /** Get all received statistics. @internal */
+        /** @internal Get all received statistics. */
         EQ_EXPORT void getStatistics( std::vector< FrameStatistics >& stats );
 
         /**
@@ -156,15 +102,19 @@ namespace eq
         /**
          * Get the current time in milliseconds.
          *
-         * The clock in all processes of the Config is synchronized to the
+         * The clock in all processes of the config is synchronized to the
          * Server clock. The precision of this synchronization is typically
-         * about 1 ms. The clock of the last instantiated Config is used as the
-         * Log clock.
+         * about 1 ms. The clock of the last instantiated config is used as the
+         * base::Log clock.
          *
          * @return the global time in ms.
          * @version 1.0
          */
         int64_t getTime() const { return _clock.getTime64(); }
+
+        /** @internal */
+        const Channel* findChannel( const std::string& name ) const
+            { return find< Channel >( name ); }
         //@}
 
         /** @name Operations */
@@ -214,6 +164,9 @@ namespace eq
 
         /** @warning Experimental - may not be supported in the future */
         EQ_EXPORT void freezeLoadBalancing( const bool onOff );
+
+        /** @sa fabric::Config::setLatency() */
+        EQ_EXPORT virtual void setLatency( const uint32_t latency );
         //@}
 
         /** @name Frame Control */
@@ -348,58 +301,23 @@ namespace eq
         EQ_EXPORT virtual bool handleEvent( const ConfigEvent* event );
         //@}
         
-        /** @name Error Information */
-        //@{
-        /** @return the error message from the last operation. @version 1.0 */
-        const std::string& getErrorMessage() const { return _error; }
-        //@}
-
-        /** @internal */
-        //@{
         /** 
+         * @internal
          * Set up the config's message pump for the given pipe.
          * Used by non-threaded and AGL pipes.
-         * @internal
          */
         void setupMessagePump( Pipe* pipe );
-        //@}
 
     protected:
-
+        EQ_EXPORT virtual void notifyMapped( net::NodePtr node ); //!< @internal
         /** @internal */
-        //@{
-        /** @internal */
-        EQ_EXPORT virtual void notifyMapped( net::NodePtr node );
-        //@}
+        EQ_EXPORT virtual void changeLatency( const uint32_t latency );
+        EQ_EXPORT virtual void unmap(); //!< @internal
+        EQ_EXPORT virtual bool mapViewObjects() const; //!< @internal
 
     private:
-        /** The node identifier of the node running the application thread. */
-        net::NodeID _appNodeID;
-        friend class Server;
-
-        /** The name. */
-        std::string _name;
-
         /** The node running the application thread. */
         net::NodePtr _appNode;
-
-        /** Locally-instantiated nodes of this config. */
-        NodeVector _nodes;
-
-        /** The list of observers, app-node only. */
-        ObserverVector _observers;
-
-        /** The list of layouts, app-node only. */
-        LayoutVector _layouts;
-
-        /** The list of canvases, app-node only. */
-        CanvasVector _canvases;
-
-        /** The default distance between the left and the right eye. */
-        float _eyeBase;
-
-        /** The reason for the last error. */
-        std::string _error;
 
         /** The receiver->app thread event queue. */
         CommandQueue _eventQueue;
@@ -410,9 +328,6 @@ namespace eq
         /** Global statistics events, index per frame and channel. */
         std::deque< FrameStatistics > _statistics;
         base::Lock                    _statisticsMutex;
-
-        /** The maximum number of outstanding frames. */
-        uint32_t _latency;
         
         /** The last started frame. */
         uint32_t _currentFrame;
@@ -431,23 +346,11 @@ namespace eq
 
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
 
         friend class Node;
-        void _addNode( Node* node );
-        void _removeNode( Node* node );
-        Node* _findNode( const uint32_t id );
         void _frameStart();
-
-        friend class ConfigDeserializer;
-        void _addObserver( Observer* observer );
-        void _removeObserver( Observer* observer );
-        void _addLayout( Layout* layout );
-        void _removeLayout( Layout* layout );
-        void _addCanvas( Canvas* canvas );
-        void _removeCanvas( Canvas* canvas );
-
         bool _needsLocalSync() const;
 
         /** 
@@ -456,22 +359,19 @@ namespace eq
          */
         void _updateStatistics( const uint32_t finishedFrame );
 
-        /** Init the application node instance */
-        void _initAppNode( const uint32_t distributorID );
-
         /** Exit the current message pump */
         void _exitMessagePump();
 
         /** The command functions. */
-        net::CommandResult _cmdSyncClock( net::Command& command );
-        net::CommandResult _cmdCreateNode( net::Command& command );
-        net::CommandResult _cmdDestroyNode( net::Command& command );
-        net::CommandResult _cmdInitReply( net::Command& command );
-        net::CommandResult _cmdExitReply( net::Command& command );
-        net::CommandResult _cmdStartFrameReply( net::Command& command );
-        net::CommandResult _cmdReleaseFrameLocal( net::Command& command );
-        net::CommandResult _cmdFrameFinish( net::Command& command );
-        net::CommandResult _cmdUnmap( net::Command& command );
+        bool _cmdSyncClock( net::Command& command );
+        bool _cmdCreateNode( net::Command& command );
+        bool _cmdDestroyNode( net::Command& command );
+        bool _cmdSync( net::Command& command );
+        bool _cmdStartFrameReply( net::Command& command );
+        bool _cmdInitReply( net::Command& command );
+        bool _cmdExitReply( net::Command& command );
+        bool _cmdReleaseFrameLocal( net::Command& command );
+        bool _cmdFrameFinish( net::Command& command );
     };
 }
 

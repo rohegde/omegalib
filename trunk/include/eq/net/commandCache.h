@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2006-2009, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2006-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -40,11 +40,15 @@ namespace net
     class CommandCache
     {
     public:
-        CommandCache();
-        ~CommandCache();
+        EQ_EXPORT CommandCache();
+        EQ_EXPORT ~CommandCache();
 
         /** @return a new command. */
-        Command& alloc( NodePtr node, NodePtr localNode, const uint64_t size );
+        EQ_EXPORT Command& alloc( NodePtr node, NodePtr localNode,
+                                  const uint64_t size );
+
+        /** @return a clone of a command. */
+        EQ_EXPORT Command& clone( Command& from );
 
         /** Flush all allocated commands. */
         void flush();
@@ -58,9 +62,16 @@ namespace net
         };
 
         /** The caches. */
-        CommandVector _caches[ CACHE_ALL ];
+        Commands _cache[ CACHE_ALL ];
+
+        /** The total size of each cache */
+        size_t _size[ CACHE_ALL ];
+
         /** Last lookup position in each cache. */
-        size_t _positions[ CACHE_ALL ];
+        size_t _position[ CACHE_ALL ];
+
+        void _compact( const Cache which );
+        Command& _newCommand( const Cache which );
 
         CHECK_THREAD_DECLARE( _thread );
     };

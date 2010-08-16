@@ -19,15 +19,13 @@
 #ifndef EQ_PACKETS_H
 #define EQ_PACKETS_H
 
-#include <eq/client/channel.h>       // Channel::IATTR_ALL enum
-#include <eq/client/commands.h>
-#include <eq/client/node.h>          // Node::IATTR_ALL enum
-#include <eq/client/renderContext.h> // member
-#include <eq/client/types.h>         // member
-#include <eq/client/viewport.h>      // member
-#include <eq/client/window.h>        // Window::IATTR_ALL enum
+#include <eq/client/statistic.h>     // member
 
-#include <eq/net/packets.h>
+#include <eq/fabric/commands.h>      // enum 
+#include <eq/fabric/packetType.h>    // member
+#include <eq/fabric/packets.h>
+#include <eq/fabric/renderContext.h> // member
+#include <eq/fabric/viewport.h>      // member
 
 namespace eq
 {
@@ -35,26 +33,19 @@ namespace eq
     class Window;
 
 /** @cond IGNORE */
-    enum DataType
-    {
-        DATATYPE_EQ_CLIENT = net::DATATYPE_EQNET_CUSTOM, // 128
-        DATATYPE_EQ_SERVER,
-        DATATYPE_EQ_CUSTOM = 1<<8 // 256
-    };
-
     //------------------------------------------------------------
     // Client
     //------------------------------------------------------------
     struct ClientPacket : public net::Packet
     {
-        ClientPacket(){ datatype = DATATYPE_EQ_CLIENT; }
+        ClientPacket(){ type = fabric::PACKETTYPE_EQ_CLIENT; }
     };
 
     struct ClientExitPacket : public ClientPacket
     {
         ClientExitPacket()
             {
-                command = CMD_CLIENT_EXIT;
+                command = fabric::CMD_CLIENT_EXIT;
                 size    = sizeof( ClientExitPacket );
             }
     };
@@ -62,17 +53,12 @@ namespace eq
     //------------------------------------------------------------
     // Server
     //------------------------------------------------------------
-    struct ServerPacket : public net::Packet
-    {
-        ServerPacket(){ datatype = DATATYPE_EQ_SERVER; }
-    };
-
-    struct ServerChooseConfigPacket : public ServerPacket
+    struct ServerChooseConfigPacket : public fabric::ServerPacket
     {
         ServerChooseConfigPacket()
                 : fill ( 0 )
             {
-                command = CMD_SERVER_CHOOSE_CONFIG;
+                command = fabric::CMD_SERVER_CHOOSE_CONFIG;
                 size    = sizeof( ServerChooseConfigPacket );
                 rendererInfo[0] = '\0';
             }
@@ -82,63 +68,12 @@ namespace eq
         EQ_ALIGN8( char rendererInfo[8] );
     };
 
-    struct ServerUseConfigPacket : public ServerPacket
-    {
-        ServerUseConfigPacket()
-            {
-                command = CMD_SERVER_USE_CONFIG;
-                size    = sizeof( ServerChooseConfigPacket );
-                configInfo[0] = '\0';
-            }
-
-        uint32_t requestID;
-        EQ_ALIGN8( char configInfo[8] );
-    };
-
-    struct ServerCreateConfigPacket : public ServerPacket
-    {
-        ServerCreateConfigPacket()
-                : requestID( EQ_ID_INVALID )
-                , objectID( EQ_ID_INVALID ) 
-                , fill( 0 )
-            {
-                command   = CMD_SERVER_CREATE_CONFIG;
-                size      = sizeof( ServerCreateConfigPacket );
-                name[0]   = '\0';
-            }
-
-        net::NodeID appNodeID;
-        net::SessionID configID;
-        uint32_t    requestID;
-        uint32_t    objectID;
-        uint32_t    fill;
-        EQ_ALIGN8( char name[8] );
-    };
-
-    struct ServerDestroyConfigPacket : public ServerPacket
-    {
-        ServerDestroyConfigPacket()
-            {
-                command = CMD_SERVER_DESTROY_CONFIG;
-                size    = sizeof( ServerDestroyConfigPacket );
-            }
-
-        net::SessionID configID;
-    };
-
-    struct ServerChooseConfigReplyPacket : public ServerPacket
+    struct ServerChooseConfigReplyPacket : public fabric::ServerPacket
     {
         ServerChooseConfigReplyPacket( const ServerChooseConfigPacket*
                                        requestPacket )
             {
-                command   = CMD_SERVER_CHOOSE_CONFIG_REPLY;
-                size      = sizeof( ServerChooseConfigReplyPacket );
-                requestID = requestPacket->requestID;
-            }
-        ServerChooseConfigReplyPacket( const ServerUseConfigPacket*
-                                       requestPacket )
-            {
-                command   = CMD_SERVER_CHOOSE_CONFIG_REPLY;
+                command   = fabric::CMD_SERVER_CHOOSE_CONFIG_REPLY;
                 size      = sizeof( ServerChooseConfigReplyPacket );
                 requestID = requestPacket->requestID;
             }
@@ -147,11 +82,11 @@ namespace eq
         uint32_t requestID;
     };
 
-    struct ServerReleaseConfigPacket : public ServerPacket
+    struct ServerReleaseConfigPacket : public fabric::ServerPacket
     {
         ServerReleaseConfigPacket()
             {
-                command = CMD_SERVER_RELEASE_CONFIG;
+                command = fabric::CMD_SERVER_RELEASE_CONFIG;
                 size    = sizeof( ServerReleaseConfigPacket );
             }
 
@@ -159,12 +94,12 @@ namespace eq
         uint32_t requestID;
     };
 
-    struct ServerReleaseConfigReplyPacket : public ServerPacket
+    struct ServerReleaseConfigReplyPacket : public fabric::ServerPacket
     {
         ServerReleaseConfigReplyPacket( const ServerReleaseConfigPacket*
                                         requestPacket )
             {
-                command   = CMD_SERVER_RELEASE_CONFIG_REPLY;
+                command   = fabric::CMD_SERVER_RELEASE_CONFIG_REPLY;
                 size      = sizeof( ServerReleaseConfigReplyPacket );
                 requestID = requestPacket->requestID;
             }
@@ -172,22 +107,22 @@ namespace eq
         uint32_t requestID;
     };
 
-    struct ServerShutdownPacket : public ServerPacket
+    struct ServerShutdownPacket : public fabric::ServerPacket
     {
         ServerShutdownPacket()
             {
-                command = CMD_SERVER_SHUTDOWN;
+                command = fabric::CMD_SERVER_SHUTDOWN;
                 size    = sizeof( ServerShutdownPacket );
             }
 
         uint32_t requestID;
     };
 
-    struct ServerShutdownReplyPacket : public ServerPacket
+    struct ServerShutdownReplyPacket : public fabric::ServerPacket
     {
         ServerShutdownReplyPacket( const ServerShutdownPacket* requestPacket )
             {
-                command   = CMD_SERVER_SHUTDOWN_REPLY;
+                command   = fabric::CMD_SERVER_SHUTDOWN_REPLY;
                 size      = sizeof( ServerShutdownReplyPacket );
                 requestID = requestPacket->requestID;
             }
@@ -201,46 +136,22 @@ namespace eq
     //------------------------------------------------------------
     typedef net::SessionPacket ConfigPacket;
 
-    struct ConfigCreateReplyPacket : public ConfigPacket
-    {
-        ConfigCreateReplyPacket( const ServerCreateConfigPacket* request )
-        {
-            command   = CMD_CONFIG_CREATE_REPLY;
-            size      = sizeof( ConfigCreateReplyPacket );
-            sessionID = request->configID;
-            requestID = request->requestID;
-        }
-
-        uint32_t requestID;
-    };
-
     struct ConfigCreateNodePacket : public ConfigPacket
     {
         ConfigCreateNodePacket()
             {
-                command = CMD_CONFIG_CREATE_NODE;
+                command = fabric::CMD_CONFIG_CREATE_NODE;
                 size    = sizeof( ConfigCreateNodePacket );
             }
 
         uint32_t nodeID;
     };
 
-    struct ConfigChangeLatency : public ConfigPacket
-    {
-        ConfigChangeLatency()
-            {
-                command = CMD_CONFIG_CHANGE_LATENCY;
-                size    = sizeof( ConfigChangeLatency );
-            }
-
-        uint32_t latency;
-    };
-
     struct ConfigDestroyNodePacket : public ConfigPacket
     {
         ConfigDestroyNodePacket()
             {
-                command = CMD_CONFIG_DESTROY_NODE;
+                command = fabric::CMD_CONFIG_DESTROY_NODE;
                 size    = sizeof( ConfigDestroyNodePacket );
             }
 
@@ -251,7 +162,7 @@ namespace eq
     {
         ConfigInitPacket()
             {
-                command   = CMD_CONFIG_INIT;
+                command   = fabric::CMD_CONFIG_INIT;
                 size      = sizeof( ConfigInitPacket );
             }
 
@@ -263,24 +174,22 @@ namespace eq
     {
         ConfigInitReplyPacket( const ConfigInitPacket* requestPacket )
             {
-                command   = CMD_CONFIG_INIT_REPLY;
+                command   = fabric::CMD_CONFIG_INIT_REPLY;
                 size      = sizeof( ConfigInitReplyPacket );
                 requestID = requestPacket->requestID;
                 sessionID = requestPacket->sessionID;
-                error[0]  = '\0';
             }
 
         uint32_t requestID;
-        uint32_t configID;
+        uint32_t version;
         bool     result;
-        EQ_ALIGN8( char error[8] );
     };
 
     struct ConfigExitPacket : public ConfigPacket
     {
         ConfigExitPacket()
             {
-                command   = CMD_CONFIG_EXIT;
+                command   = fabric::CMD_CONFIG_EXIT;
                 size      = sizeof( ConfigExitPacket );
             }
         uint32_t requestID;
@@ -290,7 +199,7 @@ namespace eq
     {
         ConfigExitReplyPacket( const ConfigExitPacket* requestPacket )
             {
-                command   = CMD_CONFIG_EXIT_REPLY;
+                command   = fabric::CMD_CONFIG_EXIT_REPLY;
                 size      = sizeof( ConfigExitReplyPacket );
                 requestID = requestPacket->requestID;
             }
@@ -302,19 +211,47 @@ namespace eq
     {
         ConfigStartFramePacket()
             {
-                command   = CMD_CONFIG_START_FRAME;
+                command   = fabric::CMD_CONFIG_START_FRAME;
                 size      = sizeof( ConfigStartFramePacket );
             }
         uint32_t frameID;
-        uint32_t nChanges;
-        EQ_ALIGN8( net::ObjectVersion changes[1] );
+        uint32_t syncID;
+        uint32_t startID;
+    };
+
+    struct ConfigSyncPacket : public ConfigPacket
+    {
+        ConfigSyncPacket( const ConfigStartFramePacket* request,
+                          const uint32_t version_ )
+                : requestID( request->syncID )
+                , version( version_ )
+            {
+                command   = fabric::CMD_CONFIG_SYNC;
+                size      = sizeof( ConfigSyncPacket );
+            }
+        const uint32_t requestID;
+        const uint32_t version;
+    };
+
+    struct ConfigStartFrameReplyPacket : public ConfigPacket
+    {
+        ConfigStartFrameReplyPacket( const ConfigStartFramePacket* request,
+                                     const bool finish_ )
+                : requestID( request->startID )
+                , finish( finish_ )
+            {
+                command   = fabric::CMD_CONFIG_START_FRAME_REPLY;
+                size      = sizeof( ConfigStartFrameReplyPacket );
+            }
+        const uint32_t requestID;
+        const bool finish;
     };
 
     struct ConfigReleaseFrameLocalPacket : public ConfigPacket
     {
         ConfigReleaseFrameLocalPacket()
             {
-                command       = CMD_CONFIG_RELEASE_FRAME_LOCAL;
+                command       = fabric::CMD_CONFIG_RELEASE_FRAME_LOCAL;
                 size          = sizeof( ConfigReleaseFrameLocalPacket );
             }
         uint32_t frameNumber;
@@ -324,7 +261,7 @@ namespace eq
     {
         ConfigFrameFinishPacket()
             {
-                command     = CMD_CONFIG_FRAME_FINISH;
+                command     = fabric::CMD_CONFIG_FRAME_FINISH;
                 size        = sizeof( ConfigFrameFinishPacket );
             }
         uint32_t frameNumber;
@@ -334,7 +271,7 @@ namespace eq
     {
         ConfigFinishAllFramesPacket()
             {
-                command   = CMD_CONFIG_FINISH_ALL_FRAMES;
+                command   = fabric::CMD_CONFIG_FINISH_ALL_FRAMES;
                 size      = sizeof( ConfigFinishAllFramesPacket );
             }
     };
@@ -343,7 +280,7 @@ namespace eq
     {
         ConfigFreezeLoadBalancingPacket()
             {
-                command = CMD_CONFIG_FREEZE_LOAD_BALANCING;
+                command = fabric::CMD_CONFIG_FREEZE_LOAD_BALANCING;
                 size    = sizeof( ConfigFreezeLoadBalancingPacket );
             }
         bool freeze;
@@ -353,34 +290,11 @@ namespace eq
     {
         ConfigSyncClockPacket()
             {
-                command       = CMD_CONFIG_SYNC_CLOCK;
+                command       = fabric::CMD_CONFIG_SYNC_CLOCK;
                 size          = sizeof( ConfigSyncClockPacket );
             }
 
         int64_t time;
-    };
-
-    struct ConfigUnmapPacket : public ConfigPacket
-    {
-        ConfigUnmapPacket()
-            {
-                command       = CMD_CONFIG_UNMAP;
-                size          = sizeof( ConfigUnmapPacket );
-            }
-
-        uint32_t requestID;
-    };
-
-    struct ConfigUnmapReplyPacket : public ConfigPacket
-    {
-        ConfigUnmapReplyPacket( const ConfigUnmapPacket* request )
-            {
-                command       = CMD_CONFIG_UNMAP_REPLY;
-                size          = sizeof( ConfigUnmapReplyPacket );
-                requestID     = request->requestID;
-            }
-
-        uint32_t requestID;
     };
 
     //------------------------------------------------------------
@@ -390,37 +304,30 @@ namespace eq
     {
         NodeConfigInitPacket()
             {
-                command        = CMD_NODE_CONFIG_INIT;
+                command        = fabric::CMD_NODE_CONFIG_INIT;
                 size           = sizeof( NodeConfigInitPacket );
-                name[0]        = '\0';
             }
 
         uint32_t initID;
         uint32_t frameNumber;
-        int32_t  iAttributes[ eq::Node::IATTR_ALL ];
-        int32_t  tasks;
-        EQ_ALIGN8( char name[8] );
     };
 
     struct NodeConfigInitReplyPacket : public net::ObjectPacket
     {
         NodeConfigInitReplyPacket()
             {
-                command   = CMD_NODE_CONFIG_INIT_REPLY;
+                command   = fabric::CMD_NODE_CONFIG_INIT_REPLY;
                 size      = sizeof( NodeConfigInitReplyPacket );
-                error[0]  = '\0';
             }
 
-        int32_t  iAttributes[ eq::Node::IATTR_ALL ];
         bool     result;
-        EQ_ALIGN8( char error[8] );
     };
 
     struct NodeConfigExitPacket : public net::ObjectPacket
     {
         NodeConfigExitPacket()
             {
-                command = CMD_NODE_CONFIG_EXIT;
+                command = fabric::CMD_NODE_CONFIG_EXIT;
                 size    = sizeof( NodeConfigExitPacket );
             }
     };
@@ -429,7 +336,7 @@ namespace eq
     {
         NodeConfigExitReplyPacket()
             {
-                command   = CMD_NODE_CONFIG_EXIT_REPLY;
+                command   = fabric::CMD_NODE_CONFIG_EXIT_REPLY;
                 size      = sizeof( NodeConfigExitReplyPacket );
             }
 
@@ -440,7 +347,7 @@ namespace eq
     {
         NodeCreatePipePacket()
             {
-                command = CMD_NODE_CREATE_PIPE;
+                command = fabric::CMD_NODE_CREATE_PIPE;
                 size    = sizeof( NodeCreatePipePacket );
             }
 
@@ -452,7 +359,7 @@ namespace eq
     {
         NodeDestroyPipePacket()
             {
-                command = CMD_NODE_DESTROY_PIPE;
+                command = fabric::CMD_NODE_DESTROY_PIPE;
                 size    = sizeof( NodeDestroyPipePacket );
             }
 
@@ -463,19 +370,20 @@ namespace eq
     {
         NodeFrameStartPacket()
             {
-                command        = CMD_NODE_FRAME_START;
+                command        = fabric::CMD_NODE_FRAME_START;
                 size           = sizeof( NodeFrameStartPacket );
             }
 
         uint32_t frameID;
         uint32_t frameNumber;
+        uint32_t version;
     };
 
     struct NodeFrameFinishPacket : public net::ObjectPacket
     {
         NodeFrameFinishPacket()
             {
-                command          = CMD_NODE_FRAME_FINISH;
+                command          = fabric::CMD_NODE_FRAME_FINISH;
                 size             = sizeof( NodeFrameFinishPacket );
             }
 
@@ -487,7 +395,7 @@ namespace eq
     {
         NodeFrameFinishReplyPacket()
             {
-                command        = CMD_NODE_FRAME_FINISH_REPLY;
+                command        = fabric::CMD_NODE_FRAME_FINISH_REPLY;
                 size           = sizeof( NodeFrameFinishReplyPacket );
             }
 
@@ -498,7 +406,7 @@ namespace eq
     {
         NodeFrameDrawFinishPacket()
             {
-                command       = CMD_NODE_FRAME_DRAW_FINISH;
+                command       = fabric::CMD_NODE_FRAME_DRAW_FINISH;
                 size          = sizeof( NodeFrameDrawFinishPacket );
             }
         uint32_t frameID;
@@ -509,7 +417,7 @@ namespace eq
     {
         NodeFrameTasksFinishPacket()
             {
-                command     = CMD_NODE_FRAME_TASKS_FINISH;
+                command     = fabric::CMD_NODE_FRAME_TASKS_FINISH;
                 size        = sizeof( NodeFrameTasksFinishPacket );
             }
 
@@ -524,7 +432,7 @@ namespace eq
     {
         PipeCreateWindowPacket()
             {
-                command = CMD_PIPE_CREATE_WINDOW;
+                command = fabric::CMD_PIPE_CREATE_WINDOW;
                 size    = sizeof( PipeCreateWindowPacket );
             }
 
@@ -535,7 +443,7 @@ namespace eq
     {
         PipeDestroyWindowPacket()
             {
-                command = CMD_PIPE_DESTROY_WINDOW;
+                command = fabric::CMD_PIPE_DESTROY_WINDOW;
                 size    = sizeof( PipeDestroyWindowPacket );
             }
 
@@ -546,50 +454,39 @@ namespace eq
     {
         PipeConfigInitPacket()
             {
-                command = CMD_PIPE_CONFIG_INIT;
+                command = fabric::CMD_PIPE_CONFIG_INIT;
                 size    = sizeof( PipeConfigInitPacket );
-                name[0] = '\0';
             }
 
         uint32_t      initID;
-        uint32_t      port;
-        uint32_t      device;
         uint32_t      frameNumber;
-        int32_t       tasks;
-        bool          cudaGLInterop;
-        PixelViewport pvp;
-        EQ_ALIGN8( char name[8] );
     };
 
     struct PipeConfigInitReplyPacket : public net::ObjectPacket
     {
         PipeConfigInitReplyPacket()
             {
-                command   = CMD_PIPE_CONFIG_INIT_REPLY;
+                command   = fabric::CMD_PIPE_CONFIG_INIT_REPLY;
                 size      = sizeof( PipeConfigInitReplyPacket );
-                error[0]  = '\0';
             }
 
         bool          result;
-        PixelViewport pvp;
-        EQ_ALIGN8( char error[8] );
     };
 
     struct PipeConfigExitPacket : public net::ObjectPacket
     {
         PipeConfigExitPacket()
             {
-                command = CMD_PIPE_CONFIG_EXIT;
+                command = fabric::CMD_PIPE_CONFIG_EXIT;
                 size    = sizeof( PipeConfigExitPacket );
             }
-        bool exitThread;
     };
 
     struct PipeConfigExitReplyPacket : public net::ObjectPacket
     {
         PipeConfigExitReplyPacket()
             {
-                command   = CMD_PIPE_CONFIG_EXIT_REPLY;
+                command   = fabric::CMD_PIPE_CONFIG_EXIT_REPLY;
                 size      = sizeof( PipeConfigExitReplyPacket );
             }
 
@@ -600,7 +497,7 @@ namespace eq
     {
         PipeFrameStartClockPacket()
             {
-                command       = CMD_PIPE_FRAME_START_CLOCK;
+                command       = fabric::CMD_PIPE_FRAME_START_CLOCK;
                 size          = sizeof( PipeFrameStartClockPacket );
             }
     };
@@ -609,19 +506,20 @@ namespace eq
     {
         PipeFrameStartPacket()
             {
-                command        = CMD_PIPE_FRAME_START;
+                command        = fabric::CMD_PIPE_FRAME_START;
                 size           = sizeof( PipeFrameStartPacket );
             }
 
         uint32_t frameID;
         uint32_t frameNumber;
+        uint32_t version;
     };
 
     struct PipeFrameFinishPacket : public net::ObjectPacket
     {
         PipeFrameFinishPacket()
             {
-                command        = CMD_PIPE_FRAME_FINISH;
+                command        = fabric::CMD_PIPE_FRAME_FINISH;
                 size           = sizeof( PipeFrameFinishPacket );
             }
 
@@ -633,7 +531,7 @@ namespace eq
     {
         PipeFrameDrawFinishPacket()
             {
-                command       = CMD_PIPE_FRAME_DRAW_FINISH;
+                command       = fabric::CMD_PIPE_FRAME_DRAW_FINISH;
                 size          = sizeof( PipeFrameDrawFinishPacket );
             }
         uint32_t frameID;
@@ -647,39 +545,29 @@ namespace eq
     {
         WindowConfigInitPacket()
             {
-                command = CMD_WINDOW_CONFIG_INIT;
+                command = fabric::CMD_WINDOW_CONFIG_INIT;
                 size    = sizeof( WindowConfigInitPacket );
-                name[0] = '\0';
             }
 
         uint32_t       initID;
-        int32_t        iAttributes[ eq::Window::IATTR_ALL ];
-        int32_t        tasks;
-        PixelViewport  pvp;
-        Viewport       vp;
-        EQ_ALIGN8( char name[8] );
     };
 
     struct WindowConfigInitReplyPacket : public net::ObjectPacket
     {
         WindowConfigInitReplyPacket()
             {
-                command   = CMD_WINDOW_CONFIG_INIT_REPLY;
+                command   = fabric::CMD_WINDOW_CONFIG_INIT_REPLY;
                 size      = sizeof( WindowConfigInitReplyPacket );
-                error[0]  = '\0';
             }
 
-        PixelViewport   pvp;
-        DrawableConfig  drawableConfig;
         bool            result;
-        EQ_ALIGN8( char error[8] );
     };
 
     struct WindowConfigExitPacket : public net::ObjectPacket
     {
         WindowConfigExitPacket()
             {
-                command = CMD_WINDOW_CONFIG_EXIT;
+                command = fabric::CMD_WINDOW_CONFIG_EXIT;
                 size    = sizeof( WindowConfigExitPacket );
             }
     };
@@ -688,7 +576,7 @@ namespace eq
     {
         WindowConfigExitReplyPacket()
             {
-                command   = CMD_WINDOW_CONFIG_EXIT_REPLY;
+                command   = fabric::CMD_WINDOW_CONFIG_EXIT_REPLY;
                 size      = sizeof( WindowConfigExitReplyPacket );
             }
 
@@ -699,7 +587,7 @@ namespace eq
     {
         WindowCreateChannelPacket()
             {
-                command = CMD_WINDOW_CREATE_CHANNEL;
+                command = fabric::CMD_WINDOW_CREATE_CHANNEL;
                 size    = sizeof( WindowCreateChannelPacket );
             }
 
@@ -710,29 +598,18 @@ namespace eq
     {
         WindowDestroyChannelPacket()
             {
-                command = CMD_WINDOW_DESTROY_CHANNEL;
+                command = fabric::CMD_WINDOW_DESTROY_CHANNEL;
                 size    = sizeof( WindowDestroyChannelPacket );
             }
 
         uint32_t channelID;
     };
 
-    struct WindowSetPVPPacket : public net::ObjectPacket
-    {
-        WindowSetPVPPacket()
-            {
-                command = CMD_WINDOW_SET_PVP;
-                size    = sizeof( WindowSetPVPPacket );
-            }
-
-        PixelViewport pvp;
-    };
-
     struct WindowFinishPacket : public net::ObjectPacket
     {
         WindowFinishPacket()
             {
-                command = CMD_WINDOW_FINISH;
+                command = fabric::CMD_WINDOW_FINISH;
                 size    = sizeof( WindowFinishPacket );
             }
     };
@@ -741,7 +618,7 @@ namespace eq
     {
         WindowThrottleFramerate()
         {
-            command = CMD_WINDOW_THROTTLE_FRAMERATE;
+            command = fabric::CMD_WINDOW_THROTTLE_FRAMERATE;
             size    = sizeof( WindowThrottleFramerate );
         }
         float    minFrameTime; // in ms
@@ -751,7 +628,7 @@ namespace eq
     {
         WindowBarrierPacket()
             {
-                command = CMD_WINDOW_BARRIER;
+                command = fabric::CMD_WINDOW_BARRIER;
                 size    = sizeof( WindowBarrierPacket );
             }
         net::ObjectVersion barrier;
@@ -761,7 +638,7 @@ namespace eq
     {
         WindowNVBarrierPacket()
             {
-                command = CMD_WINDOW_NV_BARRIER;
+                command = fabric::CMD_WINDOW_NV_BARRIER;
                 size    = sizeof( WindowNVBarrierPacket );
             }
 
@@ -774,7 +651,7 @@ namespace eq
     {
         WindowSwapPacket()
             {
-                command = CMD_WINDOW_SWAP;
+                command = fabric::CMD_WINDOW_SWAP;
                 size    = sizeof( WindowSwapPacket );
             }
     };
@@ -783,19 +660,20 @@ namespace eq
     {
         WindowFrameStartPacket()
             {
-                command        = CMD_WINDOW_FRAME_START;
+                command        = fabric::CMD_WINDOW_FRAME_START;
                 size           = sizeof( WindowFrameStartPacket );
             }
 
         uint32_t frameID;
         uint32_t frameNumber;
+        uint32_t version;
     };
 
     struct WindowFrameFinishPacket : public net::ObjectPacket
     {
         WindowFrameFinishPacket()
             {
-                command        = CMD_WINDOW_FRAME_FINISH;
+                command        = fabric::CMD_WINDOW_FRAME_FINISH;
                 size           = sizeof( WindowFrameFinishPacket );
             }
 
@@ -807,7 +685,7 @@ namespace eq
     {
         WindowFrameDrawFinishPacket()
             {
-                command       = CMD_WINDOW_FRAME_DRAW_FINISH;
+                command       = fabric::CMD_WINDOW_FRAME_DRAW_FINISH;
                 size          = sizeof( WindowFrameDrawFinishPacket );
             }
         uint32_t frameID;
@@ -821,43 +699,29 @@ namespace eq
     {
         ChannelConfigInitPacket()
             {
-                command = CMD_CHANNEL_CONFIG_INIT;
+                command = fabric::CMD_CHANNEL_CONFIG_INIT;
                 size    = sizeof( ChannelConfigInitPacket );
-                name[0] = '\0';
             }
 
         uint32_t        initID;
-        uint32_t        drawable;
-        int32_t         iAttributes[ eq::Channel::IATTR_ALL ];
-        int32_t         tasks;
-        PixelViewport   pvp;
-        Viewport        vp;
-        Vector3ub color;
-        net::ObjectVersion view;
-        EQ_ALIGN8( char name[8] );
     };
 
     struct ChannelConfigInitReplyPacket : public net::ObjectPacket
     {
         ChannelConfigInitReplyPacket()
             {
-                command   = CMD_CHANNEL_CONFIG_INIT_REPLY;
+                command   = fabric::CMD_CHANNEL_CONFIG_INIT_REPLY;
                 size      = sizeof( ChannelConfigInitReplyPacket );
-                error[0]  = '\0';
             }
 
-        Vector2i maxSize;
-        float    nearPlane;
-        float    farPlane;
-        bool     result;
-        EQ_ALIGN8( char error[8] );
+        bool result;
     };
 
     struct ChannelConfigExitPacket : public net::ObjectPacket
     {
         ChannelConfigExitPacket()
             {
-                command = CMD_CHANNEL_CONFIG_EXIT;
+                command = fabric::CMD_CHANNEL_CONFIG_EXIT;
                 size    = sizeof( ChannelConfigExitPacket );
             }
     };
@@ -866,23 +730,11 @@ namespace eq
     {
         ChannelConfigExitReplyPacket()
             {
-                command   = CMD_CHANNEL_CONFIG_EXIT_REPLY;
+                command   = fabric::CMD_CHANNEL_CONFIG_EXIT_REPLY;
                 size      = sizeof( ChannelConfigExitReplyPacket );
             }
 
         bool     result;
-    };
-
-    struct ChannelSetNearFarPacket : public net::ObjectPacket
-    {
-        ChannelSetNearFarPacket()
-            {
-                command   = CMD_CHANNEL_SET_NEARFAR;
-                size      = sizeof( ChannelSetNearFarPacket );
-            }
-
-        float    nearPlane;
-        float    farPlane;
     };
 
     struct ChannelTaskPacket : public net::ObjectPacket
@@ -894,18 +746,19 @@ namespace eq
     {
         ChannelFrameStartPacket()
             {
-                command        = CMD_CHANNEL_FRAME_START;
+                command        = fabric::CMD_CHANNEL_FRAME_START;
                 size           = sizeof( ChannelFrameStartPacket );
             }
 
         uint32_t frameNumber;
+        uint32_t version;
     };
 
     struct ChannelFrameFinishPacket : public ChannelTaskPacket
     {
         ChannelFrameFinishPacket()
             {
-                command        = CMD_CHANNEL_FRAME_FINISH;
+                command        = fabric::CMD_CHANNEL_FRAME_FINISH;
                 size           = sizeof( ChannelFrameFinishPacket );
             }
 
@@ -916,7 +769,7 @@ namespace eq
     {
         ChannelFrameFinishReplyPacket( const ChannelFrameFinishPacket* request )
             {
-                command     = CMD_CHANNEL_FRAME_FINISH_REPLY;
+                command     = fabric::CMD_CHANNEL_FRAME_FINISH_REPLY;
                 size        = sizeof( ChannelFrameFinishReplyPacket );
                 sessionID   = request->sessionID;
                 objectID    = request->objectID;
@@ -933,7 +786,7 @@ namespace eq
     {
         ChannelFrameDrawFinishPacket()
             {
-                command       = CMD_CHANNEL_FRAME_DRAW_FINISH;
+                command       = fabric::CMD_CHANNEL_FRAME_DRAW_FINISH;
                 size          = sizeof( ChannelFrameDrawFinishPacket );
             }
 
@@ -945,7 +798,7 @@ namespace eq
     {
         ChannelFrameClearPacket()
             {
-                command       = CMD_CHANNEL_FRAME_CLEAR;
+                command       = fabric::CMD_CHANNEL_FRAME_CLEAR;
                 size          = sizeof( ChannelFrameClearPacket );
             }
     };
@@ -954,7 +807,7 @@ namespace eq
     {
         ChannelFrameDrawPacket()
             {
-                command       = CMD_CHANNEL_FRAME_DRAW;
+                command       = fabric::CMD_CHANNEL_FRAME_DRAW;
                 size          = sizeof( ChannelFrameDrawPacket );
             }
     };
@@ -963,7 +816,7 @@ namespace eq
     {
         ChannelFrameAssemblePacket()
             {
-                command       = CMD_CHANNEL_FRAME_ASSEMBLE;
+                command       = fabric::CMD_CHANNEL_FRAME_ASSEMBLE;
                 size          = sizeof( ChannelFrameAssemblePacket );
             }
 
@@ -975,7 +828,7 @@ namespace eq
     {
         ChannelFrameReadbackPacket()
             {
-                command       = CMD_CHANNEL_FRAME_READBACK;
+                command       = fabric::CMD_CHANNEL_FRAME_READBACK;
                 size          = sizeof( ChannelFrameReadbackPacket );
             }
 
@@ -987,7 +840,7 @@ namespace eq
     {
         ChannelFrameTransmitPacket()
             {
-                command       = CMD_CHANNEL_FRAME_TRANSMIT;
+                command       = fabric::CMD_CHANNEL_FRAME_TRANSMIT;
                 size          = sizeof( ChannelFrameTransmitPacket );
             }
 
@@ -1001,7 +854,7 @@ namespace eq
     {
         ChannelFrameViewStartPacket()
             {
-                command       = CMD_CHANNEL_FRAME_VIEW_START;
+                command       = fabric::CMD_CHANNEL_FRAME_VIEW_START;
                 size          = sizeof( ChannelFrameViewStartPacket );
             }
     };
@@ -1010,7 +863,7 @@ namespace eq
     {
         ChannelFrameViewFinishPacket()
             {
-                command       = CMD_CHANNEL_FRAME_VIEW_FINISH;
+                command       = fabric::CMD_CHANNEL_FRAME_VIEW_FINISH;
                 size          = sizeof( ChannelFrameViewFinishPacket );
             }
     };
@@ -1022,14 +875,14 @@ namespace eq
     {
         FrameDataTransmitPacket()
             {
-                command = CMD_FRAMEDATA_TRANSMIT;
+                command = fabric::CMD_FRAMEDATA_TRANSMIT;
                 size    = sizeof( FrameDataTransmitPacket );
             }
 
+        PixelViewport pvp;
         uint32_t      version;
         uint32_t      buffers;
         uint32_t      frameNumber;
-        PixelViewport pvp;
         bool          ignoreAlpha;
 
         EQ_ALIGN8( uint8_t data[8] );
@@ -1039,9 +892,10 @@ namespace eq
     {
         FrameDataReadyPacket()
             {
-                command = CMD_FRAMEDATA_READY;
+                command = fabric::CMD_FRAMEDATA_READY;
                 size    = sizeof( FrameDataReadyPacket );
             }
+        Zoom     zoom;
         uint32_t version;
     };
 
@@ -1049,7 +903,7 @@ namespace eq
     {
         FrameDataUpdatePacket()
             {
-                command = CMD_FRAMEDATA_UPDATE;
+                command = fabric::CMD_FRAMEDATA_UPDATE;
                 size    = sizeof( FrameDataUpdatePacket );
             }
         uint32_t version;
@@ -1059,35 +913,21 @@ namespace eq
     inline std::ostream& operator << ( std::ostream& os, 
                                        const ServerChooseConfigPacket* packet )
     {
-        os << (ServerPacket*)packet << " req " << packet->requestID
+        os << (fabric::ServerPacket*)packet << " req " << packet->requestID
            << " renderer " << packet->rendererInfo;
-        return os;
-    }
-    inline std::ostream& operator << ( std::ostream& os, 
-                                       const ServerUseConfigPacket* packet )
-    {
-        os << (ServerPacket*)packet << " req " << packet->requestID
-           << " params " << packet->configInfo;
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 
                                   const ServerChooseConfigReplyPacket* packet )
     {
-        os << (ServerPacket*)packet << " req " << packet->requestID << " id " 
-           << packet->configID;
+        os << (fabric::ServerPacket*)packet << " req " << packet->requestID
+           << " id " << packet->configID;
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 
         const ServerReleaseConfigPacket* packet )
     {
-        os << (ServerPacket*)packet << " config " << packet->configID;
-        return os;
-    }
-    inline std::ostream& operator << ( std::ostream& os, 
-                                       const ServerCreateConfigPacket* packet )
-    {
-        os << (ServerPacket*)packet << " config " << packet->configID 
-            << " request " << packet->requestID;
+        os << (fabric::ServerPacket*)packet << " config " << packet->configID;
         return os;
     }
 
@@ -1135,10 +975,8 @@ namespace eq
     inline std::ostream& operator << ( std::ostream& os, 
                                        const PipeConfigInitPacket* packet )
     {
-        os << (net::ObjectPacket*)packet << " init id " << packet->initID
-           << " port " << packet->port << " device " << packet->device
-           << " tasks " << packet->tasks << " frame " << packet->frameNumber
-		   << " cuda GL interop " << packet->cudaGLInterop;
+        os << (net::ObjectPacket*)packet << " init id "
+           << " frame " << packet->frameNumber;
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 
@@ -1182,13 +1020,6 @@ namespace eq
         return os;
     }
     inline std::ostream& operator << ( std::ostream& os, 
-                                     const WindowConfigInitReplyPacket* packet )
-    {
-        os << (net::ObjectPacket*)packet << " result " << packet->result
-           << " pvp " << packet->pvp;
-        return os;
-    }
-    inline std::ostream& operator << ( std::ostream& os, 
                                        const WindowFrameStartPacket* packet )
     {
         os << (net::ObjectPacket*)packet << " frame " << packet->frameNumber
@@ -1223,6 +1054,12 @@ namespace eq
     }
     inline std::ostream& operator << ( std::ostream& os, 
                                        const ChannelFrameStartPacket* packet )
+    {
+        os << (net::ObjectPacket*)packet << " frame " << packet->frameNumber;
+        return os;
+    }
+    inline std::ostream& operator << ( std::ostream& os, 
+                                   const ChannelFrameFinishReplyPacket* packet )
     {
         os << (net::ObjectPacket*)packet << " frame " << packet->frameNumber;
         return os;

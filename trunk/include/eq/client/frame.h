@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2006-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2006-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ * Copyright (c) 2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -19,30 +20,30 @@
 #define EQ_FRAME_H
 
 #include <eq/client/eye.h>    // enum Eye
-#include <eq/client/window.h> // nested ObjectManager type
-#include <eq/client/types.h>  // member
-#include <eq/client/zoom.h>   // member
+#include <eq/client/types.h>
 
-#include <eq/base/monitor.h>
+#include <eq/fabric/zoom.h>   // member
 #include <eq/net/object.h>
+#include <eq/net/objectVersion.h>
+#include <eq/net/types.h>
+#include <eq/base/bitOperation.h> // function getIndexOfLastBit
+#include <eq/base/monitor.h>
 
 namespace eq
 {
-
+namespace util
+{
+    template< typename T > class ObjectManager;
+}
 namespace server
 {
     class Frame;
 }
-
     class FrameData;
     class Image;
     class Pipe;
-    class Pixel;
-    class Range;
 
-    /**
-     * A holder for a frame data and parameters.
-     */
+    /** A holder for a frame's data and parameters. */
     class Frame : public net::Object
     {
     public:
@@ -100,12 +101,32 @@ namespace server
         /** @return the zoom factor for readback or assemble. */
         const Zoom& getZoom() const { return _data.zoom; }
 
-        /** Set zoom, used for frames created by user; normally zoom is set by 
-            server implicitly and not through this function */
+        /**
+         * Set the zoom for this frame holder.
+         *
+         * The zoom is only applied for operations on this frame holder, i.e.,
+         * it does not apply to other (input) frames using the same underlying
+         * frame data.
+         */
         void setZoom( const Zoom& zoom ) { _data.zoom = zoom; }
 
+        /**
+         * Set an additional zoom for all input frames of this (output) frame
+         *
+         * This method sets a zoom on the frame's data which is transported to
+         * all consumers (aka input frames) of the data. The input frames use
+         * this zoom in addition to their specific zoom. It is ignored during
+         * readback.
+         *
+         * @warning experimental - may not be supported in the future.
+         */
+        EQ_EXPORT void setInputZoom( const Zoom& zoom );
+
+        /** @return the input zoom. @warning experimental */
+        EQ_EXPORT const Zoom& getInputZoom() const;
+
         /** The images of this frame */
-        EQ_EXPORT const ImageVector& getImages() const;
+        EQ_EXPORT const Images& getImages() const;
 
         /** Set the data for this frame. */
         void setData( FrameData* data ) { _frameData = data; }
@@ -115,7 +136,7 @@ namespace server
         EQ_EXPORT void setPixelViewport( const PixelViewport& pvp );
 
         const net::ObjectVersion& getDataVersion( const Eye eye ) const
-            { return _data.frameData[ eye ]; }
+        { return _data.frameData[ base::getIndexOfLastBit( eye ) ]; }
         //@}
 
         /**
@@ -137,12 +158,9 @@ namespace server
          * @param glObjects the GL object manager for the current GL context.
          * @param config the configuration of the source frame buffer.
          */
-        EQ_EXPORT void startReadback( Window::ObjectManager* glObjects,
-                                      const DrawableConfig& config );
+        EQ_EXPORT void readback( util::ObjectManager< const void* >* glObjects,
+                                 const DrawableConfig& config );
         
-        /** Synchronize the image readback. */
-        EQ_EXPORT void syncReadback();
-
         /** 
          * Transmit the frame data to the specified node.
          *
@@ -151,14 +169,16 @@ namespace server
          * 
          * @param toNode the receiving node.
          * @param frameNumber the current frame number
+         * @param originator the sender object id for statistics
          */        
-        void transmit( net::NodePtr toNode, const uint32_t frameNumber );
+        void transmit( net::NodePtr toNode, const uint32_t frameNumber,
+                       const uint32_t originator );
 
         /** 
          * Set the frame ready.
          * 
-         * The frame is automatically set ready by syncReadback and upon
-         * receiving of the transmit commands.
+         * The frame is automatically set ready by readback and upon receiving
+         * of the transmit commands.
          */
         void setReady();
 
@@ -203,7 +223,7 @@ namespace server
         /** Enable/disable alpha usage for newly allocated images. */
         EQ_EXPORT void setAlphaUsage( const bool useAlpha );
 
-        /** Set the compressor quality value. */
+        /** Set the minimum quality after compression. */
         EQ_EXPORT void setQuality( const Frame::Buffer buffer, 
                                    const float quality );
 
@@ -223,11 +243,11 @@ namespace server
         friend class eq::server::Frame;
         struct Data
         {
-            Data() : offset( Vector2i::ZERO ), zoom( 0.f, 0.f ) {}
+            Data() : offset( Vector2i::ZERO ) {}
 
-            Vector2i     offset;
-            Zoom               zoom;
-            net::ObjectVersion frameData[EYE_ALL];
+            Vector2i offset;
+            Zoom zoom;
+            net::ObjectVersion frameData[ NUM_EYES ];
         }
         _data;
 

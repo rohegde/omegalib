@@ -82,6 +82,7 @@ namespace base
 #endif
                 return *this;
             }
+        uint64_t getLow() const { return _low; }
 
         /** @return true if the UUIDs are equal, false if not. @version 1.0 */
         bool operator == ( const UUID& rhs ) const
@@ -132,7 +133,6 @@ namespace base
 #ifdef _MSC_VER
         friend size_t stde::hash_compare< eq::base::UUID >::operator() 
             ( const eq::base::UUID& key ) const;
-        friend size_t stde::hash_value( const eq::base::UUID& key );
 #else
         friend struct stde::hash< eq::base::UUID >;
 #endif
@@ -150,7 +150,7 @@ namespace base
 }
 }
 
-#ifdef _MSC_VER
+#ifdef EQ_STDEXT_VC8
 template<> inline size_t stde::hash_compare< eq::base::UUID >::operator() 
     ( const eq::base::UUID& key ) const
 {
@@ -159,13 +159,12 @@ template<> inline size_t stde::hash_compare< eq::base::UUID >::operator()
 
 template<> inline size_t stde::hash_value( const eq::base::UUID& key )
 {
-    return key._low;
+    return key.getLow();
 }
 
-#elif defined (WIN32)
+#else
 
-namespace __gnu_cxx
-{
+EQ_STDEXT_NAMESPACE_OPEN
     template<> struct hash< eq::base::UUID >
     {
         size_t operator()( const eq::base::UUID& key ) const
@@ -173,31 +172,7 @@ namespace __gnu_cxx
             return key._low;
         }
     };
-}
+EQ_STDEXT_NAMESPACE_CLOSE
 
-#else // POSIX
-
-#  ifdef __GNUC__              // GCC 3.1 and later
-#    if defined EQ_GCC_4_2_OR_LATER && !defined __INTEL_COMPILER
-namespace std { namespace tr1
-#    else
-namespace __gnu_cxx
-#    endif
-#  else //  other compilers
-namespace std
-#  endif
-{
-    template<> struct hash< eq::base::UUID >
-    {
-        size_t operator()( const eq::base::UUID& key ) const
-        {
-            return key._low;
-        }
-    };
-#if defined EQ_GCC_4_2_OR_LATER && !defined __INTEL_COMPILER
-}
 #endif
-}
-
-#endif // _MSC_VER
 #endif // EQBASE_NODE_H

@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2006-2009, Stefan Eilemann <eile@equalizergraphics.com>
+/* Copyright (c) 2006-2010, Stefan Eilemann <eile@equalizergraphics.com>
  *                    2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
@@ -20,15 +20,18 @@
 #define EQ_IMAGE_H
 
 #include <eq/client/frame.h>         // for Frame::Buffer enum
-#include <eq/client/pixelViewport.h> // member
-#include <eq/client/viewport.h>      // member
 #include <eq/client/windowSystem.h>  // for OpenGL types
+
+#include <eq/fabric/pixelViewport.h> // member
+#include <eq/fabric/viewport.h>      // member
+#include <eq/base/compressorDataCPU.h>  //member
+#include <eq/util/compressorDataGPU.h>
 #include <eq/util/texture.h>         // member
 #include <eq/base/compressor.h>
+#include <eq/base/buffer.h>
 
 namespace eq
 {
-
     /**
      * A holder for pixel data.
      *
@@ -47,12 +50,39 @@ namespace eq
             ~PixelData();
             void flush();
 
-            uint32_t format;         //!< the GL format
-            uint32_t type;           //!< the GL type
-            
-            base::Bufferb pixels;    //!< The pixel data
-        
-            uint32_t compressorName; //!< the compressor used
+            /**
+             * The type of data stored in FrameBuffer or texture on the GPU.
+             * @sa the input token types in plugins/compressor.h
+             */
+            uint32_t internalFormat;
+
+            /**
+             * The type of data stored in pixels in main memory.
+             * @sa the output token types in plugins/compressor.h
+             */
+            uint32_t externalFormat;
+
+            /**
+             * The size of one pixel, in bytes, stored in pixels.
+             * @sa the output token types in plugins/compressor.h
+             */
+            uint32_t pixelSize;
+
+            /**
+             * The dimensions of the pixel data in pixels.
+             *
+             * Note that this pvp might differ from the image pvp since the
+             * data is downloaded from the GPU using a plugin, which might
+             * compress the data. If unmodified pixel data is required, the
+             * correct download plugin has to be used.
+             *
+             * @sa setDownloadName()
+             */
+            PixelViewport pvp;
+
+            void* pixels;  //!< The pixel data, pvp.getArea() * pixelSize bytes
+
+            uint32_t compressorName; //!< The compressor used
             bool isCompressed;       //!< The compressed pixel data is valid
 
             /** Sizes of the compressed pixel data blocks. */
@@ -61,50 +91,46 @@ namespace eq
             std::vector< void* >    compressedData;
         };
 
-        /** @name Data Access */
-        //@{
-
         /** @name Image parameters */
         //@{
+        /** @return the type of the pixel data. */
+        uint32_t getExternalFormat( const Frame::Buffer buffer ) const
+            {  return _getMemory( buffer ).externalFormat; }
+        
         /**
-         * Set the (OpenGL) format of the pixel data for a buffer.
-         * Invalidates the pixel data.
+         * Get the size, in bytes, of one pixel in pixel data.
          *
          * @param buffer the buffer type.
-         * @param format the format.
          */
-        EQ_EXPORT void setFormat( const Frame::Buffer buffer,
-                                  const uint32_t format );
-
-        /** @return the (OpenGL) format of the pixel data. */
-        EQ_EXPORT uint32_t getFormat( const Frame::Buffer buffer ) const;
+        uint32_t getPixelSize( const Frame::Buffer buffer ) const
+            { return _getMemory( buffer ).pixelSize; }
 
         /**
-         * Set the (OpenGL) type of the pixel data for a buffer.
-         * Invalidates the pixel data.
+         * Set the internal GPU format of the pixel data for the given buffer.
          *
          * @param buffer the buffer type.
-         * @param type the type.
+         * @param internalFormat the internal format.
          */
-        EQ_EXPORT void setType( const Frame::Buffer buffer, 
-                                const uint32_t type );
+        EQ_EXPORT void setInternalFormat( const Frame::Buffer buffer, 
+                                          const uint32_t internalFormat );
 
-        /** @return the (OpenGL) type of the pixel data. */
-        EQ_EXPORT uint32_t getType( const Frame::Buffer buffer ) const;
+        /** @return the internal GPU format of the pixel data. */
+        EQ_EXPORT uint32_t getInternalFormat( const Frame::Buffer buffer )const;
 
-        /** @return true if the image has a color buffer with alpha. */
+        /** @return true if the image has a color buffer with alpha values. */
         EQ_EXPORT bool hasAlpha() const;
 
         /** 
          * Set the frame pixel storage type. 
          *
          * Images of storage type TYPE_MEMORY read back frame buffer data into
-         * main memory. The data can be accessed through the PixelData.
+         * main memory using a transfer plugin. The data can be accessed through
+         * the PixelData.
          *
          * Image of storage type TYPE_TEXTURE read frame buffer data into a
          * texture, which can be accessed using getTexture().
          */
-        void setStorageType( const Frame::Type type) { _type = type; }
+        void setStorageType( const Frame::Type type ) { _type = type; }
 
         /** @return the pixel data storage type. */    
         Frame::Type getStorageType() const{ return _type; }
@@ -124,13 +150,14 @@ namespace eq
          */
         EQ_EXPORT void setPixelViewport( const PixelViewport& pvp );
 
-        /** @return the pixel viewport of the image with in the frame buffer. */
+        /** @return the pixel viewport of the image within 
+          *         the frame buffer.
+          */
         const PixelViewport& getPixelViewport() const { return _pvp; }
 
         /** Reset the image to its default state. */
         EQ_EXPORT void reset();
         //@}
-
 
         /** @name Pixel data */
         //@{
@@ -140,8 +167,7 @@ namespace eq
         EQ_EXPORT uint8_t* getPixelPointer( const Frame::Buffer buffer );
 
         /** @return the size of the raw pixel data in bytes */
-        uint32_t getPixelDataSize( const Frame::Buffer buffer ) const
-            { return _pvp.getArea() * getDepth( buffer ); }
+        EQ_EXPORT uint32_t getPixelDataSize( const Frame::Buffer buffer ) const;
 
         /** @return the pixel data. */
         EQ_EXPORT const PixelData& getPixelData( const Frame::Buffer buffer )
@@ -171,35 +197,14 @@ namespace eq
         /**
          * Set the pixel data of one of the image buffers.
          *
-         * The data is copied, and previous data for the buffer is
-         * overwritten. The pixel data is validated.
-         *
-         * @param buffer the image buffer to set.
-         * @param data the buffer data of size pvp.w * pvp.h * depth.
-         */
-        EQ_EXPORT void setPixelData( const Frame::Buffer buffer, 
-                                     const uint8_t* data );
-
-        /**
-         * Set the pixel data of one of the image buffers.
-         *
          * Previous data for the buffer is overwritten. The pixel data is
-         * validated and decompressed , if needed.
+         * validated and decompressed, if needed.
          *
          * @param buffer the image buffer to set.
          * @param data the pixel data.
          */
         EQ_EXPORT void setPixelData( const Frame::Buffer buffer,
                                      const PixelData& data );
-
-        /** Switch PBO usage for image transfers on. */
-        void enablePBO() { _usePBO = true; }
-
-        /** Switch PBO usage for image transfers off. */
-        void disablePBO() { _usePBO = false; }
-
-        /** @return if this image should use PBO for image transfers. */
-        bool usePBO() const { return _usePBO; }
 
         /** Enable compression and transport of alpha data. */
         EQ_EXPORT void enableAlphaUsage();
@@ -235,13 +240,12 @@ namespace eq
                                const;
         //@}
 
-
         /**
          * @name Operations
          */
         //@{
         /**
-         * Start reading back an image from the frame buffer.
+         * reading back an image from the frame buffer.
          *
          * @param buffers bit-wise combination of the frame buffer components.
          * @param pvp the area of the frame buffer wrt the drawable.
@@ -249,20 +253,43 @@ namespace eq
          * @param glObjects the GL object manager for the current GL context.
          * @sa setStorageType()
          */
-        EQ_EXPORT void startReadback( const uint32_t buffers, 
-                                      const PixelViewport& pvp,
-                                      const Zoom& zoom,
-                                      Window::ObjectManager* glObjects );
+        EQ_EXPORT void readback( const uint32_t buffers, 
+                                 const PixelViewport& pvp,
+                                 const Zoom& zoom,
+                                 util::ObjectManager< const void* >* glObjects );
 
-        /** Make sure that the last readback operation is complete. */
-        EQ_EXPORT void syncReadback();
+        /**
+         * Start reading back an image from a texture.
+         *
+         * @param buffer bit-wise combination of the frame buffer components.
+         * @param pvp the area of the frame buffer wrt the drawable.
+         * @param texture the texture id to use for readback.
+         * @param glewContext the current GL context.
+         * @sa setStorageType()
+         */
+        void readbackFromTexture( const Frame::Buffer buffer, 
+                                  const PixelViewport& pvp,
+                                  uint32_t texture,
+                                  GLEWContext* glewContext );
+
+        EQ_EXPORT void uploadToTexture( const Frame::Buffer buffer, 
+                                        uint32_t texture,
+                                        util::ObjectManager< const void* >* glObjects ) const;
+
+        EQ_EXPORT void uploadToTexture( const Frame::Buffer buffer, 
+                                        uint32_t texture,
+                                        GLEWContext* const glewContext ) const;
+
+        EQ_EXPORT void upload( const Frame::Buffer buffer, 
+                               const Vector2i offset,
+                               util::ObjectManager< const void* >* glObjects ) const;
 
         /** Writes the pixel data as rgb image files. */
-        EQ_EXPORT void writeImage( const std::string& filename,
+        EQ_EXPORT bool writeImage( const std::string& filename,
                                    const Frame::Buffer buffer ) const;
 
         /** Writes all valid pixel data as separate images. */
-        EQ_EXPORT void writeImages( const std::string& filenameTemplate ) const;
+        EQ_EXPORT bool writeImages( const std::string& filenameTemplate ) const;
 
         /** Read pixel data from an uncompressed rgb image file. */
         EQ_EXPORT bool readImage( const std::string& filename, 
@@ -275,18 +302,6 @@ namespace eq
         /** Delete all cache data of this image. */
         EQ_EXPORT void flush();
         //@}
-
-        /** @return the GL function table, valid during readback. */
-        GLEWContext* glewGetContext() { return _glObjects->glewGetContext(); }
-
-        /** @return the number of channels in a pixel. */
-        EQ_EXPORT uint8_t getNumChannels( const Frame::Buffer buffer ) const;
-
-        /** @return the size in bytes for one channel. */
-        EQ_EXPORT uint8_t getChannelSize( const Frame::Buffer buffer ) const;
-
-        /** @return the size in bytes for one pixel (nChannels*channelSize). */
-        EQ_EXPORT uint32_t getDepth( const Frame::Buffer buffer ) const;
 
         /** 
          * @return the list of possible compressors for the given buffer.
@@ -301,6 +316,13 @@ namespace eq
          */
         EQ_EXPORT bool allocCompressor( const Frame::Buffer buffer, 
                                         const uint32_t name );
+        /**
+         * Re-allocate, if needed, a Downloader instance.
+         * @internal
+         */
+        EQ_EXPORT bool allocDownloader( const Frame::Buffer buffer, 
+                                        const uint32_t name,
+                                        GLEWContext* glewContext );
 
     private:
         /** All distributed data. */
@@ -318,31 +340,27 @@ namespace eq
         struct Memory : public PixelData
         {
         public:
-            Memory() : state( INVALID ), pboSize(0) {}
+            Memory() : state( INVALID ) {}
 
             void resize( const uint32_t size );
-            void flush();
+            void flush();            
+            void useLocalBuffer();
 
             enum State
             {
                 INVALID,
-                PBO_READBACK,
-                ZOOM_READBACK,
                 VALID
             };
 
-            State     state;   //!< The current state of the memory
-            uint32_t  pboSize; //!< the size of the PBO
-        };
+            State state;   //!< The current state of the memory
 
-        /** @return the compressor token type for the given buffer.*/
-        uint32_t _getCompressorTokenType( const Frame::Buffer buffer ) const;
+            /** During the call of setPixelData or writeImage, we have to 
+                manage an internal buffer to copy the data */
+            eq::base::Bufferb localBuffer;
+        };
 
         /** @return an appropriate compressor name for the buffer data type.*/
         uint32_t _getCompressorName( const Frame::Buffer buffer ) const;
-
-        /** The GL object manager, valid during a readback operation. */
-        Window::ObjectManager* _glObjects;
 
         /** The storage type for the pixel data. */
         Frame::Type _type;
@@ -352,24 +370,19 @@ namespace eq
         {
         public:
             Attachment() : compressor( &fullCompressor )
+                         , transfer ( &fullTransfer )
                          , quality( 1.f )
                          {}
-  
-            struct CompressorData
-            {
-                CompressorData();
-                void flush();
+            void flush();
+            base::CompressorDataCPU* compressor;
+            util::CompressorDataGPU* transfer;
+            float quality; //!< the minimum quality
 
-                uint32_t name;      //!< the name of the (de)compressor
-                void* instance;     //!< the instance of the (de)compressor
-                base::Compressor* plugin; //!< Plugin handling the allocation
-                bool isCompressor;  //!< compressor (true), decompressor (false)
-            } *compressor;
+            base::CompressorDataCPU fullCompressor;
+            base::CompressorDataCPU lossyCompressor;
 
-            float quality;
-
-            CompressorData fullCompressor;
-            CompressorData lossyCompressor;
+            util::CompressorDataGPU fullTransfer;
+            util::CompressorDataGPU lossyTransfer;
 
             /** The texture name for this image component (texture images). */
             util::Texture texture;
@@ -381,14 +394,16 @@ namespace eq
         Attachment _color;
         Attachment _depth;
 
-        Attachment& _getAttachment( const Frame::Buffer buffer );
-        const Attachment& _getAttachment( const Frame::Buffer buffer ) const;
+        EQ_EXPORT Attachment& _getAttachment( const Frame::Buffer buffer );
+        EQ_EXPORT const Attachment& _getAttachment( const Frame::Buffer buffer ) const;
+
+        Memory& _getMemory( const Frame::Buffer buffer )
+            { return _getAttachment( buffer ).memory; }
+        const Memory& _getMemory( const Frame::Buffer buffer ) const
+            { return  _getAttachment( buffer ).memory; }
 
         /** Find and activate a decompression engine */
         bool _allocDecompressor( Attachment& attachment, uint32_t name );
-
-        /** PBO Usage. */
-        bool _usePBO;
 
         /** Alpha channel significance. */
         bool _ignoreAlpha;
@@ -401,15 +416,35 @@ namespace eq
         /** @return a unique key for the frame buffer attachment. */
         const void* _getBufferKey( const Frame::Buffer buffer ) const;
 
+        /** @return a unique key for the frame buffer attachment. */
+        const void* _getCompressorKey( const Frame::Buffer buffer ) const;
+
+        /**
+         * Set the type of the pixel data in main memory for the given buffer.
+         *
+         * Invalidates the pixel data.
+         *
+         * @param buffer the buffer type.
+         * @param externalFormat the type of the pixel.
+         * @param pixelSize the size of one pixels in bytes
+         */
+        void _setExternalFormat( const Frame::Buffer buffer,
+                                const uint32_t externalFormat,
+                                const uint32_t pixelSize );
+
         bool _canIgnoreAlpha( const Frame::Buffer buffer ) const;
 
-        void _startReadback( const Frame::Buffer buffer, const Zoom& zoom );
-        void _startReadbackPBO( const Frame::Buffer buffer );
-        void _startReadbackZoom( const Frame::Buffer buffer, const Zoom& zoom );
-                                
-        void _syncReadback( const Frame::Buffer buffer );
-        void _syncReadbackPBO( const Frame::Buffer buffer );
-        void _syncReadbackZoom( const Frame::Buffer buffer );
+        void _readback( const Frame::Buffer buffer, const Zoom& zoom,
+                        util::ObjectManager< const void* >* glObjects );
+        void _readbackTexture( const Frame::Buffer buffer,
+                               util::ObjectManager< const void* >* glObjects );
+        void _readbackZoom( const Frame::Buffer buffer, const Zoom& zoom,
+                            util::ObjectManager< const void* >* glObjects );
+
+        void _download( const Frame::Buffer buffer, 
+                        uint32_t            flags,
+                        uint32_t            texture,
+                        GLEWContext*        glewContext );
 
         friend std::ostream& operator << ( std::ostream& os, const Image* );
     };

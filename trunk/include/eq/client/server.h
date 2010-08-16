@@ -1,5 +1,5 @@
 
-/* Copyright (c) 2005-2008, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2005-2010, Stefan Eilemann <eile@equalizergraphics.com> 
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -18,18 +18,15 @@
 #ifndef EQ_SERVER_H
 #define EQ_SERVER_H
 
-#include <eq/client/nodeType.h>  // for TYPE_EQ_SERVER enum
 #include <eq/client/types.h>     // basic typedefs
-
-#include <eq/net/node.h>         // base class
+#include <eq/fabric/server.h>    // base class
 
 namespace eq
 {
     class Client;
     class Config;
     class ConfigParams;
-    class Node;
-    struct ServerPacket;
+    class NodeFactory;
 
     /**
      * Proxy object for the connection to an Equalizer server.
@@ -39,7 +36,7 @@ namespace eq
      * and release a Config from the server.
      * @sa Client::connectServer
      */
-    class Server : public net::Node
+    class Server : public fabric::Server< Client, Server, Config, NodeFactory >
     {
     public:
         /** Construct a new server. */
@@ -47,10 +44,8 @@ namespace eq
 
         /** @name Internal */
         //@{
-        void setClient( ClientPtr client );
-        ClientPtr getClient(){ return _client; }
-
-        EQ_EXPORT net::CommandQueue* getNodeThreadQueue();
+        virtual void setClient( ClientPtr client );
+        EQ_EXPORT net::CommandQueue* getMainThreadQueue();
         EQ_EXPORT net::CommandQueue* getCommandThreadQueue();
         //@}
 
@@ -62,10 +57,6 @@ namespace eq
          * @sa ConfigParams
          */
         EQ_EXPORT Config* chooseConfig( const ConfigParams& parameters );
-
-        /** @warning Undocumented - may not be supported in the future */
-        EQ_EXPORT Config* useConfig( const ConfigParams& parameters, 
-                                     const std::string& config );
 
         /** 
          * Release a configuration.
@@ -79,7 +70,7 @@ namespace eq
 
         /** Undocumented - may not be supported in the future */
         EQ_EXPORT bool shutdown();
-
+        
     protected:
         /**
          * Destructs this server.
@@ -87,40 +78,20 @@ namespace eq
         EQ_EXPORT virtual ~Server();
 
     private:
-        /** The local client connected to the server */
-        ClientPtr _client;
-        friend class Client; // to call invokeCommand()
-
         /** Process-local server */
         bool _localServer;
+        friend class Client;
 
         union // placeholder for binary-compatible changes
         {
-            char dummy[64];
+            char dummy[32];
         };
 
-        /** @sa net::Node::getType */
-        virtual uint32_t getType() const { return TYPE_EQ_SERVER; }
-
         /* The command handler functions. */
-        net::CommandResult _cmdCreateConfig( net::Command& command );
-        net::CommandResult _cmdDestroyConfig( net::Command& command );
-        net::CommandResult _cmdChooseConfigReply( net::Command& command );
-        net::CommandResult _cmdReleaseConfigReply( net::Command& command );
-        net::CommandResult _cmdShutdownReply( net::Command& command );
+        bool _cmdChooseConfigReply( net::Command& command );
+        bool _cmdReleaseConfigReply( net::Command& command );
+        bool _cmdShutdownReply( net::Command& command );
     };
-
-    inline std::ostream& operator << ( std::ostream& os, const Server* server )
-    {
-        if( !server )
-        {
-            os << "NULL server";
-            return os;
-        }
-
-        os << "server " << (void*)server;
-        return os;
-    }
 }
 
 #endif // EQ_SERVER_H
