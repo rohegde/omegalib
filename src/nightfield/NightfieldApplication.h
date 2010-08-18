@@ -102,6 +102,11 @@ private:
 	float myMouseY;
 	float myLastMouseX;
 	float myLastMouseY;
+
+	// Touch info
+	float myTouchX[MaxInteractors];
+	float myTouchY[MaxInteractors];
+	int myNumTouches;
 };
 
 #endif
