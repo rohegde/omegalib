@@ -29,7 +29,17 @@ void Font::render(const omega::String& text, omega::Vector2f position, unsigned 
 	// string width
 	float wt = bbox.Upper().Xf() - bbox.Lower().Xf();
 
-	myFontImpl->Render(text.c_str(), text.length(), FTPoint(position[0], -position[1] - ht, 0.0f)); 
+	float x, y;
+
+	if(align & HALeft) x = position[0];
+	else if(align & HARight) x = position[0] - wt;
+	else x = position[0] - wt / 2;
+
+	if(align & VATop) y = -position[1] - ht;
+	else if(align & VABottom) y = -position[1];
+	else y = -position[1] - ht / 2;
+
+	myFontImpl->Render(text.c_str(), text.length(), FTPoint(x, y, 0.0f)); 
 	glPopMatrix();
 }
 

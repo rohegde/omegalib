@@ -179,6 +179,9 @@ namespace gfx
 		OUTK_API virtual void bind(GpuProgram* prog, int index, GpuData::BindType bindType);
 		OUTK_API virtual void unbind(GpuProgram* prog, int index, GpuData::BindType bindType);
 
+		//! Sets the gpu buffer data
+		OUTK_API void setData(void* data);
+
 		GLuint getGLBuffer() { return myGLBuffer; }
 		OUTK_API cl_mem getCLBuffer();
 

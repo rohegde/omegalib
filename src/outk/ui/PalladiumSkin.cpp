@@ -21,15 +21,46 @@ void PalladiumButton::draw()
 {
 	Button::draw();
 
-	float d = 0.5f;
-	if(myPressed) d = 1.0f;
+	myAnim *= 0.8f;
+	if(myPressed) myAnim = 1.0f;
 
-	GfxUtils::drawVGradient(myPosition, mySize, Color(50, 50, 100, 255), Color(100, 100, 150, 255), d);
+	GfxUtils::drawVGradient(myPosition, mySize, Color(80, 80, 100, 100 + myAnim * 100), Color(80, 80, 100, 100 + myAnim * 100));
 
-	glColor4ub(100, 100, 100, 255);
-	GfxUtils::drawDRect(myPosition, mySize, 0);
 	glColor4ub(255, 255, 255, 255);
-	GfxUtils::drawDRect(myPosition, mySize, 1);
-	glColor4ub(255, 255, 255, 128);
-	GfxUtils::drawDRect(myPosition, mySize, 2);
+	GfxUtils::drawDRect(myPosition, mySize, 0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PalladiumSlider::draw()
+{
+	//float d = 0.5f;
+	//if(myPressed) d = 1.0f;
+
+	Vector2f sliderPos, sliderSize;
+	getSliderCoords(&sliderPos, &sliderSize);
+
+	Label* lbl = getLabel();
+	if(!getProgressBarMode())
+	{
+		lbl->setPosition(sliderPos);
+		lbl->setSize(sliderSize);
+		lbl->setColor(Color(0, 0, 0,  255));
+	}
+	else
+	{
+		lbl->setPosition(myPosition + Vector2f(mySize[0], 0));
+		lbl->setSize(mySize);
+		lbl->setHorizontalAlign(Label::AlignLeft);
+		lbl->setColor(Color(255, 255, 255,  255));
+	}
+
+	myAnim *= 0.8f;
+	if(myPressed) myAnim = 1.0f;
+
+	GfxUtils::drawVGradient(sliderPos, sliderSize, Color(200, 200, 250, 200 + myAnim * 50 ), Color(200, 200, 250, 200 + myAnim * 50), 0);
+
+	glColor4ub(255, 255, 255, 255);
+	GfxUtils::drawDRect(myPosition, mySize, 0);
+
+	Slider::draw();
 }

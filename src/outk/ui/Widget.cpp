@@ -148,12 +148,24 @@ void Widget::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Widget::hitTest(Vector2f point)
+bool Widget::hitTest(const Vector2f& point)
 {
 	float x1 = myPosition[0];
 	float y1 = myPosition[1];
 	float x2 = myPosition[0] + mySize[0];
 	float y2 = myPosition[1] + mySize[1];
+
+	if(point[0] >= x1 && point[1] >= y1 && point[0] < x2 && point[1] < y2) return true;
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::hitTest(const Vector2f& point, const Vector2f& pos, const Vector2f& size)
+{
+	float x1 = pos[0];
+	float y1 = pos[1];
+	float x2 = pos[0] + size[0];
+	float y2 = pos[1] + size[1];
 
 	if(point[0] >= x1 && point[1] >= y1 && point[0] < x2 && point[1] < y2) return true;
 	return false;

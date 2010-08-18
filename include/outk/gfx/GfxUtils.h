@@ -28,6 +28,7 @@ public:
 	enum Font { Helvetica12, Helvetica18 };
 
 public:
+	OUTK_API static void getViewRay(float viewX, float viewY, omega::Vector3f* origin, omega::Vector3f* direction);
 
 	// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
 	// viewport parameters specified in the draw context.

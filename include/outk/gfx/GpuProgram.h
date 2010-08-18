@@ -143,6 +143,8 @@ namespace gfx
 		void setFragmentShader(FragmentShader* shader) { myFragmentShader = shader; }
 		FragmentShader* getFragmentShader() { return myFragmentShader; }
 
+		GLuint getGLProgram() { return myGLProgram; }
+
 		//! Add a Gpu constant to the program.
 		OUTK_API void setInput(int index, GpuData* input);
 
@@ -161,7 +163,6 @@ namespace gfx
 		int getNumrenderItems() { return myNumRenderItems; }
 
 		OUTK_API void initialize();
-		OUTK_API void activate();
 
 		OUTK_API void run(PrimType primType = PrimNone);
 

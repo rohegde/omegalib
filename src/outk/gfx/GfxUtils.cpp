@@ -21,6 +21,32 @@ using namespace outk::gfx;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::getViewRay(float viewX, float viewY, omega::Vector3f* origin, omega::Vector3f* direction)
+{
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLint viewport[4];
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
+
+	double mx1, my1, mz1, mx2, my2, mz2;
+	gluUnProject(viewX, viewport[3] - viewY, 0, modelview, projection, viewport, &mx1, &my1, &mz1);
+	gluUnProject(viewX, viewport[3] - viewY, 1, modelview, projection, viewport, &mx2, &my2, &mz2);
+
+	origin->x() = mx1;
+	origin->y() = my1;
+	origin->z() = mz1;
+
+	direction->x() = (mx1 - mx2);
+	direction->y() = (my1 - my2);
+	direction->z() = (mz1 - mz2);
+
+	direction->normalize();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GfxUtils::beginOverlayMode(const DrawContext& context)
 {
     glMatrixMode(GL_MODELVIEW);
@@ -35,17 +61,11 @@ void GfxUtils::beginOverlayMode(const DrawContext& context)
     glOrtho(0, context.viewportWidth, 0, context.viewportHeight, -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
-
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GfxUtils::endOverlayMode()
 {
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 

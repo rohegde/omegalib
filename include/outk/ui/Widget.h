@@ -93,7 +93,8 @@ namespace ui
 		void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
 
 
-		OUTK_API bool hitTest(omega::Vector2f point);
+		OUTK_API bool hitTest(const omega::Vector2f& point);
+		OUTK_API static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
 
 		// Add a child to this widget.
 		OUTK_API void addChild(Widget* child);

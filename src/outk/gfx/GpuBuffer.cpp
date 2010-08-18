@@ -35,6 +35,25 @@ void GpuConstant::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 		}
 		if(!clSuccessOrDie(status)) return;
 	}
+	else if(bindType == GpuData::BindToRenderStage)
+	{
+		GLint uid = glGetUniformLocation(prog->getGLProgram(), myName.c_str());
+		switch(myType)
+		{
+		case TypeFloat:
+			if(myComponents == 1) glUniform1f(uid, myFloatVector[0]);
+			else if(myComponents == 2) glUniform2f(uid, myFloatVector[0], myFloatVector[1]);
+			else if(myComponents == 3) glUniform3f(uid, myFloatVector[0], myFloatVector[1], myFloatVector[2]);
+			else if(myComponents == 4) glUniform4f(uid, myFloatVector[0], myFloatVector[1], myFloatVector[2], myFloatVector[3]);
+			break;
+		case TypeInt:
+			if(myComponents == 1) glUniform1i(uid, myIntVector[0]);
+			else if(myComponents == 2) glUniform2i(uid, myIntVector[0], myIntVector[1]);
+			else if(myComponents == 3) glUniform3i(uid, myIntVector[0], myIntVector[1], myIntVector[2]);
+			else if(myComponents == 4) glUniform4i(uid, myIntVector[0], myIntVector[1], myIntVector[2], myIntVector[3]);
+			break;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,12 +79,19 @@ GpuBuffer::~GpuBuffer()
 void GpuBuffer::initialize(int size, int elementSize, void* data)
 {
 	glGenBuffers(1, &myGLBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
-	glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 
 	mySize = size;
 	myElementSize = elementSize;
 	myLength = mySize / myElementSize;
+
+	setData(data);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuBuffer::setData(void* data)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
+	glBufferData(GL_ARRAY_BUFFER, mySize, data, GL_DYNAMIC_DRAW);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
