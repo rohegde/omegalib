@@ -14,6 +14,7 @@
 
 #include "outk/ui/Box.h"
 #include "outk/ui/Button.h"
+#include "outk/ui/Slider.h"
 #include "outk/ui/Widget.h"
 #include "outk/ui/Image.h"
 
@@ -44,6 +45,13 @@ namespace ui
 			Button* button = new Button(name);
 			parent->addChild(button);
 			return button;
+		}
+
+		virtual Slider* createSlider(omega::String name, Widget* parent)
+		{
+			Slider* slider = new Slider(name);
+			parent->addChild(slider);
+			return slider;
 		}
 
 		virtual Image* createImage(omega::String name, Widget* parent)

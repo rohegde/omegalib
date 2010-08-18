@@ -105,12 +105,6 @@ void GpuProgram::clearInput()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::activate()
-{
-	glUseProgram(myGLProgram);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::printProgramLog(GLuint program)
 {
     GLint infoLogLength = 0;
@@ -186,6 +180,8 @@ void GpuProgram::run(PrimType primType)
 		case PrimPoints: mode = GL_POINTS;
 		}
 
+		glUseProgram(myGLProgram);
+
 		for(int i = 0; i < MaxInputs; i++)
 		{
 			GpuData* data = myInput[i];
@@ -203,5 +199,7 @@ void GpuProgram::run(PrimType primType)
 				data->unbind(this, i, GpuData::BindToRenderStage);
 			}
 		}
+
+		glUseProgram(0);
 	}
 }

@@ -20,12 +20,25 @@ namespace ui
 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class PalladiumButton: public Button
+class PalladiumButton: public Button
 {
 public:
 	PalladiumButton(omega::String name): Button(name) {}
 protected:
 	OUTK_API void draw();
+private:
+	float myAnim;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class PalladiumSlider: public Slider
+{
+public:
+	PalladiumSlider(omega::String name): Slider(name) {}
+protected:
+	OUTK_API void draw();
+private:
+	float myAnim;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +50,13 @@ public:
 		Button* button = new PalladiumButton(name);
 		parent->addChild(button);
 		return button;
+	}
+
+	virtual Slider* createSlider(omega::String name, Widget* parent)
+	{
+		Slider* slider = new PalladiumSlider(name);
+		parent->addChild(slider);
+		return slider;
 	}
 };
 

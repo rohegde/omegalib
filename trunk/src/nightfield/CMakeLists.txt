@@ -18,11 +18,15 @@ ADD_DEFINITIONS( )
 # Source files
 SET( srcs 
         nightfield.cpp
+		NightfieldApplication.cpp
+		NightfieldUI.cpp
         )
     
 #######################################################################################################################
 # Headers
 SET( headers 
+		NightfieldApplication.h
+		NightfieldUI.h
         ) 
         
 #######################################################################################################################
