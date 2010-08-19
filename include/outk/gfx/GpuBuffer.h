@@ -172,12 +172,18 @@ namespace gfx
 	class GpuBuffer: public GpuData
 	{
 	public:
+		enum BufferFlags { BufferFlagsCLNative = 1 << 1};
+
+	public:
 		OUTK_API GpuBuffer(GpuManager* mng);
 		OUTK_API ~GpuBuffer();
 
-		OUTK_API void initialize(int size, int elementSize, void* data = NULL);
+		OUTK_API void initialize(int size, int elementSize, void* data = NULL, unsigned int bufferFlags = 0);
 		OUTK_API virtual void bind(GpuProgram* prog, int index, GpuData::BindType bindType);
 		OUTK_API virtual void unbind(GpuProgram* prog, int index, GpuData::BindType bindType);
+
+		//! Gets wether this buffer is a CL native buffer. 
+		bool isCLNative() { return myBufferFlags & BufferFlagsCLNative; } 
 
 		//! Sets the gpu buffer data
 		OUTK_API void setData(void* data);
@@ -195,6 +201,8 @@ namespace gfx
 	private:
 		GLuint myGLBuffer;
 		cl_mem myCLBuffer;
+
+		unsigned int myBufferFlags;
 
 		int mySize;
 		int myElementSize;

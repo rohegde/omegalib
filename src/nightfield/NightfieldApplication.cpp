@@ -90,8 +90,9 @@ void NightfieldApplication::initializeWindow()
 		myTotGroups = new GpuConstant();
 		myTotGroups->setIntValue(mySettings.totGroups);
 
+		// Create a native OpenCL buffer storing interactor information.
 		myInteractorBuffer = new GpuBuffer(myGpu);
-		myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay));
+		myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL, GpuBuffer::BufferFlagsCLNative);
 
 		myNumInteractors = new GpuConstant();
 		myNumInteractors->setIntValue(0);
@@ -156,41 +157,17 @@ void NightfieldApplication::draw3D(const DrawContext& context)
 
 	glColor3f(1.0, 1.0, 1.0);
 
-	if(myRotate)
-	{
-		myRotateX += (myMouseX - myLastMouseX);
-		myRotateY += (myMouseY - myLastMouseY);
-		//myLightPos->setFloatValue(myMouseX / context.viewportWidth, myMouseY / context.viewportHeight);
-	}
 	glTranslatef(mySettings.center[0], mySettings.center[1], mySettings.center[2]);
 	glRotatef(myRotateX / 3, 0, 1, 0);
 	glRotatef(myRotateY / 3, 1, 0, 0);
 	glTranslatef(-mySettings.center[0], -mySettings.center[1], -mySettings.center[2]);
-
-	for(int j = 0; j < myNumTouches; j++)
-	{
-		Vector3f mouseRayOrigin;
-		Vector3f mouseRayDirection;
-		GfxUtils::getViewRay(myTouchX[j], myTouchY[j], &mouseRayOrigin, &mouseRayDirection);
-
-		myInteractorData[j].x = mouseRayOrigin[0];
-		myInteractorData[j].y = mouseRayOrigin[1];
-		myInteractorData[j].z = mouseRayOrigin[2];
-		myInteractorData[j].dx = mouseRayDirection[0];
-		myInteractorData[j].dy = mouseRayDirection[1];
-		myInteractorData[j].dz = mouseRayDirection[2];
-	}
-	myNumInteractors->setIntValue(myNumTouches);
-	myInteractorBuffer->setData(myInteractorData);
-
-	myNumTouches = 0;
 
 	GfxUtils::beginOverlayMode(context);
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	GfxUtils::drawVGradient(Vector2i(0, context.viewportHeight - 100), Vector2i(context.viewportWidth, 100), Color(0, 0, 0), Color(50, 50, 60), 0.3);
 	//GfxUtils::drawVGradient(Vector2i(0, 0), Vector2i(context.viewportWidth, context.viewportHeight), Color(30, 30, 100), Color(120, 120, 180), 0.3);
 	GfxUtils::endOverlayMode();
@@ -205,21 +182,7 @@ void NightfieldApplication::draw3D(const DrawContext& context)
 	glBindTexture(GL_TEXTURE_2D, myGlowTexture->getGLTexture());
 	glTexEnvi(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
 
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
-	myDt->setFloatValue(0.005f);
-
-	static int frameNum = 0;
-	if(frameNum != context.frameNum)
-	{
-		frameNum = context.frameNum;
-		static int groupId = 0;
-		myGroupId->setIntValue(groupId);
-		groupId++;
-		if(groupId == mySettings.totGroups) groupId = 0;
-		myAgentBehavior->run();
-		myAgentUpdate->run();
-	}
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 	int ps = context.viewportHeight < context.viewportWidth ? context.viewportHeight / 4 : context.viewportWidth / 4;
 	glPointSize(ps);
@@ -227,11 +190,7 @@ void NightfieldApplication::draw3D(const DrawContext& context)
 	myAgentRenderer->run(GpuProgram::PrimPoints);
 
 	glDisable(GL_BLEND);
-
 	glEnable(GL_DEPTH_TEST);
-
-	myLastMouseX = myMouseX;
-	myLastMouseY = myMouseY;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -258,6 +217,44 @@ void NightfieldApplication::draw(const DrawContext& context)
 void NightfieldApplication::update(const UpdateContext& context)
 {
 	myUI->update(context);
+
+	if(myRotate)
+	{
+		myRotateX += (myMouseX - myLastMouseX);
+		myRotateY += (myMouseY - myLastMouseY);
+		//myLightPos->setFloatValue(myMouseX / context.viewportWidth, myMouseY / context.viewportHeight);
+	}
+
+	for(int j = 0; j < myNumTouches; j++)
+	{
+		Vector3f mouseRayOrigin;
+		Vector3f mouseRayDirection;
+		GfxUtils::getViewRay(myTouchX[j], myTouchY[j], &mouseRayOrigin, &mouseRayDirection);
+
+		myInteractorData[j].x = mouseRayOrigin[0];
+		myInteractorData[j].y = mouseRayOrigin[1];
+		myInteractorData[j].z = mouseRayOrigin[2];
+		myInteractorData[j].dx = mouseRayDirection[0];
+		myInteractorData[j].dy = mouseRayDirection[1];
+		myInteractorData[j].dz = mouseRayDirection[2];
+	}
+	myNumInteractors->setIntValue(myNumTouches);
+	myInteractorBuffer->setData(myInteractorData);
+
+	myNumTouches = 0;
+
+	myDt->setFloatValue(0.005f);
+
+	static int groupId = 0;
+	myGroupId->setIntValue(groupId);
+	groupId++;
+	if(groupId == mySettings.totGroups) groupId = 0;
+
+	myAgentBehavior->run();
+	myAgentUpdate->run();
+
+	myLastMouseX = myMouseX;
+	myLastMouseY = myMouseY;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

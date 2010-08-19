@@ -21,7 +21,6 @@ void GpuConstant::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 	if(bindType == GpuData::BindToComputeStage)
 	{
 		cl_int status;
-		cl_event events;
 		cl_kernel kernel = prog->getComputeShader()->getCLKernel();
 
 		switch(myType)
@@ -76,22 +75,74 @@ GpuBuffer::~GpuBuffer()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuBuffer::initialize(int size, int elementSize, void* data)
+void GpuBuffer::initialize(int size, int elementSize, void* data, unsigned int flags)
 {
-	glGenBuffers(1, &myGLBuffer);
-
+	// Set buffer parameters buffer
+	myBufferFlags = flags;
 	mySize = size;
 	myElementSize = elementSize;
 	myLength = mySize / myElementSize;
 
-	setData(data);
+	if(myBufferFlags & BufferFlagsCLNative)
+	{
+		// This buffer is an OpenCL native buffer, create it through the OpenCL API
+		cl_int status;
+		myCLBuffer = clCreateBuffer(myGpu->getCLContext(), CL_MEM_READ_WRITE, mySize, data, &status);
+		if(!clSuccessOrDie(status)) return;
+	}
+	else
+	{
+		glGenBuffers(1, &myGLBuffer);
+		setData(data);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuBuffer::setData(void* data)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
-	glBufferData(GL_ARRAY_BUFFER, mySize, data, GL_DYNAMIC_DRAW);
+	if(myBufferFlags & BufferFlagsCLNative)
+	{
+		// Write to the GPU buffer through the OpenCL API
+		cl_int status;
+		cl_command_queue clqueue = myGpu->getCLCommandQueue();
+		cl_mem clbuf = getCLBuffer();
+
+		status = clEnqueueWriteBuffer(clqueue, myCLBuffer, true, 0, mySize, data, 0, NULL, NULL);
+		if(!clSuccessOrDie(status)) return;
+	}
+	else
+	{
+		// We are using an OpenGL native buffer. If an OpenGL context is available in the
+		// current thread, write the buffer using the OpenGL API. Otherwise aquire the buffer
+		// In OpenCl and perform the write through the OpenCL API.
+		// (Is there any difference in speed? If not, we can just always perform an OpenCL write...)
+		if(wglGetCurrentContext())
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
+			glBufferData(GL_ARRAY_BUFFER, mySize, data, GL_DYNAMIC_DRAW);
+		}
+		else
+		{
+			cl_int status;
+			cl_event events;
+			cl_command_queue clqueue = myGpu->getCLCommandQueue();
+
+			status = clEnqueueAcquireGLObjects(clqueue, 1, &myCLBuffer, 0, NULL, &events);
+			if(!clSuccessOrDie(status)) return;
+			status = clWaitForEvents(1, &events);
+			if(!clSuccessOrDie(status)) return;
+			clReleaseEvent(events);
+
+			status = clEnqueueWriteBuffer(clqueue, myCLBuffer, true, 0, mySize, data, 0, NULL, NULL);
+			if(!clSuccessOrDie(status)) return;
+
+			status = clEnqueueReleaseGLObjects(clqueue, 1, &myCLBuffer, 0, NULL, &events);
+			if(!clSuccessOrDie(status)) return;
+			status = clWaitForEvents(1, &events);
+			if(!clSuccessOrDie(status)) return;
+			clReleaseEvent(events);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,20 +150,30 @@ void GpuBuffer::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 {
 	if(bindType == GpuData::BindToComputeStage)
 	{
-		cl_int status;
-		cl_event events;
-		cl_kernel kernel = prog->getComputeShader()->getCLKernel();
-		cl_command_queue clqueue = prog->getManager()->getCLCommandQueue();
-		cl_mem clbuf = getCLBuffer();
+		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
+		// needs to be done here.
+		if(!(myBufferFlags & BufferFlagsCLNative))
+		{
+			cl_int status;
+			cl_event events;
+			cl_kernel kernel = prog->getComputeShader()->getCLKernel();
+			cl_command_queue clqueue = prog->getManager()->getCLCommandQueue();
+			cl_mem clbuf = getCLBuffer();
 
-		status = clSetKernelArg(kernel, index, sizeof(cl_mem), (const void*)&clbuf);
-		if(!clSuccessOrDie(status)) return;
+			status = clSetKernelArg(kernel, index, sizeof(cl_mem), (const void*)&clbuf);
+			if(!clSuccessOrDie(status)) return;
 
-		status = clEnqueueAcquireGLObjects(clqueue, 1, &clbuf, 0, NULL, &events);
-		if(!clSuccessOrDie(status)) return;
-		status = clWaitForEvents(1, &events);
-		if(!clSuccessOrDie(status)) return;
-		clReleaseEvent(events);
+			status = clEnqueueAcquireGLObjects(clqueue, 1, &clbuf, 0, NULL, &events);
+			if(!clSuccessOrDie(status)) return;
+			status = clWaitForEvents(1, &events);
+			if(!clSuccessOrDie(status)) return;
+			clReleaseEvent(events);
+		}
+	}
+	else
+	{
+		oerror("GpuBuffer::bind() - can't bind an OpenCL native buffer to a GpuProgram containing OpenGL shaders");
+		return;
 	}
 }
 
@@ -121,17 +182,22 @@ void GpuBuffer::unbind(GpuProgram* prog, int index, GpuData::BindType bindType)
 {
 	if(bindType == GpuData::BindToComputeStage)
 	{
-		cl_int status;
-		cl_event events;
-		cl_kernel kernel = prog->getComputeShader()->getCLKernel();
-		cl_command_queue clqueue = prog->getManager()->getCLCommandQueue();
-		cl_mem clbuf = getCLBuffer();
+		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
+		// needs to be done here.
+		if(!(myBufferFlags & BufferFlagsCLNative))
+		{
+			cl_int status;
+			cl_event events;
+			cl_kernel kernel = prog->getComputeShader()->getCLKernel();
+			cl_command_queue clqueue = prog->getManager()->getCLCommandQueue();
+			cl_mem clbuf = getCLBuffer();
 
-		status = clEnqueueReleaseGLObjects(clqueue, 1, &clbuf, 0, NULL, &events);
-		if(!clSuccessOrDie(status)) return;
-		status = clWaitForEvents(1, &events);
-		if(!clSuccessOrDie(status)) return;
-		clReleaseEvent(events);
+			status = clEnqueueReleaseGLObjects(clqueue, 1, &clbuf, 0, NULL, &events);
+			if(!clSuccessOrDie(status)) return;
+			status = clWaitForEvents(1, &events);
+			if(!clSuccessOrDie(status)) return;
+			clReleaseEvent(events);
+		}
 	}
 }
 
