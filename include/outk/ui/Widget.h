@@ -84,7 +84,7 @@ namespace ui
 		void setSize(omega::Vector2f& value) { mySize = value; }
 
 		//! Sets the widget size.
-		void SetSize(float width, float height) { mySize[0] = width; mySize[1] = height; }
+		void setSize(float width, float height) { mySize[0] = width; mySize[1] = height; }
 
 		bool isVisible() { return myVisible; }
 		void setVisible(bool value) { myVisible = value; }
