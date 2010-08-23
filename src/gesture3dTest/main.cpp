@@ -122,15 +122,16 @@ public:
 		glPushMatrix();
 		glTranslatef(mx, my, mz);
 		glRotatef(ry , 0, 1, 0);
-		glRotated(rz, 0, 0, 1);
-		glRotated(rx, 1, 0, 0);
+		glRotatef(rz, 0, 0, 1);
+		glRotatef(rx, 1, 0, 0);
 		glTranslatef(0, 0.1f, 0);
-		glutWireCube( 0.1);
+		glutWireCone( 0.05, 0.1, 4, 5);
 		glPopMatrix();
 
 		glColor3f(1.0, 1.0, 1.0);
 		//DrawRoom(0.0f, 1.9f, -0.407f, 0.61f, 0, -3);
 		drawRoom(0.3f, 2.0f, -0.59f, 0.59f, 0, -3);
+		drawCubes();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,11 +201,18 @@ public:
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
-	 *	This function will go through the myCubes list and draw all corresponding glutWireCubes
+	 *	This function will go through the myCubes list and draw all corresponding cubes
 	 */
 	void drawCubes()
 	{
-		//myCubes
+		for ( int i = 0; i < myCubes.size(); i++)
+		{
+			glColor3f( 1.0, 1.0, 0.0);
+			glPushMatrix();
+			glTranslatef( myCubes[i][0], myCubes[i][1], myCubes[i][2]);
+			glutSolidCube( 0.05);
+			glPopMatrix();
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,10 +289,8 @@ public:
 					rx = evt.rotation[0];
 					ry = evt.rotation[1];
 					rz = evt.rotation[2];
-					/*for( int i = 0; i < evt.numberOfPoints; i++)
-					{
-						printf("point%d: x = %f, y = %f, z = %f\n", i, evt.pointSet[i][0], evt.pointSet[i][1], evt.pointSet[i][2]);
-					}*/
+
+					myCubes
 				}
 			}
 #endif
@@ -321,6 +327,7 @@ private:
 	float lz;
 
 	std::vector<Vector3f> myCubes;
+	int myIndex = 0;
 
 
 
@@ -333,7 +340,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	Config* cfg = new Config("../../data/omegadesk.cfg");
+	Config* cfg = new Config("../../data/gesture3d.cfg");
 
 	SystemManager* sys = SystemManager::instance();
 	sys->setup(cfg);
