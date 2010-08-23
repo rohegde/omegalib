@@ -11,71 +11,112 @@
  *********************************************************************************************************************/
 #include "omega.h"
 #include "outk.h"
+#include <vector>
 
 using namespace omega;
 using namespace outk::gfx;
+using namespace outk::ui;
+
+//#define LAPTOP
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *	class TestApplication: public Application
- *		
- *		This class will contain the draw and event handler functions that OmegaLib's System Manager will use.
- *      Additional functions can be added to handle any data that will be required by the applicaiton.
- */
-class TestApplication: public Application
+class TestApplication: public Application, IUIEventHandler
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
-	 *		
-	 */
+	TestApplication()
+	{
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void initialize()
+	{
+		myFontMng = new FontManager();
+		myFontMng->createFont("arial30", "../../data/fonts/Arial.ttf", 22);
+
+		myTexMng = new TextureManager();
+		myTexMng->loadTexture("mario", "../../data/images/mario.png");
+
+		Texture* tx = myTexMng->getTexture("mario");
+
+		myFont = myFontMng->getFont("arial30");
+
+		myUI = new UIManager();
+		myUI->setEventHandler(this);
+		myUI->setDefaultFont(myFont);
+
+		WidgetFactory* wf = myUI->getWidgetFactory();
+
+		Image* i1 = wf->createImage("i1", myUI->getRootWidget());
+		i1->setTexture(tx);
+		i1->setRotation(-20);
+		i1->setUserMoveEnabled(true);
+		i1->setPosition(Vector2f(400, 400));
+		i1->setSize(Vector2f(300, 300));
+
+
+		Box* b1 = wf->createBox("box1", myUI->getRootWidget(), Box::LayoutHorizontal);
+		b1->setUserMoveEnabled(true);
+		b1->setDebugModeEnabled(true);
+		b1->setPosition(Vector2f(100, 100));
+		b1->setSize(Vector2f(400, 100));
+		b1->setRotation(20);
+
+		Box* b2 = wf->createBox("box2", b1, Box::LayoutVertical);
+
+		Box* b3 = wf->createBox("box3", b1, Box::LayoutVertical);
+		b3->setUserMoveEnabled(true);
+		b3->setDebugModeEnabled(true);
+		b3->setPadding(2);
+
+		Box* b4 = wf->createBox("box4", b3, Box::LayoutHorizontal);
+		Box* b5 = wf->createBox("box5", b3, Box::LayoutHorizontal);
+		Box* b6 = wf->createBox("box6", b3, Box::LayoutHorizontal);
+
+		b1->layoutChildren();
+		b2->layoutChildren();
+		b3->layoutChildren();
+
+		Button* l1 = wf->createButton("L1", b4);
+		l1->setText("Hello Button!");
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void draw3D(const DrawContext& context)
 	{
-		
-
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 
+		//const float lightPos[] = { 0.0f, 1.6f, 0.0f, 0.0f };
+#ifdef LAPTOP
 		const float lightPos[] = { 0, 1.8, 0, 1.0f };
 		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		const float lightAmbient[] = { 0.3f, 0.3f, 0.3f, 1.0f };
 		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0 );
-
+#else
+		const float lightPos[] = { lx, ly, lz, 1.0f };
+		const float lightDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const float lightAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		glLightf( GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.6 );
+#endif
 		glLightfv( GL_LIGHT0, GL_POSITION, lightPos );
+
 		glLightfv( GL_LIGHT0, GL_AMBIENT, lightAmbient );
 		glLightfv( GL_LIGHT0, GL_DIFFUSE, lightDiffuse );
 
-		//Generate Fog effect
+
 		glEnable(GL_FOG);
+
 		const float fogCol[] = { 0.0f, 0.0f, 0.0f };
 		glFogfv( GL_FOG_COLOR, fogCol );
 		glFogi(GL_FOG_MODE, GL_LINEAR);
 		glFogf(GL_FOG_START, 1);
-		glFogf(GL_FOG_END, 3);
+		glFogf(GL_FOG_END, 7);
 
-
-		float i = (float)context.frameNum / 40;
-		float zz = sin(i) * 0.7;
-		float xx = cos(i * 1.2) * 0.3;
-		float yy = 0.5f; //cos(i * 0.7) * 0.1;
-
-		glColor3f(0.5, 0.4, 0.7);
-		glColor3f(0.8, 1.0, 0.8);
+		glColor3f( 1.0, 1.0, 0.0);
 		glPushMatrix();
-		glTranslatef(-0.2, 0.5, -2.0);
-		glRotated(i * 3, 0, 1, 0);
-		GfxUtils::drawSolidTeapot(0.1f);
-		glPopMatrix();
-
-		glColor3f(0.7, 0.4, 0.4);
-		glPushMatrix();
-		glTranslatef(0.0, 0.5, -0.7);
-		GfxUtils::drawSolidTeapot(0.1f);
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslatef(0.3 + xx, 0.0 + yy, -1.6 + zz);
-		glutSolidSphere(0.1f, 20, 20);
+		glTranslatef(0.0, 1.7, -0.1);
+		glutSolidCube( 0.1);
 		glPopMatrix();
 
 		glPushMatrix();
@@ -84,7 +125,7 @@ public:
 		glRotated(rz, 0, 0, 1);
 		glRotated(rx, 1, 0, 0);
 		glTranslatef(0, 0.1f, 0);
-		GfxUtils::drawSolidTeapot(0.05f);
+		glutWireCube( 0.1);
 		glPopMatrix();
 
 		glColor3f(1.0, 1.0, 1.0);
@@ -93,9 +134,6 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
-	 *		
-	 */
 	void drawRoom(float bottom, float top, float left, float right, float nearEnd, float farEnd)
 	{
 		//glColor3f(0.3, 1.0, 0.3);
@@ -143,34 +181,34 @@ public:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
-	 *		
-	 */
-	void draw2D(DrawContext& context)
+	void draw2D(const DrawContext& context)
 	{
 		GfxUtils::beginOverlayMode(context);
-
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		GfxUtils::drawText(10, 20, "Hello World!\nFrom OmegaLib!!!", GfxUtils::Helvetica18);
 
 		glColor4f (1.0f, 0.2f, 0.2f, 1.0f);
 		glPointSize (8.0);
 		glBegin(GL_POINTS);
 			glVertex2f(x, y);    // lower left vertex
 		glEnd();
-		
+
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		myUI->draw(context);
 
 		GfxUtils::endOverlayMode();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/*
-	 *	virtual void draw(DrawContext& context)
-	 *		
-	 *		This is a virtual function that can be implemented to handle drawing.
-	 *      This exmaple breaks it up into 3d and 2d drawingA.
+	 *	This function will go through the myCubes list and draw all corresponding glutWireCubes
 	 */
-	virtual void draw(DrawContext& context)
+	void drawCubes()
+	{
+		//myCubes
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void draw(const DrawContext& context)
 	{
 		switch(context.layer)
 		{
@@ -183,12 +221,14 @@ public:
 		}
 	}
 
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/*
-	 *	virtual bool handleEvent(const InputEvent& evt)
-	 *		
-	 *		This is a virtual function that can be implemented to handle input events
-	 */
+	virtual void update(const UpdateContext& context)
+	{
+		myUI->update(context);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual bool handleEvent(const InputEvent& evt)
 	{
 		switch(evt.serviceType)
@@ -196,19 +236,71 @@ public:
 		case InputService::Touch:
 		case InputService::Pointer:
 			x = evt.position[0];
-			y = evt.position[1];					
+			y = evt.position[1];	
+			myUI->processInputEvent(evt);
 		break;
 
 		case InputService::Mocap:
 		{
-			/* better calculations for tracker done here before passing */			
+#ifdef LAPTOP
 			Observer* obs = getDisplaySystem()->getObserver(0);
 			obs->update(evt.position, evt.rotation);
+#else
+			if(evt.sourceId == 1)
+			{
+				if(evt.position[0] != 0 || evt.position[1] != 0)
+				{
+					//I need to offset the observer position by the original camera position set in the config file for the z-axis
+					//for now I'll cheat instead of actually reading the config
+					Vector3f peiceOfCrap;
+					for( int i = 0; i < 3; i++)
+					{
+						peiceOfCrap[i] = evt.position[i];
+					}
+					peiceOfCrap[2] += 2.0;
+					Observer* obs = getDisplaySystem()->getObserver(0);
+					obs->update(peiceOfCrap, evt.rotation);
+				}
+			}
+			else if(evt.sourceId == 3) //glove
+			{
+				if(evt.position[0] != 0 || evt.position[1] != 0)
+				{
+					lx = evt.position[0];
+					ly = evt.position[1];
+					lz = evt.position[2];
+				}
+			}
+			else if(evt.sourceId ==2) //handheld
+			{
+				if(evt.position[0] != 0 || evt.position[1] != 0)
+				{
+					mx = evt.position[0];
+					my = evt.position[1];
+					mz = evt.position[2];
+					rx = evt.rotation[0];
+					ry = evt.rotation[1];
+					rz = evt.rotation[2];
+					/*for( int i = 0; i < evt.numberOfPoints; i++)
+					{
+						printf("point%d: x = %f, y = %f, z = %f\n", i, evt.pointSet[i][0], evt.pointSet[i][1], evt.pointSet[i][2]);
+					}*/
+				}
+			}
+#endif
+			break;
+
 			break;
 		}
 		default: break;
 		}
 		return true;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void handleUIEvent(const UIEvent& evt)
+	{
+		printf("click yay!\n");
 	}
 
 private:
@@ -227,34 +319,28 @@ private:
 	float lx;
 	float ly;
 	float lz;
+
+	std::vector<Vector3f> myCubes;
+
+
+
+	UIManager* myUI;
+	FontManager* myFontMng;
+	TextureManager* myTexMng;
+	Font* myFont;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
- *	void main(int argc, char** argv)
- *
- *    This is the main for oDemo.  Here is where to setup :
- *       - the configuration file and application to pass to OmegaLib
- *       - data structures for data that will be manipulated before relinquishing control to OmegaLib
- *		 - relingquish control to Omegalib for rendering.
- *
- *    The paradigm that drives OmegaLib is much like OpenGL.  Data structures and setup functionality is setup in the
- *      Main Program.  Control is then relinquished to OmegaLib where rendering and data manipulation will take place.
- *		
- */
 void main(int argc, char** argv)
 {
-	SystemManager* sys = SystemManager::instance();		//Setup the system manager for OmegaLib
-	
-	Config* cfg = new Config("../../data/test.cfg");	//define the config file and its path
-	sys->setup(cfg);									//notify OmegaLib's sys mngr of the configuration file
+	Config* cfg = new Config("../../data/omegadesk.cfg");
 
-	TestApplication app;								//inialize the app that will will be passed to OmegaLib
-	sys->setApplication(&app);							//notify OmegaLib's sys mngr of the app
-	
-	/* Setup data structures for data that will be manipulated before relinquishing control to OmegaLib*/
+	SystemManager* sys = SystemManager::instance();
+	sys->setup(cfg);
 
-	sys->run();											//Pass control to OmegaLib's sys mngr
+	TestApplication app;
+	sys->setApplication(&app);
+	sys->run();
 
-	sys->cleanup();										//cleanup
+	sys->cleanup();
 }
