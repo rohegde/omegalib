@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classoutk_1_1ui_1_1_abstract_button.html" title="outk::ui::AbstractButton" alt="" coords="441,208,631,240"/>
+<area shape="rect" id="node4" href="$classoutk_1_1ui_1_1_widget.html" title="outk::ui::Widget" alt="" coords="327,107,463,139"/>
+<area shape="rect" id="node11" href="$classoutk_1_1ui_1_1_u_i_manager.html" title="outk::ui::UIManager" alt="" coords="212,208,377,240"/>
+<area shape="rect" id="node18" href="$classoutk_1_1ui_1_1_label.html" title="outk::ui::Label" alt="" coords="655,208,777,240"/>
+<area shape="rect" id="node6" href="$structomega_1_1_input_event.html" title="omega::InputEvent" alt="" coords="316,5,473,37"/>
+<area shape="rect" id="node9" href="$classomega_1_1_color.html" title="omega::Color" alt="" coords="576,5,696,37"/>
+<area shape="rect" id="node13" href="$classoutk_1_1gfx_1_1_font.html" title="outk::gfx::Font" alt="" coords="581,107,707,139"/>
+<area shape="rect" id="node16" href="$classoutk_1_1ui_1_1_i_u_i_event_handler.html" title="outk::ui::IUIEventHandler" alt="" coords="5,107,208,139"/>
+</map>
