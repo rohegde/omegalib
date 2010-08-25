@@ -9,6 +9,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * GLUTDisplaySystem class declaration.
  *********************************************************************************************************************/
+#ifdef false
 #ifndef __GLUT_DISPLAY_SYSTEM_H__
 #define __GLUT_DISPLAY_SYSTEM_H__
 
@@ -47,4 +48,5 @@ namespace omega
 	};
 }; // namespace omega
 
+#endif
 #endif

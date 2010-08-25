@@ -1,14 +1,14 @@
-#/********************************************************************************************************************** 
-# * THE OMEGA LIB PROJECT
-# *---------------------------------------------------------------------------------------------------------------------
-# * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
-# * Authors:										
-# *  [Author]									[Mail]
-# *---------------------------------------------------------------------------------------------------------------------
-# * [LICENSE NOTE]
-# *---------------------------------------------------------------------------------------------------------------------
-# * [SUMMARY OF FILE CONTENTS]
-# *********************************************************************************************************************/
+#********************************************************************************************************************** 
+# THE OMEGA LIB PROJECT
+#---------------------------------------------------------------------------------------------------------------------
+# Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+# Authors:										
+#   Alessandro Febretti							febret@gmail.com
+#---------------------------------------------------------------------------------------------------------------------
+# [LICENSE NOTE]
+#---------------------------------------------------------------------------------------------------------------------
+# [SUMMARY OF FILE CONTENTS]
+#*********************************************************************************************************************/
 
 #######################################################################################################################
 # Find required packages
@@ -32,13 +32,38 @@ SET( srcs
 		Color.cpp
 		Config.cpp
 		EqualizerDisplaySystem.cpp
-		GLUTDisplaySystem.cpp
+        FontManager.cpp
+        GfxUtils.cpp
+#		GLUTDisplaySystem.cpp
+        GpuBuffer.cpp
+        GpuEnvironment.cpp
+        GpuManager.cpp
+        GpuProgram.cpp
 		InputManager.cpp
 		InputService.cpp
 		Math.cpp
         Observer.cpp
 		SystemManager.cpp
+        teapot.cpp
+        TextureManager.cpp
         Utils.cpp
+		
+		# omega::scene
+		scene/Cube.cpp
+		scene/Drawable.cpp
+		scene/SceneManager.cpp
+		scene/SceneNode.cpp
+		
+		# omega::ui
+		ui/AbstractButton.cpp
+		ui/Box.cpp
+		ui/Button.cpp
+		ui/Image.cpp
+		ui/Label.cpp
+		ui/PalladiumSkin.cpp
+		ui/Slider.cpp
+		ui/UIManager.cpp
+		ui/Widget.cpp
         )
 		
 #######################################################################################################################
@@ -49,10 +74,15 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Application.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GLUTDisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
+#		${OmegaLib_SOURCE_DIR}/include/omega/GLUTDisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuEnvironment.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
@@ -60,8 +90,25 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Math.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
+		
+		# omega::scene
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Cube.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
+		
+		# omega::ui
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/AbstractButton.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Box.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Button.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/PalladiumSkin.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Widget.h
         ) 
         
 #######################################################################################################################
@@ -102,7 +149,10 @@ IF(OMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
 
 #######################################################################################################################
-SOURCE_GROUP(input REGULAR_EXPRESSION input/)		
+SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
+SOURCE_GROUP(omega::input REGULAR_EXPRESSION omega/input/)		
+SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
+SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
 
 #######################################################################################################################
 # Setup compile info
@@ -131,4 +181,8 @@ TARGET_LINK_LIBRARIES( omega
 	debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
 	debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32
 	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
+	debug ${LIB_DEBUG}/freetype2312_D.lib optimized ${LIB_RELEASE}/freetype2312.lib
+	debug ${LIB_DEBUG}/ftgl_static_D.lib optimized ${LIB_RELEASE}/ftgl_static.lib
+	debug ${LIB_DEBUG}/FreeImage.lib optimized ${LIB_RELEASE}/FreeImage.lib
+	debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
 	${OPENGL_LIBRARY})

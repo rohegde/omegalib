@@ -23,48 +23,39 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const unsigned int EqualizerDisplaySystem::Id = OID("EQLZ");
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerChannel: public eq::Channel
+namespace omega
 {
-public:
-    EqualizerChannel( eq::Window* parent ) : eq::Channel( parent ) {}
-	virtual ~EqualizerChannel() {}
-
-protected:
-    virtual void frameDraw( const uint32_t spin );
-
-private:
-	DrawContext context;
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerWindow: public eq::Window
+//! @internal
+//! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
+//! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
+//! of a pipe are executed in the same pipe thread. The default window initialization methods initialize all windows 
+//! of the same pipe with a shared context, so that OpenGL objects can be reused between them for optimal GPU memory usage.
+class WindowImpl: public eq::Window
 {
 public:
-    EqualizerWindow(eq::Pipe* parent) : eq::Window(parent) {}
-	virtual ~EqualizerWindow() {}
+    WindowImpl(eq::Pipe* parent) : eq::Window(parent) {}
+	virtual ~WindowImpl() {}
 
 protected:
+
 	virtual bool configInit(const uint32_t initID)
 	{
-		Window::configInit(initID);
-
-		glewSetContext(this->glewGetContext());
-		Application* app = SystemManager::instance()->getApplication();
-		if(app) app->initializeWindow();
-
-		return true;
+		return Window::configInit(initID);
 	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerView: public eq::View
+//! @internal
+class ViewImpl: public eq::View
 {
 public:
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         class Proxy : public eq::fabric::Serializable
         {
         public:
-            Proxy( EqualizerView* view ) : myView( view ) {}
+            Proxy( ViewImpl* view ) : myView( view ) {}
 
         protected:
             /** The changed parts of the view. */
@@ -98,12 +89,13 @@ public:
             virtual void notifyNewVersion() { sync(); }
 
         private:
-            EqualizerView* myView;
-            friend class EqualizerView;
+            ViewImpl* myView;
+            friend class ViewImpl;
         };
 
 public:
-	EqualizerView(eq::Layout* parent): 
+
+	ViewImpl(eq::Layout* parent): 
 	  eq::View(parent)
 #pragma warning( push )
 #pragma warning( disable : 4355 )
@@ -114,7 +106,7 @@ public:
 		setUserData(&myProxy);
 	}
 
-	~EqualizerView()
+	~ViewImpl()
 	{
 		this->setUserData(NULL);
 	}
@@ -137,10 +129,20 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerConfig: public eq::Config
+//! @internal
+class ConfigImpl: public eq::Config
 {
 public:
-	EqualizerConfig( eq::base::RefPtr< eq::Server > parent): eq::Config(parent) {}
+	ConfigImpl( eq::base::RefPtr< eq::Server > parent): eq::Config(parent), myServer(NULL) {}
+
+	virtual bool init(const uint32_t initID)
+	{
+		Application* app = SystemManager::instance()->getApplication();
+		myServer = app->createServer();
+		myServer->initialize();
+		return eq::Config::init(initID);
+	}
+
 	virtual bool handleEvent(const eq::ConfigEvent* event)
 	{
 		static int x;
@@ -186,22 +188,18 @@ public:
 		}
 
 		// Process events.
-		Application* app = SystemManager::instance()->getApplication();
-		if(app != NULL)
-		{
-			im->processEvents(app);	
+		im->processEvents(myServer);	
 
-			static float lt = 0.0f;
-			// Compute dt.
-			float t = (float)((double)clock() / CLOCKS_PER_SEC);
-			lt = t;
-			UpdateContext uc;
-			uc.dt = t - lt;
+		static float lt = 0.0f;
+		// Compute dt.
+		float t = (float)((double)clock() / CLOCKS_PER_SEC);
+		lt = t;
+		UpdateContext uc;
+		uc.dt = t - lt;
 
-			app->update(uc);
-		}
+		myServer->update(uc);
 
-		SystemManager::instance()->getInputManager()->poll();
+		im->poll();
 
 		// Process exit requests.
 		if(SystemManager::instance()->isExitRequested())
@@ -220,52 +218,80 @@ public:
 		return eq::Config::finishFrame();
 	}
 
-	EqualizerView* findView(const String& viewName)
+	ViewImpl* findView(const String& viewName)
 	{
 		eq::Layout* layout = this->ohGetLayout(0);
-		return static_cast< EqualizerView* >(layout->ohFindView(viewName));
+		return static_cast< ViewImpl* >(layout->ohFindView(viewName));
 	}
 	
 	void setLayerEnabled(const String& viewName, int layerId, bool enabled)
 	{
-	    EqualizerView* view  = findView(viewName);
+	    ViewImpl* view  = findView(viewName);
 		if(view != NULL)
 		{
 			view->setLayerEnabled(layerId, enabled);
 		}
 	}
 
+private:
+	ApplicationServer* myServer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerNodeFactory: public eq::NodeFactory
+//! @internal
+class PipeImpl: public eq::Pipe
 {
 public:
-	EqualizerNodeFactory() {}
-public:
-    virtual eq::Config*  createConfig( eq::ServerPtr parent )
-		{ return new EqualizerConfig( parent ); }
-    virtual eq::Channel* createChannel(eq::Window* parent)
-        { return new EqualizerChannel( parent ); }
-	virtual eq::View* createView(eq::Layout* parent)
-        { return new EqualizerView(parent); }
-	virtual eq::Window* createWindow(eq::Pipe* parent)
-        { return new EqualizerWindow(parent); }
-};
+	PipeImpl(eq::Node* parent): eq::Pipe(parent), myClient(NULL) {}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerChannel::frameDraw( const uint32_t spin )
-{
-    EqualizerView* view  = static_cast< EqualizerView* > (const_cast< eq::View* >( getView( )));
+	ApplicationClient* getClient() { return myClient; }
 
-	glewSetContext(this->glewGetContext());
+protected:
+	virtual ~PipeImpl() {}
 
-    // setup OpenGL State
-    eq::Channel::frameDraw( spin );
-
-	Application* app = SystemManager::instance()->getApplication();
-	if(app)
+    virtual bool configInit( const uint32_t initID )
 	{
+		// Create and initialize an application client.
+		Application* app = SystemManager::instance()->getApplication();
+		if(app)
+		{
+			myClient = app->createClient();
+			myClient->initialize();
+		}
+		return eq::Pipe::configInit(initID);
+	}
+
+    virtual void frameStart( const uint32_t frameID, const uint32_t frameNumber )
+	{
+		UpdateContext context;
+		context.frameNum = frameNumber;
+		myClient->update(context);
+	}
+
+private:
+	ApplicationClient* myClient;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal
+class ChannelImpl: public eq::Channel
+{
+public:
+    ChannelImpl( eq::Window* parent ) : eq::Channel( parent ) {}
+	virtual ~ChannelImpl() {}
+
+protected:
+
+	virtual void frameDraw( const uint32_t spin )
+	{
+		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		glewSetContext(this->glewGetContext());
+
+		// setup OpenGL State
+		eq::Channel::frameDraw( spin );
+		
+		PipeImpl* pipe = (PipeImpl*)getPipe();
+
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// setup the context viewport.
@@ -275,21 +301,40 @@ void EqualizerChannel::frameDraw( const uint32_t spin )
 		context.viewportWidth = pvp.w;
 		context.viewportHeight = pvp.h;
 
-		for(int layer = 0; layer < Application::MaxLayers; layer++)
+		for(int i = 0; i < Application::MaxLayers; i++)
 		{
-			if(view->isLayerEnabled(layer))
+			if(view->isLayerEnabled(i))
 			{
-				context.layer = layer;
-				app->draw(context);
+				context.layer = i;
+				pipe->getClient()->draw(context);
 			}
 		}
-
-		/*if(SystemManager::instance()->isExitRequested())
-		{
-			exit(0);
-		}*/
 	}
-}
+
+private:
+	DrawContext context;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal
+class EqualizerNodeFactory: public eq::NodeFactory
+{
+public:
+	EqualizerNodeFactory() {}
+public:
+    virtual eq::Config*  createConfig( eq::ServerPtr parent )
+		{ return new ConfigImpl( parent ); }
+    virtual eq::Channel* createChannel(eq::Window* parent)
+        { return new ChannelImpl( parent ); }
+	virtual eq::View* createView(eq::Layout* parent)
+        { return new ViewImpl(parent); }
+	virtual eq::Window* createWindow(eq::Pipe* parent)
+        { return new WindowImpl(parent); }
+	virtual eq::Pipe* createPipe(eq::Node* parent)
+		{ return new PipeImpl(parent); }
+};
+
+}; // namespace omega
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 EqualizerDisplaySystem::EqualizerDisplaySystem():
@@ -330,7 +375,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
     }
 
     bool error  = false;
-	myConfig = static_cast<EqualizerConfig*>(eq::getConfig( argv.size(), &argv[0] ));
+	myConfig = static_cast<ConfigImpl*>(eq::getConfig( argv.size(), &argv[0] ));
 	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
 
 	// Create observers.
@@ -456,7 +501,7 @@ void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName,
 		return;
 	}
 
-	EqualizerView* view = myConfig->findView(viewName);
+	ViewImpl* view = myConfig->findView(viewName);
 	if(view != NULL)
 	{
 		view->setLayerEnabled(layerNum, enabled);
@@ -472,7 +517,7 @@ bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName)
 		return false;
 	}
 
-	EqualizerView* view = myConfig->findView(viewName);
+	ViewImpl* view = myConfig->findView(viewName);
 	if(view != NULL)
 	{
 		return view->isLayerEnabled(layerNum);
@@ -486,3 +531,4 @@ Observer* EqualizerDisplaySystem::getObserver(int observerId)
 	oassert(myObservers.size() > observerId);
 	return myObservers[observerId];
 }
+

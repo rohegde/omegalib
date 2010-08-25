@@ -47,7 +47,7 @@ public:
 	// TEMPORARY: this will run in a thread in the future.
 	OMEGA_API void poll();
 
-	OMEGA_API void processEvents(Application* app);
+	OMEGA_API void processEvents(ApplicationServer* app);
 
 	OMEGA_API int getAvailableEvents() { return myAvailableEvents; }
 	OMEGA_API int getDroppedEvents() { return myDroppedEvents; }

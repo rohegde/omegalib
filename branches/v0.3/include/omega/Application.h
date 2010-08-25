@@ -16,43 +16,91 @@
 #include "osystem.h"
 #include "SystemManager.h"
 #include "InputEvent.h"
-#include "DrawContext.h"
 #include "Application.h"
-#include "UpdateContext.h"
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
-class InputManager;
-class DisplaySystem;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
+	class SystemManager;
+	class InputManager;
+	class DisplaySystem;
+	class Application;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Application
-{
-public:
-	static const int MaxLayers = 16;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct UpdateContext
+	{
+		int frameNum;
+		float dt;
+	};
 
-public:
-	virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct DrawContext
+	{
+		unsigned int frameNum;
+		unsigned int layer;
+		int viewportX;
+		int viewportY;
+		int viewportWidth;
+		int viewportHeight;
+	};
 
-	//! Called once for entire application initialization tasks.
-	virtual void initialize() {}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class ApplicationClient
+	{
+	public:
+		ApplicationClient(Application* app): myApplication(app) {}
+		virtual ~ApplicationClient() {}
 
-	//! Called once for every initialized pipe (a graphic card, or any other resource
-	//! seen as one logical graphic card)
-	virtual void initializeWindow() {}
+		virtual void initialize() {}
+		virtual void update(const UpdateContext& context) {}
+		virtual void draw(const DrawContext& context) {}
 
-	virtual void draw(const DrawContext& context) {}
-	virtual bool handleEvent(const InputEvent& evt) { return false; }
-	virtual void update(const UpdateContext& context) {}
+		Application* getApplication() { return myApplication; }
 
-	SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-	InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
-	DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-};
+	private:
+		Application* myApplication;
+	};
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class ApplicationServer
+	{
+	public:
+		ApplicationServer(Application* app): myApplication(app) {}
+		virtual ~ApplicationServer() {}
+
+		virtual void initialize() {}
+		virtual void update(const UpdateContext& context) {}
+		virtual bool handleEvent(const InputEvent& evt) { return false; }
+
+		Application* getApplication() { return myApplication; }
+
+	private:
+		Application* myApplication;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class Application
+	{
+	public:
+		static const int MaxLayers = 16;
+
+	public:
+		virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
+
+		//! Instantiates a new Channel instance.
+		//! Users redefine this method to create instances of their own Channel objects.
+		//! @param impl - the internal DisplaySystem-dependent channel implementation.
+		virtual ApplicationServer* createServer() = 0;
+		virtual ApplicationClient* createClient() = 0;
+
+		//! Called once for entire application initialization tasks.
+		virtual void initialize() {}
+
+		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
+		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+	};
 }; // namespace omega
 
 #endif

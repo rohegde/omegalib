@@ -191,7 +191,7 @@ InputEvent* InputManager::readTail()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::processEvents(Application* app)
+void InputManager::processEvents(ApplicationServer* app)
 {
 	oassert(app);
 

@@ -17,11 +17,33 @@
 #include "omega/Config.h"
 #include "omega/Color.h"
 #include "omega/EqualizerDisplaySystem.h"
+#include "omega/FontManager.h"
+#include "omega/GfxUtils.h"
 #include "omega/GLUTDisplaySystem.h"
+#include "omega/GpuBuffer.h"
+#include "omega/GpuManager.h"
 #include "omega/InputManager.h"
 #include "omega/Math.h"
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
+#include "omega/TextureManager.h"
 #include "omega/Utils.h"
+
+#include "omega/Utils.h"
+
+#include "omega/scene/Cube.h"
+#include "omega/scene/Drawable.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/SceneNode.h"
+		
+#include "omega/ui/AbstractButton.h"
+#include "omega/ui/Box.h"
+#include "omega/ui/Button.h"
+#include "omega/ui/Image.h"
+#include "omega/ui/Label.h"
+#include "omega/ui/PalladiumSkin.h"
+#include "omega/ui/Slider.h"
+#include "omega/ui/UIManager.h"
+#include "omega/ui/Widget.h"
 
 #endif

@@ -146,10 +146,10 @@ void SystemManager::setupDisplaySystem()
 		{
 			ds = new EqualizerDisplaySystem();
 		}
-		else if(displaySystemType == "GLUT")
+		/*else if(displaySystemType == "GLUT")
 		{
 			ds = new GLUTDisplaySystem();
-		}
+		}*/
 		else
 		{
 			owarn("Unknown display system type: %s", displaySystemType.c_str());

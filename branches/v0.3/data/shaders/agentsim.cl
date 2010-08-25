@@ -20,7 +20,13 @@ __kernel void behavior(
 	__private int totGroups, 
 	__private int groupId, 
 	__private int numInteractors,
-	__constant struct InteractorRay* interactor)
+	__constant struct InteractorRay* interactor,
+	
+	// Simulation customization parameters
+	__private float avoidanceDist, 
+	__private float coordDist,
+	__private float frictionCoeff
+	)
 {
     uint i = get_global_id(0);
 	
@@ -30,7 +36,6 @@ __kernel void behavior(
 	float4 pos = (float4)(agent[i].x, agent[i].y, agent[i].z, 0);
 	
 	float4 attractDir = normalize(center - pos);
-	//float4 attractDir = (float4)(0, 0, 0, 0);
 	
 	// Compute avoidance vector.
 	float4 avoidDir = (float4)(0, 0, 0, 0);
@@ -39,24 +44,20 @@ __kernel void behavior(
 	{
 		float4 pos2 = (float4)(agent[j].x, agent[j].y, agent[j].z, 0);
 		float4 dv = pos2 - pos;
-		if(length(dv) < 0.03f)
+		if(length(dv) < avoidanceDist)
 		{
 			avoidDir -= normalize(dv);
 		}
-		if(length(dv) < 0.15f)
+		if(length(dv) < coordDist)
 		{
 			coordDir += (float4)(agent[j].vx, agent[j].vy, agent[j].vz, 0);
 		}
-		//attractDir += normalize(dv);
 	}
 	
-	//attractDir = normalize(attractDir);
 	coordDir = normalize(coordDir);
-	//avoidDir = -normalize(avoidDir);
-	
 	float4 dir = normalize(attractDir + avoidDir + coordDir);
 	
-	int friction = 0.1f / dt;
+	int friction = frictionCoeff / dt;
 	
 	float4 vel = (float4)(agent[i].vx, agent[i].vy, agent[i].vz, 0);
 	vel = (vel * friction + dir) / (friction + 1);
@@ -73,7 +74,7 @@ __kernel void behavior(
 		float idist = length(ptol);
 		if(idist < 0.2)
 		{
-			vel += (ptol / idist) / 2;
+			vel += (ptol / idist) * interactor[j].s1;
 		}
 	}
 	
