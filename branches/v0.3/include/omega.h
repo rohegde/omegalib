@@ -29,21 +29,4 @@
 #include "omega/TextureManager.h"
 #include "omega/Utils.h"
 
-#include "omega/Utils.h"
-
-#include "omega/scene/Cube.h"
-#include "omega/scene/Drawable.h"
-#include "omega/scene/SceneManager.h"
-#include "omega/scene/SceneNode.h"
-		
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Box.h"
-#include "omega/ui/Button.h"
-#include "omega/ui/Image.h"
-#include "omega/ui/Label.h"
-#include "omega/ui/PalladiumSkin.h"
-#include "omega/ui/Slider.h"
-#include "omega/ui/UIManager.h"
-#include "omega/ui/Widget.h"
-
 #endif

@@ -14,7 +14,7 @@
 #define __PLAYGROUND_UI_H__
 
 #include "omega.h"
-#include "omega.h"
+#include "omega/ui.h"
 
 // Using namespace declarations in a header file make emokitteh cry
 // but we'll accept them here since it's application-level code, and we can have

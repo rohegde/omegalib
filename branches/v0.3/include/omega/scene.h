@@ -3,31 +3,19 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Test executable
+ * Includes all the classes and functionalities implemented in the omega namespace.
  *********************************************************************************************************************/
-#include "omega.h"
-#include "omega/input/MouseService.h"
+#ifndef __OMEGA_SCENE_H__
+#define __OMEGA_SCENE_H__
 
-using namespace omega;
+#include "omega/scene/Cube.h"
+#include "omega/scene/Drawable.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/SceneNode.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void main(int argc, char** argv)
-{
-	SystemManager* sys = SystemManager::instance();
-
-	Config* cfg = new Config("../../data/test.cfg");
-	//cfg->setDisplayConfig("--eq-config ../../data/eqc/test.eqc");
-	cfg->load();
-
-	sys->setup(cfg);
-
-	sys->initialize();
-
-	//sys->run();
-
-	sys->cleanup();
-}
+#endif

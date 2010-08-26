@@ -30,7 +30,7 @@ namespace omega
 	public:
 		Font(FTFont* fontImpl): myFontImpl(fontImpl) {}
 
-		OMEGA_API void render(const omega::String& text, omega::Vector2f position, unsigned int align = HALeft | VATop);
+		OUTILS_API void render(const omega::String& text, omega::Vector2f position, unsigned int align = HALeft | VATop);
 	private:
 		FTFont* myFontImpl;
 	};
@@ -42,13 +42,13 @@ namespace omega
 	class FontManager
 	{
 	public:
-		OMEGA_API FontManager();
-		OMEGA_API ~FontManager();
+		OUTILS_API FontManager();
+		OUTILS_API ~FontManager();
 
-		OMEGA_API void cleanup();
+		OUTILS_API void cleanup();
 
-		OMEGA_API void createFont(omega::String fontName, omega::String filename, int size);
-		OMEGA_API Font* getFont(omega::String fontName);
+		OUTILS_API void createFont(omega::String fontName, omega::String filename, int size);
+		OUTILS_API Font* getFont(omega::String fontName);
 
 	private:
 		FontDictionary myFonts;

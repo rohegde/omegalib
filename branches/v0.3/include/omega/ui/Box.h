@@ -24,8 +24,8 @@ class Box: public Widget
 public: 
 	enum Layout { LayoutNone, LayoutHorizontal, LayoutVertical };
 public:
-	OMEGA_API Box(omega::String name, Layout layout);
-	OMEGA_API virtual ~Box();
+	OUTILS_API Box(omega::String name, Layout layout);
+	OUTILS_API virtual ~Box();
 
 	// Gets the widget size
 	Layout getLayout() { return myLayout; }

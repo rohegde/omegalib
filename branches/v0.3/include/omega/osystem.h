@@ -44,6 +44,12 @@
 	#else
 	   #define OMEGA_API    __declspec(dllimport)
 	#endif
+	// Omega DLL import / export macros
+	#ifdef OUTILS_EXPORTING
+	   #define OUTILS_API    __declspec(dllexport)
+	#else
+	   #define OUTILS_API    __declspec(dllimport)
+	#endif
 #endif
 
 // OpenGL includes

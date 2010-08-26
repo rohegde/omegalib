@@ -36,6 +36,6 @@ ADD_EXECUTABLE( nightfield ${srcs} ${headers})
 #######################################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( nightfield
-	omega omega)
+	omega outils)
 
 

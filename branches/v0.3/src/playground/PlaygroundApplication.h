@@ -7,7 +7,8 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Nightfield is an application that tests most of omegalib & omega features.
+ * Playground is a simple application designed to test event and gesture handling in a multithreaded / distributed 
+ * application.
  *********************************************************************************************************************/
 #ifndef __PLAYGROUND_APPLICATION_H__
 #define __PLAYGROUND_APPLICATION_H__
@@ -66,27 +67,8 @@ public:
 
 private:
 	GpuManager* myGpu;
-	GpuProgram* myAgentBehavior;
-	GpuProgram* myAgentUpdate;
-	GpuProgram* myAgentRenderer;
-
-	// Gpu data
-	VertexBuffer* myAgentBuffer;
-	GpuConstant* myDt;
-	GpuConstant* myNumAgents;
-	GpuConstant* myGroupId;
-	GpuConstant* myTotGroups;
-	GpuConstant* myCenter;
-	GpuBuffer* myInteractorBuffer;
-	GpuConstant* myNumInteractors;
-	GpuConstant* myLightPos;
-	// Gpu simulation constants
-	GpuConstant* myAvoidanceDist;
-	GpuConstant* myCoordinationDist;
-	GpuConstant* myFriction;
-
 	// Interactors.
-	InteractorRay myInteractorData[NightfieldServer::MaxInteractors];
+	InteractorRay myInteractorData[PlaygroundServer::MaxInteractors];
 
 	// Textures
 	TextureManager* myTexMng;
@@ -94,29 +76,20 @@ private:
 
 	// User interface stuff.
 	FontManager* myFontMng;
-	NightfieldUI* myUI;
-
-	bool myRotate;
-	float myRotateX;
-	float myRotateY;
-
-	float myMouseX;
-	float myMouseY;
-	float myLastMouseX;
-	float myLastMouseY;
+	PlaygroundUI* myUI;
 
 	// Touch info
-	float myTouchX[NightfieldServer::MaxInteractors];
-	float myTouchY[NightfieldServer::MaxInteractors];
+	float myTouchX[PlaygroundServer::MaxInteractors];
+	float myTouchY[PlaygroundServer::MaxInteractors];
 	int myNumTouches;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class NightfieldApplication: public Application
+class PlaygroundApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new NightfieldClient(this); }
-	virtual ApplicationServer* createServer() { return new NightfieldServer(this); }
+	virtual ApplicationClient* createClient() { return new PlaygroundClient(this); }
+	virtual ApplicationServer* createServer() { return new PlaygroundServer(this); }
 };
 
 #endif

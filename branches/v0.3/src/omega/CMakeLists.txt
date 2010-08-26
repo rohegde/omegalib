@@ -7,7 +7,7 @@
 #---------------------------------------------------------------------------------------------------------------------
 # [LICENSE NOTE]
 #---------------------------------------------------------------------------------------------------------------------
-# [SUMMARY OF FILE CONTENTS]
+# Cmake file for omega
 #*********************************************************************************************************************/
 
 #######################################################################################################################
@@ -28,42 +28,23 @@ ENDIF()
 #######################################################################################################################
 # Source files
 SET( srcs 
-        osystem.cpp
-		Color.cpp
-		Config.cpp
-		EqualizerDisplaySystem.cpp
-        FontManager.cpp
-        GfxUtils.cpp
+        omega/osystem.cpp
+		omega/Color.cpp
+		omega/Config.cpp
+		omega/EqualizerDisplaySystem.cpp
+        omega/GfxUtils.cpp
 #		GLUTDisplaySystem.cpp
-        GpuBuffer.cpp
-        GpuEnvironment.cpp
-        GpuManager.cpp
-        GpuProgram.cpp
-		InputManager.cpp
-		InputService.cpp
-		Math.cpp
-        Observer.cpp
-		SystemManager.cpp
-        teapot.cpp
-        TextureManager.cpp
-        Utils.cpp
-		
-		# omega::scene
-		scene/Cube.cpp
-		scene/Drawable.cpp
-		scene/SceneManager.cpp
-		scene/SceneNode.cpp
-		
-		# omega::ui
-		ui/AbstractButton.cpp
-		ui/Box.cpp
-		ui/Button.cpp
-		ui/Image.cpp
-		ui/Label.cpp
-		ui/PalladiumSkin.cpp
-		ui/Slider.cpp
-		ui/UIManager.cpp
-		ui/Widget.cpp
+        omega/GpuBuffer.cpp
+        omega/GpuEnvironment.cpp
+        omega/GpuManager.cpp
+        omega/GpuProgram.cpp
+		omega/InputManager.cpp
+		omega/InputService.cpp
+		omega/Math.cpp
+        omega/Observer.cpp
+		omega/SystemManager.cpp
+        omega/teapot.cpp
+        omega/Utils.cpp
         )
 		
 #######################################################################################################################
@@ -92,58 +73,41 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
-		
-		# omega::scene
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/Cube.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
-		
-		# omega::ui
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/AbstractButton.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Box.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Button.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/PalladiumSkin.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Widget.h
         ) 
         
 #######################################################################################################################
 # Enable / disable specific modules within omegalib
 SET(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
 IF(OMEGA_USE_MOUSE)
-	SET( srcs	 ${srcs} input/MouseService.cpp )
+	SET( srcs	 ${srcs} omega/input/MouseService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MouseService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_MOUSE)
 ENDIF(OMEGA_USE_MOUSE)
 
 SET(OMEGA_USE_MOCAP true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
 IF(OMEGA_USE_MOCAP)
-	SET( srcs	 ${srcs} input/MoCapService.cpp )
+	SET( srcs	 ${srcs} omega/input/MoCapService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MoCapService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_MOCAP)
 ENDIF(OMEGA_USE_MOCAP)
 
 SET(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
 IF(OMEGA_USE_OPTITRACK)
-	SET( srcs	 ${srcs} input/OptiTrackService.cpp )
+	SET( srcs	 ${srcs} omega/input/OptiTrackService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OptiTrackService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_OPTITRACK)
 ENDIF(OMEGA_USE_OPTITRACK)
 
 SET(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
 IF(OMEGA_USE_PQLABS)
-	SET( srcs	 ${srcs} input/PQService.cpp )
+	SET( srcs	 ${srcs} omega/input/PQService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/PQService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_PQLABS)
 ENDIF(OMEGA_USE_PQLABS)
 
 SET(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
 IF(OMEGA_USE_NETSERVICE)
-	SET( srcs	 ${srcs} input/NetService.cpp )
+	SET( srcs	 ${srcs} omega/input/NetService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
@@ -181,8 +145,5 @@ TARGET_LINK_LIBRARIES( omega
 	debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
 	debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32
 	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
-	debug ${LIB_DEBUG}/freetype2312_D.lib optimized ${LIB_RELEASE}/freetype2312.lib
-	debug ${LIB_DEBUG}/ftgl_static_D.lib optimized ${LIB_RELEASE}/ftgl_static.lib
-	debug ${LIB_DEBUG}/FreeImage.lib optimized ${LIB_RELEASE}/FreeImage.lib
 	debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
 	${OPENGL_LIBRARY})

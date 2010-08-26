@@ -23,8 +23,8 @@ namespace ui
 class AbstractButton: public Widget
 {
 public:
-	OMEGA_API AbstractButton(omega::String name);
-	OMEGA_API virtual ~AbstractButton();
+	OUTILS_API AbstractButton(omega::String name);
+	OUTILS_API virtual ~AbstractButton();
 
 	bool isCheckable() { return myCheckable; }
 	void setCheckable(bool value) { myCheckable = value; }

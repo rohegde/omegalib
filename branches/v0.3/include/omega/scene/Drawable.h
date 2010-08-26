@@ -18,6 +18,13 @@ namespace omega
 {
 namespace scene
 {
+	class Drawable
+	{
+	public:
+		virtual void draw() = 0;
+
+	private:
+	};
 
 }; // namespace scene
 }; // namespace omega

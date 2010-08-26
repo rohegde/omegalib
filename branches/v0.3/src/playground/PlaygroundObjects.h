@@ -6,8 +6,9 @@
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * Nightfield is an application that tests most of omegalib & omega features.
+ *--------------------------------------------------------------------------------------------------------------------- 
+ * Playground is a simple application designed to test event and gesture handling in a multithreaded / distributed 
+ * application.
  *********************************************************************************************************************/
 #ifndef __NIGHTFIELD_APPLICATION_H__
 #define __NIGHTFIELD_APPLICATION_H__

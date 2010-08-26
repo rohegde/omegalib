@@ -242,7 +242,7 @@ private:
 class PipeImpl: public eq::Pipe
 {
 public:
-	PipeImpl(eq::Node* parent): eq::Pipe(parent), myClient(NULL) {}
+	PipeImpl(eq::Node* parent): eq::Pipe(parent), myClient(NULL), myInitialized(false) {}
 
 	ApplicationClient* getClient() { return myClient; }
 
@@ -251,24 +251,35 @@ protected:
 
     virtual bool configInit( const uint32_t initID )
 	{
+		bool result = eq::Pipe::configInit(initID);
 		// Create and initialize an application client.
 		Application* app = SystemManager::instance()->getApplication();
 		if(app)
 		{
 			myClient = app->createClient();
-			myClient->initialize();
 		}
-		return eq::Pipe::configInit(initID);
+		return result;
 	}
 
     virtual void frameStart( const uint32_t frameID, const uint32_t frameNumber )
 	{
+		eq::Pipe::frameStart(frameID, frameNumber);
+
+		glewSetContext(getWindows()[0]->glewGetContext());
+		// Initialize the client at the first frame.
+		if(!myInitialized)
+		{
+			myClient->initialize();
+			myInitialized = true;
+		}
+
 		UpdateContext context;
 		context.frameNum = frameNumber;
 		myClient->update(context);
 	}
 
 private:
+	bool myInitialized;
 	ApplicationClient* myClient;
 };
 

@@ -31,12 +31,12 @@ class UIManager
 {
 friend class Widget;
 public:
-	OMEGA_API UIManager();
-	OMEGA_API ~UIManager();
+	OUTILS_API UIManager();
+	OUTILS_API ~UIManager();
 
-	OMEGA_API void update(const omega::UpdateContext& context);
-	OMEGA_API void draw(const omega::DrawContext& context);
-	OMEGA_API void processInputEvent(const omega::InputEvent& evt);
+	OUTILS_API void update(const omega::UpdateContext& context);
+	OUTILS_API void draw(const omega::DrawContext& context);
+	OUTILS_API void processInputEvent(const omega::InputEvent& evt);
 
 	Widget* getRootWidget() { return myRootWidget; }
 

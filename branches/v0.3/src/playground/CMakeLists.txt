@@ -20,7 +20,6 @@ SET( srcs
         playground.cpp
 		PlaygroundApplication.cpp
 		PlaygroundUI.cpp
-		PlaygroundObjects.cpp
         )
     
 #######################################################################################################################
@@ -28,7 +27,6 @@ SET( srcs
 SET( headers 
 		PlaygroundApplication.h
 		PlaygroundUI.h
-		PlaygroundObjects.h
         ) 
         
 #######################################################################################################################
@@ -38,6 +36,6 @@ ADD_EXECUTABLE( playground ${srcs} ${headers})
 #######################################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( playground
-	omega)
+	omega outils)
 
 

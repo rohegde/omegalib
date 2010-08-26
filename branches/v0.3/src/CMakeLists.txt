@@ -19,8 +19,8 @@ INCLUDE_DIRECTORIES(
 #######################################################################################################################
 # Options
 SET(OMEGA_BUILD_APPS true CACHE BOOL "Enable build of applications included in Omegalib")
+SET(OMEGA_BUILD_UTILS true CACHE BOOL "Enable build of utility library ")
 IF(OMEGA_BUILD_APPS)
-	SET(OMEGA_BUILD_UTILS true CACHE BOOL "Enable build of utility aplications (oinputserver)")
 	SET(OMEGA_BUILD_DEMOS true CACHE BOOL "Enable build of demo applications (nightfield, playground)")
 ENDIF(OMEGA_BUILD_APPS)
 
@@ -28,9 +28,8 @@ ENDIF(OMEGA_BUILD_APPS)
 # Add subdirectiories
 ADD_SUBDIRECTORY(3rdparty/libconfig)
 ADD_SUBDIRECTORY(omega)
-
 IF(OMEGA_BUILD_UTILS)
-	ADD_SUBDIRECTORY(oinputserver)
+	ADD_SUBDIRECTORY(outils)
 ENDIF(OMEGA_BUILD_UTILS)
 
 IF(OMEGA_BUILD_DEMOS)

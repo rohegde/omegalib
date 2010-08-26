@@ -23,8 +23,8 @@ namespace ui
 	class Slider: public Widget
 	{
 	public:
-		OMEGA_API Slider(omega::String name);
-		OMEGA_API virtual ~Slider();
+		OUTILS_API Slider(omega::String name);
+		OUTILS_API virtual ~Slider();
 
 		omega::String getText() { return myLabel.getText(); }
 		void setText(omega::String value) { myLabel.setText(value); }

@@ -27,8 +27,8 @@ namespace ui
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		OMEGA_API Label(omega::String name);
-		OMEGA_API virtual ~Label();
+		OUTILS_API Label(omega::String name);
+		OUTILS_API virtual ~Label();
 
 		omega::String getText() { return myText; }
 		void setText(const omega::String& value) { myText = value; }

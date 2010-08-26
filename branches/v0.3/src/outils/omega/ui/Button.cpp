@@ -3,65 +3,62 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Implements the Palladium UI skin.
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __PALLADIUM_SKIN_H__
-#define __PALLADIUM_SKIN_H__
+#include "omega/GfxUtils.h"
+#include "omega/ui/Button.h"
 
-#include "omega/ui/WidgetFactory.h"
-
-namespace omega
-{
-namespace ui
-{
+using namespace omega;
+using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumButton: public Button
+Button::Button(omega::String name):
+	AbstractButton(name),
+	myLabel(name + ".label")
 {
-public:
-	PalladiumButton(omega::String name): Button(name) {}
-protected:
-	OUTILS_API void draw();
-private:
-	float myAnim;
-};
+	addChild(&myLabel);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumSlider: public Slider
+Button::~Button()
 {
-public:
-	PalladiumSlider(omega::String name): Slider(name) {}
-protected:
-	OUTILS_API void draw();
-private:
-	float myAnim;
-};
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumWidgetFactory: public WidgetFactory
+bool Button::processInputEvent(const InputEvent& evt)
 {
-public:
-	virtual Button* createButton(omega::String name, Widget* parent)
+	Vector2f point  = evt.position;
+	
+	transformPoint(point);
+
+	if(hitTest(point))
 	{
-		Button* button = new PalladiumButton(name);
-		parent->addChild(button);
-		return button;
+		if(evt.type == InputEvent::Down)
+		{
+			myPressed = true;
+			myPressedStateChanged = true;
+		}
+		else if(evt.type == InputEvent::Up)
+		{
+			myPressed = false;
+			myPressedStateChanged = true;
+		}
+		return true;
 	}
+	return false;
+}
 
-	virtual Slider* createSlider(omega::String name, Widget* parent)
-	{
-		Slider* slider = new PalladiumSlider(name);
-		parent->addChild(slider);
-		return slider;
-	}
-};
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Button::draw()
+{
+	myLabel.setPosition(myPosition);
+	myLabel.setSize(mySize);
 
-
-}; // namespace ui
-}; // namespace omega
-
-#endif
+	AbstractButton::draw();
+}

@@ -1,0 +1,97 @@
+#********************************************************************************************************************** 
+# THE OMEGA LIB PROJECT
+#---------------------------------------------------------------------------------------------------------------------
+# Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+# Authors:										
+#   Alessandro Febretti							febret@gmail.com
+#---------------------------------------------------------------------------------------------------------------------
+# [LICENSE NOTE]
+#---------------------------------------------------------------------------------------------------------------------
+# Cmake file for outils
+#*********************************************************************************************************************/
+
+#######################################################################################################################
+# Compile definitions
+ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTING)
+
+#######################################################################################################################
+# Exclude libcmt when linking in visual studio
+IF(MSVC)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+ENDIF()
+
+#######################################################################################################################
+# Source files
+SET( srcs 
+		# omega
+		omega/FontManager.cpp
+		omega/TextureManager.cpp
+		
+		# omega::scene
+		omega/scene/Cube.cpp
+		omega/scene/Drawable.cpp
+		omega/scene/SceneManager.cpp
+		omega/scene/SceneNode.cpp
+		
+		# omega::ui
+		omega/ui/AbstractButton.cpp
+		omega/ui/Box.cpp
+		omega/ui/Button.cpp
+		omega/ui/Image.cpp
+		omega/ui/Label.cpp
+		omega/ui/PalladiumSkin.cpp
+		omega/ui/Slider.cpp
+		omega/ui/UIManager.cpp
+		omega/ui/Widget.cpp
+        )
+		
+#######################################################################################################################
+# Headers
+SET( headers 
+		# omega
+		${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
+		
+		# omega::scene
+		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Cube.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
+		
+		# omega::ui
+		${OmegaLib_SOURCE_DIR}/include/omega/ui.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/AbstractButton.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Box.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Button.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/PalladiumSkin.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Widget.h
+        ) 
+        
+#######################################################################################################################
+# Enable / disable specific modules within omegalib
+
+#######################################################################################################################
+SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
+SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
+SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
+
+#######################################################################################################################
+# Setup compile info
+ADD_LIBRARY( outils SHARED ${srcs} ${headers})
+
+#######################################################################################################################
+# Setup module-specific link info
+
+#######################################################################################################################
+# Setup link info.
+TARGET_LINK_LIBRARIES( outils
+	omega
+	debug ${LIB_DEBUG}/freetype2312_D.lib optimized ${LIB_RELEASE}/freetype2312.lib
+	debug ${LIB_DEBUG}/ftgl_static_D.lib optimized ${LIB_RELEASE}/ftgl_static.lib
+	debug ${LIB_DEBUG}/FreeImage.lib optimized ${LIB_RELEASE}/FreeImage.lib
+	)

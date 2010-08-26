@@ -3,65 +3,45 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Implements the Palladium UI skin.
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __PALLADIUM_SKIN_H__
-#define __PALLADIUM_SKIN_H__
+#include "omega/ui/AbstractButton.h"
 
-#include "omega/ui/WidgetFactory.h"
-
-namespace omega
-{
-namespace ui
-{
+using namespace omega;
+using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumButton: public Button
+AbstractButton::AbstractButton(omega::String name):
+	Widget(name),
+	myCheckable(false),
+	myChecked(false),
+	myPressed(false)
 {
-public:
-	PalladiumButton(omega::String name): Button(name) {}
-protected:
-	OUTILS_API void draw();
-private:
-	float myAnim;
-};
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumSlider: public Slider
+AbstractButton::~AbstractButton()
 {
-public:
-	PalladiumSlider(omega::String name): Slider(name) {}
-protected:
-	OUTILS_API void draw();
-private:
-	float myAnim;
-};
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumWidgetFactory: public WidgetFactory
+void AbstractButton::update(const omega::UpdateContext& context) 
 {
-public:
-	virtual Button* createButton(omega::String name, Widget* parent)
+	if(myPressedStateChanged)
 	{
-		Button* button = new PalladiumButton(name);
-		parent->addChild(button);
-		return button;
-	}
-
-	virtual Slider* createSlider(omega::String name, Widget* parent)
-	{
-		Slider* slider = new PalladiumSlider(name);
-		parent->addChild(slider);
-		return slider;
+		if(myPressed)
+		{
+			// Create and dispatch an ui event.
+			UIEvent evt(this, UIEvent::Click, &myLastEvent);
+			dispatchUIEvent(evt);
+		}
+		myPressedStateChanged = false;
 	}
 };
-
-
-}; // namespace ui
-}; // namespace omega
-
-#endif

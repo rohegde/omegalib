@@ -38,7 +38,7 @@ namespace omega
 
 		GLuint getGLTexture() { if(myDirty) refresh(); return myId; }
 
-		OMEGA_API virtual void refresh();
+		OUTILS_API virtual void refresh();
 
 	private:
 		bool myInitialized;
@@ -58,13 +58,13 @@ namespace omega
 	class TextureManager
 	{
 	public:
-		OMEGA_API TextureManager();
-		OMEGA_API ~TextureManager();
+		OUTILS_API TextureManager();
+		OUTILS_API ~TextureManager();
 
-		OMEGA_API void cleanup();
+		OUTILS_API void cleanup();
 
-		OMEGA_API void loadTexture(omega::String textureName, omega::String filename);
-		OMEGA_API Texture* getTexture(omega::String fontName);
+		OUTILS_API void loadTexture(omega::String textureName, omega::String filename);
+		OUTILS_API Texture* getTexture(omega::String fontName);
 
 	private:
 		TextureDictionary myTextures;

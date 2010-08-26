@@ -23,8 +23,8 @@ namespace ui
 	class Image: public Widget
 	{
 	public:
-		OMEGA_API Image(omega::String name);
-		OMEGA_API virtual ~Image();
+		OUTILS_API Image(omega::String name);
+		OUTILS_API virtual ~Image();
 
 		omega::Texture* getTexture() { return myTexture; }
 		void setTexture(omega::Texture* value) { myTexture = value; }

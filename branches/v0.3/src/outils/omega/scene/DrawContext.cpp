@@ -3,31 +3,21 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
+ *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Test executable
+ * DrawContext
  *********************************************************************************************************************/
-#include "omega.h"
-#include "omega/input/MouseService.h"
+#ifndef __DRAWCONTEXT_H__
+#define __DRAWCONTEXT_H__
 
-using namespace omega;
+#include "osystem.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void main(int argc, char** argv)
+namespace omega
 {
-	SystemManager* sys = SystemManager::instance();
 
-	Config* cfg = new Config("../../data/test.cfg");
-	//cfg->setDisplayConfig("--eq-config ../../data/eqc/test.eqc");
-	cfg->load();
+}; // namespace omega
 
-	sys->setup(cfg);
-
-	sys->initialize();
-
-	//sys->run();
-
-	sys->cleanup();
-}
+#endif

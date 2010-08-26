@@ -3,65 +3,66 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Implements the Palladium UI skin.
+ * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __PALLADIUM_SKIN_H__
-#define __PALLADIUM_SKIN_H__
+#include "omega/ui/Image.h"
+#include "omega/ui/UIManager.h"
 
-#include "omega/ui/WidgetFactory.h"
-
-namespace omega
-{
-namespace ui
-{
+using namespace omega;
+using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumButton: public Button
+Image::Image(omega::String name):
+	Widget(name),
+	myTexture(NULL)
 {
-public:
-	PalladiumButton(omega::String name): Button(name) {}
-protected:
-	OUTILS_API void draw();
-private:
-	float myAnim;
-};
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumSlider: public Slider
+Image::~Image()
 {
-public:
-	PalladiumSlider(omega::String name): Slider(name) {}
-protected:
-	OUTILS_API void draw();
-private:
-	float myAnim;
-};
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumWidgetFactory: public WidgetFactory
+void Image::draw()
 {
-public:
-	virtual Button* createButton(omega::String name, Widget* parent)
+	Widget::draw();
+
+	if(myTexture != NULL)
 	{
-		Button* button = new PalladiumButton(name);
-		parent->addChild(button);
-		return button;
+		glEnable(GL_TEXTURE_2D);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, myTexture->getGLTexture());
+
+		float x = myPosition.x();
+		float y = myPosition.y();
+
+		float width = mySize.x();
+		float height = mySize.y();
+
+		glColor4ub(255, 255, 255, 255);
+
+		glBegin(GL_TRIANGLE_STRIP);
+
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(x, y);
+
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(x + width, y);
+
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2f(x, y + height);
+
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(x + width, y + height);
+
+		glEnd();
+		glDisable(GL_TEXTURE_2D);
 	}
-
-	virtual Slider* createSlider(omega::String name, Widget* parent)
-	{
-		Slider* slider = new PalladiumSlider(name);
-		parent->addChild(slider);
-		return slider;
-	}
-};
-
-
-}; // namespace ui
-}; // namespace omega
-
-#endif
+}

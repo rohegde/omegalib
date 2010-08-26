@@ -24,8 +24,8 @@ namespace ui
 class Button: public AbstractButton
 {
 public:
-	OMEGA_API Button(omega::String name);
-	OMEGA_API virtual ~Button();
+	OUTILS_API Button(omega::String name);
+	OUTILS_API virtual ~Button();
 
 	omega::String getText() { return myLabel.getText(); }
 	void setText(omega::String value) { myLabel.setText(value); }

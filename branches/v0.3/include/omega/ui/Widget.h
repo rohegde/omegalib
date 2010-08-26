@@ -25,7 +25,7 @@ namespace ui
 	{
 	friend class UIManager;
 	public:
-		OMEGA_API Widget(omega::String name);
+		OUTILS_API Widget(omega::String name);
 		virtual ~Widget();
 
 		//! Gets the color used when widget debug mode is enabled.
@@ -93,14 +93,14 @@ namespace ui
 		void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
 
 
-		OMEGA_API bool hitTest(const omega::Vector2f& point);
-		OMEGA_API static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
+		OUTILS_API bool hitTest(const omega::Vector2f& point);
+		OUTILS_API static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
 
 		// Add a child to this widget.
-		OMEGA_API void addChild(Widget* child);
+		OUTILS_API void addChild(Widget* child);
 
 		// Remove a child from this widget.
-		OMEGA_API  void removeChild(Widget* child);
+		OUTILS_API  void removeChild(Widget* child);
 
 	protected:
 		void render();
