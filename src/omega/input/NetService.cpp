@@ -13,14 +13,18 @@
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
+
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ * Based on MSDN Winsock examples:
+ * http://msdn.microsoft.com/en-us/library/ms738566(VS.85).aspx
+ */
 void NetService::initialize() 
 {
+	serverAddress = "127.0.0.1";
 	serverPort = "27000";
-	ListenSocket = INVALID_SOCKET;
-	recvbuflen = DEFAULT_BUFLEN;
 	int iResult;
 
 	// Initialize Winsock
@@ -41,86 +45,81 @@ void NetService::initialize()
 	hints.ai_flags = AI_PASSIVE;
 
 	// Resolve the local address and port to be used by the server
-	iResult = getaddrinfo(NULL, serverPort, &hints, &result);
+	iResult = getaddrinfo(serverAddress, serverPort, &hints, &result);
 	if (iResult != 0) {
 		printf("NetService: getaddrinfo failed: %d\n", iResult);
 		WSACleanup();
 	} else {
-		printf("NetService: Server set to listen on port %s\n", serverPort);
+		printf("NetService: Client set to connect to address %s on port %s\n", serverAddress, serverPort);
 	}
+	
+	// Create connection socket
+	ConnectSocket = INVALID_SOCKET;
 
-	// Create a SOCKET for the server to listen for client connections
-	ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+	// Attempt to connect to the first address returned by
+	// the call to getaddrinfo
+	ptr=result;
 
-	if (ListenSocket == INVALID_SOCKET) {
-		printf("NetService: Error at socket(): %ld\n", WSAGetLastError());
-		freeaddrinfo(result);
-		WSACleanup();
-		return;
-	} else {
-		printf("NetService: Listening socket created.\n");
-	}
+	// Create a SOCKET for connecting to server
+	ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, 
+		ptr->ai_protocol);
 
-	// Setup the TCP listening socket
-	iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
+	// Connect to server.
+	iResult = connect( ConnectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
-		printf("NetService: bind failed: %d\n", WSAGetLastError());
+		closesocket(ConnectSocket);
+		ConnectSocket = INVALID_SOCKET;
+	}
+
+	if (ConnectSocket == INVALID_SOCKET) {
+		printf("NetService: Error at socket(): %ld - Failed to connect to server\n", WSAGetLastError());
 		freeaddrinfo(result);
-		closesocket(ListenSocket);
 		WSACleanup();
 		return;
 	}
 
-	// Listen on socket
-	if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-		printf( "NetService: Error at bind(): %ld\n", WSAGetLastError() );
-		closesocket(ListenSocket);
-		WSACleanup();
-		return;
-	} else {
-		printf("NetService: Listening on socket.\n");
-	}
+	// Should really try the next address returned by getaddrinfo
+	// if the connect call failed
+	// But for this simple example we just free the resources
+	// returned by getaddrinfo and print an error message
 
-	ClientSocket = INVALID_SOCKET;
+	freeaddrinfo(result);
 
-	// Accept a client socket
-	ClientSocket = accept(ListenSocket, NULL, NULL);
-	if (ClientSocket == INVALID_SOCKET) {
-		printf("NetService: accept failed: %d\n", WSAGetLastError());
-		closesocket(ListenSocket);
+	if (ConnectSocket == INVALID_SOCKET) {
+		printf("NetService: Unable to connect to server!\n");
 		WSACleanup();
 		return;
 	} else {
-		printf("NetService: Client Accepted.\n");
+		printf("NetService: Connected to server!\n");
 	}
-
-	// Receive until the peer shuts down the connection
-	do {
-
-		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
-		if (iResult > 0) {
-			printf("Bytes received: %d\n", iResult);
-
-			// Echo the buffer back to the sender
-			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
-			if (iSendResult == SOCKET_ERROR) {
-				printf("send failed: %d\n", WSAGetLastError());
-				closesocket(ClientSocket);
-				WSACleanup();
-				return;
-			}
-			printf("Bytes sent: %d\n", iSendResult);
-		} else if (iResult == 0)
-			printf("Connection closing...\n");
-		else {
-			printf("recv failed: %d\n", WSAGetLastError());
-			closesocket(ClientSocket);
-			WSACleanup();
-			return;
-		}
-
-	} while (iResult > 0);
+	initHandshake();
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Initializes handshake and tells server which port to start streaming data.
+void NetService::initHandshake() 
+{
+	// Send handshake
+	dataPort = "7000";
+	char sendbuf[50];
+	sendbuf[0] = '\0';
+
+	strcat( sendbuf, "data_on," );
+	strcat( sendbuf, dataPort );
+	
+	printf("NetService: sending handshake: '%s'\n", sendbuf);
+
+	iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf), 0);
+	if (iResult == SOCKET_ERROR) {
+		printf("NetService: send failed: %d\n", WSAGetLastError());
+		closesocket(ConnectSocket);
+		WSACleanup();
+		return;
+	}
+
+	printf("Bytes Sent: %ld\n", iResult);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::dispose() 

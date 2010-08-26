@@ -30,10 +30,14 @@ public:
 	OMEGA_API virtual void dispose();
 
 private:
+	OMEGA_API virtual void initHandshake();
+
+private:
 	WSADATA wsaData;
+	const char* serverAddress;
 	const char* serverPort;
-	SOCKET ListenSocket;
-	SOCKET ClientSocket;
+	const char* dataPort;
+	SOCKET ConnectSocket;
 	
 	#define DEFAULT_BUFLEN 512
 	char recvbuf[DEFAULT_BUFLEN];
