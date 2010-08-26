@@ -66,7 +66,7 @@
  * oinputservice / NetService implementation (*delivery*: Week of Aug. 30)
   Support streaming of events to remote omegalib instances.
 
- * Update PQService to stream TUIO format coordinates using screen ratio (*delivery*: Week of Sep. 6)
+ * Update PQService to stream TUIO format coordinates using screen ratio (*done*)
   Support correct scaling of coordinates on remote omegalib instances which may have a different screen resolution than the omegalib instance running on the server machine.
 
 ==<u> Jakub </u>==
