@@ -4,7 +4,7 @@
  * omegalib / Vtk integration?
  * full x64 support
 
-= omegalib v0.3 (*near future plans go here*) =
+= omegalib v0.3 (*delivery:* End of Year(?)) =
 ==<u> Alessandro </u>==
  * TacTile integration: cmake setup (*delivery*: ?)
   Implement TacTileService: prepare cmake files for TacTileService integration.
@@ -15,7 +15,7 @@
  * support linux builds (i386 only for now)
 
 
-= omegalib v0.2 (*delivery*: when it's ready) =
+= omegalib v0.2 (*delivery*: October(?)) =
 
 ==<u> Dennis </u>== 
  * Convert oTest to oDemo (*DONE*)
