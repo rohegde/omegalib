@@ -64,7 +64,10 @@
   Basic gestures added.
 
  * oinputservice / NetService implementation (*delivery*: Week of Aug. 30)
-  Support streaming of events to remote omegalib instances.
+  * oinputservice streams events out via UDP socket (*done*)
+  * NetService capable of receiving events (*delivery*: ?)
+  * Processing/TouchAPI capable of receiving events (*done*)
+  * Unity capable of receiving events (*delivery*: ? - Jakub?)
 
  * Update PQService to stream TUIO format coordinates using screen ratio (*done*)
   Support correct scaling of coordinates on remote omegalib instances which may have a different screen resolution than the omegalib instance running on the server machine.
