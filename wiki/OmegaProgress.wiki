@@ -6,6 +6,8 @@
 
 = omegalib v0.3 (*delivery:* End of Year(?)) =
 ==<u> Alessandro </u>==
+ * OmegaLib / VTK Integration (output) (*delivery*: ?)
+  Render vtk content into omegalib / equalizer channels.
  * TacTile integration: cmake setup (*delivery*: ?)
   Implement TacTileService: prepare cmake files for TacTileService integration.
 
