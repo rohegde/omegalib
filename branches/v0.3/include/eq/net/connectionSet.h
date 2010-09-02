@@ -124,7 +124,6 @@ namespace net
             ConnectionSet* const _parent;
         };
 
-
         typedef std::vector< Thread* > Threads;
         /** Threads used to handle more than MAXIMUM_WAIT_OBJECTS connections */
         Threads _threads;
@@ -178,7 +177,7 @@ namespace net
         virtual void notifyStateChanged( Connection* ) { _dirty = true; }
 
         Event _getSelectResult( const uint32_t index );
-        CHECK_THREAD_DECLARE( _selectThread );
+        EQ_TS_VAR( _selectThread );
     };
 
     EQ_EXPORT std::ostream& operator << ( std::ostream& os, 

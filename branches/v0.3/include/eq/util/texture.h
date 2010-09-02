@@ -1,6 +1,6 @@
 
-/* Copyright (c) 2009, Stefan Eilemann <eile@equalizergraphics.com>
- * Copyright (c) 2010, Cedric Stalder <cedric.stalder@gmail.com>
+/* Copyright (c) 2009-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ *                    2010, Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -32,7 +32,7 @@ namespace eq
 namespace util
 {
     /** 
-     * A wrapper around GL textures.
+     * A wrapper around OpenGL textures.
      * 
      * So far used by the Image and Compositor. The target is assumed to be
      * GL_TEXTURE_RECTANGLE_ARB or GL_TEXTURE_2D.
@@ -40,20 +40,128 @@ namespace util
     class Texture : public base::NonCopyable
     {
     public:
-        /** Construct a new Texture. @version 1.0 */
-        EQ_EXPORT Texture( GLEWContext* const glewContext = 0 );
+        /**
+         * Construct a new Texture.
+         *
+         * A GLEWContext might be provided later using setGLEWContext(). It is
+         * needed for operations using OpenGL extensions or version 1.2 or later
+         * functions.
+         * @version 1.0
+         */
+        EQ_EXPORT Texture( const GLenum target,
+                           const GLEWContext* const glewContext = 0 );
 
         /** Destruct the texture. @version 1.0 */
         EQ_EXPORT virtual ~Texture();
 
-        /** Clear the texture, including the GL texture name. @version 1.0 */
+        /** @name Data Access. */
+        //@{
+        /** @return the target of the texture. @version 1.0 */
+        GLenum getTarget() const { return _target; }
+
+        /**
+         * @return the internal (GPU) pixel format of the texture.
+         * @sa init()
+         * @version 1.0 
+         */
+        GLuint getInternalFormat() const { return _internalFormat; }
+
+        /** 
+         * Set the external data format and type.
+         *
+         * @param format the OpenGL format.
+         * @param type the OpenGL Type.
+         * @version 1.0
+         */
+        void setExternalFormat( const uint32_t format, const uint32_t type );
+
+        /**
+         * @return the external data format of the texture, e.g., GL_RGBA.
+         * @version 1.0
+         */
+        GLuint getFormat() const { return _format; }
+
+        /**
+         * @return the external data type of the texture, e.g., GL_HALF_FLOAT.
+         * @version 1.0
+         */
+        GLuint getType() const { return _type; }
+
+        /** @return the OpenGL texture name. @version 1.0 */
+        GLuint getName() const { return _name; }
+
+        /** @return the current width. @version 1.0 */
+        int32_t getWidth() const { return _width; }
+
+        /** @return the current height. @version 1.0 */
+        int32_t getHeight() const { return _height; }
+
+        /** @return true if the texture can be bound. @version 1.0 */
+        EQ_EXPORT bool isValid() const;
+        //@}
+
+        /** @name Operations. */
+        //@{
+        /** 
+         * Initialize an OpenGL texture.
+         *
+         * @param internalFormat the OpenGL texture internal format.
+         * @param width the width of the texture.
+         * @param height the height of the texture.
+         * @version 1.0
+         */
+        EQ_EXPORT void init( const GLuint internalFormat, const int32_t width,
+                             const int32_t height );
+
+        /**
+         * Clear the texture, including deleting the GL texture name.
+         * @version 1.0
+         */
         EQ_EXPORT void flush();
 
+        /**
+         * Copy the specified area from the current read buffer to the
+         * texture at 0,0.
+         * @version 1.0
+         */
+        EQ_EXPORT void copyFromFrameBuffer( const GLuint internalFormat,
+                                            const fabric::PixelViewport& pvp );
+
+        /** Copy the specified buffer to the texture at 0,0. @version 1.0 */
+        EQ_EXPORT void upload( const int32_t width, const int32_t height,
+                               const void* ptr );
+
+        /**
+         * Copy the texture data from the GPU to the given memory address.
+         * @version 1.0
+         */
+        EQ_EXPORT void download( void* buffer ) const;
+
+        /** Bind the texture. @version 1.0 */
+        EQ_EXPORT void bind() const;
+
+        /** Create and bind a texture to the current FBO. @version 1.0 */
+        EQ_EXPORT void bindToFBO( const GLenum target, const int32_t width,
+                                  const int32_t height );
+        
+        /** Resize the texture. @version 1.0 */
+        EQ_EXPORT void resize( const int32_t width, const int32_t height );
+
+        /** Write the texture data as an rgb image file. @version 1.0 */
+        EQ_EXPORT void writeRGB( const std::string& filename ) const;
+        //@}
+
+        const GLEWContext* glewGetContext() const { return _glewContext; }
+        void setGLEWContext( const GLEWContext* context )
+            { _glewContext = context; }
+
+        /** @name Wrap existing GL textures */
+        //@{
         /**
          * Flush the texture without deleting the GL texture name.
          * @version 1.0
          */
-        void flushNoDelete();
+        EQ_EXPORT void flushNoDelete();
 
         /** 
          * Use an OpenGL texture created externally.
@@ -63,130 +171,21 @@ namespace util
          * format. The texture is validated by this method.
          *
          * @param id The OpenGL texture name.
+         * @param internalFormat the OpenGL texture internal format.
          * @param width the width of the texture.
          * @param height the height of the texture.
-         * @sa setTarget(), setInternalFormat()
+         * @version 1.0
          */
-        void setGLData( const GLuint id, const int width, const int height );
-
-        /** 
-         * Init an OpenGL texture.
-         *
-         * The previous GL texture, if any, is deallocated using flush(). The
-         * new texture has to be of the correct target, size and internal
-         * format. The texture is validated by this method.
-         *
-         * @param format The OpenGL texture internal format.
-         * @param width the width of the texture.
-         * @param height the height of the texture.
-         * @sa setTarget(), setInternalFormat()
-         */
-        void init( const GLuint format, const int width, const int height );
-
-        /** Set the target of the texture. @version 1.0 */
-        EQ_EXPORT void setTarget( const GLenum target );
-
-        /** @return the target of the texture. @version 1.0 */
-        GLenum getTarget() const { return _target; }
-
-        /**
-         * Set the internal pixel format of the texture, e.g., GL_RGBA16F.
-         *
-         * Automatically sets the external format and type to the one matching
-         * the internal format.
-         * 
-         * @param internalFormat the OpenGL intenalFormat.
-         */
-        EQ_EXPORT void setInternalFormat( const GLuint internalFormat );
-
-        /** 
-         * Set the external data format and type.
-         *
-         * @param format the OpenGL format.
-         * @param type the OpenGl Type.
-         */
-        void setExternalFormat( const uint32_t format,
-                                const uint32_t type );
-
-        /** @return the pixel format of the texture. */
-        GLuint getInternalFormat() const { return _internalFormat; }
-
-        /** @return the data format of the texture, e.g., GL_RGBA. */
-        GLuint getFormat() const { return _format; }
-
-        /** @return the data type of the texture, e.g., GL_HALF_FLOAT. */
-        GLuint getType() const { return _type; }
-
-        /** @return the texture ID, */
-        GLuint getID() const { return _id; }
-
-        /** @return the current width */
-        int32_t getWidth() const { return _width; }
-
-        /** @return the current height */
-        int32_t getHeight() const { return _height; }
-
-        /** 
-         * Copy the specified area from the current read buffer to the
-         * texture at 0,0.
-         */
-        EQ_EXPORT void copyFromFrameBuffer( const PixelViewport& pvp );
-        
-        /** 
-         * Copy the specified area from the current read buffer to the
-         * texture at 0,0.
-         */
-        EQ_EXPORT void copyFromFrameBuffer( const uint64_t inDims[4] );
-
-        /** Copy the specified image buffer to the texture at 0,0. */
-        EQ_EXPORT void upload( const Image* image, const Frame::Buffer which );
-
-        /** Copy the specified buffer to the texture at 0,0. */
-        EQ_EXPORT void upload( const int width, const int height,
-                               const void* ptr );
-
-        /** Copy the texture data to the given memory address. */
-        EQ_EXPORT void download( void* buffer, const uint32_t format, 
-                                 const uint32_t type ) const;
-
-        /** set a downloader for use during transfer operation  */
-        void setDownloader( const uint32_t downloaderName )
-            {   _downloaderName = downloaderName;   }
-
-        /**
-         * Copy the texture data to the given memory address, using the internal
-         * format and type.
-         */
-        EQ_EXPORT void download( void* buffer ) const;
-
-        /** Bind the texture. */
-        EQ_EXPORT void bind() const;
-
-        /** Create and bind a texture to the current FBO. */
-        EQ_EXPORT void bindToFBO( const GLenum target, const int width,
-                                  const int height );
-        
-        /** Resize the texture. */
-        EQ_EXPORT void resize( const int width, const int height );
-
-        /** @return true if the texture can be bound. */
-        EQ_EXPORT bool isValid() const;
-
-        /** Writes the texture data as a rgb image file. */
-        EQ_EXPORT void writeRGB( const std::string& filename,
-                                 const eq::Frame::Buffer buffer,
-                                 const PixelViewport& pvp ) const;
-
-        GLEWContext* glewGetContext() { return _glewContext; }
-        const GLEWContext* glewGetContext() const { return _glewContext; }
-        void setGLEWContext( GLEWContext* context ) { _glewContext = context; }
+        EQ_EXPORT void setGLData( const GLuint id, const GLuint internalFormat,
+                                  const int32_t width, const int32_t height );
+        //@}
 
     private:
         /** The GL texture name. */
-        GLuint _id;
+        GLuint _name;
 
         /** the target of the texture. */
-        GLenum _target;
+        const GLenum _target;
 
         /** The GL pixel format (format+type). */
         GLuint _internalFormat;
@@ -197,9 +196,6 @@ namespace util
         /** texture data type */
         GLuint _type;
         
-        /** name of the default downloader */
-        uint32_t _downloaderName;
-
         /** The maximum width of the texture. */
         int32_t _width;
 
@@ -209,12 +205,22 @@ namespace util
         /** false if the texture needs to be defined, true if not. */
         bool _defined;
 
-        GLEWContext* _glewContext;
+        const GLEWContext* _glewContext;
 
         union // placeholder for binary-compatible changes
         {
             char dummy[32];
         };
+
+        /**
+         * Set the internal pixel format of the texture, e.g., GL_RGBA16F.
+         *
+         * Automatically sets the external format and type to one matching
+         * the internal format.
+         * 
+         * @param internalFormat the OpenGL internal texture format.
+         */
+        void _setInternalFormat( const GLuint internalFormat );
 
         /** Generate, if needed, a GL texture name. */
         void _generate();
@@ -222,14 +228,7 @@ namespace util
         /** Set the size of the texture, updating the _defined flag. */
         void _grow( const int32_t width, const int32_t height );
 
-        /** 
-         * Copy the specified area from the current read buffer to the
-         * texture at 0,0.
-         */
-        void _copyFromFrameBuffer( uint32_t x, uint32_t w, 
-                                   uint32_t y, uint32_t h );
-
-        CHECK_THREAD_DECLARE( _thread );
+        EQ_TS_VAR( _thread );
     };
 }
 }

@@ -28,7 +28,9 @@ SET( srcs
 		omega/TextureManager.cpp
 		
 		# omega::scene
-		omega/scene/Cube.cpp
+		omega/scene/Material.cpp
+		omega/scene/Mesh.cpp
+		omega/scene/MeshUtils.cpp
 		omega/scene/Drawable.cpp
 		omega/scene/SceneManager.cpp
 		omega/scene/SceneNode.cpp
@@ -54,7 +56,9 @@ SET( headers
 		
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/Cube.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Mesh.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshUtils.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Material.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h

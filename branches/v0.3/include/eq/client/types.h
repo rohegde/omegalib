@@ -76,7 +76,7 @@ typedef fabric::Viewport Viewport;
 typedef fabric::Wall Wall;
 typedef fabric::Zoom Zoom;
 
-/** A visitor to traverse segments. @sa  Segment ::accept() */
+/** A visitor to traverse segments. @sa  Segment::accept() */
 typedef fabric::LeafVisitor< Segment > SegmentVisitor;
 
 /** A visitor to traverse views. @sa View::accept() */
@@ -200,6 +200,7 @@ typedef Viewports ViewportVector;
 typedef PixelViewports PixelViewportVector;
 typedef Statistics StatisticVector;
 typedef Strings StringVector
+typedef fabric::Serializable Object;
 #endif
 }
 #endif // EQ_TYPES_H

@@ -103,7 +103,7 @@ typedef libconfig::Setting Setting;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
 OMEGA_API GLEWContext* glewGetContext();
-OMEGA_API void glewSetContext(GLEWContext* context);
+OMEGA_API void glewSetContext(const GLEWContext* context);
 
 OMEGA_API void ologopen(const char* filename);
 OMEGA_API void ologclose();

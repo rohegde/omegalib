@@ -27,6 +27,8 @@ namespace eq
 {
 namespace fabric
 {
+class PixelViewport;
+
 typedef vmml::matrix< 3, 3, double > Matrix3d; //!< A 3x3 double matrix
 typedef vmml::matrix< 4, 4, double > Matrix4d; //!< A 4x4 double matrix
 typedef vmml::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
@@ -44,6 +46,7 @@ typedef vmml::vector< 3, unsigned char > Vector3ub;
 typedef vmml::frustum< float >  Frustumf; //!< A frustum definition
 
 class Client;
+template< class, class > class Channel;
 template< class, class > class Observer;
 template< class, class, class > class Layout;
 template< class, class, class > class Segment;
@@ -53,6 +56,8 @@ template< class, class, class, class > class Node;
 template< class, class, class, class > class Pipe;
 template< class, class, class, class > class Server;
 template< class, class, class, class, class, class, class > class Config;
+template< class, class > class ElementVisitor;
+template< class > class LeafVisitor;
 
 typedef base::RefPtr< Client > ClientPtr;
 typedef base::RefPtr< const Client > ConstClientPtr;

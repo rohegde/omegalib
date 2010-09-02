@@ -19,8 +19,11 @@ namespace omega
 {
 namespace scene
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
 	class SceneNode
 	{
+		friend class SceneManager; // Needs to call the node draw method.
 	public:
 		SceneNode():
 			myPosition(0, 0, 0),

@@ -20,6 +20,7 @@
 
 #include <eq/base/defines.h>
 #include <eq/base/log.h>
+#include <typeinfo>
 
 #ifndef WIN32
 #  include <cxxabi.h>
@@ -61,7 +62,7 @@ EQ_EXPORT std::ostream& sysError( std::ostream& os );
 EQ_EXPORT std::ostream& backtrace( std::ostream& os );
 
 /** Print the RTTI name of the given class. @version 1.0 */
-template< class T > inline std::string className( T* object)
+template< class T > inline std::string className( T* object )
 {
 #ifdef WIN32
     return std::string( typeid( *object ).name( ));
@@ -122,8 +123,8 @@ template< class T > inline std::string className( T* object)
     {                                                                   \
         if( !(x) )                                                      \
         {                                                               \
-            EQERROR << "Assert: " << #x << std::endl << eq::base::forceFlush; \
-            eq::base::abort();                                     \
+            EQERROR << "Assert: " << #x << " ";                         \
+            eq::base::abort();                                          \
         }                                                               \
         eq::base::checkHeap();                                          \
     } 
@@ -131,29 +132,28 @@ template< class T > inline std::string className( T* object)
     {                                                                   \
         if( !(x) )                                                      \
         {                                                               \
-            EQERROR << "Assert: " << #x << " [" << info << "]" << std::endl \
-                    << eq::base::forceFlush;                            \
+            EQERROR << "Assert: " << #x << " [" << info << "] ";        \
             eq::base::abort();                                          \
         }                                                               \
         eq::base::checkHeap();                                          \
     }
 
 #  define EQUNIMPLEMENTED                                               \
-    { EQERROR << "Unimplemented code in " << typeid(*this).name()       \
-              << std::endl << eq::base::forceFlush;                     \
+    { EQERROR << "Unimplemented code in " << eq::base::className( this ) \
+              << " ";                                                   \
         eq::base::abort(); }
-#  define EQUNREACHABLE                                          \
-    { EQERROR << "Unreachable code in " << typeid(*this).name()  \
-              << std::endl << eq::base::forceFlush;              \
+#  define EQUNREACHABLE                                                 \
+    { EQERROR << "Unreachable code in " << eq::base::className( this )  \
+              << " ";                                                   \
         eq::base::abort(); }
 #  define EQDONTCALL                                                    \
     { EQERROR << "Code is not supposed to be called in this context, type " \
-              << typeid(*this).name() << std::endl << eq::base::forceFlush; \
+              << eq::base::className( this ) << " " ;                   \
         eq::base::abort(); }
 
 #  define EQCHECK(x) { const bool eqOk = x; EQASSERTINFO( eqOk, #x ) }
 #  define EQABORT( info ) {                                             \
-        EQERROR << "Abort: " << info << std::endl << eq::base::forceFlush; \
+        EQERROR << "Abort: " << " ";                                    \
         eq::base::abort(); }
 
 #endif // NDEBUG

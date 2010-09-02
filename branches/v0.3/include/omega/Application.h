@@ -52,6 +52,7 @@ namespace omega
 		ApplicationClient(Application* app): myApplication(app) {}
 		virtual ~ApplicationClient() {}
 
+		virtual void setup() {}
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}

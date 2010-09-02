@@ -20,6 +20,8 @@ namespace omega
 	class GpuEnvironment
 	{
 	public:
+		OMEGA_API void push();
+		OMEGA_API void pop();
 
 	private:
 	};

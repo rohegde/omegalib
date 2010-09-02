@@ -369,6 +369,7 @@ namespace eq
     struct NodeFrameStartPacket : public net::ObjectPacket
     {
         NodeFrameStartPacket()
+                : configVersion( net::VERSION_INVALID )
             {
                 command        = fabric::CMD_NODE_FRAME_START;
                 size           = sizeof( NodeFrameStartPacket );
@@ -377,6 +378,7 @@ namespace eq
         uint32_t frameID;
         uint32_t frameNumber;
         uint32_t version;
+        uint32_t configVersion;
     };
 
     struct NodeFrameFinishPacket : public net::ObjectPacket
@@ -642,9 +644,9 @@ namespace eq
                 size    = sizeof( WindowNVBarrierPacket );
             }
 
+        net::ObjectVersion netBarrier;
         uint32_t group;
         uint32_t barrier;
-        net::ObjectVersion netBarrier;
     };
 
     struct WindowSwapPacket : public net::ObjectPacket

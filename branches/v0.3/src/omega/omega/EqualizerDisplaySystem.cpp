@@ -257,6 +257,7 @@ protected:
 		if(app)
 		{
 			myClient = app->createClient();
+			myClient->setup();
 		}
 		return result;
 	}
@@ -265,7 +266,9 @@ protected:
 	{
 		eq::Pipe::frameStart(frameID, frameNumber);
 
-		glewSetContext(getWindows()[0]->glewGetContext());
+		const GLEWContext* glewc = getWindows()[0]->glewGetContext();
+
+		glewSetContext(glewc);
 		// Initialize the client at the first frame.
 		if(!myInitialized)
 		{
@@ -288,7 +291,7 @@ private:
 class ChannelImpl: public eq::Channel
 {
 public:
-    ChannelImpl( eq::Window* parent ) : eq::Channel( parent ) {}
+    ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) {}
 	virtual ~ChannelImpl() {}
 
 protected:
@@ -296,6 +299,7 @@ protected:
 	virtual void frameDraw( const uint32_t spin )
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		
 		glewSetContext(this->glewGetContext());
 
 		// setup OpenGL State
@@ -312,18 +316,26 @@ protected:
 		context.viewportWidth = pvp.w;
 		context.viewportHeight = pvp.h;
 
+		//printf("%f\n", myWindow->getFPS());
+
 		for(int i = 0; i < Application::MaxLayers; i++)
 		{
 			if(view->isLayerEnabled(i))
 			{
+				myWindow->makeCurrent(false);
+				glewSetContext(this->glewGetContext());
 				context.layer = i;
 				pipe->getClient()->draw(context);
 			}
 		}
+
+		myWindow->makeCurrent(false);
+		glewSetContext(this->glewGetContext());
 	}
 
 private:
 	DrawContext context;
+	eq::Window* myWindow;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
