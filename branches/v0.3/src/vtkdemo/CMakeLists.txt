@@ -26,12 +26,16 @@ ADD_DEFINITIONS( )
 SET( srcs 
         vtkdemo.cpp
 		VtkDemoApplication.cpp
+		VtkDemoUI.cpp
+		vtkEqualizerCamera.cpp
         )
     
 #######################################################################################################################
 # Headers
 SET( headers 
 		VtkDemoApplication.h
+		VtkDemoUI.h
+		vtkEqualizerCamera.h
         ) 
         
 #######################################################################################################################

@@ -22,11 +22,6 @@ server
                     viewport [ 0 0 1920 1080 ]
                     channel { name "channel1"  }
                 }
-            }
-            
-            pipe									#Top Window
-            {
-                name "GPU 2"
                 window
                 {
                     name     "window2"

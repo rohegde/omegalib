@@ -13,12 +13,22 @@
 #define __CUBE_H__
 
 #include "omega/osystem.h"
+#include "omega/scene/Mesh.h"
 
 namespace omega
 {
 namespace scene
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
+	class MeshUtils
+	{
+	public:
+		OUTILS_API Mesh* createCube(float size);
 
+	private:
+		MeshUtils() {}
+	};
 }; // namespace scene
 }; // namespace omega
 

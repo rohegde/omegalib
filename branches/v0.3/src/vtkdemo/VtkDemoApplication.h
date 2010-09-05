@@ -19,6 +19,7 @@
 // Vtk includes
 #include <vtkCylinderSource.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPerspectiveTransform.h>
 #include <vtkActor.h>
 #include <vtkWindowToImageFilter.h>
 #include <vtkPNGWriter.h>
@@ -28,6 +29,10 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+
+#include "vtkEqualizerCamera.h"
+
+#include "VtkDemoUI.h"
 
 // Using namespace declarations in a header file make emokitteh cry
 // but we'll accept them here since it's application-level code, and we can have
@@ -61,7 +66,13 @@ public:
 private:
 	GpuManager* myGpu;
 	vtkOpenGLRenderWindow* myRenderWindow;
-	unsigned char* myPixelData;
+	vtkCamera* myCamera;
+	vtkUnsignedCharArray* myPixelData;
+
+	// UI stuff.
+	TextureManager* myTexMng;
+	FontManager* myFontMng;
+	VtkDemoUI* myUI;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

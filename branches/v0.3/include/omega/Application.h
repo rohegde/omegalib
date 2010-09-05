@@ -16,7 +16,6 @@
 #include "osystem.h"
 #include "SystemManager.h"
 #include "InputEvent.h"
-#include "Application.h"
 
 namespace omega
 {
@@ -26,6 +25,16 @@ namespace omega
 	class InputManager;
 	class DisplaySystem;
 	class Application;
+	class ChannelImpl;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Interface for objects that manage a single OpenGL context.
+	class IGLContextManager
+	{
+	public:
+		//! Makes the context current.
+		virtual void makeCurrent() = 0;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct UpdateContext
@@ -43,6 +52,7 @@ namespace omega
 		int viewportY;
 		int viewportWidth;
 		int viewportHeight;
+		IGLContextManager* glContext;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +68,9 @@ namespace omega
 		virtual void draw(const DrawContext& context) {}
 
 		Application* getApplication() { return myApplication; }
+
+	protected:
+		void resetGLContext();
 
 	private:
 		Application* myApplication;

@@ -288,7 +288,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
-class ChannelImpl: public eq::Channel
+class ChannelImpl: public eq::Channel, IGLContextManager
 {
 public:
     ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) {}
@@ -296,11 +296,17 @@ public:
 
 protected:
 
+	virtual void makeCurrent() 
+	{
+		myWindow->makeCurrent(false);
+		glewSetContext(this->glewGetContext());
+	}
+
 	virtual void frameDraw( const uint32_t spin )
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 		
-		glewSetContext(this->glewGetContext());
+		makeCurrent();
 
 		// setup OpenGL State
 		eq::Channel::frameDraw( spin );
@@ -315,6 +321,7 @@ protected:
 		context.viewportY = pvp.y;
 		context.viewportWidth = pvp.w;
 		context.viewportHeight = pvp.h;
+		context.glContext = this;
 
 		//printf("%f\n", myWindow->getFPS());
 
@@ -322,15 +329,10 @@ protected:
 		{
 			if(view->isLayerEnabled(i))
 			{
-				myWindow->makeCurrent(false);
-				glewSetContext(this->glewGetContext());
 				context.layer = i;
 				pipe->getClient()->draw(context);
 			}
 		}
-
-		myWindow->makeCurrent(false);
-		glewSetContext(this->glewGetContext());
 	}
 
 private:

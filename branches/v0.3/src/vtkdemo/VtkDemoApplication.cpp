@@ -87,6 +87,7 @@ void VtkDemoClient::setup()
 	
 	// Geometry
 	source = vtkCylinderSource::New();
+	source->SetResolution(20);
 	
 	// Mapper
 	mapper = vtkPolyDataMapper::New();
@@ -100,12 +101,17 @@ void VtkDemoClient::setup()
 	// Add Actor to renderer
 	ren->AddActor(actor);
 	
+	myCamera = vtkEqualizerCamera::New();
+	ren->SetActiveCamera(myCamera);
+
 	// Reset camera and render scene	
 	ren->ResetCamera();
 	ren->SetBackground(53.0/255.0, 52.0/255.0, 102.0/255.0);
 	myRenderWindow->Render();
 
-	myPixelData = NULL;
+	//myCamera->SetPosition(0, 0, 1);
+
+	myPixelData = vtkUnsignedCharArray::New();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,11 +119,18 @@ void VtkDemoClient::initialize()
 {
 	myGpu = new GpuManager();
 	myGpu->initialize();
+
+	myFontMng = new FontManager();
+	myTexMng = new TextureManager();
+
+	myUI = new VtkDemoUI(myTexMng, myFontMng);
+	myUI->initialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkDemoClient::update(const UpdateContext& context)
 {
+	myUI->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,43 +139,51 @@ void VtkDemoClient::draw(const DrawContext& context)
 	int w = context.viewportWidth;
 	int h = context.viewportHeight;
 
-	if(myPixelData == NULL)
+	if(context.layer == 0)
 	{
-		myPixelData = new unsigned char[w*h*4];
-	}
-	if(context.layer == 1)
-	{
+		// read the current projection and modelview matrices.
+		double modelview[16];
+		double proj[16];
+		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+		glGetDoublev(GL_PROJECTION_MATRIX, proj);
+
+		// Switch the openGL context to the one manager by Vtk.
 		myRenderWindow->MakeCurrent();
+
+		// Set the vtk initial matrices to the omegalib ones.
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadMatrixd(proj);
 
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glLoadIdentity();
+		glLoadMatrixd(modelview);
+
+		glRotatef(context.frameNum, 0, 0, 1);
 
 		myRenderWindow->SetSize(w, h);
 		myRenderWindow->Render();
+
 		myRenderWindow->GetRGBACharPixelData(0, 0, w-1, h-1, 1, myPixelData);
+
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
 
 		glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();
-	}
-	else
-	{
-		// Create an image object to temporarily hold the VTK scene
-		//QRect ri = r.toRect();
 
+		// Reset the openGL context to the original one.
+		context.glContext->makeCurrent();
+
+		// draw the vtk rendered image to the omegalib framebuffer.
 		glDisable(GL_TEXTURE_2D);
-		//glDisable(GL_DEPTH_TEST);
-		//glDisable(GL_LIGHTING);
 		GfxUtils::beginOverlayMode(context);
 		glRasterPos2f(0, h - 1);
-		//memset(myPixelData, 250, w*h*4);
-		glDrawPixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, myPixelData);
+		glDrawPixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, myPixelData->GetPointer(0));
 		GfxUtils::endOverlayMode();
-
-
-		// Render the VTK scene
-
-		// applyBuffer
-
+	}
+	else if(context.layer == 1)
+	{
+		myUI->draw(context);
 	}
 }
