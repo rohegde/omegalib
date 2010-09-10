@@ -290,7 +290,7 @@ public:
 					ry = evt.rotation[1];
 					rz = evt.rotation[2];
 
-					myCubes
+					//myCubes
 				}
 			}
 #endif
@@ -327,7 +327,7 @@ private:
 	float lz;
 
 	std::vector<Vector3f> myCubes;
-	int myIndex = 0;
+	//int myIndex = 0;
 
 
 
