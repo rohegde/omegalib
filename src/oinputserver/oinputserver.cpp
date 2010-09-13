@@ -459,7 +459,7 @@ void TestApplication::sendToClients(char* event){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	Config* cfg = new Config("../../data/test.cfg");
+	Config* cfg = new Config("../../data/oinputserver.cfg");
 
 	SystemManager* sys = SystemManager::instance();
 	sys->setup(cfg);
