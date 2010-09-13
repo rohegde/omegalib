@@ -23,7 +23,7 @@ using namespace omega;
  */
 void NetService::initialize() 
 {
-	serverAddress = "127.0.0.1";
+	serverAddress = "131.193.77.102";
 	serverPort = "27000";
 	int iResult;
 
@@ -117,9 +117,55 @@ void NetService::initHandshake()
 		return;
 	}
 
-	printf("Bytes Sent: %ld\n", iResult);
+	//printf("Bytes Sent: %ld\n", iResult);
+
+	sockaddr_in RecvAddr;
+	int Port = 27015;
+	SenderAddrSize = sizeof(SenderAddr);
+
+	// Create a UDP receiver socket to receive datagrams
+	// http://msdn.microsoft.com/en-us/library/ms740120
+	RecvSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+	//-----------------------------------------------
+	// Bind the socket to any address and the specified port.
+	RecvAddr.sin_family = AF_INET;
+	RecvAddr.sin_port = htons(atoi(dataPort));
+	RecvAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	bind(RecvSocket, (SOCKADDR *) &RecvAddr, sizeof(RecvAddr));
+	readyToReceive = true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void NetService::poll()
+{
+	char RecvBuf[1024];
+	int  BufLen = 1024;
+	//-----------------------------------------------
+	// Call the recvfrom function to receive datagrams
+	// on the bound socket.
+	if( readyToReceive ){
+		int result = recvfrom(RecvSocket, 
+		RecvBuf, 
+		BufLen, 
+		0, // If non-zero, socket is non-blocking
+		(SOCKADDR *)&SenderAddr, 
+		&SenderAddrSize);
+		
+		if( result > 0 ){
+			int msgLen = result - 1;
+			char* message = new char[msgLen];
+
+			// Parse message out of datagram
+			for(int i = 0; i < msgLen; i++ ){
+				message[i] = RecvBuf[i];
+				message[i+1] = '\0';
+			}// for
+			printf("Receiving datagram '%s'\n", message);
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::dispose() 

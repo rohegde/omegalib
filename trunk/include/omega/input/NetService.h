@@ -27,9 +27,11 @@ public:
 
 public:
 	OMEGA_API virtual void initialize();
+	OMEGA_API virtual void poll();
 	OMEGA_API virtual void dispose();
 
 private:
+
 	OMEGA_API virtual void initHandshake();
 
 private:
@@ -42,7 +44,12 @@ private:
 	#define DEFAULT_BUFLEN 512
 	char recvbuf[DEFAULT_BUFLEN];
 	int iResult, iSendResult;
+
+	SOCKET RecvSocket;
+	sockaddr_in SenderAddr;
+	int SenderAddrSize;
 	int recvbuflen;
+	bool readyToReceive;
 };
 
 }; // namespace omega
