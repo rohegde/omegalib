@@ -6,6 +6,7 @@
 		Head		- id 1
 		Handheld	- id 2
 		Light		- id 3
+		OldHead		- id 4
 	**Please note any changes made to the project file here
 
 
