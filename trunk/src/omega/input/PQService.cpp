@@ -38,10 +38,22 @@ void PQService::setup(Setting& settings)
 	if(settings.exists("ScreenX"))
 	{
 		screenX =  atoi((const char*)settings["ScreenX"]);
+		printf("PQService: ScreenX set to %d\n", screenX);
 	}
 	if(settings.exists("ScreenY"))
 	{
 		screenY =  atoi((const char*)settings["ScreenY"]);
+		printf("PQService: ScreenY set to %d\n", screenY);
+	}
+	if(settings.exists("ServerX"))
+	{
+		serverX =  atoi((const char*)settings["ServerX"]);
+		printf("PQService: ServerX set to %d\n", serverX);
+	}
+	if(settings.exists("ServerY"))
+	{
+		serverY =  atoi((const char*)settings["ServerY"]);
+		printf("PQService: ServerY set to %d\n", serverY);
 	}
 }
 
@@ -313,7 +325,7 @@ void PQService:: OnGetServerResolution(int x, int y, void * call_back_object)
 	if( screenX == 0 && screenY == 0 ){
 		screenX = 1;
 		screenY = 1;
-		printf("PQService: screen resolution not specified. using screen ratio. \n");
+		printf("PQService: screen resolution not specified. using normalizing coordinates. \n");
 	} else {
 		printf("PQService: screen resolution: %d , %d \n",screenX ,screenY );
 	}
@@ -615,14 +627,21 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		evt->serviceType = InputService::Touch;
 		if( serverX != 0 && serverY != 0 ){
 			evt->position[0] = tp.x * (float)screenX / (float)serverX;
-			evt->position[1] = tp.y * (float)screenX / (float)serverX;
+			evt->position[1] = tp.y * (float)screenY / (float)serverY;
 
 			evt->numberOfPoints = 1;
 			evt->pointSet[0][0] = xWidth * (float)screenX / (float)serverX;
-			evt->pointSet[0][1] = yWidth * (float)screenX / (float)serverX;
+			evt->pointSet[0][1] = yWidth * (float)screenY / (float)serverY;
+		} else {
+			evt->position[0] = tp.x;
+			evt->position[1] = tp.y;
+
+			evt->numberOfPoints = 1;
+			evt->pointSet[0][0] = xWidth;
+			evt->pointSet[0][1] = yWidth;
 		}
 
-		
+		//printf(" Server %d,%d Screen %d, %d\n", serverX, serverY, screenX, screenY );
 		//printf("      at %d,%d (%f, %f)\n", tp.x, tp.y, evt->position[0], evt->position[1] );
 		evt->sourceId = touchID[tp.id];
 
