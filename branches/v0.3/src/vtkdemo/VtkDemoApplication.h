@@ -18,6 +18,9 @@
 
 // Vtk includes
 #include <vtkCylinderSource.h>
+#include <vtkContourFilter.h>
+#include <vtkQuadric.h>
+#include <vtkSampleFunction.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkPerspectiveTransform.h>
 #include <vtkActor.h>
@@ -66,6 +69,7 @@ public:
 private:
 	GpuManager* myGpu;
 	vtkOpenGLRenderWindow* myRenderWindow;
+	vtkRenderer* myRenderer;
 	vtkCamera* myCamera;
 	vtkUnsignedCharArray* myPixelData;
 

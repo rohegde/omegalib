@@ -64,15 +64,14 @@ void VtkDemoClient::setup()
 	vtkCylinderSource* source						= NULL;
 	vtkPolyDataMapper* mapper						= NULL;
 	vtkActor* actor									= NULL;
-	vtkRenderer* ren								= NULL;
 	vtkRenderWindowInteractor* iren					= NULL;
 	vtkInteractorStyleTrackballCamera* trackball	= NULL;
 	
 	// Setup renderer and render window
-	ren	= vtkRenderer::New();
+	myRenderer	= vtkRenderer::New();
 
 	myRenderWindow = (vtkOpenGLRenderWindow*)vtkRenderWindow::New();
-	myRenderWindow->AddRenderer(ren);
+	myRenderWindow->AddRenderer(myRenderer);
 	myRenderWindow->DoubleBufferOff();
 	myRenderWindow->SwapBuffersOff();
 	
@@ -85,28 +84,38 @@ void VtkDemoClient::setup()
 	iren = vtkRenderWindowInteractor::New();
 	iren->SetRenderWindow(myRenderWindow);
 	
-	// Geometry
-	source = vtkCylinderSource::New();
-	source->SetResolution(20);
-	
-	// Mapper
-	mapper = vtkPolyDataMapper::New();
-	mapper->ImmediateModeRenderingOn();
-	mapper->SetInputConnection(source->GetOutputPort());
-	
+	// create the quadric function definition
+	vtkQuadric *quadric = vtkQuadric::New();
+	quadric->SetCoefficients(.5,1,.2,0,.1,0,0,.2,0,0);
+
+	// sample the quadric function
+	vtkSampleFunction *sample = vtkSampleFunction::New();
+	sample->SetSampleDimensions(50,50,50);
+	sample->SetImplicitFunction(quadric);
+
+	// Create five surfaces F(x,y,z) = constant between range specified
+	vtkContourFilter *contours = vtkContourFilter::New();
+	contours->SetInput(sample->GetOutput());
+	contours->GenerateValues(5, 0.0, 1.2);
+
+	// map the contours to graphical primitives
+	vtkPolyDataMapper *contMapper = vtkPolyDataMapper::New();
+	contMapper->SetInput(contours->GetOutput());
+	contMapper->SetScalarRange(0.0, 1.2); 
+  
 	// Actor in scene
 	actor = vtkActor::New();
-	actor->SetMapper(mapper);
+	actor->SetMapper(contMapper);
 			
 	// Add Actor to renderer
-	ren->AddActor(actor);
+	myRenderer->AddActor(actor);
 	
 	myCamera = vtkEqualizerCamera::New();
-	ren->SetActiveCamera(myCamera);
+	myRenderer->SetActiveCamera(myCamera);
 
 	// Reset camera and render scene	
-	ren->ResetCamera();
-	ren->SetBackground(53.0/255.0, 52.0/255.0, 102.0/255.0);
+	myRenderer->ResetCamera();
+	myRenderer->SetBackground(53.0/255.0, 52.0/255.0, 102.0/255.0);
 	myRenderWindow->Render();
 
 	//myCamera->SetPosition(0, 0, 1);
@@ -162,6 +171,7 @@ void VtkDemoClient::draw(const DrawContext& context)
 		glRotatef(context.frameNum, 0, 0, 1);
 
 		myRenderWindow->SetSize(w, h);
+		myRenderer->SetBackground(53.0/255.0, 52.0/255.0, 102.0/255.0);
 		myRenderWindow->Render();
 
 		myRenderWindow->GetRGBACharPixelData(0, 0, w-1, h-1, 1, myPixelData);
@@ -184,6 +194,6 @@ void VtkDemoClient::draw(const DrawContext& context)
 	}
 	else if(context.layer == 1)
 	{
-		myUI->draw(context);
+		//myUI->draw(context);
 	}
 }

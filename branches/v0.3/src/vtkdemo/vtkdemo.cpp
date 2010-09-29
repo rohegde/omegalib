@@ -28,7 +28,7 @@ void main(int argc, char** argv)
 
 	// Set the initial observer position (do we still need this - can't we specify it in the settings file?)
 	Observer* obs = sys->getDisplaySystem()->getObserver(0);
-	obs->update(Vector3f(0, 1.6f, 0), Vector3f(0, 0, 0));
+	obs->update(Vector3f(0, 0.7f, 0), Vector3f(0, 0, 0));
 
 	sys->run();
 
