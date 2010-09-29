@@ -73,22 +73,22 @@ server
             segment
             {
                 viewport [ 0 0 0.5 0.5 ]
-                channel "channel1"
-            }
-            segment
-            {
-                viewport [ 0.5 0 0.5 0.5 ]
                 channel "channel4"
             }
             segment
             {
-                viewport [ 0 0.5 0.5 0.5 ]
+                viewport [ 0.5 0 0.5 0.5 ]
                 channel "channel3"
             }
             segment
             {
-                viewport [ 0.5 0.5 0.5 0.5 ]
+                viewport [ 0 0.5 0.5 0.5 ]
                 channel "channel2"
+            }
+            segment
+            {
+                viewport [ 0.5 0.5 0.5 0.5 ]
+                channel "channel1"
             }
         }
 
