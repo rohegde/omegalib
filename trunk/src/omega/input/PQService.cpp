@@ -352,7 +352,6 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 	
 	bool debugText = false;
 
-	// This is commented out and copied into each case to prevent unused PQ gestures from generating events.
 	InputEvent* evt;
 	
 	bool validEvent = false;
