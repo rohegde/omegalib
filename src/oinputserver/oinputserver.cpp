@@ -34,7 +34,7 @@ private:
 
 public:
 	NetClient::NetClient( const char* address, int port ){
-		BufLen = 1024;
+		BufLen = 100;
 
 		// Create a socket for sending data
 		SendSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);

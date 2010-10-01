@@ -16,6 +16,9 @@
 #include "omega/osystem.h"
 #include "omega/InputManager.h"
 
+#include "pqlabs/PQMTClient.h"
+using namespace PQ_SDK_MultiTouch;
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +29,7 @@ public:
 	static NetService* New() { return new NetService(); }
 
 public:
+	OMEGA_API virtual void setup(Setting& settings);
 	OMEGA_API virtual void initialize();
 	OMEGA_API virtual void poll();
 	OMEGA_API virtual void dispose();
@@ -35,6 +39,7 @@ private:
 	OMEGA_API virtual void initHandshake();
 
 private:
+	NetService* mysInstance;	
 	WSADATA wsaData;
 	const char* serverAddress;
 	const char* serverPort;
@@ -50,6 +55,10 @@ private:
 	int SenderAddrSize;
 	int recvbuflen;
 	bool readyToReceive;
+	int screenX;
+	int screenY;
+
+	struct timeval timeout;
 };
 
 }; // namespace omega
