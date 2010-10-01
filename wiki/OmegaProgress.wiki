@@ -1,15 +1,16 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 
 = omegalib v?.? (*far future plans go here*) =
- * omegalib / Vtk integration?
- * full x64 support
+ * TacTile integration: cmake setup (*delivery*: ?)
+  Implement TacTileService: prepare cmake files for TacTileService integration.
 
 = omegalib v0.3 (*delivery:* End of Year(?)) =
 ==<u> Alessandro </u>==
- * OmegaLib / VTK Integration (output) (*delivery*: ?)
-  Render vtk content into omegalib / equalizer channels.
- * TacTile integration: cmake setup (*delivery*: ?)
-  Implement TacTileService: prepare cmake files for TacTileService integration.
+ * OmegaLib / VTK Integration
+  Render vtk content into omegalib / equalizer channels (*done*)
+  Integrate OmegaLib input into vtk interaction system (control camera by mouse / touch?)
+  Create separate ovtk library 
+ * Test active stereo rendering
 
 ==<u> Unassigned </u>==
  * omegalib / Ogre integration?
