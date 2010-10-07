@@ -1,8 +1,7 @@
 =OmegaLib Meeting Notes=
 
 ==October 6 2010==
-* Arthur: Omegalib NetService & oinpitserver working
-* Brad: Omegalib NetService & oinpitserver working
-* Alessandro: tested vtk demo on new omegadesk. Still have to get active stereo working (Equalizer problem?)
-* Next week: merging 0.2 and 0.3
-
+ * Arthur: Omegalib NetService & oinpitserver working
+ * Brad: Omegalib NetService & oinpitserver working
+ * Alessandro: tested vtk demo on new omegadesk. Still have to get active stereo working (Equalizer problem?)
+ * Next week: merging 0.2 and 0.3
