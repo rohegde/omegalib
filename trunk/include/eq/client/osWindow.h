@@ -125,9 +125,9 @@ namespace util
 
         EQ_EXPORT int32_t getIAttribute( const Window::IAttribute attr ) const;
         //@}
-		
-		/** Set up _drawableConfig by querying the current context. */
-		EQ_EXPORT virtual void queryDrawableConfig( 
+
+        /** Set up _drawableConfig by querying the current context. */
+        EQ_EXPORT virtual void queryDrawableConfig( 
             DrawableConfig& drawableConfig ) = 0;
 
         /**
@@ -143,7 +143,6 @@ namespace util
          * @return the extended OpenGL function table for the window's OpenGL
          *         context.
          */
-        EQ_EXPORT virtual GLEWContext* glewGetContext() { return 0; }
         EQ_EXPORT virtual const GLEWContext* glewGetContext() const { return 0;}
 
     protected:

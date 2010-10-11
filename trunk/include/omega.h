@@ -17,11 +17,16 @@
 #include "omega/Config.h"
 #include "omega/Color.h"
 #include "omega/EqualizerDisplaySystem.h"
+#include "omega/FontManager.h"
+#include "omega/GfxUtils.h"
 #include "omega/GLUTDisplaySystem.h"
+#include "omega/GpuBuffer.h"
+#include "omega/GpuManager.h"
 #include "omega/InputManager.h"
 #include "omega/Math.h"
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
+#include "omega/TextureManager.h"
 #include "omega/Utils.h"
 
 #endif

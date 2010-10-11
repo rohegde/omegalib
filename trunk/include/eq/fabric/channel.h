@@ -29,10 +29,7 @@ namespace eq
 {
 namespace fabric
 {
-    template< class, class, class > class Window;
-    template< typename T > class LeafVisitor;
-
-    /** A channel represents a two-dimensional viewport within a Window. */
+    /** Base data transport class for channels. @sa eq::Channel */
     template< class W, class C > class Channel : public Object
     {
     public: 
@@ -72,7 +69,7 @@ namespace fabric
         void setPixelViewport( const PixelViewport& pvp );
 
         /** Set the channel's viewport wrt its parent window. @internal */
-        void setViewport( const Viewport& vp );
+        EQFABRIC_EXPORT void setViewport( const Viewport& vp );
 
         /** Notification that the vp/pvp has changed. @internal */
         virtual void notifyViewportChanged();
@@ -256,9 +253,8 @@ namespace fabric
             IATTR_HINT_STATISTICS,
             /** Use a send token for output frames (OFF, ON) */
             IATTR_HINT_SENDTOKEN,
-            IATTR_FILL1,
-            IATTR_FILL2,
-            IATTR_ALL
+            IATTR_LAST,
+            IATTR_ALL = IATTR_LAST + 5
         };
         
         /** @return the value of an integer attribute. @version 1.0 */
@@ -316,10 +312,10 @@ namespace fabric
     private:
         enum DirtyBits
         {
-            DIRTY_ATTRIBUTES = Object::DIRTY_CUSTOM << 0,
-            DIRTY_VIEWPORT   = Object::DIRTY_CUSTOM << 1,
-            DIRTY_MEMBER     = Object::DIRTY_CUSTOM << 2,
-            DIRTY_FRUSTUM    = Object::DIRTY_CUSTOM << 3,
+            DIRTY_ATTRIBUTES = Object::DIRTY_CUSTOM << 0, // 64
+            DIRTY_VIEWPORT   = Object::DIRTY_CUSTOM << 1, // 128
+            DIRTY_MEMBER     = Object::DIRTY_CUSTOM << 2, // 256
+            DIRTY_FRUSTUM    = Object::DIRTY_CUSTOM << 3, // 512
         };
 
         /** The parent window. */

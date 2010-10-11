@@ -235,12 +235,13 @@ namespace server
         typedef std::deque< net::Command* > Commands;
         Commands _readyVersions;
 
+        typedef base::Monitor< uint32_t > Monitor;
         /** Data ready monitor synchronization primitive. */
-        base::Monitor<uint32_t> _readyVersion;
+        Monitor _readyVersion;
 
+        typedef std::vector< Monitor* > Monitors;
         /** External monitors for readiness synchronization. */
-        std::vector< base::Monitor<uint32_t>* > _listeners;
-        base::Lock                              _listenersMutex;
+        base::Lockable< Monitors, base::SpinLock > _listeners;
 
         bool _useAlpha;
         bool _useSendToken;
@@ -268,7 +269,7 @@ namespace server
         bool _cmdReady( net::Command& command );
         bool _cmdUpdate( net::Command& command );
 
-        CHECK_THREAD_DECLARE( _commandThread );
+        EQ_TS_VAR( _commandThread );
     };
     std::ostream& operator << ( std::ostream& os, const FrameData* data );
 }

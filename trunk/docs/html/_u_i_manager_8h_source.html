@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/outk/ui/UIManager.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/ui/UIManager.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/outk/ui/UIManager.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/ui/UIManager.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_u_i_manager_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -43,57 +43,56 @@
 <a name="l00013"></a>00013 <span class="preprocessor">#ifndef __UI_MANAGER_H__</span>
 <a name="l00014"></a>00014 <span class="preprocessor"></span><span class="preprocessor">#define __UI_MANAGER_H__</span>
 <a name="l00015"></a>00015 <span class="preprocessor"></span>
-<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;omega.h&quot;</span>
-<a name="l00017"></a>00017 
-<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_font_manager_8h.html">outk/gfx/FontManager.h</a>&quot;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="_i_u_i_event_handler_8h.html">outk/ui/IUIEventHandler.h</a>&quot;</span>
-<a name="l00020"></a>00020 
-<a name="l00021"></a>00021 <span class="keyword">namespace </span>outk
-<a name="l00022"></a>00022 {
-<a name="l00023"></a>00023 <span class="keyword">namespace </span>ui
-<a name="l00024"></a>00024 {
-<a name="l00026"></a>00026 <span class="comment">// Forward class declarations.</span>
-<a name="l00027"></a>00027 <span class="keyword">class </span>Widget;
-<a name="l00028"></a>00028 <span class="keyword">class </span>WidgetFactory;
-<a name="l00029"></a>00029 
-<a name="l00031"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html">00031</a> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html">UIManager</a>
-<a name="l00032"></a>00032 {
-<a name="l00033"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a29fa75ce3911bef8c5f4414f6f0242b8">00033</a> <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>;
-<a name="l00034"></a>00034 <span class="keyword">public</span>:
-<a name="l00035"></a>00035         OUTK_API <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a32b72c377f864f7cd197e6ffe738142f">UIManager</a>();
-<a name="l00036"></a>00036         OUTK_API <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#aeac3e2a8fd4ba49821ce653f4d2fa6b6">~UIManager</a>();
-<a name="l00037"></a>00037 
-<a name="l00038"></a>00038         OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a69e367ce8d76b9ffadcfadcb8296a22f">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">omega::UpdateContext</a>&amp; context);
-<a name="l00039"></a>00039         OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a0f7a490e72c593cdd76c5893c43ee114">draw</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">omega::DrawContext</a>&amp; context);
-<a name="l00040"></a>00040         OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a03b2756f10bca5ae9b9aeff83b21f079">processInputEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">omega::InputEvent</a>&amp; evt);
-<a name="l00041"></a>00041 
-<a name="l00042"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#aa292f5a8e8d2f1335d0ecdb98b381831">00042</a>         <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#aa292f5a8e8d2f1335d0ecdb98b381831">getRootWidget</a>() { <span class="keywordflow">return</span> myRootWidget; }
-<a name="l00043"></a>00043 
-<a name="l00044"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a572e64164937e51da7cbe57874b2c150">00044</a>         <a class="code" href="classoutk_1_1gfx_1_1_font.html">outk::gfx::Font</a>* <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a572e64164937e51da7cbe57874b2c150">getDefaultFont</a>() { <span class="keywordflow">return</span> myDefaultFont; }
-<a name="l00045"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#acd3fb85f5906948a622e3b80b4373a32">00045</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#acd3fb85f5906948a622e3b80b4373a32">setDefaultFont</a>(<a class="code" href="classoutk_1_1gfx_1_1_font.html">outk::gfx::Font</a>* value) { myDefaultFont = value; }
-<a name="l00046"></a>00046 
-<a name="l00047"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#aebd6b56457ea7f0bda521ee72b040059">00047</a>         <a class="code" href="classoutk_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a>* <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#aebd6b56457ea7f0bda521ee72b040059">getEventHandler</a>() { <span class="keywordflow">return</span> myEventHandler; }
-<a name="l00048"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a0a9630e60bfff7fcfd117cc68ef5f598">00048</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a0a9630e60bfff7fcfd117cc68ef5f598">setEventHandler</a>(<a class="code" href="classoutk_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a>* value) { myEventHandler = value; }
-<a name="l00049"></a>00049 
-<a name="l00050"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a3e08a7da6d115bae45d43ea27ff0f03a">00050</a>         <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html">WidgetFactory</a>* <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a3e08a7da6d115bae45d43ea27ff0f03a">getWidgetFactory</a>() { <span class="keywordflow">return</span> myWidgetFactory; }
-<a name="l00051"></a><a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a7bc7c94bd573131444eea0a7faca89f7">00051</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_u_i_manager.html#a7bc7c94bd573131444eea0a7faca89f7">setWidgetFactory</a>(<a class="code" href="classoutk_1_1ui_1_1_widget_factory.html">WidgetFactory</a>* value) { myWidgetFactory = value; }
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="keyword">private</span>:
-<a name="l00054"></a>00054         <span class="keywordtype">void</span> dispatchUIEvent(<span class="keyword">const</span> <a class="code" href="structoutk_1_1ui_1_1_u_i_event.html">UIEvent</a>&amp; evt);
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="keyword">private</span>:
-<a name="l00057"></a>00057         <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* myRootWidget;
-<a name="l00058"></a>00058         <a class="code" href="classoutk_1_1gfx_1_1_font.html">outk::gfx::Font</a>* myDefaultFont;
-<a name="l00059"></a>00059         <a class="code" href="classoutk_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a>* myEventHandler;
-<a name="l00060"></a>00060         <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html">WidgetFactory</a>* myWidgetFactory;
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="_application_8h.html">omega/Application.h</a>&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="_font_manager_8h.html">omega/FontManager.h</a>&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_i_u_i_event_handler_8h.html">omega/ui/IUIEventHandler.h</a>&quot;</span>
+<a name="l00019"></a>00019 
+<a name="l00020"></a>00020 <span class="keyword">namespace </span>omega
+<a name="l00021"></a>00021 {
+<a name="l00022"></a>00022 <span class="keyword">namespace </span>ui
+<a name="l00023"></a>00023 {
+<a name="l00025"></a>00025 <span class="comment">// Forward class declarations.</span>
+<a name="l00026"></a>00026 <span class="keyword">class </span>Widget;
+<a name="l00027"></a>00027 <span class="keyword">class </span>WidgetFactory;
+<a name="l00028"></a>00028 
+<a name="l00030"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html">00030</a> <span class="keyword">class </span><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html">UIManager</a>
+<a name="l00031"></a>00031 {
+<a name="l00032"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a29fa75ce3911bef8c5f4414f6f0242b8">00032</a> <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classomega_1_1ui_1_1_widget.html">Widget</a>;
+<a name="l00033"></a>00033 <span class="keyword">public</span>:
+<a name="l00034"></a>00034         OUTILS_API <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a24f41489a9df21df5b44858faf9b8234">UIManager</a>();
+<a name="l00035"></a>00035         OUTILS_API <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a23a2df0fb4915c4d7cfd79e7742a1356">~UIManager</a>();
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037         OUTILS_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ac78f4be73f2f7dd80c2ada338f1d8438">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">omega::UpdateContext</a>&amp; context);
+<a name="l00038"></a>00038         OUTILS_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ad51dc66ebc8a483b5c442399de1bf384">draw</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">omega::DrawContext</a>&amp; context);
+<a name="l00039"></a>00039         OUTILS_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ae516fe8cfff42ec5339691f241065b97">processInputEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">omega::InputEvent</a>&amp; evt);
+<a name="l00040"></a>00040 
+<a name="l00041"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a5e94fd077e28c9d63d66e13c4ceb6e0d">00041</a>         <a class="code" href="classomega_1_1ui_1_1_widget.html">Widget</a>* <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a5e94fd077e28c9d63d66e13c4ceb6e0d">getRootWidget</a>() { <span class="keywordflow">return</span> myRootWidget; }
+<a name="l00042"></a>00042 
+<a name="l00043"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a4e39b09099996e5b864aee5a1cd3a48f">00043</a>         <a class="code" href="classomega_1_1_font.html">omega::Font</a>* <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a4e39b09099996e5b864aee5a1cd3a48f">getDefaultFont</a>() { <span class="keywordflow">return</span> myDefaultFont; }
+<a name="l00044"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ade4937d14a73021fe16144565a410759">00044</a>         <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ade4937d14a73021fe16144565a410759">setDefaultFont</a>(<a class="code" href="classomega_1_1_font.html">omega::Font</a>* value) { myDefaultFont = value; }
+<a name="l00045"></a>00045 
+<a name="l00046"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ab72c3c41bfb59af8747feeef1d28f99e">00046</a>         <a class="code" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a>* <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#ab72c3c41bfb59af8747feeef1d28f99e">getEventHandler</a>() { <span class="keywordflow">return</span> myEventHandler; }
+<a name="l00047"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a4b13e2361314e8e82084646bd454bba2">00047</a>         <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a4b13e2361314e8e82084646bd454bba2">setEventHandler</a>(<a class="code" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a>* value) { myEventHandler = value; }
+<a name="l00048"></a>00048 
+<a name="l00049"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a5b42bc363bfe959670ea329f3e43011e">00049</a>         <a class="code" href="classomega_1_1ui_1_1_widget_factory.html">WidgetFactory</a>* <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a5b42bc363bfe959670ea329f3e43011e">getWidgetFactory</a>() { <span class="keywordflow">return</span> myWidgetFactory; }
+<a name="l00050"></a><a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a2441244f9eeb068d2dca946b03af3a9e">00050</a>         <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_u_i_manager.html#a2441244f9eeb068d2dca946b03af3a9e">setWidgetFactory</a>(<a class="code" href="classomega_1_1ui_1_1_widget_factory.html">WidgetFactory</a>* value) { myWidgetFactory = value; }
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 <span class="keyword">private</span>:
+<a name="l00053"></a>00053         <span class="keywordtype">void</span> dispatchUIEvent(<span class="keyword">const</span> <a class="code" href="structomega_1_1ui_1_1_u_i_event.html">UIEvent</a>&amp; evt);
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 <span class="keyword">private</span>:
+<a name="l00056"></a>00056         <a class="code" href="classomega_1_1ui_1_1_widget.html">Widget</a>* myRootWidget;
+<a name="l00057"></a>00057         <a class="code" href="classomega_1_1_font.html">omega::Font</a>* myDefaultFont;
+<a name="l00058"></a>00058         <a class="code" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a>* myEventHandler;
+<a name="l00059"></a>00059         <a class="code" href="classomega_1_1ui_1_1_widget_factory.html">WidgetFactory</a>* myWidgetFactory;
+<a name="l00060"></a>00060 };
 <a name="l00061"></a>00061 };
-<a name="l00062"></a>00062 };
-<a name="l00063"></a>00063 }; <span class="comment">// namespace omega</span>
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065 <span class="preprocessor">#endif</span>
+<a name="l00062"></a>00062 }; <span class="comment">// namespace omega</span>
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

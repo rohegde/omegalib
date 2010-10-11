@@ -1,5 +1,6 @@
 
-/* Copyright (c) 2008-2010, Stefan Eilemann <eile@equalizergraphics.com> 
+/* Copyright (c) 2008-2010, Stefan Eilemann <eile@equalizergraphics.com>
+ * Copyright (c) 2010,      Cedric Stalder <cedric.stalder@gmail.com>
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License version 2.1 as published
@@ -41,6 +42,7 @@ namespace fabric
         /** The current rendering mode. */
         enum Mode
         {
+            MODE_NONE,   //!< Render EYE unactivation
             MODE_MONO,   //!< Render in mono (cyclop eye)
             MODE_STEREO  //!< Render in stereo (left & right eye)
         };
@@ -80,17 +82,29 @@ namespace fabric
         /** @warning  Undocumented - may not be supported in the future */
         const Vector2i& getOverdraw() const { return _overdraw; }
 
-        /** Set the 2D viewport wrt Layout and Canvas. @internal */
+        /** @internal Set the 2D viewport wrt Layout and Canvas. */
         EQFABRIC_EXPORT void setViewport( const Viewport& viewport );
 
-        /** Set the entity tracking this view. @internal */
+        /** @internal Set the entity tracking this view. */
         EQFABRIC_EXPORT void setObserver( O* observer );
         
-        /** Get the mode of this view. @internal */
+        /** @internal Get the mode of this view. */
         EQFABRIC_EXPORT Mode getMode( ) const { return _mode; }
         
-        /** Set the mode of this view. @internal */
-        EQFABRIC_EXPORT void changeMode( Mode mode ) {}
+        /**
+         * Set the mode of this view.
+         *
+         * @param mode the new rendering mode 
+         */
+        EQFABRIC_EXPORT virtual void changeMode( const Mode mode );
+        
+        /**
+         * @internal
+         * Activate the given mode on this view.
+         *
+         * @param mode the new rendering mode 
+         */
+        virtual void activateMode( const Mode mode ){} 
         //@}
 
         /** @name Operations */
@@ -117,13 +131,14 @@ namespace fabric
             DIRTY_VIEWPORT   = Object::DIRTY_CUSTOM << 0,
             DIRTY_OBSERVER   = Object::DIRTY_CUSTOM << 1,
             DIRTY_OVERDRAW   = Object::DIRTY_CUSTOM << 2,
-            DIRTY_FRUSTUM    = Object::DIRTY_CUSTOM << 3
+            DIRTY_FRUSTUM    = Object::DIRTY_CUSTOM << 3,
+            DIRTY_MODE       = Object::DIRTY_CUSTOM << 4
         };
 
-        /** Construct a new view. @internal */
+        /** @internal Construct a new view. */
         EQFABRIC_EXPORT View( L* layout );
 
-        /** Destruct this view. @internal */
+        /** @internal Destruct this view. */
         EQFABRIC_EXPORT virtual ~View();
 
         /**
@@ -143,7 +158,7 @@ namespace fabric
         EQFABRIC_EXPORT virtual void deserialize( net::DataIStream& is, 
                                                   const uint64_t dirtyBits );
 
-        /** @sa Serializable::setDirty() @internal */
+        /** @internal @sa Serializable::setDirty() */
         EQFABRIC_EXPORT virtual void setDirty( const uint64_t bits );
 
     private:

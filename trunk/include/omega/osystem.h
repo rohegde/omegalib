@@ -44,12 +44,11 @@
 	#else
 	   #define OMEGA_API    __declspec(dllimport)
 	#endif
-
-	// OUTK DLL import / export macros (NOTE, THIS IS PART OF OUTK, SHOULD BE PLACED IN A OUTK SYSTEM HEADER FOR CONSISTENCY!)
-	#ifdef OUTK_EXPORTING
-	   #define OUTK_API    __declspec(dllexport)
+	// Omega DLL import / export macros
+	#ifdef OUTILS_EXPORTING
+	   #define OUTILS_API    __declspec(dllexport)
 	#else
-	   #define OUTK_API    __declspec(dllimport)
+	   #define OUTILS_API    __declspec(dllimport)
 	#endif
 #endif
 
@@ -68,7 +67,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
-#define OMEGA_VERSION "0.2"
+#define OMEGA_VERSION "0.3"
 
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
@@ -104,7 +103,7 @@ typedef libconfig::Setting Setting;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
 OMEGA_API GLEWContext* glewGetContext();
-OMEGA_API void glewSetContext(GLEWContext* context);
+OMEGA_API void glewSetContext(const GLEWContext* context);
 
 OMEGA_API void ologopen(const char* filename);
 OMEGA_API void ologclose();

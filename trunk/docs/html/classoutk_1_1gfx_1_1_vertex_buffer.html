@@ -47,22 +47,33 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#ad83cbc340c28a218e80e7eee4accb058">VertexBuffer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a8ecec2e0a30d6a6d2d9abdeb530e33c4">getPositionOffset</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a842787885fe3e9acc6a4de0ef1341750">setPositionOffset</a> (int value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#aec116a5243294acc1d7bd89a3ec72d54">getPositionComponents</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#addb72af9d63a0473abc985705ce6412d">setPositionComponents</a> (int value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a11d7c886c380bc58c74f9c45f17a4058">activate</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a06a4310d7d3bf55880459aeb90875f99">VertexBuffer</a> (<a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a> *mng)</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Attribute Management</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrp0c4ff91c3a91eb20cea9cd2d9b50f6e2"></a> </p>
+</div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structoutk_1_1gfx_1_1_vertex_attribute.html">VertexAttribute</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#ac1c214533d9a459c83cdfcd21426b14d">getAttribute</a> (int index)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a881253eb060c37ddd74e91e2ff99aa78">clearAttributes</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#ad44c171ab65ef7821edbcd7a820f28cd">getNumAttributes</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#ae1c114fb8644f3b853e449e337fb3a15">addAttribute</a> (const <a class="el" href="structoutk_1_1gfx_1_1_vertex_attribute.html">VertexAttribute</a> &amp;attrib)</td></tr>
+<tr><td colspan="2"><h2><a name="member-group"></a>
+Internal Functions</h2></td></tr>
+<tr><td colspan="2"><p><a class="anchor" id="amgrpae260ff3a3a80dad696f01482c30bb91"></a></p>
+<p><b>For internal use only.</b></p>
+<p>Applies the vertex buffer attributes, binding vertex data to their specified semantics. This method is always called before rendering data from the vertex buffer. </p>
+<br/><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a0f4c1f103265d8e3b9d0043e41ada677">bind</a> (<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html">GpuProgram</a> *prog, int index, <a class="el" href="classoutk_1_1gfx_1_1_gpu_data.html#a244cf14922f67ca1e57d659661d3a0b7">GpuData::BindType</a> bindType)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html#a0b0eeec3ecf74b1e16f6cb2ee95878da">unbind</a> (<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html">GpuProgram</a> *prog, int index, <a class="el" href="classoutk_1_1gfx_1_1_gpu_data.html#a244cf14922f67ca1e57d659661d3a0b7">GpuData::BindType</a> bindType)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ad83cbc340c28a218e80e7eee4accb058"></a><!-- doxytag: member="outk::gfx::VertexBuffer::VertexBuffer" ref="ad83cbc340c28a218e80e7eee4accb058" args="()" -->
+<a class="anchor" id="a06a4310d7d3bf55880459aeb90875f99"></a><!-- doxytag: member="outk::gfx::VertexBuffer::VertexBuffer" ref="a06a4310d7d3bf55880459aeb90875f99" args="(GpuManager *mng)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">outk::gfx::VertexBuffer::VertexBuffer </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a> *&nbsp;</td>
+          <td class="paramname"> <em>mng</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
         </tr>
@@ -73,12 +84,65 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a11d7c886c380bc58c74f9c45f17a4058"></a><!-- doxytag: member="outk::gfx::VertexBuffer::activate" ref="a11d7c886c380bc58c74f9c45f17a4058" args="()" -->
+<a class="anchor" id="ae1c114fb8644f3b853e449e337fb3a15"></a><!-- doxytag: member="outk::gfx::VertexBuffer::addAttribute" ref="ae1c114fb8644f3b853e449e337fb3a15" args="(const VertexAttribute &amp;attrib)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void VertexBuffer::activate </td>
+          <td class="memname">int VertexBuffer::addAttribute </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structoutk_1_1gfx_1_1_vertex_attribute.html">VertexAttribute</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>attrib</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0f4c1f103265d8e3b9d0043e41ada677"></a><!-- doxytag: member="outk::gfx::VertexBuffer::bind" ref="a0f4c1f103265d8e3b9d0043e41ada677" args="(GpuProgram *prog, int index, GpuData::BindType bindType)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VertexBuffer::bind </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td>
+          <td class="paramname"> <em>prog</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_data.html#a244cf14922f67ca1e57d659661d3a0b7">GpuData::BindType</a>&nbsp;</td>
+          <td class="paramname"> <em>bindType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoutk_1_1gfx_1_1_gpu_buffer.html#a07348124717df904ac1081daac23b5c1">outk::gfx::GpuBuffer</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a881253eb060c37ddd74e91e2ff99aa78"></a><!-- doxytag: member="outk::gfx::VertexBuffer::clearAttributes" ref="a881253eb060c37ddd74e91e2ff99aa78" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VertexBuffer::clearAttributes </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -87,21 +151,37 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p><b>For internal use only.</b></p>
-<p>Applies the vertex buffer attributes, binding vertex data to their specified semantics. This method is always called before rendering data from the vertex buffer. </p>
 
 </div>
 </div>
-<a class="anchor" id="aec116a5243294acc1d7bd89a3ec72d54"></a><!-- doxytag: member="outk::gfx::VertexBuffer::getPositionComponents" ref="aec116a5243294acc1d7bd89a3ec72d54" args="()" -->
+<a class="anchor" id="ac1c214533d9a459c83cdfcd21426b14d"></a><!-- doxytag: member="outk::gfx::VertexBuffer::getAttribute" ref="ac1c214533d9a459c83cdfcd21426b14d" args="(int index)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int outk::gfx::VertexBuffer::getPositionComponents </td>
+          <td class="memname"><a class="el" href="structoutk_1_1gfx_1_1_vertex_attribute.html">VertexAttribute</a>* outk::gfx::VertexBuffer::getAttribute </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>index</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad44c171ab65ef7821edbcd7a820f28cd"></a><!-- doxytag: member="outk::gfx::VertexBuffer::getNumAttributes" ref="ad44c171ab65ef7821edbcd7a820f28cd" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int VertexBuffer::getNumAttributes </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -109,56 +189,38 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8ecec2e0a30d6a6d2d9abdeb530e33c4"></a><!-- doxytag: member="outk::gfx::VertexBuffer::getPositionOffset" ref="a8ecec2e0a30d6a6d2d9abdeb530e33c4" args="()" -->
+<a class="anchor" id="a0b0eeec3ecf74b1e16f6cb2ee95878da"></a><!-- doxytag: member="outk::gfx::VertexBuffer::unbind" ref="a0b0eeec3ecf74b1e16f6cb2ee95878da" args="(GpuProgram *prog, int index, GpuData::BindType bindType)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int outk::gfx::VertexBuffer::getPositionOffset </td>
+          <td class="memname">void VertexBuffer::unbind </td>
           <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td>
+          <td class="paramname"> <em>prog</em>, </td>
         </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="addb72af9d63a0473abc985705ce6412d"></a><!-- doxytag: member="outk::gfx::VertexBuffer::setPositionComponents" ref="addb72af9d63a0473abc985705ce6412d" args="(int value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">void outk::gfx::VertexBuffer::setPositionComponents </td>
-          <td>(</td>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>value</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td class="paramname"> <em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_data.html#a244cf14922f67ca1e57d659661d3a0b7">GpuData::BindType</a>&nbsp;</td>
+          <td class="paramname"> <em>bindType</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-</div>
-</div>
-<a class="anchor" id="a842787885fe3e9acc6a4de0ef1341750"></a><!-- doxytag: member="outk::gfx::VertexBuffer::setPositionOffset" ref="a842787885fe3e9acc6a4de0ef1341750" args="(int value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void outk::gfx::VertexBuffer::setPositionOffset </td>
-          <td>(</td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>value</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<p>Reimplemented from <a class="el" href="classoutk_1_1gfx_1_1_gpu_buffer.html#ae196c8f9e91cbd6bc349e8b4b6b608c8">outk::gfx::GpuBuffer</a>.</p>
 
 </div>
 </div>
@@ -167,7 +229,7 @@ Public Member Functions</h2></td></tr>
 <li>D:/Workspace/omegalib/src/outk/gfx/<a class="el" href="_gpu_buffer_8cpp.html">GpuBuffer.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 16 2010 01:42:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

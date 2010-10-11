@@ -13,7 +13,6 @@
 #include "outk.h"
 
 using namespace omega;
-using namespace outk::gfx;
 using namespace outk::ui;
 
 //#define LAPTOP

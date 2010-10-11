@@ -107,6 +107,9 @@ namespace net
         /** @return the number of bytes used by the instance cache. */
         long getSize() const { return _size; }
 
+        /** @return the maximum number of bytes used by the instance cache. */
+        long getMaxSize() const { return _maxSize; }
+
         /** Remove all items which are older than the given time. */
         void expire( const int64_t age );
 
@@ -133,7 +136,7 @@ namespace net
         void _releaseStreams( InstanceCache::Item& item );
         void _releaseFirstStream( InstanceCache::Item& item );
 
-        CHECK_THREAD_DECLARE( _thread );
+        EQ_TS_VAR( _thread );
     };
 
     std::ostream& operator << ( std::ostream&, const InstanceCache& );

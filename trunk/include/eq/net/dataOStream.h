@@ -19,11 +19,9 @@
 #ifndef EQNET_DATAOSTREAM_H
 #define EQNET_DATAOSTREAM_H
 
-
-#include <eq/net/types.h>   // Connections member
-
 #include <eq/base/buffer.h> // member
-#include <eq/base/compressorDataCPU.h>
+#include <eq/net/types.h>
+
 #include <iostream>
 #include <vector>
 
@@ -42,13 +40,12 @@ namespace DataStreamTest
      *
      * Derived classes send the data using the appropriate command packets.
      */
-    class DataOStream
+    class DataOStream : public base::NonCopyable
     {
     public:
         /** @name Internal */
         //@{
         EQ_EXPORT DataOStream();
-        DataOStream( const DataOStream& from );
         virtual EQ_EXPORT ~DataOStream();
 
         /** Enable output, locks the connections to the receivers */ 
@@ -94,15 +91,12 @@ namespace DataStreamTest
          * The DataIStream has a deserialize counterpart to this method. All
          * child objects have to be registered or mapped beforehand.
          */
-        template< typename O, typename C >
-        void serializeChildren( O* object, const std::vector< C* >& children );
+        template< typename C >
+        void serializeChildren( const std::vector< C* >& children );
         //@}
 
  
     protected:
-
-        base::CompressorDataCPU compressor;
-
         /** Flush remaining data in the buffer. */
         void _flush();
 
@@ -130,8 +124,9 @@ namespace DataStreamTest
         Connections _connections;
         friend class DataStreamTest::Sender;
 
-    private:
-        
+        base::CPUCompressor* const compressor;
+
+    private:        
         enum BufferType
         {
             BUFFER_NONE = 0,
@@ -231,8 +226,8 @@ namespace net
         return *this;
     }
  
-    template< typename O, typename C > inline void
-    DataOStream::serializeChildren( O* object, const std::vector<C*>& children )
+    template< typename C > inline void
+    DataOStream::serializeChildren( const std::vector<C*>& children )
     {
         const uint64_t nElems = children.size();
         (*this) << nElems;

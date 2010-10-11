@@ -7,7 +7,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Test executable
+ * Nightfield is an application that tests most of omegalib & omega features.
  *********************************************************************************************************************/
 #include "NightfieldUI.h"
 
@@ -29,7 +29,7 @@ void NightfieldUI::initialize()
 	WidgetFactory* wf = myUI.getWidgetFactory();
 
 	Box* b1 = wf->createBox("box1", myUI.getRootWidget(), Box::LayoutVertical);
-	b1->setPosition(Vector2f(10, 10));
+	b1->setPosition(Vector2f(10, 50));
 	b1->setSize(Vector2f(300, 120));
 
 	Button* btn1 = wf->createButton("L1", b1);
@@ -40,6 +40,12 @@ void NightfieldUI::initialize()
 
 	Slider* sld2 = wf->createSlider("S2", b1);
 	sld2->setProgressBarMode(true);
+
+	myPresetSelector = wf->createSlider("presetSelector", myUI.getRootWidget());
+	myPresetSelector->setPosition(10, 10);
+	myPresetSelector->setSize(300, 30);
+	myPresetSelector->setMinValue(0);
+	myPresetSelector->setMaxValue(3);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

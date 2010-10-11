@@ -47,43 +47,44 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aec783a00a03e4674d792cdee920e9326">setup</a> (<a class="el" href="classomega_1_1_config.html">Config</a> *cfg)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initializes the system manager.  <a href="#aec783a00a03e4674d792cdee920e9326"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#ab412bbfa2aed30ef0a07ab22a305c822">registerInputService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName, <a class="el" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> creationFunc)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aea68f59e83bdc269a7c8d3dd11da8474">findInputService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find an input service allocator given the input service name.  <a href="#aea68f59e83bdc269a7c8d3dd11da8474"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#af40b45c958865de2ff03d0a8a7eafafa">initialize</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a51eb11945f7445275abb45b1fa7f028d">run</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Starts running the current application.  <a href="#a51eb11945f7445275abb45b1fa7f028d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#affd639d6b8aa21fc204bccff9adbfb72">postExitRequest</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sends an exit request to the system manager.  <a href="#affd639d6b8aa21fc204bccff9adbfb72"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a65dbd70d07db2f5141e24ddcbcf99d05">cleanup</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Cleans up runtime resources, performs final debug checks etc.  <a href="#a65dbd70d07db2f5141e24ddcbcf99d05"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="classomega_1_1_config.html">Config</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a3c6f23f3d5b3247f2b100997a68e6b16">getConfig</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the system configuration.  <a href="#a3c6f23f3d5b3247f2b100997a68e6b16"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="classomega_1_1_input_manager.html">InputManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db">getInputManager</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the <a class="el" href="classomega_1_1_input_manager.html">InputManager</a> object.  <a href="#afa5e972b7037509ef221e9922566c5db"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a542bf3572aa4f55000541e6efc8b43bb">getDisplaySystem</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> object.  <a href="#a542bf3572aa4f55000541e6efc8b43bb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a416ce5f01c2e616fd88af1384f8eb71a">setDisplaySystem</a> (<a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> *value)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> object.  <a href="#a416ce5f01c2e616fd88af1384f8eb71a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="classomega_1_1_application.html">Application</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a66b2f6745a24060e91f22bd3afe3de1d">getApplication</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the <a class="el" href="classomega_1_1_application.html">Application</a> object.  <a href="#a66b2f6745a24060e91f22bd3afe3de1d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a0a08c852926528cf10e87c7aed4f2f64">setApplication</a> (<a class="el" href="classomega_1_1_application.html">Application</a> *value)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the <a class="el" href="classomega_1_1_application.html">Application</a> object.  <a href="#a0a08c852926528cf10e87c7aed4f2f64"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a0a6ace2009515887623a7d8c8d373126">isExitRequested</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aaed78e3b27eb6f6369e85d30ad5593d9">isInitialized</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a6e6f49eb1a40c770778cb4c90acbd7d8">setup</a> (<a class="el" href="classomega_1_1_config.html">Config</a> *cfg)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initializes the system manager.  <a href="#a6e6f49eb1a40c770778cb4c90acbd7d8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#ad5744d8c3ce4437309540c81e2c7ee62">registerInputService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName, <a class="el" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> creationFunc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API <a class="el" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a6afb6f1e08024f8194b0445c63ce0eea">findInputService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find an input service allocator given the input service name.  <a href="#a6afb6f1e08024f8194b0445c63ce0eea"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#ab887b2906b98f010c8a2ab253a2dc1e8">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#adb5fa2c8090bb328a12b32d8058c6214">run</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Starts running the current application.  <a href="#adb5fa2c8090bb328a12b32d8058c6214"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a8229871469beb5bf0e579183964fb60b">postExitRequest</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;reason=&quot;Undefined reason&quot;)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sends an exit request to the system manager.  <a href="#a8229871469beb5bf0e579183964fb60b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a6f7e70177c181e4331a3326c537170e8">cleanup</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Cleans up runtime resources, performs final debug checks etc.  <a href="#a6f7e70177c181e4331a3326c537170e8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_config.html">Config</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#acc68f02e0966a7ba565cd6ddc2711612">getConfig</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the system configuration.  <a href="#acc68f02e0966a7ba565cd6ddc2711612"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_input_manager.html">InputManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a6c818cb025ebd5c5e75fcf212185455f">getInputManager</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the <a class="el" href="classomega_1_1_input_manager.html">InputManager</a> object.  <a href="#a6c818cb025ebd5c5e75fcf212185455f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#adbfa96a58f2e0a48d58bea100edf4419">getDisplaySystem</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> object.  <a href="#adbfa96a58f2e0a48d58bea100edf4419"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aa4cfb95504de0fbf4a00a0bd811d05fd">setDisplaySystem</a> (<a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> *value)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> object.  <a href="#aa4cfb95504de0fbf4a00a0bd811d05fd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_application.html">Application</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a8ed2da66ff774163efaf2c53dd7b070c">getApplication</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the <a class="el" href="classomega_1_1_application.html">Application</a> object.  <a href="#a8ed2da66ff774163efaf2c53dd7b070c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a3c48ef2cf01175317ceb96a81778a3f1">setApplication</a> (<a class="el" href="classomega_1_1_application.html">Application</a> *value)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the <a class="el" href="classomega_1_1_application.html">Application</a> object.  <a href="#a3c48ef2cf01175317ceb96a81778a3f1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a5626450a88da30aa13a4e17bc090222c">isExitRequested</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a323e8e29cb5db08939e1f28c61368950">getExitReason</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aabd898c0586740191737cf6f7dad6552">isInitialized</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static OMEGA_API <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aefb1daba6a0ea15ba4ef97f0e2428b35">instance</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static OMEGA_API <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">instance</a> ()</td></tr>
 </table>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a65dbd70d07db2f5141e24ddcbcf99d05"></a><!-- doxytag: member="omega::SystemManager::cleanup" ref="a65dbd70d07db2f5141e24ddcbcf99d05" args="()" -->
+<a class="anchor" id="a6f7e70177c181e4331a3326c537170e8"></a><!-- doxytag: member="omega::SystemManager::cleanup" ref="a6f7e70177c181e4331a3326c537170e8" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SystemManager::cleanup </td>
+          <td class="memname">OMEGA_API void omega::SystemManager::cleanup </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -97,12 +98,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aea68f59e83bdc269a7c8d3dd11da8474"></a><!-- doxytag: member="omega::SystemManager::findInputService" ref="aea68f59e83bdc269a7c8d3dd11da8474" args="(String svcName)" -->
+<a class="anchor" id="a6afb6f1e08024f8194b0445c63ce0eea"></a><!-- doxytag: member="omega::SystemManager::findInputService" ref="a6afb6f1e08024f8194b0445c63ce0eea" args="(String svcName)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> SystemManager::findInputService </td>
+          <td class="memname">OMEGA_API <a class="el" href="namespaceomega.html#a9079eb8167f4cf90cea8aaa6acfbd1f2">InputServiceAllocator</a> omega::SystemManager::findInputService </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td>
           <td class="paramname"> <em>svcName</em></td>
@@ -118,12 +119,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a66b2f6745a24060e91f22bd3afe3de1d"></a><!-- doxytag: member="omega::SystemManager::getApplication" ref="a66b2f6745a24060e91f22bd3afe3de1d" args="()" -->
+<a class="anchor" id="a8ed2da66ff774163efaf2c53dd7b070c"></a><!-- doxytag: member="omega::SystemManager::getApplication" ref="a8ed2da66ff774163efaf2c53dd7b070c" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API <a class="el" href="classomega_1_1_application.html">Application</a>* omega::SystemManager::getApplication </td>
+          <td class="memname"><a class="el" href="classomega_1_1_application.html">Application</a>* omega::SystemManager::getApplication </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -137,12 +138,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3c6f23f3d5b3247f2b100997a68e6b16"></a><!-- doxytag: member="omega::SystemManager::getConfig" ref="a3c6f23f3d5b3247f2b100997a68e6b16" args="()" -->
+<a class="anchor" id="acc68f02e0966a7ba565cd6ddc2711612"></a><!-- doxytag: member="omega::SystemManager::getConfig" ref="acc68f02e0966a7ba565cd6ddc2711612" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API <a class="el" href="classomega_1_1_config.html">Config</a>* omega::SystemManager::getConfig </td>
+          <td class="memname"><a class="el" href="classomega_1_1_config.html">Config</a>* omega::SystemManager::getConfig </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -156,12 +157,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a542bf3572aa4f55000541e6efc8b43bb"></a><!-- doxytag: member="omega::SystemManager::getDisplaySystem" ref="a542bf3572aa4f55000541e6efc8b43bb" args="()" -->
+<a class="anchor" id="adbfa96a58f2e0a48d58bea100edf4419"></a><!-- doxytag: member="omega::SystemManager::getDisplaySystem" ref="adbfa96a58f2e0a48d58bea100edf4419" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a>* omega::SystemManager::getDisplaySystem </td>
+          <td class="memname"><a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a>* omega::SystemManager::getDisplaySystem </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -175,12 +176,29 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afa5e972b7037509ef221e9922566c5db"></a><!-- doxytag: member="omega::SystemManager::getInputManager" ref="afa5e972b7037509ef221e9922566c5db" args="()" -->
+<a class="anchor" id="a323e8e29cb5db08939e1f28c61368950"></a><!-- doxytag: member="omega::SystemManager::getExitReason" ref="a323e8e29cb5db08939e1f28c61368950" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API <a class="el" href="classomega_1_1_input_manager.html">InputManager</a>* omega::SystemManager::getInputManager </td>
+          <td class="memname">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&amp; omega::SystemManager::getExitReason </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6c818cb025ebd5c5e75fcf212185455f"></a><!-- doxytag: member="omega::SystemManager::getInputManager" ref="a6c818cb025ebd5c5e75fcf212185455f" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_input_manager.html">InputManager</a>* omega::SystemManager::getInputManager </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -194,12 +212,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af40b45c958865de2ff03d0a8a7eafafa"></a><!-- doxytag: member="omega::SystemManager::initialize" ref="af40b45c958865de2ff03d0a8a7eafafa" args="()" -->
+<a class="anchor" id="ab887b2906b98f010c8a2ab253a2dc1e8"></a><!-- doxytag: member="omega::SystemManager::initialize" ref="ab887b2906b98f010c8a2ab253a2dc1e8" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SystemManager::initialize </td>
+          <td class="memname">OMEGA_API void omega::SystemManager::initialize </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -211,12 +229,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aefb1daba6a0ea15ba4ef97f0e2428b35"></a><!-- doxytag: member="omega::SystemManager::instance" ref="aefb1daba6a0ea15ba4ef97f0e2428b35" args="()" -->
+<a class="anchor" id="a309fbe5e9d21b0a6945908522aa0cd5e"></a><!-- doxytag: member="omega::SystemManager::instance" ref="a309fbe5e9d21b0a6945908522aa0cd5e" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> * SystemManager::instance </td>
+          <td class="memname">static OMEGA_API <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a>* omega::SystemManager::instance </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -228,12 +246,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0a6ace2009515887623a7d8c8d373126"></a><!-- doxytag: member="omega::SystemManager::isExitRequested" ref="a0a6ace2009515887623a7d8c8d373126" args="()" -->
+<a class="anchor" id="a5626450a88da30aa13a4e17bc090222c"></a><!-- doxytag: member="omega::SystemManager::isExitRequested" ref="a5626450a88da30aa13a4e17bc090222c" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API bool omega::SystemManager::isExitRequested </td>
+          <td class="memname">bool omega::SystemManager::isExitRequested </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -245,12 +263,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aaed78e3b27eb6f6369e85d30ad5593d9"></a><!-- doxytag: member="omega::SystemManager::isInitialized" ref="aaed78e3b27eb6f6369e85d30ad5593d9" args="()" -->
+<a class="anchor" id="aabd898c0586740191737cf6f7dad6552"></a><!-- doxytag: member="omega::SystemManager::isInitialized" ref="aabd898c0586740191737cf6f7dad6552" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API bool omega::SystemManager::isInitialized </td>
+          <td class="memname">bool omega::SystemManager::isInitialized </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -262,14 +280,15 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="affd639d6b8aa21fc204bccff9adbfb72"></a><!-- doxytag: member="omega::SystemManager::postExitRequest" ref="affd639d6b8aa21fc204bccff9adbfb72" args="()" -->
+<a class="anchor" id="a8229871469beb5bf0e579183964fb60b"></a><!-- doxytag: member="omega::SystemManager::postExitRequest" ref="a8229871469beb5bf0e579183964fb60b" args="(const String &amp;reason=&quot;Undefined reason&quot;)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SystemManager::postExitRequest </td>
+          <td class="memname">OMEGA_API void omega::SystemManager::postExitRequest </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>reason</em> = <code>&quot;Undefined&nbsp;reason&quot;</code></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -281,12 +300,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab412bbfa2aed30ef0a07ab22a305c822"></a><!-- doxytag: member="omega::SystemManager::registerInputService" ref="ab412bbfa2aed30ef0a07ab22a305c822" args="(String svcName, InputServiceAllocator creationFunc)" -->
+<a class="anchor" id="ad5744d8c3ce4437309540c81e2c7ee62"></a><!-- doxytag: member="omega::SystemManager::registerInputService" ref="ad5744d8c3ce4437309540c81e2c7ee62" args="(String svcName, InputServiceAllocator creationFunc)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SystemManager::registerInputService </td>
+          <td class="memname">OMEGA_API void omega::SystemManager::registerInputService </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td>
           <td class="paramname"> <em>svcName</em>, </td>
@@ -308,12 +327,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a51eb11945f7445275abb45b1fa7f028d"></a><!-- doxytag: member="omega::SystemManager::run" ref="a51eb11945f7445275abb45b1fa7f028d" args="()" -->
+<a class="anchor" id="adb5fa2c8090bb328a12b32d8058c6214"></a><!-- doxytag: member="omega::SystemManager::run" ref="adb5fa2c8090bb328a12b32d8058c6214" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SystemManager::run </td>
+          <td class="memname">OMEGA_API void omega::SystemManager::run </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -328,12 +347,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0a08c852926528cf10e87c7aed4f2f64"></a><!-- doxytag: member="omega::SystemManager::setApplication" ref="a0a08c852926528cf10e87c7aed4f2f64" args="(Application *value)" -->
+<a class="anchor" id="a3c48ef2cf01175317ceb96a81778a3f1"></a><!-- doxytag: member="omega::SystemManager::setApplication" ref="a3c48ef2cf01175317ceb96a81778a3f1" args="(Application *value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API void omega::SystemManager::setApplication </td>
+          <td class="memname">void omega::SystemManager::setApplication </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_application.html">Application</a> *&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
@@ -348,12 +367,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a416ce5f01c2e616fd88af1384f8eb71a"></a><!-- doxytag: member="omega::SystemManager::setDisplaySystem" ref="a416ce5f01c2e616fd88af1384f8eb71a" args="(DisplaySystem *value)" -->
+<a class="anchor" id="aa4cfb95504de0fbf4a00a0bd811d05fd"></a><!-- doxytag: member="omega::SystemManager::setDisplaySystem" ref="aa4cfb95504de0fbf4a00a0bd811d05fd" args="(DisplaySystem *value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OMEGA_API void omega::SystemManager::setDisplaySystem </td>
+          <td class="memname">void omega::SystemManager::setDisplaySystem </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> *&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
@@ -368,12 +387,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aec783a00a03e4674d792cdee920e9326"></a><!-- doxytag: member="omega::SystemManager::setup" ref="aec783a00a03e4674d792cdee920e9326" args="(Config *cfg)" -->
+<a class="anchor" id="a6e6f49eb1a40c770778cb4c90acbd7d8"></a><!-- doxytag: member="omega::SystemManager::setup" ref="a6e6f49eb1a40c770778cb4c90acbd7d8" args="(Config *cfg)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SystemManager::setup </td>
+          <td class="memname">OMEGA_API void omega::SystemManager::setup </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_config.html">Config</a> *&nbsp;</td>
           <td class="paramname"> <em>cfg</em></td>
@@ -388,12 +407,11 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>D:/Workspace/omegalib/include/omega/<a class="el" href="_system_manager_8h_source.html">SystemManager.h</a></li>
-<li>D:/Workspace/omegalib/src/omega/<a class="el" href="_system_manager_8cpp.html">SystemManager.cpp</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>D:/Workspace/omegalib-0.3/include/omega/<a class="el" href="_system_manager_8h_source.html">SystemManager.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:31 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

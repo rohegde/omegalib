@@ -7,20 +7,19 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Test executable
+ * Nightfield is an application that tests most of omegalib & omega features.
  *********************************************************************************************************************/
 #ifndef __NIGHTFIELD_UI_H__
 #define __NIGHTFIELD_UI_H__
 
 #include "omega.h"
-#include "outk.h"
+#include "omega/ui.h"
 
 // Using namespace declarations in a header file make emokitteh cry
 // but we'll accept them here since it's application-level code, and we can have
 // declarations shorter and more readable for the sake of clarity.
 using namespace omega;
-using namespace outk::gfx;
-using namespace outk::ui;
+using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class NightfieldUI: public IUIEventHandler
@@ -42,6 +41,9 @@ private:
 	// User interface stuff.
 	UIManager myUI;
 	Font* myFont;
+
+	// Widgets
+	Slider* myPresetSelector;
 
 	float myMouseX;
 	float myMouseY;

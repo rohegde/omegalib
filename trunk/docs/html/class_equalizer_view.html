@@ -28,8 +28,9 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>EqualizerView Class Reference</h1>  </div>
 </div>
@@ -37,49 +38,44 @@
 <!-- doxytag: class="EqualizerView" --><!-- doxytag: inherits="eq::View" -->
 <p><a href="class_equalizer_view-members.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#aac7afb5b29949d3e6d538623cb18779e">DirtyBits</a> { <a class="el" href="class_equalizer_view.html#aac7afb5b29949d3e6d538623cb18779ea4b6ff435b691260af55484179818bf7a">DIRTY_LAYER</a> =  eq::View::DIRTY_CUSTOM &lt;&lt; 0
- }</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>The changed parts of the view. </p>
- <a href="class_equalizer_view.html#aac7afb5b29949d3e6d538623cb18779e">More...</a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view_1_1_proxy.html">Proxy</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a299c3035d7af59fd53088ebb9bab13e7">EqualizerView</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a70da7e6e5b9e0172cf6e7d6eaa4ab11a">EqualizerView</a> (eq::Layout *parent)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a1de7e461ed028e7eb315cac734bc2ed8">~EqualizerView</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a823522fb4cb2b4fae3aef9a652da07bc">isLayerEnabled</a> (int layer)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#ae282d3c8ca56850658e5f727b4792cd4">setLayerEnabled</a> (int layer, bool enabled)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a2707d4e574c4f45e2537fa1076189bf1">serialize</a> (eq::net::DataOStream &amp;os, const uint64_t dirtyBits)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a8115f0eb869be753e72a6c055c44c39a">deserialize</a> (eq::net::DataIStream &amp;is, const uint64_t dirtyBits)</td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_view.html#a3b38441881fc44a882e7ac179dae61c5">myProxy</a></td></tr>
 </table>
-<hr/><h2>Member Enumeration Documentation</h2>
-<a class="anchor" id="aac7afb5b29949d3e6d538623cb18779e"></a><!-- doxytag: member="EqualizerView::DirtyBits" ref="aac7afb5b29949d3e6d538623cb18779e" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="class_equalizer_view.html#aac7afb5b29949d3e6d538623cb18779e">EqualizerView::DirtyBits</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The changed parts of the view. </p>
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="aac7afb5b29949d3e6d538623cb18779ea4b6ff435b691260af55484179818bf7a"></a><!-- doxytag: member="DIRTY_LAYER" ref="aac7afb5b29949d3e6d538623cb18779ea4b6ff435b691260af55484179818bf7a" args="" -->DIRTY_LAYER</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
-
-</div>
-</div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a299c3035d7af59fd53088ebb9bab13e7"></a><!-- doxytag: member="EqualizerView::EqualizerView" ref="a299c3035d7af59fd53088ebb9bab13e7" args="()" -->
+<a class="anchor" id="a70da7e6e5b9e0172cf6e7d6eaa4ab11a"></a><!-- doxytag: member="EqualizerView::EqualizerView" ref="a70da7e6e5b9e0172cf6e7d6eaa4ab11a" args="(eq::Layout *parent)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">EqualizerView::EqualizerView </td>
+          <td>(</td>
+          <td class="paramtype">eq::Layout *&nbsp;</td>
+          <td class="paramname"> <em>parent</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1de7e461ed028e7eb315cac734bc2ed8"></a><!-- doxytag: member="EqualizerView::~EqualizerView" ref="a1de7e461ed028e7eb315cac734bc2ed8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">EqualizerView::~EqualizerView </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -92,33 +88,6 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a8115f0eb869be753e72a6c055c44c39a"></a><!-- doxytag: member="EqualizerView::deserialize" ref="a8115f0eb869be753e72a6c055c44c39a" args="(eq::net::DataIStream &amp;is, const uint64_t dirtyBits)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void EqualizerView::deserialize </td>
-          <td>(</td>
-          <td class="paramtype">eq::net::DataIStream &amp;&nbsp;</td>
-          <td class="paramname"> <em>is</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint64_t&nbsp;</td>
-          <td class="paramname"> <em>dirtyBits</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline, virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a823522fb4cb2b4fae3aef9a652da07bc"></a><!-- doxytag: member="EqualizerView::isLayerEnabled" ref="a823522fb4cb2b4fae3aef9a652da07bc" args="(int layer)" -->
 <div class="memitem">
 <div class="memproto">
@@ -130,33 +99,6 @@ Public Member Functions</h2></td></tr>
           <td class="paramname"> <em>layer</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a2707d4e574c4f45e2537fa1076189bf1"></a><!-- doxytag: member="EqualizerView::serialize" ref="a2707d4e574c4f45e2537fa1076189bf1" args="(eq::net::DataOStream &amp;os, const uint64_t dirtyBits)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void EqualizerView::serialize </td>
-          <td>(</td>
-          <td class="paramtype">eq::net::DataOStream &amp;&nbsp;</td>
-          <td class="paramname"> <em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint64_t&nbsp;</td>
-          <td class="paramname"> <em>dirtyBits</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline, virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -191,11 +133,25 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a3b38441881fc44a882e7ac179dae61c5"></a><!-- doxytag: member="EqualizerView::myProxy" ref="a3b38441881fc44a882e7ac179dae61c5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class myProxy<code> [friend]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>D:/Workspace/omegalib/src/omega/<a class="el" href="_equalizer_display_system_8cpp.html">EqualizerDisplaySystem.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 16 2010 01:42:29 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

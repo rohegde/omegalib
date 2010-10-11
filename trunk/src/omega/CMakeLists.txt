@@ -1,14 +1,14 @@
-#/********************************************************************************************************************** 
-# * THE OMEGA LIB PROJECT
-# *---------------------------------------------------------------------------------------------------------------------
-# * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
-# * Authors:										
-# *  [Author]									[Mail]
-# *---------------------------------------------------------------------------------------------------------------------
-# * [LICENSE NOTE]
-# *---------------------------------------------------------------------------------------------------------------------
-# * [SUMMARY OF FILE CONTENTS]
-# *********************************************************************************************************************/
+#********************************************************************************************************************** 
+# THE OMEGA LIB PROJECT
+#---------------------------------------------------------------------------------------------------------------------
+# Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+# Authors:										
+#   Alessandro Febretti							febret@gmail.com
+#---------------------------------------------------------------------------------------------------------------------
+# [LICENSE NOTE]
+#---------------------------------------------------------------------------------------------------------------------
+# Cmake file for omega
+#*********************************************************************************************************************/
 
 #######################################################################################################################
 # Find required packages
@@ -28,17 +28,23 @@ ENDIF()
 #######################################################################################################################
 # Source files
 SET( srcs 
-        osystem.cpp
-		Color.cpp
-		Config.cpp
-		EqualizerDisplaySystem.cpp
-		GLUTDisplaySystem.cpp
-		InputManager.cpp
-		InputService.cpp
-		Math.cpp
-        Observer.cpp
-		SystemManager.cpp
-        Utils.cpp
+        omega/osystem.cpp
+		omega/Color.cpp
+		omega/Config.cpp
+		omega/EqualizerDisplaySystem.cpp
+        omega/GfxUtils.cpp
+#		GLUTDisplaySystem.cpp
+        omega/GpuBuffer.cpp
+        omega/GpuEnvironment.cpp
+        omega/GpuManager.cpp
+        omega/GpuProgram.cpp
+		omega/InputManager.cpp
+		omega/InputService.cpp
+		omega/Math.cpp
+        omega/Observer.cpp
+		omega/SystemManager.cpp
+        omega/teapot.cpp
+        omega/Utils.cpp
         )
 		
 #######################################################################################################################
@@ -49,10 +55,15 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Application.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GLUTDisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
+#		${OmegaLib_SOURCE_DIR}/include/omega/GLUTDisplaySystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuEnvironment.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
@@ -60,7 +71,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Math.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
         ) 
         
@@ -68,41 +79,44 @@ SET( headers
 # Enable / disable specific modules within omegalib
 SET(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
 IF(OMEGA_USE_MOUSE)
-	SET( srcs	 ${srcs} input/MouseService.cpp )
+	SET( srcs	 ${srcs} omega/input/MouseService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MouseService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_MOUSE)
 ENDIF(OMEGA_USE_MOUSE)
 
 SET(OMEGA_USE_MOCAP true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
 IF(OMEGA_USE_MOCAP)
-	SET( srcs	 ${srcs} input/MoCapService.cpp )
+	SET( srcs	 ${srcs} omega/input/MoCapService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MoCapService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_MOCAP)
 ENDIF(OMEGA_USE_MOCAP)
 
 SET(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
 IF(OMEGA_USE_OPTITRACK)
-	SET( srcs	 ${srcs} input/OptiTrackService.cpp )
+	SET( srcs	 ${srcs} omega/input/OptiTrackService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OptiTrackService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_OPTITRACK)
 ENDIF(OMEGA_USE_OPTITRACK)
 
 SET(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
 IF(OMEGA_USE_PQLABS)
-	SET( srcs	 ${srcs} input/PQService.cpp )
+	SET( srcs	 ${srcs} omega/input/PQService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/PQService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_PQLABS)
 ENDIF(OMEGA_USE_PQLABS)
 
 SET(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
 IF(OMEGA_USE_NETSERVICE)
-	SET( srcs	 ${srcs} input/NetService.cpp )
+	SET( srcs	 ${srcs} omega/input/NetService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
 
 #######################################################################################################################
-SOURCE_GROUP(input REGULAR_EXPRESSION input/)		
+SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
+SOURCE_GROUP(omega::input REGULAR_EXPRESSION omega/input/)		
+SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
+SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
 
 #######################################################################################################################
 # Setup compile info
@@ -131,4 +145,5 @@ TARGET_LINK_LIBRARIES( omega
 	debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
 	debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32
 	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
+	debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
 	${OPENGL_LIBRARY})
