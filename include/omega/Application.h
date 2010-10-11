@@ -16,43 +16,105 @@
 #include "osystem.h"
 #include "SystemManager.h"
 #include "InputEvent.h"
-#include "DrawContext.h"
-#include "Application.h"
-#include "UpdateContext.h"
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
-class InputManager;
-class DisplaySystem;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
+	class SystemManager;
+	class InputManager;
+	class DisplaySystem;
+	class Application;
+	class ChannelImpl;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Application
-{
-public:
-	static const int MaxLayers = 16;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Interface for objects that manage a single OpenGL context.
+	class IGLContextManager
+	{
+	public:
+		//! Makes the context current.
+		virtual void makeCurrent() = 0;
+	};
 
-public:
-	virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct UpdateContext
+	{
+		int frameNum;
+		float dt;
+	};
 
-	//! Called once for entire application initialization tasks.
-	virtual void initialize() {}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct DrawContext
+	{
+		unsigned int frameNum;
+		unsigned int layer;
+		int viewportX;
+		int viewportY;
+		int viewportWidth;
+		int viewportHeight;
+		IGLContextManager* glContext;
+	};
 
-	//! Called once for every initialized pipe (a graphic card, or any other resource
-	//! seen as one logical graphic card)
-	virtual void initializeWindow() {}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class ApplicationClient
+	{
+	public:
+		ApplicationClient(Application* app): myApplication(app) {}
+		virtual ~ApplicationClient() {}
 
-	virtual void draw(const DrawContext& context) {}
-	virtual bool handleEvent(const InputEvent& evt) { return false; }
-	virtual void update(const UpdateContext& context) {}
+		virtual void setup() {}
+		virtual void initialize() {}
+		virtual void update(const UpdateContext& context) {}
+		virtual void draw(const DrawContext& context) {}
 
-	SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-	InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
-	DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-};
+		Application* getApplication() { return myApplication; }
 
+	protected:
+		void resetGLContext();
+
+	private:
+		Application* myApplication;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class ApplicationServer
+	{
+	public:
+		ApplicationServer(Application* app): myApplication(app) {}
+		virtual ~ApplicationServer() {}
+
+		virtual void initialize() {}
+		virtual void update(const UpdateContext& context) {}
+		virtual bool handleEvent(const InputEvent& evt) { return false; }
+
+		Application* getApplication() { return myApplication; }
+
+	private:
+		Application* myApplication;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class Application
+	{
+	public:
+		static const int MaxLayers = 16;
+
+	public:
+		virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
+
+		//! Instantiates a new Channel instance.
+		//! Users redefine this method to create instances of their own Channel objects.
+		//! @param impl - the internal DisplaySystem-dependent channel implementation.
+		virtual ApplicationServer* createServer() = 0;
+		virtual ApplicationClient* createClient() = 0;
+
+		//! Called once for entire application initialization tasks.
+		virtual void initialize() {}
+
+		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
+		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+	};
 }; // namespace omega
 
 #endif

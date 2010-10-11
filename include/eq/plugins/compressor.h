@@ -21,14 +21,47 @@
  * 
  * The API to create runtime-loadable compression plugins.
  *
+ * The image compositing pipeline in Equalizer uses two types of plugins:
+ * transfer engines and CPU compressors. A transfer engine downloads and uploads
+ * the data from the GPU to main memory. A CPU compressor compresses and
+ * decompresses the data produced by a transfer engine. The chain of operations
+ * for an image transfer is:
+ *  -# Select and instantiate transfer compressor for image to download
+ *  -# Run the download operation from the render thread
+ *  -# Select and instantiate a CPU compressor based on the transfer output
+ *     token type
+ *  -# Run the compress operation from the transmission thread
+ *  -# Send the compressed data results to the receiving node(s)
+ *  -# Instantiate a CPU decompressor
+ *  -# Run the decompressor from the command thread
+ *  -# Select and instantiate a transfer compressor based on the CPU
+ *     decompressor token type
+ *  -# Run the upload operation on each render thread
+ *
+ * The operations 3 to 7 are omitted if the input and output frame are on the
+ * same node. The operations 3 to 7 are replaced by transmitting the output data
+ * of the download operation if no matching CPU compressor is found. Plugin
+ * instances are cached and reused for subsequent operations from the same
+ * thread.
+ *
+ * <img src="http://www.equalizergraphics.com/documents/design/images/imageCompression.png">
+ *
  * To implement a compression plugin, the following steps are to be taken:
  *  - Create a new shared library named EqualizerCompressorNAME.dll (Win32),
  *    libeqCompressorNAME.dylib (Mac OS X) or libeqCompressorNAME.so
  *    (Linux).
  *  - Define EQ_PLUGIN_BUILD and then include eq/plugins/compressor.h (this
  *    header file).
- *  - Implement all C functions from this header file. You can use the
- *    default Equalizer compressors in src/lib/compressor as a template.
+ *  - Implement all relevant C functions from this header file. All plugins have
+ *    to implement EqCompressorGetNumCompressors, EqCompressorGetInfo,
+ *    EqCompressorNewCompressor, EqCompressorNewDecompressor,
+ *    EqCompressorDeleteCompressor and EqCompressorDeleteDecompressor. In
+ *    addition, CPU compressors have to implement EqCompressorCompress,
+ *    EqCompressorDecompress, EqCompressorGetNumResults and
+ *    EqCompressorGetResult. Transfer plugins have to additionally implement
+ *    EqCompressorIsCompatible, EqCompressorDownload and EqCompressorUpload.
+ *    The default Equalizer compressors in src/lib/compressor may be used as a
+ *    template.
  *  - Put the library in the plugin search path (see
  *    eq::Global::getPluginDirectories(), defaults to EQ_PLUGIN_PATH or
  *    "/usr/local/share/Equalizer/plugins;.eqPlugins;$LD_LIBRARY_PATH".
@@ -37,103 +70,85 @@
  *    image unit test. Use the Equalizer RLE compressor as baseline.
  *  - Request official names for your compressors.
  *
+ * @sa plugins/compressorTypes.h, plugins/compressorTokens.h
+ *
  * <h2>Changes</h2>
  * Version 3
- *  - Added capabilities for GPU-based compression during upload and download
- *    - Added data types:
- *        - EQ_COMPRESSOR_DATATYPE_RGBA_UNSIGNED_BYTE
- *        - EQ_COMPRESSOR_DATATYPE_RGBA_UNSIGNED_INT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_DATATYPE_RGBA_UNSIGNED_INT_10_10_10_2
- *        - EQ_COMPRESSOR_DATATYPE_RGBA_HALF_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_RGBA_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_BGRA_UNSIGNED_BYTE
- *        - EQ_COMPRESSOR_DATATYPE_BGRA_UNSIGNED_INT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_DATATYPE_BGRA_UNSIGNED_INT_10_10_10_2
- *        - EQ_COMPRESSOR_DATATYPE_BGRA_HALF_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_BGRA_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_INT
- *        - EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_INT_24_8_NV
- *        - EQ_COMPRESSOR_DATATYPE_RGB_UNSIGNED_BYTE
- *        - EQ_COMPRESSOR_DATATYPE_RGB_HALF_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_RGB_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_BGR_UNSIGNED_BYTE
- *        - EQ_COMPRESSOR_DATATYPE_BGR_HALF_FLOAT
- *        - EQ_COMPRESSOR_DATATYPE_BGR_FLOAT
- *    - Added flags:
- *        - EQ_COMPRESSOR_CPU
- *        - EQ_COMPRESSOR_TRANSFER
- *        - EQ_COMPRESSOR_USE_TEXTURE
- *        - EQ_COMPRESSOR_USE_FRAMEBUFFER
- *    - Added compressor names:
- *        - EQ_COMPRESSOR_DIFF_RLE_YUV          0xeu
- *        - EQ_COMPRESSOR_RLE_YUV               0xfu
- *        - EQ_COMPRESSOR_TRANSFER_RGBA_TO_RGBA
- *        - EQ_COMPRESSOR_TRANSFER_RGBA_TO_BGRA
- *        - EQ_COMPRESSOR_TRANSFER_RGBA_TO_RGBA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_TRANSFER_RGBA_TO_BGRA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_TRANSFER_RGB10A2_TO_RGB10A2
- *        - EQ_COMPRESSOR_TRANSFER_RGB10A2_TO_BGR10A2
- *        - EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_RGBA16F
- *        - EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_BGRA16F
- *        - EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA32F
- *        - EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA32F
- *        - EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA_25P
- *        - EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA_25P
- *        - EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA16F_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA16F_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGBA_TO_YUV_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGB_TO_RGB
- *        - EQ_COMPRESSOR_TRANSFER_RGB_TO_BGR
- *        - EQ_COMPRESSOR_TRANSFER_RGB16F_TO_RGB16F
- *        - EQ_COMPRESSOR_TRANSFER_RGB16F_TO_BGR16F
- *        - EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB32F
- *        - EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR32F
- *        - EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB_25P
- *        - EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR_25P
- *        - EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR16F_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB16F_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGB16F_TO_RGB_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGB16F_TO_BGR_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_RGBA_50P
- *        - EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_BGRA_50P
- *        - EQ_COMPRESSOR_TRANSFER_DEPTH_TO_DEPTH_UNSIGNED_INT
- *        - EQ_COMPRESSOR_TRANSFER_DEPTH_STENCIL_TO_UNSIGNED_INT_24_8
- *        - EQ_COMPRESSOR_DIFF_RLE_RGBA
- *        - EQ_COMPRESSOR_DIFF_RLE_BGRA
- *        - EQ_COMPRESSOR_DIFF_RLE_RGBA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_DIFF_RLE_BGRA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_DIFF_RLE_RGB10_A2
- *        - EQ_COMPRESSOR_DIFF_RLE_BGR10_A2
- *        - EQ_COMPRESSOR_DIFF_RLE_RGB
- *        - EQ_COMPRESSOR_DIFF_RLE_BGR
- *        - EQ_COMPRESSOR_DIFF_RLE_DEPTH_UNSIGNED_INT
- *        - EQ_COMPRESSOR_RLE_RGBA16F
- *        - EQ_COMPRESSOR_RLE_BGRA16F
- *        - EQ_COMPRESSOR_DIFF_RLE_RGBA16F
- *        - EQ_COMPRESSOR_DIFF_RLE_BGRA16F
- *        - EQ_COMPRESSOR_DIFF_RLE_565_RGBA
- *        - EQ_COMPRESSOR_DIFF_RLE_565_BGRA
- *        - EQ_COMPRESSOR_DIFF_RLE_565_RGBA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_DIFF_RLE_565_BGRA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_DIFF_RLE_565_RGB10_A2
- *        - EQ_COMPRESSOR_DIFF_RLE_565_BGR10_A2
- *        - EQ_COMPRESSOR_RLE_RGBA
- *        - EQ_COMPRESSOR_RLE_BGRA
- *        - EQ_COMPRESSOR_RLE_RGBA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_RLE_BGRA_UINT_8_8_8_8_REV
- *        - EQ_COMPRESSOR_RLE_RGB10_A2
- *        - EQ_COMPRESSOR_RLE_BGR10_A2
- *        - EQ_COMPRESSOR_RLE_RGB
- *        - EQ_COMPRESSOR_RLE_BGR
- *        - EQ_COMPRESSOR_RLE_DEPTH_UNSIGNED_INT
- *    - Added members in EqCompressorInfo:
- *        - unsigned outputTokenType
- *        - unsigned outputTokenSize
- *    - Added functions:
- *        - EqCompressorIsCompatible
- *        - EqCompressorDownload
- *        - EqCompressorUpload
+ *  - Added GPU-based compression during upload and download:
+ *    - Added functions: EqCompressorIsCompatible, EqCompressorDownload,
+ *      EqCompressorUpload
+ *    - Added members in EqCompressorInfo: outputTokenType, outputTokenSize
+ *    - Added flags: EQ_COMPRESSOR_CPU, EQ_COMPRESSOR_TRANSFER,
+ *      EQ_COMPRESSOR_USE_TEXTURE, EQ_COMPRESSOR_USE_FRAMEBUFFER
+ *    - Added data types: EQ_COMPRESSOR_DATATYPE_INVALID,
+ *      EQ_COMPRESSOR_DATATYPE_RGBA_UNSIGNED_BYTE,
+ *      EQ_COMPRESSOR_DATATYPE_RGBA_UNSIGNED_INT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_DATATYPE_RGBA_UNSIGNED_INT_10_10_10_2,
+ *      EQ_COMPRESSOR_DATATYPE_RGBA_HALF_FLOAT,
+ *      EQ_COMPRESSOR_DATATYPE_RGBA_FLOAT,
+ *      EQ_COMPRESSOR_DATATYPE_BGRA_UNSIGNED_BYTE,
+ *      EQ_COMPRESSOR_DATATYPE_BGRA_UNSIGNED_INT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_DATATYPE_BGRA_UNSIGNED_INT_10_10_10_2,
+ *      EQ_COMPRESSOR_DATATYPE_BGRA_HALF_FLOAT,
+ *      EQ_COMPRESSOR_DATATYPE_BGRA_FLOAT,
+ *      EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_FLOAT,
+ *      EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_INT,
+ *      EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_INT_24_8_NV,
+ *      EQ_COMPRESSOR_DATATYPE_RGB_UNSIGNED_BYTE,
+ *      EQ_COMPRESSOR_DATATYPE_RGB_HALF_FLOAT, EQ_COMPRESSOR_DATATYPE_RGB_FLOAT,
+ *      EQ_COMPRESSOR_DATATYPE_BGR_UNSIGNED_BYTE,
+ *      EQ_COMPRESSOR_DATATYPE_BGR_HALF_FLOAT, EQ_COMPRESSOR_DATATYPE_BGR_FLOAT
+ *    - Added compressor type names: EQ_COMPRESSOR_DIFF_RLE_YUVA_50P,
+ *      EQ_COMPRESSOR_RLE_YUVA_50P, EQ_COMPRESSOR_TRANSFER_RGBA_TO_RGBA,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA_TO_BGRA,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA_TO_RGBA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA_TO_BGRA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_TRANSFER_RGB10A2_TO_RGB10A2,
+ *      EQ_COMPRESSOR_TRANSFER_RGB10A2_TO_BGR10A2,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_RGBA16F,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_BGRA16F,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA32F,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA32F,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA_25P,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA_25P,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA16F_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA16F_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA_TO_YUVA_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGB_TO_RGB, EQ_COMPRESSOR_TRANSFER_RGB_TO_BGR,
+ *      EQ_COMPRESSOR_TRANSFER_RGB16F_TO_RGB16F,
+ *      EQ_COMPRESSOR_TRANSFER_RGB16F_TO_BGR16F,
+ *      EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB32F,
+ *      EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR32F,
+ *      EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB_25P,
+ *      EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR_25P,
+ *      EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR16F_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB16F_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGB16F_TO_RGB_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGB16F_TO_BGR_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_RGBA_50P,
+ *      EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_BGRA_50P,
+ *      EQ_COMPRESSOR_TRANSFER_DEPTH_TO_DEPTH_UNSIGNED_INT,
+ *      EQ_COMPRESSOR_TRANSFER_DEPTH_STENCIL_TO_UNSIGNED_INT_24_8,
+ *      EQ_COMPRESSOR_DIFF_RLE_RGBA, EQ_COMPRESSOR_DIFF_RLE_BGRA,
+ *      EQ_COMPRESSOR_DIFF_RLE_RGBA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_DIFF_RLE_BGRA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_DIFF_RLE_RGB10_A2, EQ_COMPRESSOR_DIFF_RLE_BGR10_A2,
+ *      EQ_COMPRESSOR_DIFF_RLE_RGB, EQ_COMPRESSOR_DIFF_RLE_BGR,
+ *      EQ_COMPRESSOR_DIFF_RLE_DEPTH_UNSIGNED_INT, EQ_COMPRESSOR_RLE_RGBA16F,
+ *      EQ_COMPRESSOR_RLE_BGRA16F, EQ_COMPRESSOR_DIFF_RLE_RGBA16F,
+ *      EQ_COMPRESSOR_DIFF_RLE_BGRA16F, EQ_COMPRESSOR_DIFF_RLE_565_RGBA,
+ *      EQ_COMPRESSOR_DIFF_RLE_565_BGRA,
+ *      EQ_COMPRESSOR_DIFF_RLE_565_RGBA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_DIFF_RLE_565_BGRA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_DIFF_RLE_565_RGB10_A2,
+ *      EQ_COMPRESSOR_DIFF_RLE_565_BGR10_A2, EQ_COMPRESSOR_RLE_RGBA,
+ *      EQ_COMPRESSOR_RLE_BGRA, EQ_COMPRESSOR_RLE_RGBA_UINT_8_8_8_8_REV,
+ *      EQ_COMPRESSOR_RLE_BGRA_UINT_8_8_8_8_REV, EQ_COMPRESSOR_RLE_RGB10_A2,
+ *      EQ_COMPRESSOR_RLE_BGR10_A2, EQ_COMPRESSOR_RLE_RGB,
+ *      EQ_COMPRESSOR_RLE_BGR, EQ_COMPRESSOR_RLE_DEPTH_UNSIGNED_INT,
+ *      EQ_COMPRESSOR_AG_RTT_JPEG_HQ,
+ *      EQ_COMPRESSOR_AG_RTT_JPEG_MQ,
+ *      EQ_COMPRESSOR_AG_RTT_JPEG_LQ
  *
  * Version 2
  *  - Added EQ_COMPRESSOR_DIFF_RLE_565 to type name registry
@@ -166,386 +181,32 @@ typedef unsigned long long eq_uint64_t;
 #endif
 /** @endcond */
 
+/** @name Compressor Plugin API Versioning */
+/*@{*/
+/** The version of the Compressor API described by this header. */
+#define EQ_COMPRESSOR_VERSION 3
+/** At least version 1 of the Compressor API is described by this header. */
+#define EQ_COMPRESSOR_VERSION_1 1
+/**At least version 2 of the Compressor API is described by this header.*/
+#define EQ_COMPRESSOR_VERSION_2 1
+/**At least version 3 of the Compressor API is described by this header.*/
+#define EQ_COMPRESSOR_VERSION_3 1
+/*@}*/
+
+#include <eq/plugins/compressorTokens.h>
+#include <eq/plugins/compressorTypes.h>
+
 #ifdef __cplusplus
-extern "C"
-{
+#  include <vector>
+
+extern "C" {
 #endif
- 
-    /** @name Compressor Plugin API Versioning */
-    /*@{*/
-    /** The version of the Compressor API described by this header. */
-    #define EQ_COMPRESSOR_VERSION 3
-    /** At least version 1 of the Compressor API is described by this header. */
-    #define EQ_COMPRESSOR_VERSION_1 1
-    /**At least version 2 of the Compressor API is described by this header.*/
-    #define EQ_COMPRESSOR_VERSION_2 1
-    /**At least version 3 of the Compressor API is described by this header.*/
-    #define EQ_COMPRESSOR_VERSION_3 1
-    /*@}*/
-
-    /**
-     * @name Compressor type name registry
-     *
-     * The compressor type registry ensures the uniqueness of compressor
-     * names. It is maintained by the Equalizer development team
-     * <info@equalizergraphics.com>. New types can be requested free of charge.
-     */
-    /*@{*/
-    /** Invalid Compressor */
-    #define EQ_COMPRESSOR_INVALID               0x0u
-    /** No Compressor */
-    #define EQ_COMPRESSOR_NONE                  0x1u
-    /** RLE Compression of 4-byte tokens. */
-    #define EQ_COMPRESSOR_RLE_UNSIGNED          0x2u
-    /** RLE Compression of 1-byte tokens. */
-    #define EQ_COMPRESSOR_RLE_BYTE              0x3u
-    /** RLE Compression of three 1-byte tokens. */
-    #define EQ_COMPRESSOR_RLE_3_BYTE            0x4u
-    /** RLE Compression of four 1-byte tokens. */
-    #define EQ_COMPRESSOR_RLE_4_BYTE            0x5u
-    /** RLE Compression of four float32 tokens. */
-    #define EQ_COMPRESSOR_RLE_4_FLOAT           0x6u
-    /** RLE Compression of four float16 tokens. */
-    #define EQ_COMPRESSOR_RLE_4_HALF_FLOAT      0x7u
-    /** Differential RLE Compression of three 1-byte tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_3_BYTE       0x8u
-    /** Differential RLE Compression of four 1-byte tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_4_BYTE       0x9u
-    /** RLE Compression of one 4-byte token. */
-    #define EQ_COMPRESSOR_RLE_4_BYTE_UNSIGNED   0xau
-    /** Lossy Differential RLE Compression. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565          0xbu
-    /** RLE Compression of three token of 10-bits and one toke of 2-bits */
-    #define EQ_COMPRESSOR_DIFF_RLE_10A2         0xcu
-    /** RLE Compression of four float16 tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_4_HALF_FLOAT 0xdu
-    /** Differential RLE Compression of YUV tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_YUV          0xeu
-    /** RLE Compression of YUV tokens. */
-    #define EQ_COMPRESSOR_RLE_YUV               0xfu
-
-    /* Transfer data from internal RGBA to external RGBA format 
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGBA_TO_RGBA                         0x10u
-    /* Transfer data from internal RGBA to external BGRA format 
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGBA_TO_BGRA                         0x11u
-    /* Transfer data from internal RGBA to external RGBA format 
-       with a data type unigned_int_8_8_8_8_rev */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA_TO_RGBA_UINT_8_8_8_8_REV        0x12u
-    /* Transfer data from internal RGBA to external BGRA format 
-       with a data type unigned_int_8_8_8_8_rev */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA_TO_BGRA_UINT_8_8_8_8_REV        0x13u
-    /* Transfer data from internal RGBA10A_2 to external RGBA format 
-       with a data type unsigned_int_10_10_10_2 */
-    #define EQ_COMPRESSOR_TRANSFER_RGB10A2_TO_RGB10A2                   0x14u
-    /* Transfer data from internal RGBA10A_2 to external BGRA format 
-       with a data type unsigned_int_10_10_10_2 */
-    #define EQ_COMPRESSOR_TRANSFER_RGB10A2_TO_BGR10A2                   0x15u
-    /* Transfer data from internal RGBA16F to external RGBA format 
-       with a data type half float */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_RGBA16F                   0x16u
-    /* Transfer data from internal RGBA16F to external BGRA format 
-       with a data type half float */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_BGRA16F                   0x17u
-    /* Transfer data from internal RGBA32F to external RGBA format 
-       with a data type float */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA32F                   0x18u
-    /* Transfer data from internal RGBA32F to external BGRA format 
-       with a data type float */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA32F                   0x19u
-    /* Transfer data from internal RGBA32F to external BGRA format 
-       with a data type UNSIGNED_BYTE */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA_25P                  0x1au
-    /* Transfer data from internal RGBA32F to external RGBA format 
-       with a data type UNSIGNED_BYTE */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA_25P                  0x1bu
-    /* Transfer data from internal RGBA32F to external BGRA format 
-       with a data type half float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_BGRA16F_50P               0x1cu
-    /* Transfer data from internal RGBA32F to external RGBA format 
-       with a data type half float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGBA32F_TO_RGBA16F_50P               0x1du
-    /* Transfer data from internal RGBA32F to external YUV format */
-    #define EQ_COMPRESSOR_TRANSFER_RGBA_TO_YUV_50P                      0x1eu
-    /* Transfer data from internal RGB to external RGB format 
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB_TO_RGB                           0x1fu
-    /* Transfer data from internal RGB to external BGR format 
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB_TO_BGR                           0x20u
-    /* Transfer data from internal RGB16F to external RGB format 
-       with a data type half float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB16F_TO_RGB16F                     0x21u
-    /* Transfer data from internal RGB16F to external BGR format
-       with a data type half float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB16F_TO_BGR16F                     0x22u
-    /* Transfer data from internal RGB32F to external RGB format
-       with a data type float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB32F                     0x23u
-    /* Transfer data from internal RGB32F to external BGR format
-       with a data type float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR32F                     0x24u
-    /* Transfer data from internal RGB32F to external RGB format 
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB_25P                    0x25u
-    /* Transfer data from internal RGB32F to external BGR format 
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR_25P                    0x26u
-    /* Transfer data from internal RGB32F to external BGR format 
-       with a data type half float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB32F_TO_BGR16F_50P                 0x27u
-    /* Transfer data from internal RGB32F to external RGB format 
-       with a data type half float*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB32F_TO_RGB16F_50P                 0x28u
-    /* Transfer data from internal RGB to external RGB format
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB16F_TO_RGB_50P                    0x29u
-    /* Transfer data from internal RGB to external BGR format
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGB16F_TO_BGR_50P                    0x2au
-    /* Transfer data from internal RGB to external RGB format
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_RGBA_50P                  0x2bu
-    /* Transfer data from internal RGB to external BGR format
-       with a data type UNSIGNED_BYTE*/
-    #define EQ_COMPRESSOR_TRANSFER_RGBA16F_TO_BGRA_50P                  0x2cu
-    /* Transfer data from internal DEPTH to external DEPTH_STENCIL */
-    #define EQ_COMPRESSOR_TRANSFER_DEPTH_TO_DEPTH_UNSIGNED_INT          0x2du
-    /* Transfer data from internal DEPTH_STENCIL to external DEPTH_STENCIL */
-    #define EQ_COMPRESSOR_TRANSFER_DEPTH_STENCIL_TO_UNSIGNED_INT_24_8   0x2eu
-    /** Differential RLE Compression of RGBA bytes tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_RGBA                                 0x2fu
-    /** Differential RLE Compression of BGRA bytes tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_BGRA                                 0x30u
-    /** Differential RLE Compression of RGBA UINT_8_8_8_8_REV tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_RGBA_UINT_8_8_8_8_REV                0x31u
-    /** Differential RLE Compression of BGRA  UINT_8_8_8_8_REV tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_BGRA_UINT_8_8_8_8_REV                0x32u
-    /** Differential RLE Compression of RGBA 10_10_10_2 tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_RGB10_A2                             0x33u
-    /** Differential RLE Compression of BGRA 10_10_10_2 tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_BGR10_A2                             0x34u
-    /** Differential RLE Compression of RGB bytes tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_RGB                                  0x35u
-    /** Differential RLE Compression of BGR bytes tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_BGR                                  0x36u
-    /** Differential RLE Compression of DEPTH UNSIGNED INT tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_DEPTH_UNSIGNED_INT                   0x37u
-    /** RLE Compression of RGBA half float tokens. */
-    #define EQ_COMPRESSOR_RLE_RGBA16F                                   0x38u
-    /** RLE Compression of BGRA half float tokens. */
-    #define EQ_COMPRESSOR_RLE_BGRA16F                                   0x39u
-    /** Differential RLE Compression of RGBA half float tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_RGBA16F                              0x3au
-    /** Differential RLE Compression of BGRA half float tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_BGRA16F                              0x3bu
-    /** Lossy Differential RLE Compression of RGBA bytes tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565_RGBA                             0x3cu
-    /** Lossy Differential RLE Compression of RGBA bytes tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565_BGRA                             0x3du
-    /** Lossy Differential RLE Compression of RGBA UINT_8_8_8_8_REV tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565_RGBA_UINT_8_8_8_8_REV            0x3eu
-    /** Lossy Differential RLE Compression of BGRA UINT_8_8_8_8_REV tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565_BGRA_UINT_8_8_8_8_REV            0x3fu
-    /** Lossy Differential RLE Compression of RGBA 10_10_10_2 tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565_RGB10_A2                         0x40u
-    /** Lossy Differential RLE Compression of BGRA 10_10_10_2 tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_565_BGR10_A2                         0x41u
-    /** RLE Compression of RGBA bytes tokens. */
-    #define EQ_COMPRESSOR_RLE_RGBA                                      0x42u
-    /** RLE Compression of BGRA bytes tokens. */
-    #define EQ_COMPRESSOR_RLE_BGRA                                      0x43u
-    /** RLE Compression of RGBA UINT_8_8_8_8_REV tokens. */
-    #define EQ_COMPRESSOR_RLE_RGBA_UINT_8_8_8_8_REV                     0x44u
-    /** RLE Compression of BGRA UINT_8_8_8_8_REV tokens. */
-    #define EQ_COMPRESSOR_RLE_BGRA_UINT_8_8_8_8_REV                     0x45u
-    /** RLE Compression of RGBA 10_10_10_2 tokens. */
-    #define EQ_COMPRESSOR_RLE_RGB10_A2                                  0x46u
-    /** RLE Compression of BGRA 10_10_10_2 tokens. */
-    #define EQ_COMPRESSOR_RLE_BGR10_A2                                  0x47u
-    /** RLE Compression of RGB bytes tokens. */
-    #define EQ_COMPRESSOR_RLE_RGB                                       0x48u
-    /** RLE Compression of BGR bytes tokens. */
-    #define EQ_COMPRESSOR_RLE_BGR                                       0x49u
-    /** RLE Compression of depth unsigned int tokens. */
-    #define EQ_COMPRESSOR_RLE_DEPTH_UNSIGNED_INT                        0x4au
-    /** RLE Compression of unsigned tokens. */
-    #define EQ_COMPRESSOR_DIFF_RLE_UNSIGNED                             0x4bu
-
-    /** lossless rtt.ag jpeg compressor */
-    #define EQ_COMPRESSOR_AG_RTT_JPEG_HQ   0x100000u
-
-    /**
-     * Private types -FOR DEVELOPMENT ONLY-.
-     *
-     * Any name equal or bigger than this can be used for in-house development
-     * and testing. As soon as the Compressor DSO is distributed, request public
-     * types free of charge from info@equalizergraphics.com.
-     */
-    #define EQ_COMPRESSOR_PRIVATE         0xefffffffu
-    /*@}*/
-
-    /**
-     * @name Compressor token types
-     *
-     * The compressor token type is reported by the DSO, and defines which type
-     * of input data can be processed by the given compressor. It is used by
-     * Equalizer to select candidates for compression.
-     */
-    /*@{*/
-    /** Invalid data. */
-    #define EQ_COMPRESSOR_DATATYPE_NONE       0x0
-    /** Data is processed in one-byte tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_BYTE       0x1
-    /** Data is processed in four-byte tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_UNSIGNED   0x2
-    /** Data is processed in float16 tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_HALF_FLOAT 0x3
-    /** Data is processed in float32 tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_FLOAT      0x4
-
-
-    /** Data is processed in three interleaved streams of one-byte tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_3_BYTE       0x400
-    /** Data is processed in four interleaved streams of one-byte tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_4_BYTE       0x401
-    /** Data is processed in four interleaved streams of float16 tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_3_HALF_FLOAT 0x402
-    /** Data is processed in four interleaved streams of float16 tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_4_HALF_FLOAT 0x403
-    /** Data is processed in four interleaved streams of three float32 tokens.*/
-    #define EQ_COMPRESSOR_DATATYPE_3_FLOAT      0x404
-    /** Data is processed in four interleaved streams of four float32 tokens. */
-    #define EQ_COMPRESSOR_DATATYPE_4_FLOAT      0x405
-    /**Data is processed in two interleaved streams, three 10 bit and one 2 bit.*/
-    #define EQ_COMPRESSOR_DATATYPE_10A2         0x406
-
-    /**Data is processed in two interleaved streams, one 24 bit and one 8 bit.*/
-    #define EQ_COMPRESSOR_DATATYPE_3BYTE_1BYTE  0x800
-    /**
-    * Data is processed in three 10-bit color tokens and one 2-bit alpha
-    * token.
-    */
-    #define EQ_COMPRESSOR_DATATYPE_RGB10_A2                       0x8059
-    /**
-     * Data is processed in four interleaved streams of RGBA color of
-     * unsigned Byte tokens. To simplify future implementation, we use
-     * the same token value that OpenGL
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGBA                           0X1908
-    /**
-     * Data is processed in four interleaved streams of RGBA color of
-     * unsigned fourth 8 Byte tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGBA_UINT_8_8_8_8_REV  0x801
-    /**
-     * Data is processed in four interleaved streams of RGBA color of
-     * four half float tokens. To simplify future implementation, we use
-     * the same token value that OpenGL
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGBA16F                        0x881a
-    /**
-     * Data is processed in four interleaved streams of RGBA color of
-     * four float tokens. To simplify future implementation, we use
-     * the same token value that OpenGL
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGBA32F                        0x8814
-    /**
-     * Data is processed in four interleaved streams of BGRA color of
-     * unsigned Byte tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGRA                           0x802
-    /**
-     * Data is processed in four interleaved streams of BGRA color of
-     * unsigned four 8 Byte tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGRA_UINT_8_8_8_8_REV          0x803
-    /**
-     * Data is processed in four interleaved streams of BGRA color of
-     * unsigned three 10 Byte tokens and one 2 bits token.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGR10_A2                       0x804
-    /**
-     * Data is processed in four interleaved streams of BGRA color of
-     * four half float tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGRA16F                        0x805
-    /**
-     * Data is processed in four interleaved streams of BGRA color of
-     * four float tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGRA32F                        0x806
-    /**
-     * Data is processed in one interleaved streams of depth of
-     * float tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_DEPTH_FLOAT                    0x807
-    /**
-     * Data is processed in one interleaved streams of depth of
-     * unsigned int tokens. To simplify future implementation, we use
-     * the same token value that OpenGL
-     */
-    #define EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_INT             0x1902
-    /**
-     * Data is processed in one interleaved streams of depth of
-     * unsigned 24 bits int and one 8 bits tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_DEPTH_UNSIGNED_INT_24_8_NV     0x808
-    /**
-     * Data is processed in four interleaved streams of RGB color of
-     * unsigned Byte tokens. To simplify future implementation, we use
-     * the same token value that OpenGL
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGB                            0x1907
-    /**
-     * Data is processed in four interleaved streams of RGB color of
-     * three half float tokens. To simplify future implementation, we use
-     * the same token value that OpenGL
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGB16F                         0x881b
-    /**
-     * Data is processed in four interleaved streams of RGB color of
-     * three float tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_RGB32F                         0x8815
-    /**
-     * Data is processed in four interleaved streams of BGR color of
-     * unsigned Byte tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGR                            0x80a
-    /**
-     * Data is processed in four interleaved streams of BGR color of
-     * three float tokens.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_BGR16F                         0x80b
-    /**
-     * Data is processed in four interleaved streams of RGBA color of
-     * three float tokens.
-     */    
-    #define EQ_COMPRESSOR_DATATYPE_BGR32F                         0x80c
-
-    /** Data is processed in four interleaved streams of YUV components. 
-      * Special image format with reduced color components. 
-      */
-    #define EQ_COMPRESSOR_DATATYPE_YUV                            0x80d
-    
-    /**
-     * Private token types -FOR DEVELOPMENT ONLY-.
-     *
-     * Any token type equal or bigger than this can be used for in-house
-     * development and testing. As soon as the Compressor DSO is distributed,
-     * request public types free of charge from info@equalizergraphics.com.
-     */
-    #define EQ_COMPRESSOR_DATATYPE_PRIVATE      0xefffffffu
-    /*@}*/
-
     /**
      * @name Compressor capability flags
      *
      * Capability flags define what special features a compressor supports. They
      * are queried from the DSO, and passed as input to certain functions to
-     * select a given mode.
+     * select a given capability of the plugin.
      */
     /*@{*/
     /** 
@@ -564,36 +225,54 @@ extern "C"
      * data.
      */
     #define EQ_COMPRESSOR_DATA_2D    0x4
-    /** 
-     * The compressor can (query time) or should (compress) ignore the
-     * most-significant element of the input data. Typically used for image data
-     * when the alpha-channel is present in the input data, but unneeded.
+    /**
+     * The compressor can, does or should drop the alpha channel.
+     *
+     * The plugin sets this flag during information time to indicate that it
+     * will drop the alpha channel (transfer plugins) or can drop the alpha
+     * channel (compressor plugins).
+     *
+     * During download, the flag will always be set if it was set at query
+     * time. During compression, it will be set only if the alpha channel should
+     * be dropped. It will never be set for plugins which did not indicate this
+     * capability.
+     *
+     * For compression plugins it is assumed that setting this flag improves the
+     * compression ratio by 25 percent. For transfer plugins, it is assumed that
+     * the ratio already includes the alpha reduction.
      */
-    #define EQ_COMPRESSOR_IGNORE_MSE 0x8
+    #define EQ_COMPRESSOR_IGNORE_ALPHA 0x8
+    /** Deprecated */
+    #define EQ_COMPRESSOR_IGNORE_MSE EQ_COMPRESSOR_IGNORE_ALPHA
 
     /** 
-     * The compressor is a CPU compressor, that is, it implements compress and
-     * decompress.
+     * The compressor is a CPU compressor.
+     *
+     * CPU compressors implement data compression and decompression of a block
+     * of memory.
      */
     #define EQ_COMPRESSOR_CPU 0
 
     /** 
-     * The compressor is a transfer compressor, that is, it implements download
-     * and upload.
+     * The compressor is a CPU-GPU transfer engine.
+     * GPU compressors implement to download from a GPU framebuffer or texture
+     * to main memory, as well as the corresponding upload. During this
+     * operation, compression might take place.
      */
     #define EQ_COMPRESSOR_TRANSFER 0x10
 
-    /** 
-     * The transfer engine can (query time) or should (compress) use a texture
-     * as source or destination for its operations.
+    /**
+     * Capability to use texture data as source or destination.
+     * If set, the transfer engine can (query time) or shall (compress time) use
+     * a texture as the source or destination for its operations.
      */
     #define EQ_COMPRESSOR_USE_TEXTURE 0x20
     /** 
-     * The transfer engine can (query time) or should (compress) use the frame
-     * buffer as source or destination for its operations.
+     * Capability to use the frame buffer as source or destination.
+     * If set, the transfer engine can (query time) or shall (compress time) use
+     * the frame buffer as the source or destination for its operations.
      */
     #define EQ_COMPRESSOR_USE_FRAMEBUFFER 0x40
-
     /*@}*/
 
     /** @name DSO information interface. */
@@ -607,30 +286,74 @@ extern "C"
          * Set on input to the API version used in Equalizer. Has to be set to
          * EQ_COMPRESSOR_VERSION on output to declare the API version used to
          * compile the DSO.
+         * @version 1
          */
         unsigned version;
 
-        /** The type name of the compressor (output). */
+        /** The type name of the compressor. @version 1 */
         unsigned name;
-        /** The token type supported by the compressor (output). */
+
+        /**
+         * The input token type supported by the compressor.
+         *
+         * The input token type describes the format of the input data for a
+         * compressor or downloader and the format of the output data for the
+         * decompressor or uploader of the same compressor.
+         * @version 1
+         */
         unsigned tokenType;
-        /** Capabilities supported by the compressor (output). */
+
+        /** Capabilities supported by the compressor. @version 1 */
         eq_uint64_t capabilities;
-        /** Compression quality (output, 1.0f: loss-less, <1.0f: lossy). */
+
+        /** Compression quality (1.0f: loss-less, <1.0f: lossy). @version 1 */
         float quality;
-        /** Approximate compression ratio (output, sizeCompressed/sizeIn). */
+
+        /** Approximate compression ratio (sizeCompressed/sizeIn). @version 1 */
         float ratio;
-        /** Approximate compression speed relative to BYTE_RLE (output). */
+
+        /** Approximate compression speed relative to BYTE_RLE. @version 1 */
         float speed;
-        /** The type of the data produced by the compressor (version >= 3 ). */
+
+        /**
+         * The output token type of a transfer plugin.
+         *
+         * The output token type describes the format of the data produced by a
+         * downloader and consumed by the uploader of the same compressor.
+         *
+         * A CPU compressor might set the output token type if its decompressor
+         * produces an output different from the input.
+         *
+         * If this parameter is set, outputTokenSize has to be set as well.
+         * @version 3
+         */
         unsigned outputTokenType;
-        /** The size of one output token in bytes (version >= 3 ). */
+
+        /** The size of one output token in bytes. @version 3 */
         unsigned outputTokenSize;
     };
-    
-    /** @return the number of compressors implemented in the DSO. */
+
+#ifdef __cplusplus
+    /** A vector of EqCompressorInfo structures */
+    typedef std::vector< EqCompressorInfo > EqCompressorInfos;
+#endif
+
+    /** @return the number of compressors implemented in the DSO. @version 1 */
     EQ_PLUGIN_API size_t EqCompressorGetNumCompressors();
-    /** Query information of the nth compressor in the DSO. */
+
+    /**
+     * Query information of the nth compressor in the DSO.
+     *
+     * Plugins aiming to be backward-compatible, i.e., usable in older version
+     * than the one compiled against, have to carefully check the provided
+     * runtime version in info. If they implement features incompatible with
+     * older Equalizer versions, e.g., a CPU compressor with an outputTokenType
+     * different from tokenType, they either have to implement a compatibility
+     * code path or to disable the compressor by setting the tokenType to
+     * EQ_COMPRESSOR_DATATYPE_INVALID.
+     *
+     * @version 1
+     */
     EQ_PLUGIN_API void EqCompressorGetInfo( const size_t n,
                                             EqCompressorInfo* const info );
     /*@}*/
@@ -650,6 +373,7 @@ extern "C"
      *
      * @param name the type name of the compressor.
      * @return an opaque pointer to the compressor instance.
+     * @version 1
      */
     EQ_PLUGIN_API void* EqCompressorNewCompressor( const unsigned name );
 
@@ -657,6 +381,7 @@ extern "C"
      * Release a compressor or downloader instance.
      *
      * @param compressor the compressor instance to free.
+     * @version 1
      */
     EQ_PLUGIN_API void EqCompressorDeleteCompressor( void* const compressor );
 
@@ -671,12 +396,14 @@ extern "C"
      * @param name the type name of the decompressor.
      * @return an opaque pointer to the decompressor instance, or 0 if no
      *         instance is needed by the implementation.
+     * @version 1
      */
     EQ_PLUGIN_API void* EqCompressorNewDecompressor( const unsigned name );
     /**
      * Release a decompressor instance.
      *
      * @param decompressor the decompressor instance to free.
+     * @version 1
      */
     EQ_PLUGIN_API void EqCompressorDeleteDecompressor(void* const decompressor);
     /*@}*/
@@ -704,6 +431,7 @@ extern "C"
      * @param in the pointer to the input data.
      * @param inDims the dimensions of the input data.
      * @param flags capability flags for the compression.
+     * @version 1
      */
     EQ_PLUGIN_API void EqCompressorCompress( void* const compressor, 
                                              const unsigned name,
@@ -720,6 +448,7 @@ extern "C"
      * @param compressor the compressor instance.
      * @param name the type name of the compressor.
      * @return the number of output results.
+     * @version 1
      */
     EQ_PLUGIN_API unsigned EqCompressorGetNumResults( void* const compressor,
                                                       const unsigned name );
@@ -732,6 +461,7 @@ extern "C"
      * @param i the result index to return.
      * @param out the return value to store the result pointer.
      * @param outSize the return value to store the result size in bytes.
+     * @version 1
      */
     EQ_PLUGIN_API void EqCompressorGetResult( void* const compressor, 
                                               const unsigned name,
@@ -756,6 +486,8 @@ extern "C"
      * @param outDims the dimensions of the output data.
      * @param flags capability flags for the decompression.
      * @sa EqCompressorCompress
+     * @version 1
+     * @note outDims should be const, which was an oversight
      */
     EQ_PLUGIN_API void EqCompressorDecompress( void* const decompressor, 
                                                const unsigned name,
@@ -775,24 +507,26 @@ extern "C"
      * The OpenGL context is current, and has not be modified by this
      * function. The given glewContext is an initialized GLEWContext
      * corresponding to the OpenGL context. Typically this function checks for a
-     * given OpenGL version and/or extension.
+     * given OpenGL version and/or extension required by the transfer engine.
      * 
      * @param name the type name of the compressor.
      * @param glewContext the initialized GLEW context describing corresponding
      *                    to the current OpenGL context.
      * @return true if the compressor is compatible with the environment.
+     * @version 3
      */
     EQ_PLUGIN_API bool EqCompressorIsCompatible( const unsigned name,
-                                                 GLEWContext* glewContext );
+                                               const GLEWContext* glewContext );
 
     /**
      * Transfer frame buffer data into main memory.
      * 
-     * This function has to transfer the specified frame buffer region from the
-     * GPU memory into main memory. In the process, a transformation (including
-     * compression) of the data may take place. The result buffer has to be
-     * allocated by the compressor. the buffer integrity is guarantee until the 
-     * next download call or the destruction of the class instance
+     * This function has to transfer the specified frame buffer region or
+     * texture from the GPU memory into main memory. In the process, a
+     * transformation (including compression) of the data may take place. The
+     * result buffer has to be allocated by the compressor. The buffer has to be
+     * valied until the next call to this function or the destruction of this
+     * instance.
      *
      * The correct OpenGL context is current and the frame buffer is bound
      * correctly. The format and type of the input frame buffer are determined
@@ -813,27 +547,25 @@ extern "C"
      * compressor instance.
      *
      * Flags will always contain EQ_COMPRESSOR_DATA_2D, and may contain:
-     * <ul>
-     *   <li>EQ_COMPRESSOR_IGNORE_MSE if the alpha value of a color buffer may
-     *     be dropped during download</li>
-     *   <li>EQ_COMPRESSOR_USE_TEXTURE if the source is a 2D texture ID</li>
-     *   <li>EQ_COMPRESSOR_USE_FRAMEBUFFER if the source is an OpenGL frame 
-     *     buffer and the source value will be zero.</li>
-     * </ul>
+     *  - EQ_COMPRESSOR_IGNORE_MSE if the alpha value of a color buffer may
+     *    be dropped during download
+     *  - EQ_COMPRESSOR_USE_TEXTURE if the source is a 2D texture ID
+     *  - EQ_COMPRESSOR_USE_FRAMEBUFFER if the source is an OpenGL frame buffer
      *
      * @param compressor the compressor instance.
      * @param name the type name of the compressor.
      * @param glewContext the initialized GLEW context describing corresponding
      *                    to the current OpenGL context.
      * @param inDims the dimensions of the input data (x, w, y, h).
-     * @param source texture name to process.
+     * @param source texture name to if EQ_COMPRESSOR_USE_TEXTURE is set.
      * @param flags capability flags for the compression (see description).
      * @param outDims the dimensions of the output data (see description).
      * @param out the pointer to the output data.
+     * @version 3
      */
     EQ_PLUGIN_API void EqCompressorDownload( void* const        compressor,
                                              const unsigned     name,
-                                             GLEWContext*       glewContext,
+                                             const GLEWContext* glewContext,
                                              const eq_uint64_t  inDims[4],
                                              const unsigned     source,
                                              const eq_uint64_t  flags,
@@ -843,10 +575,11 @@ extern "C"
     /**
      * Transfer data from main memory into GPU memory.
      * 
-     * This function applies the inverse operation of EqCompressorDownload,
-     * that is, it transfers the specified buffer into the GPU. It may apply a
+     * This function applies the inverse operation of EqCompressorDownload, that
+     * is, it transfers the specified buffer into the GPU. It may apply a
      * transformation, including decompression, during its operation. At the
-     * end, the result must be located in the provided texture.
+     * end, the result must be located in the frame buffer or the provided
+     * texture.
      *
      * The correct OpenGL context is current. The texture is initialized to the
      * size provided by inDims and it is not bound. The OpenGL context has been
@@ -859,27 +592,27 @@ extern "C"
      * function for further information.
      *
      * Flags will always contain EQ_COMPRESSOR_DATA_2D, and may contain:
-     * <ul>
-     *   <li>EQ_COMPRESSOR_IGNORE_MSE if the alpha value of a color buffer may
-     *     be dropped during upload</li>
-     *   <li>EQ_COMPRESSOR_USE_TEXTURE if the destination is a 2D texture ID</li>
-     *   <li>EQ_COMPRESSOR_USE_FRAMEBUFFER if the destination is an OpenGL frame 
-     *     buffer and the destination value will be zero.</li>
-     * </ul>
+     *  - EQ_COMPRESSOR_IGNORE_MSE if the alpha value of a color buffer may
+     *     be dropped during upload
+     *  - EQ_COMPRESSOR_USE_TEXTURE if the destination is a 2D texture ID
+     *  - EQ_COMPRESSOR_USE_FRAMEBUFFER if the destination is an OpenGL frame
+     *     buffer
      *
      * @param decompressor the compressor instance.
      * @param name the type name of the compressor.
-     * @param glewContext the initialized GLEW context describing corresponding
-     *                    to the current OpenGL context.
-     * @param buffer the datas input.
-     * @param inDims the dimension of data in the frame buffer.
+     * @param glewContext the initialized GLEW context corresponding to the
+     *                    current OpenGL context.
+     * @param buffer the input data.
+     * @param inDims the dimension of the input data.
      * @param flags capability flags for the compression.
-     * @param outDims the result data size
-     * @param destination the destination texture name.
+     * @param outDims the result data size in the frame buffer.
+     * @param destination the destination texture name if
+     *                    EQ_COMPRESSOR_USE_TEXTURE is set.
+     * @version 3
      */
     EQ_PLUGIN_API void EqCompressorUpload( void* const        decompressor,
                                            const unsigned     name,
-                                           GLEWContext*       glewContext, 
+                                           const GLEWContext* glewContext, 
                                            const void*        buffer,
                                            const eq_uint64_t  inDims[4],
                                            const eq_uint64_t  flags,

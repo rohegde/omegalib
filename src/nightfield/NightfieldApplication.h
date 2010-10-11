@@ -7,7 +7,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Test executable
+ * Nightfield is an application that tests most of omegalib & omega features.
  *********************************************************************************************************************/
 #ifndef __NIGHTFIELD_APPLICATION_H__
 #define __NIGHTFIELD_APPLICATION_H__
@@ -15,21 +15,33 @@
 #include "NightfieldUI.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct Preset
+{
+	float avoidanceDist;
+	float friction;
+	float coordinationDist;
+	bool useFog;
+	bool useAdditiveAlpha;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct Settings
 {
-	Settings():
-		numAgents(3000),
-		totGroups(2),
-		areaMin(Vector3f(-0.5, 0.5, -1.0)),
-		areaMax(Vector3f(0.8, 2.0, -3.0)),
-		center(0.2f, 1.5f, -2)
-		{}
+	Settings();
 
+	float minAvoidanceDist;
+	float maxAvoidanceDist;
+	float minCoordinationDist;
+	float maxCoordinationDist;
+	float minFriction;
+	float maxFriction;
 	int totGroups;
 	int numAgents;
 	Vector3f areaMin;
 	Vector3f areaMax;
 	Vector3f center;
+
+	std::vector<Preset> presets;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,23 +61,59 @@ struct InteractorRay
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class NightfieldApplication: public Application
+class NightfieldServer: public ApplicationServer
 {
 public:
-	NightfieldApplication();
+	static const int MaxInteractors = 32;
+
+public:
+	NightfieldServer(Application* app): ApplicationServer(app) {}
+
 	virtual void initialize();
-	virtual void initializeWindow();
-	void draw3D(const DrawContext& context);
-	void draw2D(const DrawContext& context);
-	virtual void draw(const DrawContext& context);
 	virtual void update(const UpdateContext& context);
 	virtual bool handleEvent(const InputEvent& evt);
 
 private:
-	static const int MaxInteractors = 32;
-
 	// Application settings.
 	Settings mySettings;
+
+	// Current simulation preset;
+	Preset myCurrentPreset;
+
+	// Interactors.
+	InteractorRay myInteractorData[MaxInteractors];
+
+	bool myRotate;
+	float myRotateX;
+	float myRotateY;
+
+	float myMouseX;
+	float myMouseY;
+	float myLastMouseX;
+	float myLastMouseY;
+
+	// Touch info
+	float myTouchX[MaxInteractors];
+	float myTouchY[MaxInteractors];
+	int myNumTouches;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class NightfieldClient: public ApplicationClient
+{
+public:
+	NightfieldClient(Application* app): ApplicationClient(app), myGpu(NULL) {}
+
+	virtual void initialize();
+	virtual void update(const UpdateContext& context);
+	virtual void draw(const DrawContext& context);
+
+private:
+	// Application settings.
+	Settings mySettings;
+
+	// Current simulation preset;
+	Preset myCurrentPreset;
 
 	GpuManager* myGpu;
 	GpuProgram* myAgentBehavior;
@@ -82,9 +130,13 @@ private:
 	GpuBuffer* myInteractorBuffer;
 	GpuConstant* myNumInteractors;
 	GpuConstant* myLightPos;
+	// Gpu simulation constants
+	GpuConstant* myAvoidanceDist;
+	GpuConstant* myCoordinationDist;
+	GpuConstant* myFriction;
 
 	// Interactors.
-	InteractorRay myInteractorData[MaxInteractors];
+	InteractorRay myInteractorData[NightfieldServer::MaxInteractors];
 
 	// Textures
 	TextureManager* myTexMng;
@@ -104,9 +156,17 @@ private:
 	float myLastMouseY;
 
 	// Touch info
-	float myTouchX[MaxInteractors];
-	float myTouchY[MaxInteractors];
+	float myTouchX[NightfieldServer::MaxInteractors];
+	float myTouchY[NightfieldServer::MaxInteractors];
 	int myNumTouches;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class NightfieldApplication: public Application
+{
+public:
+	virtual ApplicationClient* createClient() { return new NightfieldClient(this); }
+	virtual ApplicationServer* createServer() { return new NightfieldServer(this); }
 };
 
 #endif

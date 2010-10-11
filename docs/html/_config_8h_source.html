@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/omega/Config.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/Config.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/omega/Config.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/Config.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_config_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -55,7 +55,7 @@
 <a name="l00026"></a>00026 <span class="keyword">public</span>:
 <a name="l00027"></a><a class="code" href="classomega_1_1_config.html#ad8e19dc57109fd23912b0701ce0752ee">00027</a>         OMEGA_API <a class="code" href="classomega_1_1_config.html#ad8e19dc57109fd23912b0701ce0752ee">Config</a>(): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false) {}
 <a name="l00028"></a><a class="code" href="classomega_1_1_config.html#aa1612358efffc6689ac12dbae007c443">00028</a>         OMEGA_API <a class="code" href="classomega_1_1_config.html#aa1612358efffc6689ac12dbae007c443">Config</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv): myCfgFile(NULL), myIsLoaded(false) { myArgc = argc; myArgv = argv; }
-<a name="l00029"></a><a class="code" href="classomega_1_1_config.html#af2736c932cce2064821f1ceaa1c9cafd">00029</a>         OMEGA_API <a class="code" href="classomega_1_1_config.html#af2736c932cce2064821f1ceaa1c9cafd">Config</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false) { myCfgFilename = filename; }
+<a name="l00029"></a>00029         OMEGA_API <a class="code" href="classomega_1_1_config.html#ad8e19dc57109fd23912b0701ce0752ee">Config</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);
 <a name="l00030"></a><a class="code" href="classomega_1_1_config.html#aee8397f4717bb5c8be225d9166cf577e">00030</a>         OMEGA_API <a class="code" href="classomega_1_1_config.html#aee8397f4717bb5c8be225d9166cf577e">~Config</a>() {}
 <a name="l00031"></a>00031 
 <a name="l00032"></a><a class="code" href="classomega_1_1_config.html#a3d6ec2669e61937e75ccf56c8ff467e5">00032</a>         OMEGA_API <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classomega_1_1_config.html#a3d6ec2669e61937e75ccf56c8ff467e5">getConfigFilename</a>() { <span class="keywordflow">return</span> myCfgFilename.c_str(); }
@@ -64,11 +64,11 @@
 <a name="l00035"></a><a class="code" href="classomega_1_1_config.html#a4f57e0971854f2ac235827adc3b7e4f2">00035</a>         OMEGA_API <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_config.html#a4f57e0971854f2ac235827adc3b7e4f2">getArgc</a>() { <span class="keywordflow">return</span> myArgc; }
 <a name="l00036"></a><a class="code" href="classomega_1_1_config.html#ade95d3bfe833667ac9c7d26a1b3e89c5">00036</a>         OMEGA_API <span class="keywordtype">char</span>** <a class="code" href="classomega_1_1_config.html#ade95d3bfe833667ac9c7d26a1b3e89c5">getArgv</a>() { <span class="keywordflow">return</span> myArgv; }
 <a name="l00037"></a>00037 
-<a name="l00038"></a>00038         OMEGA_API <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_config.html#ac1bedc5e3bca421c0cc20c9bf3bfbe36">load</a>();
+<a name="l00038"></a>00038         OMEGA_API <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_config.html#ae7336edadb92bc258c48aeef6a44d8e8">load</a>();
 <a name="l00039"></a>00039 
 <a name="l00040"></a><a class="code" href="classomega_1_1_config.html#afc42f499c0e4d08d713437b09ea6edcc">00040</a>         OMEGA_API <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_config.html#afc42f499c0e4d08d713437b09ea6edcc">isLoaded</a>() { <span class="keywordflow">return</span> myIsLoaded; }
 <a name="l00041"></a>00041 
-<a name="l00042"></a>00042         OMEGA_API <a class="code" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a>&amp; <a class="code" href="classomega_1_1_config.html#a38a8ac8e9cae89a02a603be7d06ff940">getRootSetting</a>();
+<a name="l00042"></a>00042         OMEGA_API <a class="code" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a>&amp; <a class="code" href="classomega_1_1_config.html#a0efbbffd490c75d7d79bc96a5bbf5189">getRootSetting</a>();
 <a name="l00043"></a>00043 
 <a name="l00044"></a>00044 <span class="keyword">private</span>:
 <a name="l00045"></a>00045         <span class="keywordtype">bool</span> myIsLoaded;
@@ -84,7 +84,7 @@
 <a name="l00055"></a>00055 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/outk/ui/Label.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/ui/Label.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/outk/ui/Label.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/ui/Label.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_label_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -43,44 +43,56 @@
 <a name="l00013"></a>00013 <span class="preprocessor">#ifndef __LABEL_H__</span>
 <a name="l00014"></a>00014 <span class="preprocessor"></span><span class="preprocessor">#define __LABEL_H__</span>
 <a name="l00015"></a>00015 <span class="preprocessor"></span>
-<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;omega.h&quot;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="_font_manager_8h.html">outk/gfx/FontManager.h</a>&quot;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_widget_8h.html">outk/ui/Widget.h</a>&quot;</span>
-<a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <span class="keyword">namespace </span>outk
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="_widget_8h.html">omega/ui/Widget.h</a>&quot;</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 <span class="keyword">namespace </span>omega
+<a name="l00019"></a>00019 {
+<a name="l00020"></a>00020 <span class="keyword">namespace </span>ui
 <a name="l00021"></a>00021 {
-<a name="l00022"></a>00022 <span class="keyword">namespace </span>ui
-<a name="l00023"></a>00023 {
-<a name="l00025"></a><a class="code" href="classoutk_1_1ui_1_1_label.html">00025</a> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_label.html">Label</a>: <span class="keyword">public</span> <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>
-<a name="l00026"></a>00026 {
-<a name="l00027"></a>00027 <span class="keyword">public</span>:
-<a name="l00028"></a>00028         OUTK_API <a class="code" href="classoutk_1_1ui_1_1_label.html#a03caa27f697dc8412487d9e4d36e19a5">Label</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name);
-<a name="l00029"></a>00029         OUTK_API <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#a39e1167a9b5827afd888780973d88894">~Label</a>();
-<a name="l00030"></a>00030 
-<a name="l00031"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#a1485486de1ccfbe5810492879d5a412d">00031</a>         <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classoutk_1_1ui_1_1_label.html#a1485486de1ccfbe5810492879d5a412d">getText</a>() { <span class="keywordflow">return</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#a8fb3a806df5db35200d675b10b9d106a">myText</a>; }
-<a name="l00032"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#a2fccfbcfb4c23eafcb37114b33dd605f">00032</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#a2fccfbcfb4c23eafcb37114b33dd605f">setText</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; value) { <a class="code" href="classoutk_1_1ui_1_1_label.html#a8fb3a806df5db35200d675b10b9d106a">myText</a> = value; }
-<a name="l00033"></a>00033 
-<a name="l00034"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#a90e8b535fc6c0960797d92eb21d6ac17">00034</a>         <a class="code" href="classoutk_1_1gfx_1_1_font.html">outk::gfx::Font</a>* <a class="code" href="classoutk_1_1ui_1_1_label.html#a90e8b535fc6c0960797d92eb21d6ac17">getFont</a>() { <span class="keywordflow">return</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#af5b519c8f68d3e230fed09fe0bc4106a">myFont</a>; }
-<a name="l00035"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#aca3fdea2ea8a7d9bab83cb3aca324f46">00035</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#aca3fdea2ea8a7d9bab83cb3aca324f46">setFont</a>(<a class="code" href="classoutk_1_1gfx_1_1_font.html">outk::gfx::Font</a>* value) { <a class="code" href="classoutk_1_1ui_1_1_label.html#af5b519c8f68d3e230fed09fe0bc4106a">myFont</a> = value; }
-<a name="l00036"></a>00036 
-<a name="l00037"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#aba9716368a4504db4354069523bfdd2f">00037</a>         <a class="code" href="classomega_1_1_color.html">omega::Color</a> <a class="code" href="classoutk_1_1ui_1_1_label.html#aba9716368a4504db4354069523bfdd2f">getColor</a>() { <span class="keywordflow">return</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#a8af37647fe7d7eecaf05514e9a072149">myColor</a>; }
-<a name="l00038"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#a15855df0673e33191a866ba2b3ccadd8">00038</a>         <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#a15855df0673e33191a866ba2b3ccadd8">setColor</a>(<span class="keyword">const</span> <a class="code" href="classomega_1_1_color.html">omega::Color</a>&amp; value) { <a class="code" href="classoutk_1_1ui_1_1_label.html#a8af37647fe7d7eecaf05514e9a072149">myColor</a> = value; }
-<a name="l00039"></a>00039 
-<a name="l00040"></a>00040 <span class="keyword">protected</span>:
-<a name="l00041"></a>00041         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_label.html#aaef456e5daa53639ebe8ba09608f843c">draw</a>();
-<a name="l00042"></a>00042 
-<a name="l00043"></a>00043 <span class="keyword">protected</span>:
-<a name="l00044"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#a8fb3a806df5db35200d675b10b9d106a">00044</a>         <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classoutk_1_1ui_1_1_label.html#a8fb3a806df5db35200d675b10b9d106a">myText</a>;
-<a name="l00045"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#af5b519c8f68d3e230fed09fe0bc4106a">00045</a>         <a class="code" href="classoutk_1_1gfx_1_1_font.html">outk::gfx::Font</a>* <a class="code" href="classoutk_1_1ui_1_1_label.html#af5b519c8f68d3e230fed09fe0bc4106a">myFont</a>;
-<a name="l00046"></a><a class="code" href="classoutk_1_1ui_1_1_label.html#a8af37647fe7d7eecaf05514e9a072149">00046</a>         <a class="code" href="classomega_1_1_color.html">omega::Color</a> <a class="code" href="classoutk_1_1ui_1_1_label.html#a8af37647fe7d7eecaf05514e9a072149">myColor</a>;
-<a name="l00047"></a>00047 };
-<a name="l00048"></a>00048 }; <span class="comment">// namespace gfx</span>
-<a name="l00049"></a>00049 }; <span class="comment">// namespace outk</span>
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="preprocessor">#endif</span>
+<a name="l00023"></a><a class="code" href="classomega_1_1ui_1_1_label.html">00023</a>         <span class="keyword">class </span><a class="code" href="classomega_1_1ui_1_1_label.html">Label</a>: <span class="keyword">public</span> <a class="code" href="classomega_1_1ui_1_1_widget.html">Widget</a>
+<a name="l00024"></a>00024         {
+<a name="l00025"></a>00025         <span class="keyword">public</span>:
+<a name="l00026"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a4673cbbdcc0209de5c4bc68b230317b0">00026</a>                 <span class="keyword">enum</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a4673cbbdcc0209de5c4bc68b230317b0">HorizontalAlign</a> { AlignRight, AlignLeft, <a class="code" href="classomega_1_1ui_1_1_label.html#a4673cbbdcc0209de5c4bc68b230317b0af53278a2804da055f05670c21e2f6400">AlignCenter</a>};
+<a name="l00027"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a7bc3f72146dd4680b53295b0004b6b8b">00027</a>                 <span class="keyword">enum</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a7bc3f72146dd4680b53295b0004b6b8b">VerticalAlign</a> { AlignTop, AlignMiddle, <a class="code" href="classomega_1_1ui_1_1_label.html#a7bc3f72146dd4680b53295b0004b6b8ba94a50b996857913fc67858e46ba65028">AlignBottom</a>};
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029         <span class="keyword">public</span>:
+<a name="l00030"></a>00030                 OUTILS_API <a class="code" href="classomega_1_1ui_1_1_label.html#ad35a672d5723521ddcaec20075889562">Label</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name);
+<a name="l00031"></a>00031                 OUTILS_API <span class="keyword">virtual</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a975440d3ff2f68cd91a8ba4deaa0cf6c">~Label</a>();
+<a name="l00032"></a>00032 
+<a name="l00033"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a367a8cfbeaa6c4ad4da38572af8111f9">00033</a>                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classomega_1_1ui_1_1_label.html#a367a8cfbeaa6c4ad4da38572af8111f9">getText</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a916c60b17835464e76a8b2d6325ab738">myText</a>; }
+<a name="l00034"></a><a class="code" href="classomega_1_1ui_1_1_label.html#ac518bb662d6e767a349370749a9c6d64">00034</a>                 <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_label.html#ac518bb662d6e767a349370749a9c6d64">setText</a>(<span class="keyword">const</span> <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a>&amp; value) { <a class="code" href="classomega_1_1ui_1_1_label.html#a916c60b17835464e76a8b2d6325ab738">myText</a> = value; }
+<a name="l00035"></a>00035 
+<a name="l00036"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a11c720b2b3ec34e6f1bfd89c0d8e420a">00036</a>                 <a class="code" href="classomega_1_1_font.html">omega::Font</a>* <a class="code" href="classomega_1_1ui_1_1_label.html#a11c720b2b3ec34e6f1bfd89c0d8e420a">getFont</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1ui_1_1_label.html#af5006f97ab631c3de028b1e8a59f7541">myFont</a>; }
+<a name="l00037"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a4cc662f0061ce7d10430b28c8f759bc7">00037</a>                 <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a4cc662f0061ce7d10430b28c8f759bc7">setFont</a>(<a class="code" href="classomega_1_1_font.html">omega::Font</a>* value) { <a class="code" href="classomega_1_1ui_1_1_label.html#af5006f97ab631c3de028b1e8a59f7541">myFont</a> = value; }
+<a name="l00038"></a>00038 
+<a name="l00039"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a120ae9728d098d7f86a9dee3115b8ed6">00039</a>                 <a class="code" href="classomega_1_1_color.html">omega::Color</a> <a class="code" href="classomega_1_1ui_1_1_label.html#a120ae9728d098d7f86a9dee3115b8ed6">getColor</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1ui_1_1_label.html#ad38b9e5a5fb05cfb09822497f221e986">myColor</a>; }
+<a name="l00040"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a7d838f11ef92731dbfff24fc3553840d">00040</a>                 <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a7d838f11ef92731dbfff24fc3553840d">setColor</a>(<span class="keyword">const</span> <a class="code" href="classomega_1_1_color.html">omega::Color</a>&amp; value) { <a class="code" href="classomega_1_1ui_1_1_label.html#ad38b9e5a5fb05cfb09822497f221e986">myColor</a> = value; }
+<a name="l00041"></a>00041 
+<a name="l00042"></a><a class="code" href="classomega_1_1ui_1_1_label.html#ac1b05538f7a1af7ae7811c34d8e7775d">00042</a>                 <a class="code" href="classomega_1_1ui_1_1_label.html#a4673cbbdcc0209de5c4bc68b230317b0">HorizontalAlign</a> <a class="code" href="classomega_1_1ui_1_1_label.html#ac1b05538f7a1af7ae7811c34d8e7775d">getHorizontalAlign</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a7aaf31589044a790bbbe7a993051397e">myHorizontalAlign</a>; }
+<a name="l00043"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a29f16caf581d0d9d0db9521186849dcd">00043</a>                 <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a29f16caf581d0d9d0db9521186849dcd">setHorizontalAlign</a>(<a class="code" href="classomega_1_1ui_1_1_label.html#a4673cbbdcc0209de5c4bc68b230317b0">HorizontalAlign</a> value) { <a class="code" href="classomega_1_1ui_1_1_label.html#a7aaf31589044a790bbbe7a993051397e">myHorizontalAlign</a> = value; }
+<a name="l00044"></a>00044 
+<a name="l00045"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a54855b78c50da864ef9da1fac4431c73">00045</a>                 <a class="code" href="classomega_1_1ui_1_1_label.html#a7bc3f72146dd4680b53295b0004b6b8b">VerticalAlign</a> <a class="code" href="classomega_1_1ui_1_1_label.html#a54855b78c50da864ef9da1fac4431c73">getVerticalAlign</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1ui_1_1_label.html#ae946a7466872291f5d3fe8fb9cb44927">myVerticalAlign</a>; }
+<a name="l00046"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a117a6f358eeac753707bd28a73af3ea0">00046</a>                 <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a117a6f358eeac753707bd28a73af3ea0">setVerticalAlign</a>(<a class="code" href="classomega_1_1ui_1_1_label.html#a7bc3f72146dd4680b53295b0004b6b8b">VerticalAlign</a> value) { <a class="code" href="classomega_1_1ui_1_1_label.html#ae946a7466872291f5d3fe8fb9cb44927">myVerticalAlign</a> = value; }
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048         <span class="keyword">protected</span>:
+<a name="l00049"></a>00049                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a3d5647d4e1919250806bb8f32738165a">draw</a>();
+<a name="l00050"></a>00050                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classomega_1_1ui_1_1_label.html#a0c78f72c20501709d1a5417dd3727a3d">getFontAlignFlags</a>();
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052         <span class="keyword">protected</span>:
+<a name="l00053"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a916c60b17835464e76a8b2d6325ab738">00053</a>                 <a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> <a class="code" href="classomega_1_1ui_1_1_label.html#a916c60b17835464e76a8b2d6325ab738">myText</a>;
+<a name="l00054"></a><a class="code" href="classomega_1_1ui_1_1_label.html#af5006f97ab631c3de028b1e8a59f7541">00054</a>                 <a class="code" href="classomega_1_1_font.html">omega::Font</a>* <a class="code" href="classomega_1_1ui_1_1_label.html#af5006f97ab631c3de028b1e8a59f7541">myFont</a>;
+<a name="l00055"></a><a class="code" href="classomega_1_1ui_1_1_label.html#ad38b9e5a5fb05cfb09822497f221e986">00055</a>                 <a class="code" href="classomega_1_1_color.html">omega::Color</a> <a class="code" href="classomega_1_1ui_1_1_label.html#ad38b9e5a5fb05cfb09822497f221e986">myColor</a>;
+<a name="l00056"></a>00056 
+<a name="l00057"></a><a class="code" href="classomega_1_1ui_1_1_label.html#a7aaf31589044a790bbbe7a993051397e">00057</a>                 <a class="code" href="classomega_1_1ui_1_1_label.html#a4673cbbdcc0209de5c4bc68b230317b0">HorizontalAlign</a> <a class="code" href="classomega_1_1ui_1_1_label.html#a7aaf31589044a790bbbe7a993051397e">myHorizontalAlign</a>;
+<a name="l00058"></a><a class="code" href="classomega_1_1ui_1_1_label.html#ae946a7466872291f5d3fe8fb9cb44927">00058</a>                 <a class="code" href="classomega_1_1ui_1_1_label.html#a7bc3f72146dd4680b53295b0004b6b8b">VerticalAlign</a> <a class="code" href="classomega_1_1ui_1_1_label.html#ae946a7466872291f5d3fe8fb9cb44927">myVerticalAlign</a>;
+<a name="l00059"></a>00059         };
+<a name="l00060"></a>00060 }; <span class="comment">// namespace gfx</span>
+<a name="l00061"></a>00061 }; <span class="comment">// namespace omega</span>
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

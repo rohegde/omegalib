@@ -64,10 +64,10 @@ namespace net
 
         /** 
          * Make this object thread safe.
-         * 
-         * The caller has to ensure that no other thread is using this object
-         * when this function is called. If you don't call this function,
-         * certain operations, e.g., sync(), are not-threadsafe.
+         *
+         * Only to be called on an unregistered and unmapped object. If you
+         * don't call this function, certain operations, e.g., sync(), will not
+         * be not-threadsafe.
          */
         EQ_EXPORT virtual void makeThreadSafe();  
 
@@ -376,7 +376,7 @@ namespace net
         /* The command handlers. */
         bool _cmdForward( Command& command );
 
-        CHECK_THREAD_DECLARE( _thread );
+        EQ_TS_VAR( _thread );
     };
     EQ_EXPORT std::ostream& operator << ( std::ostream&, const Object& );
 }

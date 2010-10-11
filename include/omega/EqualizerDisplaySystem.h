@@ -17,14 +17,14 @@
 #include "Application.h"
 #include "DisplaySystem.h"
 
+namespace omega
+{
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward Declarations.
 class EqualizerNodeFactory;
-class EqualizerView;
-class EqualizerConfig;
-
-namespace omega
-{
+class ViewImpl;
+class ConfigImpl;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This class is used to route equalizer log into the omega log system.
@@ -89,7 +89,7 @@ private:
 
 	// Equalizer stuff.
     EqualizerNodeFactory* myNodeFactory;
-	EqualizerConfig* myConfig;
+	ConfigImpl* myConfig;
 
 	// Observers.
 	std::vector<Observer*> myObservers;

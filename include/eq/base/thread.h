@@ -28,6 +28,7 @@
 #include <eq/base/debug.h>    // debug macros in thread-safety checks
 #include <eq/base/lock.h>     // member
 #include <eq/base/monitor.h>  // member
+#include <eq/base/threadID.h> // member
 
 #include <vector>
 #include <typeinfo>
@@ -38,7 +39,6 @@ namespace eq
 namespace base
 {
     class ExecutionListener;
-    class ThreadPrivate;
 
     /** An utility class to execute code in a separate execution thread. */
     class Thread 
@@ -163,7 +163,7 @@ namespace base
         EQ_EXPORT static void removeAllListeners();
 
         /** @return a unique identifier for the calling thread. @version 1.0 */
-        EQ_EXPORT static size_t getSelfThreadID();
+        EQ_EXPORT static ThreadID getSelfThreadID();
 
         /** @internal */
         static void yield();
@@ -175,7 +175,7 @@ namespace base
         EQ_EXPORT static void setDebugName( const std::string& name );
 
     private:
-        ThreadPrivate* _data;
+        ThreadID _id;
 
         /** The current state of this thread. */
         enum State
@@ -214,23 +214,21 @@ namespace base
 #endif
 
 /** Declare a thread id variable to be used for thread-safety checks. */
-#define CHECK_THREAD_DECLARE( NAME )                        \
+#define EQ_TS_VAR( NAME )                        \
     struct NAME ## Struct                                   \
     {                                                       \
         NAME ## Struct ()                                   \
-            : id( 0 ), extMutex( false ), inRegion( false ) \
+            : extMutex( false ), inRegion( false )          \
             {}                                              \
-        mutable size_t id;                                  \
+        mutable eq::base::ThreadID id;                      \
         bool extMutex;                                      \
         bool inRegion;                                      \
     } NAME;                                                 \
 
 #ifdef EQ_CHECK_THREADSAFETY
-#  define CHECK_THREAD_RESET( NAME ) NAME.id = 0;
-
-#  define CHECK_THREAD( NAME )                                          \
+#  define EQ_TS_THREAD( NAME )                                          \
     {                                                                   \
-        if( NAME.id == 0 )                                              \
+        if( NAME.id == eq::base::ThreadID::ZERO )                       \
         {                                                               \
             NAME.id = eq::base::Thread::getSelfThreadID();              \
             EQVERB << "Functions for " << #NAME                         \
@@ -240,20 +238,20 @@ namespace base
         {                                                               \
             EQERROR << "Threadsafety check for " << #NAME               \
                     << " failed on object of type "                     \
-                    << typeid(*this).name() << std::endl;               \
+                    << eq::base::className( this ) << std::endl;        \
             EQABORT( "Non-threadsave code called from two threads" );   \
         }                                                               \
     }
 
-#  define CHECK_NOT_THREAD( NAME )                                      \
+#  define EQ_TS_NOT_THREAD( NAME )                                      \
     {                                                                   \
-        if( !NAME.extMutex && NAME.id != 0 )                           \
+        if( !NAME.extMutex && NAME.id != eq::base::ThreadID::ZERO )     \
         {                                                               \
             if( NAME.id ==  eq::base::Thread::getSelfThreadID( ))         \
             {                                                           \
                 EQERROR << "Threadsafety check for not " << #NAME       \
                         << " failed on object of type "                 \
-                        << typeid(*this).name() << std::endl;           \
+                        << eq::base::className( this ) << std::endl;    \
                 EQABORT( "Code called from wrong thread" );             \
             }                                                           \
         }                                                               \
@@ -280,14 +278,13 @@ namespace base
         T& _data;
     };
 
-# define CHECK_THREAD_SCOPED( NAME ) \
+# define EQ_TS_SCOPED( NAME ) \
     eq::base::ScopedThreadCheck< NAME ## Struct > scoped ## NAME ## Check(NAME);
 
 #else
-#  define CHECK_THREAD_RESET( NAME ) {}
-#  define CHECK_THREAD( NAME ) {}
-#  define CHECK_NOT_THREAD( NAME ) {}
-#  define CHECK_THREAD_SCOPED( NAME ) {}
+#  define EQ_TS_THREAD( NAME ) {}
+#  define EQ_TS_NOT_THREAD( NAME ) {}
+#  define EQ_TS_SCOPED( NAME ) {}
 #endif
 
 }

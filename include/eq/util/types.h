@@ -18,15 +18,24 @@
 #ifndef EQUTIL_TYPES_H
 #define EQUTIL_TYPES_H
 
+#include <vector>
+
 namespace eq
 {
 namespace util
 {
 
+class Accum;
+class FrameBufferObject;
 class Texture;
+template< class > class BitmapFont;
+template< class > class ObjectManager;
+
 
 /** A vector of pointers to eq::util::Texture */
 typedef std::vector< Texture* >  Textures;
+
+class GPUCompressor; //!< @internal
 
 #ifdef EQ_USE_DEPRECATED
 typedef Textures TextureVector

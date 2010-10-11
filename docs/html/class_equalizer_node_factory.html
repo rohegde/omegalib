@@ -41,7 +41,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_node_factory.html#a29a0c12b1a1f3b87cf86ac9c34c8910f">EqualizerNodeFactory</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual eq::Config *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_node_factory.html#a5c3320f0fa4a208cd230b200129e5980">createConfig</a> (eq::ServerPtr parent)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual eq::Channel *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_node_factory.html#ab22cfb964e64cca4d69c3a38e61f2dc7">createChannel</a> (eq::Window *parent)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual eq::View *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_node_factory.html#aa8838a6bf11e96e379f85e4fcd5d197b">createView</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual eq::View *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_node_factory.html#ad07a33ca1ee7a03e0e4651b5f0c186c6">createView</a> (eq::Layout *parent)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual eq::Window *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_equalizer_node_factory.html#aeedfd6d1438e747a884121cf754f7dfa">createWindow</a> (eq::Pipe *parent)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a29a0c12b1a1f3b87cf86ac9c34c8910f"></a><!-- doxytag: member="EqualizerNodeFactory::EqualizerNodeFactory" ref="a29a0c12b1a1f3b87cf86ac9c34c8910f" args="()" -->
@@ -98,14 +99,33 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa8838a6bf11e96e379f85e4fcd5d197b"></a><!-- doxytag: member="EqualizerNodeFactory::createView" ref="aa8838a6bf11e96e379f85e4fcd5d197b" args="()" -->
+<a class="anchor" id="ad07a33ca1ee7a03e0e4651b5f0c186c6"></a><!-- doxytag: member="EqualizerNodeFactory::createView" ref="ad07a33ca1ee7a03e0e4651b5f0c186c6" args="(eq::Layout *parent)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">virtual eq::View* EqualizerNodeFactory::createView </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype">eq::Layout *&nbsp;</td>
+          <td class="paramname"> <em>parent</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aeedfd6d1438e747a884121cf754f7dfa"></a><!-- doxytag: member="EqualizerNodeFactory::createWindow" ref="aeedfd6d1438e747a884121cf754f7dfa" args="(eq::Pipe *parent)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual eq::Window* EqualizerNodeFactory::createWindow </td>
+          <td>(</td>
+          <td class="paramtype">eq::Pipe *&nbsp;</td>
+          <td class="paramname"> <em>parent</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline, virtual]</code></td>
         </tr>
@@ -119,7 +139,7 @@ Public Member Functions</h2></td></tr>
 <li>D:/Workspace/omegalib/src/omega/<a class="el" href="_equalizer_display_system_8cpp.html">EqualizerDisplaySystem.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 16 2010 01:42:29 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -27,7 +27,7 @@
 #endif
 
 #ifdef WIN32
-#  include <Windows.h>
+#  include <windows.h>
 #else
 #  include <time.h>
 #endif
@@ -121,7 +121,7 @@ namespace base
          *         and atomically reset the clock.
          * @version 1.0
          */
-        float getResetTimef()
+        float resetTimef()
             {
 #ifdef Darwin
                 const uint64_t now = mach_absolute_time();

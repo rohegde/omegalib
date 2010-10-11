@@ -23,7 +23,7 @@
 #include <eq/client/types.h>
 #include <eq/client/visitorResult.h>  // enum
 #include <eq/client/window.h>         // nested Window::ObjectManager class
-#include <eq/client/windowSystem.h>   // GLEWContext
+#include <eq/client/os.h>             // GLEWContext
 
 #include <eq/fabric/channel.h>        // base class
 
@@ -78,7 +78,7 @@ namespace util
 
         /** 
          * Get the GLEW context for this channel.
-         * 
+         *
          * The GLEW context is initialized during window initialization, and
          * provides access to OpenGL extensions. This function does not follow
          * the Equalizer naming conventions, since GLEW uses a function of this
@@ -90,9 +90,6 @@ namespace util
          *         context.
          * @version 1.0
          */
-        EQ_EXPORT GLEWContext* glewGetContext();
-
-        /** Const-version of glewGetContext() @version 1.0 */
         EQ_EXPORT const GLEWContext* glewGetContext() const;
 
         /** @return the window's object manager instance. @version 1.0 */
@@ -295,7 +292,7 @@ namespace util
          * @param frameNumber the frame to start.
          * @version 1.0
          */
-        void startFrame( const uint32_t frameNumber ) { /* currently nop */ }
+        EQ_EXPORT void startFrame( const uint32_t frameNumber );
 
         /** 
          * Signal the completion of a frame to the parent.
@@ -303,7 +300,7 @@ namespace util
          * @param frameNumber the frame to end.
          * @version 1.0
          */
-        void releaseFrame( const uint32_t frameNumber ) { /* currently nop */ }
+        EQ_EXPORT void releaseFrame( const uint32_t frameNumber );
 
         /** 
          * Release the local synchronization of the parent for a frame.
@@ -311,7 +308,7 @@ namespace util
          * @param frameNumber the frame to release.
          * @version 1.0
          */
-        void releaseFrameLocal( const uint32_t frameNumber ) { /* nop */ }
+        EQ_EXPORT void releaseFrameLocal( const uint32_t frameNumber );
 
         /**
          * Setup the OpenGL state for a readback or assemble operation.
@@ -360,9 +357,8 @@ namespace util
          * @sa Config::startFrame()
          * @version 1.0
          */
-        virtual void frameStart( const uint32_t frameID, 
-                                 const uint32_t frameNumber ) 
-            { startFrame( frameNumber ); }
+        EQ_EXPORT virtual void frameStart( const uint32_t frameID,
+                                           const uint32_t frameNumber );
 
         /**
          * Finish rendering a frame.
@@ -374,9 +370,8 @@ namespace util
          * @param frameNumber the frame to finish.
          * @version 1.0
          */
-        virtual void frameFinish( const uint32_t frameID, 
-                                  const uint32_t frameNumber ) 
-            { releaseFrame( frameNumber ); }
+        EQ_EXPORT virtual void frameFinish( const uint32_t frameID, 
+                                            const uint32_t frameNumber );
 
         /** 
          * Finish drawing.
@@ -388,9 +383,8 @@ namespace util
          * @param frameNumber the frame to finished with draw.
          * @version 1.0
          */
-        virtual void frameDrawFinish( const uint32_t frameID, 
-                                      const uint32_t frameNumber )
-            { releaseFrameLocal( frameNumber ); }
+        EQ_EXPORT virtual void frameDrawFinish( const uint32_t frameID, 
+                                                const uint32_t frameNumber );
 
         /** 
          * Clear the frame buffer.
@@ -444,7 +438,7 @@ namespace util
          * @param frameID the per-frame identifier.
          * @version 1.0
          */
-        virtual void frameViewStart( const uint32_t frameID ) { /* nop */ }
+        EQ_EXPORT virtual void frameViewStart( const uint32_t frameID );
 
         /** 
          * Finish updating a destination channel.
@@ -459,7 +453,7 @@ namespace util
          * @param frameID the per-frame identifier.
          * @version 1.0
          */
-        virtual void frameViewFinish( const uint32_t frameID ) { /* nop */ }
+        EQ_EXPORT virtual void frameViewFinish( const uint32_t frameID );
         //@}
 
         /** Notification that parameters influencing the vp/pvp have changed.*/

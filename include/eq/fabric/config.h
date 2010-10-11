@@ -121,10 +121,10 @@ namespace fabric
                                           const T** result ) const;
 
         /** @internal Update or init the given canvas in a running config. */
-        virtual void updateCanvas( CV* canvas ) { /* NOP */ }
+        virtual void updateCanvas( CV* ) { /* NOP */ }
 
         /** @internal Init the given canvas in a running config. */
-        virtual void exitCanvas( CV* canvas ) { /* NOP */ }
+        virtual void exitCanvas( CV* ) { /* NOP */ }
 
         /** Set the name of the object. @version 1.0 */
         EQFABRIC_EXPORT void setName( const std::string& name );
@@ -150,24 +150,43 @@ namespace fabric
         /** @name Attributes */
         //@{
         // Note: also update string array initialization in config.ipp
+
+        /** Floating-point attributes */
         enum FAttribute
         {
             FATTR_EYE_BASE, //!< The default interocular distance in meters
             FATTR_VERSION,  //!< The version of the file loaded
-            FATTR_FILL1,
-            FATTR_FILL2,
-            FATTR_ALL
+            FATTR_LAST,
+            FATTR_ALL = FATTR_LAST + 5
+        };
+
+        /** Integer attributes. */
+        enum IAttribute
+        {
+            IATTR_ROBUSTNESS, //!< Tolerate resource failures
+            IATTR_LAST,
+            IATTR_ALL = IATTR_LAST + 5
         };
         
         /** @internal */
         void setFAttribute( const FAttribute attr, const float value )
             { _fAttributes[attr] = value; }
+        /** @internal */
+        void setIAttribute( const IAttribute attr, const int32_t value )
+            { _iAttributes[attr] = value; }
 
         /** @return the given floating-point attribute. */
         float getFAttribute( const FAttribute attr ) const
             { return _fAttributes[attr]; }
+
+        /** @return the given integer attribute. */
+        int32_t getIAttribute( const IAttribute attr ) const
+            { return _iAttributes[attr]; }
+
         /** @internal */
         static const std::string& getFAttributeString( const FAttribute attr );
+        /** @internal */
+        static const std::string& getIAttributeString( const IAttribute attr );
         //@}
  
 
@@ -210,7 +229,7 @@ namespace fabric
         void sync( const uint32_t version );
         //@}
 
-        void output( std::ostream& os ) const {} //!< @internal
+        void output( std::ostream& ) const {} //!< @internal
 
     protected:
         /** @internal Construct a new config. */
@@ -223,7 +242,7 @@ namespace fabric
         EQFABRIC_EXPORT virtual void notifyMapped( net::NodePtr node );
 
         /** @internal Execute the slave remove request. */
-        EQFABRIC_EXPORT virtual void _removeChild( const uint32_t id )
+        EQFABRIC_EXPORT virtual void _removeChild( const uint32_t )
             { EQUNIMPLEMENTED; }
 
         uint32_t register_(); //!< @internal
@@ -236,16 +255,15 @@ namespace fabric
         /** @internal */
         const net::NodeID& getAppNodeID() const { return _appNodeID; }
 
-        /** @internal */
-        virtual void changeLatency( const uint32_t latency ) { /* NOP */ }
+        virtual void changeLatency( const uint32_t ) { /* NOP */ }//!< @internal
         virtual bool mapViewObjects() const { return false; } //!< @internal
         virtual bool mapNodeObjects() const { return false; } //!< @internal
 
         /** @internal */
-        virtual VisitorResult _acceptCompounds( V& visitor )
+        virtual VisitorResult _acceptCompounds( V& )
             { return TRAVERSE_CONTINUE; }
         /** @internal */
-        virtual VisitorResult _acceptCompounds( V& visitor ) const
+        virtual VisitorResult _acceptCompounds( V& ) const
             { return TRAVERSE_CONTINUE; }
         template< class C2, class V2 >
         friend VisitorResult _acceptImpl( C2*, V2& );
@@ -268,8 +286,11 @@ namespace fabric
         /** The parent server. */
         base::RefPtr< S > _server;
         
-        /** float attributes. */
+        /** Float attributes. */
         float _fAttributes[FATTR_ALL];
+
+        /** Integer attributes. */
+        int32_t _iAttributes[IATTR_ALL];
 
         /** The list of observers. */
         Observers _observers;
