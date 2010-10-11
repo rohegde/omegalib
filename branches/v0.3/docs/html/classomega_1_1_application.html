@@ -48,13 +48,11 @@
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">getName</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#aedc6e585d95cd6f9016934da271c0e48">createServer</a> ()=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Instantiates a new Channel instance.  <a href="#aedc6e585d95cd6f9016934da271c0e48"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_application_client.html">ApplicationClient</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#ab228230ce21fd3c49374d1829f4a74da">createClient</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27">initialize</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Called once for entire application initialization tasks.  <a href="#af6d539bada1db094aedd8cd88563eb27"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a2bcd2b501ad975b2e0af969fa89a7b96">initializePipe</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Called once for every initialized pipe (a graphic card, or any other resource seen as one logical graphic card).  <a href="#a2bcd2b501ad975b2e0af969fa89a7b96"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a12235e7053689a0e270f1f6e97cfd737">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">handleEvent</a> (const <a class="el" href="structomega_1_1_input_event.html">InputEvent</a> &amp;evt)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">getSystemManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_input_manager.html">InputManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">getInputManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">getDisplaySystem</a> ()</td></tr>
@@ -63,21 +61,46 @@ Static Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#ad8550f31f75c6c3ac250da17d411e1eb">MaxLayers</a> = 16</td></tr>
 </table>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a12235e7053689a0e270f1f6e97cfd737"></a><!-- doxytag: member="omega::Application::draw" ref="a12235e7053689a0e270f1f6e97cfd737" args="(const DrawContext &amp;context)" -->
+<a class="anchor" id="ab228230ce21fd3c49374d1829f4a74da"></a><!-- doxytag: member="omega::Application::createClient" ref="ab228230ce21fd3c49374d1829f4a74da" args="()=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::Application::draw </td>
+          <td class="memname">virtual <a class="el" href="classomega_1_1_application_client.html">ApplicationClient</a>* omega::Application::createClient </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
+          <td><code> [pure virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aedc6e585d95cd6f9016934da271c0e48"></a><!-- doxytag: member="omega::Application::createServer" ref="aedc6e585d95cd6f9016934da271c0e48" args="()=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a>* omega::Application::createServer </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Instantiates a new Channel instance. </p>
+<p>Users redefine this method to create instances of their own Channel objects. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>impl</em>&nbsp;</td><td>- the internal DisplaySystem-dependent channel implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -149,24 +172,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a873309379ba4cf40e8db4963e8fd1f6d"></a><!-- doxytag: member="omega::Application::handleEvent" ref="a873309379ba4cf40e8db4963e8fd1f6d" args="(const InputEvent &amp;evt)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool omega::Application::handleEvent </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_input_event.html">InputEvent</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="af6d539bada1db094aedd8cd88563eb27"></a><!-- doxytag: member="omega::Application::initialize" ref="af6d539bada1db094aedd8cd88563eb27" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -186,43 +191,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2bcd2b501ad975b2e0af969fa89a7b96"></a><!-- doxytag: member="omega::Application::initializePipe" ref="a2bcd2b501ad975b2e0af969fa89a7b96" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void omega::Application::initializePipe </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Called once for every initialized pipe (a graphic card, or any other resource seen as one logical graphic card). </p>
-
-</div>
-</div>
-<a class="anchor" id="a4b55f725a1b38f963c2933aa6c513096"></a><!-- doxytag: member="omega::Application::update" ref="a4b55f725a1b38f963c2933aa6c513096" args="(const UpdateContext &amp;context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void omega::Application::update </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="ad8550f31f75c6c3ac250da17d411e1eb"></a><!-- doxytag: member="omega::Application::MaxLayers" ref="ad8550f31f75c6c3ac250da17d411e1eb" args="" -->
 <div class="memitem">
@@ -238,10 +206,10 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/include/omega/<a class="el" href="_application_8h_source.html">Application.h</a></li>
+<li>D:/Workspace/omegalib-0.3/include/omega/<a class="el" href="_application_8h_source.html">Application.h</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:31 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

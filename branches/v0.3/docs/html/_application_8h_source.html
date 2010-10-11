@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/omega/Application.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/Application.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/omega/Application.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/Application.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_application_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -46,44 +46,87 @@
 <a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="osystem_8h.html">osystem.h</a>&quot;</span>
 <a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="_system_manager_8h.html">SystemManager.h</a>&quot;</span>
 <a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_input_event_8h.html">InputEvent.h</a>&quot;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="_draw_context_8h.html">DrawContext.h</a>&quot;</span>
-<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;<a class="code" href="_application_8h.html">Application.h</a>&quot;</span>
-<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;<a class="code" href="_update_context_8h.html">UpdateContext.h</a>&quot;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a><a class="code" href="namespaceomega.html">00023</a> <span class="keyword">namespace </span>omega
-<a name="l00024"></a>00024 {
-<a name="l00026"></a>00026 <span class="comment">// Forward declarations</span>
-<a name="l00027"></a>00027 <span class="keyword">class </span><a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>;
-<a name="l00028"></a>00028 <span class="keyword">class </span><a class="code" href="classomega_1_1_input_manager.html">InputManager</a>;
-<a name="l00029"></a><a class="code" href="classomega_1_1_application.html">00029</a> <span class="keyword">class </span><a class="code" href="classomega_1_1_display_system.html">DisplaySystem</a>;
-<a name="l00030"></a>00030 
-<a name="l00032"></a><a class="code" href="classomega_1_1_application.html#ad8550f31f75c6c3ac250da17d411e1eb">00032</a> <span class="keyword">class </span><a class="code" href="classomega_1_1_application.html">Application</a>
-<a name="l00033"></a>00033 {
-<a name="l00034"></a>00034 <span class="keyword">public</span>:
-<a name="l00035"></a><a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">00035</a>         <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_application.html#ad8550f31f75c6c3ac250da17d411e1eb">MaxLayers</a> = 16;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037 <span class="keyword">public</span>:
-<a name="l00038"></a><a class="code" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27">00038</a>         <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">getName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;OmegaLib &quot;</span> OMEGA_VERSION; }
-<a name="l00039"></a>00039 
-<a name="l00041"></a>00041         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27" title="Called once for entire application initialization tasks.">initialize</a>() {}
-<a name="l00042"></a><a class="code" href="classomega_1_1_application.html#a2bcd2b501ad975b2e0af969fa89a7b96">00042</a> 
-<a name="l00045"></a><a class="code" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">00045</a>         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a2bcd2b501ad975b2e0af969fa89a7b96" title="Called once for every initialized pipe (a graphic card, or any other resource seen as one logical gra...">initializePipe</a>() {}
-<a name="l00046"></a><a class="code" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">00046</a> 
-<a name="l00047"></a>00047         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a12235e7053689a0e270f1f6e97cfd737">draw</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">DrawContext</a>&amp; context) {}
-<a name="l00048"></a><a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">00048</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_application.html#a873309379ba4cf40e8db4963e8fd1f6d">handleEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">InputEvent</a>&amp; evt) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }
-<a name="l00049"></a><a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">00049</a>         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#a4b55f725a1b38f963c2933aa6c513096">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">UpdateContext</a>&amp; context) {}
-<a name="l00050"></a><a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">00050</a> 
-<a name="l00051"></a>00051         <a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>*  <a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">getSystemManager</a>()  { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#aefb1daba6a0ea15ba4ef97f0e2428b35">SystemManager::instance</a>(); }
-<a name="l00052"></a>00052         <a class="code" href="classomega_1_1_input_manager.html">InputManager</a>*   <a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">getInputManager</a>()   { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#aefb1daba6a0ea15ba4ef97f0e2428b35">SystemManager::instance</a>()-&gt;<a class="code" href="classomega_1_1_system_manager.html#afa5e972b7037509ef221e9922566c5db" title="Gets the InputManager object.">getInputManager</a>(); }
-<a name="l00053"></a>00053         DisplaySystem*  <a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">getDisplaySystem</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#aefb1daba6a0ea15ba4ef97f0e2428b35">SystemManager::instance</a>()-&gt;getDisplaySystem(); }
-<a name="l00054"></a>00054 };
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 }; <span class="comment">// namespace omega</span>
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="preprocessor">#endif</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="_application_8h.html">Application.h</a>&quot;</span>
+<a name="l00020"></a>00020 
+<a name="l00021"></a><a class="code" href="namespaceomega.html">00021</a> <span class="keyword">namespace </span>omega
+<a name="l00022"></a>00022 {
+<a name="l00024"></a>00024         <span class="comment">// Forward declarations</span>
+<a name="l00025"></a>00025         <span class="keyword">class </span><a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>;
+<a name="l00026"></a>00026         <span class="keyword">class </span><a class="code" href="classomega_1_1_input_manager.html">InputManager</a>;
+<a name="l00027"></a>00027         <span class="keyword">class </span><a class="code" href="classomega_1_1_display_system.html">DisplaySystem</a>;
+<a name="l00028"></a>00028         <span class="keyword">class </span><a class="code" href="classomega_1_1_application.html">Application</a>;
+<a name="l00029"></a><a class="code" href="structomega_1_1_update_context.html">00029</a> 
+<a name="l00031"></a><a class="code" href="structomega_1_1_update_context.html#a3bc1a4312f4764766d6f870931c19bcf">00031</a>         <span class="keyword">struct </span><a class="code" href="structomega_1_1_update_context.html">UpdateContext</a>
+<a name="l00032"></a><a class="code" href="structomega_1_1_update_context.html#ac5dec975b9a9e59b2498f39fa0ea086c">00032</a>         {
+<a name="l00033"></a>00033                 <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_update_context.html#a3bc1a4312f4764766d6f870931c19bcf">frameNum</a>;
+<a name="l00034"></a>00034                 <span class="keywordtype">float</span> <a class="code" href="structomega_1_1_update_context.html#ac5dec975b9a9e59b2498f39fa0ea086c">dt</a>;
+<a name="l00035"></a>00035         };
+<a name="l00036"></a><a class="code" href="structomega_1_1_draw_context.html">00036</a> 
+<a name="l00038"></a><a class="code" href="structomega_1_1_draw_context.html#aa50a45735995efa72ba99e094d663e72">00038</a>         <span class="keyword">struct </span><a class="code" href="structomega_1_1_draw_context.html">DrawContext</a>
+<a name="l00039"></a><a class="code" href="structomega_1_1_draw_context.html#a8194febe50624db62d1f3f3989d61f28">00039</a>         {
+<a name="l00040"></a><a class="code" href="structomega_1_1_draw_context.html#a01f5314a3aed3f05ef4968c301a55984">00040</a>                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_draw_context.html#aa50a45735995efa72ba99e094d663e72">frameNum</a>;
+<a name="l00041"></a><a class="code" href="structomega_1_1_draw_context.html#ab503c6bb5d1d58902d1fec7d1081a8ba">00041</a>                 <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_draw_context.html#a8194febe50624db62d1f3f3989d61f28">layer</a>;
+<a name="l00042"></a><a class="code" href="structomega_1_1_draw_context.html#a13b85787ad5d3836b7ff845d0515abfc">00042</a>                 <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_draw_context.html#a01f5314a3aed3f05ef4968c301a55984">viewportX</a>;
+<a name="l00043"></a><a class="code" href="structomega_1_1_draw_context.html#a179cb86de62af11a5c0bddf8613f5f84">00043</a>                 <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_draw_context.html#ab503c6bb5d1d58902d1fec7d1081a8ba">viewportY</a>;
+<a name="l00044"></a>00044                 <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_draw_context.html#a13b85787ad5d3836b7ff845d0515abfc">viewportWidth</a>;
+<a name="l00045"></a>00045                 <span class="keywordtype">int</span> <a class="code" href="structomega_1_1_draw_context.html#a179cb86de62af11a5c0bddf8613f5f84">viewportHeight</a>;
+<a name="l00046"></a>00046         };
+<a name="l00047"></a><a class="code" href="classomega_1_1_application_client.html">00047</a> 
+<a name="l00049"></a>00049         <span class="keyword">class </span><a class="code" href="classomega_1_1_application_client.html">ApplicationClient</a>
+<a name="l00050"></a><a class="code" href="classomega_1_1_application_client.html#ab0ca33394de69dec5528f86673d42569">00050</a>         {
+<a name="l00051"></a><a class="code" href="classomega_1_1_application_client.html#a53d9ebdc6e73af72fff910c905419ba3">00051</a>         <span class="keyword">public</span>:
+<a name="l00052"></a>00052                 <a class="code" href="classomega_1_1_application_client.html#ab0ca33394de69dec5528f86673d42569">ApplicationClient</a>(<a class="code" href="classomega_1_1_application.html">Application</a>* app): myApplication(app) {}
+<a name="l00053"></a><a class="code" href="classomega_1_1_application_client.html#a62775189a91115fb1f0efc6a930a0556">00053</a>                 <span class="keyword">virtual</span> <a class="code" href="classomega_1_1_application_client.html#a53d9ebdc6e73af72fff910c905419ba3">~ApplicationClient</a>() {}
+<a name="l00054"></a><a class="code" href="classomega_1_1_application_client.html#acad74c2c10b487b6c4113e5ce5845daa">00054</a> 
+<a name="l00055"></a><a class="code" href="classomega_1_1_application_client.html#ae2cff2a35c74ba7b1e410a18c7f3b7a4">00055</a>                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application_client.html#a62775189a91115fb1f0efc6a930a0556">initialize</a>() {}
+<a name="l00056"></a>00056                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application_client.html#acad74c2c10b487b6c4113e5ce5845daa">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">UpdateContext</a>&amp; context) {}
+<a name="l00057"></a><a class="code" href="classomega_1_1_application_client.html#af2072b73aaeca8788d45071b75fe56f0">00057</a>                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application_client.html#ae2cff2a35c74ba7b1e410a18c7f3b7a4">draw</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">DrawContext</a>&amp; context) {}
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059                 <a class="code" href="classomega_1_1_application.html">Application</a>* <a class="code" href="classomega_1_1_application_client.html#af2072b73aaeca8788d45071b75fe56f0">getApplication</a>() { <span class="keywordflow">return</span> myApplication; }
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061         <span class="keyword">private</span>:
+<a name="l00062"></a>00062                 Application* myApplication;
+<a name="l00063"></a>00063         };
+<a name="l00064"></a><a class="code" href="classomega_1_1_application_server.html">00064</a> 
+<a name="l00066"></a>00066         <span class="keyword">class </span><a class="code" href="classomega_1_1_application_server.html">ApplicationServer</a>
+<a name="l00067"></a><a class="code" href="classomega_1_1_application_server.html#a2286d18973c95ba8b4b73895b5e52172">00067</a>         {
+<a name="l00068"></a><a class="code" href="classomega_1_1_application_server.html#a2ffcea1a7eb3479038a9788f2a168dfa">00068</a>         <span class="keyword">public</span>:
+<a name="l00069"></a>00069                 <a class="code" href="classomega_1_1_application_server.html#a2286d18973c95ba8b4b73895b5e52172">ApplicationServer</a>(<a class="code" href="classomega_1_1_application.html">Application</a>* app): myApplication(app) {}
+<a name="l00070"></a><a class="code" href="classomega_1_1_application_server.html#a9c510c610f7883eb920faad7d7cda5c7">00070</a>                 <span class="keyword">virtual</span> <a class="code" href="classomega_1_1_application_server.html#a2ffcea1a7eb3479038a9788f2a168dfa">~ApplicationServer</a>() {}
+<a name="l00071"></a><a class="code" href="classomega_1_1_application_server.html#ae4a89e32bfbaf28e8eb4178e18fe0cdf">00071</a> 
+<a name="l00072"></a><a class="code" href="classomega_1_1_application_server.html#a00cc6ae0260bb511e4d2cb58b50e2014">00072</a>                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application_server.html#a9c510c610f7883eb920faad7d7cda5c7">initialize</a>() {}
+<a name="l00073"></a>00073                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application_server.html#ae4a89e32bfbaf28e8eb4178e18fe0cdf">update</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_update_context.html">UpdateContext</a>&amp; context) {}
+<a name="l00074"></a><a class="code" href="classomega_1_1_application_server.html#aed84476ee1b4a6b404cc2d1223fe6ec0">00074</a>                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classomega_1_1_application_server.html#a00cc6ae0260bb511e4d2cb58b50e2014">handleEvent</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_input_event.html">InputEvent</a>&amp; evt) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076                 <a class="code" href="classomega_1_1_application.html">Application</a>* <a class="code" href="classomega_1_1_application_server.html#aed84476ee1b4a6b404cc2d1223fe6ec0">getApplication</a>() { <span class="keywordflow">return</span> myApplication; }
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078         <span class="keyword">private</span>:
+<a name="l00079"></a>00079                 Application* myApplication;
+<a name="l00080"></a>00080         };
+<a name="l00081"></a><a class="code" href="classomega_1_1_application.html">00081</a> 
+<a name="l00083"></a>00083         <span class="keyword">class </span><a class="code" href="classomega_1_1_application.html">Application</a>
+<a name="l00084"></a><a class="code" href="classomega_1_1_application.html#ad8550f31f75c6c3ac250da17d411e1eb">00084</a>         {
+<a name="l00085"></a>00085         <span class="keyword">public</span>:
+<a name="l00086"></a>00086                 <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_application.html#ad8550f31f75c6c3ac250da17d411e1eb">MaxLayers</a> = 16;
+<a name="l00087"></a><a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">00087</a> 
+<a name="l00088"></a>00088         <span class="keyword">public</span>:
+<a name="l00089"></a>00089                 <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classomega_1_1_application.html#a9dac494f78383b5fce93feeffe81cad9">getName</a>() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;OmegaLib &quot;</span> OMEGA_VERSION; }
+<a name="l00090"></a>00090 
+<a name="l00094"></a>00094                 <span class="keyword">virtual</span> <a class="code" href="classomega_1_1_application_server.html">ApplicationServer</a>* <a class="code" href="classomega_1_1_application.html#aedc6e585d95cd6f9016934da271c0e48" title="Instantiates a new Channel instance.">createServer</a>() = 0;
+<a name="l00095"></a>00095                 <span class="keyword">virtual</span> <a class="code" href="classomega_1_1_application_client.html">ApplicationClient</a>* <a class="code" href="classomega_1_1_application.html#ab228230ce21fd3c49374d1829f4a74da">createClient</a>() = 0;
+<a name="l00096"></a><a class="code" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27">00096</a> 
+<a name="l00098"></a><a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">00098</a>                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_application.html#af6d539bada1db094aedd8cd88563eb27" title="Called once for entire application initialization tasks.">initialize</a>() {}
+<a name="l00099"></a><a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">00099</a> 
+<a name="l00100"></a><a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">00100</a>                 <a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>*  <a class="code" href="classomega_1_1_application.html#af2795dc5909becb38f5342f42255c30b">getSystemManager</a>()  { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>(); }
+<a name="l00101"></a>00101                 <a class="code" href="classomega_1_1_input_manager.html">InputManager</a>*   <a class="code" href="classomega_1_1_application.html#a90be2744933c132b927cb2389c908e20">getInputManager</a>()   { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>()-&gt;<a class="code" href="classomega_1_1_system_manager.html#a6c818cb025ebd5c5e75fcf212185455f" title="Gets the InputManager object.">getInputManager</a>(); }
+<a name="l00102"></a>00102                 DisplaySystem*  <a class="code" href="classomega_1_1_application.html#ad169f49dc54ac3ff8c4668096eb73e1b">getDisplaySystem</a>() { <span class="keywordflow">return</span> <a class="code" href="classomega_1_1_system_manager.html#a309fbe5e9d21b0a6945908522aa0cd5e">SystemManager::instance</a>()-&gt;getDisplaySystem(); }
+<a name="l00103"></a>00103         };
+<a name="l00104"></a>00104 }; <span class="comment">// namespace omega</span>
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

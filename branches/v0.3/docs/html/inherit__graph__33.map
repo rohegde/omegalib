@@ -1,9 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classoutk_1_1ui_1_1_widget.html" title="outk::ui::Widget" alt="" coords="7,89,143,121"/>
-<area shape="rect" id="node3" href="$classoutk_1_1ui_1_1_abstract_button.html" title="outk::ui::AbstractButton" alt="" coords="193,5,383,37"/>
-<area shape="rect" id="node9" href="$classoutk_1_1ui_1_1_box.html" title="outk::ui::Box" alt="" coords="232,61,344,93"/>
-<area shape="rect" id="node11" href="$classoutk_1_1ui_1_1_image.html" title="outk::ui::Image" alt="" coords="223,117,353,149"/>
-<area shape="rect" id="node13" href="$classoutk_1_1ui_1_1_label.html" title="outk::ui::Label" alt="" coords="227,173,349,205"/>
-<area shape="rect" id="node5" href="$classoutk_1_1ui_1_1_button.html" title="outk::ui::Button" alt="" coords="432,5,563,37"/>
-<area shape="rect" id="node7" href="$classoutk_1_1ui_1_1_palladium_button.html" title="outk::ui::PalladiumButton" alt="" coords="612,5,812,37"/>
+<area shape="rect" id="node1" href="$classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="5,5,189,37"/>
 </map>

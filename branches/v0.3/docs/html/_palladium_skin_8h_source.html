@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/outk/ui/PalladiumSkin.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/ui/PalladiumSkin.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/outk/ui/PalladiumSkin.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/ui/PalladiumSkin.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_palladium_skin_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -42,40 +42,59 @@
 <a name="l00012"></a>00012 <span class="preprocessor">#ifndef __PALLADIUM_SKIN_H__</span>
 <a name="l00013"></a>00013 <span class="preprocessor"></span><span class="preprocessor">#define __PALLADIUM_SKIN_H__</span>
 <a name="l00014"></a>00014 <span class="preprocessor"></span>
-<a name="l00015"></a>00015 <span class="preprocessor">#include &quot;<a class="code" href="_widget_factory_8h.html">outk/ui/WidgetFactory.h</a>&quot;</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#include &quot;<a class="code" href="_widget_factory_8h.html">omega/ui/WidgetFactory.h</a>&quot;</span>
 <a name="l00016"></a>00016 
-<a name="l00017"></a>00017 <span class="keyword">namespace </span>outk
+<a name="l00017"></a>00017 <span class="keyword">namespace </span>omega
 <a name="l00018"></a>00018 {
 <a name="l00019"></a>00019 <span class="keyword">namespace </span>ui
 <a name="l00020"></a>00020 {
 <a name="l00021"></a>00021 
-<a name="l00023"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_button.html">00023</a>         <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_palladium_button.html">PalladiumButton</a>: <span class="keyword">public</span> <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>
+<a name="l00023"></a><a class="code" href="classomega_1_1ui_1_1_palladium_button.html">00023</a> <span class="keyword">class </span><a class="code" href="classomega_1_1ui_1_1_palladium_button.html">PalladiumButton</a>: <span class="keyword">public</span> <a class="code" href="classomega_1_1ui_1_1_button.html">Button</a>
 <a name="l00024"></a>00024 {
 <a name="l00025"></a>00025 <span class="keyword">public</span>:
-<a name="l00026"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#a3f303107118dc790e2b50910e1b12edb">00026</a>         <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#a3f303107118dc790e2b50910e1b12edb">PalladiumButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name): <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>(name) {}
+<a name="l00026"></a><a class="code" href="classomega_1_1ui_1_1_palladium_button.html#ac7068a5a9a36a3878402e8d378217b72">00026</a>         <a class="code" href="classomega_1_1ui_1_1_palladium_button.html#ac7068a5a9a36a3878402e8d378217b72">PalladiumButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name): <a class="code" href="classomega_1_1ui_1_1_button.html">Button</a>(name) {}
 <a name="l00027"></a>00027 <span class="keyword">protected</span>:
-<a name="l00028"></a>00028         OUTK_API <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html#aed16c48520f42d9fec0c101b410e4925">draw</a>();
-<a name="l00029"></a>00029 };
-<a name="l00030"></a>00030 
-<a name="l00032"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html">00032</a> <span class="keyword">class </span><a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html">PalladiumWidgetFactory</a>: <span class="keyword">public</span> <a class="code" href="classoutk_1_1ui_1_1_widget_factory.html">WidgetFactory</a>
-<a name="l00033"></a>00033 {
-<a name="l00034"></a>00034 <span class="keyword">public</span>:
-<a name="l00035"></a><a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html#ab1da3bb03d8d05d5e442d860f1b82b10">00035</a>         <span class="keyword">virtual</span> <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>* <a class="code" href="classoutk_1_1ui_1_1_palladium_widget_factory.html#ab1da3bb03d8d05d5e442d860f1b82b10">createButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classoutk_1_1ui_1_1_widget.html">Widget</a>* parent)
-<a name="l00036"></a>00036         {
-<a name="l00037"></a>00037                 <a class="code" href="classoutk_1_1ui_1_1_button.html">Button</a>* button = <span class="keyword">new</span> <a class="code" href="classoutk_1_1ui_1_1_palladium_button.html">PalladiumButton</a>(name);
-<a name="l00038"></a>00038                 parent-&gt;<a class="code" href="classoutk_1_1ui_1_1_widget.html#afa0accd94a397daa41dd2c74a0e64bd6">addChild</a>(button);
-<a name="l00039"></a>00039                 <span class="keywordflow">return</span> button;
-<a name="l00040"></a>00040         }
-<a name="l00041"></a>00041 };
-<a name="l00042"></a>00042 
+<a name="l00028"></a>00028         OUTILS_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_palladium_button.html#a70e41d40761f050da8ceba1f9804a5d0">draw</a>();
+<a name="l00029"></a>00029 <span class="keyword">private</span>:
+<a name="l00030"></a>00030         <span class="keywordtype">float</span> myAnim;
+<a name="l00031"></a>00031 };
+<a name="l00032"></a>00032 
+<a name="l00034"></a><a class="code" href="classomega_1_1ui_1_1_palladium_slider.html">00034</a> <span class="keyword">class </span><a class="code" href="classomega_1_1ui_1_1_palladium_slider.html">PalladiumSlider</a>: <span class="keyword">public</span> <a class="code" href="classomega_1_1ui_1_1_slider.html">Slider</a>
+<a name="l00035"></a>00035 {
+<a name="l00036"></a>00036 <span class="keyword">public</span>:
+<a name="l00037"></a><a class="code" href="classomega_1_1ui_1_1_palladium_slider.html#a5ce09910cf38c1331ca7e041203cad21">00037</a>         <a class="code" href="classomega_1_1ui_1_1_palladium_slider.html#a5ce09910cf38c1331ca7e041203cad21">PalladiumSlider</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name): <a class="code" href="classomega_1_1ui_1_1_slider.html">Slider</a>(name) {}
+<a name="l00038"></a>00038 <span class="keyword">protected</span>:
+<a name="l00039"></a>00039         OUTILS_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1ui_1_1_palladium_slider.html#a80c7c6d5406b6d21c0c19ca74b6bb5ae">draw</a>();
+<a name="l00040"></a>00040 <span class="keyword">private</span>:
+<a name="l00041"></a>00041         <span class="keywordtype">float</span> myAnim;
+<a name="l00042"></a>00042 };
 <a name="l00043"></a>00043 
-<a name="l00044"></a>00044 }; <span class="comment">// namespace ui</span>
-<a name="l00045"></a>00045 }; <span class="comment">// namespace outk</span>
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047 <span class="preprocessor">#endif</span>
+<a name="l00045"></a><a class="code" href="classomega_1_1ui_1_1_palladium_widget_factory.html">00045</a> <span class="keyword">class </span><a class="code" href="classomega_1_1ui_1_1_palladium_widget_factory.html">PalladiumWidgetFactory</a>: <span class="keyword">public</span> <a class="code" href="classomega_1_1ui_1_1_widget_factory.html">WidgetFactory</a>
+<a name="l00046"></a>00046 {
+<a name="l00047"></a>00047 <span class="keyword">public</span>:
+<a name="l00048"></a><a class="code" href="classomega_1_1ui_1_1_palladium_widget_factory.html#a3d372f97a5a1c90b44c6604bd4ae41e1">00048</a>         <span class="keyword">virtual</span> <a class="code" href="classomega_1_1ui_1_1_button.html">Button</a>* <a class="code" href="classomega_1_1ui_1_1_palladium_widget_factory.html#a3d372f97a5a1c90b44c6604bd4ae41e1">createButton</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classomega_1_1ui_1_1_widget.html">Widget</a>* parent)
+<a name="l00049"></a>00049         {
+<a name="l00050"></a>00050                 <a class="code" href="classomega_1_1ui_1_1_button.html">Button</a>* button = <span class="keyword">new</span> <a class="code" href="classomega_1_1ui_1_1_palladium_button.html">PalladiumButton</a>(name);
+<a name="l00051"></a>00051                 parent-&gt;<a class="code" href="classomega_1_1ui_1_1_widget.html#a351e6f269e5c7aefdf811e5ac268a201">addChild</a>(button);
+<a name="l00052"></a>00052                 <span class="keywordflow">return</span> button;
+<a name="l00053"></a>00053         }
+<a name="l00054"></a>00054 
+<a name="l00055"></a><a class="code" href="classomega_1_1ui_1_1_palladium_widget_factory.html#ae057d1af8f17d6cd59f625a7f656f92f">00055</a>         <span class="keyword">virtual</span> <a class="code" href="classomega_1_1ui_1_1_slider.html">Slider</a>* <a class="code" href="classomega_1_1ui_1_1_palladium_widget_factory.html#ae057d1af8f17d6cd59f625a7f656f92f">createSlider</a>(<a class="code" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> name, <a class="code" href="classomega_1_1ui_1_1_widget.html">Widget</a>* parent)
+<a name="l00056"></a>00056         {
+<a name="l00057"></a>00057                 <a class="code" href="classomega_1_1ui_1_1_slider.html">Slider</a>* slider = <span class="keyword">new</span> <a class="code" href="classomega_1_1ui_1_1_palladium_slider.html">PalladiumSlider</a>(name);
+<a name="l00058"></a>00058                 parent-&gt;<a class="code" href="classomega_1_1ui_1_1_widget.html#a351e6f269e5c7aefdf811e5ac268a201">addChild</a>(slider);
+<a name="l00059"></a>00059                 <span class="keywordflow">return</span> slider;
+<a name="l00060"></a>00060         }
+<a name="l00061"></a>00061 };
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064 }; <span class="comment">// namespace ui</span>
+<a name="l00065"></a>00065 }; <span class="comment">// namespace omega</span>
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

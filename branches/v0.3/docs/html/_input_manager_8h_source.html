@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/omega/InputManager.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/InputManager.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/omega/InputManager.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/InputManager.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_input_manager_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -58,30 +58,30 @@
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030 <span class="keyword">public</span>:
 <a name="l00031"></a>00031         <span class="comment">// Class constructor.</span>
-<a name="l00032"></a>00032         OMEGA_API <a class="code" href="classomega_1_1_input_manager.html#a6b811b45654e0418790a318a122cc66b">InputManager</a>(<a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>* sys);
+<a name="l00032"></a>00032         OMEGA_API <a class="code" href="classomega_1_1_input_manager.html#a4482d3d264835584f8d92bd2b88d6eb4">InputManager</a>(<a class="code" href="classomega_1_1_system_manager.html">SystemManager</a>* sys);
 <a name="l00033"></a>00033 
 <a name="l00034"></a>00034         <span class="comment">// Class destructor</span>
-<a name="l00035"></a>00035         OMEGA_API <a class="code" href="classomega_1_1_input_manager.html#af518290877dd183606709d5852db5491">~InputManager</a>();
+<a name="l00035"></a>00035         OMEGA_API <a class="code" href="classomega_1_1_input_manager.html#a2127457514de0897b9be04d68eb688d7">~InputManager</a>();
 <a name="l00036"></a>00036 
 <a name="l00037"></a>00037         <span class="comment">// Add a new input service to the manager.</span>
-<a name="l00038"></a>00038         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#ad215e084be1178f76ae2cb5be388e3be">addService</a>(<a class="code" href="classomega_1_1_input_service.html">InputService</a>* svc);
-<a name="l00039"></a>00039         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a6e4d17c0afdbc97d896255878fb42ecb">removeService</a>(<a class="code" href="classomega_1_1_input_service.html">InputService</a>* svc);
+<a name="l00038"></a>00038         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a23eae4d77fdeaa205fa0cf25e39d0d48">addService</a>(<a class="code" href="classomega_1_1_input_service.html">InputService</a>* svc);
+<a name="l00039"></a>00039         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#ae2e13126bfea16158186067c3b4ea3b8">removeService</a>(<a class="code" href="classomega_1_1_input_service.html">InputService</a>* svc);
 <a name="l00040"></a>00040 
 <a name="l00041"></a>00041         <span class="comment">// initialize</span>
-<a name="l00042"></a>00042         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#aa8d39cc6c1a5990f41a03dfbbe5262bb">initialize</a>();
-<a name="l00043"></a>00043         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#ab56355d56fcd3027e7d98dbd8b510665">start</a>();
-<a name="l00044"></a>00044         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#ae28cb071ea47ca8a1773ff66019296e7">stop</a>();
-<a name="l00045"></a>00045         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a366115a0b7cc0e79696d3747a156c2a6">dispose</a>();
+<a name="l00042"></a>00042         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a75d9bc68979f97bf1e6f3b8f513c1b13">initialize</a>();
+<a name="l00043"></a>00043         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#ab81abfa54b4dccb41ce450aaebc6bc1b">start</a>();
+<a name="l00044"></a>00044         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#af7fb6df417e1d2e8dc83d78bbc107a86">stop</a>();
+<a name="l00045"></a>00045         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#aa7963462b8f500316bfe238120a36a27">dispose</a>();
 <a name="l00046"></a>00046 
 <a name="l00047"></a>00047         <span class="comment">// TEMPORARY: this will run in a thread in the future.</span>
-<a name="l00048"></a>00048         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a7a266963db1ce3a7f47a260ff95590fa">poll</a>();
+<a name="l00048"></a>00048         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a6826fcdf225a3c85acd902901787c236">poll</a>();
 <a name="l00049"></a>00049 
-<a name="l00050"></a>00050         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a3f470f3658b1f79b4d8ba62ff705b7f2">processEvents</a>(<a class="code" href="classomega_1_1_application.html">Application</a>* app);
+<a name="l00050"></a>00050         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a4418b98f88109aee956a1325fef8e5f0">processEvents</a>(<a class="code" href="classomega_1_1_application_server.html">ApplicationServer</a>* app);
 <a name="l00051"></a>00051 
 <a name="l00052"></a><a class="code" href="classomega_1_1_input_manager.html#a3f127ef4f6207b27fbee08ee5c9bfc50">00052</a>         OMEGA_API <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_input_manager.html#a3f127ef4f6207b27fbee08ee5c9bfc50">getAvailableEvents</a>() { <span class="keywordflow">return</span> myAvailableEvents; }
 <a name="l00053"></a><a class="code" href="classomega_1_1_input_manager.html#a0cb53e11f16794d5e5adc768d2ed8803">00053</a>         OMEGA_API <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_input_manager.html#a0cb53e11f16794d5e5adc768d2ed8803">getDroppedEvents</a>() { <span class="keywordflow">return</span> myDroppedEvents; }
 <a name="l00054"></a><a class="code" href="classomega_1_1_input_manager.html#a7676476c8d97451a859e82e5a33b9cbe">00054</a>         OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_input_manager.html#a7676476c8d97451a859e82e5a33b9cbe">resetDroppedEvents</a>() { myDroppedEvents = 0; }
-<a name="l00055"></a>00055         OMEGA_API <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_input_manager.html#a6f61ccda0f4ddda5a47795ccded51f4c">getEvents</a>(<a class="code" href="structomega_1_1_input_event.html">InputEvent</a>* ptr, <span class="keywordtype">int</span> maxEvents);
+<a name="l00055"></a>00055         OMEGA_API <span class="keywordtype">int</span> <a class="code" href="classomega_1_1_input_manager.html#aa7dc6bf918d6876d200b01b07788131a">getEvents</a>(<a class="code" href="structomega_1_1_input_event.html">InputEvent</a>* ptr, <span class="keywordtype">int</span> maxEvents);
 <a name="l00056"></a>00056 
 <a name="l00057"></a>00057 <span class="keyword">public</span>:
 <a name="l00058"></a>00058         <span class="comment">// The maximum number of events stored in the event buffer.</span>
@@ -112,7 +112,7 @@
 <a name="l00083"></a>00083 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

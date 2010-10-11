@@ -36,7 +36,8 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
   <div class="headertitle">
 <h1>outk::gfx::GpuProgram Class Reference</h1>  </div>
 </div>
@@ -51,14 +52,20 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93d">PrimType</a> { <a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93da6044e6f4fce1d999afbaec483598be37">PrimPoints</a>, 
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93d">PrimType</a> { <br/>
+&nbsp;&nbsp;<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93da5966dd4bbe9cdcb8b03df01f504267c2">PrimNone</a>, 
+<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93da6044e6f4fce1d999afbaec483598be37">PrimPoints</a>, 
 <a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93dae85ae514c87672e9611f4e4dccdf2c69">PrimLines</a>, 
 <a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93da8c48f4e0f89a82bf0f27ef68161f78f5">PrimTriangles</a>, 
-<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93da8b3a9ddbc6bcfa0921ce43f867b3c32f">PrimTriangleStrip</a>
+<br/>
+&nbsp;&nbsp;<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93da8b3a9ddbc6bcfa0921ce43f867b3c32f">PrimTriangleStrip</a>
+<br/>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OUTK_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a7c2977dfcf213112f247147f00226ea6">GpuProgram</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a04f8f2dff0c809dd9bda85b35e71e58c">GpuProgram</a> (<a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a> *gpuMng)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a6be63153bd9c2a6f620eec1b282203e8">getManager</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the Gpu manager owning this program.  <a href="#a6be63153bd9c2a6f620eec1b282203e8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#ad8bd26d79f650ab6b3542ea24477b8bb">setComputeShader</a> (<a class="el" href="classoutk_1_1gfx_1_1_compute_shader.html">ComputeShader</a> *shader)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the compute shader for this program.  <a href="#ad8bd26d79f650ab6b3542ea24477b8bb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoutk_1_1gfx_1_1_compute_shader.html">ComputeShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a2f3dca5a5284bdca59511a38e81e597a">getComputeShader</a> ()</td></tr>
@@ -71,17 +78,24 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a26cce5c4c7bd69cc2859bc87cf592116">setFragmentShader</a> (<a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a> *shader)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the fragment shader for this program.  <a href="#a26cce5c4c7bd69cc2859bc87cf592116"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoutk_1_1gfx_1_1_fragment_shader.html">FragmentShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a9def64ddbf5a80c32f5f338cf1729ee9">getFragmentShader</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a83b53a43f2997865c74a8cbe591446e7">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, int value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a96876c284a2c330638278a0249935ed1">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, <a class="el" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5">omega::Vector2i</a> value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a1d265edb2ba972ce4f773d1b1fc5d258">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, <a class="el" href="namespaceomega.html#a6d6ca1d076752860b8fc4afab8465560">omega::Vector3i</a> value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#ad63accc8de83f5a5c073ea54ea8e73d8">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, <a class="el" href="namespaceomega.html#a572b3f8d2c37469de15a6f42a1238ba2">omega::Vector4i</a> value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a68341d7e7a329fd244ef21c0c3e70a1e">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, float value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#aa96c8cb2d936671bae0e115bb23c656e">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, <a class="el" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261">omega::Vector2f</a> value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#adc3bc2c298e4f5f35114cbd917e74fa0">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, <a class="el" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb">omega::Vector3f</a> value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#afa7c9e09583e1161a6001cb876a417d0">setParameter</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;name, <a class="el" href="namespaceomega.html#ab46b49fae37b4ba2d9069f3f39ae6ee5">omega::Vector4f</a> value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#ad300872edc6c6126d713d82389a2c5f2">setInput</a> (int index, <a class="el" href="classoutk_1_1gfx_1_1_gpu_data.html">GpuData</a> *input)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a Gpu constant to the program.  <a href="#ad300872edc6c6126d713d82389a2c5f2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a44804f61e503c115af00dfd9fb93567f">clearInput</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Clear the program constant table.  <a href="#a44804f61e503c115af00dfd9fb93567f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#aa2351899e514da339bb36ae5bb735fff">getComputeDimensions</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a9e985ff6dfcb047e8ee34369d72394fc">setComputeDimensions</a> (int value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#aa63d04f7a687b83504cb6942158061cb">getGlobalComputeThreads</a> (int dim)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a1daf2f59271789090dc0dc00e5641c30">getLocalComputeThreads</a> (int dim)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a0f58446bab607df6f647ed28c22e15f0">setGlobalComputeThreads</a> (int dim, size_t value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a6e936dece37af83d2c8e997b2f6db7a6">setLocalComputeThreads</a> (int dim, size_t value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a35b4a012e324d2436d548aee3133d8d3">setNumRenderItems</a> (int size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a6c8819f3c2cdc03441603c26641b5d08">getNumrenderItems</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a5fd8887a728ba0c62541dcf44ddd3242">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a33a7b4f4e7b53dcfb33e363867763cc7">activate</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a8c12b33668076ce99c4500a3dcf0557e">run</a> (<a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html">VertexBuffer</a> *vertexBuffer, <a class="el" href="classoutk_1_1gfx_1_1_index_buffer.html">IndexBuffer</a> *indexBuffer=NULL, <a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93d">PrimType</a> primType=PrimPoints)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">OUTK_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a8b862bcb7a73173ac1ce7671f27a0206">run</a> (<a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93d">PrimType</a> primType=PrimNone)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a5d814ebcd367c56736e05cb3e0d88fcf">MaxInputs</a> = 64</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Represents a program runnable on a Gpu unit. </p>
@@ -98,6 +112,8 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a667e0b096d9dc610a8a11186d1b2b93da5966dd4bbe9cdcb8b03df01f504267c2"></a><!-- doxytag: member="PrimNone" ref="a667e0b096d9dc610a8a11186d1b2b93da5966dd4bbe9cdcb8b03df01f504267c2" args="" -->PrimNone</em>&nbsp;</td><td>
+</td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a667e0b096d9dc610a8a11186d1b2b93da6044e6f4fce1d999afbaec483598be37"></a><!-- doxytag: member="PrimPoints" ref="a667e0b096d9dc610a8a11186d1b2b93da6044e6f4fce1d999afbaec483598be37" args="" -->PrimPoints</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a667e0b096d9dc610a8a11186d1b2b93dae85ae514c87672e9611f4e4dccdf2c69"></a><!-- doxytag: member="PrimLines" ref="a667e0b096d9dc610a8a11186d1b2b93dae85ae514c87672e9611f4e4dccdf2c69" args="" -->PrimLines</em>&nbsp;</td><td>
@@ -113,14 +129,15 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a7c2977dfcf213112f247147f00226ea6"></a><!-- doxytag: member="outk::gfx::GpuProgram::GpuProgram" ref="a7c2977dfcf213112f247147f00226ea6" args="()" -->
+<a class="anchor" id="a04f8f2dff0c809dd9bda85b35e71e58c"></a><!-- doxytag: member="outk::gfx::GpuProgram::GpuProgram" ref="a04f8f2dff0c809dd9bda85b35e71e58c" args="(GpuManager *gpuMng)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">GpuProgram::GpuProgram </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a> *&nbsp;</td>
+          <td class="paramname"> <em>gpuMng</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -141,6 +158,42 @@ Public Member Functions</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a44804f61e503c115af00dfd9fb93567f"></a><!-- doxytag: member="outk::gfx::GpuProgram::clearInput" ref="a44804f61e503c115af00dfd9fb93567f" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GpuProgram::clearInput </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Clear the program constant table. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa2351899e514da339bb36ae5bb735fff"></a><!-- doxytag: member="outk::gfx::GpuProgram::getComputeDimensions" ref="aa2351899e514da339bb36ae5bb735fff" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int outk::gfx::GpuProgram::getComputeDimensions </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -199,6 +252,78 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa63d04f7a687b83504cb6942158061cb"></a><!-- doxytag: member="outk::gfx::GpuProgram::getGlobalComputeThreads" ref="aa63d04f7a687b83504cb6942158061cb" args="(int dim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t outk::gfx::GpuProgram::getGlobalComputeThreads </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>dim</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1daf2f59271789090dc0dc00e5641c30"></a><!-- doxytag: member="outk::gfx::GpuProgram::getLocalComputeThreads" ref="a1daf2f59271789090dc0dc00e5641c30" args="(int dim)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t outk::gfx::GpuProgram::getLocalComputeThreads </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>dim</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6be63153bd9c2a6f620eec1b282203e8"></a><!-- doxytag: member="outk::gfx::GpuProgram::getManager" ref="a6be63153bd9c2a6f620eec1b282203e8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoutk_1_1gfx_1_1_gpu_manager.html">GpuManager</a>* outk::gfx::GpuProgram::getManager </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the Gpu manager owning this program. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6c8819f3c2cdc03441603c26641b5d08"></a><!-- doxytag: member="outk::gfx::GpuProgram::getNumrenderItems" ref="a6c8819f3c2cdc03441603c26641b5d08" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int outk::gfx::GpuProgram::getNumrenderItems </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6df8054fe7030c5d80556d2b99fec944"></a><!-- doxytag: member="outk::gfx::GpuProgram::getVertexShader" ref="a6df8054fe7030c5d80556d2b99fec944" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -233,32 +358,35 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8c12b33668076ce99c4500a3dcf0557e"></a><!-- doxytag: member="outk::gfx::GpuProgram::run" ref="a8c12b33668076ce99c4500a3dcf0557e" args="(VertexBuffer *vertexBuffer, IndexBuffer *indexBuffer=NULL, PrimType primType=PrimPoints)" -->
+<a class="anchor" id="a8b862bcb7a73173ac1ce7671f27a0206"></a><!-- doxytag: member="outk::gfx::GpuProgram::run" ref="a8b862bcb7a73173ac1ce7671f27a0206" args="(PrimType primType=PrimNone)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void GpuProgram::run </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_vertex_buffer.html">VertexBuffer</a> *&nbsp;</td>
-          <td class="paramname"> <em>vertexBuffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_index_buffer.html">IndexBuffer</a> *&nbsp;</td>
-          <td class="paramname"> <em>indexBuffer</em> = <code>NULL</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a667e0b096d9dc610a8a11186d1b2b93d">PrimType</a>&nbsp;</td>
-          <td class="paramname"> <em>primType</em> = <code>PrimPoints</code></td><td>&nbsp;</td>
-        </tr>
-        <tr>
+          <td class="paramname"> <em>primType</em> = <code>PrimNone</code></td>
+          <td>&nbsp;)&nbsp;</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9e985ff6dfcb047e8ee34369d72394fc"></a><!-- doxytag: member="outk::gfx::GpuProgram::setComputeDimensions" ref="a9e985ff6dfcb047e8ee34369d72394fc" args="(int value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void outk::gfx::GpuProgram::setComputeDimensions </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -329,48 +457,48 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a68341d7e7a329fd244ef21c0c3e70a1e"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="a68341d7e7a329fd244ef21c0c3e70a1e" args="(const omega::String &amp;name, float value)" -->
+<a class="anchor" id="a0f58446bab607df6f647ed28c22e15f0"></a><!-- doxytag: member="outk::gfx::GpuProgram::setGlobalComputeThreads" ref="a0f58446bab607df6f647ed28c22e15f0" args="(int dim, size_t value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
+          <td class="memname">void outk::gfx::GpuProgram::setGlobalComputeThreads </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a83b53a43f2997865c74a8cbe591446e7"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="a83b53a43f2997865c74a8cbe591446e7" args="(const omega::String &amp;name, int value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
           <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad300872edc6c6126d713d82389a2c5f2"></a><!-- doxytag: member="outk::gfx::GpuProgram::setInput" ref="ad300872edc6c6126d713d82389a2c5f2" args="(int index, GpuData *input)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OUTK_API void GpuProgram::setInput </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classoutk_1_1gfx_1_1_gpu_data.html">GpuData</a> *&nbsp;</td>
+          <td class="paramname"> <em>input</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -381,28 +509,30 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Add a Gpu constant to the program. </p>
+
 </div>
 </div>
-<a class="anchor" id="aa96c8cb2d936671bae0e115bb23c656e"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="aa96c8cb2d936671bae0e115bb23c656e" args="(const omega::String &amp;name, omega::Vector2f value)" -->
+<a class="anchor" id="a6e936dece37af83d2c8e997b2f6db7a6"></a><!-- doxytag: member="outk::gfx::GpuProgram::setLocalComputeThreads" ref="a6e936dece37af83d2c8e997b2f6db7a6" args="(int dim, size_t value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
+          <td class="memname">void outk::gfx::GpuProgram::setLocalComputeThreads </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>dim</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261">omega::Vector2f</a>&nbsp;</td>
+          <td class="paramtype">size_t&nbsp;</td>
           <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td><td></td>
+          <td></td><td></td><td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -410,134 +540,17 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afa7c9e09583e1161a6001cb876a417d0"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="afa7c9e09583e1161a6001cb876a417d0" args="(const omega::String &amp;name, omega::Vector4f value)" -->
+<a class="anchor" id="a35b4a012e324d2436d548aee3133d8d3"></a><!-- doxytag: member="outk::gfx::GpuProgram::setNumRenderItems" ref="a35b4a012e324d2436d548aee3133d8d3" args="(int size)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
+          <td class="memname">void outk::gfx::GpuProgram::setNumRenderItems </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceomega.html#ab46b49fae37b4ba2d9069f3f39ae6ee5">omega::Vector4f</a>&nbsp;</td>
-          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad63accc8de83f5a5c073ea54ea8e73d8"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="ad63accc8de83f5a5c073ea54ea8e73d8" args="(const omega::String &amp;name, omega::Vector4i value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceomega.html#a572b3f8d2c37469de15a6f42a1238ba2">omega::Vector4i</a>&nbsp;</td>
-          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a96876c284a2c330638278a0249935ed1"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="a96876c284a2c330638278a0249935ed1" args="(const omega::String &amp;name, omega::Vector2i value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5">omega::Vector2i</a>&nbsp;</td>
-          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="adc3bc2c298e4f5f35114cbd917e74fa0"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="adc3bc2c298e4f5f35114cbd917e74fa0" args="(const omega::String &amp;name, omega::Vector3f value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb">omega::Vector3f</a>&nbsp;</td>
-          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a1d265edb2ba972ce4f773d1b1fc5d258"></a><!-- doxytag: member="outk::gfx::GpuProgram::setParameter" ref="a1d265edb2ba972ce4f773d1b1fc5d258" args="(const omega::String &amp;name, omega::Vector3i value)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuProgram::setParameter </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">omega::String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceomega.html#a6d6ca1d076752860b8fc4afab8465560">omega::Vector3i</a>&nbsp;</td>
-          <td class="paramname"> <em>value</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>size</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -566,12 +579,26 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a5d814ebcd367c56736e05cb3e0d88fcf"></a><!-- doxytag: member="outk::gfx::GpuProgram::MaxInputs" ref="a5d814ebcd367c56736e05cb3e0d88fcf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int <a class="el" href="classoutk_1_1gfx_1_1_gpu_program.html#a5d814ebcd367c56736e05cb3e0d88fcf">outk::gfx::GpuProgram::MaxInputs</a> = 64<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>D:/Workspace/omegalib/include/outk/gfx/<a class="el" href="_gpu_program_8h_source.html">GpuProgram.h</a></li>
 <li>D:/Workspace/omegalib/src/outk/gfx/<a class="el" href="_gpu_program_8cpp.html">GpuProgram.cpp</a></li>
 </ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:18 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 16 2010 01:42:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/omega/input/MoCapService.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/input/MoCapService.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/omega/input/MoCapService.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/input/MoCapService.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_mo_cap_service_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -55,20 +55,20 @@
 <a name="l00025"></a>00025         {
 <a name="l00026"></a>00026         <span class="keyword">public</span>:
 <a name="l00027"></a>00027                 <span class="comment">// Allocator function</span>
-<a name="l00028"></a><a class="code" href="classomega_1_1_mo_cap_service.html#aba3dde5d3f14477681d95d652c021e7d">00028</a>                 <span class="keyword">static</span> <a class="code" href="classomega_1_1_mo_cap_service.html">MoCapService</a>* <a class="code" href="classomega_1_1_mo_cap_service.html#aba3dde5d3f14477681d95d652c021e7d">New</a>() { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classomega_1_1_mo_cap_service.html#abfae744cf168c417a267ca90234a52af">MoCapService</a>(); }
+<a name="l00028"></a><a class="code" href="classomega_1_1_mo_cap_service.html#aba3dde5d3f14477681d95d652c021e7d">00028</a>                 <span class="keyword">static</span> <a class="code" href="classomega_1_1_mo_cap_service.html">MoCapService</a>* <a class="code" href="classomega_1_1_mo_cap_service.html#aba3dde5d3f14477681d95d652c021e7d">New</a>() { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a193ea71cd217abff73cd99fb5b62026b">MoCapService</a>(); }
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030         <span class="keyword">public</span>:
-<a name="l00031"></a>00031                 OMEGA_API <a class="code" href="classomega_1_1_mo_cap_service.html#abfae744cf168c417a267ca90234a52af">MoCapService</a>();
-<a name="l00032"></a>00032                 OMEGA_API <a class="code" href="classomega_1_1_mo_cap_service.html#a26b7cd04ed9a5bb7709886ca772b7c84">~MoCapService</a>();
-<a name="l00033"></a>00033                 OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#ae732c0a72c9a489949444bb06b1ba0ea">setup</a>( <a class="code" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a>&amp; settings);
-<a name="l00034"></a>00034                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> __cdecl <a class="code" href="classomega_1_1_mo_cap_service.html#a4aae8cd0b683797c5a8da11031d795c0">frameController</a>(sFrameOfMocapData* data, <span class="keywordtype">void</span>* pUserData);
-<a name="l00035"></a>00035                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> __cdecl <a class="code" href="classomega_1_1_mo_cap_service.html#a40428d8b1d4eea5df33934deb2f531e5">messageController</a>(<span class="keywordtype">int</span> msgType, <span class="keywordtype">char</span>* msg);
-<a name="l00036"></a>00036                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#aa4c461e435189359b382374a26c55cb2">initialize</a>();
-<a name="l00037"></a>00037                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#af3418c45f343a6f88c71c3e4a1d88622">start</a>();<span class="comment">//initialize and start service here</span>
-<a name="l00038"></a>00038                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a3e0ae91e4fafec28258b4bb465913d5b">stop</a>();<span class="comment">//destroy service instance to stop</span>
-<a name="l00039"></a>00039                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a443d82d202e12604d21178c0068de609">dispose</a>();
-<a name="l00040"></a>00040                 OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a60437856ddc3b52c88250bc35b5af4ec">useQuaternion</a> ();
-<a name="l00041"></a>00041                 OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#af414bee0395667a63fbb62f906cce85c">useEuler</a> ();
+<a name="l00031"></a>00031                 OMEGA_API <a class="code" href="classomega_1_1_mo_cap_service.html#a193ea71cd217abff73cd99fb5b62026b">MoCapService</a>();
+<a name="l00032"></a>00032                 OMEGA_API <a class="code" href="classomega_1_1_mo_cap_service.html#a158c319f385c5b3aa92fb88cbb1d5d06">~MoCapService</a>();
+<a name="l00033"></a>00033                 OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a9e834f3394aa67e3cf9692c8c98925b0">setup</a>( <a class="code" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a>&amp; settings);
+<a name="l00034"></a>00034                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> __cdecl <a class="code" href="classomega_1_1_mo_cap_service.html#a525f03dbd97e8d6fc6303990c865c7d1">frameController</a>(sFrameOfMocapData* data, <span class="keywordtype">void</span>* pUserData);
+<a name="l00035"></a>00035                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> __cdecl <a class="code" href="classomega_1_1_mo_cap_service.html#a51d1a5b8f9206bab987f5389dabb135f">messageController</a>(<span class="keywordtype">int</span> msgType, <span class="keywordtype">char</span>* msg);
+<a name="l00036"></a>00036                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a91a5a19a018dfe3aa0662381b2336f61">initialize</a>();
+<a name="l00037"></a>00037                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#aeec28c08b7185cf454b6e076fa018d09">start</a>();<span class="comment">//initialize and start service here</span>
+<a name="l00038"></a>00038                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a7d501cc55333bf11b887b05b906b533a">stop</a>();<span class="comment">//destroy service instance to stop</span>
+<a name="l00039"></a>00039                 OMEGA_API <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#acd55a78af62898c3462cd2628fb0c12b">dispose</a>();
+<a name="l00040"></a>00040                 OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#a9524a963c55239624d75269e1af5f1e0">useQuaternion</a> ();
+<a name="l00041"></a>00041                 OMEGA_API <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_mo_cap_service.html#abba54d630a08bc4d7fa351f149e09058">useEuler</a> ();
 <a name="l00042"></a>00042                 <span class="comment">//may want to support the option to choose whether to have unicast or multicast networking</span>
 <a name="l00043"></a>00043                 <span class="comment">//for now it is hard coded to multicast</span>
 <a name="l00044"></a>00044         <span class="keyword">private</span>:
@@ -85,7 +85,7 @@
 <a name="l00055"></a>00055 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

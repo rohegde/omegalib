@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: D:/Workspace/omegalib/include/outk/gfx/GfxUtils.h Source File</title>
+<title>OmegaLib: D:/Workspace/omegalib-0.3/include/omega/GfxUtils.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -25,7 +25,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>D:/Workspace/omegalib/include/outk/gfx/GfxUtils.h</h1>  </div>
+<h1>D:/Workspace/omegalib-0.3/include/omega/GfxUtils.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="_gfx_utils_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/********************************************************************************************************************** </span>
@@ -44,48 +44,47 @@
 <a name="l00014"></a>00014 <span class="preprocessor">#ifndef __GFX_UTILS_H__</span>
 <a name="l00015"></a>00015 <span class="preprocessor"></span><span class="preprocessor">#define __GFX_UTILS_H__</span>
 <a name="l00016"></a>00016 <span class="preprocessor"></span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;omega.h&quot;</span>
-<a name="l00018"></a>00018 
-<a name="l00019"></a>00019 <span class="keyword">namespace </span>outk
-<a name="l00020"></a>00020 {
-<a name="l00021"></a>00021 <span class="keyword">namespace </span>gfx
-<a name="l00022"></a>00022 {
-<a name="l00023"></a>00023 
-<a name="l00025"></a><a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html">00025</a> <span class="keyword">class </span><a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html">GfxUtils</a>
-<a name="l00026"></a>00026 {
-<a name="l00027"></a>00027 <span class="keyword">public</span>:
-<a name="l00028"></a><a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#aaf068aea4b06acc03b322e3f5530516bac9627517ede2deb22052c30144a77084">00028</a>         <span class="keyword">enum</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#aaf068aea4b06acc03b322e3f5530516b">Font</a> { Helvetica12, <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#aaf068aea4b06acc03b322e3f5530516bac9627517ede2deb22052c30144a77084">Helvetica18</a> };
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="osystem_8h.html">osystem.h</a>&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_application_8h.html">omega/Application.h</a>&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="_color_8h.html">omega/Color.h</a>&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;<a class="code" href="_draw_context_8h.html">omega/DrawContext.h</a>&quot;</span>
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022 <span class="keyword">namespace </span>omega
+<a name="l00023"></a>00023 {
+<a name="l00025"></a><a class="code" href="classomega_1_1_gfx_utils.html">00025</a>         <span class="keyword">class </span><a class="code" href="classomega_1_1_gfx_utils.html">GfxUtils</a>
+<a name="l00026"></a>00026         {
+<a name="l00027"></a>00027         <span class="keyword">public</span>:
+<a name="l00028"></a><a class="code" href="classomega_1_1_gfx_utils.html#ad46c35d3ac7b7e9cceb89806aa314318a68cbbf6371852d2fbcd2375cfa5576db">00028</a>                 <span class="keyword">enum</span> <a class="code" href="classomega_1_1_gfx_utils.html#ad46c35d3ac7b7e9cceb89806aa314318">Font</a> { Helvetica12, <a class="code" href="classomega_1_1_gfx_utils.html#ad46c35d3ac7b7e9cceb89806aa314318a68cbbf6371852d2fbcd2375cfa5576db">Helvetica18</a> };
 <a name="l00029"></a>00029 
-<a name="l00030"></a>00030 <span class="keyword">public</span>:
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032         <span class="comment">// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the</span>
-<a name="l00033"></a>00033         <span class="comment">// viewport parameters specified in the draw context.</span>
-<a name="l00034"></a>00034         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#abf451493d211ead2f78626f19330713f">beginOverlayMode</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">omega::DrawContext</a>&amp; context);
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036         <span class="comment">// Restores the coordinate system specified before a Begin2DCoords call.</span>
-<a name="l00037"></a>00037         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#a3437455f08f6fe97a207125452902f9b">endOverlayMode</a>();
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039         <span class="comment">// Prints text. </span>
-<a name="l00040"></a>00040         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#adf66b1238febf20afa91afb7c751a220">drawText</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keyword">const</span> <span class="keywordtype">char</span>* s, <a class="code" href="classoutk_1_1gfx_1_1_font.html">Font</a> f = <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#aaf068aea4b06acc03b322e3f5530516ba4c033e6cd84b08081da5479777fe17c7">Helvetica12</a>);
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#a1decaa4b141b03bd8e96a6785a2872a9">drawSolidTeapot</a>(<span class="keywordtype">float</span> size);
-<a name="l00043"></a>00043         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#a0fc4fd74fd51afa7a228080c635a3770">drawWireTeapot</a>(<span class="keywordtype">float</span> size);
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#a5e2488fe496ff91d43fc393cd13e47fb">drawHGradient</a>(<a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> pos, <a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> size, <a class="code" href="classomega_1_1_color.html">omega::Color</a> startColor, <a class="code" href="classomega_1_1_color.html">omega::Color</a> endColor, <span class="keywordtype">float</span> pc = 0.0f);
-<a name="l00046"></a>00046         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#ad9fa53828ff58bc64d4e04036cf5d376">drawVGradient</a>(<a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> pos, <a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> size, <a class="code" href="classomega_1_1_color.html">omega::Color</a> startColor, <a class="code" href="classomega_1_1_color.html">omega::Color</a> endColor, <span class="keywordtype">float</span> pc = 0.0f);
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048         OUTK_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html#a217187757645163ee188fd58a7b795df">drawDRect</a>(<a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> pos, <a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> size, <span class="keywordtype">int</span> d);
-<a name="l00049"></a>00049 <span class="keyword">private</span>:
-<a name="l00050"></a>00050         <a class="code" href="classoutk_1_1gfx_1_1_gfx_utils.html">GfxUtils</a>() {};
-<a name="l00051"></a>00051 };
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 }; <span class="comment">// namespace gfx</span>
-<a name="l00054"></a>00054 }; <span class="comment">// namespace omega</span>
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="preprocessor">#endif</span>
+<a name="l00030"></a>00030         <span class="keyword">public</span>:
+<a name="l00031"></a>00031                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#ac5844e1157a5803ec56c5b0991f73302">getViewRay</a>(<span class="keywordtype">float</span> viewX, <span class="keywordtype">float</span> viewY, <a class="code" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb" title="A four-component float vector.">omega::Vector3f</a>* origin, <a class="code" href="namespaceomega.html#a4653c5de20efd8bcb473524875dfc2bb" title="A four-component float vector.">omega::Vector3f</a>* direction);
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033                 <span class="comment">// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the</span>
+<a name="l00034"></a>00034                 <span class="comment">// viewport parameters specified in the draw context.</span>
+<a name="l00035"></a>00035                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#acb52c855e4518c76d8a62bd676ce6482">beginOverlayMode</a>(<span class="keyword">const</span> <a class="code" href="structomega_1_1_draw_context.html">omega::DrawContext</a>&amp; context);
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037                 <span class="comment">// Restores the coordinate system specified before a Begin2DCoords call.</span>
+<a name="l00038"></a>00038                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#ac8a79f7656b711704276137638ae6eb0">endOverlayMode</a>();
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040                 <span class="comment">// Prints text. </span>
+<a name="l00041"></a>00041                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#a7623806fa5204469cf701e571f021471">drawText</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keyword">const</span> <span class="keywordtype">char</span>* s, <a class="code" href="classomega_1_1_font.html">Font</a> f = <a class="code" href="classomega_1_1_gfx_utils.html#ad46c35d3ac7b7e9cceb89806aa314318a7513cefe15edcf895118e62fd665c969">Helvetica12</a>);
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#ad02f1e888e191c3b8aed51b67c38e2f8">drawSolidTeapot</a>(<span class="keywordtype">float</span> size);
+<a name="l00044"></a>00044                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#a58d1aab2048607650dc1ddc9179cbc75">drawWireTeapot</a>(<span class="keywordtype">float</span> size);
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#a4c83bb4f24cd25988bf1e18cb246b0a9">drawHGradient</a>(<a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> pos, <a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> size, <a class="code" href="classomega_1_1_color.html">omega::Color</a> startColor, <a class="code" href="classomega_1_1_color.html">omega::Color</a> endColor, <span class="keywordtype">float</span> pc = 0.0f);
+<a name="l00047"></a>00047                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#a344c76de506da8e2630769408c57468a">drawVGradient</a>(<a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> pos, <a class="code" href="namespaceomega.html#a069c89dc09d65de7e731973967204fc5" title="A two-component integer vector.">omega::Vector2i</a> size, <a class="code" href="classomega_1_1_color.html">omega::Color</a> startColor, <a class="code" href="classomega_1_1_color.html">omega::Color</a> endColor, <span class="keywordtype">float</span> pc = 0.0f);
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049                 OMEGA_API <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classomega_1_1_gfx_utils.html#a650946b144e4fe67d9862a4f8b1044de">drawDRect</a>(<a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> pos, <a class="code" href="namespaceomega.html#a7c6c15c0a21cfce1544621fc24592261" title="A four-component float vector.">omega::Vector2f</a> size, <span class="keywordtype">int</span> d);
+<a name="l00050"></a>00050         <span class="keyword">private</span>:
+<a name="l00051"></a>00051                 <a class="code" href="classomega_1_1_gfx_utils.html">GfxUtils</a>() {};
+<a name="l00052"></a>00052         };
+<a name="l00053"></a>00053 }; <span class="comment">// namespace omega</span>
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 23 2010 01:06:17 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Aug 30 2010 18:22:30 for OmegaLib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
