@@ -63,12 +63,12 @@ server
         {
             layout "MultiView"
 
-			wall
-			{
-					bottom_left  [ -.5074 1.2 -0.8128 ]
-					bottom_right [  .5106 1.2 -0.8128 ]
-					top_left     [ -.5074 1.80 -0.8128 ]
-			}
+				wall
+				{
+						bottom_left  [ -.17 -.10 0.0 ]
+						bottom_right [  .17 -.10 0.0 ]
+						top_left     [ -.17 .10 0.0 ]
+				}
 
             segment
             {
