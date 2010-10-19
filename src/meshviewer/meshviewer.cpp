@@ -7,47 +7,31 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
  *********************************************************************************************************************/
-
-#include "omega/scene/SceneNode.h"
-
-using namespace omega;
-using namespace omega::scene;
+#include "MeshViewerApplication.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::pushTransform()
+void main(int argc, char** argv)
 {
-	glPushMatrix();
+	ologopen("meshviewer-log.txt");
 
-	glTranslatef(myPosition[0], myPosition[1], myPosition[2]);
+	Config* cfg = new Config(argv[1]);
 
-	glRotatef(myRotation[0], 1, 0, 0);
-	glRotatef(myRotation[1], 0, 1, 0);
-	glRotatef(myRotation[2], 0, 0, 1);
+	SystemManager* sys = SystemManager::instance();
+	sys->setup(cfg);
 
-	glScalef(myScale[0], myScale[1], myScale[2]);
-}
+	MeshViewerApplication app;
+	sys->setApplication(&app);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::popTransform()
-{
-	glPopMatrix();
-}
+	sys->initialize();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::draw()
-{
-	pushTransform();
-	// Draw drawables attached to this node.
-	boost_foreach(Drawable* d, myDrawables)
-	{
-		d->draw();
-	}
-	// Draw children nodes.
-	boost_foreach(SceneNode* n, myChildren)
-	{
-		n->draw();
-	}
-	popTransform();
+	// Set the initial observer position (do we still need this - can't we specify it in the settings file?)
+	//Observer* obs = sys->getDisplaySystem()->getObserver(0);
+	//obs->update(Vector3f(0, 1.6f, 0), Vector3f(0, 0, 0));
+
+	sys->run();
+
+	sys->cleanup();
+
+	ologclose();
 }

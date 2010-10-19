@@ -41,7 +41,9 @@ namespace scene
 
 		void setPosition(const Vector3f& value) { myPosition = value; }
 		void setRotation(const Vector3f& value) { myRotation = value; }
+		void setRotation(float x, float y, float z) { myRotation[0] = x; myRotation[1] = y; myRotation[2] = z;}
 		void setScale(const Vector3f& value) { myScale = value; }
+		void setScale(float value) { myScale[0] = value; myScale[1] = value; myScale[2] = value;}
 		void setPivot(const Vector3f& value) { myPivot = value; }
 
 		Vector3f& getPosition() { return myPosition; }

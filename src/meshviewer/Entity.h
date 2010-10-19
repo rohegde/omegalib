@@ -4,18 +4,28 @@
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * Includes all the classes and functionalities implemented in the omega namespace.
+ *--------------------------------------------------------------------------------------------------------------------- 
  *********************************************************************************************************************/
-#ifndef __OMEGA_SCENE_H__
-#define __OMEGA_SCENE_H__
+#ifndef __ENTITY_H__
+#define __ENTITY_H__
 
-#include "omega/scene/Drawable.h"
-#include "omega/scene/SceneManager.h"
-#include "omega/scene/SceneNode.h"
-#include "omega/scene/Mesh.h"
+#include "omega.h"
+#include "omega/scene.h"
+
+// Using namespace declarations in a header file make emokitteh cry
+// but we'll accept them here since it's application-level code, and we can have
+// declarations shorter and more readable for the sake of clarity.
+using namespace omega;
+using namespace omega::scene;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Entity
+{
+public:
+private:
+	Mesh* myMesh;
+};
 
 #endif
