@@ -87,6 +87,8 @@ struct InputEvent
 		Rotate,
 	};
 
+	static const int PointSetSize = 32;
+
 	// id of the source of this event. Input services associate unique ids to each of their event sources.
     unsigned int sourceId;
 	
@@ -116,7 +118,41 @@ struct InputEvent
 
 	// Point set
 	int numberOfPoints;
-	Vector3f pointSet[32];
+	Vector3f pointSet[PointSetSize];
+
+	//! Serialize an InputEvent instance.
+    void serialize(eq::net::DataOStream& os)
+	{
+		os << sourceId;
+		os << serviceType;
+		os << type;
+		os << flags;
+		os << timestamp;
+		os << position[0] << position[1] << position[2];
+		os << rotation[0] << rotation[1] << rotation[2];
+		os << numberOfPoints;
+		for(int i = 0; i < PointSetSize; i++)
+		{
+			os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
+		}
+	}
+
+	//! Deserialize an InputEvent instance.
+    virtual void deserialize( eq::net::DataIStream& is)
+	{
+		is >> sourceId;
+		is >> serviceType;
+		is >> type;
+		is >> flags;
+		is >> timestamp;
+		is >> position[0] >> position[1] >> position[2];
+		is >> rotation[0] >> rotation[1] >> rotation[2];
+		is >> numberOfPoints;
+		for(int i = 0; i < PointSetSize; i++)
+		{
+			is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
+		}
+	}
 };
 
 }; // namespace omega

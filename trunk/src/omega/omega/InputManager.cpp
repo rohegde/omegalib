@@ -191,19 +191,19 @@ InputEvent* InputManager::readTail()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::processEvents(ApplicationServer* app)
-{
-	oassert(app);
-
-	int av = getAvailableEvents();
-	if(av != 0)
-	{
-		// @todo: Instead of copying the event list, we can lock the main one.
-		InputEvent evts[InputManager::MaxEvents];
-		getEvents(evts, InputManager::MaxEvents);
-		for( int evtNum = 0; evtNum < av; evtNum++)
-		{
-			app->handleEvent(evts[evtNum]);
-		}
-	}
-}
+//void InputManager::processEvents(ApplicationServer* app)
+//{
+//	oassert(app);
+//
+//	int av = getAvailableEvents();
+//	if(av != 0)
+//	{
+//		// @todo: Instead of copying the event list, we can lock the main one.
+//		InputEvent evts[InputManager::MaxEvents];
+//		getEvents(evts, InputManager::MaxEvents);
+//		for( int evtNum = 0; evtNum < av; evtNum++)
+//		{
+//			app->handleEvent(evts[evtNum]);
+//		}
+//	}
+//}

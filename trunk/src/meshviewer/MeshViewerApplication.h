@@ -7,47 +7,52 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * DrawContext
  *********************************************************************************************************************/
+#ifndef __MESHVIEWER_APPLICATION_H__
+#define __MESHVIEWER_APPLICATION_H__
 
-#include "omega/scene/SceneNode.h"
+#include "MeshViewerUI.h"
 
+#include "omega/scene.h"
+
+// Using namespace declarations in a header file make emokitteh cry
+// but we'll accept them here since it's application-level code, and we can have
+// declarations shorter and more readable for the sake of clarity.
 using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::pushTransform()
+class MeshViewerClient: public ApplicationClient
 {
-	glPushMatrix();
+public:
+	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL) {}
 
-	glTranslatef(myPosition[0], myPosition[1], myPosition[2]);
+	virtual void initialize();
+	virtual bool handleEvent(const InputEvent& evt);
+	virtual void update(const UpdateContext& context);
+	virtual void draw(const DrawContext& context);
 
-	glRotatef(myRotation[0], 1, 0, 0);
-	glRotatef(myRotation[1], 0, 1, 0);
-	glRotatef(myRotation[2], 0, 0, 1);
+private:
+	// Managers
+	GpuManager* myGpu;
+	TextureManager* myTexMng;
+	FontManager* myFontMng;
+	SceneManager* mySceneManager;
 
-	glScalef(myScale[0], myScale[1], myScale[2]);
-}
+	SimplePrimitive* myTestDrawable;
+
+	// User interface.
+	MeshViewerUI* myUI;
+
+	int mouseX;
+	int mouseY;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::popTransform()
+class MeshViewerApplication: public Application
 {
-	glPopMatrix();
-}
+public:
+	virtual ApplicationClient* createClient() { return new MeshViewerClient(this); }
+};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::draw()
-{
-	pushTransform();
-	// Draw drawables attached to this node.
-	boost_foreach(Drawable* d, myDrawables)
-	{
-		d->draw();
-	}
-	// Draw children nodes.
-	boost_foreach(SceneNode* n, myChildren)
-	{
-		n->draw();
-	}
-	popTransform();
-}
+#endif

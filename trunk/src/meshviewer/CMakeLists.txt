@@ -17,21 +17,27 @@ ADD_DEFINITIONS( )
 #######################################################################################################################
 # Source files
 SET( srcs 
-        otest.cpp
+        meshviewer.cpp
+		MeshViewerApplication.cpp
+		MeshViewerUI.cpp
+		Entity.cpp
         )
     
 #######################################################################################################################
 # Headers
 SET( headers 
+		MeshViewerApplication.h
+		MeshViewerUI.h
+		Entity.h
         ) 
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE( otest ${srcs} ${headers})
+ADD_EXECUTABLE( meshviewer ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( otest
-	omega outk)
+TARGET_LINK_LIBRARIES( meshviewer
+	omega outils)
 
 

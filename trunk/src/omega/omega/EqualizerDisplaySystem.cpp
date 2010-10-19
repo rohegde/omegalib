@@ -28,6 +28,65 @@ namespace omega
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
+//!  Frame-specific data.
+//!   The frame-specific data is used as a per-config distributed object and contains mutable, rendering-relevant data. 
+//!   Each rendering thread (pipe) keeps its own instance synchronized with the frame currently being rendered. The 
+//!   data is managed by the Config, which modifies it directly.
+class FrameData : public eq::fabric::Serializable
+{
+public:
+    FrameData()	{ }
+
+    virtual ~FrameData() {};
+
+	int getNumEvents() { return myNumEvents; }
+	void setNumEvents(int value) { myNumEvents = value; }
+	InputEvent& getEvent(int index) { return myEventBuffer[index]; }
+
+	void setDirtyEvents() { setDirty( DIRTY_EVENTS ); }
+
+
+protected:
+	//! Serialize an instance of this class.
+    virtual void serialize( eq::net::DataOStream& os, const uint64_t dirtyBits )
+	{
+		eq::fabric::Serializable::serialize( os, dirtyBits );
+		if( dirtyBits & DIRTY_EVENTS )
+		{
+			os << myNumEvents;
+			for(int i = 0; i < myNumEvents; i++)
+			{
+				myEventBuffer[i].serialize(os);
+			}
+		}
+	}
+
+	//! Deserialize an instance of this class.
+    virtual void deserialize( eq::net::DataIStream& is, const uint64_t dirtyBits )
+	{
+		eq::fabric::Serializable::deserialize( is, dirtyBits );
+		if( dirtyBits & DIRTY_EVENTS )
+		{
+			is >> myNumEvents;
+			for(int i = 0; i < myNumEvents; i++)
+			{
+				myEventBuffer[i].deserialize(is);
+			}
+		}
+	}
+
+    enum DirtyBits
+    {
+        DIRTY_EVENTS   = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
+    };
+
+private:
+	int myNumEvents;
+	InputEvent myEventBuffer[InputManager::MaxEvents];
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal
 //! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
 //! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
 //! of a pipe are executed in the same pipe thread. The default window initialization methods initialize all windows 
@@ -138,9 +197,20 @@ public:
 	virtual bool init(const uint32_t initID)
 	{
 		Application* app = SystemManager::instance()->getApplication();
+
 		myServer = app->createServer();
 		myServer->initialize();
+
+		registerObject(&myFrameData);
+
 		return eq::Config::init(initID);
+	}
+
+	virtual bool exit()
+	{
+		deregisterObject( &myFrameData );
+	    const bool ret = eq::Config::exit();
+		return ret;
 	}
 
 	virtual bool handleEvent(const eq::ConfigEvent* event)
@@ -174,6 +244,12 @@ public:
 		return false;
 	}
 
+	virtual uint32_t startFrame( uint32_t version )
+	{
+		myFrameData.commit();
+		return eq::Config::startFrame( version );
+	}
+
 	virtual uint32_t finishFrame()
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -188,7 +264,22 @@ public:
 		}
 
 		// Process events.
-		im->processEvents(myServer);	
+		int av = im->getAvailableEvents();
+		myFrameData.setNumEvents(av);
+		myFrameData.setDirtyEvents();
+		if(av != 0)
+		{
+			InputEvent evts[InputManager::MaxEvents];
+			im->getEvents(evts, InputManager::MaxEvents);
+
+			// Dispatch events to application server.
+			for( int evtNum = 0; evtNum < av; evtNum++)
+			{
+				myServer->handleEvent(evts[evtNum]);
+				// Copy events to frame data.
+				myFrameData.getEvent(evtNum) = evts[evtNum];
+			}
+		}
 
 		static float lt = 0.0f;
 		// Compute dt.
@@ -233,8 +324,11 @@ public:
 		}
 	}
 
+	const FrameData& getFrameData() { return myFrameData; }
+
 private:
 	ApplicationServer* myServer;
+	FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,6 +346,12 @@ protected:
     virtual bool configInit( const uint32_t initID )
 	{
 		bool result = eq::Pipe::configInit(initID);
+
+		// Map the frame data object.
+		ConfigImpl* config = static_cast<ConfigImpl*>( getConfig( ));
+		const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
+		EQASSERT( mapped );
+
 		// Create and initialize an application client.
 		Application* app = SystemManager::instance()->getApplication();
 		if(app)
@@ -260,6 +360,14 @@ protected:
 			myClient->setup();
 		}
 		return result;
+	}
+
+	virtual bool configExit()
+	{
+		eq::Config* config = getConfig();
+		config->unmapObject( &myFrameData );
+
+		return eq::Pipe::configExit();
 	}
 
     virtual void frameStart( const uint32_t frameID, const uint32_t frameNumber )
@@ -275,15 +383,31 @@ protected:
 			myClient->initialize();
 			myInitialized = true;
 		}
+		else
+		{
+			// Syncronize frame data (containing input events and possibly other stuff)
+			myFrameData.sync(frameID);
 
-		UpdateContext context;
-		context.frameNum = frameNumber;
-		myClient->update(context);
+			// Dispatch received events events to application client.
+			int av = myFrameData.getNumEvents();
+			if(av != 0)
+			{
+				for( int evtNum = 0; evtNum < av; evtNum++)
+				{
+					myClient->handleEvent(myFrameData.getEvent(evtNum));
+				}
+			}
+
+			UpdateContext context;
+			context.frameNum = frameNumber;
+			myClient->update(context);
+		}
 	}
 
 private:
 	bool myInitialized;
 	ApplicationClient* myClient;
+    FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -488,8 +612,9 @@ void EqualizerDisplaySystem::run()
             uint32_t spin = 0;
             while( myConfig->isRunning( ))
             {
-                myConfig->startFrame( ++spin );
+                myConfig->startFrame( spin );
                 myConfig->finishFrame();
+				spin++;
             }
         
             // 5. exit config

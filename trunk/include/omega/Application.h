@@ -66,6 +66,7 @@ namespace omega
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
+		virtual bool handleEvent(const InputEvent& evt) { return false; }
 
 		Application* getApplication() { return myApplication; }
 
@@ -105,8 +106,8 @@ namespace omega
 		//! Instantiates a new Channel instance.
 		//! Users redefine this method to create instances of their own Channel objects.
 		//! @param impl - the internal DisplaySystem-dependent channel implementation.
-		virtual ApplicationServer* createServer() = 0;
-		virtual ApplicationClient* createClient() = 0;
+		virtual ApplicationServer* createServer() { return new ApplicationServer(this); };
+		virtual ApplicationClient* createClient() { return new ApplicationClient(this); };
 
 		//! Called once for entire application initialization tasks.
 		virtual void initialize() {}
