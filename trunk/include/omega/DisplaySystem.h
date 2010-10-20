@@ -10,46 +10,84 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#ifndef __DISPLAY_SYSTEM_H__
-#define __DISPLAY_SYSTEM_H__
+#ifndef __EQUALIZER_DISPLAY_SYSTEM_H__
+#define __EQUALIZER_DISPLAY_SYSTEM_H__
 
 #include "osystem.h"
+#include "Application.h"
 #include "Observer.h"
 
 namespace omega
 {
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
+// Forward Declarations.
+class EqualizerNodeFactory;
+class ViewImpl;
+class ConfigImpl;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// This class is used to route equalizer log into the omega log system.
+class EqualizerLogStreamBuf: public std::streambuf
+{
+protected:
+	virtual int overflow ( int c = EOF )
+	{
+		if(c == '\n')
+		{
+			omsg(myStringStream.str().c_str());
+			myStringStream.str(""); 
+		}
+		else
+		{
+			myStringStream << (char)c;
+		}
+		return 0;
+	}
+private:
+    std::ostringstream myStringStream;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class DisplaySystem
 {
 public:
-	virtual ~DisplaySystem() {}
+	OMEGA_API DisplaySystem();
+	OMEGA_API ~DisplaySystem();
 
 	// sets up the display system. Called before initalize.
-	virtual void setup(Setting& setting) {}
+	OMEGA_API void setup(Setting& setting);
 
-	// initializes the display system
-	virtual void initialize(SystemManager* sys) {}
+	OMEGA_API void initialize(SystemManager* sys); 
+	OMEGA_API void run(); 
+	OMEGA_API void cleanup(); 
 
-	// Starts display system rendering. This call does not return until the current omegalib application sends an
-	// exit request to the system manager.
-	virtual void run() = 0;
+	OMEGA_API String getDisplayConfig() { return myDisplayConfig; }
+	OMEGA_API void setDisplayConfig(const String& value) { myDisplayConfig = value; }
+
+	OMEGA_API Observer* getObserver(int observerId);
 
 	// Layer and view management.
-	virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
-	virtual bool isLayerEnabled(int layerNum, const char* viewName) { return true;}
+	OMEGA_API void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
+	OMEGA_API bool isLayerEnabled(int layerNum, const char* viewName);
 
-	virtual Observer* getObserver(int observerId) { return NULL; }
-	
-	virtual void cleanup() {}
+private:
+	void initLayers();
+	void initObservers();
 
-	virtual unsigned int getId() { return -1; }
+private:
+	SystemManager* mySys;
 
-protected:
-	DisplaySystem() {}
+	// Display config
+	Setting* mySetting;
+	String myDisplayConfig;
+
+	// Equalizer stuff.
+    EqualizerNodeFactory* myNodeFactory;
+	ConfigImpl* myConfig;
+
+	// Observers.
+	std::vector<Observer*> myObservers;
 };
 
 }; // namespace omega
