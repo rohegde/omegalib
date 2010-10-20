@@ -13,6 +13,7 @@
 #include "omega/InputManager.h"
 #include "omega/SystemManager.h"
 #include "omega/Config.h"
+#include "omega/DisplaySystem.h"
 
 // Input services
 #ifdef OMEGA_USE_MOCAP
@@ -30,10 +31,6 @@
 #ifdef OMEGA_USE_OPTITRACK
 #include "omega/input/OptiTrackService.h"
 #endif
-
-// Display systems
-#include "omega/EqualizerDisplaySystem.h"
-#include "omega/GLUTDisplaySystem.h"
 
 using namespace omega;
 
@@ -137,29 +134,10 @@ void SystemManager::setupDisplaySystem()
 	Setting& stRoot = myConfig->getRootSetting();
 	if(stRoot.exists("Config/DisplaySystem"))
 	{
-		DisplaySystem* ds = NULL;
 		Setting& stDS = stRoot["Config/DisplaySystem"][0];
-		String displaySystemType = "NULL";
-
-		stDS.lookupValue("Type", displaySystemType);
-		if(displaySystemType == "Equalizer")
-		{
-			ds = new EqualizerDisplaySystem();
-		}
-		/*else if(displaySystemType == "GLUT")
-		{
-			ds = new GLUTDisplaySystem();
-		}*/
-		else
-		{
-			owarn("Unknown display system type: %s", displaySystemType.c_str());
-		}
-
-		if(ds != NULL)
-		{
-			ds->setup(stDS);
-			setDisplaySystem(ds);
-		}
+		DisplaySystem* ds = new DisplaySystem();
+		ds->setup(stDS);
+		setDisplaySystem(ds);
 	}
 }
 

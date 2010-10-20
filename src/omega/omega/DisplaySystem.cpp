@@ -11,7 +11,7 @@
  *********************************************************************************************************************/
 #include "omega/Application.h"
 #include "omega/Config.h"
-#include "omega/EqualizerDisplaySystem.h"
+#include "omega/DisplaySystem.h"
 #include "omega/SystemManager.h"
 
 #include "omega/input/MouseService.h"
@@ -19,9 +19,6 @@
 using namespace omega;
 using namespace eq::base;
 using namespace std;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const unsigned int EqualizerDisplaySystem::Id = OID("EQLZ");
 
 namespace omega
 {
@@ -244,7 +241,7 @@ public:
 		return false;
 	}
 
-	virtual uint32_t startFrame( uint32_t version )
+	virtual uint32_t startFrame( const uint32_t version )
 	{
 		myFrameData.commit();
 		return eq::Config::startFrame( version );
@@ -486,7 +483,7 @@ public:
 }; // namespace omega
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-EqualizerDisplaySystem::EqualizerDisplaySystem():
+DisplaySystem::DisplaySystem():
 	mySys(NULL),
 	myConfig(NULL),
 	myNodeFactory(NULL),
@@ -495,19 +492,19 @@ EqualizerDisplaySystem::EqualizerDisplaySystem():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-EqualizerDisplaySystem::~EqualizerDisplaySystem()
+DisplaySystem::~DisplaySystem()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::setup(Setting& setting) 
+void DisplaySystem::setup(Setting& setting) 
 {
 	setting.lookupValue("DisplayConfig", myDisplayConfig);
 	mySetting = &setting;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::initialize(SystemManager* sys)
+void DisplaySystem::initialize(SystemManager* sys)
 {
 	// Init glew
 	glewInit();
@@ -539,7 +536,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::initObservers()
+void DisplaySystem::initObservers()
 {
 	if(mySetting->exists("Observers"))
 	{
@@ -581,7 +578,7 @@ void EqualizerDisplaySystem::initObservers()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::initLayers()
+void DisplaySystem::initLayers()
 {
 	if(mySetting->exists("Views"))
 	{
@@ -599,7 +596,7 @@ void EqualizerDisplaySystem::initLayers()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::run()
+void DisplaySystem::run()
 {
 	bool error = false;
     if( myConfig )
@@ -638,12 +635,12 @@ void EqualizerDisplaySystem::run()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::cleanup()
+void DisplaySystem::cleanup()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
+void DisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
 {
 	if(!myConfig)
 	{
@@ -659,7 +656,7 @@ void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
+bool DisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
 { 
 	if(!myConfig)
 	{
@@ -676,7 +673,7 @@ bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Observer* EqualizerDisplaySystem::getObserver(int observerId)
+Observer* DisplaySystem::getObserver(int observerId)
 {
 	oassert(myObservers.size() > observerId);
 	return myObservers[observerId];

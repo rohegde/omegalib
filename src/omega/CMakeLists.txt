@@ -31,9 +31,8 @@ SET( srcs
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
-		omega/EqualizerDisplaySystem.cpp
+		omega/DisplaySystem.cpp
         omega/GfxUtils.cpp
-#		GLUTDisplaySystem.cpp
         omega/GpuBuffer.cpp
         omega/GpuEnvironment.cpp
         omega/GpuManager.cpp
@@ -56,10 +55,8 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
-#		${OmegaLib_SOURCE_DIR}/include/omega/GLUTDisplaySystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GpuEnvironment.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h

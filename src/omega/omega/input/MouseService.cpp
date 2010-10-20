@@ -9,7 +9,6 @@
  *---------------------------------------------------------------------------------------------------------------------
  * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "omega/GLUTDisplaySystem.h"
 #include "omega/SystemManager.h"
 #include "omega/input/MouseService.h"
 
@@ -44,18 +43,9 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 
 		InputEvent* evt = mysInstance->writeHead();
 		evt->serviceType = InputService::Pointer;
-		/*if(SystemManager::instance()->getDisplaySystem()->getId() == GLUTDisplaySystem::Id)
-		{
-			evt->type = InputEvent::Down;
-			evt->position[0] = x;
-			evt->position[1] = y;
-		}
-		else*/
-		{
-			evt->type = state ? InputEvent::Down : InputEvent::Up;
-			evt->position[0] = x;
-			evt->position[1] = y;
-		}
+		evt->type = state ? InputEvent::Down : InputEvent::Up;
+		evt->position[0] = x;
+		evt->position[1] = y;
 
 		mysInstance->unlockEvents();
 	}
@@ -65,11 +55,6 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 void MouseService::initialize() 
 {
 	mysInstance = this;
-	/*if(SystemManager::instance()->getDisplaySystem()->getId() == GLUTDisplaySystem::Id)
-	{
-		glutPassiveMotionFunc(mouseMotionCallback);
-		glutMouseFunc(mouseButtonCallback);
-	}*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
