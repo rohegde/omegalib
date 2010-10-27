@@ -13,6 +13,7 @@
 #define __GPU_BUFFER_H__
 
 #include "osystem.h"
+#include "omega/GpuProgram.h"
 
 #include "CL/cl.h"
 #include "CL/cl_gl.h"
@@ -22,16 +23,13 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class GpuManager;
-	class GpuProgram;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class GpuData
 	{
 	public:
-		enum BindType { BindToComputeStage, BindToRenderStage };
-	public:
-		virtual void bind(GpuProgram* prog, int index, GpuData::BindType bindType) = 0;
-		virtual void unbind(GpuProgram* prog, int index, GpuData::BindType bindType) = 0;
+		virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage) = 0;
+		virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage) = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,8 +40,8 @@ namespace omega
 		enum Type {TypeInt, TypeFloat };
 
 	public:
-		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuData::BindType bindType);
-		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuData::BindType bindType);
+		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
 
 		//! Sets the uniform name.
 		void setName(omega::String value) { myName = value; }
@@ -177,8 +175,8 @@ namespace omega
 		OMEGA_API ~GpuBuffer();
 
 		OMEGA_API void initialize(int size, int elementSize, void* data = NULL, unsigned int bufferFlags = 0);
-		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuData::BindType bindType);
-		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuData::BindType bindType);
+		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
 		
 		OMEGA_API void copyTo(GpuBuffer* destination, int srcOffset,int dstOffset,  int length);
 
@@ -269,8 +267,8 @@ namespace omega
 		//! @name Internal Functions
 		//! @internal Applies the vertex buffer attributes, binding vertex data to their specified semantics.
 		//! This method is always called before rendering data from the vertex buffer.
-		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuData::BindType bindType);
-		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuData::BindType bindType);
+		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
 
 	private:
 		std::vector<VertexAttribute> myAttributes;

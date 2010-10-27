@@ -20,6 +20,73 @@ using namespace omega;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+GLenum getLightGLEnum(int lightId)
+{
+	switch(lightId)
+	{
+	case 0:
+		return GL_LIGHT0;
+	case 1:
+		return GL_LIGHT1;
+	case 2:
+		return GL_LIGHT2;
+	case 3:
+		return GL_LIGHT3;
+	case 4:
+		return GL_LIGHT4;
+	case 5:
+		return GL_LIGHT5;
+	case 6:
+		return GL_LIGHT6;
+	case 7:
+		return GL_LIGHT7;
+	}
+	return GL_LIGHT0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::setLightingEnabled(bool value)
+{
+	if(value)
+	{
+		glEnable(GL_LIGHTING);
+	}
+	else
+	{
+		glDisable(GL_LIGHTING);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::setLightEnabled(int lightId, bool value)
+{
+	GLenum glid = getLightGLEnum(lightId);
+	if(value)
+	{
+		glEnable(glid);
+	}
+	else
+	{
+		glDisable(glid);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::setLightPosition(int lightId, const Vector3f& pos)
+{
+	GLenum glid = getLightGLEnum(lightId);
+	glLightfv(glid, GL_POSITION, pos.begin());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GfxUtils::setLightColor(int lightId, const Color& color)
+{
+	GLenum glid = getLightGLEnum(lightId);
+	glLightfv(glid, GL_DIFFUSE, color.begin());
+	glLightfv(glid, GL_SPECULAR, color.begin());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GfxUtils::getViewRay(float viewX, float viewY, omega::Vector3f* origin, omega::Vector3f* direction)
 {
 	GLdouble modelview[16];
@@ -126,7 +193,7 @@ void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Color startColor, Colo
 
 	float h1 = int(height * pc);
 
-	glColor4ubv(startColor);
+	glColor4fv(startColor.begin());
 	glRecti(x, y, x + width, y + h1);
 
 	y += h1;
@@ -137,7 +204,7 @@ void GfxUtils::drawVGradient(Vector2i pos, Vector2i size, Color startColor, Colo
 	glVertex2i(x, y);
 	glVertex2i(x + width, y);
 
-	glColor4ubv(endColor);
+	glColor4fv(endColor.begin());
 	glVertex2i(x + width, y + height);
 	glVertex2i(x, y + height);
 
@@ -154,7 +221,7 @@ void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Color startColor, Colo
 
 	float w1 = int(width * pc);
 
-	glColor4ubv(startColor);
+	glColor4fv(startColor.begin());
 	glRecti(x, y, x + w1, y + height);
 
 	x += w1;
@@ -165,7 +232,7 @@ void GfxUtils::drawHGradient(Vector2i pos, Vector2i size, Color startColor, Colo
 	glVertex2i(x, y + height);
 	glVertex2i(x, y);
 
-	glColor4ubv(endColor);
+	glColor4fv(endColor.begin());
 	glVertex2i(x + width, y);
 	glVertex2i(x + width, y + height);
 

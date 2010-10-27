@@ -18,19 +18,12 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class Color: public vmml::vector< 4, byte >
+	class Color: public vmml::vector< 4, float >
 	{
 	public:
 	public:
-		Color(byte r, byte g, byte b, byte a = 255):
-		  vmml::vector< 4, byte >(r, g, b, a) {}
-
-		static Color floats(float r, float g, float b, float a)
-		{
-		  return Color((byte)(r * 256), (byte)(g * 256), (byte)(b * 256), (byte)(a * 256));
-		}
-
-		operator byte* () { return begin(); }
+		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f):
+		  vmml::vector< 4, float >(r, g, b, a) {}
 	};
 }; // namespace omega
 

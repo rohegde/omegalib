@@ -13,10 +13,17 @@
 #define __GPU_PROGRAM_H__
 
 #include "osystem.h"
-#include "omega/GpuBuffer.h"
+
+#include "CL/cl.h"
+#include "CL/cl_gl.h"
 
 namespace omega
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class GpuBuffer;
+	class GpuData;
+	class GpuManager;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @interal Checks safety of OpenCL calls.
 	bool __clSuccessOrDie(const char* file, int line, int status);
@@ -112,7 +119,7 @@ namespace omega
 	{
 	public:
 		enum PrimType { PrimNone, PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
-		static const int MaxInputs = 64;
+		enum Stage { ComputeStage, RenderStage };
 
 	public:
 		OMEGA_API GpuProgram(GpuManager* gpuMng);
@@ -142,51 +149,56 @@ namespace omega
 
 		GLuint getGLProgram() { return myGLProgram; }
 
-		//! Add a Gpu constant to the program.
-		OMEGA_API void setInput(int index, GpuData* input);
-
-		//! Clear the program constant table.
-		OMEGA_API void clearInput();
-
 		int getComputeDimensions() { return myComputeDimensions; }
 		void setComputeDimensions(int value) { myComputeDimensions = value; }
 
-		size_t getGlobalComputeThreads(int dim) { return myGlobalComputeThreads[dim]; }
-		size_t getLocalComputeThreads(int dim) { return myLocalComputeThreads[dim]; }
-		void setGlobalComputeThreads(int dim, size_t value) { myGlobalComputeThreads[dim] = value; }
-		void setLocalComputeThreads(int dim, size_t value) { myLocalComputeThreads[dim] = value; }
-		
-		void setNumRenderItems(int size) { myNumRenderItems = size; }
-		int getNumrenderItems() { return myNumRenderItems; }
-
 		OMEGA_API void initialize();
 
-		OMEGA_API void run(PrimType primType = PrimNone);
+		OMEGA_API void runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads);
+		OMEGA_API void runRenderStage(int items, PrimType primType = PrimNone);
 
 	private:
 		void printProgramLog(GLuint program);
-		void runComputeShader();
 
 	private:
 		omega::String myName;
 
 		GpuManager* myGpuMng;
 
-		// Program inputs.
-		GpuData* myInput[MaxInputs];
-
 		// OpenGL program stuff
 		GLuint myGLProgram;
 		GeometryShader* myGeometryShader;
 		VertexShader* myVertexShader;
 		FragmentShader* myFragmentShader;
-		int myNumRenderItems;
 
 		// OpenCL program stuff.
 		ComputeShader* myComputeShader;
 		int myComputeDimensions;
 	    size_t myGlobalComputeThreads[3];
 	    size_t myLocalComputeThreads[3];
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class GpuProgramParams
+	{
+	public:
+		static const int MaxParams = 64;
+
+	public:
+		GpuProgramParams() { clearInput(); }
+
+		//! Add a Gpu constant to the program.
+		OMEGA_API void setParam(int index, GpuData* input);
+
+		//! Clear the program constant table.
+		OMEGA_API void clearInput();
+
+		OMEGA_API void bind(GpuProgram* program, GpuProgram::Stage stage);
+		OMEGA_API void unbind(GpuProgram* program, GpuProgram::Stage stage);
+
+	private:
+		// Program inputs.
+		GpuData* myInput[MaxParams];
 	};
 }; // namespace omega
 

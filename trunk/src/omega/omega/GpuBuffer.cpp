@@ -15,9 +15,9 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuConstant::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
+void GpuConstant::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
-	if(bindType == GpuData::BindToComputeStage)
+	if(stage == GpuProgram::ComputeStage)
 	{
 		cl_int status;
 		cl_kernel kernel = prog->getComputeShader()->getCLKernel();
@@ -33,7 +33,7 @@ void GpuConstant::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 		}
 		if(!clSuccessOrDie(status)) return;
 	}
-	else if(bindType == GpuData::BindToRenderStage)
+	else if(stage == GpuProgram::RenderStage)
 	{
 		GLint uid = glGetUniformLocation(prog->getGLProgram(), myName.c_str());
 		switch(myType)
@@ -55,7 +55,7 @@ void GpuConstant::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuConstant::unbind(GpuProgram* prog, int index, GpuData::BindType bindType)
+void GpuConstant::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
 }
 
@@ -182,9 +182,9 @@ void GpuBuffer::copyTo(GpuBuffer* dest, int srcOffset, int dstOffset, int length
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuBuffer::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
+void GpuBuffer::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
-	if(bindType == GpuData::BindToComputeStage)
+	if(stage == GpuProgram::ComputeStage)
 	{
 		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
 		// needs to be done here.
@@ -214,9 +214,9 @@ void GpuBuffer::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuBuffer::unbind(GpuProgram* prog, int index, GpuData::BindType bindType)
+void GpuBuffer::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
-	if(bindType == GpuData::BindToComputeStage)
+	if(stage == GpuProgram::ComputeStage)
 	{
 		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
 		// needs to be done here.
@@ -257,9 +257,9 @@ int VertexBuffer::addAttribute(const VertexAttribute& attrib)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void VertexBuffer::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
+void VertexBuffer::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
-	if(bindType == GpuData::BindToRenderStage)
+	if(stage == GpuProgram::RenderStage)
 	{
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, getGLBuffer());
@@ -296,15 +296,15 @@ void VertexBuffer::bind(GpuProgram* prog, int index, GpuData::BindType bindType)
 	else
 	{
 		// For compute stage, just perform standard buffer binding.
-		GpuBuffer::bind(prog, index, bindType);
+		GpuBuffer::bind(prog, index, stage);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void VertexBuffer::unbind(GpuProgram* prog, int index, GpuData::BindType bindType)
+void VertexBuffer::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
 	// Nothing to do for now.
-	GpuBuffer::unbind(prog, index, bindType);
+	GpuBuffer::unbind(prog, index, stage);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

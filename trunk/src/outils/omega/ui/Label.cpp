@@ -73,7 +73,7 @@ void Label::draw()
 			if(alignFlags & Font::VABottom) textPos[1] += mySize[1];
 			else if(alignFlags & Font::VAMiddle) textPos[1] += mySize[1] / 2;
 
-			glColor4ubv(myColor);
+			glColor4fv(myColor.begin());
 			myFont->render(myText, textPos, alignFlags);
 		}
 	}

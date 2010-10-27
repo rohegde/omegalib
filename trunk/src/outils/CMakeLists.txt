@@ -28,12 +28,14 @@ SET( srcs
 		omega/TextureManager.cpp
 		
 		# omega::scene
-		omega/scene/Material.cpp
+		omega/scene/Effect.cpp
 		omega/scene/Mesh.cpp
-		omega/scene/MeshUtils.cpp
+		omega/scene/MeshManager.cpp
 		omega/scene/Drawable.cpp
 		omega/scene/SceneManager.cpp
 		omega/scene/SceneNode.cpp
+		omega/scene/PlyDataReader.cpp
+		omega/scene/plyfile.cpp
 		
 		# omega::ui
 		omega/ui/AbstractButton.cpp
@@ -57,11 +59,14 @@ SET( headers
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Mesh.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshUtils.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/Material.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshData.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Effect.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/PlyDataReader.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/ply.h
 		
 		# omega::ui
 		${OmegaLib_SOURCE_DIR}/include/omega/ui.h

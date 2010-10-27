@@ -34,7 +34,6 @@ SET( srcs
 		omega/DisplaySystem.cpp
         omega/GfxUtils.cpp
         omega/GpuBuffer.cpp
-        omega/GpuEnvironment.cpp
         omega/GpuManager.cpp
         omega/GpuProgram.cpp
 		omega/InputManager.cpp
@@ -55,10 +54,8 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GpuEnvironment.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
@@ -68,7 +65,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Math.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
         ) 
         

@@ -26,11 +26,5 @@ void Mesh::initialize(SceneManager* scene, int numVertices, int vertexSize, void
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Mesh::draw()
 {
-	if(myMaterial != NULL)
-	{
-		myMaterial->activate();
-		myMaterial->draw(this);
-		myMaterial->deactivate();
-	}
 }
 

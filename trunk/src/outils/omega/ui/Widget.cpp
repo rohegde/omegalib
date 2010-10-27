@@ -110,7 +110,7 @@ void Widget::draw()
 		float width = mySize.x();
 		float height = mySize.y();
 
-		glColor4ubv(myDebugModeColor.begin());
+		glColor4fv(myDebugModeColor.begin());
 
 		glBegin(GL_LINES);
 

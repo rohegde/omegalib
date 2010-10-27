@@ -11,8 +11,48 @@
  *********************************************************************************************************************/
 #include "omega/GpuProgram.h"
 #include "omega/GpuManager.h"
+#include "omega/GpuBuffer.h"
 
 using namespace omega;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuProgramParams::bind(GpuProgram* program, GpuProgram::Stage stage)
+{
+	for(int i = 0; i < MaxParams; i++)
+	{
+		GpuData* data = myInput[i];
+		if(data != NULL)
+		{
+			data->bind(program, i, stage);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuProgramParams::unbind(GpuProgram* program, GpuProgram::Stage stage)
+{
+	for(int i = 0; i < MaxParams; i++)
+	{
+		GpuData* data = myInput[i];
+		if(data != NULL)
+		{
+			data->unbind(program, i, stage);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuProgramParams::setParam(int index, GpuData* inputData)
+{
+	myInput[index] = inputData;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuProgramParams::clearInput()
+{
+	memset(myInput, 0, MaxParams * sizeof(GpuData*));
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 VertexShader::VertexShader(GLuint GLShader, const omega::String& name):
@@ -68,7 +108,6 @@ GpuProgram::GpuProgram(GpuManager* gpuMng):
 	myGpuMng(gpuMng)
 {
 	oassert(gpuMng != NULL);
-	clearInput();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,18 +131,6 @@ void GpuProgram::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::setInput(int index, GpuData* inputData)
-{
-	myInput[index] = inputData;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::clearInput()
-{
-	memset(myInput, 0, MaxInputs * sizeof(GpuData*));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::printProgramLog(GLuint program)
 {
     GLint infoLogLength = 0;
@@ -122,7 +149,7 @@ void GpuProgram::printProgramLog(GLuint program)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::runComputeShader()
+void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads)
 {
 	cl_event events;
 	cl_int status;
@@ -147,30 +174,8 @@ void GpuProgram::runComputeShader()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::run(PrimType primType)
+void GpuProgram::runRenderStage(int items, PrimType primType)
 {
-	// If a compute shader is present, run it.
-	if(myComputeShader != NULL)
-	{
-		for(int i = 0; i < MaxInputs; i++)
-		{
-			GpuData* data = myInput[i];
-			if(data != NULL)
-			{
-				data->bind(this, i, GpuData::BindToComputeStage);
-			}
-		}
-		runComputeShader();
-		for(int i = 0; i < MaxInputs; i++)
-		{
-			GpuData* data = myInput[i];
-			if(data != NULL)
-			{
-				data->unbind(this, i, GpuData::BindToComputeStage);
-			}
-		}
-	}
-
 	if(primType != PrimNone)
 	{
 		GLenum mode = GL_POINTS;
@@ -181,23 +186,7 @@ void GpuProgram::run(PrimType primType)
 
 		glUseProgram(myGLProgram);
 
-		for(int i = 0; i < MaxInputs; i++)
-		{
-			GpuData* data = myInput[i];
-			if(data != NULL)
-			{
-				data->bind(this, i, GpuData::BindToRenderStage);
-			}
-		}
-		glDrawArrays(mode, 0, myNumRenderItems);
-		for(int i = 0; i < MaxInputs; i++)
-		{
-			GpuData* data = myInput[i];
-			if(data != NULL)
-			{
-				data->unbind(this, i, GpuData::BindToRenderStage);
-			}
-		}
+		glDrawArrays(mode, 0, items);
 
 		glUseProgram(0);
 	}
