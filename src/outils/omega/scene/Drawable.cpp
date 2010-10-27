@@ -11,12 +11,18 @@
  *********************************************************************************************************************/
 
 #include "omega/scene/Drawable.h"
+#include "omega/GfxUtils.h"
 
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SimplePrimitive::draw()
 {
+	if(myEffect != NULL)
+	{
+		myEffect->activate();
+	}
+
 	switch(myPrimitiveType)
 	{
 	case SimplePrimitive::SolidCube:
@@ -26,7 +32,12 @@ void SimplePrimitive::draw()
 		glutSolidSphere(mySize, myResolution1, myResolution2);
 		break;
 	case SimplePrimitive::SolidTeapot:
-		glutSolidTeapot(mySize);
+		GfxUtils::drawSolidTeapot(mySize);
 		break;
 	};
+
+	if(myEffect != NULL)
+	{
+		myEffect->deactivate();
+	}
 }

@@ -30,14 +30,25 @@ namespace omega
 	public:
 		OMEGA_API static void getViewRay(float viewX, float viewY, omega::Vector3f* origin, omega::Vector3f* direction);
 
-		// Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
-		// viewport parameters specified in the draw context.
+		//! Changes the coordinate system to pixel-based 2d coords. The coordinate system viewport will correspond to the
+		//! viewport parameters specified in the draw context.
 		OMEGA_API static void beginOverlayMode(const omega::DrawContext& context);
 
-		// Restores the coordinate system specified before a Begin2DCoords call.
+		//! Restores the coordinate system specified before a Begin2DCoords call.
 		OMEGA_API static void endOverlayMode();
 
-		// Prints text. 
+		//! Light management
+		//@{
+		//! Enables or disables lighting support.
+		OMEGA_API static void setLightingEnabled(bool value);
+		OMEGA_API static void setLightEnabled(int lightId, bool value);
+		OMEGA_API static void GfxUtils::setLightPosition(int lightId, const Vector3f& pos);
+		OMEGA_API static void GfxUtils::setLightColor(int lightId, const Color& pos);
+		//@}
+
+		//! Drawing functions
+		//@{
+		//! Prints text. 
 		OMEGA_API static void drawText(int x, int y, const char* s, Font f = Helvetica12);
 
 		OMEGA_API static void drawSolidTeapot(float size);
@@ -47,6 +58,7 @@ namespace omega
 		OMEGA_API static void drawVGradient(omega::Vector2i pos, omega::Vector2i size, omega::Color startColor, omega::Color endColor, float pc = 0.0f);
 
 		OMEGA_API static void drawDRect(omega::Vector2f pos, omega::Vector2f size, int d);
+		//@}
 	private:
 		GfxUtils() {};
 	};

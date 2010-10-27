@@ -14,7 +14,7 @@
 
 #include "omega/osystem.h"
 #include "omega/GpuBuffer.h"
-#include "omega/scene/Material.h"
+#include "omega/scene/Effect.h"
 #include "omega/scene/Drawable.h"
 #include "omega/scene/SceneManager.h"
 
@@ -27,13 +27,13 @@ namespace scene
 	class Mesh: public Drawable
 	{
 	public:
-		Mesh(): myVertexBuffer(NULL), myIndexBuffer(NULL), myMaterial(NULL) {}
+		Mesh(): myVertexBuffer(NULL), myIndexBuffer(NULL), myEffect(NULL) {}
 
 		VertexBuffer* getVertexBuffer() { return myVertexBuffer; }
 		IndexBuffer* getIndexBuffer()  { return myIndexBuffer; }
 
-		Material* getMaterial() { return myMaterial; }
-		void setMaterial(Material* value) { myMaterial = value; }
+		Effect* getEffect() { return myEffect; }
+		void setEffect(Effect* value) { myEffect = value; }
 
 		OUTILS_API void initialize(SceneManager* scene, int numVertices, int vertexSize, void* vertexData, void* indexData);
 		OUTILS_API virtual void draw();
@@ -41,7 +41,7 @@ namespace scene
 	private:
 		VertexBuffer* myVertexBuffer;
 		IndexBuffer* myIndexBuffer;
-		Material* myMaterial;
+		Effect* myEffect;
 	};
 
 }; // namespace scene

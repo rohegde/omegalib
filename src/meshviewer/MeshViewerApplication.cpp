@@ -26,7 +26,9 @@ void MeshViewerClient::initialize()
 	mySceneManager = new SceneManager(myGpu);
 
 	myTestDrawable = new SimplePrimitive();
-	myTestDrawable->setPrimitiveType(SimplePrimitive::SolidCube);
+	myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
+	myTestDrawable->setEffect(new Effect());
+	myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
 
 	mySceneManager->getRootNode()->addDrawable(myTestDrawable);
 	mySceneManager->getRootNode()->setScale(0.1f);
@@ -109,7 +111,10 @@ void MeshViewerClient::draw(const DrawContext& context)
 		glEnable(GL_LIGHTING);
 		//glDisable(GL_FOG);
 
-		glColor3f(1.0, 0.0, 1.0);
+		GfxUtils::setLightingEnabled(true);
+		GfxUtils::setLightEnabled(0, true);
+		GfxUtils::setLightColor(0, Color(1.0, 1.0, 1.0));
+		GfxUtils::setLightPosition(0, Vector3f(0, 1, 0));
 
 		mySceneManager->draw();
 

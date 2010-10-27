@@ -4,61 +4,55 @@
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
-#include "omega/GfxUtils.h"
-#include "omega/ui/Button.h"
+#include "omega/scene/MeshManager.h"
+#include "omega/scene/ply.h"
 
 using namespace omega;
-using namespace omega::ui;
+using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Button::Button(omega::String name):
-	AbstractButton(name),
-	myLabel(name + ".label")
+MeshManager::MeshManager()
 {
-	addChild(&myLabel);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Button::~Button()
+MeshManager::~MeshManager()
 {
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Button::processInputEvent(const InputEvent& evt)
+void MeshManager::loadMesh(omega::String name, omega::String filename, MeshFormat format)
 {
-	Vector2f point  = evt.position;
-	
-	transformPoint(point);
-
-	if(hitTest(point))
+	if(format == MeshManager::MeshFormatPly)
 	{
-		if(evt.type == InputEvent::Down)
-		{
-			myPressed = true;
-			myPressedStateChanged = true;
-		}
-		else if(evt.type == InputEvent::Up)
-		{
-			myPressed = false;
-			myPressedStateChanged = true;
-		}
-		return true;
+		PlyDataReader reader;
+		reader.readPlyFile(filename);
+
+		createMesh(name, &reader);
 	}
-	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Button::draw()
+Mesh* MeshManager::getMesh(omega::String name)
 {
-	myLabel.setPosition(myPosition);
-	myLabel.setSize(mySize);
+	return myMeshes[name];
+}
 
-	AbstractButton::draw();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshManager::cleanup()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshManager::createMesh(omega::String name, MeshData* data)
+{
+	Mesh* mesh = new Mesh();
+	myMeshes[name] = mesh;
+
+	// TODO: fill the mesh index and vertex buffers with data.
 }

@@ -10,33 +10,27 @@
  * DrawContext
  *********************************************************************************************************************/
 
-#include "omega/scene/Material.h"
+#include "omega/scene/Effect.h"
 #include "omega/scene/Mesh.h"
 
 using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::activate()
+void Effect::activate()
 {
-	myEnvironment.push();
+	myParams.bind(myProgram, GpuProgram::RenderStage);
+	glDisable(GL_COLOR_MATERIAL);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.begin());
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.begin());
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.begin());
+	glMaterialfv(GL_FRONT, GL_EMISSION, myEmissiveColor.begin());
+	glMaterialf(GL_FRONT, GL_SHININESS, myShininess);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::deactivate()
+void Effect::deactivate()
 {
-	myEnvironment.pop();
+	myParams.unbind(myProgram, GpuProgram::RenderStage);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Material::draw(Mesh* mesh)
-{
-	oassert(mesh != NULL);
-
-	if(myProgram != NULL)
-	{
-		myProgram->setInput(0, mesh->getVertexBuffer());
-		myProgram->setInput(1, mesh->getIndexBuffer());
-		myProgram->run(GpuProgram::PrimTriangles);
-	}
-}
