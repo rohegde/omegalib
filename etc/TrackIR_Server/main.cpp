@@ -9,17 +9,22 @@
 #include <atlbase.h>
 #include "inc/optitrack.h"
 #import  "lib/optitrack.tlb"
+#include <iostream>
+#include <fstream>
 
-int SLOW_POL_RATE = 15;
+using namespace std;
+
+int SLOW_POL_RATE = 60;
 int FAST_POL_RATE = 1;
 
-bool show_out = true;
-bool calibrate = false;
+bool show_out = false;
+
+bool test_out = false;
 bool slow_frame = false;
 float x_offset, y_offset, z_offset;
 float rx_offset, ry_offset, rz_offset;
 
-
+ofstream myfile;
 
 void processkey()
 {
@@ -28,11 +33,39 @@ void processkey()
 	{
 		case 27 : exit(0);	break;
 
-		case 99 :	//c
-			calibrate = true;
+		case 49 :			//1
+			test_out = true;
+			printf( "x-axis c: \t");
+			myfile<<"x-axis cen: \t";
+			break;
+		case 50 :			//2
+			test_out = true;
+			printf( "x-axis: \t");
+			myfile<<"x-axis: \t";
+			break;
+		case 51 :			//3
+			test_out = true;
+			printf( "y-axis cen: \t");
+			myfile<<"y-axis cen: \t";
+			break;
+		case 52 :			//4
+			test_out = true;
+			printf( "y-axis: \t");
+			myfile<<"y-axis: \t";
+			break;
+		case 53 :			//5
+			test_out = true;
+			printf( "z-axis cen: \t");
+			myfile<<"z-axis cen: \t";
+			break;
+		case 54 :			//6
+			test_out = true;
+			printf( "z-axis: \t");
+			myfile<<"z-axis: \t";
 			break;
 
-			case 100 :	//d
+
+		case 100 :	//d
 			slow_frame = !slow_frame;
 			break;
 
@@ -51,6 +84,8 @@ void processkey()
 
 int _tmain(int argc, TCHAR* argv[])
 {
+	myfile.open ("example.txt");
+    
 	printf("OptiTrack WIN32 Sample Application ============================================\n");
 	printf("Copyright 2007 NaturalPoint =============================================------\n\n");
 
@@ -128,7 +163,6 @@ int _tmain(int argc, TCHAR* argv[])
 		printf("\nPress:\n");
 		printf("  Esc: \t Exit\n");
 		printf("  s:   \t Show output\n");
-		printf("  c:   \t Calibrate\n");
 
 		cameraCollection->Item(0, &camera);
 		{
@@ -160,30 +194,29 @@ int _tmain(int argc, TCHAR* argv[])
 							hr = vector->get_Yaw(&yaw);
 							hr = vector->get_Roll(&roll);
 
-							if( calibrate )
-							{
-								calibrate = false;
-								x_offset = -(float)x.dblVal;
-								y_offset = -(float)y.dblVal;
-								z_offset = -(float)z.dblVal;
-								rx_offset = -(float)pitch.dblVal;
-								ry_offset = -(float)yaw.dblVal;
-								rz_offset = -(float)roll.dblVal;
-							}
-
 							//store data 
-							frameData.x = (float)x.dblVal + x_offset;
-							frameData.y = (float)y.dblVal + y_offset;
-							frameData.z = (float)z.dblVal + z_offset;
-							frameData.pitch = (float)pitch.dblVal + rx_offset;
-							frameData.yaw = (float)yaw.dblVal + ry_offset;
-							frameData.roll = (float)roll.dblVal + rz_offset;
+							frameData.x = (float)x.dblVal;
+							frameData.y = (float)y.dblVal;
+							frameData.z = (float)z.dblVal;
+							frameData.pitch = (float)pitch.dblVal;
+							frameData.yaw = (float)yaw.dblVal;
+							frameData.roll = (float)roll.dblVal;
 
 							if(show_out)
 							{
 								printf("Pos: {%.2f, %.2f, %.2f}      Rot: { %.2f, %.2f, %.2f } \n", 
 									frameData.x, frameData.y, frameData.z,
 									frameData.pitch, frameData.yaw, frameData.roll);
+							}
+
+							if( test_out )
+							{
+								test_out = false;
+								printf("Pos: {%.2f, %.2f, %.2f}      Rot: { %.2f, %.2f, %.2f } \n", 
+									frameData.x, frameData.y, frameData.z,
+									frameData.pitch, frameData.yaw, frameData.roll);
+								myfile<< "Pos: {" << frameData.x << ", " << frameData.y << ", " << frameData.z << "}\t"
+									  << "Rot: {" << frameData.pitch << " , " << frameData.yaw << " , " << frameData.roll << "}\n";
 							}
 
 							if(sendData(sd, &frameData, sizeof(frameData), (struct sockaddr *)&server) != sizeof(frameData)) {
@@ -218,6 +251,7 @@ int _tmain(int argc, TCHAR* argv[])
 
 	printf("Application Exit.\n");
 	getchar();
+	myfile.close();
 	return 0;
 }
 
