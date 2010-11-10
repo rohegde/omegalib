@@ -7,9 +7,9 @@
  * Test app: build a simple obj mesh viewer
 
 ==November 10 2010==
-* Alessandro: Compile without Equalizer support, needed in about a week.
-* Brad needs to compile omegalib inside linux, hopefully be solved by disabling equalizer  support and compiling a dependency free version of the lib.
-* Brad: put updated version of mocap config in repository
-* Brad & Arthur: think about porting their unity animation app (awesome ants) to omegadesk as a demo app using multitouch + 3d.
-* Khairi mentioned using omegalib in future version of raintable for multitouch (they may be using PQLab overlays)
-* Brad: need to have 2 tracked hands.
+ * Alessandro: Compile without Equalizer support, needed in about a week.
+ * Brad needs to compile omegalib inside linux, hopefully be solved by disabling equalizer  support and compiling a dependency free version of the lib.
+ * Brad: put updated version of mocap config in repository
+ * Brad & Arthur: think about porting their unity animation app (awesome ants) to omegadesk as a demo app using multitouch + 3d.
+ * Khairi mentioned using omegalib in future version of raintable for multitouch (they may be using PQLab overlays)
+ * Brad: need to have 2 tracked hands.
