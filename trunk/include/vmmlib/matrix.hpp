@@ -65,6 +65,12 @@ public:
     template< size_t P, size_t Q >
     matrix( const matrix< P, Q, T >& source_ );
     
+    #ifndef VMMLIB_NO_CONVERSION_OPERATORS
+    // auto conversion operator
+    operator T*();
+    operator const T*() const;
+    #endif
+    
     bool operator==( const matrix& other ) const;
     bool operator!=( const matrix& other ) const;
 
@@ -82,6 +88,10 @@ public:
         const matrix< M, P, T >& left,
         const matrix< P, N, T >& right 
         );
+	
+	// convolution operation (extending borders) of (this) matrix and the given kernel
+	template< size_t U, size_t V >
+	void convolve(const matrix< U, V, T >& kernel);
 
     // returned matrix_mxp = (this) matrix * other matrix_nxp;
     // note: using multiply(...) it avoids a copy of the resulting matrix
@@ -131,6 +141,8 @@ public:
     typename enable_if< uM == 3 && vM == 3 && M == N && M == 4 >::type* 
     tensor( const vector< uM, T >& u, const vector< vM, T >& v );
 	
+	// row_offset and col_offset define the starting indices for the sub_matrix
+	// the sub_matrix is extracted according to the size of the target matrix, i.e. ( OXP )
 	template< size_t O, size_t P >
 	matrix< O, P, T >
     get_sub_matrix( size_t row_offset, size_t col_offset, 
@@ -175,7 +187,29 @@ public:
         
     void zero();
     void identity();
-        
+	
+	double frobenius_norm() const;
+	
+	template< typename TT >
+	void cast_from( const matrix< M, N, TT >& other );
+	
+	template< typename TT >
+		void quantize( matrix< M, N, TT >& quantized_, T& min_value, T& max_value ) const;
+	template< typename TT >
+		void dequantize( matrix< M, N, TT >& quantized_, const TT& min_value, const TT& max_value ) const;
+
+	
+	//Khatri-Rao Product: columns must be of same size
+    template< size_t O >
+    matrix< M*O, N, T > khatri_rao_product( const matrix< O, N, T >& right_ ) const;
+
+	T get_min() const;
+	T get_max() const;
+	
+	//returns number of non-zeros
+	size_t nnz() const;
+	size_t nnz( const T& threshold_ ) const;
+	
     vector< M, T >  get_column( size_t column_index ) const;
     void get_column( size_t column_index, vector< M, T>& column ) const;
 
@@ -196,8 +230,7 @@ public:
     size_t get_number_of_rows() const;
     size_t get_number_of_columns() const;
     
-    template< typename dummy_t >
-    T det( typename enable_if< M == N, dummy_t >::type* = 0 ) const;
+    T det() const;
     
     // the return value indicates if the matrix is invertible.
     // we need a tolerance term since the computation of the determinant is
@@ -367,7 +400,13 @@ public:
             os << "(";
             for( size_t col_index = 0; col_index < N; ++col_index )
             {
-                os << matrix.at( row_index, col_index ) << ", ";
+                if( sizeof(T) ==sizeof(unsigned char)) {
+					os << int(matrix.at( row_index, col_index ));
+				} else {
+					os << matrix.at( row_index, col_index );
+				}
+                if (col_index < (N-1) )
+                    os << ", ";
             }
             os << ")" << std::endl;
         }
@@ -405,7 +444,7 @@ bool equals( const matrix< M, N, T >& m0, const matrix< M, N, T >& m1, T toleran
 
 
 template< size_t M, size_t N, typename T >
-inline void
+inline void 
 multiply( const matrix< M, N, T >& left, const matrix< M, N, T >& right,
     matrix< M, N, T >& result )
 {
@@ -413,10 +452,51 @@ multiply( const matrix< M, N, T >& left, const matrix< M, N, T >& right,
 }
 
 
+
+template< size_t M, size_t N, typename T >
+template< size_t U, size_t V >
+void matrix< M, N, T>::convolve(const matrix< U, V, T >& kernel)
+{
+	matrix< M, N, T> temp;  // do not override original values instantly as old values are needed for calculation
+	
+	for(int y = 0; y < N; ++y) 
+    {
+		for(int x = 0; x < M; ++x) 
+        {
+			double sum = 0.0;
+	
+			for(int j = 0; j < V; ++j)
+            {
+				int srcy = y - V/2 + j;
+		
+				// Extending border values
+				if(srcy < 0)	srcy = 0;
+				if(srcy >= N)	srcy = N-1;
+		
+				for(int i = 0; i < U; ++i)
+                {
+					int srcx = x - U/2 + i;
+			
+					// Extending border values
+					if(srcx < 0)	srcx = 0;
+					if(srcx >= M)	srcx = M-1;
+					
+					sum += kernel.at(j,i) * at(srcy,srcx);
+				}
+			}
+			temp.at(y,x) = sum;
+		}
+	}
+	
+	*this = temp;
+}
+
+
+
 template< size_t M, size_t N, size_t P, typename T >
-inline
-void multiply( const matrix< M, P >& left, const matrix< M, P, T >& right, 
-    matrix< M, N >& result )
+inline void 
+multiply( const matrix< M, P, T >& left, const matrix< P, N, T >& right, 
+    matrix< M, N, T >& result )
 {
     result.multiply( left, right );
 }
@@ -463,6 +543,54 @@ inline T compute_determinant( const matrix< 3, 3, T >& m_ )
           m_( 0,0 ) * ( m_( 1,1 ) * m_( 2,2 ) - m_( 1,2 ) * m_( 2,1 ) )
         + m_( 0,1 ) * ( m_( 1,2 ) * m_( 2,0 ) - m_( 1,0 ) * m_( 2,2 ) )
         + m_( 0,2 ) * ( m_( 1,0 ) * m_( 2,1 ) - m_( 1,1 ) * m_( 2,0 ) );
+}
+
+
+template< typename T >
+inline T compute_determinant( const matrix< 4, 4, T >& m )
+{
+    T m00   = m( 0, 0 );
+    T m10   = m( 1, 0 );
+    T m20   = m( 2, 0 );
+    T m30   = m( 3, 0 );
+    T m01   = m( 0, 1 );
+    T m11   = m( 1, 1 );
+    T m21   = m( 2, 1 );
+    T m31   = m( 3, 1 );
+    T m02   = m( 0, 2 );
+    T m12   = m( 1, 2 );
+    T m22   = m( 2, 2 );
+    T m32   = m( 3, 2 );
+    T m03   = m( 0, 3 );
+    T m13   = m( 1, 3 );
+    T m23   = m( 2, 3 );
+    T m33   = m( 3, 3 );
+
+    return
+        m03 * m12 * m21 * m30
+            - m02 * m13 * m21 * m30
+            - m03 * m11 * m22 * m30
+            + m01 * m13 * m22 * m30
+            + m02 * m11 * m23 * m30
+            - m01 * m12 * m23 * m30
+            - m03 * m12 * m20 * m31
+            + m02 * m13 * m20 * m31
+            + m03 * m10 * m22 * m31
+            - m00 * m13 * m22 * m31
+            - m02 * m10 * m23 * m31
+            + m00 * m12 * m23 * m31
+            + m03 * m11 * m20 * m32
+            - m01 * m13 * m20 * m32
+            - m03 * m10 * m21 * m32
+            + m00 * m13 * m21 * m32
+            + m01 * m10 * m23 * m32
+            - m00 * m11 * m23 * m32
+            - m02 * m11 * m20 * m33
+            + m01 * m12 * m20 * m33
+            + m02 * m10 * m21 * m33
+            - m00 * m12 * m21 * m33
+            - m01 * m10 * m22 * m33
+            + m00 * m11 * m22 * m33;
 }
 
 
@@ -721,6 +849,27 @@ matrix< M, N, T >::matrix( const matrix< M, N >& original )
 {
 
 }
+#endif
+
+
+#ifndef VMMLIB_NO_CONVERSION_OPERATORS
+
+template< size_t M, size_t N, typename T >
+matrix< M, N, T >::
+operator T*()
+{
+    return array;
+}
+
+
+
+template< size_t M, size_t N, typename T >
+matrix< M, N, T >::
+operator const T*() const
+{
+    return array;
+}
+
 #endif
 
 
@@ -1216,7 +1365,7 @@ set_row( size_t row_index,  const matrix< 1, N, T >& row )
 {
     #ifdef VMMLIB_SAFE_ACCESSORS
     if ( row_index >= M )
-        VMMLIB_ERROR( "getRow() - index out of bounds.", VMMLIB_HERE );
+        VMMLIB_ERROR( "set_row() - index out of bounds.", VMMLIB_HERE );
     #endif
 
     for( size_t col_index = 0; col_index < N; ++col_index )
@@ -1501,9 +1650,8 @@ set_sub_matrix( const matrix< O, P, T >& sub_matrix,
 
 
 template< size_t M, size_t N, typename T >
-template< typename dummy_t >
 inline T
-matrix< M, N, T >::det( typename enable_if< M == N, dummy_t >::type* ) const
+matrix< M, N, T >::det() const
 {
     return compute_determinant( *this );
 }
@@ -1598,8 +1746,8 @@ typename enable_if< M == N && M == 4, TT >::type* )
 {
     const T angle = static_cast< T >( angle_ );
 
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
+    const T sine      = sin( angle );
+    const T cosine    = cos( angle );
     
     // this is necessary since Visual Studio cannot resolve the
     // pow()-call correctly if we just use 2.0 directly.
@@ -1642,8 +1790,8 @@ rotate_x( const TT angle_, typename enable_if< M == N && M == 4, TT >::type* )
 {
     const T angle       = static_cast< T >( angle_ );
 
-    const T sine        = math::sine( angle );
-    const T cosine      = math::cosine( angle );
+    const T sine        = sin( angle );
+    const T cosine      = cos( angle );
 
     T tmp;
 
@@ -1674,8 +1822,8 @@ rotate_y( const TT angle_, typename enable_if< M == N && M == 4, TT >::type* )
 {
     const T angle = static_cast< T >( angle_ );
 
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
+    const T sine      = sin( angle );
+    const T cosine    = cos( angle );
 
     T tmp;
 
@@ -1706,8 +1854,8 @@ rotate_z( const TT angle_, typename enable_if< M == N && M == 4, TT >::type* )
 {
     const T angle = static_cast< T >( angle_ );
     
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
+    const T sine      = sin( angle );
+    const T cosine    = cos( angle );
 
     T tmp;
 
@@ -1739,8 +1887,8 @@ pre_rotate_x( const TT angle_,
 {
     const T angle = static_cast< T >( angle_ );
 
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
+    const T sine      = sin( angle );
+    const T cosine    = cos( angle );
 
     T tmp;
     
@@ -1771,8 +1919,8 @@ pre_rotate_y( const TT angle_, typename enable_if< M == N && M == 4, TT >::type*
 {
     const T angle = static_cast< T >( angle_ );
 
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
+    const T sine      = sin( angle );
+    const T cosine    = cos( angle );
 
     T tmp;
 
@@ -1803,8 +1951,8 @@ pre_rotate_z( const TT angle_, typename enable_if< M == N && M == 4, TT >::type*
 {
     const T angle = static_cast< T >( angle_ );
 
-    const T sine      = math::sine( angle );
-    const T cosine    = math::cosine( angle );
+    const T sine      = sin( angle );
+    const T cosine    = cos( angle );
 
     T tmp;
     
@@ -2093,7 +2241,192 @@ matrix< M, N, T >::ZERO(
     );
 
 
+	
+template< size_t M, size_t N, typename T >
+double 
+matrix< M, N, T >::frobenius_norm( ) const
+{
+	double norm = 0.0;
+	
+	const_iterator it = begin(), it_end = end(); 
+	for( ; it != it_end; ++it )
+	{
+		norm += *it * *it;
+	}
+	
+	return sqrt(norm);
+}
 
+
+template< size_t M, size_t N, typename T  >
+template< size_t O >
+matrix< M*O, N, T > 
+matrix< M, N, T >::khatri_rao_product( const matrix< O, N, T >& right_ ) const
+{
+	matrix< M*O, N, T > khatri_rao;
+	
+	//build product for every column
+	for (size_t col = 0; col < N; ++col )
+	{
+		for ( size_t m = 0; m < M; ++m )
+		{
+			for (size_t o = 0; o < O; ++o )
+			{
+				khatri_rao.at(O*m + o, col) = at( m, col ) * right_.at( o, col );
+			}
+		}
+	}
+		
+	return khatri_rao;
+}
+	
+	
+template< size_t M, size_t N, typename T  >
+template< typename TT >
+void 
+matrix< M, N, T >::cast_from( const matrix< M, N, TT >& other )
+{
+	typedef vmml::matrix< M, N, TT > matrix_tt_type ;
+	typedef typename matrix_tt_type::const_iterator tt_const_iterator;
+	
+	iterator it = begin(), it_end = end();
+    tt_const_iterator other_it = other.begin();
+    for( ; it != it_end; ++it, ++other_it )
+    {
+        *it = static_cast< T >( *other_it );
+    }	
+}
+
+
+template< size_t M, size_t N, typename T  >
+T
+matrix< M, N, T >::get_min() const
+{
+	T min_value = static_cast<T>(std::numeric_limits<T>::max());
+	
+	const_iterator  it = begin(),
+	it_end = end();
+	for( ; it != it_end; ++it)
+	{		
+		if ( *it < min_value ) {
+			min_value = *it;
+		}
+	}
+	return min_value;
+}	
+
+template< size_t M, size_t N, typename T  >
+T
+matrix< M, N, T >::get_max() const
+{
+	T max_value = static_cast<T>(0);
+	
+	const_iterator  it = begin(),
+	it_end = end();
+	for( ; it != it_end; ++it)
+	{		
+		if ( *it > max_value ) {
+			max_value = *it;
+		}
+	}
+	return max_value;
+}		
+	
+template< size_t M, size_t N, typename T >
+size_t
+matrix< M, N, T >::nnz() const
+{
+	size_t counter = 0;
+	
+	const_iterator  it = begin(),
+	it_end = end();
+	for( ; it != it_end; ++it)
+	{		
+		if ( *it != 0 ) {
+			++counter;
+		}
+	}
+	
+	return counter;
+}	
+
+template< size_t M, size_t N, typename T >
+size_t
+matrix< M, N, T >::nnz( const T& threshold ) const
+{
+	size_t counter = 0;
+	
+	const_iterator  it = begin(),
+	it_end = end();
+	for( ; it != it_end; ++it)
+	{		
+		if ( fabs(*it) > threshold ) {
+			++counter;
+		}
+	}
+	
+	return counter;
+}		
+
+	
+
+template< size_t M, size_t N, typename T >
+template< typename TT  >
+void
+matrix< M, N, T >::quantize( matrix< M, N, TT >& quantized_, T& min_value, T& max_value ) const
+{
+	long max_tt_range = long(std::numeric_limits< TT >::max());
+	long min_tt_range = long(std::numeric_limits< TT >::min());
+	long tt_range = max_tt_range - min_tt_range;
+	
+	min_value = get_min();
+	max_value = get_max();
+	T t_range = max_value - min_value;
+
+	typedef matrix< M, N, TT > m_tt_type ;
+	typedef typename m_tt_type::iterator tt_iterator;
+	tt_iterator it_quant = quantized_.begin();
+	const_iterator it = begin(), it_end = end();
+
+	for( ; it != it_end; ++it, ++it_quant )
+	{
+		if (std::numeric_limits<TT>::is_signed ) {
+			*it_quant = TT( std::min( std::max( min_tt_range, long(( *it * tt_range / t_range ) + 0.5)), max_tt_range ));
+		} else {
+			*it_quant = TT( std::min( std::max( min_tt_range, long(((*it - min_value) * tt_range / t_range) + 0.5)), max_tt_range ));
+		}
+	}
+}		
+
+	
+
+template< size_t M, size_t N, typename T >
+template< typename TT  >
+void
+matrix< M, N, T >::dequantize( matrix< M, N, TT >& dequantized_, const TT& min_value, const TT& max_value ) const
+{
+	T max_t_range = get_max();
+	T min_t_range = get_min();
+	long t_range = long(max_t_range) - long(min_t_range);
+	
+	TT tt_range = max_value - min_value;
+	
+	typedef matrix< M, N, TT > m_tt_type ;
+	typedef typename m_tt_type::iterator tt_iterator;
+	tt_iterator it_dequant = dequantized_.begin();
+	const_iterator it = begin(), it_end = end();
+	for( ; it != it_end; ++it, ++it_dequant )
+	{
+		if (std::numeric_limits<T>::is_signed ) {
+			*it_dequant = std::min( std::max( min_value, TT((TT(*it) / t_range) * tt_range)), max_value );
+		} else {
+			*it_dequant = std::min( std::max( min_value, TT((((TT(*it) / t_range)) * tt_range ) + min_value)), max_value );
+		}
+	}
+}		
+
+	
+	
 } // namespace vmml
 
 #endif

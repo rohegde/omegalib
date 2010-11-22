@@ -41,7 +41,6 @@ public:
     typedef vector< 4, T >  super;
 
     using super::operator();
-    using super::operator[];
     using super::operator=;
     using super::at;
     using super::x;
@@ -266,7 +265,7 @@ set( const matrix< DIM, DIM, T >& M )
     // very small traces may introduce a big numerical error
     if( trace > QUATERNION_TRACE_EPSILON )
     {
-        T s = 0.5 / math::square_root( trace );
+        T s = 0.5 / sqrt( trace );
         x() = M( 2, 1 ) - M( 1, 2 );
         x() *= s;
 
@@ -286,7 +285,7 @@ set( const matrix< DIM, DIM, T >& M )
         // 0, 0 is largest
         if ( largest == 0 )
         {
-            T s = 0.5 / math::square_root( 1.0 + M( 0, 0 ) - M( 1, 1 ) - M( 2, 2 ) );
+            T s = 0.5 / sqrt( 1.0 + M( 0, 0 ) - M( 1, 1 ) - M( 2, 2 ) );
             x() = 0.25 / s;
 
             y() = M( 0,1 ) + M( 1,0 );
@@ -300,7 +299,7 @@ set( const matrix< DIM, DIM, T >& M )
         }
         else if ( largest == 1 )
         {
-            T s = 0.5 / math::square_root( 1.0 + M( 1,1 ) - M( 0,0 ) - M( 2,2 ) );
+            T s = 0.5 / sqrt( 1.0 + M( 1,1 ) - M( 0,0 ) - M( 2,2 ) );
             x() = M( 0,1 ) + M( 1,0 );
             x() *= s;
 
@@ -315,7 +314,7 @@ set( const matrix< DIM, DIM, T >& M )
         // 2, 2 is largest
         else if ( largest == 2 )
         {
-            T s = 0.5 / math::square_root( 1.0 + M( 2,2 ) - M( 0,0 ) - M( 1,1 ) );
+            T s = 0.5 / sqrt( 1.0 + M( 2,2 ) - M( 0,0 ) - M( 1,1 ) );
             x() = M( 0,2 ) + M( 2,0 );
             x() *= s;
 
@@ -465,7 +464,7 @@ template < typename T >
 T
 quaternion< T >::abs() const
 {
-	return math::square_root( squared_abs() );
+	return sqrt( squared_abs() );
 }
 
 
