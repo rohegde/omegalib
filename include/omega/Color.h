@@ -18,13 +18,14 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class Color: public vmml::vector< 4, float >
+	typedef vmml::vector< 4, float > Color; //!< A four-component float vector
+	/*class Color: public vmml::vector< 4, float >
 	{
 	public:
 	public:
 		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f):
 		  vmml::vector< 4, float >(r, g, b, a) {}
-	};
+	};*/
 }; // namespace omega
 
 #endif

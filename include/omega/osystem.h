@@ -24,19 +24,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdarg.h>
 
 // Stdlib includes
 #include <string>
 
-// Equalizer includes
-#include <eq/eq.h>
+#ifdef OMEGA_USE_DISPLAY
+	// Equalizer includes
+	#include <eq/eq.h>
+#endif
+
+// vmmlib includes
+//#define VMMLIB_DONT_FORCE_ALIGNMENT
+#include <vmmlib/vmmlib.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WIN32 Platform-specific includes & macros.
 #ifdef WIN32
+	#define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
-	#include <objbase.h>
-	#include <atlbase.h>
+	#include <winsock2.h>
+	#include <ws2tcpip.h>
+	//#include <objbase.h>
+	//#include <atlbase.h>
 
 	// Omega DLL import / export macros
 	#ifdef OMEGA_EXPORTING
@@ -50,12 +60,17 @@
 	#else
 	   #define OUTILS_API    __declspec(dllimport)
 	#endif
+#else
+	#define OMEGA_API
+	#define OUTILS_API
 #endif
 
-// OpenGL includes
-#include <GL/gl.h>
-#include <GL/glut.h>
-#include <GL/glew.h>
+#ifdef OMEGA_USE_DISPLAY
+	// OpenGL includes
+	#include <GL/gl.h>
+	#include <GL/glut.h>
+	#include <GL/glew.h>
+#endif
 
 // Libconfig
 #include "libconfig/libconfig.hh"
@@ -134,8 +149,10 @@ typedef libconfig::Setting Setting;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
+#ifdef OMEGA_USE_DISPLAY
 OMEGA_API GLEWContext* glewGetContext();
 OMEGA_API void glewSetContext(const GLEWContext* context);
+#endif
 
 OMEGA_API void ologopen(const char* filename);
 OMEGA_API void ologclose();

@@ -114,7 +114,9 @@ namespace omega
 
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
+#ifdef OMEGA_USE_DISPLAY
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+#endif
 	};
 }; // namespace omega
 

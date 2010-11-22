@@ -120,6 +120,12 @@ struct InputEvent
 	int numberOfPoints;
 	Vector3f pointSet[PointSetSize];
 
+	// NOTE: event serialization services are used only in clustered / multidisplay systems.
+	// If display system building is disabled, this code can be safely excluded.
+	// Right now, event serialization for NetService / oinputserver and display system
+	// serialization (this) are implemented as separate facilities. We may think of joining them
+	// sometime in the future.
+#ifdef OMEGA_USE_DISPLAY
 	//! Serialize an InputEvent instance.
     void serialize(eq::net::DataOStream& os)
 	{
@@ -153,6 +159,7 @@ struct InputEvent
 			is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
 		}
 	}
+#endif
 };
 
 }; // namespace omega

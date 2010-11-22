@@ -36,6 +36,10 @@ ELSEIF(CMAKE_GENERATOR STREQUAL "Visual Studio 10 Win64")
 	SET(ARCH "win-x64")
 	SET(TOOL "vs10")
 	
+ELSEIF(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
+	SET(ARCH "linux-i386")
+	SET(TOOL "make")
+	
 ENDIF(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
 #######################################################################################################################

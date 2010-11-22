@@ -9,11 +9,14 @@
  *---------------------------------------------------------------------------------------------------------------------
  * omega functions implementation. See omega.h for more details.
  *********************************************************************************************************************/
-#include "omega/DisplaySystem.h"
 #include "omega/InputManager.h"
 #include "omega/SystemManager.h"
 #include "omega/Config.h"
-#include "omega/DisplaySystem.h"
+
+// Display system
+#ifdef OMEGA_USE_DISPLAY
+	#include "omega/DisplaySystem.h"
+#endif
 
 // Input services
 #ifdef OMEGA_USE_MOCAP
@@ -47,7 +50,9 @@ SystemManager* SystemManager::instance()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::SystemManager():
 	myConfig(NULL),
+#ifdef OMEGA_USE_DISPLAY
 	myDisplaySystem(NULL),
+#endif
 	myExitRequested(false),
 	myIsInitialized(false)
 {
@@ -71,7 +76,9 @@ void SystemManager::setup(Config* cfg)
 	oassert(myConfig->isLoaded());
 
 	setupInputManager();
+#ifdef OMEGA_USE_DISPLAY
 	setupDisplaySystem();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,6 +135,7 @@ void SystemManager::setupInputManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef OMEGA_USE_DISPLAY
 void SystemManager::setupDisplaySystem()
 {
 	// Instantiate input services
@@ -140,11 +148,14 @@ void SystemManager::setupDisplaySystem()
 		setDisplaySystem(ds);
 	}
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::initialize()
 {
+#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
+#endif
 	myInputManager->initialize();
 
 	// Initialize the application object (if present)
@@ -160,6 +171,7 @@ void SystemManager::run()
 	if(!myIsInitialized) initialize();
 
 	myInputManager->start();
+#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem)
 	{
 		myDisplaySystem->run();
@@ -168,12 +180,15 @@ void SystemManager::run()
 	{
 		owarn("SystemManager::run - no display system specified, returning immediately");
 	}
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::cleanup()
 {
+#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->cleanup();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

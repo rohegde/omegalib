@@ -31,17 +31,11 @@ SET( srcs
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
-		omega/DisplaySystem.cpp
-        omega/GfxUtils.cpp
-        omega/GpuBuffer.cpp
-        omega/GpuManager.cpp
-        omega/GpuProgram.cpp
 		omega/InputManager.cpp
 		omega/InputService.cpp
 		omega/Math.cpp
         omega/Observer.cpp
 		omega/SystemManager.cpp
-        omega/teapot.cpp
         omega/Utils.cpp
         )
 		
@@ -50,14 +44,8 @@ SET( srcs
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/omega.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Application.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
@@ -106,6 +94,30 @@ IF(OMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
 
 #######################################################################################################################
+# Add code and library dependencies when the equalizer display system is enabled
+IF(OMEGA_USE_DISPLAY)
+	ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY)
+	SET( srcs 
+			${srcs}
+			omega/DisplaySystem.cpp
+			omega/GfxUtils.cpp
+			omega/GpuBuffer.cpp
+			omega/GpuManager.cpp
+			omega/GpuProgram.cpp
+			omega/teapot.cpp
+			)
+	SET( headers 
+			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
+			) 
+ENDIF(OMEGA_USE_DISPLAY)
+
+#######################################################################################################################
+# Group source files into separate folders foe visual studio project (this is just eye candy)
 SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
 SOURCE_GROUP(omega::input REGULAR_EXPRESSION omega/input/)		
 SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
@@ -129,14 +141,24 @@ IF(OMEGA_USE_PQLABS)
 	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/PQMTClient.lib optimized ${LIB_RELEASE}/PQMTClient.lib)
 ENDIF(OMEGA_USE_PQLABS)
 
+IF(OMEGA_USE_PQLABS)
+	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/PQMTClient.lib optimized ${LIB_RELEASE}/PQMTClient.lib)
+ENDIF(OMEGA_USE_PQLABS)
+
+IF(OMEGA_USE_NETSERVICE)
+	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32)
+ENDIF(OMEGA_USE_NETSERVICE)
+
+IF(OMEGA_USE_DISPLAY)
+	TARGET_LINK_LIBRARIES( omega
+		debug ${LIB_DEBUG}/pthreadVC2.lib optimized ${LIB_RELEASE}/pthreadVC2.lib
+		debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
+		debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
+		debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
+		${OPENGL_LIBRARY})
+ENDIF(OMEGA_USE_DISPLAY)
+
 #######################################################################################################################
-# Setup link info.
+# Setup link info for additional libraries
 TARGET_LINK_LIBRARIES( omega
-	libconfig
-	debug ${LIB_DEBUG}/pthreadVC2.lib optimized ${LIB_RELEASE}/pthreadVC2.lib
-#	debug ${LIB_DEBUG}/rpcrt4.lib optimized ${LIB_RELEASE}/rpcrt4.lib
-	debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
-	debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32
-	debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
-	debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
-	${OPENGL_LIBRARY})
+	libconfig)

@@ -69,11 +69,13 @@ public:
 	//! Gets the InputManager object
 	InputManager* getInputManager() { return myInputManager; }
 
+#ifdef OMEGA_USE_DISPLAY
 	//! Gets the DisplaySystem object
 	DisplaySystem* getDisplaySystem() { return myDisplaySystem; }
-
 	//! Sets the DisplaySystem object
 	void setDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
+#endif
+
 
 	//! Gets the Application object
 	Application* getApplication() { return myApplication; }
@@ -92,7 +94,9 @@ private:
 	~SystemManager();
 
 	void setupInputManager();
+#ifdef OMEGA_USE_DISPLAY
 	void setupDisplaySystem();
+#endif
 
 private:
 	// Singleton instance.
@@ -107,7 +111,9 @@ private:
 	InputFilterDictionary myInputFilterRegistry;
 
 	Config*			myConfig;
+#ifdef OMEGA_USE_DISPLAY
 	DisplaySystem*	myDisplaySystem;
+#endif
 	InputManager*	myInputManager;
 	Application*	myApplication;
 	bool			myExitRequested;

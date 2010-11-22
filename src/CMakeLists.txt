@@ -18,11 +18,14 @@ INCLUDE_DIRECTORIES(
 
 #######################################################################################################################
 # Options
-SET(OMEGA_BUILD_APPS true CACHE BOOL "Enable build of applications included in Omegalib")
-SET(OMEGA_BUILD_UTILS true CACHE BOOL "Enable build of utility library ")
-IF(OMEGA_BUILD_UTILS)
-	SET(OMEGA_BUILD_DEMOS true CACHE BOOL "Enable build of demo applications")
-ENDIF(OMEGA_BUILD_UTILS)
+SET(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
+IF(OMEGA_USE_DISPLAY)
+	SET(OMEGA_BUILD_APPS false CACHE BOOL "Enable build of applications included in Omegalib")
+	SET(OMEGA_BUILD_UTILS false CACHE BOOL "Enable build of utility library ")
+	IF(OMEGA_BUILD_UTILS)
+		SET(OMEGA_BUILD_DEMOS false CACHE BOOL "Enable build of demo applications")
+	ENDIF(OMEGA_BUILD_UTILS)
+ENDIF(OMEGA_USE_DISPLAY)
 
 #######################################################################################################################
 # Add subdirectiories
