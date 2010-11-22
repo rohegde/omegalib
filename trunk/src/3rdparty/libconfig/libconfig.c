@@ -750,7 +750,7 @@ static config_setting_t *config_setting_create(config_setting_t *parent,
 
   setting = _new(config_setting_t);
   setting->parent = parent;
-  setting->name = (name == NULL) ? NULL : _strdup(name);
+  setting->name = (name == NULL) ? NULL : strdup(name);
   setting->type = type;
   setting->config = parent->config;
   setting->hook = NULL;
@@ -1061,7 +1061,7 @@ int config_setting_set_string(config_setting_t *setting, const char *value)
   if(setting->value.sval)
     _delete(setting->value.sval);
 
-  setting->value.sval = (value == NULL) ? NULL : _strdup(value);
+  setting->value.sval = (value == NULL) ? NULL : strdup(value);
   return(CONFIG_TRUE);
 }
 

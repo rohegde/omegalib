@@ -32,7 +32,7 @@ public:
 
 	OMEGA_API Matrix4f getHeadMatrix() { return myHeadMatrix; }
 
-	OMEGA_API void update(Vector3f position, Vector3f rotation);
+	OMEGA_API void update(const Vector3f& position, const Vector3f& rotation);
 
 private:
 	Matrix4f myWorldToEmitter;

@@ -22,9 +22,9 @@ Observer::Observer()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::update(Vector3f position, Vector3f rotation)
+void Observer::update(const Vector3f& position, const Vector3f& rotation)
 {
-	myHeadMatrix = eq::Matrix4f::IDENTITY;
+	myHeadMatrix = Matrix4f::IDENTITY;
 
 	myHeadMatrix.rotate_x(rotation[0] * Math::DegToRad);
 	myHeadMatrix.rotate_z(rotation[2] * Math::DegToRad);
