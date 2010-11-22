@@ -116,7 +116,12 @@ namespace vmml
 {
 
 template< typename T > 
-const frustum< T > frustum< T >::DEFAULT( -1.0, 1.0, -1.0, 1.0, 0.1, 100.0 );
+const frustum< T > frustum< T >::DEFAULT( static_cast< T >( -1.0 ),
+                                          static_cast< T >( 1.0 ), 
+                                          static_cast< T >( -1.0 ),
+                                          static_cast< T >( 1.0 ), 
+                                          static_cast< T >( 0.1 ), 
+                                          static_cast< T >( 100.0 ) );
 
 
 

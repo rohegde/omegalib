@@ -50,7 +50,7 @@ void svdecompose(
                     s += a[k][i] * a[k][i];
                 }
                 f = a[i][i];
-                g = -math::sign( vmml::math::square_root(s), f);
+                g = -math::sign( static_cast< T >(sqrt(s)), f);
                 h = f * g - s;
                 a[i][i] = f - g;
                 for ( j = l; j < n; ++j ) 
@@ -79,7 +79,7 @@ void svdecompose(
                     s += a[i][k] * a[i][k];
                 }
                 f = a[i][l];
-                g = -math::sign( math::square_root(s), f);
+                g = -math::sign( static_cast< T >( sqrt(s)), f);
                 h = f * g - s;
                 a[i][l] = f - g;
                 for ( k = l; k < n; ++k )

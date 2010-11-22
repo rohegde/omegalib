@@ -41,12 +41,23 @@ public:
     inline const_reverse_iterator rbegin() const;
     inline const_reverse_iterator rend() const;
     
+    #ifndef VMMLIB_NO_CONVERSION_OPERATORS
+    // conversion operators
+    inline operator T*();
+    inline operator const T*() const;
+    #else
+    inline T& operator[]( size_t index );
+    inline const T& operator[]( size_t index ) const;
+    #endif
+    
     // accessors 
     inline T& operator()( size_t index );
     inline const T& operator()( size_t index ) const;
+    #if 0
     inline T& operator[]( size_t index );
     inline const T& operator[]( size_t index ) const;
-
+    #endif
+    
     inline T& at( size_t index );
     inline const T& at( size_t index ) const;
 
@@ -138,6 +149,7 @@ public:
     vector( const vector< N, T >& source_,
         typename enable_if< N == M - 1 >::type* = 0 );
 
+    // from-homogenous-coordinates ctor
     template< size_t N >
     vector( const vector< N, T >& source_,
         typename enable_if< N == M + 1 >::type* = 0  );
@@ -248,6 +260,11 @@ public:
         T min_value = -1.0, T max_value = 1.0 ) const;
     
     inline static size_t size(); // returns M
+    
+    bool is_unit_vector() const;
+
+    // perturbs each component by randomly + or - the perturbation parameter
+    void perturb( T perturbation = 0.0001 );
     
     friend std::ostream& operator<< ( std::ostream& os, const vector& vector_ )
     {
@@ -454,7 +471,7 @@ template< size_t N >
 vector< M, T >::
 vector( const vector< N, T >& source_, typename enable_if< N == M - 1 >::type* )
 {
-	for(int i = 0; i < N; i++) array[i] = source_[i];
+    (*this) = source_;
 }
 
 
@@ -466,10 +483,7 @@ template< size_t N >
 vector< M, T >::
 vector( const vector< N, T >& source_, typename enable_if< N == M + 1 >::type*  )
 {
-	for(int i = 0; i < M; i++)
-	{
-		array[i] = source_[i];
-	}
+    (*this) = source_;
 }
 
 
@@ -583,7 +597,42 @@ vector< M, T >::at( size_t index ) const
 }
 
 
+#ifndef VMMLIB_NO_CONVERSION_OPERATORS
 
+template< size_t M, typename T >
+vector< M, T >::operator T*()
+{
+    return array;
+}
+
+
+
+template< size_t M, typename T >
+vector< M, T >::operator const T*() const
+{
+    return array;
+}
+#else
+
+template< size_t M, typename T >
+T&
+vector< M, T >::operator[]( size_t index )
+{   
+    return at( index );
+}
+
+template< size_t M, typename T >
+const T&
+vector< M, T >::operator[]( size_t index ) const
+{   
+    return at( index );
+}
+
+
+#endif
+
+
+#if 0
 template< size_t M, typename T >
 inline T&
 vector< M, T >::operator[]( size_t index )
@@ -599,7 +648,7 @@ vector< M, T >::operator[]( size_t index ) const
 {
     return at( index );
 }
-
+#endif
 
 
 template< size_t M, typename T >
@@ -1038,7 +1087,7 @@ template< size_t M, typename T >
 inline T
 vector< M, T >::length() const
 {
-    return math::square_root( squared_length() );
+    return sqrt( squared_length() );
 }
 
 
@@ -1061,7 +1110,7 @@ template< size_t M, typename T >
 inline T
 vector< M, T >::distance( const vector< M, T >& other_vector_ ) const
 {
-    return math::square_root( squared_distance( other_vector_ ) );
+    return sqrt( squared_distance( other_vector_ ) );
 }
 
 
@@ -1114,8 +1163,8 @@ vector< 3, T > vector< M, T >::rotate( const T theta, vector< M, TT > axis,
 {
     axis.normalize();
 
-    const T costheta = math::cosine( theta );
-    const T sintheta = math::sine( theta );
+    const T costheta = cos( theta );
+    const T sintheta = sin( theta );
 
     return vector< 3, T >(
         (costheta + ( 1.0f - costheta ) * axis.x() * axis.x() ) * x()    +
@@ -1252,25 +1301,35 @@ equals( const vector< M, T >& other, T tolerance ) const
 
 
 
+// to-homogenous-coordinates assignment operator
+// non-chainable because of sfinae
 template< size_t M, typename T >
 template< size_t N >
 typename enable_if< N == M - 1 >::type*
 vector< M, T >::
 operator=( const vector< N, T >& source_ )
 {
-	for(int i = 0; i < N; i++) array[i] = source_[i];
+    std::copy( source_.begin(), source_.end(), begin() );
+    at( M - 1 ) = static_cast< T >( 1.0 );
     return 0;
 }
 
     
+// from-homogenous-coordinates assignment operator
+// non-chainable because of sfinae
 template< size_t M, typename T >
 template< size_t N >
 typename enable_if< N == M + 1 >::type*
 vector< M, T >::
 operator=( const vector< N, T >& source_ )
 {
-	for(int i = 0; i < M; i++) array[i] = source_[i];
-	return 0;
+    const T w_reci = static_cast< T >( 1.0 ) / source_( M );
+    iterator it = begin(), it_end = end();
+    for( size_t index = 0; it != it_end; ++it, ++index )
+    {
+        *it = source_( index ) * w_reci;
+    }
+    return 0;
 }
 
 
@@ -1515,6 +1574,47 @@ vector< M, T >::rend() const
 {
     return array - 1;
 }
+
+
+
+template< size_t M, typename T >
+bool
+vector< M, T >::is_unit_vector() const
+{
+    const_iterator it = begin(), it_end = end();
+    bool one = false;
+    for( ; it != it_end; ++it )
+    {
+        if ( *it == 1.0 )
+        {
+            if ( one )
+                return false;
+            one = true;
+        }
+        else if ( *it != 0.0 )
+        {
+            return false;
+        }
+    }
+    return one;
+}
+
+
+
+
+template< size_t M, typename T >
+void
+vector< M, T >::perturb( T perturbation )
+{
+    for( iterator it = begin(), it_end = end(); it != it_end; ++it )
+    {
+        (*it) += ( rand() & 1u ) ? perturbation : -perturbation;
+    }
+    
+}
+
+
+
 
 } // namespace vmml
 

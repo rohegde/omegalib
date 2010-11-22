@@ -3,6 +3,16 @@
 
 // #define VMMLIB_NO_SFINAE 
 
+
+
+// enabling this switch will have the following effect:
+// operator T* will not be compiled, but for vectors, 
+// operator[] will instead be used. This means you can 
+// use vec[2] as before, but things like glVertex3fv( vec )
+// will not work anymore.
+//#define VMMLIB_NO_CONVERSION_OPERATORS
+//#define VMMLIB_DONT_FORCE_ALIGNMENT
+
 #ifndef VMMLIB_CUSTOM_CONFIG
 #  ifndef NDEBUG
 #    define VMMLIB_SAFE_ACCESSORS
@@ -19,6 +29,10 @@
 #      error "Alignment macro undefined"
 #    endif
 #  endif
+#else   // we define VMMLIB_ALIGN in case it's not defined in the custom config
+#   ifndef VMMLIB_ALIGN
+#       define VMMLIB_ALIGN( var ) var
+#   endif
 #endif
 
 #endif
