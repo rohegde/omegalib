@@ -19,6 +19,24 @@
 #include "pqlabs/PQMTClient.h"
 using namespace PQ_SDK_MultiTouch;
 
+#if defined (linux)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <unistd.h> // needed for close()
+#include <string>
+#endif
+#if defined (WIN32)
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#endif
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,32 +51,40 @@ public:
 	OMEGA_API virtual void initialize();
 	OMEGA_API virtual void poll();
 	OMEGA_API virtual void dispose();
-
+	void setServer(const char*,const char*);
+	void setDataport(const char*);
 private:
-
-	OMEGA_API virtual void initHandshake();
-
+	void initHandshake();
+	void parseDGram(int);
 private:
-	NetService* mysInstance;	
+	NetService* mysInstance;
+#if defined (WIN32)
 	WSADATA wsaData;
+	SOCKET ConnectSocket;
+	SOCKET RecvSocket;	
+#endif
+#if defined (linux)
+	int ConnectSocket;
+	int RecvSocket;
+#endif
+	struct timeval timeout;
+	sockaddr_in SenderAddr;
+
 	const char* serverAddress;
 	const char* serverPort;
 	const char* dataPort;
-	SOCKET ConnectSocket;
+	
 	
 	#define DEFAULT_BUFLEN 512
 	char recvbuf[DEFAULT_BUFLEN];
 	int iResult, iSendResult;
 
-	SOCKET RecvSocket;
-	sockaddr_in SenderAddr;
+	
 	int SenderAddrSize;
 	int recvbuflen;
 	bool readyToReceive;
 	int screenX;
 	int screenY;
-
-	struct timeval timeout;
 };
 
 }; // namespace omega
