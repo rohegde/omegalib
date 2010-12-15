@@ -175,46 +175,7 @@ public:
 			sprintf(floatChar,"%f",evt.rotation[2]);
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, " " ); // Spacer
-			
-			if(evt.sourceId == 1)
-			{
-				if(evt.position[0] != 0 || evt.position[1] != 0)
-				{
-					Observer* obs = getDisplaySystem()->getObserver(0);
-					obs->update(evt.position, evt.rotation);
-
-					return true;
-				}
-			}
-			else if(evt.sourceId == 3) //glove
-			{
-				if(evt.position[0] != 0 || evt.position[1] != 0)
-				{
-					lx = evt.position[0];
-					ly = evt.position[1];
-					lz = evt.position[2];
-
-					return true;
-				}
-			}
-			else if(evt.sourceId ==2) //handheld
-			{
-				if(evt.position[0] != 0 || evt.position[1] != 0)
-				{
-					mx = evt.position[0];
-					my = evt.position[1];
-					mz = evt.position[2];
-					rx = evt.rotation[0];
-					ry = evt.rotation[1];
-					rz = evt.rotation[2];
-					/*for( int i = 0; i < evt.numberOfPoints; i++)
-					{
-						printf("point%d: x = %f, y = %f, z = %f\n", i, evt.pointSet[i][0], evt.pointSet[i][1], evt.pointSet[i][2]);
-					}*/
-
-					return true;
-				}
-			}
+			return true;
 #endif
 			break;
 
@@ -476,8 +437,10 @@ void main(int argc, char** argv)
 	while(true){
 		// Start listening for clients (non-blocking)
 		app.startListening();
-
+		
+		app.sendToClients( app.getEvent() );
 		// Get events
+		/*
 		int av = sys->getInputManager()->getAvailableEvents();
 		if(av != 0)
 		{
@@ -492,7 +455,7 @@ void main(int argc, char** argv)
 				}
 			}
 		}// if
-
+		*/
 		
 
 	}// while
