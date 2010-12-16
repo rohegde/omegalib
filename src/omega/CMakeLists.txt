@@ -125,7 +125,7 @@ SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)
 
 #######################################################################################################################
 # Setup compile info
-ADD_LIBRARY( omega SHARED ${srcs} ${headers})
+ADD_LIBRARY( omega ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup module-specific link info
@@ -146,7 +146,9 @@ IF(OMEGA_USE_PQLABS)
 ENDIF(OMEGA_USE_PQLABS)
 
 IF(OMEGA_USE_NETSERVICE)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32)
+	IF(WIN32)
+		TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/ws2_32 optimized ${LIB_RELEASE}/ws2_32)
+	ENDIF(WIN32)
 ENDIF(OMEGA_USE_NETSERVICE)
 
 IF(OMEGA_USE_DISPLAY)

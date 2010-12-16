@@ -91,7 +91,7 @@ SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)
 
 #######################################################################################################################
 # Setup compile info
-ADD_LIBRARY( outils SHARED ${srcs} ${headers})
+ADD_LIBRARY( outils ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup module-specific link info
