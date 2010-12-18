@@ -20,25 +20,27 @@ INCLUDE_DIRECTORIES(
 # Options
 SET(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
 IF(OMEGA_USE_DISPLAY)
-	SET(OMEGA_BUILD_APPS false CACHE BOOL "Enable build of applications included in Omegalib")
-	SET(OMEGA_BUILD_UTILS false CACHE BOOL "Enable build of utility library ")
-	IF(OMEGA_BUILD_UTILS)
-		SET(OMEGA_BUILD_DEMOS false CACHE BOOL "Enable build of demo applications")
-	ENDIF(OMEGA_BUILD_UTILS)
+	SET(OMEGA_BUILD_UTILITY_LIB false CACHE BOOL "Enable build of the omegalib utility library (outils)")
 ENDIF(OMEGA_USE_DISPLAY)
+IF(OMEGA_BUILD_UTILITY_LIB)
+	SET(OMEGA_BUILD_DEMOS false CACHE BOOL "Enable build of demo applications included in Omegalib")
+	SET(OMEGA_BUILD_PLAYGROUND false CACHE BOOL "Enable build of playground projects. Playgroud projects are experimental, and may not work. ")
+ENDIF(OMEGA_BUILD_UTILITY_LIB)
 
 #######################################################################################################################
 # Add subdirectiories
 ADD_SUBDIRECTORY(3rdparty/libconfig)
 ADD_SUBDIRECTORY(omega)
+ADD_SUBDIRECTORY(oinputserver)
 
-IF(OMEGA_BUILD_UTILS)
+IF(OMEGA_BUILD_UTILITY_LIB)
 	ADD_SUBDIRECTORY(outils)
-	ADD_SUBDIRECTORY(oinputserver)
-ENDIF(OMEGA_BUILD_UTILS)
+ENDIF(OMEGA_BUILD_UTILITY_LIB)
 
 IF(OMEGA_BUILD_DEMOS)
-	ADD_SUBDIRECTORY(nightfield)
-	ADD_SUBDIRECTORY(meshviewer)
-	ADD_SUBDIRECTORY(vtkdemo)
+	ADD_SUBDIRECTORY(demos/meshviewer)
 ENDIF(OMEGA_BUILD_DEMOS)
+
+IF(OMEGA_BUILD_PLAYGROUND)
+	ADD_SUBDIRECTORY(playground/vtkdemo)
+ENDIF(OMEGA_BUILD_PLAYGROUND)

@@ -29,10 +29,8 @@
 // Stdlib includes
 #include <string>
 
-#ifdef OMEGA_USE_DISPLAY
-	// Equalizer includes
-	#include <eq/eq.h>
-#endif
+// Equalizer includes
+#include <eq/eq.h>
 
 // vmmlib includes
 //#define VMMLIB_DONT_FORCE_ALIGNMENT
@@ -45,32 +43,35 @@
 	#include <windows.h>
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
-	//#include <objbase.h>
-	//#include <atlbase.h>
+	#include <objbase.h>
+	#include <atlbase.h>
 
 	// Omega DLL import / export macros
-	#ifdef OMEGA_EXPORTING
-	   #define OMEGA_API    __declspec(dllexport)
+	#ifdef OMEGA_DYNAMIC
+		#ifdef OMEGA_EXPORTING
+		   #define OMEGA_API    __declspec(dllexport)
+		#else
+		   #define OMEGA_API    __declspec(dllimport)
+		#endif
+		// Omega DLL import / export macros
+		#ifdef OUTILS_EXPORTING
+		   #define OUTILS_API    __declspec(dllexport)
+		#else
+		   #define OUTILS_API    __declspec(dllimport)
+		#endif
 	#else
-	   #define OMEGA_API    __declspec(dllimport)
-	#endif
-	// Omega DLL import / export macros
-	#ifdef OUTILS_EXPORTING
-	   #define OUTILS_API    __declspec(dllexport)
-	#else
-	   #define OUTILS_API    __declspec(dllimport)
+		#define OMEGA_API
+		#define OUTILS_API
 	#endif
 #else
 	#define OMEGA_API
 	#define OUTILS_API
 #endif
 
-#ifdef OMEGA_USE_DISPLAY
-	// OpenGL includes
-	#include <GL/gl.h>
-	#include <GL/glut.h>
-	#include <GL/glew.h>
-#endif
+// OpenGL includes
+#include <GL/gl.h>
+#include <GL/glut.h>
+#include <GL/glew.h>
 
 // Libconfig
 #include "libconfig/libconfig.hh"
@@ -149,10 +150,8 @@ typedef libconfig::Setting Setting;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
-#ifdef OMEGA_USE_DISPLAY
 OMEGA_API GLEWContext* glewGetContext();
 OMEGA_API void glewSetContext(const GLEWContext* context);
-#endif
 
 OMEGA_API void ologopen(const char* filename);
 OMEGA_API void ologclose();
