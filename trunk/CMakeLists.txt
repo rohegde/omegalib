@@ -61,5 +61,13 @@ SET (LIB_DEBUG ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-debug)
 SET (LIB_RELEASE ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-release)
 
 #######################################################################################################################
+# Visual studio specific options.
+IF(MSVC)
+	# Exclude libcmt when linking in visual studio
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+	ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS)
+ENDIF()
+
+#######################################################################################################################
 # Add subdirectiories
 ADD_SUBDIRECTORY(src)

@@ -16,8 +16,12 @@
 #include <ws2tcpip.h>
 #include <vector>
 
-using namespace std;
+//using namespace std;
 using namespace omega;
+
+#ifdef WIN32
+#define itoa _itoa
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Based on Winsock UDP Server Example:
@@ -205,7 +209,7 @@ private:
 	int recvbuflen;
 	
 	// Temp socket until multi-client is implemented
-	map<char*,NetClient*> netClients;
+	std::map<char*,NetClient*> netClients;
 	//vector<NetClient*> netClients;
 	NetClient* tempClient;
 
@@ -405,7 +409,7 @@ void TestApplication::createClient(const char* clientAddress, int dataPort){
 void TestApplication::sendToClients(char* event){
 	// Iterate through all clients
 	
-	map<char*,NetClient*>::iterator itr = netClients.begin();
+	std::map<char*,NetClient*>::iterator itr = netClients.begin();
 	while( itr != netClients.end() ){
 		NetClient* client = itr->second;
 		client->sendEvent( event );

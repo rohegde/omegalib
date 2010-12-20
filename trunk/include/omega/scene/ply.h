@@ -170,5 +170,10 @@ extern int equal_strings(const char *, const char *);
 #ifdef __cplusplus
 }
 #endif
+
+#ifdef WIN32
+#define strdup _strdup
+#endif
+
 #endif /* !__PLY_H__ */
 

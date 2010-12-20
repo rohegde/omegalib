@@ -1764,7 +1764,8 @@ extern int isatty (int );
         b->yy_bs_column = 0;
     }
 
-        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+		// OMEGALIB HACK: file is never interactive, and fileno(file) gives some weird error in _isatty...
+        b->yy_is_interactive = 0; //file ? (isatty( fileno(file) ) > 0) : 0;
     
 	errno = oerrno;
 }
