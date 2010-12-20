@@ -17,12 +17,11 @@ find_package(OpenGL)
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING)
-
-#######################################################################################################################
-# Exclude libcmt when linking in visual studio
+ADD_DEFINITIONS(-DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING)
 IF(MSVC)
+	# Exclude libcmt when linking in visual studio
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+	ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS)
 ENDIF()
 
 #######################################################################################################################
