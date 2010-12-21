@@ -18,26 +18,20 @@ ADD_DEFINITIONS( )
 # Source files
 SET( srcs 
         meshviewer.cpp
-		MeshViewerApplication.cpp
-		MeshViewerUI.cpp
-		Entity.cpp
         )
     
 #######################################################################################################################
 # Headers
 SET( headers 
-		MeshViewerApplication.h
-		MeshViewerUI.h
-		Entity.h
         ) 
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE( meshviewer ${srcs} ${headers})
+ADD_EXECUTABLE(meshviewer ${srcs} ${headers})
 
 #######################################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( meshviewer
+TARGET_LINK_LIBRARIES(meshviewer
 	omega outils)
 
 
