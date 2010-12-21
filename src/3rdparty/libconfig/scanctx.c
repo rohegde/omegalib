@@ -29,6 +29,10 @@
 #define STRING_BLOCK_SIZE 64
 #define CHUNK_SIZE 32
 
+#ifdef WIN32
+#define strdup _strdup
+#endif
+
 /* ------------------------------------------------------------------------- */
 
 static const char *err_bad_include = "cannot open include file";
