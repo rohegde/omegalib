@@ -441,10 +441,8 @@ void main(int argc, char** argv)
 	while(true){
 		// Start listening for clients (non-blocking)
 		app.startListening();
-		
-		app.sendToClients( app.getEvent() );
+
 		// Get events
-		/*
 		int av = sys->getInputManager()->getAvailableEvents();
 		if(av != 0)
 		{
@@ -459,7 +457,7 @@ void main(int argc, char** argv)
 				}
 			}
 		}// if
-		*/
+
 		
 
 	}// while
