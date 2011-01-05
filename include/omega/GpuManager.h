@@ -55,6 +55,8 @@ namespace omega
 		OMEGA_API GeometryShader* getGeometryShader(const omega::String& name);
 		OMEGA_API ComputeShader* getComputeShader(const omega::String& name);
 
+		OMEGA_API GpuProgram* getDefaultProgram() { return myDefaultProgram; }
+
 		cl_context getCLContext() { return myCLContext; }
 		cl_command_queue getCLCommandQueue() { return myCLCommandQueue; }
 
@@ -72,6 +74,9 @@ namespace omega
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
 		ComputeShaderDictionary myComputeShaders;
+
+		// Default gpu program
+		GpuProgram* myDefaultProgram;
 
 		// OpenCL stuff.
 		cl_context myCLContext;

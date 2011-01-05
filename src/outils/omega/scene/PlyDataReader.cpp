@@ -365,18 +365,18 @@ void PlyDataReader::scale( const float baseSize )
 /*  Helper structure to sort Triangles with standard library sort function.  */
 struct _TriangleSort
 {
-    _TriangleSort( const PlyDataReader& data, const Axis axis ) : _data( data ),
+    _TriangleSort( PlyDataReader& data, const Axis axis ) : _data( data ),
                                                                _axis( axis ) {}
     
     bool operator() ( const Triangle& t1, const Triangle& t2 )
     {
         // references to both triangles' three vertices
-        const Vector3f& v11 = _data.vertices[ t1[0] ];
-        const Vector3f& v12 = _data.vertices[ t1[1] ];
-        const Vector3f& v13 = _data.vertices[ t1[2] ];
-        const Vector3f& v21 = _data.vertices[ t2[0] ];
-        const Vector3f& v22 = _data.vertices[ t2[1] ];
-        const Vector3f& v23 = _data.vertices[ t2[2] ];
+        const Vector3f& v11 = _data.getVertexPosition( t1[0] );
+        const Vector3f& v12 = _data.getVertexPosition( t1[1] );
+        const Vector3f& v13 = _data.getVertexPosition( t1[2] );
+        const Vector3f& v21 = _data.getVertexPosition( t2[0] );
+        const Vector3f& v22 = _data.getVertexPosition( t2[1] );
+        const Vector3f& v23 = _data.getVertexPosition( t2[2] );
         
         // compare first by given axis
         int axis = _axis;
@@ -396,7 +396,7 @@ struct _TriangleSort
         return false;
     }
     
-    const PlyDataReader&   _data;
+    PlyDataReader&   _data;
     const Axis          _axis;
 };
 /** @endcond */

@@ -5,9 +5,22 @@
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+ * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #ifndef __GPU_BUFFER_H__
 #define __GPU_BUFFER_H__
@@ -227,6 +240,7 @@ namespace omega
 			TargetPosition, 
 			TargetPrimaryColor, 
 			TargetSecondaryColor, 
+			TargetNormal, 
 			TargetTexture0, 
 			TargetTexture1, 
 			TargetTexture2, 
@@ -267,24 +281,13 @@ namespace omega
 		//! @name Internal Functions
 		//! @internal Applies the vertex buffer attributes, binding vertex data to their specified semantics.
 		//! This method is always called before rendering data from the vertex buffer.
-		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
-		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		//! @remarks if stage is RenderStage, the prog and index parameters will be ignored.
+		OMEGA_API virtual void bind(GpuProgram* prog = NULL, int index = 0, GpuProgram::Stage stage = GpuProgram::RenderStage);
+		OMEGA_API virtual void unbind(GpuProgram* prog = NULL, int index = 0, GpuProgram::Stage stage = GpuProgram::RenderStage);
 
 	private:
 		std::vector<VertexAttribute> myAttributes;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class IndexBuffer: public GpuBuffer
-	{
-	public:
-		IndexBuffer(GpuManager* mng):
-		  GpuBuffer(mng)
-		  {}
-
-	private:
-	};
-
 }; // namespace omega
 
 #endif

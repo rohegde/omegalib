@@ -10,6 +10,8 @@
  * [SUMMARY OF FILE CONTENTS]
  *********************************************************************************************************************/
 #include "omega/Utils.h"
+#include "omega/Application.h"
+#include "omega/Config.h"
 
 using namespace omega;
 
@@ -113,4 +115,23 @@ void oerror(const char* fmt, ...)
 void oexit(int code)
 {
 	exit(code);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void omain(Application& app, const char* configFile, const char* logFile)
+{
+	ologopen(logFile);
+
+	Config* cfg = new Config(configFile);
+
+	SystemManager* sys = SystemManager::instance();
+	sys->setup(cfg);
+
+	sys->setApplication(&app);
+	sys->initialize();
+	sys->run();
+
+	sys->cleanup();
+
+	ologclose();
 }

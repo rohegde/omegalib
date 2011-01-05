@@ -22,68 +22,44 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __MATERIAL_H__
-#define __MATERIAL_H__
+#ifndef __EFFECT_MANAGER_H__
+#define __EFFECT_MANAGER_H__
 
 #include "omega/osystem.h"
-#include "omega/GpuProgram.h"
-#include "omega/Color.h"
+#include "omega/scene/Effect.h"
+
+#include "boost/unordered_map.hpp"
 
 namespace omega
 {
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// forawrd declarations.
-	class EffectManager;
+	//! A dictionary containing <String, Effect*> pairs.
+	typedef boost::unordered_map<omega::String, Effect*> EffectDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class Effect
+	//! Loads and manages Meshes.
+	class EffectManager
 	{
 	public:
-		OUTILS_API Effect(EffectManager* mng);
+		OUTILS_API EffectManager(omega::GpuManager* gpu);
+		OUTILS_API ~EffectManager();
 
-		void setProgram(GpuProgram* program) { myProgram = program; }
-		GpuProgram* getProgram() { return myProgram; }
-		
-		OUTILS_API void activate();
-		OUTILS_API void deactivate();
+		GpuManager* getGpuManager() { return myGpuMng; }
 
-		GpuProgramParams& getParams() { return myParams; }
+		OUTILS_API void cleanup();
 
-		//! Utility method to set ambient, diffuse and specular colors together
-		void setColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) { myDiffuseColor = Color(r, g, b, a); myAmbientColor = Color(r, g, b, a); }
-		void setColor(const Color& value) { myDiffuseColor = value; mySpecularColor = value; myAmbientColor = value;}
+		OUTILS_API Effect* getEffect(omega::String name);
+		OUTILS_API void addEffect(omega::String name, Effect* effect);
 
-		void setDiffuseColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) { myDiffuseColor = Color(r, g, b, a); }
-		void setDiffuseColor(const Color& value) { myDiffuseColor = value; }
-		Color getDiffuseColor() { return myDiffuseColor; }
-
-		void setSpecularColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) { mySpecularColor = Color(r, g, b, a); }
-		void setSpecularColor(const Color& value) { mySpecularColor = value; }
-		Color getSpecularColor() { return mySpecularColor; }
-
-		void setAmbientColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) { myAmbientColor = Color(r, g, b, a); }
-		void setAmbientColor(const Color& value) { myAmbientColor = value; }
-		Color getAmbientColor() { return myAmbientColor; }
-
-		void setEmissiveColor(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) { myEmissiveColor = Color(r, g, b, a); }
-		void setEmissiveColor(const Color& value) { myEmissiveColor = value; }
-		Color getEmissiveColor() { return myEmissiveColor; }
-
-		void setShininess(float value) { myShininess = value; }
-		float getShininess() { return myShininess; }
+		OUTILS_API Effect* getDefaultEffect() { return myDefaultEffect; }
 
 	private:
-		EffectManager* myMng;
-		GpuProgram* myProgram;
-		GpuProgramParams myParams;
-		Color myDiffuseColor;
-		Color mySpecularColor;
-		Color myAmbientColor;
-		Color myEmissiveColor;
-		float myShininess;
+		EffectDictionary myEffects;
+		omega::GpuManager* myGpuMng;
+
+		Effect* myDefaultEffect;
 	};
 
 }; // namespace scene

@@ -22,42 +22,35 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-
-#include "omega/scene/Effect.h"
 #include "omega/scene/EffectManager.h"
-#include "omega/scene/Mesh.h"
-#include "omega/GpuManager.h"
 
 using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Effect::Effect(EffectManager* mng): 
-	myMng(mng), 
-	myEmissiveColor(0, 0, 0, 1), 
-	mySpecularColor(0, 0, 0, 1), 
-	myAmbientColor(1, 1, 1, 1),
-	myDiffuseColor(1, 1, 1, 1),
-	myShininess(100) 
+EffectManager::EffectManager(omega::GpuManager* gpu): myGpuMng(gpu) 
 {
-	myProgram = myMng->getGpuManager()->getDefaultProgram();
+	myDefaultEffect = new Effect(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Effect::activate()
+EffectManager::~EffectManager()
 {
-	myParams.bind(myProgram, GpuProgram::RenderStage);
-	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.begin());
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.begin());
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.begin());
-	glMaterialfv(GL_FRONT, GL_EMISSION, myEmissiveColor.begin());
-	glMaterialf(GL_FRONT, GL_SHININESS, myShininess);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Effect::deactivate()
+Effect* EffectManager::getEffect(omega::String name)
 {
-	myParams.unbind(myProgram, GpuProgram::RenderStage);
+	return myEffects[name];
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EffectManager::cleanup()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void EffectManager::addEffect(omega::String name, Effect* effect)
+{
+	myEffects[name] = effect;
+}

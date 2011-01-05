@@ -43,6 +43,7 @@ SET( srcs
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/omega.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
