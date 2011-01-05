@@ -16,7 +16,7 @@ using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MeshManager::MeshManager()
+MeshManager::MeshManager(omega::GpuManager* gpu, EffectManager* effectMng): myGpuMng(gpu), myEffectMng(effectMng)
 {
 }
 
@@ -30,10 +30,10 @@ void MeshManager::loadMesh(omega::String name, omega::String filename, MeshForma
 {
 	if(format == MeshManager::MeshFormatPly)
 	{
-		PlyDataReader reader;
-		reader.readPlyFile(filename);
+		PlyDataReader* reader = new PlyDataReader();
+		reader->readPlyFile(filename);
 
-		createMesh(name, &reader);
+		addMesh(name, reader);
 	}
 }
 
@@ -49,10 +49,10 @@ void MeshManager::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshManager::createMesh(omega::String name, MeshData* data)
+void MeshManager::addMesh(omega::String name, MeshData* data)
 {
-	Mesh* mesh = new Mesh();
+	Mesh* mesh = new Mesh(this);
 	myMeshes[name] = mesh;
-
-	// TODO: fill the mesh index and vertex buffers with data.
+	mesh->setData(data);
+	mesh->update();
 }

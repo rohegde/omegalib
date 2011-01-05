@@ -28,7 +28,6 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *---------------------------------------------------------------------------------------------------------------------
  *********************************************************************************************************************/
 #ifndef MESH_DATA
 #define MESH_DATA
@@ -47,10 +46,116 @@ namespace scene
     class MeshData
     {
     public:
+		int getNumVertices() { return vertices.size(); }
+		int getNumTriangles() { return triangles.size(); }
+		
+		Vector3f& getVertexPosition(int i) { return vertices[i]; }
+		Color& getVertexColor(int i) { return colors[i]; }
+		Vector3f& getVertexNormal(int i) { return normals[i]; }
+		Triangle& getTriangle(int i) { return triangles[i]; }
+
+		void addTriangle(const Triangle& tri) 
+		{ 
+			triangles.push_back(tri); 
+		}
+
+		void addVertex(const Vector3f& pos) 
+		{
+			myHasColors = false;
+			myHasNormals = false;
+			myIsDirty = true;
+			vertices.push_back(pos);
+		}
+
+		void addVertex(const Vector3f& pos, const Vector3f& normal) 
+		{
+			myHasColors = false;
+			myHasNormals = true;
+			myIsDirty = true;
+			vertices.push_back(pos);
+			normals.push_back(normal);
+		}
+
+		void addVertex(const Vector3f& pos, const Vector3f& normal, const Color& color)
+		{
+			myHasColors = true;
+			myHasNormals = true;
+			myIsDirty = true;
+			vertices.push_back(pos);
+			colors.push_back(color);
+			normals.push_back(normal);
+		}
+
+		void addVertex(const Vector3f& pos, const Color& color)
+		{
+			myHasColors = true;
+			myHasNormals = false;
+			myIsDirty = true;
+			vertices.push_back(pos);
+			colors.push_back(color);
+		}
+
+		//void addVertex(const Vector3f& pos, const Vector2f& tex) {/*TODO*/ }
+		//void addVertex(const Vector3f& pos, const Vector3f& normal, const Vector2f& tex) {/*TODO*/ }
+		//void addVertex(const Vector3f& pos, const Vector3f& normal, const Color& color, const Vector2f& tex) {/*TODO*/ }
+		//void addVertex(const Vector3f& pos, const Color& color, const Vector2f& tex) {/*TODO*/ }
+
+		bool hasColors() { return myHasColors; }
+		bool hasNormals() { return myHasNormals; }
+
+		const BoundingBox& getBoundingBox() 
+		{ 
+			if(myIsDirty) update(); 
+			return myBBox; 
+		}
+
+		void clear() 
+		{
+			vertices.clear();
+			colors.clear();
+			normals.clear();
+			triangles.clear();
+			myHasColors = false;
+			myHasNormals = false;
+			myIsDirty = true;
+		}
+	
+	protected:
         std::vector< Vector3f >   vertices;
         std::vector< Color >    colors;
         std::vector< Vector3f >   normals;
         std::vector< Triangle > triangles;
+
+		bool myHasColors;
+		bool myHasNormals;
+
+		bool myIsDirty;
+
+	private:
+		void update()
+		{
+			// Reset bounding box.
+			float fmax = std::numeric_limits<float>::max();
+			float fmin = -std::numeric_limits<float>::max();
+			myBBox[0][0] = myBBox[0][1] = myBBox[0][2] = fmax;
+			myBBox[1][0] = myBBox[1][1] = myBBox[1][2] = fmin;
+
+			// Recompute bounding box.
+			for(int i = 0; i < getNumVertices(); i++)
+			{
+				const Vector3f& v = getVertexPosition(i);
+				for(int j = 0; j < 3; j++)
+				{
+					if(v[j] < myBBox[0][j]) myBBox[0][j] = v[j];
+					if(v[j] > myBBox[1][j]) myBBox[1][j] = v[j];
+				}
+			}
+
+			myIsDirty = false;
+		}
+
+	private:
+		BoundingBox myBBox;
     };
 }; // namespace scene
 } // namespace omega

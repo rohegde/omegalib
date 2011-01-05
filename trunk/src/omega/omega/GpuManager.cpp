@@ -85,6 +85,7 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 GpuManager::GpuManager():
 	myInitialized(false)
 {
+	myDefaultProgram = new GpuProgram(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

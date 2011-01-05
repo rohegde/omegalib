@@ -48,9 +48,11 @@ private:
 	TextureManager* myTexMng;
 	FontManager* myFontMng;
 	SceneManager* mySceneManager;
+	MeshManager* myMeshManager;
+	EffectManager* myEffectManager;
 	UIManager myUI;
 
-	SimplePrimitive* myTestDrawable;
+	Mesh* myMesh;
 
 	int mouseX;
 	int mouseY;
@@ -67,7 +69,6 @@ public:
 void MeshViewerClient::initialize()
 {
 	myFontMng = new FontManager();
-
 	myTexMng = new TextureManager();
 
 	//myUI = new UIManager();
@@ -77,14 +78,28 @@ void MeshViewerClient::initialize()
 	myGpu->initialize();
 
 	mySceneManager = new SceneManager(myGpu);
+	myEffectManager = new EffectManager(myGpu);
+	myMeshManager = new MeshManager(myGpu, myEffectManager);
 
-	myTestDrawable = new SimplePrimitive();
-	myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
-	myTestDrawable->setEffect(new Effect());
-	myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
+	MeshData* md = new MeshData();
 
-	mySceneManager->getRootNode()->addDrawable(myTestDrawable);
-	mySceneManager->getRootNode()->setScale(0.1f);
+	md->addVertex(Vector3f(-0.5, -0.5, 0));
+	md->addVertex(Vector3f(0.5, -0.5, 0));
+	md->addVertex(Vector3f(0.5, 0.5, 0));
+	md->addVertex(Vector3f(-0.5, 0.5, 0));
+
+	md->addTriangle(Triangle(0, 1, 2));
+	md->addTriangle(Triangle(0, 2, 3));
+
+	myMeshManager->addMesh("test", md);
+
+	myMesh = myMeshManager->getMesh("test");
+	//myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
+	//myTestDrawable->setEffect(new Effect());
+	//myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
+
+	mySceneManager->getRootNode()->addDrawable(myMesh);
+	mySceneManager->getRootNode()->setScale(0.1);
 
 	// Setup data and parameters for the agent render program
 	//myAgentRenderer = new GpuProgram(myGpu);
@@ -166,7 +181,6 @@ void MeshViewerClient::draw(const DrawContext& context)
 	else
 	{
 		// We don't use lighting for this application.
-		glEnable(GL_LIGHTING);
 		//glDisable(GL_FOG);
 
 		GfxUtils::setLightingEnabled(true);
@@ -188,19 +202,6 @@ void MeshViewerClient::draw(const DrawContext& context)
 // Application entry point
 void main(int argc, char** argv)
 {
-	ologopen("meshviewer-log.txt");
-
-	Config* cfg = new Config(argv[1]);
-
-	SystemManager* sys = SystemManager::instance();
-	sys->setup(cfg);
-
 	MeshViewerApplication app;
-	sys->setApplication(&app);
-	sys->initialize();
-	sys->run();
-
-	sys->cleanup();
-
-	ologclose();
+	omain(app, argv[1], "meshviewer-log.txt");
 }

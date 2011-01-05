@@ -12,7 +12,7 @@
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTING)
+ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTING -DFTGL_LIBRARY_STATIC)
 
 #######################################################################################################################
 # Exclude libcmt when linking in visual studio
@@ -29,7 +29,9 @@ SET( srcs
 		
 		# omega::scene
 		omega/scene/Effect.cpp
+		omega/scene/EffectManager.cpp
 		omega/scene/Mesh.cpp
+		omega/scene/MeshData.cpp
 		omega/scene/MeshManager.cpp
 		omega/scene/Drawable.cpp
 		omega/scene/SceneManager.cpp
@@ -62,6 +64,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshData.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Effect.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/EffectManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
