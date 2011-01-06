@@ -212,11 +212,11 @@ int _tmain(int argc, TCHAR* argv[])
 							if( test_out )
 							{
 								test_out = false;
-								printf("Pos: {%.2f, %.2f, %.2f}      Rot: { %.2f, %.2f, %.2f } \n", 
+								printf("Pos:\t%.2f \t %.2f\t%.2f\tRot:\t%.2f\t%.2f\t%.2f\t\n", 
 									frameData.x, frameData.y, frameData.z,
 									frameData.pitch, frameData.yaw, frameData.roll);
-								myfile<< "Pos: {" << frameData.x << ", " << frameData.y << ", " << frameData.z << "}\t"
-									  << "Rot: {" << frameData.pitch << " , " << frameData.yaw << " , " << frameData.roll << "}\n";
+								myfile<< "Pos: " << frameData.x << "\t" << frameData.y << "\t" << frameData.z << "}\t"
+									  << "Rot: " << frameData.pitch << "\t" << frameData.yaw << "\t" << frameData.roll << "}\n";
 							}
 
 							if(sendData(sd, &frameData, sizeof(frameData), (struct sockaddr *)&server) != sizeof(frameData)) {
