@@ -80,6 +80,7 @@ public:
 		eventPacket = itoa(evt.serviceType, eventPacket, 10); // Append input type
 		strcat( eventPacket, ":" );
 		char floatChar[32];
+
 		switch(evt.serviceType)
 		{
 		case InputService::Touch:
@@ -210,7 +211,6 @@ private:
 	
 	// Temp socket until multi-client is implemented
 	std::map<char*,NetClient*> netClients;
-	//vector<NetClient*> netClients;
 	NetClient* tempClient;
 
 	private:
@@ -401,24 +401,30 @@ void TestApplication::createClient(const char* clientAddress, int dataPort){
 	strcat( addr, ":" );
 	strcat( addr, itoa(dataPort,buf,10) );
 	
-	netClients[addr] =  new NetClient( clientAddress, dataPort );
-	//netClients.push_back( new NetClient( clientAddress, dataPort ) );
+	// Iterate through client map. If client name already exists,
+	// do not add to list.
+	std::map<char*, NetClient*>::iterator p;
+	for(p = netClients.begin(); p != netClients.end(); p++) {
+		printf( "%s \n", p->first );
+		if( strcmp(p->first, addr) == 0 ){
+			printf("NetService: NetClient already exists: %s \n", addr );
+			return;
+		}
+	}
+
+	netClients[addr] = new NetClient( clientAddress, dataPort );
+	//printf("NetService: current nClients: %d \n", netClients.size() );
 }// createClient
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TestApplication::sendToClients(char* event){
 	// Iterate through all clients
-	
 	std::map<char*,NetClient*>::iterator itr = netClients.begin();
 	while( itr != netClients.end() ){
 		NetClient* client = itr->second;
 		client->sendEvent( event );
 		itr++;
 	}// while
-	
-	//for( int i = 0; i < netClients.size(); i++ ){
-	//	netClients[i]->sendEvent( event );
-	//}
 }// createClient
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -434,7 +440,7 @@ void main(int argc, char** argv)
 
 	sys->initialize();
 	sys->getInputManager()->start();
-	//sys->run();
+	//sys->run(); // Not used for oinputserver
 	app.startConnection();
 	
 	printf("NetService: Starting to listen for clients... \n");
@@ -457,8 +463,6 @@ void main(int argc, char** argv)
 				}
 			}
 		}// if
-
-		
 
 	}// while
 	
