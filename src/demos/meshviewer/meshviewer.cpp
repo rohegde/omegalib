@@ -81,7 +81,7 @@ void MeshViewerClient::initialize()
 	myEffectManager = new EffectManager(myGpu);
 	myMeshManager = new MeshManager(myGpu, myEffectManager);
 
-	MeshData* md = new MeshData();
+	/*MeshData* md = new MeshData();
 
 	md->addVertex(Vector3f(-0.5, -0.5, 0));
 	md->addVertex(Vector3f(0.5, -0.5, 0));
@@ -91,15 +91,17 @@ void MeshViewerClient::initialize()
 	md->addTriangle(Triangle(0, 1, 2));
 	md->addTriangle(Triangle(0, 2, 3));
 
-	myMeshManager->addMesh("test", md);
+	myMeshManager->addMesh("test", md);*/
 
-	myMesh = myMeshManager->getMesh("test");
+	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
+
+	myMesh = myMeshManager->getMesh("screwdriver");
 	//myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
 	//myTestDrawable->setEffect(new Effect());
 	//myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
 
 	mySceneManager->getRootNode()->addDrawable(myMesh);
-	mySceneManager->getRootNode()->setScale(0.1);
+	//mySceneManager->getRootNode()->setScale(0.1);
 
 	// Setup data and parameters for the agent render program
 	//myAgentRenderer = new GpuProgram(myGpu);
@@ -183,7 +185,7 @@ void MeshViewerClient::draw(const DrawContext& context)
 		// We don't use lighting for this application.
 		//glDisable(GL_FOG);
 
-		GfxUtils::setLightingEnabled(true);
+		GfxUtils::setLightingEnabled(false);
 		GfxUtils::setLightEnabled(0, true);
 		GfxUtils::setLightColor(0, Color(1.0, 1.0, 1.0));
 		GfxUtils::setLightPosition(0, Vector3f(0, 1, 0));

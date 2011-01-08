@@ -82,7 +82,6 @@ void Mesh::update()
 	// Define normal attribute for vertex buffer.
 	VertexAttribute colorAttrib;
 	colorAttrib.components = 4;
-	colorAttrib.offset = 24;
 	colorAttrib.type = VertexAttribute::TypeFloat;
 	colorAttrib.target = VertexAttribute::TargetPrimaryColor;
 
@@ -101,6 +100,8 @@ void Mesh::update()
 	{
 		dataSize += myData->getNumVertices() * 4 * sizeof(float);
 		elementSize += 4 * sizeof(float);
+		if(myData->hasNormals()) colorAttrib.offset = 24;
+		else colorAttrib.offset = 12;
 		myVertexBuffer->addAttribute(colorAttrib);
 	}
 
