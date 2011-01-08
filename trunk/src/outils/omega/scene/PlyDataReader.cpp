@@ -100,7 +100,7 @@ void PlyDataReader::readVertices( PlyFile* file, const int nVertices,
         ply_get_element( file, static_cast< void* >( &vertex ) );
         vertices.push_back( Vector3f( vertex.x, vertex.y, vertex.z ) );
         if( readColors )
-            colors.push_back( Color( vertex.r, vertex.g, vertex.b, 0 ) );
+            colors.push_back( Color( (float)vertex.r / 255, (float)vertex.g  / 255, (float)vertex.b  / 255,  1.0f) );
     }
 }
 
@@ -194,19 +194,11 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
             }
         }
         else if( equal_strings( elemNames[i], "face" ) )
-        //try
-        //{
+        {
             readTriangles( file, nElems );
             oassert( triangles.size() == static_cast< size_t >( nElems ) );
             result = true;
-        //}
-        /*catch( exception& e )
-        {
-            oerror("Unable to read PLY file, an exception occured: %s", e.what().c_str());
-            // stop for loop by setting the loop variable to break condition
-            // this way resources still get released even on error cases
-            i = nPlyElems;
-        }*/
+        }
         
         // free the memory that was allocated by ply_get_element_description
         for( int j = 0; j < nProps; ++j )
@@ -220,6 +212,12 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
     for( int i = 0; i < nPlyElems; ++i )
         free( elemNames[i] );
     free( elemNames );
+
+	if(this->normals.size() != 0) myHasNormals = true;
+	else myHasNormals = false;
+
+	if(this->colors.size() != 0) myHasColors = true;
+	else myHasColors = false;
     
     return result;
 }
