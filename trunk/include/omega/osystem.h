@@ -51,7 +51,7 @@
 	#include <atlbase.h>
 
 	// Omega DLL import / export macros
-	#ifdef OMEGA_DYNAMIC
+	#ifndef OMEGA_STATIC
 		#ifdef OMEGA_EXPORTING
 		   #define OMEGA_API    __declspec(dllexport)
 		#else

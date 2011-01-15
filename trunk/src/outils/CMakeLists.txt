@@ -15,12 +15,6 @@
 ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTING -DFTGL_LIBRARY_STATIC)
 
 #######################################################################################################################
-# Exclude libcmt when linking in visual studio
-IF(MSVC)
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-ENDIF()
-
-#######################################################################################################################
 # Source files
 SET( srcs 
 		# omega
@@ -94,7 +88,11 @@ SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)
 
 #######################################################################################################################
 # Setup compile info
-ADD_LIBRARY( outils ${srcs} ${headers})
+IF(OMEGA_BUILD_STATIC)
+	ADD_LIBRARY( outils ${srcs} ${headers})
+ELSE(OMEGA_BUILD_STATIC)
+	ADD_LIBRARY( outils SHARED ${srcs} ${headers})
+ENDIF(OMEGA_BUILD_STATIC)
 
 #######################################################################################################################
 # Setup module-specific link info

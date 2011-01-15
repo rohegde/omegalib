@@ -69,6 +69,7 @@ typedef std::string String;
 
 // Setting
 typedef libconfig::Setting Setting;
+typedef co::base::uint128_t uint128_t;
 
 }; // namespace omega
 

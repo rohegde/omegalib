@@ -127,7 +127,7 @@ struct InputEvent
 	// sometime in the future.
 #ifdef OMEGA_USE_DISPLAY
 	//! Serialize an InputEvent instance.
-    void serialize(eq::net::DataOStream& os)
+    void serialize(co::DataOStream& os)
 	{
 		os << sourceId;
 		os << serviceType;
@@ -144,7 +144,7 @@ struct InputEvent
 	}
 
 	//! Deserialize an InputEvent instance.
-    virtual void deserialize( eq::net::DataIStream& is)
+    virtual void deserialize( co::DataIStream& is)
 	{
 		is >> sourceId;
 		is >> serviceType;

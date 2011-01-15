@@ -70,7 +70,7 @@ private:
 private:
 	SystemManager*	mySys;
 #ifdef OMEGA_USE_DISPLAY
-	eq::base::Lock  myEventBufferLock;
+	co::base::Lock  myEventBufferLock;
 #endif
 	InputEvent*		myEventBuffer;
 	int				myEventBufferHead;
