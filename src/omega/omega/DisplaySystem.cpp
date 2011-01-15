@@ -16,8 +16,12 @@
 
 #include "omega/input/MouseService.h"
 
+// This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 
+// template definition isn't compiled in the original equalizer static library.
+#include "eq/../../../equalizer/libs/fabric/layout.ipp"
+
 using namespace omega;
-using namespace eq::base;
+using namespace co::base;
 using namespace std;
 
 namespace omega
@@ -45,7 +49,7 @@ public:
 
 protected:
 	//! Serialize an instance of this class.
-    virtual void serialize( eq::net::DataOStream& os, const uint64_t dirtyBits )
+    virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
 	{
 		eq::fabric::Serializable::serialize( os, dirtyBits );
 		if( dirtyBits & DIRTY_EVENTS )
@@ -59,7 +63,7 @@ protected:
 	}
 
 	//! Deserialize an instance of this class.
-    virtual void deserialize( eq::net::DataIStream& is, const uint64_t dirtyBits )
+    virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
 	{
 		eq::fabric::Serializable::deserialize( is, dirtyBits );
 		if( dirtyBits & DIRTY_EVENTS )
@@ -96,7 +100,7 @@ public:
 
 protected:
 
-	virtual bool configInit(const uint32_t initID)
+	virtual bool configInit(const uint128_t& initID)
 	{
 		return Window::configInit(initID);
 	}
@@ -120,7 +124,7 @@ public:
                 DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
             };
 
-            virtual void serialize( eq::net::DataOStream& os, const uint64_t dirtyBits )
+            virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
 			{
 				if( dirtyBits & DIRTY_LAYER )
 				{
@@ -131,7 +135,7 @@ public:
 				}
 			}
 
-            virtual void deserialize( eq::net::DataIStream& is, const uint64_t dirtyBits )
+            virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
 			{
 				if( dirtyBits & DIRTY_LAYER )
 				{
@@ -189,9 +193,9 @@ private:
 class ConfigImpl: public eq::Config
 {
 public:
-	ConfigImpl( eq::base::RefPtr< eq::Server > parent): eq::Config(parent), myServer(NULL) {}
+	ConfigImpl( co::base::RefPtr< eq::Server > parent): eq::Config(parent), myServer(NULL) {}
 
-	virtual bool init(const uint32_t initID)
+	virtual bool init(const uint128_t& initID)
 	{
 		Application* app = SystemManager::instance()->getApplication();
 
@@ -216,21 +220,21 @@ public:
 		static int y;
 		switch( event->data.type )
 		{
-        case eq::Event::POINTER_MOTION:
+        case eq::Event::WINDOW_POINTER_MOTION:
 			{
 				x = event->data.pointerMotion.x;
 				y = event->data.pointerMotion.y;
 				MouseService::mouseMotionCallback(x, y);
 				return true;
 			}
-		case eq::Event::POINTER_BUTTON_PRESS:
+		case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
 			{
 				x = event->data.pointerButtonPress.x;
 				y = event->data.pointerButtonPress.y;
 				MouseService::mouseButtonCallback(0, 1, x, y);
 				return true;
 			}
-		case eq::Event::POINTER_BUTTON_RELEASE:
+		case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
 			{
 				x = event->data.pointerButtonPress.x;
 				y = event->data.pointerButtonPress.y;
@@ -241,7 +245,7 @@ public:
 		return false;
 	}
 
-	virtual uint32_t startFrame( const uint32_t version )
+	virtual uint32_t startFrame( const uint128_t& version )
 	{
 		myFrameData.commit();
 		return eq::Config::startFrame( version );
@@ -308,8 +312,8 @@ public:
 
 	ViewImpl* findView(const String& viewName)
 	{
-		eq::Layout* layout = this->ohGetLayout(0);
-		return static_cast< ViewImpl* >(layout->ohFindView(viewName));
+		eq::Layout* layout = this->getLayouts()[0];
+		return static_cast< ViewImpl* >(layout->findView(viewName));
 	}
 	
 	void setLayerEnabled(const String& viewName, int layerId, bool enabled)
@@ -340,7 +344,7 @@ public:
 protected:
 	virtual ~PipeImpl() {}
 
-    virtual bool configInit( const uint32_t initID )
+    virtual bool configInit( const uint128_t& initID )
 	{
 		bool result = eq::Pipe::configInit(initID);
 
@@ -367,7 +371,7 @@ protected:
 		return eq::Pipe::configExit();
 	}
 
-    virtual void frameStart( const uint32_t frameID, const uint32_t frameNumber )
+    virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber )
 	{
 		eq::Pipe::frameStart(frameID, frameNumber);
 
@@ -412,7 +416,10 @@ private:
 class ChannelImpl: public eq::Channel, IGLContextManager
 {
 public:
-    ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) {}
+    ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) 
+	{
+	}
+
 	virtual ~ChannelImpl() {}
 
 protected:
@@ -423,7 +430,7 @@ protected:
 		glewSetContext(this->glewGetContext());
 	}
 
-	virtual void frameDraw( const uint32_t spin )
+	virtual void frameDraw( const uint128_t& spin )
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 		
@@ -431,7 +438,7 @@ protected:
 
 		// setup OpenGL State
 		eq::Channel::frameDraw( spin );
-		
+
 		PipeImpl* pipe = (PipeImpl*)getPipe();
 
 		eq::PixelViewport pvp = getPixelViewport();
@@ -619,7 +626,7 @@ void DisplaySystem::run()
         }
         else
         {
-            oerror("Config initialization failed: %s", myConfig->getErrorMessage());
+            oerror("Config initialization failed!");
             error = true;
         }
 

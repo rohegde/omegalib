@@ -12,17 +12,11 @@
 
 #######################################################################################################################
 # Find required packages
-# take away these and use libs included with project.
 find_package(OpenGL)
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS(-DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING)
-IF(MSVC)
-	# Exclude libcmt when linking in visual studio
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-	ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS)
-ENDIF()
+ADD_DEFINITIONS(-DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC)
 
 #######################################################################################################################
 # Source files
@@ -125,7 +119,11 @@ SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)
 
 #######################################################################################################################
 # Setup compile info
-ADD_LIBRARY( omega ${srcs} ${headers})
+IF(OMEGA_BUILD_STATIC)
+	ADD_LIBRARY( omega ${srcs} ${headers})
+ELSE(OMEGA_BUILD_STATIC)
+	ADD_LIBRARY( omega SHARED ${srcs} ${headers})
+ENDIF(OMEGA_BUILD_STATIC)
 
 #######################################################################################################################
 # Setup module-specific link info
@@ -153,9 +151,8 @@ ENDIF(OMEGA_USE_NETSERVICE)
 
 IF(OMEGA_USE_DISPLAY)
 	TARGET_LINK_LIBRARIES( omega
-		debug ${LIB_DEBUG}/pthreadVC2.lib optimized ${LIB_RELEASE}/pthreadVC2.lib
-		debug ${LIB_DEBUG}/equalizer.lib optimized ${LIB_RELEASE}/equalizer.lib
-		debug ${LIB_DEBUG}/glut32.lib optimized ${LIB_RELEASE}/glut32.lib
+		debug ${LIB_DEBUG}/glew.lib optimized ${LIB_RELEASE}/glew.lib
+		debug ${LIB_DEBUG}/Equalizer.lib optimized ${LIB_RELEASE}/Equalizer.lib
 		debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
 		${OPENGL_LIBRARY})
 ENDIF(OMEGA_USE_DISPLAY)
