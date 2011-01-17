@@ -28,6 +28,8 @@
 #include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
 
+#include "libconfig/ArgumentHelper.h"
+
 using namespace omega;
 
 GLEWContext sGLEWContext;
@@ -61,6 +63,8 @@ void displayCallback(void)
 	dc.viewportY = 0;
 	dc.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
 	dc.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+	ds->updateProjectionMatrix();
 
 	// Push observer matrix.
 	glPushMatrix();
@@ -110,18 +114,35 @@ void GlutDisplaySystem::setup(Setting& setting)
 	String sCfg;
 	setting.lookupValue("DisplayConfig", sCfg);
 
-	char cfg[1024];
-	strcpy(cfg, sCfg.c_str());
-	
-	char* spc = strchr(cfg, ' ');
-	if(spc != NULL) spc = '\0';
+	int width;
+	int height;
+	myFov = 90;
+	myNearz = 0;
+	myFarz = 1000;
 
-	char* x = strchr(cfg, 'x');
-	*x = '\0';
-	myResolution[0] = atoi(cfg);
-	myResolution[1] = atoi(&x[1]);
+	libconfig::ArgumentHelper ah;
+	ah.newInt("width", "Resolution width", width);
+	ah.newInt("height", "Resolution width", height);
+	ah.newNamedInt('f', "fov", "fov", "field of view", myFov);
+	ah.newNamedInt('z', "nearz", "nearZ", "near Z clipping plane", myNearz);
+	ah.newNamedInt('Z', "farz", "farZ", "far Z clipping plane", myFarz);
+
+	ah.process(sCfg.c_str());
+
+	myResolution[0] = width;
+	myResolution[1] = height;
+	myAspect = (float)width / height;
 
 	mySetting = &setting;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::updateProjectionMatrix()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(myFov, myAspect, myNearz, myFarz);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

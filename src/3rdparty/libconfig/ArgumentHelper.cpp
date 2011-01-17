@@ -653,10 +653,11 @@
 
 		strcpy(args, argstr);
 		char* c = args;
-		int argc = 1;
-		argv[0] = args;
+		int argc = 2;
+		argv[0] = "";
+		argv[1] = args;
 		while(*c != '\0') { if(*c == ' ') { *c = '\0'; argv[argc++] = (c + 1); } c++; }
-		
+		process(argc, argv);
 	}
  }
  

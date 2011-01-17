@@ -31,22 +31,24 @@ namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements a display system based on GLUT, offering a single render window and mouse input support.
-	class GlutDisplaySystem: public DisplaySystem
+	class OMEGA_API GlutDisplaySystem: public DisplaySystem
 	{
 	public:
-		OMEGA_API GlutDisplaySystem();
-		OMEGA_API virtual ~GlutDisplaySystem();
+		GlutDisplaySystem();
+		virtual ~GlutDisplaySystem();
 
 		// sets up the display system. Called before initalize.
-		OMEGA_API void setup(Setting& setting);
+		void setup(Setting& setting);
 
-		OMEGA_API virtual void initialize(SystemManager* sys); 
-		OMEGA_API virtual void run(); 
-		OMEGA_API virtual void cleanup(); 
+		virtual void initialize(SystemManager* sys); 
+		virtual void run(); 
+		virtual void cleanup(); 
+
+		void updateProjectionMatrix();
 
 		// Layer and view management.
-		OMEGA_API virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
-		OMEGA_API virtual bool isLayerEnabled(int layerNum, const char* viewName);
+		virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
+		virtual bool isLayerEnabled(int layerNum, const char* viewName);
 
 		Observer& getObserver() { return myObserver; }
 
@@ -64,6 +66,10 @@ namespace omega
 		Setting* mySetting;
 		Vector2i myResolution;
 		Observer myObserver;
+		int myFov;
+		float myAspect;
+		int myNearz;
+		int myFarz;
 
 		SystemManager* mySys;
 		ApplicationClient* myAppClient;
