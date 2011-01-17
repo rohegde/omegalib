@@ -55,11 +55,6 @@
 #    define FGAPI
 #    define FGAPIENTRY
 
-        /* Link with Win32 static freeglut lib */
-#       if defined(_MSC_VER)
-#           pragma comment (lib, "freeglut_static.lib")
-#       endif
-
 /* Windows shared library (DLL) */
 #   else
 
@@ -68,28 +63,10 @@
 #        else
 #                define FGAPI __declspec(dllimport)
 
-            /* link with Win32 shared freeglut lib */
-#           if defined(_MSC_VER)
-#               ifndef _WIN32_WCE
-#                   pragma comment (lib, "freeglut.lib")
-#               endif
-#        endif
-
 #       endif
 
 #       define FGAPIENTRY __stdcall
 
-#   endif
-
-/* Drag in other Windows libraries as required by FreeGLUT */
-#   if defined(_MSC_VER)
-#       ifndef _WIN32_WCE
-#           pragma comment (lib, "winmm.lib")    /* link Windows MultiMedia lib */
-#           pragma comment (lib, "user32.lib")   /* link Windows user lib       */
-#           pragma comment (lib, "gdi32.lib")    /* link Windows GDI lib        */
-#           pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-#           pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
-#       endif /* _WIN32_WCE */
 #   endif
 
 #else

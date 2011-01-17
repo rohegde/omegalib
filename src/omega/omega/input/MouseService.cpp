@@ -41,6 +41,13 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 	{
 		mysInstance->lockEvents();
 
+		/*if(SystemManager::instance()->getDisplaySystem()->getId() == GLUTDisplaySystem::Id)
+		{
+			evt->type = InputEvent::Down;
+			evt->position[0] = x;
+			evt->position[1] = y;
+		}
+		else*/
 		InputEvent* evt = mysInstance->writeHead();
 		evt->serviceType = InputService::Pointer;
 		evt->type = state ? InputEvent::Down : InputEvent::Up;
@@ -55,6 +62,11 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 void MouseService::initialize() 
 {
 	mysInstance = this;
+	/*if(SystemManager::instance()->getDisplaySystem()->getId() == GLUTDisplaySystem::Id)
+	{
+		glutPassiveMotionFunc(mouseMotionCallback);
+		glutMouseFunc(mouseButtonCallback);
+	}*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
