@@ -3,15 +3,28 @@
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
+ *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * EqualizerDisplaySystem method implementation. See EqualizerDisplaySystem.h for more details.
+ * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+ * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "omega/Application.h"
 #include "omega/Config.h"
-#include "omega/DisplaySystem.h"
+#include "omega/EqualizerDisplaySystem.h"
 #include "omega/SystemManager.h"
 
 #include "omega/input/MouseService.h"
@@ -84,26 +97,6 @@ protected:
 private:
 	int myNumEvents;
 	InputEvent myEventBuffer[InputManager::MaxEvents];
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//! @internal
-//! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
-//! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
-//! of a pipe are executed in the same pipe thread. The default window initialization methods initialize all windows 
-//! of the same pipe with a shared context, so that OpenGL objects can be reused between them for optimal GPU memory usage.
-class WindowImpl: public eq::Window
-{
-public:
-    WindowImpl(eq::Pipe* parent) : eq::Window(parent) {}
-	virtual ~WindowImpl() {}
-
-protected:
-
-	virtual bool configInit(const uint128_t& initID)
-	{
-		return Window::configInit(initID);
-	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +179,26 @@ private:
 	bool myEnabledLayers[Application::MaxLayers];
 	Proxy myProxy;
 	friend class myProxy;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal
+//! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
+//! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
+//! of a pipe are executed in the same pipe thread. The default window initialization methods initialize all windows 
+//! of the same pipe with a shared context, so that OpenGL objects can be reused between them for optimal GPU memory usage.
+class WindowImpl: public eq::Window
+{
+public:
+    WindowImpl(eq::Pipe* parent) : eq::Window(parent) {}
+	virtual ~WindowImpl() {}
+
+protected:
+
+	virtual bool configInit(const uint128_t& initID)
+	{
+		return Window::configInit(initID);
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -490,7 +503,7 @@ public:
 }; // namespace omega
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-DisplaySystem::DisplaySystem():
+EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL),
 	myConfig(NULL),
 	myNodeFactory(NULL),
@@ -499,19 +512,19 @@ DisplaySystem::DisplaySystem():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-DisplaySystem::~DisplaySystem()
+EqualizerDisplaySystem::~EqualizerDisplaySystem()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::setup(Setting& setting) 
+void EqualizerDisplaySystem::setup(Setting& setting) 
 {
 	setting.lookupValue("DisplayConfig", myDisplayConfig);
 	mySetting = &setting;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::initialize(SystemManager* sys)
+void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
 	// Init glew
 	glewInit();
@@ -543,7 +556,7 @@ void DisplaySystem::initialize(SystemManager* sys)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::initObservers()
+void EqualizerDisplaySystem::initObservers()
 {
 	if(mySetting->exists("Observers"))
 	{
@@ -585,7 +598,7 @@ void DisplaySystem::initObservers()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::initLayers()
+void EqualizerDisplaySystem::initLayers()
 {
 	if(mySetting->exists("Views"))
 	{
@@ -603,7 +616,7 @@ void DisplaySystem::initLayers()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::run()
+void EqualizerDisplaySystem::run()
 {
 	bool error = false;
     if( myConfig )
@@ -642,12 +655,12 @@ void DisplaySystem::run()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::cleanup()
+void EqualizerDisplaySystem::cleanup()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void DisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
+void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
 {
 	if(!myConfig)
 	{
@@ -663,7 +676,7 @@ void DisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool ena
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool DisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
+bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
 { 
 	if(!myConfig)
 	{
@@ -680,7 +693,7 @@ bool DisplaySystem::isLayerEnabled(int layerNum,const char* viewName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Observer* DisplaySystem::getObserver(int observerId)
+Observer* EqualizerDisplaySystem::getObserver(int observerId)
 {
 	oassert(myObservers.size() > observerId);
 	return myObservers[observerId];

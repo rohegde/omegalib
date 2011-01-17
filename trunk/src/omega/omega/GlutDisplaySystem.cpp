@@ -1,0 +1,247 @@
+/********************************************************************************************************************** 
+ * THE OMEGA LIB PROJECT
+ *---------------------------------------------------------------------------------------------------------------------
+ * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti							febret@gmail.com
+ *---------------------------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+ * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *********************************************************************************************************************/
+#include "omega/Application.h"
+#include "omega/InputManager.h"
+#include "omega/SystemManager.h"
+#include "omega/Config.h"
+#include "omega/GlutDisplaySystem.h"
+
+using namespace omega;
+
+GLEWContext sGLEWContext;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void displayCallback(void) 
+{
+	static float lt = 0.0f;
+
+	GlutDisplaySystem* ds = (GlutDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	ApplicationServer* as = ds->getApplicationServer();
+	ApplicationClient* ac = ds->getApplicationClient();
+
+	// Compute dt.
+	float t = (float)((double)clock() / CLOCKS_PER_SEC);
+	UpdateContext uc;
+	uc.dt = t - lt;
+	lt = t;
+
+	as->update(uc);
+	ac->update(uc);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Process events.
+	InputManager* im = SystemManager::instance()->getInputManager();
+
+	// setup the context viewport.
+	DrawContext dc;
+	dc.viewportX = 0;
+	dc.viewportY = 0;
+	dc.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
+	dc.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+	// Push observer matrix.
+	glPushMatrix();
+	Matrix4f& mat = ds->getObserver().getHeadMatrix();
+	glLoadMatrixf(mat.begin());
+
+	for(int layer = 0; layer < Application::MaxLayers; layer++)
+	{
+		if(ds->isLayerEnabled(layer, 0))
+		{
+			dc.layer = layer;
+			ac->draw(dc);
+		}
+	}
+
+	glPopMatrix();
+
+	glFlush();
+	glutPostRedisplay();
+
+	// poll the input manager for new events.
+	im->poll();
+
+	if(SystemManager::instance()->isExitRequested())
+	{
+		exit(0);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+GlutDisplaySystem::GlutDisplaySystem():
+	mySys(NULL)
+{
+	myLayerEnabled = new bool[Application::MaxLayers];
+	memset(myLayerEnabled, 0, Application::MaxLayers * sizeof(bool));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+GlutDisplaySystem::~GlutDisplaySystem()
+{
+	delete myLayerEnabled;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::setup(Setting& setting) 
+{
+	String sCfg;
+	setting.lookupValue("DisplayConfig", sCfg);
+
+	char cfg[1024];
+	strcpy(cfg, sCfg.c_str());
+	
+	char* spc = strchr(cfg, ' ');
+	if(spc != NULL) spc = '\0';
+
+	char* x = strchr(cfg, 'x');
+	*x = '\0';
+	myResolution[0] = atoi(cfg);
+	myResolution[1] = atoi(&x[1]);
+
+	mySetting = &setting;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::initialize(SystemManager* sys)
+{
+	mySys = sys;
+
+	initLayers();
+	initObservers();
+
+	char* argv = "";
+	int argcp = 1;
+
+	// Setup and initialize Glut
+	glutInit(&argcp, &argv);
+	glutInitWindowPosition(0, 0);
+	glutInitWindowSize(myResolution[0], myResolution[1]);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
+	glutCreateWindow(sys->getApplication()->getName()); 
+
+	glewSetContext(&sGLEWContext);
+
+	// Init glew
+	glewInit();
+
+	glutDisplayFunc(displayCallback); 
+
+	// Setup and initialize the application server and client.
+	Application* app = SystemManager::instance()->getApplication();
+	if(app)
+	{
+		myAppClient = app->createClient();
+		myAppServer = app->createServer();
+
+		myAppServer->initialize();
+		myAppClient->setup();
+		myAppClient->initialize();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::run()
+{
+	glutMainLoop();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::cleanup()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::initLayers()
+{
+	if(mySetting->exists("Views"))
+	{
+		Setting& stViews = (*mySetting)["Views"];
+		for(int i = 0; i < stViews.getLength(); i++)
+		{
+			Setting& stView = stViews[i];
+			Setting& stLayers = stView["Layers"];
+			for(int j = 0; j < stLayers.getLength(); j++)
+			{
+				setLayerEnabled(stLayers[j], stView.getName(), true);
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::initObservers()
+{
+	if(mySetting->exists("Observers"))
+	{
+		Setting& stObservers = (*mySetting)["Observers"];
+		for(int i = 0; i < stObservers.getLength(); i++)
+		{
+			Setting& stObserver = stObservers[i];
+
+			Matrix4f emitterMatrix( eq::Matrix4f::IDENTITY );
+
+			if(stObserver.exists("EmitterScale"))
+			{
+				Setting& stEmitterScale = stObserver["EmitterScale"];
+				emitterMatrix.scale((float)stEmitterScale[0], (float)stEmitterScale[1], (float)stEmitterScale[2]);
+			}
+			if(stObserver.exists("EmitterTranslation"))
+			{
+				Setting& stEmitterTranslation = stObserver["EmitterTranslation"];
+				Vector3f pos;
+				pos.x() = (float)stEmitterTranslation[0];
+				pos.y() = (float)stEmitterTranslation[1];
+				pos.z() = (float)stEmitterTranslation[2];
+				emitterMatrix.set_translation(pos);
+			}
+			/*if(stObserver.exists("EmitterRotation"))
+			{
+				Setting& stEmitterRotation = stObserver["EmitterRotation"];
+				emitterMatrix.rotate((float)stEmitterRotation[0], 1, 0, 0);
+				emitterMatrix.rotate((float)stEmitterRotation[1], 0, 1, 0);
+				emitterMatrix.rotate((float)stEmitterRotation[2], 0, 0, 1);
+			}*/
+
+			// NOTE: Glut supports just one observer.. last observer specified wins.
+			// Set observer initial position to origin, neutral orientation.
+			myObserver.setWorldToEmitter(emitterMatrix);
+			myObserver.update(Vector3f::ZERO, Vector3f::ZERO);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GlutDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled)
+{
+	myLayerEnabled[layerNum] = enabled;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool GlutDisplaySystem::isLayerEnabled(int layerNum, const char* viewName)
+{
+	return myLayerEnabled[layerNum];
+}
+

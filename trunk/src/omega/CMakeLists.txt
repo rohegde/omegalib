@@ -16,11 +16,12 @@ find_package(OpenGL)
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS(-DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC)
+ADD_DEFINITIONS(-DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
 
 #######################################################################################################################
 # Source files
 SET( srcs 
+		omega/glew.c
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
@@ -52,6 +53,46 @@ SET( headers
         
 #######################################################################################################################
 # Enable / disable specific modules within omegalib
+IF(OMEGA_USE_DISPLAY)
+	ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY)
+	SET( srcs ${srcs}
+			omega/EqualizerDisplaySystem.cpp
+			omega/GfxUtils.cpp
+			omega/GpuBuffer.cpp
+			omega/GpuManager.cpp
+			omega/GpuProgram.cpp
+			omega/teapot.cpp
+			)
+	SET( headers ${headers}
+			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
+			) 
+			
+	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
+	IF(OMEGA_USE_DISPLAY_EQUALIZER)
+		ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY_EQUALIZER)
+		SET( srcs ${srcs} omega/EqualizerDisplaySystem.cpp)
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
+	ENDIF(OMEGA_USE_DISPLAY_EQUALIZER)
+	
+	SET(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+	IF(OMEGA_USE_DISPLAY_GLUT)
+		ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY_GLUT)
+		SET( srcs ${srcs} omega/GlutDisplaySystem.cpp)
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
+	ENDIF(OMEGA_USE_DISPLAY_GLUT)
+	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
+	
+	SET(OMEGA_USE_OPENCL true CACHE BOOL "Enable OpenCL support for GPU programs")
+	IF(OMEGA_USE_OPENCL)
+		ADD_DEFINITIONS( -DOMEGA_USE_OPENCL)
+	ENDIF(OMEGA_USE_OPENCL)
+ENDIF(OMEGA_USE_DISPLAY)
+
 SET(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
 IF(OMEGA_USE_MOUSE)
 	SET( srcs	 ${srcs} omega/input/MouseService.cpp )
@@ -86,29 +127,6 @@ IF(OMEGA_USE_NETSERVICE)
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
 	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
-
-#######################################################################################################################
-# Add code and library dependencies when the equalizer display system is enabled
-IF(OMEGA_USE_DISPLAY)
-	ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY)
-	SET( srcs 
-			${srcs}
-			omega/DisplaySystem.cpp
-			omega/GfxUtils.cpp
-			omega/GpuBuffer.cpp
-			omega/GpuManager.cpp
-			omega/GpuProgram.cpp
-			omega/teapot.cpp
-			)
-	SET( headers 
-			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
-			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
-			) 
-ENDIF(OMEGA_USE_DISPLAY)
 
 #######################################################################################################################
 # Group source files into separate folders foe visual studio project (this is just eye candy)
@@ -151,10 +169,19 @@ ENDIF(OMEGA_USE_NETSERVICE)
 
 IF(OMEGA_USE_DISPLAY)
 	TARGET_LINK_LIBRARIES( omega
-		debug ${LIB_DEBUG}/glew.lib optimized ${LIB_RELEASE}/glew.lib
-		debug ${LIB_DEBUG}/Equalizer.lib optimized ${LIB_RELEASE}/Equalizer.lib
-		debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib
 		${OPENGL_LIBRARY})
+	IF(OMEGA_USE_DISPLAY_EQUALIZER)
+		TARGET_LINK_LIBRARIES( omega 
+		debug ${LIB_DEBUG}/Equalizer.lib optimized ${LIB_RELEASE}/Equalizer.lib)
+	ENDIF(OMEGA_USE_DISPLAY_EQUALIZER)
+	IF(OMEGA_USE_DISPLAY_GLUT)
+		TARGET_LINK_LIBRARIES( omega 
+		debug ${LIB_DEBUG}/freeglut.lib optimized ${LIB_RELEASE}/freeglut.lib)
+	ENDIF(OMEGA_USE_DISPLAY_GLUT)
+	IF(OMEGA_USE_OPENCL)
+		TARGET_LINK_LIBRARIES( omega 
+		debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib)
+	ENDIF(OMEGA_USE_OPENCL)
 ENDIF(OMEGA_USE_DISPLAY)
 
 #######################################################################################################################

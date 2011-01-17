@@ -72,10 +72,14 @@
 	#define OUTILS_API
 #endif
 
+// Enable GLEW multiple render context support.
+#define GLEW_MX 
+
 // OpenGL includes
 #include <GL/gl.h>
-#include <GL/glut.h>
 #include <GL/glew.h>
+#include <GL/glu.h>
+#include <GL/freeglut.h>
 
 // Libconfig
 #include "libconfig/libconfig.hh"
