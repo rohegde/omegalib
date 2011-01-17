@@ -20,11 +20,11 @@ namespace omega
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class Image: public Widget
+	class OUTILS_API Image: public Widget
 	{
 	public:
-		OUTILS_API Image(omega::String name);
-		OUTILS_API virtual ~Image();
+		Image(omega::String name);
+		virtual ~Image();
 
 		omega::Texture* getTexture() { return myTexture; }
 		void setTexture(omega::Texture* value) { myTexture = value; }

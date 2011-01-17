@@ -40,20 +40,20 @@ namespace scene
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages Meshes.
-	class EffectManager
+	class OUTILS_API EffectManager
 	{
 	public:
-		OUTILS_API EffectManager(omega::GpuManager* gpu);
-		OUTILS_API ~EffectManager();
+		EffectManager(omega::GpuManager* gpu);
+		~EffectManager();
 
 		GpuManager* getGpuManager() { return myGpuMng; }
 
-		OUTILS_API void cleanup();
+		void cleanup();
 
-		OUTILS_API Effect* getEffect(omega::String name);
-		OUTILS_API void addEffect(omega::String name, Effect* effect);
+		Effect* getEffect(omega::String name);
+		void addEffect(omega::String name, Effect* effect);
 
-		OUTILS_API Effect* getDefaultEffect() { return myDefaultEffect; }
+		Effect* getDefaultEffect() { return myDefaultEffect; }
 
 	private:
 		EffectDictionary myEffects;

@@ -48,32 +48,32 @@ typedef boost::unordered_map<String, InputFilterAllocator> InputFilterDictionary
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // The SystemManager class is the root object of the omegalib architecture.
-class SystemManager
+class OMEGA_API SystemManager
 {
 public:
 	// Get the singleton instance of the system manager.
-	OMEGA_API static SystemManager* instance();
+	static SystemManager* instance();
 
 	//! Initializes the system manager
-	OMEGA_API void setup(Config* cfg);
+	void setup(Config* cfg);
 
-	OMEGA_API void registerInputService(String svcName, InputServiceAllocator creationFunc);
+	void registerInputService(String svcName, InputServiceAllocator creationFunc);
 
 	//! Find an input service allocator given the input service name.
 	//! See registerInputService for additional information.
-	OMEGA_API InputServiceAllocator findInputService(String svcName);
+	InputServiceAllocator findInputService(String svcName);
 
-	OMEGA_API void initialize();
+	void initialize();
 
 	//! Starts running the current application.
 	//! This method does not return until the application is done running.
-	OMEGA_API void	run();
+	void	run();
 
 	//! Sends an exit request to the system manager.
-	OMEGA_API void postExitRequest(const String& reason = "Undefined reason");
+	void postExitRequest(const String& reason = "Undefined reason");
 
 	//! Cleans up runtime resources, performs final debug checks etc.
-	OMEGA_API void cleanup();
+	void cleanup();
 
 	//! Gets the system configuration.
 	Config* getConfig() { return myConfig; }

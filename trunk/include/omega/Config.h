@@ -18,28 +18,28 @@
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Config
+class OMEGA_API Config
 {
 public:
 	static std::vector<char*> stringToArgv(String appName, String args);
 
 public:
-	OMEGA_API Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false) {}
-	OMEGA_API Config(int argc, char** argv): myCfgFile(NULL), myIsLoaded(false) { myArgc = argc; myArgv = argv; }
-	OMEGA_API Config(const char* filename);
-	OMEGA_API ~Config() {}
+	Config(): myArgv(NULL), myArgc(1), myCfgFile(NULL), myIsLoaded(false) {}
+	Config(int argc, char** argv): myCfgFile(NULL), myIsLoaded(false) { myArgc = argc; myArgv = argv; }
+	Config(const char* filename);
+	~Config() {}
 
-	OMEGA_API const char* getConfigFilename() { return myCfgFilename.c_str(); }
-	OMEGA_API void setConfigFilename(const char* value) { myCfgFilename = value; }
+	const char* getConfigFilename() { return myCfgFilename.c_str(); }
+	void setConfigFilename(const char* value) { myCfgFilename = value; }
 
-	OMEGA_API int getArgc() { return myArgc; }
-	OMEGA_API char** getArgv() { return myArgv; }
+	int getArgc() { return myArgc; }
+	char** getArgv() { return myArgv; }
 
-	OMEGA_API bool load();
+	bool load();
 
-	OMEGA_API bool isLoaded() { return myIsLoaded; }
+	bool isLoaded() { return myIsLoaded; }
 
-	OMEGA_API Setting& getRootSetting();
+	Setting& getRootSetting();
 
 private:
 	bool myIsLoaded;

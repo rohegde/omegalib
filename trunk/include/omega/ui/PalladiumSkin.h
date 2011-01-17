@@ -20,23 +20,23 @@ namespace ui
 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumButton: public Button
+class OUTILS_API PalladiumButton: public Button
 {
 public:
 	PalladiumButton(omega::String name): Button(name) {}
 protected:
-	OUTILS_API void draw();
+	void draw();
 private:
 	float myAnim;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class PalladiumSlider: public Slider
+class OUTILS_API PalladiumSlider: public Slider
 {
 public:
 	PalladiumSlider(omega::String name): Slider(name) {}
 protected:
-	OUTILS_API void draw();
+	void draw();
 private:
 	float myAnim;
 };

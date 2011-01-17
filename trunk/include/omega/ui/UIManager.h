@@ -27,16 +27,16 @@ class Widget;
 class WidgetFactory;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class UIManager
+class OUTILS_API UIManager
 {
 friend class Widget;
 public:
-	OUTILS_API UIManager();
-	OUTILS_API ~UIManager();
+	UIManager();
+	~UIManager();
 
-	OUTILS_API void update(const omega::UpdateContext& context);
-	OUTILS_API void draw(const omega::DrawContext& context);
-	OUTILS_API void processInputEvent(const omega::InputEvent& evt);
+	void update(const omega::UpdateContext& context);
+	void draw(const omega::DrawContext& context);
+	void processInputEvent(const omega::InputEvent& evt);
 
 	Widget* getRootWidget() { return myRootWidget; }
 

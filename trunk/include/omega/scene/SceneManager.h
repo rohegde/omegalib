@@ -35,7 +35,7 @@ namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class SceneManager
+	class OUTILS_API SceneManager
 	{
 	public:
 		SceneManager(omega::GpuManager* gpu): myGpuMng(gpu) {}
@@ -43,7 +43,7 @@ namespace scene
 		GpuManager* getGpuManager() { return myGpuMng; }
 		SceneNode* getRootNode() { return &myRoot; }
 
-		OUTILS_API void draw();
+		void draw();
 
 	private:
 		omega::GpuManager* myGpuMng;

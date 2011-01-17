@@ -20,14 +20,14 @@
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Math
+class OMEGA_API Math
 {
 public:
-	OMEGA_API static const float Pi;
-	OMEGA_API static const float DegToRad;
-	OMEGA_API static const float RadToDeg;
+	static const float Pi;
+	static const float DegToRad;
+	static const float RadToDeg;
 
-	OMEGA_API static float rnd();
+	static float rnd();
 
 private:
 	Math() {}

@@ -34,12 +34,12 @@ public:
 	static PQService* New() { return new PQService(); }
 
 public:
-	OMEGA_API virtual void initialize();
-	OMEGA_API virtual void dispose();
+	virtual void initialize();
+	virtual void dispose();
 
-	OMEGA_API void setup(Setting& settings);
-	OMEGA_API void initialize(  char* local_ip );
-	OMEGA_API int init();
+	void setup(Setting& settings);
+	void initialize(  char* local_ip );
+	int init();
 
 private:
 	static PQService* mysInstance;	

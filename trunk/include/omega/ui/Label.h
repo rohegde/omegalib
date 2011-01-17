@@ -20,15 +20,15 @@ namespace omega
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class Label: public Widget
+	class OUTILS_API Label: public Widget
 	{
 	public:
 		enum HorizontalAlign { AlignRight, AlignLeft, AlignCenter};
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		OUTILS_API Label(omega::String name);
-		OUTILS_API virtual ~Label();
+		Label(omega::String name);
+		virtual ~Label();
 
 		omega::String getText() { return myText; }
 		void setText(const omega::String& value) { myText = value; }

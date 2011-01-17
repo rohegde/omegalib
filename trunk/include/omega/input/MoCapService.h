@@ -28,17 +28,17 @@ namespace omega
 		static MoCapService* New() { return new MoCapService(); }
 
 	public:
-		OMEGA_API MoCapService();
-		OMEGA_API ~MoCapService();
-		OMEGA_API void setup( Setting& settings);
-		OMEGA_API static void __cdecl frameController(sFrameOfMocapData* data, void* pUserData);
-		OMEGA_API static void __cdecl messageController(int msgType, char* msg);
-		OMEGA_API virtual void initialize();
-		OMEGA_API virtual void start();//initialize and start service here
-		OMEGA_API virtual void stop();//destroy service instance to stop
-		OMEGA_API virtual void dispose();
-		OMEGA_API void useQuaternion ();
-		OMEGA_API void useEuler ();
+		MoCapService();
+		~MoCapService();
+		void setup( Setting& settings);
+		static void __cdecl frameController(sFrameOfMocapData* data, void* pUserData);
+		static void __cdecl messageController(int msgType, char* msg);
+		virtual void initialize();
+		virtual void start();//initialize and start service here
+		virtual void stop();//destroy service instance to stop
+		virtual void dispose();
+		void useQuaternion ();
+		void useEuler ();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:

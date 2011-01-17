@@ -21,11 +21,11 @@ namespace omega
 namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Button: public AbstractButton
+class OUTILS_API Button: public AbstractButton
 {
 public:
-	OUTILS_API Button(omega::String name);
-	OUTILS_API virtual ~Button();
+	Button(omega::String name);
+	virtual ~Button();
 
 	omega::String getText() { return myLabel.getText(); }
 	void setText(omega::String value) { myLabel.setText(value); }

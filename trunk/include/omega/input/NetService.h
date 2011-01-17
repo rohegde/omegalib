@@ -47,10 +47,10 @@ public:
 	static NetService* New() { return new NetService(); }
 
 public:
-	OMEGA_API virtual void setup(Setting& settings);
-	OMEGA_API virtual void initialize();
-	OMEGA_API virtual void poll();
-	OMEGA_API virtual void dispose();
+	virtual void setup(Setting& settings);
+	virtual void initialize();
+	virtual void poll();
+	virtual void dispose();
 	void setServer(const char*,const char*);
 	void setDataport(const char*);
 private:
