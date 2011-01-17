@@ -46,6 +46,10 @@ OpenGL(TM) is a trademark of Silicon Graphics, Inc.
 
 #include "omega.h"
 
+#ifdef WIN32
+	#pragma warning( disable : 4305)
+#endif
+
 /* Rim, body, lid, and bottom data must be reflected in x and
    y; handle and spout data across the y axis only.  */
 

@@ -39,16 +39,16 @@ namespace scene
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class Effect
+	class OUTILS_API Effect
 	{
 	public:
-		OUTILS_API Effect(EffectManager* mng);
+		Effect(EffectManager* mng);
 
 		void setProgram(GpuProgram* program) { myProgram = program; }
 		GpuProgram* getProgram() { return myProgram; }
 		
-		OUTILS_API void activate();
-		OUTILS_API void deactivate();
+		void activate();
+		void deactivate();
 
 		GpuProgramParams& getParams() { return myParams; }
 

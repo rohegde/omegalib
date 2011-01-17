@@ -29,11 +29,11 @@ public:
 
 public:
 
-	OMEGA_API virtual void initialize();
-	OMEGA_API virtual void start();
-	OMEGA_API virtual void poll();
-	OMEGA_API virtual void stop();
-	OMEGA_API virtual void dispose();
+	virtual void initialize();
+	virtual void start();
+	virtual void poll();
+	virtual void stop();
+	virtual void dispose();
 
 private:
     CComPtr<INPCamera>	myCamera;

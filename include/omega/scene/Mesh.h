@@ -29,7 +29,7 @@ namespace scene
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class Mesh: public Drawable
+	class OUTILS_API Mesh: public Drawable
 	{
 	public:
 		Mesh(MeshManager* manager);
@@ -42,8 +42,8 @@ namespace scene
 		MeshData* getData() { return myData; }
 		void setData(MeshData* value) { myData = value; }
 
-		OUTILS_API virtual void draw();
-		OUTILS_API void update();
+		virtual void draw();
+		void update();
 
 	private:
 		VertexBuffer* myVertexBuffer;

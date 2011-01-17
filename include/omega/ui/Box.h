@@ -19,13 +19,13 @@ namespace omega
 namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Box: public Widget
+class OUTILS_API Box: public Widget
 {
 public: 
 	enum Layout { LayoutNone, LayoutHorizontal, LayoutVertical };
 public:
-	OUTILS_API Box(omega::String name, Layout layout);
-	OUTILS_API virtual ~Box();
+	Box(omega::String name, Layout layout);
+	virtual ~Box();
 
 	// Gets the widget size
 	Layout getLayout() { return myLayout; }

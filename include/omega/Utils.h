@@ -20,7 +20,7 @@ namespace omega
 	class Utils
 	{
 	public:
-		OMEGA_API static String readTextFile(const String& filename);
+		static String readTextFile(const String& filename);
 	private:
 		Utils() {};
 	};

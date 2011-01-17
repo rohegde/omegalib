@@ -46,15 +46,15 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class GpuConstant: public GpuData
+	class OMEGA_API GpuConstant: public GpuData
 	{
 	public:
 		//! The supported uniform types.
 		enum Type {TypeInt, TypeFloat };
 
 	public:
-		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
-		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
 
 		//! Sets the uniform name.
 		void setName(omega::String value) { myName = value; }
@@ -178,29 +178,29 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class GpuBuffer: public GpuData
+	class OMEGA_API GpuBuffer: public GpuData
 	{
 	public:
 		enum BufferFlags { BufferFlagsCLNative = 1 << 1};
 
 	public:
-		OMEGA_API GpuBuffer(GpuManager* mng);
-		OMEGA_API ~GpuBuffer();
+		GpuBuffer(GpuManager* mng);
+		~GpuBuffer();
 
-		OMEGA_API void initialize(int size, int elementSize, void* data = NULL, unsigned int bufferFlags = 0);
-		OMEGA_API virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
-		OMEGA_API virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		void initialize(int size, int elementSize, void* data = NULL, unsigned int bufferFlags = 0);
+		virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage);
+		virtual void unbind(GpuProgram* prog, int index, GpuProgram::Stage stage);
 		
-		OMEGA_API void copyTo(GpuBuffer* destination, int srcOffset,int dstOffset,  int length);
+		void copyTo(GpuBuffer* destination, int srcOffset,int dstOffset,  int length);
 
 		//! Gets wether this buffer is a CL native buffer. 
 		bool isCLNative() { return myBufferFlags & BufferFlagsCLNative; } 
 
 		//! Sets the gpu buffer data
-		OMEGA_API void setData(void* data);
+		void setData(void* data);
 
 		GLuint getGLBuffer() { return myGLBuffer; }
-		OMEGA_API cl_mem getCLBuffer();
+		cl_mem getCLBuffer();
 
 		int getSize() { return mySize; }
 		int getElementSize() { return myElementSize; }
@@ -265,7 +265,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class VertexBuffer: public GpuBuffer
+	class OMEGA_API VertexBuffer: public GpuBuffer
 	{
 	public:
 		VertexBuffer(GpuManager* mng):
@@ -274,16 +274,16 @@ namespace omega
 
 		//! @name Attribute Management
 		VertexAttribute* getAttribute(int index) { return &myAttributes[index]; }
-		OMEGA_API void clearAttributes();
-		OMEGA_API int getNumAttributes();
-		OMEGA_API int addAttribute(const VertexAttribute& attrib);
+		void clearAttributes();
+		int getNumAttributes();
+		int addAttribute(const VertexAttribute& attrib);
 
 		//! @name Internal Functions
 		//! @internal Applies the vertex buffer attributes, binding vertex data to their specified semantics.
 		//! This method is always called before rendering data from the vertex buffer.
 		//! @remarks if stage is RenderStage, the prog and index parameters will be ignored.
-		OMEGA_API virtual void bind(GpuProgram* prog = NULL, int index = 0, GpuProgram::Stage stage = GpuProgram::RenderStage);
-		OMEGA_API virtual void unbind(GpuProgram* prog = NULL, int index = 0, GpuProgram::Stage stage = GpuProgram::RenderStage);
+		virtual void bind(GpuProgram* prog = NULL, int index = 0, GpuProgram::Stage stage = GpuProgram::RenderStage);
+		virtual void unbind(GpuProgram* prog = NULL, int index = 0, GpuProgram::Stage stage = GpuProgram::RenderStage);
 
 	private:
 		std::vector<VertexAttribute> myAttributes;

@@ -20,11 +20,11 @@ namespace omega
 namespace ui
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class AbstractButton: public Widget
+class OUTILS_API AbstractButton: public Widget
 {
 public:
-	OUTILS_API AbstractButton(omega::String name);
-	OUTILS_API virtual ~AbstractButton();
+	AbstractButton(omega::String name);
+	virtual ~AbstractButton();
 
 	bool isCheckable() { return myCheckable; }
 	void setCheckable(bool value) { myCheckable = value; }

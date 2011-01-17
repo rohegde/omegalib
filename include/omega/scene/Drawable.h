@@ -45,7 +45,7 @@ namespace scene
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements some simple primitive drawing through GLUT calls.
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class SimplePrimitive: public Drawable
+	class OUTILS_API SimplePrimitive: public Drawable
 	{
 	public:
 		enum PrimitiveType { SolidCube, SolidSphere, SolidTeapot};
@@ -53,7 +53,7 @@ namespace scene
 	public:
 		SimplePrimitive(): myPrimitiveType(SolidCube), mySize(1), myResolution1(16), myResolution2(16), myEffect(NULL) {}
 
-		OUTILS_API virtual void draw();
+		virtual void draw();
 
 		PrimitiveType getPrimitiveType() { return myPrimitiveType; }
 		void setPrimitiveType(PrimitiveType value) { myPrimitiveType = value; }

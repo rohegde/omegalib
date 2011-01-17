@@ -20,11 +20,11 @@ namespace omega
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class Slider: public Widget
+	class OUTILS_API Slider: public Widget
 	{
 	public:
-		OUTILS_API Slider(omega::String name);
-		OUTILS_API virtual ~Slider();
+		Slider(omega::String name);
+		virtual ~Slider();
 
 		omega::String getText() { return myLabel.getText(); }
 		void setText(omega::String value) { myLabel.setText(value); }

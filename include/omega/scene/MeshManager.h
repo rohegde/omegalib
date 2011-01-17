@@ -42,23 +42,23 @@ namespace scene
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages Meshes.
-	class MeshManager
+	class OUTILS_API MeshManager
 	{
 	public:
 		enum MeshFormat { MeshFormatPly };
 
 	public:
-		OUTILS_API MeshManager(omega::GpuManager* gpu, EffectManager* effectMng);
-		OUTILS_API ~MeshManager();
+		MeshManager(omega::GpuManager* gpu, EffectManager* effectMng);
+		~MeshManager();
 
 		GpuManager* getGpuManager() { return myGpuMng; }
 		EffectManager* getEffectManager() { return myEffectMng; }
 
-		OUTILS_API void cleanup();
+		void cleanup();
 
-		OUTILS_API void loadMesh(omega::String name, omega::String filename, MeshFormat format);
-		OUTILS_API Mesh* getMesh(omega::String name);
-		OUTILS_API void addMesh(omega::String name, MeshData* data);
+		void loadMesh(omega::String name, omega::String filename, MeshFormat format);
+		Mesh* getMesh(omega::String name);
+		void addMesh(omega::String name, MeshData* data);
 
 	private:
 		MeshDictionary myMeshes;

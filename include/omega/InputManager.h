@@ -23,36 +23,36 @@ namespace omega
 class SystemManager;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class InputManager
+class OMEGA_API InputManager
 {
 friend class InputService;
 
 public:
 	// Class constructor.
-	OMEGA_API InputManager(SystemManager* sys);
+	InputManager(SystemManager* sys);
 
 	// Class destructor
-	OMEGA_API ~InputManager();
+	~InputManager();
 
 	// Add a new input service to the manager.
-	OMEGA_API void addService(InputService* svc);
-	OMEGA_API void removeService(InputService* svc);
+	void addService(InputService* svc);
+	void removeService(InputService* svc);
 
 	// initialize
-	OMEGA_API void initialize();
-	OMEGA_API void start();
-	OMEGA_API void stop();
-	OMEGA_API void dispose();
+	void initialize();
+	void start();
+	void stop();
+	void dispose();
 
 	// TEMPORARY: this will run in a thread in the future.
-	OMEGA_API void poll();
+	void poll();
 
-	OMEGA_API void processEvents(ApplicationServer* app);
+	void processEvents(ApplicationServer* app);
 
-	OMEGA_API int getAvailableEvents() { return myAvailableEvents; }
-	OMEGA_API int getDroppedEvents() { return myDroppedEvents; }
-	OMEGA_API void resetDroppedEvents() { myDroppedEvents = 0; }
-	OMEGA_API int getEvents(InputEvent* ptr, int maxEvents);
+	int getAvailableEvents() { return myAvailableEvents; }
+	int getDroppedEvents() { return myDroppedEvents; }
+	void resetDroppedEvents() { myDroppedEvents = 0; }
+	int getEvents(InputEvent* ptr, int maxEvents);
 
 public:
 	// The maximum number of events stored in the event buffer.
