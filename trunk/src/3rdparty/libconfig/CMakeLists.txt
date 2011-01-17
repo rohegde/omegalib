@@ -17,7 +17,8 @@ SET (Sources
         scanner.c
         strbuf.c
         grammar.c
-        libconfigcpp.cpp)
+        libconfigcpp.cpp
+		ArgumentHelper.cpp)
 
 #######################################################################################################################
 # Compile as a static library
