@@ -44,7 +44,7 @@
 
 
 ==<u> Victor </u>==
- * Integrate newest omegalib with PigProject visualization
+ * Integrating Kinect and OpenNI to omegalib
 
  * Waiting for:
   * Gestures
