@@ -39,7 +39,7 @@ SET( srcs
 		omega/ui/Button.cpp
 		omega/ui/Image.cpp
 		omega/ui/Label.cpp
-		omega/ui/PalladiumSkin.cpp
+		omega/ui/DefaultSkin.cpp
 		omega/ui/Slider.cpp
 		omega/ui/UIManager.cpp
 		omega/ui/Widget.cpp
@@ -72,7 +72,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Button.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/PalladiumSkin.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/DefaultSkin.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Widget.h

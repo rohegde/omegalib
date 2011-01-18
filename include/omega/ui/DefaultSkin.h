@@ -22,64 +22,59 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#include "omega/ui/DefaultSkin.h"
-#include "omega/ui/UIManager.h"
-#include "omega/ui/Widget.h"
+#ifndef __PALLADIUM_SKIN_H__
+#define __PALLADIUM_SKIN_H__
 
-using namespace omega;
-using namespace omega::ui;
+#include "omega/ui/WidgetFactory.h"
+
+namespace omega
+{
+namespace ui
+{
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UIManager::UIManager():
-	myRootWidget(new Widget("")),
-	myWidgetFactory(new DefaultWidgetFactory()),
-	myDefaultFont(NULL),
-	myEventHandler(NULL)
+class OUTILS_API DefaultButton: public Button
 {
-	myRootWidget->myUI = this;
-}
+public:
+	DefaultButton(omega::String name): Button(name) {}
+protected:
+	void draw();
+private:
+	float myAnim;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UIManager::~UIManager() 
+class OUTILS_API DefaultSlider: public Slider
 {
-}
+public:
+	DefaultSlider(omega::String name): Slider(name) {}
+protected:
+	void draw();
+private:
+	float myAnim;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::update(const UpdateContext& context)
+class DefaultWidgetFactory: public WidgetFactory
 {
-	myRootWidget->update(context);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::draw(const DrawContext& context)
-{
-	myRootWidget->setPosition(Vector2f(context.viewportX, context.viewportY));
-	myRootWidget->setSize(Vector2f(context.viewportWidth, context.viewportHeight));
-
-	myRootWidget->layoutChildren();
-	myRootWidget->render();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::processInputEvent(const InputEvent& evt)
-{
-	// UI widgets only manage touch and pointer events.
-	if(evt.serviceType == InputService::Touch || evt.serviceType == InputService::Pointer)
+public:
+	virtual Button* createButton(omega::String name, Widget* parent)
 	{
-		//if(evt.type == InputEvent::Move) 
-		//	printf("move! at %f %f\n", evt.position[0], evt.position[1]);
-		//if(evt.type == InputEvent::Rotate) 
-		//	printf("rotate! at %f %f, deg:%f\n", evt.position[0], evt.position[1], evt.rotation[0]);
-		//if(evt.type == InputEvent::Split) printf("split!\n");
-		myRootWidget->processInputEvent(evt);
+		Button* button = new DefaultButton(name);
+		parent->addChild(button);
+		return button;
 	}
-}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::dispatchUIEvent(const UIEvent& evt)
-{
-	if(myEventHandler)
+	virtual Slider* createSlider(omega::String name, Widget* parent)
 	{
-		myEventHandler->handleUIEvent(evt);
+		Slider* slider = new DefaultSlider(name);
+		parent->addChild(slider);
+		return slider;
 	}
-}
+};
+
+
+}; // namespace ui
+}; // namespace omega
+
+#endif
