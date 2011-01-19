@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$osystem_8h.html" title="osystem.h" alt="" coords="415,325,511,357"/>
-<area shape="rect" id="node25" href="$_application_8h.html" title="Application.h" alt="" coords="215,85,329,117"/>
-<area shape="rect" id="node42" href="$_display_system_8h.html" title="DisplaySystem.h" alt="" coords="681,165,825,197"/>
-<area shape="rect" id="node28" href="$_system_manager_8h.html" title="SystemManager.h" alt="" coords="195,165,349,197"/>
-<area shape="rect" id="node33" href="$_input_event_8h.html" title="InputEvent.h" alt="" coords="441,165,553,197"/>
-<area shape="rect" id="node38" href="$_input_service_8h.html" title="InputService.h" alt="" coords="591,245,716,277"/>
-<area shape="rect" id="node45" href="$_observer_8h.html" title="Observer.h" alt="" coords="791,245,892,277"/>
-</map>
