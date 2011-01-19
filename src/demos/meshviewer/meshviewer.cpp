@@ -26,6 +26,9 @@
 #include "omega/scene.h"
 #include "omega/ui.h"
 
+#include "omega/Plane.h"
+#include "omega/Ray.h"
+
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;

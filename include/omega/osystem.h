@@ -30,15 +30,8 @@
 #include <time.h>
 #include <stdarg.h>
 
-// Stdlib includes
-#include <string>
-
 // Equalizer includes
 #include <eq/eq.h>
-
-// vmmlib includes
-//#define VMMLIB_DONT_FORCE_ALIGNMENT
-#include <vmmlib/vmmlib.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WIN32 Platform-specific includes & macros.
@@ -72,6 +65,8 @@
 	#define OUTILS_API
 #endif
 
+#include "otypes.h"
+
 // Enable GLEW multiple render context support.
 #define GLEW_MX 
 
@@ -80,9 +75,6 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
-
-// Libconfig
-#include "libconfig/libconfig.hh"
 
 // Boost foreach support
 #include "boost/foreach.hpp"
@@ -95,8 +87,6 @@
 
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
-
-#include "otypes.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.

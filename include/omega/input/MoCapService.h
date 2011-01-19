@@ -42,7 +42,7 @@ namespace omega
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:
-		static double PI;
+		static double Pi;
 		static MoCapService* myMoCap;
 		NatNetClient* pClient;
 		int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast

@@ -183,6 +183,42 @@ public:
         typename enable_if< M == 3, TT >::type* = 0 );
   
 
+    /** Calculates the 2 dimensional cross-product of 2 vectors, which results
+		in a single floating point value which is 2 times the area of the triangle.
+    */
+    template< typename TT >
+    inline float cross( const vector< M, TT>& a, 
+        typename enable_if< M == 2, TT >::type* = 0 ) const
+    {
+        return x() * a.y() - y() * a.x();
+    }
+
+    /** Sets this vector's components to the minimum of its own and the
+        ones of the passed in vector.
+        @remarks
+            'Minimum' in this case means the combination of the lowest
+            value of x, y and z from both vectors. Lowest is taken just
+            numerically, not magnitude, so -1 < 0.
+    */
+    template< typename TT >
+    inline void makeFloor( const vector< M, TT>& cmp )
+    {
+		for( size_t index = 0; index < M; ++index ) if(cmp[index] < array[index]) array[index] = cmp[index];
+    }
+
+    /** Sets this vector's components to the maximum of its own and the
+        ones of the passed in vector.
+        @remarks
+            'Maximum' in this case means the combination of the highest
+            value of x, y and z from both vectors. Highest is taken just
+            numerically, not magnitude, so 1 > -3.
+    */
+    template< typename TT >
+    inline void makeCeil( const vector< M, TT>& cmp )
+    {
+		for( size_t index = 0; index < M; ++index ) if(cmp[index] > array[index]) array[index] = cmp[index];
+    }
+
     // compute the dot product of two vectors
     // note: there's also a free function:
     // T dot( const vector<>, const vector<> );
@@ -195,7 +231,7 @@ public:
     inline T normalize();
     
     inline T length() const;
-    inline T squared_length() const;
+    inline T squaredLength() const;
     
     inline T distance( const vector& other_vector_ ) const;
     inline T squared_distance( const vector& other_vector_ ) const;
@@ -1087,14 +1123,14 @@ template< size_t M, typename T >
 inline T
 vector< M, T >::length() const
 {
-    return sqrt( squared_length() );
+    return sqrt( squaredLength() );
 }
 
 
 
 template< size_t M, typename T >
 inline T
-vector< M, T >::squared_length() const
+vector< M, T >::squaredLength() const
 {
     T _squared_length = 0.0;
     for( const_iterator it = begin(), it_end = end(); it != it_end; ++it )
