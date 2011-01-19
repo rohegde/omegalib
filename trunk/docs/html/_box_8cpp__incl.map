@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$_box_8h.html" title="outk/ui/Box.h" alt="" coords="119,85,233,117"/>
-<area shape="rect" id="node7" href="$_widget_8h.html" title="outk/ui/Widget.h" alt="" coords="160,165,301,197"/>
-<area shape="rect" id="node10" href="$_u_i_manager_8h.html" title="outk/ui/UIManager.h" alt="" coords="245,245,413,277"/>
-<area shape="rect" id="node13" href="$_font_manager_8h.html" title="outk/gfx/FontManager.h" alt="" coords="491,325,683,357"/>
-<area shape="rect" id="node20" href="$_i_u_i_event_handler_8h.html" title="outk/ui/IUIEventHandler.h" alt="" coords="261,325,467,357"/>
-</map>

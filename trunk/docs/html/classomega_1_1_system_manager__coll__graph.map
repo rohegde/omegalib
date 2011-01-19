@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node5" href="$classomega_1_1_input_manager.html" title="omega::InputManager" alt="" coords="132,208,313,240"/>
-<area shape="rect" id="node3" href="$classomega_1_1_display_system.html" title="omega::DisplaySystem" alt="" coords="17,5,207,37"/>
-<area shape="rect" id="node8" href="$structomega_1_1_input_event.html" title="omega::InputEvent" alt="" coords="5,107,163,139"/>
-<area shape="rect" id="node10" href="$classomega_1_1_config.html" title="omega::Config" alt="" coords="231,5,359,37"/>
-<area shape="rect" id="node12" href="$classomega_1_1_application.html" title="omega::Application" alt="" coords="383,5,543,37"/>
-</map>
