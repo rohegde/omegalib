@@ -1,8 +1,15 @@
 =OmegaLib Meeting Notes=
 
 ==January 19 2011==
- * Alessandro:
-  * added a bunch of utility classes for math & geometry to omegalib
+ * (*Alessandro*) added a bunch of utility classes for math & geometry to omegalib
+ * (*Alessandro*) working on meshviewer application
+ * (*Victor*) integrating kinect into omegalib
+ * (*Arthur*) start thinking on how to integrate controller support into omegalib
+ * Other issues / questions:
+  * Having multiple thread render 2d / 3d portions of the screen to keep speed of 2d and 3d parts separate
+  * Do we need optitrack for controller tracking or can we use kinect for everything?
+  * Do kinect and optitrack interfere?
+  * Are we able to render full res active stereo on the omegadesk machine? (Looks like we can't with the current video card)
 
 
 ==November 10 2010==
