@@ -14,6 +14,7 @@
 #define __OMEGA_H__
 
 #include "omega/Application.h"
+#include "omega/AxisAlignedBox.h"
 #include "omega/Config.h"
 #include "omega/Color.h"
 #include "omega/DisplaySystem.h"
@@ -24,6 +25,10 @@
 #include "omega/InputManager.h"
 #include "omega/Math.h"
 #include "omega/Observer.h"
+#include "omega/Plane.h"
+#include "omega/PlaneBoundedVolume.h"
+#include "omega/Ray.h"
+#include "omega/Sphere.h"
 #include "omega/SystemManager.h"
 #include "omega/TextureManager.h"
 #include "omega/Utils.h"

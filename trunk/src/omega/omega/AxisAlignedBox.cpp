@@ -21,52 +21,23 @@
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *---------------------------------------------------------------------------------------------------------------------
+ * Original code taken from OGRE
+ * Copyright (c) 2000-2009 Torus Knot Software Ltd
+ *  For the latest info, see http://www.ogre3d.org/
+ *---------------------------------------------------------------------------------------------------------------------
+ * This file is based on material originally from:
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2010
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ * http://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
  *********************************************************************************************************************/
-#ifndef __DISPLAY_SYSTEM_H__
-#define __DISPLAY_SYSTEM_H__
-
-#include "osystem.h"
-#include "Observer.h"
+#include "omega/AxisAlignedBox.h"
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class SystemManager;
+	const AxisAlignedBox AxisAlignedBox::BOX_NULL;
+	const AxisAlignedBox AxisAlignedBox::BOX_INFINITE(AxisAlignedBox::EXTENT_INFINITE);
+}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OMEGA_API DisplaySystem
-{
-public:
-	enum DisplaySystemType { Invalid, Equalizer, Glut };
-
-public:
-	virtual ~DisplaySystem() {}
-
-	// sets up the display system. Called before initalize.
-	virtual void setup(Setting& setting) {}
-
-	// initializes the display system
-	virtual void initialize(SystemManager* sys) {}
-
-	// Starts display system rendering. This call does not return until the current omegalib application sends an
-	// exit request to the system manager.
-	virtual void run() = 0;
-
-	// Layer and view management.
-	virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
-	virtual bool isLayerEnabled(int layerNum, const char* viewName) { return true;}
-
-	virtual Observer* getObserver(int observerId) { return NULL; }
-	
-	virtual void cleanup() {}
-
-	virtual DisplaySystemType getId() { return Invalid; }
-
-protected:
-	DisplaySystem() {}
-};
-
-}; // namespace omega
-
-#endif

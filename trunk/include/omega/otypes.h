@@ -28,6 +28,16 @@
 typedef unsigned char byte;
 typedef unsigned int uint;
 
+// Stdlib includes
+#include <string>
+
+// vmmlib includes
+#define VMMLIB_DONT_FORCE_ALIGNMENT
+#include <vmmlib/vmmlib.hpp>
+
+// Libconfig
+#include "libconfig/libconfig.hh"
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,6 +79,9 @@ typedef vmml::vector< 4, double >Vector4d; //!< A four-component double vector
 typedef vmml::vector< 2, float > Vector2f; //!< A two-component float vector
 typedef vmml::vector< 3, float > Vector3f; //!< A three-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
+
+typedef vmml::quaternion<float> Quaternion;
+
 typedef ArrayWrapper< Vector3f, 2 >   BoundingBox;
 typedef vmml::vector< 4, float >    BoundingSphere;
 typedef vmml::vector< 3, uint >      Triangle;
