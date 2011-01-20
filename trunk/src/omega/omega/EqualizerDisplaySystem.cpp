@@ -49,9 +49,9 @@ namespace omega
 class FrameData : public eq::fabric::Serializable
 {
 public:
-    FrameData()	{ }
+	FrameData()	{ }
 
-    virtual ~FrameData() {};
+	virtual ~FrameData() {};
 
 	int getNumEvents() { return myNumEvents; }
 	void setNumEvents(int value) { myNumEvents = value; }
@@ -62,7 +62,7 @@ public:
 
 protected:
 	//! Serialize an instance of this class.
-    virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
+	virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
 	{
 		eq::fabric::Serializable::serialize( os, dirtyBits );
 		if( dirtyBits & DIRTY_EVENTS )
@@ -76,7 +76,7 @@ protected:
 	}
 
 	//! Deserialize an instance of this class.
-    virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
+	virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
 	{
 		eq::fabric::Serializable::deserialize( is, dirtyBits );
 		if( dirtyBits & DIRTY_EVENTS )
@@ -89,10 +89,10 @@ protected:
 		}
 	}
 
-    enum DirtyBits
-    {
-        DIRTY_EVENTS   = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
-    };
+	enum DirtyBits
+	{
+		DIRTY_EVENTS   = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
+	};
 
 private:
 	int myNumEvents;
@@ -105,19 +105,19 @@ class ViewImpl: public eq::View
 {
 public:
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        class Proxy : public eq::fabric::Serializable
-        {
-        public:
-            Proxy( ViewImpl* view ) : myView( view ) {}
+		class Proxy : public eq::fabric::Serializable
+		{
+		public:
+			Proxy( ViewImpl* view ) : myView( view ) {}
 
-        protected:
-            /** The changed parts of the view. */
-            enum DirtyBits
-            {
-                DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
-            };
+		protected:
+			/** The changed parts of the view. */
+			enum DirtyBits
+			{
+				DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
+			};
 
-            virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
+			virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
 			{
 				if( dirtyBits & DIRTY_LAYER )
 				{
@@ -128,7 +128,7 @@ public:
 				}
 			}
 
-            virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
+			virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
 			{
 				if( dirtyBits & DIRTY_LAYER )
 				{
@@ -139,12 +139,12 @@ public:
 				}
 			}
 
-            virtual void notifyNewVersion() { sync(); }
+			virtual void notifyNewVersion() { sync(); }
 
-        private:
-            ViewImpl* myView;
-            friend class ViewImpl;
-        };
+		private:
+			ViewImpl* myView;
+			friend class ViewImpl;
+		};
 
 public:
 
@@ -172,7 +172,7 @@ public:
 	void setLayerEnabled(int layer, bool enabled) 
 	{ 
 		myEnabledLayers[layer] = enabled; 
-	    myProxy.setDirty( Proxy::DIRTY_LAYER );
+		myProxy.setDirty( Proxy::DIRTY_LAYER );
 	}
 
 private:
@@ -190,7 +190,7 @@ private:
 class WindowImpl: public eq::Window
 {
 public:
-    WindowImpl(eq::Pipe* parent) : eq::Window(parent) {}
+	WindowImpl(eq::Pipe* parent) : eq::Window(parent) {}
 	virtual ~WindowImpl() {}
 
 protected:
@@ -223,7 +223,7 @@ public:
 	virtual bool exit()
 	{
 		deregisterObject( &myFrameData );
-	    const bool ret = eq::Config::exit();
+		const bool ret = eq::Config::exit();
 		return ret;
 	}
 
@@ -233,7 +233,7 @@ public:
 		static int y;
 		switch( event->data.type )
 		{
-        case eq::Event::WINDOW_POINTER_MOTION:
+		case eq::Event::WINDOW_POINTER_MOTION:
 			{
 				x = event->data.pointerMotion.x;
 				y = event->data.pointerMotion.y;
@@ -331,7 +331,7 @@ public:
 	
 	void setLayerEnabled(const String& viewName, int layerId, bool enabled)
 	{
-	    ViewImpl* view  = findView(viewName);
+		ViewImpl* view  = findView(viewName);
 		if(view != NULL)
 		{
 			view->setLayerEnabled(layerId, enabled);
@@ -357,7 +357,7 @@ public:
 protected:
 	virtual ~PipeImpl() {}
 
-    virtual bool configInit( const uint128_t& initID )
+	virtual bool configInit( const uint128_t& initID )
 	{
 		bool result = eq::Pipe::configInit(initID);
 
@@ -384,7 +384,7 @@ protected:
 		return eq::Pipe::configExit();
 	}
 
-    virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber )
+	virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber )
 	{
 		eq::Pipe::frameStart(frameID, frameNumber);
 
@@ -408,7 +408,8 @@ protected:
 			{
 				for( int evtNum = 0; evtNum < av; evtNum++)
 				{
-					myClient->handleEvent(myFrameData.getEvent(evtNum));
+					InputEvent& evt = myFrameData.getEvent(evtNum);
+					myClient->handleEvent(evt);
 				}
 			}
 
@@ -421,7 +422,7 @@ protected:
 private:
 	bool myInitialized;
 	ApplicationClient* myClient;
-    FrameData myFrameData;
+	FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -429,7 +430,7 @@ private:
 class ChannelImpl: public eq::Channel, IGLContextManager
 {
 public:
-    ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) 
+	ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) 
 	{
 	}
 
@@ -488,14 +489,14 @@ class EqualizerNodeFactory: public eq::NodeFactory
 public:
 	EqualizerNodeFactory() {}
 public:
-    virtual eq::Config*  createConfig( eq::ServerPtr parent )
+	virtual eq::Config*  createConfig( eq::ServerPtr parent )
 		{ return new ConfigImpl( parent ); }
-    virtual eq::Channel* createChannel(eq::Window* parent)
-        { return new ChannelImpl( parent ); }
+	virtual eq::Channel* createChannel(eq::Window* parent)
+		{ return new ChannelImpl( parent ); }
 	virtual eq::View* createView(eq::Layout* parent)
-        { return new ViewImpl(parent); }
+		{ return new ViewImpl(parent); }
 	virtual eq::Window* createWindow(eq::Pipe* parent)
-        { return new WindowImpl(parent); }
+		{ return new WindowImpl(parent); }
 	virtual eq::Pipe* createPipe(eq::Node* parent)
 		{ return new PipeImpl(parent); }
 };
@@ -535,12 +536,12 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	myNodeFactory = new EqualizerNodeFactory();
 
 	omsg("\n\n--- Equalizer initialization --------------------------------------------------");
-    if( !eq::init( argv.size(), &argv[0], myNodeFactory ))
-    {
+	if( !eq::init( argv.size(), &argv[0], myNodeFactory ))
+	{
 		oerror("Equalizer init failed");
-    }
+	}
 
-    bool error  = false;
+	bool error  = false;
 	myConfig = static_cast<ConfigImpl*>(eq::getConfig( argv.size(), &argv[0] ));
 	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
 
@@ -619,39 +620,39 @@ void EqualizerDisplaySystem::initLayers()
 void EqualizerDisplaySystem::run()
 {
 	bool error = false;
-    if( myConfig )
-    {
+	if( myConfig )
+	{
 		omsg("\n\n--- Equalizer display system startup ------------------------------------------");
-        if( myConfig->init( 0 ))
-        {
+		if( myConfig->init( 0 ))
+		{
 			omsg("--- Equalizer display system startup [DONE] -----------------------------------\n\n");
 
-            uint32_t spin = 0;
-            while( myConfig->isRunning( ))
-            {
-                myConfig->startFrame( spin );
-                myConfig->finishFrame();
+			uint32_t spin = 0;
+			while( myConfig->isRunning( ))
+			{
+				myConfig->startFrame( spin );
+				myConfig->finishFrame();
 				spin++;
-            }
-        
-            // 5. exit config
-            myConfig->exit();
-        }
-        else
-        {
-            oerror("Config initialization failed!");
-            error = true;
-        }
+			}
+		
+			// 5. exit config
+			myConfig->exit();
+		}
+		else
+		{
+			oerror("Config initialization failed!");
+			error = true;
+		}
 
-        eq::releaseConfig( myConfig );
-    }
-    else
-    {
-        oerror("Cannot get config");
-        error = true;
-    }    
+		eq::releaseConfig( myConfig );
+	}
+	else
+	{
+		oerror("Cannot get config");
+		error = true;
+	}    
 
-    eq::exit();
+	eq::exit();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

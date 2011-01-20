@@ -125,7 +125,9 @@ struct InputEvent
 	// Right now, event serialization for NetService / oinputserver and display system
 	// serialization (this) are implemented as separate facilities. We may think of joining them
 	// sometime in the future.
-#ifdef OMEGA_USE_DISPLAY
+	// ALso, this feature relies on Equalizer deta streams, so it is enabled only for builds
+	// that support equalizer.
+#ifdef OMEGA_USE_DISPLAY_EQUALIZER
 	//! Serialize an InputEvent instance.
     void serialize(co::DataOStream& os)
 	{
@@ -144,7 +146,7 @@ struct InputEvent
 	}
 
 	//! Deserialize an InputEvent instance.
-    virtual void deserialize( co::DataIStream& is)
+    void deserialize( co::DataIStream& is)
 	{
 		is >> sourceId;
 		is >> serviceType;
