@@ -57,7 +57,17 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 
 		InputEvent* evt = mysInstance->writeHead();
 		evt->serviceType = InputService::Pointer;
-		evt->type = state ? InputEvent::Down : InputEvent::Up;
+#ifdef OMEGA_USE_DISPLAY_GLUT
+		// Glut mouse callback button states are inverted wrt equalizer callbacks.
+		if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
+		{
+			evt->type = state ? InputEvent::Up : InputEvent::Down;
+		}
+		else
+#endif
+		{
+			evt->type = state ? InputEvent::Down : InputEvent::Up;
+		}
 		evt->position[0] = x;
 		evt->position[1] = y;
 

@@ -56,6 +56,19 @@ void displayCallback(void)
 
 	// Process events.
 	InputManager* im = SystemManager::instance()->getInputManager();
+	int av = im->getAvailableEvents();
+	if(av != 0)
+	{
+		InputEvent evts[InputManager::MaxEvents];
+		im->getEvents(evts, InputManager::MaxEvents);
+
+		// Dispatch events to application server.
+		for( int evtNum = 0; evtNum < av; evtNum++)
+		{
+			as->handleEvent(evts[evtNum]);
+			ac->handleEvent(evts[evtNum]);
+		}
+	}
 
 	// setup the context viewport.
 	DrawContext dc;
