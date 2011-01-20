@@ -39,12 +39,6 @@ namespace omega {
 	class AxisAlignedBox;
 	class Plane;
 
-	/** \addtogroup Core
-	*  @{
-	*/
-	/** \addtogroup Math
-	*  @{
-	*/
 	/** A sphere primitive, mostly used for bounds checking. 
     @remarks
         A sphere in math texts is normally represented by the function
@@ -102,9 +96,6 @@ namespace omega {
         
 
     };
-	/** @} */
-	/** @} */
-
 }
 
 #endif

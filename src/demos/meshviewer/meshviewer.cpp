@@ -84,18 +84,6 @@ void MeshViewerClient::initialize()
 	myEffectManager = new EffectManager(myGpu);
 	myMeshManager = new MeshManager(myGpu, myEffectManager);
 
-	/*MeshData* md = new MeshData();
-
-	md->addVertex(Vector3f(-0.5, -0.5, 0));
-	md->addVertex(Vector3f(0.5, -0.5, 0));
-	md->addVertex(Vector3f(0.5, 0.5, 0));
-	md->addVertex(Vector3f(-0.5, 0.5, 0));
-
-	md->addTriangle(Triangle(0, 1, 2));
-	md->addTriangle(Triangle(0, 2, 3));
-
-	myMeshManager->addMesh("test", md);*/
-
 	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
 
 	myMesh = myMeshManager->getMesh("screwdriver");
@@ -119,16 +107,14 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	switch(evt.serviceType)
 	{
 	case InputService::Pointer:
-		mouseX = evt.position.x();
-		mouseY = evt.position.y();
-		//if(evt.type == InputEvent::Down)
-		//{
-		//	myRotate = true;
-		//}
-		//else if(evt.type == InputEvent::Up)
-		//{
-		//	myRotate = false;
-		//}
+		if(evt.type == InputEvent::Down)
+		{
+			printf("down\n");
+		}
+		else if(evt.type == InputEvent::Up)
+		{
+			printf("up\n");
+		}
 		break;
 	case InputService::Touch:
 		//myTouchX[myNumTouches] = evt.position.x();
