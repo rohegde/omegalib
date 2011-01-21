@@ -22,31 +22,34 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __DRAWABLE_H__
-#define __DRAWABLE_H__
+#include "omega/scene/SimplePrimitive.h"
+#include "omega/GfxUtils.h"
 
-#include "omega/osystem.h"
-#include "omega/scene/Effect.h"
+using namespace omega::scene;
 
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SimplePrimitive::draw(SceneNode* node)
 {
-namespace scene
-{
-	// Forward declarations
-	class SceneNode;
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OUTILS_API Drawable
+	if(myEffect != NULL)
 	{
-	public:
-		virtual void draw(SceneNode* node) = 0;
+		myEffect->activate();
+	}
 
-		virtual const BoundingBox* getBoundingBox() { return NULL; }
-		virtual bool hasBoundingBox() { return false; }
-	private:
+	switch(myPrimitiveType)
+	{
+	case SimplePrimitive::SolidCube:
+		glutSolidCube(mySize);
+		break;
+	case SimplePrimitive::SolidSphere:
+		glutSolidSphere(mySize, myResolution1, myResolution2);
+		break;
+	case SimplePrimitive::SolidTeapot:
+		GfxUtils::drawSolidTeapot(mySize);
+		break;
 	};
-}; // namespace scene
-}; // namespace omega
 
-#endif
+	if(myEffect != NULL)
+	{
+		myEffect->deactivate();
+	}
+}

@@ -42,8 +42,8 @@ namespace omega
 		//! Enables or disables lighting support.
 		static void setLightingEnabled(bool value);
 		static void setLightEnabled(int lightId, bool value);
-		static void GfxUtils::setLightPosition(int lightId, const Vector3f& pos);
-		static void GfxUtils::setLightColor(int lightId, const Color& pos);
+		static void setLightPosition(int lightId, const Vector3f& pos);
+		static void setLightColor(int lightId, const Color& pos);
 		//@}
 
 		//! Drawing functions

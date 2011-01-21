@@ -42,8 +42,11 @@ namespace scene
 		MeshData* getData() { return myData; }
 		void setData(MeshData* value) { myData = value; }
 
-		virtual void draw();
+		virtual void draw(SceneNode* node);
 		void update();
+
+		const BoundingBox* getBoundingBox();
+		bool hasBoundingBox();
 
 	private:
 		VertexBuffer* myVertexBuffer;
