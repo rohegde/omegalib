@@ -22,10 +22,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __DRAWABLE_H__
-#define __DRAWABLE_H__
+#ifndef __SIMPLE_PRIMITIVE_H__
+#define __SIMPLE_PRIMITIVE_H__
 
 #include "omega/osystem.h"
+#include "omega/scene/Drawable.h"
 #include "omega/scene/Effect.h"
 
 namespace omega
@@ -36,15 +37,39 @@ namespace scene
 	class SceneNode;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Implements some simple primitive drawing through GLUT calls.
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OUTILS_API Drawable
+	class OUTILS_API SimplePrimitive: public Drawable
 	{
 	public:
-		virtual void draw(SceneNode* node) = 0;
+		enum PrimitiveType { SolidCube, SolidSphere, SolidTeapot };
 
-		virtual const BoundingBox* getBoundingBox() { return NULL; }
-		virtual bool hasBoundingBox() { return false; }
+	public:
+		SimplePrimitive(): myPrimitiveType(SolidCube), mySize(1), myResolution1(16), myResolution2(16), myEffect(NULL) {}
+
+		virtual void draw(SceneNode* node);
+
+		PrimitiveType getPrimitiveType() { return myPrimitiveType; }
+		void setPrimitiveType(PrimitiveType value) { myPrimitiveType = value; }
+
+		float getSize() { return mySize; }
+		void setSize( float value) { mySize = value; }
+
+		int getResolution1() { return myResolution1; }
+		void setResolution1( float value) { myResolution1 = value; }
+
+		int getResolution2() { return myResolution2; }
+		void setResolution2( float value) { myResolution2 = value; }
+
+		Effect* getEffect() { return myEffect; }
+		void setEffect(Effect* value) { myEffect = value; }
+
 	private:
+		float mySize;
+		int myResolution1;
+		int myResolution2;
+		PrimitiveType myPrimitiveType;
+		Effect* myEffect;
 	};
 }; // namespace scene
 }; // namespace omega

@@ -27,7 +27,7 @@ SET( srcs
 		omega/scene/Mesh.cpp
 		omega/scene/MeshData.cpp
 		omega/scene/MeshManager.cpp
-		omega/scene/Drawable.cpp
+		omega/scene/SimplePrimitive.cpp
 		omega/scene/SceneManager.cpp
 		omega/scene/SceneNode.cpp
 		omega/scene/PlyDataReader.cpp
@@ -60,6 +60,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Effect.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/EffectManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/SimplePrimitive.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/PlyDataReader.h
