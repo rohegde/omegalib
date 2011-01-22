@@ -14,10 +14,11 @@
 #define __OMEGA_SCENE_H__
 
 #include "omega/scene/Drawable.h"
-#include "omega/scene/SceneManager.h"
-#include "omega/scene/SceneNode.h"
-#include "omega/scene/SimplePrimitive.h"
 #include "omega/scene/Mesh.h"
 #include "omega/scene/MeshManager.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/SceneNode.h"
+#include "omega/scene/SceneQuery.h"
+#include "omega/scene/SimplePrimitive.h"
 
 #endif

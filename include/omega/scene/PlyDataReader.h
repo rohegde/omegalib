@@ -55,7 +55,7 @@ namespace scene
         void scale( const float baseSize = 2.0f );
         void calculateNormals( const bool vertexNormals = true );
         void calculateBoundingBox();
-        const BoundingBox& getBoundingBox() const { return _boundingBox; }
+        const AxisAlignedBox& getBoundingBox() const { return _boundingBox; }
         Axis getLongestAxis( const size_t start, const size_t elements ) const;
 
         void useInvertedFaces() { _invertFaces = true; }
@@ -65,7 +65,7 @@ namespace scene
                            const bool readColors );
         void readTriangles( PlyFile* file, const int nFaces );
 
-        BoundingBox _boundingBox;
+        AxisAlignedBox _boundingBox;
         bool        _invertFaces;
     };
 }; // namespace scene

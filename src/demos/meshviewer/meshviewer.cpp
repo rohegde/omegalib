@@ -92,6 +92,9 @@ void MeshViewerClient::initialize()
 	//myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
 
 	mySceneManager->getRootNode()->addDrawable(myMesh);
+	mySceneManager->getRootNode()->setBoundingBoxVisible(true);
+	mySceneManager->getRootNode()->setSelectable(true);
+	const AxisAlignedBox& bbox = mySceneManager->getRootNode()->getBoundingBox();
 	//mySceneManager->getRootNode()->setScale(0.1);
 
 	// Setup data and parameters for the agent render program
@@ -109,7 +112,19 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	case InputService::Pointer:
 		if(evt.type == InputEvent::Down)
 		{
-			printf("down\n");
+			RaySceneQuery query(mySceneManager);
+
+			Vector3f origin;
+			Vector3f direction;
+			GfxUtils::getViewRay(evt.position[0], evt.position[1], &origin, &direction);
+
+			Ray ray(origin, direction);
+			query.setRay(ray);
+
+			const SceneQueryResultList& rl = query.execute();
+
+			printf("orig: %f %f %f, dir %f %f %f numresults: %d\n", origin[0], origin[1], origin[2], 
+				direction[0], direction[1], direction[2], rl.size());
 		}
 		else if(evt.type == InputEvent::Up)
 		{

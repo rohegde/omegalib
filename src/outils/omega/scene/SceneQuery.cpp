@@ -22,60 +22,55 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __GLUT_DISPLAY_SYSTEM_H__
-#define __GLUT_DISPLAY_SYSTEM_H__
+#include "omega/scene/SceneQuery.h"
 
-#include "DisplaySystem.h"
+using namespace omega;
+using namespace omega::scene;
 
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneQuery::clearResults()
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! Implements a display system based on GLUT, offering a single render window and mouse input support.
-	class OMEGA_API GlutDisplaySystem: public DisplaySystem
+	myResults.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const SceneQueryResultList& RaySceneQuery::execute(uint flags)
+{
+	bool queryOne = ((flags & SceneQuery::QueryFirst) == SceneQuery::QueryFirst) ? true : false;
+
+	queryNode(myScene->getRootNode(), myResults, queryOne);
+
+	if((flags & SceneQuery::QuerySort) == SceneQuery::QuerySort)
 	{
-	public:
-		GlutDisplaySystem();
-		virtual ~GlutDisplaySystem();
+		myResults.sort(SceneQueryResultDistanceCompare);
+	}
+	return myResults;
+}
 
-		// sets up the display system. Called before initalize.
-		void setup(Setting& setting);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool queryFirst)
+{
+	bool selected = false;
+	if(node->isSelectable())
+	{
+		std::pair<bool, float> resPair = myRay.intersects(node->getBoundingBox());
+		if(resPair.first)
+		{
+			SceneQueryResult res;
+			res.node = node;
+			res.distance = resPair.second;
+			list.push_back(res);
+		}
+	}
 
-		virtual void initialize(SystemManager* sys); 
-		virtual void run(); 
-		virtual void cleanup(); 
+	// If this node has been selected, and we are returning the first node found, return immediately.
+	if(selected && queryFirst) return;
 
-		void updateProjectionMatrix();
+	// Draw children nodes.
+	for(int i = 0; i < node->getNumChildren(); i++)
+	{
+		SceneNode* n = node->getChild(i);
+		queryNode(n, list, queryFirst);
+	}
+}
 
-		// Layer and view management.
-		virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
-		virtual bool isLayerEnabled(int layerNum, const char* viewName);
-
-		Observer& getObserver() { return myObserver; }
-
-		DisplaySystemType getId() { return DisplaySystem::Glut; }
-
-		ApplicationServer* getApplicationServer() { return myAppServer; }
-		ApplicationClient* getApplicationClient() { return myAppClient; }
-
-	private:
-		void initLayers();
-		void initObservers();
-
-	private:
-		// Display config
-		Setting* mySetting;
-		Vector2i myResolution;
-		Observer myObserver;
-		int myFov;
-		float myAspect;
-		double myNearz;
-		double myFarz;
-
-		SystemManager* mySys;
-		ApplicationClient* myAppClient;
-		ApplicationServer* myAppServer;
-		bool* myLayerEnabled;
-	};
-}; // namespace omega
-
-#endif

@@ -34,6 +34,7 @@
 
 #include "omega/osystem.h"
 #include "omega/Color.h"
+#include "omega/AxisAlignedBox.h"
 
 namespace omega 
 {
@@ -103,7 +104,7 @@ namespace scene
 		bool hasColors() { return myHasColors; }
 		bool hasNormals() { return myHasNormals; }
 
-		const BoundingBox& getBoundingBox() 
+		const AxisAlignedBox& getBoundingBox() 
 		{ 
 			if(myIsDirty) update(); 
 			return myBBox; 
@@ -155,7 +156,7 @@ namespace scene
 		}
 
 	private:
-		BoundingBox myBBox;
+		AxisAlignedBox myBBox;
     };
 }; // namespace scene
 } // namespace omega
