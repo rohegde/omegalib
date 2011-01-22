@@ -138,8 +138,8 @@ namespace scene
 			// Reset bounding box.
 			float fmax = std::numeric_limits<float>::max();
 			float fmin = -std::numeric_limits<float>::max();
-			myBBox[0][0] = myBBox[0][1] = myBBox[0][2] = fmax;
-			myBBox[1][0] = myBBox[1][1] = myBBox[1][2] = fmin;
+			Vector3f vmin(fmax, fmax, fmax);
+			Vector3f vmax(fmin, fmin, fmin);
 
 			// Recompute bounding box.
 			for(int i = 0; i < getNumVertices(); i++)
@@ -147,10 +147,12 @@ namespace scene
 				const Vector3f& v = getVertexPosition(i);
 				for(int j = 0; j < 3; j++)
 				{
-					if(v[j] < myBBox[0][j]) myBBox[0][j] = v[j];
-					if(v[j] > myBBox[1][j]) myBBox[1][j] = v[j];
+					if(v[j] < vmin[j]) vmin[j] = v[j];
+					if(v[j] > vmax[j]) vmax[j] = v[j];
 				}
 			}
+
+			myBBox.setExtents(vmin, vmax);
 
 			myIsDirty = false;
 		}

@@ -32,5 +32,6 @@
 #include "omega/SystemManager.h"
 #include "omega/TextureManager.h"
 #include "omega/Utils.h"
+#include "omega/StringUtils.h"
 
 #endif

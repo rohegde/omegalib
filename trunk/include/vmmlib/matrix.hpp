@@ -18,6 +18,8 @@
 #include <string>
 #include <cstring>
 
+#define VMMLIB_NO_CONVERSION_OPERATORS
+
 namespace vmml
 {
 
@@ -414,13 +416,14 @@ public:
         return os;
     };  
 
-    // protected:
-    // column_by_column
-    VMMLIB_ALIGN( T array[ M * N ] );
-    
     // static members
     static const matrix< M, N, T > IDENTITY;
     static const matrix< M, N, T > ZERO;
+
+    protected:
+    // column_by_column
+    VMMLIB_ALIGN( T array[ M * N ] );
+    
 
 }; // class matrix
 
