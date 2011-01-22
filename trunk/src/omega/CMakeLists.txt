@@ -33,6 +33,7 @@ SET( srcs
         omega/Plane.cpp
 		omega/SystemManager.cpp
         omega/Utils.cpp
+		omega/StringUtils.cpp
         )
 		
 #######################################################################################################################
@@ -56,6 +57,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Sphere.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
         ) 
         
 #######################################################################################################################
