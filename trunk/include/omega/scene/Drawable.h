@@ -26,6 +26,7 @@
 #define __DRAWABLE_H__
 
 #include "omega/osystem.h"
+#include "omega/AxisAlignedBox.h"
 #include "omega/scene/Effect.h"
 
 namespace omega
@@ -42,7 +43,7 @@ namespace scene
 	public:
 		virtual void draw(SceneNode* node) = 0;
 
-		virtual const BoundingBox* getBoundingBox() { return NULL; }
+		virtual const AxisAlignedBox* getBoundingBox() { return NULL; }
 		virtual bool hasBoundingBox() { return false; }
 	private:
 	};

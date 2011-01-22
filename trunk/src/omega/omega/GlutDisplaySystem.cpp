@@ -130,15 +130,15 @@ void GlutDisplaySystem::setup(Setting& setting)
 	int width;
 	int height;
 	myFov = 90;
-	myNearz = 0;
-	myFarz = 1000;
+	myNearz = 0.01f;
+	myFarz = 100;
 
 	libconfig::ArgumentHelper ah;
 	ah.newInt("width", "Resolution width", width);
 	ah.newInt("height", "Resolution width", height);
 	ah.newNamedInt('f', "fov", "fov", "field of view", myFov);
-	ah.newNamedInt('z', "nearz", "nearZ", "near Z clipping plane", myNearz);
-	ah.newNamedInt('Z', "farz", "farZ", "far Z clipping plane", myFarz);
+	ah.newNamedDouble('z', "nearz", "nearZ", "near Z clipping plane", myNearz);
+	ah.newNamedDouble('Z', "farz", "farZ", "far Z clipping plane", myFarz);
 
 	ah.process(sCfg.c_str());
 

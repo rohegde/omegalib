@@ -29,6 +29,7 @@ SET( srcs
 		omega/scene/MeshManager.cpp
 		omega/scene/SimplePrimitive.cpp
 		omega/scene/SceneManager.cpp
+		omega/scene/SceneQuery.cpp
 		omega/scene/SceneNode.cpp
 		omega/scene/PlyDataReader.cpp
 		omega/scene/plyfile.cpp
@@ -62,6 +63,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SimplePrimitive.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneQuery.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/PlyDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/ply.h

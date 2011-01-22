@@ -82,7 +82,6 @@ typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
 
 typedef vmml::quaternion<float> Quaternion;
 
-typedef ArrayWrapper< Vector3f, 2 >   BoundingBox;
 typedef vmml::vector< 4, float >    BoundingSphere;
 typedef vmml::vector< 3, uint >      Triangle;
 

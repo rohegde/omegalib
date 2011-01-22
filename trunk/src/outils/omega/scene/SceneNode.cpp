@@ -80,7 +80,7 @@ void SceneNode::updateBounds()
 	{
 		if(d->hasBoundingBox())
 		{
-			const BoundingBox& bbox = *(d->getBoundingBox());
+			const AxisAlignedBox& bbox = *(d->getBoundingBox());
 			for(int i = 0; i < 3; i++)
 			{
 				if(bbox[0][i] < myBBox [0][i]) myBBox[0][i] = bbox[0][i];
@@ -91,7 +91,7 @@ void SceneNode::updateBounds()
 	// Draw children nodes.
 	boost_foreach(SceneNode* n, myChildren)
 	{
-		const BoundingBox& bbox = n->getBoundingBox();
+		const AxisAlignedBox& bbox = n->getBoundingBox();
 		for(int i = 0; i < 3; i++)
 		{
 			if(bbox[0][i] < myBBox [0][i]) myBBox[0][i] = bbox[0][i];

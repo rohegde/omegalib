@@ -45,7 +45,7 @@ namespace scene
 		virtual void draw(SceneNode* node);
 		void update();
 
-		const BoundingBox* getBoundingBox();
+		const AxisAlignedBox* getBoundingBox();
 		bool hasBoundingBox();
 
 	private:

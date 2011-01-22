@@ -22,60 +22,76 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __GLUT_DISPLAY_SYSTEM_H__
-#define __GLUT_DISPLAY_SYSTEM_H__
+#ifndef __SCENE_QUERY_H__
+#define __SCENE_QUERY_H__
 
-#include "DisplaySystem.h"
+#include "omega/osystem.h"
+#include "omega/Ray.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
+namespace scene
+{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! Implements a display system based on GLUT, offering a single render window and mouse input support.
-	class OMEGA_API GlutDisplaySystem: public DisplaySystem
+	// Stores a scene query result
+	struct SceneQueryResult
+	{
+		SceneNode* node;
+		float distance;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Comparison function to sort scene query results by distance.
+	bool SceneQueryResultDistanceCompare(SceneQueryResult& r1, SceneQueryResult& r2)
+	{
+		if(r1.distance < r2.distance) return false;
+		return true;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// A list of scene query results.
+	typedef std::list<SceneQueryResult> SceneQueryResultList;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API SceneQuery
 	{
 	public:
-		GlutDisplaySystem();
-		virtual ~GlutDisplaySystem();
+		enum QueryFlags {QuerySort = 1 << 1, QueryFirst = 1 << 2};
 
-		// sets up the display system. Called before initalize.
-		void setup(Setting& setting);
+	public:
+		SceneQuery(SceneManager* scene): myScene(scene) {}
 
-		virtual void initialize(SystemManager* sys); 
-		virtual void run(); 
-		virtual void cleanup(); 
+		SceneManager* getSceneManager() { return myScene; }
 
-		void updateProjectionMatrix();
+		virtual const SceneQueryResultList& execute(uint flags = 0) = 0;
 
-		// Layer and view management.
-		virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
-		virtual bool isLayerEnabled(int layerNum, const char* viewName);
+		void clearResults();
 
-		Observer& getObserver() { return myObserver; }
-
-		DisplaySystemType getId() { return DisplaySystem::Glut; }
-
-		ApplicationServer* getApplicationServer() { return myAppServer; }
-		ApplicationClient* getApplicationClient() { return myAppClient; }
-
-	private:
-		void initLayers();
-		void initObservers();
-
-	private:
-		// Display config
-		Setting* mySetting;
-		Vector2i myResolution;
-		Observer myObserver;
-		int myFov;
-		float myAspect;
-		double myNearz;
-		double myFarz;
-
-		SystemManager* mySys;
-		ApplicationClient* myAppClient;
-		ApplicationServer* myAppServer;
-		bool* myLayerEnabled;
+	protected:
+		SceneQueryResultList myResults;
+		SceneManager* myScene;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API RaySceneQuery: public SceneQuery
+	{
+	public:
+		RaySceneQuery(SceneManager* scene): SceneQuery(scene) {}
+
+		void setRay(Ray& ray) { myRay = ray; }
+		const Ray& getRay() { return myRay; }
+
+		virtual const SceneQueryResultList& execute(uint flags = 0);
+
+	private:
+		void queryNode(SceneNode* node, SceneQueryResultList& list, bool queryFirst);
+
+	private:
+		Ray myRay;
+	};
+}; // namespace scene
 }; // namespace omega
 
 #endif

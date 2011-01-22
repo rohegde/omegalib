@@ -45,18 +45,24 @@ namespace scene
 			myScale(1, 1, 1),
 			myPivot(0, 0, 0),
 			myBoundingBoxColor(1, 1, 1, 1),
-			myBoundingBoxVisible(false)
+			myBoundingBoxVisible(false),
+			mySelectable(false)
 			{}
 
 		void addChild(SceneNode* child) { myChildren.push_back(child); }
 		int getNumChildren() { return myChildren.size(); }
 		void clearChildren() { myChildren.empty(); }
 
+		SceneNode* getChild(int index) { return myChildren[index]; }
+
 		void addDrawable(Drawable* child) { myDrawables.push_back(child); myChanged = true;}
 		int getNumDrawables() { return myDrawables.size(); }
 		void clearDrawables() { myDrawables.empty(); myChanged = true;}
 
 		bool hasChanged() { return myChanged; }
+
+		bool isSelectable() { return mySelectable; }
+		void setSelectable(bool value) { mySelectable = value; }
 
 		// Transformation
 		//@{
@@ -75,7 +81,7 @@ namespace scene
 
 		// Bounding box handling
 		//@{
-		const BoundingBox& getBoundingBox() { if(myChanged) updateBounds(); return myBBox; }
+		const AxisAlignedBox& getBoundingBox() { if(myChanged) updateBounds(); return myBBox; }
 		const Sphere& getBoundingSphere() { if(myChanged) updateBounds(); return myBSphere; }
 		bool isBoundingBoxVisible() { return myBoundingBoxVisible; }
 		void setBoundingBoxVisible(bool value) { myBoundingBoxVisible = value; }
@@ -100,8 +106,10 @@ namespace scene
 		Vector3f myScale;
 		Vector3f myPosition;
 
+		bool mySelectable;
+
 		bool myChanged;
-		BoundingBox myBBox;
+		AxisAlignedBox myBBox;
 		Sphere myBSphere;
 
 		// Bounding box stuff.

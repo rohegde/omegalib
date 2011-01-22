@@ -805,6 +805,19 @@ namespace omega {
 		static const AxisAlignedBox BOX_NULL;
 		static const AxisAlignedBox BOX_INFINITE;
 
+		Vector3f& operator[]( const size_t i )
+		{
+			assert( i < 2 );
+			if(i == 0) return mMinimum;
+			return mMaximum;
+		}
+        
+		const Vector3f& operator[]( const size_t i ) const
+		{
+			assert( i < 2 );
+			if(i == 0) return mMinimum;
+			return mMaximum;
+		}
 
 	};
 } // namespace omega
