@@ -63,7 +63,7 @@ namespace scene
 	public:
 		SceneQuery(SceneManager* scene): myScene(scene) {}
 
-		SceneManager* getSceneManager() { return myScene; }
+		SceneManager* getScene() { return myScene; }
 
 		virtual const SceneQueryResultList& execute(uint flags = 0) = 0;
 

@@ -57,8 +57,8 @@ private:
 
 	Mesh* myMesh;
 
-	int mouseX;
-	int mouseY;
+	float mouseX;
+	float mouseY;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,6 +90,8 @@ void MeshViewerClient::initialize()
 	//myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
 	//myTestDrawable->setEffect(new Effect());
 	//myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
+
+	mySceneManager->initialize();
 
 	mySceneManager->getRootNode()->addDrawable(myMesh);
 	mySceneManager->getRootNode()->setBoundingBoxVisible(true);
@@ -130,6 +132,8 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 		{
 			printf("up\n");
 		}
+		//mouseX = evt.position[0] / 100;
+		//mouseY = evt.position[1] / 100;
 		break;
 	case InputService::Touch:
 		//myTouchX[myNumTouches] = evt.position.x();
@@ -147,7 +151,7 @@ void MeshViewerClient::handleUIEvent(const UIEvent& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::update(const UpdateContext& context)
 {
-	mySceneManager->getRootNode()->setRotation(mouseX, mouseY, 0);
+	//mySceneManager->getRootNode()->setRotation(mouseX, mouseY, 0);
 	//myUI->update(context);
 
 	//if(myRotate)

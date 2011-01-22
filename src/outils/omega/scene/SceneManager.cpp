@@ -15,9 +15,23 @@
 using namespace omega;
 using namespace omega::scene;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::initialize()
+{
+	myRoot = new SceneNode(this);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::draw()
 {
-	myRoot.draw();
+	// Setup view matrix (read back from gl)
+	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.begin() );
+
+	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
+	// stored inside the scene nodes. So, create a new, clean transform on the stack.
+	glPushMatrix();
+	glLoadIdentity();
+
+	myRoot->draw();
+	glPopMatrix();
 }

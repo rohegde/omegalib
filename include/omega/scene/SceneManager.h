@@ -38,16 +38,23 @@ namespace scene
 	class OUTILS_API SceneManager
 	{
 	public:
-		SceneManager(omega::GpuManager* gpu): myGpuMng(gpu) {}
+		SceneManager(omega::GpuManager* gpu): 
+		  myGpuMng(gpu), 
+		  myRoot(NULL),
+		  myViewTransform(Matrix4f::IDENTITY) {}
+
+		void initialize();
 
 		GpuManager* getGpuManager() { return myGpuMng; }
-		SceneNode* getRootNode() { return &myRoot; }
+		SceneNode* getRootNode() { return myRoot; }
+		const Matrix4f& getViewTransform() { return myViewTransform; }
 
 		void draw();
 
 	private:
 		omega::GpuManager* myGpuMng;
-		SceneNode myRoot;
+		SceneNode* myRoot;
+		Matrix4f myViewTransform;
 	};
 }; // namespace scene
 }; // namespace omega

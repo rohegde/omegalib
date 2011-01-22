@@ -39,17 +39,23 @@ namespace scene
 	{
 		friend class SceneManager; // Needs to call the node draw method.
 	public:
-		SceneNode():
+		SceneNode(SceneManager* scene):
+			myScene(scene),
 			myPosition(0, 0, 0),
 			myRotation(0, 0, 0),
 			myScale(1, 1, 1),
 			myPivot(0, 0, 0),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
-			mySelectable(false)
+			mySelectable(false),
+			myParent(NULL)
 			{}
 
-		void addChild(SceneNode* child) { myChildren.push_back(child); }
+		SceneNode* getParent() { return myParent; }
+
+		SceneManager* getScene() { return myScene; }
+
+		void addChild(SceneNode* child);
 		int getNumChildren() { return myChildren.size(); }
 		void clearChildren() { myChildren.empty(); }
 
@@ -77,12 +83,15 @@ namespace scene
 		const Vector3f& getRotation() { return myRotation; }
 		const Vector3f& getScale() { return myScale; }
 		const Vector3f& getPivot() { return myPivot; }
+
+		const Matrix4f getWorldTransform() { if(myChanged) updateTransform(); return myWorldTransform; }
+		const Matrix4f getLocalTransform() { if(myChanged) updateTransform(); return myLocalTransform; }
 		//@}
 
 		// Bounding box handling
 		//@{
-		const AxisAlignedBox& getBoundingBox() { if(myChanged) updateBounds(); return myBBox; }
-		const Sphere& getBoundingSphere() { if(myChanged) updateBounds(); return myBSphere; }
+		const AxisAlignedBox& getBoundingBox() { if(myChanged) updateTransform(); return myBBox; }
+		const Sphere& getBoundingSphere() { if(myChanged) updateTransform(); return myBSphere; }
 		bool isBoundingBoxVisible() { return myBoundingBoxVisible; }
 		void setBoundingBoxVisible(bool value) { myBoundingBoxVisible = value; }
 		const Color& getBoundingBoxColor() { return myBoundingBoxColor; }
@@ -90,14 +99,14 @@ namespace scene
 		//@}
 
 	private:
-		void pushTransform();
-		void popTransform();
 		void draw();
-
-		void updateBounds();
+		void updateTransform();
 		void drawBoundingBox();
 
 	private:
+		SceneManager* myScene;
+
+		SceneNode* myParent;
 		std::vector<SceneNode*> myChildren;
 		std::vector<Drawable*> myDrawables;
 
@@ -105,6 +114,9 @@ namespace scene
 		Vector3f myPivot;
 		Vector3f myScale;
 		Vector3f myPosition;
+
+		Matrix4f myLocalTransform;
+		Matrix4f myWorldTransform;
 
 		bool mySelectable;
 

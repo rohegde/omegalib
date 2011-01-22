@@ -23,34 +23,31 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "omega/scene/SceneNode.h"
+#include "omega/scene/SceneManager.h"
 
 using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::pushTransform()
-{
-	glPushMatrix();
-
-	glTranslatef(myPosition[0], myPosition[1], myPosition[2]);
-
-	glRotatef(myRotation[0], 1, 0, 0);
-	glRotatef(myRotation[1], 0, 1, 0);
-	glRotatef(myRotation[2], 0, 0, 1);
-
-	glScalef(myScale[0], myScale[1], myScale[2]);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::popTransform()
-{
-	glPopMatrix();
+void SceneNode::addChild(SceneNode* child) 
+{ 
+	myChildren.push_back(child); child->myParent = this; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::draw()
 {
-	pushTransform();
+	if(myChanged) updateTransform();
+
+	glPushMatrix();
+
+	// Load the world transform matrix into gl.
+	glLoadMatrixf(myScene->getViewTransform().begin());
+
+	if(myBoundingBoxVisible) drawBoundingBox();
+
+	glMultMatrixf(myWorldTransform.begin());
+
 	// Draw drawables attached to this node.
 	boost_foreach(Drawable* d, myDrawables)
 	{
@@ -62,18 +59,30 @@ void SceneNode::draw()
 		n->draw();
 	}
 
-	if(myBoundingBoxVisible) drawBoundingBox();
-	popTransform();
+	glPopMatrix();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::updateBounds()
+void SceneNode::updateTransform()
 {
+	// Compute local transform
+	myLocalTransform = Matrix4f::IDENTITY;
+	myLocalTransform.set_translation(myPosition);
+	myLocalTransform.rotate_x(myRotation[0]);
+	myLocalTransform.rotate_y(myRotation[1]);
+	myLocalTransform.rotate_z(myRotation[2]);
+	myLocalTransform.scale(myScale);
+
+	if(myParent != NULL) myWorldTransform = myParent->myWorldTransform * myLocalTransform;
+	else myWorldTransform = myLocalTransform;
+
+	boost_foreach(SceneNode* n, myChildren)
+	{
+		n->updateTransform();
+	}
+
 	// Reset bounding box.
-	float fmax = std::numeric_limits<float>::max();
-	float fmin = -std::numeric_limits<float>::max();
-	myBBox[0][0] = myBBox[0][1] = myBBox[0][2] = fmax;
-	myBBox[1][0] = myBBox[1][1] = myBBox[1][2] = fmin;
+	myBBox.setNull();
 
 	// Draw drawables attached to this node.
 	boost_foreach(Drawable* d, myDrawables)
@@ -81,23 +90,17 @@ void SceneNode::updateBounds()
 		if(d->hasBoundingBox())
 		{
 			const AxisAlignedBox& bbox = *(d->getBoundingBox());
-			for(int i = 0; i < 3; i++)
-			{
-				if(bbox[0][i] < myBBox [0][i]) myBBox[0][i] = bbox[0][i];
-				if(bbox[1][i] > myBBox[1][i]) myBBox[1][i] = bbox[1][i];
-			}
+			myBBox.merge(bbox);
 		}
 	}
 	// Draw children nodes.
 	boost_foreach(SceneNode* n, myChildren)
 	{
 		const AxisAlignedBox& bbox = n->getBoundingBox();
-		for(int i = 0; i < 3; i++)
-		{
-			if(bbox[0][i] < myBBox [0][i]) myBBox[0][i] = bbox[0][i];
-			if(bbox[1][i] > myBBox[1][i]) myBBox[1][i] = bbox[1][i];
-		}
+		myBBox.merge(bbox);
 	}
+
+	myBBox.transformAffine(myWorldTransform);
 
 	myChanged = false;
 }
@@ -105,8 +108,6 @@ void SceneNode::updateBounds()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::drawBoundingBox()
 {
-	if(myChanged) updateBounds();
-
 	glPushAttrib(GL_ENABLE_BIT);
 	glDisable(GL_LIGHTING);
 	glEnable(GL_DEPTH_TEST);
