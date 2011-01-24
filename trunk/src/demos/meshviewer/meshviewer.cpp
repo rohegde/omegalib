@@ -37,13 +37,16 @@ using namespace omega::ui;
 class MeshViewerClient: public ApplicationClient, IUIEventHandler
 {
 public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL) {}
+	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL), myActiveNode(NULL) {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const InputEvent& evt);
 	virtual void handleUIEvent(const UIEvent& evt);
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
+
+private:
+	void addObject(Mesh* m, const Vector3f& position);
 
 private:
 	// Managers
@@ -55,10 +58,11 @@ private:
 	EffectManager* myEffectManager;
 	UIManager myUI;
 
-	Mesh* myMesh;
+	// Active object.
+	SceneNode* myActiveNode;
 
-	float mouseX;
-	float mouseY;
+	Vector3f myStartPosition;
+	bool myMoving;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,18 +90,17 @@ void MeshViewerClient::initialize()
 
 	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
 
-	myMesh = myMeshManager->getMesh("screwdriver");
+	Mesh* mesh = myMeshManager->getMesh("screwdriver");
 	//myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
 	//myTestDrawable->setEffect(new Effect());
 	//myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
 
 	mySceneManager->initialize();
 
-	mySceneManager->getRootNode()->addDrawable(myMesh);
-	mySceneManager->getRootNode()->setBoundingBoxVisible(true);
-	mySceneManager->getRootNode()->setSelectable(true);
-	mySceneManager->getRootNode()->setPosition(Vector3f(0, 0.2, -0.5));
-	const AxisAlignedBox& bbox = mySceneManager->getRootNode()->getBoundingBox();
+	addObject(mesh, Vector3f(0, 0.2, -0.5f));
+	addObject(mesh, Vector3f(0, -0.2, -0.5f));
+	addObject(mesh, Vector3f(0, 0, -0.5f));
+
 	//mySceneManager->getRootNode()->setScale(0.1);
 
 	// Setup data and parameters for the agent render program
@@ -115,6 +118,8 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	case InputService::Pointer:
 		if(evt.type == InputEvent::Down)
 		{
+			myMoving = true;
+
 			RaySceneQuery query(mySceneManager);
 
 			Vector3f origin;
@@ -125,13 +130,54 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 			query.setRay(ray);
 
 			const SceneQueryResultList& rl = query.execute();
+			if(rl.size() > 0)
+			{
+				if(myActiveNode != NULL)
+				{
+					myActiveNode->setBoundingBoxVisible(false);
+				}
+				myActiveNode = rl.front().node;
+				myActiveNode->setBoundingBoxVisible(true);
+				myStartPosition = myActiveNode->getPosition();
+			}
+			else
+			{
+				if(myActiveNode != NULL)
+				{
+					myActiveNode->setBoundingBoxVisible(false);
+				}
+				myActiveNode = NULL;
+			}
 
-			printf("orig: %f %f %f, dir %f %f %f numresults: %d\n", origin[0], origin[1], origin[2], 
-				direction[0], direction[1], direction[2], rl.size());
+			//printf("orig: %f %f %f, dir %f %f %f numresults: %d\n", origin[0], origin[1], origin[2], 
+			//	direction[0], direction[1], direction[2], rl.size());
 		}
 		else if(evt.type == InputEvent::Up)
 		{
-			printf("up\n");
+			if(myActiveNode != NULL)
+			{
+				myActiveNode->setBoundingBoxVisible(false);
+			}
+			myActiveNode = NULL;
+		}
+		else if(evt.type == InputEvent::Move)
+		{
+			if(myActiveNode != NULL)
+			{
+				Vector3f origin;
+				Vector3f direction;
+				GfxUtils::getViewRay(evt.position[0], evt.position[1], &origin, &direction);
+
+				const Vector3f& oldPos = myActiveNode->getPosition();
+				
+				float l = (oldPos[2] - origin[2]) / direction[2];
+				float tx = origin[0] + l * direction[0];
+				float ty = origin[1] + l * direction[1];
+
+				Vector3f newPos = Vector3f(tx, ty, oldPos[2]);
+
+				myActiveNode->setPosition(newPos);
+			}
 		}
 		//mouseX = evt.position[0] / 100;
 		//mouseY = evt.position[1] / 100;
@@ -142,6 +188,16 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	break;
 	}
 	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::addObject(Mesh* m, const Vector3f& position)
+{
+	SceneNode* node = new SceneNode(mySceneManager);
+	node->addDrawable(m);
+	node->setPosition(position);
+	node->setSelectable(true);
+	mySceneManager->getRootNode()->addChild(node);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

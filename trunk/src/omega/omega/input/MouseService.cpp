@@ -83,6 +83,7 @@ void MouseService::initialize()
 	if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
 	{
 		glutPassiveMotionFunc(mouseMotionCallback);
+		glutMotionFunc(mouseMotionCallback);
 		glutMouseFunc(mouseButtonCallback);
 	}
 #endif

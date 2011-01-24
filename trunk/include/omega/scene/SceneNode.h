@@ -72,7 +72,7 @@ namespace scene
 
 		// Transformation
 		//@{
-		void setPosition(const Vector3f& value) { myPosition = value; }
+		void setPosition(const Vector3f& value) { myPosition = value; myChanged = true;}
 		void setRotation(const Vector3f& value) { myRotation = value; myChanged = true;}
 		void setRotation(float x, float y, float z) { myRotation[0] = x; myRotation[1] = y; myRotation[2] = z; myChanged = true;}
 		void setScale(const Vector3f& value) { myScale = value; myChanged = true;}
