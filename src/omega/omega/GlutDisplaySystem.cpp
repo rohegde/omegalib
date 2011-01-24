@@ -130,7 +130,7 @@ void GlutDisplaySystem::setup(Setting& setting)
 	int width;
 	int height;
 	myFov = 90;
-	myNearz = 0.01f;
+	myNearz = 0.001f;
 	myFarz = 100;
 
 	libconfig::ArgumentHelper ah;

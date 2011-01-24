@@ -96,6 +96,7 @@ void MeshViewerClient::initialize()
 	mySceneManager->getRootNode()->addDrawable(myMesh);
 	mySceneManager->getRootNode()->setBoundingBoxVisible(true);
 	mySceneManager->getRootNode()->setSelectable(true);
+	mySceneManager->getRootNode()->setPosition(Vector3f(0, 0.2, -0.5));
 	const AxisAlignedBox& bbox = mySceneManager->getRootNode()->getBoundingBox();
 	//mySceneManager->getRootNode()->setScale(0.1);
 

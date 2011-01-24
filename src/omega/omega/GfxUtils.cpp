@@ -118,9 +118,9 @@ void GfxUtils::getViewRay(float viewX, float viewY, omega::Vector3f* origin, ome
 	origin->y() = my1;
 	origin->z() = mz1;
 
-	direction->x() = (mx1 - mx2);
-	direction->y() = (my1 - my2);
-	direction->z() = (mz1 - mz2);
+	direction->x() = (mx2 - mx1);
+	direction->y() = (my2 - my1);
+	direction->z() = (mz2 - mz1);
 
 	direction->normalize();
 }
