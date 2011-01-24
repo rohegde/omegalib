@@ -81,6 +81,10 @@ public:
     inline const T& b() const;
     inline const T& a() const;
 
+	bool operator>=( const vector< M, T >& other ) const;
+	bool operator<=( const vector< M, T >& other ) const;
+	bool operator>( const vector< M, T >& other ) const;
+	bool operator<( const vector< M, T >& other ) const;
     bool operator==( const vector& other ) const;
     bool operator!=( const vector& other ) const;
     bool equals( const vector& other, 
@@ -1299,6 +1303,54 @@ vector< M, T >::project_point_onto_plane( const vector< 3, TT >& point,
 }
 
 
+
+template< size_t M, typename T >
+bool
+vector< M, T >::operator<=( const vector< M, T >& other ) const
+{
+    bool ok = true;
+    for( size_t index = 0; ok && index < M; ++index )
+    {
+        ok = at( index ) <= other.at( index );
+    }
+    return ok;
+}
+
+template< size_t M, typename T >
+bool
+vector< M, T >::operator>=( const vector< M, T >& other ) const
+{
+    bool ok = true;
+    for( size_t index = 0; ok && index < M; ++index )
+    {
+        ok = at( index ) >= other.at( index );
+    }
+    return ok;
+}
+
+template< size_t M, typename T >
+bool
+vector< M, T >::operator<( const vector< M, T >& other ) const
+{
+    bool ok = true;
+    for( size_t index = 0; ok && index < M; ++index )
+    {
+        ok = at( index ) < other.at( index );
+    }
+    return ok;
+}
+
+template< size_t M, typename T >
+bool
+vector< M, T >::operator>( const vector< M, T >& other ) const
+{
+    bool ok = true;
+    for( size_t index = 0; ok && index < M; ++index )
+    {
+        ok = at( index ) > other.at( index );
+    }
+    return ok;
+}
 
 template< size_t M, typename T >
 bool
