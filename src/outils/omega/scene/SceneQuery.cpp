@@ -54,9 +54,9 @@ void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool 
 	if(node->isSelectable())
 	{
 		const AxisAlignedBox& bbox = node->getBoundingBox();
-		printf("Bounding box min: %f %f %f max: %f %f %f\n", 
-			bbox.getMinimum()[0], bbox.getMinimum()[1], bbox.getMinimum()[2],
-			bbox.getMaximum()[0], bbox.getMaximum()[1], bbox.getMaximum()[2]);
+		//printf("Bounding box min: %f %f %f max: %f %f %f\n", 
+		//	bbox.getMinimum()[0], bbox.getMinimum()[1], bbox.getMinimum()[2],
+		//	bbox.getMaximum()[0], bbox.getMaximum()[1], bbox.getMaximum()[2]);
 		std::pair<bool, float> resPair = myRay.intersects(bbox);
 		if(resPair.first)
 		{
