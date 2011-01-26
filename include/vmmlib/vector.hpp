@@ -260,7 +260,7 @@ public:
     
 	// sphere functions - sphere layout: center xyz, radius w
     template< typename TT >
-	inline vector< 3, T > project_point_onto_sphere( 
+	inline vector< 3, T > projectOnSphere( 
         const vector< 3, TT >& point, 
         typename enable_if< M == 4, TT >::type* = 0 ) const;
         
@@ -302,6 +302,8 @@ public:
     inline static size_t size(); // returns M
     
     bool is_unit_vector() const;
+
+	bool isZeroLength() { return (length() < std::numeric_limits<T>::epsilon()); }
 
     // perturbs each component by randomly + or - the perturbation parameter
     void perturb( T perturbation = 0.0001 );
@@ -1226,7 +1228,7 @@ template< size_t M, typename T >
 template< typename TT >
 inline vector< 3, T >
 vector< M, T >::
-project_point_onto_sphere( const vector< 3, TT >& point, 
+projectOnSphere( const vector< 3, TT >& point, 
     typename enable_if< M == 4, TT >::type* ) const
 {
     const vector< 3, T >& _center = get_sub_vector< 3 >( 0 );
@@ -1700,9 +1702,6 @@ vector< M, T >::perturb( T perturbation )
     }
     
 }
-
-
-
 
 } // namespace vmml
 

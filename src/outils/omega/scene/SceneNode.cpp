@@ -84,7 +84,6 @@ void SceneNode::updateTransform()
 	// Reset bounding box.
 	myBBox.setNull();
 
-	// Draw drawables attached to this node.
 	boost_foreach(Drawable* d, myDrawables)
 	{
 		if(d->hasBoundingBox())
@@ -93,7 +92,6 @@ void SceneNode::updateTransform()
 			myBBox.merge(bbox);
 		}
 	}
-	// Draw children nodes.
 	boost_foreach(SceneNode* n, myChildren)
 	{
 		const AxisAlignedBox& bbox = n->getBoundingBox();
@@ -101,6 +99,9 @@ void SceneNode::updateTransform()
 	}
 
 	myBBox.transformAffine(myWorldTransform);
+
+	// Compute bounding sphere.
+	myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().find_max());
 
 	myChanged = false;
 }

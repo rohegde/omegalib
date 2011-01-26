@@ -61,7 +61,8 @@ private:
 	// Active object.
 	SceneNode* myActiveNode;
 
-	Vector3f myStartPosition;
+	Vector3f myHandlePosition;
+	Sphere myStartBSphere;
 	bool myMoving;
 };
 
@@ -91,23 +92,12 @@ void MeshViewerClient::initialize()
 	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
 
 	Mesh* mesh = myMeshManager->getMesh("screwdriver");
-	//myTestDrawable->setPrimitiveType(SimplePrimitive::SolidTeapot);
-	//myTestDrawable->setEffect(new Effect());
-	//myTestDrawable->getEffect()->setColor(0.3, 0.8, 0.3);
 
 	mySceneManager->initialize();
 
 	addObject(mesh, Vector3f(0, 0.2, -0.5f));
 	addObject(mesh, Vector3f(0, -0.2, -0.5f));
 	addObject(mesh, Vector3f(0, 0, -0.5f));
-
-	//mySceneManager->getRootNode()->setScale(0.1);
-
-	// Setup data and parameters for the agent render program
-	//myAgentRenderer = new GpuProgram(myGpu);
-	//myAgentRenderer->initialize();
-
-	//myNumTouches = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +128,12 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 				}
 				myActiveNode = rl.front().node;
 				myActiveNode->setBoundingBoxVisible(true);
-				myStartPosition = myActiveNode->getPosition();
+				myStartBSphere = myActiveNode->getBoundingSphere();
+				
+				std::pair<bool, float> res = Math::intersects(ray, myStartBSphere);
+				oassert(res.first);
+
+				myHandlePosition = ray.getPoint(res.second) - myStartBSphere.getCenter();
 			}
 			else
 			{
@@ -168,23 +163,56 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 				Vector3f direction;
 				GfxUtils::getViewRay(evt.position[0], evt.position[1], &origin, &direction);
 
-				const Vector3f& oldPos = myActiveNode->getPosition();
-				
-				float l = (oldPos[2] - origin[2]) / direction[2];
+				// Interstect the ray with the Z plane where the handle lies, to get
+				// the new handle position.
+				float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
+				float l = (tz - origin[2]) / direction[2];
 				float tx = origin[0] + l * direction[0];
 				float ty = origin[1] + l * direction[1];
 
-				Vector3f newPos = Vector3f(tx, ty, oldPos[2]);
+				Vector3f newPos = Vector3f(tx, ty, tz);
 
-				myActiveNode->setPosition(newPos);
+				if((evt.flags & InputEvent::Left) == InputEvent::Left)
+				{
+					// Compute the new object position using the handle offset.
+					newPos = newPos - myHandlePosition;
+					myActiveNode->setPosition(newPos);
+				}
+				else if((evt.flags & InputEvent::Right) == InputEvent::Right)
+				{
+					const Vector3f& rot = myActiveNode->getRotation();
+
+					// Compute projection of bounding sphere center to ray.
+					Ray ray = Ray(origin, direction);
+					Vector3f rproj = ray.projectPoint(myStartBSphere.getCenter());
+
+					// Project point back onto sphere.
+					Vector3f sproj = myStartBSphere.projectPoint(rproj);
+					sproj.normalize();
+
+					Quaternion q2 = Quaternion(sproj);
+
+					//myActiveNode->setRotation(rot[0] + delta[0], rot[1] + delta[1], rot[2]);
+				}
+				else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
+				{
+					// Compute new scale.
+					//const Sphere& bs = myActiveNode->getBoundingSphere();
+					//float d = (bs.getCenter() - myStartPosition).length();
+					//float r = bs.getRadius();
+
+					//float td = (bs.getCenter() - newPos).length();
+					//float scale = (td / d);
+
+					//printf("%f %f %f\n", d, r, scale);
+
+					//myActiveNode->setScale(scale);
+				}
+
 			}
 		}
-		//mouseX = evt.position[0] / 100;
-		//mouseY = evt.position[1] / 100;
 		break;
 	case InputService::Touch:
-		//myTouchX[myNumTouches] = evt.position.x();
-		//myTouchY[myNumTouches] = evt.position.y();
 	break;
 	}
 	return true;
@@ -208,34 +236,6 @@ void MeshViewerClient::handleUIEvent(const UIEvent& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::update(const UpdateContext& context)
 {
-	//mySceneManager->getRootNode()->setRotation(mouseX, mouseY, 0);
-	//myUI->update(context);
-
-	//if(myRotate)
-	//{
-	//	myRotateX += (myMouseX - myLastMouseX);
-	//	myRotateY += (myMouseY - myLastMouseY);
-	//	//myLightPos->setFloatValue(myMouseX / context.viewportWidth, myMouseY / context.viewportHeight);
-	//}
-
-	//for(int j = 0; j < myNumTouches; j++)
-	//{
-	//	Vector3f mouseRayOrigin;
-	//	Vector3f mouseRayDirection;
-	//	GfxUtils::getViewRay(myTouchX[j], myTouchY[j], &mouseRayOrigin, &mouseRayDirection);
-
-	//	myInteractorData[j].x = mouseRayOrigin[0];
-	//	myInteractorData[j].y = mouseRayOrigin[1];
-	//	myInteractorData[j].z = mouseRayOrigin[2];
-	//	myInteractorData[j].dx = mouseRayDirection[0];
-	//	myInteractorData[j].dy = mouseRayDirection[1];
-	//	myInteractorData[j].dz = mouseRayDirection[2];
-	//}
-
-	//myNumTouches = 0;
-
-	//myLastMouseX = myMouseX;
-	//myLastMouseY = myMouseY;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

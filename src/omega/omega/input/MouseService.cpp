@@ -30,6 +30,7 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MouseService* MouseService::mysInstance = NULL;
+unsigned int sButtonFlags = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseMotionCallback(int x, int y)
@@ -43,6 +44,7 @@ void MouseService::mouseMotionCallback(int x, int y)
 		evt->type = InputEvent::Move;
 		evt->position[0] = x;
 		evt->position[1] = y;
+		evt->flags = sButtonFlags;
 
 		mysInstance->unlockEvents();
 	}
@@ -62,6 +64,20 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
 		{
 			evt->type = state ? InputEvent::Up : InputEvent::Down;
+
+			// Update button flags
+			if(evt->type == InputEvent::Down)
+			{
+				if(button == GLUT_LEFT_BUTTON) sButtonFlags |= InputEvent::Left;
+				if(button == GLUT_RIGHT_BUTTON) sButtonFlags |= InputEvent::Right;
+				if(button == GLUT_MIDDLE_BUTTON) sButtonFlags |= InputEvent::Middle;
+			}
+			else
+			{
+				if(button == GLUT_LEFT_BUTTON) sButtonFlags &= ~InputEvent::Left;
+				if(button == GLUT_RIGHT_BUTTON) sButtonFlags &= ~InputEvent::Right;
+				if(button == GLUT_MIDDLE_BUTTON) sButtonFlags &= ~InputEvent::Middle;
+			}
 		}
 		else
 #endif
@@ -70,6 +86,7 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		}
 		evt->position[0] = x;
 		evt->position[1] = y;
+		evt->flags = sButtonFlags;
 
 		mysInstance->unlockEvents();
 	}

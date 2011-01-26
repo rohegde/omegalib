@@ -518,9 +518,9 @@ namespace omega {
 
 			Vector3f newCentre = m * centre;
 			Vector3f newHalfSize(
-				Math::Abs(m[0][0]) * halfSize.x() + Math::Abs(m[0][1]) * halfSize.y() + Math::Abs(m[0][2]) * halfSize.z(), 
-				Math::Abs(m[1][0]) * halfSize.x() + Math::Abs(m[1][1]) * halfSize.y() + Math::Abs(m[1][2]) * halfSize.z(),
-				Math::Abs(m[2][0]) * halfSize.x() + Math::Abs(m[2][1]) * halfSize.y() + Math::Abs(m[2][2]) * halfSize.z());
+				Math::abs(m[0][0]) * halfSize.x() + Math::abs(m[0][1]) * halfSize.y() + Math::abs(m[0][2]) * halfSize.z(), 
+				Math::abs(m[1][0]) * halfSize.x() + Math::abs(m[1][1]) * halfSize.y() + Math::abs(m[1][2]) * halfSize.z(),
+				Math::abs(m[2][0]) * halfSize.x() + Math::abs(m[2][1]) * halfSize.y() + Math::abs(m[2][2]) * halfSize.z());
 
 			setExtents(newCentre - newHalfSize, newCentre + newHalfSize);
 		}

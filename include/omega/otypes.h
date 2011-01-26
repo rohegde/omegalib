@@ -79,10 +79,7 @@ typedef vmml::vector< 4, double >Vector4d; //!< A four-component double vector
 typedef vmml::vector< 2, float > Vector2f; //!< A two-component float vector
 typedef vmml::vector< 3, float > Vector3f; //!< A three-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
-
-typedef vmml::quaternion<float> Quaternion;
-
-typedef vmml::vector< 4, float >    BoundingSphere;
+typedef vmml::quaternion<float> Quaternion; //! A floating point quaternion
 typedef vmml::vector< 3, uint >      Triangle;
 
 //! enumeration for the axes
