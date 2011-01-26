@@ -107,6 +107,21 @@ namespace omega {
 			return Math::intersects(*this, box);
 		}
 
+		/** Computes the projection of a point.
+		@returns the distance
+		*/
+		Vector3f projectPoint(const Vector3f& point) const
+		{
+			const Vector3f& v = mDirection;
+			const Vector3f w = point - mOrigin;
+			
+			float c1 = w.dot(v);
+			float c2 = v.dot(v);
+			float b = c1 / c2;
+			 Vector3f pb = mOrigin + b * v;
+			 return pb;
+		}
+
     };
 	/** @} */
 	/** @} */

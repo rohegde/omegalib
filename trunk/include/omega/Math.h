@@ -78,17 +78,17 @@ namespace omega
         */
         ~Math();
 
-		static inline int IAbs (int iValue) { return ( iValue >= 0 ? iValue : -iValue ); }
-		static inline int ICeil (float fValue) { return int(ceil(fValue)); }
-		static inline int IFloor (float fValue) { return int(floor(fValue)); }
-        static int ISign (int iValue);
+		static inline int iabs (int iValue) { return ( iValue >= 0 ? iValue : -iValue ); }
+		static inline int iceil (float fValue) { return int(std::ceil(fValue)); }
+		static inline int ifloor (float fValue) { return int(std::floor(fValue)); }
+        static int isign (int iValue);
 
-		static inline float Abs (float fValue) { return float(fabs(fValue)); }
-		static float ACos (float fValue);
-		static float ASin (float fValue);
-		static inline float ATan (float fValue) { return atan(fValue); }
-		static inline float ATan2 (float fY, float fX) { return atan2(fY,fX); }
-		static inline float Ceil (float fValue) { return float(ceil(fValue)); }
+		static inline float abs (float fValue) { return float(fabs(fValue)); }
+		static float acos (float fValue);
+		static float asin (float fValue);
+		static inline float atan (float fValue) { return std::atan(fValue); }
+		static inline float atan2 (float fY, float fX) { return std::atan2(fY,fX); }
+		static inline float ceil (float fValue) { return float(std::ceil(fValue)); }
 		static inline bool isNaN(float f)
 		{
 			// std::isnan() is C99, not supported by all compilers
@@ -103,26 +103,26 @@ namespace omega
                 useTables If true, uses lookup tables rather than
                 calculation - faster but less accurate.
         */
-        static inline float Cos (float fValue, bool useTables = false) {
-			return (!useTables) ? float(cos(fValue)) : SinTable(fValue + HalfPi);
+        static inline float cos (float fValue, bool useTables = false) {
+			return (!useTables) ? float(std::cos(fValue)) : SinTable(fValue + HalfPi);
 		}
 
-		static inline float Exp (float fValue) { return float(exp(fValue)); }
+		static inline float exp (float fValue) { return float(std::exp(fValue)); }
 
-		static inline float Floor (float fValue) { return float(floor(fValue)); }
+		static inline float floor (float fValue) { return float(std::floor(fValue)); }
 
-		static inline float Log (float fValue) { return float(log(fValue)); }
+		static inline float log (float fValue) { return float(std::log(fValue)); }
 
 		/// Stored value of log(2) for frequent use
 		static const float Log2Base;
 
-		static inline float Log2 (float fValue) { return float(log(fValue)/Log2Base); }
+		static inline float log2 (float fValue) { return float(log(fValue)/Log2Base); }
 
-		static inline float LogN (float base, float fValue) { return float(log(fValue)/log(base)); }
+		static inline float logN (float base, float fValue) { return float(log(fValue)/log(base)); }
 
-		static inline float Pow (float fBase, float fExponent) { return float(pow(fBase,fExponent)); }
+		static inline float pow (float fBase, float fExponent) { return float(std::pow(fBase,fExponent)); }
 
-        static float Sign (float fValue);
+        static float sign (float fValue);
 
         /** Sine function.
             @param
@@ -131,19 +131,19 @@ namespace omega
                 useTables If true, uses lookup tables rather than
                 calculation - faster but less accurate.
         */
-        static inline float Sin (float fValue, bool useTables = false) {
+        static inline float sin (float fValue, bool useTables = false) {
 			return (!useTables) ? float(sin(fValue)) : SinTable(fValue);
 		}
 
-		static inline float Sqr (float fValue) { return fValue*fValue; }
+		static inline float sqr (float fValue) { return fValue*fValue; }
 
-		static inline float Sqrt (float fValue) { return float(sqrt(fValue)); }
+		static inline float sqrt (float fValue) { return float(std::sqrt(fValue)); }
 
-        static float UnitRandom ();  // in [0,1]
+        static float unitRandom ();  // in [0,1]
 
-        static float RangeRandom (float fLow, float fHigh);  // in [fLow,fHigh]
+        static float rangeRandom (float fLow, float fHigh);  // in [fLow,fHigh]
 
-        static float SymmetricRandom ();  // in [-1,1]
+        static float symmetricRandom ();  // in [-1,1]
 
         /** Tangent function.
             @param
@@ -152,12 +152,12 @@ namespace omega
                 useTables If true, uses lookup tables rather than
                 calculation - faster but less accurate.
         */
-		static inline float Tan (float fValue, bool useTables = false) {
-			return (!useTables) ? float(tan(fValue)) : TanTable(fValue);
+		static inline float tan (float fValue, bool useTables = false) {
+			return (!useTables) ? float(std::tan(fValue)) : TanTable(fValue);
 		}
 
-		static inline float DegreesToRadians(float degrees) { return degrees * DegToRad; }
-        static inline float RadiansToDegrees(float radians) { return radians * RadToDeg; }
+		static inline float degreesToRadians(float degrees) { return degrees * DegToRad; }
+        static inline float radiansToDegrees(float radians) { return radians * RadToDeg; }
 
        /** Checks whether a given point is inside a triangle, in a
             2-dimensional (Cartesian) space.
@@ -364,6 +364,9 @@ namespace omega
 		/** Get a bounding radius value from a bounding box. */
 		static float boundingRadiusFromAABB(const AxisAlignedBox& aabb);
 
+		/** Compute a quaternion rotation transforming vector a to vector b **/
+		Quaternion buildRotation(const Vector3f& a, const Vector3f& b,
+			const Vector3f& fallbackAxis = Vector3f::ZERO);
 
 
         static const float PositiveInfinity;

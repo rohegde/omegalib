@@ -76,7 +76,7 @@ namespace omega {
 		bool intersects(const Sphere& s) const
 		{
             return (s.mCenter - mCenter).squaredLength() <=
-                Math::Sqr(s.mRadius + mRadius);
+                Math::sqr(s.mRadius + mRadius);
 		}
 		/** Returns whether or not this sphere intersects a box. */
 		bool intersects(const AxisAlignedBox& box) const
@@ -91,7 +91,15 @@ namespace omega {
 		/** Returns whether or not this sphere intersects a point. */
 		bool intersects(const Vector3f& v) const
 		{
-            return ((v - mCenter).squaredLength() <= Math::Sqr(mRadius));
+            return ((v - mCenter).squaredLength() <= Math::sqr(mRadius));
+		}
+		/** Projects a point onto the sphere.
+		@Returns: the coordinates of the projected point.*/
+		Vector3f projectPoint(const Vector3f point)
+		{
+			Vector4f sphere = Vector4f(mCenter, mRadius);
+			Vector3f result = sphere.projectOnSphere(point);
+			return result;
 		}
         
 

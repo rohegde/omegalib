@@ -67,6 +67,9 @@ public:
     quaternion( const matrix< M, M, T >& rotation_matrix_,
         typename enable_if< M >= 3 >::type* = 0 );
 	
+	void fromAngleAxis (float rfAngle, const vector< 3, T >& rkAxis);
+	void toAngleAxis (float* rfAngle, vector< 3, T >* rkAxis) const;
+
     void zero();
     void identity();
 
@@ -941,5 +944,45 @@ slerp( T a, const quaternion< T >& p, const quaternion< T >& q )
 	}
 }
 
+template < typename T >
+void quaternion< T >::fromAngleAxis (float rfAngle, const vector< 3, T >& rkAxis)
+{
+    // assert:  axis[] is unit length
+    //
+    // The quaternion representing the rotation is
+    //   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
+
+    float fHalfAngle ( 0.5*rfAngle );
+    float fSin = sin(fHalfAngle);
+    w() = cos(fHalfAngle);
+    x() = fSin*rkAxis.x();
+    y() = fSin*rkAxis.y();
+    z() = fSin*rkAxis.z();
+}
+
+template < typename T >
+void quaternion< T >::toAngleAxis (float* rfAngle, vector< 3, T >* rkAxis) const
+{
+    // The quaternion representing the rotation is
+    //   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
+
+    Real fSqrLength = x*x+y*y+z*z;
+    if ( fSqrLength > 0.0f )
+    {
+        *rfAngle = 2.0f * acos(w);
+        Real fInvLength = 1 / sqrt(fSqrLength);
+        rkAxis->x ()= x*fInvLength;
+        rkAxis->y() = y*fInvLength;
+        rkAxis->z() = z*fInvLength;
+    }
+    else
+    {
+        // angle is 0 (mod 2*pi), so any axis will do
+        *rfAngle = 0.0f;
+        rkAxis->x() = 1.0f;
+        rkAxis->y() = 0.0f;
+        rkAxis->z() = 0.0f;
+    }
+}
 }
 #endif

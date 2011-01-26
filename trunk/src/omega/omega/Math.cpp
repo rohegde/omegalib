@@ -110,12 +110,12 @@ namespace omega
 		return mTanTable[idx];
     }
     //-----------------------------------------------------------------------
-    int Math::ISign (int iValue)
+    int Math::isign (int iValue)
     {
         return ( iValue > 0 ? +1 : ( iValue < 0 ? -1 : 0 ) );
     }
     //-----------------------------------------------------------------------
-    float Math::ACos (float fValue)
+    float Math::acos (float fValue)
     {
         if ( -1.0 < fValue )
         {
@@ -130,7 +130,7 @@ namespace omega
         }
     }
     //-----------------------------------------------------------------------
-    float Math::ASin (float fValue)
+    float Math::asin (float fValue)
     {
         if ( -1.0 < fValue )
         {
@@ -145,7 +145,7 @@ namespace omega
         }
     }
     //-----------------------------------------------------------------------
-    float Math::Sign (float fValue)
+    float Math::sign (float fValue)
     {
         if ( fValue > 0.0 )
             return 1.0;
@@ -156,20 +156,20 @@ namespace omega
         return 0.0;
     }
     //-----------------------------------------------------------------------
-    float Math::UnitRandom ()
+    float Math::unitRandom ()
 	{
 		return ((float)rand() / RAND_MAX);
 	}    
     //-----------------------------------------------------------------------
-    float Math::RangeRandom (float fLow, float fHigh)
+    float Math::rangeRandom (float fLow, float fHigh)
     {
-        return (fHigh-fLow)*UnitRandom() + fLow;
+        return (fHigh-fLow)*unitRandom() + fLow;
     }
 
     //-----------------------------------------------------------------------
-    float Math::SymmetricRandom ()
+    float Math::symmetricRandom ()
     {
-		return 2.0f * UnitRandom() - 1.0f;
+		return 2.0f * unitRandom() - 1.0f;
     }
     //-----------------------------------------------------------------------
 	bool Math::pointInTri2D(const Vector2f& p, const Vector2f& a, 
@@ -197,7 +197,7 @@ namespace omega
 
 		// Compare signs (ignore colinear / coincident points)
 		if(!zeroDot[0] && !zeroDot[1] 
-		&& Math::Sign(dot[0]) != Math::Sign(dot[1]))
+		&& Math::sign(dot[0]) != Math::sign(dot[1]))
 		{
 			return false;
 		}
@@ -209,9 +209,9 @@ namespace omega
 		zeroDot[2] = Math::floatEqual(dot[2], 0.0f, 1e-3f);
 		// Compare signs (ignore colinear / coincident points)
 		if((!zeroDot[0] && !zeroDot[2] 
-			&& Math::Sign(dot[0]) != Math::Sign(dot[2])) ||
+			&& Math::sign(dot[0]) != Math::sign(dot[2])) ||
 			(!zeroDot[1] && !zeroDot[2] 
-			&& Math::Sign(dot[1]) != Math::Sign(dot[2])))
+			&& Math::sign(dot[1]) != Math::sign(dot[2])))
 		{
 			return false;
 		}
@@ -245,7 +245,7 @@ namespace omega
 
 		// Compare signs (ignore colinear / coincident points)
 		if(!zeroDot[0] && !zeroDot[1] 
-			&& Math::Sign(dot[0]) != Math::Sign(dot[1]))
+			&& Math::sign(dot[0]) != Math::sign(dot[1]))
 		{
             return false;
 		}
@@ -257,9 +257,9 @@ namespace omega
 		zeroDot[2] = Math::floatEqual(dot[2], 0.0f, 1e-3f);
 		// Compare signs (ignore colinear / coincident points)
 		if((!zeroDot[0] && !zeroDot[2] 
-			&& Math::Sign(dot[0]) != Math::Sign(dot[2])) ||
+			&& Math::sign(dot[0]) != Math::sign(dot[2])) ||
 			(!zeroDot[1] && !zeroDot[2] 
-			&& Math::Sign(dot[1]) != Math::Sign(dot[2])))
+			&& Math::sign(dot[1]) != Math::sign(dot[2])))
 		{
 			return false;
 		}
@@ -281,7 +281,7 @@ namespace omega
     {
 
         float denom = plane.normal.dot(ray.getDirection());
-        if (Math::Abs(denom) < std::numeric_limits<float>::epsilon())
+        if (Math::abs(denom) < std::numeric_limits<float>::epsilon())
         {
             // Parallel
             return std::pair<bool, float>(false, 0);
@@ -422,9 +422,9 @@ namespace omega
             // BTW, if d=0 there is one intersection, if d > 0 there are 2
             // But we only want the closest one, so that's ok, just use the 
             // '-' version of the solver
-            float t = ( -b - Math::Sqrt(d) ) / (2 * a);
+            float t = ( -b - Math::sqrt(d) ) / (2 * a);
             if (t < 0)
-                t = ( -b + Math::Sqrt(d) ) / (2 * a);
+                t = ( -b + Math::sqrt(d) ) / (2 * a);
             return std::pair<bool, float>(true, t);
         }
 
@@ -578,9 +578,9 @@ namespace omega
         const Vector3f& raydir = ray.getDirection();
 
         Vector3f absDir;
-        absDir[0] = Math::Abs(raydir[0]);
-        absDir[1] = Math::Abs(raydir[1]);
-        absDir[2] = Math::Abs(raydir[2]);
+        absDir[0] = Math::abs(raydir[0]);
+        absDir[1] = Math::abs(raydir[1]);
+        absDir[2] = Math::abs(raydir[2]);
 
         // Sort the axis, ensure check minimise floating error axis first
         int imax = 0, imid = 1, imin = 2;
@@ -690,9 +690,9 @@ namespace omega
         //
         size_t i0, i1;
         {
-            float n0 = Math::Abs(normal[0]);
-            float n1 = Math::Abs(normal[1]);
-            float n2 = Math::Abs(normal[2]);
+            float n0 = Math::abs(normal[0]);
+            float n1 = Math::abs(normal[1]);
+            float n2 = Math::abs(normal[2]);
 
             i0 = 1; i1 = 2;
             if (n1 > n2)
@@ -786,7 +786,7 @@ namespace omega
     bool Math::intersects(const Sphere& sphere, const Plane& plane)
     {
         return (
-            Math::Abs(plane.getDistance(sphere.getCenter()))
+            Math::abs(plane.getDistance(sphere.getCenter()))
             <= sphere.getRadius() );
     }
     //-----------------------------------------------------------------------
@@ -866,9 +866,9 @@ namespace omega
 	//-----------------------------------------------------------------------
 	float Math::gaussianDistribution(float x, float offset, float scale)
 	{
-		float nom = Math::Exp(
-			-Math::Sqr(x - offset) / (2 * Math::Sqr(scale)));
-		float denom = scale * Math::Sqrt(2 * Math::Pi);
+		float nom = Math::exp(
+			-Math::sqr(x - offset) / (2 * Math::sqr(scale)));
+		float denom = scale * Math::sqrt(2 * Math::Pi);
 
 		return nom / denom;
 
@@ -925,4 +925,63 @@ namespace omega
 
 		return magnitude.length();
 	}
+
+		/** Gets the shortest arc quaternion to rotate this vector to the destination
+		vector.
+	@remarks
+		If you call this with a dest vector that is close to the inverse
+		of this vector, we will rotate 180 degrees around the 'fallbackAxis'
+		(if specified, or a generated axis if not) since in this case
+		ANY axis of rotation is valid.
+	*/
+	Quaternion Math::buildRotation(const Vector3f& a, const Vector3f& b,
+		const Vector3f& fallbackAxis)
+	{
+		// Based on Stan Melax's article in Game Programming Gems
+		Quaternion q;
+		// Copy, since cannot modify local
+		Vector3f v0 = a;
+		Vector3f v1 = b;
+		v0.normalize();
+		v1.normalize();
+
+		float d = v0.dot(v1);
+		// If dot == 1, vectors are the same
+		if (d >= 1.0f)
+		{
+			return Quaternion::IDENTITY;
+		}
+		if (d < (1e-6f - 1.0f))
+		{
+			if (fallbackAxis != Vector3f::ZERO)
+			{
+				// rotate 180 degrees about the fallback axis
+				q.fromAngleAxis(Math::Pi, fallbackAxis);
+			}
+			else
+			{
+				// Generate an axis
+				Vector3f axis = Vector3f::UNIT_X.cross(a);
+				if (axis.isZeroLength()) // pick another if colinear
+					axis = Vector3f::UNIT_Y.cross(a);
+				axis.normalize();
+				q.fromAngleAxis(Math::Pi, axis);
+			}
+		}
+		else
+		{
+			float s = Math::sqrt( (1+d)*2 );
+			float invs = 1 / s;
+
+			Vector3f c = v0.cross(v1);
+
+    		q.x() = c.x() * invs;
+			q.y() = c.y() * invs;
+			q.z() = c.z() * invs;
+			q.w() = s * 0.5f;
+			q.normalize();
+		}
+		return q;
+	}
+
 }

@@ -4,11 +4,23 @@
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+ * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #ifndef __INPUT_EVENT_H__
 #define __INPUT_EVENT_H__
@@ -31,7 +43,7 @@ struct Point
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct InputEvent
 {
-	// Supported event types.
+	//! Supported event types.
 	enum Type 
 	{ 
 		//! Move: Generated whenever the source of an event moves.
@@ -85,6 +97,26 @@ struct InputEvent
 		//! Rotate: generated when an event source is stationary while a second source is rotating around the first.
 		//! parameters: position (center of gesture) pointSet[0, 1] (individual finger positions), rotation[0] (degrees).
 		Rotate,
+	};
+
+	//! Defines some generic input event flags
+	enum Flags
+	{
+		//! Used for right mouse button or equivalent events.
+		Left = 1 << 1,
+		//! Used for right mouse button or equivalent events.
+		Right = 1 << 2,
+		//! Used for middle mouse button or equivalent events.
+		Middle = 1 << 3,
+		//! Used for ctrl key presses or equivalent events.
+		Ctrl = 1 << 4,
+		//! Used for ctrl key presses or equivalent events.
+		Alt = 1 << 5,
+		//! Used for ctrl key presses or equivalent events.
+		Shift = 1 << 6,
+
+		//! User flags should offset this value: 16 user flags available (USER to USER << 16)
+		User = 1 << 16
 	};
 
 	static const int PointSetSize = 32;
