@@ -32,6 +32,9 @@ void SceneManager::draw()
 	glPushMatrix();
 	glLoadIdentity();
 
+	// Update transform hierarchy
+	myRoot->update(true, true);
+
 	myRoot->draw();
 	glPopMatrix();
 }

@@ -50,9 +50,9 @@ namespace scene
 
 		SceneManager* getScene() { return myScene; }
 
-		void addDrawable(Drawable* child) { myDrawables.push_back(child); myChanged = true;}
-		int getNumDrawables() { return myDrawables.size(); }
-		void clearDrawables() { myDrawables.empty(); myChanged = true;}
+		void addDrawable(Drawable* child);
+		int getNumDrawables();
+		void clearDrawables();
 
 		bool isSelectable() { return mySelectable; }
 		void setSelectable(bool value) { mySelectable = value; }
@@ -67,9 +67,9 @@ namespace scene
 		void setBoundingBoxColor(const Color& color) { myBoundingBoxColor = color; }
 		//@}
 
+		virtual void update(bool updateChildren, bool parentHasChanged);
 	private:
 		void draw();
-		void updateTransform();
 		void drawBoundingBox();
 
 	private:
