@@ -125,7 +125,7 @@ const Matrix4f& Node::getFullTransform(void) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Node::_update(bool updateChildren, bool parentHasChanged)
+void Node::update(bool updateChildren, bool parentHasChanged)
 {
 	// always clear information about parent notification
 	mParentNotified = false ;
@@ -152,7 +152,7 @@ void Node::_update(bool updateChildren, bool parentHasChanged)
         for (it = mChildren.begin(); it != itend; ++it)
         {
             Node* child = it->second;
-            child->_update(true, true);
+            child->update(true, true);
         }
         mChildrenToUpdate.clear();
     }
@@ -165,7 +165,7 @@ void Node::_update(bool updateChildren, bool parentHasChanged)
         for(it = mChildrenToUpdate.begin(); it != itend; ++it)
         {
             Node* child = *it;
-            child->_update(true, false);
+            child->update(true, false);
         }
 
         mChildrenToUpdate.clear();

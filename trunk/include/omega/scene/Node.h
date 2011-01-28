@@ -459,7 +459,7 @@ namespace scene
                     so the child should retrieve the parent's xform and combine it with its own
                     even if it hasn't changed itself.
         */
-        virtual void _update(bool updateChildren, bool parentHasChanged);
+        virtual void update(bool updateChildren, bool parentHasChanged);
 
 		/** Gets the local position, relative to this node, of the given world-space position */
 		virtual Vector3f convertWorldToLocalPosition( const Vector3f &worldPos );
