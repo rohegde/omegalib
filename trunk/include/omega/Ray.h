@@ -121,7 +121,6 @@ namespace omega {
 			 Vector3f pb = mOrigin + b * v;
 			 return pb;
 		}
-
     };
 	/** @} */
 	/** @} */

@@ -100,8 +100,13 @@ void GfxUtils::setLightColor(int lightId, const Color& color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GfxUtils::getViewRay(float viewX, float viewY, omega::Vector3f* origin, omega::Vector3f* direction)
+Ray GfxUtils::getViewRay(const Vector2f& pos)
 {
+	float viewX = pos[0];
+	float viewY = pos[1];
+	Vector3f origin;
+	Vector3f direction;
+
 	GLdouble modelview[16];
 	GLdouble projection[16];
 	GLint viewport[4];
@@ -114,15 +119,17 @@ void GfxUtils::getViewRay(float viewX, float viewY, omega::Vector3f* origin, ome
 	gluUnProject(viewX, viewport[3] - viewY, 0, modelview, projection, viewport, &mx1, &my1, &mz1);
 	gluUnProject(viewX, viewport[3] - viewY, 1, modelview, projection, viewport, &mx2, &my2, &mz2);
 
-	origin->x() = mx1;
-	origin->y() = my1;
-	origin->z() = mz1;
+	origin.x() = mx1;
+	origin.y() = my1;
+	origin.z() = mz1;
 
-	direction->x() = (mx2 - mx1);
-	direction->y() = (my2 - my1);
-	direction->z() = (mz2 - mz1);
+	direction.x() = (mx2 - mx1);
+	direction.y() = (my2 - my1);
+	direction.z() = (mz2 - mz1);
 
-	direction->normalize();
+	direction.normalize();
+
+	return Ray(origin, direction);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

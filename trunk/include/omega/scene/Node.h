@@ -55,11 +55,11 @@ namespace scene
         enum TransformSpace
         {
             /// Transform is relative to the local space
-            TS_LOCAL,
+            TransformLocal,
             /// Transform is relative to the space of the parent node
-            TS_PARENT,
+            TransformParent,
             /// Transform is relative to world space
-            TS_WORLD
+            TransformWorld
         };
         typedef Dictionary<String, Node*> ChildNodeMap;
 
@@ -261,7 +261,7 @@ namespace scene
             @param
                 relativeTo The space which this transform is relative to.
         */
-        virtual void translate(const Vector3f& d, TransformSpace relativeTo = TS_PARENT);
+        virtual void translate(const Vector3f& d, TransformSpace relativeTo = TransformParent);
         /** Moves the node along the Cartesian axes.
             @par
                 This method moves the node by the supplied vector along the
@@ -275,7 +275,7 @@ namespace scene
             @param
             relativeTo The space which this transform is relative to.
         */
-        virtual void translate(float x, float y, float z, TransformSpace relativeTo = TS_PARENT);
+        virtual void translate(float x, float y, float z, TransformSpace relativeTo = TransformParent);
         /** Moves the node along arbitrary axes.
             @remarks
                 This method translates the node by a vector which is relative to
@@ -295,7 +295,7 @@ namespace scene
             @param
             relativeTo The space which this transform is relative to.
         */
-        virtual void translate(const Matrix3f& axes, const Vector3f& move, TransformSpace relativeTo = TS_PARENT);
+        virtual void translate(const Matrix3f& axes, const Vector3f& move, TransformSpace relativeTo = TransformParent);
         /** Moves the node along arbitrary axes.
             @remarks
             This method translates the node by a vector which is relative to
@@ -315,27 +315,27 @@ namespace scene
             @param
                 relativeTo The space which this transform is relative to.
         */
-        virtual void translate(const Matrix3f& axes, float x, float y, float z, TransformSpace relativeTo = TS_PARENT);
+        virtual void translate(const Matrix3f& axes, float x, float y, float z, TransformSpace relativeTo = TransformParent);
 
         /** Rotate the node around the Z-axis.
         */
-        virtual void roll(const float& angle, TransformSpace relativeTo = TS_LOCAL);
+        virtual void roll(const float& angle, TransformSpace relativeTo = TransformLocal);
 
         /** Rotate the node around the X-axis.
         */
-        virtual void pitch(const float& angle, TransformSpace relativeTo = TS_LOCAL);
+        virtual void pitch(const float& angle, TransformSpace relativeTo = TransformLocal);
 
         /** Rotate the node around the Y-axis.
         */
-        virtual void yaw(const float& angle, TransformSpace relativeTo = TS_LOCAL);
+        virtual void yaw(const float& angle, TransformSpace relativeTo = TransformLocal);
 
         /** Rotate the node around an arbitrary axis.
         */
-        virtual void rotate(const Vector3f& axis, const float& angle, TransformSpace relativeTo = TS_LOCAL);
+        virtual void rotate(const Vector3f& axis, const float& angle, TransformSpace relativeTo = TransformLocal);
 
         /** Rotate the node around an aritrary axis using a Quarternion.
         */
-        virtual void rotate(const Quaternion& q, TransformSpace relativeTo = TS_LOCAL);
+        virtual void rotate(const Quaternion& q, TransformSpace relativeTo = TransformLocal);
 
         /** Gets a matrix whose columns are the local axes based on
             the nodes orientation relative to it's parent. */
@@ -493,6 +493,9 @@ namespace scene
         /** Called by children to notify their parent that they no longer need an update. */
         virtual void cancelUpdate(Node* child);
 
+		void* getUserData() { return myUserData; }
+		void setUserData(void* data) { myUserData = data; }
+
     protected:
         /// Pointer to parent node
         Node* mParent;
@@ -531,6 +534,8 @@ namespace scene
 
         /// Stores whether this node inherits scale from it's parent
         bool mInheritScale;
+
+		void* myUserData;
 
         /// Only available internally - notification of parent.
         virtual void setParent(Node* parent);
@@ -574,8 +579,8 @@ namespace scene
         mutable Matrix4f mCachedTransform;
         mutable bool mCachedTransformOutOfDate;
 
-		typedef std::vector<Node*> QueuedUpdates;
-		static QueuedUpdates msQueuedUpdates;
+		//typedef std::vector<Node*> QueuedUpdates;
+		//static QueuedUpdates msQueuedUpdates;
     };
 }
 } //namespace

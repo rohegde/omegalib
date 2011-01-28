@@ -34,10 +34,51 @@ using namespace omega::scene;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class SelectionSphere: public Drawable
+{
+public:
+	void draw(SceneNode* node);
+
+	void setVisible(bool value) { myVisible = value; }
+	bool isVisisble() { return myVisible; }
+
+private:
+	bool myVisible;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Entity
+{
+public:
+	enum Operation { Move, Scale, Translate, Compound };
+
+public:
+	Entity(SceneManager* sm, Mesh* m, const Vector3f& position);
+
+	bool hit(const Ray& ray, Vector3f* handlePos);
+	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::ZERO, Vector3f::ZERO));
+
+	void activate(const Vector3f handlePos);
+	void deactivate();
+	bool isActive() { return myActive; }
+
+private:
+	SceneNode* mySceneNode;
+	Mesh* myMesh;
+	SelectionSphere* mySelectionSphere;
+
+	// Interaction stuff
+	Vector3f myHandlePosition;
+	Sphere myStartBSphere;
+	Quaternion myStartOrientation;
+	bool myActive;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MeshViewerClient: public ApplicationClient, IUIEventHandler
 {
 public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL), myActiveNode(NULL) {}
+	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL), myActiveEntity(NULL) {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const InputEvent& evt);
@@ -46,7 +87,7 @@ public:
 	virtual void draw(const DrawContext& context);
 
 private:
-	void addObject(Mesh* m, const Vector3f& position);
+	void addEntity(Mesh* m, const Vector3f& position);
 
 private:
 	// Managers
@@ -58,12 +99,11 @@ private:
 	EffectManager* myEffectManager;
 	UIManager myUI;
 
-	// Active object.
-	SceneNode* myActiveNode;
+	// Entity list
+	std::list<Entity*> myEntities;
 
-	Vector3f myHandlePosition;
-	Sphere myStartBSphere;
-	bool myMoving;
+	// Active entity.
+	Entity* myActiveEntity;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +112,105 @@ class MeshViewerApplication: public Application
 public:
 	virtual ApplicationClient* createClient() { return new MeshViewerClient(this); }
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SelectionSphere::draw(SceneNode* node)
+{
+	if(myVisible)
+	{
+		float radius = node->getBoundingSphere().getRadius();
+		float stp = Math::Pi * 2 / 32;
+		float stp2 = Math::Pi * 2 / 16;
+		glEnable(GL_BLEND);
+		glColor4f(0.8, 0.8, 1.0, 0.2f);
+	
+		for(float g = 0; g < 2 * Math::Pi; g+= stp2)
+		{
+			glBegin(GL_LINE_LOOP);
+			for(float t = 0; t < 2 * Math::Pi; t+= stp)
+			{
+				float ptx = Math::sin(t) * Math::sin(g) * radius;
+				float pty = Math::cos(t) * Math::sin(g) * radius;
+				float ptz = Math::cos(g) * radius;
+				glVertex3f(ptx, pty, ptz);
+			}
+			glEnd();
+			glBegin(GL_LINE_LOOP);
+			for(float t = 0; t < 2 * Math::Pi; t+= stp)
+			{
+				float ptz = Math::sin(t) * Math::sin(g) * radius;
+				float pty = Math::cos(t) * Math::sin(g) * radius;
+				float ptx = Math::cos(g) * radius;
+				glVertex3f(ptx, pty, ptz);
+			}
+			glEnd();
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Entity::Entity(SceneManager* sm, Mesh* m, const Vector3f& position)
+{
+	myMesh = m;
+	mySelectionSphere = new SelectionSphere();
+	mySelectionSphere->setVisible(false);
+
+	mySceneNode = new SceneNode(sm);
+	mySceneNode->addDrawable(myMesh);
+	mySceneNode->addDrawable(mySelectionSphere);
+	mySceneNode->setPosition(position);
+	mySceneNode->setSelectable(true);
+	sm->getRootNode()->addChild(mySceneNode);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::activate(const Vector3f handlePos)
+{
+	myActive = true;
+	mySelectionSphere->setVisible(true);
+
+	myStartBSphere = mySceneNode->getBoundingSphere();
+	myStartOrientation = mySceneNode->getOrientation();
+	myHandlePosition = handlePos;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::deactivate()
+{
+	myActive = false;
+	mySelectionSphere->setVisible(false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Entity::hit(const Ray& ray, Vector3f* handlePos)
+{
+	const Sphere& s = mySceneNode->getBoundingSphere();
+	std::pair<bool, float> h = ray.intersects(s);
+	if(h.first)
+	{
+		(*handlePos) = ray.getPoint(h.second) - s.getCenter();
+	}
+	return h.first;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
+{
+	if(op == Move)
+	{
+		Vector3f origin = ray1.getOrigin();
+		Vector3f direction = ray1.getDirection();
+		// Interstect the ray with the Z plane where the handle lies, to get
+		// the new handle position.
+		float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
+		float l = (tz - origin[2]) / direction[2];
+		float tx = origin[0] + l * direction[0];
+		float ty = origin[1] + l * direction[1];
+
+		Vector3f newPos = Vector3f(tx, ty, tz) - myHandlePosition;
+		mySceneNode->setPosition(newPos);
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
@@ -95,9 +234,16 @@ void MeshViewerClient::initialize()
 
 	mySceneManager->initialize();
 
-	addObject(mesh, Vector3f(0, 0.2, -0.5f));
-	addObject(mesh, Vector3f(0, -0.2, -0.5f));
-	addObject(mesh, Vector3f(0, 0, -0.5f));
+	//addObject(mesh, Vector3f(0, 0.2, -0.5f));
+	//addObject(mesh, Vector3f(0, -0.2, -0.5f));
+	addEntity(mesh, Vector3f(0, 0, -0.2f));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::addEntity(Mesh* m, const Vector3f& position)
+{
+	Entity* e = new Entity(mySceneManager, m, position);
+	myEntities.push_back(e);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,108 +254,69 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	case InputService::Pointer:
 		if(evt.type == InputEvent::Down)
 		{
-			myMoving = true;
+			Ray ray = GfxUtils::getViewRay(Vector2f(evt.position[0], evt.position[1]));
 
-			RaySceneQuery query(mySceneManager);
-
-			Vector3f origin;
-			Vector3f direction;
-			GfxUtils::getViewRay(evt.position[0], evt.position[1], &origin, &direction);
-
-			Ray ray(origin, direction);
-			query.setRay(ray);
-
-			const SceneQueryResultList& rl = query.execute();
-			if(rl.size() > 0)
+			VectorIterator<std::list<Entity*> > it(myEntities.begin(), myEntities.end());
+			while(it.hasMoreElements())
 			{
-				if(myActiveNode != NULL)
+				Entity* e = it.getNext();
+				Vector3f handlePos;
+				if(e->hit(ray, &handlePos))
 				{
-					myActiveNode->setBoundingBoxVisible(false);
+					e->activate(handlePos);
+					if(myActiveEntity != NULL) myActiveEntity->deactivate();
+					myActiveEntity = e;
+					break;
 				}
-				myActiveNode = rl.front().node;
-				myActiveNode->setBoundingBoxVisible(true);
-				myStartBSphere = myActiveNode->getBoundingSphere();
-				
-				std::pair<bool, float> res = Math::intersects(ray, myStartBSphere);
-				oassert(res.first);
-
-				myHandlePosition = ray.getPoint(res.second) - myStartBSphere.getCenter();
 			}
-			else
-			{
-				if(myActiveNode != NULL)
-				{
-					myActiveNode->setBoundingBoxVisible(false);
-				}
-				myActiveNode = NULL;
-			}
-
-			//printf("orig: %f %f %f, dir %f %f %f numresults: %d\n", origin[0], origin[1], origin[2], 
-			//	direction[0], direction[1], direction[2], rl.size());
 		}
 		else if(evt.type == InputEvent::Up)
 		{
-			if(myActiveNode != NULL)
+			if(myActiveEntity != NULL)
 			{
-				myActiveNode->setBoundingBoxVisible(false);
+				myActiveEntity->deactivate();
 			}
-			myActiveNode = NULL;
+			myActiveEntity = NULL;
 		}
 		else if(evt.type == InputEvent::Move)
 		{
-			if(myActiveNode != NULL)
+			if(myActiveEntity != NULL)
 			{
-				Vector3f origin;
-				Vector3f direction;
-				GfxUtils::getViewRay(evt.position[0], evt.position[1], &origin, &direction);
-
-				// Interstect the ray with the Z plane where the handle lies, to get
-				// the new handle position.
-				float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
-				float l = (tz - origin[2]) / direction[2];
-				float tx = origin[0] + l * direction[0];
-				float ty = origin[1] + l * direction[1];
-
-				Vector3f newPos = Vector3f(tx, ty, tz);
+				Ray ray = GfxUtils::getViewRay(Vector2f(evt.position[0], evt.position[1]));
 
 				if((evt.flags & InputEvent::Left) == InputEvent::Left)
 				{
-					// Compute the new object position using the handle offset.
-					newPos = newPos - myHandlePosition;
-					myActiveNode->setPosition(newPos);
+					myActiveEntity->manipulate(Entity::Move, ray);
 				}
-				else if((evt.flags & InputEvent::Right) == InputEvent::Right)
-				{
-					//const Vector3f& rot = myActiveNode->getRotation();
+				//else if((evt.flags & InputEvent::Right) == InputEvent::Right)
+				//{
+				//	// Compute projection of bounding sphere center to ray.
+				//	Ray ray = Ray(origin, direction);
+				//	Vector3f rproj = ray.projectPoint(myStartBSphere.getCenter());
 
-					// Compute projection of bounding sphere center to ray.
-					Ray ray = Ray(origin, direction);
-					Vector3f rproj = ray.projectPoint(myStartBSphere.getCenter());
+				//	// Project point back onto sphere.
+				//	Vector3f sproj = myStartBSphere.projectPoint(rproj);
+				//	sproj.normalize();
 
-					// Project point back onto sphere.
-					Vector3f sproj = myStartBSphere.projectPoint(rproj);
-					sproj.normalize();
+				//	Quaternion rot = Math::buildRotation(sproj, myHandlePosition);
+				//	myActiveNode->setOrientation(rot * myStartOrientation);
 
-					Quaternion rot = Math::buildRotation(myHandlePosition, sproj);
+				//	//myActiveNode->setRotation(rot[0] + delta[0], rot[1] + delta[1], rot[2]);
+				//}
+				//else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
+				//{
+				//	// Compute new scale.
+				//	//const Sphere& bs = myActiveNode->getBoundingSphere();
+				//	//float d = (bs.getCenter() - myStartPosition).length();
+				//	//float r = bs.getRadius();
 
-					Quaternion q2 = Quaternion(sproj);
+				//	//float td = (bs.getCenter() - newPos).length();
+				//	//float scale = (td / d);
 
-					//myActiveNode->setRotation(rot[0] + delta[0], rot[1] + delta[1], rot[2]);
-				}
-				else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
-				{
-					// Compute new scale.
-					//const Sphere& bs = myActiveNode->getBoundingSphere();
-					//float d = (bs.getCenter() - myStartPosition).length();
-					//float r = bs.getRadius();
+				//	//printf("%f %f %f\n", d, r, scale);
 
-					//float td = (bs.getCenter() - newPos).length();
-					//float scale = (td / d);
-
-					//printf("%f %f %f\n", d, r, scale);
-
-					//myActiveNode->setScale(scale);
-				}
+				//	//myActiveNode->setScale(scale);
+				//}
 
 			}
 		}
@@ -218,16 +325,6 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	break;
 	}
 	return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::addObject(Mesh* m, const Vector3f& position)
-{
-	SceneNode* node = new SceneNode(mySceneManager);
-	node->addDrawable(m);
-	node->setPosition(position);
-	node->setSelectable(true);
-	mySceneManager->getRootNode()->addChild(node);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

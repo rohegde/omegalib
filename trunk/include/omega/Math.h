@@ -132,7 +132,7 @@ namespace omega
                 calculation - faster but less accurate.
         */
         static inline float sin (float fValue, bool useTables = false) {
-			return (!useTables) ? float(sin(fValue)) : SinTable(fValue);
+			return (!useTables) ? float(std::sin(fValue)) : SinTable(fValue);
 		}
 
 		static inline float sqr (float fValue) { return fValue*fValue; }
