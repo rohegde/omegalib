@@ -29,6 +29,11 @@
 #include "osystem.h"
 #include "InputService.h"
 
+#ifdef OMEGA_USE_DISPLAY_EQUALIZER
+// Equalizer includes
+#include <eq/eq.h>
+#endif
+
 namespace omega
 {
 

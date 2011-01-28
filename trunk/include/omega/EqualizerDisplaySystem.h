@@ -28,8 +28,12 @@
 #include "DisplaySystem.h"
 #include "Application.h"
 
+// Equalizer includes
+#include <eq/eq.h>
+
 namespace omega
 {
+//typedef co::base::uint128_t uint128_t;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward Declarations.
