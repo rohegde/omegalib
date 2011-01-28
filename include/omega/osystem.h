@@ -32,13 +32,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdarg.h>
-
-// Equalizer includes
-#include <eq/eq.h>
+#include <list>
+#include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WIN32 Platform-specific includes & macros.
 #ifdef WIN32
+	#define WIN32_LEAN_AND_MEAN
+	#include <windows.h>
 	// Omega DLL import / export macros
 	#ifndef OMEGA_STATIC
 		#ifdef OMEGA_EXPORTING
@@ -61,14 +62,22 @@
 	#define OUTILS_API
 #endif
 
+// make sure the min and max macros are undefined.
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 #include "otypes.h"
 
 // Enable GLEW multiple render context support.
 #define GLEW_MX 
 
 // OpenGL includes
-#include <GL/gl.h>
 #include <GL/glew.h>
+#include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 

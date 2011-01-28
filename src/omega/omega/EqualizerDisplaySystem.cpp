@@ -458,7 +458,8 @@ protected:
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// setup the context viewport.
-		context.frameNum = spin;
+		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
+		context.frameNum = spin.low();
 		context.viewportX = pvp.x;
 		context.viewportY = pvp.y;
 		context.viewportWidth = pvp.w;

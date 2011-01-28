@@ -31,6 +31,8 @@
 
 #include "omega.h"
 
+#include<set>
+
 namespace omega 
 {
 namespace scene 

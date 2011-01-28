@@ -45,9 +45,9 @@ namespace omega
 // Type definitions
 typedef libconfig::Setting Setting;
 typedef std::string String;
-typedef co::base::uint128_t uint128_t;
 typedef unsigned char byte;
 typedef unsigned int uint;
+typedef unsigned long long uint64;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations
