@@ -28,6 +28,7 @@
 #include "omega/osystem.h"
 #include "omega/Sphere.h"
 #include "omega/scene/Drawable.h"
+#include "omega/scene/Node.h"
 
 namespace omega
 {
@@ -35,63 +36,31 @@ namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OUTILS_API SceneNode
+	class OUTILS_API SceneNode: public Node
 	{
 		friend class SceneManager; // Needs to call the node draw method.
 	public:
 		SceneNode(SceneManager* scene):
 			myScene(scene),
-			myPosition(0, 0, 0),
-			myRotation(0, 0, 0),
-			myScale(1, 1, 1),
-			myPivot(0, 0, 0),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
 			mySelectable(false),
-			myParent(NULL)
+			myChanged(false)
 			{}
 
-		SceneNode* getParent() { return myParent; }
-
 		SceneManager* getScene() { return myScene; }
-
-		void addChild(SceneNode* child);
-		int getNumChildren() { return myChildren.size(); }
-		void clearChildren() { myChildren.empty(); }
-
-		SceneNode* getChild(int index) { return myChildren[index]; }
 
 		void addDrawable(Drawable* child) { myDrawables.push_back(child); myChanged = true;}
 		int getNumDrawables() { return myDrawables.size(); }
 		void clearDrawables() { myDrawables.empty(); myChanged = true;}
 
-		bool hasChanged() { return myChanged; }
-
 		bool isSelectable() { return mySelectable; }
 		void setSelectable(bool value) { mySelectable = value; }
 
-		// Transformation
-		//@{
-		void setPosition(const Vector3f& value) { myPosition = value; myChanged = true;}
-		void setRotation(const Vector3f& value) { myRotation = value; myChanged = true;}
-		void setRotation(float x, float y, float z) { myRotation[0] = x; myRotation[1] = y; myRotation[2] = z; myChanged = true;}
-		void setScale(const Vector3f& value) { myScale = value; myChanged = true;}
-		void setScale(float value) { myScale[0] = value; myScale[1] = value; myScale[2] = value; myChanged = true;}
-		void setPivot(const Vector3f& value) { myPivot = value; myChanged = true;}
-
-		const Vector3f& getPosition() { return myPosition; }
-		const Vector3f& getRotation() { return myRotation; }
-		const Vector3f& getScale() { return myScale; }
-		const Vector3f& getPivot() { return myPivot; }
-
-		const Matrix4f getWorldTransform() { if(myChanged) updateTransform(); return myWorldTransform; }
-		const Matrix4f getLocalTransform() { if(myChanged) updateTransform(); return myLocalTransform; }
-		//@}
-
 		// Bounding box handling
 		//@{
-		const AxisAlignedBox& getBoundingBox() { if(myChanged) updateTransform(); return myBBox; }
-		const Sphere& getBoundingSphere() { if(myChanged) updateTransform(); return myBSphere; }
+		const AxisAlignedBox& getBoundingBox() { return myBBox; }
+		const Sphere& getBoundingSphere() { return myBSphere; }
 		bool isBoundingBoxVisible() { return myBoundingBoxVisible; }
 		void setBoundingBoxVisible(bool value) { myBoundingBoxVisible = value; }
 		const Color& getBoundingBoxColor() { return myBoundingBoxColor; }
@@ -106,17 +75,7 @@ namespace scene
 	private:
 		SceneManager* myScene;
 
-		SceneNode* myParent;
-		std::vector<SceneNode*> myChildren;
 		std::vector<Drawable*> myDrawables;
-
-		Vector3f myRotation;
-		Vector3f myPivot;
-		Vector3f myScale;
-		Vector3f myPosition;
-
-		Matrix4f myLocalTransform;
-		Matrix4f myWorldTransform;
 
 		bool mySelectable;
 

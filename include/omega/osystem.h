@@ -76,7 +76,7 @@
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 
-// Boost foreach support
+// Boost boost_foreach support
 #include "boost/foreach.hpp"
 // Let's use a nicer lowercase sytax for this macro.
 #define boost_foreach BOOST_FOREACH

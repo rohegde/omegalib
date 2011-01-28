@@ -365,7 +365,7 @@ namespace omega
 		static float boundingRadiusFromAABB(const AxisAlignedBox& aabb);
 
 		/** Compute a quaternion rotation transforming vector a to vector b **/
-		Quaternion buildRotation(const Vector3f& a, const Vector3f& b,
+		static Quaternion buildRotation(const Vector3f& a, const Vector3f& b,
 			const Vector3f& fallbackAxis = Vector3f::ZERO);
 
 

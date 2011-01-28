@@ -507,7 +507,7 @@ namespace omega {
 		@note
 		The matrix must be an affine matrix. @see Matrix4f::isAffine.
 		*/
-		void transformAffine(Matrix4f& m)
+		void transformAffine(const Matrix4f& m)
 		{
 			// Do nothing if current null or infinite
 			if ( mExtent != EXTENT_FINITE )

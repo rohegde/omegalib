@@ -35,7 +35,7 @@ namespace vmml
 {
 
 template < typename T >
-class quaternion : private vector< 4, T >
+class quaternion : public vector< 4, T >
 {
 public:
     typedef vector< 4, T >  super;
@@ -129,7 +129,8 @@ public:
 	//
     quaternion operator+( const vector< 3, T >& a ) const;
 	quaternion operator-( const vector< 3, T >& a ) const;
-	quaternion operator*( const vector< 3, T >& a ) const;
+	//quaternion operator*( const vector< 3, T >& a ) const;
+	vector< 3, T > operator* (const vector< 3, T >& v) const;
 
 	void operator+=( const vector< 3, T >& a );
 	void operator-=( const vector< 3, T >& a );
@@ -142,7 +143,7 @@ public:
 	static T dot( const quaternion< T >& a, const quaternion< T >& b );
 	
 	// returns multiplicative inverse
-	quaternion inverse();
+	quaternion inverse() const;
 	
 	void normal( const quaternion& aa, const quaternion& bb, const quaternion& cc,  const quaternion& dd );
 	quaternion normal( const quaternion& aa, const quaternion& bb, const quaternion& cc );
@@ -481,7 +482,7 @@ T quaternion< T >::squared_abs() const
 
 
 template < typename T >
-quaternion< T > quaternion< T >::inverse()
+quaternion< T > quaternion< T >::inverse() const
 {
 	quaternion< T > q( *this );
     q.conjugate();
@@ -706,17 +707,30 @@ quaternion< T >::operator-( const vector< 3, T >& a ) const
 
 
 
+//template < typename T >
+//quaternion< T >
+//quaternion< T >::operator*( const vector< 3, T >& a ) const
+//{
+//	return quaternion( -x() * a.x() - y() * a.y() - z() * a.z(),
+//	 					w() * a.x() + y() * a.z() - z() * a.y(), 
+//						w() * a.y() + z() * a.x() - x() * a.z(),
+//						w() * a.z() + x() * a.y() - y() * a.x()  );
+//}
+
+
 template < typename T >
-quaternion< T >
-quaternion< T >::operator*( const vector< 3, T >& a ) const
+vector< 3, T > quaternion<T>::operator* (const vector< 3, T >& v) const
 {
-	return quaternion( -x() * a.x() - y() * a.y() - z() * a.z(),
-	 					w() * a.x() + y() * a.z() - z() * a.y(), 
-						w() * a.y() + z() * a.x() - x() * a.z(),
-						w() * a.z() + x() * a.y() - y() * a.x()  );
+	// nVidia SDK implementation
+	vector< 3, T > uv, uuv;
+	vector< 3, T > qvec(x(), y(), z());
+	uv = qvec.cross(v);
+	uuv = qvec.cross(uv);
+	uv *= (2.0f * w());
+	uuv *= 2.0f;
+
+	return v + uv + uuv;
 }
-
-
 
 template < typename T >
 void
@@ -756,8 +770,6 @@ quaternion< T >::operator*=(const vector< 3, T >& a )
     w() = -_x * a.x() - _y * a.y() - _z * a.z();
 }
 	
-
-
 
 template < typename T >
 vector< 3, T > quaternion< T >::cross( const quaternion< T >& bb ) const
