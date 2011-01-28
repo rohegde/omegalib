@@ -119,7 +119,41 @@ public:
 				sprintf(floatChar,"%f", evt.pointSet[0][1] );
 				strcat( eventPacket, floatChar );
 			} else if( evt.numberOfPoints == 2 ){ // Touch Gestures
+				// Converts value to char, appends to eventPacket
+				strcat( eventPacket, "," ); // Spacer
+				sprintf(floatChar,"%f", evt.pointSet[0][0] );
+				strcat( eventPacket, floatChar );
+				
+				// Converts value to char, appends to eventPacket
+				strcat( eventPacket, "," ); // Spacer
+				sprintf(floatChar,"%f", evt.pointSet[0][1] );
+				strcat( eventPacket, floatChar );
 
+				// Converts value to char, appends to eventPacket
+				strcat( eventPacket, "," ); // Spacer
+				sprintf(floatChar,"%f", evt.pointSet[1][0] );
+				strcat( eventPacket, floatChar );
+
+				// Converts value to char, appends to eventPacket
+				strcat( eventPacket, "," ); // Spacer
+				sprintf(floatChar,"%f", evt.pointSet[1][1] );
+				strcat( eventPacket, floatChar );
+
+				if( evt.type == InputEvent::Rotate ){
+					// Converts rotation to char, appends to eventPacket
+					strcat( eventPacket, "," ); // Spacer
+					sprintf(floatChar,"%f", evt.rotation[0] );
+					strcat( eventPacket, floatChar );
+				} else if( evt.type == InputEvent::Split ){
+					// Converts values to char, appends to eventPacket
+					strcat( eventPacket, "," ); // Spacer
+					sprintf(floatChar,"%f", evt.value[0] ); // Delta distance
+					strcat( eventPacket, floatChar );
+
+					strcat( eventPacket, "," ); // Spacer
+					sprintf(floatChar,"%f", evt.value[1] ); // Delta ratio
+					strcat( eventPacket, floatChar );
+				}
 			}
 
 			strcat( eventPacket, " " ); // Spacer
