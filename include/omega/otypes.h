@@ -25,9 +25,6 @@
 #ifndef __OTYPES_H__
 #define __OTYPES_H__
 
-typedef unsigned char byte;
-typedef unsigned int uint;
-
 // Stdlib includes
 #include <string>
 
@@ -38,8 +35,20 @@ typedef unsigned int uint;
 // Libconfig
 #include "libconfig/libconfig.hh"
 
+
+// Dictionary 
+#define Dictionary boost::unordered_map 
+
 namespace omega
 {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Type definitions
+typedef libconfig::Setting Setting;
+typedef std::string String;
+typedef co::base::uint128_t uint128_t;
+typedef unsigned char byte;
+typedef unsigned int uint;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 class Application;
@@ -64,16 +73,6 @@ enum Axis
     AxisY,
     AxisZ
 };
-
-// String
-typedef std::string String;
-
-// Dictionary 
-#define Dictionary boost::unordered_map 
-
-// Setting
-typedef libconfig::Setting Setting;
-typedef co::base::uint128_t uint128_t;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //! wrapper to enable array use where arrays would not be allowed otherwise

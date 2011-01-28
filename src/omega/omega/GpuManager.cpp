@@ -13,6 +13,9 @@
 #include "omega/SystemManager.h"
 #include "omega/Utils.h"
 
+#include "boost/foreach.hpp"
+#define boost_foreach BOOST_FOREACH
+
 using namespace omega;
 
 #define HANDLE_STATUS(id) case id: { oerror(#id); break; }
