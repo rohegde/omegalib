@@ -63,7 +63,8 @@
  * Update PQService to use config files (*done*)
 
  * Integrate PQLabs gestures into PQService (*done*)
-  * Add PQLabs gestures to oinputservice and have NetService convert gestures back into events (*delivery*: Late January/Early February)
+  * Add PQLabs gestures to oinputservice (*done*)
+  * NetService convert gestures back into events (*delivery*: Early February)
 
  * oinputservice / NetService implementation (*done*)
   * oinputservice streams events out via UDP socket (*done*)
