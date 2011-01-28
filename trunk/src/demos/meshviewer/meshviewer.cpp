@@ -180,7 +180,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 				}
 				else if((evt.flags & InputEvent::Right) == InputEvent::Right)
 				{
-					const Vector3f& rot = myActiveNode->getRotation();
+					//const Vector3f& rot = myActiveNode->getRotation();
 
 					// Compute projection of bounding sphere center to ray.
 					Ray ray = Ray(origin, direction);
@@ -189,6 +189,8 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 					// Project point back onto sphere.
 					Vector3f sproj = myStartBSphere.projectPoint(rproj);
 					sproj.normalize();
+
+					Quaternion rot = Math::buildRotation(myHandlePosition, sproj);
 
 					Quaternion q2 = Quaternion(sproj);
 

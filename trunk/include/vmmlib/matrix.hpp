@@ -22,6 +22,7 @@
 
 namespace vmml
 {
+template < typename T >class quaternion;
 
 // matrix of type T with m rows and n columns
 template< size_t M, size_t N, typename T = float >
@@ -263,6 +264,10 @@ public:
     * @param angle - angle in radians
     * @param rotation axis - must be normalized!
     */
+	template< typename TT >
+	void makeTransform(const vector<3, TT>& position, const vector<3, TT>& scale, const quaternion<TT>& orientation, 
+		typename enable_if< M == N && M == 4, TT >::type* = 0);
+
     template< typename TT >
     void rotate( const TT angle, const vector< M-1, T >& axis, 
         typename enable_if< M == N && M == 4, TT >::type* = 0 );
@@ -337,7 +342,6 @@ public:
     inline T& y();
     inline T& z();
     
-	// legacy/compatibility accessor
 	struct row_accessor
 	{
 		row_accessor( T* array_ ) : array( array_ ) {}
@@ -350,6 +354,13 @@ public:
 			#endif
 			return array[ col_index * M ]; 
 		}
+		T* array;
+		private: row_accessor() {} // disallow std ctor
+	};
+
+	struct const_row_accessor
+	{
+		const_row_accessor(const T* array_ ) : array( array_ ) {}
 
 		const T&
 		operator[]( size_t col_index ) const
@@ -361,11 +372,10 @@ public:
 			return array[ col_index * M ]; 
 		}
 		
-		T* array;
-		private: row_accessor() {} // disallow std ctor
+		const T* array;
+		private: const_row_accessor() {} // disallow std ctor
 	};
-	// this is a hack to allow array-style access to matrix elements
-	// usage: matrix< 2, 2, float > m; m[ 1 ][ 0 ] = 37.0f;
+
 	inline row_accessor operator[]( size_t row_index )
 	{ 
 		#ifdef VMMLIB_SAFE_ACCESSORS
@@ -374,29 +384,18 @@ public:
 		#endif
 		return row_accessor( array + row_index );
 	}
+	inline const const_row_accessor operator[]( size_t row_index ) const
+	{ 
+		#ifdef VMMLIB_SAFE_ACCESSORS
+		if ( row_index > M ) 
+            VMMLIB_ERROR( "row index out of bounds", VMMLIB_HERE );
+		#endif
+		return const_row_accessor( array + row_index );
+	}
 
     friend std::ostream& operator << ( std::ostream& os, 
         const matrix< M, N, T >& matrix )
     {
-#ifdef EQ_EXPORT
-        const std::ios::fmtflags flags = os.flags();
-        const int                prec  = os.precision();
-        
-        os.setf( std::ios::right, std::ios::adjustfield );
-        os.precision( 5 );
-
-        for( size_t row_index = 0; row_index < M; ++row_index )
-        {
-            os << "|";
-            for( size_t col_index = 0; col_index < N; ++col_index )
-            {
-                os << std::setw(10) << matrix.at( row_index, col_index ) << " ";
-            }
-            os << "|" << std::endl;
-        }
-        os.precision( prec );
-        os.setf( flags );
-#else
         for( size_t row_index = 0; row_index < M; ++row_index )
         {
             os << "(";
@@ -412,7 +411,6 @@ public:
             }
             os << ")" << std::endl;
         }
-#endif
         return os;
     };  
 
@@ -1738,6 +1736,25 @@ typename enable_if< O == M-1 && P == N-1 && M == N && M >= 2 >::type* ) const
     return compute_determinant( minor_ );
 }
 
+
+template< size_t M, size_t N, typename T >
+template< typename TT >
+void
+matrix< M, N, T >::
+makeTransform(const vector<3, TT>& position, const vector<3, TT>& scale, const quaternion<TT>& orientation, 
+	typename enable_if< M == N && M == 4, TT>::type* )
+{
+    matrix< 3, 3, T > rot3x3;
+    orientation.get_rotation_matrix(rot3x3);
+
+    // Set up final matrix with scale, rotation and translation
+	(*this)[0][0] = scale.x() * rot3x3[0][0]; (*this)[0][1] = scale.y() * rot3x3[0][1]; (*this)[0][2] = scale.z() * rot3x3[0][2]; (*this)[0][3] = position.x();
+    (*this)[1][0] = scale.x() * rot3x3[1][0]; (*this)[1][1] = scale.y() * rot3x3[1][1]; (*this)[1][2] = scale.z() * rot3x3[1][2]; (*this)[1][3] = position.y();
+    (*this)[2][0] = scale.x() * rot3x3[2][0]; (*this)[2][1] = scale.y() * rot3x3[2][1]; (*this)[2][2] = scale.z() * rot3x3[2][2]; (*this)[2][3] = position.z();
+
+    // No projection term
+    (*this)[3][0] = 0; (*this)[3][1] = 0; (*this)[3][2] = 0; (*this)[3][3] = 1;
+}
 
 
 template< size_t M, size_t N, typename T >

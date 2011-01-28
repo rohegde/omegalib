@@ -29,15 +29,9 @@ using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::addChild(SceneNode* child) 
-{ 
-	myChildren.push_back(child); child->myParent = this; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::draw()
 {
-	if(myChanged) updateTransform();
+	//if(myChanged) updateTransform();
 
 	glPushMatrix();
 
@@ -46,7 +40,7 @@ void SceneNode::draw()
 
 	if(myBoundingBoxVisible) drawBoundingBox();
 
-	glMultMatrixf(myWorldTransform.begin());
+	glMultMatrixf(getFullTransform().begin());
 
 	// Draw drawables attached to this node.
 	boost_foreach(Drawable* d, myDrawables)
@@ -54,8 +48,10 @@ void SceneNode::draw()
 		d->draw(this);
 	}
 	// Draw children nodes.
-	boost_foreach(SceneNode* n, myChildren)
+	ChildNodeIterator i = getChildIterator();
+	while(i.hasMoreElements())
 	{
+		SceneNode* n = (SceneNode*)i.getNext();
 		n->draw();
 	}
 
@@ -65,22 +61,6 @@ void SceneNode::draw()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::updateTransform()
 {
-	// Compute local transform
-	myLocalTransform = Matrix4f::IDENTITY;
-	myLocalTransform.set_translation(myPosition);
-	myLocalTransform.rotate_x(myRotation[0]);
-	myLocalTransform.rotate_y(myRotation[1]);
-	myLocalTransform.rotate_z(myRotation[2]);
-	myLocalTransform.scale(myScale);
-
-	if(myParent != NULL) myWorldTransform = myParent->myWorldTransform * myLocalTransform;
-	else myWorldTransform = myLocalTransform;
-
-	boost_foreach(SceneNode* n, myChildren)
-	{
-		n->updateTransform();
-	}
-
 	// Reset bounding box.
 	myBBox.setNull();
 
@@ -92,18 +72,18 @@ void SceneNode::updateTransform()
 			myBBox.merge(bbox);
 		}
 	}
-	boost_foreach(SceneNode* n, myChildren)
+	ChildNodeIterator i = getChildIterator();
+	while(i.hasMoreElements())
 	{
+		SceneNode* n = (SceneNode*)i.getNext();
 		const AxisAlignedBox& bbox = n->getBoundingBox();
 		myBBox.merge(bbox);
 	}
 
-	myBBox.transformAffine(myWorldTransform);
+	myBBox.transformAffine(getFullTransform());
 
 	// Compute bounding sphere.
 	myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().find_max());
-
-	myChanged = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

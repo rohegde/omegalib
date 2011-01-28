@@ -71,9 +71,9 @@ void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool 
 	if(selected && queryFirst) return;
 
 	// Draw children nodes.
-	for(int i = 0; i < node->getNumChildren(); i++)
+	for(int i = 0; i < node->numChildren(); i++)
 	{
-		SceneNode* n = node->getChild(i);
+		SceneNode* n = (SceneNode*)node->getChild(i);
 		queryNode(n, list, queryFirst);
 	}
 }
