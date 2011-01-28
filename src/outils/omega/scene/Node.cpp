@@ -372,11 +372,11 @@ void Node::translate(const Vector3f& d, TransformSpace relativeTo)
 {
     switch(relativeTo)
     {
-    case TS_LOCAL:
+    case TransformLocal:
         // position is relative to parent so transform downwards
         mPosition += mOrientation * d;
         break;
-    case TS_WORLD:
+    case TransformWorld:
         // position is relative to parent so transform upwards
         if (mParent)
         {
@@ -387,7 +387,7 @@ void Node::translate(const Vector3f& d, TransformSpace relativeTo)
             mPosition += d;
         }
         break;
-    case TS_PARENT:
+    case TransformParent:
         mPosition += d;
         break;
     }
@@ -452,16 +452,16 @@ void Node::rotate(const Quaternion& q, TransformSpace relativeTo)
 
     switch(relativeTo)
     {
-    case TS_PARENT:
+    case TransformParent:
         // Rotations are normally relative to local axes, transform up
         mOrientation = qnorm * mOrientation;
         break;
-    case TS_WORLD:
+    case TransformWorld:
         // Rotations are normally relative to local axes, transform up
         mOrientation = mOrientation * getDerivedOrientation().inverse()
             * qnorm * getDerivedOrientation();
         break;
-    case TS_LOCAL:
+    case TransformLocal:
         // Note the order of the mult, i.e. q comes after
         mOrientation = mOrientation * qnorm;
         break;
