@@ -12,6 +12,9 @@
  *********************************************************************************************************************/
 #include "omega/ui/Box.h"
 
+#include "boost/foreach.hpp"
+#define boost_foreach BOOST_FOREACH
+
 using namespace omega;
 using namespace omega::ui;
 

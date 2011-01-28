@@ -13,6 +13,9 @@
 #include "omega/Math.h"
 #include "omega/ui/Widget.h"
 
+#include "boost/foreach.hpp"
+#define boost_foreach BOOST_FOREACH
+
 #include "FTGL/ftgl.h"
 
 using namespace omega;

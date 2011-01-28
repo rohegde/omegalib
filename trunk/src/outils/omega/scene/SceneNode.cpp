@@ -25,6 +25,9 @@
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/SceneManager.h"
 
+#include "boost/foreach.hpp"
+#define boost_foreach BOOST_FOREACH
+
 using namespace omega;
 using namespace omega::scene;
 
