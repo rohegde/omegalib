@@ -34,15 +34,22 @@ using namespace omega::scene;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward declarations.
+class Entity;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SelectionSphere: public Drawable
 {
 public:
+	SelectionSphere(Entity* e): myEntity(e) {}
+
 	void draw(SceneNode* node);
 
 	void setVisible(bool value) { myVisible = value; }
 	bool isVisisble() { return myVisible; }
 
 private:
+	Entity* myEntity;
 	bool myVisible;
 };
 
@@ -50,7 +57,7 @@ private:
 class Entity
 {
 public:
-	enum Operation { Move, Scale, Translate, Compound };
+	enum Operation { Move, Scale, Rotate, Compound };
 
 public:
 	Entity(SceneManager* sm, Mesh* m, const Vector3f& position);
@@ -61,6 +68,8 @@ public:
 	void activate(const Vector3f handlePos);
 	void deactivate();
 	bool isActive() { return myActive; }
+
+	Vector3f getHandlePosition() { return myHandlePosition; }
 
 private:
 	SceneNode* mySceneNode;
@@ -145,6 +154,14 @@ void SelectionSphere::draw(SceneNode* node)
 			}
 			glEnd();
 		}
+
+		// Draw handle positions;
+		//glColor4f(1.0, 0.0, 0.0, 1.0);
+		//glPointSize(16);
+		//glBegin(GL_POINTS);
+		//glVertex3fv(myEntity->getHandlePosition().begin());
+		//glEnd();
+		//glPointSize(1);
 	}
 }
 
@@ -152,7 +169,7 @@ void SelectionSphere::draw(SceneNode* node)
 Entity::Entity(SceneManager* sm, Mesh* m, const Vector3f& position)
 {
 	myMesh = m;
-	mySelectionSphere = new SelectionSphere();
+	mySelectionSphere = new SelectionSphere(this);
 	mySelectionSphere->setVisible(false);
 
 	mySceneNode = new SceneNode(sm);
@@ -171,7 +188,7 @@ void Entity::activate(const Vector3f handlePos)
 
 	myStartBSphere = mySceneNode->getBoundingSphere();
 	myStartOrientation = mySceneNode->getOrientation();
-	myHandlePosition = handlePos;
+	myHandlePosition =  handlePos; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,6 +226,19 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 
 		Vector3f newPos = Vector3f(tx, ty, tz) - myHandlePosition;
 		mySceneNode->setPosition(newPos);
+	}
+	else if(op == Rotate)
+	{
+		// Intersect the ray with the bounding sphere. 
+		// If the point is outside the bounding sphere, perform no rotation.
+		std::pair<bool, float> p = ray1.intersects(myStartBSphere);
+		if(p.first)
+		{
+			Vector3f pt = ray1.getPoint(p.second);
+			pt -= myStartBSphere.getCenter();
+			Quaternion rot = Math::buildRotation(myHandlePosition, pt);
+			mySceneNode->setOrientation(rot * myStartOrientation);
+		}
 	}
 }
 
@@ -288,21 +318,10 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 				{
 					myActiveEntity->manipulate(Entity::Move, ray);
 				}
-				//else if((evt.flags & InputEvent::Right) == InputEvent::Right)
-				//{
-				//	// Compute projection of bounding sphere center to ray.
-				//	Ray ray = Ray(origin, direction);
-				//	Vector3f rproj = ray.projectPoint(myStartBSphere.getCenter());
-
-				//	// Project point back onto sphere.
-				//	Vector3f sproj = myStartBSphere.projectPoint(rproj);
-				//	sproj.normalize();
-
-				//	Quaternion rot = Math::buildRotation(sproj, myHandlePosition);
-				//	myActiveNode->setOrientation(rot * myStartOrientation);
-
-				//	//myActiveNode->setRotation(rot[0] + delta[0], rot[1] + delta[1], rot[2]);
-				//}
+				else if((evt.flags & InputEvent::Right) == InputEvent::Right)
+				{
+					myActiveEntity->manipulate(Entity::Rotate, ray);
+				}
 				//else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
 				//{
 				//	// Compute new scale.
@@ -353,6 +372,8 @@ void MeshViewerClient::draw(const DrawContext& context)
 		GfxUtils::setLightEnabled(0, true);
 		GfxUtils::setLightColor(0, Color(1.0, 1.0, 1.0));
 		GfxUtils::setLightPosition(0, Vector3f(0, 1, 0));
+
+		glEnable(GL_DEPTH_TEST);
 
 		mySceneManager->draw();
 
