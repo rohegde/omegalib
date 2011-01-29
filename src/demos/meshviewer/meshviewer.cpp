@@ -80,6 +80,7 @@ private:
 	Vector3f myHandlePosition;
 	Sphere myStartBSphere;
 	Quaternion myStartOrientation;
+	float myStartScale;
 	bool myActive;
 };
 
@@ -188,6 +189,7 @@ void Entity::activate(const Vector3f handlePos)
 
 	myStartBSphere = mySceneNode->getBoundingSphere();
 	myStartOrientation = mySceneNode->getOrientation();
+	myStartScale = mySceneNode->getScale()[0];
 	myHandlePosition =  handlePos; 
 }
 
@@ -239,6 +241,24 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 			Quaternion rot = Math::buildRotation(myHandlePosition, pt);
 			mySceneNode->setOrientation(rot * myStartOrientation);
 		}
+	}
+	else if(op == Scale)
+	{
+		Vector3f origin = ray1.getOrigin();
+		Vector3f direction = ray1.getDirection();
+		// Interstect the ray with the Z plane where the handle lies, to get
+		// the new handle position.
+		float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
+		float l = (tz - origin[2]) / direction[2];
+		float tx = origin[0] + l * direction[0];
+		float ty = origin[1] + l * direction[1];
+
+		Vector3f newPos = Vector3f(tx, ty, tz);// - myHandlePosition;
+		float d = (newPos - myStartBSphere.getCenter()).length();
+
+		float scale = myStartScale * d / myStartBSphere.getRadius();
+
+		mySceneNode->setScale(scale);
 	}
 }
 
@@ -322,20 +342,10 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 				{
 					myActiveEntity->manipulate(Entity::Rotate, ray);
 				}
-				//else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
-				//{
-				//	// Compute new scale.
-				//	//const Sphere& bs = myActiveNode->getBoundingSphere();
-				//	//float d = (bs.getCenter() - myStartPosition).length();
-				//	//float r = bs.getRadius();
-
-				//	//float td = (bs.getCenter() - newPos).length();
-				//	//float scale = (td / d);
-
-				//	//printf("%f %f %f\n", d, r, scale);
-
-				//	//myActiveNode->setScale(scale);
-				//}
+				else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
+				{
+					myActiveEntity->manipulate(Entity::Scale, ray);
+				}
 
 			}
 		}
