@@ -22,245 +22,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-
-#include "omega/Plane.h"
-#include "omega/Ray.h"
-
-using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations.
-class Entity;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class SelectionSphere: public Drawable
-{
-public:
-	SelectionSphere(Entity* e): myEntity(e) {}
-
-	void draw(SceneNode* node);
-
-	void setVisible(bool value) { myVisible = value; }
-	bool isVisisble() { return myVisible; }
-
-private:
-	Entity* myEntity;
-	bool myVisible;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity
-{
-public:
-	enum Operation { Move, Scale, Rotate, Compound };
-
-public:
-	Entity(SceneManager* sm, Mesh* m, const Vector3f& position);
-
-	bool hit(const Ray& ray, Vector3f* handlePos);
-	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::ZERO, Vector3f::ZERO));
-
-	void activate(const Vector3f handlePos);
-	void deactivate();
-	bool isActive() { return myActive; }
-
-	Vector3f getHandlePosition() { return myHandlePosition; }
-
-private:
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	SelectionSphere* mySelectionSphere;
-
-	// Interaction stuff
-	Vector3f myHandlePosition;
-	Sphere myStartBSphere;
-	Quaternion myStartOrientation;
-	float myStartScale;
-	bool myActive;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public ApplicationClient, IUIEventHandler
-{
-public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL), myActiveEntity(NULL) {}
-
-	virtual void initialize();
-	virtual bool handleEvent(const InputEvent& evt);
-	virtual void handleUIEvent(const UIEvent& evt);
-	virtual void update(const UpdateContext& context);
-	virtual void draw(const DrawContext& context);
-
-private:
-	void addEntity(Mesh* m, const Vector3f& position);
-
-private:
-	// Managers
-	GpuManager* myGpu;
-	TextureManager* myTexMng;
-	FontManager* myFontMng;
-	SceneManager* mySceneManager;
-	MeshManager* myMeshManager;
-	EffectManager* myEffectManager;
-	UIManager myUI;
-
-	// Entity list
-	std::list<Entity*> myEntities;
-
-	// Active entity.
-	Entity* myActiveEntity;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient() { return new MeshViewerClient(this); }
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SelectionSphere::draw(SceneNode* node)
-{
-	if(myVisible)
-	{
-		float radius = node->getBoundingSphere().getRadius();
-		float stp = Math::Pi * 2 / 32;
-		float stp2 = Math::Pi * 2 / 16;
-		glEnable(GL_BLEND);
-		glColor4f(0.8, 0.8, 1.0, 0.2f);
-	
-		for(float g = 0; g < 2 * Math::Pi; g+= stp2)
-		{
-			glBegin(GL_LINE_LOOP);
-			for(float t = 0; t < 2 * Math::Pi; t+= stp)
-			{
-				float ptx = Math::sin(t) * Math::sin(g) * radius;
-				float pty = Math::cos(t) * Math::sin(g) * radius;
-				float ptz = Math::cos(g) * radius;
-				glVertex3f(ptx, pty, ptz);
-			}
-			glEnd();
-			glBegin(GL_LINE_LOOP);
-			for(float t = 0; t < 2 * Math::Pi; t+= stp)
-			{
-				float ptz = Math::sin(t) * Math::sin(g) * radius;
-				float pty = Math::cos(t) * Math::sin(g) * radius;
-				float ptx = Math::cos(g) * radius;
-				glVertex3f(ptx, pty, ptz);
-			}
-			glEnd();
-		}
-
-		// Draw handle positions;
-		//glColor4f(1.0, 0.0, 0.0, 1.0);
-		//glPointSize(16);
-		//glBegin(GL_POINTS);
-		//glVertex3fv(myEntity->getHandlePosition().begin());
-		//glEnd();
-		//glPointSize(1);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* sm, Mesh* m, const Vector3f& position)
-{
-	myMesh = m;
-	mySelectionSphere = new SelectionSphere(this);
-	mySelectionSphere->setVisible(false);
-
-	mySceneNode = new SceneNode(sm);
-	mySceneNode->addDrawable(myMesh);
-	mySceneNode->addDrawable(mySelectionSphere);
-	mySceneNode->setPosition(position);
-	mySceneNode->setSelectable(true);
-	sm->getRootNode()->addChild(mySceneNode);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::activate(const Vector3f handlePos)
-{
-	myActive = true;
-	mySelectionSphere->setVisible(true);
-
-	myStartBSphere = mySceneNode->getBoundingSphere();
-	myStartOrientation = mySceneNode->getOrientation();
-	myStartScale = mySceneNode->getScale()[0];
-	myHandlePosition =  handlePos; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::deactivate()
-{
-	myActive = false;
-	mySelectionSphere->setVisible(false);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Entity::hit(const Ray& ray, Vector3f* handlePos)
-{
-	const Sphere& s = mySceneNode->getBoundingSphere();
-	std::pair<bool, float> h = ray.intersects(s);
-	if(h.first)
-	{
-		(*handlePos) = ray.getPoint(h.second) - s.getCenter();
-	}
-	return h.first;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
-{
-	if(op == Move)
-	{
-		Vector3f origin = ray1.getOrigin();
-		Vector3f direction = ray1.getDirection();
-		// Interstect the ray with the Z plane where the handle lies, to get
-		// the new handle position.
-		float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
-		float l = (tz - origin[2]) / direction[2];
-		float tx = origin[0] + l * direction[0];
-		float ty = origin[1] + l * direction[1];
-
-		Vector3f newPos = Vector3f(tx, ty, tz) - myHandlePosition;
-		mySceneNode->setPosition(newPos);
-	}
-	else if(op == Rotate)
-	{
-		// Intersect the ray with the bounding sphere. 
-		// If the point is outside the bounding sphere, perform no rotation.
-		std::pair<bool, float> p = ray1.intersects(myStartBSphere);
-		if(p.first)
-		{
-			Vector3f pt = ray1.getPoint(p.second);
-			pt -= myStartBSphere.getCenter();
-			Quaternion rot = Math::buildRotation(myHandlePosition, pt);
-			mySceneNode->setOrientation(rot * myStartOrientation);
-		}
-	}
-	else if(op == Scale)
-	{
-		Vector3f origin = ray1.getOrigin();
-		Vector3f direction = ray1.getDirection();
-		// Interstect the ray with the Z plane where the handle lies, to get
-		// the new handle position.
-		float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
-		float l = (tz - origin[2]) / direction[2];
-		float tx = origin[0] + l * direction[0];
-		float ty = origin[1] + l * direction[1];
-
-		Vector3f newPos = Vector3f(tx, ty, tz);// - myHandlePosition;
-		float d = (newPos - myStartBSphere.getCenter()).length();
-
-		float scale = myStartScale * d / myStartBSphere.getRadius();
-
-		mySceneNode->setScale(scale);
-	}
-}
+#include "meshviewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
@@ -304,6 +66,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	case InputService::Pointer:
 		if(evt.type == InputEvent::Down)
 		{
+			// Select objects.
 			Ray ray = GfxUtils::getViewRay(Vector2f(evt.position[0], evt.position[1]));
 
 			VectorIterator<std::list<Entity*> > it(myEntities.begin(), myEntities.end());
@@ -322,6 +85,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 		}
 		else if(evt.type == InputEvent::Up)
 		{
+			// Deselect objects.
 			if(myActiveEntity != NULL)
 			{
 				myActiveEntity->deactivate();
@@ -330,6 +94,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 		}
 		else if(evt.type == InputEvent::Move)
 		{
+			// Manipulate object, if one is active.
 			if(myActiveEntity != NULL)
 			{
 				Ray ray = GfxUtils::getViewRay(Vector2f(evt.position[0], evt.position[1]));

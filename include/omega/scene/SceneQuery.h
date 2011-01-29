@@ -44,7 +44,7 @@ namespace scene
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Comparison function to sort scene query results by distance.
-	bool SceneQueryResultDistanceCompare(SceneQueryResult& r1, SceneQueryResult& r2)
+	inline bool SceneQueryResultDistanceCompare(SceneQueryResult& r1, SceneQueryResult& r2)
 	{
 		if(r1.distance < r2.distance) return false;
 		return true;
