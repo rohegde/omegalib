@@ -1,6 +1,5 @@
 #Equalizer 1.0 ascii
 
-# A laptop configuration for OmegaDesk emulation. Assumes an HD screen laptop.
 global
 {
     EQ_CONFIG_FATTR_EYE_BASE        1.025
