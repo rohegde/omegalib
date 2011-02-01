@@ -12,7 +12,6 @@
 
 #include <vmmlib/vector.hpp>
 #include <vmmlib/matrix.hpp>
-#include <vmmlib/math.hpp>
 #include <vmmlib/enable_if.hpp>
 
 #include <vmmlib/exception.hpp>

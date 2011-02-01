@@ -26,14 +26,13 @@
  * Copyright (c) 2000-2009 Torus Knot Software Ltd
  *  For the latest info, see http://www.ogre3d.org/
  *********************************************************************************************************************/
-#ifndef __Sphere_H_
-#define __Sphere_H_
+#ifndef __SPHERE_H_
+#define __SPHERE_H_
 
-#include "osystem.h"
+#include <vmmlib/math.hpp>
+#include <vmmlib/vector.hpp>
 
-#include "omega/Math.h"
-
-namespace omega {
+namespace vmml {
 
 	// Forward declarations.
 	class AxisAlignedBox;
@@ -45,64 +44,63 @@ namespace omega {
         x^2 + y^2 + z^2 = r^2 (for sphere's centered on the origin). Ogre stores spheres
         simply as a center point and a radius.
     */
-    class OMEGA_API Sphere
+	template<typename T>
+    class sphere
     {
     protected:
-        float mRadius;
-        Vector3f mCenter;
+        T mRadius;
+        vector<3,T> mCenter;
     public:
         /** Standard constructor - creates a unit sphere around the origin.*/
-        Sphere() : mRadius(1.0), mCenter(Vector3f::ZERO) {}
+        sphere() : mRadius(1.0), mCenter(vector<3,T>::ZERO) {}
         /** Constructor allowing arbitrary spheres. 
             @param center The center point of the sphere.
             @param radius The radius of the sphere.
         */
-        Sphere(const Vector3f& center, float radius)
+        sphere(const vector<3,T>& center, T radius)
             : mRadius(radius), mCenter(center) {}
 
         /** Returns the radius of the sphere. */
-        float getRadius(void) const { return mRadius; }
+        T getRadius(void) const { return mRadius; }
 
         /** Sets the radius of the sphere. */
-        void setRadius(float radius) { mRadius = radius; }
+        void setRadius(T radius) { mRadius = radius; }
 
         /** Returns the center point of the sphere. */
-        const Vector3f& getCenter(void) const { return mCenter; }
+        const vector<3,T>& getCenter(void) const { return mCenter; }
 
         /** Sets the center point of the sphere. */
-        void setCenter(const Vector3f& center) { mCenter = center; }
+        void setCenter(const vector<3,T>& center) { mCenter = center; }
 
 		/** Returns whether or not this sphere intersects another sphere. */
-		bool intersects(const Sphere& s) const
+		bool intersects(const sphere<T>& s) const
 		{
             return (s.mCenter - mCenter).squaredLength() <=
-                Math::sqr(s.mRadius + mRadius);
+                math<T>::sqr(s.mRadius + mRadius);
 		}
 		/** Returns whether or not this sphere intersects a box. */
 		bool intersects(const AxisAlignedBox& box) const
 		{
-			return Math::intersects(*this, box);
+			return math<T>::intersects(*this, box);
 		}
 		/** Returns whether or not this sphere intersects a plane. */
 		bool intersects(const Plane& plane) const
 		{
-			return Math::intersects(*this, plane);
+			return math<T>::intersects(*this, plane);
 		}
 		/** Returns whether or not this sphere intersects a point. */
-		bool intersects(const Vector3f& v) const
+		bool intersects(const vector<3,T>& v) const
 		{
-            return ((v - mCenter).squaredLength() <= Math::sqr(mRadius));
+            return ((v - mCenter).squaredLength() <= math<T>::sqr(mRadius));
 		}
 		/** Projects a point onto the sphere.
 		@Returns: the coordinates of the projected point.*/
-		Vector3f projectPoint(const Vector3f point)
+		vector<3,T> projectPoint(const vector<3,T> point)
 		{
-			Vector4f sphere = Vector4f(mCenter, mRadius);
-			Vector3f result = sphere.projectOnSphere(point);
+			vector<4,T> sphere = vector<4,T>(mCenter, mRadius);
+			vector<3,T> result = sphere.projectOnSphere(point);
 			return result;
 		}
-        
-
     };
 }
 

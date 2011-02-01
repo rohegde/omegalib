@@ -26,43 +26,43 @@
  * Copyright (c) 2000-2009 Torus Knot Software Ltd
  *  For the latest info, see http://www.ogre3d.org/
  *********************************************************************************************************************/
-#ifndef __Ray_H_
-#define __Ray_H_
+#ifndef __RAY_H_
+#define __RAY_H_
 
-#include "otypes.h"
+#include <vmmlib/plane.hpp>
+#include <vmmlib/plane_bounded_volume.hpp>
 
-#include "omega/Plane.h"
-#include "omega/PlaneBoundedVolume.h"
-
-namespace omega {
+namespace vmml 
+{
 	/** Representation of a ray in space, i.e. a line with an origin and direction. */
-    class OMEGA_API Ray
+	template<typename T>
+    class ray
     {
     protected:
-        Vector3f mOrigin;
-        Vector3f mDirection;
+        vector<3,T> mOrigin;
+        vector<3,T> mDirection;
     public:
-        Ray():mOrigin(Vector3f::ZERO), mDirection(Vector3f::UNIT_Z) {}
-        Ray(const Vector3f& origin, const Vector3f& direction)
+        ray():mOrigin(vector<3,T>::ZERO), mDirection(vector<3,T>::UNIT_Z) {}
+        ray(const vector<3,T>& origin, const vector<3,T>& direction)
             :mOrigin(origin), mDirection(direction) {}
 
         /** Sets the origin of the ray. */
-        void setOrigin(const Vector3f& origin) {mOrigin = origin;} 
+        void setOrigin(const vector<3,T>& origin) {mOrigin = origin;} 
         /** Gets the origin of the ray. */
-        const Vector3f& getOrigin(void) const {return mOrigin;} 
+        const vector<3,T>& getOrigin(void) const {return mOrigin;} 
 
         /** Sets the direction of the ray. */
-        void setDirection(const Vector3f& dir) {mDirection = dir;} 
+        void setDirection(const vector<3,T>& dir) {mDirection = dir;} 
         /** Gets the direction of the ray. */
-        const Vector3f& getDirection(void) const {return mDirection;} 
+        const vector<3,T>& getDirection(void) const {return mDirection;} 
 
 		/** Gets the position of a point t units along the ray. */
-		Vector3f getPoint(float t) const { 
-			return Vector3f(mOrigin + (mDirection * t));
+		vector<3,T> getPoint(float t) const { 
+			return vector<3,T>(mOrigin + (mDirection * t));
 		}
 		
 		/** Gets the position of a point t units along the ray. */
-		Vector3f operator*(float t) const { 
+		vector<3,T> operator*(float t) const { 
 			return getPoint(t);
 		}
 
@@ -72,9 +72,9 @@ namespace omega {
 			indicate the distance along the ray at which it intersects. 
 			This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, float> intersects(const Plane& p) const
+		std::pair<bool, float> intersects(const plane<T>& p) const
 		{
-			return Math::intersects(*this, p);
+			return math<T>::intersects(*this, p);
 		}
         /** Tests whether this ray intersects the given plane bounded volume. 
         @returns A pair structure where the first element indicates whether
@@ -82,9 +82,9 @@ namespace omega {
         indicate the distance along the ray at which it intersects. 
         This can be converted to a point in space by calling getPoint().
         */
-        std::pair<bool, float> intersects(const PlaneBoundedVolume& p) const
+        std::pair<bool, float> intersects(const plane_bounded_volume<T>& p) const
         {
-            return Math::intersects(*this, p.planes, p.outside == Plane::POSITIVE_SIDE);
+            return math<T>::intersects(*this, p.planes, p.outside == plane<T>::POSITIVE_SIDE);
         }
 		/** Tests whether this ray intersects the given sphere. 
 		@returns A pair structure where the first element indicates whether
@@ -92,9 +92,9 @@ namespace omega {
 			indicate the distance along the ray at which it intersects. 
 			This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, float> intersects(const Sphere& s) const
+		std::pair<bool, float> intersects(const sphere<T>& s) const
 		{
-			return Math::intersects(*this, s);
+			return math<T>::intersects(*this, s);
 		}
 		/** Tests whether this ray intersects the given box. 
 		@returns A pair structure where the first element indicates whether
@@ -102,23 +102,23 @@ namespace omega {
 			indicate the distance along the ray at which it intersects. 
 			This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, float> intersects(const AxisAlignedBox& box) const
+		std::pair<bool, float> intersects(const axis_aligned_box<T>& box) const
 		{
-			return Math::intersects(*this, box);
+			return math<T>::intersects(*this, box);
 		}
 
 		/** Computes the projection of a point.
 		@returns the distance
 		*/
-		Vector3f projectPoint(const Vector3f& point) const
+		vector<3,T> projectPoint(const vector<3,T>& point) const
 		{
-			const Vector3f& v = mDirection;
-			const Vector3f w = point - mOrigin;
+			const vector<3,T>& v = mDirection;
+			const vector<3,T> w = point - mOrigin;
 			
 			float c1 = w.dot(v);
 			float c2 = v.dot(v);
 			float b = c1 / c2;
-			 Vector3f pb = mOrigin + b * v;
+			 vector<3,T> pb = mOrigin + b * v;
 			 return pb;
 		}
     };

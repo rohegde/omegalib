@@ -5,7 +5,6 @@
 
 #include <vmmlib/matrix_functors.hpp>
 #include <vmmlib/vector.hpp>
-#include <vmmlib/math.hpp>
 #include <vmmlib/exception.hpp>
 #include <vmmlib/enable_if.hpp>
 

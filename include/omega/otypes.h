@@ -49,12 +49,18 @@ typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long long uint64;
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 class Application;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Type definitions.
+typedef vmml::math<float> Math;
+typedef vmml::sphere<float> Sphere;
+typedef vmml::plane<float> Plane;
+typedef vmml::ray<float> Ray;
+typedef vmml::axis_aligned_box<float> AxisAlignedBox;
 typedef vmml::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
 typedef vmml::matrix< 4, 4, float >  Matrix4f; //!< A 4x4 float matrix
 typedef vmml::vector< 2, int > Vector2i; //!< A two-component integer vector

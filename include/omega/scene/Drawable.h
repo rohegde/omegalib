@@ -26,7 +26,6 @@
 #define __DRAWABLE_H__
 
 #include "omega/osystem.h"
-#include "omega/AxisAlignedBox.h"
 #include "omega/scene/Effect.h"
 
 namespace omega

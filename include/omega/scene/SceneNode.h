@@ -26,7 +26,6 @@
 #define __SCENENODE_H__
 
 #include "omega/osystem.h"
-#include "omega/Sphere.h"
 #include "omega/scene/Drawable.h"
 #include "omega/scene/Node.h"
 

@@ -2,7 +2,6 @@
 #define __VMML__VECTOR__HPP__
 
 #include <vmmlib/vmmlib_config.hpp>
-#include <vmmlib/math.hpp>
 #include <vmmlib/enable_if.hpp>
 #include <vmmlib/exception.hpp>
 
