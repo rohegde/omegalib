@@ -27,6 +27,7 @@
 #include "omega/SystemManager.h"
 #include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
+#include "omega/Math.h"
 
 #include "libconfig/ArgumentHelper.h"
 
@@ -54,6 +55,26 @@ void displayCallback(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// setup the context viewport.
+	DrawContext dc;
+	dc.viewportX = 0;
+	dc.viewportY = 0;
+	dc.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
+	dc.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+	ds->updateProjectionMatrix(dc);
+
+	// Push observer matrix.
+	glPushMatrix();
+	Matrix4f& mat = ds->getObserver().getViewTransform();
+	glLoadIdentity();
+	glLoadMatrixf(mat.begin());
+
+	//glLoadIdentity();
+	//Vector3f pt = (ds->getObserver().getReferencePosition() * -1.0f);
+	//glTranslatef(pt[0], pt[1], pt[2]);
+	//glGetFloatv( GL_MODELVIEW_MATRIX, mat.begin());
+
 	// Process events.
 	InputManager* im = SystemManager::instance()->getInputManager();
 	int av = im->getAvailableEvents();
@@ -69,20 +90,6 @@ void displayCallback(void)
 			ac->handleEvent(evts[evtNum]);
 		}
 	}
-
-	// setup the context viewport.
-	DrawContext dc;
-	dc.viewportX = 0;
-	dc.viewportY = 0;
-	dc.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
-	dc.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
-
-	ds->updateProjectionMatrix();
-
-	// Push observer matrix.
-	glPushMatrix();
-	Matrix4f& mat = ds->getObserver().getHeadMatrix();
-	glLoadMatrixf(mat.begin());
 
 	for(int layer = 0; layer < Application::MaxLayers; layer++)
 	{
@@ -129,8 +136,8 @@ void GlutDisplaySystem::setup(Setting& setting)
 
 	int width;
 	int height;
-	myFov = 90;
-	myNearz = 0.001f;
+	myFov = 60;
+	myNearz = 1.0f;
 	myFarz = 100;
 
 	libconfig::ArgumentHelper ah;
@@ -150,10 +157,11 @@ void GlutDisplaySystem::setup(Setting& setting)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GlutDisplaySystem::updateProjectionMatrix()
+void GlutDisplaySystem::updateProjectionMatrix(const DrawContext& dc)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	//glViewport(dc.viewportX, dc.viewportY, dc.viewportWidth, dc.viewportHeight);
 	gluPerspective(myFov, myAspect, myNearz, myFarz);
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -235,34 +243,20 @@ void GlutDisplaySystem::initObservers()
 		{
 			Setting& stObserver = stObservers[i];
 
-			Matrix4f emitterMatrix( eq::Matrix4f::IDENTITY );
+			Vector3f referencePos;
 
-			if(stObserver.exists("EmitterScale"))
+			if(stObserver.exists("ReferencePosition"))
 			{
-				Setting& stEmitterScale = stObserver["EmitterScale"];
-				emitterMatrix.scale((float)stEmitterScale[0], (float)stEmitterScale[1], (float)stEmitterScale[2]);
+				Setting& stEmitterTranslation = stObserver["ReferencePosition"];
+				referencePos.x() = (float)stEmitterTranslation[0];
+				referencePos.y() = (float)stEmitterTranslation[1];
+				referencePos.z() = (float)stEmitterTranslation[2];
 			}
-			if(stObserver.exists("EmitterTranslation"))
-			{
-				Setting& stEmitterTranslation = stObserver["EmitterTranslation"];
-				Vector3f pos;
-				pos.x() = (float)stEmitterTranslation[0];
-				pos.y() = (float)stEmitterTranslation[1];
-				pos.z() = (float)stEmitterTranslation[2];
-				emitterMatrix.set_translation(pos);
-			}
-			/*if(stObserver.exists("EmitterRotation"))
-			{
-				Setting& stEmitterRotation = stObserver["EmitterRotation"];
-				emitterMatrix.rotate((float)stEmitterRotation[0], 1, 0, 0);
-				emitterMatrix.rotate((float)stEmitterRotation[1], 0, 1, 0);
-				emitterMatrix.rotate((float)stEmitterRotation[2], 0, 0, 1);
-			}*/
 
 			// NOTE: Glut supports just one observer.. last observer specified wins.
 			// Set observer initial position to origin, neutral orientation.
-			myObserver.setWorldToEmitter(emitterMatrix);
-			myObserver.update(Vector3f::ZERO, Vector3f::ZERO);
+			myObserver.setReferencePosition(referencePos);
+			myObserver.update(Vector3f::ZERO, Quaternion::IDENTITY);
 		}
 	}
 }

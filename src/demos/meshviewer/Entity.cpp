@@ -159,7 +159,7 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 
 		float scale = myStartScale * d / myStartBSphere.getRadius();
 
-		mySceneNode->setScale(scale);
+		mySceneNode->setScale(scale, scale, scale);
 	}
 }
 

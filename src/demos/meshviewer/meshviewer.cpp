@@ -48,7 +48,7 @@ void MeshViewerClient::initialize()
 
 	//addObject(mesh, Vector3f(0, 0.2, -0.5f));
 	//addObject(mesh, Vector3f(0, -0.2, -0.5f));
-	addEntity(mesh, Vector3f(0, 0, -0.2f));
+	addEntity(mesh, Vector3f(0, 0, 0.0f));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
