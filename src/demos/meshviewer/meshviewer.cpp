@@ -30,8 +30,8 @@ void MeshViewerClient::initialize()
 	myFontMng = new FontManager();
 	myTexMng = new TextureManager();
 
-	//myUI = new UIManager();
-	//myUI->initialize();
+	myUI = new MeshViewerUI();
+	myUI->initialize(this);
 
 	myGpu = new GpuManager();
 	myGpu->initialize();
@@ -41,14 +41,16 @@ void MeshViewerClient::initialize()
 	myMeshManager = new MeshManager(myGpu, myEffectManager);
 
 	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
+	myMeshManager->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly);
 
-	Mesh* mesh = myMeshManager->getMesh("screwdriver");
+	Mesh* mesh1 = myMeshManager->getMesh("screwdriver");
+	Mesh* mesh2 = myMeshManager->getMesh("arm");
 
 	mySceneManager->initialize();
 
-	addEntity(mesh, Vector3f(0, 0.1, 0.0f));
-	addEntity(mesh, Vector3f(0, -0.1, 0.0f));
-	addEntity(mesh, Vector3f(0, 0, 0.0f));
+	addEntity(mesh1, Vector3f(0, 0.1, 0.0f));
+	addEntity(mesh1, Vector3f(0, -0.1, 0.0f));
+	addEntity(mesh2, Vector3f(0, 0, 0.0f));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
