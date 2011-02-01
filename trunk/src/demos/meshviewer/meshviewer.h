@@ -39,6 +39,7 @@ using namespace omega::ui;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations.
 class Entity;
+class MeshViewerClient;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SelectionSphere: public Drawable
@@ -88,6 +89,21 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class MeshViewerUI
+{
+public:
+	MeshViewerUI(): myUIMng(NULL), myClient(NULL) {}
+
+	void initialize(MeshViewerClient* client);
+	void update(const UpdateContext& context);
+	void draw(const DrawContext& context);
+
+private:
+	UIManager* myUIMng;
+	MeshViewerClient* myClient;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MeshViewerClient: public ApplicationClient, IUIEventHandler
 {
 public:
@@ -110,7 +126,7 @@ private:
 	SceneManager* mySceneManager;
 	MeshManager* myMeshManager;
 	EffectManager* myEffectManager;
-	UIManager myUI;
+	MeshViewerUI* myUI;
 
 	// Entity list
 	std::list<Entity*> myEntities;
