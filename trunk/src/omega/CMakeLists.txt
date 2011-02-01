@@ -23,14 +23,11 @@ ADD_DEFINITIONS(-DLIBCONFIGXX_STATIC -DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC
 SET( srcs 
 		omega/glew.c
         omega/osystem.cpp
-		omega/AxisAlignedBox.cpp
 		omega/Color.cpp
 		omega/Config.cpp
 		omega/InputManager.cpp
 		omega/InputService.cpp
-		omega/Math.cpp
         omega/Observer.cpp
-        omega/Plane.cpp
 		omega/SystemManager.cpp
         omega/Utils.cpp
 		omega/StringUtils.cpp
@@ -42,22 +39,28 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/AxisAlignedBox.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
         ${OmegaLib_SOURCE_DIR}/include/omega/InputFilter.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Math.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Plane.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/PlaneBoundedVolume.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Ray.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Sphere.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
+
+		# vmml
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/vmmlib.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/vector.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/matrix.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/quaternion.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/math.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/ray.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/sphere.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/plane.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/axis_aligned_box.hpp
+        ${OmegaLib_SOURCE_DIR}/include/vmmlib/plane_bounded_volume.hpp
         ) 
         
 #######################################################################################################################
@@ -143,6 +146,7 @@ SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)
 SOURCE_GROUP(omega::input REGULAR_EXPRESSION omega/input/)		
 SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
 SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
+SOURCE_GROUP(vmml REGULAR_EXPRESSION vmmlib)		
 
 #######################################################################################################################
 # Setup compile info

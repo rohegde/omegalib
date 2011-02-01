@@ -2,7 +2,6 @@
 #include "omega/SystemManager.h"
 
 #include "omega/Utils.h"
-#include "omega/Math.h"
 
 using namespace omega;
 

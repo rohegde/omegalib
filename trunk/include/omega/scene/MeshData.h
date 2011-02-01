@@ -34,7 +34,6 @@
 
 #include "omega/osystem.h"
 #include "omega/Color.h"
-#include "omega/AxisAlignedBox.h"
 
 namespace omega 
 {

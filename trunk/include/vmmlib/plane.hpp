@@ -33,14 +33,12 @@
  * http://www.boost.org/LICENSE_1_0.txt
  * http://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
  *********************************************************************************************************************/
-#ifndef __Plane_H__
-#define __Plane_H__
+#ifndef __PLANE_H__
+#define __PLANE_H__
 
-#include "osystem.h"
+#include <vmmlib\axis_aligned_box.hpp>
 
-#include "omega\AxisAlignedBox.h"
-
-namespace omega {
+namespace vmml {
 	/** Defines a plane in 3D space.
         @remarks
             A plane is defined in 3D space by the equation
@@ -51,26 +49,27 @@ namespace omega {
             respectively), and a constant (D) which is the distance along
             the normal you have to go to move the plane back to the origin.
      */
-    class Plane
+	template<typename T>
+    class plane
     {
     public:
         /** Default constructor - sets everything to 0.
         */
-        Plane ();
-        Plane (const Plane& rhs);
+        inline plane ();
+        inline plane (const plane& rhs);
         /** Construct a plane through a normal, and a distance to move the plane along the normal.*/
-        Plane (const Vector3f& rkNormal, float fConstant);
+        inline plane (const vector<3,T>& rkNormal, float fConstant);
 		/** Construct a plane using the 4 constants directly **/
-		Plane (float a, float b, float c, float d);
-        Plane (const Vector3f& rkNormal, const Vector3f& rkPoint);
-        Plane (const Vector3f& rkPoint0, const Vector3f& rkPoint1,
-            const Vector3f& rkPoint2);
+		inline plane (float a, float b, float c, float d);
+        inline plane (const vector<3,T>& rkNormal, const vector<3,T>& rkPoint);
+        inline plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+            const vector<3,T>& rkPoint2);
 
         /** The "positive side" of the plane is the half space to which the
             plane normal points. The "negative side" is the other half
             space. The flag "no side" indicates the plane itself.
         */
-        enum Side
+        enum side
         {
             NO_SIDE,
             POSITIVE_SIDE,
@@ -78,13 +77,13 @@ namespace omega {
             BOTH_SIDE
         };
 
-        Side getSide (const Vector3f& rkPoint) const;
+        inline side getSide (const vector<3,T>& rkPoint) const;
 
         /**
         returns the side where the aligneBox is. the flag BOTH_SIDE indicates an intersecting box.
         one corner ON the plane is sufficient to consider the box and the plane intersecting.
         */
-        Side getSide (const AxisAlignedBox& rkBox) const;
+        inline side getSide (const AxisAlignedBox& rkBox) const;
 
         /** Returns which side of the plane that the given box lies on.
             The box is defined as centre/half-size pairs for effectively.
@@ -95,7 +94,7 @@ namespace omega {
             NEGATIVE_SIDE if the box complete lies on the "negative side" of the plane,
             and BOTH_SIDE if the box intersects the plane.
         */
-        Side getSide (const Vector3f& centre, const Vector3f& halfSize) const;
+        inline side getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const;
 
         /** This is a pseudodistance. The sign of the return value is
             positive if the point is on the positive side of the plane,
@@ -105,14 +104,14 @@ namespace omega {
             The absolute value of the return value is the true distance only
             when the plane normal is a unit length vector.
         */
-        float getDistance (const Vector3f& rkPoint) const;
+        inline float getDistance (const vector<3,T>& rkPoint) const;
 
         /** Redefine this plane based on 3 points. */
-        void redefine(const Vector3f& rkPoint0, const Vector3f& rkPoint1,
-            const Vector3f& rkPoint2);
+        inline void redefine(const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+            const vector<3,T>& rkPoint2);
 
 		/** Redefine this plane based on a normal and a point. */
-		void redefine(const Vector3f& rkNormal, const Vector3f& rkPoint);
+		inline void redefine(const vector<3,T>& rkNormal, const vector<3,T>& rkPoint);
 
 		/** Project a vector onto the plane. 
 		@remarks This gives you the element of the input vector that is perpendicular 
@@ -121,7 +120,7 @@ namespace omega {
 			from the original vector, since parallel + perpendicular = original.
 		@param v The input vector
 		*/
-		Vector3f projectVector(const Vector3f& v) const;
+		inline vector<3,T> projectVector(const vector<3,T>& v) const;
 
         /** Normalises the plane.
             @remarks
@@ -132,24 +131,166 @@ namespace omega {
                 will be no changes made to their components.
             @returns The previous length of the plane's normal.
         */
-        float normalise(void);
+        inline float normalise(void);
 
-		Vector3f normal;
+		vector<3,T> normal;
         float d;
 
         /// Comparison operator
-        bool operator==(const Plane& rhs) const
+        bool operator==(const plane<T>& rhs) const
         {
             return (rhs.d == d && rhs.normal == normal);
         }
-        bool operator!=(const Plane& rhs) const
+        bool operator!=(const plane<T>& rhs) const
         {
             return (rhs.d != d && rhs.normal != normal);
         }
-
-        OMEGA_API friend std::ostream& operator<< (std::ostream& o, const Plane& p);
     };
 
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	plane<T>::plane ()
+	{
+		normal = vector<3,T>::ZERO;
+		d = 0.0;
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	plane<T>::plane (const plane<T>& rhs)
+	{
+		normal = rhs.normal;
+		d = rhs.d;
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	plane<T>::plane (const vector<3,T>& rkNormal, float fConstant)
+	{
+		normal = rkNormal;
+		d = -fConstant;
+	}
+	//---------------------------------------------------------------------
+	template<typename T> inline
+	plane<T>::plane (float a, float b, float c, float _d)
+		: normal(a, b, c), d(_d)
+	{
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	plane<T>::plane (const vector<3,T>& rkNormal, const vector<3,T>& rkPoint)
+	{
+		redefine(rkNormal, rkPoint);
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	plane<T>::plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+		const vector<3,T>& rkPoint2)
+	{
+		redefine(rkPoint0, rkPoint1, rkPoint2);
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	float plane<T>::getDistance (const vector<3,T>& rkPoint) const
+	{
+		return normal.dot(rkPoint) + d;
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	typename plane<T>::side plane<T>::getSide (const vector<3,T>& rkPoint) const
+	{
+		float fDistance = getDistance(rkPoint);
+
+		if ( fDistance < 0.0 )
+			return plane<T>::NEGATIVE_SIDE;
+
+		if ( fDistance > 0.0 )
+			return plane<T>::POSITIVE_SIDE;
+
+		return plane<T>::NO_SIDE;
+	}
+
+
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	typename plane<T>::side plane<T>::getSide (const AxisAlignedBox& box) const
+	{
+		if (box.isNull()) 
+			return NO_SIDE;
+		if (box.isInfinite())
+			return BOTH_SIDE;
+
+        return getSide(box.getCenter(), box.getHalfSize());
+	}
+    //-----------------------------------------------------------------------
+	template<typename T> inline
+    typename plane<T>::side plane<T>::getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const
+    {
+        // Calculate the distance between box centre and the plane
+        float dist = getDistance(centre);
+
+        // Calculate the maximise allows absolute distance for
+        // the distance between box centre and plane
+        float maxAbsDist = abs(normal.dot(halfSize));
+
+        if (dist < -maxAbsDist)
+            return plane<T>::NEGATIVE_SIDE;
+
+        if (dist > +maxAbsDist)
+            return plane<T>::POSITIVE_SIDE;
+
+        return plane<T>::BOTH_SIDE;
+    }
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	void plane<T>::redefine(const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+		const vector<3,T>& rkPoint2)
+	{
+		vector<3,T> kEdge1 = rkPoint1 - rkPoint0;
+		vector<3,T> kEdge2 = rkPoint2 - rkPoint0;
+		normal = kEdge1.cross(kEdge2);
+		normal.normalize();
+		d = -normal.dot(rkPoint0);
+	}
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+	void plane<T>::redefine(const vector<3,T>& rkNormal, const vector<3,T>& rkPoint)
+	{
+		normal = rkNormal;
+		d = -rkNormal.dot(rkPoint);
+	}
+	//-----------------------------------------------------------------------
+	//vector<3,T> plane<T>::projectVector(const vector<3,T>& p) const
+	//{
+	//	// We know plane normal is unit length, so use simple method
+	//	Matrix3f xform;
+	//	xform[0][0] = 1.0f - normal.x() * normal.x();
+	//	xform[0][1] = -normal.x() * normal.y();
+	//	xform[0][2] = -normal.x() * normal.z();
+	//	xform[1][0] = -normal.y() * normal.x();
+	//	xform[1][1] = 1.0f - normal.y() * normal.y();
+	//	xform[1][2] = -normal.y() * normal.z();
+	//	xform[2][0] = -normal.z() * normal.x();
+	//	xform[2][1] = -normal.z() * normal.y();
+	//	xform[2][2] = 1.0f - normal.z() * normal.z();
+	//	return xform * p;
+
+	//}
+
+	//-----------------------------------------------------------------------
+	template<typename T> inline
+    float plane<T>::normalise(void)
+    {
+        float fLength = normal.length();
+
+        // Will also work for zero-sized vectors, but will change nothing
+        if (fLength > 1e-08f)
+        {
+            float fInvLength = 1.0f / fLength;
+            normal *= fInvLength;
+            d *= fInvLength;
+        }
+
+        return fLength;
+    }
 } // namespace omega
 
 #endif

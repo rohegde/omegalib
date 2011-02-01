@@ -33,14 +33,12 @@
  * http://www.boost.org/LICENSE_1_0.txt
  * http://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
  *********************************************************************************************************************/
-#ifndef __AxisAlignedBox_H_
-#define __AxisAlignedBox_H_
+#ifndef __AXIS_ALIGNED_BOX_H_
+#define __AXIS_ALIGNED_BOX_H_
 
-#include "osystem.h"
+#include <vmmlib/sphere.hpp>
 
-#include "omega/Sphere.h"
-
-namespace omega {
+namespace vmml {
 	/** A 3D box aligned with the x/y/z axes.
 	@remarks
 	This class represents a simple box which is aligned with the
@@ -50,7 +48,8 @@ namespace omega {
 	for an axis-aligned bounding box (AABB) for collision and
 	visibility determination.
 	*/
-	class OMEGA_API AxisAlignedBox
+	template<typename T>
+	class axis_aligned_box
 	{
 	public:
 		enum Extent
@@ -61,10 +60,10 @@ namespace omega {
 		};
 	protected:
 
-		Vector3f mMinimum;
-		Vector3f mMaximum;
+		vector<3,T> mMinimum;
+		vector<3,T> mMaximum;
 		Extent mExtent;
-		mutable Vector3f* mpCorners;
+		mutable vector<3,T>* mpCorners;
 
 	public:
 		/*
@@ -87,21 +86,21 @@ namespace omega {
 			NEAR_LEFT_TOP = 5,
 			NEAR_RIGHT_TOP = 4
 		} CornerEnum;
-		inline AxisAlignedBox() : mMinimum(Vector3f::ZERO), mMaximum(Vector3f::ONE), mpCorners(0)
+		inline axis_aligned_box() : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
 		{
 			// Default to a null box 
 			setMinimum( -0.5, -0.5, -0.5 );
 			setMaximum( 0.5, 0.5, 0.5 );
 			mExtent = EXTENT_NULL;
 		}
-		inline AxisAlignedBox(Extent e) : mMinimum(Vector3f::ZERO), mMaximum(Vector3f::ONE), mpCorners(0)
+		inline axis_aligned_box(Extent e) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
 		{
 			setMinimum( -0.5, -0.5, -0.5 );
 			setMaximum( 0.5, 0.5, 0.5 );
 			mExtent = e;
 		}
 
-		inline AxisAlignedBox(const AxisAlignedBox & rkBox) : mMinimum(Vector3f::ZERO), mMaximum(Vector3f::ONE), mpCorners(0)
+		inline axis_aligned_box(const axis_aligned_box & rkBox) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
 
 		{
 			if (rkBox.isNull())
@@ -112,19 +111,19 @@ namespace omega {
 				setExtents( rkBox.mMinimum, rkBox.mMaximum );
 		}
 
-		inline AxisAlignedBox( const Vector3f& min, const Vector3f& max ) : mMinimum(Vector3f::ZERO), mMaximum(Vector3f::ONE), mpCorners(0)
+		inline axis_aligned_box( const vector<3,T>& min, const vector<3,T>& max ) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
 		{
 			setExtents( min, max );
 		}
 
-		inline AxisAlignedBox(
+		inline axis_aligned_box(
 			float mx, float my, float mz,
-			float Mx, float My, float Mz ) : mMinimum(Vector3f::ZERO), mMaximum(Vector3f::ONE), mpCorners(0)
+			float Mx, float My, float Mz ) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
 		{
 			setExtents( mx, my, mz, Mx, My, Mz );
 		}
 
-		AxisAlignedBox& operator=(const AxisAlignedBox& rhs)
+		axis_aligned_box& operator=(const axis_aligned_box& rhs)
 		{
 			// Specifically override to avoid copying mpCorners
 			if (rhs.isNull())
@@ -137,7 +136,7 @@ namespace omega {
 			return *this;
 		}
 
-		~AxisAlignedBox()
+		~axis_aligned_box()
 		{
 			if (mpCorners) 
 			{
@@ -149,7 +148,7 @@ namespace omega {
 
 		/** Gets the minimum corner of the box.
 		*/
-		inline const Vector3f& getMinimum(void) const
+		inline const vector<3,T>& getMinimum(void) const
 		{ 
 			return mMinimum; 
 		}
@@ -157,14 +156,14 @@ namespace omega {
 		/** Gets a modifiable version of the minimum
 		corner of the box.
 		*/
-		inline Vector3f& getMinimum(void)
+		inline vector<3,T>& getMinimum(void)
 		{ 
 			return mMinimum; 
 		}
 
 		/** Gets the maximum corner of the box.
 		*/
-		inline const Vector3f& getMaximum(void) const
+		inline const vector<3,T>& getMaximum(void) const
 		{ 
 			return mMaximum;
 		}
@@ -172,7 +171,7 @@ namespace omega {
 		/** Gets a modifiable version of the maximum
 		corner of the box.
 		*/
-		inline Vector3f& getMaximum(void)
+		inline vector<3,T>& getMaximum(void)
 		{ 
 			return mMaximum;
 		}
@@ -180,7 +179,7 @@ namespace omega {
 
 		/** Sets the minimum corner of the box.
 		*/
-		inline void setMinimum( const Vector3f& vec )
+		inline void setMinimum( const vector<3,T>& vec )
 		{
 			mExtent = EXTENT_FINITE;
 			mMinimum = vec;
@@ -214,7 +213,7 @@ namespace omega {
 
 		/** Sets the maximum corner of the box.
 		*/
-		inline void setMaximum( const Vector3f& vec )
+		inline void setMaximum( const vector<3,T>& vec )
 		{
 			mExtent = EXTENT_FINITE;
 			mMaximum = vec;
@@ -248,7 +247,7 @@ namespace omega {
 
 		/** Sets both minimum and maximum extents at once.
 		*/
-		inline void setExtents( const Vector3f& min, const Vector3f& max )
+		inline void setExtents( const vector<3,T>& min, const vector<3,T>& max )
 		{
             assert( (min.x() <= max.x() && min.y() <= max.y() && min.z() <= max.z()) &&
                 "The minimum corner of the box must be less than or equal to maximum corner" );
@@ -301,7 +300,7 @@ namespace omega {
 		</pre>
 		@remarks as this implementation uses a static member, make sure to use your own copy !
 		*/
-		inline const Vector3f* getAllCorners(void) const
+		inline const vector<3,T>* getAllCorners(void) const
 		{
 			assert( (mExtent == EXTENT_FINITE) && "Can't get corners of a null or infinite AAB" );
 
@@ -312,7 +311,7 @@ namespace omega {
 			//   around face (looking onto the face)
 			// Only for optimization/compatibility.
 			if (!mpCorners)
-				mpCorners = new Vector3f[8];
+				mpCorners = new vector<3,T>[8];
 
 			mpCorners[0] = mMinimum;
 			mpCorners[1].x() = mMinimum.x(); mpCorners[1].y() = mMaximum.y(); mpCorners[1].z() = mMinimum.z();
@@ -329,57 +328,35 @@ namespace omega {
 
 		/** gets the position of one of the corners
 		*/
-		Vector3f getCorner(CornerEnum cornerToGet) const
+		vector<3,T> getCorner(CornerEnum cornerToGet) const
 		{
 			switch(cornerToGet)
 			{
 			case FAR_LEFT_BOTTOM:
 				return mMinimum;
 			case FAR_LEFT_TOP:
-				return Vector3f(mMinimum.x(), mMaximum.y(), mMinimum.z());
+				return vector<3,T>(mMinimum.x(), mMaximum.y(), mMinimum.z());
 			case FAR_RIGHT_TOP:
-				return Vector3f(mMaximum.x(), mMaximum.y(), mMinimum.z());
+				return vector<3,T>(mMaximum.x(), mMaximum.y(), mMinimum.z());
 			case FAR_RIGHT_BOTTOM:
-				return Vector3f(mMaximum.x(), mMinimum.y(), mMinimum.z());
+				return vector<3,T>(mMaximum.x(), mMinimum.y(), mMinimum.z());
 			case NEAR_RIGHT_BOTTOM:
-				return Vector3f(mMaximum.x(), mMinimum.y(), mMaximum.z());
+				return vector<3,T>(mMaximum.x(), mMinimum.y(), mMaximum.z());
 			case NEAR_LEFT_BOTTOM:
-				return Vector3f(mMinimum.x(), mMinimum.y(), mMaximum.z());
+				return vector<3,T>(mMinimum.x(), mMinimum.y(), mMaximum.z());
 			case NEAR_LEFT_TOP:
-				return Vector3f(mMinimum.x(), mMaximum.y(), mMaximum.z());
+				return vector<3,T>(mMinimum.x(), mMaximum.y(), mMaximum.z());
 			case NEAR_RIGHT_TOP:
 				return mMaximum;
 			default:
-				return Vector3f();
-			}
-		}
-
-		OMEGA_API friend std::ostream& operator<<( std::ostream& o, const AxisAlignedBox aab )
-		{
-			switch (aab.mExtent)
-			{
-			case EXTENT_NULL:
-				o << "AxisAlignedBox(null)";
-				return o;
-
-			case EXTENT_FINITE:
-				o << "AxisAlignedBox(min=" << aab.mMinimum << ", max=" << aab.mMaximum << ")";
-				return o;
-
-			case EXTENT_INFINITE:
-				o << "AxisAlignedBox(infinite)";
-				return o;
-
-			default: // shut up compiler
-				assert( false && "Never reached" );
-				return o;
+				return vector<3,T>();
 			}
 		}
 
 		/** Merges the passed in box into the current box. The result is the
 		box which encompasses both.
 		*/
-		void merge( const AxisAlignedBox& rhs )
+		void merge( const axis_aligned_box<T>& rhs )
 		{
 			// Do nothing if rhs null, or this is infinite
 			if ((rhs.mExtent == EXTENT_NULL) || (mExtent == EXTENT_INFINITE))
@@ -399,8 +376,8 @@ namespace omega {
 			// Otherwise merge
 			else
 			{
-				Vector3f min = mMinimum;
-				Vector3f max = mMaximum;
+				vector<3,T> min = mMinimum;
+				vector<3,T> max = mMaximum;
 				max.makeCeil(rhs.mMaximum);
 				min.makeFloor(rhs.mMinimum);
 
@@ -411,7 +388,7 @@ namespace omega {
 
 		/** Extends the box to encompass the specified point (if needed).
 		*/
-		inline void merge( const Vector3f& point )
+		inline void merge( const vector<3,T>& point )
 		{
 			switch (mExtent)
 			{
@@ -440,13 +417,13 @@ namespace omega {
 		AABB. Useful when you have a local AABB for an object which
 		is then transformed.
 		*/
-		inline void transform( const Matrix4f& matrix )
+		inline void transform( const matrix<4,4,T>& matrix )
 		{
 			// Do nothing if current null or infinite
 			if( mExtent != EXTENT_FINITE )
 				return;
 
-			Vector3f oldMin, oldMax, currentCorner;
+			vector<3,T> oldMin, oldMax, currentCorner;
 
 			// Getting the old values so that we can use the existing merge method.
 			oldMin = mMinimum;
@@ -505,22 +482,22 @@ namespace omega {
 		AABB. Useful when you have a local AABB for an object which
 		is then transformed.
 		@note
-		The matrix must be an affine matrix. @see Matrix4f::isAffine.
+		The matrix must be an affine matrix. @see matrix<4,4,T>::isAffine.
 		*/
-		void transformAffine(const Matrix4f& m)
+		void transformAffine(const matrix<4,4,T>& m)
 		{
 			// Do nothing if current null or infinite
 			if ( mExtent != EXTENT_FINITE )
 				return;
 
-			Vector3f centre = getCenter();
-			Vector3f halfSize = getHalfSize();
+			vector<3,T> centre = getCenter();
+			vector<3,T> halfSize = getHalfSize();
 
-			Vector3f newCentre = m * centre;
-			Vector3f newHalfSize(
-				Math::abs(m[0][0]) * halfSize.x() + Math::abs(m[0][1]) * halfSize.y() + Math::abs(m[0][2]) * halfSize.z(), 
-				Math::abs(m[1][0]) * halfSize.x() + Math::abs(m[1][1]) * halfSize.y() + Math::abs(m[1][2]) * halfSize.z(),
-				Math::abs(m[2][0]) * halfSize.x() + Math::abs(m[2][1]) * halfSize.y() + Math::abs(m[2][2]) * halfSize.z());
+			vector<3,T> newCentre = m * centre;
+			vector<3,T> newHalfSize(
+				math<T>::abs(m[0][0]) * halfSize.x() + math<T>::abs(m[0][1]) * halfSize.y() + math<T>::abs(m[0][2]) * halfSize.z(), 
+				math<T>::abs(m[1][0]) * halfSize.x() + math<T>::abs(m[1][1]) * halfSize.y() + math<T>::abs(m[1][2]) * halfSize.z(),
+				math<T>::abs(m[2][0]) * halfSize.x() + math<T>::abs(m[2][1]) * halfSize.y() + math<T>::abs(m[2][2]) * halfSize.z());
 
 			setExtents(newCentre - newHalfSize, newCentre + newHalfSize);
 		}
@@ -561,7 +538,7 @@ namespace omega {
 		}
 
 		/** Returns whether or not this box intersects another. */
-		inline bool intersects(const AxisAlignedBox& b2) const
+		inline bool intersects(const axis_aligned_box& b2) const
 		{
 			// Early-fail for nulls
 			if (this->isNull() || b2.isNull())
@@ -592,11 +569,11 @@ namespace omega {
 		}
 
 		/// Calculate the area of intersection of this box and another
-		inline AxisAlignedBox intersection(const AxisAlignedBox& b2) const
+		inline axis_aligned_box intersection(const axis_aligned_box& b2) const
 		{
             if (this->isNull() || b2.isNull())
 			{
-				return AxisAlignedBox();
+				return axis_aligned_box();
 			}
 			else if (this->isInfinite())
 			{
@@ -607,8 +584,8 @@ namespace omega {
 				return *this;
 			}
 
-			Vector3f intMin = mMinimum;
-            Vector3f intMax = mMaximum;
+			vector<3,T> intMin = mMinimum;
+            vector<3,T> intMax = mMaximum;
 
             intMin.makeCeil(b2.getMinimum());
             intMax.makeFloor(b2.getMaximum());
@@ -618,10 +595,10 @@ namespace omega {
                 intMin.y() < intMax.y() &&
                 intMin.z() < intMax.z())
             {
-                return AxisAlignedBox(intMin, intMax);
+                return axis_aligned_box(intMin, intMax);
             }
 
-            return AxisAlignedBox();
+            return axis_aligned_box();
 		}
 
 		/// Calculate the volume of this box
@@ -634,12 +611,12 @@ namespace omega {
 
 			case EXTENT_FINITE:
 				{
-					Vector3f diff = mMaximum - mMinimum;
+					vector<3,T> diff = mMaximum - mMinimum;
 					return diff.x() * diff.y() * diff.z();
 				}
 
 			case EXTENT_INFINITE:
-				return Math::PositiveInfinity;
+				return math<T>::PositiveInfinity;
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
@@ -648,30 +625,30 @@ namespace omega {
 		}
 
 		/** Scales the AABB by the vector given. */
-		inline void scale(const Vector3f& s)
+		inline void scale(const vector<3,T>& s)
 		{
 			// Do nothing if current null or infinite
 			if (mExtent != EXTENT_FINITE)
 				return;
 
 			// NB assumes centered on origin
-			Vector3f min = mMinimum * s;
-			Vector3f max = mMaximum * s;
+			vector<3,T> min = mMinimum * s;
+			vector<3,T> max = mMaximum * s;
 			setExtents(min, max);
 		}
 
 		/** Tests whether this box intersects a sphere. */
-		bool intersects(const Sphere& s) const
+		bool intersects(const sphere<T>& s) const
 		{
-			return Math::intersects(s, *this); 
+			return math<T>::intersects(s, *this); 
 		}
 		/** Tests whether this box intersects a plane. */
 		bool intersects(const Plane& p) const
 		{
-			return Math::intersects(p, *this);
+			return math<T>::intersects(p, *this);
 		}
 		/** Tests whether the vector point is within this box. */
-		bool intersects(const Vector3f& v) const
+		bool intersects(const vector<3,T>& v) const
 		{
 			switch (mExtent)
 			{
@@ -692,63 +669,63 @@ namespace omega {
 			}
 		}
 		/// Gets the centre of the box
-		Vector3f getCenter(void) const
+		vector<3,T> getCenter(void) const
 		{
 			assert( (mExtent == EXTENT_FINITE) && "Can't get center of a null or infinite AAB" );
 
-			return Vector3f(
+			return vector<3,T>(
 				(mMaximum.x() + mMinimum.x()) * 0.5f,
 				(mMaximum.y() + mMinimum.y()) * 0.5f,
 				(mMaximum.z() + mMinimum.z()) * 0.5f);
 		}
 		/// Gets the size of the box
-		Vector3f getSize(void) const
+		vector<3,T> getSize(void) const
 		{
 			switch (mExtent)
 			{
 			case EXTENT_NULL:
-				return Vector3f::ZERO;
+				return vector<3,T>::ZERO;
 
 			case EXTENT_FINITE:
 				return mMaximum - mMinimum;
 
 			case EXTENT_INFINITE:
-				return Vector3f(
-					Math::PositiveInfinity,
-					Math::PositiveInfinity,
-					Math::PositiveInfinity);
+				return vector<3,T>(
+					math<T>::PositiveInfinity,
+					math<T>::PositiveInfinity,
+					math<T>::PositiveInfinity);
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
-				return Vector3f::ZERO;
+				return vector<3,T>::ZERO;
 			}
 		}
 		/// Gets the half-size of the box
-		Vector3f getHalfSize(void) const
+		vector<3,T> getHalfSize(void) const
 		{
 			switch (mExtent)
 			{
 			case EXTENT_NULL:
-				return Vector3f::ZERO;
+				return vector<3,T>::ZERO;
 
 			case EXTENT_FINITE:
 				return (mMaximum - mMinimum) * 0.5;
 
 			case EXTENT_INFINITE:
-				return Vector3f(
-					Math::PositiveInfinity,
-					Math::PositiveInfinity,
-					Math::PositiveInfinity);
+				return vector<3,T>(
+					math<T>::PositiveInfinity,
+					math<T>::PositiveInfinity,
+					math<T>::PositiveInfinity);
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
-				return Vector3f::ZERO;
+				return vector<3,T>::ZERO;
 			}
 		}
 
         /** Tests whether the given point contained by this box.
         */
-        bool contains(const Vector3f& v) const
+        bool contains(const vector<3,T>& v) const
         {
             if (isNull())
                 return false;
@@ -762,7 +739,7 @@ namespace omega {
 
         /** Tests whether another box contained by this box.
         */
-        bool contains(const AxisAlignedBox& other) const
+        bool contains(const axis_aligned_box& other) const
         {
             if (other.isNull() || this->isInfinite())
                 return true;
@@ -780,7 +757,7 @@ namespace omega {
 
         /** Tests 2 boxes for equality.
         */
-        bool operator== (const AxisAlignedBox& rhs) const
+        bool operator== (const axis_aligned_box& rhs) const
         {
             if (this->mExtent != rhs.mExtent)
                 return false;
@@ -794,23 +771,23 @@ namespace omega {
 
         /** Tests 2 boxes for inequality.
         */
-        bool operator!= (const AxisAlignedBox& rhs) const
+        bool operator!= (const axis_aligned_box& rhs) const
         {
             return !(*this == rhs);
         }
 
 		// special values
-		static const AxisAlignedBox BOX_NULL;
-		static const AxisAlignedBox BOX_INFINITE;
+		static const axis_aligned_box BOX_NULL;
+		static const axis_aligned_box BOX_INFINITE;
 
-		Vector3f& operator[]( const size_t i )
+		vector<3,T>& operator[]( const size_t i )
 		{
 			assert( i < 2 );
 			if(i == 0) return mMinimum;
 			return mMaximum;
 		}
         
-		const Vector3f& operator[]( const size_t i ) const
+		const vector<3,T>& operator[]( const size_t i ) const
 		{
 			assert( i < 2 );
 			if(i == 0) return mMinimum;

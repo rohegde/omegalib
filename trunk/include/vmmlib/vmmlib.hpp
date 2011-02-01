@@ -23,5 +23,11 @@
 #include <vmmlib/quaternion.hpp>
 #include <vmmlib/frustum.hpp>
 #include <vmmlib/frustum_culler.hpp>
+#include <vmmlib/math.hpp>
+#include <vmmlib/sphere.hpp>
+#include <vmmlib/ray.hpp>
+#include <vmmlib/plane.hpp>
+#include <vmmlib/axis_aligned_box.hpp>
+#include <vmmlib/plane_bounded_volume.hpp>
 
 #endif
