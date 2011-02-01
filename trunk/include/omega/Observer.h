@@ -4,11 +4,23 @@
  * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
  *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
+ * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+ * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #ifndef __OBSERVER_H__
 #define __OBSERVER_H__
@@ -17,27 +29,39 @@
 
 namespace omega
 {
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class OMEGA_API Observer
 {
 public:
 	Observer();
 
-	Matrix4f getWorldToEmitter() { return myWorldToEmitter; }
-	void setWorldToEmitter(Matrix4f value) { myWorldToEmitter = value; }
+	void setReferencePosition(const Vector3f& value) { myReferencePosition = value; }
+	Vector3f getReferencePosition() { return myReferencePosition; }
 
-	Matrix4f getSensorToObject() { return mySensorToObject; }
-	void setSensorToObject(Matrix4f value) { mySensorToObject = value; }
+	Matrix4f getSensorTransform() { return mySensorTransform; }
+	void setSensorTransform(Matrix4f value) { mySensorTransform = value; }
 
-	Matrix4f getHeadMatrix() { return myHeadMatrix; }
+	Matrix4f getViewTransform() { return myViewTransform; }
+	Matrix4f getHeadTransform() { return myHeadTransform; }
 
-	void update(const Vector3f& position, const Vector3f& rotation);
+	void update(const Vector3f& position, const Quaternion& orientation);
 
 private:
-	Matrix4f myWorldToEmitter;
-	Matrix4f mySensorToObject;
-	Matrix4f myHeadMatrix;
+	//! Current view transform
+	Matrix4f myViewTransform;
+	Matrix4f myHeadTransform;
+
+	//! Observer current position.
+	Vector3f myPosition;
+	//! Observer current rotation.
+	Quaternion myOrientation;
+
+	//! Position of observer reference frame wrt world origin.
+	Vector3f myReferencePosition;
+
+	//! Transformation from sensor reference frame to observer reference frame.
+	//! Use when sensor is offset and or / rotated from actual eye position.
+	Matrix4f mySensorTransform;
 };
 
 }; // namespace omega

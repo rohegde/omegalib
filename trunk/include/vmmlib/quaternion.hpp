@@ -60,7 +60,7 @@ public:
 
 	quaternion( const vector< 3, T >& xyz , T w );
     // initializes the quaternion with xyz, sets w to zero
-	quaternion( const vector< 3, T >& xyz );
+	//quaternion( const vector< 3, T >& xyz );
     
     // uses the top-left 3x3 part of the supplied matrix as rotation matrix
     template< size_t M >
@@ -239,11 +239,11 @@ quaternion< T >::quaternion(
 
 
 
-template < typename T >
-quaternion< T >::quaternion( const vector< 3, T >& xyz )
-{
-    super::set( xyz, static_cast< T >( 0.0 ) );
-}
+//template < typename T >
+//quaternion< T >::quaternion( const vector< 3, T >& xyz )
+//{
+//    super::set( xyz, static_cast< T >( 0.0 ) );
+//}
 
 
 

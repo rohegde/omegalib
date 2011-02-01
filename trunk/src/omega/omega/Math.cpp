@@ -52,7 +52,6 @@ namespace omega
     //-----------------------------------------------------------------------
     Math::Math( unsigned int trigTableSize )
     {
-
         mTrigTableSize = trigTableSize;
         mTrigTableFactor = mTrigTableSize / Math::TwoPi;
 
@@ -874,44 +873,40 @@ namespace omega
 
 	}
 	//---------------------------------------------------------------------
-	//Matrix4f Math::makeViewMatrix(const Vector3f& position, const Quaternion& orientation, 
-	//	const Matrix4f* reflectMatrix)
-	//{
-	//	Matrix4f viewMatrix;
+	Matrix4f Math::makeViewMatrix(const Vector3f& position, const Quaternion& orientation)
+	{
+		Matrix4f viewMatrix;
 
-	//	// View matrix is:
-	//	//
-	//	//  [ Lx  Uy  Dz  Tx  ]
-	//	//  [ Lx  Uy  Dz  Ty  ]
-	//	//  [ Lx  Uy  Dz  Tz  ]
-	//	//  [ 0   0   0   1   ]
-	//	//
-	//	// Where T = -(Transposed(Rot) * Pos)
+		// View matrix is:
+		//
+		//  [ Lx  Uy  Dz  Tx  ]
+		//  [ Lx  Uy  Dz  Ty  ]
+		//  [ Lx  Uy  Dz  Tz  ]
+		//  [ 0   0   0   1   ]
+		//
+		// Where T = -(Transposed(Rot) * Pos)
 
-	//	// This is most efficiently done using 3x3 Matrices
-	//	Matrix3f rot;
-	//	orientation.ToRotationMatrix(rot);
+		// This is most efficiently done using 3x3 Matrices
+		Matrix3f rot;
+		orientation.get_rotation_matrix(rot);
 
-	//	// Make the translation relative to new axes
-	//	Matrix3 rotT = rot.Transpose();
-	//	Vector3f trans = -rotT * position;
+		// Make the translation relative to new axes
+		Matrix3f rotT;
+		rot.transpose_to(rotT);
+		Vector3f trans = -rotT * position;
 
-	//	// Make final matrix
-	//	viewMatrix = Matrix4f::IDENTITY;
-	//	viewMatrix = rotT; // fills upper 3x3
-	//	viewMatrix[0][3] = trans.x();
-	//	viewMatrix[1][3] = trans.y();
-	//	viewMatrix[2][3] = trans.z();
+		// Make final matrix
+		viewMatrix = Matrix4f::IDENTITY;
+		viewMatrix = rotT; // fills upper 3x3
+		viewMatrix[0][3] = trans.x();
+		viewMatrix[1][3] = trans.y();
+		viewMatrix[2][3] = trans.z();
+		viewMatrix[3][3] = 1.0f;
 
-	//	// Deal with reflections
-	//	if (reflectMatrix)
-	//	{
-	//		viewMatrix = viewMatrix * (*reflectMatrix);
-	//	}
+		return viewMatrix;
 
-	//	return viewMatrix;
+	}
 
-	//}
 	//---------------------------------------------------------------------
 	float Math::boundingRadiusFromAABB(const AxisAlignedBox& aabb)
 	{

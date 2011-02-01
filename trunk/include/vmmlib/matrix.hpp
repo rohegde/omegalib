@@ -119,7 +119,7 @@ public:
 	// 
 	// matrix-scalar operations / scaling 
 	// 
-    matrix operator*( T scalar );
+    matrix operator*( T scalar ) const;
     void operator*=( T scalar );
 
 	//
@@ -1052,7 +1052,7 @@ matrix< M, N, T >::operator*=( const matrix< O, P, TT >& right )
 
 template< size_t M, size_t N, typename T >
 matrix< M, N, T >
-matrix< M, N, T >::operator*( T scalar )
+matrix< M, N, T >::operator*( T scalar ) const
 {
     matrix< M, N, T > result;
     
@@ -1153,7 +1153,7 @@ matrix< M, N, T >
 matrix< M, N, T >::negate() const
 {
     matrix< M, N, T > result;
-    result *= -1.0;
+	result = (*this) * -1.0f;
     return result;
 }
 

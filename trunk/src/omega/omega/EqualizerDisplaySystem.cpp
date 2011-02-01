@@ -273,7 +273,7 @@ public:
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
 		{
 			Observer* obs  = ds->getObserver(i);
-			getObservers().at(i)->setHeadMatrix(obs->getHeadMatrix());
+			getObservers().at(i)->setHeadMatrix(obs->getHeadTransform());
 			getObservers().at(i)->setEyeBase(0.008f);
 		}
 
@@ -567,34 +567,19 @@ void EqualizerDisplaySystem::initObservers()
 		{
 			Setting& stObserver = stObservers[i];
 			Observer* obs = getObserver(i);
+			Vector3f referencePos;
 
-			Matrix4f emitterMatrix( eq::Matrix4f::IDENTITY );
-
-			if(stObserver.exists("EmitterScale"))
+			if(stObserver.exists("ReferencePosition"))
 			{
-				Setting& stEmitterScale = stObserver["EmitterScale"];
-				emitterMatrix.scale((float)stEmitterScale[0], (float)stEmitterScale[1], (float)stEmitterScale[2]);
+				Setting& stEmitterTranslation = stObserver["ReferencePosition"];
+				referencePos.x() = (float)stEmitterTranslation[0];
+				referencePos.y() = (float)stEmitterTranslation[1];
+				referencePos.z() = (float)stEmitterTranslation[2];
 			}
-			if(stObserver.exists("EmitterTranslation"))
-			{
-				Setting& stEmitterTranslation = stObserver["EmitterTranslation"];
-				Vector3f pos;
-				pos.x() = (float)stEmitterTranslation[0];
-				pos.y() = (float)stEmitterTranslation[1];
-				pos.z() = (float)stEmitterTranslation[2];
-				emitterMatrix.set_translation(pos);
-			}
-			/*if(stObserver.exists("EmitterRotation"))
-			{
-				Setting& stEmitterRotation = stObserver["EmitterRotation"];
-				emitterMatrix.rotate((float)stEmitterRotation[0], 1, 0, 0);
-				emitterMatrix.rotate((float)stEmitterRotation[1], 0, 1, 0);
-				emitterMatrix.rotate((float)stEmitterRotation[2], 0, 0, 1);
-			}*/
 
 			// Set observer initial position to origin, neutral orientation.
-			obs->setWorldToEmitter(emitterMatrix);
-			obs->update(Vector3f::ZERO, Vector3f::ZERO);
+			obs->setReferencePosition(referencePos);
+			obs->update(Vector3f::ZERO, Quaternion::IDENTITY);
 		}
 	}
 }

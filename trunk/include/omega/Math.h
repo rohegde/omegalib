@@ -358,8 +358,7 @@ namespace omega
 			return std::max(std::min(val, maxval), minval);
 		}
 
-		static Matrix4f makeViewMatrix(const Vector3f& position, const Quaternion& orientation, 
-			const Matrix4f* reflectMatrix = 0);
+		static Matrix4f makeViewMatrix(const Vector3f& position, const Quaternion& orientation);
 
 		/** Get a bounding radius value from a bounding box. */
 		static float boundingRadiusFromAABB(const AxisAlignedBox& aabb);
