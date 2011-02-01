@@ -83,6 +83,14 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 #endif
 		{
 			evt->type = state ? InputEvent::Down : InputEvent::Up;
+			//if(evt->type == InputEvent::Down)
+			{
+				sButtonFlags = button;
+			}
+			//else
+			{
+			//	sButtonFlags &= ~button;
+			}
 		}
 		evt->position[0] = x;
 		evt->position[1] = y;

@@ -244,13 +244,21 @@ public:
 			{
 				x = event->data.pointerButtonPress.x;
 				y = event->data.pointerButtonPress.y;
-				MouseService::mouseButtonCallback(0, 1, x, y);
+				uint buttons = 0;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= InputEvent::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= InputEvent::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= InputEvent::Right;
+				MouseService::mouseButtonCallback(buttons, 1, x, y);
 				return true;
 			}
 		case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
 			{
 				x = event->data.pointerButtonPress.x;
 				y = event->data.pointerButtonPress.y;
+				uint buttons = 0;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= InputEvent::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= InputEvent::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= InputEvent::Right;
 				MouseService::mouseButtonCallback(0, 0, x, y);
 				return true;
 			}
