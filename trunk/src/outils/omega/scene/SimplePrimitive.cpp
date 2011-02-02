@@ -23,7 +23,6 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "omega/scene/SimplePrimitive.h"
-#include "omega/GfxUtils.h"
 
 using namespace omega::scene;
 
@@ -44,7 +43,7 @@ void SimplePrimitive::draw(SceneNode* node)
 		glutSolidSphere(mySize, myResolution1, myResolution2);
 		break;
 	case SimplePrimitive::SolidTeapot:
-		GfxUtils::drawSolidTeapot(mySize);
+		//GfxUtils::drawSolidTeapot(mySize);
 		break;
 	};
 

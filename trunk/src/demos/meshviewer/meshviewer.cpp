@@ -145,10 +145,10 @@ void MeshViewerClient::draw(const DrawContext& context)
 		// We don't use lighting for this application.
 		//glDisable(GL_FOG);
 
-		GfxUtils::setLightingEnabled(false);
-		GfxUtils::setLightEnabled(0, true);
-		GfxUtils::setLightColor(0, Color(1.0, 1.0, 1.0));
-		GfxUtils::setLightPosition(0, Vector3f(0, 1, 0));
+		//GfxUtils::setLightingEnabled(false);
+		//GfxUtils::setLightEnabled(0, true);
+		//GfxUtils::setLightColor(0, Color(1.0, 1.0, 1.0));
+		//GfxUtils::setLightPosition(0, Vector3f(0, 1, 0));
 
 		glEnable(GL_DEPTH_TEST);
 

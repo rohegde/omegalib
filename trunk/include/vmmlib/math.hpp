@@ -8,10 +8,33 @@
 
 namespace vmml
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! wrapper to enable array use where arrays would not be allowed otherwise
+	template< class T, size_t d >
+	struct array_wrapper
+	{
+		T& operator[]( const size_t i )
+		{
+			assert( i < d );
+			return data[i];
+		}
+        
+		const T& operator[]( const size_t i ) const
+		{
+			assert( i < d );
+			return data[i];
+		}
+        
+	private:
+		T data[d];
+	};
+
 	template<typename T> class ray;
 	template<typename T> class plane;
 	template<typename T> class sphere;
 	template<typename T> class axis_aligned_box;
+
+	template<typename T> class rect: public array_wrapper<vector<2, T>, 2> {};
 
     /** Class to provide access to common mathematical functions.
         @remarks
@@ -341,6 +364,8 @@ namespace vmml
 		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b,
 			const vector<3,T>& fallbackAxis = vector<3,T>::ZERO);
 
+		static inline 
+		ray<T> math<T>::unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport);
 
         static const T PositiveInfinity;
         static const T NegativeInfinity;
@@ -1342,6 +1367,38 @@ namespace vmml
 		}
 		return q;
 	}
+	//---------------------------------------------------------------------
+    template<typename T> inline 
+	ray<T> math<T>::unproject(const vector<2, float>& point, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport)
+	{
+		Vector3f origin;
+		Vector3f direction;
+
+		double dmv[16];
+		double dpm[16];
+		for(int i = 0; i < 16; i++)
+		{
+			dmv[i] = modelview.begin()[i];
+			dpm[i] = projection.begin()[i];
+		}
+
+		GLint vp[4];
+		vp[0] = viewport[0][0];
+		vp[1] = viewport[0][1];
+		vp[2] = viewport[1][0];
+		vp[3] = viewport[1][1];
+
+		double mx1, my1, mz1, mx2, my2, mz2;
+		gluUnProject(point[0], vp[3] - point[1], 0, dmv, dpm, vp, &mx1, &my1, &mz1);
+		gluUnProject(point[0], vp[3] - point[1], 1, dmv, dpm, vp, &mx2, &my2, &mz2);
+
+		origin = vector<3, T>(mx1, my1, mz1);
+		direction = vector<3, T>((mx2 - mx1), (my2 - my1), (mz2 - mz1));
+		direction.normalize();
+
+		return ray<T>(origin, direction);
+	}
+
 } // namespace vmml
 
 #endif

@@ -102,34 +102,21 @@ void GfxUtils::setLightColor(int lightId, const Color& color)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Ray GfxUtils::getViewRay(const Vector2f& pos)
 {
-	float viewX = pos[0];
-	float viewY = pos[1];
-	Vector3f origin;
-	Vector3f direction;
-
-	GLdouble modelview[16];
-	GLdouble projection[16];
+	Matrix4f modelview;
+	Matrix4f projection;
 	GLint viewport[4];
 
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetFloatv( GL_MODELVIEW_MATRIX, modelview.begin() );
+	glGetFloatv( GL_PROJECTION_MATRIX, projection.begin() );
 	glGetIntegerv( GL_VIEWPORT, viewport );
 
-	double mx1, my1, mz1, mx2, my2, mz2;
-	gluUnProject(viewX, viewport[3] - viewY, 0, modelview, projection, viewport, &mx1, &my1, &mz1);
-	gluUnProject(viewX, viewport[3] - viewY, 1, modelview, projection, viewport, &mx2, &my2, &mz2);
+	Recti vp;
+	vp[0][0] = viewport[0];
+	vp[0][1] = viewport[1];
+	vp[1][0] = viewport[2];
+	vp[1][1] = viewport[3];
 
-	origin.x() = mx1;
-	origin.y() = my1;
-	origin.z() = mz1;
-
-	direction.x() = (mx2 - mx1);
-	direction.y() = (my2 - my1);
-	direction.z() = (mz2 - mz1);
-
-	direction.normalize();
-
-	return Ray(origin, direction);
+	return Math::unproject(pos, modelview, projection, vp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

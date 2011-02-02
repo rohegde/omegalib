@@ -22,7 +22,6 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#include "omega/GfxUtils.h"
 #include "omega/ui/DefaultSkin.h"
 
 using namespace omega;
@@ -36,10 +35,10 @@ void DefaultButton::draw()
 	myAnim *= 0.8f;
 	if(myPressed) myAnim = 1.0f;
 
-	GfxUtils::drawVGradient(myPosition, mySize, Color(80, 80, 100, 100 + myAnim * 100), Color(80, 80, 100, 100 + myAnim * 100));
+	//GfxUtils::drawVGradient(myPosition, mySize, Color(80, 80, 100, 100 + myAnim * 100), Color(80, 80, 100, 100 + myAnim * 100));
 
 	glColor4ub(255, 255, 255, 255);
-	GfxUtils::drawDRect(myPosition, mySize, 0);
+	//GfxUtils::drawDRect(myPosition, mySize, 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,10 +68,10 @@ void DefaultSlider::draw()
 	myAnim *= 0.8f;
 	if(myPressed) myAnim = 1.0f;
 
-	GfxUtils::drawVGradient(sliderPos, sliderSize, Color(200, 200, 250, 200 + myAnim * 50 ), Color(200, 200, 250, 200 + myAnim * 50), 0);
+	//GfxUtils::drawVGradient(sliderPos, sliderSize, Color(200, 200, 250, 200 + myAnim * 50 ), Color(200, 200, 250, 200 + myAnim * 50), 0);
 
 	glColor4ub(255, 255, 255, 255);
-	GfxUtils::drawDRect(myPosition, mySize, 0);
+	//GfxUtils::drawDRect(myPosition, mySize, 0);
 
 	Slider::draw();
 }
