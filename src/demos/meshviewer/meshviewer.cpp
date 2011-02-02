@@ -69,7 +69,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 		if(evt.type == InputEvent::Down)
 		{
 			// Select objects.
-			Ray ray = GfxUtils::getViewRay(Vector2f(evt.position[0], evt.position[1]));
+			Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), getModelViewMatrix(), getProjectionMatrix(), getViewport());
 
 			VectorIterator<std::list<Entity*> > it(myEntities.begin(), myEntities.end());
 			while(it.hasMoreElements())
