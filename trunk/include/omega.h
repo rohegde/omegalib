@@ -30,7 +30,6 @@
 #include "omega/Color.h"
 #include "omega/DisplaySystem.h"
 #include "omega/FontManager.h"
-#include "omega/GfxUtils.h"
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
 #include "omega/InputManager.h"
