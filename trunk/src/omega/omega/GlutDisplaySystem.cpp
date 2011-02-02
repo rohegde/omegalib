@@ -38,6 +38,7 @@ GLEWContext sGLEWContext;
 void displayCallback(void) 
 {
 	static float lt = 0.0f;
+	static uint64 frame = 0;
 
 	GlutDisplaySystem* ds = (GlutDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 	ApplicationServer* as = ds->getApplicationServer();
@@ -60,6 +61,7 @@ void displayCallback(void)
 	dc.viewportY = 0;
 	dc.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
 	dc.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
+	dc.frameNum = frame++;
 
 	ds->updateProjectionMatrix(dc);
 

@@ -135,18 +135,16 @@ Ray GfxUtils::getViewRay(const Vector2f& pos)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GfxUtils::beginOverlayMode(const DrawContext& context)
 {
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glTranslatef(0.0, context.viewportHeight - 1, 0.0);
-    glScalef(1.0, -1.0, 1.0);
-
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
     glOrtho(0, context.viewportWidth, 0, context.viewportHeight, -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef(0.0, context.viewportHeight - 1, 0.0);
+    glScalef(1.0, -1.0, 1.0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
