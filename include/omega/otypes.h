@@ -81,27 +81,6 @@ enum Axis
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//! wrapper to enable array use where arrays would not be allowed otherwise
-template< class T, size_t d >
-struct ArrayWrapper
-{
-    T& operator[]( const size_t i )
-    {
-        assert( i < d );
-        return data[i];
-    }
-        
-    const T& operator[]( const size_t i ) const
-    {
-        assert( i < d );
-        return data[i];
-    }
-        
-private:
-    T data[d];
-};
-	
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //! Utility class to generate a sequentially numbered series of names
 //---------------------------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
@@ -518,6 +497,9 @@ class ConstMapIterator : public MapIteratorWrapper<T,  typename T::const_iterato
 		{
 		}
 };
+
+typedef vmml::rect<int> Recti;
+typedef vmml::rect<float> Rectf;
 
 }; // namespace omega
 
