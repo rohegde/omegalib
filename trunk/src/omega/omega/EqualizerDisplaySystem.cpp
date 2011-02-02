@@ -468,11 +468,22 @@ protected:
 		// setup the context viewport.
 		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
 		context.frameNum = spin.low();
-		context.viewportX = pvp.x;
-		context.viewportY = pvp.y;
-		context.viewportWidth = pvp.w;
-		context.viewportHeight = pvp.h;
+
 		context.glContext = this;
+
+		Recti viewport;
+		Matrix4f modelview;
+		Matrix4f projection;
+
+		viewport[0][0] = pvp.x;
+		viewport[0][1] = pvp.y;
+		viewport[1][0] = pvp.w;
+		viewport[1][1] = pvp.h;
+		glGetFloatv( GL_MODELVIEW_MATRIX, modelview.begin() );
+		glGetFloatv( GL_PROJECTION_MATRIX, projection.begin() );
+
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		ds->setClientTransforms(pipe->getClient(), modelview, projection, viewport);
 
 		//printf("%f\n", myWindow->getFPS());
 

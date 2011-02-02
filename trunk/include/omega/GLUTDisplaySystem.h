@@ -44,7 +44,7 @@ namespace omega
 		virtual void run(); 
 		virtual void cleanup(); 
 
-		void updateProjectionMatrix(const DrawContext& dc);
+		void updateProjectionMatrix();
 
 		// Layer and view management.
 		virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);

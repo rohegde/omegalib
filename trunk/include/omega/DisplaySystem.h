@@ -1,11 +1,11 @@
 /********************************************************************************************************************** 
  * THE OMEGA LIB PROJECT
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
  * following conditions are met:
@@ -27,6 +27,7 @@
 
 #include "osystem.h"
 #include "Observer.h"
+#include "Application.h"
 
 namespace omega
 {
@@ -62,6 +63,14 @@ public:
 	virtual void cleanup() {}
 
 	virtual DisplaySystemType getId() { return Invalid; }
+
+	//! Set the client modelview, projection and viewport
+	void setClientTransforms(ApplicationClient* client, const Matrix4f& modelview, const Matrix4f& projection, const Recti& viewport)
+	{
+		client->setModelViewMatrix(modelview);
+		client->setProjectionMatrix(projection);
+		client->setViewport(viewport);
+	}
 
 protected:
 	DisplaySystem() {}

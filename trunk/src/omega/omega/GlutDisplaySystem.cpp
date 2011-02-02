@@ -57,13 +57,9 @@ void displayCallback(void)
 
 	// setup the context viewport.
 	DrawContext dc;
-	dc.viewportX = 0;
-	dc.viewportY = 0;
-	dc.viewportWidth = glutGet(GLUT_WINDOW_WIDTH);
-	dc.viewportHeight = glutGet(GLUT_WINDOW_HEIGHT);
 	dc.frameNum = frame++;
 
-	ds->updateProjectionMatrix(dc);
+	ds->updateProjectionMatrix();
 
 	// Push observer matrix.
 	glPushMatrix();
@@ -71,10 +67,18 @@ void displayCallback(void)
 	glLoadIdentity();
 	glLoadMatrixf(mat.begin());
 
-	//glLoadIdentity();
-	//Vector3f pt = (ds->getObserver().getReferencePosition() * -1.0f);
-	//glTranslatef(pt[0], pt[1], pt[2]);
-	//glGetFloatv( GL_MODELVIEW_MATRIX, mat.begin());
+	Matrix4f modelview;
+	Matrix4f projection;
+	Recti viewport;
+
+	viewport[0][0] = 0;
+	viewport[0][1] = 0;
+	viewport[1][0] = glutGet(GLUT_WINDOW_WIDTH);
+	viewport[1][1] = glutGet(GLUT_WINDOW_HEIGHT);
+	glGetFloatv( GL_MODELVIEW_MATRIX, modelview.begin() );
+	glGetFloatv( GL_PROJECTION_MATRIX, projection.begin() );
+
+	ds->setClientTransforms(ac, modelview, projection, viewport);
 
 	// Process events.
 	InputManager* im = SystemManager::instance()->getInputManager();
@@ -158,11 +162,10 @@ void GlutDisplaySystem::setup(Setting& setting)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GlutDisplaySystem::updateProjectionMatrix(const DrawContext& dc)
+void GlutDisplaySystem::updateProjectionMatrix()
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//glViewport(dc.viewportX, dc.viewportY, dc.viewportWidth, dc.viewportHeight);
 	gluPerspective(myFov, myAspect, myNearz, myFarz);
 	glMatrixMode(GL_MODELVIEW);
 }

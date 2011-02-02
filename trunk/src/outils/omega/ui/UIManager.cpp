@@ -53,8 +53,8 @@ void UIManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::draw(const DrawContext& context)
 {
-	myRootWidget->setPosition(Vector2f(context.viewportX, context.viewportY));
-	myRootWidget->setSize(Vector2f(context.viewportWidth, context.viewportHeight));
+	//myRootWidget->setPosition(Vector2f(context.viewportX, context.viewportY));
+	//myRootWidget->setSize(Vector2f(context.viewportWidth, context.viewportHeight));
 
 	myRootWidget->layoutChildren();
 	myRootWidget->render();
