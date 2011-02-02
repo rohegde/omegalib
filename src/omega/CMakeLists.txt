@@ -69,16 +69,13 @@ IF(OMEGA_USE_DISPLAY)
 	ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY)
 	SET( srcs ${srcs}
 			omega/EqualizerDisplaySystem.cpp
-			omega/GfxUtils.cpp
 			omega/GpuBuffer.cpp
 			omega/GpuManager.cpp
 			omega/GpuProgram.cpp
-			omega/teapot.cpp
 			)
 	SET( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
 			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GfxUtils.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
