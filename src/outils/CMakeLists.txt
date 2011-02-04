@@ -37,8 +37,8 @@ SET( srcs
 		
 		# omega::ui
 		omega/ui/AbstractButton.cpp
-		omega/ui/Box.cpp
 		omega/ui/Button.cpp
+		omega/ui/Container.cpp
 		omega/ui/Image.cpp
 		omega/ui/Label.cpp
 		omega/ui/DefaultSkin.cpp
@@ -73,8 +73,8 @@ SET( headers
 		# omega::ui
 		${OmegaLib_SOURCE_DIR}/include/omega/ui.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/AbstractButton.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Box.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Button.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Container.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/DefaultSkin.h

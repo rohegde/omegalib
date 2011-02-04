@@ -69,11 +69,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 		if(evt.type == InputEvent::Down)
 		{
 			// Select objects.
-			Ray ray = Math::unproject(
-				Vector2f(evt.position[0], evt.position[1]), 
-				getModelViewMatrix(), 
-				getProjectionMatrix(), 
-				getViewport());
+			Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]));
 
 			VectorIterator<std::list<Entity*> > it(myEntities.begin(), myEntities.end());
 			while(it.hasMoreElements())
@@ -103,11 +99,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 			// Manipulate object, if one is active.
 			if(myActiveEntity != NULL)
 			{
-				Ray ray = Math::unproject(
-					Vector2f(evt.position[0], evt.position[1]), 
-					getModelViewMatrix(), 
-					getProjectionMatrix(), 
-					getViewport());
+				Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]));
 
 				if((evt.flags & InputEvent::Left) == InputEvent::Left)
 				{
@@ -146,27 +138,14 @@ void MeshViewerClient::draw(const DrawContext& context)
 {
 	if(context.layer == 1)
 	{
-		// Draw UI.
+		myUI->draw(context, getViewport());
 	}
 	else
 	{
-		// We don't use lighting for this application.
-		//glDisable(GL_FOG);
-
-		//GfxUtils::setLightingEnabled(false);
-		//GfxUtils::setLightEnabled(0, true);
-		//GfxUtils::setLightColor(0, Color(1.0, 1.0, 1.0));
-		//GfxUtils::setLightPosition(0, Vector3f(0, 1, 0));
-
 		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_LIGHTING);
 
 		mySceneManager->draw();
-
-		//glEnable(GL_TEXTURE_2D);
-		//glActiveTexture(GL_TEXTURE0);
-
-		//glDisable(GL_BLEND);
-		//glEnable(GL_DEPTH_TEST);
 	}
 }
 

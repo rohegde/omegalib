@@ -1,11 +1,11 @@
 /********************************************************************************************************************** 
  * THE OMEGA LIB PROJECT
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
  * following conditions are met:
@@ -28,7 +28,22 @@
 void MeshViewerUI::initialize(MeshViewerClient* client)
 {
 	myClient = client;
+	
 	myUIMng = new UIManager();
+	myFontMng = new FontManager();
+
+	//! Load and set default font.
+	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 12);
+	Font* defaultFont = myFontMng->getFont("arial");
+	myUIMng->setDefaultFont(defaultFont);
+
+	WidgetFactory* wf = myUIMng->getWidgetFactory();
+	Container* root = myUIMng->getRootContainer();
+
+	root->setLayout(Container::LayoutHorizontal);
+
+	wf->createLabel("Hello", root);
+	wf->createLabel("World", root);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +52,7 @@ void MeshViewerUI::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::draw(const DrawContext& context)
+void MeshViewerUI::draw(const DrawContext& context, const Recti& viewport)
 {
+	myUIMng->draw(context, viewport);
 }

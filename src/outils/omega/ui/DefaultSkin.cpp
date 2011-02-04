@@ -1,11 +1,11 @@
 /********************************************************************************************************************** 
  * THE OMEGA LIB PROJECT
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
  * following conditions are met:
@@ -44,34 +44,34 @@ void DefaultButton::draw()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultSlider::draw()
 {
-	//float d = 0.5f;
-	//if(myPressed) d = 1.0f;
+	////float d = 0.5f;
+	////if(myPressed) d = 1.0f;
 
-	Vector2f sliderPos, sliderSize;
-	getSliderCoords(&sliderPos, &sliderSize);
+	//Vector2f sliderPos, sliderSize;
+	//getSliderCoords(&sliderPos, &sliderSize);
 
-	Label* lbl = getLabel();
-	if(!getProgressBarMode())
-	{
-		lbl->setPosition(sliderPos);
-		lbl->setSize(sliderSize);
-		lbl->setColor(Color(0, 0, 0,  255));
-	}
-	else
-	{
-		lbl->setPosition(myPosition + Vector2f(mySize[0], 0));
-		lbl->setSize(mySize);
-		lbl->setHorizontalAlign(Label::AlignLeft);
-		lbl->setColor(Color(255, 255, 255,  255));
-	}
+	//Label* lbl = getLabel();
+	//if(!getProgressBarMode())
+	//{
+	//	lbl->setPosition(sliderPos);
+	//	lbl->setSize(sliderSize);
+	//	lbl->setColor(Color(0, 0, 0,  255));
+	//}
+	//else
+	//{
+	//	lbl->setPosition(myPosition + Vector2f(mySize[0], 0));
+	//	lbl->setSize(mySize);
+	//	lbl->setHorizontalAlign(Label::AlignLeft);
+	//	lbl->setColor(Color(255, 255, 255,  255));
+	//}
 
-	myAnim *= 0.8f;
-	if(myPressed) myAnim = 1.0f;
+	//myAnim *= 0.8f;
+	//if(myPressed) myAnim = 1.0f;
 
-	//GfxUtils::drawVGradient(sliderPos, sliderSize, Color(200, 200, 250, 200 + myAnim * 50 ), Color(200, 200, 250, 200 + myAnim * 50), 0);
+	////GfxUtils::drawVGradient(sliderPos, sliderSize, Color(200, 200, 250, 200 + myAnim * 50 ), Color(200, 200, 250, 200 + myAnim * 50), 0);
 
-	glColor4ub(255, 255, 255, 255);
-	//GfxUtils::drawDRect(myPosition, mySize, 0);
+	//glColor4ub(255, 255, 255, 255);
+	////GfxUtils::drawDRect(myPosition, mySize, 0);
 
-	Slider::draw();
+	//Slider::draw();
 }
