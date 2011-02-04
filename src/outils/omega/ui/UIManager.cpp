@@ -53,13 +53,33 @@ void UIManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::draw(const DrawContext& context, const Recti& viewport)
 {
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef(0.0, viewport[1][1] - 1, 0.0);
+    glScalef(1.0, -1.0, 1.0);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, viewport[1][0], 0, viewport[1][1], -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+
 	// Update the layout.
 	myRootContainer->setPosition(viewport[0]);
 	myRootContainer->setSize(viewport[1]);
+	myRootContainer->setHeight(200);
+	myRootContainer->setWidth(200);
 	myRootContainer->layout();
 
 	// Draw ui.
 	myRootContainer->draw();
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
