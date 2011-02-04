@@ -59,8 +59,8 @@ namespace ui
 		void setVerticalAlign(VerticalAlign value) { myVerticalAlign = value; }
 
 	protected:
-		virtual void draw();
 		unsigned int getFontAlignFlags();
+		virtual void renderContent();
 
 	protected:
 		omega::String myText;
