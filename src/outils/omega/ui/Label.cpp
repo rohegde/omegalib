@@ -80,25 +80,25 @@ unsigned int Label::getFontAlignFlags()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Label::draw()
+void Label::renderContent()
 {
-	Widget::draw();
+	Widget::renderContent();
 
 	// If not font has been set, use default ui font.
 	if(!myFont) myFont = getUIManager()->getDefaultFont();
 
 	if(myFont)
 	{
-		//unsigned int alignFlags = getFontAlignFlags();
-		//Vector2f textPos = myPosition;
+		unsigned int alignFlags = getFontAlignFlags();
+		Vector2f textPos = Vector2f::ZERO;
 
-		//if(alignFlags & Font::HARight) textPos[0] += mySize[0];
-		//else if(alignFlags & Font::HACenter) textPos[0] += mySize[0] / 2;
+		if(alignFlags & Font::HARight) textPos[0] += (float)getWidth();
+		else if(alignFlags & Font::HACenter) textPos[0] += (float)getWidth() / 2;
 
-		//if(alignFlags & Font::VABottom) textPos[1] += mySize[1];
-		//else if(alignFlags & Font::VAMiddle) textPos[1] += mySize[1] / 2;
+		if(alignFlags & Font::VABottom) textPos[1] += (float)getHeight();
+		else if(alignFlags & Font::VAMiddle) textPos[1] += (float)getHeight() / 2;
 
-		//glColor4fv(myColor.begin());
-		//myFont->render(myText, textPos, alignFlags);
+		glColor4fv(myColor.begin());
+		myFont->render(myText, textPos, alignFlags);
 	}
 }

@@ -74,12 +74,14 @@ void Widget::preDraw()
 	glPushMatrix();
 
 	// Setup transformation.
-	Vector2f center = myPosition + (mySize / 2);
-	Vector2f mcenter = -center;
+	//Vector2f center = myPosition + (mySize / 2);
+	//Vector2f mcenter = -center;
 
-	glTranslatef(center[0], center[1], 0.0f);
-	glRotatef(myRotation, 0, 0, 1);
-	glTranslatef(mcenter[0], mcenter[1], 0.0f);
+	//glTranslatef(center[0], center[1], 0.0f);
+	//glRotatef(myRotation, 0, 0, 1);
+	//glTranslatef(mcenter[0], mcenter[1], 0.0f);
+
+	glTranslatef((float)myPosition[0], (float)myPosition[1], 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,27 +104,24 @@ void Widget::renderContent()
 {
 	if(myDebugModeEnabled)
 	{
-		float x = myPosition.x();
-		float y = myPosition.y();
-
-		float width = mySize.x();
-		float height = mySize.y();
+		float width = mySize[0];
+		float height = mySize[1];
 
 		glColor4fv(myDebugModeColor.begin());
 
 		glBegin(GL_LINES);
 
-		glVertex2f(x, y);
-		glVertex2f(x + width, y);
+		glVertex2f(0, 0);
+		glVertex2f(width, 0);
 
-		glVertex2f(x, y + height);
-		glVertex2f(x + width, y + height);
+		glVertex2f(0, height);
+		glVertex2f(width, height);
 
-		glVertex2f(x, y);
-		glVertex2f(x, y + height);
+		glVertex2f(0, 0);
+		glVertex2f(0, height);
 
-		glVertex2f(x + width, y);
-		glVertex2f(x + width, y + height);
+		glVertex2f(width, 0);
+		glVertex2f(width, height);
 
 		glEnd();
 	}
@@ -205,5 +204,6 @@ void Widget::layout()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::setActualSize(int value, Orientation orientation) 
 {
+	requestLayoutRefresh();
 	mySize[orientation] = value; 
 }

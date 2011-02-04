@@ -33,7 +33,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	myFontMng = new FontManager();
 
 	//! Load and set default font.
-	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 12);
+	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 20);
 	Font* defaultFont = myFontMng->getFont("arial");
 	myUIMng->setDefaultFont(defaultFont);
 
@@ -43,7 +43,15 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	root->setLayout(Container::LayoutHorizontal);
 
 	wf->createLabel("Hello", root);
-	wf->createLabel("World", root);
+	Label* l = wf->createLabel("World", root);
+	l->setMaximumHeight(20);
+
+	Container* c = wf->createContainer("c", root, Container::LayoutVertical);
+	wf->createLabel("A", c);
+	wf->createLabel("B", c);
+	Label* l2 = wf->createLabel("C", c);
+	l2->setMaximumHeight(20);
+	l2->setMaximumWidth(20);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

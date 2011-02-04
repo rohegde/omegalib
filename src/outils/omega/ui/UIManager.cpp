@@ -53,6 +53,15 @@ void UIManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::draw(const DrawContext& context, const Recti& viewport)
 {
+	// Update the layout.
+	if(myRootContainer->getPosition() != viewport[0] ||
+		myRootContainer->getSize() != viewport[1])
+	{
+		myRootContainer->setPosition(viewport[0]);
+		myRootContainer->setSize(viewport[1]);
+	}
+	myRootContainer->layout();
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
@@ -66,15 +75,16 @@ void UIManager::draw(const DrawContext& context, const Recti& viewport)
 
     glMatrixMode(GL_MODELVIEW);
 
-	// Update the layout.
-	myRootContainer->setPosition(viewport[0]);
-	myRootContainer->setSize(viewport[1]);
-	myRootContainer->setHeight(200);
-	myRootContainer->setWidth(200);
-	myRootContainer->layout();
+	glDisable(GL_DEPTH_TEST);
+	//glEnable(GL_TEXTURE_2D);
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Draw ui.
 	myRootContainer->draw();
+
+	glDisable (GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

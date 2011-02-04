@@ -105,7 +105,7 @@ int Container::expandStep(int availableSpace, Orientation orientation)
 		int max = w->getMaximumSize()[orientation];
 
 		// Compute new width
-		int ns = w->getWidth() + childSpace;
+		int ns = w->getSize()[orientation] + childSpace;
 		if(ns < min) ns = min;
 		if(ns > max) ns = max;
 
@@ -172,7 +172,7 @@ void Container::resetChildrenSize(Orientation orientation)
 void Container::computeLinearLayout(Orientation orientation)
 {
 	int nc = getNumChildren();
-	Orientation oppositeOrientation = (orientation = Vertical) ? Horizontal : Vertical;
+	Orientation oppositeOrientation = (orientation == Vertical) ? Horizontal : Vertical;
 	// TODO: Check satisfiability of conditions
 
 	// Compute how much total space is available.
@@ -192,8 +192,6 @@ void Container::layout()
 {
 	if(needLayoutRefresh())
 	{
-		Widget::layout();
-
 		if(myLayout == LayoutHorizontal)
 		{
 			computeLinearLayout(Horizontal);
@@ -210,6 +208,8 @@ void Container::layout()
 			Widget* w = it.getNext();
 			w->layout();
 		}
+
+		Widget::layout();
 	}
 }
 
