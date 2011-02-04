@@ -58,17 +58,17 @@ private:
 class DefaultWidgetFactory: public WidgetFactory
 {
 public:
-	virtual Button* createButton(omega::String name, Widget* parent)
+	virtual Button* createButton(omega::String name, Container* container)
 	{
 		Button* button = new DefaultButton(name);
-		parent->addChild(button);
+		container->addChild(button);
 		return button;
 	}
 
-	virtual Slider* createSlider(omega::String name, Widget* parent)
+	virtual Slider* createSlider(omega::String name, Container* container)
 	{
 		Slider* slider = new DefaultSlider(name);
-		parent->addChild(slider);
+		container->addChild(slider);
 		return slider;
 	}
 };

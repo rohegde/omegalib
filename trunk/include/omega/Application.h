@@ -83,6 +83,12 @@ namespace omega
 		const Matrix4f& getModelViewMatrix() const { return myModelView; }
 		const Matrix4f& getProjectionMatrix() const { return myProjection; }
 
+		//! helper method to get view ray from a point on the near projection plane.
+		Ray unproject(Vector2f point)
+		{
+			return Math::unproject(point, myModelView, myProjection, myViewport);
+		}
+
 	protected:
 		void resetGLContext();
 

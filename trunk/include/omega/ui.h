@@ -26,8 +26,8 @@
 #define __OMEGA_UI_H__
 
 #include "omega/ui/AbstractButton.h"
-#include "omega/ui/Box.h"
 #include "omega/ui/Button.h"
+#include "omega/ui/Container.h"
 #include "omega/ui/Image.h"
 #include "omega/ui/Label.h"
 #include "omega/ui/DefaultSkin.h"

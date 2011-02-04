@@ -93,9 +93,10 @@ public:
 
 	void initialize(MeshViewerClient* client);
 	void update(const UpdateContext& context);
-	void draw(const DrawContext& context);
+	void draw(const DrawContext& context, const Recti& viewport);
 
 private:
+	FontManager* myFontMng;
 	UIManager* myUIMng;
 	MeshViewerClient* myClient;
 };

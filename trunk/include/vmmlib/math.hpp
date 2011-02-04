@@ -1371,8 +1371,8 @@ namespace vmml
     template<typename T> inline 
 	ray<T> math<T>::unproject(const vector<2, float>& point, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport)
 	{
-		Vector3f origin;
-		Vector3f direction;
+		vector<3, T> origin;
+		vector<3, T> direction;
 
 		double dmv[16];
 		double dpm[16];

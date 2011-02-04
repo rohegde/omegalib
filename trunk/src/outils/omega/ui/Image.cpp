@@ -32,37 +32,37 @@ Image::~Image()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Image::draw()
 {
-	Widget::draw();
+	//Widget::draw();
 
-	if(myTexture != NULL)
-	{
-		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, myTexture->getGLTexture());
+	//if(myTexture != NULL)
+	//{
+	//	glEnable(GL_TEXTURE_2D);
+	//	glActiveTexture(GL_TEXTURE0);
+	//	glBindTexture(GL_TEXTURE_2D, myTexture->getGLTexture());
 
-		float x = myPosition.x();
-		float y = myPosition.y();
+	//	float x = myPosition.x();
+	//	float y = myPosition.y();
 
-		float width = mySize.x();
-		float height = mySize.y();
+	//	float width = mySize.x();
+	//	float height = mySize.y();
 
-		glColor4ub(255, 255, 255, 255);
+	//	glColor4ub(255, 255, 255, 255);
 
-		glBegin(GL_TRIANGLE_STRIP);
+	//	glBegin(GL_TRIANGLE_STRIP);
 
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(x, y);
+	//	glTexCoord2f(0.0f, 1.0f);
+	//	glVertex2f(x, y);
 
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(x + width, y);
+	//	glTexCoord2f(1.0f, 1.0f);
+	//	glVertex2f(x + width, y);
 
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(x, y + height);
+	//	glTexCoord2f(0.0f, 0.0f);
+	//	glVertex2f(x, y + height);
 
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(x + width, y + height);
+	//	glTexCoord2f(1.0f, 0.0f);
+	//	glVertex2f(x + width, y + height);
 
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
-	}
+	//	glEnd();
+	//	glDisable(GL_TEXTURE_2D);
+	//}
 }

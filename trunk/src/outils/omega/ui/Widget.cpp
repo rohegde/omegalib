@@ -23,27 +23,27 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "omega/ui/Widget.h"
+#include "omega/ui/Container.h"
 
-#include "boost/foreach.hpp"
-#define boost_foreach BOOST_FOREACH
-
-#include "FTGL/ftgl.h"
+//#include "FTGL/ftgl.h"
 
 using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(omega::String name):
-	myUI(NULL),
+	myUIMng(NULL),
 	myName(name),
-	myParent(NULL),
+	myContainer(NULL),
 	myVisible(true),
 	myDebugModeColor(255, 0, 255),
-	myDebugModeEnabled(false),
+	myDebugModeEnabled(true),
 	myRotation(0),
 	//myScale(1.0f),
 	myUserMoveEnabled(false),
-	myMoving(false)
+	myMoving(false),
+	myMaximumSize(std::numeric_limits<int>::max(), std::numeric_limits<int>::max()),
+	myMinimumSize(0, 0)
 {
 
 }
@@ -55,38 +55,21 @@ Widget::~Widget()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::setUI(UIManager* ui)
+void Widget::clearSizeConstaints()
 {
-	myUI = ui;
-	boost_foreach(Widget* child, myChildren)
-	{
-		child->setUI(ui);
-	}
+	myMaximumSize = Vector2i(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
+	myMinimumSize = Vector2i(0, 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::addChild(Widget* child)
-{
-	if(child->myParent != NULL)
-	{
-		child->myParent->removeChild(child);
-	}
-	myChildren.push_back(child);
-	child->myParent = this;
-	child->setUI(myUI);
+void Widget::setContainer(Container* value) 
+{ 
+	myContainer = value; 
+	setUIManager(myContainer->getUIManager());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::removeChild(Widget* child)
-{
-	myChildren.remove(child);
-	child->myParent = NULL;
-	child->setUI(NULL);
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::render()
+void Widget::preDraw()
 {
 	glPushMatrix();
 
@@ -95,26 +78,27 @@ void Widget::render()
 	Vector2f mcenter = -center;
 
 	glTranslatef(center[0], center[1], 0.0f);
-
 	glRotatef(myRotation, 0, 0, 1);
-
 	glTranslatef(mcenter[0], mcenter[1], 0.0f);
+}
 
-    // draw myself.
-	draw();
-
-	// render children.
-	boost_foreach(Widget* child, myChildren)
-	{
-		child->render();
-	}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::postDraw()
+{
 	// reset transform.
 	glPopMatrix();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::draw()
+{
+	preDraw();
+	renderContent();
+	postDraw();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::renderContent()
 {
 	if(myDebugModeEnabled)
 	{
@@ -145,24 +129,6 @@ void Widget::draw()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::layoutChildren()
-{
-	boost_foreach(Widget* child, myChildren)
-	{
-		child->layoutChildren();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::update(const omega::UpdateContext& context)
-{
-	boost_foreach(Widget* child, myChildren)
-	{
-		child->update(context);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Widget::hitTest(const Vector2f& point)
 {
 	float x1 = myPosition[0];
@@ -187,81 +153,57 @@ bool Widget::hitTest(const Vector2f& point, const Vector2f& pos, const Vector2f&
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::transformPoint(Vector2f& point)
+Vector2f Widget::transformPoint(const Vector2f& point)
 {
-	if(myParent)
-	{
-		myParent->transformPoint(point);
-	}
-
+	//if(myParent)
+	//{
+	//	myParent->transformPoint(point);
+	//}
+	Vector2f res;
 	if(myRotation != 0)
 	{
 		Vector2f center = myPosition + (mySize / 2);
-		point -= center;
+		res = point - center;
 		float s = sin(-myRotation * omega::Math::DegToRad);
 		float c = cos(-myRotation * omega::Math::DegToRad);
 		float x = point[0];
 		float y = point[1];
-		point[0] = x * c - y * s;;
-		point[1] = y * c + x * s;
-		point += center;
+		res[0] = x * c - y * s;;
+		res[1] = y * c + x * s;
+		res += center;
 	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Widget::processInputEvent(const InputEvent& evt)
-{
-	myLastEvent = evt;
-	bool processed = false;
-
-	Vector2f point = evt.position;
-	
-	transformPoint(point);
-
-	boost_foreach(Widget* child, myChildren)
-	{
-		processed |= child->processInputEvent(evt);
-	}
-	if(hitTest(point))
-	{
-		if(!processed)
-		{
-			if(myUserMoveEnabled)
-			{
-				if(evt.type == InputEvent::Down)
-				{
-					myUserMovePosition = evt.position;
-					processed = true;
-					myMoving = true;
-				}
-				else if(evt.type == InputEvent::Move && myMoving)
-				{
-					Vector2f cur = evt.position;
-					Vector2f delta = cur - myUserMovePosition;
-					myUserMovePosition = cur;
-
-					myPosition += delta;
-					processed = true;
-				}
-				else if(myMoving && evt.type == InputEvent::Up)
-				{
-					myMoving = false;
-					processed = true;
-				}
-				if(evt.type == InputEvent::Rotate)
-				{
-					myRotation += evt.rotation[0];
-					processed = true;
-				}
-			}
-		}
-	}
-	return processed;
+	return res;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::dispatchUIEvent(UIEvent& evt)
 {
-	if(myParent) myParent->dispatchUIEvent(evt);
-	else myUI->dispatchUIEvent(evt);
+	if(myContainer != NULL) myContainer->dispatchUIEvent(evt);
+	else myUIMng->dispatchUIEvent(evt);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::requestLayoutRefresh() 
+{ 
+	myNeedLayoutRefresh = true; 
+	if(myContainer != NULL) 
+		myContainer->requestLayoutRefresh(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::needLayoutRefresh() 
+{ 
+	return myNeedLayoutRefresh; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::layout()
+{ 
+	myNeedLayoutRefresh = false; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::setActualSize(int value, Orientation orientation) 
+{
+	mySize[orientation] = value; 
 }

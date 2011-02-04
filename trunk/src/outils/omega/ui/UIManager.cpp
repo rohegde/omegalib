@@ -1,11 +1,11 @@
 /********************************************************************************************************************** 
  * THE OMEGA LIB PROJECT
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
  * following conditions are met:
@@ -24,19 +24,19 @@
  *********************************************************************************************************************/
 #include "omega/ui/DefaultSkin.h"
 #include "omega/ui/UIManager.h"
-#include "omega/ui/Widget.h"
+#include "omega/ui/Container.h"
 
 using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UIManager::UIManager():
-	myRootWidget(new Widget("")),
+	myRootContainer(new Container("root")),
 	myWidgetFactory(new DefaultWidgetFactory()),
 	myDefaultFont(NULL),
 	myEventHandler(NULL)
 {
-	myRootWidget->myUI = this;
+	myRootContainer->setUIManager(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,17 +47,19 @@ UIManager::~UIManager()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::update(const UpdateContext& context)
 {
-	myRootWidget->update(context);
+	myRootContainer->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::draw(const DrawContext& context)
+void UIManager::draw(const DrawContext& context, const Recti& viewport)
 {
-	//myRootWidget->setPosition(Vector2f(context.viewportX, context.viewportY));
-	//myRootWidget->setSize(Vector2f(context.viewportWidth, context.viewportHeight));
+	// Update the layout.
+	myRootContainer->setPosition(viewport[0]);
+	myRootContainer->setSize(viewport[1]);
+	myRootContainer->layout();
 
-	myRootWidget->layoutChildren();
-	myRootWidget->render();
+	// Draw ui.
+	myRootContainer->draw();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +73,7 @@ void UIManager::processInputEvent(const InputEvent& evt)
 		//if(evt.type == InputEvent::Rotate) 
 		//	printf("rotate! at %f %f, deg:%f\n", evt.position[0], evt.position[1], evt.rotation[0]);
 		//if(evt.type == InputEvent::Split) printf("split!\n");
-		myRootWidget->processInputEvent(evt);
+		myRootContainer->processInputEvent(evt);
 	}
 }
 
