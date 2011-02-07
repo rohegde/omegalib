@@ -182,6 +182,11 @@ bool Widget::needLayoutRefresh()
 void Widget::layout()
 { 
 	myNeedLayoutRefresh = false; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::updateSize()
+{
 	if(myAutosize) autosize();
 }
 

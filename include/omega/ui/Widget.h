@@ -85,6 +85,7 @@ namespace ui
 		//@{
 		//! Gets the widget size
 		Vector2i& getSize();
+		float getSize(Orientation orientation);
 		float getWidth();
 		float getHeight();
 		//! Sets the widget size.
@@ -107,6 +108,7 @@ namespace ui
 		void setAutosize(bool value);
 		bool getAutosize();
 		virtual void autosize() {}
+		virtual void updateSize();
 		//@}
 
 		bool isVisible();
@@ -190,6 +192,12 @@ namespace ui
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Vector2i& Widget::getSize() 
 	{ return mySize; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline float Widget::getSize(Orientation orientation)
+	{
+		return mySize[orientation];
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline float Widget::getWidth()

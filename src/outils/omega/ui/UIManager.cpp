@@ -55,13 +55,18 @@ void UIManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::draw(const DrawContext& context, const Recti& viewport)
 {
-	// Update the layout.
+	// Update the root container size if necessary.
 	if(myRootContainer->getPosition() != viewport[0] ||
 		myRootContainer->getSize() != viewport[1])
 	{
 		myRootContainer->setPosition(viewport[0]);
 		myRootContainer->setSize(viewport[1]);
 	}
+
+	// Make sure all widget sizes are up to date (and perform autosize where necessary).
+	myRootContainer->updateSize();
+
+	// Layout ui.
 	myRootContainer->layout();
 
     glMatrixMode(GL_MODELVIEW);
