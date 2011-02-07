@@ -1,48 +1,52 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
- * following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
  * 
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
- * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
- * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
  * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
- * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************************************************************/
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #include "omega/ui/Container.h"
 
 using namespace omega;
 using namespace omega::ui;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Container::Container(omega::String name):
 		Widget(name),
 		myPadding(5),
-		myMargin(5)
+		myMargin(5),
+		myHorizontalAlign(AlignCenter),
+		myVerticalAlign(AlignMiddle)
 {
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Container::~Container()
 {
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::addChild(Widget* child)
 {
 	requestLayoutRefresh();
@@ -50,7 +54,7 @@ void Container::addChild(Widget* child)
 	child->setContainer(this);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::removeChild(Widget* child)
 {
 	requestLayoutRefresh();
@@ -58,7 +62,7 @@ void Container::removeChild(Widget* child)
 	child->setContainer(NULL);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::setUIManager(UIManager* ui)
 {
 	Widget::setUIManager(ui);
@@ -71,7 +75,7 @@ void Container::setUIManager(UIManager* ui)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::draw()
 {
 	preDraw();
@@ -90,7 +94,19 @@ void Container::draw()
 	postDraw();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::updateSize()
+{
+	WidgetIterator it(myChildren.begin(), myChildren.end());
+	while(it.hasMoreElements())
+	{
+		Widget* w = it.getNext();
+		w->updateSize();
+	}
+	Widget::autosize();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 int Container::expandStep(int availableSpace, Orientation orientation)
 {
 	// Check space constraints for each child
@@ -115,7 +131,7 @@ int Container::expandStep(int availableSpace, Orientation orientation)
 	return spaceLeft;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::updateChildrenLayoutPosition(Orientation orientation)
 {
 	int p = myPadding;
@@ -128,7 +144,7 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::updateChildrenFreeBounds(Orientation orientation)
 {
 	// Compute the maximum available size
@@ -151,12 +167,27 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 
 		// Set child position (no alignment for now, always centered
 		// into parent container.
-		int pos = (available - ns) / 2 + myPadding;
+		int pos = 0;
+		if((orientation == Horizontal && myHorizontalAlign == AlignLeft) ||
+			(orientation == Vertical && myVerticalAlign == AlignTop))
+		{
+			pos = 0;
+		}
+		else if((orientation == Horizontal && myHorizontalAlign == AlignRight) ||
+			(orientation == Vertical && myVerticalAlign == AlignBottom))
+		{
+			pos = getSize(orientation) - w->getSize(orientation) - myPadding;
+		}
+		else
+		{
+			pos = (available - ns) / 2 + myPadding;
+		}
+
 		w->setPosition(pos, orientation);
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::resetChildrenSize(Orientation orientation)
 {
 	// Initialize widget width to 0
@@ -168,7 +199,7 @@ void Container::resetChildrenSize(Orientation orientation)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::computeLinearLayout(Orientation orientation)
 {
 	int nc = getNumChildren();
@@ -187,7 +218,7 @@ void Container::computeLinearLayout(Orientation orientation)
 	updateChildrenFreeBounds(oppositeOrientation);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::layout()
 {
 	if(needLayoutRefresh())
@@ -213,7 +244,7 @@ void Container::layout()
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::update(const omega::UpdateContext& context)
 {
 	WidgetIterator it(myChildren.begin(), myChildren.end());
@@ -224,7 +255,7 @@ void Container::update(const omega::UpdateContext& context)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Container::processInputEvent(const InputEvent& evt)
 {
 	myLastEvent = evt;

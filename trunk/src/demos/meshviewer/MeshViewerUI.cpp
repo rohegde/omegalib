@@ -45,6 +45,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	root->setLayout(Container::LayoutVertical);
 
 	Container* c = wf->createContainer("c", root, Container::LayoutHorizontal);
+	c->setVerticalAlign(Container::AlignBottom);
 	Label* l = wf->createLabel("Hello World", c);
 	l->setAutosize(true);
 	Button* btn = wf->createButton("Button", c);

@@ -59,19 +59,24 @@ namespace ui
 		int getNumChildren();
 		//@}
 
+
+		//!Layout options
+		//@{
 		void setLayout(Layout layout);
 		Layout getLayout();
-
-		//!Padding and margin
-		//@{
 		float getPadding();
 		float getMargin();
 		void setPadding(float value);
 		void setMargin(float value);
+		HorizontalAlign getHorizontalAlign();
+		void setHorizontalAlign(HorizontalAlign value);
+		VerticalAlign getVerticalAlign();
+		void setVerticalAlign(VerticalAlign value);
 		//@}
 
 		virtual void draw();
 		virtual void setUIManager(UIManager* ui);
+		virtual void updateSize();
 
 	protected:
 		virtual bool processInputEvent(const omega::InputEvent& evt);
@@ -90,6 +95,8 @@ namespace ui
 		Layout myLayout;
 		float myPadding;
 		float myMargin;
+		HorizontalAlign myHorizontalAlign;
+		VerticalAlign myVerticalAlign;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +126,23 @@ namespace ui
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Container::setMargin(float value) 
 	{ myMargin = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Container::HorizontalAlign Container::getHorizontalAlign()
+	{ return myHorizontalAlign; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Container::setHorizontalAlign(HorizontalAlign value) 
+	{ myHorizontalAlign = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Container::VerticalAlign Container::getVerticalAlign() 
+	{ return myVerticalAlign; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Container::setVerticalAlign(VerticalAlign value) 
+	{ myVerticalAlign = value; }
+
 };
 }; // namespace omega
 
