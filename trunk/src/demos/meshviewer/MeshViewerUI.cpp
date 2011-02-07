@@ -35,7 +35,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	myFontMng = new FontManager();
 
 	//! Load and set default font.
-	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 20);
+	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 30);
 	Font* defaultFont = myFontMng->getFont("arial");
 	myUIMng->setDefaultFont(defaultFont);
 
