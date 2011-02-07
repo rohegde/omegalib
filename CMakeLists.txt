@@ -9,7 +9,8 @@
 # *---------------------------------------------------------------------------------------------------------------------
 # * [SUMMARY OF FILE CONTENTS]
 # *********************************************************************************************************************/
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8) 
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS On)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3) 
 
 PROJECT(OmegaLib)
 

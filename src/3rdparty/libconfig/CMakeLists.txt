@@ -27,3 +27,4 @@ ADD_DEFINITIONS( -DLIBCONFIG_STATIC -DLIBCONFIGXX_STATIC)
 #######################################################################################################################
 # Setup compile info
 ADD_LIBRARY(libconfig ${Sources})
+SET_TARGET_PROPERTIES(libconfig PROPERTIES FOLDER 3rdparty)
