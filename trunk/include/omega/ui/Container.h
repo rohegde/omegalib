@@ -42,6 +42,8 @@ namespace ui
 	friend class UIManager;
 	public:
 		enum Layout {LayoutFree, LayoutHorizontal, LayoutVertical};
+		enum HorizontalAlign { AlignRight, AlignLeft, AlignCenter};
+		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
 		Container(omega::String name);
@@ -68,13 +70,13 @@ namespace ui
 		void setMargin(float value);
 		//@}
 
-	protected:
+		virtual void draw();
 		virtual void setUIManager(UIManager* ui);
 
+	protected:
 		virtual bool processInputEvent(const omega::InputEvent& evt);
 		virtual void update(const omega::UpdateContext& context);
 		virtual void layout();
-		virtual void draw();
 
 	private:
 		int expandStep(int childSpace, Orientation orientation);
