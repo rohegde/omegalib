@@ -41,6 +41,7 @@ namespace ui
 	friend class Container;
 	public:
 		enum Orientation {Horizontal = 0, Vertical = 1};
+
 	public:
 		Widget(omega::String name);
 		virtual ~Widget();
@@ -103,6 +104,9 @@ namespace ui
 		void setMaximumWidth(float value);
 		void setMaximumHeight(float value);
 		void clearSizeConstaints();
+		void setAutosize(bool value);
+		bool getAutosize();
+		virtual void autosize() {}
 		//@}
 
 		bool isVisible();
@@ -114,6 +118,11 @@ namespace ui
 		bool hitTest(const omega::Vector2f& point);
 		static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
 
+		virtual void draw();
+
+		UIManager* getUIManager();
+		virtual void setUIManager(UIManager* ui) { myUIMng = ui; }
+
 	protected:
 		//! internal layout management
 		//@{
@@ -124,13 +133,10 @@ namespace ui
 		//@}
 
 		void setContainer(Container* value);
-		UIManager* getUIManager();
-		virtual void setUIManager(UIManager* ui) { myUIMng = ui; }
 		Vector2f transformPoint(const omega::Vector2f& point);
 		virtual void update(const omega::UpdateContext& context) {}
 		void preDraw();
 		void postDraw();
-		virtual void draw();
 		virtual void renderContent();
 		virtual bool processInputEvent(const omega::InputEvent& evt) { return false; }
 		void dispatchUIEvent(UIEvent& evt);
@@ -160,6 +166,7 @@ namespace ui
 		// Size constraints.
 		omega::Vector2i myMinimumSize;
 		omega::Vector2i myMaximumSize;
+		bool myAutosize;
 
 		// Last handled input event.
 		omega::InputEvent myLastEvent;
@@ -167,7 +174,18 @@ namespace ui
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline UIManager* Widget::getUIManager() 
-	{ return myUIMng; }
+	{ oassert(myUIMng != NULL); return myUIMng; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Widget::setAutosize(bool value)
+	{ 
+		myAutosize = value; 
+		requestLayoutRefresh();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Widget::getAutosize()
+	{ return myAutosize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Vector2i& Widget::getSize() 
