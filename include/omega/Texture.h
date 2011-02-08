@@ -29,12 +29,10 @@
 
 #include "osystem.h"
 
-#include "boost/unordered_map.hpp"
-
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture
+	class OUTILS_API Texture
 	{
 	public:
 		Texture(): 
@@ -42,18 +40,19 @@ namespace omega
 		  myDirty(true),
 		  myData(NULL) {}
 
-		bool isDirty() { return myDirty; }
-		void setDirty() { myDirty = true; }
+		void initialize(byte* data, int width, int height); 
 
-		byte* getData() { return myData; }
-		void setData(byte* data, int width, int height) { myData = data; myWidth = width; myHeight = height; }
+		//bool isDirty() { return myDirty; }
+		//void setDirty() { myDirty = true; }
 
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
+		//byte* getData() { return myData; }
 
-		GLuint getGLTexture() { if(myDirty) refresh(); return myId; }
+		int getWidth();
+		int getHeight();
 
-		OUTILS_API virtual void refresh();
+		GLuint getGLTexture();
+
+		virtual void refresh();
 
 	private:
 		bool myInitialized;
@@ -63,6 +62,21 @@ namespace omega
 		int myWidth;
 		int myHeight;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Texture::getWidth() 
+	{ return myWidth; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Texture::getHeight() 
+	{ return myHeight; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GLuint Texture::getGLTexture() 
+	{
+		oassert(myInitialized);
+		return myId; 
+	}
 }; // namespace omega
 
 #endif

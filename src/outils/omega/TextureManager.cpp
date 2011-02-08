@@ -41,7 +41,19 @@ TextureManager::~TextureManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TextureManager::loadTexture(omega::String textureName, omega::String filename)
+Texture* TextureManager::createTexture(String textureName, int width, int height, byte* data)
+{
+	Texture* tx = new Texture();
+	tx->initialize(data, width, height);
+
+	// @todo: Check for already existing textures with same name & notify + deallocate.
+
+	myTextures[textureName] = tx;
+	return tx;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* TextureManager::loadTexture(omega::String textureName, omega::String filename)
 {
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(), 0);
 	FIBITMAP* image = FreeImage_Load(format, filename.c_str());
@@ -67,12 +79,7 @@ void TextureManager::loadTexture(omega::String textureName, omega::String filena
 	
 	FreeImage_Unload(image);
 
-	Texture* tx = new Texture();
-	tx->setData(data, w, h);
-
-	// @todo: Check for already existing textures with same name & notify + deallocate.
-
-	myTextures[textureName] = tx;
+	return createTexture(textureName, w, h, data);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
