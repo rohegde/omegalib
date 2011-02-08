@@ -30,3 +30,103 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation orientation, 
+	Color startColor, Color endColor, float pc)
+{
+	int x = pos[0];
+	int y = pos[1];
+	int width = size[0];
+	int height = size[1];
+
+	float s = 0;
+
+	glColor4fv(startColor);
+	if(orientation == Widget::Horizontal)
+	{
+		// draw full color portion
+		s = int(height * pc);
+		glRecti(x, y, x + width, y + s);
+		y += s;
+		height -= s;
+		// draw gradient portion
+		glBegin(GL_QUADS);
+		glVertex2i(x, y);
+		glVertex2i(x + width, y);
+		glColor4fv(endColor);
+		glVertex2i(x + width, y + height);
+		glVertex2i(x, y + height);
+		glEnd(); 
+	}
+	else
+	{
+		// draw full color portion
+		s = int(width * pc);
+		glRecti(x, y, x + s, y + height);
+		x += s;
+		width -= s;
+		// draw gradient portion
+		glBegin(GL_QUADS);
+		glVertex2i(x, y + height);
+		glVertex2i(x, y);
+		glColor4fv(endColor.begin());
+		glVertex2i(x + width, y);
+		glVertex2i(x + width, y + height);
+		glEnd();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Painter::drawRect(Vector2i pos, Vector2i size, Color color)
+{
+	int x = pos[0];
+	int y = pos[1];
+	int width = size[0];
+	int height = size[1];
+
+	glColor4fv(color);
+	glRecti(x, y, x + width, y + height);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Painter::drawRectOutline(Vector2i pos, Vector2i size, Color color)
+{
+	int x = pos[0];
+	int y = pos[1];
+	int width = size[0];
+	int height = size[1];
+
+	glColor4fv(color);
+
+	glBegin(GL_LINES);
+
+	glVertex2f(x, y);
+	glVertex2f(x + width, y);
+
+	glVertex2f(x, y + height);
+	glVertex2f(x + width, y + height);
+
+	glVertex2f(x, y);
+	glVertex2f(x, y + height);
+
+	glVertex2f(x + width, y);
+	glVertex2f(x + width, y + height);
+
+	glEnd();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Painter::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
+{ 
+	Vector2i rect = font->computeSize(text);
+	float x, y;
+
+	if(align & Font::HALeft) x = position[0];
+	else if(align & Font::HARight) x = position[0] - rect[0];
+	else x = position[0] - rect[0] / 2;
+
+	if(align & Font::VATop) y = -position[1] - rect[1];
+	else if(align & Font::VABottom) y = -position[1];
+	else y = -position[1] - rect[1] / 2;
+
+	font->render(text, x, y); 
+}

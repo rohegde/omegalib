@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/ui/Label.h"
 #include "omega/ui/UIManager.h"
+#include "omega/ui/Painter.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -73,8 +74,8 @@ void Label::autosize()
 	if(!myFont) myFont = getUIManager()->getDefaultFont();
 	if(myFont)
 	{
-		Recti rect = myFont->computeBoundingBox(myText);
-		Vector2i size = rect[1] + Vector2i(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
+		Vector2i size = myFont->computeSize(myText);
+		size += Vector2i(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
 		setSize(size);
 	}
 }
@@ -118,6 +119,7 @@ void Label::renderContent()
 		else if(alignFlags & Font::VAMiddle) textPos[1] += (float)getHeight() / 2 - 1;
 
 		glColor4fv(myColor.begin());
-		myFont->render(myText, textPos, alignFlags);
+
+		getPainter()->drawText(myText, myFont, textPos, alignFlags);
 	}
 }

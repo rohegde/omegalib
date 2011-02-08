@@ -29,42 +29,21 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Recti Font::computeBoundingBox(const omega::String& text) 
+Vector2i Font::computeSize(const omega::String& text) 
 { 
 	FTBBox bbox = myFontImpl->BBox(text.c_str());
-
-	Vector2i pos = Vector2i((int)bbox.Lower().Xf(), (int)bbox.Lower().Yf());
-	Vector2i size = Vector2i((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf()) - pos;
-
-	Recti rect;
-	rect[0] = pos;
-	rect[1] = size;
-	return rect;
+	Vector2i size = Vector2i((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf());
+	return size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Font::render(const omega::String& text, omega::Vector2f position, unsigned int align) 
+void Font::render(const omega::String& text, float x, float y) 
 { 
 	glPushMatrix();
 	glScalef(1.0f, -1.0f, 1.0f);
 
-	FTBBox bbox = myFontImpl->BBox(text.c_str());
-
-	// string height and width
-	float ht = bbox.Upper().Yf() - bbox.Lower().Yf();
-	float wt = bbox.Upper().Xf() - bbox.Lower().Xf();
-
-	float x, y;
-
-	if(align & HALeft) x = position[0];
-	else if(align & HARight) x = position[0] - wt;
-	else x = position[0] - wt / 2;
-
-	if(align & VATop) y = -position[1] - ht;
-	else if(align & VABottom) y = -position[1];
-	else y = -position[1] - ht / 2;
-
 	myFontImpl->Render(text.c_str(), text.length(), FTPoint(x, y, 0.0f)); 
+
 	glPopMatrix();
 }
 

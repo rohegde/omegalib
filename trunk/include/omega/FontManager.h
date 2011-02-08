@@ -42,15 +42,15 @@ namespace omega
 	public:
 		Font(FTFont* fontImpl): myFontImpl(fontImpl) {}
 
-		OUTILS_API void render(const omega::String& text, omega::Vector2f position, unsigned int align = HALeft | VATop);
-		OUTILS_API Recti computeBoundingBox(const omega::String& text);
+		OUTILS_API void render(const String& text, float x, float y);
+		OUTILS_API Vector2i computeSize(const omega::String& text);
 
 	private:
 		FTFont* myFontImpl;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	typedef boost::unordered_map<omega::String, Font*> FontDictionary;
+	typedef Dictionary<String, Font*> FontDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class FontManager

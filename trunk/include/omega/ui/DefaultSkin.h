@@ -38,9 +38,11 @@ namespace ui
 class OUTILS_API DefaultButton: public Button
 {
 public:
-	DefaultButton(omega::String name): Button(name) {}
+	DefaultButton(String name): Button(name) {}
+
 protected:
-	void draw();
+	void renderContent();
+
 private:
 	float myAnim;
 };
@@ -49,7 +51,7 @@ private:
 class OUTILS_API DefaultSlider: public Slider
 {
 public:
-	DefaultSlider(omega::String name): Slider(name) {}
+	DefaultSlider(String name): Slider(name) {}
 protected:
 	void draw();
 private:
@@ -60,18 +62,14 @@ private:
 class DefaultWidgetFactory: public WidgetFactory
 {
 public:
-	static void gradientRect(Vector2i pos, Vector2i size, Widget::Orientation orientation, Color startColor, Color endColor, float pc = 0.5f);
-	static void fillRect(Vector2i pos, Vector2i size, Color color);
-	static void outlineRect(Vector2i pos, Vector2i size, Color color);
-
-	virtual Button* createButton(omega::String name, Container* container)
+	virtual Button* createButton(String name, Container* container)
 	{
 		Button* button = new DefaultButton(name);
 		container->addChild(button);
 		return button;
 	}
 
-	virtual Slider* createSlider(omega::String name, Container* container)
+	virtual Slider* createSlider(String name, Container* container)
 	{
 		Slider* slider = new DefaultSlider(name);
 		container->addChild(slider);

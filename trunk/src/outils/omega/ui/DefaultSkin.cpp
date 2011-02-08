@@ -25,14 +25,24 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ui/DefaultSkin.h"
+#include "omega/ui/Painter.h"
 
 using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultButton::draw()
+void DefaultButton::renderContent()
 {
-	Button::draw();
+	Button::renderContent();
+
+	Painter* painter = getPainter();
+
+	painter->drawRect(Vector2i::ZERO, getSize(), Color(1.0f, 1.0f, 1.0f, 0.2f));
+	painter->drawRectOutline(Vector2i::ZERO, getSize(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+
+	myLabel.setPosition(Vector2i::ZERO);
+	myLabel.setSize(getSize());
+	myLabel.draw();
 
 	myAnim *= 0.8f;
 	if(myPressed) myAnim = 1.0f;
@@ -76,90 +86,5 @@ void DefaultSlider::draw()
 	////GfxUtils::drawDRect(myPosition, mySize, 0);
 
 	//Slider::draw();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultWidgetFactory::gradientRect(Vector2i pos, Vector2i size, Widget::Orientation orientation, 
-	Color startColor, Color endColor, float pc)
-{
-	int x = pos[0];
-	int y = pos[1];
-	int width = size[0];
-	int height = size[1];
-
-	float s = 0;
-
-	glColor4fv(startColor);
-	if(orientation == Widget::Horizontal)
-	{
-		// draw full color portion
-		s = int(height * pc);
-		glRecti(x, y, x + width, y + s);
-		y += s;
-		height -= s;
-		// draw gradient portion
-		glBegin(GL_QUADS);
-		glVertex2i(x, y);
-		glVertex2i(x + width, y);
-		glColor4fv(endColor);
-		glVertex2i(x + width, y + height);
-		glVertex2i(x, y + height);
-		glEnd(); 
-	}
-	else
-	{
-		// draw full color portion
-		s = int(width * pc);
-		glRecti(x, y, x + s, y + height);
-		x += s;
-		width -= s;
-		// draw gradient portion
-		glBegin(GL_QUADS);
-		glVertex2i(x, y + height);
-		glVertex2i(x, y);
-		glColor4fv(endColor.begin());
-		glVertex2i(x + width, y);
-		glVertex2i(x + width, y + height);
-		glEnd();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultWidgetFactory::fillRect(Vector2i pos, Vector2i size, Color color)
-{
-	int x = pos[0];
-	int y = pos[1];
-	int width = size[0];
-	int height = size[1];
-
-	glColor4fv(color);
-	glRecti(x, y, x + width, y + height);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultWidgetFactory::outlineRect(Vector2i pos, Vector2i size, Color color)
-{
-	int x = pos[0];
-	int y = pos[1];
-	int width = size[0];
-	int height = size[1];
-
-	glColor4fv(color);
-
-	glBegin(GL_LINES);
-
-	glVertex2f(x, y);
-	glVertex2f(x + width, y);
-
-	glVertex2f(x, y + height);
-	glVertex2f(x + width, y + height);
-
-	glVertex2f(x, y);
-	glVertex2f(x, y + height);
-
-	glVertex2f(x + width, y);
-	glVertex2f(x + width, y + height);
-
-	glEnd();
 }
 

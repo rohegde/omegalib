@@ -123,7 +123,9 @@ namespace ui
 		virtual void draw();
 
 		UIManager* getUIManager();
-		virtual void setUIManager(UIManager* ui) { myUIMng = ui; }
+		virtual void setUIManager(UIManager* ui);
+
+		Painter* getPainter();
 
 	protected:
 		//! internal layout management

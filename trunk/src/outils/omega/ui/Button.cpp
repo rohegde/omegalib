@@ -89,10 +89,4 @@ bool Button::processInputEvent(const InputEvent& evt)
 void Button::renderContent()
 {
 	AbstractButton::renderContent();
-	DefaultWidgetFactory::fillRect(Vector2i::ZERO, getSize(), Color(1.0f, 1.0f, 1.0f, 0.2f));
-	DefaultWidgetFactory::outlineRect(Vector2i::ZERO, getSize(), Color(1.0f, 1.0f, 1.0f, 1.0f));
-
-	myLabel.setPosition(Vector2i::ZERO);
-	myLabel.setSize(getSize());
-	myLabel.draw();
 }

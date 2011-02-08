@@ -40,6 +40,7 @@ namespace ui
 	class Widget;
 	class Container;
 	class WidgetFactory;
+	class Painter;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API UIManager
@@ -49,11 +50,12 @@ namespace ui
 		UIManager();
 		~UIManager();
 
-		void update(const omega::UpdateContext& context);
-		void draw(const omega::DrawContext& context, const Recti& viewport);
-		bool processInputEvent(const omega::InputEvent& evt);
+		void update(const UpdateContext& context);
+		void draw(const DrawContext& context, const Recti& viewport);
+		bool processInputEvent(const InputEvent& evt);
 
 		Container* getRootContainer();
+		Painter* getDefaultPainter();
 
 		omega::Font* getDefaultFont();
 		void setDefaultFont(Font* value);
@@ -70,7 +72,8 @@ namespace ui
 	private:
 		Container* myRootContainer;
 
-		omega::Font* myDefaultFont;
+		Font* myDefaultFont;
+		Painter* myDefaultPainter;
 		IUIEventHandler* myEventHandler;
 		WidgetFactory* myWidgetFactory;
 	};
@@ -78,6 +81,10 @@ namespace ui
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Container* UIManager::getRootContainer() 
 	{ return myRootContainer; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Painter* UIManager::getDefaultPainter() 
+	{ return myDefaultPainter; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline omega::Font* UIManager::getDefaultFont() 
