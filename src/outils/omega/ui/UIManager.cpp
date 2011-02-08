@@ -27,6 +27,7 @@
 #include "omega/ui/DefaultSkin.h"
 #include "omega/ui/UIManager.h"
 #include "omega/ui/Container.h"
+#include "omega/ui/Painter.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -36,9 +37,11 @@ UIManager::UIManager():
 	myRootContainer(new Container("root")),
 	myWidgetFactory(new DefaultWidgetFactory()),
 	myDefaultFont(NULL),
-	myEventHandler(NULL)
+	myEventHandler(NULL),
+	myDefaultPainter(NULL)
 {
 	myRootContainer->setUIManager(this);
+	myDefaultPainter = new Painter();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

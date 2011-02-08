@@ -53,7 +53,7 @@ protected:
 		virtual bool processInputEvent(const omega::InputEvent& evt);
 		virtual void renderContent();
 
-private:
+protected:
 	Label myLabel;
 };
 }; // namespace gfx

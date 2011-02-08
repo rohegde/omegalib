@@ -27,7 +27,7 @@
 #ifndef __PAINTER_H__
 #define __PAINTER_H__
 
-#include "omega/osystem.h"
+#include "omega/ui/Widget.h"
 
 namespace omega
 {
@@ -37,6 +37,12 @@ namespace ui
 	class Painter
 	{
 	public:
+		void drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation orientation, 
+			Color startColor, Color endColor, float pc = 0.5f);
+		void drawRect(Vector2i pos, Vector2i size, Color color);
+		void drawRectOutline(Vector2i pos, Vector2i size, Color color);
+		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
+
 	private:
 	};
 }; // namespace ui
