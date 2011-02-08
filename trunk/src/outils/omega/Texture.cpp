@@ -29,22 +29,30 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::initialize(byte* data, int width, int height)
+{
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	//Now generate the OpenGL texture object 
+	glGenTextures(1, &myId);
+		
+	GLenum glErr = glGetError();
+	if(glErr)
+	{
+		const unsigned char* str = gluErrorString(glErr);
+		oerror("Texture initialization: %s", str);
+		return;
+	}
+	myDirty = true;
+	myInitialized = true;
+	refresh();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Texture::refresh()
 {
-	if(!myInitialized)
-	{
-		//Now generate the OpenGL texture object 
-		glGenTextures(1, &myId);
-		
-		GLenum glErr = glGetError();
-		if(glErr)
-		{
-			const unsigned char* str = gluErrorString(glErr);
-			oerror("Texture initialization: %s", str);
-			return;
-		}
-		myInitialized = true;
-	}
 	if(myDirty)
 	{
 		glBindTexture(GL_TEXTURE_2D, myId);

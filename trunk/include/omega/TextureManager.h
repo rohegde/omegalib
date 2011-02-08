@@ -27,9 +27,7 @@
 #ifndef __TEXTURE_MANAGER_H__
 #define __TEXTURE_MANAGER_H__
 
-#include "osystem.h"
-
-#include "boost/unordered_map.hpp"
+#include "omega.h"
 
 namespace omega
 {
@@ -38,20 +36,21 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, Texture*> pairs.
-	typedef boost::unordered_map<omega::String, Texture*> TextureDictionary;
+	typedef Dictionary<String, Texture*> TextureDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads images and manages OpenGL textures.
-	class TextureManager
+	class OUTILS_API TextureManager
 	{
 	public:
-		OUTILS_API TextureManager();
-		OUTILS_API ~TextureManager();
+		TextureManager();
+		~TextureManager();
 
-		OUTILS_API void cleanup();
+		void cleanup();
 
-		OUTILS_API void loadTexture(omega::String textureName, omega::String filename);
-		OUTILS_API Texture* getTexture(omega::String fontName);
+		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
+		Texture* loadTexture(String textureName, String filename);
+		Texture* getTexture(String fontName);
 
 	private:
 		TextureDictionary myTextures;
