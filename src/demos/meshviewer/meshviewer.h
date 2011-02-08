@@ -94,6 +94,7 @@ public:
 	void initialize(MeshViewerClient* client);
 	void update(const UpdateContext& context);
 	void draw(const DrawContext& context, const Recti& viewport);
+	bool handleEvent(const InputEvent& evt);
 
 private:
 	FontManager* myFontMng;

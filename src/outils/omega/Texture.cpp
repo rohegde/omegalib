@@ -24,38 +24,40 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#include "omega/Texture.h"
 
-#include "osystem.h"
+using namespace omega;
 
-#include "boost/unordered_map.hpp"
-
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::refresh()
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef boost::unordered_map<omega::String, Texture*> TextureDictionary;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class TextureManager
+	if(!myInitialized)
 	{
-	public:
-		OUTILS_API TextureManager();
-		OUTILS_API ~TextureManager();
+		//Now generate the OpenGL texture object 
+		glGenTextures(1, &myId);
+		
+		GLenum glErr = glGetError();
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oerror("Texture initialization: %s", str);
+			return;
+		}
+		myInitialized = true;
+	}
+	if(myDirty)
+	{
+		glBindTexture(GL_TEXTURE_2D, myId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		GLenum glErr = glGetError();
 
-		OUTILS_API void cleanup();
-
-		OUTILS_API void loadTexture(omega::String textureName, omega::String filename);
-		OUTILS_API Texture* getTexture(omega::String fontName);
-
-	private:
-		TextureDictionary myTextures;
-	};
-}; // namespace omega
-
-#endif
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oerror("Texture refresh: %s", str);
+			return;
+		}
+		myDirty = false;
+	}
+}

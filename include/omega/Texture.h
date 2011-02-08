@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#ifndef __TEXTURE_H__
+#define __TEXTURE_H__
 
 #include "osystem.h"
 
@@ -34,27 +34,34 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef boost::unordered_map<omega::String, Texture*> TextureDictionary;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class TextureManager
+	class Texture
 	{
 	public:
-		OUTILS_API TextureManager();
-		OUTILS_API ~TextureManager();
+		Texture(): 
+		  myInitialized(false), 
+		  myDirty(true),
+		  myData(NULL) {}
 
-		OUTILS_API void cleanup();
+		bool isDirty() { return myDirty; }
+		void setDirty() { myDirty = true; }
 
-		OUTILS_API void loadTexture(omega::String textureName, omega::String filename);
-		OUTILS_API Texture* getTexture(omega::String fontName);
+		byte* getData() { return myData; }
+		void setData(byte* data, int width, int height) { myData = data; myWidth = width; myHeight = height; }
+
+		int getWidth() { return myWidth; }
+		int getHeight() { return myHeight; }
+
+		GLuint getGLTexture() { if(myDirty) refresh(); return myId; }
+
+		OUTILS_API virtual void refresh();
 
 	private:
-		TextureDictionary myTextures;
+		bool myInitialized;
+		bool myDirty;
+		GLuint myId;
+		GLubyte* myData;
+		int myWidth;
+		int myHeight;
 	};
 }; // namespace omega
 

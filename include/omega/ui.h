@@ -30,6 +30,7 @@
 #include "omega/ui/Container.h"
 #include "omega/ui/Image.h"
 #include "omega/ui/Label.h"
+#include "omega/ui/Painter.h"
 #include "omega/ui/DefaultSkin.h"
 #include "omega/ui/Slider.h"
 #include "omega/ui/UIManager.h"
