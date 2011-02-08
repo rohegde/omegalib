@@ -35,45 +35,73 @@ namespace omega
 {
 namespace ui
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward class declarations.
-class Widget;
-class Container;
-class WidgetFactory;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward class declarations.
+	class Widget;
+	class Container;
+	class WidgetFactory;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API UIManager
-{
-friend class Widget;
-public:
-	UIManager();
-	~UIManager();
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API UIManager
+	{
+	friend class Widget;
+	public:
+		UIManager();
+		~UIManager();
 
-	void update(const omega::UpdateContext& context);
-	void draw(const omega::DrawContext& context, const Recti& viewport);
-	void processInputEvent(const omega::InputEvent& evt);
+		void update(const omega::UpdateContext& context);
+		void draw(const omega::DrawContext& context, const Recti& viewport);
+		bool processInputEvent(const omega::InputEvent& evt);
 
-	Container* getRootContainer() { return myRootContainer; }
+		Container* getRootContainer();
 
-	omega::Font* getDefaultFont() { return myDefaultFont; }
-	void setDefaultFont(omega::Font* value) { myDefaultFont = value; }
+		omega::Font* getDefaultFont();
+		void setDefaultFont(Font* value);
 
-	IUIEventHandler* getEventHandler() { return myEventHandler; }
-	void setEventHandler(IUIEventHandler* value) { myEventHandler = value; }
+		IUIEventHandler* getEventHandler();
+		void setEventHandler(IUIEventHandler* value);
 
-	WidgetFactory* getWidgetFactory() { return myWidgetFactory; }
-	void setWidgetFactory(WidgetFactory* value) { myWidgetFactory = value; }
+		WidgetFactory* getWidgetFactory();
+		void setWidgetFactory(WidgetFactory* value);
 
-private:
-	void dispatchUIEvent(const UIEvent& evt);
+	private:
+		void dispatchUIEvent(const UIEvent& evt);
 
-private:
-	Container* myRootContainer;
+	private:
+		Container* myRootContainer;
 
-	omega::Font* myDefaultFont;
-	IUIEventHandler* myEventHandler;
-	WidgetFactory* myWidgetFactory;
-};
+		omega::Font* myDefaultFont;
+		IUIEventHandler* myEventHandler;
+		WidgetFactory* myWidgetFactory;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Container* UIManager::getRootContainer() 
+	{ return myRootContainer; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline omega::Font* UIManager::getDefaultFont() 
+	{ return myDefaultFont; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void UIManager::setDefaultFont(Font* value) 
+	{ myDefaultFont = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline IUIEventHandler* UIManager::getEventHandler() 
+	{ return myEventHandler; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void UIManager::setEventHandler(IUIEventHandler* value)
+	{ myEventHandler = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline WidgetFactory* UIManager::getWidgetFactory() 
+	{ return myWidgetFactory; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void UIManager::setWidgetFactory(WidgetFactory* value) 
+	{ myWidgetFactory = value; }
 };
 }; // namespace omega
 

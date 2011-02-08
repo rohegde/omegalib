@@ -34,6 +34,8 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	myUIMng = new UIManager();
 	myFontMng = new FontManager();
 
+	myUIMng->setEventHandler(this);
+
 	//! Load and set default font.
 	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 30);
 	Font* defaultFont = myFontMng->getFont("arial");
@@ -55,8 +57,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerUI::handleEvent(const InputEvent& evt)
 {
-	myUIMng->processInputEvent(evt);
-	return true;
+	return myUIMng->processInputEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,4 +70,9 @@ void MeshViewerUI::update(const UpdateContext& context)
 void MeshViewerUI::draw(const DrawContext& context, const Recti& viewport)
 {
 	myUIMng->draw(context, viewport);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerUI::handleUIEvent(const UIEvent& evt)
+{
 }

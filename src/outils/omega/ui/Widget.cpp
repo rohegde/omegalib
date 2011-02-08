@@ -142,6 +142,7 @@ Vector2f Widget::transformPoint(const Vector2f& point)
 	//	myParent->transformPoint(point);
 	//}
 	Vector2f res;
+	res -= myPosition;
 	if(myRotation != 0)
 	{
 		Vector2f center = myPosition + (mySize / 2);

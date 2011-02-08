@@ -100,15 +100,15 @@ public:
     
     // to-homogenous-coordinates assignment operator
     // non-chainable because of sfinae
-    template< size_t N >
-    typename enable_if< N == M - 1 >::type*
-        operator=( const vector< N, T >& source_ );
+    //template< size_t N >
+    //typename enable_if< N == M - 1 >::type*
+    //    operator=( const vector< N, T >& source_ );
         
     // from-homogenous-coordinates assignment operator
     // non-chainable because of sfinae
-    template< size_t N >
-    typename enable_if< N == M + 1 >::type*
-        operator=( const vector< N, T >& source_ );
+    //template< size_t N >
+    //typename enable_if< N == M + 1 >::type*
+    //    operator=( const vector< N, T >& source_ );
     
     vector operator*( const vector& other ) const;
     vector operator/( const vector& other ) const;    
@@ -148,14 +148,14 @@ public:
 
     // vec< M > with homogeneous coordinates <-> vec< M-1 > conversion ctor
     // to-homogenous-coordinates ctor
-    template< size_t N >
-    vector( const vector< N, T >& source_,
-        typename enable_if< N == M - 1 >::type* = 0 );
+    //template< size_t N >
+    //vector( const vector< N, T >& source_,
+    //    typename enable_if< N == M - 1 >::type* = 0 );
 
     // from-homogenous-coordinates ctor
-    template< size_t N >
-    vector( const vector< N, T >& source_,
-        typename enable_if< N == M + 1 >::type* = 0  );
+    //template< size_t N >
+    //vector( const vector< N, T >& source_,
+    //    typename enable_if< N == M + 1 >::type* = 0  );
 
     template< typename U >
     vector( const vector< M, U >& source_ );
@@ -507,25 +507,25 @@ vector< M, T >::vector( const vector< M-1, T >& vector_, T last_ )
 
 
 // to-homogenous-coordinates ctor
-template< size_t M, typename T >
-template< size_t N >
-vector< M, T >::
-vector( const vector< N, T >& source_, typename enable_if< N == M - 1 >::type* )
-{
-    (*this) = source_;
-}
+//template< size_t M, typename T >
+//template< size_t N >
+//vector< M, T >::
+//vector( const vector< N, T >& source_, typename enable_if< N == M - 1 >::type* )
+//{
+//    (*this) = source_;
+//}
 
 
 
 
 // from-homogenous-coordinates ctor
-template< size_t M, typename T >
-template< size_t N >
-vector< M, T >::
-vector( const vector< N, T >& source_, typename enable_if< N == M + 1 >::type*  )
-{
-    (*this) = source_;
-}
+//template< size_t M, typename T >
+//template< size_t N >
+//vector< M, T >::
+//vector( const vector< N, T >& source_, typename enable_if< N == M + 1 >::type*  )
+//{
+//    (*this) = source_;
+//}
 
 
 template< size_t M, typename T >
@@ -1392,34 +1392,34 @@ equals( const vector< M, T >& other, T tolerance ) const
 
 // to-homogenous-coordinates assignment operator
 // non-chainable because of sfinae
-template< size_t M, typename T >
-template< size_t N >
-typename enable_if< N == M - 1 >::type*
-vector< M, T >::
-operator=( const vector< N, T >& source_ )
-{
-    std::copy( source_.begin(), source_.end(), begin() );
-    at( M - 1 ) = static_cast< T >( 1.0 );
-    return 0;
-}
+//template< size_t M, typename T >
+//template< size_t N >
+//typename enable_if< N == M - 1 >::type*
+//vector< M, T >::
+//operator=( const vector< N, T >& source_ )
+//{
+//    std::copy( source_.begin(), source_.end(), begin() );
+//    at( M - 1 ) = static_cast< T >( 1.0 );
+//    return 0;
+//}
 
     
 // from-homogenous-coordinates assignment operator
 // non-chainable because of sfinae
-template< size_t M, typename T >
-template< size_t N >
-typename enable_if< N == M + 1 >::type*
-vector< M, T >::
-operator=( const vector< N, T >& source_ )
-{
-    const T w_reci = static_cast< T >( 1.0 ) / source_( M );
-    iterator it = begin(), it_end = end();
-    for( size_t index = 0; it != it_end; ++it, ++index )
-    {
-        *it = source_( index ) * w_reci;
-    }
-    return 0;
-}
+//template< size_t M, typename T >
+//template< size_t N >
+//typename enable_if< N == M + 1 >::type*
+//vector< M, T >::
+//operator=( const vector< N, T >& source_ )
+//{
+//    const T w_reci = static_cast< T >( 1.0 ) / source_( M );
+//    iterator it = begin(), it_end = end();
+//    for( size_t index = 0; it != it_end; ++it, ++index )
+//    {
+//        *it = source_( index ) * w_reci;
+//    }
+//    return 0;
+//}
 
 
 template< size_t M, typename T >
