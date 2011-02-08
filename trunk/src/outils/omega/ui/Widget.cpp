@@ -196,3 +196,9 @@ void Widget::setActualSize(int value, Orientation orientation)
 	requestLayoutRefresh();
 	mySize[orientation] = value; 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::processInputEvent(const InputEvent& evt) 
+{
+	return false; 
+}

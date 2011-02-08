@@ -24,38 +24,21 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#ifndef __PAINTER_H__
+#define __PAINTER_H__
 
-#include "osystem.h"
-
-#include "boost/unordered_map.hpp"
+#include "omega/osystem.h"
 
 namespace omega
 {
+namespace ui
+{
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef boost::unordered_map<omega::String, Texture*> TextureDictionary;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class TextureManager
+	class Painter
 	{
 	public:
-		OUTILS_API TextureManager();
-		OUTILS_API ~TextureManager();
-
-		OUTILS_API void cleanup();
-
-		OUTILS_API void loadTexture(omega::String textureName, omega::String filename);
-		OUTILS_API Texture* getTexture(omega::String fontName);
-
-	private:
-		TextureDictionary myTextures;
 	};
+}; // namespace ui
 }; // namespace omega
 
 #endif

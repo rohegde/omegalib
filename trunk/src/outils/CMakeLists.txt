@@ -19,6 +19,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTI
 SET( srcs 
 		# omega
 		omega/FontManager.cpp
+		omega/Texture.cpp
 		omega/TextureManager.cpp
 		
 		# omega::scene
@@ -41,6 +42,7 @@ SET( srcs
 		omega/ui/Container.cpp
 		omega/ui/Image.cpp
 		omega/ui/Label.cpp
+		omega/ui/Painter.cpp
 		omega/ui/DefaultSkin.cpp
 		omega/ui/Slider.cpp
 		omega/ui/UIManager.cpp
@@ -52,6 +54,7 @@ SET( srcs
 SET( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
 		
 		# omega::scene
@@ -77,6 +80,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Container.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/Painter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/DefaultSkin.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h

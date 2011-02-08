@@ -140,7 +140,7 @@ namespace ui
 		void preDraw();
 		void postDraw();
 		virtual void renderContent();
-		virtual bool processInputEvent(const omega::InputEvent& evt) { return false; }
+		virtual bool processInputEvent(const InputEvent& evt);
 		void dispatchUIEvent(UIEvent& evt);
 
 	private:
