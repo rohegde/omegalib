@@ -58,6 +58,7 @@ void Button::update(const omega::UpdateContext& context)
 {
 	// Make sure label ui manager is set.
 	myLabel.setUIManager(getUIManager());
+	AbstractButton::update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -37,6 +37,7 @@ namespace ui
 	class Painter
 	{
 	public:
+	private:
 	};
 }; // namespace ui
 }; // namespace omega
