@@ -24,36 +24,41 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#include "omega/TextureManager.h"
+#include "omega/Texture.h"
+#include "FreeImage.h"
 
-#include "omega.h"
+using namespace omega;
 
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TextureManager::TextureManager()
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef Dictionary<String, Texture*> TextureDictionary;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TextureManager::~TextureManager()
+{
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class OMEGA_API TextureManager
-	{
-	public:
-		TextureManager();
-		~TextureManager();
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* TextureManager::createTexture(String textureName, int width, int height, byte* data)
+{
+	Texture* tx = new Texture();
+	tx->initialize(data, width, height);
 
-		void cleanup();
+	// @todo: Check for already existing textures with same name & notify + deallocate.
 
-		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
-		Texture* getTexture(String fontName);
+	myTextures[textureName] = tx;
+	return tx;
+}
 
-	private:
-		TextureDictionary myTextures;
-	};
-}; // namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* TextureManager::getTexture(omega::String fontName)
+{
+	return myTextures[fontName];
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TextureManager::cleanup()
+{
+}

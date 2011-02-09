@@ -1,72 +1,112 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
- *********************************************************************************************************************/
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #ifndef __GPU_MANAGER_H__
 #define __GPU_MANAGER_H__
 
 #include "osystem.h"
 #include "omega/GpuProgram.h"
-#include "boost/unordered_map.hpp"
+#include "omega/Application.h"
 
 namespace omega
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, VertexShader*> pairs.
-	typedef boost::unordered_map<omega::String, VertexShader*> VertexShaderDictionary;
-	//! A dictionary containing <String, FragmentShader*> pairs.
-	typedef boost::unordered_map<omega::String, FragmentShader*> FragmentShaderDictionary;
-	//! A dictionary containing <String, GeometryShader*> pairs.
-	typedef boost::unordered_map<omega::String, GeometryShader*> GeometryShaderDictionary;
-	//! A dictionary containing <String, ComputeShader*> pairs.
-	typedef boost::unordered_map<omega::String, ComputeShader*> ComputeShaderDictionary;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
+	class RenderTarget;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! A dictionary containing <String, VertexShader*> pairs.
+	typedef Dictionary<String, VertexShader*> VertexShaderDictionary;
+	//! A dictionary containing <String, FragmentShader*> pairs.
+	typedef Dictionary<String, FragmentShader*> FragmentShaderDictionary;
+	//! A dictionary containing <String, GeometryShader*> pairs.
+	typedef Dictionary<String, GeometryShader*> GeometryShaderDictionary;
+	//! A dictionary containing <String, ComputeShader*> pairs.
+	typedef Dictionary<String, ComputeShader*> ComputeShaderDictionary;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads images and manages OpenGL textures.
-	class GpuManager
+	class OMEGA_API GpuManager
 	{
 	public:
 		enum InitFlags { InitCL = 1 << 1, InitGL = 1 << 2};
-
+		enum TextureUnit {
+			TextureUnitInvalid = 0,
+			TextureUnit0 = GL_TEXTURE0, 
+			TextureUnit1 = GL_TEXTURE1,
+			TextureUnit2 = GL_TEXTURE2,
+			TextureUnit3 = GL_TEXTURE3 };
 	public:
-		OMEGA_API GpuManager();
-		OMEGA_API virtual ~GpuManager();
+		GpuManager();
+		virtual ~GpuManager();
 
+		//! Initialization
+		//@{
 		bool isInitialized() { return myInitialized; }
+		void initialize(ApplicationClient* client, unsigned int initFlags = InitCL | InitGL);
+		//@}
+
+		//! Gpu configuration
+		//@{
 		bool isCLEnabled() { return ((myInitFlags & InitCL) == InitCL); }
 		bool isGLEnabled() { return ((myInitFlags & InitGL) == InitGL); }
+		//@}
 
-		OMEGA_API void initialize(unsigned int initFlags = InitCL | InitGL);
+		void loadVertexShader(const String& name, const String& filename);
+		void loadFragmentShader(const String& name, const String& filename);
+		void loadGeometryShader(const String& name, const String& filename);
+		void loadComputeShaders(const String& filename, const Vector<omega::String>& shaderNames);
 
-		OMEGA_API void loadVertexShader(const omega::String& name, const omega::String& filename);
-		OMEGA_API void loadFragmentShader(const omega::String& name, const omega::String& filename);
-		OMEGA_API void loadGeometryShader(const omega::String& name, const omega::String& filename);
-		OMEGA_API void loadComputeShaders(const omega::String& filename, const std::vector<omega::String>& shaderNames);
+		VertexShader* getVertexShader(const String& name);
+		FragmentShader* getFragmentShader(const String& name);
+		GeometryShader* getGeometryShader(const String& name);
+		ComputeShader* getComputeShader(const String& name);
 
-		OMEGA_API VertexShader* getVertexShader(const omega::String& name);
-		OMEGA_API FragmentShader* getFragmentShader(const omega::String& name);
-		OMEGA_API GeometryShader* getGeometryShader(const omega::String& name);
-		OMEGA_API ComputeShader* getComputeShader(const omega::String& name);
+		//! Data
+		//@{
+		GpuProgram* getDefaultProgram();
+		RenderTarget* getFrameBuffer();
+		ApplicationClient* getClient();
+		//@}
 
-		OMEGA_API GpuProgram* getDefaultProgram() { return myDefaultProgram; }
-
+		//! OpenCL support
+		//@{
 		cl_context getCLContext() { return myCLContext; }
 		cl_command_queue getCLCommandQueue() { return myCLCommandQueue; }
+		//@}
 
 	private:
 		void  initCL();
 
-		GLuint loadGlShader(const omega::String& filename, GLenum type);
+		GLuint loadGlShader(const String& filename, GLenum type);
 		void printShaderLog(GLuint shader);
 
 	private:
+		ApplicationClient* myClient;
+
 		bool myInitialized;
 		unsigned int myInitFlags;
 
@@ -74,6 +114,8 @@ namespace omega
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
 		ComputeShaderDictionary myComputeShaders;
+
+		RenderTarget* myFrameBuffer;
 
 		// Default gpu program
 		GpuProgram* myDefaultProgram;
@@ -83,6 +125,18 @@ namespace omega
 		cl_device_id* myCLDevices;
 		cl_command_queue myCLCommandQueue;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GpuProgram* GpuManager::getDefaultProgram()
+	{ return myDefaultProgram; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline RenderTarget* GpuManager::getFrameBuffer()
+	{ return myFrameBuffer; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ApplicationClient* GpuManager::getClient()
+	{ return myClient; }
 }; // namespace omega
 
 #endif

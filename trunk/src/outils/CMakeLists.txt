@@ -19,8 +19,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTI
 SET( srcs 
 		# omega
 		omega/FontManager.cpp
-		omega/Texture.cpp
-		omega/TextureManager.cpp
+		omega/ImageUtils.cpp
 		
 		# omega::scene
 		omega/scene/Effect.cpp
@@ -54,8 +53,7 @@ SET( srcs
 SET( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-		${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
 		
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h

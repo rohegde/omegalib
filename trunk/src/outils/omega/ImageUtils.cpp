@@ -24,36 +24,37 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#include "omega/ImageUtils.h"
+#include "FreeImage.h"
 
-#include "omega.h"
+using namespace omega;
 
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////
+byte* ImageUtils::loadImage(const String& filename)
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(), 0);
+	FIBITMAP* image = FreeImage_Load(format, filename.c_str());
+	
+	FIBITMAP* temp = image;
+	image = FreeImage_ConvertTo32Bits(image);
+	FreeImage_Unload(temp);
+	
+	int w = FreeImage_GetWidth(image);
+	int h = FreeImage_GetHeight(image);
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef Dictionary<String, Texture*> TextureDictionary;
+	omsg("Image loaded: %s. Size: %dx%d", filename.c_str(), w, h);
+	
+	GLubyte* data = new GLubyte[4*w*h];
+	char* pixels = (char*)FreeImage_GetBits(image);
+	
+	for(int j= 0; j<w*h; j++){
+		data[j*4+0]= pixels[j*4+2];
+		data[j*4+1]= pixels[j*4+1];
+		data[j*4+2]= pixels[j*4+0];
+		data[j*4+3]= pixels[j*4+3];
+	}
+	
+	FreeImage_Unload(image);
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class OMEGA_API TextureManager
-	{
-	public:
-		TextureManager();
-		~TextureManager();
-
-		void cleanup();
-
-		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
-		Texture* getTexture(String fontName);
-
-	private:
-		TextureDictionary myTextures;
-	};
-}; // namespace omega
-
-#endif
+	return data;
+}

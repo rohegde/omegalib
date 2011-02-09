@@ -82,6 +82,7 @@ namespace omega
 		const Recti& getViewport() const { return myViewport; }
 		const Matrix4f& getModelViewMatrix() const { return myModelView; }
 		const Matrix4f& getProjectionMatrix() const { return myProjection; }
+		const Vector2i getResolution() const { return myResolution; }
 
 		//! helper method to get view ray from a point on the near projection plane.
 		Ray unproject(Vector2f point)
@@ -96,12 +97,14 @@ namespace omega
 		void setViewport(const Recti& value) { myViewport = value; }
 		void setModelViewMatrix(const Matrix4f& value) { myModelView = value; }
 		void setProjectionMatrix(const Matrix4f& value) { myProjection = value; }
+		void setResolution(const Vector2i& value) { myResolution = value; }
 
 	private:
 		Application* myApplication;
 		Recti myViewport;
 		Matrix4f myModelView;
 		Matrix4f myProjection;
+		Vector2i myResolution;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

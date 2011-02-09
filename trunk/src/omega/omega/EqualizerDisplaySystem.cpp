@@ -372,13 +372,17 @@ protected:
 		// Map the frame data object.
 		ConfigImpl* config = static_cast<ConfigImpl*>( getConfig( ));
 		const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
-		EQASSERT( mapped );
+		oassert( mapped );
+
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
 		// Create and initialize an application client.
 		Application* app = SystemManager::instance()->getApplication();
 		if(app)
 		{
 			myClient = app->createClient();
+			const eq::fabric::PixelViewport pw = getPixelViewport();
+			ds->setClientResolution(myClient, Vector2i(pw.w, pw.h));
 			myClient->setup();
 		}
 		return result;

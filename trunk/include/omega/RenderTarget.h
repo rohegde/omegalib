@@ -24,36 +24,83 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#ifndef __RENDER_TARGET_H__
+#define __RENDER_TARGET_H__
 
-#include "omega.h"
+#include "osystem.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
 	class Texture;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef Dictionary<String, Texture*> TextureDictionary;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class OMEGA_API TextureManager
+	class OMEGA_API RenderTarget
 	{
 	public:
-		TextureManager();
-		~TextureManager();
+		enum Type { TypeFrameBuffer, TypeRenderBuffer};
 
-		void cleanup();
+	public:
+		RenderTarget();
 
-		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
-		Texture* getTexture(String fontName);
+		//! Initalization
+		//@{
+		void initialize(int width, int height, Type type = TypeRenderBuffer);
+		bool isInitialized();
+		//@}
+
+		//! Render target configuration
+		//@{
+		int getWidth();
+		int getHeight();
+		Type getType();
+		void setColorTarget(Texture* target);
+		//@}
+
+		//! Drawing
+		//@{
+		void beginDraw();
+		void endDraw();
+		GLuint getGLId();
+		//@}
 
 	private:
-		TextureDictionary myTextures;
+		bool myInitialized;
+		GLuint myId;
+		int myWidth;
+		int myHeight;
+		Type myType;
+
+		Texture* myColorTarget;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool RenderTarget::isInitialized() 
+	{ return myInitialized; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int RenderTarget::getWidth() 
+	{ return myWidth; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int RenderTarget::getHeight() 
+	{ return myHeight; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline RenderTarget::Type RenderTarget::getType() 
+	{ return myType; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void RenderTarget::setColorTarget(Texture* target) 
+	{ myColorTarget = target; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GLuint RenderTarget::getGLId() 
+	{
+		oassert(myInitialized);
+		return myId; 
+	}
 }; // namespace omega
 
 #endif

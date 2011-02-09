@@ -24,71 +24,62 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/TextureManager.h"
 #include "omega/Texture.h"
-#include "FreeImage.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TextureManager::TextureManager()
+void Texture::initialize(byte* data, int width, int height)
 {
-}
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-TextureManager::~TextureManager()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* TextureManager::createTexture(String textureName, int width, int height, byte* data)
-{
-	Texture* tx = new Texture();
-	tx->initialize(data, width, height);
-
-	// @todo: Check for already existing textures with same name & notify + deallocate.
-
-	myTextures[textureName] = tx;
-	return tx;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* TextureManager::loadTexture(omega::String textureName, omega::String filename)
-{
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(), 0);
-	FIBITMAP* image = FreeImage_Load(format, filename.c_str());
-	
-	FIBITMAP* temp = image;
-	image = FreeImage_ConvertTo32Bits(image);
-	FreeImage_Unload(temp);
-	
-	int w = FreeImage_GetWidth(image);
-	int h = FreeImage_GetHeight(image);
-
-	omsg("Image loaded: %s. Size: %dx%d", filename.c_str(), w, h);
-	
-	GLubyte* data = new GLubyte[4*w*h];
-	char* pixels = (char*)FreeImage_GetBits(image);
-	
-	for(int j= 0; j<w*h; j++){
-		data[j*4+0]= pixels[j*4+2];
-		data[j*4+1]= pixels[j*4+1];
-		data[j*4+2]= pixels[j*4+0];
-		data[j*4+3]= pixels[j*4+3];
+	//Now generate the OpenGL texture object 
+	glGenTextures(1, &myId);
+		
+	GLenum glErr = glGetError();
+	if(glErr)
+	{
+		const unsigned char* str = gluErrorString(glErr);
+		oerror("Texture initialization: %s", str);
+		return;
 	}
-	
-	FreeImage_Unload(image);
-
-	return createTexture(textureName, w, h, data);
+	myDirty = true;
+	myInitialized = true;
+	refresh();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* TextureManager::getTexture(omega::String fontName)
+void Texture::refresh()
 {
-	return myTextures[fontName];
+	if(myDirty)
+	{
+		glBindTexture(GL_TEXTURE_2D, myId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		GLenum glErr = glGetError();
+
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oerror("Texture refresh: %s", str);
+			return;
+		}
+		myDirty = false;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TextureManager::cleanup()
+void Texture::bind(GpuManager::TextureUnit unit)
 {
+	myTextureUnit = unit;
+	glActiveTexture(myTextureUnit);
+	glBindTexture(GL_TEXTURE_2D, myId);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::unbind()
+{
+	myTextureUnit = GpuManager::TextureUnitInvalid;
 }

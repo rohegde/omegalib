@@ -28,17 +28,19 @@
 #define __TEXTURE_H__
 
 #include "osystem.h"
+#include "omega/GpuManager.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API Texture
+	class OMEGA_API Texture
 	{
 	public:
 		Texture(): 
 		  myInitialized(false), 
 		  myDirty(true),
-		  myData(NULL) {}
+		  myData(NULL),
+		  myTextureUnit(GpuManager::TextureUnitInvalid) {}
 
 		void initialize(byte* data, int width, int height); 
 
@@ -50,9 +52,16 @@ namespace omega
 		int getWidth();
 		int getHeight();
 
-		GLuint getGLTexture();
+		//! Texture operations
+		//@{
+			GLuint getGLTexture();
+			void bind(GpuManager::TextureUnit unit);
+			void unbind();
+			void refresh();
+			bool isBound();
+			GpuManager::TextureUnit getTextureUnit();
 
-		virtual void refresh();
+		//@}
 
 	private:
 		bool myInitialized;
@@ -61,6 +70,8 @@ namespace omega
 		GLubyte* myData;
 		int myWidth;
 		int myHeight;
+
+		GpuManager::TextureUnit myTextureUnit;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +88,16 @@ namespace omega
 		oassert(myInitialized);
 		return myId; 
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Texture::isBound()
+	{
+		return (myTextureUnit != GpuManager::TextureUnitInvalid ? true : false);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GpuManager::TextureUnit Texture::getTextureUnit()
+	{ return myTextureUnit; }
 }; // namespace omega
 
 #endif

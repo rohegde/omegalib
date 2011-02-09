@@ -37,14 +37,47 @@ namespace ui
 	class Painter
 	{
 	public:
+		Painter();
+
+		//! Painter options
+		//@{
+		void setTargetTexture(Texture* texture);
+		Texture* getTargetTexture();
+		//@}
+
+		//! Drawing control
+		//@{
+		void beginDraw();
+		void endDraw();
+		bool isDrawing();
+		//@}
+
+		//! Drawing methods
+		//@{
 		void drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation orientation, 
 			Color startColor, Color endColor, float pc = 0.5f);
 		void drawRect(Vector2i pos, Vector2i size, Color color);
 		void drawRectOutline(Vector2i pos, Vector2i size, Color color);
 		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
+		//@}
 
 	private:
+		bool myDrawing;
+		Texture* myTargetTexture;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Painter::isDrawing()
+	{ return myDrawing; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Painter::setTargetTexture(Texture* texture)
+	{ myTargetTexture = texture; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Texture* Painter::getTargetTexture()
+	{ return myTargetTexture; }
+
 }; // namespace ui
 }; // namespace omega
 
