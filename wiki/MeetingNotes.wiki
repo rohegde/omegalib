@@ -3,6 +3,7 @@
 ==February 9 2011==
  * (*Victor*) still working on Kinect integration. Should be ready in a couple weeks
  * (*Arthur*) working on xbox360 & ps3 controller integration
+  * Agreed on using input event as a representation of the entire state of the controller (similar to what is done for mouse)
  * (*Alessandro*) meshviewer app: started integration with omegadesk inputs & working on UI lib
 
 
