@@ -1,9 +1,9 @@
 =OmegaLib Meeting Notes=
 
 ==February 9 2011==
- * (Victor) still working on Kinect integration. Should be ready in a couple weeks
- * (Arthur) working on xbox360 & ps3 controller integration
- * (Alessandro) meshviewer app: started integration with omegadesk inputs & working on UI lib
+ * (*Victor*) still working on Kinect integration. Should be ready in a couple weeks
+ * (*Arthur*) working on xbox360 & ps3 controller integration
+ * (*Alessandro*) meshviewer app: started integration with omegadesk inputs & working on UI lib
 
 
 ==January 19 2011==
