@@ -31,6 +31,7 @@ SET( srcs
 		omega/SystemManager.cpp
         omega/Utils.cpp
 		omega/StringUtils.cpp
+		omega/RenderTarget.cpp
         )
 		
 #######################################################################################################################
@@ -49,6 +50,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 
 		# vmml
         ${OmegaLib_SOURCE_DIR}/include/vmmlib/vmmlib.hpp
@@ -72,6 +74,8 @@ IF(OMEGA_USE_DISPLAY)
 			omega/GpuBuffer.cpp
 			omega/GpuManager.cpp
 			omega/GpuProgram.cpp
+			omega/Texture.cpp
+			omega/TextureManager.cpp
 			)
 	SET( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
@@ -79,7 +83,8 @@ IF(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
-			) 
+			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
+			${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h	) 
 			
 	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	IF(OMEGA_USE_DISPLAY_EQUALIZER)

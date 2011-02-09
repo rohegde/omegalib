@@ -24,36 +24,50 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#include "omega/RenderTarget.h"
+#include "omega/Texture.h"
 
-#include "omega.h"
+using namespace omega;
 
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderTarget::RenderTarget():
+	myWidth(0),
+	myHeight(0),
+	myId(0),
+	myColorTarget(NULL),
+	myInitialized(false)
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef Dictionary<String, Texture*> TextureDictionary;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::initialize(int width, int height, Type type)
+{
+	myWidth = width;
+	myHeight = height;
+	myType = type;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class OMEGA_API TextureManager
+	if(type == TypeRenderBuffer)
 	{
-	public:
-		TextureManager();
-		~TextureManager();
+		glGenRenderbuffers(1, &myId);
+	}
 
-		void cleanup();
+	myInitialized = true;
+}
 
-		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
-		Texture* getTexture(String fontName);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::beginDraw()
+{
+	if(myColorTarget != NULL)
+	{
+		myColorTarget->unbind();
+	}
+}
 
-	private:
-		TextureDictionary myTextures;
-	};
-}; // namespace omega
-
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::endDraw()
+{
+	if(myColorTarget != NULL)
+	{
+		myColorTarget->bind(GpuManager::TextureUnit0);
+	}
+}

@@ -204,6 +204,8 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 		myAppServer = app->createServer();
 
 		myAppServer->initialize();
+
+		setClientResolution(myAppClient, myResolution);
 		myAppClient->setup();
 		myAppClient->initialize();
 	}

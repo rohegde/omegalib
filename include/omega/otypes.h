@@ -1,27 +1,29 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
- * following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
  * 
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
- * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
- * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
  * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
- * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************************************************************/
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #ifndef __OTYPES_H__
 #define __OTYPES_H__
 
@@ -35,13 +37,16 @@
 // Libconfig
 #include "libconfig/libconfig.hh"
 
+// Boost
+#include "boost/unordered_map.hpp"
+
 
 // Dictionary 
-#define Dictionary boost::unordered_map 
+//#define Dictionary boost::unordered_map 
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Type definitions
 typedef libconfig::Setting Setting;
 typedef std::string String;
@@ -49,12 +54,17 @@ typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long long uint64;
 
+// Container classes
+template<typename K, typename T> class Dictionary: public boost::unordered_map<K, T> {};
+template<typename T> class Vector: public std::vector<T> {};
+template<typename T> class List: public std::list<T> {};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 class Application;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Type definitions.
 typedef vmml::math<float> Math;
 typedef vmml::sphere<float> Sphere;
@@ -80,9 +90,9 @@ enum Axis
     AxisZ
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! Utility class to generate a sequentially numbered series of names
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -130,7 +140,7 @@ public:
 	}
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Basefunctionality for IteratorWrappers
@@ -142,7 +152,7 @@ public:
  * 
  * have a look at VectorIteratorWrapper and MapIteratorWrapper for a concrete usage
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -226,7 +236,7 @@ class IteratorWrapper
 };
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Prepiared IteratorWrapper for container like std::vector 
@@ -237,7 +247,7 @@ class IteratorWrapper
  * 
  * have a look at VectorIterator and ConstVectorIterator for a more concrete usage
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -285,7 +295,7 @@ class VectorIteratorWrapper : public IteratorWrapper<T, IteratorType, typename  
 };
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Concrete IteratorWrapper for nonconst access to the underlying container
@@ -293,7 +303,7 @@ class VectorIteratorWrapper : public IteratorWrapper<T, IteratorType, typename  
  * \param T  Container 
  * 
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -320,7 +330,7 @@ class VectorIterator : public VectorIteratorWrapper<T,  typename T::iterator>{
 		
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Concrete IteratorWrapper for const access to the underlying container
@@ -329,7 +339,7 @@ class VectorIterator : public VectorIteratorWrapper<T,  typename T::iterator>{
  * \param T = Container 
  * 
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -355,7 +365,7 @@ class ConstVectorIterator : public VectorIteratorWrapper<T,  typename T::const_i
 		}
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Prepiared IteratorWrapper for key-value container
@@ -366,7 +376,7 @@ class ConstVectorIterator : public VectorIteratorWrapper<T,  typename T::const_i
  * 
  * have a look at MapIterator and ConstMapIterator for a concrete usage
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -425,7 +435,7 @@ class MapIteratorWrapper  : public IteratorWrapper<T, IteratorType, typename T::
 
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Concrete IteratorWrapper for nonconst access to the underlying key-value container
@@ -434,7 +444,7 @@ class MapIteratorWrapper  : public IteratorWrapper<T, IteratorType, typename T::
  * \param T key-value container
  * 
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/
@@ -462,7 +472,7 @@ class MapIterator : public MapIteratorWrapper<T,  typename T::iterator>{
 		
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 /** 
  * 
  * \brief Concrete IteratorWrapper for const access to the underlying key-value container
@@ -471,7 +481,7 @@ class MapIterator : public MapIteratorWrapper<T,  typename T::iterator>{
  * \param T key-value container
  * 
 */
-//---------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
 // Original code taken from OGRE
 //  Copyright (c) 2000-2009 Torus Knot Software Ltd
 //  For the latest info, see http://www.ogre3d.org/

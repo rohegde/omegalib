@@ -36,7 +36,7 @@ void MeshViewerClient::initialize()
 	myUI->initialize(this);
 
 	myGpu = new GpuManager();
-	myGpu->initialize();
+	myGpu->initialize(this);
 
 	mySceneManager = new SceneManager(myGpu);
 	myEffectManager = new EffectManager(myGpu);
@@ -50,8 +50,8 @@ void MeshViewerClient::initialize()
 
 	mySceneManager->initialize();
 
-	addEntity(mesh1, Vector3f(0, 0.1, 0.0f));
-	addEntity(mesh1, Vector3f(0, -0.1, 0.0f));
+	addEntity(mesh1, Vector3f(0, 0.1f, 0.0f));
+	addEntity(mesh1, Vector3f(0, -0.1f, 0.0f));
 	addEntity(mesh2, Vector3f(0, 0, 0.0f));
 }
 

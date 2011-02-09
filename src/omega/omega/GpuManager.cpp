@@ -1,17 +1,33 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * [SUMMARY OF FILE CONTENTS]
- *********************************************************************************************************************/
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #include "omega/GpuManager.h"
 #include "omega/SystemManager.h"
 #include "omega/Utils.h"
+#include "omega/RenderTarget.h"
 
 #include "boost/foreach.hpp"
 #define boost_foreach BOOST_FOREACH
@@ -20,7 +36,7 @@ using namespace omega;
 
 #define HANDLE_STATUS(id) case id: { oerror(#id); break; }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool omega::__clSuccessOrDie(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return true;
@@ -84,32 +100,40 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 
 #undef HANDLE_STATUS
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager():
-	myInitialized(false)
+	myInitialized(false),
+	myFrameBuffer(NULL),
+	myClient(NULL)
 {
 	myDefaultProgram = new GpuProgram(this);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::~GpuManager()
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::initialize(unsigned int initFlags)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuManager::initialize(ApplicationClient* client, unsigned int initFlags)
 {
 	myInitFlags = initFlags;
+	myClient = client;
 
 	if(isCLEnabled())
 	{
 		initCL();
 	}
 
+	Vector2i res = myClient->getResolution();
+
+	myFrameBuffer = new RenderTarget();
+	myFrameBuffer->initialize(res[0], res[1], RenderTarget::TypeFrameBuffer);
+
 	myInitialized = true;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuManager::initCL()
 {
 	cl_int status = 0;
@@ -206,32 +230,32 @@ void GpuManager::initCL()
 	omsg("OpenCL: initialization successful!");
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadVertexShader(const omega::String& name, const omega::String& filename)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuManager::loadVertexShader(const String& name, const String& filename)
 {
 	GLuint s = loadGlShader(filename, GL_VERTEX_SHADER);
 	VertexShader* sh = new VertexShader(s, name);
 	myVertexShaders[name] = sh;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadFragmentShader(const omega::String& name, const omega::String& filename)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuManager::loadFragmentShader(const String& name, const String& filename)
 {
 	GLuint s = loadGlShader(filename, GL_FRAGMENT_SHADER);
 	FragmentShader* sh = new FragmentShader(s, name);
 	myFragmentShaders[name] = sh;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadGeometryShader(const omega::String& name, const omega::String& filename)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuManager::loadGeometryShader(const String& name, const String& filename)
 {
 	GLuint s = loadGlShader(filename, GL_GEOMETRY_SHADER);
 	GeometryShader* sh = new GeometryShader(s, name);
 	myGeometryShaders[name] = sh;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::loadComputeShaders(const omega::String& filename, const std::vector<String>& shaderNames)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuManager::loadComputeShaders(const String& filename, const Vector<String>& shaderNames)
 {
 	cl_int status = 0;
     
@@ -272,32 +296,32 @@ void GpuManager::loadComputeShaders(const omega::String& filename, const std::ve
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-VertexShader* GpuManager::getVertexShader(const omega::String& name)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+VertexShader* GpuManager::getVertexShader(const String& name)
 {
 	return myVertexShaders[name];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-FragmentShader* GpuManager::getFragmentShader(const omega::String& name)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+FragmentShader* GpuManager::getFragmentShader(const String& name)
 {
 	return myFragmentShaders[name];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GeometryShader* GpuManager::getGeometryShader(const omega::String& name)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+GeometryShader* GpuManager::getGeometryShader(const String& name)
 {
 	return myGeometryShaders[name];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ComputeShader* GpuManager::getComputeShader(const omega::String& name)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ComputeShader* GpuManager::getComputeShader(const String& name)
 {
 	return myComputeShaders[name];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GLuint GpuManager::loadGlShader(const omega::String& filename, GLenum type)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+GLuint GpuManager::loadGlShader(const String& filename, GLenum type)
 {
 	GLuint s = glCreateShader(type);
 	String ss = Utils::readTextFile(filename);
@@ -309,7 +333,7 @@ GLuint GpuManager::loadGlShader(const omega::String& filename, GLenum type)
 	return s;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuManager::printShaderLog(GLuint shader)
 {
     GLint infoLogLength = 0;

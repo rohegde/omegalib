@@ -34,6 +34,7 @@
 #include "omega/GpuManager.h"
 #include "omega/InputManager.h"
 #include "omega/Observer.h"
+#include "omega/RenderTarget.h"
 #include "omega/SystemManager.h"
 #include "omega/TextureManager.h"
 #include "omega/Utils.h"

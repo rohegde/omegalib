@@ -24,48 +24,23 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Texture.h"
+#ifndef __IMAGE_UTILS_H__
+#define __IMAGE_UTILS_H__
 
-using namespace omega;
+#include "omega.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::initialize(byte* data, int width, int height)
+namespace omega
 {
-	myData = data; 
-	myWidth = width; 
-	myHeight = height; 
-
-	//Now generate the OpenGL texture object 
-	glGenTextures(1, &myId);
-		
-	GLenum glErr = glGetError();
-	if(glErr)
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Loads images and manages OpenGL textures.
+	class OUTILS_API ImageUtils
 	{
-		const unsigned char* str = gluErrorString(glErr);
-		oerror("Texture initialization: %s", str);
-		return;
-	}
-	myDirty = true;
-	myInitialized = true;
-	refresh();
-}
+	public:
+		static byte* loadImage(const String& filename);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::refresh()
-{
-	if(myDirty)
-	{
-		glBindTexture(GL_TEXTURE_2D, myId);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		GLenum glErr = glGetError();
+	private:
+		ImageUtils() {}
+	};
+}; // namespace omega
 
-		if(glErr)
-		{
-			const unsigned char* str = gluErrorString(glErr);
-			oerror("Texture refresh: %s", str);
-			return;
-		}
-		myDirty = false;
-	}
-}
+#endif

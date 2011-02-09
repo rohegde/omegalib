@@ -72,6 +72,11 @@ public:
 		client->setViewport(viewport);
 	}
 
+	void setClientResolution(ApplicationClient* client, const Vector2i& resolution)
+	{
+		client->setResolution(resolution);
+	}
+
 protected:
 	DisplaySystem() {}
 };
