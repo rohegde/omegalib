@@ -20,6 +20,7 @@ SET( srcs
 		# omega
 		omega/FontManager.cpp
 		omega/ImageUtils.cpp
+		omega/EngineClient.cpp
 		
 		# omega::scene
 		omega/scene/Effect.cpp
@@ -54,6 +55,7 @@ SET( headers
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EngineClient.h
 		
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h

@@ -29,52 +29,38 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
 {
-	myFontMng = new FontManager();
-	myTexMng = new TextureManager();
+	myEngine = new EngineClient(this);
+	myEngine->initialize();
 
-	myUI = new MeshViewerUI();
+	myEngine->getFontManager()->createFont("arial", "../../data/fonts/arial.ttf", 30);
 
-	myGpu = new GpuManager();
-	myGpu->initialize(this);
+	MeshManager* mm = myEngine->getMeshManager();
+	mm->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
+	mm->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly);
 
-	mySceneManager = new SceneManager(myGpu);
-	myEffectManager = new EffectManager(myGpu);
-	myMeshManager = new MeshManager(myGpu, myEffectManager);
-
-	myFontMng = new FontManager();
-	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 30);
-
-	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
-	myMeshManager->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly);
-
-	Mesh* mesh1 = myMeshManager->getMesh("screwdriver");
-	Mesh* mesh2 = myMeshManager->getMesh("arm");
-
-	mySceneManager->initialize();
+	Mesh* mesh1 = mm->getMesh("screwdriver");
+	Mesh* mesh2 = mm->getMesh("arm");
 
 	addEntity(mesh1, Vector3f(0, 0.1f, 0.0f));
 	addEntity(mesh1, Vector3f(0, -0.1f, 0.0f));
 	addEntity(mesh2, Vector3f(0, 0, 0.0f));
 
-	Vector2i res = getResolution();
-	myFrame = myTexMng->createTexture("tex", res[0], res[1]);
-
-	myGpu->getFrameBuffer()->setColorTarget(myFrame);
+	// Create and initialize meshviewer UI
+	myUI = new MeshViewerUI();
 	myUI->initialize(this);
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::addEntity(Mesh* m, const Vector3f& position)
 {
-	Entity* e = new Entity(mySceneManager, m, position);
+	Entity* e = new Entity(myEngine->getSceneManager(), m, position);
 	myEntities.push_back(e);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const InputEvent& evt)
 {
-	myUI->handleEvent(evt);
+	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)
 	{
@@ -139,25 +125,18 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::update(const UpdateContext& context)
 {
-	myUI->update(context);
+	myEngine->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
-	if(context.layer == 1)
-	{
-	myGpu->beginDraw();
-		myUI->draw(context, getViewport());
-	myGpu->endDraw();
-	}
-	else
+	if(context.layer == 0)
 	{
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_LIGHTING);
 
-		mySceneManager->draw();
-
+		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 	}
 }
 
