@@ -69,5 +69,6 @@ void RenderTarget::endDraw()
 	if(myColorTarget != NULL)
 	{
 		myColorTarget->bind(GpuManager::TextureUnit0);
+		glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, myColorTarget->getWidth(), myColorTarget->getHeight(), 0);
 	}
 }

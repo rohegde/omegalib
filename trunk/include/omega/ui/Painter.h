@@ -31,6 +31,9 @@
 
 namespace omega
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
+	class Texture;
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +62,7 @@ namespace ui
 		void drawRect(Vector2i pos, Vector2i size, Color color);
 		void drawRectOutline(Vector2i pos, Vector2i size, Color color);
 		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
+		void drawRectTexture(Texture* texture, const Vector2i& position, const Vector2i size);
 		//@}
 
 	private:

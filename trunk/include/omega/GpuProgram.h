@@ -128,14 +128,14 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Represents a program runnable on a Gpu unit.
 	//! A program is composed by a geometry, vertex and fragment shader. Not all programs need to be present.
-	class GpuProgram
+	class OMEGA_API GpuProgram
 	{
 	public:
 		enum PrimType { PrimNone, PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
 		enum Stage { ComputeStage, RenderStage };
 
 	public:
-		OMEGA_API GpuProgram(GpuManager* gpuMng);
+		GpuProgram(GpuManager* gpuMng);
 
 		//! Returns the Gpu manager owning this program.
 		GpuManager* getManager() { return myGpuMng; }
@@ -165,10 +165,10 @@ namespace omega
 		int getComputeDimensions() { return myComputeDimensions; }
 		void setComputeDimensions(int value) { myComputeDimensions = value; }
 
-		OMEGA_API void initialize();
+		void initialize();
 
-		OMEGA_API void runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads);
-		OMEGA_API void runRenderStage(int items, PrimType primType = PrimNone, unsigned int* indices = NULL);
+		void runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads);
+		void runRenderStage(int items, PrimType primType = PrimNone, unsigned int* indices = NULL);
 
 	private:
 		void printProgramLog(GLuint program);

@@ -33,7 +33,6 @@ void MeshViewerClient::initialize()
 	myTexMng = new TextureManager();
 
 	myUI = new MeshViewerUI();
-	myUI->initialize(this);
 
 	myGpu = new GpuManager();
 	myGpu->initialize(this);
@@ -41,6 +40,9 @@ void MeshViewerClient::initialize()
 	mySceneManager = new SceneManager(myGpu);
 	myEffectManager = new EffectManager(myGpu);
 	myMeshManager = new MeshManager(myGpu, myEffectManager);
+
+	myFontMng = new FontManager();
+	myFontMng->createFont("arial", "../../data/fonts/arial.ttf", 30);
 
 	myMeshManager->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
 	myMeshManager->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly);
@@ -53,6 +55,13 @@ void MeshViewerClient::initialize()
 	addEntity(mesh1, Vector3f(0, 0.1f, 0.0f));
 	addEntity(mesh1, Vector3f(0, -0.1f, 0.0f));
 	addEntity(mesh2, Vector3f(0, 0, 0.0f));
+
+	Vector2i res = getResolution();
+	myFrame = myTexMng->createTexture("tex", res[0], res[1]);
+
+	myGpu->getFrameBuffer()->setColorTarget(myFrame);
+	myUI->initialize(this);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,7 +147,9 @@ void MeshViewerClient::draw(const DrawContext& context)
 {
 	if(context.layer == 1)
 	{
+	myGpu->beginDraw();
 		myUI->draw(context, getViewport());
+	myGpu->endDraw();
 	}
 	else
 	{
@@ -146,6 +157,7 @@ void MeshViewerClient::draw(const DrawContext& context)
 		glDisable(GL_LIGHTING);
 
 		mySceneManager->draw();
+
 	}
 }
 
