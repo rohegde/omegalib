@@ -213,3 +213,4 @@ void GpuProgram::runRenderStage(int items, PrimType primType, unsigned int* indi
 		glUseProgram(0);
 	}
 }
+

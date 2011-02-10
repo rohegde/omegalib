@@ -103,6 +103,7 @@ private:
 	FontManager* myFontMng;
 	UIManager* myUIMng;
 	MeshViewerClient* myClient;
+	TextureManager* myTexMng;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,6 +117,10 @@ public:
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
 
+	FontManager* getFontManager() { return myFontMng; }
+	TextureManager* getTextureManager() { return myTexMng; }
+	Texture* getFrame() { return myFrame; }
+
 private:
 	void addEntity(Mesh* m, const Vector3f& position);
 
@@ -128,6 +133,8 @@ private:
 	MeshManager* myMeshManager;
 	EffectManager* myEffectManager;
 	MeshViewerUI* myUI;
+
+	Texture* myFrame;
 
 	// Entity list
 	std::list<Entity*> myEntities;

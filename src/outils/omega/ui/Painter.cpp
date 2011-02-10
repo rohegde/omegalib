@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ui/Painter.h"
+#include "omega/Texture.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -148,4 +149,38 @@ void Painter::drawText(const String& text, Font* font, const Vector2f& position,
 	else y = -position[1] - rect[1] / 2;
 
 	font->render(text, x, y); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Painter::drawRectTexture(Texture* texture, const Vector2i& position, const Vector2i size)
+{
+	glEnable(GL_TEXTURE_2D);
+	texture->bind(GpuManager::TextureUnit0);
+
+	float x = position[0];
+	float y = position[1];
+
+	float width = size[0];
+	float height = size[1];
+
+	glColor4ub(255, 255, 255, 255);
+
+	glBegin(GL_TRIANGLE_STRIP);
+
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(x, y);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(x + width, y);
+
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2f(x, y + height);
+
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex2f(x + width, y + height);
+
+	glEnd();
+
+	texture->unbind();
+	glDisable(GL_TEXTURE_2D);
 }

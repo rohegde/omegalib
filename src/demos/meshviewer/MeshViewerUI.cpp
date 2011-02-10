@@ -32,7 +32,8 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	myClient = client;
 	
 	myUIMng = new UIManager();
-	myFontMng = new FontManager();
+	myFontMng = myClient->getFontManager();
+	myTexMng = myClient->getTextureManager();
 
 	myUIMng->setEventHandler(this);
 
@@ -52,6 +53,11 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	l->setAutosize(true);
 	Button* btn = wf->createButton("Button", c);
 	btn->setAutosize(true);
+
+	Image* img = wf->createImage("Img", c);
+	
+	img->setTexture(myClient->getFrame());
+	img->setSize(Vector2i(200, 200));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

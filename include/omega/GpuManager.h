@@ -85,6 +85,9 @@ namespace omega
 		GeometryShader* getGeometryShader(const String& name);
 		ComputeShader* getComputeShader(const String& name);
 
+		void beginDraw();
+		void endDraw();
+
 		//! Data
 		//@{
 		GpuProgram* getDefaultProgram();
