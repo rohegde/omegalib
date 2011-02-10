@@ -30,6 +30,7 @@
 #include "omega.h"
 #include "omega/scene.h"
 #include "omega/ui.h"
+#include "omega/EngineClient.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -91,53 +92,40 @@ private:
 class MeshViewerUI: public IUIEventHandler
 {
 public:
-	MeshViewerUI(): myUIMng(NULL), myClient(NULL) {}
+	MeshViewerUI(): myClient(NULL) {}
 
 	void initialize(MeshViewerClient* client);
-	void update(const UpdateContext& context);
-	void draw(const DrawContext& context, const Recti& viewport);
-	bool handleEvent(const InputEvent& evt);
 	void handleUIEvent(const UIEvent& evt);
 
 private:
-	FontManager* myFontMng;
-	UIManager* myUIMng;
 	MeshViewerClient* myClient;
-	TextureManager* myTexMng;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class MeshViewerClient: public ApplicationClient
 {
 public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myGpu(NULL), myActiveEntity(NULL) {}
+	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myActiveEntity(NULL) {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const InputEvent& evt);
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
 
-	FontManager* getFontManager() { return myFontMng; }
-	TextureManager* getTextureManager() { return myTexMng; }
-	Texture* getFrame() { return myFrame; }
+	EngineClient* getEngine() { return myEngine; }
 
 private:
 	void addEntity(Mesh* m, const Vector3f& position);
 
 private:
-	// Managers
-	GpuManager* myGpu;
-	TextureManager* myTexMng;
-	FontManager* myFontMng;
-	SceneManager* mySceneManager;
-	MeshManager* myMeshManager;
-	EffectManager* myEffectManager;
+	// Engine
+	EngineClient* myEngine;
+
+	// UI
 	MeshViewerUI* myUI;
 
-	Texture* myFrame;
-
 	// Entity list
-	std::list<Entity*> myEntities;
+	List<Entity*> myEntities;
 
 	// Active entity.
 	Entity* myActiveEntity;

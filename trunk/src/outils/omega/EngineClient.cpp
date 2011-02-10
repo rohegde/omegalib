@@ -24,35 +24,63 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "meshviewer.h"
+#include "omega/Application.h"
+#include "omega/EngineClient.h"
+#include "omega/GpuManager.h"
+#include "omega/FontManager.h"
+#include "omega/TextureManager.h"
+#include "omega/ui/UIManager.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/EffectManager.h"
+#include "omega/scene/MeshManager.h"
+
+using namespace omega;
+using namespace omega::ui;
+using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::initialize(MeshViewerClient* client)
+void EngineClient::initialize()
 {
-	myClient = client;
+	myFontManager = new FontManager();
+	myTextureManager = new TextureManager();
+	myUIManager = new UIManager();
+	myGpuManager = new GpuManager();
+	myFontManager = new FontManager();
 
-	UIManager* ui = client->getEngine()->getUIManager();
-	ui->setEventHandler(this);
+	myGpuManager->initialize(myClient);
 
-	//! Load and set default font.
-	FontManager* fm = client->getEngine()->getFontManager();
-	Font* defaultFont = fm->getFont("arial");
-	ui->setDefaultFont(defaultFont);
+	mySceneManager = new SceneManager(myGpuManager);
+	myEffectManager = new EffectManager(myGpuManager);
+	myMeshManager = new MeshManager(myGpuManager, myEffectManager);
 
-	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer();
+	mySceneManager->initialize();
 
-	root->setLayout(Container::LayoutVertical);
-
-	Container* c = wf->createContainer("c", root, Container::LayoutHorizontal);
-	c->setVerticalAlign(Container::AlignBottom);
-	Label* l = wf->createLabel("Hello World", c);
-	l->setAutosize(true);
-	Button* btn = wf->createButton("Button", c);
-	btn->setAutosize(true);
+	//myUIManager->initialize(myClient);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::handleUIEvent(const UIEvent& evt)
+void EngineClient::update(const UpdateContext& context)
 {
+	myUIManager->update(context);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool EngineClient::handleEvent(const InputEvent& evt)
+{
+	return myUIManager->processInputEvent(evt);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::draw(const DrawContext& context, uint flags)
+{
+	myGpuManager->beginDraw();
+	if((flags & DrawScene) == DrawScene)
+	{
+		mySceneManager->draw();
+	}
+	if((flags & DrawUI) == DrawUI)
+	{
+		myUIManager->draw(context, myClient->getViewport());
+	}
+	myGpuManager->endDraw();
 }
