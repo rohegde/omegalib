@@ -55,7 +55,7 @@ void RenderTarget::initialize(int width, int height, Type type)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::beginDraw()
+void RenderTarget::endDraw()
 {
 	if(myColorTarget != NULL)
 	{
@@ -64,7 +64,7 @@ void RenderTarget::beginDraw()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::endDraw()
+void RenderTarget::beginDraw()
 {
 	if(myColorTarget != NULL)
 	{

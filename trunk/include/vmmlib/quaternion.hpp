@@ -977,14 +977,14 @@ void quaternion< T >::toAngleAxis (float* rfAngle, vector< 3, T >* rkAxis) const
     // The quaternion representing the rotation is
     //   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
 
-    Real fSqrLength = x*x+y*y+z*z;
+    float fSqrLength = x()*x()+y()*y()+z()*z();
     if ( fSqrLength > 0.0f )
     {
-        *rfAngle = 2.0f * acos(w);
-        Real fInvLength = 1 / sqrt(fSqrLength);
-        rkAxis->x ()= x*fInvLength;
-        rkAxis->y() = y*fInvLength;
-        rkAxis->z() = z*fInvLength;
+        *rfAngle = 2.0f * acos(w());
+        float fInvLength = 1 / sqrt(fSqrLength);
+        rkAxis->x()= x()*fInvLength;
+        rkAxis->y() = y()*fInvLength;
+        rkAxis->z() = z()*fInvLength;
     }
     else
     {

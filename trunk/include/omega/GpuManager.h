@@ -66,7 +66,7 @@ namespace omega
 		//! Initialization
 		//@{
 		bool isInitialized() { return myInitialized; }
-		void initialize(ApplicationClient* client, unsigned int initFlags = InitCL | InitGL);
+		void initialize(ApplicationClient* client, unsigned int initFlags = InitGL);
 		//@}
 
 		//! Gpu configuration

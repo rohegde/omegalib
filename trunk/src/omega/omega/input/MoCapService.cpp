@@ -6,7 +6,7 @@
 using namespace omega;
 
 MoCapService* MoCapService :: myMoCap = NULL;
-bool MoCapService :: isEuler = true;
+bool MoCapService :: isEuler = false;
 
 
 MoCapService::MoCapService()
