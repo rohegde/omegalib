@@ -44,7 +44,12 @@ void Observer::update(const Vector3f& position, const Quaternion& orientation)
 	myViewTransform *= mySensorTransform;
 
 	myHeadTransform = Matrix4f::IDENTITY;
+	float angle;
+	Vector3f axis;
+	orientation.toAngleAxis(&angle, &axis);
+	myHeadTransform.rotate(angle, axis);
 	myHeadTransform.set_translation(position);
+	//myHeadTransform.rotate(angle, axis);
 	Matrix4f w2e = Matrix4f::IDENTITY;
 	w2e.set_translation(myReferencePosition);
 	myHeadTransform = w2e * myHeadTransform;

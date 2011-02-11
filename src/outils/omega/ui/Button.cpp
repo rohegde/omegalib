@@ -49,6 +49,8 @@ Button::~Button()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::autosize()
 {
+	// Make sure label ui manager is set.
+	myLabel.setUIManager(getUIManager());
 	myLabel.autosize();
 	setSize(myLabel.getSize());
 }

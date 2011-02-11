@@ -174,7 +174,7 @@ struct InputEvent
 		os << flags;
 		os << timestamp;
 		os << position[0] << position[1] << position[2];
-		os << rotation[0] << rotation[1] << rotation[2];
+		os << rotation[0] << rotation[1] << rotation[2] << rotation[3];
 		os << numberOfPoints;
 		for(int i = 0; i < PointSetSize; i++)
 		{
@@ -191,7 +191,7 @@ struct InputEvent
 		is >> flags;
 		is >> timestamp;
 		is >> position[0] >> position[1] >> position[2];
-		is >> rotation[0] >> rotation[1] >> rotation[2];
+		is >> rotation[0] >> rotation[1] >> rotation[2] >> rotation[3];
 		is >> numberOfPoints;
 		for(int i = 0; i < PointSetSize; i++)
 		{

@@ -2,7 +2,7 @@
 
 global
 {
-    EQ_CONFIG_FATTR_EYE_BASE        1.025
+    EQ_CONFIG_FATTR_EYE_BASE        0.06
     EQ_WINDOW_IATTR_PLANES_STENCIL ON
 }
 
@@ -18,23 +18,23 @@ server
                 name "GPU 1"
                 window
                 {
-                    name     "window1"
-                    viewport [ 0 0 1920 1080 ]
-                    channel { name "channel1"  }
+                    name     "bottom"
+                    viewport [ -1920 1080 1920 1080 ]
+                    channel { name "bottom"  }
                 }
                 window
                 {
-                    name     "window2"
-                    viewport [ 0 -1080 1920 1080 ]
+                    name     "top"
+                    viewport [ -1920 0 1920 1080 ]
                     channel 
                     { 
 						viewport [0 0 .5 1]
-						name "channel2left"  
+						name "topleft"  
 					}
                     channel 
                     { 
 						viewport [.5 0 .5 1]
-						name "channel2right"  
+						name "topright"  
 					}
                 }
             }
@@ -51,13 +51,13 @@ server
             name "MultiView"
             view
             {
-                name "view2D"
+                name "bottom"
 				observer "observer0"                
                 viewport [ 0 0 1 .5 ]
             }
             view
             {
-                name "view3D"
+                name "top"
                 observer "observer0"
                 viewport [ 0 .5 1 .5 ]
             }
@@ -71,7 +71,7 @@ server
             segment
             {
                 viewport [ 0 0 1 .5 ]
-                channel "channel1"
+                channel "bottom"
 				wall
 				{
 						bottom_left  [ -.590 .835 -0.15 ]
@@ -82,23 +82,23 @@ server
             segment
             {
                 viewport [ 0 .5 1 .5 ]
-                channel "channel2left"
+                channel "topleft"
 				wall
 				{
-						bottom_left  [ -.509 1.13 -0.8 ]
-						bottom_right [  .509 1.13 -0.8 ]
-						top_left     [ -.509 1.78 -0.8 ]
+						bottom_left  [ -.7 -0.4 0 ]
+						bottom_right [  .7 -0.4 0 ]
+						top_left     [ -.7 0.4 0 ]
 				}
             }
             segment
             {
                 viewport [ 0 .5 1 .5 ]
-                channel "channel2right"
+                channel "topright"
 				wall
 				{
-						bottom_left  [ -.509 1.13 -0.8 ]
-						bottom_right [  .509 1.13 -0.8 ]
-						top_left     [ -.509 1.78 -0.8 ]
+						bottom_left  [ -.7 -0.4 0 ]
+						bottom_right [  .7 -0.4 0 ]
+						top_left     [ -.7 0.4 0 ]
 				}
             }
         }
@@ -109,13 +109,11 @@ server
             compound
             {
                 channel ( segment 0 layout "MultiView" view 0 )
-                swapbarrier {}
             }
             compound
             {
 				eye [ LEFT ]
                 channel ( segment 1 layout "MultiView" view 1 )
-                swapbarrier {}
             }
             compound
             {
