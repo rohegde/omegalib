@@ -136,6 +136,7 @@ void GpuManager::initialize(ApplicationClient* client, unsigned int initFlags)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuManager::initCL()
 {
+#ifdef OMEGA_USE_OPENCL
 	cl_int status = 0;
     size_t deviceListSize;
 
@@ -228,6 +229,7 @@ void GpuManager::initCL()
     if(!clSuccessOrDie(status)) return;
 
 	omsg("OpenCL: initialization successful!");
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,6 +259,7 @@ void GpuManager::loadGeometryShader(const String& name, const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuManager::loadComputeShaders(const String& filename, const Vector<String>& shaderNames)
 {
+#ifdef OMEGA_USE_OPENCL
 	cl_int status = 0;
     
 	String ss = Utils::readTextFile(filename);
@@ -294,6 +297,7 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
 		myComputeShaders[shaderName] = sh;
 		omsg("Compute shader created: %s", shaderName.c_str());
 	}
+#endif OMEGA_USE_OPENCL
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
