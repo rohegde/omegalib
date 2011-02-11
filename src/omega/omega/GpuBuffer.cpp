@@ -32,6 +32,7 @@ void GpuConstant::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
 	if(stage == GpuProgram::ComputeStage)
 	{
+#ifdef OMEGA_USE_OPENCL
 		cl_int status;
 		cl_kernel kernel = prog->getComputeShader()->getCLKernel();
 
@@ -45,6 +46,7 @@ void GpuConstant::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 			break;
 		}
 		if(!clSuccessOrDie(status)) return;
+#endif
 	}
 	else if(stage == GpuProgram::RenderStage)
 	{
@@ -97,10 +99,12 @@ void GpuBuffer::initialize(int size, int elementSize, void* data, unsigned int f
 
 	if(myBufferFlags & BufferFlagsCLNative)
 	{
+#ifdef OMEGA_USE_OPENCL
 		// This buffer is an OpenCL native buffer, create it through the OpenCL API
 		cl_int status;
 		myCLBuffer = clCreateBuffer(myGpu->getCLContext(), CL_MEM_READ_WRITE, mySize, data, &status);
 		if(!clSuccessOrDie(status)) return;
+#endif
 	}
 	else
 	{
@@ -112,6 +116,7 @@ void GpuBuffer::initialize(int size, int elementSize, void* data, unsigned int f
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuBuffer::acquireGLBuffer()
 {
+#ifdef OMEGA_USE_OPENCL
 	cl_int status;
 	cl_event events;
 	cl_command_queue clqueue = myGpu->getCLCommandQueue();
@@ -121,11 +126,13 @@ void GpuBuffer::acquireGLBuffer()
 	status = clWaitForEvents(1, &events);
 	if(!clSuccessOrDie(status)) return;
 	clReleaseEvent(events);
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuBuffer::unacquireGLBuffer()
 {
+#ifdef OMEGA_USE_OPENCL
 	cl_int status;
 	cl_event events;
 	cl_command_queue clqueue = myGpu->getCLCommandQueue();
@@ -135,6 +142,7 @@ void GpuBuffer::unacquireGLBuffer()
 	status = clWaitForEvents(1, &events);
 	if(!clSuccessOrDie(status)) return;
 	clReleaseEvent(events);
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,6 +150,7 @@ void GpuBuffer::setData(void* data)
 {
 	if(myBufferFlags & BufferFlagsCLNative)
 	{
+#ifdef OMEGA_USE_OPENCL
 		// Write to the GPU buffer through the OpenCL API
 		cl_int status;
 		cl_command_queue clqueue = myGpu->getCLCommandQueue();
@@ -149,6 +158,7 @@ void GpuBuffer::setData(void* data)
 
 		status = clEnqueueWriteBuffer(clqueue, myCLBuffer, true, 0, mySize, data, 0, NULL, NULL);
 		if(!clSuccessOrDie(status)) return;
+#endif
 	}
 	else
 	{
@@ -163,6 +173,7 @@ void GpuBuffer::setData(void* data)
 		}
 		else
 		{
+#ifdef OMEGA_USE_OPENCL
 			cl_int status;
 			cl_command_queue clqueue = myGpu->getCLCommandQueue();
 
@@ -172,6 +183,7 @@ void GpuBuffer::setData(void* data)
 			if(!clSuccessOrDie(status)) return;
 
 			unacquireGLBuffer();
+#endif
 		}
 	}
 }
@@ -179,6 +191,7 @@ void GpuBuffer::setData(void* data)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuBuffer::copyTo(GpuBuffer* dest, int srcOffset, int dstOffset, int length)
 {
+#ifdef OMEGA_USE_OPENCL
 	// Acquire non CL native buffers.
 	if(!isCLNative()) acquireGLBuffer();
 	if(!dest->isCLNative()) dest->acquireGLBuffer();
@@ -192,6 +205,7 @@ void GpuBuffer::copyTo(GpuBuffer* dest, int srcOffset, int dstOffset, int length
 	// Unacquire non CL native buffers.
 	if(!isCLNative()) unacquireGLBuffer();
 	if(!dest->isCLNative()) dest->unacquireGLBuffer();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +213,7 @@ void GpuBuffer::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
 	if(stage == GpuProgram::ComputeStage)
 	{
+#ifdef OMEGA_USE_OPENCL
 		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
 		// needs to be done here.
 		if(!(myBufferFlags & BufferFlagsCLNative))
@@ -218,6 +233,7 @@ void GpuBuffer::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 			if(!clSuccessOrDie(status)) return;
 			clReleaseEvent(events);
 		}
+#endif
 	}
 	else
 	{
@@ -231,6 +247,7 @@ void GpuBuffer::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 {
 	if(stage == GpuProgram::ComputeStage)
 	{
+#ifdef OMEGA_USE_OPENCL
 		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
 		// needs to be done here.
 		if(!(myBufferFlags & BufferFlagsCLNative))
@@ -247,6 +264,7 @@ void GpuBuffer::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 			if(!clSuccessOrDie(status)) return;
 			clReleaseEvent(events);
 		}
+#endif
 	}
 }
 
@@ -332,6 +350,7 @@ void VertexBuffer::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 cl_mem GpuBuffer::getCLBuffer()
 { 
+#ifdef OMEGA_USE_OPENCL
 	if(myCLBuffer == NULL)
 	{
 		cl_int status;
@@ -339,4 +358,6 @@ cl_mem GpuBuffer::getCLBuffer()
 		if(!clSuccessOrDie(status)) return NULL;
 	}
 	return myCLBuffer; 
+#endif
+	return NULL;
 }

@@ -101,10 +101,12 @@ GeometryShader::GeometryShader(GLuint GLShader, const omega::String& name):
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ComputeShader::ComputeShader(cl_program program, const omega::String& kernelEntryPoint, const omega::String& name)
 {
+#ifdef OMEGA_USE_OPENCL
 	cl_int status;
 	myCLProgram = program;
 	myCLKernel = clCreateKernel(myCLProgram, kernelEntryPoint.c_str(), &status);
 	if(!clSuccessOrDie(status)) return;
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,6 +167,7 @@ void GpuProgram::printProgramLog(GLuint program)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads)
 {
+#ifdef OMEGA_USE_OPENCL
 	cl_event events;
 	cl_int status;
 
@@ -185,6 +188,7 @@ void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, c
 	status = clWaitForEvents(1, &events);
 	if(!clSuccessOrDie(status)) return;
 	clReleaseEvent(events);
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
