@@ -76,7 +76,7 @@ void EngineClient::draw(const DrawContext& context, uint flags)
 	myGpuManager->beginDraw();
 	if((flags & DrawScene) == DrawScene)
 	{
-		mySceneManager->draw();
+		mySceneManager->draw(context, myClient->getViewport());
 	}
 	if((flags & DrawUI) == DrawUI)
 	{

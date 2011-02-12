@@ -41,9 +41,9 @@ void MeshViewerClient::initialize()
 	Mesh* mesh1 = mm->getMesh("screwdriver");
 	Mesh* mesh2 = mm->getMesh("arm");
 
-	addEntity(mesh1, Vector3f(0, 0.1f, 0.3f));
-	addEntity(mesh1, Vector3f(0, -0.1f, 0.3f));
-	addEntity(mesh2, Vector3f(0, 0, 0.3f));
+	addEntity(mesh1, Vector3f(0, 0.1f, 0.0f));
+	addEntity(mesh1, Vector3f(0, -0.1f, 0.0f));
+	addEntity(mesh2, Vector3f(0, 0, 0.0f));
 
 	// Create and initialize meshviewer UI
 	myUI = new MeshViewerUI();
@@ -138,16 +138,12 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
 	switch(context.layer)
 	{
 	case 0:
 		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 		break;
 	case 1:
-		glColor4f(0.2f, 0.2f, 0.2f, 1);
-		glRecti(-960, -540, 1920, 1080);
 		myEngine->draw(context, EngineClient::DrawScene);
 		break;
 	case 2:

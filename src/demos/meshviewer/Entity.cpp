@@ -36,7 +36,7 @@ void SelectionSphere::draw(SceneNode* node)
 		float stp2 = Math::Pi * 2 / 16;
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(0.8f, 0.8f, 1.0f, 0.0f);
+		glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
 	
 		for(float g = 0; g < 2 * Math::Pi; g+= stp2)
 		{
