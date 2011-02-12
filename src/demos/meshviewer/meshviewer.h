@@ -64,7 +64,9 @@ public:
 	enum Operation { Move, Scale, Rotate, Compound };
 
 public:
-	Entity(SceneManager* sm, Mesh* m);
+	Entity(const String& name, SceneManager* sm, Mesh* m);
+
+	const String& getName() { return myName; }
 
 	bool hit(const Ray& ray, Vector3f* handlePos);
 	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::ZERO, Vector3f::ZERO));
@@ -80,6 +82,7 @@ public:
 	Vector3f getHandlePosition() { return myHandlePosition; }
 
 private:
+	String myName;
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
 	SelectionSphere* mySelectionSphere;
@@ -104,6 +107,7 @@ public:
 
 private:
 	MeshViewerClient* myClient;
+	Vector<Button*> myEntityButtons;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +126,9 @@ public:
 
 	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);
+
+	int getNumEntities() { return myEntities.size(); }
+	Entity* getEntity(int entityId) { return myEntities[entityId]; }
 
 private:
 	// Engine

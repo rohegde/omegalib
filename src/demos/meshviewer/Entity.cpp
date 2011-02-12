@@ -71,8 +71,9 @@ void SelectionSphere::draw(SceneNode* node)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* sm, Mesh* m)
+Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 {
+	myName = name;
 	myMesh = m;
 	mySelectionSphere = new SelectionSphere(this);
 	mySelectionSphere->setVisible(false);
@@ -99,7 +100,7 @@ void Entity::resetTransform()
 {
 	mySceneNode->setPosition(0, 0, 0);
 	mySceneNode->resetOrientation();
-	mySceneNode->setScale(1, 1, 1);
+	mySceneNode->setScale(0.2f, 0.2f, 0.2f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
