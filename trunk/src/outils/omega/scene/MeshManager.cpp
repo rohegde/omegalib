@@ -26,12 +26,13 @@ MeshManager::~MeshManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshManager::loadMesh(omega::String name, omega::String filename, MeshFormat format)
+void MeshManager::loadMesh(omega::String name, omega::String filename, MeshFormat format, bool rescale)
 {
 	if(format == MeshManager::MeshFormatPly)
 	{
 		PlyDataReader* reader = new PlyDataReader();
 		reader->readPlyFile(filename);
+		if(rescale)	reader->scale(1);
 
 		addMesh(name, reader);
 	}

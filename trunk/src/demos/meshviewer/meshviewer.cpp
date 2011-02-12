@@ -35,14 +35,20 @@ void MeshViewerClient::initialize()
 	myEngine->getFontManager()->createFont("arial", "../../data/fonts/arial.ttf", 30);
 
 	MeshManager* mm = myEngine->getMeshManager();
-	mm->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly);
-	mm->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly);
+	mm->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("bonney", "../../data/meshes/bonney.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("glacier", "../../data/meshes/glacier.ply", MeshManager::MeshFormatPly, true);
 
 	Mesh* mesh1 = mm->getMesh("screwdriver");
 	Mesh* mesh2 = mm->getMesh("arm");
+	Mesh* mesh3 = mm->getMesh("bonney");
+	Mesh* mesh4 = mm->getMesh("glacier");
 
-	myEntities.push_back(new Entity(myEngine->getSceneManager(), mesh1));
-	myEntities.push_back(new Entity(myEngine->getSceneManager(), mesh2));
+	myEntities.push_back(new Entity("Screwdriver", myEngine->getSceneManager(), mesh1));
+	myEntities.push_back(new Entity("Rocker Arm", myEngine->getSceneManager(), mesh2));
+	myEntities.push_back(new Entity("Bonney", myEngine->getSceneManager(), mesh3));
+	myEntities.push_back(new Entity("Glacier", myEngine->getSceneManager(), mesh4));
 
 	// Create and initialize meshviewer UI
 	myUI = new MeshViewerUI();

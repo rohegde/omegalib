@@ -44,16 +44,28 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 
 	root->setLayout(Container::LayoutVertical);
 
-	Container* c = wf->createContainer("c", root, Container::LayoutHorizontal);
-	c->setVerticalAlign(Container::AlignBottom);
-	Label* l = wf->createLabel("Hello World", c);
-	l->setAutosize(true);
-	Button* btn = wf->createButton("Button", c);
-	btn->setAutosize(true);
+	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
+	entityButtons->setVerticalAlign(Container::AlignBottom);
+
+	// Add buttons for each entity
+	for(int i = 0; i < myClient->getNumEntities(); i++)
+	{
+		Entity* e = myClient->getEntity(i);
+		Button* btn = wf->createButton(e->getName(), entityButtons);
+		btn->setAutosize(true);
+		myEntityButtons.push_back(btn);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 {
-	myClient->setVisibleEntity(0);
+	for(int i = 0; i < myClient->getNumEntities(); i++)
+	{
+		if(myEntityButtons[i] == evt.source)
+		{
+			myClient->setVisibleEntity(i);
+			break;
+		}
+	}
 }
