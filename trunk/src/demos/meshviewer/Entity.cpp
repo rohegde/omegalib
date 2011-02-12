@@ -71,18 +71,35 @@ void SelectionSphere::draw(SceneNode* node)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* sm, Mesh* m, const Vector3f& position)
+Entity::Entity(SceneManager* sm, Mesh* m)
 {
 	myMesh = m;
 	mySelectionSphere = new SelectionSphere(this);
 	mySelectionSphere->setVisible(false);
+	myVisible = false;
 
 	mySceneNode = new SceneNode(sm);
 	mySceneNode->addDrawable(myMesh);
 	mySceneNode->addDrawable(mySelectionSphere);
-	mySceneNode->setPosition(position);
+	mySceneNode->setPosition(Vector3f::ZERO);
 	mySceneNode->setSelectable(true);
+	mySceneNode->setVisible(false);
 	sm->getRootNode()->addChild(mySceneNode);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setVisible(bool value)
+{
+	myVisible = value;
+	mySceneNode->setVisible(value);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::resetTransform()
+{
+	mySceneNode->setPosition(0, 0, 0);
+	mySceneNode->resetOrientation();
+	mySceneNode->setScale(1, 1, 1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +111,7 @@ void Entity::activate(const Vector3f handlePos)
 	myStartBSphere = mySceneNode->getBoundingSphere();
 	myStartOrientation = mySceneNode->getOrientation();
 	myStartScale = mySceneNode->getScale()[0];
-	myHandlePosition =  handlePos; 
+	myHandlePosition = handlePos; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

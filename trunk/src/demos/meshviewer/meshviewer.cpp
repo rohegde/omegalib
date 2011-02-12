@@ -41,9 +41,8 @@ void MeshViewerClient::initialize()
 	Mesh* mesh1 = mm->getMesh("screwdriver");
 	Mesh* mesh2 = mm->getMesh("arm");
 
-	addEntity(mesh1, Vector3f(0, 0.1f, 0.0f));
-	addEntity(mesh1, Vector3f(0, -0.1f, 0.0f));
-	addEntity(mesh2, Vector3f(0, 0, 0.0f));
+	myEntities.push_back(new Entity(myEngine->getSceneManager(), mesh1));
+	myEntities.push_back(new Entity(myEngine->getSceneManager(), mesh2));
 
 	// Create and initialize meshviewer UI
 	myUI = new MeshViewerUI();
@@ -51,10 +50,18 @@ void MeshViewerClient::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::addEntity(Mesh* m, const Vector3f& position)
+void MeshViewerClient::setVisibleEntity(int entityId)
 {
-	Entity* e = new Entity(myEngine->getSceneManager(), m, position);
-	myEntities.push_back(e);
+	if(myVisibleEntity != NULL)
+	{
+		myVisibleEntity->setVisible(false);
+		myVisibleEntity = NULL;
+	}
+
+	Entity* e = myEntities[entityId];
+	myVisibleEntity = e;
+	myVisibleEntity->resetTransform();
+	myVisibleEntity->setVisible(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,16 +77,12 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 			// Select objects.
 			Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]));
 
-			VectorIterator<std::list<Entity*> > it(myEntities.begin(), myEntities.end());
-			while(it.hasMoreElements())
+			if(myVisibleEntity != NULL)
 			{
-				Entity* e = it.getNext();
 				Vector3f handlePos;
-				if(e->hit(ray, &handlePos))
+				if(myVisibleEntity->hit(ray, &handlePos))
 				{
-					e->activate(handlePos);
-					if(myActiveEntity != NULL) myActiveEntity->deactivate();
-					myActiveEntity = e;
+					myVisibleEntity->activate(handlePos);
 					break;
 				}
 			}
@@ -87,30 +90,29 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 		else if(evt.type == InputEvent::Up)
 		{
 			// Deselect objects.
-			if(myActiveEntity != NULL)
+			if(myVisibleEntity != NULL)
 			{
-				myActiveEntity->deactivate();
+				myVisibleEntity->deactivate();
 			}
-			myActiveEntity = NULL;
 		}
 		else if(evt.type == InputEvent::Move)
 		{
 			// Manipulate object, if one is active.
-			if(myActiveEntity != NULL)
+			if(myVisibleEntity != NULL)
 			{
 				Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]));
 
 				if((evt.flags & InputEvent::Left) == InputEvent::Left)
 				{
-					myActiveEntity->manipulate(Entity::Move, ray);
+					myVisibleEntity->manipulate(Entity::Move, ray);
 				}
 				else if((evt.flags & InputEvent::Right) == InputEvent::Right)
 				{
-					myActiveEntity->manipulate(Entity::Rotate, ray);
+					myVisibleEntity->manipulate(Entity::Rotate, ray);
 				}
 				else if((evt.flags & InputEvent::Middle) == InputEvent::Middle)
 				{
-					myActiveEntity->manipulate(Entity::Scale, ray);
+					myVisibleEntity->manipulate(Entity::Scale, ray);
 				}
 
 			}
@@ -119,6 +121,7 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt)
 	case InputService::Touch:
 	break;
 	case InputService::Mocap:
+		// Update observer
 		if(evt.sourceId == 1 && evt.position.length() > 0.1f)
 		{
 			Observer* o = SystemManager::instance()->getDisplaySystem()->getObserver(0);
