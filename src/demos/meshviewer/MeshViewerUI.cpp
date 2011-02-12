@@ -55,4 +55,5 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 {
+	myClient->setVisibleEntity(0);
 }

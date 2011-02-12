@@ -43,7 +43,7 @@ namespace scene
 		  myGpuMng(gpu), 
 		  myRoot(NULL),
 		  myViewTransform(Matrix4f::IDENTITY),
-		  myBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f) {}
+		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
 
 		void initialize();
 

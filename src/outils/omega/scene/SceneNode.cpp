@@ -54,31 +54,34 @@ void SceneNode::clearDrawables()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::draw()
 {
-	//if(myChanged) updateTransform();
-
-	glPushMatrix();
-
-	// Load the world transform matrix into gl.
-	glLoadMatrixf(myScene->getViewTransform().begin());
-
-	if(myBoundingBoxVisible) drawBoundingBox();
-
-	glMultMatrixf(getFullTransform().begin());
-
-	// Draw drawables attached to this node.
-	boost_foreach(Drawable* d, myDrawables)
+	if(myVisible)
 	{
-		d->draw(this);
-	}
-	// Draw children nodes.
-	ChildNodeIterator i = getChildIterator();
-	while(i.hasMoreElements())
-	{
-		SceneNode* n = (SceneNode*)i.getNext();
-		n->draw();
-	}
+		//if(myChanged) updateTransform();
 
-	glPopMatrix();
+		glPushMatrix();
+
+		// Load the world transform matrix into gl.
+		glLoadMatrixf(myScene->getViewTransform().begin());
+
+		if(myBoundingBoxVisible) drawBoundingBox();
+
+		glMultMatrixf(getFullTransform().begin());
+
+		// Draw drawables attached to this node.
+		boost_foreach(Drawable* d, myDrawables)
+		{
+			d->draw(this);
+		}
+		// Draw children nodes.
+		ChildNodeIterator i = getChildIterator();
+		while(i.hasMoreElements())
+		{
+			SceneNode* n = (SceneNode*)i.getNext();
+			n->draw();
+		}
+
+		glPopMatrix();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

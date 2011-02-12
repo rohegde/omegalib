@@ -64,14 +64,18 @@ public:
 	enum Operation { Move, Scale, Rotate, Compound };
 
 public:
-	Entity(SceneManager* sm, Mesh* m, const Vector3f& position);
+	Entity(SceneManager* sm, Mesh* m);
 
 	bool hit(const Ray& ray, Vector3f* handlePos);
 	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::ZERO, Vector3f::ZERO));
+	void resetTransform();
 
 	void activate(const Vector3f handlePos);
 	void deactivate();
 	bool isActive() { return myActive; }
+
+	bool isVisible() { return myVisible; }
+	void setVisible(bool value);
 
 	Vector3f getHandlePosition() { return myHandlePosition; }
 
@@ -86,6 +90,7 @@ private:
 	Quaternion myStartOrientation;
 	float myStartScale;
 	bool myActive;
+	bool myVisible;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +110,7 @@ private:
 class MeshViewerClient: public ApplicationClient
 {
 public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myActiveEntity(NULL) {}
+	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL) {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const InputEvent& evt);
@@ -113,9 +118,7 @@ public:
 	virtual void draw(const DrawContext& context);
 
 	EngineClient* getEngine() { return myEngine; }
-
-private:
-	void addEntity(Mesh* m, const Vector3f& position);
+	void setVisibleEntity(int entityId);
 
 private:
 	// Engine
@@ -125,10 +128,10 @@ private:
 	MeshViewerUI* myUI;
 
 	// Entity list
-	List<Entity*> myEntities;
+	Vector<Entity*> myEntities;
 
 	// Active entity.
-	Entity* myActiveEntity;
+	Entity* myVisibleEntity;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
