@@ -117,6 +117,9 @@ public:
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
 
+	void processPointerEvent(const InputEvent& evt);
+	void processObserverEvent(const InputEvent& evt);
+
 	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);
 
