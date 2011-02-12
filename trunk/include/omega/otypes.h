@@ -40,10 +40,6 @@
 // Boost
 #include "boost/unordered_map.hpp"
 
-
-// Dictionary 
-//#define Dictionary boost::unordered_map 
-
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +77,8 @@ typedef vmml::vector< 3, float > Vector3f; //!< A three-component float vector
 typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
 typedef vmml::quaternion<float> Quaternion; //! A floating point quaternion
 typedef vmml::vector< 3, uint >      Triangle;
+typedef vmml::rect<int> Recti;
+typedef vmml::rect<float> Rectf;
 
 //! enumeration for the axes
 enum Axis
@@ -508,9 +506,5 @@ class ConstMapIterator : public MapIteratorWrapper<T,  typename T::const_iterato
 		}
 };
 
-typedef vmml::rect<int> Recti;
-typedef vmml::rect<float> Rectf;
-
 }; // namespace omega
-
 #endif
