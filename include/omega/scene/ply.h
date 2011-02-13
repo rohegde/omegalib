@@ -68,6 +68,8 @@ extern "C" {
 #define  PLY_SCALAR  0
 #define  PLY_LIST    1
 
+	namespace omega { class DataStream; };
+
 
 typedef struct PlyProperty {    /* description of a property */
 
@@ -118,6 +120,7 @@ typedef struct PlyOtherElems {  /* "other" elements, not interpreted by user */
 } PlyOtherElems;
 
 typedef struct PlyFile {        /* description of PLY file */
+  omega::DataStream* stream;
   FILE *fp;                     /* file pointer */
   int file_type;                /* ascii or binary */
   float version;                /* version number of file */

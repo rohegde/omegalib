@@ -76,6 +76,7 @@ DataStream* DataManager::openStream(const String& path, DataStream::Mode mode)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DataManager::deleteStream(DataStream* stream)
 {
+	if(stream->isOpen()) stream->close();
 	delete stream;
 }
 

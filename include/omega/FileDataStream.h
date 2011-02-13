@@ -39,6 +39,7 @@ namespace omega
 		FileDataStream(const DataInfo& info);
 
 		virtual int bytesAvailable() { return 0; }
+		virtual bool isOpen();
 		virtual bool isCFile();
 		virtual FILE* getCFile();
 		virtual uint64 getSize() { return 0; }

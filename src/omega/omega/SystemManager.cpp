@@ -24,6 +24,7 @@
  *********************************************************************************************************************/
 #include "omega/InputManager.h"
 #include "omega/SystemManager.h"
+#include "omega/DataManager.h"
 #include "omega/Config.h"
 
 // Display system
@@ -76,6 +77,7 @@ SystemManager::SystemManager():
 	myExitRequested(false),
 	myIsInitialized(false)
 {
+	myDataManager = new DataManager();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

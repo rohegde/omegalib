@@ -33,7 +33,7 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class FilesystemDataSource: DataSource
+	class OMEGA_API FilesystemDataSource: DataSource
 	{
 	public:
 		FilesystemDataSource(const String& name, const String& path);

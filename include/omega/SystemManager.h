@@ -31,101 +31,139 @@
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class Application;
-class Config;
-class DisplaySystem;
-class InputManager;
-class InputService;
-class InputFilter;
-class DataManager;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
+	class Application;
+	class Config;
+	class DisplaySystem;
+	class InputManager;
+	class InputService;
+	class InputFilter;
+	class DataManager;
 
-typedef InputService* (*InputServiceAllocator)();
-typedef Dictionary<String, InputServiceAllocator> InputServiceDictionary;
+	typedef InputService* (*InputServiceAllocator)();
+	typedef Dictionary<String, InputServiceAllocator> InputServiceDictionary;
 
-typedef InputFilter* (*InputFilterAllocator)();
-typedef Dictionary<String, InputFilterAllocator> InputFilterDictionary;
+	typedef InputFilter* (*InputFilterAllocator)();
+	typedef Dictionary<String, InputFilterAllocator> InputFilterDictionary;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The SystemManager class is the root object of the omegalib architecture.
-class OMEGA_API SystemManager
-{
-public:
-	// Get the singleton instance of the system manager.
-	static SystemManager* instance();
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// The SystemManager class is the root object of the omegalib architecture.
+	class OMEGA_API SystemManager
+	{
+	public:
+		// Get the singleton instance of the system manager.
+		static SystemManager* instance();
 
-	//! Initializes the system manager
-	void setup(Config* cfg);
+		//! Initializes the system manager
+		void setup(Config* cfg);
 
-	void registerInputService(String svcName, InputServiceAllocator creationFunc);
+		void registerInputService(String svcName, InputServiceAllocator creationFunc);
 
-	//! Find an input service allocator given the input service name.
-	//! See registerInputService for additional information.
-	InputServiceAllocator findInputService(String svcName);
+		//! Find an input service allocator given the input service name.
+		//! See registerInputService for additional information.
+		InputServiceAllocator findInputService(String svcName);
 
-	void initialize();
+		void initialize();
 
-	//! Starts running the current application.
-	//! This method does not return until the application is done running.
-	void	run();
+		//! Starts running the current application.
+		//! This method does not return until the application is done running.
+		void	run();
 
-	//! Sends an exit request to the system manager.
-	void postExitRequest(const String& reason = "Undefined reason");
+		//! Sends an exit request to the system manager.
+		void postExitRequest(const String& reason = "Undefined reason");
 
-	//! Cleans up runtime resources, performs final debug checks etc.
-	void cleanup();
+		//! Cleans up runtime resources, performs final debug checks etc.
+		void cleanup();
 
-	//! Gets the system configuration.
-	Config* getConfig() { return myConfig; }
+		//! Gets the system configuration.
+		Config* getConfig();
 
-	//! Gets the InputManager object
-	InputManager* getInputManager() { return myInputManager; }
+		DataManager* getDataManager();
 
-	//! Gets the DisplaySystem object
-	DisplaySystem* getDisplaySystem() { return myDisplaySystem; }
-	//! Sets the DisplaySystem object
-	void setDisplaySystem(DisplaySystem* value) { myDisplaySystem = value; }
+		//! Gets the InputManager object
+		InputManager* getInputManager();
 
-	//! Gets the Application object
-	Application* getApplication() { return myApplication; }
+		//! Gets the DisplaySystem object
+		DisplaySystem* getDisplaySystem();
+		//! Sets the DisplaySystem object
+		void setDisplaySystem(DisplaySystem* value);
 
-	//! Sets the Application object
-	void setApplication(Application* value) { myApplication = value; }
+		//! Gets the Application object
+		Application* getApplication();
 
-	bool isExitRequested() { return myExitRequested; }
+		//! Sets the Application object
+		void setApplication(Application* value);
 
-	const String& getExitReason() { return myExitReason; }
+		bool isExitRequested();
 
-	bool isInitialized() { return myIsInitialized; }
+		const String& getExitReason();
 
-private:
-	SystemManager();
-	~SystemManager();
+		bool isInitialized();
 
-	void setupInputManager();
-	void setupDisplaySystem();
+	private:
+		SystemManager();
+		~SystemManager();
 
-private:
-	// Singleton instance.
-	static SystemManager* mysInstance;
+		void setupInputManager();
+		void setupDisplaySystem();
 
-	bool myIsInitialized;
+	private:
+		// Singleton instance.
+		static SystemManager* mysInstance;
 
-	// The input manager registry.
-	InputServiceDictionary myInputServiceRegistry;
+		bool myIsInitialized;
 
-	// The input service registry.
-	InputFilterDictionary myInputFilterRegistry;
+		// The input manager registry.
+		InputServiceDictionary myInputServiceRegistry;
 
-	Config*			myConfig;
-	DisplaySystem*	myDisplaySystem;
-	InputManager*	myInputManager;
-	Application*	myApplication;
-	bool			myExitRequested;
-	String			myExitReason;
-};
+		// The input service registry.
+		InputFilterDictionary myInputFilterRegistry;
 
+		Config*			myConfig;
+		DataManager*    myDataManager;
+		DisplaySystem*	myDisplaySystem;
+		InputManager*	myInputManager;
+		Application*	myApplication;
+		bool			myExitRequested;
+		String			myExitReason;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline DataManager* SystemManager::getDataManager()
+	{ return myDataManager; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline InputManager* SystemManager::getInputManager() 
+	{ return myInputManager; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline DisplaySystem* SystemManager::getDisplaySystem() 
+	{ return myDisplaySystem; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SystemManager::setDisplaySystem(DisplaySystem* value) 
+	{ myDisplaySystem = value; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Application* SystemManager::getApplication() 
+	{ return myApplication; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SystemManager::setApplication(Application* value) 
+	{ myApplication = value; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool SystemManager::isExitRequested() 
+	{ return myExitRequested; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const String& SystemManager::getExitReason() 
+	{ return myExitReason; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool SystemManager::isInitialized() 
+	{ return myIsInitialized; }
 }; // namespace omega
 
 #endif

@@ -113,7 +113,7 @@ OMEGA_API void omsg(const char* fmt, ...);
 OMEGA_API void owarn(const char* fmt, ...);
 OMEGA_API void oerror(const char* fmt, ...);
 OMEGA_API void oexit(int code);
-OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile);
+OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, int dataSources = 0, ...);
 
 // @todo: stupid macros bleah go away.
 #define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }

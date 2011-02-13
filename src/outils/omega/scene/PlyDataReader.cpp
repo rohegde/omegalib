@@ -1,11 +1,10 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *  [PLACE YOUR NAME AND MAIL HERE IF YOU CONTRIBUTED TO WRITE THIS SOURCE FILE]
- *---------------------------------------------------------------------------------------------------------------------
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -29,11 +28,11 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *---------------------------------------------------------------------------------------------------------------------
+ *-------------------------------------------------------------------------------------------------
  * This file is a modified version of Vector3fData, eqPly, Equalizer.
  * Copyright (c) 2007, Tobias Wolf <twolf@access.unizh.ch>
  *               2009, Stefan Eilemann <eile@equalizergraphics.com>
- *********************************************************************************************************************/
+ *************************************************************************************************/
 #include "omega/scene/PlyDataReader.h"
 #include <cstdlib>
 #include <algorithm>

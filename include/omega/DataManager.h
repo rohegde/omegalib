@@ -55,6 +55,7 @@ namespace omega
 
 		const DataInfo& getInfo() { return myInfo; }
 
+		virtual bool isOpen() { return false; }
 		virtual int bytesAvailable() { return 0; }
 		virtual bool isCFile() { return false; }
 		virtual FILE* getCFile() { return NULL; }
