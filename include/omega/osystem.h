@@ -102,6 +102,9 @@
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
 
+// Forward declaration of DataSource, used for omain
+namespace omega { class DataSource; };
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function definitions.
 OMEGA_API GLEWContext* glewGetContext();
@@ -113,7 +116,7 @@ OMEGA_API void omsg(const char* fmt, ...);
 OMEGA_API void owarn(const char* fmt, ...);
 OMEGA_API void oerror(const char* fmt, ...);
 OMEGA_API void oexit(int code);
-OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, int dataSources = 0, ...);
+OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
 
 // @todo: stupid macros bleah go away.
 #define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }

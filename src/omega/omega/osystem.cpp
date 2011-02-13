@@ -28,8 +28,7 @@
 #include "omega/Application.h"
 #include "omega/Config.h"
 #include "omega/DataManager.h"
-
-using namespace omega;
+#include "omega/FilesystemDataSource.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #define LOG_STR_LEN 65536
@@ -134,23 +133,22 @@ void oexit(int code)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void omain(Application& app, const char* configFile, const char* logFile, int dataSources, ...)
+void omain(Application& app, const char* configFile, const char* logFile, DataSource* dataSource)
 {
 	ologopen(logFile);
 
 	Config* cfg = new Config(configFile);
 
 	SystemManager* sys = SystemManager::instance();
+	DataManager* dm = sys->getDataManager();
+	// Add a default filesystem data source using current work dir.
+	dm->addSource(new FilesystemDataSource("./"));
 
-	// Set the data sources.
-	va_list ap;
-    va_start(ap, dataSources); 
-    for(int j = 0; j < dataSources; j++)
+	// Add optional data source.
+	if(dataSource != NULL)
 	{
-		DataSource* src = va_arg(ap, DataSource*);
-		sys->getDataManager()->addSource(src);
+		dm->addSource(dataSource);
 	}
-    va_end(ap);
 
 	sys->setup(cfg);
 	sys->setApplication(&app);
