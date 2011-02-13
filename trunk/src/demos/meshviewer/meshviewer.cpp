@@ -177,8 +177,5 @@ void MeshViewerClient::draw(const DrawContext& context)
 void main(int argc, char** argv)
 {
 	MeshViewerApplication app;
-	omain(app, argv[1], "meshviewer.log", 
-		2, 
-		new FilesystemDataSource("./"),
-		new FilesystemDataSource("../../data/"));
+	omain(app, argv[1], "meshviewer.log", new FilesystemDataSource("../../data/"));
 }
