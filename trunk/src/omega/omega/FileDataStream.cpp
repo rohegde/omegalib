@@ -48,11 +48,17 @@ FILE* FileDataStream::getCFile()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool FileDataStream::isOpen() 
+{
+	return myFile != NULL ? true : false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void FileDataStream::open(Mode mode)
 {
 	char* smode = NULL;
-	if(mode == DataStream::Read) smode = "r";
-	else if(mode == DataStream::Write) smode = "w";
+	if(mode == DataStream::Read) smode = "rb";
+	else if(mode == DataStream::Write) smode = "wb";
 
 	myFile = fopen(myInfo.path.c_str(), smode);
 }
@@ -63,6 +69,7 @@ void FileDataStream::close()
 	if(myFile != NULL)
 	{
 		fclose(myFile);
+		myFile = NULL;
 	}
 }
 

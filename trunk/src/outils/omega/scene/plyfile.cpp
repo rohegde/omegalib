@@ -44,6 +44,11 @@ WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 #include <math.h>
 #include <string.h>
 
+#include "omega/SystemManager.h"
+#include "omega/DataManager.h"
+using namespace omega;
+
+
 const char *type_names[] = {
     "invalid",
     "char", "short", "int",
@@ -1021,7 +1026,10 @@ PlyFile *ply_open_for_reading(
 
   /* open the file for reading */
 
-  fp = fopen (name, "rb");
+  DataManager* dm = SystemManager::instance()->getDataManager();
+  DataStream* stream = dm->openStream(filename, DataStream::Read);
+
+  fp = stream->getCFile();
   free(name);
   if (fp == NULL)
     return (NULL);
@@ -1029,6 +1037,7 @@ PlyFile *ply_open_for_reading(
   /* create the PlyFile data structure */
 
   plyfile = ply_read (fp, nelems, elem_names);
+  plyfile->stream = stream;
 
   /* determine the file type and version */
 
@@ -1564,9 +1573,8 @@ Entry:
 void ply_close(PlyFile *plyfile)
 {
   // Changed by Will Schroeder. Old stuff leaked like a sieve.
-
-  /* free up memory associated with the PLY file */
-  fclose (plyfile->fp);
+  DataManager* dm = SystemManager::instance()->getDataManager();
+  dm->deleteStream(plyfile->stream);
 
   int i, j;
   PlyElement *elem;

@@ -35,10 +35,10 @@ void MeshViewerClient::initialize()
 	myEngine->getFontManager()->createFont("arial", "../../data/fonts/arial.ttf", 30);
 
 	MeshManager* mm = myEngine->getMeshManager();
-	mm->loadMesh("screwdriver", "../../data/meshes/screwdriver.ply", MeshManager::MeshFormatPly, true);
-	mm->loadMesh("arm", "../../data/meshes/rockerArm.ply", MeshManager::MeshFormatPly, true);
-	mm->loadMesh("bonney", "../../data/meshes/bonney.ply", MeshManager::MeshFormatPly, true);
-	mm->loadMesh("glacier", "../../data/meshes/glacier.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("screwdriver", "meshes/screwdriver.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("arm", "meshes/rockerArm.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("bonney", "meshes/bonney.ply", MeshManager::MeshFormatPly, true);
+	mm->loadMesh("glacier", "meshes/glacier.ply", MeshManager::MeshFormatPly, true);
 
 	Mesh* mesh1 = mm->getMesh("screwdriver");
 	Mesh* mesh2 = mm->getMesh("arm");
@@ -177,5 +177,8 @@ void MeshViewerClient::draw(const DrawContext& context)
 void main(int argc, char** argv)
 {
 	MeshViewerApplication app;
-	omain(app, argv[1], "meshviewer.log");
+	omain(app, argv[1], "meshviewer.log", 
+		2, 
+		new FilesystemDataSource("./"),
+		new FilesystemDataSource("../../data/"));
 }
