@@ -45,6 +45,9 @@ SET( srcs
         omega/Utils.cpp
 		omega/StringUtils.cpp
 		omega/RenderTarget.cpp
+		omega/DataManager.cpp
+		omega/FileDataStream.cpp
+		omega/FilesystemDataSource.cpp
         )
 		
 #######################################################################################################################
@@ -64,6 +67,9 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Utils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
 
 		# vmml
         ${OmegaLib_SOURCE_DIR}/include/vmmlib/vmmlib.hpp
