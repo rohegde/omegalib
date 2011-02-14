@@ -56,7 +56,7 @@ void UIManager::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::draw(const DrawContext& context, const Recti& viewport)
+void UIManager::draw(const Recti& viewport)
 {
 	// Update the root container size if necessary.
 	if(myRootContainer->getPosition() != viewport[0] ||

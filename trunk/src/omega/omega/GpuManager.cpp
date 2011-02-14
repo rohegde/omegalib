@@ -162,7 +162,7 @@ void GpuManager::initialize(ApplicationClient* client, unsigned int initFlags)
 	Vector2i res = myClient->getResolution();
 
 	myFrameBuffer = new RenderTarget();
-	myFrameBuffer->initialize(res[0], res[1], RenderTarget::TypeFrameBuffer);
+	myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, res[0], res[1]);
 
 	myInitialized = true;
 }
