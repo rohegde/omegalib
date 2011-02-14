@@ -49,6 +49,8 @@ namespace ui
 		Container(omega::String name);
 		virtual ~Container();
 
+		void load(Setting& setting);
+
 		//! Child management
 		//@{
 		//! Add a child to this widget.
@@ -58,7 +60,6 @@ namespace ui
 		//! Return the number of children
 		int getNumChildren();
 		//@}
-
 
 		//!Layout options
 		//@{
