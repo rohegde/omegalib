@@ -75,7 +75,6 @@ namespace omega
 		virtual int bytesAvailable() { return 0; }
 		virtual bool isCFile() { return false; }
 		virtual FILE* getCFile() { return NULL; }
-		virtual uint64 getSize() { return 0; }
 		virtual void open(Mode mode) = 0;
 		virtual void close() = 0;
 		virtual void read(void* data, uint64 size) = 0;

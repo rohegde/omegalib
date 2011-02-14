@@ -89,14 +89,8 @@ DataStream* FilesystemDataSource::newStream(const String& name)
 {
 	if(exists(name))
 	{
-		DataInfo info;
-		info.name = name;
-		info.path = myPath + name;
-		info.size = 0;
-		info.source = this;
-		info.local = true;
-		FileDataStream* stream = new FileDataStream(info);
-		return stream;
+		DataInfo info = getInfo(name);
+		return new FileDataStream(info);
 	}
 	return NULL;
 }

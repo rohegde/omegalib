@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/FontManager.h"
+#include "omega/DataManager.h"
 
 using namespace omega;
 
@@ -66,7 +67,25 @@ void FontManager::createFont(omega::String fontName, omega::String filename, int
 		return;
 	}
 
-	FTFont* fontImpl = new FTTextureFont(filename.c_str());
+	// Load font data.
+	//DataManager* dm = SystemManager::instance()->getDataManager();
+	//DataStream* stream = dm->openStream(filename, DataStream::Read);
+
+	//int64 datasize = stream->getInfo().size;
+	//byte* data = new byte[datasize];
+	//stream->read(data, datasize);
+
+	//dm->deleteStream(stream);
+
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo info = dm->getInfo(filename);
+	oassert(!info.isNull());
+	oassert(info.local);
+
+	FTFont* fontImpl = new FTTextureFont(info.path.c_str());
+
+	//delete data;
+
 	if(fontImpl->Error())
 	{
 		owarn("Font %s failed to open", filename.c_str());
