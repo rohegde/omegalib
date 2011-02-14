@@ -90,5 +90,7 @@ bool Button::processInputEvent(const InputEvent& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::renderContent()
 {
+	// Make sure label ui manager is set.
+	myLabel.setUIManager(getUIManager());
 	AbstractButton::renderContent();
 }
