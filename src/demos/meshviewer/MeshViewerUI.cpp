@@ -36,7 +36,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 
 	//! Load and set default font.
 	FontManager* fm = client->getEngine()->getFontManager();
-	Font* defaultFont = fm->getFont("arial");
+	Font* defaultFont = fm->getFont("default");
 	ui->setDefaultFont(defaultFont);
 
 	WidgetFactory* wf = ui->getWidgetFactory();
