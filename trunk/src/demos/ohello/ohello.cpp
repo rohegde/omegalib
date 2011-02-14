@@ -67,5 +67,10 @@ void HelloClient::draw(const DrawContext& context)
 void main(int argc, char** argv)
 {
 	HelloApplication app;
-	omain(app, argv[1], "ohello.log");
+
+	// Read config file name from command line or use default one.
+	const char* cfgName = "ohello.cfg";
+	if(argc == 2) cfgName = argv[1];
+
+	omain(app, cfgName, "ohello.log", new FilesystemDataSource("../../data/"));
 }
