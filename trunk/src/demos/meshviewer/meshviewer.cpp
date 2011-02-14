@@ -32,7 +32,7 @@ void MeshViewerClient::initialize()
 	myEngine = new EngineClient(this);
 	myEngine->initialize();
 
-	myEngine->getFontManager()->createFont("arial", "../../data/fonts/arial.ttf", 30);
+	myEngine->getFontManager()->createFont("arial", "fonts/arial.ttf", 30);
 
 	MeshManager* mm = myEngine->getMeshManager();
 	mm->loadMesh("screwdriver", "meshes/screwdriver.ply", MeshManager::MeshFormatPly, true);
