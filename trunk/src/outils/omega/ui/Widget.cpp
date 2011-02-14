@@ -206,9 +206,14 @@ void Widget::updateSize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::setActualSize(int value, Orientation orientation) 
+void Widget::setActualSize(int value, Orientation orientation, bool force) 
 {
 	requestLayoutRefresh();
+	if(!force)
+	{
+		if(value < myMinimumSize[orientation]) value = myMinimumSize[orientation];
+		if(value > myMaximumSize[orientation]) value = myMaximumSize[orientation];
+	}
 	mySize[orientation] = value; 
 }
 

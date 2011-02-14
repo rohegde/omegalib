@@ -52,7 +52,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	{
 		Entity* e = myClient->getEntity(i);
 		Button* btn = wf->createButton(e->getName(), entityButtons);
-		btn->setAutosize(true);
+		//btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 	}
 }

@@ -133,7 +133,7 @@ namespace ui
 		void requestLayoutRefresh();
 		bool needLayoutRefresh();
 		virtual void layout();
-		void setActualSize(int value, Orientation orientation);
+		void setActualSize(int value, Orientation orientation, bool force = false);
 		//@}
 
 		void setContainer(Container* value);

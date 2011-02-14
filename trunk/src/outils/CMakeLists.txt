@@ -12,7 +12,7 @@
 
 #######################################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DLIBCONFIGXX_STATIC -DOUTILS_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
+ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOUTILS_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
 
 #######################################################################################################################
 # Source files
