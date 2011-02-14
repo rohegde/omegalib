@@ -43,6 +43,7 @@ namespace omega
 
 		//! Data stream management
 		//@{
+		DataInfo getInfo(const String& path);
 		virtual bool exists(const String& name);
 		virtual DataStream* newStream(const String& name);
 		virtual void deleteStream(DataStream* stream);

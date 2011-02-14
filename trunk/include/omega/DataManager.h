@@ -31,19 +31,35 @@
 
 namespace omega
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class DataSource;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct DataInfo
 	{
+		//! Default constructor. Creates a NULL data info (isNull() returns true)
+		DataInfo():
+			source(NULL),
+			size(-1),
+			local(false) {}
+
+		//! The data stream name
 		String name;
+		//! The data stream path (relative to the DataSource)
 		String path;
+		//! Pointer to the data source providing this info.
 		DataSource* source;
-		uint64 size;
+		//! The size of the data.
+		int64 size;
+		//! True if this data is local (that is, it can be accessed using standard streams or c 
+		//! files using the DataInfo path)
+		bool local;
+		
+		//! True if this object contains information about an existing data object.
+		bool isNull() { return (size == -1); }
 	};
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API DataStream
 	{
 	public:
@@ -81,6 +97,7 @@ namespace omega
 		//! Data stream management
 		//@{
 		virtual bool exists(const String& name) = 0;
+		virtual DataInfo getInfo(const String& path) = 0;
 		virtual DataStream* newStream(const String& name) = 0;
 		virtual void deleteStream(DataStream* stream) = 0;
 		//@}
@@ -102,6 +119,7 @@ namespace omega
 
 		//! Data streams
 		//@{
+		DataInfo getInfo(const String& path);
 		DataStream* createStream(const String& path);
 		DataStream* openStream(const String& path, DataStream::Mode mode);
 		void deleteStream(DataStream* stream);

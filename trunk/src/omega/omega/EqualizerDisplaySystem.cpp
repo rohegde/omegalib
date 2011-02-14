@@ -1,30 +1,34 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
- * following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
  * 
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
- * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
- * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
  * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
- * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************************************************************/
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #include "omega/Application.h"
 #include "omega/Config.h"
 #include "omega/EqualizerDisplaySystem.h"
+#include "omega/SystemManager.h"
+#include "omega/DataManager.h"
 #include "omega/SystemManager.h"
 
 #include "omega/input/MouseService.h"
@@ -40,7 +44,7 @@ using namespace std;
 namespace omega
 {
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 //!  Frame-specific data.
 //!   The frame-specific data is used as a per-config distributed object and contains mutable, rendering-relevant data. 
@@ -99,12 +103,12 @@ private:
 	InputEvent myEventBuffer[InputManager::MaxEvents];
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class ViewImpl: public eq::View
 {
 public:
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////
 		class Proxy : public eq::fabric::Serializable
 		{
 		public:
@@ -181,7 +185,7 @@ private:
 	friend class myProxy;
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 //! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
 //! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
@@ -201,7 +205,7 @@ protected:
 	}
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class ConfigImpl: public eq::Config
 {
@@ -352,7 +356,7 @@ private:
 	FrameData myFrameData;
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class PipeImpl: public eq::Pipe
 {
@@ -436,7 +440,7 @@ private:
 	FrameData myFrameData;
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class ChannelImpl: public eq::Channel, IGLContextManager
 {
@@ -505,7 +509,7 @@ private:
 	eq::Window* myWindow;
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class EqualizerNodeFactory: public eq::NodeFactory
 {
@@ -526,7 +530,7 @@ public:
 
 }; // namespace omega
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL),
 	myConfig(NULL),
@@ -535,37 +539,50 @@ EqualizerDisplaySystem::EqualizerDisplaySystem():
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 EqualizerDisplaySystem::~EqualizerDisplaySystem()
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
 	setting.lookupValue("DisplayConfig", myDisplayConfig);
 	mySetting = &setting;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
 	// Init glew
 	glewInit();
 
 	mySys = sys;
-	std::vector<char*> argv = Config::stringToArgv( mySys->getApplication()->getName(), myDisplayConfig);
+	const char* appName = mySys->getApplication()->getName();
+
+	DataManager* dm = mySys->getDataManager();
+	DataInfo cfgInfo = dm->getInfo(myDisplayConfig);
+
+	oassert(!cfgInfo.isNull())
+	oassert(cfgInfo.local);
+
+	const char* argv[] =
+	{
+		appName,
+		"--eq-config",
+		cfgInfo.path.c_str()
+	};
 
 	myNodeFactory = new EqualizerNodeFactory();
 
 	omsg("\n\n--- Equalizer initialization --------------------------------------------------");
-	if( !eq::init( argv.size(), &argv[0], myNodeFactory ))
+	if( !eq::init( 3, (char**)argv, myNodeFactory ))
 	{
 		oerror("Equalizer init failed");
 	}
 
 	bool error  = false;
-	myConfig = static_cast<ConfigImpl*>(eq::getConfig( argv.size(), &argv[0] ));
+	myConfig = static_cast<ConfigImpl*>(eq::getConfig( 3, (char**)argv ));
 	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
 
 	// Create observers.
@@ -579,7 +596,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	initObservers();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initObservers()
 {
 	if(mySetting->exists("Observers"))
@@ -606,7 +623,7 @@ void EqualizerDisplaySystem::initObservers()
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initLayers()
 {
 	if(mySetting->exists("Views"))
@@ -624,7 +641,7 @@ void EqualizerDisplaySystem::initLayers()
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::run()
 {
 	bool error = false;
@@ -663,12 +680,12 @@ void EqualizerDisplaySystem::run()
 	eq::exit();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::cleanup()
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
 {
 	if(!myConfig)
@@ -684,7 +701,7 @@ void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName,
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
 { 
 	if(!myConfig)

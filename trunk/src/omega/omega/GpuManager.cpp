@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "omega/GpuManager.h"
 #include "omega/SystemManager.h"
-#include "omega/Utils.h"
 #include "omega/RenderTarget.h"
 
 #include "boost/foreach.hpp"
@@ -99,6 +98,41 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 }
 
 #undef HANDLE_STATUS
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Move this into a stream reading class in the future.
+String readTextFile(const String& filename)
+{
+	FILE *fp;
+	char *content = NULL;
+
+	int count=0;
+
+	fp = fopen(filename.c_str(), "rt");
+
+	if (fp != NULL) 
+	{
+		fseek(fp, 0, SEEK_END);
+		count = ftell(fp);
+		rewind(fp);
+		if (count > 0) 
+		{
+			content = (char *)malloc(sizeof(char) * (count+1));
+			count = fread(content,sizeof(char),count,fp);
+			content[count] = '\0';
+		}
+		fclose(fp);
+	}
+	
+	if (content == NULL)
+	{
+		fprintf(stderr, "ERROR: could not load in file %s\n", filename.c_str());
+		exit(1);
+	}
+	String result = String(content);
+	free(content);
+	return result;
+}                    
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager():
@@ -262,7 +296,7 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
 #ifdef OMEGA_USE_OPENCL
 	cl_int status = 0;
     
-	String ss = Utils::readTextFile(filename);
+	String ss = readTextFile(filename);
     const char * source    = ss.c_str();
     size_t sourceSize[]    = { strlen(source) };
 
@@ -328,7 +362,7 @@ ComputeShader* GpuManager::getComputeShader(const String& name)
 GLuint GpuManager::loadGlShader(const String& filename, GLenum type)
 {
 	GLuint s = glCreateShader(type);
-	String ss = Utils::readTextFile(filename);
+	String ss = readTextFile(filename);
 	const char* cstr = ss.c_str();
 	glShaderSource(s, 1, &cstr, NULL);
 	glCompileShader(s);
