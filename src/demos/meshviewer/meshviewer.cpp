@@ -34,6 +34,9 @@ void MeshViewerClient::initialize()
 
 	myEngine->getFontManager()->createFont("arial", "fonts/arial.ttf", 30);
 
+	Config* cfg = getSystemManager()->getAppConfig();
+
+
 	MeshManager* mm = myEngine->getMeshManager();
 	mm->loadMesh("screwdriver", "meshes/screwdriver.ply", MeshManager::MeshFormatPly, true);
 	mm->loadMesh("arm", "meshes/rockerArm.ply", MeshManager::MeshFormatPly, true);

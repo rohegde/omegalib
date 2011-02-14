@@ -547,7 +547,7 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
-	setting.lookupValue("DisplayConfig", myDisplayConfig);
+	setting.lookupValue("config", myDisplayConfig);
 	mySetting = &setting;
 }
 
@@ -599,18 +599,18 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initObservers()
 {
-	if(mySetting->exists("Observers"))
+	if(mySetting->exists("observers"))
 	{
-		Setting& stObservers = (*mySetting)["Observers"];
+		Setting& stObservers = (*mySetting)["observers"];
 		for(int i = 0; i < stObservers.getLength(); i++)
 		{
 			Setting& stObserver = stObservers[i];
 			Observer* obs = getObserver(i);
 			Vector3f referencePos;
 
-			if(stObserver.exists("ReferencePosition"))
+			if(stObserver.exists("referencePosition"))
 			{
-				Setting& stEmitterTranslation = stObserver["ReferencePosition"];
+				Setting& stEmitterTranslation = stObserver["referencePosition"];
 				referencePos.x() = (float)stEmitterTranslation[0];
 				referencePos.y() = (float)stEmitterTranslation[1];
 				referencePos.z() = (float)stEmitterTranslation[2];
@@ -626,16 +626,23 @@ void EqualizerDisplaySystem::initObservers()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initLayers()
 {
-	if(mySetting->exists("Views"))
+	if(mySetting->exists("views"))
 	{
-		Setting& stViews = (*mySetting)["Views"];
+		Setting& stViews = (*mySetting)["views"];
 		for(int i = 0; i < stViews.getLength(); i++)
 		{
 			Setting& stView = stViews[i];
-			Setting& stLayers = stView["Layers"];
-			for(int j = 0; j < stLayers.getLength(); j++)
+			if(stView.exists("layers"))
 			{
-				setLayerEnabled(stLayers[j], stView.getName(), true);
+				Setting& stLayers = stView["layers"];
+				for(int j = 0; j < stLayers.getLength(); j++)
+				{
+					setLayerEnabled(stLayers[j], stView.getName(), true);
+				}
+			}
+			else
+			{
+				owarn("Config: no layer section defined in config/views/%s", stView.getName());
 			}
 		}
 	}

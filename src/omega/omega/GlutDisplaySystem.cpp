@@ -138,7 +138,7 @@ GlutDisplaySystem::~GlutDisplaySystem()
 void GlutDisplaySystem::setup(Setting& setting) 
 {
 	String sCfg;
-	setting.lookupValue("DisplayConfig", sCfg);
+	setting.lookupValue("config", sCfg);
 
 	int width;
 	int height;
@@ -225,16 +225,24 @@ void GlutDisplaySystem::cleanup()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GlutDisplaySystem::initLayers()
 {
-	if(mySetting->exists("Views"))
+	if(mySetting->exists("views"))
 	{
-		Setting& stViews = (*mySetting)["Views"];
+		Setting& stViews = (*mySetting)["views"];
 		for(int i = 0; i < stViews.getLength(); i++)
 		{
 			Setting& stView = stViews[i];
-			Setting& stLayers = stView["Layers"];
-			for(int j = 0; j < stLayers.getLength(); j++)
+
+			if(stView.exists("layers"))
 			{
-				setLayerEnabled(stLayers[j], stView.getName(), true);
+				Setting& stLayers = stView["layers"];
+				for(int j = 0; j < stLayers.getLength(); j++)
+				{
+					setLayerEnabled(stLayers[j], stView.getName(), true);
+				}
+			}
+			else
+			{
+				owarn("Config: no layer section defined in config/views/%s", stView.getName());
 			}
 		}
 	}
@@ -243,18 +251,18 @@ void GlutDisplaySystem::initLayers()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GlutDisplaySystem::initObservers()
 {
-	if(mySetting->exists("Observers"))
+	if(mySetting->exists("observers"))
 	{
-		Setting& stObservers = (*mySetting)["Observers"];
+		Setting& stObservers = (*mySetting)["observers"];
 		for(int i = 0; i < stObservers.getLength(); i++)
 		{
 			Setting& stObserver = stObservers[i];
 
 			Vector3f referencePos;
 
-			if(stObserver.exists("ReferencePosition"))
+			if(stObserver.exists("referencePosition"))
 			{
-				Setting& stEmitterTranslation = stObserver["ReferencePosition"];
+				Setting& stEmitterTranslation = stObserver["referencePosition"];
 				referencePos.x() = (float)stEmitterTranslation[0];
 				referencePos.y() = (float)stEmitterTranslation[1];
 				referencePos.z() = (float)stEmitterTranslation[2];

@@ -92,7 +92,7 @@ void SystemManager::setup(Config* appcfg)
 
 	if(!appcfg->isLoaded()) appcfg->load();
 
-	String systemCfgName = appcfg->lookup("Config/SystemConfig");
+	String systemCfgName = appcfg->lookup("config/systemConfig");
 
 	myAppConfig = appcfg;
 	mySystemConfig = new Config(systemCfgName);
@@ -132,10 +132,10 @@ void SystemManager::setupInputManager()
 #endif
 
 	// Instantiate input services
-	Setting& stRoot = mySystemConfig->getRootSetting()["Config"];
-	if(stRoot.exists("InputServices"))
+	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
+	if(stRoot.exists("input"))
 	{
-		Setting& stServices = stRoot["InputServices"];
+		Setting& stServices = stRoot["input"];
 		for(int i = 0; i < stServices.getLength(); i++)
 		{
 			Setting& stSvc = stServices[i];
@@ -167,13 +167,13 @@ void SystemManager::setupDisplaySystem()
 {
 	// Instantiate input services
 	Setting& stRoot = mySystemConfig->getRootSetting();
-	if(stRoot.exists("Config/DisplaySystem"))
+	if(stRoot.exists("config/display"))
 	{
-		Setting& stDS = stRoot["Config/DisplaySystem"][0];
+		Setting& stDS = stRoot["config/display"][0];
 		DisplaySystem* ds = NULL;
 
 		String displaySystemType;
-		stDS.lookupValue("Type", displaySystemType);
+		stDS.lookupValue("type", displaySystemType);
 		if(displaySystemType == "Equalizer")
 		{
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
