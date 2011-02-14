@@ -24,64 +24,90 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENEMANAGER_H__
-#define __SCENEMANAGER_H__
+#ifndef __CAMERA_H__
+#define __CAMERA_H__
 
 #include "omega/osystem.h"
-#include "omega/GpuManager.h"
-#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
+	class RenderTarget;
 namespace scene
 {
+	class SceneManager;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API SceneManager
+	class OUTILS_API Camera
 	{
 	public:
-		SceneManager(omega::GpuManager* gpu): 
-		  myGpuMng(gpu), 
-		  myRoot(NULL),
-		  myViewTransform(Matrix4f::IDENTITY),
-		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
+		Camera(SceneManager* scene, RenderTarget* target);
 
-		void initialize();
-
-		GpuManager* getGpuManager();
-		SceneNode* getRootNode();
 		const Matrix4f& getViewTransform();
+		const Matrix4f& getProjectionTransform();
+		void setProjectionTransform(const Matrix4f& value);
+		void setViewTransform(const Matrix4f& value);
 
-		void setBackgroundColor(const Color& value);
-		Color getBackgroundColor();
+		void updateView(const Vector3f& position, const Quaternion& orientation);
+		void updateProjection(float fov, float aspect, float nearZ, float farZ);
 
-		void draw(const Recti& viewport);
+		RenderTarget* getRenderTarget();
+		SceneManager* getScene();
+
+		bool getAutoAspect();
+		void setAutoAspect(bool value);
+		void render();
 
 	private:
-		omega::GpuManager* myGpuMng;
-		SceneNode* myRoot;
-		Matrix4f myViewTransform;
-		Color myBackgroundColor;
+		RenderTarget* myRenderTarget;
+		SceneManager* myScene;
+
+		//! Current view transform
+		Matrix4f myView;
+		Matrix4f myProjection;
+
+		//! Observer current position.
+		Vector3f myPosition;
+		//! Observer current rotation.
+		Quaternion myOrientation;
+		//! Field of view (in radians)
+		float myFov;
+		float myAspect;
+		float myNearZ;
+		float myFarZ;
+		bool myAutoAspect;
 	};
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Matrix4f& Camera::getViewTransform() 
+	{ return myView; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuManager* SceneManager::getGpuManager() 
-	{ return myGpuMng; }
+	inline const Matrix4f& Camera::getProjectionTransform()
+	{ return myProjection; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* SceneManager::getRootNode() 
-	{ return myRoot; }
+	inline void Camera::setProjectionTransform(const Matrix4f& value)
+	{ myProjection = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& SceneManager::getViewTransform() 
-	{ return myViewTransform; }
+	inline void Camera::setViewTransform(const Matrix4f& value)
+	{ myView = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneManager::setBackgroundColor(const Color& value)
-	{ myBackgroundColor = value; }
+	inline RenderTarget* Camera::getRenderTarget()
+	{ return myRenderTarget; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color SceneManager::getBackgroundColor()
-	{ return myBackgroundColor; }
+	inline SceneManager* Camera::getScene()
+	{ return myScene; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Camera::getAutoAspect()
+	{ return myAutoAspect; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Camera::setAutoAspect(bool value)
+	{ myAutoAspect = value; }
 }; // namespace scene
 }; // namespace omega
 

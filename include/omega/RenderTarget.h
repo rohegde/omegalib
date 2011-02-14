@@ -39,14 +39,15 @@ namespace omega
 	class OMEGA_API RenderTarget
 	{
 	public:
-		enum Type { TypeFrameBuffer, TypeRenderBuffer};
+		enum Type { TypeFrameBuffer, TypeRenderBuffer, TypeTexture};
 
 	public:
 		RenderTarget();
+		~RenderTarget();
 
 		//! Initalization
 		//@{
-		void initialize(int width, int height, Type type = TypeRenderBuffer);
+		void initialize(Type type = TypeFrameBuffer, int width = 0, int height = 0);
 		bool isInitialized();
 		//@}
 
@@ -71,6 +72,7 @@ namespace omega
 		int myWidth;
 		int myHeight;
 		Type myType;
+		bool myDrawing;
 
 		Texture* myColorTarget;
 	};
@@ -90,10 +92,6 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline RenderTarget::Type RenderTarget::getType() 
 	{ return myType; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void RenderTarget::setColorTarget(Texture* target) 
-	{ myColorTarget = target; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline GLuint RenderTarget::getGLId() 

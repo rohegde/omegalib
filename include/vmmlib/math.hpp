@@ -356,6 +356,7 @@ namespace vmml
 		}
 
 		static inline matrix<4,4,T> makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation);
+		static inline matrix<4,4,T> makePerspectiveMatrix(float fov, float aspect, float nearZ, float farZ);
 
 		/** Get a bounding radius value from a bounding box. */
 		static inline T boundingRadiusFromAABB(const axis_aligned_box<T>& aabb);
@@ -1292,6 +1293,22 @@ namespace vmml
 
 		return viewMatrix;
 
+	}
+
+	//---------------------------------------------------------------------
+    template<typename T>
+	inline matrix<4,4,T> math<T>::makePerspectiveMatrix(float fov, float a, float n, float f)
+	{
+		matrix<4,4,T> m = matrix<4,4,T>::ZERO;
+		float e = 1.0f / tan(fov / 2);
+
+		m[0][0] = e;
+		m[1][1] = e / a;
+		m[2][2] = - (f + n) / (f - n);
+		m[2][3] = - (2 * f * n) / (f - n);
+		m[3][2] = -1;
+
+		return m;
 	}
 
 	//---------------------------------------------------------------------

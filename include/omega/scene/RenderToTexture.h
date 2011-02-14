@@ -24,64 +24,48 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENEMANAGER_H__
-#define __SCENEMANAGER_H__
+#ifndef __RENDER_TO_TEXTURE_H__
+#define __RENDER_TO_TEXTURE_H__
 
 #include "omega/osystem.h"
-#include "omega/GpuManager.h"
-#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
+	class RenderTarget;
+	class Texture;
+	class TextureManager;
 namespace scene
 {
+	class SceneManager;
+	class Camera;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API SceneManager
+	class OUTILS_API RenderToTexture
 	{
 	public:
-		SceneManager(omega::GpuManager* gpu): 
-		  myGpuMng(gpu), 
-		  myRoot(NULL),
-		  myViewTransform(Matrix4f::IDENTITY),
-		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
+		RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height);
+		~RenderToTexture();
 
-		void initialize();
-
-		GpuManager* getGpuManager();
-		SceneNode* getRootNode();
-		const Matrix4f& getViewTransform();
-
-		void setBackgroundColor(const Color& value);
-		Color getBackgroundColor();
-
-		void draw(const Recti& viewport);
+		void render();
+		
+		Camera* getCamera();
+		Texture* getTexture();
 
 	private:
-		omega::GpuManager* myGpuMng;
-		SceneNode* myRoot;
-		Matrix4f myViewTransform;
-		Color myBackgroundColor;
+		RenderTarget* myRenderTarget;
+		SceneManager* myScene;
+		Camera* myCamera;
+		Texture* myTexture;
 	};
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Camera* RenderToTexture::getCamera() 
+	{ return myCamera; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuManager* SceneManager::getGpuManager() 
-	{ return myGpuMng; }
+	inline Texture* RenderToTexture::getTexture() 
+	{ return myTexture; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* SceneManager::getRootNode() 
-	{ return myRoot; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& SceneManager::getViewTransform() 
-	{ return myViewTransform; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneManager::setBackgroundColor(const Color& value)
-	{ myBackgroundColor = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color SceneManager::getBackgroundColor()
-	{ return myBackgroundColor; }
 }; // namespace scene
 }; // namespace omega
 

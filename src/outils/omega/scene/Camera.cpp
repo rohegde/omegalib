@@ -24,65 +24,75 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENEMANAGER_H__
-#define __SCENEMANAGER_H__
+#include "omega/RenderTarget.h"
+#include "omega/scene/Camera.h"
+#include "omega/scene/SceneManager.h"
 
-#include "omega/osystem.h"
-#include "omega/GpuManager.h"
-#include "omega/scene/SceneNode.h"
+using namespace omega;
+using namespace omega::scene;
 
-namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera::Camera(SceneManager* scene, RenderTarget* target):
+	myScene(scene),
+	myRenderTarget(target),
+	myAutoAspect(false)
 {
-namespace scene
+	updateView(Vector3f::ZERO, Quaternion::IDENTITY);
+	updateProjection(60 * Math::DegToRad, 1, 0.01f, 100);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::updateView(const Vector3f& position, const Quaternion& orientation)
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API SceneManager
+	myPosition = position;
+	myOrientation = orientation;
+	myView = Math::makeViewMatrix(position, orientation);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::updateProjection(float fov, float aspect, float nearZ, float farZ)
+{
+	myProjection = Math::makePerspectiveMatrix(fov, aspect, nearZ, farZ);
+	myFov = fov;
+	myNearZ = nearZ;
+	myFarZ = farZ;
+	myAspect = aspect;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::render()
+{
+	oassert(myScene != NULL);
+	oassert(myRenderTarget != NULL);
+
+	Recti viewport;
+	viewport[0][0] = 0;
+	viewport[0][1] = 0;
+	viewport[1][0] = myRenderTarget->getWidth();
+	viewport[1][1] = myRenderTarget->getHeight();
+
+	if(myAutoAspect)
 	{
-	public:
-		SceneManager(omega::GpuManager* gpu): 
-		  myGpuMng(gpu), 
-		  myRoot(NULL),
-		  myViewTransform(Matrix4f::IDENTITY),
-		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
+		float aspect = (float)viewport[1][0] / viewport[1][1];
+		updateProjection(myFov, aspect, myNearZ, myFarZ);
+	}
 
-		void initialize();
+	//glMatrixMode(GL_PROJECTION);
+	//glPushMatrix();
+	//glLoadMatrixf(myProjection.begin());
 
-		GpuManager* getGpuManager();
-		SceneNode* getRootNode();
-		const Matrix4f& getViewTransform();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadMatrixf(myView.begin());
 
-		void setBackgroundColor(const Color& value);
-		Color getBackgroundColor();
 
-		void draw(const Recti& viewport);
+	myRenderTarget->beginDraw();
+	myScene->draw(viewport);
+	myRenderTarget->endDraw();
 
-	private:
-		omega::GpuManager* myGpuMng;
-		SceneNode* myRoot;
-		Matrix4f myViewTransform;
-		Color myBackgroundColor;
-	};
+	//glMatrixMode(GL_PROJECTION);
+	//glPopMatrix();
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuManager* SceneManager::getGpuManager() 
-	{ return myGpuMng; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* SceneManager::getRootNode() 
-	{ return myRoot; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& SceneManager::getViewTransform() 
-	{ return myViewTransform; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneManager::setBackgroundColor(const Color& value)
-	{ myBackgroundColor = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color SceneManager::getBackgroundColor()
-	{ return myBackgroundColor; }
-}; // namespace scene
-}; // namespace omega
-
-#endif
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+}

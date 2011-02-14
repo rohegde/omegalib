@@ -35,20 +35,34 @@ RenderTarget::RenderTarget():
 	myHeight(0),
 	myId(0),
 	myColorTarget(NULL),
-	myInitialized(false)
+	myInitialized(false),
+	myDrawing(false)
 {
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+RenderTarget::~RenderTarget()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::setColorTarget(Texture* target) 
+{
+	myColorTarget = target; 
+	myWidth = myColorTarget->getWidth();
+	myHeight = myColorTarget->getHeight();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::initialize(int width, int height, Type type)
+void RenderTarget::initialize(Type type, int width, int height)
 {
 	myWidth = width;
 	myHeight = height;
 	myType = type;
 
-	if(type == TypeRenderBuffer)
+	if(type == TypeRenderBuffer || type == TypeTexture)
 	{
-		glGenRenderbuffers(1, &myId);
+		glGenFramebuffers(1, &myId);
 	}
 
 	myInitialized = true;
@@ -57,18 +71,35 @@ void RenderTarget::initialize(int width, int height, Type type)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderTarget::endDraw()
 {
+	myDrawing = false;
 	if(myColorTarget != NULL)
 	{
-		myColorTarget->unbind();
+		if(myId == 0)
+		{
+			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, myColorTarget->getWidth(), myColorTarget->getHeight(), 0);
+			myColorTarget->unbind();
+		}
+		else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderTarget::beginDraw()
 {
+	myDrawing = true;
 	if(myColorTarget != NULL)
 	{
-		myColorTarget->bind(GpuManager::TextureUnit0);
-		glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, myColorTarget->getWidth(), myColorTarget->getHeight(), 0);
+		if(myId == 0)
+		{
+			myColorTarget->bind(GpuManager::TextureUnit0);
+		}
+		else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, myId);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, myColorTarget->getGLTexture(), 0);
+		}
 	}
 }

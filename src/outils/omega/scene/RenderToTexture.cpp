@@ -24,65 +24,40 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENEMANAGER_H__
-#define __SCENEMANAGER_H__
+#include "omega/RenderTarget.h"
+#include "omega/Texture.h"
+#include "omega/TextureManager.h"
+#include "omega/scene/Camera.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/RenderToTexture.h"
 
-#include "omega/osystem.h"
-#include "omega/GpuManager.h"
-#include "omega/scene/SceneNode.h"
+using namespace omega;
+using namespace omega::scene;
 
-namespace omega
+static NameGenerator sRenderToTextureNameGenerator("RenderToTexture_");
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderToTexture::RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height)
 {
-namespace scene
+	myScene = scene;
+	myTexture = txman->createTexture(sRenderToTextureNameGenerator.generate(), width, height);
+	myRenderTarget = new RenderTarget();
+	myRenderTarget->initialize(RenderTarget::TypeTexture);
+	myRenderTarget->setColorTarget(myTexture);
+	myCamera = new Camera(myScene, myRenderTarget);
+	myCamera->setAutoAspect(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderToTexture::~RenderToTexture()
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API SceneManager
-	{
-	public:
-		SceneManager(omega::GpuManager* gpu): 
-		  myGpuMng(gpu), 
-		  myRoot(NULL),
-		  myViewTransform(Matrix4f::IDENTITY),
-		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
+	delete myTexture;
+	delete myRenderTarget;
+	delete myCamera;
+}
 
-		void initialize();
-
-		GpuManager* getGpuManager();
-		SceneNode* getRootNode();
-		const Matrix4f& getViewTransform();
-
-		void setBackgroundColor(const Color& value);
-		Color getBackgroundColor();
-
-		void draw(const Recti& viewport);
-
-	private:
-		omega::GpuManager* myGpuMng;
-		SceneNode* myRoot;
-		Matrix4f myViewTransform;
-		Color myBackgroundColor;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuManager* SceneManager::getGpuManager() 
-	{ return myGpuMng; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* SceneManager::getRootNode() 
-	{ return myRoot; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& SceneManager::getViewTransform() 
-	{ return myViewTransform; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneManager::setBackgroundColor(const Color& value)
-	{ myBackgroundColor = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color SceneManager::getBackgroundColor()
-	{ return myBackgroundColor; }
-}; // namespace scene
-}; // namespace omega
-
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderToTexture::render()
+{
+	myCamera->render();
+}
