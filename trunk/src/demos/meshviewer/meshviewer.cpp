@@ -32,12 +32,17 @@ void MeshViewerClient::initialize()
 	myEngine = new EngineClient(this);
 	myEngine->initialize();
 
-	myEngine->getFontManager()->createFont("arial", "fonts/arial.ttf", 16);
+	Config* cfg = getSystemManager()->getAppConfig();
+
+	if(cfg->exists("config/defaultFont"))
+	{
+		Setting& fontSetting = cfg->lookup("config/defaultFont");
+		myEngine->getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
+	}
 
 	MeshManager* mm = myEngine->getMeshManager();
 
 	// Load meshes specified in config file.
-	Config* cfg = getSystemManager()->getAppConfig();
 	if(cfg->exists("config/meshes"))
 	{
 		Setting& meshes = cfg->lookup("config/meshes");
