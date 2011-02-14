@@ -32,26 +32,27 @@ void MeshViewerClient::initialize()
 	myEngine = new EngineClient(this);
 	myEngine->initialize();
 
-	myEngine->getFontManager()->createFont("arial", "fonts/arial.ttf", 30);
-
-	Config* cfg = getSystemManager()->getAppConfig();
-
+	myEngine->getFontManager()->createFont("arial", "fonts/arial.ttf", 16);
 
 	MeshManager* mm = myEngine->getMeshManager();
-	mm->loadMesh("screwdriver", "meshes/screwdriver.ply", MeshManager::MeshFormatPly, true);
-	mm->loadMesh("arm", "meshes/rockerArm.ply", MeshManager::MeshFormatPly, true);
-	mm->loadMesh("bonney", "meshes/bonney.ply", MeshManager::MeshFormatPly, true);
-	mm->loadMesh("glacier", "meshes/glacier.ply", MeshManager::MeshFormatPly, true);
 
-	Mesh* mesh1 = mm->getMesh("screwdriver");
-	Mesh* mesh2 = mm->getMesh("arm");
-	Mesh* mesh3 = mm->getMesh("bonney");
-	Mesh* mesh4 = mm->getMesh("glacier");
+	// Load meshes specified in config file.
+	Config* cfg = getSystemManager()->getAppConfig();
+	if(cfg->exists("config/meshes"))
+	{
+		Setting& meshes = cfg->lookup("config/meshes");
+		for(int i = 0; i < meshes.getLength(); i++)
+		{
+			Setting& meshSetting = meshes[i];
+			String meshName = meshSetting.getName();
+			String meshFilename = meshSetting["filename"];
+			String meshLabel = meshSetting["label"];
 
-	myEntities.push_back(new Entity("Screwdriver", myEngine->getSceneManager(), mesh1));
-	myEntities.push_back(new Entity("Rocker Arm", myEngine->getSceneManager(), mesh2));
-	myEntities.push_back(new Entity("Bonney", myEngine->getSceneManager(), mesh3));
-	myEntities.push_back(new Entity("Glacier", myEngine->getSceneManager(), mesh4));
+			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, true);
+			Mesh* mesh = mm->getMesh(meshName);
+			myEntities.push_back(new Entity(meshLabel, myEngine->getSceneManager(), mesh));
+		}
+	}
 
 	// Create and initialize meshviewer UI
 	myUI = new MeshViewerUI();

@@ -35,7 +35,9 @@ Container::Container(omega::String name):
 		myPadding(5),
 		myMargin(5),
 		myHorizontalAlign(AlignCenter),
-		myVerticalAlign(AlignMiddle)
+		myVerticalAlign(AlignMiddle),
+		myGridRows(1),
+		myGridColumns(1)
 {
 
 }
@@ -117,16 +119,9 @@ int Container::expandStep(int availableSpace, Orientation orientation)
 	while(it.hasMoreElements())
 	{
 		Widget* w = it.getNext();
-		int min = w->getMinimumSize()[orientation];
-		int max = w->getMaximumSize()[orientation];
-
-		// Compute new width
-		int ns = w->getSize()[orientation] + childSpace;
-		if(ns < min) ns = min;
-		if(ns > max) ns = max;
-
-		spaceLeft -= ns;
-		w->setActualSize(ns, orientation);
+		int size = w->getSize()[orientation] + childSpace;
+		w->setActualSize(size, orientation);
+		spaceLeft -= w->getSize(orientation);
 	}
 	return spaceLeft;
 }
@@ -154,19 +149,11 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 	while(it.hasMoreElements())
 	{
 		Widget* w = it.getNext();
-		int min = w->getMinimumSize()[orientation];
-		int max = w->getMaximumSize()[orientation];
-
-		// Compute new width
-		int ns = available;
-		if(ns < min) ns = min;
-		if(ns > max) ns = max;
 
 		// Set child size.
-		w->setActualSize(ns, orientation);
+		w->setActualSize(available, orientation);
 
-		// Set child position (no alignment for now, always centered
-		// into parent container.
+		// Set child position
 		int pos = 0;
 		if((orientation == Horizontal && myHorizontalAlign == AlignLeft) ||
 			(orientation == Vertical && myVerticalAlign == AlignTop))
@@ -180,7 +167,7 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 		}
 		else
 		{
-			pos = (available - ns) / 2 + myPadding;
+			pos = (available - w->getSize(orientation)) / 2 + myPadding;
 		}
 
 		w->setPosition(pos, orientation);
@@ -219,6 +206,54 @@ void Container::computeLinearLayout(Orientation orientation)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::computeGridLayout(Orientation orientation)
+{
+	int nc = getNumChildren();
+	Orientation oppositeOrientation = (orientation == Vertical) ? Horizontal : Vertical;
+	// TODO: Check satisfiability of conditions
+
+	// Compute how much total space is available.
+	int availableWidth = getSize()[Horizontal] - myPadding * 2 - (myGridColumns - 1) * myMargin;
+	int availableHeight = getSize()[Vertical] - myPadding * 2 - (myGridRows - 1) * myMargin;
+
+	int cellWidth = availableWidth / myGridColumns;
+	int cellHeight = availableHeight / myGridRows;
+
+	int cellX = myPadding;
+	int cellY = myPadding;
+
+	WidgetIterator it(myChildren.begin(), myChildren.end());
+	while(it.hasMoreElements())
+	{
+		Widget* w = it.getNext();
+		w->setActualSize(cellWidth, Horizontal);
+		w->setActualSize(cellHeight, Vertical);
+
+		w->setPosition(Vector2f(cellX, cellY));
+
+		// Compute next cell position.
+		if(orientation == Horizontal)
+		{
+			cellX += cellWidth + myMargin;
+			if(cellX > availableWidth)
+			{
+				cellX = myPadding;
+				cellY += cellHeight + myMargin;
+			}
+		}
+		else
+		{
+			cellY += cellHeight + myMargin;
+			if(cellY > availableHeight)
+			{
+				cellY = myPadding;
+				cellX += cellWidth + myMargin;
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::layout()
 {
 	if(needLayoutRefresh())
@@ -230,6 +265,14 @@ void Container::layout()
 		else if(myLayout == LayoutVertical)
 		{
 			computeLinearLayout(Vertical);
+		}
+		else if(myLayout == LayoutGridHorizontal)
+		{
+			computeGridLayout(Horizontal);
+		}
+		if(myLayout == LayoutGridVertical)
+		{
+			computeGridLayout(Vertical);
 		}
 
 		// Layout children.

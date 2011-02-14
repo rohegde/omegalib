@@ -22,7 +22,7 @@ SET (Sources
 
 #######################################################################################################################
 # Compile as a static library
-ADD_DEFINITIONS( -DLIBCONFIG_STATIC -DLIBCONFIGXX_STATIC)
+ADD_DEFINITIONS( -DLIBCONFIG_STATIC)
         
 #######################################################################################################################
 # Setup compile info

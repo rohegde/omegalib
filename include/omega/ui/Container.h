@@ -41,7 +41,7 @@ namespace ui
 	{
 	friend class UIManager;
 	public:
-		enum Layout {LayoutFree, LayoutHorizontal, LayoutVertical};
+		enum Layout {LayoutFree, LayoutHorizontal, LayoutVertical, LayoutGridHorizontal, LayoutGridVertical};
 		enum HorizontalAlign { AlignRight, AlignLeft, AlignCenter};
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
@@ -72,6 +72,10 @@ namespace ui
 		void setHorizontalAlign(HorizontalAlign value);
 		VerticalAlign getVerticalAlign();
 		void setVerticalAlign(VerticalAlign value);
+		int getGridRows();
+		int getGridColumns();
+		void setGridRows(int value);
+		void setGridColumns(int value);
 		//@}
 
 		virtual void draw();
@@ -89,12 +93,15 @@ namespace ui
 		void updateChildrenFreeBounds(Orientation orientation);
 		void resetChildrenSize(Orientation orientation);
 		void computeLinearLayout(Orientation orientation);
+		void computeGridLayout(Orientation orientation);
 
 	private:
 		std::list<Widget*> myChildren;
 		Layout myLayout;
 		float myPadding;
 		float myMargin;
+		int myGridRows;
+		int myGridColumns;
 		HorizontalAlign myHorizontalAlign;
 		VerticalAlign myVerticalAlign;
 	};
@@ -143,6 +150,21 @@ namespace ui
 	inline void Container::setVerticalAlign(VerticalAlign value) 
 	{ myVerticalAlign = value; }
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Container::getGridRows()
+	{ return myGridRows; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Container::getGridColumns()
+	{ return myGridColumns; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Container::setGridRows(int value)
+	{ myGridRows = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Container::setGridColumns(int value)
+	{ myGridColumns = value; }
 };
 }; // namespace omega
 
