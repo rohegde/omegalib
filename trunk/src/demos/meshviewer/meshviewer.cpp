@@ -124,8 +124,7 @@ void MeshViewerClient::processObserverEvent(const InputEvent& evt)
 {
 	if(evt.position.length() > 0.1f)
 	{
-		Observer* o = SystemManager::instance()->getDisplaySystem()->getObserver(0);
-		o->update(evt.position, Quaternion(evt.rotation[0], evt.rotation[1], evt.rotation[2], evt.rotation[3]));
+		getDisplaySystem()->getObserver(0)->update(evt.position, evt.orientation);
 	}
 }
 
@@ -177,5 +176,10 @@ void MeshViewerClient::draw(const DrawContext& context)
 void main(int argc, char** argv)
 {
 	MeshViewerApplication app;
-	omain(app, argv[1], "meshviewer.log", new FilesystemDataSource("../../data/"));
+
+	// Read config file name from command line or use default one.
+	const char* cfgName = "meshviewer.cfg";
+	if(argc == 2) cfgName = argv[1];
+
+	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("../../data/"));
 }

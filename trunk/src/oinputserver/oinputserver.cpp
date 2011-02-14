@@ -142,7 +142,7 @@ public:
 				if( evt.type == InputEvent::Rotate ){
 					// Converts rotation to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.rotation[0] );
+					sprintf(floatChar,"%f", evt.orientation[0] );
 					strcat( eventPacket, floatChar );
 				} else if( evt.type == InputEvent::Split ){
 					// Converts values to char, appends to eventPacket
@@ -176,10 +176,6 @@ public:
 
 		case InputService::Mocap:
 		{
-#ifdef LAPTOP
-			Observer* obs = getDisplaySystem()->getObserver(0);
-			obs->update(evt.position, evt.rotation);
-#else
 			// Converts id to char, appends to eventPacket
 			sprintf(floatChar,"%d",evt.sourceId);
 			strcat( eventPacket, floatChar );
@@ -201,21 +197,25 @@ public:
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts xRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.rotation[0]);
+			sprintf(floatChar,"%f",evt.orientation[0]);
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts yRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.rotation[1]);
+			sprintf(floatChar,"%f",evt.orientation[1]);
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts zRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.rotation[2]);
+			sprintf(floatChar,"%f",evt.orientation[2]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, " " ); // Spacer
+
+			// Converts zRot to char, appends to eventPacket
+			sprintf(floatChar,"%f",evt.orientation[3]);
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, " " ); // Spacer
 			return true;
-#endif
 			break;
 
 			break;

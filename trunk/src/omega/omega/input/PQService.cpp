@@ -551,7 +551,7 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt = mysInstance->writeHead();
 			evt->type  = InputEvent::Rotate;
 
-			evt->rotation[0] = -tg.params[0] * Math::RadToDeg; // angle
+			evt->orientation[0] = -tg.params[0]; // angle
 
 			evt->numberOfPoints = 2;
 			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX; // anchorX
@@ -569,7 +569,7 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt = mysInstance->writeHead();
 			evt->type  = InputEvent::Rotate;
 
-			evt->rotation[0] = tg.params[0] * Math::RadToDeg; // angle
+			evt->orientation[0] = tg.params[0]; // angle
 
 			evt->numberOfPoints = 2;
 			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX; // anchorX

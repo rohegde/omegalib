@@ -78,6 +78,9 @@ namespace omega
 		virtual bool handleEvent(const InputEvent& evt) { return false; }
 
 		Application* getApplication() { return myApplication; }
+		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
+		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 
 		const Recti& getViewport() const { return myViewport; }
 		const Matrix4f& getModelViewMatrix() const { return myModelView; }
