@@ -1,0 +1,95 @@
+#Equalizer 1.0 ascii
+
+# four-window configuration showing all Equalizer features
+global
+{
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+    EQ_COMPOUND_IATTR_STEREO_MODE ANAGLYPH
+}
+
+server
+{
+    config
+    {
+        appNode
+        {
+            pipe
+            {
+                name "GPU 1"
+                window
+                {
+                    name     "window1"
+                    viewport [ 50 50 100 100 ]
+                    channel { name "channel2"  }
+                }
+                window
+                {
+                    name     "window2"
+                    viewport [ 150 50 100 100 ]
+                    channel { name "channel1"  }
+                }
+                window
+                {
+                    name     "window3"
+                    viewport [ 50 150 100 100 ]
+                    channel { name "channel4"  }
+                }
+                window
+                {
+                    name     "window4"
+                    viewport [ 150 150 100 100 ]
+                    channel { name "channel3"  }
+                }
+            }
+        }
+
+        observer { name "observer1" }
+        
+        # Layouts - one for each demo mode
+        layout
+        {
+            name "MultiView"
+            view
+            {
+                name "view3D"
+                observer "observer1"
+                
+                viewport [ 0 0 1 1 ]
+            }
+        }
+
+        # Canvas using all layouts
+        canvas
+        {
+            layout "MultiView"
+
+			wall
+			{
+					bottom_left  [ -.4074 1.16 -0.8128 ]
+					bottom_right [  .6106 1.16 -0.8128 ]
+					top_left     [ -.4074 1.80 -0.8128 ]
+			}
+
+            segment
+            {
+                viewport [ 0 0 0.5 1 ]
+                channel "channel1"
+            }
+            segment
+            {
+                viewport [ 0.5 0 0.5 1 ]
+                channel "channel2"
+            }
+        }
+
+        # wall compound - need swap barrier
+        compound
+        {
+            compound
+            {
+                channel ( segment 0 layout "MultiView" view 0 )
+                channel ( segment 1 layout "MultiView" view 0 )
+            }
+        }
+    }
+}

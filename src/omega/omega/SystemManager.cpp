@@ -70,7 +70,7 @@ SystemManager* SystemManager::instance()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::SystemManager():
-	myConfig(NULL),
+	mySystemConfig(NULL),
 #ifdef OMEGA_USE_DISPLAY
 	myDisplaySystem(NULL),
 #endif
@@ -86,16 +86,21 @@ SystemManager::~SystemManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::setup(Config* cfg)
+void SystemManager::setup(Config* appcfg)
 {
 	omsg("SystemManager::setup");
 
-	myConfig = cfg;
+	if(!appcfg->isLoaded()) appcfg->load();
+
+	String systemCfgName = appcfg->lookup("Config/SystemConfig");
+
+	myAppConfig = appcfg;
+	mySystemConfig = new Config(systemCfgName);
 
 	// Make sure the configuration is loaded.
-	if(!myConfig->isLoaded()) myConfig->load();
+	if(!mySystemConfig->isLoaded()) mySystemConfig->load();
 
-	oassert(myConfig->isLoaded());
+	oassert(mySystemConfig->isLoaded());
 
 	setupInputManager();
 #ifdef OMEGA_USE_DISPLAY
@@ -127,7 +132,7 @@ void SystemManager::setupInputManager()
 #endif
 
 	// Instantiate input services
-	Setting& stRoot = myConfig->getRootSetting()["Config"];
+	Setting& stRoot = mySystemConfig->getRootSetting()["Config"];
 	if(stRoot.exists("InputServices"))
 	{
 		Setting& stServices = stRoot["InputServices"];
@@ -161,7 +166,7 @@ void SystemManager::setupInputManager()
 void SystemManager::setupDisplaySystem()
 {
 	// Instantiate input services
-	Setting& stRoot = myConfig->getRootSetting();
+	Setting& stRoot = mySystemConfig->getRootSetting();
 	if(stRoot.exists("Config/DisplaySystem"))
 	{
 		Setting& stDS = stRoot["Config/DisplaySystem"][0];

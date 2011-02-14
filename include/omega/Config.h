@@ -45,6 +45,8 @@ public:
 	bool isLoaded() { return myIsLoaded; }
 
 	Setting& getRootSetting();
+	bool exists(const String& path);
+	Setting& lookup(const String& path);
 
 private:
 	bool myIsLoaded;

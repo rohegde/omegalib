@@ -76,8 +76,11 @@ namespace omega
 		//! Cleans up runtime resources, performs final debug checks etc.
 		void cleanup();
 
+		//! Gets the application configuration.
+		Config* getAppConfig();
+
 		//! Gets the system configuration.
-		Config* getConfig();
+		Config* getSystemConfig();
 
 		DataManager* getDataManager();
 
@@ -120,7 +123,8 @@ namespace omega
 		// The input service registry.
 		InputFilterDictionary myInputFilterRegistry;
 
-		Config*			myConfig;
+		Config*			myAppConfig;
+		Config*			mySystemConfig;
 		DataManager*    myDataManager;
 		DisplaySystem*	myDisplaySystem;
 		InputManager*	myInputManager;
@@ -164,6 +168,14 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool SystemManager::isInitialized() 
 	{ return myIsInitialized; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Config* SystemManager::getAppConfig() 
+	{ return myAppConfig; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Config* SystemManager::getSystemConfig() 
+	{ return mySystemConfig; }
 }; // namespace omega
 
 #endif

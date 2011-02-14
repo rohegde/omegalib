@@ -150,7 +150,7 @@ namespace omega
 		Vector3f position;
 
 		// Rotation.
-		Vector4f rotation;
+		Quaternion orientation;
 
 		// Vector storing additional event parameters (i.e. split distance / ratio for Split events)
 		Vector3f value;
@@ -178,7 +178,7 @@ namespace omega
 			os << flags;
 			os << timestamp;
 			os << position[0] << position[1] << position[2];
-			os << rotation[0] << rotation[1] << rotation[2] << rotation[3];
+			os << orientation[0] << orientation[1] << orientation[2] << orientation[3];
 			os << numberOfPoints;
 			for(int i = 0; i < PointSetSize; i++)
 			{
@@ -195,7 +195,7 @@ namespace omega
 			is >> flags;
 			is >> timestamp;
 			is >> position[0] >> position[1] >> position[2];
-			is >> rotation[0] >> rotation[1] >> rotation[2] >> rotation[3];
+			is >> orientation[0] >> orientation[1] >> orientation[2] >> orientation[3];
 			is >> numberOfPoints;
 			for(int i = 0; i < PointSetSize; i++)
 			{

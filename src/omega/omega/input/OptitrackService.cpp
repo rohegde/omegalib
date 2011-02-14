@@ -151,9 +151,14 @@ void OptiTrackService::poll()
 			evt->position[0] = -x.dblVal / 1000.0f;
 			evt->position[1] = y.dblVal  / 1000.0f;
 			evt->position[2] = z.dblVal  / 1000.0f;
-			evt->rotation[0] = pitch.dblVal;
-			evt->rotation[1] = yaw.dblVal;
-			evt->rotation[2] = roll.dblVal;
+			
+			Quaternion qyaw, qpitch, qroll;
+
+			qpitch.fromAngleAxis(pitch.dblVal, Vector3f::UNIT_X);
+			qyaw.fromAngleAxis(yaw.dblVal, Vector3f::UNIT_Y);
+			qroll.fromAngleAxis(roll.dblVal, Vector3f::UNIT_Z);
+
+			evt->orientation = qpitch * qyaw * qroll;
 
 			unlockEvents();
 
