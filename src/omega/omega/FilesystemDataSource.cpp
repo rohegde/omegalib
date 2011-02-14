@@ -66,6 +66,25 @@ bool FilesystemDataSource::exists(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+DataInfo FilesystemDataSource::getInfo(const String& name)
+{
+	DataInfo info;
+	info.name = name;
+	info.path = myPath + name;
+	info.local = true;
+	info.source = this;
+	if(exists(name))
+	{
+		// Get file size.
+		FILE* f = fopen(info.path.c_str(), "r");
+		fseek(f, 0, SEEK_END);
+		info.size = ftell(f);
+		fclose(f);
+	}
+	return info;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 DataStream* FilesystemDataSource::newStream(const String& name)
 {
 	if(exists(name))
@@ -75,6 +94,7 @@ DataStream* FilesystemDataSource::newStream(const String& name)
 		info.path = myPath + name;
 		info.size = 0;
 		info.source = this;
+		info.local = true;
 		FileDataStream* stream = new FileDataStream(info);
 		return stream;
 	}

@@ -49,6 +49,7 @@ typedef std::string String;
 typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long long uint64;
+typedef unsigned long long int64;
 
 // Container classes
 template<typename K, typename T> class Dictionary: public boost::unordered_map<K, T> {};

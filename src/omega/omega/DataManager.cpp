@@ -49,6 +49,22 @@ DataSource* DataManager::getSource(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+DataInfo DataManager::getInfo(const String& path)
+{
+	DataSourceIterator it = DataSourceIterator(mySources);
+	while(it.hasMoreElements())
+	{
+		DataSource* ds = it.getNext();
+		if(ds->exists(path))
+		{
+			return ds->getInfo(path);
+		}
+	}
+	// Data stream not found, return a null data info.
+	return DataInfo();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 DataStream* DataManager::createStream(const String& path)
 {
 	DataSourceIterator it = DataSourceIterator(mySources);
