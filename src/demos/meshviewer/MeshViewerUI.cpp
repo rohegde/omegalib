@@ -41,11 +41,20 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 
 	WidgetFactory* wf = ui->getWidgetFactory();
 	Container* root = ui->getRootContainer();
-
 	root->setLayout(Container::LayoutVertical);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-	entityButtons->setVerticalAlign(Container::AlignBottom);
+
+	// Setup ui layout using from config file sections.
+	Config* cfg = SystemManager::instance()->getAppConfig();
+	if(cfg->exists("config/ui/entityButtons"))
+	{
+		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
+	}
+	if(cfg->exists("config/ui/root"))
+	{
+		root->load(cfg->lookup("config/ui/root"));
+	}
 
 	// Add buttons for each entity
 	for(int i = 0; i < myClient->getNumEntities(); i++)

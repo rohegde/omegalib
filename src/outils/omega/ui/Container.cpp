@@ -49,6 +49,72 @@ Container::~Container()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::load(Setting& setting)
+{
+	if(setting.exists("layout"))
+	{
+		String layout = setting["layout"];
+		if(layout == "LayoutFree") myLayout = LayoutFree;
+		if(layout == "LayoutVertical") myLayout = LayoutVertical;
+		if(layout == "LayoutHorizontal") myLayout = LayoutHorizontal;
+		if(layout == "LayoutGridHorizontal") myLayout = LayoutGridHorizontal;
+		if(layout == "LayoutGridVertical") myLayout = LayoutGridVertical;
+	}
+	if(setting.exists("position"))
+	{
+		String position = setting["position"];
+		setPosition(Vector2i(position[0], position[1]));
+	}
+	if(setting.exists("horizontalAlign"))
+	{
+		String align = setting["horizontalAlign"];
+		if(align == "AlignLeft") myHorizontalAlign = AlignLeft;
+		if(align == "AlignCenter") myHorizontalAlign = AlignCenter;
+		if(align == "AlignRight") myHorizontalAlign = AlignRight;
+	}
+	if(setting.exists("verticalAlign"))
+	{
+		String align = setting["verticalAlign"];
+		if(align == "AlignTop") myVerticalAlign = AlignTop;
+		if(align == "AlignBottom") myVerticalAlign = AlignBottom;
+		if(align == "AlignMiddle") myVerticalAlign = AlignMiddle;
+	}
+	if(setting.exists("size"))
+	{
+		Setting& size = setting["size"];
+		setSize(Vector2i(size[0], size[1]));
+	}
+	if(setting.exists("width"))
+	{
+		setWidth((int)setting["width"]);
+	}
+	if(setting.exists("height"))
+	{
+		setHeight((int)setting["height"]);
+	}
+	if(setting.exists("padding"))
+	{
+		myPadding = setting["padding"];
+	}
+	if(setting.exists("margin"))
+	{
+		myMargin = setting["margin"];
+	}
+	if(setting.exists("gridRows"))
+	{
+		myGridRows = setting["gridRows"];
+	}
+	if(setting.exists("gridColumns"))
+	{
+		myGridRows = setting["gridColumns"];
+	}
+	if(setting.exists("debugMode"))
+	{
+		myDebugModeEnabled = setting["debugMode"];
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::addChild(Widget* child)
 {
 	requestLayoutRefresh();
@@ -129,7 +195,29 @@ int Container::expandStep(int availableSpace, Orientation orientation)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::updateChildrenLayoutPosition(Orientation orientation)
 {
-	int p = myPadding;
+	int p = 0;
+
+	if((orientation == Horizontal && myHorizontalAlign == AlignLeft) ||
+		(orientation == Vertical && myVerticalAlign == AlignTop))
+	{
+		p = myPadding;
+	}
+	else if((orientation == Horizontal && myHorizontalAlign == AlignRight) ||
+		(orientation == Vertical && myVerticalAlign == AlignBottom))
+	{
+		p = getSize(orientation) - myPadding;
+		WidgetIterator it(myChildren.begin(), myChildren.end());
+		while(it.hasMoreElements())
+		{
+			Widget* w = it.getNext();
+			p -= (w->getSize(orientation) + myMargin);
+		}
+	}
+	else
+	{
+		// TODO: Compute center align start position
+		p = myPadding;
+	}
 	WidgetIterator it(myChildren.begin(), myChildren.end());
 	while(it.hasMoreElements())
 	{
