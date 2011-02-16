@@ -25,9 +25,6 @@
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/SceneManager.h"
 
-#include "boost/foreach.hpp"
-#define boost_foreach BOOST_FOREACH
-
 using namespace omega;
 using namespace omega::scene;
 
@@ -68,8 +65,10 @@ void SceneNode::draw()
 		glMultMatrixf(getFullTransform().begin());
 
 		// Draw drawables attached to this node.
-		boost_foreach(Drawable* d, myDrawables)
+		VectorIterator<Vector<Drawable*> > it(myDrawables);
+		while(it.hasMoreElements())
 		{
+			Drawable* d = it.getNext();
 			d->draw(this);
 		}
 		// Draw children nodes.
@@ -92,8 +91,10 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	// Reset bounding box.
 	myBBox.setNull();
 
-	boost_foreach(Drawable* d, myDrawables)
+	VectorIterator<Vector<Drawable*> > it(myDrawables);
+	while(it.hasMoreElements())
 	{
+		Drawable* d = it.getNext();
 		if(d->hasBoundingBox())
 		{
 			const AxisAlignedBox& bbox = *(d->getBoundingBox());

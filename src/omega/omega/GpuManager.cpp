@@ -28,9 +28,6 @@
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
 
-#include "boost/foreach.hpp"
-#define boost_foreach BOOST_FOREACH
-
 using namespace omega;
 
 #define HANDLE_STATUS(id) case id: { oerror(#id); break; }
@@ -325,8 +322,10 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
 
     if(!clSuccessOrDie(status)) return;
 
-	boost_foreach(String shaderName, shaderNames)
+	ConstVectorIterator<Vector<String> > it(shaderNames);
+	while(it.hasMoreElements())
 	{
+		String shaderName = it.getNext();
 		ComputeShader* sh = new ComputeShader(program, shaderName, shaderName);
 		myComputeShaders[shaderName] = sh;
 		omsg("Compute shader created: %s", shaderName.c_str());
