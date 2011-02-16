@@ -30,15 +30,13 @@
 #include "omega/scene/Mesh.h"
 #include "omega/scene/PlyDataReader.h"
 
-#include "boost/unordered_map.hpp"
-
 namespace omega
 {
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, Mesh*> pairs.
-	typedef boost::unordered_map<omega::String, Mesh*> MeshDictionary;
+	typedef Dictionary<omega::String, Mesh*> MeshDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages Meshes.

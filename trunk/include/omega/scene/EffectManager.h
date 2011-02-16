@@ -28,15 +28,13 @@
 #include "omega/osystem.h"
 #include "omega/scene/Effect.h"
 
-#include "boost/unordered_map.hpp"
-
 namespace omega
 {
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, Effect*> pairs.
-	typedef boost::unordered_map<omega::String, Effect*> EffectDictionary;
+	typedef Dictionary<omega::String, Effect*> EffectDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages Meshes.

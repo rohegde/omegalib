@@ -29,7 +29,7 @@
 
 // Stdlib includes
 #include <string>
-
+#include <hash_map>
 // vmmlib includes
 #define VMMLIB_DONT_FORCE_ALIGNMENT
 #include <vmmlib/vmmlib.hpp>
@@ -37,32 +37,36 @@
 // Libconfig
 #include "libconfig/libconfig.hh"
 
-// Boost
-#include "boost/unordered_map.hpp"
+namespace std                                                                                 
+{                                                                                             
+/*  template<> struct hash< std::string >                                                       
+  {                                                                                           
+    size_t operator()( const std::string& x ) const                                           
+    {                                                                                         
+      return hash< const char* >()( x.c_str() );                                              
+    }                                                                                         
+  };   */                                                                                       
+}    
 
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// Type definitions
-typedef libconfig::Setting Setting;
-typedef std::string String;
+// Forward declarations
+class Application;
+
+// Basic typedefs
 typedef unsigned char byte;
 typedef unsigned int uint;
 typedef unsigned long long uint64;
 typedef unsigned long long int64;
+typedef std::string String;
 
-// Container classes
-template<typename K, typename T> class Dictionary: public boost::unordered_map<K, T> {};
+// Container typedefs
+template<typename K, typename T> class Dictionary: public stdext::hash_map<K, T> {};
 template<typename T> class Vector: public std::vector<T> {};
 template<typename T> class List: public std::list<T> {};
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-class Application;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Type definitions.
+// Math and linear algebra typedefs
 typedef vmml::math<float> Math;
 typedef vmml::sphere<float> Sphere;
 typedef vmml::plane<float> Plane;
@@ -80,6 +84,9 @@ typedef vmml::quaternion<float> Quaternion; //! A floating point quaternion
 typedef vmml::vector< 3, uint >      Triangle;
 typedef vmml::rect<int> Recti;
 typedef vmml::rect<float> Rectf;
+
+// Misc typedefs
+typedef libconfig::Setting Setting;
 
 //! enumeration for the axes
 enum Axis
