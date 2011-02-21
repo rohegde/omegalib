@@ -109,12 +109,12 @@ bool Plugin::init( const std::string& libraryName )
             }
         }
 #ifndef NDEBUG // Check that each compressor exist once
-        for( size_t j = 0; j < i; ++j )
-        {
-            EQASSERTINFO( info.name != _infos[j].name,
-                          "Compressors " << i << " and " << j << " in '" <<
-                          libraryName << "' use the same name" );
-        }
+        //for( size_t j = 0; j < i; ++j )
+        //{
+        //    EQASSERTINFO( info.name != _infos[j].name,
+        //                  "Compressors " << i << " and " << j << " in '" <<
+        //                  libraryName << "' use the same name" );
+        //}
 #endif
 
     }

@@ -30,10 +30,9 @@
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
 #include "omega/SystemManager.h"
-
 #include "omega/input/MouseService.h"
 
-#ifdef WIN32
+#ifdef OMEGA_OS_WIN
 // This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 
 // template definition isn't compiled in the original equalizer static library.
 #include "eq/../../../equalizer/libs/fabric/layout.ipp"
@@ -556,9 +555,6 @@ void EqualizerDisplaySystem::setup(Setting& setting)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
-	// Init glew
-	glewInit();
-
 	mySys = sys;
 	const char* appName = mySys->getApplication()->getName();
 

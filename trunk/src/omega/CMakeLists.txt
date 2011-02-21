@@ -83,9 +83,9 @@ SET( headers
         
 ###################################################################################################
 # Enable / disable specific modules within omegalib
-IF(OMEGA_USE_DISPLAY)
-	ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY)
-	SET( srcs ${srcs}
+if(OMEGA_USE_DISPLAY)
+	add_definitions( -DOMEGA_USE_DISPLAY)
+	set( srcs ${srcs}
 			omega/EqualizerDisplaySystem.cpp
 			omega/GpuBuffer.cpp
 			omega/GpuManager.cpp
@@ -94,7 +94,7 @@ IF(OMEGA_USE_DISPLAY)
 			omega/Texture.cpp
 			omega/TextureManager.cpp
 			)
-	SET( headers ${headers}
+	set( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
 			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
@@ -105,64 +105,65 @@ IF(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h	) 
 	
 	# Equalizer Display Module
-	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
-	IF(OMEGA_USE_DISPLAY_EQUALIZER)
-		ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY_EQUALIZER)
-		SET( srcs ${srcs} omega/EqualizerDisplaySystem.cpp)
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
-	ENDIF(OMEGA_USE_DISPLAY_EQUALIZER)
+	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
+	if(OMEGA_USE_DISPLAY_EQUALIZER)
+		add_definitions( -DOMEGA_USE_DISPLAY_EQUALIZER)
+		set( srcs ${srcs} omega/EqualizerDisplaySystem.cpp)
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
+	endif(OMEGA_USE_DISPLAY_EQUALIZER)
 	
 	# Glut Display Module
-	SET(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
-	IF(OMEGA_USE_DISPLAY_GLUT)
-		ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY_GLUT)
-		SET( srcs ${srcs} omega/GlutDisplaySystem.cpp)
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
-	ENDIF(OMEGA_USE_DISPLAY_GLUT)
+	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+	if(OMEGA_USE_DISPLAY_GLUT)
+		add_definitions( -DOMEGA_USE_DISPLAY_GLUT)
+		set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
+	endif(OMEGA_USE_DISPLAY_GLUT)
 	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	
 	# OpenCL Module
-	SET(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
-	IF(OMEGA_USE_OPENCL)
-		ADD_DEFINITIONS( -DOMEGA_USE_OPENCL)
-	ENDIF(OMEGA_USE_OPENCL)
-ENDIF(OMEGA_USE_DISPLAY)
+	set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
+	if(OMEGA_USE_OPENCL)
+		add_definitions( -DOMEGA_USE_OPENCL)
+	endif(OMEGA_USE_OPENCL)
+endif(OMEGA_USE_DISPLAY)
 
-SET(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
-IF(OMEGA_USE_MOUSE)
-	SET( srcs	 ${srcs} omega/input/MouseService.cpp )
-	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MouseService.h )
-	ADD_DEFINITIONS( -DOMEGA_USE_MOUSE)
-ENDIF(OMEGA_USE_MOUSE)
+set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
+if(OMEGA_USE_MOUSE)
+	set( srcs	 ${srcs} omega/input/MouseService.cpp )
+	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MouseService.h )
+	add_definitions( -DOMEGA_USE_MOUSE)
+endif(OMEGA_USE_MOUSE)
 
-SET(OMEGA_USE_MOCAP true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
-IF(OMEGA_USE_MOCAP)
-	SET( srcs	 ${srcs} omega/input/MoCapService.cpp )
-	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MoCapService.h )
-	ADD_DEFINITIONS( -DOMEGA_USE_MOCAP)
-ENDIF(OMEGA_USE_MOCAP)
+if(WIN32)
+	set(OMEGA_USE_MOCAP true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
+	if(OMEGA_USE_MOCAP)
+		set( srcs	 ${srcs} omega/input/MoCapService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MoCapService.h )
+		add_definitions( -DOMEGA_USE_MOCAP)
+	ENDIF(OMEGA_USE_MOCAP)
 
-SET(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
-IF(OMEGA_USE_OPTITRACK)
-	SET( srcs	 ${srcs} omega/input/OptiTrackService.cpp )
-	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OptiTrackService.h )
-	ADD_DEFINITIONS( -DOMEGA_USE_OPTITRACK)
-ENDIF(OMEGA_USE_OPTITRACK)
+	set(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
+	if(OMEGA_USE_OPTITRACK)
+		set( srcs	 ${srcs} omega/input/OptiTrackService.cpp )
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OptiTrackService.h )
+		add_definitions( -DOMEGA_USE_OPTITRACK)
+	endif(OMEGA_USE_OPTITRACK)
 
-SET(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
-IF(OMEGA_USE_PQLABS)
-	SET( srcs	 ${srcs} omega/input/PQService.cpp )
-	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/PQService.h )
-	ADD_DEFINITIONS( -DOMEGA_USE_PQLABS)
-ENDIF(OMEGA_USE_PQLABS)
+	set(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
+	if(OMEGA_USE_PQLABS)
+		set( srcs	 ${srcs} omega/input/PQService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/PQService.h )
+		add_definitions( -DOMEGA_USE_PQLABS)
+	endif(OMEGA_USE_PQLABS)
 
-SET(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
-IF(OMEGA_USE_NETSERVICE)
-	SET( srcs	 ${srcs} omega/input/NetService.cpp )
-	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
-	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
-ENDIF(OMEGA_USE_NETSERVICE)
-
+	set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
+	if(OMEGA_USE_NETSERVICE)
+		set( srcs	 ${srcs} omega/input/NetService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
+		add_definitions( -DOMEGA_USE_NETSERVICE)
+	endif(OMEGA_USE_NETSERVICE)
+endif(WIN32)
 ###################################################################################################
 # Group source files into separate folders foe visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
@@ -218,6 +219,7 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
+    # freeglut should always be included: Need to init glut to have omegalib work correctly on VM linux.
 	target_link_libraries(omega freeglut)
 	include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/freeglut/include)
 endif(OMEGA_USE_DISPLAY_GLUT)
