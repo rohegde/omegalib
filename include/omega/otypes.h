@@ -29,24 +29,62 @@
 
 // Stdlib includes
 #include <string>
-#include <hash_map>
+#include <list>
+#include <vector>
+
+// Unordered map: use different implementations on linux & windows.
+#ifdef __GNUC__
+	#include <tr1/unordered_map>
+#else
+	#include <hash_map>
+#endif
+
+// Libconfig
+#include "libconfig.hh"
+
+// make sure the min and max macros are undefined.
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 // vmmlib includes
 #define VMMLIB_DONT_FORCE_ALIGNMENT
 #include <vmmlib/vmmlib.hpp>
 
-// Libconfig
-#include "libconfig/libconfig.hh"
-
-namespace std                                                                                 
-{                                                                                             
-/*  template<> struct hash< std::string >                                                       
-  {                                                                                           
-    size_t operator()( const std::string& x ) const                                           
-    {                                                                                         
-      return hash< const char* >()( x.c_str() );                                              
-    }                                                                                         
-  };   */                                                                                       
-}    
+// Forward declarations of some OpenGL and OpenCL types.
+// Using these, we can avoid including gl, cl (and windows) headers for every compiled source file.
+// Source files that make explicit use of OpenGL/or OpenCL functionality have to include glheaders.h
+struct _cl_program;
+struct _cl_kernel;
+struct _cl_context;
+struct _cl_mem;
+struct _cl_command_queue;
+struct _cl_device_id;
+typedef _cl_device_id* cl_device_id;
+typedef _cl_program* cl_program;
+typedef _cl_kernel* cl_kernel;
+typedef _cl_mem* cl_mem;
+typedef _cl_context* cl_context;
+typedef _cl_command_queue* cl_command_queue;
+typedef unsigned int GLenum;
+typedef unsigned int GLbitfield;
+typedef unsigned int GLuint;
+typedef int GLint;
+typedef int GLsizei;
+typedef unsigned char GLboolean;
+typedef signed char GLbyte;
+typedef short GLshort;
+typedef unsigned char GLubyte;
+typedef unsigned short GLushort;
+typedef unsigned long GLulong;
+typedef float GLfloat;
+typedef float GLclampf;
+typedef double GLdouble;
+typedef double GLclampd;
+typedef void GLvoid;
 
 namespace omega
 {
@@ -62,7 +100,11 @@ typedef unsigned long long int64;
 typedef std::string String;
 
 // Container typedefs
-template<typename K, typename T> class Dictionary: public stdext::hash_map<K, T> {};
+#ifdef __GNUC__
+	template<typename K, typename T> class Dictionary: public std::tr1::unordered_map<K, T> {};
+#else
+	template<typename K, typename T> class Dictionary: public stdext::hash_map<K, T> {};
+#endif
 template<typename T> class Vector: public std::vector<T> {};
 template<typename T> class List: public std::list<T> {};
 

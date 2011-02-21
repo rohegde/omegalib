@@ -36,9 +36,20 @@
 #ifndef __PLANE_H__
 #define __PLANE_H__
 
-#include <vmmlib\axis_aligned_box.hpp>
+//#include <vmmlib\axis_aligned_box.hpp>
 
 namespace vmml {
+       /** The "positive side" of the plane is the half space to which the
+            plane normal points. The "negative side" is the other half
+            space. The flag "no side" indicates the plane itself.
+        */
+        enum plane_side
+        {
+            NO_SIDE,
+            POSITIVE_SIDE,
+            NEGATIVE_SIDE,
+            BOTH_SIDE
+        };
 	/** Defines a plane in 3D space.
         @remarks
             A plane is defined in 3D space by the equation
@@ -65,25 +76,13 @@ namespace vmml {
         inline plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
             const vector<3,T>& rkPoint2);
 
-        /** The "positive side" of the plane is the half space to which the
-            plane normal points. The "negative side" is the other half
-            space. The flag "no side" indicates the plane itself.
-        */
-        enum side
-        {
-            NO_SIDE,
-            POSITIVE_SIDE,
-            NEGATIVE_SIDE,
-            BOTH_SIDE
-        };
-
-        inline side getSide (const vector<3,T>& rkPoint) const;
+        inline plane_side getSide (const vector<3,T>& rkPoint) const;
 
         /**
         returns the side where the aligneBox is. the flag BOTH_SIDE indicates an intersecting box.
         one corner ON the plane is sufficient to consider the box and the plane intersecting.
         */
-        inline side getSide (const AxisAlignedBox& rkBox) const;
+        //inline side getSide (const AxisAlignedBox& rkBox) const;
 
         /** Returns which side of the plane that the given box lies on.
             The box is defined as centre/half-size pairs for effectively.
@@ -94,7 +93,7 @@ namespace vmml {
             NEGATIVE_SIDE if the box complete lies on the "negative side" of the plane,
             and BOTH_SIDE if the box intersects the plane.
         */
-        inline side getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const;
+        inline plane_side getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const;
 
         /** This is a pseudodistance. The sign of the return value is
             positive if the point is on the positive side of the plane,
@@ -195,7 +194,7 @@ namespace vmml {
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	typename plane<T>::side plane<T>::getSide (const vector<3,T>& rkPoint) const
+	plane_side plane<T>::getSide (const vector<3,T>& rkPoint) const
 	{
 		float fDistance = getDistance(rkPoint);
 
@@ -210,7 +209,7 @@ namespace vmml {
 
 
 	//-----------------------------------------------------------------------
-	template<typename T> inline
+/*	template<typename T> inline
 	typename plane<T>::side plane<T>::getSide (const AxisAlignedBox& box) const
 	{
 		if (box.isNull()) 
@@ -219,10 +218,10 @@ namespace vmml {
 			return BOTH_SIDE;
 
         return getSide(box.getCenter(), box.getHalfSize());
-	}
+	}*/
     //-----------------------------------------------------------------------
 	template<typename T> inline
-    typename plane<T>::side plane<T>::getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const
+    plane_side plane<T>::getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const
     {
         // Calculate the distance between box centre and the plane
         float dist = getDistance(centre);

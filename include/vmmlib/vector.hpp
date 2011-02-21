@@ -13,6 +13,7 @@
 #include <limits>
 #include <algorithm>
 
+
 namespace vmml
 {
 
@@ -1546,7 +1547,7 @@ vector< M, T >::find_max_index() const
 }
 
 
-
+/*
 template< size_t M, typename T >
 size_t
 vector< M, T >::find_abs_min_index() const
@@ -1562,7 +1563,7 @@ vector< M, T >::find_abs_max_index() const
 {
     return std::max_element( begin(), end(), vmml::math::abs_greater< T >() ) - begin();
 }
-
+*/
 
 
 template< size_t M, typename T >

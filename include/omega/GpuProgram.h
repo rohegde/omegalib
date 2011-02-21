@@ -27,9 +27,6 @@
 
 #include "osystem.h"
 
-#include "CL/cl.h"
-#include "CL/cl_gl.h"
-
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,11 +159,11 @@ namespace omega
 
 		GLuint getGLProgram() { return myGLProgram; }
 
-		int getComputeDimensions() { return myComputeDimensions; }
-		void setComputeDimensions(int value) { myComputeDimensions = value; }
 
 		void initialize();
 
+		int getComputeDimensions() { return myComputeDimensions; }
+		void setComputeDimensions(int value) { myComputeDimensions = value; }
 		void runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads);
 		void runRenderStage(int items, PrimType primType = PrimNone, unsigned int* indices = NULL);
 
@@ -183,9 +180,9 @@ namespace omega
 		GeometryShader* myGeometryShader;
 		VertexShader* myVertexShader;
 		FragmentShader* myFragmentShader;
+		ComputeShader* myComputeShader;
 
 		// OpenCL program stuff.
-		ComputeShader* myComputeShader;
 		int myComputeDimensions;
 	    size_t myGlobalComputeThreads[3];
 	    size_t myLocalComputeThreads[3];

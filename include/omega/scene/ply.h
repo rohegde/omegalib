@@ -33,7 +33,7 @@ WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 #ifndef __PLY_H__
 #define __PLY_H__
 
-#include <eq/eq.h>
+#define LITTLE_ENDIAN // Force little-endiannes (default architecture for Win & Linux)
 
 #ifdef __cplusplus
 extern "C" {

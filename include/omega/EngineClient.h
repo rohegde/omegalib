@@ -27,7 +27,7 @@
 #ifndef __ENGINE_CLIENT_H__
 #define __ENGINE_CLIENT_H__
 
-#include "omega.h"
+#include "osystem.h"
 
 namespace omega
 {
@@ -35,6 +35,7 @@ namespace omega
 	// Forward declarations
 	class TextureManager;
 	class GpuManager;
+	class FontManager;
 	namespace scene
 	{
 		class SceneManager;
@@ -53,7 +54,7 @@ namespace omega
 		enum DrawFlags { DrawScene = 1 << 1, DrawUI = 1 << 2 };
 
 	public:
-		EngineClient::EngineClient(ApplicationClient* client):
+		EngineClient(ApplicationClient* client):
 		  myClient(client),
 		  myGpuManager(NULL),
 		  myTextureManager(NULL),

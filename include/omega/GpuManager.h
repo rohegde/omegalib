@@ -31,6 +31,17 @@
 #include "omega/GpuProgram.h"
 #include "omega/Application.h"
 
+// HACK: To be removed (see GpuManager::TextureUnit)
+#define GL_TEXTURE0 0x84C0
+#define GL_TEXTURE1 0x84C1
+#define GL_TEXTURE2 0x84C2
+#define GL_TEXTURE3 0x84C3
+#define GL_TEXTURE4 0x84C4
+#define GL_TEXTURE5 0x84C5
+#define GL_TEXTURE6 0x84C6
+#define GL_TEXTURE7 0x84C7
+#define GL_TEXTURE8 0x84C8
+
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +95,6 @@ namespace omega
 		FragmentShader* getFragmentShader(const String& name);
 		GeometryShader* getGeometryShader(const String& name);
 		ComputeShader* getComputeShader(const String& name);
-
 		void beginDraw();
 		void endDraw();
 
@@ -95,12 +105,13 @@ namespace omega
 		ApplicationClient* getClient();
 		//@}
 
+#ifdef OMEGA_USE_OPENCL
 		//! OpenCL support
 		//@{
 		cl_context getCLContext() { return myCLContext; }
 		cl_command_queue getCLCommandQueue() { return myCLCommandQueue; }
 		//@}
-
+#endif
 	private:
 		void  initCL();
 
@@ -117,16 +128,17 @@ namespace omega
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
 		ComputeShaderDictionary myComputeShaders;
-
 		RenderTarget* myFrameBuffer;
 
 		// Default gpu program
 		GpuProgram* myDefaultProgram;
 
+#ifdef OMEGA_USE_OPENCL
 		// OpenCL stuff.
 		cl_context myCLContext;
 		cl_device_id* myCLDevices;
 		cl_command_queue myCLCommandQueue;
+#endif
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
