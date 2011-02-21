@@ -1,40 +1,41 @@
-####################################################################################################################### 
+###################################################################################################
 # THE OMEGA LIB PROJECT
-#---------------------------------------------------------------------------------------------------------------------
-# Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
+#-------------------------------------------------------------------------------------------------
+# Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
 # Authors:										
-#  Alessandro Febretti							febret@gmail.com
-#---------------------------------------------------------------------------------------------------------------------
+#  Alessandro Febretti		febret@gmail.com
+#-------------------------------------------------------------------------------------------------
 # Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
 # All rights reserved.
-# Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
-# following conditions are met:
+# Redistribution and use in source and binary forms, with or without modification, are permitted 
+# provided that the following conditions are met:
 # 
-# Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
-# disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
-# and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+# Redistributions of source code must retain the above copyright notice, this list of conditions 
+# and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+# notice, this list of conditions and the following disclaimer in the documentation and/or other 
+# materials provided with the distribution. 
 # 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-# INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
-# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-######################################################################################################################
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+# FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+# USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+###################################################################################################
 
-#######################################################################################################################
+###################################################################################################
 # Find required packages
 find_package(OpenGL)
 
-#######################################################################################################################
+###################################################################################################
 # Compile definitions
-ADD_DEFINITIONS(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
+add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
 
-#######################################################################################################################
+###################################################################################################
 # Source files
 SET( srcs 
-		omega/glew.c
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
@@ -43,13 +44,12 @@ SET( srcs
         omega/Observer.cpp
 		omega/SystemManager.cpp
 		omega/StringUtils.cpp
-		omega/RenderTarget.cpp
 		omega/DataManager.cpp
 		omega/FileDataStream.cpp
 		omega/FilesystemDataSource.cpp
         )
 		
-#######################################################################################################################
+###################################################################################################
 # Headers
 SET( headers 
         ${OmegaLib_SOURCE_DIR}/include/omega.h
@@ -64,7 +64,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
@@ -82,7 +81,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/vmmlib/plane_bounded_volume.hpp
         ) 
         
-#######################################################################################################################
+###################################################################################################
 # Enable / disable specific modules within omegalib
 IF(OMEGA_USE_DISPLAY)
 	ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY)
@@ -91,6 +90,7 @@ IF(OMEGA_USE_DISPLAY)
 			omega/GpuBuffer.cpp
 			omega/GpuManager.cpp
 			omega/GpuProgram.cpp
+			omega/RenderTarget.cpp
 			omega/Texture.cpp
 			omega/TextureManager.cpp
 			)
@@ -100,9 +100,11 @@ IF(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
+			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 			${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h	) 
-			
+	
+	# Equalizer Display Module
 	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	IF(OMEGA_USE_DISPLAY_EQUALIZER)
 		ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY_EQUALIZER)
@@ -110,6 +112,7 @@ IF(OMEGA_USE_DISPLAY)
 		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 	ENDIF(OMEGA_USE_DISPLAY_EQUALIZER)
 	
+	# Glut Display Module
 	SET(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
 	IF(OMEGA_USE_DISPLAY_GLUT)
 		ADD_DEFINITIONS( -DOMEGA_USE_DISPLAY_GLUT)
@@ -118,7 +121,8 @@ IF(OMEGA_USE_DISPLAY)
 	ENDIF(OMEGA_USE_DISPLAY_GLUT)
 	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	
-	SET(OMEGA_USE_OPENCL true CACHE BOOL "Enable OpenCL support for GPU programs")
+	# OpenCL Module
+	SET(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
 	IF(OMEGA_USE_OPENCL)
 		ADD_DEFINITIONS( -DOMEGA_USE_OPENCL)
 	ENDIF(OMEGA_USE_OPENCL)
@@ -159,64 +163,70 @@ IF(OMEGA_USE_NETSERVICE)
 	ADD_DEFINITIONS( -DOMEGA_USE_NETSERVICE)
 ENDIF(OMEGA_USE_NETSERVICE)
 
-#######################################################################################################################
+###################################################################################################
 # Group source files into separate folders foe visual studio project (this is just eye candy)
-SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
-SOURCE_GROUP(omega::input REGULAR_EXPRESSION omega/input/)		
-SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
-SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
-SOURCE_GROUP(vmml REGULAR_EXPRESSION vmmlib)		
+source_group(omega REGULAR_EXPRESSION omega/)		
+source_group(omega::input REGULAR_EXPRESSION omega/input/)		
+source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
+source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
+source_group(vmml REGULAR_EXPRESSION vmmlib)		
 
-#######################################################################################################################
-# Setup compile info
-IF(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( omega ${srcs} ${headers})
-ELSE(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( omega SHARED ${srcs} ${headers})
-ENDIF(OMEGA_BUILD_STATIC)
+###################################################################################################
+# Create the library with the provided sources and headers
+if(OMEGA_BUILD_STATIC)
+	add_library( omega ${srcs} ${headers})
+else(OMEGA_BUILD_STATIC)
+	add_library( omega SHARED ${srcs} ${headers})
+endif(OMEGA_BUILD_STATIC)
 
-#######################################################################################################################
+###################################################################################################
 # Setup module-specific link info
-IF(OMEGA_USE_MOCAP)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/NatNetLibStatic.lib optimized ${LIB_RELEASE}/NatNetLibStatic.lib)
-ENDIF(OMEGA_USE_MOCAP)
+set(EXT_LIB_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/libs32)
+set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/include)
 
-IF(OMEGA_USE_OPTITRACK)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/optitrackuuid.lib optimized ${LIB_RELEASE}/optitrackuuid.lib)
-ENDIF(OMEGA_USE_OPTITRACK)
+include_directories(${EXT_INCLUDE_DIR})
 
-IF(OMEGA_USE_PQLABS)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/PQMTClient.lib optimized ${LIB_RELEASE}/PQMTClient.lib)
-ENDIF(OMEGA_USE_PQLABS)
+if(OMEGA_USE_MOCAP)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/NatNetLibStatic.lib)
+	endif(WIN32)
+endif(OMEGA_USE_MOCAP)
 
-IF(OMEGA_USE_PQLABS)
-	TARGET_LINK_LIBRARIES( omega debug ${LIB_DEBUG}/PQMTClient.lib optimized ${LIB_RELEASE}/PQMTClient.lib)
-ENDIF(OMEGA_USE_PQLABS)
+if(OMEGA_USE_OPTITRACK)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/optitrackuuid.lib)
+	endif(WIN32)
+endif(OMEGA_USE_OPTITRACK)
 
-IF(OMEGA_USE_NETSERVICE)
-	IF(WIN32)
-		TARGET_LINK_LIBRARIES( omega ws2_32.lib)
-	ENDIF(WIN32)
-ENDIF(OMEGA_USE_NETSERVICE)
+if(OMEGA_USE_PQLABS)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/PQMTClient.lib)
+		# Copy the PQLabs dll into the destination bin directory
+		configure_file(${EXT_LIB_DIR}/PQMTClient.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} COPYONLY)
+		configure_file(${EXT_LIB_DIR}/PQMTClient.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} COPYONLY)
+	endif(WIN32)
+endif(OMEGA_USE_PQLABS)
 
-IF(OMEGA_USE_DISPLAY)
-	TARGET_LINK_LIBRARIES( omega
-		${OPENGL_LIBRARY})
-	IF(OMEGA_USE_DISPLAY_EQUALIZER)
-		TARGET_LINK_LIBRARIES( omega 
-		debug ${LIB_DEBUG}/Equalizer.lib optimized ${LIB_RELEASE}/Equalizer.lib)
-	ENDIF(OMEGA_USE_DISPLAY_EQUALIZER)
-	IF(OMEGA_USE_DISPLAY_GLUT)
-		TARGET_LINK_LIBRARIES( omega 
-		debug ${LIB_DEBUG}/freeglut.lib optimized ${LIB_RELEASE}/freeglut.lib)
-	ENDIF(OMEGA_USE_DISPLAY_GLUT)
-	IF(OMEGA_USE_OPENCL)
-		TARGET_LINK_LIBRARIES( omega 
-		debug ${LIB_DEBUG}/OpenCL.lib optimized ${LIB_RELEASE}/OpenCL.lib)
-	ENDIF(OMEGA_USE_OPENCL)
-ENDIF(OMEGA_USE_DISPLAY)
+if(OMEGA_USE_NETSERVICE)
+	if(WIN32)
+		target_link_libraries( omega ws2_32.lib)
+	endif(WIN32)
+endif(OMEGA_USE_NETSERVICE)
 
-#######################################################################################################################
+if(OMEGA_USE_DISPLAY_EQUALIZER)
+	target_link_libraries(omega Equalizer)
+endif(OMEGA_USE_DISPLAY_EQUALIZER)
+
+if(OMEGA_USE_DISPLAY_GLUT)
+	target_link_libraries(omega freeglut)
+	include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/freeglut/include)
+endif(OMEGA_USE_DISPLAY_GLUT)
+
+if(OMEGA_USE_OPENCL)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/OpenCL.lib)
+	endif(WIN32)
+endif(OMEGA_USE_OPENCL)
+###################################################################################################
 # Setup link info for additional libraries
-TARGET_LINK_LIBRARIES( omega
-	libconfig)
+target_link_libraries( omega ${OPENGL_LIBRARY} glew libconfig Collage)

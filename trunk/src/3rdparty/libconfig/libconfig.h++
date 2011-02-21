@@ -27,6 +27,8 @@
 #include <string>
 #include <map>
 
+#define LIBCONFIGXX_STATIC
+
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 #pragma warning( disable: 4290)
 #if defined(LIBCONFIGXX_STATIC)

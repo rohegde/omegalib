@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "omega/Texture.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 

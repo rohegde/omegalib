@@ -22,6 +22,7 @@
  #include <cstdio>
  //#include <limits>
  #include <cassert>
+ #include <string.h>
  
  
  

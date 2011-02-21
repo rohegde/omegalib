@@ -24,10 +24,15 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+//#include <GL/glew.h>
+//#include <GL/gl.h>
+//#include <GL/glu.h>
+
 #include "omega/Application.h"
 #include "omega/Config.h"
 #include "omega/DataManager.h"
 #include "omega/FilesystemDataSource.h"
+#include <stdarg.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #define LOG_STR_LEN 65536
@@ -37,7 +42,6 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 FILE* sLogFile = NULL;
 
-#ifdef OMEGA_USE_DISPLAY
 GLEWContext* sGlewContext;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +55,6 @@ void glewSetContext(const GLEWContext* context)
 {
 	sGlewContext = (GLEWContext*)context;
 }
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ologopen(const char* filename)

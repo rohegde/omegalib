@@ -182,7 +182,7 @@ void MeshViewerClient::draw(const DrawContext& context)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	MeshViewerApplication app;
 
@@ -190,5 +190,7 @@ void main(int argc, char** argv)
 	const char* cfgName = "meshviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("../../data/"));
+	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("./../../data/"));
+
+	return 0;
 }

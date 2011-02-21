@@ -37,10 +37,10 @@ void SimplePrimitive::draw(SceneNode* node)
 	switch(myPrimitiveType)
 	{
 	case SimplePrimitive::SolidCube:
-		glutSolidCube(mySize);
+		//glutSolidCube(mySize);
 		break;
 	case SimplePrimitive::SolidSphere:
-		glutSolidSphere(mySize, myResolution1, myResolution2);
+		//glutSolidSphere(mySize, myResolution1, myResolution2);
 		break;
 	case SimplePrimitive::SolidTeapot:
 		//GfxUtils::drawSolidTeapot(mySize);

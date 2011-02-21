@@ -27,6 +27,7 @@
 #include "omega/RenderTarget.h"
 #include "omega/scene/Camera.h"
 #include "omega/scene/SceneManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::scene;

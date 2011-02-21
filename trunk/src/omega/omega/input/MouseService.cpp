@@ -26,6 +26,10 @@
 #include "omega/DisplaySystem.h"
 #include "omega/input/MouseService.h"
 
+#ifdef OMEGA_USE_DISPLAY_GLUT
+#include "GL/freeglut.h"
+#endif
+
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

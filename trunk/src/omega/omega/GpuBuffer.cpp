@@ -24,6 +24,7 @@
  *********************************************************************************************************************/
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 
@@ -166,7 +167,7 @@ void GpuBuffer::setData(void* data)
 		// current thread, write the buffer using the OpenGL API. Otherwise aquire the buffer
 		// In OpenCl and perform the write through the OpenCL API.
 		// (Is there any difference in speed? If not, we can just always perform an OpenCL write...)
-		if(wglGetCurrentContext())
+		if(true)//if(wglGetCurrentContext()) << WRONG
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
 			glBufferData(GL_ARRAY_BUFFER, mySize, data, GL_DYNAMIC_DRAW);
@@ -358,6 +359,7 @@ cl_mem GpuBuffer::getCLBuffer()
 		if(!clSuccessOrDie(status)) return NULL;
 	}
 	return myCLBuffer; 
-#endif
+#else
 	return NULL;
+#endif
 }

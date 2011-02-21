@@ -29,7 +29,7 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Observer::Observer()
 {
-	myReferencePosition = Vector4f::ZERO;
+	myReferencePosition = Vector3f::ZERO;
 	mySensorTransform = Matrix4f::IDENTITY;
 	myViewTransform = Matrix4f::IDENTITY;
 }

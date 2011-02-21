@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/ui/Painter.h"
 #include "omega/Texture.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -60,7 +61,7 @@ void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation 
 
 	float s = 0;
 
-	glColor4fv(startColor);
+	glColor4fv(startColor.begin());
 	if(orientation == Widget::Horizontal)
 	{
 		// draw full color portion
@@ -72,7 +73,7 @@ void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation 
 		glBegin(GL_QUADS);
 		glVertex2i(x, y);
 		glVertex2i(x + width, y);
-		glColor4fv(endColor);
+		glColor4fv(endColor.begin());
 		glVertex2i(x + width, y + height);
 		glVertex2i(x, y + height);
 		glEnd(); 
@@ -103,7 +104,7 @@ void Painter::drawRect(Vector2i pos, Vector2i size, Color color)
 	int width = size[0];
 	int height = size[1];
 
-	glColor4fv(color);
+	glColor4fv(color.begin());
 	glRecti(x, y, x + width, y + height);
 }
 
@@ -115,7 +116,7 @@ void Painter::drawRectOutline(Vector2i pos, Vector2i size, Color color)
 	int width = size[0];
 	int height = size[1];
 
-	glColor4fv(color);
+	glColor4fv(color.begin());
 
 	glBegin(GL_LINES);
 

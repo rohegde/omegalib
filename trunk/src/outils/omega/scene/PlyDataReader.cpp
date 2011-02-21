@@ -38,8 +38,12 @@
 #include <algorithm>
 #include <math.h>
 
+#include "omega/glheaders.h"
+
 #define min(a, b)  ((a)<(b))?(a):(b)
 #define max(a, b)  ((a)>(b))?(a):(b)
+
+typedef unsigned char uint8_t;
 
 using namespace omega;
 using namespace omega::scene;
@@ -161,7 +165,7 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
                                           &fileType, &version );
     if( !file )
     {
-        oerror("Unable to open PLY file %s for reading", filename);
+        oerror("Unable to open PLY file %s for reading", filename.c_str());
         return result;
     }
     oassert( elemNames != 0 );

@@ -29,6 +29,8 @@
 #include "omega/ui/DefaultSkin.h"
 #include "omega/ui/Painter.h"
 
+#include "omega/glheaders.h"
+
 using namespace omega;
 using namespace omega::ui;
 

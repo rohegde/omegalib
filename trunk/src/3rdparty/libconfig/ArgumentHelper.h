@@ -21,7 +21,7 @@
  #include <list>
  #include <string>
  
- #include "libconfig/libconfig.h++"
+ #include "libconfig.h++"
 
  namespace libconfig {
    extern bool verbose, VERBOSE;

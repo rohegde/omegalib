@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/scene/SceneManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -42,7 +43,7 @@ void SceneManager::draw(const Recti& viewport)
 
 	// Draw background
 	glDisable(GL_DEPTH_TEST);
-	glColor4fv(myBackgroundColor);
+	glColor4fv(myBackgroundColor.begin());
 	int width = viewport[1][0];
 	int height = viewport[1][1];
 	int x = viewport[0][0] - width / 2;

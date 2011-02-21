@@ -53,8 +53,8 @@ void HelloClient::draw(const DrawContext& context)
 	
 	// Setup light.
 	glEnable(GL_LIGHT0);
-	glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0));
-	glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0));
+	glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).begin());
+	glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).begin());
 
 	// Draw a rotating teapot.
 	glRotatef(10, 1, 0, 0);
@@ -64,7 +64,7 @@ void HelloClient::draw(const DrawContext& context)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	HelloApplication app;
 
@@ -72,5 +72,7 @@ void main(int argc, char** argv)
 	const char* cfgName = "ohello.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "ohello.log", new FilesystemDataSource("../../data/"));
+	omain(app, cfgName, "ohello.log", new FilesystemDataSource("./../../data/"));
+	
+	return 0;
 }

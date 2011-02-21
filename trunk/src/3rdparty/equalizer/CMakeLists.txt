@@ -1,0 +1,122 @@
+# Copyright (c) 2010 Daniel Pfeifer <daniel@pfeifer-mail.de>
+#               2010-2011 Stefan Eilemann <eile@eyescale.ch>
+set(Equalizer_SOURCE_DIR ${OmegaLib_SOURCE_DIR}/src/3rdparty/equalizer)
+set(Equalizer_BINARY_DIR ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer)
+
+list(APPEND CMAKE_MODULE_PATH ${Equalizer_SOURCE_DIR}/CMake)
+
+set(VERSION_MAJOR "0")
+set(VERSION_MINOR "9")
+set(VERSION_PATCH "3")
+set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+
+IF(NOT CMAKE_BUILD_TYPE)
+   SET(CMAKE_BUILD_TYPE Debug)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
+option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" ON)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  set(LINUX TRUE)
+endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${Equalizer_BINARY_DIR}/bin)
+set(EQ_FEATURES)
+
+set(EQ_INCLUDE_DIR ${Equalizer_BINARY_DIR}/include)
+file(MAKE_DIRECTORY ${EQ_INCLUDE_DIR})
+include_directories(${EQ_INCLUDE_DIR})
+
+if(MSVC)
+  add_definitions(
+    /D_CRT_SECURE_NO_WARNINGS
+    /wd4244 # conversion from X to Y, possible loss of data
+    /wd4800 # forcing value to bool 'true' or 'false' (performance warning)
+    )
+  # http://www.ogre3d.org/forums/viewtopic.php?f=2&t=60015&start=0
+  set(CMAKE_CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /Zm500 /EHsc /GR /WX")
+endif(MSVC)
+
+find_package(OpenGL REQUIRED)
+include_directories(SYSTEM ${OPENGL_INCLUDE_DIR})
+
+if(APPLE)
+  # WAR otherwise MacPorts X11 (/opt/local) is preferred
+  LIST(REMOVE_ITEM CMAKE_SYSTEM_LIBRARY_PATH /opt/local/lib)
+  LIST(REMOVE_ITEM CMAKE_SYSTEM_PREFIX_PATH /opt/local)
+endif(APPLE)
+
+find_package(X11)
+if(X11_FOUND)
+  if(APPLE)
+    set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem ") # Disabled by GNU.cmake!?
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5" )
+    if(EXISTS /Developer/SDKs/MacOSX10.6.sdk)
+      if(EQUALIZER_PREFER_AGL)
+        set(EQ_AGL_USED 1)
+      else(EQUALIZER_PREFER_AGL)
+        set(EQ_GLX_USED 1)
+      endif(EQUALIZER_PREFER_AGL)
+    else(EXISTS /Developer/SDKs/MacOSX10.6.sdk)
+      set(EQ_AGL_USED 1)
+      set(EQ_GLX_USED 1)
+    endif(EXISTS /Developer/SDKs/MacOSX10.6.sdk)
+  else(APPLE)
+    set(EQ_GLX_USED 1)
+  endif(APPLE)
+endif(X11_FOUND)
+
+if(EQ_GLX_USED)
+  include_directories(SYSTEM ${X11_INCLUDE_DIR})
+  set(EQ_FEATURES "${EQ_FEATURES} GLX")
+endif(EQ_GLX_USED)
+if(EQ_AGL_USED)
+  set(EQ_FEATURES "${EQ_FEATURES} AGL")
+endif(EQ_AGL_USED)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Winvalid-pch -Wnon-virtual-dtor -Wsign-promo -Wshadow -Winit-self -Wno-unknown-pragmas -Wno-unused-parameter -Wno-write-strings")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wuninitialized")
+  if(NOT WIN32 AND NOT XCODE_VERSION)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+  endif()
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
+if(LINUX)
+  add_definitions(-fPIC) # 64bit Linux wants this
+endif(LINUX)
+
+if(APPLE)
+  link_directories(/usr/X11R6/lib)
+  include_directories(SYSTEM /usr/X11R6/include)
+  add_definitions(-DDarwin)
+  if(EQ_AGL_USED)
+    if(_CMAKE_OSX_MACHINE MATCHES "ppc")
+      set(CMAKE_OSX_ARCHITECTURES "ppc")
+    else()
+      set(CMAKE_OSX_ARCHITECTURES "i386")
+    endif()
+    set(CUDA_64_BIT_DEVICE_CODE OFF) 
+  else(EQ_AGL_USED)
+    if(_CMAKE_OSX_MACHINE MATCHES "64" AND CUDA_FOUND)
+      set(CUDA_FOUND 0)
+      message(STATUS "  Disable CUDA due to missing 64 bit libraries")
+    endif()
+  endif(EQ_AGL_USED)
+endif(APPLE)
+
+include(${Equalizer_SOURCE_DIR}/externals/UseGLEW.cmake)
+include(${Equalizer_SOURCE_DIR}/externals/UseVMMLib.cmake)
+include(${Equalizer_SOURCE_DIR}/externals/UseGnuWin32.cmake)
+include(${Equalizer_SOURCE_DIR}/externals/UsePthreads.cmake)
+set(PTHREAD_LIBRARIES pthread)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEQ_BUILD_DIR=\"${CMAKE_BINARY_DIR}/\"")
+
+add_subdirectory(libs)
+
+if(APPLE AND CMAKE_OSX_ARCHITECTURES)
+  message(STATUS "Supported Features:${EQ_FEATURES} [${CMAKE_OSX_ARCHITECTURES}]")
+else()
+  message(STATUS "Supported Features:${EQ_FEATURES}")
+endif()
+
