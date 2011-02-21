@@ -44,11 +44,11 @@ namespace vmml
         typedef std::vector<plane<T> > PlaneList;
         /// Publicly accessible plane list, you can modify this direct
         PlaneList planes;
-        typename plane<T>::side outside;
+        plane_side outside;
 
-        plane_bounded_volume() :outside(plane<T>::NEGATIVE_SIDE) {}
+        plane_bounded_volume() :outside(NEGATIVE_SIDE) {}
         /** Constructor, determines which side is deemed to be 'outside' */
-        plane_bounded_volume(typename plane<T>::side theOutside) 
+        plane_bounded_volume(plane_side theOutside) 
             : outside(theOutside) {}
 
         /** Intersection test with AABB
@@ -64,13 +64,13 @@ namespace vmml
             // Get the half-size of the box
             vector<3,T> halfSize = box.getHalfSize();
             
-            PlaneList::const_iterator i, iend;
+            typename PlaneList::const_iterator i, iend;
             iend = planes.end();
             for (i = planes.begin(); i != iend; ++i)
             {
                 const plane<T> & plane = *i;
 
-                plane<T> ::Side side = plane.getSide(centre, halfSize);
+                plane_side side = plane.getSide(centre, halfSize);
                 if (side == outside)
                 {
                     // Found a splitting plane therefore return not intersecting
@@ -87,7 +87,7 @@ namespace vmml
         */
         inline bool intersects(const sphere<T>& sphere) const
         {
-            PlaneList::const_iterator i, iend;
+            typename PlaneList::const_iterator i, iend;
             iend = planes.end();
             for (i = planes.begin(); i != iend; ++i)
             {
@@ -96,7 +96,7 @@ namespace vmml
                 // Test which side of the plane the sphere is
                 float d = plane.getDistance(sphere.getCenter());
                 // Negate d if planes point inwards
-                if (outside == plane<T>::NEGATIVE_SIDE) d = -d;
+                if (outside == NEGATIVE_SIDE) d = -d;
 
                 if ( (d - sphere.getRadius()) > 0)
                     return false;
@@ -112,7 +112,7 @@ namespace vmml
         */
         inline std::pair<bool, float> intersects(const ray<T>& ray)
         {
-            return Math::intersects(ray, planes, outside == plane<T> ::POSITIVE_SIDE);
+            return math<T>::intersects(ray, planes, outside == plane<T> ::POSITIVE_SIDE);
         }
 
     };

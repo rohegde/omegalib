@@ -27,7 +27,7 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
-#include "InputEvent.h"
+//#include "InputEvent.h"
 
 namespace omega
 {
@@ -38,6 +38,7 @@ namespace omega
 	class DisplaySystem;
 	class Application;
 	class ChannelImpl;
+	struct InputEvent;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Interface for objects that manage a single OpenGL context.

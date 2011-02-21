@@ -27,7 +27,7 @@
 #ifndef __FONT_MANAGER_H__
 #define __FONT_MANAGER_H__
 
-#include "omega.h"
+#include "osystem.h"
 
 #include "FTGL/ftgl.h"
 

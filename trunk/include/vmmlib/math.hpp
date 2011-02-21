@@ -5,6 +5,7 @@
 #include <vmmlib/vector.hpp>
 #include <vmmlib/matrix.hpp>
 #include <vmmlib/quaternion.hpp>
+#include <vmmlib/plane.hpp>
 
 namespace vmml
 {
@@ -306,7 +307,7 @@ namespace vmml
         @param normalIsOutside Does the normal point outside the volume
         */
         static inline std::pair<bool, T> intersects(
-            const ray<T>& ray, const std::vector<plane<T>>& planeList, 
+            const ray<T>& ray, const std::vector<plane<T> >& planeList, 
             bool normalIsOutside);
         /** ray<T> / convex plane list intersection test. 
         @param ray The ray to test with
@@ -314,7 +315,7 @@ namespace vmml
         @param normalIsOutside Does the normal point outside the volume
         */
         static inline std::pair<bool, T> intersects(
-            const ray<T>& ray, const std::list<plane<T>>& planeList, 
+            const ray<T>& ray, const std::list<plane<T> >& planeList, 
             bool normalIsOutside);
 
         /** sphere<T> / plane intersection test. 
@@ -366,7 +367,7 @@ namespace vmml
 			const vector<3,T>& fallbackAxis = vector<3,T>::ZERO);
 
 		static inline 
-		ray<T> math<T>::unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport);
+		ray<T> unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport);
 
         static const T PositiveInfinity;
         static const T NegativeInfinity;
@@ -667,10 +668,10 @@ namespace vmml
     //-----------------------------------------------------------------------
     template<typename T> inline 
     std::pair<bool, T> math<T>::intersects(const ray<T>& ray, 
-        const std::vector<plane<T>>& planes, bool normalIsOutside)
+        const std::vector<plane<T> >& planes, bool normalIsOutside)
     {
-		std::list<plane<T>> planesList;
-		for (std::vector<plane<T>>::const_iterator i = planes.begin(); i != planes.end(); ++i)
+		std::list<plane<T> > planesList;
+		for (typename std::vector<plane<T> >::const_iterator i = planes.begin(); i != planes.end(); ++i)
 		{
 			planesList.push_back(*i);
 		}
@@ -679,9 +680,9 @@ namespace vmml
     //-----------------------------------------------------------------------
     template<typename T> inline 
     std::pair<bool, T> math<T>::intersects(const ray<T>& ray, 
-        const std::list<plane<T>>& planes, bool normalIsOutside)
+        const std::list<plane<T> >& planes, bool normalIsOutside)
     {
-		std::list<plane<T>>::const_iterator planeit, planeitend;
+		typename std::list<plane<T> >::const_iterator planeit, planeitend;
 		planeitend = planes.end();
 		bool allInside = true;
 		std::pair<bool, T> ret;
@@ -695,7 +696,7 @@ namespace vmml
 		// derive side
 		// NB we don't pass directly since that would require plane<T>::Side in 
 		// interface, which results in recursive includes since math is so fundamental
-		plane<T>::Side outside = normalIsOutside ? plane<T>::POSITIVE_SIDE : plane<T>::NEGATIVE_SIDE;
+		typename plane<T>::Side outside = normalIsOutside ? plane<T>::POSITIVE_SIDE : plane<T>::NEGATIVE_SIDE;
 
 		for (planeit = planes.begin(); planeit != planeitend; ++planeit)
 		{
@@ -1159,7 +1160,7 @@ namespace vmml
     template<typename T> inline 
     bool math<T>::intersects(const plane<T>& plane, const axis_aligned_box<T>& box)
     {
-        return (plane.getSide(box) == plane<T>::BOTH_SIDE);
+        return (plane.getSide(box) == BOTH_SIDE);
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
@@ -1391,26 +1392,23 @@ namespace vmml
 		vector<3, T> origin;
 		vector<3, T> direction;
 
-		double dmv[16];
-		double dpm[16];
-		for(int i = 0; i < 16; i++)
-		{
-			dmv[i] = modelview.begin()[i];
-			dpm[i] = projection.begin()[i];
-		}
+		matrix<4, 4, T> A = projection * modelview;
+		matrix<4, 4, T> m;
+		if(!A.inverse(m)) return ray<T>();
 
-		GLint vp[4];
-		vp[0] = viewport[0][0];
-		vp[1] = viewport[0][1];
-		vp[2] = viewport[1][0];
-		vp[3] = viewport[1][1];
+		vector<4, T> in;
+		in[0]=(point[0] - (float)viewport[0][0]) / (float)(viewport[1][0] - viewport[0][0]) * 2.0f - 1.0f;
+        in[1]=((viewport[1][1] - point[1]) - (float)viewport[0][1]) / (float)(viewport[1][1] - viewport[0][1]) * 2.0f - 1.0f;
+        in[2]= -1.0f;
+        in[3]=1.0f;
 
-		double mx1, my1, mz1, mx2, my2, mz2;
-		gluUnProject(point[0], vp[3] - point[1], 0, dmv, dpm, vp, &mx1, &my1, &mz1);
-		gluUnProject(point[0], vp[3] - point[1], 1, dmv, dpm, vp, &mx2, &my2, &mz2);
+		vector<4, T> m1 = m * in;
 
-		origin = vector<3, T>(mx1, my1, mz1);
-		direction = vector<3, T>((mx2 - mx1), (my2 - my1), (mz2 - mz1));
+        in[2] = 1.0f;
+		vector<4, T> m2 = m * in;
+
+		origin = vector<3, T>(m1[0], m1[1], m1[2]);
+		direction = vector<3, T>((m2[0] - m1[0]), (m2[1] - m1[1]), (m2[2] - m1[2]));
 		direction.normalize();
 
 		return ray<T>(origin, direction);

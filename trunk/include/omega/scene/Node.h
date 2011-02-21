@@ -29,9 +29,9 @@
 #ifndef _Node_H__
 #define _Node_H__
 
-#include "omega.h"
-
 #include<set>
+#include "omega/osystem.h"
+
 
 namespace omega 
 {

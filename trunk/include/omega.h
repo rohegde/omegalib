@@ -25,6 +25,7 @@
 #ifndef __OMEGA_H__
 #define __OMEGA_H__
 
+#include "omega/glheaders.h"
 #include "omega/Application.h"
 #include "omega/Config.h"
 #include "omega/Color.h"
@@ -32,7 +33,6 @@
 #include "omega/DataManager.h"
 #include "omega/FilesystemDataSource.h"
 #include "omega/FileDataStream.h"
-#include "omega/FontManager.h"
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
 #include "omega/InputManager.h"

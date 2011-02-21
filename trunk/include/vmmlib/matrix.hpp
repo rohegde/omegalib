@@ -17,6 +17,8 @@
 #include <string>
 #include <cstring>
 
+#include <math.h>
+
 #define VMMLIB_NO_CONVERSION_OPERATORS
 
 namespace vmml
@@ -417,7 +419,7 @@ public:
     static const matrix< M, N, T > IDENTITY;
     static const matrix< M, N, T > ZERO;
 
-    protected:
+    public: // HACK for compute_inverse methods
     // column_by_column
     VMMLIB_ALIGN( T array[ M * N ] );
     
