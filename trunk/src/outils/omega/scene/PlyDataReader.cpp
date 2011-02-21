@@ -221,6 +221,8 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
 
 	if(this->colors.size() != 0) myHasColors = true;
 	else myHasColors = false;
+
+	this->myIsDirty = true;
     
     return result;
 }
