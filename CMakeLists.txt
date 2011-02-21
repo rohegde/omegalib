@@ -59,8 +59,8 @@ set(OMEGA_BUILD_NAME ${ARCH}-${TOOL} CACHE STRING "The omegalib build name. A di
 # Set the output directories for libraries and binary files
 if(MSVC)
 	# Since visual studio builds are multiconfiguration, set two separate directories for debug and release builds
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME}-debug)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME}-release)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-debug)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-release)
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME}-debug)
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME}-release)
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-debug)
@@ -70,9 +70,11 @@ if(MSVC)
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE})
 else(MSVC)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME})
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME})
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME})
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME})
+	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+	file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 endif(MSVC)
 
 ###################################################################################################
