@@ -33,9 +33,11 @@
 
 #include "omega/input/MouseService.h"
 
+#ifdef WIN32
 // This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 
 // template definition isn't compiled in the original equalizer static library.
 #include "eq/../../../equalizer/libs/fabric/layout.ipp"
+#endif
 
 using namespace omega;
 using namespace co::base;

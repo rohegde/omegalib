@@ -28,6 +28,7 @@
 #include "omega/ui/UIManager.h"
 #include "omega/ui/Container.h"
 #include "omega/ui/Painter.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::ui;

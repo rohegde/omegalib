@@ -26,6 +26,8 @@
  *************************************************************************************************/
 #include "omega/FontManager.h"
 #include "omega/DataManager.h"
+#include "omega/SystemManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 

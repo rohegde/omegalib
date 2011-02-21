@@ -25,14 +25,14 @@
 #pragma warning( disable : 4224 4244 4251 4018)
 #endif
 
-#include "libconfig/libconfig.h++"
+#include "libconfig.h++"
 
 #ifdef _MSC_VER
 #pragma warning (disable: 4996)
 #endif
 
-#include "libconfig/wincompat.h"
-#include "libconfig/libconfig.h"
+#include "wincompat.h"
+#include "libconfig.h"
 
 #include <cstring>
 #include <cstdlib>

@@ -28,7 +28,9 @@
 #include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
 
-#include "libconfig/ArgumentHelper.h"
+#include "ArgumentHelper.h"
+
+#include "GL/freeglut.h"
 
 using namespace omega;
 
@@ -64,7 +66,7 @@ void displayCallback(void)
 
 	// Push observer matrix.
 	glPushMatrix();
-	Matrix4f& mat = ds->getObserver().getViewTransform();
+	Matrix4f mat = ds->getObserver().getViewTransform();
 	glLoadIdentity();
 	glLoadMatrixf(mat.begin());
 

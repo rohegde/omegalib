@@ -24,6 +24,7 @@
  *********************************************************************************************************************/
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/SceneManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::scene;

@@ -22,11 +22,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-
 #include "omega/scene/Effect.h"
 #include "omega/scene/EffectManager.h"
 #include "omega/scene/Mesh.h"
 #include "omega/GpuManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::scene;

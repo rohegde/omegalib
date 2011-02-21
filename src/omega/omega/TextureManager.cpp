@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "omega/TextureManager.h"
 #include "omega/Texture.h"
-#include "FreeImage.h"
 
 using namespace omega;
 

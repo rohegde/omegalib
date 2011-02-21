@@ -25,6 +25,7 @@
 #include "omega/GpuProgram.h"
 #include "omega/GpuManager.h"
 #include "omega/GpuBuffer.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 
@@ -98,25 +99,27 @@ GeometryShader::GeometryShader(GLuint GLShader, const omega::String& name):
 {
 }
 
+#ifdef OMEGA_USE_OPENCL
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ComputeShader::ComputeShader(cl_program program, const omega::String& kernelEntryPoint, const omega::String& name)
 {
-#ifdef OMEGA_USE_OPENCL
 	cl_int status;
 	myCLProgram = program;
 	myCLKernel = clCreateKernel(myCLProgram, kernelEntryPoint.c_str(), &status);
 	if(!clSuccessOrDie(status)) return;
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ComputeShader::dispose()
 {
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GpuProgram::GpuProgram(GpuManager* gpuMng):
+#ifdef OMEGA_USE_OPENCL
 	myComputeShader(NULL),
+#endif
 	myGeometryShader(NULL),
 	myVertexShader(NULL),
 	myFragmentShader(NULL),
@@ -165,9 +168,9 @@ void GpuProgram::printProgramLog(GLuint program)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef OMEGA_USE_OPENCL
 void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads)
 {
-#ifdef OMEGA_USE_OPENCL
 	cl_event events;
 	cl_int status;
 
@@ -188,8 +191,8 @@ void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, c
 	status = clWaitForEvents(1, &events);
 	if(!clSuccessOrDie(status)) return;
 	clReleaseEvent(events);
-#endif
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GpuProgram::runRenderStage(int items, PrimType primType, unsigned int* indices)

@@ -66,7 +66,7 @@ void Button::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Button::processInputEvent(const InputEvent& evt)
 {
-	Vector2f point  = evt.position;
+	Vector2f point  = Vector2f(evt.position[0], evt.position[1]);
 	
 	transformPoint(point);
 

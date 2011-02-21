@@ -28,11 +28,14 @@
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
 
+#include "omega/glheaders.h"
+
 using namespace omega;
 
 #define HANDLE_STATUS(id) case id: { oerror(#id); break; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef OMEGA_USE_OPENCL
 bool omega::__clSuccessOrDie(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return true;
@@ -93,7 +96,7 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 	SystemManager::instance()->postExitRequest("Fatal OpenCL failure");
 	return false;
 }
-
+#endif
 #undef HANDLE_STATUS
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
