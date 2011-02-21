@@ -110,7 +110,7 @@ void displayCallback(void)
 
 	glPopMatrix();
 
-	glFlush();
+	//glFlush();
 	glutPostRedisplay();
 
 	// poll the input manager for new events.
