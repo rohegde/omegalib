@@ -238,6 +238,7 @@ public:
 		static int y;
 		switch( event->data.type )
 		{
+#ifdef OMEGA_USE_MOUSE
 		case eq::Event::WINDOW_POINTER_MOTION:
 			{
 				x = event->data.pointerMotion.x;
@@ -267,6 +268,7 @@ public:
 				MouseService::mouseButtonCallback(0, 0, x, y);
 				return true;
 			}
+#endif
 		}
 		return false;
 	}
