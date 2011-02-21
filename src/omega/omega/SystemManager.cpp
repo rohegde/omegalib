@@ -40,8 +40,8 @@
 #endif
 
 // Input services
-#ifdef OMEGA_USE_MOCAP
-	#include "omega/input/MoCapService.h"
+#ifdef OMEGA_USE_NATURAL_POINT
+	#include "omega/input/NaturalPointService.h"
 #endif
 #ifdef OMEGA_USE_MOUSE
 	#include "omega/input/MouseService.h"

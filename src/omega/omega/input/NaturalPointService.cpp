@@ -1,14 +1,40 @@
-#include "omega/input/MoCapService.h"
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Brad McGinnis
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+#include "omega/input/NaturalPointService.h"
 #include "omega/SystemManager.h"
-
 
 using namespace omega;
 
-MoCapService* MoCapService :: myMoCap = NULL;
-bool MoCapService :: isEuler = false;
+NaturalPointService* NaturalPointService :: myMoCap = NULL;
+bool NaturalPointService :: isEuler = false;
 
-
-MoCapService::MoCapService()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+NaturalPointService::NaturalPointService()
 {
 	pClient = NULL;
 	strcpy ( localIP, "" );
@@ -16,19 +42,21 @@ MoCapService::MoCapService()
 	castType = 0;
 }
 
-MoCapService::~MoCapService()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+NaturalPointService::~NaturalPointService()
 {
 	pClient->Uninitialize();
 	delete pClient;
 }
 
-void MoCapService::initialize()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::initialize()
 {
 	myMoCap = this;
 }
 
-
-void MoCapService::setup(Setting& settings)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::setup(Setting& settings)
 {
 	if( settings.exists( "serverIP" ) )
 	{
@@ -45,7 +73,9 @@ void MoCapService::setup(Setting& settings)
 		castType = atoi( (const char*) settings[ "castingType" ] );
 	}
 }
-void MoCapService::start()
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::start()
 {
 	if( pClient == NULL)
 	{
@@ -79,17 +109,20 @@ void MoCapService::start()
 
 }
 
-void MoCapService::stop()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::stop()
 {
 	pClient->Uninitialize();
 }
 
-void MoCapService::dispose()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::dispose()
 {
 	delete myMoCap;
 }
 
-void __cdecl MoCapService::messageController( int msgType, char* msg)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void __cdecl NaturalPointService::messageController( int msgType, char* msg)
 {
 	//this is where you write messages, from the NatNet server, to the log
 	//Log::Message("MOCAP: %s", msg);
@@ -97,12 +130,8 @@ void __cdecl MoCapService::messageController( int msgType, char* msg)
 	//this is commented out b/c it is printing messages at every frame and I am unsure if they are worth while
 }
 
-/**********************************************************************************************
- *	For a better idea of what is going on in the quaternion to euler conversion check out:
- *		http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
- *		http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
- **********************************************************************************************/
-void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUserData)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void *pUserData)
 {
 	double verticalTest; //used to handle special case of body pointing straight along vertical axis
 	double unit;
@@ -223,14 +252,14 @@ void __cdecl MoCapService::frameController( sFrameOfMocapData* data, void *pUser
 	}
 }
 
-
-
-void MoCapService::useEuler()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::useEuler()
 {
 	isEuler = true;
 }
 
-void MoCapService::useQuaternion()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NaturalPointService::useQuaternion()
 {
 	isEuler = false;
 }
