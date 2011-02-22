@@ -120,5 +120,15 @@ ELSE(OMEGA_BUILD_STATIC)
 ENDIF(OMEGA_BUILD_STATIC)
 
 ###################################################################################################
+if(MSVC)
+	# Horrible horrible hack, ignore multiple symbol decinitions, but apparently 
+	# needed to have VS2008 work with NstNetLib static...
+	# See if you can remove this in the future.
+    #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /FORCE:MULTIPLE")
+    #set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /FORCE:MULTIPLE")
+	#add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
+endif(MSVC)
+
+###################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( outils omega freetype ftgl FreeImage)

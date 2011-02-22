@@ -120,6 +120,7 @@ public:
 			enum DirtyBits
 			{
 				DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
+				DIRTY_DRAW_STATS       = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
 			};
 
 			virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
@@ -131,6 +132,10 @@ public:
 						os << myView->myEnabledLayers[i];
 					}
 				}
+				if( dirtyBits & DIRTY_DRAW_STATS )
+				{
+					os << myView->myDrawStatistics;
+				}
 			}
 
 			virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
@@ -141,6 +146,10 @@ public:
 					{
 						is >> myView->myEnabledLayers[i];
 					}
+				}
+				if( dirtyBits & DIRTY_DRAW_STATS )
+				{
+					is >> myView->myDrawStatistics;
 				}
 			}
 
@@ -160,6 +169,7 @@ public:
 	, myProxy( this )
 #pragma warning( pop )
 	{
+		myDrawStatistics = false;
 		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
 		setUserData(&myProxy);
 	}
@@ -180,7 +190,19 @@ public:
 		myProxy.setDirty( Proxy::DIRTY_LAYER );
 	}
 
+	void drawStatistics(bool enable)
+	{
+		myDrawStatistics = enable;
+		myProxy.setDirty( Proxy::DIRTY_DRAW_STATS );
+	}
+
+	bool isDrawStatisticsEnabled()
+	{
+		return myDrawStatistics;
+	}
+
 private:
+	bool myDrawStatistics;
 	bool myEnabledLayers[Application::MaxLayers];
 	Proxy myProxy;
 	friend class myProxy;
@@ -270,7 +292,7 @@ public:
 			}
 #endif
 		}
-		return false;
+		return Config::handleEvent(event);
 	}
 
 	virtual uint32_t startFrame( const uint128_t& version )
@@ -507,6 +529,15 @@ protected:
 		}
 	}
 
+	virtual void frameViewFinish( const uint128_t& spin )
+	{
+		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		if(view->isDrawStatisticsEnabled())
+		{
+			drawStatistics();
+		}
+	}
+
 private:
 	DrawContext context;
 	eq::Window* myWindow;
@@ -632,6 +663,16 @@ void EqualizerDisplaySystem::initLayers()
 		for(int i = 0; i < stViews.getLength(); i++)
 		{
 			Setting& stView = stViews[i];
+
+			// Set draw statistics flag
+			ViewImpl* view = myConfig->findView(stView.getName());
+			if(view != NULL)
+			{
+				if(stView.exists("drawStatistics"))
+					view->drawStatistics(stView["drawStatistics"]);
+			}
+
+			// Set enabled layers
 			if(stView.exists("layers"))
 			{
 				Setting& stLayers = stView["layers"];
