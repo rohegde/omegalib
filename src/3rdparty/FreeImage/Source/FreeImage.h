@@ -54,11 +54,6 @@
 
 #include <wchar.h>	// needed for UNICODE functions
 
-// OmegaLib: force static lib compilation
-#ifndef FREEIMAGE_LIB
-#define FREEIMAGE_LIB
-#endif
-
 #if defined(FREEIMAGE_LIB)
 	#define DLL_API
 	#define DLL_CALLCONV

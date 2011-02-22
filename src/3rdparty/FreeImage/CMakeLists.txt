@@ -537,8 +537,10 @@ include_directories(Source/OpenEXR/IlmThread)
 include_directories(Source/OpenEXR/Imath)
 include_directories(Source/ZLib)
 
-add_definitions(-DOPJ_STATIC -DLIBRAW_NODLL -DLIBRAW_LIBRARY_BUILD -DFREEIMAGE_LIB -DNO_LCMS)
-add_library(FreeImage STATIC ${FreeImage_SOURCES})
+add_definitions(-DOPJ_STATIC -DLIBRAW_NODLL -DLIBRAW_LIBRARY_BUILD -DNO_LCMS)
+
+# Needs to be shared, or we will have symbol conflicts when NatNetLibStatic is included in vs9.
+add_library(FreeImage SHARED ${FreeImage_SOURCES})
 
 set(FreeImage_INCLUDE_DIR "${FreeImage_SOURCE_DIR}/Source" CACHE PATH "" FORCE)
 set(FreeImage_LIBRARY_DBG FreeImage CACHE STRING "" FORCE)

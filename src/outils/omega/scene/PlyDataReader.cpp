@@ -53,8 +53,7 @@ using namespace omega::scene;
 PlyDataReader::PlyDataReader()
     : _invertFaces( false )
 {
-    _boundingBox[0] = Vector3f( 0.0f );
-    _boundingBox[1] = Vector3f( 0.0f );
+	_boundingBox.setNull();
 }
 
 
@@ -282,14 +281,22 @@ void PlyDataReader::calculateNormals( const bool vertexNormals )
 /*  Calculate the bounding box of the current vertex data.  */
 void PlyDataReader::calculateBoundingBox()
 {
-    _boundingBox[0] = vertices[0];
-    _boundingBox[1] = vertices[0];
+	_boundingBox.setNull();
+	
+	float m = FLT_MAX;
+	Vector3f vmin = Vector3f(m, m,  m);
+	Vector3f vmax = Vector3f(-m, -m,  -m);
+
     for( size_t v = 1; v < vertices.size(); ++v )
-        for( size_t i = 0; i < 3; ++i )
-        {
-            _boundingBox[0][i] = min( _boundingBox[0][i], vertices[v][i] );
-            _boundingBox[1][i] = max( _boundingBox[1][i], vertices[v][i] );
-        }
+	{
+		Vector3f& ve = vertices[v];
+		for(int i = 0; i < 3; i++)
+		{
+			vmin[i] = min(vmin[i], ve[i]);
+			vmax[i] = max(vmax[i], ve[i]);
+		}
+	}
+	_boundingBox.setExtents(vmin, vmax);
 }
 
 
@@ -354,13 +361,12 @@ void PlyDataReader::scale( const float baseSize )
             vertices[v][i] *= factor;
         }
     
+	Vector3f min, max;
+	min = (_boundingBox[0] - offset) * factor;
+	max = (_boundingBox[1] - offset) * factor;
+
     // scale the bounding box
-    for( size_t v = 0; v < 2; ++v )
-        for( size_t i = 0; i < 3; ++i )
-        {
-            _boundingBox[v][i] -= offset[i];
-            _boundingBox[v][i] *= factor;
-        }
+	_boundingBox.setExtents(min, max);
 }
 
 

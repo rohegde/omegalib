@@ -780,9 +780,12 @@ namespace vmml {
 		static const axis_aligned_box BOX_NULL;
 		static const axis_aligned_box BOX_INFINITE;
 
+		// This method is kinda dangerous. It sets the extent to finite, without any guarantee
+		// it's actually going to be so.
 		vector<3,T>& operator[]( const size_t i )
 		{
 			assert( i < 2 );
+			mExtent = EXTENT_FINITE;
 			if(i == 0) return mMinimum;
 			return mMaximum;
 		}
