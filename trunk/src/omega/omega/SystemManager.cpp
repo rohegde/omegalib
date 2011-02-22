@@ -47,13 +47,16 @@
 	#include "omega/input/MouseService.h"
 #endif
 #ifdef OMEGA_USE_NETSERVICE
-#include "omega/input/NetService.h"
+	#include "omega/input/NetService.h"
 #endif
 #ifdef OMEGA_USE_PQLABS
-#include "omega/input/PQService.h"
+	#include "omega/input/PQService.h"
 #endif
 #ifdef OMEGA_USE_OPTITRACK
-#include "omega/input/OptiTrackService.h"
+	#include "omega/input/OptiTrackService.h"
+#endif
+#ifdef OMEGA_USE_OPENNI
+	#include "omega/input/OpenNIService.h"
 #endif
 
 using namespace omega;
@@ -129,6 +132,9 @@ void SystemManager::setupInputManager()
 #endif
 #ifdef OMEGA_USE_OPTITRACK
 	registerInputService("OptiTrackService", (InputServiceAllocator)OptiTrackService::New);
+#endif
+#ifdef OMEGA_USE_OPENNI
+	registerInputService("OpenNIService", (InputServiceAllocator)OpenNIService::New);
 #endif
 
 	// Instantiate input services
@@ -210,6 +216,7 @@ void SystemManager::initialize()
 	myInputManager->initialize();
 
 	// Initialize the application object (if present)
+	// XXX If myApp = NULL then I still get an Exception - Vic
 	if(myApplication) myApplication->initialize();
 
 	myIsInitialized = true;
