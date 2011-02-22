@@ -1,0 +1,43 @@
+#summary This page will give brief instructions on how to build OmegaLib and add in a new service driver.
+
+= *Updated Jul 6 2010* =
+
+= Introduction =
+
+This page will give brief instructions on how to build OmegaLib.
+A brief overview of the cmake structure in the source will be given. 
+
+= Building the Source =
+
+A successful compilation of the source requires:
+ * SVN Client
+ * OptiTrack SDK (http://www.naturalpoint.com/optitrack/support/downloads.html)
+ * Cmake
+ * Visual Studios 2008
+
+Once all the components are gathered:
+
+1) Using the chosen SVN client checkout a version from Google Code.
+
+2) Open the cmake gui
+   * Set source_path to where OmegaLib source was placed at checkout
+   * Set build_path to ./source_Path/build.
+   * Configure
+   * Choose version of Visual Studio installed
+   * Generate
+
+3) Go into ./source_Path/build directory open .snl using Visual Studio
+   * Need to assign *odemo* as startup project by right clicking on *odemo* in solution view
+   * Set the debug path:
+        * Right click on *odemo*
+        * Properties -> Configuration Properties -> Debugging -> Working Directory -> $(TargetDir)
+
+4) Make sure it is in "Release" Mode.
+
+= Adding a service driver =
+
+Cmake is a cross platform build system.  It is capable of generating makefiles and workspaces that can be used in the compiler environment of your choice.  Cmake uses configuration files named "CMakeLists.txt"  This file is found at every level of the source.  The image below describes how to configure the various CMakeList.txt to add and link a new service driver to omegaLib.
+
+<a href="http://higherechelongames.com/omegaTable/cmake_spec.jpg">
+<img src="http://higherechelongames.com/omegaTable/cmake_spec.jpg" width="501" height="521">
+<a>
