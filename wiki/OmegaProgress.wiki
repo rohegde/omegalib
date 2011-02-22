@@ -8,6 +8,8 @@ thingies here
 ==Work In Progress==
  * complete meshviewer application (*Alessandro*)
  * kinect integration (*Victor*)
+ * Integration of PS3 controller (*Arthur*)
+ * Integration of XBox 360 controller (*Arthur*)
 
 
 
