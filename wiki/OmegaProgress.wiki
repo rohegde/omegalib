@@ -1,13 +1,13 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 
-== omegalib v0.4 (*current developement version*) ==
-===Summary===
+= omegalib v0.4 (*current developement version*) =
+==Summary==
 Expected delivery: June(?)
 thingies here
-===Completed Tasks===
-===ToDo List===
-* complete meshviewer application (*Alessandro*)
-* kinect integration (*Victor*)
+==Completed Tasks==
+==Work In Progress==
+ * complete meshviewer application (*Alessandro*)
+ * kinect integration (*Victor*)
 
 
 
