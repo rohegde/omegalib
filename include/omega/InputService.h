@@ -41,7 +41,7 @@ class InputService
 {
 friend class InputManager;
 public:
-	enum ServiceType { Pointer, Mocap, Touch, Keyboard }; 
+	enum ServiceType { Pointer, Mocap, Touch, Keyboard, OpenNI }; 
 
 public:
 	// Class constructor

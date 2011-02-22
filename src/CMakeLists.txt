@@ -41,6 +41,7 @@ ENDIF(OMEGA_USE_DISPLAY)
 
 IF(OMEGA_BUILD_UTILITY_LIB)
 	SET(DEMO_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
+	SET(DEMO_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
 	SET(PLAYGROUND_BUILD_VTK_DEMO false CACHE BOOL "Enable build of playground projects. Playgroud projects are experimental, and may not work. ")
 ENDIF(OMEGA_BUILD_UTILITY_LIB)
 
@@ -78,6 +79,10 @@ endif(OMEGA_BUILD_UTILITY_LIB)
 if(DEMO_BUILD_MESH_VIEWER)
 	add_subdirectory(demos/meshviewer)
 endif(DEMO_BUILD_MESH_VIEWER)
+
+IF(DEMO_BUILD_KINECT)
+	ADD_SUBDIRECTORY(demos/kinectdemo)
+ENDIF(DEMO_BUILD_KINECT)
 
 IF(PLAYGROUND_BUILD_VTK_DEMO)
 	ADD_SUBDIRECTORY(playground/vtkdemo)

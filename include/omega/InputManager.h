@@ -69,6 +69,8 @@ private:
 
 private:
 	SystemManager*	mySys;
+	// XXX if you do not select OMEGA_USE_DISPLAY_EQUALIZER
+	// then it cannot find co - Vic
 #ifdef OMEGA_USE_DISPLAY
 	co::base::Lock  myEventBufferLock;
 #endif
