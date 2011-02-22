@@ -60,7 +60,7 @@ void SceneManager::draw(const Recti& viewport)
 	glLoadIdentity();
 
 	// Update transform hierarchy
-	myRoot->update(true, true);
+	myRoot->update(false, false);
 
 	// Draw background
 	//glDisable(GL_DEPTH_TEST);
