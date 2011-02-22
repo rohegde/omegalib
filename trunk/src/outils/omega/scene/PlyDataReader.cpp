@@ -339,7 +339,7 @@ Axis PlyDataReader::getLongestAxis( const size_t start,
 void PlyDataReader::scale( const float baseSize )
 {
     // calculate bounding box if not yet done
-    if( _boundingBox[0].length() == 0.0f && _boundingBox[1].length() == 0.0f )
+	if(_boundingBox.isNull())
         calculateBoundingBox();
     
     // find largest dimension and determine scale factor
