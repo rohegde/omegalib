@@ -5,6 +5,11 @@
 This version will the first one to compile on linux as well on windows.
 A complete demo application will be included (meshviewer) as well as kinect integration. Sperimental integration with vtk and a small demo application is also planned to be integrated into omegalib 0.4.
 
+
+
+
+
+
 *Expected delivery*: June(?)
 
 ==Completed Tasks==
