@@ -61,6 +61,9 @@ namespace omega
 	{
 		uint64 frameNum;
 		unsigned int layer;
+		Matrix4f modelview;
+		Matrix4f projection;
+		Recti viewport;
 		IGLContextManager* glContext;
 	};
 
@@ -76,31 +79,26 @@ namespace omega
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
-		virtual bool handleEvent(const InputEvent& evt) { return false; }
+		virtual bool handleEvent(const InputEvent& evt, DrawContext& context) { return false; }
+		virtual bool handleEvent(const InputEvent& evt, UpdateContext& context) { return false; }
 
 		Application* getApplication() { return myApplication; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 
-		const Recti& getViewport() const { return myViewport; }
-		const Matrix4f& getModelViewMatrix() const { return myModelView; }
-		const Matrix4f& getProjectionMatrix() const { return myProjection; }
 		const Vector2i getResolution() const { return myResolution; }
 
 		//! helper method to get view ray from a point on the near projection plane.
-		Ray unproject(Vector2f point)
+		static Ray unproject(Vector2f point, DrawContext& context)
 		{
-			return Math::unproject(point, myModelView, myProjection, myViewport);
+			return Math::unproject(point, context.modelview, context.projection, context.viewport);
 		}
 
 	protected:
 		void resetGLContext();
 
 	private:
-		void setViewport(const Recti& value) { myViewport = value; }
-		void setModelViewMatrix(const Matrix4f& value) { myModelView = value; }
-		void setProjectionMatrix(const Matrix4f& value) { myProjection = value; }
 		void setResolution(const Vector2i& value) { myResolution = value; }
 
 	private:

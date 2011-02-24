@@ -70,18 +70,12 @@ void displayCallback(void)
 	glLoadIdentity();
 	glLoadMatrixf(mat.begin());
 
-	Matrix4f modelview;
-	Matrix4f projection;
-	Recti viewport;
-
-	viewport[0][0] = 0;
-	viewport[0][1] = 0;
-	viewport[1][0] = glutGet(GLUT_WINDOW_WIDTH);
-	viewport[1][1] = glutGet(GLUT_WINDOW_HEIGHT);
-	glGetFloatv( GL_MODELVIEW_MATRIX, modelview.begin() );
-	glGetFloatv( GL_PROJECTION_MATRIX, projection.begin() );
-
-	ds->setClientTransforms(ac, modelview, projection, viewport);
+	dc.viewport[0][0] = 0;
+	dc.viewport[0][1] = 0;
+	dc.viewport[1][0] = glutGet(GLUT_WINDOW_WIDTH);
+	dc.viewport[1][1] = glutGet(GLUT_WINDOW_HEIGHT);
+	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.begin() );
+	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.begin() );
 
 	// Process events.
 	InputManager* im = SystemManager::instance()->getInputManager();
@@ -95,7 +89,7 @@ void displayCallback(void)
 		for( int evtNum = 0; evtNum < av; evtNum++)
 		{
 			as->handleEvent(evts[evtNum]);
-			ac->handleEvent(evts[evtNum]);
+			ac->handleEvent(evts[evtNum], dc);
 		}
 	}
 
