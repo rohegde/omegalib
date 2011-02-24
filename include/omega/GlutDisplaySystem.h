@@ -74,6 +74,7 @@ namespace omega
 		SystemManager* mySys;
 		ApplicationClient* myAppClient;
 		ApplicationServer* myAppServer;
+		RenderTarget* myFrameBuffer;
 		bool* myLayerEnabled;
 	};
 }; // namespace omega

@@ -29,7 +29,7 @@
 
 #include "osystem.h"
 #include "omega/GpuProgram.h"
-#include "omega/Application.h"
+#include "omega/RenderTarget.h"
 
 // HACK: To be removed (see GpuManager::TextureUnit)
 #define GL_TEXTURE0 0x84C0
@@ -44,10 +44,6 @@
 
 namespace omega
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// Forward declarations
-	class RenderTarget;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, VertexShader*> pairs.
 	typedef Dictionary<String, VertexShader*> VertexShaderDictionary;
@@ -77,7 +73,7 @@ namespace omega
 		//! Initialization
 		//@{
 		bool isInitialized() { return myInitialized; }
-		void initialize(ApplicationClient* client, unsigned int initFlags = InitGL);
+		void initialize(unsigned int initFlags = InitGL);
 		//@}
 
 		//! Gpu configuration
@@ -103,7 +99,6 @@ namespace omega
 		GpuProgram* getDefaultProgram();
 		RenderTarget* getFrameBuffer();
 		void setFrameBuffer(RenderTarget* fb);
-		ApplicationClient* getClient();
 		//@}
 
 #ifdef OMEGA_USE_OPENCL
@@ -120,8 +115,6 @@ namespace omega
 		void printShaderLog(GLuint shader);
 
 	private:
-		ApplicationClient* myClient;
-
 		bool myInitialized;
 		unsigned int myInitFlags;
 
@@ -153,12 +146,8 @@ namespace omega
 	{ return myFrameBuffer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void RenderTarget::setFrameBuffer(RenderTarget* fb)
+	inline void GpuManager::setFrameBuffer(RenderTarget* fb)
 	{ myFrameBuffer = fb; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ApplicationClient* GpuManager::getClient()
-	{ return myClient; }
 }; // namespace omega
 
 #endif

@@ -48,7 +48,7 @@ void SceneManager::draw(const Recti& viewport)
 	int height = viewport[1][1];
 	int x = viewport[0][0] - width / 2;
 	int y = viewport[0][1] - height / 2;
-	glRecti(x, y, width, height);
+	//glRecti(x, y, width, height);
 	glEnable(GL_DEPTH_TEST);
 
 	// Setup view matrix (read back from gl)

@@ -174,6 +174,7 @@ namespace omega
 		//! Serialize an InputEvent instance.
 		void serialize(co::DataOStream& os)
 		{
+			os << processed;
 			os << sourceId;
 			os << serviceType;
 			os << type;
@@ -191,6 +192,7 @@ namespace omega
 		//! Deserialize an InputEvent instance.
 		void deserialize( co::DataIStream& is)
 		{
+			is >> processed;
 			is >> sourceId;
 			is >> serviceType;
 			is >> type;

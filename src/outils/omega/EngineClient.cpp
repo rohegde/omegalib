@@ -41,13 +41,12 @@ using namespace omega::scene;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
+	myGpuManager = myClient->getGpu();
+
 	myFontManager = new FontManager();
 	myTextureManager = new TextureManager();
 	myUIManager = new UIManager();
-	myGpuManager = new GpuManager();
 	myFontManager = new FontManager();
-
-	myGpuManager->initialize(myClient);
 
 	mySceneManager = new SceneManager(myGpuManager);
 	myEffectManager = new EffectManager(myGpuManager);

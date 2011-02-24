@@ -118,7 +118,8 @@ void displayCallback(void)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GlutDisplaySystem::GlutDisplaySystem():
-	mySys(NULL)
+	mySys(NULL),
+	myFrameBuffer(NULL)
 {
 	myLayerEnabled = new bool[Application::MaxLayers];
 	memset(myLayerEnabled, 0, Application::MaxLayers * sizeof(bool));
@@ -201,9 +202,11 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 		myAppServer->initialize();
 
-		setClientResolution(myAppClient, myResolution);
+		myFrameBuffer = new RenderTarget();
+		myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
 		myAppClient->setup();
 		myAppClient->initialize();
+		myAppClient->getGpu()->setFrameBuffer(myFrameBuffer);
 	}
 }
 

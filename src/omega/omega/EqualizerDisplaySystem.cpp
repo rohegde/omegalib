@@ -30,6 +30,7 @@
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
 #include "omega/SystemManager.h"
+#include "omega/RenderTarget.h"
 #include "omega/input/MouseService.h"
 
 #ifdef OMEGA_OS_WIN
@@ -206,26 +207,6 @@ private:
 	bool myEnabledLayers[Application::MaxLayers];
 	Proxy myProxy;
 	friend class myProxy;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//! @internal
-//! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
-//! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
-//! of a pipe are executed in the same pipe thread. The default window initialization methods initialize all windows 
-//! of the same pipe with a shared context, so that OpenGL objects can be reused between them for optimal GPU memory usage.
-class WindowImpl: public eq::Window
-{
-public:
-	WindowImpl(eq::Pipe* parent) : eq::Window(parent) {}
-	virtual ~WindowImpl() {}
-
-protected:
-
-	virtual bool configInit(const uint128_t& initID)
-	{
-		return Window::configInit(initID);
-	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,7 +391,6 @@ protected:
 		{
 			myClient = app->createClient();
 			const eq::fabric::PixelViewport pw = getPixelViewport();
-			ds->setClientResolution(myClient, Vector2i(pw.w, pw.h));
 			myClient->setup();
 		}
 		return result;
@@ -474,6 +454,47 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
+//! A Window represents an on-screen or off-screen drawable. A drawable is a 2D rendering surface, 
+//! typically attached to an OpenGL context. A Window is a child of a Pipe. The task methods for all windows 
+//! of a pipe are executed in the same pipe thread. The default window initialization methods initialize all windows 
+//! of the same pipe with a shared context, so that OpenGL objects can be reused between them for optimal GPU memory usage.
+class WindowImpl: public eq::Window
+{
+public:
+	WindowImpl(eq::Pipe* parent) : eq::Window(parent), myFrameBuffer(NULL) {}
+	virtual ~WindowImpl() {}
+
+protected:
+
+	virtual bool configInitGL(const uint128_t& initID)
+	{
+		// Initialize this window frame buffer.
+		bool res = Window::configInitGL(initID);
+		const eq::fabric::PixelViewport& pvp = getPixelViewport();
+		myFrameBuffer = new RenderTarget();
+		myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, pvp.w, pvp.h);
+
+		// Get the gpu manager from the client instance.
+		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+		ApplicationClient* client = pipe->getClient();
+		myGpu = client->getGpu();
+
+		return res;
+	}
+
+	virtual void frameStart	(const uint128_t &frameID, const uint32_t frameNumber) 
+	{
+		// Set the frame buffer for the client gpu to this window frame buffer.
+		myGpu->setFrameBuffer(myFrameBuffer);
+	}
+
+private:
+	RenderTarget* myFrameBuffer;
+	GpuManager* myGpu;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal
 class ChannelImpl: public eq::Channel, IGLContextManager
 {
 public:
@@ -530,7 +551,12 @@ protected:
 				// If event has not been processed during update, handle it now.
 				if(!evt.processed)
 				{
-					evt.processed = client->handleEvent(evt, context);
+					// NOTE: for now, down't allow channels to mark an event as processed,
+					// so all channels receive a copy of the event.
+					// Otherwise, the first channel marking the event as processed will stop other
+					// channels from seeing it.... This may make sense on some scenarios so it's
+					// worth thinking about it, but for now keep it simple.
+					/*evt.processed = */client->handleEvent(evt, context);
 				}
 			}
 		}
