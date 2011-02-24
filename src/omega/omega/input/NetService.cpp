@@ -364,7 +364,7 @@ void NetService::parseDGram(int result)
 						break;
 					case(2): // Touch (points only not gestures)
 						evt = mysInstance->writeHead();
-						evt->serviceType = InputService::Touch;
+						evt->serviceType = InputService::Pointer;
 						if( (int)(params[0]) == TP_DOWN ){
 							evt->type = InputEvent::Down;
 						}

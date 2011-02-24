@@ -587,7 +587,7 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			break;
 	}// switch		
 	if( validEvent ){
-		evt->serviceType = InputService::Touch;
+		evt->serviceType = InputService::Pointer;
 		evt->sourceId = -1; // Gestures have no id
 	}
 	mysInstance->unlockEvents();
@@ -629,7 +629,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				evt->type  = InputEvent::Up;
 				break;
 		}		
-		evt->serviceType = InputService::Touch;
+		evt->serviceType = InputService::Pointer;
 		if( serverX != 0 && serverY != 0 ){
 			evt->position[0] = tp.x * (float)screenX / (float)serverX;
 			evt->position[1] = tp.y * (float)screenY / (float)serverY;

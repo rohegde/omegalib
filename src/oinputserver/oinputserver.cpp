@@ -83,7 +83,7 @@ public:
 
 		switch(evt.serviceType)
 		{
-		case InputService::Touch:
+		case InputService::Pointer:
 			x = evt.position[0];
 			y = evt.position[1];
 			//printf(" Touch type %d \n", evt.type); 
@@ -160,19 +160,19 @@ public:
 
 			return true;
 			break;
-		case InputService::Pointer:
-			x = evt.position[0];
-			y = evt.position[1];
+		//case InputService::Pointer:
+		//	x = evt.position[0];
+		//	y = evt.position[1];
 
-			// Converts x y float to chars and appents to eventPacket char*
-			sprintf(floatChar,"%f",x);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," );
-			sprintf(floatChar,"%f",y);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, " " );
-			return true;
-			break;
+		//	// Converts x y float to chars and appents to eventPacket char*
+		//	sprintf(floatChar,"%f",x);
+		//	strcat( eventPacket, floatChar );
+		//	strcat( eventPacket, "," );
+		//	sprintf(floatChar,"%f",y);
+		//	strcat( eventPacket, floatChar );
+		//	strcat( eventPacket, " " );
+		//	return true;
+		//	break;
 
 		case InputService::Mocap:
 		{
