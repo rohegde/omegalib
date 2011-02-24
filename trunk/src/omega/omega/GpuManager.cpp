@@ -137,8 +137,7 @@ String readTextFile(const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager():
 	myInitialized(false),
-	myFrameBuffer(NULL),
-	myClient(NULL)
+	myFrameBuffer(NULL)
 {
 	myDefaultProgram = new GpuProgram(this);
 }
@@ -149,21 +148,14 @@ GpuManager::~GpuManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::initialize(ApplicationClient* client, unsigned int initFlags)
+void GpuManager::initialize(unsigned int initFlags)
 {
 	myInitFlags = initFlags;
-	myClient = client;
 
 	if(isCLEnabled())
 	{
 		initCL();
 	}
-
-	Vector2i res = myClient->getResolution();
-
-	myFrameBuffer = new RenderTarget();
-	myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, res[0], res[1]);
-
 	myInitialized = true;
 }
 

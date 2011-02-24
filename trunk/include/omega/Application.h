@@ -27,6 +27,7 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
+#include "GpuManager.h"
 //#include "InputEvent.h"
 
 namespace omega
@@ -38,6 +39,7 @@ namespace omega
 	class DisplaySystem;
 	class Application;
 	class ChannelImpl;
+	class GpuManager;
 	struct InputEvent;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,11 +74,18 @@ namespace omega
 	{
 	friend class DisplaySystem;
 	public:
-		ApplicationClient(Application* app): myApplication(app) {}
+		ApplicationClient(Application* app): myApplication(app) 
+		{
+			myGpu = new GpuManager();
+		}
+
 		virtual ~ApplicationClient() {}
 
 		virtual void setup() {}
-		virtual void initialize() {}
+		virtual void initialize() 
+		{
+			myGpu->initialize();
+		}
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
 		virtual bool handleEvent(const InputEvent& evt, DrawContext& context) { return false; }
@@ -86,8 +95,7 @@ namespace omega
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-
-		const Vector2i getResolution() const { return myResolution; }
+		GpuManager*		getGpu() { return myGpu; }
 
 		//! helper method to get view ray from a point on the near projection plane.
 		static Ray unproject(Vector2f point, DrawContext& context)
@@ -99,14 +107,10 @@ namespace omega
 		void resetGLContext();
 
 	private:
-		void setResolution(const Vector2i& value) { myResolution = value; }
 
 	private:
 		Application* myApplication;
-		Recti myViewport;
-		Matrix4f myModelView;
-		Matrix4f myProjection;
-		Vector2i myResolution;
+		GpuManager* myGpu;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

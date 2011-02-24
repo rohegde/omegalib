@@ -64,10 +64,10 @@ public:
 
 	virtual DisplaySystemType getId() { return Invalid; }
 
-	void setClientResolution(ApplicationClient* client, const Vector2i& resolution)
-	{
-		client->setResolution(resolution);
-	}
+	//void setClientResolution(ApplicationClient* client, const Vector2i& resolution)
+	//{
+	//	client->setResolution(resolution);
+	//}
 
 protected:
 	DisplaySystem() {}

@@ -78,6 +78,7 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 	mySelectionSphere = new SelectionSphere(this);
 	mySelectionSphere->setVisible(true);
 	myVisible = false;
+	myActive = false;
 
 	mySceneNode = new SceneNode(sm);
 	mySceneNode->addDrawable(myMesh);

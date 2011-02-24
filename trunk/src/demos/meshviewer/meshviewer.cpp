@@ -82,54 +82,70 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& context)
 {
+	int vx1 = context.viewport[0][0];
+	int vy1 = context.viewport[0][1];
+	int vx2 = context.viewport[0][0] + context.viewport[1][0];
+	int vy2 = context.viewport[0][1] + context.viewport[1][1];
+
+	if(evt.position[0] > vx1 &&
+		evt.position[0] < vx2 &&
+		evt.position[1] > vy1 &&
+		evt.position[1] < vy2)
+	{
 		// Select objects.
 		Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
 
-		//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-		//glPointSize(5);
-		//glBegin(GL_POINTS);
-		//glVertex3fv(ray.getOrigin().begin());
-		//glEnd();
-	if(evt.type == InputEvent::Down)
-	{
+		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+		glPointSize(5);
+		glBegin(GL_POINTS);
+		glVertex3fv(ray.getOrigin().begin());
+		glEnd();
 
-		if(myVisibleEntity != NULL)
+		//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
+		//glRecti(vx1, vy1, vx2, vy2);
+		//glRecti(0, 0, context.viewport[1][0], context.viewport[1][1]);
+
+		if(evt.type == InputEvent::Down)
 		{
-			Vector3f handlePos;
-			if(myVisibleEntity->hit(ray, &handlePos))
+
+			if(myVisibleEntity != NULL)
 			{
-				myVisibleEntity->activate(handlePos);
+				Vector3f handlePos;
+				if(myVisibleEntity->hit(ray, &handlePos))
+				{
+					myVisibleEntity->activate(handlePos);
+				}
 			}
 		}
-	}
-	else if(evt.type == InputEvent::Up)
-	{
-		// Deselect objects.
-		if(myVisibleEntity != NULL)
+		else if(evt.type == InputEvent::Up)
 		{
-			myVisibleEntity->deactivate();
+			// Deselect objects.
+			if(myVisibleEntity != NULL)
+			{
+				myVisibleEntity->deactivate();
+			}
 		}
-	}
-	else if(evt.type == InputEvent::Move)
-	{
-		// Manipulate object, if one is active.
-		if(myVisibleEntity != NULL)
+		else if(evt.type == InputEvent::Move)
 		{
-			Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
+			// Manipulate object, if one is active.
+			if(myVisibleEntity != NULL && myVisibleEntity->isActive())
+			{
+				Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
 
-			if(evt.isFlagSet(InputEvent::Left))
-			{
-				myVisibleEntity->manipulate(Entity::Move, ray);
-			}
-			else if(evt.isFlagSet(InputEvent::Right))
-			{
-				myVisibleEntity->manipulate(Entity::Rotate, ray);
-			}
-			else if(evt.isFlagSet(InputEvent::Middle))
-			{
-				myVisibleEntity->manipulate(Entity::Scale, ray);
-			}
+				if(evt.isFlagSet(InputEvent::Left))
+				{
+					myVisibleEntity->manipulate(Entity::Move, ray);
+				}
+				else if(evt.isFlagSet(InputEvent::Right))
+				{
+					myVisibleEntity->manipulate(Entity::Rotate, ray);
+				}
+				else if(evt.isFlagSet(InputEvent::Middle))
+				{
+					myVisibleEntity->manipulate(Entity::Scale, ray);
+				}
 
+			}
 		}
 	}
 }
@@ -160,6 +176,12 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt, UpdateContext& context
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const InputEvent& evt, DrawContext& context)
 {
+	int vx1 = context.viewport[0][0];
+	int vy1 = context.viewport[0][1];
+	int vx2 = context.viewport[0][0] + context.viewport[1][0];
+	int vy2 = context.viewport[0][1] + context.viewport[1][1];
+	printf("%d %d %d %d\n", vx1, vy1, vx2, vy2);
+
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)
@@ -189,7 +211,7 @@ void MeshViewerClient::draw(const DrawContext& context)
 		myEngine->draw(context, EngineClient::DrawScene);
 		break;
 	case 2:
-		myEngine->draw(context, EngineClient::DrawUI);
+		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 		break;
 	}
 }
