@@ -158,7 +158,7 @@ void OpenNIService::poll(void)
 
 				InputEvent* theEvent = myOpenNI->writeHead();
 				theEvent->sourceId = aUsers[i];
-				theEvent->serviceType = InputService::OpenNI;
+				theEvent->serviceType = InputService::Mocap;
 
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);

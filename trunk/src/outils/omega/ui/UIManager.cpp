@@ -107,7 +107,7 @@ void UIManager::draw(const Recti& viewport)
 bool UIManager::processInputEvent(const InputEvent& evt)
 {
 	// UI widgets only manage touch and pointer events.
-	if(evt.serviceType == InputService::Touch || evt.serviceType == InputService::Pointer)
+	if(evt.serviceType == InputService::Pointer)
 	{
 		myRootContainer->processInputEvent(evt);
 	}
