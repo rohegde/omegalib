@@ -102,6 +102,7 @@ namespace omega
 		//@{
 		GpuProgram* getDefaultProgram();
 		RenderTarget* getFrameBuffer();
+		void setFrameBuffer(RenderTarget* fb);
 		ApplicationClient* getClient();
 		//@}
 
@@ -128,6 +129,8 @@ namespace omega
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
 		ComputeShaderDictionary myComputeShaders;
+
+		//! Current frame buffer.
 		RenderTarget* myFrameBuffer;
 
 		// Default gpu program
@@ -148,6 +151,10 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline RenderTarget* GpuManager::getFrameBuffer()
 	{ return myFrameBuffer; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void RenderTarget::setFrameBuffer(RenderTarget* fb)
+	{ myFrameBuffer = fb; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ApplicationClient* GpuManager::getClient()

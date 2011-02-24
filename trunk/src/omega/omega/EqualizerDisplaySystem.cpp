@@ -387,8 +387,8 @@ class PipeImpl: public eq::Pipe
 {
 public:
 	PipeImpl(eq::Node* parent): eq::Pipe(parent), myClient(NULL), myInitialized(false) {}
-
 	ApplicationClient* getClient() { return myClient; }
+	FrameData& getFrameData() { return myFrameData; }
 
 protected:
 	virtual ~PipeImpl() {}
@@ -428,9 +428,13 @@ protected:
 	{
 		eq::Pipe::frameStart(frameID, frameNumber);
 
+		// Activate the glew context for this pipe, so initialize and update client
+		// methods can handle openGL buffers associated with this Pipe.
+		// NOTE: getting the glew context from the first window is correct since all
+		// windows attached to the same pape share the same Glew (and OpenGL) contexts.
 		const GLEWContext* glewc = getWindows()[0]->glewGetContext();
-
 		glewSetContext(glewc);
+
 		// Initialize the client at the first frame.
 		if(!myInitialized)
 		{
@@ -442,6 +446,9 @@ protected:
 			// Syncronize frame data (containing input events and possibly other stuff)
 			myFrameData.sync(frameID);
 
+			UpdateContext context;
+			context.frameNum = frameNumber;
+
 			// Dispatch received events events to application client.
 			int av = myFrameData.getNumEvents();
 			if(av != 0)
@@ -449,12 +456,12 @@ protected:
 				for( int evtNum = 0; evtNum < av; evtNum++)
 				{
 					InputEvent& evt = myFrameData.getEvent(evtNum);
-					myClient->handleEvent(evt);
+					if(!evt.processed)
+					{
+						evt.processed = myClient->handleEvent(evt, context);
+					}
 				}
 			}
-
-			UpdateContext context;
-			context.frameNum = frameNumber;
 			myClient->update(context);
 		}
 	}
@@ -487,44 +494,53 @@ protected:
 	virtual void frameDraw( const uint128_t& spin )
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-		
+		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+		FrameData& fd = pipe->getFrameData();
+		ApplicationClient* client = pipe->getClient();
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+
 		makeCurrent();
 
 		// setup OpenGL State
 		eq::Channel::frameDraw( spin );
 
-		PipeImpl* pipe = (PipeImpl*)getPipe();
-
 		eq::PixelViewport pvp = getPixelViewport();
 
 		// setup the context viewport.
 		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
+		DrawContext context;
 		context.frameNum = spin.low();
-
 		context.glContext = this;
+		context.viewport[0][0] = pvp.x;
+		context.viewport[0][1] = pvp.y;
+		context.viewport[1][0] = pvp.w;
+		context.viewport[1][1] = pvp.h;
 
-		Recti viewport;
-		Matrix4f modelview;
-		Matrix4f projection;
+		// Can we get the matrix out of equalizer instead of using opengl?
+		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.begin() );
+		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.begin() );
 
-		viewport[0][0] = pvp.x;
-		viewport[0][1] = pvp.y;
-		viewport[1][0] = pvp.w;
-		viewport[1][1] = pvp.h;
-		glGetFloatv( GL_MODELVIEW_MATRIX, modelview.begin() );
-		glGetFloatv( GL_PROJECTION_MATRIX, projection.begin() );
-
-		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-		ds->setClientTransforms(pipe->getClient(), modelview, projection, viewport);
-
-		//printf("%f\n", myWindow->getFPS());
+		// Dispatch received events events to application client.
+		int av = fd.getNumEvents();
+		if(av != 0)
+		{
+			for( int evtNum = 0; evtNum < av; evtNum++)
+			{
+				InputEvent& evt = fd.getEvent(evtNum);
+				// If event has not been processed during update, handle it now.
+				if(!evt.processed)
+				{
+					evt.processed = client->handleEvent(evt, context);
+				}
+			}
+		}
 
 		for(int i = 0; i < Application::MaxLayers; i++)
 		{
 			if(view->isLayerEnabled(i))
 			{
 				context.layer = i;
-				pipe->getClient()->draw(context);
+				client->draw(context);
 			}
 		}
 	}
@@ -539,7 +555,6 @@ protected:
 	}
 
 private:
-	DrawContext context;
 	eq::Window* myWindow;
 };
 

@@ -50,6 +50,7 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct InputEvent
 	{
+		InputEvent();
 		//! Supported event types.
 		enum Type 
 		{ 
@@ -126,47 +127,48 @@ namespace omega
 			User = 1 << 16
 		};
 
-		static const int PointSetSize = 32;
+		static const int MaxPointSetSize = 32;
 
-		// id of the source of this event. Input services associate unique ids to each of their event sources.
+		//! Set to true if this even has been processed already.
+		bool processed;
+
+		//! id of the source of this event. Input services associate unique ids to each of their event sources.
 		unsigned int sourceId;
 	
-		// Type of the service that generated this event.
+		//! Type of the service that generated this event.
 		enum InputService::ServiceType serviceType;
 
-		// Unique id of the service that generated this event.
+		//! Unique id of the service that generated this event.
 		int serviceId;
 
-		// The event type.
+		//! The event type.
 		enum Type type;
 
-		// Event flags.
+		//! Event flags.
 		unsigned int flags;
 
-		// Event timestamp.
+		//! Event timestamp.
 		unsigned int timestamp;
 
-		// Position 
+		//! Position 
 		Vector3f position;
 
-		// Rotation.
+		//! Rotation.
 		Quaternion orientation;
 
-		// Vector storing additional event parameters (i.e. split distance / ratio for Split events)
+		//! Vector storing additional event parameters (i.e. split distance / ratio for Split events)
 		Vector3f value;
 
-		// Point set
+		//! Point set
 		int numberOfPoints;
-		Vector3f pointSet[PointSetSize];
-
-		bool isFlagSet(uint flag) const;
+		Vector3f pointSet[MaxPointSetSize];
 
 		// NOTE: event serialization services are used only in clustered / multidisplay systems.
 		// If display system building is disabled, this code can be safely excluded.
 		// Right now, event serialization for NetService / oinputserver and display system
 		// serialization (this) are implemented as separate facilities. We may think of joining them
 		// sometime in the future.
-		// ALso, this feature relies on Equalizer deta streams, so it is enabled only for builds
+		// ALso, this feature relies on Equalizer data streams, so it is enabled only for builds
 		// that support equalizer.
 	#ifdef OMEGA_USE_DISPLAY_EQUALIZER
 		//! Serialize an InputEvent instance.
@@ -180,7 +182,7 @@ namespace omega
 			os << position[0] << position[1] << position[2];
 			os << orientation[0] << orientation[1] << orientation[2] << orientation[3];
 			os << numberOfPoints;
-			for(int i = 0; i < PointSetSize; i++)
+			for(int i = 0; i < numberOfPoints; i++)
 			{
 				os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
 			}
@@ -197,16 +199,23 @@ namespace omega
 			is >> position[0] >> position[1] >> position[2];
 			is >> orientation[0] >> orientation[1] >> orientation[2] >> orientation[3];
 			is >> numberOfPoints;
-			for(int i = 0; i < PointSetSize; i++)
+			for(int i = 0; i < numberOfPoints; i++)
 			{
 				is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
 			}
 		}
 	#endif
+		bool isFlagSet(uint flag) const;
 	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool InputEvent::isFlagSet(uint flag) const
 	{ return (flags & flag) == flag; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline InputEvent::InputEvent():
+		processed(false)
+	{}
 
 }; // namespace omega
 

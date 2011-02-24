@@ -80,12 +80,18 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::processPointerEvent(const InputEvent& evt)
+void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& context)
 {
+		// Select objects.
+		Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
+
+		//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+		//glPointSize(5);
+		//glBegin(GL_POINTS);
+		//glVertex3fv(ray.getOrigin().begin());
+		//glEnd();
 	if(evt.type == InputEvent::Down)
 	{
-		// Select objects.
-		Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]));
 
 		if(myVisibleEntity != NULL)
 		{
@@ -109,7 +115,7 @@ void MeshViewerClient::processPointerEvent(const InputEvent& evt)
 		// Manipulate object, if one is active.
 		if(myVisibleEntity != NULL)
 		{
-			Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]));
+			Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
 
 			if(evt.isFlagSet(InputEvent::Left))
 			{
@@ -129,32 +135,40 @@ void MeshViewerClient::processPointerEvent(const InputEvent& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::processObserverEvent(const InputEvent& evt)
+bool MeshViewerClient::handleEvent(const InputEvent& evt, UpdateContext& context)
 {
-	if(evt.position.length() > 0.1f)
+	myEngine->handleEvent(evt);
+
+	switch(evt.serviceType)
 	{
-		getDisplaySystem()->getObserver(0)->update(evt.position, evt.orientation);
+	case InputService::Mocap:
+		// Update observer
+		if(evt.sourceId == 1)
+		{
+			if(evt.position.length() > 0.1f)
+			{
+				getDisplaySystem()->getObserver(0)->update(evt.position, evt.orientation);
+			}
+			return true;
+		}
+	break;
 	}
+	return false;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const InputEvent& evt)
+bool MeshViewerClient::handleEvent(const InputEvent& evt, DrawContext& context)
 {
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)
 	{
 	case InputService::Pointer:
-		processPointerEvent(evt);
-		break;
-	case InputService::Touch:
-	break;
-	case InputService::Mocap:
-		// Update observer
-		if(evt.sourceId == 1) processObserverEvent(evt);
-	break;
+		processPointerEvent(evt, context);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

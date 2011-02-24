@@ -64,14 +64,6 @@ public:
 
 	virtual DisplaySystemType getId() { return Invalid; }
 
-	//! Set the client modelview, projection and viewport
-	void setClientTransforms(ApplicationClient* client, const Matrix4f& modelview, const Matrix4f& projection, const Recti& viewport)
-	{
-		client->setModelViewMatrix(modelview);
-		client->setProjectionMatrix(projection);
-		client->setViewport(viewport);
-	}
-
 	void setClientResolution(ApplicationClient* client, const Vector2i& resolution)
 	{
 		client->setResolution(resolution);
