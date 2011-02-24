@@ -38,6 +38,10 @@
 #include <algorithm>
 #include <math.h>
 
+#ifdef OMEGA_OS_LINUX
+#include <float.h>
+#endif
+
 #include "omega/glheaders.h"
 
 #define min(a, b)  ((a)<(b))?(a):(b)
