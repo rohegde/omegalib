@@ -367,7 +367,7 @@ namespace vmml
 			const vector<3,T>& fallbackAxis = vector<3,T>::ZERO);
 
 		static inline 
-		ray<T> unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport);
+		ray<T> unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport, float z = 0.0f);
 
         static const T PositiveInfinity;
         static const T NegativeInfinity;
@@ -1387,7 +1387,7 @@ namespace vmml
 	}
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	ray<T> math<T>::unproject(const vector<2, float>& point, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport)
+	ray<T> math<T>::unproject(const vector<2, float>& point, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport, float z)
 	{
 		vector<3, T> origin;
 		vector<3, T> direction;
@@ -1408,8 +1408,6 @@ namespace vmml
         in[2] = 1.0f;
 		vector<4, T> m2 = m * in;
 		m2 = m2 / m2[3];
-
-		float z = 0;
 
 		float t = (z - m1[2]) / (m2[2] - m1[2]);
 		origin[0] = m1[0] + t * (m2[0] - m1[0]);

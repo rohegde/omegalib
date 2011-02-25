@@ -54,7 +54,7 @@ namespace scene
 
 		void cleanup();
 
-		void loadMesh(omega::String name, omega::String filename, MeshFormat format, bool rescale = false);
+		void loadMesh(omega::String name, omega::String filename, MeshFormat format, float rescale = 0.0f);
 		Mesh* getMesh(omega::String name);
 		void addMesh(omega::String name, MeshData* data);
 

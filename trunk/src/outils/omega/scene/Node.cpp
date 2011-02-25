@@ -712,6 +712,7 @@ void Node::requestUpdate(Node* child, bool forceParentUpdate)
         return;
     }
 
+	mNeedChildUpdate = true;
     mChildrenToUpdate.insert(child);
     // Request selective update of me, if we didn't do it before
     if (mParent && (!mParentNotified || forceParentUpdate))

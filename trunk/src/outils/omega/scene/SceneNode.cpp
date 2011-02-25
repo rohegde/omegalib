@@ -88,7 +88,7 @@ void SceneNode::draw()
 void SceneNode::update(bool updateChildren, bool parentHasChanged)
 {
     // Short circuit the off case
-    if (!updateChildren && !mNeedParentUpdate && !mNeedChildUpdate && !parentHasChanged )
+    if (!updateChildren && !mNeedParentUpdate && !mNeedChildUpdate && !parentHasChanged)
     {
         return;
     }
