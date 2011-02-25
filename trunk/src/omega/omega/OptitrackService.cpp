@@ -9,7 +9,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * MouseService method definitions. See MouseService.h for more details.
  *********************************************************************************************************************/
-#include "omega/input/OptiTrackService.h"
+#include "omega/OptiTrackService.h"
 #include "omega/SystemManager.h"
 
 using namespace omega;
@@ -21,7 +21,7 @@ using namespace omega;
 //	{
 //		mysInstance->lockEvents();
 //
-//		InputEvent* evt = mysInstance->writeHead();
+//		Event* evt = mysInstance->writeHead();
 //		//	evt->id = OM_ID_MOUSE;
 //		//	evt->source = OM_DC_POINTER;
 //		//	evt->type = OM_EVENT_MOVE;
@@ -141,11 +141,11 @@ void OptiTrackService::poll()
 			//printf("x=%.3f  y=%.3f  z=%.3f   yaw=%.3f  pitch=%.3f  roll=%.3f \n", x.dblVal, y.dblVal, z.dblVal, yaw.dblVal, pitch.dblVal, roll.dblVal);
 			lockEvents();
 
-			InputEvent* evt = writeHead();
+			Event* evt = writeHead();
 			//	evt->id = OM_ID_MOUSE;
 			//	evt->source = OM_DC_POINTER;
 			//	evt->type = OM_EVENT_MOVE;
-			evt->serviceType = InputService::Mocap;
+			evt->serviceType = Service::Mocap;
 
 			evt->sourceId = 1;
 			evt->position[0] = -x.dblVal / 1000.0f;

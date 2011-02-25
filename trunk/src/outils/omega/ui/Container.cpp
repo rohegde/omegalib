@@ -387,7 +387,7 @@ void Container::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Container::processInputEvent(const InputEvent& evt)
+bool Container::processInputEvent(const Event& evt)
 {
 	myLastEvent = evt;
 	bool processed = false;

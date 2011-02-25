@@ -64,7 +64,7 @@ void EngineClient::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool EngineClient::handleEvent(const InputEvent& evt)
+bool EngineClient::handleEvent(const Event& evt)
 {
 	return myUIManager->processInputEvent(evt);
 }

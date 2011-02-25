@@ -24,39 +24,38 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BUTTON_H__
-#define __BUTTON_H__
+#include "omega/Service.h"
+#include "omega/ServiceManager.h"
 
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Label.h"
+using namespace omega;
 
-namespace omega
-{
-namespace ui
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API Button: public AbstractButton
-{
-public:
-	Button(omega::String name);
-	virtual ~Button();
+void Service::lockEvents() 
+{ 
+	myManager->lockEvents(); 
+}
 
-	omega::String getText() { return myLabel.getText(); }
-	void setText(omega::String value) { myLabel.setText(value); }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Service::unlockEvents() 
+{ 
+	myManager->unlockEvents(); 
+}
 
-	// Gets the label subobject used by the button.
-	Label* getLabel() { return &myLabel; }
-	virtual void autosize();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Event* Service::writeHead()
+{ 
+	return myManager->writeHead(); 
 
-protected:
-		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
-		virtual void renderContent();
+}
 
-protected:
-	Label myLabel;
-};
-}; // namespace gfx
-}; // namespace omega
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Event* Service::readHead()
+{ 
+	return myManager->readHead();
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Event* Service::readTail()
+{ 
+	return myManager->readTail(); 
+}

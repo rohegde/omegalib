@@ -39,8 +39,8 @@ SET( srcs
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
-		omega/InputManager.cpp
-		omega/InputService.cpp
+		omega/ServiceManager.cpp
+		omega/Service.cpp
         omega/Observer.cpp
 		omega/SystemManager.cpp
 		omega/StringUtils.cpp
@@ -57,10 +57,9 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/InputEvent.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/InputManager.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/InputService.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/InputFilter.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Event.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Service.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
@@ -130,52 +129,51 @@ endif(OMEGA_USE_DISPLAY)
 
 set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
 if(OMEGA_USE_MOUSE)
-	set( srcs	 ${srcs} omega/input/MouseService.cpp )
-	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/MouseService.h )
+	set( srcs	 ${srcs} omega/MouseService.cpp )
+	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
 	add_definitions( -DOMEGA_USE_MOUSE)
 endif(OMEGA_USE_MOUSE)
 
 if(WIN32)
 	set(OMEGA_USE_NATURAL_POINT true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
 	if(OMEGA_USE_NATURAL_POINT)
-		set( srcs	 ${srcs} omega/input/NaturalPointService.cpp )
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NaturalPointService.h )
+		set( srcs	 ${srcs} omega/NaturalPointService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NaturalPointService.h )
 		add_definitions( -DOMEGA_USE_NATURAL_POINT)
 	ENDIF(OMEGA_USE_NATURAL_POINT)
 
 	set(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
 	if(OMEGA_USE_OPTITRACK)
-		set( srcs	 ${srcs} omega/input/OptiTrackService.cpp )
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OptiTrackService.h )
+		set( srcs	 ${srcs} omega/OptiTrackService.cpp )
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OptiTrackService.h )
 		add_definitions( -DOMEGA_USE_OPTITRACK)
 	endif(OMEGA_USE_OPTITRACK)
 
 	set(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
 	if(OMEGA_USE_PQLABS)
-		set( srcs	 ${srcs} omega/input/PQService.cpp )
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/PQService.h )
+		set( srcs	 ${srcs} omega/PQService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/PQService.h )
 		add_definitions( -DOMEGA_USE_PQLABS)
 	endif(OMEGA_USE_PQLABS)
 
 	set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
 	if(OMEGA_USE_NETSERVICE)
-		set( srcs	 ${srcs} omega/input/NetService.cpp )
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/NetService.h )
+		set( srcs	 ${srcs} omega/NetService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NetService.h )
 		add_definitions( -DOMEGA_USE_NETSERVICE)
 	endif(OMEGA_USE_NETSERVICE)
 
 	SET(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support")
 	IF(OMEGA_USE_OPENNI)
-		SET( srcs	 ${srcs} omega/input/OpenNIService.cpp )
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/input/OpenNIService.h )
+		SET( srcs	 ${srcs} omega/OpenNIService.cpp )
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OpenNIService.h )
 		ADD_DEFINITIONS( -DOMEGA_USE_OPENNI)
 		INCLUDE_DIRECTORIES(${OmegaLib_SOURCE_DIR}/ext/windows/include/openni)
 ENDIF(OMEGA_USE_OPENNI)
 endif(WIN32)
 ###################################################################################################
-# Group source files into separate folders foe visual studio project (this is just eye candy)
+# Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
-source_group(omega::input REGULAR_EXPRESSION omega/input/)		
 source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
 source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
 source_group(vmml REGULAR_EXPRESSION vmmlib)		

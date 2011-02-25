@@ -24,39 +24,54 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BUTTON_H__
-#define __BUTTON_H__
+#ifndef __INPUT_SERVICE_H__
+#define __INPUT_SERVICE_H__
 
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Label.h"
+#include "osystem.h"
 
 namespace omega
 {
-namespace ui
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Forward declarations
+struct Event;
+class ServiceManager;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class Service
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API Button: public AbstractButton
-{
+friend class ServiceManager;
 public:
-	Button(omega::String name);
-	virtual ~Button();
+	enum ServiceType { Pointer, Mocap, Keyboard, Controller }; 
 
-	omega::String getText() { return myLabel.getText(); }
-	void setText(omega::String value) { myLabel.setText(value); }
+public:
+	// Class constructor
+	Service(): myManager(NULL) {}
 
-	// Gets the label subobject used by the button.
-	Label* getLabel() { return &myLabel; }
-	virtual void autosize();
+   // Class destructor
+	virtual ~Service() {}
+
+	ServiceManager* getManager() { return myManager; }
+
+	virtual void setup(Setting& settings) {}
+	virtual void initialize() {}
+	virtual void start() {}
+	virtual void poll() {}
+	virtual void stop() {}
+	virtual void dispose() {}
 
 protected:
-		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
-		virtual void renderContent();
+	void lockEvents();
+	void unlockEvents();
+	Event* writeHead();
+	Event* readHead();
+	Event* readTail();
 
-protected:
-	Label myLabel;
+private:
+	void setManager(ServiceManager* mng) { myManager = mng; }
+
+private:
+	ServiceManager* myManager;
 };
-}; // namespace gfx
 }; // namespace omega
 
 #endif

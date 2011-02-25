@@ -3,7 +3,6 @@
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Brad McGinnis
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
@@ -25,46 +24,44 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MOTION_CAPTURE_SERVICE_H__
-#define __MOTION_CAPTURE_SERVICE_H__
+#ifndef __TRACKIR__SERVICE_H__
+#define __TRACKIR__SERVICE_H__
 
 #include "omega/osystem.h"
-#include "omega/InputManager.h"
-#include "natnet/NatNetTypes.h"
-#include "natnet/NatNetClient.h"
-#include "winsock2.h"
+#include "omega/ServiceManager.h"
+
+#include "optitrack/optitrack.h"
+#import  "optitrack/optitrack.tlb"
+
+#ifdef WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <objbase.h>
+#include <atlbase.h>
+#endif
 
 namespace omega
 {
-	class NaturalPointService : public InputService
-	{
-	public:
-		// Allocator function
-		static NaturalPointService* New() { return new NaturalPointService(); }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class OptiTrackService: public Service
+{
+public:
+	// Allocator function
+	static OptiTrackService* New() { return new OptiTrackService(); }
 
-	public:
-		NaturalPointService();
-		~NaturalPointService();
-		void setup( Setting& settings);
-		static void __cdecl frameController(sFrameOfMocapData* data, void* pUserData);
-		static void __cdecl messageController(int msgType, char* msg);
-		virtual void initialize();
-		virtual void start();//initialize and start service here
-		virtual void stop();//destroy service instance to stop
-		virtual void dispose();
-		void useQuaternion ();
-		void useEuler ();
-		//may want to support the option to choose whether to have unicast or multicast networking
-		//for now it is hard coded to multicast
-	private:
-		static double Pi;
-		static NaturalPointService* myMoCap;
-		NatNetClient* pClient;
-		int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
-		char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
-		char serverIP[128];		//Server's IP address assumed to be local if left blank
-		static bool isEuler;			//tells whether Euler or Quaternion angles are used. TRUE = Euler  FALSE = Quaternion
-	};//class MoCapService
+public:
 
-};//namespace omega
+	virtual void initialize();
+	virtual void start();
+	virtual void poll();
+	virtual void stop();
+	virtual void dispose();
+
+private:
+    CComPtr<INPCamera>	myCamera;
+	CComPtr<INPVector3> myVector;
+};
+
+}; // namespace omega
+
 #endif

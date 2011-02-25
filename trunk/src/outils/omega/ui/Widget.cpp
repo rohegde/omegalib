@@ -220,7 +220,7 @@ void Widget::setActualSize(int value, Orientation orientation, bool force)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Widget::processInputEvent(const InputEvent& evt) 
+bool Widget::processInputEvent(const Event& evt) 
 {
 	return false; 
 }

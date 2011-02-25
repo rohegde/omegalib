@@ -117,12 +117,12 @@ public:
 	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL) {}
 
 	virtual void initialize();
-	virtual bool handleEvent(const InputEvent& evt, DrawContext& context);
-	virtual bool handleEvent(const InputEvent& evt, UpdateContext& context);
+	virtual bool handleEvent(const Event& evt, DrawContext& context);
+	virtual bool handleEvent(const Event& evt, UpdateContext& context);
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
 
-	void processPointerEvent(const InputEvent& evt, DrawContext& context);
+	void processPointerEvent(const Event& evt, DrawContext& context);
 
 	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);

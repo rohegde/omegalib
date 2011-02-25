@@ -29,7 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SelectionSphere::draw(SceneNode* node)
 {
-	//if(myVisible)
+	if(myVisible)
 	{
 		float radius = node->getBoundingSphere().getRadius();
 		float stp = Math::Pi * 2 / 32;
@@ -76,7 +76,7 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 	myName = name;
 	myMesh = m;
 	mySelectionSphere = new SelectionSphere(this);
-	mySelectionSphere->setVisible(true);
+	mySelectionSphere->setVisible(false);
 	myVisible = false;
 	myActive = false;
 

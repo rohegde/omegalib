@@ -1,28 +1,30 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Alessandro Febretti							febret@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
- * following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
  * 
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
- * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
- * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
  * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
- * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
- * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************************************************************/
-#include "omega/InputManager.h"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
 #include "omega/Config.h"
@@ -41,22 +43,22 @@
 
 // Input services
 #ifdef OMEGA_USE_NATURAL_POINT
-	#include "omega/input/NaturalPointService.h"
+	#include "omega/NaturalPointService.h"
 #endif
 #ifdef OMEGA_USE_MOUSE
-	#include "omega/input/MouseService.h"
+	#include "omega/MouseService.h"
 #endif
 #ifdef OMEGA_USE_NETSERVICE
-	#include "omega/input/NetService.h"
+	#include "omega/NetService.h"
 #endif
 #ifdef OMEGA_USE_PQLABS
-	#include "omega/input/PQService.h"
+	#include "omega/PQService.h"
 #endif
 #ifdef OMEGA_USE_OPTITRACK
-	#include "omega/input/OptiTrackService.h"
+	#include "omega/OptiTrackService.h"
 #endif
 #ifdef OMEGA_USE_OPENNI
-	#include "omega/input/OpenNIService.h"
+	#include "omega/OpenNIService.h"
 #endif
 
 using namespace omega;
@@ -105,36 +107,36 @@ void SystemManager::setup(Config* appcfg)
 
 	oassert(mySystemConfig->isLoaded());
 
-	setupInputManager();
+	setupServiceManager();
 #ifdef OMEGA_USE_DISPLAY
 	setupDisplaySystem();
 #endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::setupInputManager()
+void SystemManager::setupServiceManager()
 {
-	myInputManager = new InputManager(this);
+	myServiceManager = new ServiceManager(this);
 
 	// register standard input services.
 	// @todo: I don't understand why a static_cast does not work here.
 #ifdef OMEGA_USE_MOUSE
-	registerInputService("MouseService", (InputServiceAllocator)MouseService::New);
+	registerService("MouseService", (ServiceAllocator)MouseService::New);
 #endif
 #ifdef OMEGA_USE_MOCAP
-	registerInputService("MoCapService", (InputServiceAllocator)MoCapService::New);
+	registerService("MoCapService", (ServiceAllocator)MoCapService::New);
 #endif
 #ifdef OMEGA_USE_NETSERVICE
-	registerInputService("NetService", (InputServiceAllocator)NetService::New);
+	registerService("NetService", (ServiceAllocator)NetService::New);
 #endif
 #ifdef OMEGA_USE_PQLABS
-	registerInputService("PQService", (InputServiceAllocator)PQService::New);
+	registerService("PQService", (ServiceAllocator)PQService::New);
 #endif
 #ifdef OMEGA_USE_OPTITRACK
-	registerInputService("OptiTrackService", (InputServiceAllocator)OptiTrackService::New);
+	registerService("OptiTrackService", (ServiceAllocator)OptiTrackService::New);
 #endif
 #ifdef OMEGA_USE_OPENNI
-	registerInputService("OpenNIService", (InputServiceAllocator)OpenNIService::New);
+	registerService("OpenNIService", (ServiceAllocator)OpenNIService::New);
 #endif
 
 	// Instantiate input services
@@ -145,13 +147,13 @@ void SystemManager::setupInputManager()
 		for(int i = 0; i < stServices.getLength(); i++)
 		{
 			Setting& stSvc = stServices[i];
-			InputServiceAllocator svcAllocator = findInputService(stSvc.getName());
+			ServiceAllocator svcAllocator = findServiceAllocator(stSvc.getName());
 			if(svcAllocator != NULL)
 			{
 				// Input service found: create and setup it.
-				InputService* svc = svcAllocator();
+				Service* svc = svcAllocator();
 				svc->setup(stSvc);
-				myInputManager->addService(svc);
+				myServiceManager->addService(svc);
 
 				omsg("Input service added: %s", stSvc.getName());
 			}
@@ -213,7 +215,7 @@ void SystemManager::initialize()
 #ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
 #endif
-	myInputManager->initialize();
+	myServiceManager->initialize();
 
 	// Initialize the application object (if present)
 	// XXX If myApp = NULL then I still get an Exception - Vic
@@ -228,7 +230,7 @@ void SystemManager::run()
 	// If the system manager has not been initialized yet, do it now.
 	if(!myIsInitialized) initialize();
 
-	myInputManager->start();
+	myServiceManager->start();
 #ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem)
 	{
@@ -257,15 +259,15 @@ void SystemManager::postExitRequest(const String& reason)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::registerInputService(String svcName, InputServiceAllocator creationFunc)
+void SystemManager::registerService(String svcName, ServiceAllocator creationFunc)
 {
-	myInputServiceRegistry.insert(InputServiceDictionary::value_type(std::string(svcName), creationFunc));
+	myServiceRegistry.insert(ServiceAllocatorDictionary::value_type(std::string(svcName), creationFunc));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputServiceAllocator SystemManager::findInputService(String svcName)
+ServiceAllocator SystemManager::findServiceAllocator(String svcName)
 {
-	InputServiceDictionary::const_iterator elem = myInputServiceRegistry.find(svcName);
-	if(elem == myInputServiceRegistry.end()) return NULL;
+	ServiceAllocatorDictionary::const_iterator elem = myServiceRegistry.find(svcName);
+	if(elem == myServiceRegistry.end()) return NULL;
 	return elem->second;
 }

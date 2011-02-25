@@ -80,7 +80,7 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& context)
+void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& context)
 {
 	int vx1 = context.viewport[0][0];
 	int vy1 = context.viewport[0][1];
@@ -101,11 +101,15 @@ void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& c
 		glVertex3fv(ray.getOrigin().begin());
 		glEnd();
 
+		printf("%.2f %.2f %2.f -> %.2f %.2f %.2f\n", 
+			ray.getOrigin()[0], ray.getOrigin()[1], ray.getOrigin()[2],
+			ray.getDirection()[0], ray.getDirection()[1], ray.getDirection()[2]);
+
 		//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
 		//glRecti(vx1, vy1, vx2, vy2);
 		//glRecti(0, 0, context.viewport[1][0], context.viewport[1][1]);
 
-		if(evt.type == InputEvent::Down)
+		if(evt.type == Event::Down)
 		{
 
 			if(myVisibleEntity != NULL)
@@ -117,7 +121,7 @@ void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& c
 				}
 			}
 		}
-		else if(evt.type == InputEvent::Up)
+		else if(evt.type == Event::Up)
 		{
 			// Deselect objects.
 			if(myVisibleEntity != NULL)
@@ -125,22 +129,22 @@ void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& c
 				myVisibleEntity->deactivate();
 			}
 		}
-		else if(evt.type == InputEvent::Move)
+		else if(evt.type == Event::Move)
 		{
 			// Manipulate object, if one is active.
 			if(myVisibleEntity != NULL && myVisibleEntity->isActive())
 			{
 				Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
 
-				if(evt.isFlagSet(InputEvent::Left))
+				if(evt.isFlagSet(Event::Left))
 				{
 					myVisibleEntity->manipulate(Entity::Move, ray);
 				}
-				else if(evt.isFlagSet(InputEvent::Right))
+				else if(evt.isFlagSet(Event::Right))
 				{
 					myVisibleEntity->manipulate(Entity::Rotate, ray);
 				}
-				else if(evt.isFlagSet(InputEvent::Middle))
+				else if(evt.isFlagSet(Event::Middle))
 				{
 					myVisibleEntity->manipulate(Entity::Scale, ray);
 				}
@@ -151,13 +155,13 @@ void MeshViewerClient::processPointerEvent(const InputEvent& evt, DrawContext& c
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const InputEvent& evt, UpdateContext& context)
+bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 {
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)
 	{
-	case InputService::Mocap:
+	case Service::Mocap:
 		// Update observer
 		if(evt.sourceId == 1)
 		{
@@ -174,19 +178,19 @@ bool MeshViewerClient::handleEvent(const InputEvent& evt, UpdateContext& context
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const InputEvent& evt, DrawContext& context)
+bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
 {
-	int vx1 = context.viewport[0][0];
-	int vy1 = context.viewport[0][1];
-	int vx2 = context.viewport[0][0] + context.viewport[1][0];
-	int vy2 = context.viewport[0][1] + context.viewport[1][1];
-	printf("%d %d %d %d\n", vx1, vy1, vx2, vy2);
+	//int vx1 = context.viewport[0][0];
+	//int vy1 = context.viewport[0][1];
+	//int vx2 = context.viewport[0][0] + context.viewport[1][0];
+	//int vy2 = context.viewport[0][1] + context.viewport[1][1];
+	//printf("PT %d %d of %d %d %d %d\n", (int)evt.position[0], (int)evt.position[1], vx1, vy1, vx2, vy2);
 
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)
 	{
-	case InputService::Pointer:
+	case Service::Pointer:
 		processPointerEvent(evt, context);
 		return true;
 	}

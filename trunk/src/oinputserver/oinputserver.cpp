@@ -1,16 +1,31 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Arthur Nishimoto							anishimoto42@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * Test executable
- *********************************************************************************************************************/
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #include "omega.h"
-#include "omega/input/MouseService.h"
+#include "omega/MouseService.h"
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -53,7 +68,7 @@ public:
 
 	void NetClient::sendEvent( char* eventPacket ){
 		// Send a datagram to the receiver
-		printf("InputService: Sending datagram '%s' to receiver...\n", eventPacket);
+		printf("Service: Sending datagram '%s' to receiver...\n", eventPacket);
 		sendto(SendSocket, 
 		  eventPacket, 
 		  strlen(eventPacket), 
@@ -68,13 +83,8 @@ class TestApplication: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void draw(DrawContext& context)
-	{
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Checks the type of event. If a valid event, creates an event packet and returns true. Else return false.
-	virtual bool handleEvent(const InputEvent& evt)
+	virtual bool handleEvent(const Event& evt)
 	{
 		eventPacket = new char[99];
 		eventPacket = itoa(evt.serviceType, eventPacket, 10); // Append input type
@@ -83,7 +93,7 @@ public:
 
 		switch(evt.serviceType)
 		{
-		case InputService::Pointer:
+		case Service::Pointer:
 			x = evt.position[0];
 			y = evt.position[1];
 			//printf(" Touch type %d \n", evt.type); 
@@ -139,12 +149,12 @@ public:
 				sprintf(floatChar,"%f", evt.pointSet[1][1] );
 				strcat( eventPacket, floatChar );
 
-				if( evt.type == InputEvent::Rotate ){
+				if( evt.type == Event::Rotate ){
 					// Converts rotation to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
 					sprintf(floatChar,"%f", evt.orientation[0] );
 					strcat( eventPacket, floatChar );
-				} else if( evt.type == InputEvent::Split ){
+				} else if( evt.type == Event::Split ){
 					// Converts values to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
 					sprintf(floatChar,"%f", evt.value[0] ); // Delta distance
@@ -160,7 +170,7 @@ public:
 
 			return true;
 			break;
-		//case InputService::Pointer:
+		//case Service::Pointer:
 		//	x = evt.position[0];
 		//	y = evt.position[1];
 
@@ -174,7 +184,7 @@ public:
 		//	return true;
 		//	break;
 
-		case InputService::Mocap:
+		case Service::Mocap:
 		{
 			// Converts id to char, appends to eventPacket
 			sprintf(floatChar,"%d",evt.sourceId);
@@ -283,10 +293,10 @@ void TestApplication::startConnection(){
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
-		printf("InputService: WSAStartup failed: %d\n", iResult);
+		printf("Service: WSAStartup failed: %d\n", iResult);
 		return;
 	} else {
-		printf("InputService: Winsock initialized \n");
+		printf("Service: Winsock initialized \n");
 	}
 
 	struct addrinfo *result = NULL, *ptr = NULL, hints;
@@ -300,10 +310,10 @@ void TestApplication::startConnection(){
 	// Resolve the local address and port to be used by the server
 	iResult = getaddrinfo(NULL, serverPort, &hints, &result);
 	if (iResult != 0) {
-		printf("InputService: getaddrinfo failed: %d\n", iResult);
+		printf("Service: getaddrinfo failed: %d\n", iResult);
 		WSACleanup();
 	} else {
-		printf("InputService: Server set to listen on port %s\n", serverPort);
+		printf("Service: Server set to listen on port %s\n", serverPort);
 	}
 
 	// Create a SOCKET for the server to listen for client connections
@@ -314,18 +324,18 @@ void TestApplication::startConnection(){
 	ioctlsocket(ListenSocket,FIONBIO,&iMode);
 
 	if (ListenSocket == INVALID_SOCKET) {
-		printf("InputService: Error at socket(): %ld\n", WSAGetLastError());
+		printf("Service: Error at socket(): %ld\n", WSAGetLastError());
 		freeaddrinfo(result);
 		WSACleanup();
 		return;
 	} else {
-		printf("InputService: Listening socket created.\n");
+		printf("Service: Listening socket created.\n");
 	}
 
 	// Setup the TCP listening socket
 	iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
-		printf("InputService: bind failed: %d\n", WSAGetLastError());
+		printf("Service: bind failed: %d\n", WSAGetLastError());
 		freeaddrinfo(result);
 		closesocket(ListenSocket);
 		WSACleanup();
@@ -339,7 +349,7 @@ SOCKET TestApplication::startListening(){
 
 	// Listen on socket
 	if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-		printf( "InputService: Error at bind(): %ld\n", WSAGetLastError() );
+		printf( "Service: Error at bind(): %ld\n", WSAGetLastError() );
 		closesocket(ListenSocket);
 		WSACleanup();
 		return NULL;
@@ -365,7 +375,7 @@ SOCKET TestApplication::startListening(){
 	} else {
 		// Gets the clientInfo and extracts the IP address
 		clientAddress = inet_ntoa(clientInfo.sin_addr);
-		printf("InputService: Client '%s' Accepted.\n", clientAddress);
+		printf("Service: Client '%s' Accepted.\n", clientAddress);
 	}
 	
 	// Wait for client handshake
@@ -373,11 +383,11 @@ SOCKET TestApplication::startListening(){
 	// Because we're using a non-blocking socket, it is possible to attempt to receive before data is
 	// sent, resulting in the 'recv failed' error that is commented out.
 	bool gotData = false;
-	printf("InputService: Waiting for client handshake\n");
+	printf("Service: Waiting for client handshake\n");
 	do {
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
-			//printf("InputService: Bytes received: %d\n", iResult);
+			//printf("Service: Bytes received: %d\n", iResult);
 			char* inMessage;
 			char* portCStr;
 			inMessage = new char[iResult];
@@ -402,14 +412,14 @@ SOCKET TestApplication::startListening(){
 			if( handshake.find(inMessage) ){
 				// Get data port number
 				dataPort = atoi(portCStr);
-				printf("InputService: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
+				printf("Service: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
 				createClient( clientAddress, dataPort );
 			}
 			gotData = true;			
 		} else if (iResult == 0)
-			printf("InputService: Connection closing...\n");
+			printf("Service: Connection closing...\n");
 		else {
-			//printf("InputService: recv failed: %d\n", WSAGetLastError());
+			//printf("Service: recv failed: %d\n", WSAGetLastError());
 			//closesocket(ClientSocket);
 			//WSACleanup();
 			//return NULL;
@@ -473,7 +483,7 @@ void main(int argc, char** argv)
 	sys->setApplication(&app);
 
 	sys->initialize();
-	sys->getInputManager()->start();
+	sys->getServiceManager()->start();
 	//sys->run(); // Not used for oinputserver
 	app.startConnection();
 	
@@ -483,12 +493,12 @@ void main(int argc, char** argv)
 		app.startListening();
 
 		// Get events
-		int av = sys->getInputManager()->getAvailableEvents();
+		int av = sys->getServiceManager()->getAvailableEvents();
 		if(av != 0)
 		{
 			// @todo: Instead of copying the event list, we can lock the main one.
-			InputEvent evts[InputManager::MaxEvents];
-			sys->getInputManager()->getEvents(evts, InputManager::MaxEvents);
+			Event evts[ServiceManager::MaxEvents];
+			sys->getServiceManager()->getEvents(evts, ServiceManager::MaxEvents);
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
 				if( app.handleEvent(evts[evtNum]) ){ // is there an event?

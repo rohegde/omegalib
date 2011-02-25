@@ -142,7 +142,7 @@ namespace ui
 		void preDraw();
 		void postDraw();
 		virtual void renderContent();
-		virtual bool processInputEvent(const InputEvent& evt);
+		virtual bool processInputEvent(const Event& evt);
 		void dispatchUIEvent(UIEvent& evt);
 
 	private:
@@ -173,7 +173,7 @@ namespace ui
 		bool myAutosize;
 
 		// Last handled input event.
-		omega::InputEvent myLastEvent;
+		omega::Event myLastEvent;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

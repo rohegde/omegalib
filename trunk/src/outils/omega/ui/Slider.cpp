@@ -47,7 +47,7 @@ Slider::~Slider()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Slider::processInputEvent(const InputEvent& evt)
+bool Slider::processInputEvent(const Event& evt)
 {
 	//Vector2f point  = evt.position;
 	//
@@ -58,13 +58,13 @@ bool Slider::processInputEvent(const InputEvent& evt)
 
 	//if(!myProgressBarMode && hitTest(point, sliderPos, sliderSize))
 	//{
-	//	if(evt.type == InputEvent::Down)
+	//	if(evt.type == Event::Down)
 	//	{
 	//		myPressed = true;
 	//		myPressPos = evt.position[0];
 	//		mySmoothValue = myValue;
 	//	}
-	//	else if(evt.type == InputEvent::Up)
+	//	else if(evt.type == Event::Up)
 	//	{
 	//		myPressed = false;
 	//	}
@@ -72,15 +72,15 @@ bool Slider::processInputEvent(const InputEvent& evt)
 	//}
 	//if(hitTest(point))
 	//{
-	//	if(evt.type == InputEvent::Down && myProgressBarMode)
+	//	if(evt.type == Event::Down && myProgressBarMode)
 	//	{
 	//		myPressed = true;
 	//	}
-	//	if(evt.type == InputEvent::Up && myProgressBarMode)
+	//	if(evt.type == Event::Up && myProgressBarMode)
 	//	{
 	//		myPressed = false;
 	//	}
-	//	if(myPressed && (evt.type == InputEvent::Move || myProgressBarMode))
+	//	if(myPressed && (evt.type == Event::Move || myProgressBarMode))
 	//	{
 	//		if(!myProgressBarMode)
 	//		{

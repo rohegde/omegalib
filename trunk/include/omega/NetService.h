@@ -3,6 +3,7 @@
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
+ *  Arthur Nishimoto		anishimoto42@gmail.com
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
@@ -24,39 +25,83 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BUTTON_H__
-#define __BUTTON_H__
+#ifndef __NET_SERVICE_H__
+#define __NET_SERVICE_H__
 
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Label.h"
+#include "omega/osystem.h"
+#include "omega/ServiceManager.h"
+
+#include "pqlabs/PQMTClient.h"
+using namespace PQ_SDK_MultiTouch;
+
+#if defined (linux)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <unistd.h> // needed for close()
+#include <string>
+#endif
+#if defined (WIN32)
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#endif
 
 namespace omega
 {
-namespace ui
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API Button: public AbstractButton
+class NetService: public Service
 {
 public:
-	Button(omega::String name);
-	virtual ~Button();
+	// Allocator function
+	static NetService* New() { return new NetService(); }
 
-	omega::String getText() { return myLabel.getText(); }
-	void setText(omega::String value) { myLabel.setText(value); }
+public:
+	virtual void setup(Setting& settings);
+	virtual void initialize();
+	virtual void poll();
+	virtual void dispose();
+	void setServer(const char*,const char*);
+	void setDataport(const char*);
+private:
+	void initHandshake();
+	void parseDGram(int);
+private:
+	NetService* mysInstance;
+#if defined (WIN32)
+	WSADATA wsaData;
+	SOCKET ConnectSocket;
+	SOCKET RecvSocket;	
+#endif
+#if defined (linux)
+	int ConnectSocket;
+	int RecvSocket;
+#endif
+	struct timeval timeout;
+	sockaddr_in SenderAddr;
 
-	// Gets the label subobject used by the button.
-	Label* getLabel() { return &myLabel; }
-	virtual void autosize();
+	const char* serverAddress;
+	const char* serverPort;
+	const char* dataPort;
+	
+	
+	#define DEFAULT_BUFLEN 512
+	char recvbuf[DEFAULT_BUFLEN];
+	int iResult, iSendResult;
 
-protected:
-		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
-		virtual void renderContent();
-
-protected:
-	Label myLabel;
+	
+	int SenderAddrSize;
+	int recvbuflen;
+	bool readyToReceive;
+	int screenX;
+	int screenY;
 };
-}; // namespace gfx
+
 }; // namespace omega
 
 #endif

@@ -9,7 +9,7 @@
 *---------------------------------------------------------------------------------------------------------------------
 * NetService method definitions. See NetService.h for more details.
 *********************************************************************************************************************/
-#include "omega/input/NetService.h"
+#include "omega/NetService.h"
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,12 +345,12 @@ void NetService::parseDGram(int result)
 		params[currentParam] = atof( msgStr.substr(lastIndex,msgLen).c_str() );
 #if defined(WIN32)
 		mysInstance->lockEvents();
-		InputEvent* evt;
+		Event* evt;
 
 		switch(inputType){
 					case(1): // MoCap
 						evt = mysInstance->writeHead();
-						evt->serviceType = InputService::Mocap;
+						evt->serviceType = Service::Mocap;
 
 						evt->sourceId = (int)(params[0] + 0.5);
 						evt->position[0] = params[1];
@@ -364,15 +364,15 @@ void NetService::parseDGram(int result)
 						break;
 					case(2): // Touch (points only not gestures)
 						evt = mysInstance->writeHead();
-						evt->serviceType = InputService::Pointer;
+						evt->serviceType = Service::Pointer;
 						if( (int)(params[0]) == TP_DOWN ){
-							evt->type = InputEvent::Down;
+							evt->type = Event::Down;
 						}
 						else if( (int)(params[0]) == TP_MOVE ){
-							evt->type = InputEvent::Move;
+							evt->type = Event::Move;
 						}
 						else if( (int)(params[0]) == TP_UP ){
-							evt->type = InputEvent::Up;
+							evt->type = Event::Up;
 						}
 						evt->sourceId = (int)(params[1]);
 						evt->position[0] = params[2] * (float)screenX;
