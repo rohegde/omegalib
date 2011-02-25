@@ -36,16 +36,12 @@ namespace omega
 	class Application;
 	class Config;
 	class DisplaySystem;
-	class InputManager;
-	class InputService;
-	class InputFilter;
+	class ServiceManager;
+	class Service;
 	class DataManager;
 
-	typedef InputService* (*InputServiceAllocator)();
-	typedef Dictionary<String, InputServiceAllocator> InputServiceDictionary;
-
-	typedef InputFilter* (*InputFilterAllocator)();
-	typedef Dictionary<String, InputFilterAllocator> InputFilterDictionary;
+	typedef Service* (*ServiceAllocator)();
+	typedef Dictionary<String, ServiceAllocator> ServiceAllocatorDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// The SystemManager class is the root object of the omegalib architecture.
@@ -58,11 +54,11 @@ namespace omega
 		//! Initializes the system manager
 		void setup(Config* cfg);
 
-		void registerInputService(String svcName, InputServiceAllocator creationFunc);
+		void registerService(String svcName, ServiceAllocator creationFunc);
 
 		//! Find an input service allocator given the input service name.
 		//! See registerInputService for additional information.
-		InputServiceAllocator findInputService(String svcName);
+		ServiceAllocator findServiceAllocator(String svcName);
 
 		void initialize();
 
@@ -84,8 +80,8 @@ namespace omega
 
 		DataManager* getDataManager();
 
-		//! Gets the InputManager object
-		InputManager* getInputManager();
+		//! Gets the ServiceManager object
+		ServiceManager* getServiceManager();
 
 		//! Gets the DisplaySystem object
 		DisplaySystem* getDisplaySystem();
@@ -108,7 +104,7 @@ namespace omega
 		SystemManager();
 		~SystemManager();
 
-		void setupInputManager();
+		void setupServiceManager();
 		void setupDisplaySystem();
 
 	private:
@@ -118,16 +114,13 @@ namespace omega
 		bool myIsInitialized;
 
 		// The input manager registry.
-		InputServiceDictionary myInputServiceRegistry;
-
-		// The input service registry.
-		InputFilterDictionary myInputFilterRegistry;
+		ServiceAllocatorDictionary myServiceRegistry;
 
 		Config*			myAppConfig;
 		Config*			mySystemConfig;
 		DataManager*    myDataManager;
 		DisplaySystem*	myDisplaySystem;
-		InputManager*	myInputManager;
+		ServiceManager*	myServiceManager;
 		Application*	myApplication;
 		bool			myExitRequested;
 		String			myExitReason;
@@ -138,8 +131,8 @@ namespace omega
 	{ return myDataManager; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline InputManager* SystemManager::getInputManager() 
-	{ return myInputManager; }
+	inline ServiceManager* SystemManager::getServiceManager() 
+	{ return myServiceManager; }
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline DisplaySystem* SystemManager::getDisplaySystem() 

@@ -1399,7 +1399,7 @@ namespace vmml
 		vector<4, T> in;
 		in[0]=(point[0] - (float)viewport[0][0]) / (float)(viewport[1][0]) * 2.0f - 1.0f;
         in[1]=((viewport[1][1] - point[1]) - (float)viewport[0][1]) / (float)(viewport[1][1]) * 2.0f - 1.0f;
-        in[2]= 0.0f;
+        in[2]= -1.0f;
         in[3]=1.0f;
 
 		vector<4, T> m1 = m * in;
@@ -1409,10 +1409,16 @@ namespace vmml
 		vector<4, T> m2 = m * in;
 		m2 = m2 / m2[3];
 
-		origin = vector<3, T>(m1[0], m1[1], m1[2]);
+		float z = 0;
+
+		float t = (z - m1[2]) / (m2[2] - m1[2]);
+		origin[0] = m1[0] + t * (m2[0] - m1[0]);
+		origin[1] = m1[1] + t * (m2[1] - m1[1]);
+		origin[2] = z;
+
 		direction = vector<3, T>((m2[0] - m1[0]), (m2[1] - m1[1]), (m2[2] - m1[2]));
 		direction.normalize();
-		direction *= -1;
+		//direction *= -1;
 
 		return ray<T>(origin, direction);
 	}

@@ -24,39 +24,78 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BUTTON_H__
-#define __BUTTON_H__
+#ifndef __INPUT_MANAGER_H__
+#define __INPUT_MANAGER_H__
 
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Label.h"
+#include "osystem.h"
+#include "Application.h"
+#include "Event.h"
 
 namespace omega
 {
-namespace ui
-{
+// Forward declarations.
+class SystemManager;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API Button: public AbstractButton
+class OMEGA_API ServiceManager
 {
+friend class Service;
+
 public:
-	Button(omega::String name);
-	virtual ~Button();
+	// Class constructor.
+	ServiceManager(SystemManager* sys);
 
-	omega::String getText() { return myLabel.getText(); }
-	void setText(omega::String value) { myLabel.setText(value); }
+	// Class destructor
+	~ServiceManager();
 
-	// Gets the label subobject used by the button.
-	Label* getLabel() { return &myLabel; }
-	virtual void autosize();
+	// Add a new input service to the manager.
+	void addService(Service* svc);
+	void removeService(Service* svc);
 
-protected:
-		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
-		virtual void renderContent();
+	// initialize
+	void initialize();
+	void start();
+	void stop();
+	void dispose();
 
-protected:
-	Label myLabel;
+	// TEMPORARY: this will run in a thread in the future.
+	void poll();
+
+	void processEvents(ApplicationServer* app);
+
+	int getAvailableEvents() { return myAvailableEvents; }
+	int getDroppedEvents() { return myDroppedEvents; }
+	void resetDroppedEvents() { myDroppedEvents = 0; }
+	int getEvents(Event* ptr, int maxEvents);
+
+public:
+	// The maximum number of events stored in the event buffer.
+	static const int MaxEvents = 1024;
+
+private:
+	int incrementBufferIndex(int index);
+	int decrementBufferIndex(int index);
+	void lockEvents();
+	void unlockEvents();
+	Event* writeHead();
+	Event* readHead();
+	Event* readTail();
+
+private:
+	SystemManager*	mySys;
+	// XXX if you do not select OMEGA_USE_DISPLAY_EQUALIZER
+	// then it cannot find co - Vic
+#ifdef OMEGA_USE_DISPLAY
+	co::base::Lock  myEventBufferLock;
+#endif
+	Event*		myEventBuffer;
+	int				myEventBufferHead;
+	int				myEventBufferTail;
+	std::vector<Service*> myServices;
+
+	int myAvailableEvents;
+	int myDroppedEvents;
 };
-}; // namespace gfx
 }; // namespace omega
 
 #endif

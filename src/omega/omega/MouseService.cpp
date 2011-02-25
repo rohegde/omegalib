@@ -24,7 +24,7 @@
  *********************************************************************************************************************/
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
-#include "omega/input/MouseService.h"
+#include "omega/MouseService.h"
 
 #ifdef OMEGA_USE_DISPLAY_GLUT
 #include "GL/freeglut.h"
@@ -43,9 +43,9 @@ void MouseService::mouseMotionCallback(int x, int y)
 	{
 		mysInstance->lockEvents();
 
-		InputEvent* evt = mysInstance->writeHead();
-		evt->serviceType = InputService::Pointer;
-		evt->type = InputEvent::Move;
+		Event* evt = mysInstance->writeHead();
+		evt->serviceType = Service::Pointer;
+		evt->type = Event::Move;
 		evt->position[0] = x;
 		evt->position[1] = y;
 		evt->flags = sButtonFlags;
@@ -61,33 +61,33 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 	{
 		mysInstance->lockEvents();
 
-		InputEvent* evt = mysInstance->writeHead();
-		evt->serviceType = InputService::Pointer;
+		Event* evt = mysInstance->writeHead();
+		evt->serviceType = Service::Pointer;
 #ifdef OMEGA_USE_DISPLAY_GLUT
 		// Glut mouse callback button states are inverted wrt equalizer callbacks.
 		if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
 		{
-			evt->type = state ? InputEvent::Up : InputEvent::Down;
+			evt->type = state ? Event::Up : Event::Down;
 
 			// Update button flags
-			if(evt->type == InputEvent::Down)
+			if(evt->type == Event::Down)
 			{
-				if(button == GLUT_LEFT_BUTTON) sButtonFlags |= InputEvent::Left;
-				if(button == GLUT_RIGHT_BUTTON) sButtonFlags |= InputEvent::Right;
-				if(button == GLUT_MIDDLE_BUTTON) sButtonFlags |= InputEvent::Middle;
+				if(button == GLUT_LEFT_BUTTON) sButtonFlags |= Event::Left;
+				if(button == GLUT_RIGHT_BUTTON) sButtonFlags |= Event::Right;
+				if(button == GLUT_MIDDLE_BUTTON) sButtonFlags |= Event::Middle;
 			}
 			else
 			{
-				if(button == GLUT_LEFT_BUTTON) sButtonFlags &= ~InputEvent::Left;
-				if(button == GLUT_RIGHT_BUTTON) sButtonFlags &= ~InputEvent::Right;
-				if(button == GLUT_MIDDLE_BUTTON) sButtonFlags &= ~InputEvent::Middle;
+				if(button == GLUT_LEFT_BUTTON) sButtonFlags &= ~Event::Left;
+				if(button == GLUT_RIGHT_BUTTON) sButtonFlags &= ~Event::Right;
+				if(button == GLUT_MIDDLE_BUTTON) sButtonFlags &= ~Event::Middle;
 			}
 		}
 		else
 #endif
 		{
-			evt->type = state ? InputEvent::Down : InputEvent::Up;
-			//if(evt->type == InputEvent::Down)
+			evt->type = state ? Event::Down : Event::Up;
+			//if(evt->type == Event::Down)
 			{
 				sButtonFlags = button;
 			}

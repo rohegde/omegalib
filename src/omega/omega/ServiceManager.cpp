@@ -1,22 +1,37 @@
-/********************************************************************************************************************** 
+/**************************************************************************************************
  * THE OMEGA LIB PROJECT
- *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  [Author]									[Mail]
- *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * InputManager members implementation. See InputManager.h for more details.
- *********************************************************************************************************************/
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #include "omega/Application.h"
-#include "omega/InputManager.h"
+#include "omega/ServiceManager.h"
 
 using namespace omega;
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputManager::InputManager(SystemManager* sys):
+ServiceManager::ServiceManager(SystemManager* sys):
 	mySys(sys),
 	myEventBuffer(NULL),
 	myEventBufferHead(0),
@@ -27,16 +42,16 @@ InputManager::InputManager(SystemManager* sys):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputManager::~InputManager()
+ServiceManager::~ServiceManager()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::initialize()
+void ServiceManager::initialize()
 {
-	omsg("InputManager::initialize");
+	omsg("ServiceManager::initialize");
 
-	myEventBuffer = new InputEvent[MaxEvents];
+	myEventBuffer = new Event[MaxEvents];
 	omsg("Event buffer allocated. Max events: %d", MaxEvents);
 
 	for(int i = 0; i < myServices.size(); i++)
@@ -46,7 +61,7 @@ void InputManager::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::dispose()
+void ServiceManager::dispose()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
@@ -55,7 +70,7 @@ void InputManager::dispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::start()
+void ServiceManager::start()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
@@ -64,7 +79,7 @@ void InputManager::start()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::stop()
+void ServiceManager::stop()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
@@ -73,7 +88,7 @@ void InputManager::stop()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::poll()
+void ServiceManager::poll()
 {
 	for(int i = 0; i < myServices.size(); i++)
 	{
@@ -82,7 +97,7 @@ void InputManager::poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::addService(InputService* svc)
+void ServiceManager::addService(Service* svc)
 {
 	oassert(svc != NULL);
 
@@ -91,32 +106,32 @@ void InputManager::addService(InputService* svc)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::removeService(InputService* svc)
+void ServiceManager::removeService(Service* svc)
 {
 	oassert(false | !"Not Implemented");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int InputManager::incrementBufferIndex(int index)
+int ServiceManager::incrementBufferIndex(int index)
 {
 	index++;
-	if(index == InputManager::MaxEvents) index = 0;
+	if(index == ServiceManager::MaxEvents) index = 0;
 	return index;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int InputManager::decrementBufferIndex(int index)
+int ServiceManager::decrementBufferIndex(int index)
 {
-	if(index == 0) index = InputManager::MaxEvents;
+	if(index == 0) index = ServiceManager::MaxEvents;
 	index--;
 	return index;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int InputManager::getEvents(InputEvent* ptr, int maxEvents)
+int ServiceManager::getEvents(Event* ptr, int maxEvents)
 {
 	int returnedEvents = 0;
-	InputEvent* evt;
+	Event* evt;
 	
 	lockEvents();
 	do
@@ -124,7 +139,7 @@ int InputManager::getEvents(InputEvent* ptr, int maxEvents)
 		evt = readTail();
 		if(evt)	
 		{
-			memcpy(&ptr[returnedEvents], evt, sizeof(InputEvent));
+			memcpy(&ptr[returnedEvents], evt, sizeof(Event));
 			returnedEvents++;
 		}
 	} while(evt && returnedEvents < maxEvents);
@@ -134,7 +149,7 @@ int InputManager::getEvents(InputEvent* ptr, int maxEvents)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::lockEvents()
+void ServiceManager::lockEvents()
 {
 #ifdef OMEGA_USE_DISPLAY
 	myEventBufferLock.set();
@@ -142,7 +157,7 @@ void InputManager::lockEvents()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void InputManager::unlockEvents()
+void ServiceManager::unlockEvents()
 {
 #ifdef OMEGA_USE_DISPLAY
 	myEventBufferLock.unset();
@@ -150,9 +165,9 @@ void InputManager::unlockEvents()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputEvent* InputManager::writeHead()
+Event* ServiceManager::writeHead()
 {
-	InputEvent* evt = &myEventBuffer[myEventBufferHead];
+	Event* evt = &myEventBuffer[myEventBufferHead];
 	myEventBufferHead = incrementBufferIndex(myEventBufferHead);
 
 	// This is not totally exact, we would need an event more to actually start dropping..
@@ -169,11 +184,11 @@ InputEvent* InputManager::writeHead()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputEvent* InputManager::readHead()
+Event* ServiceManager::readHead()
 {
 	if(myAvailableEvents > 0)
 	{
-		InputEvent* evt = &myEventBuffer[myEventBufferHead];
+		Event* evt = &myEventBuffer[myEventBufferHead];
 		myEventBufferHead = decrementBufferIndex(myEventBufferHead);
 		myAvailableEvents--;
 		return evt;
@@ -182,11 +197,11 @@ InputEvent* InputManager::readHead()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InputEvent* InputManager::readTail()
+Event* ServiceManager::readTail()
 {
 	if(myAvailableEvents > 0)
 	{
-		InputEvent* evt = &myEventBuffer[myEventBufferTail];
+		Event* evt = &myEventBuffer[myEventBufferTail];
 		myEventBufferTail = incrementBufferIndex(myEventBufferTail);
 		myAvailableEvents--;
 		return evt;
@@ -195,7 +210,7 @@ InputEvent* InputManager::readTail()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//void InputManager::processEvents(ApplicationServer* app)
+//void ServiceManager::processEvents(ApplicationServer* app)
 //{
 //	oassert(app);
 //
@@ -203,8 +218,8 @@ InputEvent* InputManager::readTail()
 //	if(av != 0)
 //	{
 //		// @todo: Instead of copying the event list, we can lock the main one.
-//		InputEvent evts[InputManager::MaxEvents];
-//		getEvents(evts, InputManager::MaxEvents);
+//		Event evts[ServiceManager::MaxEvents];
+//		getEvents(evts, ServiceManager::MaxEvents);
 //		for( int evtNum = 0; evtNum < av; evtNum++)
 //		{
 //			app->handleEvent(evts[evtNum]);

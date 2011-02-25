@@ -156,9 +156,9 @@ void OpenNIService::poll(void)
 			{
 				myOpenNI->lockEvents();
 
-				InputEvent* theEvent = myOpenNI->writeHead();
+				Event* theEvent = myOpenNI->writeHead();
 				theEvent->sourceId = aUsers[i];
-				theEvent->serviceType = InputService::Mocap;
+				theEvent->serviceType = Service::Mocap;
 
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
@@ -189,7 +189,7 @@ void OpenNIService::poll(void)
 	}
 }
 
-void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, InputEvent* theEvent) {
+void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent) {
 	Vector3f pos;
 	if( getJointPosition(player, joint, pos) ) {
 		theEvent->pointSet[joint][0] = pos[0];

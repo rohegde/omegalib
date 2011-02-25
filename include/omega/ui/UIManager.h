@@ -52,7 +52,7 @@ namespace ui
 
 		void update(const UpdateContext& context);
 		void draw(const Recti& viewport);
-		bool processInputEvent(const InputEvent& evt);
+		bool processInputEvent(const Event& evt);
 
 		Container* getRootContainer();
 		Painter* getDefaultPainter();

@@ -31,7 +31,7 @@
 #include "omega/DataManager.h"
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
-#include "omega/input/MouseService.h"
+#include "omega/MouseService.h"
 
 #ifdef OMEGA_OS_WIN
 // This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 
@@ -61,7 +61,7 @@ public:
 
 	int getNumEvents() { return myNumEvents; }
 	void setNumEvents(int value) { myNumEvents = value; }
-	InputEvent& getEvent(int index) { return myEventBuffer[index]; }
+	Event& getEvent(int index) { return myEventBuffer[index]; }
 
 	void setDirtyEvents() { setDirty( DIRTY_EVENTS ); }
 
@@ -102,7 +102,7 @@ protected:
 
 private:
 	int myNumEvents;
-	InputEvent myEventBuffer[InputManager::MaxEvents];
+	Event myEventBuffer[ServiceManager::MaxEvents];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,9 +254,9 @@ public:
 				x = event->data.pointerButtonPress.x;
 				y = event->data.pointerButtonPress.y;
 				uint buttons = 0;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= InputEvent::Left;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= InputEvent::Middle;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= InputEvent::Right;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
 				MouseService::mouseButtonCallback(buttons, 1, x, y);
 				return true;
 			}
@@ -265,9 +265,9 @@ public:
 				x = event->data.pointerButtonPress.x;
 				y = event->data.pointerButtonPress.y;
 				uint buttons = 0;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= InputEvent::Left;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= InputEvent::Middle;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= InputEvent::Right;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
 				MouseService::mouseButtonCallback(0, 0, x, y);
 				return true;
 			}
@@ -285,7 +285,7 @@ public:
 	virtual uint32_t finishFrame()
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-		InputManager* im = SystemManager::instance()->getInputManager();
+		ServiceManager* im = SystemManager::instance()->getServiceManager();
 
 		// update observer head matrices.
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
@@ -300,8 +300,8 @@ public:
 		myFrameData.setDirtyEvents();
 		if(av != 0)
 		{
-			InputEvent evts[InputManager::MaxEvents];
-			im->getEvents(evts, InputManager::MaxEvents);
+			Event evts[ServiceManager::MaxEvents];
+			im->getEvents(evts, ServiceManager::MaxEvents);
 
 			// Dispatch events to application server.
 			for( int evtNum = 0; evtNum < av; evtNum++)
@@ -435,7 +435,7 @@ protected:
 			{
 				for( int evtNum = 0; evtNum < av; evtNum++)
 				{
-					InputEvent& evt = myFrameData.getEvent(evtNum);
+					Event& evt = myFrameData.getEvent(evtNum);
 					if(!evt.processed)
 					{
 						evt.processed = myClient->handleEvent(evt, context);
@@ -520,7 +520,7 @@ protected:
 		ApplicationClient* client = pipe->getClient();
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
-		makeCurrent();
+		//makeCurrent();
 
 		// setup OpenGL State
 		eq::Channel::frameDraw( spin );
@@ -547,7 +547,7 @@ protected:
 		{
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
-				InputEvent& evt = fd.getEvent(evtNum);
+				Event& evt = fd.getEvent(evtNum);
 				// If event has not been processed during update, handle it now.
 				if(!evt.processed)
 				{

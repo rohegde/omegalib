@@ -64,7 +64,7 @@ void Button::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Button::processInputEvent(const InputEvent& evt)
+bool Button::processInputEvent(const Event& evt)
 {
 	Vector2f point  = Vector2f(evt.position[0], evt.position[1]);
 	
@@ -72,12 +72,12 @@ bool Button::processInputEvent(const InputEvent& evt)
 
 	if(hitTest(point))
 	{
-		if(evt.type == InputEvent::Down)
+		if(evt.type == Event::Down)
 		{
 			myPressed = true;
 			myPressedStateChanged = true;
 		}
-		else if(evt.type == InputEvent::Up)
+		else if(evt.type == Event::Up)
 		{
 			myPressed = false;
 			myPressedStateChanged = true;

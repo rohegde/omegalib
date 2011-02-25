@@ -27,9 +27,8 @@
 #ifndef __INPUT_EVENT_H__
 #define __INPUT_EVENT_H__
 
-#include <vector>
 #include "osystem.h"
-#include "InputService.h"
+#include "Service.h"
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
 // Equalizer includes
@@ -38,19 +37,10 @@
 
 namespace omega
 {
-
-//will be used to store point data for the markers that make up MoCap rigid bodies
-//struct Point
-//{
-//	float x;
-//	float y;
-//	float z;
-//};
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct InputEvent
+	struct Event
 	{
-		InputEvent();
+		Event();
 		//! Supported event types.
 		enum Type 
 		{ 
@@ -136,7 +126,7 @@ namespace omega
 		unsigned int sourceId;
 	
 		//! Type of the service that generated this event.
-		enum InputService::ServiceType serviceType;
+		enum Service::ServiceType serviceType;
 
 		//! Unique id of the service that generated this event.
 		int serviceId;
@@ -171,7 +161,7 @@ namespace omega
 		// ALso, this feature relies on Equalizer data streams, so it is enabled only for builds
 		// that support equalizer.
 	#ifdef OMEGA_USE_DISPLAY_EQUALIZER
-		//! Serialize an InputEvent instance.
+		//! Serialize an Event instance.
 		void serialize(co::DataOStream& os)
 		{
 			os << processed;
@@ -189,7 +179,7 @@ namespace omega
 			}
 		}
 
-		//! Deserialize an InputEvent instance.
+		//! Deserialize an Event instance.
 		void deserialize( co::DataIStream& is)
 		{
 			is >> processed;
@@ -211,11 +201,11 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool InputEvent::isFlagSet(uint flag) const
+	inline bool Event::isFlagSet(uint flag) const
 	{ return (flags & flag) == flag; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline InputEvent::InputEvent():
+	inline Event::Event():
 		processed(false)
 	{}
 

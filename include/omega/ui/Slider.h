@@ -46,7 +46,7 @@ namespace ui
 
 	protected:
 			virtual void update(const omega::UpdateContext& context);
-			virtual bool processInputEvent(const omega::InputEvent& evt);
+			virtual bool processInputEvent(const omega::Event& evt);
 			virtual void draw();
 			virtual void getSliderCoords(omega::Vector2f* pos, omega::Vector2f* size);
 

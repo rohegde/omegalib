@@ -28,19 +28,19 @@
 #include "osystem.h"
 #include "SystemManager.h"
 #include "GpuManager.h"
-//#include "InputEvent.h"
+//#include "Event.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class SystemManager;
-	class InputManager;
+	class ServiceManager;
 	class DisplaySystem;
 	class Application;
 	class ChannelImpl;
 	class GpuManager;
-	struct InputEvent;
+	struct Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Interface for objects that manage a single OpenGL context.
@@ -88,12 +88,12 @@ namespace omega
 		}
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
-		virtual bool handleEvent(const InputEvent& evt, DrawContext& context) { return false; }
-		virtual bool handleEvent(const InputEvent& evt, UpdateContext& context) { return false; }
+		virtual bool handleEvent(const Event& evt, DrawContext& context) { return false; }
+		virtual bool handleEvent(const Event& evt, UpdateContext& context) { return false; }
 
 		Application* getApplication() { return myApplication; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
+		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 		GpuManager*		getGpu() { return myGpu; }
 
@@ -122,7 +122,7 @@ namespace omega
 
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
-		virtual bool handleEvent(const InputEvent& evt) { return false; }
+		virtual bool handleEvent(const Event& evt) { return false; }
 
 		Application* getApplication() { return myApplication; }
 
@@ -148,9 +148,9 @@ namespace omega
 		//! Called once for entire application initialization tasks.
 		virtual void initialize() {}
 
-		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-		InputManager*   getInputManager()   { return SystemManager::instance()->getInputManager(); }
-		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+		//SystemManager*  getSystemManager()  { return SystemManager::instance(); }
+		//ServiceManager*   getInputManager()   { return SystemManager::instance()->getServiceManager(); }
+		//DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 	};
 }; // namespace omega
 

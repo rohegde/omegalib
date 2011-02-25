@@ -25,7 +25,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/input/NaturalPointService.h"
+#include "omega/NaturalPointService.h"
 #include "omega/SystemManager.h"
 
 using namespace omega;
@@ -143,16 +143,16 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 		for( int i = 0; i < data->nRigidBodies; i++)
 		{
 			//actions to process each rigid body into an event
-			InputEvent* theEvent = myMoCap->writeHead();
+			Event* theEvent = myMoCap->writeHead();
 			theEvent->numberOfPoints = data->RigidBodies[i].nMarkers;
 
 			theEvent->sourceId = data->RigidBodies[i].ID;
-			theEvent->serviceType = InputService::Mocap;
+			theEvent->serviceType = Service::Mocap;
 
 			//checks to see if the rigid body is being tracked, if all positional data is set to zero then it is more than likely not being tracked
 			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )
 			{
-				theEvent->type = InputEvent::Untrace;
+				theEvent->type = Event::Untrace;
 				theEvent->position[0] = 0.0;
 				theEvent->position[1] = 0.0;
 				theEvent->position[2] = 0.0;
@@ -174,7 +174,7 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 
 			//Set event type
 			//for now only trace and untraced are going to be supported with more complex types being implemented soon
-			theEvent->type = InputEvent::Trace;
+			theEvent->type = Event::Trace;
 
 			//get x,y,z coordinates
 			theEvent->position[0] = data->RigidBodies[i].x;

@@ -24,39 +24,32 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BUTTON_H__
-#define __BUTTON_H__
+#ifndef __MOUSE__SERVICE_H__
+#define __MOUSE__SERVICE_H__
 
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Label.h"
+#include "omega/osystem.h"
+#include "omega/ServiceManager.h"
 
 namespace omega
 {
-namespace ui
-{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API Button: public AbstractButton
+class MouseService: public Service
 {
 public:
-	Button(omega::String name);
-	virtual ~Button();
+	// Allocator function
+	static MouseService* New() { return new MouseService(); }
 
-	omega::String getText() { return myLabel.getText(); }
-	void setText(omega::String value) { myLabel.setText(value); }
+public:
+	static void mouseMotionCallback(int x, int y);
+	static void mouseButtonCallback(int x, int y, int btn, int k);
 
-	// Gets the label subobject used by the button.
-	Label* getLabel() { return &myLabel; }
-	virtual void autosize();
+	OMEGA_API virtual void initialize();
+	OMEGA_API virtual void dispose();
 
-protected:
-		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
-		virtual void renderContent();
-
-protected:
-	Label myLabel;
+private:
+	static MouseService* mysInstance;
 };
-}; // namespace gfx
+
 }; // namespace omega
 
 #endif
