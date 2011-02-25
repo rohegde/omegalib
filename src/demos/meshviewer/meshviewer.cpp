@@ -53,7 +53,7 @@ void MeshViewerClient::initialize()
 			String meshFilename = meshSetting["filename"];
 			String meshLabel = meshSetting["label"];
 
-			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, true);
+			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.2f);
 			Mesh* mesh = mm->getMesh(meshName);
 			myEntities.push_back(new Entity(meshLabel, myEngine->getSceneManager(), mesh));
 		}

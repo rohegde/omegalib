@@ -484,7 +484,7 @@ namespace scene
 		@param forceParentUpdate Even if the node thinks it has already told it's
 			parent, tell it anyway
         */
-        virtual void needUpdate(bool forceParentUpdate = false);
+        virtual void needUpdate(bool forceParentUpdate = true);
         /** Called by children to notify their parent that they need an update. 
 		@param forceParentUpdate Even if the node thinks it has already told it's
 			parent, tell it anyway
