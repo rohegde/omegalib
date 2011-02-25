@@ -95,15 +95,15 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 		// Select objects.
 		Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
 
-		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-		glPointSize(5);
-		glBegin(GL_POINTS);
-		glVertex3fv(ray.getOrigin().begin());
-		glEnd();
+		//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+		//glPointSize(5);
+		//glBegin(GL_POINTS);
+		//glVertex3fv(ray.getOrigin().begin());
+		//glEnd();
 
-		printf("%.2f %.2f %2.f -> %.2f %.2f %.2f\n", 
-			ray.getOrigin()[0], ray.getOrigin()[1], ray.getOrigin()[2],
-			ray.getDirection()[0], ray.getDirection()[1], ray.getDirection()[2]);
+		//printf("%.2f %.2f %2.f -> %.2f %.2f %.2f\n", 
+		//	ray.getOrigin()[0], ray.getOrigin()[1], ray.getOrigin()[2],
+		//	ray.getDirection()[0], ray.getDirection()[1], ray.getDirection()[2]);
 
 		//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
 		//glRecti(vx1, vy1, vx2, vy2);

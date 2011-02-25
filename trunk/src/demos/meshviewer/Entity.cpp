@@ -131,8 +131,8 @@ bool Entity::hit(const Ray& ray, Vector3f* handlePos)
 	if(h.first)
 	{
 		(*handlePos) = ray.getPoint(h.second) - s.getCenter();
-		printf("handle pos: %.2f %.2f %.2f\n",
-			handlePos->x(), handlePos->y(), handlePos->z());
+		//printf("handle pos: %.2f %.2f %.2f\n",
+		//	handlePos->x(), handlePos->y(), handlePos->z());
 	}
 	return h.first;
 }
