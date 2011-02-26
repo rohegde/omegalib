@@ -96,6 +96,7 @@ void SystemManager::setup(Config* appcfg)
 	omsg("SystemManager::setup");
 
 	if(!appcfg->isLoaded()) appcfg->load();
+	oassert(appcfg->isLoaded());
 
 	String systemCfgName = appcfg->lookup("config/systemConfig");
 
@@ -123,8 +124,8 @@ void SystemManager::setupServiceManager()
 #ifdef OMEGA_USE_MOUSE
 	registerService("MouseService", (ServiceAllocator)MouseService::New);
 #endif
-#ifdef OMEGA_USE_MOCAP
-	registerService("MoCapService", (ServiceAllocator)MoCapService::New);
+#ifdef OMEGA_USE_NATURAL_POINT
+	registerService("NaturalPointService", (ServiceAllocator)NaturalPointService::New);
 #endif
 #ifdef OMEGA_USE_NETSERVICE
 	registerService("NetService", (ServiceAllocator)NetService::New);

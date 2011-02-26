@@ -12,19 +12,19 @@ void KinectDemoClient::draw(const DrawContext& context)
 
 	//xn::DepthMetaData depthMD;
 
-	SystemManager::instance()->getInputManager()->poll();
+	SystemManager::instance()->getServiceManager()->poll();
 
-	int numberOfEvents = SystemManager::instance()->getInputManager()->getAvailableEvents();
+	int numberOfEvents = SystemManager::instance()->getServiceManager()->getAvailableEvents();
 
-	omega::InputEvent ptrEvents[omega::InputManager::MaxEvents];
+	omega::Event ptrEvents[omega::ServiceManager::MaxEvents];
 
 	if( numberOfEvents > 0 ) {
-		SystemManager::instance()->getInputManager()->getEvents(ptrEvents, omega::InputManager::MaxEvents);
+		SystemManager::instance()->getServiceManager()->getEvents(ptrEvents, omega::ServiceManager::MaxEvents);
 
 		for ( int i = 0; i < numberOfEvents; i++ ) {
 
 				// Select only the openni events
-			if( ptrEvents[i].serviceType == omega::InputService::OpenNI ) {
+			if( ptrEvents[i].serviceType == omega::Service::Mocap ) {
 
 				for( int j = 1; j < 25; j++ ) {
 					if( ptrEvents[i].pointSet[j][0] != FLT_MIN ) {
@@ -46,7 +46,8 @@ int main(int argc, char** argv)
 	KinectDemoApplication app;
 	const char* cfgName = "kinect.cfg";
 
-	omain(app, cfgName, "kinect.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "kinect.log", new FilesystemDataSource("./../../data/"));
+
 	return 0;
 }
 

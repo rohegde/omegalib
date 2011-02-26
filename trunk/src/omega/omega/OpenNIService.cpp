@@ -1,4 +1,4 @@
-#include "omega/input/OpenNIService.h"
+#include "omega/OpenNIService.h"
 #include "omega/SystemManager.h"
 
 using namespace omega;

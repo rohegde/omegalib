@@ -151,12 +151,28 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 
 			}
 		}
+		else if(evt.type == Event::Zoom)
+		{
+			// Manipulate object, if one is active.
+			if(myVisibleEntity != NULL)
+			{
+				float sc = 1;
+				if(evt.value[0] < 0) sc = 0.9f * -evt.value[0] / 3;
+				else sc = 1.1f * evt.value[0] / 3;
+				printf("%f\n", sc);
+				myVisibleEntity->scale(sc);
+			}
+		}
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 {
+	//getDisplaySystem()->getObserver(0)->update(
+	//	Vector3f(0, 1.8f, 1.0f), 
+	//	Quaternion::IDENTITY);
+
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)

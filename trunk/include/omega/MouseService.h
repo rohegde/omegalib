@@ -41,7 +41,8 @@ public:
 
 public:
 	static void mouseMotionCallback(int x, int y);
-	static void mouseButtonCallback(int x, int y, int btn, int k);
+	static void mouseButtonCallback(int btn, int k, int x, int y);
+	static void mouseWheelCallback(int wheel, int x, int y);
 
 	OMEGA_API virtual void initialize();
 	OMEGA_API virtual void dispose();

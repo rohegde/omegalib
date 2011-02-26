@@ -268,7 +268,20 @@ public:
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
-				MouseService::mouseButtonCallback(0, 0, x, y);
+				MouseService::mouseButtonCallback(buttons, 0, x, y);
+				return true;
+			}
+		case eq::Event::WINDOW_POINTER_WHEEL:
+			{
+				//x = event->data.pointerWheel.x;
+				//y = event->data.pointerWheel.y;
+				int wheel = event->data.pointerWheel.xAxis;
+				uint buttons = 0;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
+				MouseService::mouseWheelCallback(wheel, x, y);
+				printf("Z\n");
 				return true;
 			}
 #endif
