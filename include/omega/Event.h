@@ -77,6 +77,8 @@ namespace omega
 			//! MoveDown: generated when the source of event goes toward the bottom of the screen.
 			//! parameters: position.
 			MoveDown,
+			//! Zoom: zoom event.
+			Zoom,
 			//! SplitStart: generated at the start of a split/zoom gesture.
 			//! parameters: position (center of gesture) pointSet[0, 1] (individual finger positions) .
 			SplitStart,
@@ -172,6 +174,7 @@ namespace omega
 			os << timestamp;
 			os << position[0] << position[1] << position[2];
 			os << orientation[0] << orientation[1] << orientation[2] << orientation[3];
+			os << value[0] << value[1] << value[2];
 			os << numberOfPoints;
 			for(int i = 0; i < numberOfPoints; i++)
 			{
@@ -190,6 +193,7 @@ namespace omega
 			is >> timestamp;
 			is >> position[0] >> position[1] >> position[2];
 			is >> orientation[0] >> orientation[1] >> orientation[2] >> orientation[3];
+			is >> value[0] >> value[1] >> value[2];
 			is >> numberOfPoints;
 			for(int i = 0; i < numberOfPoints; i++)
 			{

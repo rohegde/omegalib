@@ -142,35 +142,35 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 		//process the frame data and store it in events, one event per rigid body
 		for( int i = 0; i < data->nRigidBodies; i++)
 		{
+			//checks to see if the rigid body is being tracked, if all positional data is set to zero then it is more than likely not being tracked
+			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )
+			{
+				//theEvent->type = Event::Untrace;
+				//theEvent->position[0] = 0.0;
+				//theEvent->position[1] = 0.0;
+				//theEvent->position[2] = 0.0;
+
+				//theEvent->orientation[0] = 0.0;
+				//theEvent->orientation[1] = 0.0;
+				//theEvent->orientation[2] = 0.0;
+				//theEvent->orientation[3] = 0.0;
+				//for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
+				//{
+				//	Vector3f aPoint;
+				//	aPoint[0] = 0.0; //x
+				//	aPoint[1] = 0.0; //y
+				//	aPoint[2] = 0.0; //z
+				//	theEvent->pointSet[k] = aPoint;
+				//}
+				continue;
+			}
+
 			//actions to process each rigid body into an event
 			Event* theEvent = myMoCap->writeHead();
 			theEvent->numberOfPoints = data->RigidBodies[i].nMarkers;
 
 			theEvent->sourceId = data->RigidBodies[i].ID;
 			theEvent->serviceType = Service::Mocap;
-
-			//checks to see if the rigid body is being tracked, if all positional data is set to zero then it is more than likely not being tracked
-			if ( ( data->RigidBodies[i].x == 0 ) && ( data->RigidBodies[i].y == 0 ) && ( data->RigidBodies[i].z == 0 ) )
-			{
-				theEvent->type = Event::Untrace;
-				theEvent->position[0] = 0.0;
-				theEvent->position[1] = 0.0;
-				theEvent->position[2] = 0.0;
-
-				theEvent->orientation[0] = 0.0;
-				theEvent->orientation[1] = 0.0;
-				theEvent->orientation[2] = 0.0;
-				theEvent->orientation[3] = 0.0;
-				for( int k = 0; k < data->RigidBodies[i].nMarkers; k++)
-				{
-					Vector3f aPoint;
-					aPoint[0] = 0.0; //x
-					aPoint[1] = 0.0; //y
-					aPoint[2] = 0.0; //z
-					theEvent->pointSet[k] = aPoint;
-				}
-				continue;
-			}
 
 			//Set event type
 			//for now only trace and untraced are going to be supported with more complex types being implemented soon

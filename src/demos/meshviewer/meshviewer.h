@@ -70,6 +70,7 @@ public:
 
 	bool hit(const Ray& ray, Vector3f* handlePos);
 	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::ZERO, Vector3f::ZERO));
+	void scale(float scale);
 	void resetTransform();
 
 	void activate(const Vector3f handlePos);

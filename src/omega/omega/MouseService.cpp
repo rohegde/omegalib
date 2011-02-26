@@ -37,6 +37,23 @@ MouseService* MouseService::mysInstance = NULL;
 unsigned int sButtonFlags = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MouseService::mouseWheelCallback(int wheel, int x, int y)
+{
+	if(mysInstance)
+	{
+		mysInstance->lockEvents();
+
+		Event* evt = mysInstance->writeHead();
+		evt->serviceType = Service::Pointer;
+		evt->type = Event::Zoom;
+		evt->position[0] = x;
+		evt->position[1] = y;
+		evt->value[0] = wheel;
+		mysInstance->unlockEvents();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseMotionCallback(int x, int y)
 {
 	if(mysInstance)

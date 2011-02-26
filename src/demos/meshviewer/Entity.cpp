@@ -99,7 +99,7 @@ void Entity::setVisible(bool value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::resetTransform()
 {
-	mySceneNode->setPosition(0, 0, -0.2f);
+	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->resetOrientation();
 	//mySceneNode->setScale(0.2f, 0.2f, 0.2f);
 }
@@ -187,3 +187,10 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::scale(float scale)
+{
+	float sc = mySceneNode->getScale()[0];
+	sc *= scale;
+	mySceneNode->setScale(sc, sc, sc);
+}
