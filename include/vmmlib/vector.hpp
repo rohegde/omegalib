@@ -142,9 +142,10 @@ public:
     vector( const T& x, const T& y, const T& z );
     vector( const T& x, const T& y, const T& z, const T& w );
     
-    // initializes the first M-1 values from vector_, the last from last_
+    //! initializes the first M-1 values from vector_, the last from last_
     vector( const vector< M-1, T >& vector_, T last_ );
-    
+	//! Initializes an M component vector from a M+1 component vector, dropping the last value.
+	vector( const vector< M+1, T >& vector_);
     vector( const T* values );
 
     // vec< M > with homogeneous coordinates <-> vec< M-1 > conversion ctor
@@ -505,6 +506,20 @@ vector< M, T >::vector( const vector< M-1, T >& vector_, T last_ )
     (*my_it) = last_;
 }
 
+template< size_t M, typename T >
+// initializes the first M-1 values from vector_, the last from last_
+vector< M, T >::vector( const vector< M+1, T >& vector_)
+{
+    typename vector< M, T >::iterator
+        it = begin(), it_end = end();
+
+    typename vector< M+1, T >::const_iterator v_it = vector_.begin();
+
+    for( ; it != it_end; ++it, ++v_it )
+    {
+        (*it) = *v_it;
+    }
+}
 
 
 // to-homogenous-coordinates ctor
