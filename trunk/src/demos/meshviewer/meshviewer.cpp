@@ -92,8 +92,9 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 		evt.position[1] > vy1 &&
 		evt.position[1] < vy2)
 	{
-		// Select objects.
-		Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
+		// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
+		float z = 1.0f;
+		Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
 
 		//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 		//glPointSize(5);
@@ -134,7 +135,8 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 			// Manipulate object, if one is active.
 			if(myVisibleEntity != NULL && myVisibleEntity->isActive())
 			{
-				Ray ray = unproject(Vector2f(evt.position[0], evt.position[1]), context);
+				float z = 1.0f;
+				Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
 
 				if(evt.isFlagSet(Event::Left))
 				{
