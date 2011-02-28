@@ -5,7 +5,7 @@
 This version will the first one to compile on linux as well on windows.
 A complete demo application will be included (meshviewer) as well as kinect integration. Sperimental integration with vtk and a small demo application is also planned to be integrated into omegalib 0.4.
 
-*Expected delivery*: June(?)
+*Expected delivery*: May 2011
 
 ==Completed Tasks==
  * All of codebase compiles on linux (*Alessandro*)
@@ -28,7 +28,7 @@ A complete demo application will be included (meshviewer) as well as kinect inte
 
 
 <br/><br/><br/><br/>
-= omegalib v0.3 (*delivery:* End of Year(?)) =
+= omegalib v0.3 (*delivered:* January 2011) =
 ==<u> Alessandro </u>==
  * OmegaLib / VTK Integration
   * Render vtk content into omegalib / equalizer channels (*done*)
@@ -42,7 +42,7 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * support linux builds (i386 only for now)
 
 
-= omegalib v0.2 (*delivery*: October(?)) =
+= omegalib v0.2 (*delivered*: October 2010) =
 
 ==<u> Dennis </u>== 
  * Convert oTest to oDemo (*DONE*)
