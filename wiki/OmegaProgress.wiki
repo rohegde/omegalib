@@ -16,6 +16,12 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * Integration of PS3 controller (*Arthur*)
  * Integration of XBox 360 controller (*Arthur*)
 
+==Wish List==
+ * Autocalibration app for Kinect
+ * Vtk integration library
+ * vtk viewer demo application
+
+
 
 
 
