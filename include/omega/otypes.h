@@ -86,6 +86,8 @@ typedef double GLdouble;
 typedef double GLclampd;
 typedef void GLvoid;
 
+namespace boost { template<class Ch, class Tr, class Alloc> class basic_format; };
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////

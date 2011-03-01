@@ -57,6 +57,7 @@ add_subdirectory(3rdparty/glew)
 
 include_directories(
   ${OmegaLib_SOURCE_DIR}/include/
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/boost
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/

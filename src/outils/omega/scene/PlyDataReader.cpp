@@ -34,6 +34,7 @@
  *               2009, Stefan Eilemann <eile@equalizergraphics.com>
  *************************************************************************************************/
 #include "omega/scene/PlyDataReader.h"
+#include "omega/StringUtils.h"
 #include <cstdlib>
 #include <algorithm>
 #include <math.h>
@@ -168,12 +169,12 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
                                           &fileType, &version );
     if( !file )
     {
-        oerror("Unable to open PLY file %s for reading", filename.c_str());
+        oferror("Unable to open PLY file %1% for reading", %filename);
         return result;
     }
     oassert( elemNames != 0 );
     
-    omsg("%s: %d elements, file type = %d %f", filename.c_str(), nPlyElems, fileType, version); 
+    ofmsg("%1%: %1% elements, file type = %3% %4%", %filename %nPlyElems %fileType %version); 
     
     for( int i = 0; i < nPlyElems; ++i )
     {
@@ -278,7 +279,7 @@ void PlyDataReader::calculateNormals( const bool vertexNormals )
         for( size_t i = 0; i < vertices.size(); ++i )
             normals[i].normalize();
     
-    if( wrongNormals > 0 ) omsg("%d faces had no valid normal.", wrongNormals);
+    if( wrongNormals > 0 ) ofmsg("%1% faces had no valid normal.", %wrongNormals);
 }
 
 

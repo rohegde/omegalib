@@ -311,19 +311,6 @@ public:
     
     friend std::ostream& operator<< ( std::ostream& os, const vector& vector_ )
     {
-#ifdef EQ_EXPORT
-        const std::ios::fmtflags flags = os.flags();
-        const int                prec  = os.precision();
-
-        os.setf( std::ios::right, std::ios::adjustfield );
-        os.precision( 5 );
-        os << "[ ";
-        for( size_t index = 0; index < M; ++index )
-            os << std::setw(10) << vector_.at( index ) << " ";
-        os << "]";
-        os.precision( prec );
-        os.setf( flags );
-#else
         os << "(";
         size_t index = 0;
         for( ; index < M - 1; ++index )
@@ -331,7 +318,6 @@ public:
             os << vector_.at( index ) << ", ";
         }
         os << vector_.at( index ) << ") ";
-#endif
         return os;
     }
         

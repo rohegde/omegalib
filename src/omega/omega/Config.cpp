@@ -27,6 +27,7 @@
 #include "omega/Config.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -49,11 +50,11 @@ bool Config::load()
 		DataStream* stream = dm->openStream(myCfgFilename, DataStream::Read);
 		if(stream == NULL)
 		{
-			oerror("Config::Load - Opening file failed: %s", myCfgFilename.c_str());
+			oferror("Config::Load - Opening file failed: %1%", %myCfgFilename);
 			return false;
 		}
 
-		omsg("Opened config file: %s", myCfgFilename.c_str());
+		ofmsg("Opened config file: %1%", %myCfgFilename);
 
 		try
 		{
@@ -61,7 +62,7 @@ bool Config::load()
 		}
 		catch(libconfig::ParseException e)
 		{
-			oerror("Config loading: %s at line %d", e.getError(), e.getLine());
+			oferror("Config loading: %1% at line %2%", %e.getError() %e.getLine());
 			dm->deleteStream(stream);
 			return false;
 		}

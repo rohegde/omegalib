@@ -32,6 +32,7 @@
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
 #include "omega/MouseService.h"
+#include "omega/StringUtils.h"
 
 #ifdef OMEGA_OS_WIN
 // This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 
@@ -351,11 +352,11 @@ public:
 			const char* ereason = SystemManager::instance()->getExitReason().c_str();
 			if(this->exit())
 			{
-				omsg("Application exit request (reason: %s) successful", ereason);
+				ofmsg("Application exit request (reason: %1%) successful", %ereason);
 			}
 			else
 			{
-				oerror("Application exit request (reason: %s) FAILED!", ereason);
+				oferror("Application exit request (reason: %1%) FAILED!", %ereason);
 			}
 		}
 
@@ -708,7 +709,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	// Create observers.
 	int numObservers = myConfig->getObservers().size();
 	for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
-	omsg("initialized %d observer(s).", numObservers);
+	ofmsg("initialized %1% observer(s).", %numObservers);
 
 	// Initialize layers and observers from configuration settings.
 	initLayers();
@@ -760,7 +761,7 @@ void EqualizerDisplaySystem::initLayers()
 			}
 			else
 			{
-				owarn("Config: no layer section defined in config/views/%s", stView.getName());
+				ofwarn("Config: no layer section defined in config/views/%1%", %stView.getName());
 			}
 		}
 	}

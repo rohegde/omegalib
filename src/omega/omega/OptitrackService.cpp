@@ -11,6 +11,7 @@
  *********************************************************************************************************************/
 #include "omega/OptiTrackService.h"
 #include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -55,7 +56,7 @@ void OptiTrackService::initialize()
 	//== Determine Available Cameras =====================----
     cameraCollection->get_Count(&cameraCount);
 
-	omsg("Optitrack: %d Camera(s) Detected:\n\n", cameraCount);
+	ofmsg("Optitrack: %1% Camera(s) Detected:\n\n", %cameraCount);
 	
 	//== Display Camera Information for All Cameras ======----
 	for(int index=0; index<cameraCount; index++)
@@ -71,12 +72,12 @@ void OptiTrackService::initialize()
 		camera->get_Revision    (&revision);
 		camera->get_FrameRate   (&rate);
 
-		omsg("  Camera %d",serial);
-		omsg("  =========================");
-		omsg("  Resolution: %dx%d",width,height);
-		omsg("  Revision  : 0x%8x",revision);
-		omsg("  Model     : 0x%8x",model);
-		omsg("  Frame rate: %d" ,rate);
+		//ofmsg("  Camera %d",serial);
+		//ofmsg("  =========================");
+		//ofmsg("  Resolution: %dx%d",width,height);
+		//ofmsg("  Revision  : 0x%8x",revision);
+		//ofmsg("  Model     : 0x%8x",model);
+		//ofmsg("  Frame rate: %d" ,rate);
 
 		//== Set Some Camera Options ====================----
 

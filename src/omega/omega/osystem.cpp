@@ -24,140 +24,123 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-//#include <GL/glew.h>
-//#include <GL/gl.h>
-//#include <GL/glu.h>
-
 #include "omega/Application.h"
 #include "omega/Config.h"
 #include "omega/DataManager.h"
 #include "omega/FilesystemDataSource.h"
-#include <stdarg.h>
+#include "omega/StringUtils.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-#define LOG_STR_LEN 65536
-
-using namespace omega;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-FILE* sLogFile = NULL;
-
-GLEWContext* sGlewContext;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-GLEWContext* glewGetContext()
+namespace omega
 {
-	return sGlewContext;
-}
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	FILE* sLogFile = NULL;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void glewSetContext(const GLEWContext* context)
-{
-	sGlewContext = (GLEWContext*)context;
-}
+	GLEWContext* sGlewContext;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ologopen(const char* filename)
-{
-	if(!filename) filename = "./log.txt";
-	sLogFile = fopen(filename, "w");
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ologclose()
-{
-	if(sLogFile)
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	GLEWContext* glewGetContext()
 	{
-		fflush(sLogFile);
-		fclose(sLogFile);
-		sLogFile = NULL;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void omsg(const char* fmt, ...)
-{
-	char str[LOG_STR_LEN];
-	va_list args;
-	va_start(args, fmt);
-	vsprintf(str, fmt, args);
-	strcat(str, "\n");
-
-	printf(str);
-	if(sLogFile)
-	{
-		fprintf(sLogFile, str);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void owarn(const char* fmt, ...)
-{
-	char tmpstr[LOG_STR_LEN];
-	char str[LOG_STR_LEN];
-
-	va_list args;
-	va_start(args, fmt);
-	vsprintf(tmpstr, fmt, args);
-
-	sprintf(str, "WARNING: %s\n", tmpstr);
-
-	printf(str);
-	if(sLogFile)
-	{
-		fprintf(sLogFile, str);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void oerror(const char* fmt, ...)
-{
-	char tmpstr[LOG_STR_LEN];
-	char str[LOG_STR_LEN];
-
-	va_list args;
-	va_start(args, fmt);
-	vsprintf(tmpstr, fmt, args);
-
-	sprintf(str, "ERROR: %s\n", tmpstr);
-
-	printf(str);
-	if(sLogFile)
-	{
-		fprintf(sLogFile, str);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void oexit(int code)
-{
-	exit(code);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void omain(Application& app, const char* configFile, const char* logFile, DataSource* dataSource)
-{
-	ologopen(logFile);
-
-	Config* cfg = new Config(configFile);
-
-	SystemManager* sys = SystemManager::instance();
-	DataManager* dm = sys->getDataManager();
-	// Add a default filesystem data source using current work dir.
-	dm->addSource(new FilesystemDataSource("./"));
-
-	// Add optional data source.
-	if(dataSource != NULL)
-	{
-		dm->addSource(dataSource);
+		return sGlewContext;
 	}
 
-	sys->setup(cfg);
-	sys->setApplication(&app);
-	sys->initialize();
-	sys->run();
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void glewSetContext(const GLEWContext* context)
+	{
+		sGlewContext = (GLEWContext*)context;
+	}
 
-	sys->cleanup();
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologopen(const char* filename)
+	{
+		if(!filename) filename = "./log.txt";
+		sLogFile = fopen(filename, "w");
+	}
 
-	ologclose();
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologclose()
+	{
+		if(sLogFile)
+		{
+			fflush(sLogFile);
+			fclose(sLogFile);
+			sLogFile = NULL;
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void omsg(const String& str)
+	{
+		printf("%s\n", str.c_str());
+		if(sLogFile)
+		{
+			fprintf(sLogFile, "%s\n", str.c_str());
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void owarn(const String& str)
+	{
+		printf("WARNING: %s\n", str.c_str());
+		if(sLogFile)
+		{
+			fprintf(sLogFile, "WARNING: %s\n", str.c_str());
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void oerror(const String& str)
+	{
+		printf("ERROR: %s\n", str.c_str());
+		if(sLogFile)
+		{
+			fprintf(sLogFile, "ERROR: %s\n", str.c_str());
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void oabort(const char* file, int line, const char* reason)
+	{
+		String filename;
+		String path;
+
+		StringUtils::splitFilename(file, filename, path);
+
+		ofmsg("Assertion failed at %1%:%2% - %3%", %file %line %reason);
+
+		abort();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void oexit(int code)
+	{
+		exit(code);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void omain(Application& app, const char* configFile, const char* logFile, DataSource* dataSource)
+	{
+		ologopen(logFile);
+
+		Config* cfg = new Config(configFile);
+
+		SystemManager* sys = SystemManager::instance();
+		DataManager* dm = sys->getDataManager();
+		// Add a default filesystem data source using current work dir.
+		dm->addSource(new FilesystemDataSource("./"));
+
+		// Add optional data source.
+		if(dataSource != NULL)
+		{
+			dm->addSource(dataSource);
+		}
+
+		sys->setup(cfg);
+		sys->setApplication(&app);
+		sys->initialize();
+		sys->run();
+
+		sys->cleanup();
+
+		ologclose();
+	}
 }

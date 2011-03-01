@@ -27,6 +27,7 @@
 #include "omega/GpuManager.h"
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
+#include "omega/StringUtils.h"
 
 #include "omega/glheaders.h"
 
@@ -40,7 +41,7 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return true;
 	
-	oerror("At %s:%d ", file, line);
+	oferror("At %1%:%2% ", %file %line);
 	
 	switch(status)
 	{
@@ -292,7 +293,7 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
     const char * source    = ss.c_str();
     size_t sourceSize[]    = { strlen(source) };
 
-	omsg("Loading OpenCL program: %s", filename.c_str());
+	ofmsg("Loading OpenCL program: %1%", %filename);
 
 	cl_program program = clCreateProgramWithSource(myCLContext, 1, &source, sourceSize, &status);
     if(!clSuccessOrDie(status)) return;
@@ -323,7 +324,7 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
 		String shaderName = it.getNext();
 		ComputeShader* sh = new ComputeShader(program, shaderName, shaderName);
 		myComputeShaders[shaderName] = sh;
-		omsg("Compute shader created: %s", shaderName.c_str());
+		ofmsg("Compute shader created: %1%", %shaderName);
 	}
 #endif OMEGA_USE_OPENCL
 }
