@@ -244,15 +244,22 @@ public:
 #ifdef OMEGA_USE_MOUSE
 		case eq::Event::WINDOW_POINTER_MOTION:
 			{
-				x = event->data.pointerMotion.x;
-				y = event->data.pointerMotion.y;
+				eq::Window* w = this->find<eq::Window>(event->data.originator);
+				const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
+
+				x = event->data.pointerMotion.x + pvp.x;
+				y = event->data.pointerMotion.y + pvp.y;
 				MouseService::mouseMotionCallback(x, y);
 				return true;
 			}
 		case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
 			{
-				x = event->data.pointerButtonPress.x;
-				y = event->data.pointerButtonPress.y;
+				//
+				eq::Window* w = this->find<eq::Window>(event->data.originator);
+				const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
+
+				x = event->data.pointerButtonPress.x + pvp.x;
+				y = event->data.pointerButtonPress.y + pvp.y;
 				uint buttons = 0;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
@@ -262,8 +269,11 @@ public:
 			}
 		case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
 			{
-				x = event->data.pointerButtonPress.x;
-				y = event->data.pointerButtonPress.y;
+				eq::Window* w = this->find<eq::Window>(event->data.originator);
+				const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
+
+				x = event->data.pointerButtonPress.x + pvp.x;
+				y = event->data.pointerButtonPress.y + pvp.y;
 				uint buttons = 0;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
@@ -281,7 +291,6 @@ public:
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
 				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
 				MouseService::mouseWheelCallback(wheel, x, y);
-				printf("Z\n");
 				return true;
 			}
 #endif
@@ -539,16 +548,23 @@ protected:
 		eq::Channel::frameDraw( spin );
 
 		eq::PixelViewport pvp = getPixelViewport();
+		eq::PixelViewport gpvp = getWindow()->getPixelViewport();
 
 		// setup the context viewport.
 		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
 		DrawContext context;
 		context.frameNum = spin.low();
 		context.glContext = this;
+
 		context.viewport[0][0] = pvp.x;
 		context.viewport[0][1] = pvp.y;
 		context.viewport[1][0] = pvp.w;
 		context.viewport[1][1] = pvp.h;
+
+		context.globalViewport[0][0] = gpvp.x;
+		context.globalViewport[0][1] = gpvp.y;
+		context.globalViewport[1][0] = gpvp.w;
+		context.globalViewport[1][1] = gpvp.h;
 
 		// Can we get the matrix out of equalizer instead of using opengl?
 		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.begin() );
@@ -564,12 +580,31 @@ protected:
 				// If event has not been processed during update, handle it now.
 				if(!evt.processed)
 				{
-					// NOTE: for now, down't allow channels to mark an event as processed,
-					// so all channels receive a copy of the event.
-					// Otherwise, the first channel marking the event as processed will stop other
-					// channels from seeing it.... This may make sense on some scenarios so it's
-					// worth thinking about it, but for now keep it simple.
-					/*evt.processed = */client->handleEvent(evt, context);
+					// Pointer type events get special treatment: they are delivered
+					// only to channels whose pixel viewport contains the event source position.
+					// Also, the event poistion is converted from global pixel coordinates to
+					// window coordinates.
+					if(evt.serviceType == Service::Pointer)
+					{
+						int vx1 = context.globalViewport[0][0] + context.viewport[0][0];
+						int vy1 = context.globalViewport[0][1] + context.viewport[0][1];
+						int vx2 = vx1 + context.viewport[1][0];
+						int vy2 = vy1 + context.viewport[1][1];
+
+						if(evt.position[0] > vx1 &&
+							evt.position[0] < vx2 &&
+							evt.position[1] > vy1 &&
+							evt.position[1] < vy2)
+						{
+							evt.position[0] -= context.globalViewport[0][0];
+							evt.position[1] -= context.globalViewport[0][1];
+							evt.processed = client->handleEvent(evt, context);
+						}
+					}
+					else
+					{
+						evt.processed = client->handleEvent(evt, context);
+					}
 				}
 			}
 		}

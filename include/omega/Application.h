@@ -67,7 +67,10 @@ namespace omega
 		unsigned int layer;
 		Matrix4f modelview;
 		Matrix4f projection;
+		//! The pixel viewport coordinates of this context with respect to the owner window of the context.
 		Recti viewport;
+		//! The pixel viewport coordinates of this context with respect to the global canvas managed by the display system.
+		Recti globalViewport;
 		IGLContextManager* glContext;
 	};
 
