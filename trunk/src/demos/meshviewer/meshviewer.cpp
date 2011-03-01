@@ -82,88 +82,77 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& context)
 {
-	int vx1 = context.viewport[0][0];
-	int vy1 = context.viewport[0][1];
-	int vx2 = context.viewport[0][0] + context.viewport[1][0];
-	int vy2 = context.viewport[0][1] + context.viewport[1][1];
+	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
+	float z = 1.0f;
+	Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
 
-	if(evt.position[0] > vx1 &&
-		evt.position[0] < vx2 &&
-		evt.position[1] > vy1 &&
-		evt.position[1] < vy2)
+	printf("%.2f %.2f\n", evt.position[0], evt.position[1]); 
+	//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+	//glPointSize(5);
+	//glBegin(GL_POINTS);
+	//glVertex3fv(ray.getOrigin().begin());
+	//glEnd();
+
+	printf("%.2f %.2f %2.f -> %.2f %.2f %.2f\n", 
+		ray.getOrigin()[0], ray.getOrigin()[1], ray.getOrigin()[2],
+		ray.getDirection()[0], ray.getDirection()[1], ray.getDirection()[2]);
+
+	//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
+	//glRecti(vx1, vy1, vx2, vy2);
+	//glRecti(0, 0, context.viewport[1][0], context.viewport[1][1]);
+
+	if(evt.type == Event::Down)
 	{
-		// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
-		float z = 1.0f;
-		Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
 
-		//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-		//glPointSize(5);
-		//glBegin(GL_POINTS);
-		//glVertex3fv(ray.getOrigin().begin());
-		//glEnd();
-
-		//printf("%.2f %.2f %2.f -> %.2f %.2f %.2f\n", 
-		//	ray.getOrigin()[0], ray.getOrigin()[1], ray.getOrigin()[2],
-		//	ray.getDirection()[0], ray.getDirection()[1], ray.getDirection()[2]);
-
-		//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
-		//glRecti(vx1, vy1, vx2, vy2);
-		//glRecti(0, 0, context.viewport[1][0], context.viewport[1][1]);
-
-		if(evt.type == Event::Down)
+		if(myVisibleEntity != NULL)
 		{
-
-			if(myVisibleEntity != NULL)
+			Vector3f handlePos;
+			if(myVisibleEntity->hit(ray, &handlePos))
 			{
-				Vector3f handlePos;
-				if(myVisibleEntity->hit(ray, &handlePos))
-				{
-					myVisibleEntity->activate(handlePos);
-				}
+				myVisibleEntity->activate(handlePos);
 			}
 		}
-		else if(evt.type == Event::Up)
+	}
+	else if(evt.type == Event::Up)
+	{
+		// Deselect objects.
+		if(myVisibleEntity != NULL)
 		{
-			// Deselect objects.
-			if(myVisibleEntity != NULL)
-			{
-				myVisibleEntity->deactivate();
-			}
+			myVisibleEntity->deactivate();
 		}
-		else if(evt.type == Event::Move)
+	}
+	else if(evt.type == Event::Move)
+	{
+		// Manipulate object, if one is active.
+		if(myVisibleEntity != NULL && myVisibleEntity->isActive())
 		{
-			// Manipulate object, if one is active.
-			if(myVisibleEntity != NULL && myVisibleEntity->isActive())
+			float z = 1.0f;
+			Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
+
+			if(evt.isFlagSet(Event::Left))
 			{
-				float z = 1.0f;
-				Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
-
-				if(evt.isFlagSet(Event::Left))
-				{
-					myVisibleEntity->manipulate(Entity::Move, ray);
-				}
-				else if(evt.isFlagSet(Event::Right))
-				{
-					myVisibleEntity->manipulate(Entity::Rotate, ray);
-				}
-				else if(evt.isFlagSet(Event::Middle))
-				{
-					myVisibleEntity->manipulate(Entity::Scale, ray);
-				}
-
+				myVisibleEntity->manipulate(Entity::Move, ray);
 			}
+			else if(evt.isFlagSet(Event::Right))
+			{
+				myVisibleEntity->manipulate(Entity::Rotate, ray);
+			}
+			else if(evt.isFlagSet(Event::Middle))
+			{
+				myVisibleEntity->manipulate(Entity::Scale, ray);
+			}
+
 		}
-		else if(evt.type == Event::Zoom)
+	}
+	else if(evt.type == Event::Zoom)
+	{
+		// Manipulate object, if one is active.
+		if(myVisibleEntity != NULL)
 		{
-			// Manipulate object, if one is active.
-			if(myVisibleEntity != NULL)
-			{
-				float sc = 1;
-				if(evt.value[0] < 0) sc = 0.9f * -evt.value[0] / 3;
-				else sc = 1.1f * evt.value[0] / 3;
-				printf("%f\n", sc);
-				myVisibleEntity->scale(sc);
-			}
+			float sc;
+			if(evt.value[0] < 0) sc = 0.9f;
+			else sc = 1.1f;
+			myVisibleEntity->scale(sc);
 		}
 	}
 }
@@ -198,12 +187,6 @@ bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
 {
-	//int vx1 = context.viewport[0][0];
-	//int vy1 = context.viewport[0][1];
-	//int vx2 = context.viewport[0][0] + context.viewport[1][0];
-	//int vy2 = context.viewport[0][1] + context.viewport[1][1];
-	//printf("PT %d %d of %d %d %d %d\n", (int)evt.position[0], (int)evt.position[1], vx1, vy1, vx2, vy2);
-
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)
