@@ -163,7 +163,7 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 		{
 			Vector3f pt = ray1.getPoint(p.second);
 			pt -= myStartBSphere.getCenter();
-			Quaternion rot = Math::buildRotation(myHandlePosition, pt);
+			Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::ZERO );
 			mySceneNode->setOrientation(rot * myStartOrientation);
 		}
 	}

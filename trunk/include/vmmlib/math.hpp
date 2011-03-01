@@ -363,8 +363,7 @@ namespace vmml
 		static inline T boundingRadiusFromAABB(const axis_aligned_box<T>& aabb);
 
 		/** Compute a quaternion rotation transforming vector a to vector b **/
-		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b,
-			const vector<3,T>& fallbackAxis = vector<3,T>::ZERO);
+		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::ZERO);
 
 		static inline 
 		ray<T> unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport, float z = 0.0f);

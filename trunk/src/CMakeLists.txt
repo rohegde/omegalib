@@ -52,7 +52,9 @@ add_subdirectory(3rdparty/equalizer)
 add_subdirectory(3rdparty/FreeImage)
 add_subdirectory(3rdparty/freetype)
 add_subdirectory(3rdparty/ftgl)
-add_subdirectory(3rdparty/freeglut)
+IF( OMEGA_USE_DISPLAY_GLUT) 
+	add_subdirectory(3rdparty/freeglut)
+ENDIF(OMEGA_USE_DISPLAY_GLUT)
 add_subdirectory(3rdparty/glew)
 
 include_directories(

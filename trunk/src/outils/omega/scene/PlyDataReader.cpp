@@ -43,6 +43,10 @@
 #include <float.h>
 #endif
 
+#ifdef OMEGA_OS_OSX
+#include <cfloat>
+#endif
+
 #include "omega/glheaders.h"
 
 #define min(a, b)  ((a)<(b))?(a):(b)

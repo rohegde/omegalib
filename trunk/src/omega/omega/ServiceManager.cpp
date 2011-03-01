@@ -31,6 +31,10 @@
 using namespace omega;
 using namespace std;
 
+// The maximum number of events stored in the event buffer.
+const int ServiceManager::MaxEvents = OMEGA_MAX_EVENTS;
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ServiceManager::ServiceManager(SystemManager* sys):
 	mySys(sys),
