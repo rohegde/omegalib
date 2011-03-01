@@ -86,16 +86,15 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 	float z = 1.0f;
 	Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
 
-	printf("%.2f %.2f\n", evt.position[0], evt.position[1]); 
+	//printf("%.2f %.2f\n", evt.position[0], evt.position[1]); 
+	ofmsg("Position: %1%", %Vector2f(evt.position));
 	//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 	//glPointSize(5);
 	//glBegin(GL_POINTS);
 	//glVertex3fv(ray.getOrigin().begin());
 	//glEnd();
 
-	printf("%.2f %.2f %2.f -> %.2f %.2f %.2f\n", 
-		ray.getOrigin()[0], ray.getOrigin()[1], ray.getOrigin()[2],
-		ray.getDirection()[0], ray.getDirection()[1], ray.getDirection()[2]);
+	ofmsg("%1% -> %2%", %ray.getOrigin() %ray.getDirection());
 
 	//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
 	//glRecti(vx1, vy1, vx2, vy2);
@@ -160,10 +159,6 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 {
-	//getDisplaySystem()->getObserver(0)->update(
-	//	Vector3f(0, 1.8f, 1.0f), 
-	//	Quaternion::IDENTITY);
-
 	myEngine->handleEvent(evt);
 
 	switch(evt.serviceType)

@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/Application.h"
 #include "omega/ServiceManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace std;
@@ -52,7 +53,7 @@ void ServiceManager::initialize()
 	omsg("ServiceManager::initialize");
 
 	myEventBuffer = new Event[MaxEvents];
-	omsg("Event buffer allocated. Max events: %d", MaxEvents);
+	ofmsg("Event buffer allocated. Max events: %1%", %MaxEvents);
 
 	for(int i = 0; i < myServices.size(); i++)
 	{

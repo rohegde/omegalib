@@ -28,6 +28,7 @@
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
 #include "omega/Config.h"
+#include "omega/StringUtils.h"
 
 // Display system
 #ifdef OMEGA_USE_DISPLAY
@@ -156,11 +157,11 @@ void SystemManager::setupServiceManager()
 				svc->setup(stSvc);
 				myServiceManager->addService(svc);
 
-				omsg("Input service added: %s", stSvc.getName());
+				ofmsg("Input service added: %1%", %stSvc.getName());
 			}
 			else
 			{
-				owarn("Input service not found: %s", stSvc.getName());
+				ofwarn("Input service not found: %1%", %stSvc.getName());
 			}
 		}
 	}
@@ -202,7 +203,7 @@ void SystemManager::setupDisplaySystem()
 		}
 		else
 		{
-			oerror("invalid display system type: %s", displaySystemType.c_str());
+			oferror("invalid display system type: %s", %displaySystemType);
 		}
 		ds->setup(stDS);
 		setDisplaySystem(ds);

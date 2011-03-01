@@ -71,36 +71,41 @@
 
 #include "otypes.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
 #define OMEGA_VERSION "0.4"
 
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)
 
-// Forward declaration of DataSource, used for omain
-namespace omega { class DataSource; };
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Function definitions.
 struct GLEWContextStruct;
 typedef struct GLEWContextStruct GLEWContext;
-OMEGA_API GLEWContext* glewGetContext();
-OMEGA_API void glewSetContext(const GLEWContext* context);
 
-OMEGA_API void ologopen(const char* filename);
-OMEGA_API void ologclose();
-OMEGA_API void omsg(const char* fmt, ...);
-OMEGA_API void owarn(const char* fmt, ...);
-OMEGA_API void oerror(const char* fmt, ...);
-OMEGA_API void oexit(int code);
-OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+// Forward declaration of DataSource, used for omain
+namespace omega 
+{ 
+	class DataSource;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Function definitions.
+	OMEGA_API GLEWContext* glewGetContext();
+	OMEGA_API void glewSetContext(const GLEWContext* context);
+
+	OMEGA_API void ologopen(const char* filename);
+	OMEGA_API void ologclose();
+	OMEGA_API void omsg(const String& str);
+	OMEGA_API void owarn(const String& str);
+	OMEGA_API void oerror(const String& str);
+	OMEGA_API void oexit(int code);
+	OMEGA_API void oabort(const char* file, int line, const char* reason);
+	OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+};
 
 // @todo: stupid macros bleah go away.
-#define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }
-#define OMEGA_LOG_CLOSE() { ologclose(); }
+//#define OMEGA_LOG_INIT_FILE(file) { ologopen(file); eq::base::Log::setOutput(std::ostream(new EqualizerLogStreamBuf())); }
+//#define OMEGA_LOG_CLOSE() { ologclose(); }
 
 #define odbg(str) omsg(str);
-#define oassert(c) if(!(c)) { oerror("Assertion failed at %s:%d - %s", __FILE__, __LINE__, #c); exit(1); }
+#define oassert(c) if(!(c)) { oabort(__FILE__, __LINE__, #c); }
 
 #endif

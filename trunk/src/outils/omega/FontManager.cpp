@@ -27,6 +27,7 @@
 #include "omega/FontManager.h"
 #include "omega/DataManager.h"
 #include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -65,7 +66,7 @@ void FontManager::createFont(omega::String fontName, omega::String filename, int
 {
 	if(getFont(fontName))
 	{
-		owarn("FontManager::createFont: font '%s' already existing.", fontName);
+		ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
 		return;
 	}
 
@@ -90,13 +91,13 @@ void FontManager::createFont(omega::String fontName, omega::String filename, int
 
 	if(fontImpl->Error())
 	{
-		owarn("Font %s failed to open", filename.c_str());
+		ofwarn("Font %1% failed to open", %filename);
 		delete fontImpl;
 	}
 
 	if(!fontImpl->FaceSize(size))
 	{
-		owarn("Font %s failed to set size %i", filename, size);
+		ofwarn("Font %1% failed to set size %2%", %filename %size);
 		delete fontImpl;
 	}
 

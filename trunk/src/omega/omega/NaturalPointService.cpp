@@ -27,6 +27,7 @@
  *************************************************************************************************/
 #include "omega/NaturalPointService.h"
 #include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -92,19 +93,19 @@ void NaturalPointService::start()
 	
 	if ( retCode != ErrorCode_OK)
 	{
-		oerror("MOCAP: Unable to connect to server. Error code: %d. Exiting", retCode);
+		oferror("MOCAP: Unable to connect to server. Error code: %d. Exiting", %retCode);
 		exit(1);
 	}
 	omsg("MOCAP: Initialization succeeded\n");
 
 	// send/receive test request
-	omsg("MOCAP: Sending Test Request\n");
+	omsg("MOCAP: Sending Test Request");
 	void* response;
 	int nBytes;
 	int iResult = pClient->SendMessageAndWait("TestRequest", &response, &nBytes);
 	if (iResult == ErrorCode_OK)
 	{
-		printf("MOCAP: Received: %s", (char*)response);
+		ofmsg("MOCAP: Received: %s", %(char*)response);
 	}
 
 }

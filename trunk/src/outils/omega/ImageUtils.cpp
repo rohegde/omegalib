@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ImageUtils.h"
+#include "omega/StringUtils.h"
 #include "FreeImage.h"
 
 using namespace omega;
@@ -42,7 +43,7 @@ byte* ImageUtils::loadImage(const String& filename)
 	int w = FreeImage_GetWidth(image);
 	int h = FreeImage_GetHeight(image);
 
-	omsg("Image loaded: %s. Size: %dx%d", filename.c_str(), w, h);
+	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %w %h);
 	
 	GLubyte* data = new GLubyte[4*w*h];
 	char* pixels = (char*)FreeImage_GetBits(image);

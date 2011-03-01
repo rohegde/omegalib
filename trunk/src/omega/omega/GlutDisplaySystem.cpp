@@ -29,6 +29,7 @@
 #include "omega/SystemManager.h"
 #include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
+#include "omega/StringUtils.h"
 
 #include "ArgumentHelper.h"
 
@@ -243,7 +244,7 @@ void GlutDisplaySystem::initLayers()
 			}
 			else
 			{
-				owarn("Config: no layer section defined in config/views/%s", stView.getName());
+				ofwarn("Config: no layer section defined in config/views/%1%", %stView.getName());
 			}
 		}
 	}

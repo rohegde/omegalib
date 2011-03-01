@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Texture.h"
+#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -43,7 +44,7 @@ void Texture::initialize(byte* data, int width, int height)
 	if(glErr)
 	{
 		const unsigned char* str = gluErrorString(glErr);
-		oerror("Texture initialization: %s", str);
+		oferror("Texture initialization: %1%", %str);
 		return;
 	}
 	myDirty = true;
@@ -64,7 +65,7 @@ void Texture::refresh()
 		if(glErr)
 		{
 			const unsigned char* str = gluErrorString(glErr);
-			oerror("Texture refresh: %s", str);
+			oferror("Texture refresh: %1%", %str);
 			return;
 		}
 		myDirty = false;
