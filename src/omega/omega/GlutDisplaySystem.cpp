@@ -258,21 +258,7 @@ void GlutDisplaySystem::initObservers()
 		for(int i = 0; i < stObservers.getLength(); i++)
 		{
 			Setting& stObserver = stObservers[i];
-
-			Vector3f referencePos;
-
-			if(stObserver.exists("referencePosition"))
-			{
-				Setting& stEmitterTranslation = stObserver["referencePosition"];
-				referencePos.x() = (float)stEmitterTranslation[0];
-				referencePos.y() = (float)stEmitterTranslation[1];
-				referencePos.z() = (float)stEmitterTranslation[2];
-			}
-
-			// NOTE: Glut supports just one observer.. last observer specified wins.
-			// Set observer initial position to origin, neutral orientation.
-			myObserver.setReferencePosition(referencePos);
-			myObserver.update(Vector3f::ZERO, Quaternion::IDENTITY);
+			myObserver.load(stObserver);
 		}
 	}
 }
