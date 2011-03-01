@@ -726,19 +726,7 @@ void EqualizerDisplaySystem::initObservers()
 		{
 			Setting& stObserver = stObservers[i];
 			Observer* obs = getObserver(i);
-			Vector3f referencePos;
-
-			if(stObserver.exists("referencePosition"))
-			{
-				Setting& stEmitterTranslation = stObserver["referencePosition"];
-				referencePos.x() = (float)stEmitterTranslation[0];
-				referencePos.y() = (float)stEmitterTranslation[1];
-				referencePos.z() = (float)stEmitterTranslation[2];
-			}
-
-			// Set observer initial position to origin, neutral orientation.
-			obs->setReferencePosition(referencePos);
-			obs->update(Vector3f::ZERO, Quaternion::IDENTITY);
+			obs->load(stObserver);
 		}
 	}
 }
