@@ -41,7 +41,7 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! A string formatting class derived from boost::format, with the addition of a String 
 	//! conversion operator.
-	typedef public boost::format Format;
+	typedef boost::format Format;
 	// Define some macros to simplify string formatting and formatted logging
 	#define oformat(format, args) boost::str(Format(format) args)
 	#define ofmsg(format, args) omsg(oformat(format, args))

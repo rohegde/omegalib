@@ -103,7 +103,7 @@ protected:
 
 private:
 	int myNumEvents;
-	Event myEventBuffer[ServiceManager::MaxEvents];
+	Event myEventBuffer[ OMEGA_MAX_EVENTS ];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@
 #include "osystem.h"
 #include "Application.h"
 #include "Event.h"
-
+#define OMEGA_MAX_EVENTS 1024
 namespace omega
 {
 // Forward declarations.
@@ -70,8 +70,8 @@ public:
 
 public:
 	// The maximum number of events stored in the event buffer.
-	static const int MaxEvents = 1024;
-
+	static const int MaxEvents;
+	
 private:
 	int incrementBufferIndex(int index);
 	int decrementBufferIndex(int index);

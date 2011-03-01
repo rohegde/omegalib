@@ -90,8 +90,8 @@ static void __config_locale_override()
 
 #elif defined(__APPLE__)
 
-  locale_t loc = newlocale(LC_NUMERIC_MASK, "C", NULL);
-  uselocale(loc);
+  //locale_t loc = newlocale(LC_NUMERIC_MASK, "C", NULL);
+  //uselocale(loc);
 
 #elif ((defined HAVE_NEWLOCALE) && (defined HAVE_USELOCALE))
 

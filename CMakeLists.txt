@@ -56,13 +56,18 @@ elseif(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
 	set(ARCH "linux-i386")
 	set(TOOL "gcc4.4")
 	add_definitions(-DOMEGA_OS_LINUX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
+elseif(CMAKE_GENERATOR STREQUAL "Xcode")
+	set(ARCH "OSX-i386")
+	set(TOOL "gcc4.2")
+	add_definitions(-DOMEGA_OS_OSX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
+	
 endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
 set(OMEGA_BUILD_NAME ${ARCH}-${TOOL} CACHE STRING "The omegalib build name. A directory with this name will be created in the bin and lib directories to store the final build products.")
 
 ###################################################################################################
 # Set the output directories for libraries and binary files
-if(MSVC)
+if(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 	# Since visual studio builds are multiconfiguration, set two separate directories for debug and release builds
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-debug)
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-release)
@@ -74,13 +79,13 @@ if(MSVC)
 	# third party dlls there if needed.
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE})
-else(MSVC)
+else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME})
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME})
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME})
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 	file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-endif(MSVC)
+endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
 ###################################################################################################
 # Couple utility variables for library linking
