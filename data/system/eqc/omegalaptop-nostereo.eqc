@@ -21,21 +21,18 @@ server
                 {
                     name     "bottom"
                     viewport [ 0 480 854 480 ]
-                    channel { name "bottom"  }
+                    channel 
+					{ 
+						name "bottom"  
+					}
                 }
                 window
                 {
                     name     "top"
                     viewport [ 0 0 854 480 ]
                     channel 
-                    { 
-						viewport [0 0 .5 1]
-						name "topleft"  
-					}
-                    channel 
-                    { 
-						viewport [.5 0 .5 1]
-						name "topright"  
+					{ 
+						name "top"  
 					}
                 }
             }
@@ -75,31 +72,20 @@ server
                 channel "bottom"
 				wall
 				{
-						bottom_left  [ -.7 -0.4 0 ]
-						bottom_right [  .7 -0.4 0 ]
-						top_left     [ -.7 0.4 0 ]
+					bottom_left  [ -.7 -1.2 0 ]
+					bottom_right [  .7 -1.2 0 ]
+					top_left     [ -.7 -0.4 0 ]
 				}
             }
             segment
             {
                 viewport [ 0 .5 1 .5 ]
-                channel "topleft"
+                channel "top"
 				wall
 				{
-						bottom_left  [ -.7 -0.4 0 ]
-						bottom_right [  .7 -0.4 0 ]
-						top_left     [ -.7 0.4 0 ]
-				}
-            }
-            segment
-            {
-                viewport [ 0 .5 1 .5 ]
-                channel "topright"
-				wall
-				{
-						bottom_left  [ -.7 -0.4 0 ]
-						bottom_right [  .7 -0.4 0 ]
-						top_left     [ -.7 0.4 0 ]
+					bottom_left  [ -.7 -0.4 0 ]
+					bottom_right [  .7 -0.4 0 ]
+					top_left     [ -.7 0.4 0 ]
 				}
             }
         }
@@ -113,13 +99,7 @@ server
             }
             compound
             {
-				eye [ LEFT ]
                 channel ( segment 1 layout "MultiView" view 1 )
-            }
-            compound
-            {
-				eye [ RIGHT ]
-                channel ( segment 2 layout "MultiView" view 1 )
             }
         }
     }
