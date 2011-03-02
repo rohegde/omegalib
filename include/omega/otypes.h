@@ -54,6 +54,9 @@
 #define VMMLIB_DONT_FORCE_ALIGNMENT
 #include <vmmlib/vmmlib.hpp>
 
+// Used for lock.
+#include "co/base/lock.h"
+
 // Forward declarations of some OpenGL and OpenCL types.
 // Using these, we can avoid including gl, cl (and windows) headers for every compiled source file.
 // Source files that make explicit use of OpenGL/or OpenCL functionality have to include glheaders.h
@@ -100,6 +103,7 @@ typedef unsigned int uint;
 typedef unsigned long long uint64;
 typedef unsigned long long int64;
 typedef std::string String;
+typedef co::base::Lock Lock;
 
 // Container typedefs
 #ifdef __GNUC__
