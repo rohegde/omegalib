@@ -85,7 +85,7 @@ void displayCallback(void)
 	int av = im->getAvailableEvents();
 	if(av != 0)
 	{
-		Event evts[ServiceManager::MaxEvents];
+		Event evts[OMEGA_MAX_EVENTS];
 		im->getEvents(evts, ServiceManager::MaxEvents);
 
 		// Dispatch events to application server.

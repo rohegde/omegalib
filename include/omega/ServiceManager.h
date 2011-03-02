@@ -31,12 +31,15 @@
 #include "Application.h"
 #include "Event.h"
 #define OMEGA_MAX_EVENTS 1024
+// Used for lock.
+#include "eq/base.h"
+
 namespace omega
 {
 // Forward declarations.
 class SystemManager;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 class OMEGA_API ServiceManager
 {
 friend class Service;
@@ -80,14 +83,13 @@ private:
 	Event* writeHead();
 	Event* readHead();
 	Event* readTail();
+	Event* getEvent(int index);
 
 private:
 	SystemManager*	mySys;
-	// XXX if you do not select OMEGA_USE_DISPLAY_EQUALIZER
-	// then it cannot find co - Vic
-#ifdef OMEGA_USE_DISPLAY
+
 	co::base::Lock  myEventBufferLock;
-#endif
+
 	Event*		myEventBuffer;
 	int				myEventBufferHead;
 	int				myEventBufferTail;
