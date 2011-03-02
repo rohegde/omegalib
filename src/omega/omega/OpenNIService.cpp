@@ -1,5 +1,6 @@
 #include "omega/OpenNIService.h"
 #include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -235,7 +236,7 @@ bool OpenNIService::getJointPosition(XnUserID player, XnSkeletonJoint joint, Vec
 // Callback: New user was detected
 void XN_CALLBACK_TYPE OpenNIService::User_NewUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie)
 {
-	omsg("New User %d\n", nId);
+	ofmsg("New User %1%", %(int)nId);
 	// New user found
 	if ( OpenNIService::omg_bNeedPose)
 	{
@@ -250,13 +251,13 @@ void XN_CALLBACK_TYPE OpenNIService::User_NewUser(xn::UserGenerator& generator, 
 // Callback: An existing user was lost
 void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie)
 {
-	omsg("Lost user %d\n", nId);
+	ofmsg("Lost user %1%\n", %(int)nId);
 }
 
 // Callback: Detected a pose
 void XN_CALLBACK_TYPE OpenNIService::UserPose_PoseDetected(xn::PoseDetectionCapability& capability, const XnChar* strPose, XnUserID nId, void* pCookie)
 {
-	omsg("Pose %s detected for user %d\n", strPose, nId);
+	ofmsg("Pose %1% detected for user %2%\n", %strPose %(int)nId);
 	omg_UserGenerator.GetPoseDetectionCap().StopPoseDetection(nId);
 	omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
 }
@@ -264,7 +265,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserPose_PoseDetected(xn::PoseDetectionCapa
 // Callback: Started calibration
 void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationStart(xn::SkeletonCapability& capability, XnUserID nId, void* pCookie)
 {
-	omsg("Calibration started for user %d\n", nId);
+	ofmsg("Calibration started for user %1%\n", %(int)nId);
 }
 
 // Callback: Finished calibration
@@ -273,13 +274,13 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 	if (bSuccess)
 	{
 		// Calibration succeeded
-		omsg("Calibration complete, start tracking user %d\n", nId);
+		ofmsg("Calibration complete, start tracking user %1%\n", %(int)nId);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
 	}
 	else
 	{
 		// Calibration failed
-		omsg("Calibration failed for user %d\n", nId);
+		ofmsg("Calibration failed for user %1%\n", %(int)nId);
 		if ( OpenNIService::omg_bNeedPose )
 		{
 			omg_UserGenerator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);

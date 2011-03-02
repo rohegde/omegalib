@@ -16,7 +16,7 @@ void KinectDemoClient::draw(const DrawContext& context)
 
 	int numberOfEvents = SystemManager::instance()->getServiceManager()->getAvailableEvents();
 
-	omega::Event ptrEvents[omega::ServiceManager::MaxEvents];
+	omega::Event ptrEvents[OMEGA_MAX_EVENTS];
 
 	if( numberOfEvents > 0 ) {
 		SystemManager::instance()->getServiceManager()->getEvents(ptrEvents, omega::ServiceManager::MaxEvents);
