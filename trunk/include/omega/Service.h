@@ -65,6 +65,7 @@ protected:
 	Event* writeHead();
 	Event* readHead();
 	Event* readTail();
+	Event* getEvent(int index);
 
 private:
 	void setManager(ServiceManager* mng) { myManager = mng; }

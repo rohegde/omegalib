@@ -42,6 +42,7 @@ SET( srcs
 		omega/ServiceManager.cpp
 		omega/Service.cpp
         omega/Observer.cpp
+		omega/ObserverUpdateService.cpp
 		omega/SystemManager.cpp
 		omega/StringUtils.cpp
 		omega/DataManager.cpp
@@ -61,6 +62,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Service.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h

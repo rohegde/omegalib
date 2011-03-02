@@ -497,7 +497,7 @@ void main(int argc, char** argv)
 		if(av != 0)
 		{
 			// @todo: Instead of copying the event list, we can lock the main one.
-			Event evts[ServiceManager::MaxEvents];
+			Event evts[OMEGA_MAX_EVENTS];
 			sys->getServiceManager()->getEvents(evts, ServiceManager::MaxEvents);
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{

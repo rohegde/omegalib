@@ -24,44 +24,34 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Service.h"
+#ifndef __OBSERVER_UPDATE_SERVICE_H__
+#define __OBSERVER_UPDATE_SERVICE_H__
+
+#include "omega/osystem.h"
 #include "omega/ServiceManager.h"
 
-using namespace omega;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Service::lockEvents() 
-{ 
-	myManager->lockEvents(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Service::unlockEvents() 
-{ 
-	myManager->unlockEvents(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Event* Service::writeHead()
-{ 
-	return myManager->writeHead(); 
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Event* Service::readHead()
-{ 
-	return myManager->readHead();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Event* Service::readTail()
-{ 
-	return myManager->readTail(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Event* Service::getEvent(int index)
+namespace omega
 {
-	return myManager->getEvent(index);
-}
+	class Observer;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class ObserverUpdateService: public Service
+	{
+	public:
+		// Allocator function
+		static ObserverUpdateService* New() { return new ObserverUpdateService(); }
+
+	public:
+		ObserverUpdateService();
+
+		virtual void setup(Setting& settings);
+		virtual void initialize();
+		virtual void poll();
+		virtual void dispose();
+
+	private:
+		Observer* myObserver;
+		int mySourceId;
+	};
+}; // namespace omega
+
+#endif
