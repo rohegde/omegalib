@@ -25,8 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ImageUtils.h"
-#include "omega/StringUtils.h"
 #include "FreeImage.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 

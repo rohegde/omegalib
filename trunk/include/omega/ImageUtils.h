@@ -27,7 +27,7 @@
 #ifndef __IMAGE_UTILS_H__
 #define __IMAGE_UTILS_H__
 
-#include "omega.h"
+#include "osystem.h"
 
 namespace omega
 {

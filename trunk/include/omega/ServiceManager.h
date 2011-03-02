@@ -31,8 +31,6 @@
 #include "Application.h"
 #include "Event.h"
 #define OMEGA_MAX_EVENTS 1024
-// Used for lock.
-#include "eq/base.h"
 
 namespace omega
 {
@@ -88,7 +86,7 @@ private:
 private:
 	SystemManager*	mySys;
 
-	co::base::Lock  myEventBufferLock;
+	Lock  myEventBufferLock;
 
 	Event*		myEventBuffer;
 	int				myEventBufferHead;
