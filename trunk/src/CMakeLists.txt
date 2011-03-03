@@ -33,6 +33,7 @@ IF(OMEGA_BUILD_STATIC)
 ENDIF(OMEGA_BUILD_STATIC)
 
 SET(APPS_BUILD_INPUT_SERVER false CACHE BOOL "Build omegalib input server")
+SET(APPS_BUILD_MOCALIB false CACHE BOOL "Build motion capture calibration app")
 
 SET(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
 IF(OMEGA_USE_DISPLAY)
@@ -80,6 +81,10 @@ add_subdirectory(apps/ohello)
 if(APPS_BUILD_INPUT_SERVER)
 	ADD_SUBDIRECTORY(apps/oinputserver)
 endif(APPS_BUILD_INPUT_SERVER)
+
+if(APPS_BUILD_MOCALIB)
+	ADD_SUBDIRECTORY(apps/mocalib)
+endif(APPS_BUILD_MOCALIB)
 
 if(APPS_BUILD_MESH_VIEWER)
 	add_subdirectory(apps/meshviewer)
