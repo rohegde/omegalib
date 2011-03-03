@@ -55,7 +55,8 @@ void MeshViewerClient::initialize()
 
 			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.2f);
 			Mesh* mesh = mm->getMesh(meshName);
-			myEntities.push_back(new Entity(meshLabel, myEngine->getSceneManager(), mesh));
+			Entity* e = new Entity(meshLabel, myEngine->getSceneManager(), mesh);
+			myEntities.push_back(e);
 		}
 	}
 
@@ -85,20 +86,6 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
 	Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
-
-	//printf("%.2f %.2f\n", evt.position[0], evt.position[1]); 
-	ofmsg("Position: %1%", %Vector2f(evt.position));
-	//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	//glPointSize(5);
-	//glBegin(GL_POINTS);
-	//glVertex3fv(ray.getOrigin().begin());
-	//glEnd();
-
-	ofmsg("%1% -> %2%", %ray.getOrigin() %ray.getDirection());
-
-	//glColor4f(0.0f, 1.0f, 0.0f, 0.2f);
-	//glRecti(vx1, vy1, vx2, vy2);
-	//glRecti(0, 0, context.viewport[1][0], context.viewport[1][1]);
 
 	if(evt.type == Event::Down)
 	{
@@ -160,23 +147,7 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 {
 	myEngine->handleEvent(evt);
-
-	switch(evt.serviceType)
-	{
-	case Service::Mocap:
-		// Update observer
-		if(evt.sourceId == 1)
-		{
-			if(evt.position.length() > 0.1f)
-			{
-				getDisplaySystem()->getObserver(0)->update(evt.position, evt.orientation);
-			}
-			return true;
-		}
-	break;
-	}
 	return false;
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,6 +180,14 @@ void MeshViewerClient::draw(const DrawContext& context)
 		break;
 	case 1:
 		myEngine->draw(context, EngineClient::DrawScene);
+		glBegin(GL_TRIANGLE_STRIP);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(-0.05f, -0.05f, 0);
+		glVertex3f(0.05f, -0.05f, 0);
+		glVertex3f(-0.05f, 0.05f, 0);
+		glVertex3f(0.05f, 0.05f, 0);
+		glEnd();
+
 		break;
 	case 2:
 		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);

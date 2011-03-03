@@ -30,6 +30,8 @@
 #include "omega/Config.h"
 #include "omega/StringUtils.h"
 
+#include "omega/ObserverUpdateService.h"
+
 // Display system
 #ifdef OMEGA_USE_DISPLAY
 	#include "omega/DisplaySystem.h"
@@ -140,6 +142,8 @@ void SystemManager::setupServiceManager()
 #ifdef OMEGA_USE_OPENNI
 	registerService("OpenNIService", (ServiceAllocator)OpenNIService::New);
 #endif
+
+	registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
 
 	// Instantiate input services
 	Setting& stRoot = mySystemConfig->getRootSetting()["config"];

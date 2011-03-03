@@ -310,6 +310,8 @@ public:
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		ServiceManager* im = SystemManager::instance()->getServiceManager();
 
+		im->poll();
+
 		// update observer head matrices.
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
 		{
@@ -323,17 +325,18 @@ public:
 		myFrameData.setDirtyEvents();
 		if(av != 0)
 		{
-			Event evts[OMEGA_MAX_EVENTS];
-			im->getEvents(evts, ServiceManager::MaxEvents);
-
+			im->lockEvents();
 			// Dispatch events to application server.
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
-				myServer->handleEvent(evts[evtNum]);
+				Event* evt = im->getEvent(evtNum);
+				myServer->handleEvent(*evt);
 				// Copy events to frame data.
-				myFrameData.getEvent(evtNum) = evts[evtNum];
+				myFrameData.getEvent(evtNum) = *evt;
 			}
+			im->unlockEvents();
 		}
+		im->clearEvents();
 
 		static float lt = 0.0f;
 		// Compute dt.
@@ -343,8 +346,6 @@ public:
 		uc.dt = t - lt;
 
 		myServer->update(uc);
-
-		im->poll();
 
 		// Process exit requests.
 		if(SystemManager::instance()->isExitRequested())
