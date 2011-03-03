@@ -32,7 +32,7 @@ IF(OMEGA_BUILD_STATIC)
 	ADD_DEFINITIONS(-DOMEGA_STATIC)
 ENDIF(OMEGA_BUILD_STATIC)
 
-SET(OMEGA_BUILD_INPUT_SERVER false CACHE BOOL "Build omegalib input server")
+SET(APPS_BUILD_INPUT_SERVER false CACHE BOOL "Build omegalib input server")
 
 SET(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
 IF(OMEGA_USE_DISPLAY)
@@ -40,9 +40,9 @@ IF(OMEGA_USE_DISPLAY)
 ENDIF(OMEGA_USE_DISPLAY)
 
 IF(OMEGA_BUILD_UTILITY_LIB)
-	SET(DEMO_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
-	SET(DEMO_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
-	SET(PLAYGROUND_BUILD_VTK_DEMO false CACHE BOOL "Enable build of playground projects. Playgroud projects are experimental, and may not work. ")
+	SET(APPS_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
+	SET(APPS_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
+	SET(APPS_BUILD_VTK_DEMO false CACHE BOOL "Enable build of playground projects. Playgroud projects are experimental, and may not work. ")
 ENDIF(OMEGA_BUILD_UTILITY_LIB)
 
 ###################################################################################################
@@ -52,6 +52,7 @@ add_subdirectory(3rdparty/equalizer)
 add_subdirectory(3rdparty/FreeImage)
 add_subdirectory(3rdparty/freetype)
 add_subdirectory(3rdparty/ftgl)
+
 IF( OMEGA_USE_DISPLAY_GLUT) 
 	add_subdirectory(3rdparty/freeglut)
 ENDIF(OMEGA_USE_DISPLAY_GLUT)
@@ -69,24 +70,25 @@ include_directories(
   )
   
 add_subdirectory(omega)
-add_subdirectory(demos/ohello)
-
-if(OMEGA_BUILD_INPUT_SERVER)
-	ADD_SUBDIRECTORY(oinputserver)
-endif(OMEGA_BUILD_INPUT_SERVER)
 
 if(OMEGA_BUILD_UTILITY_LIB)
 	add_subdirectory(outils)
 endif(OMEGA_BUILD_UTILITY_LIB)
 
-if(DEMO_BUILD_MESH_VIEWER)
-	add_subdirectory(demos/meshviewer)
-endif(DEMO_BUILD_MESH_VIEWER)
+add_subdirectory(apps/ohello)
 
-IF(DEMO_BUILD_KINECT)
-	ADD_SUBDIRECTORY(demos/kinectdemo)
-ENDIF(DEMO_BUILD_KINECT)
+if(APPS_BUILD_INPUT_SERVER)
+	ADD_SUBDIRECTORY(apps/oinputserver)
+endif(APPS_BUILD_INPUT_SERVER)
 
-IF(PLAYGROUND_BUILD_VTK_DEMO)
-	ADD_SUBDIRECTORY(playground/vtkdemo)
-ENDIF(PLAYGROUND_BUILD_VTK_DEMO)
+if(APPS_BUILD_MESH_VIEWER)
+	add_subdirectory(apps/meshviewer)
+endif(APPS_BUILD_MESH_VIEWER)
+
+IF(APPS_BUILD_KINECT)
+	ADD_SUBDIRECTORY(apps/kinectdemo)
+ENDIF(APPS_BUILD_KINECT)
+
+IF(APPS_BUILD_VTK_DEMO)
+	ADD_SUBDIRECTORY(apps/vtkdemo)
+ENDIF(APPS_BUILD_VTK_DEMO)
