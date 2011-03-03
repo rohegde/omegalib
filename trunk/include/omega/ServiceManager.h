@@ -59,15 +59,16 @@ public:
 	void stop();
 	void dispose();
 
-	// TEMPORARY: this will run in a thread in the future.
 	void poll();
-
-	void processEvents(ApplicationServer* app);
 
 	int getAvailableEvents() { return myAvailableEvents; }
 	int getDroppedEvents() { return myDroppedEvents; }
 	void resetDroppedEvents() { myDroppedEvents = 0; }
 	int getEvents(Event* ptr, int maxEvents);
+	Event* getEvent(int index);
+	void clearEvents();
+	void lockEvents();
+	void unlockEvents();
 
 public:
 	// The maximum number of events stored in the event buffer.
@@ -76,12 +77,9 @@ public:
 private:
 	int incrementBufferIndex(int index);
 	int decrementBufferIndex(int index);
-	void lockEvents();
-	void unlockEvents();
 	Event* writeHead();
 	Event* readHead();
 	Event* readTail();
-	Event* getEvent(int index);
 
 private:
 	SystemManager*	mySys;

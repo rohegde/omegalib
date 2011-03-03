@@ -114,11 +114,6 @@ void OpenNIService::dispose()
 }
 
 
-/**********************************************************************************************
- *	For a better idea of what is going on in the quaternion to euler conversion check out:
- *		http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
- *		http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
- **********************************************************************************************/
 void OpenNIService::poll(void)
 {
 	double verticalTest; //used to handle special case of body pointing straight along vertical axis
@@ -198,7 +193,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 		theEvent->pointSet[joint][2] = pos[2];
 
 		// Save the center of gravity
-		if( joint == OMEGA_SKEL_TORSO ) {
+		if( joint == OMEGA_SKEL_HEAD ) {
 			theEvent->position[0] = pos[0]; theEvent->position[1] = pos[1]; theEvent->position[2] = pos[2];
 		}
 	}
