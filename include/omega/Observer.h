@@ -44,7 +44,7 @@ namespace omega
 		void setSensorTransform(Matrix4f value);
 
 		Matrix4f getViewTransform();
-		Matrix4f getHeadTransform();
+		const Matrix4f& getHeadTransform();
 
 		void update(const Vector3f& position, const Quaternion& orientation);
 		void load(Setting& setting);
@@ -88,7 +88,7 @@ namespace omega
 	{ return myViewTransform; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Matrix4f Observer::getHeadTransform() 
+	inline const Matrix4f& Observer::getHeadTransform() 
 	{ return myHeadTransform; }
 }; // namespace omega
 

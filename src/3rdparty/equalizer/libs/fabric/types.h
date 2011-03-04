@@ -22,7 +22,7 @@
 #include <co/base/os.h>
 #include <co/base/refPtr.h>
 #include <co/base/uint128_t.h>
-#include <vmmlib/vmmlib.hpp>
+#include "vmmlib/vmmlib.hpp"
 
 namespace eq
 {

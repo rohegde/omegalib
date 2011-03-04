@@ -69,17 +69,17 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
 
-		# vmml
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/vmmlib.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/vector.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/matrix.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/quaternion.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/math.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/ray.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/sphere.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/plane.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/axis_aligned_box.hpp
-        ${OmegaLib_SOURCE_DIR}/include/vmmlib/plane_bounded_volume.hpp
+		# eigenwrap
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/eigenwrap.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/vector.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/matrix.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/quaternion.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/math.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/ray.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/sphere.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/plane.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/axis_aligned_box.hpp
+        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/plane_bounded_volume.hpp
         ) 
         
 ###################################################################################################
@@ -178,7 +178,7 @@ endif(WIN32)
 source_group(omega REGULAR_EXPRESSION omega/)		
 source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
 source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
-source_group(vmml REGULAR_EXPRESSION vmmlib)		
+source_group(eigenwrap REGULAR_EXPRESSION eigenwrap)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers
