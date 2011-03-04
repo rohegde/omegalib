@@ -316,7 +316,10 @@ public:
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
 		{
 			Observer* obs  = ds->getObserver(i);
-			getObservers().at(i)->setHeadMatrix(obs->getHeadTransform());
+			eq::fabric::Matrix4f om;
+			const Matrix4f& ht = obs->getHeadTransform();
+			om.set(ht.begin(), ht.end(), false);
+			getObservers().at(i)->setHeadMatrix(om);
 		}
 
 		// Process events.

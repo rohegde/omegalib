@@ -50,9 +50,9 @@
 #undef max
 #endif
 
-// vmmlib includes
+// eigenwrap includes
 #define VMMLIB_DONT_FORCE_ALIGNMENT
-#include <vmmlib/vmmlib.hpp>
+#include <eigenwrap/eigenwrap.hpp>
 
 // Used for lock.
 #include "co/base/lock.h"
@@ -115,23 +115,23 @@ template<typename T> class Vector: public std::vector<T> {};
 template<typename T> class List: public std::list<T> {};
 
 // Math and linear algebra typedefs
-typedef vmml::math<float> Math;
-typedef vmml::sphere<float> Sphere;
-typedef vmml::plane<float> Plane;
-typedef vmml::ray<float> Ray;
-typedef vmml::axis_aligned_box<float> AxisAlignedBox;
-typedef vmml::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
-typedef vmml::matrix< 4, 4, float >  Matrix4f; //!< A 4x4 float matrix
-typedef vmml::vector< 2, int > Vector2i; //!< A two-component integer vector
-typedef vmml::vector< 3, int > Vector3i; //!< A three-component integer vector
-typedef vmml::vector< 4, int > Vector4i; //!< A four-component integer vector
-typedef vmml::vector< 2, float > Vector2f; //!< A two-component float vector
-typedef vmml::vector< 3, float > Vector3f; //!< A three-component float vector
-typedef vmml::vector< 4, float > Vector4f; //!< A four-component float vector
-typedef vmml::quaternion<float> Quaternion; //! A floating point quaternion
-typedef vmml::vector< 3, uint >      Triangle;
-typedef vmml::rect<int> Recti;
-typedef vmml::rect<float> Rectf;
+typedef eigenwrap::math<float> Math;
+typedef eigenwrap::sphere<float> Sphere;
+typedef eigenwrap::plane<float> Plane;
+typedef eigenwrap::ray<float> Ray;
+typedef eigenwrap::axis_aligned_box<float> AxisAlignedBox;
+typedef eigenwrap::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
+typedef eigenwrap::matrix< 4, 4, float >  Matrix4f; //!< A 4x4 float matrix
+typedef eigenwrap::vector< 2, int > Vector2i; //!< A two-component integer vector
+typedef eigenwrap::vector< 3, int > Vector3i; //!< A three-component integer vector
+typedef eigenwrap::vector< 4, int > Vector4i; //!< A four-component integer vector
+typedef eigenwrap::vector< 2, float > Vector2f; //!< A two-component float vector
+typedef eigenwrap::vector< 3, float > Vector3f; //!< A three-component float vector
+typedef eigenwrap::vector< 4, float > Vector4f; //!< A four-component float vector
+typedef eigenwrap::quaternion<float> Quaternion; //! A floating point quaternion
+typedef eigenwrap::vector< 3, uint >      Triangle;
+typedef eigenwrap::rect<int> Recti;
+typedef eigenwrap::rect<float> Rectf;
 
 // Misc typedefs
 typedef libconfig::Setting Setting;

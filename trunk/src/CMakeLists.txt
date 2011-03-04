@@ -67,9 +67,9 @@ include_directories(
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
-  ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include
+  ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include/
   )
-  
+
 add_subdirectory(omega)
 
 if(OMEGA_BUILD_UTILITY_LIB)

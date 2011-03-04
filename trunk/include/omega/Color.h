@@ -32,12 +32,12 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Color: public vmml::vector< 4, float >
+	class Color: public eigenwrap::vector< 4, float >
 	{
 	public:
 	public:
 		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f):
-		  vmml::vector< 4, float >(r, g, b, a) {}
+		  eigenwrap::vector< 4, float >(r, g, b, a) {}
 	};
 }; // namespace omega
 
