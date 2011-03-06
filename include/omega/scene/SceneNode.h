@@ -70,7 +70,7 @@ namespace scene
 
 		// Bounding box handling
 		//@{
-		const AxisAlignedBox& getBoundingBox();
+		const AlignedBox3& getBoundingBox();
 		const Sphere& getBoundingSphere();
 		bool isBoundingBoxVisible();
 		void setBoundingBoxVisible(bool value);
@@ -93,7 +93,7 @@ namespace scene
 		bool myVisible;
 
 		bool myChanged;
-		AxisAlignedBox myBBox;
+		AlignedBox3 myBBox;
 		Sphere myBSphere;
 
 		// Bounding box stuff.
@@ -102,7 +102,7 @@ namespace scene
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AxisAlignedBox& SceneNode::getBoundingBox() 
+	inline const AlignedBox3& SceneNode::getBoundingBox() 
 	{ return myBBox; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

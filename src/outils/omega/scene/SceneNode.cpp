@@ -104,7 +104,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 		Drawable* d = it.getNext();
 		if(d->hasBoundingBox())
 		{
-			const AxisAlignedBox& bbox = *(d->getBoundingBox());
+			const AlignedBox3& bbox = *(d->getBoundingBox());
 			myBBox.merge(bbox);
 		}
 	}
@@ -112,7 +112,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	while(i.hasMoreElements())
 	{
 		SceneNode* n = (SceneNode*)i.getNext();
-		const AxisAlignedBox& bbox = n->getBoundingBox();
+		const AlignedBox3& bbox = n->getBoundingBox();
 		myBBox.merge(bbox);
 	}
 

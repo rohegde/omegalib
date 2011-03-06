@@ -38,10 +38,8 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct Event
+	struct Event: public DynamicObject
 	{
-		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
 		Event();
 		//! Supported event types.
 		enum Type 

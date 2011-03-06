@@ -48,7 +48,7 @@ void Mesh::draw(SceneNode* node)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const AxisAlignedBox* Mesh::getBoundingBox()
+const AlignedBox3* Mesh::getBoundingBox()
 {
 	return &myData->getBoundingBox();
 }

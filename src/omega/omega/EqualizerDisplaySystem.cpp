@@ -567,15 +567,8 @@ protected:
 		context.frameNum = spin.low();
 		context.glContext = this;
 
-		context.viewport[0][0] = pvp.x;
-		context.viewport[0][1] = pvp.y;
-		context.viewport[1][0] = pvp.w;
-		context.viewport[1][1] = pvp.h;
-
-		context.globalViewport[0][0] = gpvp.x;
-		context.globalViewport[0][1] = gpvp.y;
-		context.globalViewport[1][0] = gpvp.w;
-		context.globalViewport[1][1] = gpvp.h;
+		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);;
 
 		// Can we get the matrix out of equalizer instead of using opengl?
 		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
@@ -597,18 +590,18 @@ protected:
 					// window coordinates.
 					if(evt.serviceType == Service::Pointer)
 					{
-						int vx1 = context.globalViewport[0][0] + context.viewport[0][0];
-						int vy1 = context.globalViewport[0][1] + context.viewport[0][1];
-						int vx2 = vx1 + context.viewport[1][0];
-						int vy2 = vy1 + context.viewport[1][1];
+						int vx1 = context.globalViewport.x() + context.viewport.x();
+						int vy1 = context.globalViewport.y() + context.viewport.y();
+						int vx2 = vx1 + context.viewport.width();
+						int vy2 = vy1 + context.viewport.height();
 
 						if(evt.position[0] > vx1 &&
 							evt.position[0] < vx2 &&
 							evt.position[1] > vy1 &&
 							evt.position[1] < vy2)
 						{
-							evt.position[0] -= context.globalViewport[0][0];
-							evt.position[1] -= context.globalViewport[0][1];
+							evt.position[0] -= context.globalViewport.x();
+							evt.position[1] -= context.globalViewport.y();
 							evt.processed = client->handleEvent(evt, context);
 						}
 					}

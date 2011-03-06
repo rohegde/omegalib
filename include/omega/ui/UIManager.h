@@ -51,7 +51,7 @@ namespace ui
 		~UIManager();
 
 		void update(const UpdateContext& context);
-		void draw(const Recti& viewport);
+		void draw(const Rect& viewport);
 		bool processInputEvent(const Event& evt);
 
 		Container* getRootContainer();

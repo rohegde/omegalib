@@ -42,7 +42,7 @@ namespace scene
 	public:
 		virtual void draw(SceneNode* node) = 0;
 
-		virtual const AxisAlignedBox* getBoundingBox() { return NULL; }
+		virtual const AlignedBox3* getBoundingBox() { return NULL; }
 		virtual bool hasBoundingBox() { return false; }
 	private:
 	};

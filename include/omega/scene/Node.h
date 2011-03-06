@@ -47,10 +47,8 @@ namespace scene
             This is an abstract class - concrete classes are based on this for specific purposes,
             e.g. SceneNode, Bone
     */
-    class OUTILS_API Node 
+    class OUTILS_API Node: public DynamicObject 
     {
-	public:
-		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     public:
         /** Enumeration denoting the spaces which a transform can be relative to.
         */

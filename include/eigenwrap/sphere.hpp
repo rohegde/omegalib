@@ -35,7 +35,7 @@
 namespace eigenwrap {
 
 	// Forward declarations.
-	class AxisAlignedBox;
+	class AlignedBox3;
 	class Plane;
 
 	/** A sphere primitive, mostly used for bounds checking. 
@@ -79,7 +79,7 @@ namespace eigenwrap {
                 math<T>::sqr(s.mRadius + mRadius);
 		}
 		/** Returns whether or not this sphere intersects a box. */
-		bool intersects(const AxisAlignedBox& box) const
+		bool intersects(const AlignedBox3& box) const
 		{
 			return math<T>::intersects(*this, box);
 		}

@@ -57,14 +57,14 @@ void UIManager::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::draw(const Recti& viewport)
+void UIManager::draw(const Rect& viewport)
 {
 	// Update the root container size if necessary.
-	if((myRootContainer->getPosition().cwiseNotEqual(viewport[0].cast<float>())).all() ||
-		myRootContainer->getSize().cwiseNotEqual(viewport[1].cast<float>()).all())
+	if((myRootContainer->getPosition().cwiseNotEqual(viewport.min.cast<float>())).all() ||
+		myRootContainer->getSize().cwiseNotEqual(viewport.max.cast<float>()).all())
 	{
-		myRootContainer->setPosition(Vector2f(viewport[0][0], viewport[0][1]));
-		myRootContainer->setSize(Vector2f(viewport[1][0], viewport[1][1]));
+		myRootContainer->setPosition(viewport.min.cast<float>());
+		myRootContainer->setSize(Vector2f(viewport.width(), viewport.height()));
 	}
 
 	// Make sure all widget sizes are up to date (and perform autosize where necessary).
@@ -76,13 +76,13 @@ void UIManager::draw(const Recti& viewport)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef(0.0, viewport[1][1] - 1, 0.0);
+    glTranslatef(0.0, viewport.height() - 1, 0.0);
     glScalef(1.0, -1.0, 1.0);
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, viewport[1][0], 0, viewport[1][1], -1, 1);
+    glOrtho(0, viewport.width(), 0, viewport.height(), -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
 

@@ -11,31 +11,50 @@ namespace eigenwrap
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! wrapper to enable array use where arrays would not be allowed otherwise
-	template< class T, size_t d >
-	struct array_wrapper
-	{
-		T& operator[]( const size_t i )
-		{
-			assert( i < d );
-			return data[i];
-		}
-        
-		const T& operator[]( const size_t i ) const
-		{
-			assert( i < d );
-			return data[i];
-		}
-        
-	private:
-		T data[d];
-	};
+	//template< class T, size_t d >
+	//struct array_wrapper
+	//{
+	//	T& operator[]( const size_t i )
+	//	{
+	//		assert( i < d );
+	//		return data[i];
+	//	}
+ //       
+	//	const T& operator[]( const size_t i ) const
+	//	{
+	//		assert( i < d );
+	//		return data[i];
+	//	}
+ //       
+	//private:
+	//	T data[d];
+	//};
 
 	template<typename T> class ray;
 	template<typename T> class plane;
 	template<typename T> class sphere;
 	template<typename T> class axis_aligned_box;
 
-	template<typename T> class rect: public array_wrapper<vector<2, T>, 2> {};
+	typedef vector<2, int> Point;
+    struct Rect
+    {
+		Point min;
+		Point max;
+
+		Rect(): min(0, 0), max(0, 0) {}
+
+		Rect(const Point& vmin, const Point& vmax):
+		min(vmin), max(vmax) {}
+
+		Rect(int x, int y, int width, int height):
+		min(x, y), max(x + width, y + height) {}
+
+		int width() const { return max(0) - min(0); }
+		int height() const { return max(1) - min(1); }
+
+		int x() const { return min(0); }
+		int y() const { return min(1); }
+    };
 
     /** Class to provide access to common mathematical functions.
         @remarks
@@ -366,7 +385,7 @@ namespace eigenwrap
 		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::Zero());
 
 		static inline 
-		ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const rect<int>& viewport, float z);
+		ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z);
 
 		static vector< 3, T > normal(const vector< 3, T >& aa, const vector< 3, T >& bb, const vector< 3, T >& cc);
 
@@ -1390,7 +1409,7 @@ namespace eigenwrap
 	}
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	ray<T> math<T>::unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const rect<int>& viewport, float z)
+	ray<T> math<T>::unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z)
 	{
 		vector<3, T> origin;
 		vector<3, T> direction;
@@ -1401,8 +1420,8 @@ namespace eigenwrap
 		//if(!A.inverse(m)) return ray<T>();
 
 		vector<4, T> in;
-		in[0]=(point[0] - (float)viewport[0][0]) / (float)(viewport[1][0]) * 2.0f - 1.0f;
-        in[1]=((viewport[1][1] - point[1]) - (float)viewport[0][1]) / (float)(viewport[1][1]) * 2.0f - 1.0f;
+		in[0]=(point[0] - (float)viewport.x()) / (float)(viewport.width()) * 2.0f - 1.0f;
+        in[1]=((viewport.height() - point[1]) - (float)viewport.y()) / (float)(viewport.height()) * 2.0f - 1.0f;
         in[2]= -1.0f;
         in[3]=1.0f;
 
