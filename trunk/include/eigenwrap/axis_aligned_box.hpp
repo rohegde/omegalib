@@ -86,21 +86,21 @@ namespace eigenwrap {
 			NEAR_LEFT_TOP = 5,
 			NEAR_RIGHT_TOP = 4
 		} CornerEnum;
-		inline axis_aligned_box() : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
+		inline axis_aligned_box() : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			// Default to a null box 
 			setMinimum( -0.5, -0.5, -0.5 );
 			setMaximum( 0.5, 0.5, 0.5 );
 			mExtent = EXTENT_NULL;
 		}
-		inline axis_aligned_box(Extent e) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
+		inline axis_aligned_box(Extent e) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			setMinimum( -0.5, -0.5, -0.5 );
 			setMaximum( 0.5, 0.5, 0.5 );
 			mExtent = e;
 		}
 
-		inline axis_aligned_box(const axis_aligned_box & rkBox) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
+		inline axis_aligned_box(const axis_aligned_box & rkBox) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 
 		{
 			if (rkBox.isNull())
@@ -111,14 +111,14 @@ namespace eigenwrap {
 				setExtents( rkBox.mMinimum, rkBox.mMaximum );
 		}
 
-		inline axis_aligned_box( const vector<3,T>& min, const vector<3,T>& max ) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
+		inline axis_aligned_box( const vector<3,T>& min, const vector<3,T>& max ) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			setExtents( min, max );
 		}
 
 		inline axis_aligned_box(
 			float mx, float my, float mz,
-			float Mx, float My, float Mz ) : mMinimum(vector<3,T>::ZERO), mMaximum(vector<3,T>::ONE), mpCorners(0)
+			float Mx, float My, float Mz ) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			setExtents( mx, my, mz, Mx, My, Mz );
 		}
@@ -376,11 +376,8 @@ namespace eigenwrap {
 			// Otherwise merge
 			else
 			{
-				vector<3,T> min = mMinimum;
-				vector<3,T> max = mMaximum;
-				max.makeCeil(rhs.mMaximum);
-				min.makeFloor(rhs.mMinimum);
-
+				vector<3,T> min = mMinimum.cwiseMin(rhs.mMinimum);
+				vector<3,T> max = mMaximum.cwiseMax(rhs.mMaximum);
 				setExtents(min, max);
 			}
 
@@ -397,8 +394,8 @@ namespace eigenwrap {
 				return;
 
 			case EXTENT_FINITE:
-				mMaximum.makeCeil(point);
-				mMinimum.makeFloor(point);
+				mMaximum = mMaximum.cwiseMax(point);
+				mMinimum = mMinimum.cwiseMin(point);
 				return;
 
 			case EXTENT_INFINITE: // if infinite, makes no difference
@@ -484,7 +481,7 @@ namespace eigenwrap {
 		@note
 		The matrix must be an affine matrix. @see matrix<4,4,T>::isAffine.
 		*/
-		void transformAffine(const matrix<4,4,T>& m)
+		void transformAffine(const Eigen::Transform<T, 3, Eigen::Affine>& tf)
 		{
 			// Do nothing if current null or infinite
 			if ( mExtent != EXTENT_FINITE )
@@ -493,11 +490,13 @@ namespace eigenwrap {
 			vector<3,T> centre = getCenter();
 			vector<3,T> halfSize = getHalfSize();
 
-			vector<3,T> newCentre = m * centre;
+			matrix<4,4,T> m = tf.matrix();
+
+			vector<3,T> newCentre = tf * centre;
 			vector<3,T> newHalfSize(
-				math<T>::abs(m[0][0]) * halfSize.x() + math<T>::abs(m[0][1]) * halfSize.y() + math<T>::abs(m[0][2]) * halfSize.z(), 
-				math<T>::abs(m[1][0]) * halfSize.x() + math<T>::abs(m[1][1]) * halfSize.y() + math<T>::abs(m[1][2]) * halfSize.z(),
-				math<T>::abs(m[2][0]) * halfSize.x() + math<T>::abs(m[2][1]) * halfSize.y() + math<T>::abs(m[2][2]) * halfSize.z());
+				math<T>::abs(m(0, 0)) * halfSize.x() + math<T>::abs(m(0, 1)) * halfSize.y() + math<T>::abs(m(0, 2)) * halfSize.z(), 
+				math<T>::abs(m(1, 0)) * halfSize.x() + math<T>::abs(m(1, 1)) * halfSize.y() + math<T>::abs(m(1, 2)) * halfSize.z(),
+				math<T>::abs(m(2, 0)) * halfSize.x() + math<T>::abs(m(2, 1)) * halfSize.y() + math<T>::abs(m(2, 2)) * halfSize.z());
 
 			setExtents(newCentre - newHalfSize, newCentre + newHalfSize);
 		}
@@ -684,7 +683,7 @@ namespace eigenwrap {
 			switch (mExtent)
 			{
 			case EXTENT_NULL:
-				return vector<3,T>::ZERO;
+				return vector<3,T>::Zero();
 
 			case EXTENT_FINITE:
 				return mMaximum - mMinimum;
@@ -697,7 +696,7 @@ namespace eigenwrap {
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
-				return vector<3,T>::ZERO;
+				return vector<3,T>::Zero();
 			}
 		}
 		/// Gets the half-size of the box
@@ -706,7 +705,7 @@ namespace eigenwrap {
 			switch (mExtent)
 			{
 			case EXTENT_NULL:
-				return vector<3,T>::ZERO;
+				return vector<3,T>::Zero();
 
 			case EXTENT_FINITE:
 				return (mMaximum - mMinimum) * 0.5;
@@ -719,7 +718,7 @@ namespace eigenwrap {
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
-				return vector<3,T>::ZERO;
+				return vector<3,T>::Zero();
 			}
 		}
 

@@ -35,24 +35,26 @@ namespace omega
 	class OMEGA_API Observer
 	{
 	public:
+		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+	public:
 		Observer();
 
 		void setReferencePosition(const Vector3f& value);
 		Vector3f getReferencePosition();
 
-		Matrix4f getSensorTransform();
-		void setSensorTransform(Matrix4f value);
+		AffineTransform3 getSensorTransform();
+		void setSensorTransform(const AffineTransform3& value);
 
-		Matrix4f getViewTransform();
-		const Matrix4f& getHeadTransform();
+		AffineTransform3 getViewTransform();
+		const AffineTransform3& getHeadTransform();
 
 		void update(const Vector3f& position, const Quaternion& orientation);
 		void load(Setting& setting);
 
 	private:
 		//! Current view transform
-		Matrix4f myViewTransform;
-		Matrix4f myHeadTransform;
+		AffineTransform3 myViewTransform;
+		AffineTransform3 myHeadTransform;
 
 		//! Observer current position.
 		Vector3f myPosition;
@@ -64,7 +66,7 @@ namespace omega
 
 		//! Transformation from sensor reference frame to observer reference frame.
 		//! Use when sensor is offset and or / rotated from actual eye position.
-		Matrix4f mySensorTransform;
+		AffineTransform3 mySensorTransform;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,19 +78,19 @@ namespace omega
 	{ return myReferencePosition; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Matrix4f Observer::getSensorTransform()
+	inline AffineTransform3 Observer::getSensorTransform()
 	{ return mySensorTransform; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Observer::setSensorTransform(Matrix4f value) 
+	inline void Observer::setSensorTransform(const AffineTransform3& value) 
 	{ mySensorTransform = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Matrix4f Observer::getViewTransform() 
+	inline AffineTransform3 Observer::getViewTransform() 
 	{ return myViewTransform; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& Observer::getHeadTransform() 
+	inline const AffineTransform3& Observer::getHeadTransform() 
 	{ return myHeadTransform; }
 }; // namespace omega
 

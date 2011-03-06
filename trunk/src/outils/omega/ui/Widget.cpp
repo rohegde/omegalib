@@ -75,8 +75,8 @@ Painter* Widget::getPainter()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::clearSizeConstaints()
 {
-	myMaximumSize = Vector2i(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
-	myMinimumSize = Vector2i(0, 0);
+	myMaximumSize = Vector2f(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
+	myMinimumSize = Vector2f(0, 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ void Widget::renderContent()
 {
 	if(myDebugModeEnabled)
 	{
-		getPainter()->drawRectOutline(Vector2i::ZERO, mySize, myDebugModeColor);
+		getPainter()->drawRectOutline(Vector2f::Zero(), mySize, myDebugModeColor);
 	}
 }
 

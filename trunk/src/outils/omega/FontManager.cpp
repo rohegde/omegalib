@@ -33,10 +33,10 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Vector2i Font::computeSize(const omega::String& text) 
+Vector2f Font::computeSize(const omega::String& text) 
 { 
 	FTBBox bbox = myFontImpl->BBox(text.c_str());
-	Vector2i size = Vector2i((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf());
+	Vector2f size = Vector2f((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf());
 	return size;
 }
 

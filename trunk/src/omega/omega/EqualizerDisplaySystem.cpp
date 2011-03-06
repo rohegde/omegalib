@@ -56,6 +56,8 @@ namespace omega
 class FrameData : public eq::fabric::Serializable
 {
 public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+public:
 	FrameData()	{ }
 
 	virtual ~FrameData() {};
@@ -215,6 +217,8 @@ private:
 class ConfigImpl: public eq::Config
 {
 public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+public:
 	ConfigImpl( co::base::RefPtr< eq::Server > parent): eq::Config(parent), myServer(NULL) {}
 
 	virtual bool init(const uint128_t& initID)
@@ -317,8 +321,8 @@ public:
 		{
 			Observer* obs  = ds->getObserver(i);
 			eq::fabric::Matrix4f om;
-			const Matrix4f& ht = obs->getHeadTransform();
-			om.set(ht.begin(), ht.end(), false);
+			const AffineTransform3& ht = obs->getHeadTransform();
+			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
 			getObservers().at(i)->setHeadMatrix(om);
 		}
 
@@ -393,6 +397,8 @@ private:
 //! @internal
 class PipeImpl: public eq::Pipe
 {
+public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
 	PipeImpl(eq::Node* parent): eq::Pipe(parent), myClient(NULL), myInitialized(false) {}
 	ApplicationClient* getClient() { return myClient; }
@@ -572,8 +578,8 @@ protected:
 		context.globalViewport[1][1] = gpvp.h;
 
 		// Can we get the matrix out of equalizer instead of using opengl?
-		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.begin() );
-		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.begin() );
+		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
+		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.data() );
 
 		// Dispatch received events events to application client.
 		int av = fd.getNumEvents();

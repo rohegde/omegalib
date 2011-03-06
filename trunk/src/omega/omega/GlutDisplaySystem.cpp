@@ -69,16 +69,16 @@ void displayCallback(void)
 
 	// Push observer matrix.
 	glPushMatrix();
-	Matrix4f mat = ds->getObserver().getViewTransform();
+	AffineTransform3 mat = ds->getObserver().getViewTransform();
 	glLoadIdentity();
-	glLoadMatrixf(mat.begin());
+	glLoadMatrixf(mat.data());
 
 	dc.viewport[0][0] = 0;
 	dc.viewport[0][1] = 0;
 	dc.viewport[1][0] = glutGet(GLUT_WINDOW_WIDTH);
 	dc.viewport[1][1] = glutGet(GLUT_WINDOW_HEIGHT);
-	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.begin() );
-	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.begin() );
+	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.data() );
+	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.data() );
 
 	// Process events.
 	ServiceManager* im = SystemManager::instance()->getServiceManager();

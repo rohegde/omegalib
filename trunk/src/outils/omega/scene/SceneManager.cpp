@@ -43,7 +43,7 @@ void SceneManager::draw(const Recti& viewport)
 
 	// Draw background
 	glDisable(GL_DEPTH_TEST);
-	glColor4fv(myBackgroundColor.begin());
+	glColor4fv(myBackgroundColor.data());
 	int width = viewport[1][0];
 	int height = viewport[1][1];
 	int x = viewport[0][0] - width / 2;
@@ -52,7 +52,7 @@ void SceneManager::draw(const Recti& viewport)
 	glEnable(GL_DEPTH_TEST);
 
 	// Setup view matrix (read back from gl)
-	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.begin() );
+	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.data() );
 
 	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 	// stored inside the scene nodes. So, create a new, clean transform on the stack.

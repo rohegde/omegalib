@@ -12,10 +12,6 @@ void KinectDemoClient::draw(const DrawContext& context)
 
 	//xn::DepthMetaData depthMD;
 
-	Matrix4f xf = Matrix4f::IDENTITY;
-	xf.rotate_x(80);
-	xf.set_translation(-2.1f, 0.0f, -0.2f);
-
 	SystemManager::instance()->getServiceManager()->poll();
 
 	int numberOfEvents = SystemManager::instance()->getServiceManager()->getAvailableEvents();
@@ -31,9 +27,7 @@ void KinectDemoClient::draw(const DrawContext& context)
 			if( ptrEvents[i].serviceType == omega::Service::Mocap ) {
 				ptrEvents[i].position *= 0.001;
 				
-				Vector4f hp = xf * Vector4f(ptrEvents[i].position, 1.0f);
-				Vector3f p = hp / hp[3];
-				ofmsg("Position: %1%", %p);
+				ofmsg("Position: %1%", %ptrEvents[i].position);
 
 				//for( int j = 1; j < 25; j++ ) {
 				//	if( ptrEvents[i].pointSet[j][0] != FLT_MIN ) {

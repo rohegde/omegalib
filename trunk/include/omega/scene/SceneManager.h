@@ -39,17 +39,19 @@ namespace scene
 	class OUTILS_API SceneManager
 	{
 	public:
+		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+	public:
 		SceneManager(omega::GpuManager* gpu): 
+		  myViewTransform(AffineTransform3::Identity()),
 		  myGpuMng(gpu), 
 		  myRoot(NULL),
-		  myViewTransform(Matrix4f::IDENTITY),
 		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
 
 		void initialize();
 
 		GpuManager* getGpuManager();
 		SceneNode* getRootNode();
-		const Matrix4f& getViewTransform();
+		const AffineTransform3& getViewTransform();
 
 		void setBackgroundColor(const Color& value);
 		Color getBackgroundColor();
@@ -57,9 +59,10 @@ namespace scene
 		void draw(const Recti& viewport);
 
 	private:
+		AffineTransform3 myViewTransform;
+
 		omega::GpuManager* myGpuMng;
 		SceneNode* myRoot;
-		Matrix4f myViewTransform;
 		Color myBackgroundColor;
 	};
 
@@ -72,7 +75,7 @@ namespace scene
 	{ return myRoot; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& SceneManager::getViewTransform() 
+	inline const AffineTransform3& SceneManager::getViewTransform() 
 	{ return myViewTransform; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -38,7 +38,7 @@ Camera::Camera(SceneManager* scene, RenderTarget* target):
 	myRenderTarget(target),
 	myAutoAspect(false)
 {
-	updateView(Vector3f::ZERO, Quaternion::IDENTITY);
+	updateView(Vector3f::Zero(), Quaternion::Identity());
 	updateProjection(60 * Math::DegToRad, 1, 0.01f, 100);
 }
 
@@ -80,11 +80,11 @@ void Camera::render()
 
 	//glMatrixMode(GL_PROJECTION);
 	//glPushMatrix();
-	//glLoadMatrixf(myProjection.begin());
+	//glLoadMatrixf(myProjection.data());
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glLoadMatrixf(myView.begin());
+	glLoadMatrixf(myView.data());
 
 
 	myRenderTarget->beginDraw();

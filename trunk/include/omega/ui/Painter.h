@@ -57,12 +57,12 @@ namespace ui
 
 		//! Drawing methods
 		//@{
-		void drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation orientation, 
+		void drawRectGradient(Vector2f pos, Vector2f size, Widget::Orientation orientation, 
 			Color startColor, Color endColor, float pc = 0.5f);
-		void drawRect(Vector2i pos, Vector2i size, Color color);
-		void drawRectOutline(Vector2i pos, Vector2i size, Color color);
+		void drawRect(Vector2f pos, Vector2f size, Color color);
+		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
 		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
-		void drawRectTexture(Texture* texture, const Vector2i& position, const Vector2i size);
+		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size);
 		//@}
 
 	private:

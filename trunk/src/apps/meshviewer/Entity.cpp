@@ -64,7 +64,7 @@ void SelectionSphere::draw(SceneNode* node)
 		glColor4f(1.0, 1.0, 0.0, 1.0);
 		glPointSize(16);
 		glBegin(GL_POINTS);
-		glVertex3fv(myEntity->getHandlePosition().begin());
+		glVertex3fv(myEntity->getHandlePosition().data());
 		glEnd();
 		glPointSize(1);
 	}
@@ -83,7 +83,7 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 	mySceneNode = new SceneNode(sm);
 	mySceneNode->addDrawable(myMesh);
 	mySceneNode->addDrawable(mySelectionSphere);
-	mySceneNode->setPosition(Vector3f::ZERO);
+	mySceneNode->setPosition(Vector3f::Zero());
 	mySceneNode->setSelectable(true);
 	mySceneNode->setVisible(false);
 	sm->getRootNode()->addChild(mySceneNode);
@@ -163,7 +163,7 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 		{
 			Vector3f pt = ray1.getPoint(p.second);
 			pt -= myStartBSphere.getCenter();
-			Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::ZERO );
+			Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::Zero() );
 			mySceneNode->setOrientation(rot * myStartOrientation);
 		}
 	}
@@ -179,7 +179,7 @@ void Entity::manipulate(Operation op, const Ray& ray1, const Ray& ray2)
 		float ty = origin[1] + l * direction[1];
 
 		Vector3f newPos = Vector3f(tx, ty, tz);// - myHandlePosition;
-		float d = (newPos - myStartBSphere.getCenter()).length();
+		float d = (newPos - myStartBSphere.getCenter()).norm();
 
 		float scale = myStartScale * d / myStartBSphere.getRadius();
 

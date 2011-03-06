@@ -49,6 +49,8 @@ namespace scene
     */
     class OUTILS_API Node 
     {
+	public:
+		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     public:
         /** Enumeration denoting the spaces which a transform can be relative to.
         */
@@ -447,7 +449,7 @@ namespace scene
                 derived transforms have been updated before calling this method.
                 Applications using Ogre should just use the relative transforms.
         */
-        virtual const Matrix4f& getFullTransform(void) const;
+        virtual const AffineTransform3& getFullTransform(void) const;
 
         /** Internal method to update the Node.
             @note
@@ -576,7 +578,7 @@ namespace scene
 		virtual void updateFromParent(void) const;
 
         /// Cached derived transform as a 4x4 matrix
-        mutable Matrix4f mCachedTransform;
+        mutable AffineTransform3 mCachedTransform;
         mutable bool mCachedTransformOutOfDate;
 
 		//typedef std::vector<Node*> QueuedUpdates;

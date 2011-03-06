@@ -32,12 +32,22 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Color: public eigenwrap::vector< 4, float >
+	class Color
 	{
 	public:
+		const float& operator[](int i) const { return myData[i]; }
+		float& operator[](int i) { return myData[i]; }
+		float* data() { return (float*)myData; }
 	public:
-		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f):
-		  eigenwrap::vector< 4, float >(r, g, b, a) {}
+		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f)
+		{
+			myData[0] = r;
+			myData[1] = g;
+			myData[2] = b;
+			myData[3] = a;
+		}
+	private:
+		float myData[4];
 	};
 }; // namespace omega
 

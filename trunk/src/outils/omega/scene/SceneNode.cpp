@@ -59,11 +59,11 @@ void SceneNode::draw()
 		glPushMatrix();
 
 		// Load the world transform matrix into gl.
-		glLoadMatrixf(myScene->getViewTransform().begin());
+		glLoadMatrixf(myScene->getViewTransform().data());
 
 		if(myBoundingBoxVisible) drawBoundingBox();
 
-		glMultMatrixf(getFullTransform().begin());
+		glMultMatrixf(getFullTransform().data());
 
 		// Draw drawables attached to this node.
 		VectorIterator<Vector<Drawable*> > it(myDrawables);
@@ -119,7 +119,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	myBBox.transformAffine(getFullTransform());
 
 	// Compute bounding sphere.
-	myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().find_max());
+	myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().maxCoeff());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ void SceneNode::drawBoundingBox()
 	glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_GREATER);
 	
-	glColor3fv(myBoundingBoxColor.begin());
+	glColor3fv(myBoundingBoxColor.data());
 	glBegin(GL_LINES);
 
 	glVertex3f(myBBox[0][0], myBBox[0][1], myBBox[0][2]);

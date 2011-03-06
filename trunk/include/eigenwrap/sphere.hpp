@@ -52,7 +52,7 @@ namespace eigenwrap {
         vector<3,T> mCenter;
     public:
         /** Standard constructor - creates a unit sphere around the origin.*/
-        sphere() : mRadius(1.0), mCenter(vector<3,T>::ZERO) {}
+        sphere() : mRadius(1.0), mCenter(vector<3,T>::Zero()) {}
         /** Constructor allowing arbitrary spheres. 
             @param center The center point of the sphere.
             @param radius The radius of the sphere.

@@ -51,7 +51,7 @@ void Painter::endDraw()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation orientation, 
+void Painter::drawRectGradient(Vector2f pos, Vector2f size, Widget::Orientation orientation, 
 	Color startColor, Color endColor, float pc)
 {
 	int x = pos[0];
@@ -61,7 +61,7 @@ void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation 
 
 	float s = 0;
 
-	glColor4fv(startColor.begin());
+	glColor4fv(startColor.data());
 	if(orientation == Widget::Horizontal)
 	{
 		// draw full color portion
@@ -73,7 +73,7 @@ void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation 
 		glBegin(GL_QUADS);
 		glVertex2i(x, y);
 		glVertex2i(x + width, y);
-		glColor4fv(endColor.begin());
+		glColor4fv(endColor.data());
 		glVertex2i(x + width, y + height);
 		glVertex2i(x, y + height);
 		glEnd(); 
@@ -89,7 +89,7 @@ void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation 
 		glBegin(GL_QUADS);
 		glVertex2i(x, y + height);
 		glVertex2i(x, y);
-		glColor4fv(endColor.begin());
+		glColor4fv(endColor.data());
 		glVertex2i(x + width, y);
 		glVertex2i(x + width, y + height);
 		glEnd();
@@ -97,26 +97,26 @@ void Painter::drawRectGradient(Vector2i pos, Vector2i size, Widget::Orientation 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRect(Vector2i pos, Vector2i size, Color color)
+void Painter::drawRect(Vector2f pos, Vector2f size, Color color)
 {
 	int x = pos[0];
 	int y = pos[1];
 	int width = size[0];
 	int height = size[1];
 
-	glColor4fv(color.begin());
+	glColor4fv(color.data());
 	glRecti(x, y, x + width, y + height);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRectOutline(Vector2i pos, Vector2i size, Color color)
+void Painter::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 {
 	int x = pos[0];
 	int y = pos[1];
 	int width = size[0];
 	int height = size[1];
 
-	glColor4fv(color.begin());
+	glColor4fv(color.data());
 
 	glBegin(GL_LINES);
 
@@ -138,7 +138,7 @@ void Painter::drawRectOutline(Vector2i pos, Vector2i size, Color color)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Painter::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
 { 
-	Vector2i rect = font->computeSize(text);
+	Vector2f rect = font->computeSize(text);
 	float x, y;
 
 	if(align & Font::HALeft) x = position[0];
@@ -153,7 +153,7 @@ void Painter::drawText(const String& text, Font* font, const Vector2f& position,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRectTexture(Texture* texture, const Vector2i& position, const Vector2i size)
+void Painter::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size)
 {
 	glEnable(GL_TEXTURE_2D);
 	texture->bind(GpuManager::TextureUnit0);

@@ -60,11 +60,11 @@ void UIManager::update(const UpdateContext& context)
 void UIManager::draw(const Recti& viewport)
 {
 	// Update the root container size if necessary.
-	if(myRootContainer->getPosition() != viewport[0] ||
-		myRootContainer->getSize() != viewport[1])
+	if((myRootContainer->getPosition().cwiseNotEqual(viewport[0].cast<float>())).all() ||
+		myRootContainer->getSize().cwiseNotEqual(viewport[1].cast<float>()).all())
 	{
-		myRootContainer->setPosition(viewport[0]);
-		myRootContainer->setSize(viewport[1]);
+		myRootContainer->setPosition(Vector2f(viewport[0][0], viewport[0][1]));
+		myRootContainer->setSize(Vector2f(viewport[1][0], viewport[1][1]));
 	}
 
 	// Make sure all widget sizes are up to date (and perform autosize where necessary).

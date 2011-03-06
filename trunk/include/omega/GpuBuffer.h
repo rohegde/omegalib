@@ -68,8 +68,8 @@ namespace omega
 		//! parameter initialization.
 		void* getAddress()
 		{
-			if(myType == TypeInt) return (void*)myIntVector.begin();
-			return (void*)myFloatVector.begin();
+			if(myType == TypeInt) return (void*)myIntVector.data();
+			return (void*)myFloatVector.data();
 		}
 
 		//! return the size in bytes of this constant.

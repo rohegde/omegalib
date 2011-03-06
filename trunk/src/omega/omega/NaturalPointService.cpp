@@ -134,9 +134,6 @@ void __cdecl NaturalPointService::messageController( int msgType, char* msg)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void *pUserData)
 {
-	double verticalTest; //used to handle special case of body pointing straight along vertical axis
-	double unit;
-
 	if( myMoCap )
 	{
 		myMoCap->lockEvents();
@@ -193,61 +190,10 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 				theEvent->pointSet[j] = aPoint;
 			}
 
-			//get the quaternion orientation ( qw, qx, qy, qz) and convert it to euler angles ( roll(rx), yaw(ry), pitch(rz))
-			//if ( isEuler )
-			//{
-			//	double sqw = data->RigidBodies[i].qw * data->RigidBodies[i].qw;
-			//	double sqx = data->RigidBodies[i].qx * data->RigidBodies[i].qx;
-			//	double sqy = data->RigidBodies[i].qy * data->RigidBodies[i].qy;
-			//	double sqz = data->RigidBodies[i].qz * data->RigidBodies[i].qz;
-
-			//	theEvent->rotation[3] = 0;
-			//	//check for a position that is at either of the poles (pointing straight up or straight down)
-			//	verticalTest = ( data->RigidBodies[i].qx * data->RigidBodies[i].qy ) + ( data->RigidBodies[i].qz * data->RigidBodies[i].qw );
-
-			//	unit = sqx + sqy + sqz + sqw;
-
-			//	//check for pointing North
-			//	if( verticalTest > ( 0.499 * unit ) )
-			//	{
-			//		//owarn("MOCAP: Pointing North");
-			//		theEvent->orientation[0] = 0;
-			//		theEvent->orientation[1] = 2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
-			//		theEvent->orientation[2] = Math::Pi/2;
-			//	}
-			//	//check for pointing South
-			//	else if( verticalTest < ( -0.499 * unit ) )
-			//	{
-			//		//owarn("MOCAP: Pointing South");
-			//		theEvent->orientation[0] = 0;
-			//		theEvent->orientation[1] = -2 * atan2 ( data->RigidBodies[i].qx, data->RigidBodies[i].qw );
-			//		theEvent->orientation[2] = -Math::Pi/2;
-			//	}
-			//	else
-			//	{
-			//		//pitch
-			//		theEvent->rotation[0] = atan2( (double) ( ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qz ) ),
-			//								-sqx + sqy - sqz + sqw );
-			//		//roll
-			//		theEvent->rotation[2] = asin( 2 * verticalTest / unit );
-
-			//		//yaw
-			//		theEvent->rotation[1] = atan2( (double) ( ( 2 * data->RigidBodies[i].qy * data->RigidBodies[i].qw ) - ( 2 * data->RigidBodies[i].qx * data->RigidBodies[i].qz ) ),
-			//								sqx - sqy - sqz + sqw );
-
-			//		// Convert to degrees.
-			//		theEvent->rotation[0] *= Math::RadToDeg;
-			//		theEvent->rotation[1] *= Math::RadToDeg;
-			//		theEvent->rotation[2] *= Math::RadToDeg;
-			//	}
-			//}
-			//else //if the user wants quaternion data
-			{
-				theEvent->orientation[3] = data->RigidBodies[i].qw;
-				theEvent->orientation[0] = data->RigidBodies[i].qx;
-				theEvent->orientation[1] = data->RigidBodies[i].qy;
-				theEvent->orientation[2] = data->RigidBodies[i].qz;
-			}
+			theEvent->orientation.w() = data->RigidBodies[i].qw;
+			theEvent->orientation.x() = data->RigidBodies[i].qx;
+			theEvent->orientation.y() = data->RigidBodies[i].qy;
+			theEvent->orientation.z() = data->RigidBodies[i].qz;
 		}
 		myMoCap->unlockEvents();
 	}

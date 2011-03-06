@@ -150,7 +150,7 @@ namespace eigenwrap {
 	template<typename T> inline
 	plane<T>::plane ()
 	{
-		normal = vector<3,T>::ZERO;
+		normal = vector<3,T>::Zero();
 		d = 0.0;
 	}
 	//-----------------------------------------------------------------------

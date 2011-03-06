@@ -40,14 +40,14 @@ Node::Node()
 	mNeedChildUpdate(false),
 	mParentNotified(false),
     mQueuedForUpdate(false),
-	mOrientation(Quaternion::IDENTITY),
-	mPosition(Vector3f::ZERO),
-	mScale(Vector3f::ONE),
+	mOrientation(Quaternion::Identity()),
+	mPosition(Vector3f::Zero()),
+	mScale(Vector3f::Ones()),
     mInheritOrientation(true),
 	mInheritScale(true),
-	mDerivedOrientation(Quaternion::IDENTITY),
-	mDerivedPosition(Vector3f::ZERO),
-	mDerivedScale(Vector3f::ONE),
+	mDerivedOrientation(Quaternion::Identity()),
+	mDerivedPosition(Vector3f::Zero()),
+	mDerivedScale(Vector3f::Ones()),
 	mCachedTransformOutOfDate(true)
 {
     // Generate a name
@@ -66,14 +66,14 @@ Node::Node(const String& name)
 	mParentNotified(false),
     mQueuedForUpdate(false),
 	mName(name),
-	mOrientation(Quaternion::IDENTITY),
-	mPosition(Vector3f::ZERO),
-	mScale(Vector3f::ONE),
+	mOrientation(Quaternion::Identity()),
+	mPosition(Vector3f::Zero()),
+	mScale(Vector3f::Ones()),
     mInheritOrientation(true),
 	mInheritScale(true),
-	mDerivedOrientation(Quaternion::IDENTITY),
-	mDerivedPosition(Vector3f::ZERO),
-	mDerivedScale(Vector3f::ONE),
+	mDerivedOrientation(Quaternion::Identity()),
+	mDerivedPosition(Vector3f::Zero()),
+	mDerivedScale(Vector3f::Ones()),
 	mCachedTransformOutOfDate(true)
 
 {
@@ -110,15 +110,15 @@ void Node::setParent(Node* parent)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const Matrix4f& Node::getFullTransform(void) const
+const AffineTransform3& Node::getFullTransform(void) const
 {
     if (mCachedTransformOutOfDate)
     {
         // Use derived values
-        mCachedTransform.makeTransform(
+        mCachedTransform.fromPositionOrientationScale(
             getDerivedPosition(),
-            getDerivedScale(),
-            getDerivedOrientation());
+            getDerivedOrientation(),
+            getDerivedScale());
         mCachedTransformOutOfDate = false;
     }
     return mCachedTransform;
@@ -199,7 +199,7 @@ void Node::updateFromParent(void) const
         {
             // Scale own position by parent scale, NB just combine
             // as equivalent axes, no shearing
-            mDerivedScale = parentScale * mScale;
+			mDerivedScale = parentScale.cwiseProduct(mScale);
         }
         else
         {
@@ -208,7 +208,7 @@ void Node::updateFromParent(void) const
         }
 
         // Change position vector based on parent's orientation & scale
-        mDerivedPosition = parentOrientation * (parentScale * mPosition);
+		mDerivedPosition = parentOrientation * (parentScale.cwiseProduct(mPosition));
 
         // Add altered position vector to parents
         mDerivedPosition += mParent->getDerivedPosition();
@@ -324,7 +324,7 @@ void Node::setOrientation( float w, float x, float y, float z)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::resetOrientation(void)
 {
-    mOrientation = Quaternion::IDENTITY;
+    mOrientation = Quaternion::Identity();
     needUpdate();
 }
 
@@ -352,18 +352,18 @@ const Vector3f & Node::getPosition(void) const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Matrix3f Node::getLocalAxes(void) const
 {
-    Vector3f axisX = Vector3f::UNIT_X;
-    Vector3f axisY = Vector3f::UNIT_Y;
-    Vector3f axisZ = Vector3f::UNIT_Z;
+    Vector3f axisX = Vector3f::UnitX();
+    Vector3f axisY = Vector3f::UnitY();
+    Vector3f axisZ = Vector3f::UnitZ();
 
     axisX = mOrientation * axisX;
     axisY = mOrientation * axisY;
     axisZ = mOrientation * axisZ;
 
 	Matrix3f mt;
-	mt.set_row(0, axisX);
-	mt.set_row(1, axisY);
-	mt.set_row(2, axisZ);
+	mt.row(0) = axisX;
+	mt.row(1) = axisY;
+	mt.row(2) = axisZ;
 	return mt;
 }
 
@@ -380,7 +380,7 @@ void Node::translate(const Vector3f& d, TransformSpace relativeTo)
         // position is relative to parent so transform upwards
         if (mParent)
         {
-			mPosition += (mParent->getDerivedOrientation().inverse() * d) / mParent->getDerivedScale();
+			mPosition += (mParent->getDerivedOrientation().inverse() * d).cwiseQuotient(mParent->getDerivedScale());
         }
         else
         {
@@ -419,27 +419,26 @@ void Node::translate(const Matrix3f& axes, float x, float y, float z, TransformS
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::roll(const float& angle, TransformSpace relativeTo)
 {
-    rotate(Vector3f::UNIT_Z, angle, relativeTo);
+    rotate(Vector3f::UnitZ(), angle, relativeTo);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::pitch(const float& angle, TransformSpace relativeTo)
 {
-    rotate(Vector3f::UNIT_X, angle, relativeTo);
+    rotate(Vector3f::UnitX(), angle, relativeTo);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::yaw(const float& angle, TransformSpace relativeTo)
 {
-    rotate(Vector3f::UNIT_Y, angle, relativeTo);
+    rotate(Vector3f::UnitY(), angle, relativeTo);
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::rotate(const Vector3f& axis, const float& angle, TransformSpace relativeTo)
 {
-    Quaternion q;
-    q.fromAngleAxis(angle,axis);
+    Quaternion q = AngleAxis(angle,axis);
     rotate(q, relativeTo);
 }
 
@@ -520,7 +519,7 @@ Vector3f Node::convertWorldToLocalPosition( const Vector3f &worldPos )
     {
         updateFromParent();
     }
-	return mDerivedOrientation.inverse() * (worldPos - mDerivedPosition) / mDerivedScale;
+	return mDerivedOrientation.inverse() * (worldPos - mDerivedPosition).cwiseQuotient(mDerivedScale);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -530,7 +529,7 @@ Vector3f Node::convertLocalToWorldPosition( const Vector3f &localPos )
     {
         updateFromParent();
     }
-	return (mDerivedOrientation * localPos * mDerivedScale) + mDerivedPosition;
+	return (mDerivedOrientation * localPos.cwiseProduct(mDerivedScale)) + mDerivedPosition;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,7 +615,7 @@ bool Node::getInheritScale(void) const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::scale(const Vector3f& inScale)
 {
-    mScale = mScale * inScale;
+	mScale = mScale.cwiseProduct(inScale);
     needUpdate();
 
 }

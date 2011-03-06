@@ -38,10 +38,10 @@ void DefaultButton::renderContent()
 
 	Painter* painter = getPainter();
 
-	painter->drawRect(Vector2i::ZERO, getSize(), Color(1.0f, 1.0f, 1.0f, 0.2f));
-	painter->drawRectOutline(Vector2i::ZERO, getSize(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+	painter->drawRect(Vector2f::Zero(), getSize(), Color(1.0f, 1.0f, 1.0f, 0.2f));
+	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 
-	myLabel.setPosition(Vector2i::ZERO);
+	myLabel.setPosition(Vector2f::Zero());
 	myLabel.setSize(getSize());
 	myLabel.draw();
 

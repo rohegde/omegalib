@@ -75,8 +75,8 @@ void Label::autosize()
 	if(!myFont) myFont = getUIManager()->getDefaultFont();
 	if(myFont)
 	{
-		Vector2i size = myFont->computeSize(myText);
-		size += Vector2i(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
+		Vector2f size = myFont->computeSize(myText);
+		size += Vector2f(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
 		setSize(size);
 	}
 }
@@ -111,7 +111,7 @@ void Label::renderContent()
 	if(myFont)
 	{
 		unsigned int alignFlags = getFontAlignFlags();
-		Vector2f textPos = Vector2f::ZERO;
+		Vector2f textPos = Vector2f::Zero();
 
 		if(alignFlags & Font::HARight) textPos[0] += (float)getWidth() - 1;
 		else if(alignFlags & Font::HACenter) textPos[0] += (float)getWidth() / 2 - 1;
@@ -119,7 +119,7 @@ void Label::renderContent()
 		if(alignFlags & Font::VABottom) textPos[1] += (float)getHeight() - 1;
 		else if(alignFlags & Font::VAMiddle) textPos[1] += (float)getHeight() / 2 - 1;
 
-		glColor4fv(myColor.begin());
+		glColor4fv(myColor.data());
 
 		getPainter()->drawText(myText, myFont, textPos, alignFlags);
 	}

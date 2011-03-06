@@ -43,7 +43,7 @@ namespace omega
 		Font(FTFont* fontImpl): myFontImpl(fontImpl) {}
 
 		OUTILS_API void render(const String& text, float x, float y);
-		OUTILS_API Vector2i computeSize(const omega::String& text);
+		OUTILS_API Vector2f computeSize(const omega::String& text);
 
 	private:
 		FTFont* myFontImpl;
