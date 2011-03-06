@@ -31,9 +31,9 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Observer::Observer()
 {
-	myReferencePosition = Vector3f::ZERO;
-	mySensorTransform = Matrix4f::IDENTITY;
-	myViewTransform = Matrix4f::IDENTITY;
+	myReferencePosition = Vector3f::Zero();
+	mySensorTransform = AffineTransform3::Identity();
+	myViewTransform = AffineTransform3::Identity();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ void Observer::load(Setting& setting)
 		myReferencePosition.z() = (float)st[2];
 	}
 
-	Vector3f position = Vector3f::ZERO;
+	Vector3f position = Vector3f::Zero();
 	if(setting.exists("position"))
 	{
 		Setting& st = setting["position"];
@@ -57,7 +57,7 @@ void Observer::load(Setting& setting)
 	}
 
 	// Set observer initial position to origin, neutral orientation.
-	update(position, Quaternion::IDENTITY);
+	update(position, Quaternion::Identity());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,17 +67,21 @@ void Observer::update(const Vector3f& position, const Quaternion& orientation)
 	myOrientation = orientation;
 	myViewTransform = Math::makeViewMatrix(position + myReferencePosition, orientation);
 
-	myViewTransform *= mySensorTransform;
-
-	myHeadTransform = Matrix4f::IDENTITY;
+	myViewTransform = myViewTransform * mySensorTransform;
+	myHeadTransform = AffineTransform3::Identity();
 	float angle;
 	Vector3f axis;
-	orientation.toAngleAxis(&angle, &axis);
-	myHeadTransform.rotate(angle, axis);
-	myHeadTransform.set_translation(position);
+
+	AngleAxis aa;
+	aa = orientation;
+	angle = aa.angle();
+	axis = aa.axis();
+
+	myHeadTransform.rotate(AngleAxis(angle, axis));
+	myHeadTransform.translate(position);
 	//myHeadTransform.rotate(angle, axis);
-	Matrix4f w2e = Matrix4f::IDENTITY;
-	w2e.set_translation(myReferencePosition);
+	AffineTransform3 w2e = AffineTransform3::Identity();
+	w2e.translate(myReferencePosition);
 	myHeadTransform = w2e * myHeadTransform;
 }
 

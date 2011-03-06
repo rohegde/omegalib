@@ -121,7 +121,7 @@ typedef eigenwrap::plane<float> Plane;
 typedef eigenwrap::ray<float> Ray;
 typedef eigenwrap::axis_aligned_box<float> AxisAlignedBox;
 typedef eigenwrap::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
-typedef eigenwrap::matrix< 4, 4, float >  Matrix4f; //!< A 4x4 float matrix
+//typedef eigenwrap::matrix< 4, 4, float >  Transform3; //!< A 4x4 float matrix
 typedef eigenwrap::vector< 2, int > Vector2i; //!< A two-component integer vector
 typedef eigenwrap::vector< 3, int > Vector3i; //!< A three-component integer vector
 typedef eigenwrap::vector< 4, int > Vector4i; //!< A four-component integer vector
@@ -132,6 +132,15 @@ typedef eigenwrap::quaternion<float> Quaternion; //! A floating point quaternion
 typedef eigenwrap::vector< 3, uint >      Triangle;
 typedef eigenwrap::rect<int> Recti;
 typedef eigenwrap::rect<float> Rectf;
+typedef Eigen::AngleAxis<float> AngleAxis;
+
+typedef eigenwrap::transform<3, float> Transform3;
+typedef eigenwrap::transform<3, float, Eigen::Affine> AffineTransform3;
+
+// Point (Vector2i)
+// Rect (Recti)
+// Box2 (AlignedBox<float,2>
+// Box3 (AlignedBox<float,3>
 
 // Misc typedefs
 typedef libconfig::Setting Setting;

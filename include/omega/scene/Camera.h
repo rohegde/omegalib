@@ -42,10 +42,10 @@ namespace scene
 	public:
 		Camera(SceneManager* scene, RenderTarget* target);
 
-		const Matrix4f& getViewTransform();
-		const Matrix4f& getProjectionTransform();
-		void setProjectionTransform(const Matrix4f& value);
-		void setViewTransform(const Matrix4f& value);
+		const AffineTransform3& getViewTransform();
+		const AffineTransform3& getProjectionTransform();
+		void setProjectionTransform(const AffineTransform3& value);
+		void setViewTransform(const AffineTransform3& value);
 
 		void updateView(const Vector3f& position, const Quaternion& orientation);
 		void updateProjection(float fov, float aspect, float nearZ, float farZ);
@@ -62,8 +62,8 @@ namespace scene
 		SceneManager* myScene;
 
 		//! Current view transform
-		Matrix4f myView;
-		Matrix4f myProjection;
+		AffineTransform3 myView;
+		AffineTransform3 myProjection;
 
 		//! Observer current position.
 		Vector3f myPosition;
@@ -78,19 +78,19 @@ namespace scene
 	};
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& Camera::getViewTransform() 
+	inline const AffineTransform3& Camera::getViewTransform() 
 	{ return myView; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Matrix4f& Camera::getProjectionTransform()
+	inline const AffineTransform3& Camera::getProjectionTransform()
 	{ return myProjection; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setProjectionTransform(const Matrix4f& value)
+	inline void Camera::setProjectionTransform(const AffineTransform3& value)
 	{ myProjection = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setViewTransform(const Matrix4f& value)
+	inline void Camera::setViewTransform(const AffineTransform3& value)
 	{ myView = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

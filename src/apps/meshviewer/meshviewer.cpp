@@ -85,7 +85,7 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 {
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
-	Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
+	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
 
 	if(evt.type == Event::Down)
 	{
@@ -113,7 +113,7 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 		if(myVisibleEntity != NULL && myVisibleEntity->isActive())
 		{
 			float z = 1.0f;
-			Ray ray = Math::unproject(evt.position, context.modelview, context.projection, context.viewport, z);
+			Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
 
 			if(evt.isFlagSet(Event::Left))
 			{

@@ -357,10 +357,10 @@ void NetService::parseDGram(int result)
 						evt->position[1] = params[2];
 						evt->position[2] = params[3];
 
-						evt->orientation[0] = params[4];
-						evt->orientation[1] = params[5];
-						evt->orientation[2] = params[6];
-						evt->orientation[3] = params[7];
+						evt->orientation.x() = params[4];
+						evt->orientation.y() = params[5];
+						evt->orientation.z() = params[6];
+						evt->orientation.w() = params[7];
 						break;
 					case(2): // Touch (points only not gestures)
 						evt = mysInstance->writeHead();

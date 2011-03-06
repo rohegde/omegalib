@@ -63,7 +63,7 @@ void Container::load(Setting& setting)
 	if(setting.exists("position"))
 	{
 		String position = setting["position"];
-		setPosition(Vector2i(position[0], position[1]));
+		setPosition(Vector2f(position[0], position[1]));
 	}
 	if(setting.exists("horizontalAlign"))
 	{
@@ -82,7 +82,7 @@ void Container::load(Setting& setting)
 	if(setting.exists("size"))
 	{
 		Setting& size = setting["size"];
-		setSize(Vector2i(size[0], size[1]));
+		setSize(Vector2f(size[0], size[1]));
 	}
 	if(setting.exists("width"))
 	{
@@ -389,7 +389,7 @@ void Container::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Container::processInputEvent(const Event& evt)
 {
-	myLastEvent = evt;
+	//myLastEvent = evt;
 	bool processed = false;
 
 	Vector2f point = Vector2f(evt.position[0], evt.position[1]);

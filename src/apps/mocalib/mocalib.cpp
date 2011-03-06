@@ -50,8 +50,8 @@ void MocalibClient::draw(const DrawContext& context)
 	
 	// Setup light.
 	glEnable(GL_LIGHT0);
-	glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).begin());
-	glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).begin());
+	glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
+	glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).data());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

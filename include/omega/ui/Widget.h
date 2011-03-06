@@ -65,9 +65,9 @@ namespace ui
 		//! Position and rotation
 		//@{
 		//! Gets the widget position.
-		Vector2i& getPosition() { return myPosition; }
+		Vector2f& getPosition() { return myPosition; }
 		//! Sets the widget position
-		void setPosition(const omega::Vector2i& value) { myPosition = value; }
+		void setPosition(const omega::Vector2f& value) { myPosition = value; }
 		void setPosition(int value, int dimension) { myPosition[dimension] = value; }
 		//! Sets the widget rotation
 		//! @param value - the widget rotation in degrees
@@ -84,20 +84,20 @@ namespace ui
 		//! Size constraints
 		//@{
 		//! Gets the widget size
-		Vector2i& getSize();
+		Vector2f& getSize();
 		float getSize(Orientation orientation);
 		float getWidth();
 		float getHeight();
 		//! Sets the widget size.
-		void setSize(const omega::Vector2i& value);
+		void setSize(const Vector2f& value);
 		void setWidth(float value);
 		void setHeight(float value);
-		Vector2i& getMinimumSize();
-		Vector2i& getMaximumSize();
-		void setMinimumSize(const Vector2i& value);
+		Vector2f& getMinimumSize();
+		Vector2f& getMaximumSize();
+		void setMinimumSize(const Vector2f& value);
 		int getMinimumWidth();
 		int getMinimumHeight();
-		void setMaximumSize(const Vector2i& value);
+		void setMaximumSize(const Vector2f& value);
 		int getMaximumWidth();
 		int getMaximumHeight();
 		void setMinimumWidth(float value);
@@ -162,18 +162,18 @@ namespace ui
 
 		bool myVisible;
 
-		omega::Vector2i myPosition;
-		omega::Vector2i mySize;
+		omega::Vector2f myPosition;
+		omega::Vector2f mySize;
 		float myRotation;
 		//float myScale;
 
 		// Size constraints.
-		omega::Vector2i myMinimumSize;
-		omega::Vector2i myMaximumSize;
+		omega::Vector2f myMinimumSize;
+		omega::Vector2f myMaximumSize;
 		bool myAutosize;
 
 		// Last handled input event.
-		omega::Event myLastEvent;
+		//omega::Event myLastEvent;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,7 +192,7 @@ namespace ui
 	{ return myAutosize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Vector2i& Widget::getSize() 
+	inline Vector2f& Widget::getSize() 
 	{ return mySize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@ namespace ui
 	{ return mySize[1]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Widget::setSize(const omega::Vector2i& value) 
+	inline void Widget::setSize(const omega::Vector2f& value) 
 	{ 
 		requestLayoutRefresh(); 
 		mySize = value; 
@@ -237,15 +237,15 @@ namespace ui
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Vector2i& Widget::getMinimumSize() 
+	inline Vector2f& Widget::getMinimumSize() 
 	{ return myMinimumSize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Vector2i& Widget::getMaximumSize() 
+	inline Vector2f& Widget::getMaximumSize() 
 	{ return myMaximumSize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Widget::setMinimumSize(const Vector2i& value) 
+	inline void Widget::setMinimumSize(const Vector2f& value) 
 	{
 		requestLayoutRefresh(); 
 		myMinimumSize = value; 
@@ -260,7 +260,7 @@ namespace ui
 	{ return myMinimumSize[1]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Widget::setMaximumSize(const Vector2i& value) 
+	inline void Widget::setMaximumSize(const Vector2f& value) 
 	{
 		requestLayoutRefresh(); 
 		myMaximumSize = value; 

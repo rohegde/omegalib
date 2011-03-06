@@ -52,6 +52,6 @@ void Image::renderContent()
 
 	if(myTexture != NULL)
 	{
-		getPainter()->drawRectTexture(myTexture, Vector2i::ZERO, getSize());
+		getPainter()->drawRectTexture(myTexture, Vector2f::Zero(), getSize());
 	}
 }

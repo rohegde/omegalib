@@ -258,15 +258,15 @@ void PlyDataReader::calculateNormals( const bool vertexNormals )
     uint   i0, i1, i2;
     for( size_t i = 0; i < triangles.size(); ++i )
     {
-        i0 = triangles[i].at(0);
-        i1 = triangles[i].at(1);
-        i2 = triangles[i].at(2);
-        triangleNormal.compute_normal( vertices[i0],
+        i0 = triangles[i](0);
+        i1 = triangles[i](1);
+        i2 = triangles[i](2);
+        triangleNormal = Math::normal(  vertices[i0],
                                        vertices[i1],
                                        vertices[i2] );
         
         // count emtpy normals in debug mode
-        if( triangleNormal.length() == 0.0f ) ++wrongNormals;
+        if( triangleNormal.norm() == 0.0f ) ++wrongNormals;
          
         if( vertexNormals )
         {
@@ -425,7 +425,7 @@ void PlyDataReader::sort( const uint start, const uint length, const Axis axis )
     oassert( length > 0 );
     oassert( start + length <= triangles.size() );
     
-    std::sort( triangles.begin() + start, 
-               triangles.begin() + start + length,
+    std::sort( triangles.data() + start, 
+               triangles.data() + start + length,
                _TriangleSort( *this, axis ) );
 }

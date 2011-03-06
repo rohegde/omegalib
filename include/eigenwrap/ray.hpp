@@ -42,7 +42,7 @@ namespace eigenwrap
         vector<3,T> mOrigin;
         vector<3,T> mDirection;
     public:
-        ray():mOrigin(vector<3,T>::ZERO), mDirection(vector<3,T>::UNIT_Z) {}
+        ray():mOrigin(vector<3,T>::Zero()), mDirection(vector<3,T>::UnitZ()) {}
         ray(const vector<3,T>& origin, const vector<3,T>& direction)
             :mOrigin(origin), mDirection(direction) {}
 

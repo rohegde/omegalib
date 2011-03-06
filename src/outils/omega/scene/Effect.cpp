@@ -48,10 +48,10 @@ void Effect::activate()
 {
 	myParams.bind(myProgram, GpuProgram::RenderStage);
 	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.begin());
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.begin());
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.begin());
-	glMaterialfv(GL_FRONT, GL_EMISSION, myEmissiveColor.begin());
+	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.data());
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.data());
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.data());
+	glMaterialfv(GL_FRONT, GL_EMISSION, myEmissiveColor.data());
 	glMaterialf(GL_FRONT, GL_SHININESS, myShininess);
 }
 

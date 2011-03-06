@@ -40,6 +40,8 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct Event
 	{
+		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 		Event();
 		//! Supported event types.
 		enum Type 
@@ -173,7 +175,7 @@ namespace omega
 			os << flags;
 			os << timestamp;
 			os << position[0] << position[1] << position[2];
-			os << orientation[0] << orientation[1] << orientation[2] << orientation[3];
+			os << orientation.x() << orientation.y() << orientation.z() << orientation.w();
 			os << value[0] << value[1] << value[2];
 			os << numberOfPoints;
 			for(int i = 0; i < numberOfPoints; i++)
@@ -192,7 +194,7 @@ namespace omega
 			is >> flags;
 			is >> timestamp;
 			is >> position[0] >> position[1] >> position[2];
-			is >> orientation[0] >> orientation[1] >> orientation[2] >> orientation[3];
+			is >> orientation.x() >> orientation.y() >> orientation.z() >> orientation.w();
 			is >> value[0] >> value[1] >> value[2];
 			is >> numberOfPoints;
 			for(int i = 0; i < numberOfPoints; i++)

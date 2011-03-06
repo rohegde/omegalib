@@ -155,9 +155,9 @@ void OptiTrackService::poll()
 			
 			Quaternion qyaw, qpitch, qroll;
 
-			qpitch.fromAngleAxis(pitch.dblVal, Vector3f::UNIT_X);
-			qyaw.fromAngleAxis(yaw.dblVal, Vector3f::UNIT_Y);
-			qroll.fromAngleAxis(roll.dblVal, Vector3f::UNIT_Z);
+			qpitch = AngleAxis(pitch.dblVal, Vector3f::UnitX());
+			qyaw = AngleAxis(yaw.dblVal, Vector3f::UnitY());
+			qroll = AngleAxis(roll.dblVal, Vector3f::UnitZ());
 
 			evt->orientation = qpitch * qyaw * qroll;
 

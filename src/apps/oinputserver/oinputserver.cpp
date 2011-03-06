@@ -152,7 +152,7 @@ public:
 				if( evt.type == Event::Rotate ){
 					// Converts rotation to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.orientation[0] );
+					sprintf(floatChar,"%f", evt.orientation.x() );
 					strcat( eventPacket, floatChar );
 				} else if( evt.type == Event::Split ){
 					// Converts values to char, appends to eventPacket
@@ -207,22 +207,22 @@ public:
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts xRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation[0]);
+			sprintf(floatChar,"%f",evt.orientation.x());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts yRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation[1]);
+			sprintf(floatChar,"%f",evt.orientation.y());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts zRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation[2]);
+			sprintf(floatChar,"%f",evt.orientation.z());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, " " ); // Spacer
 
 			// Converts zRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation[3]);
+			sprintf(floatChar,"%f",evt.orientation.w());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, " " ); // Spacer
 			return true;

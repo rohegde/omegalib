@@ -356,17 +356,19 @@ namespace eigenwrap
 			return std::max(std::min(val, maxval), minval);
 		}
 
-		static inline matrix<4,4,T> makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation);
+		static transform<3, T, Eigen::Affine> makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation);
 		static inline matrix<4,4,T> makePerspectiveMatrix(float fov, float aspect, float nearZ, float farZ);
 
 		/** Get a bounding radius value from a bounding box. */
 		static inline T boundingRadiusFromAABB(const axis_aligned_box<T>& aabb);
 
 		/** Compute a quaternion rotation transforming vector a to vector b **/
-		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::ZERO);
+		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::Zero());
 
 		static inline 
-		ray<T> unproject(const vector<2, float>& pos, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport, float z = 0.0f);
+		ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const rect<int>& viewport, float z);
+
+		static vector< 3, T > normal(const vector< 3, T >& aa, const vector< 3, T >& bb, const vector< 3, T >& cc);
 
         static const T PositiveInfinity;
         static const T NegativeInfinity;
@@ -771,7 +773,7 @@ namespace eigenwrap
         T radius = sphere.getRadius();
 
         // Check origin inside first
-        if (rayorig.squaredLength() <= radius*radius && discardInside)
+        if (rayorig.squaredNorm() <= radius*radius && discardInside)
         {
             return std::pair<bool, T>(true, 0);
         }
@@ -820,7 +822,7 @@ namespace eigenwrap
 		const vector<3,T>& raydir = ray.getDirection();
 
 		// Check origin inside first
-		if ( rayorig > min && rayorig < max )
+		if ( (rayorig.array()  > min.array()).all() && (rayorig.array() < max.array()).all() )
 		{
 			return std::pair<bool, T>(true, 0);
 		}
@@ -1261,9 +1263,9 @@ namespace eigenwrap
 	}
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	matrix<4,4,T> math<T>::makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation)
+	transform<3, T, Eigen::Affine> math<T>::makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation)
 	{
-		matrix<4,4,T> viewMatrix;
+		transform<3, T, Eigen::Affine> viewMatrix;
 
 		// View matrix is:
 		//
@@ -1276,20 +1278,22 @@ namespace eigenwrap
 
 		// This is most efficiently done using 3x3 Matrices
 		matrix<3,3,T> rot;
-		orientation.get_rotation_matrix(rot);
+		
+		//orientation.get_rotation_matrix(rot);
+		rot = orientation;
 
 		// Make the translation relative to new axes
 		matrix<3,3,T> rotT;
-		rot.transpose_to(rotT);
+		rotT = rot.transpose();
 		vector<3,T> trans = -rotT * position;
 
 		// Make final matrix
-		viewMatrix = matrix<4,4,T>::IDENTITY;
+		viewMatrix = matrix<4,4,T>::Identity();
 		viewMatrix = rotT; // fills upper 3x3
-		viewMatrix[0][3] = trans.x();
-		viewMatrix[1][3] = trans.y();
-		viewMatrix[2][3] = trans.z();
-		viewMatrix[3][3] = 1.0f;
+		viewMatrix(0, 3) = trans.x();
+		viewMatrix(1, 3) = trans.y();
+		viewMatrix(2, 3) = trans.z();
+		viewMatrix(3, 3) = 1.0f;
 
 		return viewMatrix;
 
@@ -1299,14 +1303,14 @@ namespace eigenwrap
     template<typename T>
 	inline matrix<4,4,T> math<T>::makePerspectiveMatrix(float fov, float a, float n, float f)
 	{
-		matrix<4,4,T> m = matrix<4,4,T>::ZERO;
+		matrix<4,4,T> m = matrix<4,4,T>::Zero();
 		float e = 1.0f / tan(fov / 2);
 
-		m[0][0] = e;
-		m[1][1] = e / a;
-		m[2][2] = - (f + n) / (f - n);
-		m[2][3] = - (2 * f * n) / (f - n);
-		m[3][2] = -1;
+		m(0,0) = e;
+		m(1,1) = e / a;
+		m(2,2) = - (f + n) / (f - n);
+		m(2,3) = - (2 * f * n) / (f - n);
+		m(3,2) = -1;
 
 		return m;
 	}
@@ -1350,23 +1354,23 @@ namespace eigenwrap
 		// If dot == 1, vectors are the same
 		if (d >= 1.0f)
 		{
-			return quaternion<T>::IDENTITY;
+			return quaternion<T>::Identity();
 		}
 		if (d < (1e-6f - 1.0f))
 		{
-			if (fallbackAxis != vector<3,T>::ZERO)
+			if (fallbackAxis != vector<3,T>::Zero())
 			{
 				// rotate 180 degrees about the fallback axis
-				q.fromAngleAxis(math<T>::Pi, fallbackAxis);
+				q = AngleAxis(math<T>::Pi, fallbackAxis);
 			}
 			else
 			{
 				// Generate an axis
-				vector<3,T> axis = vector<3,T>::UNIT_X.cross(a);
-				if (axis.isZeroLength()) // pick another if colinear
-					axis = vector<3,T>::UNIT_Y.cross(a);
+				vector<3,T> axis = vector<3,T>::UnitX().cross(a);
+				if (axis.norm() == 0) // pick another if colinear
+					axis = vector<3,T>::UnitY().cross(a);
 				axis.normalize();
-				q.fromAngleAxis(math<T>::Pi, axis);
+				q = AngleAxis(math<T>::Pi, axis);
 			}
 		}
 		else
@@ -1386,14 +1390,15 @@ namespace eigenwrap
 	}
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	ray<T> math<T>::unproject(const vector<2, float>& point, const matrix<4, 4, T>& modelview, const matrix<4, 4, T>& projection, const rect<int>& viewport, float z)
+	ray<T> math<T>::unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const rect<int>& viewport, float z)
 	{
 		vector<3, T> origin;
 		vector<3, T> direction;
 
-		matrix<4, 4, T> A = projection * modelview;
+		matrix<4, 4, T> A = projection.matrix() * modelview.matrix();
 		matrix<4, 4, T> m;
-		if(!A.inverse(m)) return ray<T>();
+		m = A.inverse();
+		//if(!A.inverse(m)) return ray<T>();
 
 		vector<4, T> in;
 		in[0]=(point[0] - (float)viewport[0][0]) / (float)(viewport[1][0]) * 2.0f - 1.0f;
@@ -1420,6 +1425,22 @@ namespace eigenwrap
 		return ray<T>(origin, direction);
 	}
 
+	template< typename T >
+	vector< 3, T > math<T>::normal(
+	    const vector< 3, T >& aa, 
+		const vector< 3, T >& bb, 
+		const vector< 3, T >& cc
+		) 
+	{
+		vector< 3, T > u,v,tmp;
+		// right hand system, CCW triangle
+		u = bb - aa;
+		v = cc - aa;
+
+		tmp = u.cross(v);
+		tmp.normalize();
+		return tmp;
+	}
 } // namespace eigenwrap
 
 #endif
