@@ -53,7 +53,7 @@ void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool 
 	bool selected = false;
 	if(node->isSelectable())
 	{
-		const AxisAlignedBox& bbox = node->getBoundingBox();
+		const AlignedBox3& bbox = node->getBoundingBox();
 		//printf("Bounding box min: %f %f %f max: %f %f %f\n", 
 		//	bbox.getMinimum()[0], bbox.getMinimum()[1], bbox.getMinimum()[2],
 		//	bbox.getMaximum()[0], bbox.getMaximum()[1], bbox.getMaximum()[2]);

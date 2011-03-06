@@ -318,7 +318,7 @@ Axis PlyDataReader::getLongestAxis( const size_t start,
 		return AxisX;
     }
 
-    AxisAlignedBox bb;
+    AlignedBox3 bb;
     bb[0] = vertices[ triangles[start][0] ];
     bb[1] = vertices[ triangles[start][0] ];
 

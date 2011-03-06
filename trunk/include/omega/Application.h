@@ -68,9 +68,9 @@ namespace omega
 		AffineTransform3 modelview;
 		Transform3 projection;
 		//! The pixel viewport coordinates of this context with respect to the owner window of the context.
-		Recti viewport;
+		Rect viewport;
 		//! The pixel viewport coordinates of this context with respect to the global canvas managed by the display system.
-		Recti globalViewport;
+		Rect globalViewport;
 		IGLContextManager* glContext;
 	};
 

@@ -82,7 +82,7 @@ namespace eigenwrap {
         returns the side where the aligneBox is. the flag BOTH_SIDE indicates an intersecting box.
         one corner ON the plane is sufficient to consider the box and the plane intersecting.
         */
-        //inline side getSide (const AxisAlignedBox& rkBox) const;
+        //inline side getSide (const AlignedBox3& rkBox) const;
 
         /** Returns which side of the plane that the given box lies on.
             The box is defined as centre/half-size pairs for effectively.
@@ -210,7 +210,7 @@ namespace eigenwrap {
 
 	//-----------------------------------------------------------------------
 /*	template<typename T> inline
-	typename plane<T>::side plane<T>::getSide (const AxisAlignedBox& box) const
+	typename plane<T>::side plane<T>::getSide (const AlignedBox3& box) const
 	{
 		if (box.isNull()) 
 			return NO_SIDE;

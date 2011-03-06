@@ -66,15 +66,11 @@ void Camera::render()
 	oassert(myScene != NULL);
 	oassert(myRenderTarget != NULL);
 
-	Recti viewport;
-	viewport[0][0] = 0;
-	viewport[0][1] = 0;
-	viewport[1][0] = myRenderTarget->getWidth();
-	viewport[1][1] = myRenderTarget->getHeight();
+	Rect viewport = Rect(0, 0, myRenderTarget->getWidth(), myRenderTarget->getHeight());
 
 	if(myAutoAspect)
 	{
-		float aspect = (float)viewport[1][0] / viewport[1][1];
+		float aspect = (float)viewport.width() / viewport.height();
 		updateProjection(myFov, aspect, myNearZ, myFarZ);
 	}
 

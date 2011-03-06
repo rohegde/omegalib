@@ -36,10 +36,8 @@ namespace omega
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API SceneManager
+	class OUTILS_API SceneManager: public DynamicObject
 	{
-	public:
-		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 	public:
 		SceneManager(omega::GpuManager* gpu): 
 		  myViewTransform(AffineTransform3::Identity()),
@@ -56,7 +54,7 @@ namespace scene
 		void setBackgroundColor(const Color& value);
 		Color getBackgroundColor();
 
-		void draw(const Recti& viewport);
+		void draw(const Rect& viewport);
 
 	private:
 		AffineTransform3 myViewTransform;

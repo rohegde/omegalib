@@ -37,17 +37,17 @@ void SceneManager::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::draw(const Recti& viewport)
+void SceneManager::draw(const Rect& viewport)
 {
 	glDisable(GL_LIGHTING);
 
 	// Draw background
 	glDisable(GL_DEPTH_TEST);
 	glColor4fv(myBackgroundColor.data());
-	int width = viewport[1][0];
-	int height = viewport[1][1];
-	int x = viewport[0][0] - width / 2;
-	int y = viewport[0][1] - height / 2;
+	int width = viewport.width();
+	int height = viewport.height();
+	int x = viewport.x() - width / 2;
+	int y = viewport.y() - height / 2;
 	//glRecti(x, y, width, height);
 	glEnable(GL_DEPTH_TEST);
 

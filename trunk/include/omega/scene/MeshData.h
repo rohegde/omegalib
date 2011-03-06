@@ -103,7 +103,7 @@ namespace scene
 		bool hasColors() { return myHasColors; }
 		bool hasNormals() { return myHasNormals; }
 
-		const AxisAlignedBox& getBoundingBox() 
+		const AlignedBox3& getBoundingBox() 
 		{ 
 			if(myIsDirty) update(); 
 			return myBBox; 
@@ -157,7 +157,7 @@ namespace scene
 		}
 
 	private:
-		AxisAlignedBox myBBox;
+		AlignedBox3 myBBox;
     };
 }; // namespace scene
 } // namespace omega
