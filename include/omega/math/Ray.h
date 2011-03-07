@@ -29,21 +29,21 @@
 #ifndef __RAY_H_
 #define __RAY_H_
 
-#include <eigenwrap/plane.hpp>
-#include <eigenwrap/plane_bounded_volume.hpp>
+#include "Plane.h"
+#include "PlaneBoundedVolume.h"
 
-namespace eigenwrap 
+namespace omega { namespace math 
 {
 	/** Representation of a ray in space, i.e. a line with an origin and direction. */
 	template<typename T>
-    class ray
+    class Ray
     {
     protected:
         vector<3,T> mOrigin;
         vector<3,T> mDirection;
     public:
-        ray():mOrigin(vector<3,T>::Zero()), mDirection(vector<3,T>::UnitZ()) {}
-        ray(const vector<3,T>& origin, const vector<3,T>& direction)
+        Ray():mOrigin(vector<3,T>::Zero()), mDirection(vector<3,T>::UnitZ()) {}
+        Ray(const vector<3,T>& origin, const vector<3,T>& direction)
             :mOrigin(origin), mDirection(direction) {}
 
         /** Sets the origin of the ray. */
@@ -72,9 +72,9 @@ namespace eigenwrap
 			indicate the distance along the ray at which it intersects. 
 			This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, float> intersects(const plane<T>& p) const
+		std::pair<bool, float> intersects(const Plane<T>& p) const
 		{
-			return math<T>::intersects(*this, p);
+			return Math<T>::intersects(*this, p);
 		}
         /** Tests whether this ray intersects the given plane bounded volume. 
         @returns A pair structure where the first element indicates whether
@@ -82,9 +82,9 @@ namespace eigenwrap
         indicate the distance along the ray at which it intersects. 
         This can be converted to a point in space by calling getPoint().
         */
-        std::pair<bool, float> intersects(const plane_bounded_volume<T>& p) const
+        std::pair<bool, float> intersects(const PlaneBoundedVolume<T>& p) const
         {
-            return math<T>::intersects(*this, p.planes, p.outside == plane<T>::POSITIVE_SIDE);
+            return Math<T>::intersects(*this, p.planes, p.outside == Plane<T>::POSITIVE_SIDE);
         }
 		/** Tests whether this ray intersects the given sphere. 
 		@returns A pair structure where the first element indicates whether
@@ -92,9 +92,9 @@ namespace eigenwrap
 			indicate the distance along the ray at which it intersects. 
 			This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, float> intersects(const sphere<T>& s) const
+		std::pair<bool, float> intersects(const Sphere<T>& s) const
 		{
-			return math<T>::intersects(*this, s);
+			return Math<T>::intersects(*this, s);
 		}
 		/** Tests whether this ray intersects the given box. 
 		@returns A pair structure where the first element indicates whether
@@ -102,9 +102,9 @@ namespace eigenwrap
 			indicate the distance along the ray at which it intersects. 
 			This can be converted to a point in space by calling getPoint().
 		*/
-		std::pair<bool, float> intersects(const axis_aligned_box<T>& box) const
+		std::pair<bool, float> intersects(const AlignedBox3<T>& box) const
 		{
-			return math<T>::intersects(*this, box);
+			return Math<T>::intersects(*this, box);
 		}
 
 		/** Computes the projection of a point.
@@ -124,6 +124,6 @@ namespace eigenwrap
     };
 	/** @} */
 	/** @} */
-
+}
 }
 #endif

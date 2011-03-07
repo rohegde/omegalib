@@ -36,14 +36,14 @@
 #ifndef __PLANE_H__
 #define __PLANE_H__
 
-//#include <eigenwrap\axis_aligned_box.hpp>
+#include "EigenWrappers.h"
 
-namespace eigenwrap {
+namespace omega { namespace math {
        /** The "positive side" of the plane is the half space to which the
             plane normal points. The "negative side" is the other half
             space. The flag "no side" indicates the plane itself.
         */
-        enum plane_side
+        enum PlaneSide
         {
             NO_SIDE,
             POSITIVE_SIDE,
@@ -61,22 +61,22 @@ namespace eigenwrap {
             the normal you have to go to move the plane back to the origin.
      */
 	template<typename T>
-    class plane
+    class Plane
     {
     public:
         /** Default constructor - sets everything to 0.
         */
-        inline plane ();
-        inline plane (const plane& rhs);
+        inline Plane ();
+        inline Plane (const Plane& rhs);
         /** Construct a plane through a normal, and a distance to move the plane along the normal.*/
-        inline plane (const vector<3,T>& rkNormal, float fConstant);
+        inline Plane (const vector<3,T>& rkNormal, float fConstant);
 		/** Construct a plane using the 4 constants directly **/
-		inline plane (float a, float b, float c, float d);
-        inline plane (const vector<3,T>& rkNormal, const vector<3,T>& rkPoint);
-        inline plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+		inline Plane (float a, float b, float c, float d);
+        inline Plane (const vector<3,T>& rkNormal, const vector<3,T>& rkPoint);
+        inline Plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
             const vector<3,T>& rkPoint2);
 
-        inline plane_side getSide (const vector<3,T>& rkPoint) const;
+        inline PlaneSide getSide (const vector<3,T>& rkPoint) const;
 
         /**
         returns the side where the aligneBox is. the flag BOTH_SIDE indicates an intersecting box.
@@ -93,7 +93,7 @@ namespace eigenwrap {
             NEGATIVE_SIDE if the box complete lies on the "negative side" of the plane,
             and BOTH_SIDE if the box intersects the plane.
         */
-        inline plane_side getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const;
+        inline PlaneSide getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const;
 
         /** This is a pseudodistance. The sign of the return value is
             positive if the point is on the positive side of the plane,
@@ -136,11 +136,11 @@ namespace eigenwrap {
         float d;
 
         /// Comparison operator
-        bool operator==(const plane<T>& rhs) const
+        bool operator==(const Plane<T>& rhs) const
         {
             return (rhs.d == d && rhs.normal == normal);
         }
-        bool operator!=(const plane<T>& rhs) const
+        bool operator!=(const Plane<T>& rhs) const
         {
             return (rhs.d != d && rhs.normal != normal);
         }
@@ -148,69 +148,69 @@ namespace eigenwrap {
 
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	plane<T>::plane ()
+	Plane<T>::Plane ()
 	{
 		normal = vector<3,T>::Zero();
 		d = 0.0;
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	plane<T>::plane (const plane<T>& rhs)
+	Plane<T>::Plane (const Plane<T>& rhs)
 	{
 		normal = rhs.normal;
 		d = rhs.d;
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	plane<T>::plane (const vector<3,T>& rkNormal, float fConstant)
+	Plane<T>::Plane (const vector<3,T>& rkNormal, float fConstant)
 	{
 		normal = rkNormal;
 		d = -fConstant;
 	}
 	//---------------------------------------------------------------------
 	template<typename T> inline
-	plane<T>::plane (float a, float b, float c, float _d)
+	Plane<T>::Plane (float a, float b, float c, float _d)
 		: normal(a, b, c), d(_d)
 	{
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	plane<T>::plane (const vector<3,T>& rkNormal, const vector<3,T>& rkPoint)
+	Plane<T>::Plane (const vector<3,T>& rkNormal, const vector<3,T>& rkPoint)
 	{
 		redefine(rkNormal, rkPoint);
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	plane<T>::plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+	Plane<T>::Plane (const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
 		const vector<3,T>& rkPoint2)
 	{
 		redefine(rkPoint0, rkPoint1, rkPoint2);
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	float plane<T>::getDistance (const vector<3,T>& rkPoint) const
+	float Plane<T>::getDistance (const vector<3,T>& rkPoint) const
 	{
 		return normal.dot(rkPoint) + d;
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	plane_side plane<T>::getSide (const vector<3,T>& rkPoint) const
+	PlaneSide Plane<T>::getSide (const vector<3,T>& rkPoint) const
 	{
 		float fDistance = getDistance(rkPoint);
 
 		if ( fDistance < 0.0 )
-			return plane<T>::NEGATIVE_SIDE;
+			return Plane<T>::NEGATIVE_SIDE;
 
 		if ( fDistance > 0.0 )
-			return plane<T>::POSITIVE_SIDE;
+			return Plane<T>::POSITIVE_SIDE;
 
-		return plane<T>::NO_SIDE;
+		return Plane<T>::NO_SIDE;
 	}
 
 
 	//-----------------------------------------------------------------------
 /*	template<typename T> inline
-	typename plane<T>::side plane<T>::getSide (const AlignedBox3& box) const
+	typename Plane<T>::side Plane<T>::getSide (const AlignedBox3& box) const
 	{
 		if (box.isNull()) 
 			return NO_SIDE;
@@ -221,7 +221,7 @@ namespace eigenwrap {
 	}*/
     //-----------------------------------------------------------------------
 	template<typename T> inline
-    plane_side plane<T>::getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const
+    PlaneSide Plane<T>::getSide (const vector<3,T>& centre, const vector<3,T>& halfSize) const
     {
         // Calculate the distance between box centre and the plane
         float dist = getDistance(centre);
@@ -231,16 +231,16 @@ namespace eigenwrap {
         float maxAbsDist = abs(normal.dot(halfSize));
 
         if (dist < -maxAbsDist)
-            return plane<T>::NEGATIVE_SIDE;
+            return Plane<T>::NEGATIVE_SIDE;
 
         if (dist > +maxAbsDist)
-            return plane<T>::POSITIVE_SIDE;
+            return Plane<T>::POSITIVE_SIDE;
 
-        return plane<T>::BOTH_SIDE;
+        return Plane<T>::BOTH_SIDE;
     }
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	void plane<T>::redefine(const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
+	void Plane<T>::redefine(const vector<3,T>& rkPoint0, const vector<3,T>& rkPoint1,
 		const vector<3,T>& rkPoint2)
 	{
 		vector<3,T> kEdge1 = rkPoint1 - rkPoint0;
@@ -251,13 +251,13 @@ namespace eigenwrap {
 	}
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-	void plane<T>::redefine(const vector<3,T>& rkNormal, const vector<3,T>& rkPoint)
+	void Plane<T>::redefine(const vector<3,T>& rkNormal, const vector<3,T>& rkPoint)
 	{
 		normal = rkNormal;
 		d = -rkNormal.dot(rkPoint);
 	}
 	//-----------------------------------------------------------------------
-	//vector<3,T> plane<T>::projectVector(const vector<3,T>& p) const
+	//vector<3,T> Plane<T>::projectVector(const vector<3,T>& p) const
 	//{
 	//	// We know plane normal is unit length, so use simple method
 	//	Matrix3f xform;
@@ -276,7 +276,7 @@ namespace eigenwrap {
 
 	//-----------------------------------------------------------------------
 	template<typename T> inline
-    float plane<T>::normalise(void)
+    float Plane<T>::normalise(void)
     {
         float fLength = normal.length();
 
@@ -290,6 +290,8 @@ namespace eigenwrap {
 
         return fLength;
     }
-} // namespace omega
+
+}; // namespace math
+}; //namespace omega
 
 #endif

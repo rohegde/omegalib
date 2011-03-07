@@ -70,16 +70,13 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
 
 		# eigenwrap
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/eigenwrap.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/vector.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/matrix.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/quaternion.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/math.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/ray.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/sphere.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/plane.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/axis_aligned_box.hpp
-        ${OmegaLib_SOURCE_DIR}/include/eigenwrap/plane_bounded_volume.hpp
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/EigenWrappers.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Math.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Ray.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Sphere.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Plane.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/AlignedBox.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/PlaneBoundedVolume.h
         ) 
         
 ###################################################################################################
@@ -178,7 +175,7 @@ endif(WIN32)
 source_group(omega REGULAR_EXPRESSION omega/)		
 source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
 source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
-source_group(eigenwrap REGULAR_EXPRESSION eigenwrap)		
+source_group(omega::math REGULAR_EXPRESSION omega/math)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers

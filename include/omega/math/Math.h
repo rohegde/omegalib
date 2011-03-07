@@ -1,39 +1,43 @@
-#ifndef __EIGENWRAP__MATH__HPP__
-#define __EIGENWRAP__MATH__HPP__
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+#ifndef __OMEGA_MATH__H__
+#define __OMEGA_MATH__H__
 
 #include <cmath>
-#include <eigenwrap/vector.hpp>
-#include <eigenwrap/matrix.hpp>
-#include <eigenwrap/quaternion.hpp>
-#include <eigenwrap/plane.hpp>
 
-namespace eigenwrap
+#include "Plane.h"
+#include "EigenWrappers.h"
+
+namespace omega { namespace math 
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! wrapper to enable array use where arrays would not be allowed otherwise
-	//template< class T, size_t d >
-	//struct array_wrapper
-	//{
-	//	T& operator[]( const size_t i )
-	//	{
-	//		assert( i < d );
-	//		return data[i];
-	//	}
- //       
-	//	const T& operator[]( const size_t i ) const
-	//	{
-	//		assert( i < d );
-	//		return data[i];
-	//	}
- //       
-	//private:
-	//	T data[d];
-	//};
-
-	template<typename T> class ray;
-	template<typename T> class plane;
-	template<typename T> class sphere;
-	template<typename T> class axis_aligned_box;
+	template<typename T> class Ray;
+	template<typename T> class Plane;
+	template<typename T> class Sphere;
+	template<typename T> class AlignedBox3;
 
 	typedef vector<2, int> Point;
     struct Rect
@@ -67,7 +71,7 @@ namespace eigenwrap
             <a href="http://www.geometrictools.com/">Wild Magic</a>.
     */
 	template<typename T>
-    class math 
+    class Math 
     {
     protected:
         /// Size of the trig tables as determined by constructor.
@@ -90,11 +94,11 @@ namespace eigenwrap
                 trigTableSize Optional parameter to set the size of the
                 tables used to implement Sin, Cos, Tan
         */
-        inline math(unsigned int trigTableSize = 4096);
+        inline Math(unsigned int trigTableSize = 4096);
 
         /** Default destructor.
         */
-        inline ~math();
+        inline ~Math();
 
 		static inline int iabs (int iValue) { return ( iValue >= 0 ? iValue : -iValue ); }
 		static inline int iceil (T fValue) { return int(std::ceil(fValue)); }
@@ -227,17 +231,17 @@ namespace eigenwrap
         */
         static inline bool pointInTri3D(const vector<3,T>& p, const vector<3,T>& a, 
 			const vector<3,T>& b, const vector<3,T>& c, const vector<3,T>& normal);
-        /** ray<T> / plane intersection, returns boolean result and distance. */
-        static inline std::pair<bool, T> intersects(const ray<T>& ray, const plane<T>& plane);
+        /** Ray<T> / plane intersection, returns boolean result and distance. */
+        static inline std::pair<bool, T> intersects(const Ray<T>& ray, const Plane<T>& plane);
 
-        /** ray<T> / sphere intersection, returns boolean result and distance. */
-        static inline std::pair<bool, T> intersects(const ray<T>& ray, const sphere<T>& sphere, 
+        /** Ray<T> / sphere intersection, returns boolean result and distance. */
+        static inline std::pair<bool, T> intersects(const Ray<T>& ray, const Sphere<T>& sphere, 
             bool discardInside = true);
         
-        /** ray<T> / box intersection, returns boolean result and distance. */
-        static inline std::pair<bool, T> intersects(const ray<T>& ray, const axis_aligned_box<T>& box);
+        /** Ray<T> / box intersection, returns boolean result and distance. */
+        static inline std::pair<bool, T> intersects(const Ray<T>& ray, const AlignedBox3<T>& box);
 
-        /** ray<T> / box intersection, returns boolean result and two intersection distance.
+        /** Ray<T> / box intersection, returns boolean result and two intersection distance.
         @param
             ray The ray.
         @param
@@ -259,10 +263,10 @@ namespace eigenwrap
             If the ray isn't intersects the box, <b>false</b> is returned, and
             <i>d1</i> and <i>d2</i> is unmodified.
         */
-        static inline bool intersects(const ray<T>& ray, const axis_aligned_box<T>& box,
+        static inline bool intersects(const Ray<T>& ray, const AlignedBox3<T>& box,
             T* d1, T* d2);
 
-        /** ray<T> / triangle intersection, returns boolean result and distance.
+        /** Ray<T> / triangle intersection, returns boolean result and distance.
         @param
             ray The ray.
         @param
@@ -286,11 +290,11 @@ namespace eigenwrap
             If the ray isn't intersects the triangle, a pair of <b>false</b> and
             <b>0</b> returned.
         */
-        static inline std::pair<bool, T> intersects(const ray<T>& ray, const vector<3,T>& a,
+        static inline std::pair<bool, T> intersects(const Ray<T>& ray, const vector<3,T>& a,
             const vector<3,T>& b, const vector<3,T>& c, const vector<3,T>& normal,
             bool positiveSide = true, bool negativeSide = true);
 
-        /** ray<T> / triangle intersection, returns boolean result and distance.
+        /** Ray<T> / triangle intersection, returns boolean result and distance.
         @param
             ray The ray.
         @param
@@ -310,37 +314,37 @@ namespace eigenwrap
             If the ray isn't intersects the triangle, a pair of <b>false</b> and
             <b>0</b> returned.
         */
-        static inline std::pair<bool, T> intersects(const ray<T>& ray, const vector<3,T>& a,
+        static inline std::pair<bool, T> intersects(const Ray<T>& ray, const vector<3,T>& a,
             const vector<3,T>& b, const vector<3,T>& c,
             bool positiveSide = true, bool negativeSide = true);
 
-        /** sphere<T> / box intersection test. */
-        static inline bool intersects(const sphere<T>& sphere, const axis_aligned_box<T>& box);
+        /** Sphere<T> / box intersection test. */
+        static inline bool intersects(const Sphere<T>& sphere, const AlignedBox3<T>& box);
 
-        /** plane<T> / box intersection test. */
-        static inline bool intersects(const plane<T>& plane, const axis_aligned_box<T>& box);
+        /** Plane<T> / box intersection test. */
+        static inline bool intersects(const Plane<T>& plane, const AlignedBox3<T>& box);
 
-        /** ray<T> / convex plane list intersection test. 
+        /** Ray<T> / convex plane list intersection test. 
         @param ray The ray to test with
         @param plaeList List of planes which form a convex volume
         @param normalIsOutside Does the normal point outside the volume
         */
         static inline std::pair<bool, T> intersects(
-            const ray<T>& ray, const std::vector<plane<T> >& planeList, 
+            const Ray<T>& ray, const std::vector<Plane<T> >& planeList, 
             bool normalIsOutside);
-        /** ray<T> / convex plane list intersection test. 
+        /** Ray<T> / convex plane list intersection test. 
         @param ray The ray to test with
         @param plaeList List of planes which form a convex volume
         @param normalIsOutside Does the normal point outside the volume
         */
         static inline std::pair<bool, T> intersects(
-            const ray<T>& ray, const std::list<plane<T> >& planeList, 
+            const Ray<T>& ray, const std::list<Plane<T> >& planeList, 
             bool normalIsOutside);
 
-        /** sphere<T> / plane intersection test. 
+        /** Sphere<T> / plane intersection test. 
         @remarks NB just do a plane.getDistance(sphere.getCenter()) for more detail!
         */
-        static inline bool intersects(const sphere<T>& sphere, const plane<T>& plane);
+        static inline bool intersects(const Sphere<T>& sphere, const Plane<T>& plane);
 
         /** Compare 2 reals, using tolerance for inaccuracies.
         */
@@ -353,7 +357,7 @@ namespace eigenwrap
             T u1, T v1, T u2, T v2, T u3, T v3);
 
         /** Build a reflection matrix for the passed in plane. */
-        static inline matrix<4,4,T> buildReflectionMatrix(const plane<T>& p);
+        static inline matrix<4,4,T> buildReflectionMatrix(const Plane<T>& p);
         /** Calculate a face normal, including the w component which is the offset from the origin. */
         static inline vector<4,T> calculateFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3);
         /** Calculate a face normal, no w-information. */
@@ -379,13 +383,13 @@ namespace eigenwrap
 		static inline matrix<4,4,T> makePerspectiveMatrix(float fov, float aspect, float nearZ, float farZ);
 
 		/** Get a bounding radius value from a bounding box. */
-		static inline T boundingRadiusFromAABB(const axis_aligned_box<T>& aabb);
+		static inline T boundingRadiusFromAABB(const AlignedBox3<T>& aabb);
 
 		/** Compute a quaternion rotation transforming vector a to vector b **/
 		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::Zero());
 
 		static inline 
-		ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z);
+		Ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z);
 
 		static vector< 3, T > normal(const vector< 3, T >& aa, const vector< 3, T >& bb, const vector< 3, T >& cc);
 
@@ -399,38 +403,38 @@ namespace eigenwrap
     };
 
     template<typename T>
-    const T math<T>::PositiveInfinity = std::numeric_limits<T>::infinity();
+    const T Math<T>::PositiveInfinity = std::numeric_limits<T>::infinity();
     template<typename T>
-    const T math<T>::NegativeInfinity = -std::numeric_limits<T>::infinity();
+    const T Math<T>::NegativeInfinity = -std::numeric_limits<T>::infinity();
     template<typename T>
-    const T math<T>::Pi = T( 4.0 * atan( 1.0 ) );
+    const T Math<T>::Pi = T( 4.0 * atan( 1.0 ) );
     template<typename T>
-    const T math<T>::TwoPi = T( 2.0 * Pi );
+    const T Math<T>::TwoPi = T( 2.0 * Pi );
     template<typename T>
-    const T math<T>::HalfPi = T( 0.5 * Pi );
+    const T Math<T>::HalfPi = T( 0.5 * Pi );
     template<typename T>
-	const T math<T>::DegToRad = Pi / T(180.0);
+	const T Math<T>::DegToRad = Pi / T(180.0);
     template<typename T>
-	const T math<T>::RadToDeg = T(180.0) / Pi;
+	const T Math<T>::RadToDeg = T(180.0) / Pi;
     template<typename T>
-	const T math<T>::Log2Base = log(T(2.0));
+	const T Math<T>::Log2Base = log(T(2.0));
 
     template<typename T>
-    int math<T>::mTrigTableSize;
+    int Math<T>::mTrigTableSize;
 
     template<typename T>
-    T  math<T>::mTrigTableFactor;
+    T  Math<T>::mTrigTableFactor;
     template<typename T>
-    T *math<T>::mSinTable = NULL;
+    T *Math<T>::mSinTable = NULL;
     template<typename T>
-    T *math<T>::mTanTable = NULL;
+    T *Math<T>::mTanTable = NULL;
 
     //-----------------------------------------------------------------------
     template<typename T> inline 
-	math<T>::math( unsigned int trigTableSize )
+	Math<T>::Math( unsigned int trigTableSize )
     {
         mTrigTableSize = trigTableSize;
-        mTrigTableFactor = mTrigTableSize / math<T>::TwoPi;
+        mTrigTableFactor = mTrigTableSize / Math<T>::TwoPi;
 
         mSinTable = new T[mTrigTableSize];
         mTanTable = new T[mTrigTableSize];
@@ -440,7 +444,7 @@ namespace eigenwrap
 
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    math<T>::~math()
+    Math<T>::~Math()
     {
 		delete[] mSinTable;
 		delete[] mTanTable;
@@ -450,7 +454,7 @@ namespace eigenwrap
 
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    void math<T>::buildTrigTables(void)
+    void Math<T>::buildTrigTables(void)
     {
         // Build trig lookup tables
         // Could get away with building only Pi sized Sin table but simpler this 
@@ -459,14 +463,14 @@ namespace eigenwrap
         T angle;
         for (int i = 0; i < mTrigTableSize; ++i)
         {
-            angle = math<T>::TwoPi * i / mTrigTableSize;
+            angle = Math<T>::TwoPi * i / mTrigTableSize;
             mSinTable[i] = sin(angle);
             mTanTable[i] = tan(angle);
         }
     }
 	//-----------------------------------------------------------------------	
     template<typename T> inline 
-	T math<T>::SinTable (T fValue)
+	T Math<T>::SinTable (T fValue)
     {
         // Convert range to index values, wrap if required
         int idx;
@@ -483,7 +487,7 @@ namespace eigenwrap
     }
 	//-----------------------------------------------------------------------
     template<typename T> inline 
-	T math<T>::TanTable (T fValue)
+	T Math<T>::TanTable (T fValue)
     {
         // Convert range to index values, wrap if required
 		int idx = int(fValue *= mTrigTableFactor) % mTrigTableSize;
@@ -491,13 +495,13 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    int math<T>::isign (int iValue)
+    int Math<T>::isign (int iValue)
     {
         return ( iValue > 0 ? +1 : ( iValue < 0 ? -1 : 0 ) );
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    T math<T>::acos (T fValue)
+    T Math<T>::acos (T fValue)
     {
         if ( -1.0 < fValue )
         {
@@ -513,7 +517,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    T math<T>::asin (T fValue)
+    T Math<T>::asin (T fValue)
     {
         if ( -1.0 < fValue )
         {
@@ -529,7 +533,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    T math<T>::sign (T fValue)
+    T Math<T>::sign (T fValue)
     {
         if ( fValue > 0.0 )
             return 1.0;
@@ -541,26 +545,26 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    T math<T>::unitRandom ()
+    T Math<T>::unitRandom ()
 	{
 		return ((T)rand() / RAND_MAX);
 	}    
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    T math<T>::rangeRandom (T fLow, T fHigh)
+    T Math<T>::rangeRandom (T fLow, T fHigh)
     {
         return (fHigh-fLow)*unitRandom() + fLow;
     }
 
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    T math<T>::symmetricRandom ()
+    T Math<T>::symmetricRandom ()
     {
 		return 2.0f * unitRandom() - 1.0f;
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-	bool math<T>::pointInTri2D(const vector<2,T>& p, const vector<2,T>& a, 
+	bool Math<T>::pointInTri2D(const vector<2,T>& p, const vector<2,T>& a, 
 		const vector<2,T>& b, const vector<2,T>& c)
     {
 		// Winding must be consistent from all edges for point to be inside
@@ -574,18 +578,18 @@ namespace eigenwrap
 		// Note we don't care about normalisation here since sign is all we need
 		// It means we don't have to worry about magnitude of cross products either
 		dot[0] = v1.cross(v2);
-		zeroDot[0] = math<T>::floatEqual(dot[0], 0.0f, 1e-3f);
+		zeroDot[0] = Math<T>::floatEqual(dot[0], 0.0f, 1e-3f);
 
 
 		v1 = c - b;
 		v2 = p - b;
 
 		dot[1] = v1.cross(v2);
-		zeroDot[1] = math<T>::floatEqual(dot[1], 0.0f, 1e-3f);
+		zeroDot[1] = Math<T>::floatEqual(dot[1], 0.0f, 1e-3f);
 
 		// Compare signs (ignore colinear / coincident points)
 		if(!zeroDot[0] && !zeroDot[1] 
-		&& math<T>::sign(dot[0]) != math<T>::sign(dot[1]))
+		&& Math<T>::sign(dot[0]) != Math<T>::sign(dot[1]))
 		{
 			return false;
 		}
@@ -594,12 +598,12 @@ namespace eigenwrap
 		v2 = p - c;
 
 		dot[2] = v1.cross(v2);
-		zeroDot[2] = math<T>::floatEqual(dot[2], 0.0f, 1e-3f);
+		zeroDot[2] = Math<T>::floatEqual(dot[2], 0.0f, 1e-3f);
 		// Compare signs (ignore colinear / coincident points)
 		if((!zeroDot[0] && !zeroDot[2] 
-			&& math<T>::sign(dot[0]) != math<T>::sign(dot[2])) ||
+			&& Math<T>::sign(dot[0]) != Math<T>::sign(dot[2])) ||
 			(!zeroDot[1] && !zeroDot[2] 
-			&& math<T>::sign(dot[1]) != math<T>::sign(dot[2])))
+			&& Math<T>::sign(dot[1]) != Math<T>::sign(dot[2])))
 		{
 			return false;
 		}
@@ -609,7 +613,7 @@ namespace eigenwrap
     }
 	//-----------------------------------------------------------------------
     template<typename T> inline 
-	bool math<T>::pointInTri3D(const vector<3,T>& p, const vector<3,T>& a, 
+	bool Math<T>::pointInTri3D(const vector<3,T>& p, const vector<3,T>& a, 
 		const vector<3,T>& b, const vector<3,T>& c, const vector<3,T>& normal)
 	{
         // Winding must be consistent from all edges for point to be inside
@@ -623,18 +627,18 @@ namespace eigenwrap
 		// Note we don't care about normalisation here since sign is all we need
 		// It means we don't have to worry about magnitude of cross products either
         dot[0] = v1.cross(v2).dot(normal);
-		zeroDot[0] = math<T>::floatEqual(dot[0], 0.0f, 1e-3f);
+		zeroDot[0] = Math<T>::floatEqual(dot[0], 0.0f, 1e-3f);
 
 
         v1 = c - b;
         v2 = p - b;
 
 		dot[1] = v1.cross(v2).dot(normal);
-		zeroDot[1] = math<T>::floatEqual(dot[1], 0.0f, 1e-3f);
+		zeroDot[1] = Math<T>::floatEqual(dot[1], 0.0f, 1e-3f);
 
 		// Compare signs (ignore colinear / coincident points)
 		if(!zeroDot[0] && !zeroDot[1] 
-			&& math<T>::sign(dot[0]) != math<T>::sign(dot[1]))
+			&& Math<T>::sign(dot[0]) != Math<T>::sign(dot[1]))
 		{
             return false;
 		}
@@ -643,12 +647,12 @@ namespace eigenwrap
         v2 = p - c;
 
 		dot[2] = v1.cross(v2).dot(normal);
-		zeroDot[2] = math<T>::floatEqual(dot[2], 0.0f, 1e-3f);
+		zeroDot[2] = Math<T>::floatEqual(dot[2], 0.0f, 1e-3f);
 		// Compare signs (ignore colinear / coincident points)
 		if((!zeroDot[0] && !zeroDot[2] 
-			&& math<T>::sign(dot[0]) != math<T>::sign(dot[2])) ||
+			&& Math<T>::sign(dot[0]) != Math<T>::sign(dot[2])) ||
 			(!zeroDot[1] && !zeroDot[2] 
-			&& math<T>::sign(dot[1]) != math<T>::sign(dot[2])))
+			&& Math<T>::sign(dot[1]) != Math<T>::sign(dot[2])))
 		{
 			return false;
 		}
@@ -658,7 +662,7 @@ namespace eigenwrap
 	}
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    bool math<T>::floatEqual( T a, T b, T tolerance )
+    bool Math<T>::floatEqual( T a, T b, T tolerance )
     {
         if (fabs(b-a) <= tolerance)
             return true;
@@ -668,11 +672,11 @@ namespace eigenwrap
 
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    std::pair<bool, T> math<T>::intersects(const ray<T>& ray, const plane<T>& plane)
+    std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const Plane<T>& plane)
     {
 
         T denom = plane.normal.dot(ray.getDirection());
-        if (math<T>::abs(denom) < std::numeric_limits<T>::epsilon())
+        if (Math<T>::abs(denom) < std::numeric_limits<T>::epsilon())
         {
             // Parallel
             return std::pair<bool, T>(false, 0);
@@ -687,11 +691,11 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    std::pair<bool, T> math<T>::intersects(const ray<T>& ray, 
-        const std::vector<plane<T> >& planes, bool normalIsOutside)
+    std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, 
+        const std::vector<Plane<T> >& planes, bool normalIsOutside)
     {
-		std::list<plane<T> > planesList;
-		for (typename std::vector<plane<T> >::const_iterator i = planes.begin(); i != planes.end(); ++i)
+		std::list<Plane<T> > planesList;
+		for (typename std::vector<Plane<T> >::const_iterator i = planes.begin(); i != planes.end(); ++i)
 		{
 			planesList.push_back(*i);
 		}
@@ -699,10 +703,10 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    std::pair<bool, T> math<T>::intersects(const ray<T>& ray, 
-        const std::list<plane<T> >& planes, bool normalIsOutside)
+    std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, 
+        const std::list<Plane<T> >& planes, bool normalIsOutside)
     {
-		typename std::list<plane<T> >::const_iterator planeit, planeitend;
+		typename std::list<Plane<T> >::const_iterator planeit, planeitend;
 		planeitend = planes.end();
 		bool allInside = true;
 		std::pair<bool, T> ret;
@@ -714,13 +718,13 @@ namespace eigenwrap
 
 
 		// derive side
-		// NB we don't pass directly since that would require plane<T>::Side in 
+		// NB we don't pass directly since that would require Plane<T>::Side in 
 		// interface, which results in recursive includes since math is so fundamental
-		typename plane<T>::Side outside = normalIsOutside ? plane<T>::POSITIVE_SIDE : plane<T>::NEGATIVE_SIDE;
+		typename Plane<T>::Side outside = normalIsOutside ? Plane<T>::POSITIVE_SIDE : Plane<T>::NEGATIVE_SIDE;
 
 		for (planeit = planes.begin(); planeit != planeitend; ++planeit)
 		{
-			const plane<T>& plane = *planeit;
+			const Plane<T>& plane = *planeit;
 			// is origin outside?
 			if (plane.getSide(ray.getOrigin()) == outside)
 			{
@@ -783,7 +787,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    std::pair<bool, T> math<T>::intersects(const ray<T>& ray, const sphere<T>& sphere, 
+    std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const Sphere<T>& sphere, 
         bool discardInside)
     {
         const vector<3,T>& raydir = ray.getDirection();
@@ -816,9 +820,9 @@ namespace eigenwrap
             // BTW, if d=0 there is one intersection, if d > 0 there are 2
             // But we only want the closest one, so that's ok, just use the 
             // '-' version of the solver
-            T t = ( -b - math<T>::sqrt(d) ) / (2 * a);
+            T t = ( -b - Math<T>::sqrt(d) ) / (2 * a);
             if (t < 0)
-                t = ( -b + math<T>::sqrt(d) ) / (2 * a);
+                t = ( -b + Math<T>::sqrt(d) ) / (2 * a);
             return std::pair<bool, T>(true, t);
         }
 
@@ -826,7 +830,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-	std::pair<bool, T> math<T>::intersects(const ray<T>& ray, const axis_aligned_box<T>& box)
+	std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const AlignedBox3<T>& box)
 	{
 		if (box.isNull()) return std::pair<bool, T>(false, 0);
 		if (box.isInfinite()) return std::pair<bool, T>(true, 0);
@@ -955,7 +959,7 @@ namespace eigenwrap
 	} 
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    bool math<T>::intersects(const ray<T>& ray, const axis_aligned_box<T>& box,
+    bool Math<T>::intersects(const Ray<T>& ray, const AlignedBox3<T>& box,
         T* d1, T* d2)
     {
         if (box.isNull())
@@ -964,7 +968,7 @@ namespace eigenwrap
         if (box.isInfinite())
         {
             if (d1) *d1 = 0;
-            if (d2) *d2 = math<T>::PositiveInfinity;
+            if (d2) *d2 = Math<T>::PositiveInfinity;
             return true;
         }
 
@@ -974,9 +978,9 @@ namespace eigenwrap
         const vector<3,T>& raydir = ray.getDirection();
 
         vector<3,T> absDir;
-        absDir[0] = math<T>::abs(raydir[0]);
-        absDir[1] = math<T>::abs(raydir[1]);
-        absDir[2] = math<T>::abs(raydir[2]);
+        absDir[0] = Math<T>::abs(raydir[0]);
+        absDir[1] = Math<T>::abs(raydir[1]);
+        absDir[2] = Math<T>::abs(raydir[2]);
 
         // Sort the axis, ensure check minimise floating error axis first
         int imax = 0, imid = 1, imin = 2;
@@ -996,7 +1000,7 @@ namespace eigenwrap
             imax = 1;
         }
 
-        T start = 0, end = math<T>::PositiveInfinity;
+        T start = 0, end = Math<T>::PositiveInfinity;
 
 #define _CALC_AXIS(i)                                       \
     do {                                                    \
@@ -1044,7 +1048,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    std::pair<bool, T> math<T>::intersects(const ray<T>& ray, const vector<3,T>& a,
+    std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const vector<3,T>& a,
         const vector<3,T>& b, const vector<3,T>& c, const vector<3,T>& normal,
         bool positiveSide, bool negativeSide)
     {
@@ -1087,9 +1091,9 @@ namespace eigenwrap
         //
         size_t i0, i1;
         {
-            T n0 = math<T>::abs(normal[0]);
-            T n1 = math<T>::abs(normal[1]);
-            T n2 = math<T>::abs(normal[2]);
+            T n0 = Math<T>::abs(normal[0]);
+            T n1 = Math<T>::abs(normal[1]);
+            T n2 = Math<T>::abs(normal[2]);
 
             i0 = 1; i1 = 2;
             if (n1 > n2)
@@ -1138,7 +1142,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    std::pair<bool, T> math<T>::intersects(const ray<T>& ray, const vector<3,T>& a,
+    std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const vector<3,T>& a,
         const vector<3,T>& b, const vector<3,T>& c,
         bool positiveSide, bool negativeSide)
     {
@@ -1147,7 +1151,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    bool math<T>::intersects(const sphere<T>& sphere, const axis_aligned_box<T>& box)
+    bool Math<T>::intersects(const Sphere<T>& sphere, const AlignedBox3<T>& box)
     {
         if (box.isNull()) return false;
         if (box.isInfinite()) return true;
@@ -1178,21 +1182,21 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    bool math<T>::intersects(const plane<T>& plane, const axis_aligned_box<T>& box)
+    bool Math<T>::intersects(const Plane<T>& plane, const AlignedBox3<T>& box)
     {
         return (plane.getSide(box) == BOTH_SIDE);
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    bool math<T>::intersects(const sphere<T>& sphere, const plane<T>& plane)
+    bool Math<T>::intersects(const Sphere<T>& sphere, const Plane<T>& plane)
     {
         return (
-            math<T>::abs(plane.getDistance(sphere.getCenter()))
+            Math<T>::abs(plane.getDistance(sphere.getCenter()))
             <= sphere.getRadius() );
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    vector<3,T> math<T>::calculateTangentSpaceVector(
+    vector<3,T> Math<T>::calculateTangentSpaceVector(
         const vector<3,T>& position1, const vector<3,T>& position2, const vector<3,T>& position3,
         T u1, T v1, T u2, T v2, T u3, T v3)
     {
@@ -1230,7 +1234,7 @@ namespace eigenwrap
 
     }
     //-----------------------------------------------------------------------
-    //matrix<4,4,T> math<T>::buildReflectionMatrix(const plane<T>& p)
+    //matrix<4,4,T> Math<T>::buildReflectionMatrix(const Plane<T>& p)
     //{
     //    return matrix<4,4,T>(
     //        -2 * p.normal.x() * p.normal.x() + 1,   -2 * p.normal.x() * p.normal.y(),       -2 * p.normal.x() * p.normal.z(),       -2 * p.normal.x() * p.d, 
@@ -1240,7 +1244,7 @@ namespace eigenwrap
     //}
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    vector<4,T> math<T>::calculateFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
+    vector<4,T> Math<T>::calculateFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
         vector<3,T> normal = calculateBasicFaceNormal(v1, v2, v3);
         // Now set up the w (distance of tri from origin
@@ -1248,7 +1252,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    vector<3,T> math<T>::calculateBasicFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
+    vector<3,T> Math<T>::calculateBasicFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
         vector<3,T> normal = (v2 - v1).cross(v3 - v1);
         normal.normalize();
@@ -1256,7 +1260,7 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    vector<4,T> math<T>::calculateFaceNormalWithoutNormalize(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
+    vector<4,T> Math<T>::calculateFaceNormalWithoutNormalize(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
         vector<3,T> normal = calculateBasicFaceNormalWithoutNormalize(v1, v2, v3);
         // Now set up the w (distance of tri from origin)
@@ -1264,25 +1268,25 @@ namespace eigenwrap
     }
     //-----------------------------------------------------------------------
     template<typename T> inline 
-    vector<3,T> math<T>::calculateBasicFaceNormalWithoutNormalize(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
+    vector<3,T> Math<T>::calculateBasicFaceNormalWithoutNormalize(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
         vector<3,T> normal = (v2 - v1).cross(v3 - v1);
         return normal;
     }
 	//-----------------------------------------------------------------------
     template<typename T> inline 
-	T math<T>::gaussianDistribution(T x, T offset, T scale)
+	T Math<T>::gaussianDistribution(T x, T offset, T scale)
 	{
-		T nom = math<T>::exp(
-			-math<T>::sqr(x - offset) / (2 * math<T>::sqr(scale)));
-		T denom = scale * math<T>::sqrt(2 * math<T>::Pi);
+		T nom = Math<T>::exp(
+			-Math<T>::sqr(x - offset) / (2 * Math<T>::sqr(scale)));
+		T denom = scale * Math<T>::sqrt(2 * Math<T>::Pi);
 
 		return nom / denom;
 
 	}
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	transform<3, T, Eigen::Affine> math<T>::makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation)
+	transform<3, T, Eigen::Affine> Math<T>::makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation)
 	{
 		transform<3, T, Eigen::Affine> viewMatrix;
 
@@ -1320,7 +1324,7 @@ namespace eigenwrap
 
 	//---------------------------------------------------------------------
     template<typename T>
-	inline matrix<4,4,T> math<T>::makePerspectiveMatrix(float fov, float a, float n, float f)
+	inline matrix<4,4,T> Math<T>::makePerspectiveMatrix(float fov, float a, float n, float f)
 	{
 		matrix<4,4,T> m = matrix<4,4,T>::Zero();
 		float e = 1.0f / tan(fov / 2);
@@ -1336,7 +1340,7 @@ namespace eigenwrap
 
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	T math<T>::boundingRadiusFromAABB(const axis_aligned_box<T>& aabb)
+	T Math<T>::boundingRadiusFromAABB(const AlignedBox3<T>& aabb)
 	{
 		vector<3,T> max = aabb.getMaximum();
 		vector<3,T> min = aabb.getMinimum();
@@ -1358,7 +1362,7 @@ namespace eigenwrap
 		ANY axis of rotation is valid.
 	*/
     template<typename T> inline 
-	quaternion<T> math<T>::buildRotation(const vector<3,T>& a, const vector<3,T>& b,
+	quaternion<T> Math<T>::buildRotation(const vector<3,T>& a, const vector<3,T>& b,
 		const vector<3,T>& fallbackAxis)
 	{
 		// Based on Stan Melax's article in Game Programming Gems
@@ -1380,7 +1384,7 @@ namespace eigenwrap
 			if (fallbackAxis != vector<3,T>::Zero())
 			{
 				// rotate 180 degrees about the fallback axis
-				q = AngleAxis(math<T>::Pi, fallbackAxis);
+				q = AngleAxis(Math<T>::Pi, fallbackAxis);
 			}
 			else
 			{
@@ -1389,12 +1393,12 @@ namespace eigenwrap
 				if (axis.norm() == 0) // pick another if colinear
 					axis = vector<3,T>::UnitY().cross(a);
 				axis.normalize();
-				q = AngleAxis(math<T>::Pi, axis);
+				q = AngleAxis(Math<T>::Pi, axis);
 			}
 		}
 		else
 		{
-			T s = math<T>::sqrt( (1+d)*2 );
+			T s = Math<T>::sqrt( (1+d)*2 );
 			T invs = 1 / s;
 
 			vector<3,T> c = v0.cross(v1);
@@ -1409,7 +1413,7 @@ namespace eigenwrap
 	}
 	//---------------------------------------------------------------------
     template<typename T> inline 
-	ray<T> math<T>::unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z)
+	Ray<T> Math<T>::unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z)
 	{
 		vector<3, T> origin;
 		vector<3, T> direction;
@@ -1417,7 +1421,7 @@ namespace eigenwrap
 		matrix<4, 4, T> A = projection.matrix() * modelview.matrix();
 		matrix<4, 4, T> m;
 		m = A.inverse();
-		//if(!A.inverse(m)) return ray<T>();
+		//if(!A.inverse(m)) return Ray<T>();
 
 		vector<4, T> in;
 		in[0]=(point[0] - (float)viewport.x()) / (float)(viewport.width()) * 2.0f - 1.0f;
@@ -1441,11 +1445,11 @@ namespace eigenwrap
 		direction.normalize();
 		//direction *= -1;
 
-		return ray<T>(origin, direction);
+		return Ray<T>(origin, direction);
 	}
 
 	template< typename T >
-	vector< 3, T > math<T>::normal(
+	vector< 3, T > Math<T>::normal(
 	    const vector< 3, T >& aa, 
 		const vector< 3, T >& bb, 
 		const vector< 3, T >& cc
@@ -1460,7 +1464,8 @@ namespace eigenwrap
 		tmp.normalize();
 		return tmp;
 	}
-} // namespace eigenwrap
 
+} // namespace eigenwrap
+}
 #endif
 

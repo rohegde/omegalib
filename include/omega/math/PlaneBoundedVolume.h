@@ -29,32 +29,32 @@
 #ifndef __PLANE_BOUNDED_VOLUME_H_
 #define __PLANE_BOUNDED_VOLUME_H_
 
-#include <eigenwrap/axis_aligned_box.hpp>
-#include <eigenwrap/axis_aligned_box.hpp>
-#include <eigenwrap/math.hpp>
+#include "AlignedBox.h"
+#include "Math.h"
+#include "Plane.h"
 
-namespace eigenwrap
+namespace omega { namespace math 
 {
 	/** Represents a convex volume bounded by planes.
     */
 	template<typename T>
-    class plane_bounded_volume
+    class PlaneBoundedVolume
     {
     public:
-        typedef std::vector<plane<T> > PlaneList;
+        typedef std::vector<Plane<T> > PlaneList;
         /// Publicly accessible plane list, you can modify this direct
         PlaneList planes;
-        plane_side outside;
+        PlaneSide outside;
 
-        plane_bounded_volume() :outside(NEGATIVE_SIDE) {}
+        PlaneBoundedVolume() :outside(NEGATIVE_SIDE) {}
         /** Constructor, determines which side is deemed to be 'outside' */
-        plane_bounded_volume(plane_side theOutside) 
+        PlaneBoundedVolume(PlaneSide theOutside) 
             : outside(theOutside) {}
 
         /** Intersection test with AABB
         @remarks May return false positives but will never miss an intersection.
         */
-        inline bool intersects(const axis_aligned_box<T>& box) const
+        inline bool intersects(const AlignedBox3<T>& box) const
         {
             if (box.isNull()) return false;
             if (box.isInfinite()) return true;
@@ -68,9 +68,9 @@ namespace eigenwrap
             iend = planes.end();
             for (i = planes.begin(); i != iend; ++i)
             {
-                const plane<T> & plane = *i;
+                const Plane<T> & plane = *i;
 
-                plane_side side = plane.getSide(centre, halfSize);
+                PlaneSide side = plane.getSide(centre, halfSize);
                 if (side == outside)
                 {
                     // Found a splitting plane therefore return not intersecting
@@ -82,16 +82,16 @@ namespace eigenwrap
             return true;
 
         }
-        /** Intersection test with sphere<T>
+        /** Intersection test with Sphere<T>
         @remarks May return false positives but will never miss an intersection.
         */
-        inline bool intersects(const sphere<T>& sphere) const
+        inline bool intersects(const Sphere<T>& sphere) const
         {
             typename PlaneList::const_iterator i, iend;
             iend = planes.end();
             for (i = planes.begin(); i != iend; ++i)
             {
-                const plane<T> & plane = *i;
+                const Plane<T> & plane = *i;
 
                 // Test which side of the plane the sphere is
                 float d = plane.getDistance(sphere.getCenter());
@@ -106,19 +106,17 @@ namespace eigenwrap
 
         }
 
-        /** Intersection test with a ray<T>
+        /** Intersection test with a Ray<T>
         @returns std::pair of hit (bool) and distance
         @remarks May return false positives but will never miss an intersection.
         */
-        inline std::pair<bool, float> intersects(const ray<T>& ray)
+        inline std::pair<bool, float> intersects(const Ray<T>& ray)
         {
-            return math<T>::intersects(ray, planes, outside == plane<T> ::POSITIVE_SIDE);
+            return Math<T>::intersects(ray, planes, outside == Plane<T> ::POSITIVE_SIDE);
         }
 
     };
-
-	//template<typename T>
-    //typedef std::vector<plane_bounded_volume<T> > plane_bounded_volume_list;
+}
 }
 
 #endif
