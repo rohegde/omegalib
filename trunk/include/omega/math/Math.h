@@ -1300,10 +1300,10 @@ namespace omega { namespace math
 		// Where T = -(Transposed(Rot) * Pos)
 
 		// This is most efficiently done using 3x3 Matrices
-		matrix<3,3,T> rot;
+		matrix<3,3,T> rot = orientation.toRotationMatrix();
 		
 		//orientation.get_rotation_matrix(rot);
-		rot = orientation;
+		//rot = orientation;
 
 		// Make the translation relative to new axes
 		matrix<3,3,T> rotT;

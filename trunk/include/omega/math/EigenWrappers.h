@@ -39,27 +39,30 @@ namespace omega { namespace math
 	class vector: public Eigen::Matrix<T, M, 1>
 	{
 	public:
-		vector() {};
+		typedef Eigen::Matrix<T, M, 1> Base;
+
+		vector(): Base() {}
 
 		template< typename OtherDerived > 
-		vector(const Eigen::EigenBase< OtherDerived > &other): Matrix(other) {}
+		vector(const Eigen::EigenBase< OtherDerived > &other): Base(other) {}
 
-		vector(const T &x, const T &y): Matrix(x, y) {}
+		vector(const T &x, const T &y): Base(x, y) {}
 
-		vector(const T &x, const T &y, const T &z): Matrix (x, y, z) {}
+		vector(const T &x, const T &y, const T &z): Base(x, y, z) {}
 
-		template< typename OtherDerived >
-		vector(const Eigen::RotationBase< OtherDerived, ColsAtCompileTime > &r): Matrix (r) {}
+		template< typename OtherDerived, int ColsAtCompileTime >
+		vector(const Eigen::RotationBase< OtherDerived, ColsAtCompileTime > &r): Base(r) {}
 
 		template<typename OtherDerived >
-		vector(const Eigen::ReturnByValue< OtherDerived > &other): Matrix(other) {}
+		vector(const Eigen::ReturnByValue< OtherDerived > &other): Base(other) {}
 
-		vector(const Matrix &other): Matrix (other) {}
+		template<int N>
+		vector(const Eigen::Matrix<T, M, N> &other): Base(other) {}
 
 		template< typename OtherDerived >
-		vector(const Eigen::MatrixBase< OtherDerived > &other): Matrix(other) {}
+		vector(const Eigen::MatrixBase< OtherDerived > &other): Base(other) {}
 
-		vector(const T &x, const T &y, const T &z, const T &w): Matrix (x, y, z, w) {}
+		vector(const T &x, const T &y, const T &z, const T &w): Base(x, y, z, w) {}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,27 +70,29 @@ namespace omega { namespace math
 	class matrix: public Eigen::Matrix<T, M, N>
 	{
 	public:
-		matrix(): Matrix() {}
+		typedef Eigen::Matrix<T, M, N> Base;
+
+		matrix(): Base() {}
 
 		template< typename OtherDerived > 
-		matrix(const Eigen::EigenBase< OtherDerived > &other): Matrix(other) {}
+		matrix(const Eigen::EigenBase< OtherDerived > &other): Base(other) {}
 
 		//matrix(const T &x, const T &y): Matrix(x, y) {}
 
 		//matrix(const T &x, const T &y, const T &z): Matrix (x, y, z) {}
 
-		template< typename OtherDerived >
-		matrix(const Eigen::RotationBase< OtherDerived, ColsAtCompileTime > &r): Matrix (r) {}
+		template< typename OtherDerived, size_t ColsAtCompileTime>
+		matrix(const Eigen::RotationBase< OtherDerived, ColsAtCompileTime > &r): Base (r) {}
 
 		template<typename OtherDerived >
-		matrix(const Eigen::ReturnByValue< OtherDerived > &other): Matrix(other) {}
+		matrix(const Eigen::ReturnByValue< OtherDerived > &other): Base(other) {}
 
-		matrix(const Matrix &other): Matrix (other) {}
+		matrix(const Base&other): Base (other) {}
 
 		template< typename OtherDerived >
-		matrix(const Eigen::MatrixBase< OtherDerived > &other): Matrix(other) {}
+		matrix(const Eigen::MatrixBase< OtherDerived > &other): Base(other) {}
 
-		//matrix(const T &x, const T &y, const T &z, const T &w): Matrix (x, y, z, w) {}
+		matrix(const T &x, const T &y, const T &z, const T &w): Base (x, y, z, w) {}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,13 +100,15 @@ namespace omega { namespace math
 	class transform: public Eigen::Transform<T, Dim, Mode, Options>
 	{
 	public:
-		transform(): Transform() {}
+		typedef Eigen::Transform<T, Dim, Mode, Options> Base;
+
+		transform(): Base() {}
 
 		template<typename OtherDerived >
-		transform(const Eigen::EigenBase< OtherDerived > &other): Transform (other) {}
+		transform(const Eigen::EigenBase< OtherDerived > &other): Base (other) {}
 
 		template<typename OtherScalarType >
-		transform (const Transform< OtherScalarType, Dim, Mode, Options > &other): Transform (other) {}
+		transform (const Eigen::Transform< OtherScalarType, Dim, Mode, Options > &other): Base (other) {}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,20 +116,21 @@ namespace omega { namespace math
 	class quaternion : public Eigen::Quaternion<Scalar>
 	{
 	public:
+		typedef Eigen::Quaternion<Scalar> Base;
 
-		quaternion (const Scalar *data): Quaternion(data) {}
+		quaternion (const Scalar *data): Base(data) {}
 
 		template<typename Derived >	
-		quaternion (const Eigen::MatrixBase< Derived > &other): Quaternion (other) {}
+		quaternion (const Eigen::MatrixBase< Derived > &other): Base (other) {}
 
-		quaternion (const Eigen::Quaternion<Scalar>::AngleAxisType &aa): Quaternion (aa) {}
+		quaternion (const typename Base::AngleAxisType &aa): Base (aa) {}
 
-		quaternion (Scalar w, Scalar x, Scalar y, Scalar z): Quaternion (w, x, y, z) {}
+		quaternion (Scalar w, Scalar x, Scalar y, Scalar z): Base (w, x, y, z) {}
 
-		quaternion (): Quaternion() {}
+		quaternion (): Base() {}
 
 		template<class Derived >
-		quaternion (const Eigen::QuaternionBase< Derived > &other): Quaternion (other) {}
+		quaternion (const Eigen::QuaternionBase< Derived > &other): Base (other) {}
 	};
 }; // namespace math
 }; //namespace omega
