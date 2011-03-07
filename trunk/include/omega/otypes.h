@@ -51,8 +51,11 @@
 #endif
 
 // eigenwrap includes
-#define VMMLIB_DONT_FORCE_ALIGNMENT
-#include <eigenwrap/eigenwrap.hpp>
+#include <omega/math/Math.h>
+#include <omega/math/Ray.h>
+#include <omega/math/AlignedBox.h>
+#include <omega/math/Sphere.h>
+#include <omega/math/Plane.h>
 
 // Used for lock.
 #include "co/base/lock.h"
@@ -122,32 +125,28 @@ namespace omega
 	template<typename T> class List: public std::list<T> {};
 
 	// Math and linear algebra typedefs
-	typedef eigenwrap::math<float> Math;
-	typedef eigenwrap::sphere<float> Sphere;
-	typedef eigenwrap::plane<float> Plane;
-	typedef eigenwrap::ray<float> Ray;
-	typedef eigenwrap::axis_aligned_box<float> AlignedBox3;
-	typedef eigenwrap::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
-	//typedef eigenwrap::matrix< 4, 4, float >  Transform3; //!< A 4x4 float matrix
-	typedef eigenwrap::vector< 2, int > Vector2i; //!< A two-component integer vector
-	typedef eigenwrap::vector< 3, int > Vector3i; //!< A three-component integer vector
-	typedef eigenwrap::vector< 4, int > Vector4i; //!< A four-component integer vector
-	typedef eigenwrap::vector< 2, float > Vector2f; //!< A two-component float vector
-	typedef eigenwrap::vector< 3, float > Vector3f; //!< A three-component float vector
-	typedef eigenwrap::vector< 4, float > Vector4f; //!< A four-component float vector
-	typedef eigenwrap::quaternion<float> Quaternion; //! A floating point quaternion
-	typedef eigenwrap::vector< 3, uint >      Triangle;
-	//typedef eigenwrap::rect<int> Recti;
-	//typedef eigenwrap::rect<float> Rectf;
+	typedef math::Math<float> Math;
+	typedef math::Sphere<float> Sphere;
+	typedef math::Plane<float> Plane;
+	typedef math::Ray<float> Ray;
+	typedef math::AlignedBox3<float> AlignedBox3;
+	typedef math::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
+	typedef math::vector< 2, float > Vector2f; //!< A two-component float vector
+	typedef math::vector< 3, float > Vector3f; //!< A three-component float vector
+	typedef math::vector< 4, float > Vector4f; //!< A four-component float vector
+	typedef math::vector< 2, int > Vector2i; //!< A four-component float vector
+	typedef math::vector< 3, int > Vector3i; //!< A four-component float vector
+	typedef math::vector< 4, int > Vector4i; //!< A four-component float vector
+	typedef math::quaternion<float> Quaternion; //! A floating point quaternion
+	typedef math::vector< 3, uint >      Triangle;
 	typedef Eigen::AngleAxis<float> AngleAxis;
-
-	typedef eigenwrap::transform<3, float> Transform3;
-	typedef eigenwrap::transform<3, float, Eigen::Affine> AffineTransform3;
+	typedef math::transform<3, float> Transform3;
+	typedef math::transform<3, float, Eigen::Affine> AffineTransform3;
+	typedef math::Rect Rect;
 
 		// Misc typedefs
 	typedef libconfig::Setting Setting;
 
-	typedef eigenwrap::Rect Rect;
 
 	//! enumeration for the axes
 	enum Axis

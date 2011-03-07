@@ -36,9 +36,11 @@
 #ifndef __AXIS_ALIGNED_BOX_H_
 #define __AXIS_ALIGNED_BOX_H_
 
-#include <eigenwrap/sphere.hpp>
+#include "Sphere.h"
+//#include "EigenWrappers.h"
 
-namespace eigenwrap {
+namespace omega { namespace math 
+{
 	/** A 3D box aligned with the x/y/z axes.
 	@remarks
 	This class represents a simple box which is aligned with the
@@ -49,7 +51,7 @@ namespace eigenwrap {
 	visibility determination.
 	*/
 	template<typename T>
-	class axis_aligned_box
+	class AlignedBox3
 	{
 	public:
 		enum Extent
@@ -86,21 +88,21 @@ namespace eigenwrap {
 			NEAR_LEFT_TOP = 5,
 			NEAR_RIGHT_TOP = 4
 		} CornerEnum;
-		inline axis_aligned_box() : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
+		inline AlignedBox3() : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			// Default to a null box 
 			setMinimum( -0.5, -0.5, -0.5 );
 			setMaximum( 0.5, 0.5, 0.5 );
 			mExtent = EXTENT_NULL;
 		}
-		inline axis_aligned_box(Extent e) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
+		inline AlignedBox3(Extent e) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			setMinimum( -0.5, -0.5, -0.5 );
 			setMaximum( 0.5, 0.5, 0.5 );
 			mExtent = e;
 		}
 
-		inline axis_aligned_box(const axis_aligned_box & rkBox) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
+		inline AlignedBox3(const AlignedBox3 & rkBox) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 
 		{
 			if (rkBox.isNull())
@@ -111,19 +113,19 @@ namespace eigenwrap {
 				setExtents( rkBox.mMinimum, rkBox.mMaximum );
 		}
 
-		inline axis_aligned_box( const vector<3,T>& min, const vector<3,T>& max ) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
+		inline AlignedBox3( const vector<3,T>& min, const vector<3,T>& max ) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			setExtents( min, max );
 		}
 
-		inline axis_aligned_box(
+		inline AlignedBox3(
 			float mx, float my, float mz,
 			float Mx, float My, float Mz ) : mMinimum(vector<3,T>::Zero()), mMaximum(vector<3,T>::Ones()), mpCorners(0)
 		{
 			setExtents( mx, my, mz, Mx, My, Mz );
 		}
 
-		axis_aligned_box& operator=(const axis_aligned_box& rhs)
+		AlignedBox3& operator=(const AlignedBox3& rhs)
 		{
 			// Specifically override to avoid copying mpCorners
 			if (rhs.isNull())
@@ -136,7 +138,7 @@ namespace eigenwrap {
 			return *this;
 		}
 
-		~axis_aligned_box()
+		~AlignedBox3()
 		{
 			if (mpCorners) 
 			{
@@ -185,7 +187,7 @@ namespace eigenwrap {
 			mMinimum = vec;
 		}
 
-		inline void setMinimum( float x, float y, float z )
+		inline void setMinimum( T x, T y, T z )
 		{
 			mExtent = EXTENT_FINITE;
 			mMinimum.x() = x;
@@ -196,17 +198,17 @@ namespace eigenwrap {
 		/** Changes one of the components of the minimum corner of the box
 		used to resize only one dimension of the box
 		*/
-		inline void setMinimumX(float x)
+		inline void setMinimumX(T x)
 		{
 			mMinimum.x() = x;
 		}
 
-		inline void setMinimumY(float y)
+		inline void setMinimumY(T y)
 		{
 			mMinimum.y() = y;
 		}
 
-		inline void setMinimumZ(float z)
+		inline void setMinimumZ(T z)
 		{
 			mMinimum.z() = z;
 		}
@@ -219,7 +221,7 @@ namespace eigenwrap {
 			mMaximum = vec;
 		}
 
-		inline void setMaximum( float x, float y, float z )
+		inline void setMaximum( T x, T y, T z )
 		{
 			mExtent = EXTENT_FINITE;
 			mMaximum.x() = x;
@@ -230,17 +232,17 @@ namespace eigenwrap {
 		/** Changes one of the components of the maximum corner of the box
 		used to resize only one dimension of the box
 		*/
-		inline void setMaximumX( float x )
+		inline void setMaximumX( T x )
 		{
 			mMaximum.x() = x;
 		}
 
-		inline void setMaximumY( float y )
+		inline void setMaximumY( T y )
 		{
 			mMaximum.y() = y;
 		}
 
-		inline void setMaximumZ( float z )
+		inline void setMaximumZ( T z )
 		{
 			mMaximum.z() = z;
 		}
@@ -258,8 +260,8 @@ namespace eigenwrap {
 		}
 
 		inline void setExtents(
-			float mx, float my, float mz,
-			float Mx, float My, float Mz )
+			T mx, T my, T mz,
+			T Mx, T My, T Mz )
 		{
             assert( (mx <= Mx && my <= My && mz <= Mz) &&
                 "The minimum corner of the box must be less than or equal to maximum corner" );
@@ -356,7 +358,7 @@ namespace eigenwrap {
 		/** Merges the passed in box into the current box. The result is the
 		box which encompasses both.
 		*/
-		void merge( const axis_aligned_box<T>& rhs )
+		void merge( const AlignedBox3<T>& rhs )
 		{
 			// Do nothing if rhs null, or this is infinite
 			if ((rhs.mExtent == EXTENT_NULL) || (mExtent == EXTENT_INFINITE))
@@ -414,61 +416,61 @@ namespace eigenwrap {
 		AABB. Useful when you have a local AABB for an object which
 		is then transformed.
 		*/
-		inline void transform( const matrix<4,4,T>& matrix )
-		{
-			// Do nothing if current null or infinite
-			if( mExtent != EXTENT_FINITE )
-				return;
+		//inline void transform( const matrix<4,4,T>& matrix )
+		//{
+		//	// Do nothing if current null or infinite
+		//	if( mExtent != EXTENT_FINITE )
+		//		return;
 
-			vector<3,T> oldMin, oldMax, currentCorner;
+		//	vector<3,T> oldMin, oldMax, currentCorner;
 
-			// Getting the old values so that we can use the existing merge method.
-			oldMin = mMinimum;
-			oldMax = mMaximum;
+		//	// Getting the old values so that we can use the existing merge method.
+		//	oldMin = mMinimum;
+		//	oldMax = mMaximum;
 
-			// reset
-			setNull();
+		//	// reset
+		//	setNull();
 
-			// We sequentially compute the corners in the following order :
-			// 0, 6, 5, 1, 2, 4 ,7 , 3
-			// This sequence allows us to only change one member at a time to get at all corners.
+		//	// We sequentially compute the corners in the following order :
+		//	// 0, 6, 5, 1, 2, 4 ,7 , 3
+		//	// This sequence allows us to only change one member at a time to get at all corners.
 
-			// For each one, we transform it using the matrix
-			// Which gives the resulting point and merge the resulting point.
+		//	// For each one, we transform it using the matrix
+		//	// Which gives the resulting point and merge the resulting point.
 
-			// First corner 
-			// min min min
-			currentCorner = oldMin;
-			merge( matrix * currentCorner );
+		//	// First corner 
+		//	// min min min
+		//	currentCorner = oldMin;
+		//	merge( matrix * currentCorner );
 
-			// min,min,max
-			currentCorner.z() = oldMax.z();
-			merge( matrix * currentCorner );
+		//	// min,min,max
+		//	currentCorner.z() = oldMax.z();
+		//	merge( matrix * currentCorner );
 
-			// min max max
-			currentCorner.y() = oldMax.y();
-			merge( matrix * currentCorner );
+		//	// min max max
+		//	currentCorner.y() = oldMax.y();
+		//	merge( matrix * currentCorner );
 
-			// min max min
-			currentCorner.z() = oldMin.z();
-			merge( matrix * currentCorner );
+		//	// min max min
+		//	currentCorner.z() = oldMin.z();
+		//	merge( matrix * currentCorner );
 
-			// max max min
-			currentCorner.x() = oldMax.x();
-			merge( matrix * currentCorner );
+		//	// max max min
+		//	currentCorner.x() = oldMax.x();
+		//	merge( matrix * currentCorner );
 
-			// max max max
-			currentCorner.z() = oldMax.z();
-			merge( matrix * currentCorner );
+		//	// max max max
+		//	currentCorner.z() = oldMax.z();
+		//	merge( matrix * currentCorner );
 
-			// max min max
-			currentCorner.y() = oldMin.y();
-			merge( matrix * currentCorner );
+		//	// max min max
+		//	currentCorner.y() = oldMin.y();
+		//	merge( matrix * currentCorner );
 
-			// max min min
-			currentCorner.z() = oldMin.z();
-			merge( matrix * currentCorner ); 
-		}
+		//	// max min min
+		//	currentCorner.z() = oldMin.z();
+		//	merge( matrix * currentCorner ); 
+		//}
 
 		/** Transforms the box according to the affine matrix supplied.
 		@remarks
@@ -481,7 +483,7 @@ namespace eigenwrap {
 		@note
 		The matrix must be an affine matrix. @see matrix<4,4,T>::isAffine.
 		*/
-		void transformAffine(const Eigen::Transform<T, 3, Eigen::Affine>& tf)
+		inline void transformAffine(const transform<3, T, Eigen::Affine>& tf)
 		{
 			// Do nothing if current null or infinite
 			if ( mExtent != EXTENT_FINITE )
@@ -494,9 +496,9 @@ namespace eigenwrap {
 
 			vector<3,T> newCentre = tf * centre;
 			vector<3,T> newHalfSize(
-				math<T>::abs(m(0, 0)) * halfSize.x() + math<T>::abs(m(0, 1)) * halfSize.y() + math<T>::abs(m(0, 2)) * halfSize.z(), 
-				math<T>::abs(m(1, 0)) * halfSize.x() + math<T>::abs(m(1, 1)) * halfSize.y() + math<T>::abs(m(1, 2)) * halfSize.z(),
-				math<T>::abs(m(2, 0)) * halfSize.x() + math<T>::abs(m(2, 1)) * halfSize.y() + math<T>::abs(m(2, 2)) * halfSize.z());
+				Math<T>::abs(m(0, 0)) * halfSize.x() + Math<T>::abs(m(0, 1)) * halfSize.y() + Math<T>::abs(m(0, 2)) * halfSize.z(), 
+				Math<T>::abs(m(1, 0)) * halfSize.x() + Math<T>::abs(m(1, 1)) * halfSize.y() + Math<T>::abs(m(1, 2)) * halfSize.z(),
+				Math<T>::abs(m(2, 0)) * halfSize.x() + Math<T>::abs(m(2, 1)) * halfSize.y() + Math<T>::abs(m(2, 2)) * halfSize.z());
 
 			setExtents(newCentre - newHalfSize, newCentre + newHalfSize);
 		}
@@ -537,7 +539,7 @@ namespace eigenwrap {
 		}
 
 		/** Returns whether or not this box intersects another. */
-		inline bool intersects(const axis_aligned_box& b2) const
+		inline bool intersects(const AlignedBox3<T>& b2) const
 		{
 			// Early-fail for nulls
 			if (this->isNull() || b2.isNull())
@@ -568,11 +570,11 @@ namespace eigenwrap {
 		}
 
 		/// Calculate the area of intersection of this box and another
-		inline axis_aligned_box intersection(const axis_aligned_box& b2) const
+		inline AlignedBox3 intersection(const AlignedBox3<T>& b2) const
 		{
             if (this->isNull() || b2.isNull())
 			{
-				return axis_aligned_box();
+				return AlignedBox3();
 			}
 			else if (this->isInfinite())
 			{
@@ -594,10 +596,10 @@ namespace eigenwrap {
                 intMin.y() < intMax.y() &&
                 intMin.z() < intMax.z())
             {
-                return axis_aligned_box(intMin, intMax);
+                return AlignedBox3(intMin, intMax);
             }
 
-            return axis_aligned_box();
+            return AlignedBox3();
 		}
 
 		/// Calculate the volume of this box
@@ -615,7 +617,7 @@ namespace eigenwrap {
 				}
 
 			case EXTENT_INFINITE:
-				return math<T>::PositiveInfinity;
+				return Math<T>::PositiveInfinity;
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
@@ -637,14 +639,14 @@ namespace eigenwrap {
 		}
 
 		/** Tests whether this box intersects a sphere. */
-		bool intersects(const sphere<T>& s) const
+		bool intersects(const Sphere<T>& s) const
 		{
-			return math<T>::intersects(s, *this); 
+			return Math<T>::intersects(s, *this); 
 		}
 		/** Tests whether this box intersects a plane. */
-		bool intersects(const Plane& p) const
+		bool intersects(const Plane<T>& p) const
 		{
-			return math<T>::intersects(p, *this);
+			return Math<T>::intersects(p, *this);
 		}
 		/** Tests whether the vector point is within this box. */
 		bool intersects(const vector<3,T>& v) const
@@ -690,9 +692,9 @@ namespace eigenwrap {
 
 			case EXTENT_INFINITE:
 				return vector<3,T>(
-					math<T>::PositiveInfinity,
-					math<T>::PositiveInfinity,
-					math<T>::PositiveInfinity);
+					Math<T>::PositiveInfinity,
+					Math<T>::PositiveInfinity,
+					Math<T>::PositiveInfinity);
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
@@ -712,9 +714,9 @@ namespace eigenwrap {
 
 			case EXTENT_INFINITE:
 				return vector<3,T>(
-					math<T>::PositiveInfinity,
-					math<T>::PositiveInfinity,
-					math<T>::PositiveInfinity);
+					Math<T>::PositiveInfinity,
+					Math<T>::PositiveInfinity,
+					Math<T>::PositiveInfinity);
 
 			default: // shut up compiler
 				assert( false && "Never reached" );
@@ -738,7 +740,7 @@ namespace eigenwrap {
 
         /** Tests whether another box contained by this box.
         */
-        bool contains(const axis_aligned_box& other) const
+        bool contains(const AlignedBox3<T>& other) const
         {
             if (other.isNull() || this->isInfinite())
                 return true;
@@ -756,7 +758,7 @@ namespace eigenwrap {
 
         /** Tests 2 boxes for equality.
         */
-        bool operator== (const axis_aligned_box& rhs) const
+        bool operator== (const AlignedBox3<T>& rhs) const
         {
             if (this->mExtent != rhs.mExtent)
                 return false;
@@ -770,14 +772,14 @@ namespace eigenwrap {
 
         /** Tests 2 boxes for inequality.
         */
-        bool operator!= (const axis_aligned_box& rhs) const
+        bool operator!= (const AlignedBox3<T>& rhs) const
         {
             return !(*this == rhs);
         }
 
 		// special values
-		static const axis_aligned_box BOX_NULL;
-		static const axis_aligned_box BOX_INFINITE;
+		static const AlignedBox3 BOX_NULL;
+		static const AlignedBox3 BOX_INFINITE;
 
 		// This method is kinda dangerous. It sets the extent to finite, without any guarantee
 		// it's actually going to be so.
@@ -797,6 +799,7 @@ namespace eigenwrap {
 		}
 
 	};
-} // namespace omega
 
+}
+}
 #endif

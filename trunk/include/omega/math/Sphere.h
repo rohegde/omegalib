@@ -29,15 +29,10 @@
 #ifndef __SPHERE_H_
 #define __SPHERE_H_
 
-#include <eigenwrap/math.hpp>
-#include <eigenwrap/vector.hpp>
+#include "Math.h"
 
-namespace eigenwrap {
-
-	// Forward declarations.
-	class AlignedBox3;
-	class Plane;
-
+namespace omega { namespace math 
+{
 	/** A sphere primitive, mostly used for bounds checking. 
     @remarks
         A sphere in math texts is normally represented by the function
@@ -45,19 +40,19 @@ namespace eigenwrap {
         simply as a center point and a radius.
     */
 	template<typename T>
-    class sphere
+    class Sphere
     {
     protected:
         T mRadius;
         vector<3,T> mCenter;
     public:
         /** Standard constructor - creates a unit sphere around the origin.*/
-        sphere() : mRadius(1.0), mCenter(vector<3,T>::Zero()) {}
+        Sphere() : mRadius(1.0), mCenter(vector<3,T>::Zero()) {}
         /** Constructor allowing arbitrary spheres. 
             @param center The center point of the sphere.
             @param radius The radius of the sphere.
         */
-        sphere(const vector<3,T>& center, T radius)
+        Sphere(const vector<3,T>& center, T radius)
             : mRadius(radius), mCenter(center) {}
 
         /** Returns the radius of the sphere. */
@@ -73,25 +68,25 @@ namespace eigenwrap {
         void setCenter(const vector<3,T>& center) { mCenter = center; }
 
 		/** Returns whether or not this sphere intersects another sphere. */
-		bool intersects(const sphere<T>& s) const
+		bool intersects(const Sphere<T>& s) const
 		{
             return (s.mCenter - mCenter).squaredLength() <=
-                math<T>::sqr(s.mRadius + mRadius);
+                Math<T>::sqr(s.mRadius + mRadius);
 		}
 		/** Returns whether or not this sphere intersects a box. */
-		bool intersects(const AlignedBox3& box) const
+		bool intersects(const AlignedBox3<T>& box) const
 		{
-			return math<T>::intersects(*this, box);
+			return Math<T>::intersects(*this, box);
 		}
 		/** Returns whether or not this sphere intersects a plane. */
-		bool intersects(const Plane& plane) const
+		bool intersects(const Plane<T>& plane) const
 		{
-			return math<T>::intersects(*this, plane);
+			return Math<T>::intersects(*this, plane);
 		}
 		/** Returns whether or not this sphere intersects a point. */
 		bool intersects(const vector<3,T>& v) const
 		{
-            return ((v - mCenter).squaredLength() <= math<T>::sqr(mRadius));
+            return ((v - mCenter).squaredLength() <= Math<T>::sqr(mRadius));
 		}
 		/** Projects a point onto the sphere.
 		@Returns: the coordinates of the projected point.*/
@@ -102,7 +97,8 @@ namespace eigenwrap {
 			return result;
 		}
     };
-}
 
+}
+}
 #endif
 
