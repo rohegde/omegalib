@@ -425,7 +425,7 @@ void PlyDataReader::sort( const uint start, const uint length, const Axis axis )
     oassert( length > 0 );
     oassert( start + length <= triangles.size() );
     
-    std::sort( triangles.data() + start, 
-               triangles.data() + start + length,
+    std::sort( triangles.begin() + start, 
+               triangles.begin() + start + length,
                _TriangleSort( *this, axis ) );
 }
