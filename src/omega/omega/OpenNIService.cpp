@@ -116,9 +116,6 @@ void OpenNIService::dispose()
 
 void OpenNIService::poll(void)
 {
-	double verticalTest; //used to handle special case of body pointing straight along vertical axis
-	double unit;
-
 	if( myOpenNI )
 	{
 
