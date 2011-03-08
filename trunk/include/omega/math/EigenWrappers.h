@@ -63,6 +63,11 @@ namespace omega { namespace math
 		vector(const Eigen::MatrixBase< OtherDerived > &other): Base(other) {}
 
 		vector(const T &x, const T &y, const T &z, const T &w): Base(x, y, z, w) {}
+
+		std::ostream& operator<<(std::ostream& os)
+		{
+			return os << this->format(IOFormat(StreamPrecision, 0, ", ", " ", "", ""));
+		}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
