@@ -1,17 +1,17 @@
 =OmegaLib Meeting Notes=
 
 ==March 9 2011==
-* (*Dennis*) line by line demo likely to run by 16th demos
-* Things neede for demo
- * Kinect working & calibrated
- * maybe having a texture giving back depth / camera image
- * multiple user support?
-  * What gesture / info are we using to select the active, tracked user
-   * Raising hard?
-   * closest user?
-   * tracked controller / object, who has is is the tracked user.
-* With kinect and pqlab now we can have touch ownership.
-* (*Khairi*) may be using omegalib + pqlabs on mac
+ * (*Dennis*) line by line demo likely to run by 16th demos
+ * Things needed for demo
+  * Kinect working & calibrated
+  * maybe having a texture giving back depth / camera image
+  * multiple user support?
+ * What gesture / info are we using to select the active, tracked user
+  * Raising hard?
+  * closest user?
+  * tracked controller / object, who has is is the tracked user.
+ * With kinect and pqlab now we can have touch ownership.
+ * (*Khairi*) may be using omegalib + pqlabs on mac
  * (*Arthur*) find mac PqLabs drivers for mac.
 
 
