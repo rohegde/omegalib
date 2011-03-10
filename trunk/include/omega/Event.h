@@ -155,6 +155,9 @@ namespace omega
 		int numberOfPoints;
 		Vector3f pointSet[MaxPointSetSize];
 
+		int userDataSize;
+		void* userData;
+
 		// NOTE: event serialization services are used only in clustered / multidisplay systems.
 		// If display system building is disabled, this code can be safely excluded.
 		// Right now, event serialization for NetService / oinputserver and display system
