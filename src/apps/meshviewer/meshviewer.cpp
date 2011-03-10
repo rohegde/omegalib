@@ -89,7 +89,6 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 
 	if(evt.type == Event::Down)
 	{
-
 		if(myVisibleEntity != NULL)
 		{
 			Vector3f handlePos;

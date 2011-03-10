@@ -29,21 +29,28 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Marker: public DynamicObject
+struct Marker
 {
-public:
 	Vector3f reference;
 	Vector3f reading;
 };
+
+#define MAX_MARKERS 32
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class MocalibClient: public ApplicationClient
 {
 public:
-	MocalibClient(Application* app): ApplicationClient(app) {}
+	MocalibClient(Application* app): ApplicationClient(app), myCurMarker(0) {}
 	virtual void initialize();
 	virtual bool handleEvent(const Event& evt, UpdateContext& context);
 	virtual void draw(const DrawContext& context);
+	void processData();
+private:
+	int myNumMarkers;
+	Marker myMarkers[MAX_MARKERS];
+	int myCurMarker;
+	Vector3f myCurrentMocapReading;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,14 +68,23 @@ void MocalibClient::initialize()
 	// Load meshes specified in config file.
 	if(cfg->exists("config/testPoints"))
 	{
-		int i = 0;
+		myNumMarkers = 0;
 		Setting& pts = cfg->lookup("config/testPoints");
 		for(int i = 0; i < pts.getLength(); i++)
 		{
-			Marker* mk = new Marker();
-			meshes[i];
+			Setting& smk = pts[i];
+			myMarkers[myNumMarkers].reference.x() = smk[0];
+			myMarkers[myNumMarkers].reference.y() = smk[1];
+			myMarkers[myNumMarkers].reference.z() = smk[2];
+			myMarkers[myNumMarkers].reading = Vector3f::Zero();
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MocalibClient::processData()
+{
+	omsg("Processing data");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +94,15 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 	{
 	case Service::Mocap:
 		ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
+		myCurrentMocapReading = evt.position;
+		return true;
+	case Service::Pointer:
+		if(evt.type == Event::Down)
+		{
+			myMarkers[myCurMarker].reading = myCurrentMocapReading; 
+			myCurMarker++;
+			if(myCurMarker == myNumMarkers) processData();
+		}
 		return true;
 	}
 	return false;
@@ -90,6 +115,8 @@ void MocalibClient::draw(const DrawContext& context)
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
 	glPointSize(10);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3fv(myMarkers[myNumMarkers].reference.data());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
