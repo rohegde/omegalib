@@ -45,6 +45,9 @@
 #endif
 
 // Input services
+#ifdef OMEGA_USE_DIRECTINPUT
+	#include "omega/DirectXInputService.h"
+#endif
 #ifdef OMEGA_USE_NATURAL_POINT
 	#include "omega/NaturalPointService.h"
 #endif
@@ -124,6 +127,9 @@ void SystemManager::setupServiceManager()
 
 	// register standard input services.
 	// @todo: I don't understand why a static_cast does not work here.
+#ifdef OMEGA_USE_DIRECTINPUT
+	registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);
+#endif
 #ifdef OMEGA_USE_MOUSE
 	registerService("MouseService", (ServiceAllocator)MouseService::New);
 #endif

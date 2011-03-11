@@ -68,7 +68,7 @@ public:
 
 	void NetClient::sendEvent( char* eventPacket ){
 		// Send a datagram to the receiver
-		printf("Service: Sending datagram '%s' to receiver...\n", eventPacket);
+		//printf("Service: Sending datagram '%s' to receiver...\n", eventPacket);
 		sendto(SendSocket, 
 		  eventPacket, 
 		  strlen(eventPacket), 
@@ -79,7 +79,7 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class TestApplication: public Application
+class OInputServer: public Application
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,9 +227,53 @@ public:
 			strcat( eventPacket, " " ); // Spacer
 			return true;
 			break;
-
-			break;
 		}
+
+		case Service::Controller:
+			// Converts id to char, appends to eventPacket
+			sprintf(floatChar,"%d",evt.sourceId);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+
+			// See DirectXInputService.cpp for parameter details
+			
+			// Analog sticks
+			sprintf(floatChar,"%d",(int)evt.pointSet[0][0]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+
+			sprintf(floatChar,"%d",(int)evt.pointSet[0][1]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+
+			sprintf(floatChar,"%d",(int)evt.pointSet[1][0]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+
+			sprintf(floatChar,"%d",(int)evt.pointSet[1][1]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+
+			for( int i = 3; i < 19; i++ ){
+				sprintf(floatChar,"%d", (int)evt.pointSet[i][0]);
+				strcat( eventPacket, floatChar );
+				strcat( eventPacket, "," ); // Spacer
+			}
+
+			sprintf(floatChar,"%d",(int)evt.pointSet[2][0]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+					
+			sprintf(floatChar,"%d",(int)evt.pointSet[19][0]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+
+			sprintf(floatChar,"%d",(int)evt.pointSet[19][1]);
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, " " ); // Spacer
+
+			return true;
+			break;
 		default: break;
 		}
 		return false;
@@ -253,9 +297,8 @@ private:
 	int iResult, iSendResult;
 	int recvbuflen;
 	
-	// Temp socket until multi-client is implemented
+	// Collection of unique clients (IP/port combinations)
 	std::map<char*,NetClient*> netClients;
-	NetClient* tempClient;
 
 	private:
 		float rx;
@@ -284,7 +327,7 @@ private:
  * Non-blocking socket example:
  * http://www.win32developer.com/tutorial/winsock/winsock_tutorial_4.shtm
  */
-void TestApplication::startConnection(){
+void OInputServer::startConnection(){
 	serverPort = "27000";
 	ListenSocket = INVALID_SOCKET;
 	recvbuflen = DEFAULT_BUFLEN;
@@ -293,10 +336,10 @@ void TestApplication::startConnection(){
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
-		printf("Service: WSAStartup failed: %d\n", iResult);
+		printf("OInputServer: WSAStartup failed: %d\n", iResult);
 		return;
 	} else {
-		printf("Service: Winsock initialized \n");
+		printf("OInputServer: Winsock initialized \n");
 	}
 
 	struct addrinfo *result = NULL, *ptr = NULL, hints;
@@ -310,10 +353,10 @@ void TestApplication::startConnection(){
 	// Resolve the local address and port to be used by the server
 	iResult = getaddrinfo(NULL, serverPort, &hints, &result);
 	if (iResult != 0) {
-		printf("Service: getaddrinfo failed: %d\n", iResult);
+		printf("OInputServer: getaddrinfo failed: %d\n", iResult);
 		WSACleanup();
 	} else {
-		printf("Service: Server set to listen on port %s\n", serverPort);
+		printf("OInputServer: Server set to listen on port %s\n", serverPort);
 	}
 
 	// Create a SOCKET for the server to listen for client connections
@@ -324,18 +367,18 @@ void TestApplication::startConnection(){
 	ioctlsocket(ListenSocket,FIONBIO,&iMode);
 
 	if (ListenSocket == INVALID_SOCKET) {
-		printf("Service: Error at socket(): %ld\n", WSAGetLastError());
+		printf("OInputServer: Error at socket(): %ld\n", WSAGetLastError());
 		freeaddrinfo(result);
 		WSACleanup();
 		return;
 	} else {
-		printf("Service: Listening socket created.\n");
+		printf("OInputServer: Listening socket created.\n");
 	}
 
 	// Setup the TCP listening socket
 	iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
-		printf("Service: bind failed: %d\n", WSAGetLastError());
+		printf("OInputServer: bind failed: %d\n", WSAGetLastError());
 		freeaddrinfo(result);
 		closesocket(ListenSocket);
 		WSACleanup();
@@ -344,12 +387,12 @@ void TestApplication::startConnection(){
 }// startConnection
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-SOCKET TestApplication::startListening(){
+SOCKET OInputServer::startListening(){
 	SOCKET ClientSocket;
 
 	// Listen on socket
 	if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-		printf( "Service: Error at bind(): %ld\n", WSAGetLastError() );
+		printf( "OInputServer: Error at bind(): %ld\n", WSAGetLastError() );
 		closesocket(ListenSocket);
 		WSACleanup();
 		return NULL;
@@ -375,7 +418,7 @@ SOCKET TestApplication::startListening(){
 	} else {
 		// Gets the clientInfo and extracts the IP address
 		clientAddress = inet_ntoa(clientInfo.sin_addr);
-		printf("Service: Client '%s' Accepted.\n", clientAddress);
+		printf("NetService: Client '%s' Accepted.\n", clientAddress);
 	}
 	
 	// Wait for client handshake
@@ -383,7 +426,7 @@ SOCKET TestApplication::startListening(){
 	// Because we're using a non-blocking socket, it is possible to attempt to receive before data is
 	// sent, resulting in the 'recv failed' error that is commented out.
 	bool gotData = false;
-	printf("Service: Waiting for client handshake\n");
+	printf("NetService: Waiting for client handshake\n");
 	do {
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
@@ -412,12 +455,12 @@ SOCKET TestApplication::startListening(){
 			if( handshake.find(inMessage) ){
 				// Get data port number
 				dataPort = atoi(portCStr);
-				printf("Service: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
+				printf("NetService: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
 				createClient( clientAddress, dataPort );
 			}
 			gotData = true;			
 		} else if (iResult == 0)
-			printf("Service: Connection closing...\n");
+			printf("NetService: Connection closing...\n");
 		else {
 			//printf("Service: recv failed: %d\n", WSAGetLastError());
 			//closesocket(ClientSocket);
@@ -432,12 +475,12 @@ SOCKET TestApplication::startListening(){
 }// startListening
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-char* TestApplication::getEvent(){
+char* OInputServer::getEvent(){
 	return eventPacket;
 }// getEvent
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TestApplication::createClient(const char* clientAddress, int dataPort){
+void OInputServer::createClient(const char* clientAddress, int dataPort){
 	// Generate a unique name for client "address:port"
 	char* addr = new char[128];
 	strcpy( addr, clientAddress );
@@ -451,7 +494,7 @@ void TestApplication::createClient(const char* clientAddress, int dataPort){
 	for(p = netClients.begin(); p != netClients.end(); p++) {
 		printf( "%s \n", p->first );
 		if( strcmp(p->first, addr) == 0 ){
-			printf("NetService: NetClient already exists: %s \n", addr );
+			printf("OInputServer: NetClient already exists: %s \n", addr );
 			return;
 		}
 	}
@@ -461,7 +504,7 @@ void TestApplication::createClient(const char* clientAddress, int dataPort){
 }// createClient
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void TestApplication::sendToClients(char* event){
+void OInputServer::sendToClients(char* event){
 	// Iterate through all clients
 	std::map<char*,NetClient*>::iterator itr = netClients.begin();
 	while( itr != netClients.end() ){
@@ -474,21 +517,40 @@ void TestApplication::sendToClients(char* event){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void main(int argc, char** argv)
 {
-	Config* cfg = new Config("../../data/oinputserver.cfg");
+	OInputServer app;
 
+	DataSource* dataSource = new FilesystemDataSource("./../../data/");
+
+	Config* cfg = new Config("oinputserver.cfg");
 	SystemManager* sys = SystemManager::instance();
+
+	DataManager* dm = sys->getDataManager();
+	// Add a default filesystem data source using current work dir.
+	dm->addSource(new FilesystemDataSource("./"));
+
+	// Add optional data source.
+	if(dataSource != NULL)
+	{
+		dm->addSource(dataSource);
+	}
+
 	sys->setup(cfg);
-
-	TestApplication app;
 	sys->setApplication(&app);
-
 	sys->initialize();
 	sys->getServiceManager()->start();
+
 	//sys->run(); // Not used for oinputserver
 	app.startConnection();
 	
-	printf("NetService: Starting to listen for clients... \n");
+	float delay = 0.1f; // Seconds to delay sending events (-1 disables delay)
+
+	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){
+		if( delay != -1.0 )
+			Sleep(1000.0*delay); // Delay sending of data out
+
+		sys->getServiceManager()->poll(); // Required for DirectInputService
+
 		// Start listening for clients (non-blocking)
 		app.startListening();
 
