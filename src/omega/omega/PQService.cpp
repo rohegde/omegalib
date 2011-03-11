@@ -104,18 +104,18 @@ int PQService::init()
 	// set the functions on server callback
 	SetFuncsOnReceiveProc();
 	// connect server
-	printf("PQService: connect to server on %s \n", server_ip);
+	printf("PQService: connecting to server on %s... \n", server_ip);
 	if((err_code = ConnectServer(server_ip)) != PQMTE_SUCESS){
-		printf("PQService: connect server fail, socket error code: %d\n", err_code);
+		printf("PQService: connect to server failed, socket error code: %d\n", err_code);
 		return err_code;
 	}
 	// send request to server
-	printf("PQService: connect success, send request.\n");
+	printf("PQService: connected to server, sending request...\n");
 	TouchClientRequest tcq = {0};
 	tcq.app_id = GetTrialAppID();
 	tcq.type = RQST_RAWDATA_ALL | RQST_GESTURE_ALL;
 	if((err_code = SendRequest(tcq)) != PQMTE_SUCESS){
-		printf("PQService: send request fail, error code: %d\n", err_code);
+		printf("PQService: send request failed, error code: %d\n", err_code);
 		return err_code;
 	}
 	//////////////you can set the move_threshold when the tcq.type is RQST_RAWDATA_INSIDE;
@@ -129,12 +129,12 @@ int PQService::init()
 	////////////////////////
 	//get server resolution
 	if((err_code = GetServerResolution(OnGetServerResolution, NULL)) != PQMTE_SUCESS){
-		printf("PQService: get server resolution fail,error code: %d\n", err_code);
+		printf("PQService: get server resolution failed,error code: %d\n", err_code);
 		return err_code;
 	};
 	//
 	// start receiving
-	printf("PQService: send request success, start recv.\n");
+	printf("PQService: send request succeeded, start recv.\n");
 	printf("PQService: Maximum blob size set to %i pixels \n", maxBlobSize);
 	return err_code;
 }
