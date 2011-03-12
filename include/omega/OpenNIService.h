@@ -56,6 +56,8 @@
 #define OMEGA_SKEL_RIGHT_KNEE		XN_SKEL_RIGHT_KNEE
 #define OMEGA_SKEL_RIGHT_FOOT		XN_SKEL_RIGHT_FOOT
 
+#define OMEGA_OPENNI_MAX_DEPTH		10000
+
 namespace omega
 {
 	// Typedefs for the OpenNIService - omega integration
@@ -93,6 +95,14 @@ namespace omega
 		static xn::DepthGenerator omg_DepthGenerator;
 		static xn::UserGenerator omg_UserGenerator;
 		static xn::SceneMetaData omg_sceneMD;
+
+	private:
+		float g_pDepthHist[OMEGA_OPENNI_MAX_DEPTH];
+		static const int nColors = 10;
+
+		unsigned char* pDepthTexBuf;
+
+		float Colors[11][3];
 		
 
 	private:
@@ -108,12 +118,10 @@ namespace omega
 		bool getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos);
 		void joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent);
 
+		void getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd);
+
 	};//class KinectService
 };//namespace omega
 
-// XXX - Callbacks have to br globals!! Fix this ASAPs
-
-
-//xn::DepthMetaData depthMD;
 
 #endif
