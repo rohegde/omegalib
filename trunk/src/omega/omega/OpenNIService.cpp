@@ -19,10 +19,25 @@ OpenNIService::OpenNIService()
 	strcpy ( localIP, "" );
 	strcpy ( serverIP, "" );
 	castType = 0;
+
+	Colors[0][0] = 0; Colors[0][1] = 1; Colors[0][2] = 1;
+	Colors[1][0] = 0; Colors[1][1] = 0; Colors[1][2] = 1;
+	Colors[2][0] = 0; Colors[2][1] = 1; Colors[2][2] = 0;
+	Colors[3][0] = 1; Colors[3][1] = 1; Colors[3][2] = 0;
+	Colors[4][0] = 1; Colors[4][1] = 0; Colors[4][2] = 0;
+	Colors[5][0] = 1; Colors[5][1] = .5; Colors[5][2] = 0;
+	Colors[6][0] = .5; Colors[6][1] = 1; Colors[6][2] = 0;
+	Colors[7][0] = 0; Colors[7][1] = .5; Colors[7][2] = 1;
+	Colors[8][0] = .5; Colors[8][1] = 0; Colors[8][2] = 1;
+	Colors[9][0] = 1; Colors[9][1] = 1; Colors[9][2] = .5;
+	Colors[10][0] = 1; Colors[10][1] = 1; Colors[10][2] = 1;
+
+	pDepthTexBuf = new unsigned char[640 * 480 * 4];
 }
 
 OpenNIService::~OpenNIService()
 {
+	delete pDepthTexBuf;
 }
 
 void OpenNIService::initialize()
@@ -118,7 +133,6 @@ void OpenNIService::poll(void)
 {
 	if( myOpenNI )
 	{
-
 		omg_Context.WaitAndUpdateAll();
 
 		xn::SceneMetaData sceneMD;
@@ -134,6 +148,8 @@ void OpenNIService::poll(void)
 		XnUInt16 nUsers = OMEGA_OPENNI_MAX_USERS;
 		omg_UserGenerator.GetUsers(aUsers, nUsers);
 
+		// Store the texture
+		getTexture(depthMD, sceneMD);
 		for (int i = 0; i < nUsers; ++i)
 		{
 			
@@ -152,6 +168,8 @@ void OpenNIService::poll(void)
 				Event* theEvent = myOpenNI->writeHead();
 				theEvent->sourceId = aUsers[i];
 				theEvent->serviceType = Service::Mocap;
+				theEvent->userData = pDepthTexBuf;
+				theEvent->userDataSize = 640 * 480 * 4;
 
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
@@ -178,7 +196,6 @@ void OpenNIService::poll(void)
 			}
 		}
 
-		
 	}
 }
 
@@ -281,5 +298,106 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 		{
 			omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
 		}
+	}
+}
+
+void OpenNIService::getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd) 
+{
+	static bool bInitialized = false;	
+	static GLuint depthTexID;
+	static int texWidth, texHeight;
+	float topLeftX = dmd.XRes();
+	float topLeftY = 0;
+	float bottomRightY = dmd.YRes();
+	float bottomRightX = 0;
+	float texXpos = (float)dmd.XRes()/texWidth;
+	float texYpos = (float)dmd.YRes()/texHeight; 
+
+	//memset(texcoords, 0, 8*sizeof(float));
+	//texcoords[0] = texXpos, texcoords[1] = texYpos, texcoords[2] = texXpos, texcoords[7] = texYpos;
+
+	unsigned int nValue = 0;
+	unsigned int nHistValue = 0;
+	unsigned int nIndex = 0;
+	unsigned int nX = 0;
+	unsigned int nY = 0;
+	unsigned int nNumberOfPoints = 0;
+	XnUInt16 g_nXRes = dmd.XRes();
+	XnUInt16 g_nYRes = dmd.YRes();
+
+	//pDepthTexBuf = new unsigned char[g_nXRes * g_nYRes * 4];
+
+	unsigned char* pDestImage = pDepthTexBuf;
+
+	const XnDepthPixel* pDepth = dmd.Data();
+	const XnLabel* pLabels = smd.Data();
+
+	// Calculate the accumulative histogram
+	memset(g_pDepthHist, 0, OMEGA_OPENNI_MAX_DEPTH*sizeof(float));
+	for (nY=0; nY<g_nYRes; nY++)
+	{
+		for (nX=0; nX<g_nXRes; nX++)
+		{
+			nValue = *pDepth;
+
+			if (nValue != 0)
+			{
+				g_pDepthHist[nValue]++;
+				nNumberOfPoints++;
+			}
+
+			pDepth++;
+		}
+	}
+
+	for (nIndex=1; nIndex<OMEGA_OPENNI_MAX_DEPTH; nIndex++)
+	{
+		g_pDepthHist[nIndex] += g_pDepthHist[nIndex-1];
+	}
+	if (nNumberOfPoints)
+	{
+		for (nIndex=1; nIndex<OMEGA_OPENNI_MAX_DEPTH; nIndex++)
+		{
+			g_pDepthHist[nIndex] = (unsigned int)(256 * (1.0f - (g_pDepthHist[nIndex] / nNumberOfPoints)));
+		}
+	}
+
+	pDepth = dmd.Data();
+	nIndex = 0;
+	// Prepare the texture map
+	for (nY=0; nY<g_nYRes; nY++)
+	{
+		for (nX=0; nX < g_nXRes; nX++, nIndex++)
+		{
+
+			pDestImage[0] = 0;
+			pDestImage[1] = 0;
+			pDestImage[2] = 0;
+			if ( *pLabels != 0 )
+			{
+				nValue = *pDepth;
+				XnLabel label = *pLabels;
+				XnUInt32 nColorID = label % nColors;
+				if (label == 0)
+				{
+					nColorID = nColors;
+				}
+
+				if (nValue != 0)
+				{
+					nHistValue = g_pDepthHist[nValue];
+
+					pDestImage[0] = nHistValue * Colors[nColorID][0]; 
+					pDestImage[1] = nHistValue * Colors[nColorID][1];
+					pDestImage[2] = nHistValue * Colors[nColorID][2];
+				}
+			}
+
+			pDepth++;
+			pLabels++;
+			pDestImage+=3;
+		}
+
+		pDestImage += (texWidth - g_nXRes) *3;
 	}
 }
