@@ -1,0 +1,127 @@
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Victor Mateevitsi		vmatee2@uic.edu
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+#ifndef __OPENNI_SERVICE_H__
+#define __OPENNI_SERVICE_H__
+
+#include "omega/osystem.h"
+#include "omega/ServiceManager.h"
+#include "natnet/NatNetTypes.h"
+#include "openni/XnCppWrapper.h"
+
+#include "winsock2.h"
+
+//#define KINECT_CONFIG "../../data/openni/conf/KinectConfig.xml"
+#define KINECT_CONFIG "./../../data/openni/conf/KinectConfig.xml"
+#define OMEGA_OPENNI_MAX_USERS 15
+
+#define OMEGA_SKEL_HEAD				XN_SKEL_HEAD
+#define OMEGA_SKEL_NECK				XN_SKEL_NECK
+#define	OMEGA_SKEL_TORSO			XN_SKEL_TORSO
+
+#define OMEGA_SKEL_LEFT_SHOULDER	XN_SKEL_LEFT_SHOULDER
+#define OMEGA_SKEL_LEFT_ELBOW		XN_SKEL_LEFT_ELBOW
+#define OMEGA_SKEL_LEFT_HAND		XN_SKEL_LEFT_HAND
+#define OMEGA_SKEL_LEFT_HIP			XN_SKEL_LEFT_HIP
+#define OMEGA_SKEL_LEFT_KNEE		XN_SKEL_LEFT_KNEE
+#define OMEGA_SKEL_LEFT_FOOT		XN_SKEL_LEFT_FOOT
+
+#define OMEGA_SKEL_RIGHT_SHOULDER	XN_SKEL_RIGHT_SHOULDER
+#define OMEGA_SKEL_RIGHT_ELBOW		XN_SKEL_RIGHT_ELBOW
+#define OMEGA_SKEL_RIGHT_HAND		XN_SKEL_RIGHT_HAND
+#define OMEGA_SKEL_RIGHT_HIP		XN_SKEL_RIGHT_HIP
+#define OMEGA_SKEL_RIGHT_KNEE		XN_SKEL_RIGHT_KNEE
+#define OMEGA_SKEL_RIGHT_FOOT		XN_SKEL_RIGHT_FOOT
+
+#define OMEGA_OPENNI_MAX_DEPTH		10000
+
+namespace omega
+{
+	// Typedefs for the OpenNIService - omega integration
+	typedef xn::DepthMetaData DepthMetaData;
+	typedef xn::SceneMetaData RGBMetaData;
+
+	class OpenNIService : public Service
+	{
+	public:
+		// Allocator function
+		static OpenNIService* New() { return new OpenNIService(); }
+
+	public:
+		OMEGA_API OpenNIService();
+		OMEGA_API ~OpenNIService();
+		OMEGA_API void setup( Setting& settings);
+		OMEGA_API virtual void initialize();
+		OMEGA_API virtual void start();//initialize and start service here
+		OMEGA_API virtual void stop();//destroy service instance to stop
+		OMEGA_API virtual void dispose();
+		OMEGA_API virtual void poll();
+		//may want to support the option to choose whether to have unicast or multicast networking
+		//for now it is hard coded to multicast
+	private:
+		static OpenNIService* myOpenNI;
+		int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
+		char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
+		char serverIP[128];		//Server's IP address assumed to be local if left blank
+
+	public:
+		// For the openni interaction
+		static XnChar omg_strPose[20]; // XXX - What is this ???
+		static XnBool omg_bNeedPose;
+		static xn::Context omg_Context;
+		static xn::DepthGenerator omg_DepthGenerator;
+		static xn::UserGenerator omg_UserGenerator;
+		static xn::SceneMetaData omg_sceneMD;
+
+	private:
+		float g_pDepthHist[OMEGA_OPENNI_MAX_DEPTH];
+		static const int nColors = 10;
+
+		unsigned char* pDepthTexBuf;
+
+		float Colors[11][3];
+		
+
+	private:
+
+		static void XN_CALLBACK_TYPE User_NewUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie);
+		static void XN_CALLBACK_TYPE UserCalibration_CalibrationStart(xn::SkeletonCapability& capability, XnUserID nId, void* pCookie);
+
+		static void XN_CALLBACK_TYPE User_LostUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie);
+		static void XN_CALLBACK_TYPE UserPose_PoseDetected(xn::PoseDetectionCapability& capability, const XnChar* strPose, XnUserID nId, void* pCookie);
+
+		static void XN_CALLBACK_TYPE UserCalibration_CalibrationEnd(xn::SkeletonCapability& capability, XnUserID nId, XnBool bSuccess, void* pCookie);
+
+		bool getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos);
+		void joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent);
+
+		void getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd);
+
+	};//class KinectService
+};//namespace omega
+
+
+#endif
