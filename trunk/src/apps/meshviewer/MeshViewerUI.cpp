@@ -66,8 +66,8 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	}
 
 	depthImage = wf->createImage("kinectDepthBuffer", entityButtons);
-	depthImage->setHeight(480);
-	depthImage->setWidth(640);
+	depthImage->setHeight(240);
+	depthImage->setWidth(320);
 
 	texture = NULL;
 

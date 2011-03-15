@@ -74,6 +74,7 @@ namespace omega
 		if(sLogFile)
 		{
 			fprintf(sLogFile, "%s\n", str.c_str());
+			fflush(sLogFile);
 		}
 	}
 
@@ -84,6 +85,7 @@ namespace omega
 		if(sLogFile)
 		{
 			fprintf(sLogFile, "WARNING: %s\n", str.c_str());
+			fflush(sLogFile);
 		}
 	}
 
@@ -94,6 +96,7 @@ namespace omega
 		if(sLogFile)
 		{
 			fprintf(sLogFile, "ERROR: %s\n", str.c_str());
+			fflush(sLogFile);
 		}
 	}
 

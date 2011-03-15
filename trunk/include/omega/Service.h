@@ -37,7 +37,7 @@ struct Event;
 class ServiceManager;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Service
+class Service: public DynamicObject
 {
 friend class ServiceManager;
 public:

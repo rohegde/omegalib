@@ -75,7 +75,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationClient
+	class ApplicationClient: public DynamicObject
 	{
 	friend class DisplaySystem;
 	public:
@@ -113,7 +113,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationServer
+	class ApplicationServer: public DynamicObject
 	{
 	public:
 		ApplicationServer(Application* app): myApplication(app) {}

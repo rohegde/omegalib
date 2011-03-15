@@ -1,13 +1,9 @@
 /********************************************************************************************************************** 
  * THE OMEGA LIB PROJECT
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Arthur Nishimoto							anishimoto42@gmail.com
- *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * PQService method definitions. See PQService.h for more details.
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.

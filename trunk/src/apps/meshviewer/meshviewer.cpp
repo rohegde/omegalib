@@ -84,9 +84,6 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processMocapEvent(const Event& evt, DrawContext& context)
 {
-	//if( evt.userDataSize == 640 * 480 * 4 )
-		myUI->updateKinectTexture( (omega::byte*)OpenNIService::imageData );
-		//myUI->updateKinectTexture( (omega::byte*)evt.userData );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +181,7 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
+	myUI->updateKinectTexture( (omega::byte*)OpenNIService::imageData );
 
 	switch(context.layer)
 	{
@@ -192,13 +190,13 @@ void MeshViewerClient::draw(const DrawContext& context)
 		break;
 	case 1:
 		myEngine->draw(context, EngineClient::DrawScene);
-		glBegin(GL_TRIANGLE_STRIP);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(-0.05f, -0.05f, 0);
-		glVertex3f(0.05f, -0.05f, 0);
-		glVertex3f(-0.05f, 0.05f, 0);
-		glVertex3f(0.05f, 0.05f, 0);
-		glEnd();
+		//glBegin(GL_TRIANGLE_STRIP);
+		//glColor3f(1.0f, 1.0f, 1.0f);
+		//glVertex3f(-0.05f, -0.05f, 0);
+		//glVertex3f(0.05f, -0.05f, 0);
+		//glVertex3f(-0.05f, 0.05f, 0);
+		//glVertex3f(0.05f, 0.05f, 0);
+		//glEnd();
 
 		break;
 	case 2:
