@@ -58,7 +58,7 @@ public:
 private:
 	static PQService* mysInstance;	
 	static int maxBlobSize;
-	static int screenX, screenY, serverX, serverY;
+	static int screenX, screenY, serverX, serverY, screenOffsetX, screenOffsetY;
 	const char* server_ip;
 	int touchID[1000]; // Max IDs assigned before resetting
 	static int maxTouches; // Should be same number as touchID array init

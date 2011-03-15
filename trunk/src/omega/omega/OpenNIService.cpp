@@ -38,6 +38,7 @@ xn::Context OpenNIService::omg_Context = NULL;
 xn::DepthGenerator OpenNIService::omg_DepthGenerator = NULL;
 xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
 //xn::SceneMetaData OpenNIService::omg_sceneMD = NULL;
+bool OpenNIService::isCalibrated = false;
 
 void* OpenNIService::imageData = NULL;
 
@@ -58,7 +59,6 @@ OpenNIService::OpenNIService()
 	pDepthTexBuf = new unsigned char[640 * 480 * 4];
 
 	myTransform  = AffineTransform3::Identity();
-    isCalibrated = false;
 }
 
 OpenNIService::~OpenNIService()
@@ -264,11 +264,11 @@ void OpenNIService::poll(void)
 }
 
 void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent) {
-	Vector3f pos;
-	if( getJointPosition(player, joint, pos) ) {
+	Vector3f ps;
+	if( getJointPosition(player, joint, ps) ) {
 
 		// Transform position
-		pos = myTransform * pos;
+		Vector3f pos = myTransform * ps;
 
 		theEvent->pointSet[joint][0] = pos[0];
 		theEvent->pointSet[joint][1] = pos[1];

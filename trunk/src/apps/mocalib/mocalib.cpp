@@ -113,9 +113,9 @@ void MocalibClient::processData()
 	omsg("-------------------------------------------------");
 	omsg("referenceTransform:");
 	omsg("{");
-	ofmsg("referenceTranslation = [%.4f, %.4f, %.4f];", 
-		%tr(0) %tr(1) %tr(0));
-	ofmsg("referenceLinear = [%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f];", 
+	ofmsg("referenceTranslation = [%.6f, %.6f, %.6f];", 
+		%tr(0) %tr(1) %tr(2));
+	ofmsg("referenceLinear = [%.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f];", 
 		%ln(0) %ln(1) %ln(2) %ln(3) %ln(4) %ln(5) %ln(6) %ln(7) %ln(8));
 	omsg("};");
 	omsg("-------------------------------------------------");
