@@ -89,9 +89,17 @@ void MeshViewerClient::processMocapEvent(const Event& evt, DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& context)
 {
+
+
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
 	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+
+	glPointSize(32);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glBegin(GL_POINTS);
+	glVertex3fv(ray.getOrigin().data());
+	glEnd();
 
 	if(evt.type == Event::Down)
 	{

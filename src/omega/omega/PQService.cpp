@@ -24,6 +24,7 @@
  *********************************************************************************************************************/
 #include "omega/PQService.h"
 #include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -35,6 +36,8 @@ int PQService::serverX = 0; // Resolution of the machine running PQLabs
 int PQService::serverY = 0; 
 int PQService::screenX = 0; // If set to 1,1 PQService will send events as a normalized coordinates.
 int PQService::screenY = 0;
+int PQService::screenOffsetX = 0; 
+int PQService::screenOffsetY = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::setup(Setting& settings)
@@ -66,6 +69,16 @@ void PQService::setup(Setting& settings)
 	{
 		screenY =  atoi((const char*)settings["ScreenY"]);
 		printf("PQService: ScreenY set to %d\n", screenY);
+	}
+	if(settings.exists("ScreenOffsetX"))
+	{
+		screenOffsetX =  atoi((const char*)settings["ScreenOffsetX"]);
+		printf("PQService: ScreenOffsetX set to %d\n", screenOffsetX);
+	}
+	if(settings.exists("ScreenOffsetY"))
+	{
+		screenOffsetY =  atoi((const char*)settings["ScreenOffsetY"]);
+		printf("PQService: ScreenOffsetY set to %d\n", screenOffsetY);
 	}
 }
 
@@ -376,8 +389,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt = mysInstance->writeHead();
 			evt->type = Event::Down;
 
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -386,8 +399,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_MOVE:
 			evt = mysInstance->writeHead();
 			evt->type = Event::Move;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch move at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -396,8 +409,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_UP:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::Up;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -406,8 +419,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_CLICK:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::Click;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -416,8 +429,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_DB_CLICK:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::DoubleClick;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch db click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -426,8 +439,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_MOVE_RIGHT:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::MoveRight;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch move right at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -436,8 +449,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_MOVE_UP:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::MoveUp;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch move up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -446,8 +459,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_MOVE_LEFT:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::MoveLeft;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch move left at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -456,8 +469,8 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 		case TG_MOVE_DOWN:
 			evt = mysInstance->writeHead();
 			evt->type  = Event::MoveDown;
-			evt->position[0] = tg.params[0] * screenX / serverX; // xPos
-			evt->position[1] = tg.params[1] * screenY / serverY; // yPos
+			evt->position[0] = tg.params[0] * screenX / serverX + screenOffsetX; // xPos
+			evt->position[1] = tg.params[1] * screenY / serverY + screenOffsetY; // yPos
 			if( debugText ){
 				printf(" Touch move down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->position[0], evt->position[1] );
 			}
@@ -468,10 +481,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->type  = Event::SplitStart;
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX; // x2
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY; // y2
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX; // x1
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY; // y1
+			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // x2
+			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // y2
+			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // x1
+			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // y1
 
 			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			if( debugText ){
@@ -485,10 +498,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->type  = Event::SplitEnd;
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX; // x2
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY; // y2
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX; // x1
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY; // y1
+			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // x2
+			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // y2
+			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // x1
+			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // y1
 
 			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2;
 			if( debugText ){
@@ -502,10 +515,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt = mysInstance->writeHead();
 			evt->type  = Event::Split;
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[2] * screenX / specialDividerX; // x2
-			evt->pointSet[0][1] = tg.params[3] * screenY / specialDividerY; // y2
-			evt->pointSet[1][0] = tg.params[4] * screenX / specialDividerX; // x1
-			evt->pointSet[1][1] = tg.params[5] * screenY / specialDividerY; // y1
+			evt->pointSet[0][0] = tg.params[2] * screenX / specialDividerX + screenOffsetX; // x2
+			evt->pointSet[0][1] = tg.params[3] * screenY / specialDividerY + screenOffsetY; // y2
+			evt->pointSet[1][0] = tg.params[4] * screenX / specialDividerX + screenOffsetX; // x1
+			evt->pointSet[1][1] = tg.params[5] * screenY / specialDividerY + screenOffsetY; // y1
 
 			evt->position = (evt->pointSet[0] + evt->pointSet[1]) / 2; // midpoint
 
@@ -521,10 +534,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt = mysInstance->writeHead();
 			evt->type  = Event::RotateStart;
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX; // anchorX
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY; // anchorY
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY; // rotFingerY
+			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // anchorX
+			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // anchorY
+			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // rotFingerX
+			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // rotFingerY
 			evt->position = evt->pointSet[0];	// Point 0 is the center of rotation.
 			if( debugText ){
 				printf(" Touch rotate start at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
@@ -536,10 +549,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt = mysInstance->writeHead();
 			evt->type  = Event::RotateEnd;
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX; // anchorX
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY; // anchorY
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY; // rotFingerY
+			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // anchorX
+			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // anchorY
+			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // rotFingerX
+			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // rotFingerY
 			evt->position = evt->pointSet[0];	// Point 0 is the center of rotation.
 			if( debugText ){
 				printf(" Touch rotate end at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
@@ -554,10 +567,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->orientation.x() = -tg.params[0]; // angle
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX; // anchorX
-			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY; // anchorY
-			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY; // rotFingerY
+			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX + screenOffsetX; // anchorX
+			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY + screenOffsetY; // anchorY
+			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX + screenOffsetX; // rotFingerX
+			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY + screenOffsetY; // rotFingerY
 			evt->position = evt->pointSet[0]; // Point 0 is the center of rotation.
 			if( debugText ){
 				printf(" Touch Rotate anti-clock at %f,%f (%f, %f)\n", tg.params[1], tg.params[2], evt->pointSet[0][0], evt->pointSet[1][0] );
@@ -572,10 +585,10 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 			evt->orientation.x() = tg.params[0]; // angle
 
 			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX; // anchorX
-			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY; // anchorY
-			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY; // rotFingerY
+			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX + screenOffsetX; // anchorX
+			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY + screenOffsetY; // anchorY
+			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX + screenOffsetX; // rotFingerX
+			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY + screenOffsetY; // rotFingerY
 			evt->position = evt->pointSet[0]; // Point 0 is the center of rotation.
 			if( debugText ){
 				printf(" Touch Rotate clock at %f,%f (%f, %f)\n", tg.params[1], tg.params[2], evt->pointSet[0][0], evt->pointSet[1][0] );
@@ -649,7 +662,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		//printf(" Server %d,%d Screen %d, %d\n", serverX, serverY, screenX, screenY );
 		//printf("      at %d,%d (%f, %f)\n", tp.x, tp.y, evt->position[0], evt->position[1] );
 		evt->sourceId = touchID[tp.id];
-
+		ofmsg("%1%", %evt->position);
 		mysInstance->unlockEvents();
 	}
 }
