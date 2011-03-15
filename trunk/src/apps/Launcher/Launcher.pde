@@ -22,7 +22,7 @@ int data[];
 int numstars=400;
 final int SPREAD=64;
 int CX,CY;
-final float SPEED=0.9;
+final float SPEED=0.6;
 
 GL gl;
 
@@ -44,15 +44,15 @@ void setup()
   stroke(0);
   gl = ((PGraphicsOpenGL)g).gl;
   // Connect to the server's IP address and port
-  cl = new Client(this, "127.0.0.1", 27000); // Replace with your server's IP and port
+  //cl = new Client(this, "127.0.0.1", 27000); // Replace with your server's IP and port
   // Write the handshake
-  cl.write("data_on, 8000");
+  //cl.write("data_on, 8000");
   
-  udp = new UDP(this, 8000);
+  //udp = new UDP(this, 8000);
   
-  udp.listen( true );
+  //udp.listen( true );
   
-  CX=width/4 ; CY=height/2;
+  CX=width / 2 ; CY=height / 2;
   for(int i=0;i<numstars;i++) {    
     s[i]= new Star();    
     s[i].SetPosition();  
@@ -63,11 +63,12 @@ void draw_scene()
 {
   drawStarField();
   
-  fill(255);
+  //fill(255);
   //rect(560, 490, 200, 100);
   
   //rect(860, 490, 200, 100);
   
+  fill(255, 0, 0);
   rect(1160, 490, 200, 100);
   // Receive data from server
   
@@ -78,7 +79,7 @@ void draw() {
   gl.glViewport(0, 0, width, height);
   gl.glScissor(0, 0, width, height);
   
-  background(255);
+  background(0);
   
   draw_view(0,         0, width / 2, height, r); //right eye
   draw_view(width / 2, 0, width / 2, height, l); // left eye
@@ -96,7 +97,7 @@ void draw_view( int x, int y,
   rect(0, 0, 100, 100);
   
   // Aply the projection
-  //projection(eye, 1.0f, 36.0f);
+  projection(eye, 1.0f, 36.0f);
   
   //gl.glLoadIdentity();
   //gl.glTranslatef(0.0f, 0.0f, 16.0f);
@@ -179,8 +180,8 @@ void projection(float []eye, float n, float f) {
   /* Load the perpendicular projection on the projection matrix stack. */
 
   gl.glMatrixMode(gl.GL_PROJECTION);
-  gl.glLoadIdentity();
-  gl.glFrustum(l, r, b2, t, n, f);
+  //gl.glLoadIdentity();
+  //gl.glFrustum(l, r, b2, t, n, f);
 
   /* Rotate the projection by applying the screen orientation. */
 
@@ -189,11 +190,11 @@ void projection(float []eye, float n, float f) {
   M[2] = vn[0]; M[6] = vn[1]; M[10] = vn[2]; M[14] = 0.0f;
   M[3] =  0.0f; M[7] =  0.0f; M[11] =  0.0f; M[15] = 1.0f;
 
-  gl.glMultMatrixf(M, 0);
+  //gl.glMultMatrixf(M, 0);
 
   /* Move the apex of the frustum to the origin. */
 
-  gl.glTranslatef(-eye[0], -eye[1], -eye[2]);
+  //gl.glTranslatef(-eye[0], -eye[1], -eye[2]);
 
   gl.glMatrixMode(gl.GL_MODELVIEW);
 }
