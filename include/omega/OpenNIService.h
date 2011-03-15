@@ -86,11 +86,17 @@ namespace omega
 		virtual void poll();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
+	
 	private:
 		static OpenNIService* myOpenNI;
-		//int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
-		//char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
-		//char serverIP[128];		//Server's IP address assumed to be local if left blank
+
+		// Used for motion capture trackable emulation.
+		struct Trackable
+		{
+			int userId;
+			int jointId;
+			int trackableId;
+		};
 
 	public:
 		// For the openni interaction
@@ -112,7 +118,9 @@ namespace omega
 
 		// Reference frame transform
 		AffineTransform3 myTransform;
-		
+		bool myUseTrackables;
+
+		Vector<Trackable> myTrackables;
 
 	private:
 

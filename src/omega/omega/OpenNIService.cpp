@@ -4,6 +4,7 @@
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Victor Mateevitsi		mvictoras@gmail.com
+ *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -125,20 +126,6 @@ void OpenNIService::initialize()
 
 void OpenNIService::setup(Setting& settings)
 {
-	//if( settings.exists( "serverIP" ) )
-	//{
-	//	strcpy( serverIP, settings[ "serverIP" ] );
-	//}
-
-	//if( settings.exists( "localIP" ) )
-	//{
-	//	strcpy( serverIP, settings[ "localIP" ] );
-	//}
-
-	//if( settings.exists( "castingType" ) )
-	//{
-	//	castType = atoi( (const char*) settings[ "castingType" ] );
-	//}
 	Vector3f refTranslation = Vector3f::Zero();
 	Matrix3f refLinear = Matrix3f::Identity();
 	if(settings.exists("referenceTransform"))
@@ -163,6 +150,25 @@ void OpenNIService::setup(Setting& settings)
 
 	myTransform.linear() = refLinear;
 	myTransform.translation() = refTranslation;
+
+	myUseTrackables = false;
+	if(settings.exists("useTrackables"))
+	{
+		myUseTrackables = settings["useTrackables"];
+	}
+	if(myUseTrackables)
+	{
+		Setting& strs = settings["trackables"];
+		for(int i = 0; i < strs.getLength(); i++)
+		{
+			Setting& str = strs[i];
+			Trackable trackable;
+			trackable.userId = str["userId"];
+			trackable.jointId = str["jointId"];
+			trackable.trackableId = str["trackableId"];
+			myTrackables.push_back(trackable);
+		}
+	}
 }
 
 void OpenNIService::start()
@@ -201,65 +207,71 @@ void OpenNIService::poll(void)
 		// Store the texture
 		getTexture(depthMD, sceneMD);
 
-		//myOpenNI->lockEvents();
-
-		//Event* theEvent = myOpenNI->writeHead();
-		
-		//theEvent->userData = pDepthTexBuf;
 		imageData = pDepthTexBuf;
-		//theEvent->userDataSize = 640 * 480 * 4;
-		//theEvent->serviceType = Service::Mocap;
-		//theEvent->sourceId = 0;
 
-		//myOpenNI->unlockEvents();
-
+		myOpenNI->lockEvents();
 		for (int i = 0; i < nUsers; ++i)
 		{
-			
-			
-
 			XnPoint3D com;
 			omg_UserGenerator.GetCoM(aUsers[i], com);
 			omg_DepthGenerator.ConvertRealWorldToProjective(1, &com, &com);
 
-			// Save the state in a variable somehow
-
 			if ( omg_UserGenerator.GetSkeletonCap().IsTracking(aUsers[i]) )
 			{
-				myOpenNI->lockEvents();
+				if(myUseTrackables)
+				{
+					for(int i = 0; i < myTrackables.size(); i++)
+					{
+						Trackable& t = myTrackables[i];
+						if(t.userId == i)
+						{
+							// Write a trackable event for the specified joint.
+							Vector3f pos;
+							if( getJointPosition(aUsers[i], (OmegaSkeletonJoint)t.jointId, pos) ) 
+							{
+								Event* theEvent = this->writeHead();
+								theEvent->position = myTransform * pos;
+								theEvent->serviceType = Service::Mocap;
+								theEvent->sourceId = t.trackableId;
+								theEvent->type = Event::Trace;
+								theEvent->orientation = Quaternion::Identity();
+							}
+						}
+					}
+				}
+				else
+				{
+					Event* theEvent = myOpenNI->writeHead();
+					theEvent->sourceId = aUsers[i];
+					theEvent->serviceType = Service::Mocap;
+					//theEvent->userData = pDepthTexBuf;
+					//theEvent->userDataSize = 640 * 480 * 4;
+					theEvent->numberOfPoints = 25;
 
-				Event* theEvent = myOpenNI->writeHead();
-				theEvent->sourceId = aUsers[i];
-				theEvent->serviceType = Service::Mocap;
-				//theEvent->userData = pDepthTexBuf;
-				//theEvent->userDataSize = 640 * 480 * 4;
-				theEvent->numberOfPoints = 25;
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_TORSO, theEvent);
 
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_TORSO, theEvent);
+					// Left side
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_SHOULDER, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_ELBOW, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_HAND, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_HIP, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_KNEE, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_FOOT, theEvent);
 
-				// Left side
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_SHOULDER, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_ELBOW, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_HAND, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_HIP, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_KNEE, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_FOOT, theEvent);
+					// Right side
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_SHOULDER, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_ELBOW, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_HAND, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_HIP, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_KNEE, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_FOOT, theEvent);
 
-				// Right side
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_SHOULDER, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_ELBOW, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_HAND, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_HIP, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_KNEE, theEvent);
-				joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_FOOT, theEvent);
-
-				myOpenNI->unlockEvents();
-
+				}
 			}
 		}
-
+		myOpenNI->unlockEvents();
 	}
 }
 
