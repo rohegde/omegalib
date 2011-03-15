@@ -66,7 +66,8 @@ void ObserverUpdateService::poll()
 			if(evt->sourceId == mySourceId)
 			{
 				ofmsg("Observer pos: %1%", %evt->position);
-				myObserver->update(evt->position, evt->orientation);
+				//myObserver->update(evt->position, evt->orientation);
+				myObserver->update(evt->position, Quaternion::Identity());
 			}
 		}
 	}

@@ -393,6 +393,9 @@ namespace omega { namespace math
 
 		static vector< 3, T > normal(const vector< 3, T >& aa, const vector< 3, T >& bb, const vector< 3, T >& cc);
 
+		static transform< 3, T, Eigen::Affine > computeMatchingPointsTransform(const matrix< 3, Eigen::Dynamic >& src, const matrix< 3, Eigen::Dynamic >& dst);
+
+
         static const T PositiveInfinity;
         static const T NegativeInfinity;
         static const T Pi;
@@ -1465,6 +1468,14 @@ namespace omega { namespace math
 		return tmp;
 	}
 
+	template< typename T >
+	transform< 3, T, Eigen::Affine > Math<T>::computeMatchingPointsTransform(
+		const matrix< 3, Eigen::Dynamic >& src, 
+		const matrix< 3, Eigen::Dynamic >& dst)
+	{
+		matrix<4, 4, T> result = Eigen::umeyama(src, dst);
+		return result;
+	}
 } // namespace eigenwrap
 }
 #endif

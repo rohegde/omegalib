@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega.h"
+#include "omega/OpenNIService.h"
 
 using namespace omega;
 
@@ -50,6 +51,7 @@ private:
 	int myNumMarkers;
 	Marker myMarkers[MAX_MARKERS];
 	int myCurMarker;
+	AffineTransform3 myTransform;
 	Vector3f myCurrentMocapReading;
 };
 
@@ -63,9 +65,10 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MocalibClient::initialize()
 {
+	myTransform = AffineTransform3::Identity();
+
 	Config* cfg = getSystemManager()->getAppConfig();
 
-	// Load meshes specified in config file.
 	if(cfg->exists("config/testPoints"))
 	{
 		myNumMarkers = 0;
@@ -77,6 +80,7 @@ void MocalibClient::initialize()
 			myMarkers[myNumMarkers].reference.y() = smk[1];
 			myMarkers[myNumMarkers].reference.z() = smk[2];
 			myMarkers[myNumMarkers].reading = Vector3f::Zero();
+			myNumMarkers++;
 		}
 	}
 }
@@ -84,7 +88,37 @@ void MocalibClient::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MocalibClient::processData()
 {
-	omsg("Processing data");
+	Vectors3f src;
+	Vectors3f dst;
+
+	src.resize(3, myNumMarkers);
+	dst.resize(3, myNumMarkers);
+
+	for(int i = 0; i < myNumMarkers; i++)
+	{
+		dst.col(i) = myMarkers[i].reference;
+		src.col(i) = myMarkers[i].reading;
+	}
+	myTransform = Math::computeMatchingPointsTransform(src, dst);
+	omsg("src:");
+	ofmsg("%1%", %src);
+
+	omsg("dst:");
+	ofmsg("%1%", %dst);
+
+	Vector3f tr = myTransform.translation();
+	Matrix3f ln = myTransform.linear();
+
+	omsg("Reference frame settings (copy the following code into mocap service configuration section)");
+	omsg("-------------------------------------------------");
+	omsg("referenceTransform:");
+	omsg("{");
+	ofmsg("referenceTranslation = [%.4f, %.4f, %.4f];", 
+		%tr(0) %tr(1) %tr(0));
+	ofmsg("referenceLinear = [%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f];", 
+		%ln(0) %ln(1) %ln(2) %ln(3) %ln(4) %ln(5) %ln(6) %ln(7) %ln(8));
+	omsg("};");
+	omsg("-------------------------------------------------");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,8 +127,12 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 	switch(evt.serviceType)
 	{
 	case Service::Mocap:
-		ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
-		myCurrentMocapReading = evt.position;
+		//ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
+		myCurrentMocapReading = myTransform * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+		//ofmsg("%1% %2% %3%", 
+		//	%myCurrentMocapReading.x() 
+		//	%myCurrentMocapReading.y()
+		//	%myCurrentMocapReading.z());
 		return true;
 	case Service::Pointer:
 		if(evt.type == Event::Down)
@@ -111,12 +149,28 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MocalibClient::draw(const DrawContext& context)
 {
-	// Enable depth testing and lighting.
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
-	glPointSize(10);
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3fv(myMarkers[myNumMarkers].reference.data());
+
+	if(myCurMarker < myNumMarkers)
+	{
+		glPointSize(64);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glBegin(GL_POINTS);
+		glVertex3fv(myMarkers[myCurMarker].reference.data());
+		glEnd();
+	}
+	else
+	{
+		glPointSize(32);
+		glColor3f(0.3f, 1.0f, 0.3f);
+		glBegin(GL_POINTS);
+		glVertex3f(
+			myCurrentMocapReading.x(),
+			myCurrentMocapReading.y(),
+			0.0f);
+		glEnd();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

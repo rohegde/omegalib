@@ -88,9 +88,9 @@ namespace omega
 		//for now it is hard coded to multicast
 	private:
 		static OpenNIService* myOpenNI;
-		int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
-		char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
-		char serverIP[128];		//Server's IP address assumed to be local if left blank
+		//int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
+		//char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
+		//char serverIP[128];		//Server's IP address assumed to be local if left blank
 
 	public:
 		// For the openni interaction
@@ -108,6 +108,9 @@ namespace omega
 		unsigned char* pDepthTexBuf;
 
 		float Colors[11][3];
+
+		// Reference frame transform
+		AffineTransform3 myTransform;
 		
 
 	private:

@@ -43,11 +43,6 @@ void* OpenNIService::imageData = NULL;
 
 OpenNIService::OpenNIService()
 {
-	//omg_strPose[0] = "";
-	strcpy ( localIP, "" );
-	strcpy ( serverIP, "" );
-	castType = 0;
-
 	Colors[0][0] = 0; Colors[0][1] = 1; Colors[0][2] = 1;
 	Colors[1][0] = 0; Colors[1][1] = 0; Colors[1][2] = 1;
 	Colors[2][0] = 0; Colors[2][1] = 1; Colors[2][2] = 0;
@@ -61,6 +56,8 @@ OpenNIService::OpenNIService()
 	Colors[10][0] = 1; Colors[10][1] = 1; Colors[10][2] = 1;
 
 	pDepthTexBuf = new unsigned char[640 * 480 * 4];
+
+	myTransform  = AffineTransform3::Identity();
 }
 
 OpenNIService::~OpenNIService()
@@ -127,20 +124,44 @@ void OpenNIService::initialize()
 
 void OpenNIService::setup(Setting& settings)
 {
-	if( settings.exists( "serverIP" ) )
+	//if( settings.exists( "serverIP" ) )
+	//{
+	//	strcpy( serverIP, settings[ "serverIP" ] );
+	//}
+
+	//if( settings.exists( "localIP" ) )
+	//{
+	//	strcpy( serverIP, settings[ "localIP" ] );
+	//}
+
+	//if( settings.exists( "castingType" ) )
+	//{
+	//	castType = atoi( (const char*) settings[ "castingType" ] );
+	//}
+	Vector3f refTranslation = Vector3f::Zero();
+	Matrix3f refLinear = Matrix3f::Identity();
+	if(settings.exists("referenceTransform"))
 	{
-		strcpy( serverIP, settings[ "serverIP" ] );
+		Setting& srt = settings["referenceTransform"];
+		if(srt.exists("referenceTranslation"))
+		{
+			Setting& st = srt["referenceTranslation"];
+			refTranslation.x() = (float)st[0];
+			refTranslation.y() = (float)st[1];
+			refTranslation.z() = (float)st[2];
+		}
+		if(srt.exists("referenceLinear"))
+		{
+			Setting& st = srt["referenceLinear"];
+			for(int i = 0; i < 9; i++)
+			{
+				refLinear(i) = st[i];
+			}
+		}
 	}
 
-	if( settings.exists( "localIP" ) )
-	{
-		strcpy( serverIP, settings[ "localIP" ] );
-	}
-
-	if( settings.exists( "castingType" ) )
-	{
-		castType = atoi( (const char*) settings[ "castingType" ] );
-	}
+	myTransform.linear() = refLinear;
+	myTransform.translation() = refTranslation;
 }
 
 void OpenNIService::start()
@@ -179,17 +200,17 @@ void OpenNIService::poll(void)
 		// Store the texture
 		getTexture(depthMD, sceneMD);
 
-		myOpenNI->lockEvents();
+		//myOpenNI->lockEvents();
 
-		Event* theEvent = myOpenNI->writeHead();
+		//Event* theEvent = myOpenNI->writeHead();
 		
 		//theEvent->userData = pDepthTexBuf;
 		imageData = pDepthTexBuf;
 		//theEvent->userDataSize = 640 * 480 * 4;
-		theEvent->serviceType = Service::Mocap;
-		theEvent->sourceId = 0;
+		//theEvent->serviceType = Service::Mocap;
+		//theEvent->sourceId = 0;
 
-		myOpenNI->unlockEvents();
+		//myOpenNI->unlockEvents();
 
 		for (int i = 0; i < nUsers; ++i)
 		{
@@ -209,8 +230,9 @@ void OpenNIService::poll(void)
 				Event* theEvent = myOpenNI->writeHead();
 				theEvent->sourceId = aUsers[i];
 				theEvent->serviceType = Service::Mocap;
-				theEvent->userData = pDepthTexBuf;
-				theEvent->userDataSize = 640 * 480 * 4;
+				//theEvent->userData = pDepthTexBuf;
+				//theEvent->userDataSize = 640 * 480 * 4;
+				theEvent->numberOfPoints = 25;
 
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 				joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
@@ -243,11 +265,15 @@ void OpenNIService::poll(void)
 void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent) {
 	Vector3f pos;
 	if( getJointPosition(player, joint, pos) ) {
+
+		// Transform position
+		pos = myTransform * pos;
+
 		theEvent->pointSet[joint][0] = pos[0];
 		theEvent->pointSet[joint][1] = pos[1];
 		theEvent->pointSet[joint][2] = pos[2];
 
-		// Save the center of gravity
+		// Event position = Head position (simplifies compatibility with head tracking service)
 		if( joint == OMEGA_SKEL_HEAD ) {
 			theEvent->position[0] = pos[0]; theEvent->position[1] = pos[1]; theEvent->position[2] = pos[2];
 		}

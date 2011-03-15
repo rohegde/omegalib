@@ -131,12 +131,13 @@ namespace omega
 	typedef math::Ray<float> Ray;
 	typedef math::AlignedBox3<float> AlignedBox3;
 	typedef math::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
+	typedef math::matrix< 3, Eigen::Dynamic, float >  Vectors3f; //!< A 3x3 float matrix
 	typedef math::vector< 2, float > Vector2f; //!< A two-component float vector
 	typedef math::vector< 3, float > Vector3f; //!< A three-component float vector
 	typedef math::vector< 4, float > Vector4f; //!< A four-component float vector
-	typedef math::vector< 2, int > Vector2i; //!< A four-component float vector
-	typedef math::vector< 3, int > Vector3i; //!< A four-component float vector
-	typedef math::vector< 4, int > Vector4i; //!< A four-component float vector
+	typedef math::vector< 2, int > Vector2i; //!< A four-component int vector
+	typedef math::vector< 3, int > Vector3i; //!< A four-component int vector
+	typedef math::vector< 4, int > Vector4i; //!< A four-component int vector
 	typedef math::quaternion<float> Quaternion; //! A floating point quaternion
 	typedef math::vector< 3, uint >      Triangle;
 	typedef Eigen::AngleAxis<float> AngleAxis;

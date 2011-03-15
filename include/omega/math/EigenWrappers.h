@@ -64,9 +64,9 @@ namespace omega { namespace math
 
 		vector(const T &x, const T &y, const T &z, const T &w): Base(x, y, z, w) {}
 
-		std::ostream& operator<<(std::ostream& os)
+		virtual std::ostream& operator<<(std::ostream& os)
 		{
-			return os << this->format(IOFormat(StreamPrecision, 0, ", ", " ", "", ""));
+			return os << this->format(Eigen::IOFormat(Eigen::StreamPrecision, 0, ", ", " ", "", ""));
 		}
 	};
 
