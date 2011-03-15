@@ -10,9 +10,9 @@ A complete demo application will be included (meshviewer) as well as kinect inte
 ==Completed Tasks==
  * All of codebase compiles on linux (*Alessandro*)
  * kinect integration (*Victor*)
+ * mocap calibration application (*Alessandro*)
 
 ==Work In Progress==
- * mocap calibration application (*Alessandro*)
  * complete meshviewer application (*Alessandro*)
  * Integration of PS3 controller (*Arthur*)
  * Integration of XBox 360 controller (*Arthur*)
