@@ -3,7 +3,7 @@
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Victor Mateevitsi		vmatee2@uic.edu
+ *  Victor Mateevitsi		mvictoras@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -63,22 +63,27 @@ namespace omega
 	// Typedefs for the OpenNIService - omega integration
 	typedef xn::DepthMetaData DepthMetaData;
 	typedef xn::SceneMetaData RGBMetaData;
+	typedef XnSkeletonJoint OmegaSkeletonJoint;
 
-	class OpenNIService : public Service
+	class OMEGA_API OpenNIService : public Service
 	{
+	// HACK HACK HACK
+	public:
+		static void* imageData;
+
 	public:
 		// Allocator function
 		static OpenNIService* New() { return new OpenNIService(); }
 
 	public:
-		OMEGA_API OpenNIService();
-		OMEGA_API ~OpenNIService();
-		OMEGA_API void setup( Setting& settings);
-		OMEGA_API virtual void initialize();
-		OMEGA_API virtual void start();//initialize and start service here
-		OMEGA_API virtual void stop();//destroy service instance to stop
-		OMEGA_API virtual void dispose();
-		OMEGA_API virtual void poll();
+		OpenNIService();
+		~OpenNIService();
+		void setup( Setting& settings);
+		virtual void initialize();
+		virtual void start();//initialize and start service here
+		virtual void stop();//destroy service instance to stop
+		virtual void dispose();
+		virtual void poll();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:

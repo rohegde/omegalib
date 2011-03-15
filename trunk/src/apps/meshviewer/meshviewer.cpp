@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "meshviewer.h"
+#include "omega/OpenNIService.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
@@ -78,6 +79,14 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 	myVisibleEntity = e;
 	myVisibleEntity->resetTransform();
 	myVisibleEntity->setVisible(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::processMocapEvent(const Event& evt, DrawContext& context)
+{
+	//if( evt.userDataSize == 640 * 480 * 4 )
+		myUI->updateKinectTexture( (omega::byte*)OpenNIService::imageData );
+		//myUI->updateKinectTexture( (omega::byte*)evt.userData );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,6 +168,9 @@ bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
 	case Service::Pointer:
 		processPointerEvent(evt, context);
 		return true;
+	case Service::Mocap:
+		processMocapEvent(evt, context);
+		return true;
 	}
 	return false;
 }
@@ -172,6 +184,7 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
+
 	switch(context.layer)
 	{
 	case 0:

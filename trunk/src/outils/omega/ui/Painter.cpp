@@ -168,16 +168,16 @@ void Painter::drawRectTexture(Texture* texture, const Vector2f& position, const 
 
 	glBegin(GL_TRIANGLE_STRIP);
 
-	glTexCoord2f(0.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex2f(x, y);
 
-	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex2f(x + width, y);
 
-	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex2f(x, y + height);
 
-	glTexCoord2f(1.0f, 0.0f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex2f(x + width, y + height);
 
 	glEnd();

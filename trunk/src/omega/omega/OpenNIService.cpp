@@ -1,3 +1,30 @@
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Victor Mateevitsi		mvictoras@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+
 #include "omega/OpenNIService.h"
 #include "omega/SystemManager.h"
 #include "omega/StringUtils.h"
@@ -12,6 +39,7 @@ xn::DepthGenerator OpenNIService::omg_DepthGenerator = NULL;
 xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
 //xn::SceneMetaData OpenNIService::omg_sceneMD = NULL;
 
+void* OpenNIService::imageData = NULL;
 
 OpenNIService::OpenNIService()
 {
@@ -150,6 +178,19 @@ void OpenNIService::poll(void)
 
 		// Store the texture
 		getTexture(depthMD, sceneMD);
+
+		myOpenNI->lockEvents();
+
+		Event* theEvent = myOpenNI->writeHead();
+		
+		//theEvent->userData = pDepthTexBuf;
+		imageData = pDepthTexBuf;
+		//theEvent->userDataSize = 640 * 480 * 4;
+		theEvent->serviceType = Service::Mocap;
+		theEvent->sourceId = 0;
+
+		myOpenNI->unlockEvents();
+
 		for (int i = 0; i < nUsers; ++i)
 		{
 			
@@ -364,6 +405,7 @@ void OpenNIService::getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd)
 
 	pDepth = dmd.Data();
 	nIndex = 0;
+	texWidth = 640;
 	// Prepare the texture map
 	for (nY=0; nY<g_nYRes; nY++)
 	{
@@ -373,8 +415,9 @@ void OpenNIService::getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd)
 			pDestImage[0] = 0;
 			pDestImage[1] = 0;
 			pDestImage[2] = 0;
-			if ( *pLabels != 0 )
-			{
+			pDestImage[3] = 255;
+			//if ( *pLabels != 0 )
+			//{
 				nValue = *pDepth;
 				XnLabel label = *pLabels;
 				XnUInt32 nColorID = label % nColors;
@@ -391,13 +434,13 @@ void OpenNIService::getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd)
 					pDestImage[1] = nHistValue * Colors[nColorID][1];
 					pDestImage[2] = nHistValue * Colors[nColorID][2];
 				}
-			}
+			//}
 
 			pDepth++;
 			pLabels++;
-			pDestImage+=3;
+			pDestImage+=4;
 		}
 
-		pDestImage += (texWidth - g_nXRes) *3;
+		pDestImage += (texWidth - g_nXRes) *4;
 	}
 }

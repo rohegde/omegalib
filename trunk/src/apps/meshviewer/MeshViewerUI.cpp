@@ -64,6 +64,13 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 		//btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 	}
+
+	depthImage = wf->createImage("kinectDepthBuffer", entityButtons);
+	depthImage->setHeight(480);
+	depthImage->setWidth(640);
+
+	texture = NULL;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,4 +84,17 @@ void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 			break;
 		}
 	}
+}
+
+void MeshViewerUI::updateKinectTexture(omega::byte* data)
+{
+	if( texture == NULL ) 
+	{
+		texture = new Texture();
+		texture->initialize(data, 640, 480);
+		depthImage->setTexture(texture);
+	}
+	
+	texture->setDirty();
+	texture->refresh();
 }
