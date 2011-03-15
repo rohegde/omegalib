@@ -108,6 +108,7 @@ namespace omega
 		unsigned char* pDepthTexBuf;
 
 		float Colors[11][3];
+        bool isCalibrated;
 
 		// Reference frame transform
 		AffineTransform3 myTransform;
