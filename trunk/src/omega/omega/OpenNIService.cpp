@@ -58,6 +58,7 @@ OpenNIService::OpenNIService()
 	pDepthTexBuf = new unsigned char[640 * 480 * 4];
 
 	myTransform  = AffineTransform3::Identity();
+    isCalibrated = false;
 }
 
 OpenNIService::~OpenNIService()
@@ -313,15 +314,24 @@ bool OpenNIService::getJointPosition(XnUserID player, XnSkeletonJoint joint, Vec
 void XN_CALLBACK_TYPE OpenNIService::User_NewUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie)
 {
 	ofmsg("New User %1%", %(int)nId);
-	// New user found
-	if ( OpenNIService::omg_bNeedPose)
-	{
-		omg_UserGenerator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);
-	}
-	else
-	{
-		omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
-	}
+    if( isCalibrated ) 
+    {
+        omg_UserGenerator.GetSkeletonCap().LoadCalibrationData(nId, 0);
+        omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
+    }
+    else 
+    {
+
+	    // New user found
+	    if ( OpenNIService::omg_bNeedPose)
+	    {
+		    omg_UserGenerator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);
+        }	
+	    else
+	    {
+		    omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
+        }
+    }
 }
 
 // Callback: An existing user was lost
@@ -352,6 +362,8 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 		// Calibration succeeded
 		ofmsg("Calibration complete, start tracking user %1%\n", %(int)nId);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
+        omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
+        isCalibrated = true;
 	}
 	else
 	{
