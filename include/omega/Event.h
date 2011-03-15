@@ -183,6 +183,11 @@ namespace omega
 			{
 				os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
 			}
+			os << userDataSize;
+			//if(userDataSize != 0)
+			//{
+				//os.write((const char*)userData, userDataSize);
+			//}
 		}
 
 		//! Deserialize an Event instance.
@@ -202,6 +207,11 @@ namespace omega
 			{
 				is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
 			}
+			is >> userDataSize;
+			//if(userDataSize != 0)
+			//{
+			//	is.read((char*)userData, userDataSize);
+			//}
 		}
 	#endif
 		bool isFlagSet(uint flag) const;
@@ -213,7 +223,9 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Event::Event():
-		processed(false)
+		processed(false),
+		userDataSize(0),
+		userData(NULL)
 	{}
 
 }; // namespace omega

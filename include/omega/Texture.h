@@ -44,8 +44,8 @@ namespace omega
 
 		void initialize(byte* data, int width, int height); 
 
-		//bool isDirty() { return myDirty; }
-		//void setDirty() { myDirty = true; }
+		bool isDirty() { return myDirty; }
+		void setDirty() { myDirty = true; }
 
 		//byte* getData() { return myData; }
 

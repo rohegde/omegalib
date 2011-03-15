@@ -31,6 +31,7 @@
 #include "omega/scene.h"
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
+#include "omega/Texture.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -106,10 +107,13 @@ public:
 
 	void initialize(MeshViewerClient* client);
 	void handleUIEvent(const UIEvent& evt);
+	void updateKinectTexture(omega::byte* data);
 
 private:
 	MeshViewerClient* myClient;
 	Vector<Button*> myEntityButtons;
+	Image* depthImage;
+	Texture *texture;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,6 +129,7 @@ public:
 	virtual void draw(const DrawContext& context);
 
 	void processPointerEvent(const Event& evt, DrawContext& context);
+	void processMocapEvent(const Event& evt, DrawContext& context);
 
 	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);
