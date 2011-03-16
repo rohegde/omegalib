@@ -1,5 +1,22 @@
 =OmegaLib Meeting Notes=
 
+==March 16 2011==
+ * Fix display position on omegadesk
+ * Fix head orientation using center screen orientation + possibly kinect head tilt?
+ * What's the 'interaction metaphor' with omegadesk?
+  * Describe 'interaction models' maybe even more than one, describing how applications would use the device.
+ * finalize the set of input modalities that we hink are sufficient to give the best user experience.
+ * what kind of aplication are we trying to test?
+  * meshviewer / vtk viewer
+  * Pig project slice alignment tool
+  * Using both displays as stereo displays vs using just the top one.
+ * Objective for May
+  * stabilize canonical set of features of omegadesk.
+  * finalize meshviewer to a polished application.
+ * fix oinputserver
+ * Take a look at conferences where we can publish papers on omegadesk
+
+
 ==March 9 2011==
  * (*Dennis*) line by line demo likely to run by 16th demos
  * Things needed for demo
