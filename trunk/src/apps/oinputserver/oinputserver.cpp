@@ -27,6 +27,7 @@
 #include "omega.h"
 #include "omega/MouseService.h"
 
+#include <time.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <vector>
@@ -87,15 +88,14 @@ public:
 	virtual bool handleEvent(const Event& evt)
 	{
 		eventPacket = new char[99];
-		eventPacket = itoa(evt.serviceType, eventPacket, 10); // Append input type
+		
+		itoa(evt.serviceType, eventPacket, 10); // Append input type
 		strcat( eventPacket, ":" );
 		char floatChar[32];
-
+		
 		switch(evt.serviceType)
 		{
 		case Service::Pointer:
-			x = evt.position[0];
-			y = evt.position[1];
 			//printf(" Touch type %d \n", evt.type); 
 			//printf("               at %f %f \n", x, y ); 
 
@@ -110,12 +110,12 @@ public:
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts x to char, appends to eventPacket
-			sprintf(floatChar,"%f",x);
+			sprintf(floatChar,"%f",evt.position[0]);
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts y to char, appends to eventPacket
-			sprintf(floatChar,"%f",y);
+			sprintf(floatChar,"%f",evt.position[1]);
 			strcat( eventPacket, floatChar );
 
 			if( evt.numberOfPoints == 1 ){ // TouchPoint down/up/move
@@ -276,6 +276,8 @@ public:
 			break;
 		default: break;
 		}
+		
+		delete[] eventPacket;
 		return false;
 	}
 	
@@ -426,6 +428,10 @@ SOCKET OInputServer::startListening(){
 	// Because we're using a non-blocking socket, it is possible to attempt to receive before data is
 	// sent, resulting in the 'recv failed' error that is commented out.
 	bool gotData = false;
+	float timer = 0.0f;
+	float timeout = 5.0f; // seconds
+	time_t startTime = time (NULL);
+
 	printf("NetService: Waiting for client handshake\n");
 	do {
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
@@ -458,10 +464,17 @@ SOCKET OInputServer::startListening(){
 				printf("NetService: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
 				createClient( clientAddress, dataPort );
 			}
-			gotData = true;			
+			gotData = true;
+			delete inMessage;
+			delete portCStr;
 		} else if (iResult == 0)
 			printf("NetService: Connection closing...\n");
 		else {
+			timer = time (NULL);
+			if( timer > startTime + timeout ){
+				printf("NetService: Handshake timed out\n");
+				break;
+			}
 			//printf("Service: recv failed: %d\n", WSAGetLastError());
 			//closesocket(ClientSocket);
 			//WSACleanup();
@@ -512,6 +525,7 @@ void OInputServer::sendToClients(char* event){
 		client->sendEvent( event );
 		itr++;
 	}// while
+	delete[] event; // Clean up event after being set to all clients
 }// createClient
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -573,4 +587,7 @@ void main(int argc, char** argv)
 	}// while
 	
 	sys->cleanup();
+	delete dataSource;
+	delete cfg;
+	delete dm;
 }
