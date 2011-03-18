@@ -374,8 +374,8 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 		// Calibration succeeded
 		ofmsg("Calibration complete, start tracking user %1%\n", %(int)nId);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
-        omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
-        isCalibrated = true;
+        //omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
+        //isCalibrated = true;
 	}
 	else
 	{

@@ -129,7 +129,7 @@ public:
 	virtual void draw(const DrawContext& context);
 
 	void processPointerEvent(const Event& evt, DrawContext& context);
-	void processMocapEvent(const Event& evt, DrawContext& context);
+	void processMocapEvent(const Event& evt, UpdateContext& context);
 
 	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);
