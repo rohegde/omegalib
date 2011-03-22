@@ -33,8 +33,10 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ObserverUpdateService::ObserverUpdateService():
 	myObserver(NULL),
-	mySourceId(0)
+	mySourceId(0),
+	myEnableLookAt(false)
 {
+	myLookAt = Vector3f::Zero();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +45,14 @@ void ObserverUpdateService::setup(Setting& settings)
 	if(settings.exists("sourceId"))
 	{
 		mySourceId = settings["sourceId"];
+	}
+	if(settings.exists("lookAt"))
+	{
+		myEnableLookAt = true;
+		Setting& stLa = settings["lookAt"];
+		myLookAt(0) = stLa[0];
+		myLookAt(1) = stLa[1];
+		myLookAt(2) = stLa[2];
 	}
 }
 
@@ -67,7 +77,19 @@ void ObserverUpdateService::poll()
 			{
 				//ofmsg("Observer pos: %1%", %evt->position);
 				//myObserver->update(evt->position, evt->orientation);
-				myObserver->update(evt->position, Quaternion::Identity());
+
+				Quaternion q = Quaternion::Identity();
+
+				// If look at is enabled, compute orientation using target lookat point.
+				if(myEnableLookAt)
+				{
+					Vector3f dir = myLookAt - evt->position;
+					dir.normalize();
+					Vector3f localZ = Vector3f(0, 0, -1);
+					q = Math::buildRotation(localZ, dir, Vector3f::Zero());
+				}
+
+				myObserver->update(evt->position, q);
 			}
 		}
 	}

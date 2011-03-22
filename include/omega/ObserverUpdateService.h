@@ -51,6 +51,8 @@ namespace omega
 	private:
 		Observer* myObserver;
 		int mySourceId;
+		Vector3f myLookAt;
+		bool myEnableLookAt;
 	};
 }; // namespace omega
 

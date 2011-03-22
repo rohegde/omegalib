@@ -27,6 +27,8 @@
 #ifndef __EIGEN_WRAPPERS_HPP__
 #define __EIGEN_WRAPPERS_HPP__
 
+#define EIGEN_DEFAULT_IO_FORMAT Eigen::IOFormat(Eigen::StreamPrecision, 0, ", ", " ", "", "")
+
 #include "Eigen/Core"
 #include "Eigen/Geometry"
 
@@ -64,10 +66,10 @@ namespace omega { namespace math
 
 		vector(const T &x, const T &y, const T &z, const T &w): Base(x, y, z, w) {}
 
-		virtual std::ostream& operator<<(std::ostream& os)
-		{
-			return os << this->format(Eigen::IOFormat(Eigen::StreamPrecision, 0, ", ", " ", "", ""));
-		}
+		//std::ostream& operator<<(std::ostream& os)
+		//{
+		//	return os << this->format(Eigen::IOFormat(Eigen::StreamPrecision, 0, ", ", " ", "", ""));
+		//}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

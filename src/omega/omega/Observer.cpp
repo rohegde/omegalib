@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Observer.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -69,17 +70,9 @@ void Observer::update(const Vector3f& position, const Quaternion& orientation)
 
 	myViewTransform = myViewTransform * mySensorTransform;
 	myHeadTransform = AffineTransform3::Identity();
-	float angle;
-	Vector3f axis;
 
-	AngleAxis aa;
-	aa = orientation;
-	angle = aa.angle();
-	axis = aa.axis();
-
-	myHeadTransform.rotate(AngleAxis(angle, axis));
 	myHeadTransform.translate(position);
-	//myHeadTransform.rotate(angle, axis);
+	myHeadTransform.rotate(orientation);
 	AffineTransform3 w2e = AffineTransform3::Identity();
 	w2e.translate(myReferencePosition);
 	myHeadTransform = w2e * myHeadTransform;
