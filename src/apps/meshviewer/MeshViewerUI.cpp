@@ -86,12 +86,13 @@ void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 	}
 }
 
-void MeshViewerUI::updateKinectTexture(omega::byte* data)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
 {
 	if( texture == NULL ) 
 	{
 		texture = new Texture();
-		texture->initialize(data, 640, 480);
+		texture->initialize((byte*)svc->getDepthImageData(), svc->getImageDataWidth(), svc->getImageDataHeight());
 		depthImage->setTexture(texture);
 	}
 	

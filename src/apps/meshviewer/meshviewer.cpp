@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "meshviewer.h"
-#include "omega/OpenNIService.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
@@ -240,7 +239,9 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
-	myUI->updateKinectTexture( (omega::byte*)OpenNIService::imageData );
+	OpenNIService* svc = getServiceManager()->findService<OpenNIService>("OpenNIService");
+
+	myUI->updateKinectTexture(svc);
 
 	switch(context.layer)
 	{

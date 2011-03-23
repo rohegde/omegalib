@@ -41,8 +41,6 @@ xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
 //xn::SceneMetaData OpenNIService::omg_sceneMD = NULL;
 bool OpenNIService::isCalibrated = false;
 
-void* OpenNIService::imageData = NULL;
-
 OpenNIService::OpenNIService()
 {
 	Colors[0][0] = 0; Colors[0][1] = 1; Colors[0][2] = 1;
@@ -206,8 +204,6 @@ void OpenNIService::poll(void)
 
 		// Store the texture
 		getTexture(depthMD, sceneMD);
-
-		imageData = pDepthTexBuf;
 
 		myOpenNI->lockEvents();
 		for (int i = 0; i < nUsers; ++i)
@@ -493,4 +489,19 @@ void OpenNIService::getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd)
 
 		pDestImage += (texWidth - g_nXRes) *4;
 	}
+}
+
+void* OpenNIService::getDepthImageData()
+{
+	return pDepthTexBuf;
+}
+
+int OpenNIService::getImageDataWidth()
+{
+	return 640;
+}
+
+int OpenNIService::getImageDataHeight()
+{
+	return 480;
 }

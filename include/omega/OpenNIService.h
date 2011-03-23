@@ -67,10 +67,6 @@ namespace omega
 
 	class OMEGA_API OpenNIService : public Service
 	{
-	// HACK HACK HACK
-	public:
-		static void* imageData;
-
 	public:
 		// Allocator function
 		static OpenNIService* New() { return new OpenNIService(); }
@@ -84,6 +80,9 @@ namespace omega
 		virtual void stop();//destroy service instance to stop
 		virtual void dispose();
 		virtual void poll();
+		void* getDepthImageData();
+		int getImageDataWidth();
+		int getImageDataHeight();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	

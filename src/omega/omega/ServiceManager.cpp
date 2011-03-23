@@ -77,7 +77,7 @@ void ServiceManager::setup(Setting& settings)
 		{
 			// Input service found: create and setup it.
 			Service* svc = svcAllocator();
-			svc->setup(stSvc);
+			svc->doSetup(stSvc);
 			addService(svc);
 
 			ofmsg("Service added: %1%", %stSvc.getName());
@@ -151,7 +151,7 @@ void ServiceManager::addService(Service* svc)
 {
 	oassert(svc != NULL);
 
-	myServices.insert(ServiceDictionary::value_type(svc->getName(), svc));
+	myServices.insert(ServiceDictionary::value_type(std::string(svc->getName()), svc));
 	svc->setManager(this);
 }
 
