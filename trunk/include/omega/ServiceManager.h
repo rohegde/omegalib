@@ -65,6 +65,7 @@ namespace omega
 		// Add a new input service to the manager.
 		void addService(Service* svc);
 		void removeService(Service* svc);
+		Service* findService(String svcName);
 		template<typename T> T* findService(String svcName);
 
 		// initialize
@@ -116,10 +117,17 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	template<typename T> inline
-		T* ServiceManager::findService(String svcName)
+	inline Service* ServiceManager::findService(String svcName)
 	{
-		return (T*)myServices[svcName];
+		ServiceDictionary::const_iterator elem = myServices.find(svcName);
+		if(elem == myServices.end()) return NULL;
+		return elem->second;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename T> inline T* ServiceManager::findService(String svcName)
+	{
+		return (T*)findService(svcName);
 	}
 }; // namespace omega
 

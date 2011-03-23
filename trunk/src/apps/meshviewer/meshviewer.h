@@ -32,6 +32,8 @@
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
 #include "omega/Texture.h"
+#include "omega/OpenNIService.h"
+
 
 using namespace omega;
 using namespace omega::scene;
@@ -107,7 +109,7 @@ public:
 
 	void initialize(MeshViewerClient* client);
 	void handleUIEvent(const UIEvent& evt);
-	void updateKinectTexture(omega::byte* data);
+	void updateKinectTexture(OpenNIService* svc);
 
 private:
 	MeshViewerClient* myClient;

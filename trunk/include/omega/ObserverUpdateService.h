@@ -47,6 +47,8 @@ namespace omega
 		virtual void initialize();
 		virtual void poll();
 		virtual void dispose();
+		int getSourceId(); 
+		void setSourceId(int value); 
 
 	private:
 		Observer* myObserver;
@@ -54,6 +56,18 @@ namespace omega
 		Vector3f myLookAt;
 		bool myEnableLookAt;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int ObserverUpdateService::getSourceId()
+	{
+		return mySourceId;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void ObserverUpdateService::setSourceId(int value)
+	{
+		mySourceId = value;
+	}
 }; // namespace omega
 
 #endif
