@@ -35,7 +35,7 @@ using namespace std;
 const int ServiceManager::MaxEvents = OMEGA_MAX_EVENTS;
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 ServiceManager::ServiceManager(SystemManager* sys):
 	mySys(sys),
 	myEventBuffer(NULL),
@@ -52,6 +52,44 @@ ServiceManager::~ServiceManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServiceManager::registerService(String svcName, ServiceAllocator creationFunc)
+{
+	myServiceRegistry.insert(
+		ServiceAllocatorDictionary::value_type(std::string(svcName), creationFunc));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ServiceAllocator ServiceManager::findServiceAllocator(String svcName)
+{
+	ServiceAllocatorDictionary::const_iterator elem = myServiceRegistry.find(svcName);
+	if(elem == myServiceRegistry.end()) return NULL;
+	return elem->second;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServiceManager::setup(Setting& settings)
+{
+	for(int i = 0; i < settings.getLength(); i++)
+	{
+		Setting& stSvc = settings[i];
+		ServiceAllocator svcAllocator = findServiceAllocator(stSvc.getName());
+		if(svcAllocator != NULL)
+		{
+			// Input service found: create and setup it.
+			Service* svc = svcAllocator();
+			svc->setup(stSvc);
+			addService(svc);
+
+			ofmsg("Service added: %1%", %stSvc.getName());
+		}
+		else
+		{
+			ofwarn("Service not found: %1%", %stSvc.getName());
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::initialize()
 {
 	omsg("ServiceManager::initialize");
@@ -59,45 +97,52 @@ void ServiceManager::initialize()
 	myEventBuffer = new Event[MaxEvents];
 	ofmsg("Event buffer allocated. Max events: %1%", %MaxEvents);
 
-	for(int i = 0; i < myServices.size(); i++)
+	MapIterator<ServiceDictionary> it(myServices);
+	while(it.hasMoreElements())
 	{
-		myServices[i]->initialize();
+		it.getNext()->initialize();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::dispose()
 {
-	for(int i = 0; i < myServices.size(); i++)
+	MapIterator<ServiceDictionary> it(myServices);
+	while(it.hasMoreElements())
 	{
-		myServices[i]->dispose();
+		it.getNext()->dispose();
 	}
+
+	delete[] myEventBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::start()
 {
-	for(int i = 0; i < myServices.size(); i++)
+	MapIterator<ServiceDictionary> it(myServices);
+	while(it.hasMoreElements())
 	{
-		myServices[i]->start();
+		it.getNext()->start();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::stop()
 {
-	for(int i = 0; i < myServices.size(); i++)
+	MapIterator<ServiceDictionary> it(myServices);
+	while(it.hasMoreElements())
 	{
-		myServices[i]->stop();
+		it.getNext()->stop();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::poll()
 {
-	for(int i = 0; i < myServices.size(); i++)
+	MapIterator<ServiceDictionary> it(myServices);
+	while(it.hasMoreElements())
 	{
-		myServices[i]->poll();
+		it.getNext()->poll();
 	}
 }
 
@@ -106,7 +151,7 @@ void ServiceManager::addService(Service* svc)
 {
 	oassert(svc != NULL);
 
-	myServices.push_back(svc);
+	myServices.insert(ServiceDictionary::value_type(svc->getName(), svc));
 	svc->setManager(this);
 }
 

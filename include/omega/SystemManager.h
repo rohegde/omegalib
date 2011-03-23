@@ -40,9 +40,6 @@ namespace omega
 	class Service;
 	class DataManager;
 
-	typedef Service* (*ServiceAllocator)();
-	typedef Dictionary<String, ServiceAllocator> ServiceAllocatorDictionary;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// The SystemManager class is the root object of the omegalib architecture.
 	class OMEGA_API SystemManager
@@ -53,12 +50,6 @@ namespace omega
 
 		//! Initializes the system manager
 		void setup(Config* cfg);
-
-		void registerService(String svcName, ServiceAllocator creationFunc);
-
-		//! Find an input service allocator given the input service name.
-		//! See registerInputService for additional information.
-		ServiceAllocator findServiceAllocator(String svcName);
 
 		void initialize();
 
@@ -112,9 +103,6 @@ namespace omega
 		static SystemManager* mysInstance;
 
 		bool myIsInitialized;
-
-		// The input manager registry.
-		ServiceAllocatorDictionary myServiceRegistry;
 
 		Config*			myAppConfig;
 		Config*			mySystemConfig;

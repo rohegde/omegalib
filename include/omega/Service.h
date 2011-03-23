@@ -31,48 +31,59 @@
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations
-struct Event;
-class ServiceManager;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward declarations
+	struct Event;
+	class ServiceManager;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class Service: public DynamicObject
-{
-friend class ServiceManager;
-public:
-	enum ServiceType { Pointer, Mocap, Keyboard, Controller }; 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class Service: public DynamicObject
+	{
+	friend class ServiceManager;
+	public:
+		enum ServiceType { Pointer, Mocap, Keyboard, Controller }; 
 
-public:
-	// Class constructor
-	Service(): myManager(NULL) {}
+	public:
+		// Class constructor
+		Service(): myManager(NULL) {}
 
-   // Class destructor
-	virtual ~Service() {}
+	   // Class destructor
+		virtual ~Service() {}
 
-	ServiceManager* getManager() { return myManager; }
+		ServiceManager* getManager();
+		String getName();
 
-	virtual void setup(Setting& settings) {}
-	virtual void initialize() {}
-	virtual void start() {}
-	virtual void poll() {}
-	virtual void stop() {}
-	virtual void dispose() {}
+		virtual void setup(Setting& settings) {}
+		virtual void initialize() {}
+		virtual void start() {}
+		virtual void poll() {}
+		virtual void stop() {}
+		virtual void dispose() {}
 
-protected:
-	void lockEvents();
-	void unlockEvents();
-	Event* writeHead();
-	Event* readHead();
-	Event* readTail();
-	Event* getEvent(int index);
+	protected:
+		void lockEvents();
+		void unlockEvents();
+		Event* writeHead();
+		Event* readHead();
+		Event* readTail();
+		Event* getEvent(int index);
 
-private:
-	void setManager(ServiceManager* mng) { myManager = mng; }
+	private:
+		void doSetup(Setting& settings);
+		void setManager(ServiceManager* mng) { myManager = mng; }
 
-private:
-	ServiceManager* myManager;
-};
+	private:
+		ServiceManager* myManager;
+		String myName;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ServiceManager* Service::getManager() 
+	{ return myManager; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline String Service::getName() 
+	{ return myName; }
 }; // namespace omega
 
 #endif
