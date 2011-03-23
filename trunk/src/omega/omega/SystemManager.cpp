@@ -128,56 +128,42 @@ void SystemManager::setupServiceManager()
 	// register standard input services.
 	// @todo: I don't understand why a static_cast does not work here.
 #ifdef OMEGA_USE_DIRECTINPUT
-	registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);
+	myServiceManager->registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);
 #endif
 #ifdef OMEGA_USE_MOUSE
-	registerService("MouseService", (ServiceAllocator)MouseService::New);
+	myServiceManager->registerService("MouseService", (ServiceAllocator)MouseService::New);
 #endif
 #ifdef OMEGA_USE_NATURAL_POINT
-	registerService("NaturalPointService", (ServiceAllocator)NaturalPointService::New);
+	myServiceManager->registerService("NaturalPointService", (ServiceAllocator)NaturalPointService::New);
 #endif
 #ifdef OMEGA_USE_NETSERVICE
-	registerService("NetService", (ServiceAllocator)NetService::New);
+	myServiceManager->registerService("NetService", (ServiceAllocator)NetService::New);
 #endif
 #ifdef OMEGA_USE_PQLABS
-	registerService("PQService", (ServiceAllocator)PQService::New);
+	myServiceManager->registerService("PQService", (ServiceAllocator)PQService::New);
 #endif
 #ifdef OMEGA_USE_OPTITRACK
-	registerService("OptiTrackService", (ServiceAllocator)OptiTrackService::New);
+	myServiceManager->registerService("OptiTrackService", (ServiceAllocator)OptiTrackService::New);
 #endif
 #ifdef OMEGA_USE_OPENNI
-	registerService("OpenNIService", (ServiceAllocator)OpenNIService::New);
+	myServiceManager->registerService("OpenNIService", (ServiceAllocator)OpenNIService::New);
 #endif
 
-	registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
+	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
 
-	// Instantiate input services
+	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
 	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
 	if(stRoot.exists("input"))
 	{
-		Setting& stServices = stRoot["input"];
-		for(int i = 0; i < stServices.getLength(); i++)
-		{
-			Setting& stSvc = stServices[i];
-			ServiceAllocator svcAllocator = findServiceAllocator(stSvc.getName());
-			if(svcAllocator != NULL)
-			{
-				// Input service found: create and setup it.
-				Service* svc = svcAllocator();
-				svc->setup(stSvc);
-				myServiceManager->addService(svc);
-
-				ofmsg("Input service added: %1%", %stSvc.getName());
-			}
-			else
-			{
-				ofwarn("Input service not found: %1%", %stSvc.getName());
-			}
-		}
+		myServiceManager->setup(stRoot["input"]);
+	}
+	else if(stRoot.exists("services"))
+	{
+		myServiceManager->setup(stRoot["services"]);
 	}
 	else
 	{
-		owarn("Config/InputServices section missing from config file: No input services created.");
+		owarn("Config/InputServices section missing from config file: No services created.");
 	}
 }
 
@@ -270,16 +256,3 @@ void SystemManager::postExitRequest(const String& reason)
 	myExitReason = reason;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::registerService(String svcName, ServiceAllocator creationFunc)
-{
-	myServiceRegistry.insert(ServiceAllocatorDictionary::value_type(std::string(svcName), creationFunc));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ServiceAllocator SystemManager::findServiceAllocator(String svcName)
-{
-	ServiceAllocatorDictionary::const_iterator elem = myServiceRegistry.find(svcName);
-	if(elem == myServiceRegistry.end()) return NULL;
-	return elem->second;
-}

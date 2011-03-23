@@ -30,70 +30,89 @@
 #include "osystem.h"
 #include "Application.h"
 #include "Event.h"
+
+// Preprocessor macro, bleah.. Forced to use this instead of static constant as a quick workaround 
+// to a gcc 4.2 build error. Think of a better solution in the future.
 #define OMEGA_MAX_EVENTS 1024
 
 namespace omega
 {
-// Forward declarations.
-class SystemManager;
+	// Forward declarations.
+	class SystemManager;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class OMEGA_API ServiceManager
-{
-friend class Service;
+	typedef Service* (*ServiceAllocator)();
+	typedef Dictionary<String, ServiceAllocator> ServiceAllocatorDictionary;
+	typedef Dictionary<String, Service*> ServiceDictionary;
 
-public:
-	// Class constructor.
-	ServiceManager(SystemManager* sys);
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API ServiceManager
+	{
+	friend class Service;
 
-	// Class destructor
-	~ServiceManager();
+	public:
+		// Class constructor.
+		ServiceManager(SystemManager* sys);
 
-	// Add a new input service to the manager.
-	void addService(Service* svc);
-	void removeService(Service* svc);
+		// Class destructor
+		~ServiceManager();
 
-	// initialize
-	void initialize();
-	void start();
-	void stop();
-	void dispose();
+		void registerService(String svcName, ServiceAllocator creationFunc);
 
-	void poll();
+		//! Find an input service allocator given the input service name.
+		//! See registerInputService for additional information.
+		ServiceAllocator findServiceAllocator(String svcName);
 
-	int getAvailableEvents() { return myAvailableEvents; }
-	int getDroppedEvents() { return myDroppedEvents; }
-	void resetDroppedEvents() { myDroppedEvents = 0; }
-	int getEvents(Event* ptr, int maxEvents);
-	Event* getEvent(int index);
-	void clearEvents();
-	void lockEvents();
-	void unlockEvents();
+		// Add a new input service to the manager.
+		void addService(Service* svc);
+		void removeService(Service* svc);
 
-public:
-	// The maximum number of events stored in the event buffer.
-	static const int MaxEvents;
+		// initialize
+		void setup(Setting& settings);
+		void initialize();
+		void start();
+		void stop();
+		void dispose();
+
+		void poll();
+
+		int getAvailableEvents() { return myAvailableEvents; }
+		int getDroppedEvents() { return myDroppedEvents; }
+		void resetDroppedEvents() { myDroppedEvents = 0; }
+		int getEvents(Event* ptr, int maxEvents);
+		Event* getEvent(int index);
+		void clearEvents();
+		void lockEvents();
+		void unlockEvents();
+
+	public:
+		// The maximum number of events stored in the event buffer.
+		static const int MaxEvents;
 	
-private:
-	int incrementBufferIndex(int index);
-	int decrementBufferIndex(int index);
-	Event* writeHead();
-	Event* readHead();
-	Event* readTail();
+	private:
+		int incrementBufferIndex(int index);
+		int decrementBufferIndex(int index);
+		Event* writeHead();
+		Event* readHead();
+		Event* readTail();
 
-private:
-	SystemManager*	mySys;
+	private:
+		SystemManager*	mySys;
 
-	Lock  myEventBufferLock;
+		// The service registry.
+		ServiceAllocatorDictionary myServiceRegistry;
 
-	Event*		myEventBuffer;
-	int				myEventBufferHead;
-	int				myEventBufferTail;
-	std::vector<Service*> myServices;
+		// Dictionary of active services
+		ServiceDictionary myServices;
 
-	int myAvailableEvents;
-	int myDroppedEvents;
-};
+		// Event buffer stuff.
+		Lock  myEventBufferLock;
+		Event*		myEventBuffer;
+		int				myEventBufferHead;
+		int				myEventBufferTail;
+
+		int myAvailableEvents;
+		int myDroppedEvents;
+	};
 }; // namespace omega
 
 #endif

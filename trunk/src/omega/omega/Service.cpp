@@ -30,6 +30,23 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Service::doSetup(Setting& settings)
+{
+	// set the service name.
+	if(settings.exists("name"))
+	{
+		myName = (String)settings["name"];
+	}
+	else
+	{
+		myName = settings.getName();
+	}
+
+	// call service specific setup method
+	setup(settings);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Service::lockEvents() 
 { 
 	myManager->lockEvents(); 
