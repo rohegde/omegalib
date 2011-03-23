@@ -65,6 +65,7 @@ namespace omega
 		// Add a new input service to the manager.
 		void addService(Service* svc);
 		void removeService(Service* svc);
+		template<typename T> T* findService(String svcName);
 
 		// initialize
 		void setup(Setting& settings);
@@ -113,6 +114,13 @@ namespace omega
 		int myAvailableEvents;
 		int myDroppedEvents;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename T> inline
+		T* ServiceManager::findService(String svcName)
+	{
+		return (T*)myServices[svcName];
+	}
 }; // namespace omega
 
 #endif
