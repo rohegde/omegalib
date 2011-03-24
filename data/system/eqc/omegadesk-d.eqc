@@ -85,7 +85,7 @@ server
 				{
 						bottom_left  [ -.7 -0.9 .9 ]
 						bottom_right [  .7 -0.9 .9 ]
-						top_left     [ -.7 -0.4 0 ]
+						top_left     [ -.7 -0.55 0 ]
 				}
             }
             segment
@@ -96,7 +96,7 @@ server
 				{
 						bottom_left  [ -.7 -0.9 .9 ]
 						bottom_right [  .7 -0.9 .9 ]
-						top_left     [ -.7 -0.4 0 ]
+						top_left     [ -.7 -0.55 0 ]
 				}
             }
             segment

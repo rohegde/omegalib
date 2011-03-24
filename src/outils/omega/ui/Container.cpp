@@ -154,6 +154,22 @@ Widget* Container::getChildByName(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Widget* Container::getChildByIndex(int index)
+{
+	oassert(getNumChildren() > index);
+
+	WidgetIterator it(myChildren.begin(), myChildren.end());
+	int i = 0;
+	while(it.hasMoreElements())
+	{
+		Widget* w = it.getNext();
+		if(i == index) return w;
+		i++;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::setUIManager(UIManager* ui)
 {
 	Widget::setUIManager(ui);

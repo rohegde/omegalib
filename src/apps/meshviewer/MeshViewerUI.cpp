@@ -89,6 +89,16 @@ void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 			break;
 		}
 	}
+	for(int j = 0; j < myUserUI->getNumChildren(); j++)
+	{
+		Widget* w = myUserUI->getChildByIndex(j);
+		if(w == evt.source)
+		{
+			int userId = atoi(w->getName().c_str());
+			ofmsg("Active User id: %1%", %userId);
+			myClient->setActiveUser(userId);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,7 +121,7 @@ void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
 void MeshViewerUI::onTraceUser(int userId)
 {
 	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
-	String name = oformat("user %1%", %userId);
+	String name = oformat("%1%", %userId);
 	String label = oformat("User %1%", %userId);
 	Button* btn = wf->createButton(name, myUserUI);
 	btn->setText(label);

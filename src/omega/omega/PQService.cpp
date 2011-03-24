@@ -662,7 +662,6 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		//printf(" Server %d,%d Screen %d, %d\n", serverX, serverY, screenX, screenY );
 		//printf("      at %d,%d (%f, %f)\n", tp.x, tp.y, evt->position[0], evt->position[1] );
 		evt->sourceId = touchID[tp.id];
-		ofmsg("%1%", %evt->position);
 		mysInstance->unlockEvents();
 	}
 }

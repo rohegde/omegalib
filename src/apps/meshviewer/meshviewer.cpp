@@ -81,16 +81,24 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::setActiveUser(int userId)
+{
+	myActiveUserId = userId;
+	ObserverUpdateService* svc = getServiceManager()->findService<ObserverUpdateService>("ObserverUpdateService");
+	svc->setSourceId(userId);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& context)
 {
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
 	//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-	Ray ray = Ray(evt.pointSet[PointSetId::RightHand], Vector3f(0, 0, -1.0f));
+	Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
 
 	//ofmsg("Ray pos: %1%", %ray.getOrigin());
 
-	if(evt.pointSet[PointSetId::RightHand].z() < 0.5f)
+	if(evt.pointSet[RightHand].z() < 0.6f)
 	{
 		if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
 		{
@@ -104,7 +112,7 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 		{
 			float z = 1.0f;
 			//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-			Ray ray = Ray(evt.pointSet[PointSetId::RightHand], Vector3f(0, 0, -1.0f));
+			Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
 
 			//if(evt.isFlagSet(Event::Left))
 			//{
@@ -120,7 +128,7 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 			//}
 		}
 	}
-	else if(evt.position.z() > 0.5f)
+	else if(evt.position.z() > 0.6f)
 	{
 		// Deselect objects.
 		if(myVisibleEntity != NULL)

@@ -32,6 +32,7 @@
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
 #include "omega/Texture.h"
+#include "omega/ObserverUpdateService.h"
 
 #ifdef OMEGA_USE_OPENNI
 #include "omega/OpenNIService.h"
@@ -131,7 +132,7 @@ private:
 class MeshViewerClient: public ApplicationClient
 {
 public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL) {}
+	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL), myActiveUserId(1) {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const Event& evt, DrawContext& context);
@@ -148,6 +149,8 @@ public:
 	int getNumEntities() { return myEntities.size(); }
 	Entity* getEntity(int entityId) { return myEntities[entityId]; }
 
+	void setActiveUser(int userId);
+
 private:
 	// Engine
 	EngineClient* myEngine;
@@ -160,6 +163,9 @@ private:
 
 	// Active entity.
 	Entity* myVisibleEntity;
+
+	// Active user id;
+	int myActiveUserId;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
