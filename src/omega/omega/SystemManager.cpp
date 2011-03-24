@@ -85,6 +85,7 @@ SystemManager::SystemManager():
 #ifdef OMEGA_USE_DISPLAY
 	myDisplaySystem(NULL),
 #endif
+	myApplication(NULL),
 	myExitRequested(false),
 	myIsInitialized(false)
 {
@@ -201,8 +202,11 @@ void SystemManager::setupDisplaySystem()
 		{
 			oferror("invalid display system type: %s", %displaySystemType);
 		}
-		ds->setup(stDS);
-		setDisplaySystem(ds);
+		if(ds != NULL)
+		{
+			ds->setup(stDS);
+			setDisplaySystem(ds);
+		}
 	}
 }
 #endif
@@ -216,7 +220,6 @@ void SystemManager::initialize()
 	myServiceManager->initialize();
 
 	// Initialize the application object (if present)
-	// XXX If myApp = NULL then I still get an Exception - Vic
 	if(myApplication) myApplication->initialize();
 
 	myIsInitialized = true;

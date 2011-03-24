@@ -77,7 +77,11 @@ if(OMEGA_BUILD_UTILITY_LIB)
 	add_subdirectory(outils)
 endif(OMEGA_BUILD_UTILITY_LIB)
 
+IF(OMEGA_USE_DISPLAY) 
 add_subdirectory(apps/ohello)
+ENDIF(OMEGA_USE_DISPLAY)
+
+add_subdirectory(apps/eventlogger)
 
 if(APPS_BUILD_INPUT_SERVER)
 	ADD_SUBDIRECTORY(apps/oinputserver)
