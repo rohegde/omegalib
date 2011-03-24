@@ -48,8 +48,10 @@ int main(int argc, char** argv)
 	Config* cfg = new Config("eventlogger.cfg");
 	sys->setup(cfg);
 
+	// Initialize the system manager
 	sys->initialize();
 
+	// Start running services and listening to events.
 	ServiceManager* sm = sys->getServiceManager();
 	sm->start();
 
