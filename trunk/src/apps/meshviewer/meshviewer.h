@@ -32,7 +32,10 @@
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
 #include "omega/Texture.h"
+
+#ifdef OMEGA_USE_OPENNI
 #include "omega/OpenNIService.h"
+#endif
 
 
 using namespace omega;
@@ -109,7 +112,9 @@ public:
 
 	void initialize(MeshViewerClient* client);
 	void handleUIEvent(const UIEvent& evt);
+#ifdef OMEGA_USE_OPENNI
 	void updateKinectTexture(OpenNIService* svc);
+#endif
 	void onTraceUser(int userId);
 	void onUntraceUser(int userId);
 

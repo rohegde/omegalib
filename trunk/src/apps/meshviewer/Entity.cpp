@@ -59,14 +59,6 @@ void SelectionSphere::draw(SceneNode* node)
 			}
 			glEnd();
 		}
-
-		// Draw handle positions;
-		glColor4f(1.0, 1.0, 0.0, 1.0);
-		glPointSize(16);
-		glBegin(GL_POINTS);
-		glVertex3fv(myEntity->getHandlePosition().data());
-		glEnd();
-		glPointSize(1);
 	}
 }
 
@@ -100,9 +92,7 @@ void Entity::setVisible(bool value)
 void Entity::resetTransform()
 {
 	mySceneNode->setPosition(0, 0, 0.0f);
-	//mySceneNode->setPosition(0, -1.4, 0.4f);
 	mySceneNode->resetOrientation();
-	//mySceneNode->setScale(0.2f, 0.2f, 0.2f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,8 +122,6 @@ bool Entity::hit(const Ray& ray, Vector3f* handlePos)
 	if(h.first)
 	{
 		(*handlePos) = ray.getPoint(h.second) - s.getCenter();
-		//printf("handle pos: %.2f %.2f %.2f\n",
-		//	handlePos->x(), handlePos->y(), handlePos->z());
 	}
 	return h.first;
 }

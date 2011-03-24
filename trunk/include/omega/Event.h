@@ -35,8 +35,51 @@
 #include <eq/eq.h>
 #endif
 
+#ifdef OMEGA_USE_OPENNI
+#include "openni/XnCppWrapper.h"
+#endif
+
 namespace omega
 {
+#ifdef OMEGA_USE_OPENNI
+	enum PointSetId
+	{
+		Head = XN_SKEL_HEAD,
+		Neck = XN_SKEL_NECK,
+		Torso = XN_SKEL_TORSO,
+		LeftShoulder = XN_SKEL_LEFT_SHOULDER,
+		LeftElbow = XN_SKEL_LEFT_ELBOW,
+		LeftHand = XN_SKEL_LEFT_HAND,
+		LeftHip = XN_SKEL_LEFT_HIP,
+		LeftKnee = XN_SKEL_LEFT_KNEE,
+		LeftFoot = XN_SKEL_LEFT_FOOT,
+		RightShoulder = XN_SKEL_RIGHT_SHOULDER,
+		RightElbow = XN_SKEL_RIGHT_ELBOW,
+		RightHand = XN_SKEL_RIGHT_HAND,
+		RightHip = XN_SKEL_RIGHT_HIP,
+		RightKnee = XN_SKEL_RIGHT_KNEE,
+		RightFoot = XN_SKEL_RIGHT_FOOT
+	};
+#else
+	enum PointSetId
+	{
+		Head,
+		Neck,
+		Torso,
+		LeftShoulder,
+		LeftElbow,
+		LeftHand,
+		LeftHip,
+		LeftKnee,
+		LeftFoot,
+		RightShoulder,
+		RightElbow,
+		RightHand,
+		RightHip,
+		RightKnee,
+		RightFoot
+	};
+#endif
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct Event: public DynamicObject
 	{
