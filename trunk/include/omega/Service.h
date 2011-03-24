@@ -37,21 +37,25 @@ namespace omega
 	class ServiceManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Service: public DynamicObject
+	class OMEGA_API Service: public DynamicObject
 	{
 	friend class ServiceManager;
 	public:
 		enum ServiceType { Pointer, Mocap, Keyboard, Controller }; 
+		enum ServicePollPriority { PollFirst, PollNormal, PollLast }; 
 
 	public:
 		// Class constructor
-		Service(): myManager(NULL) {}
+		Service(): myManager(NULL), myPriority(PollNormal) {}
 
 	   // Class destructor
 		virtual ~Service() {}
 
 		ServiceManager* getManager();
 		String getName();
+
+		ServicePollPriority getPollPriority();
+		void setPollPriority(ServicePollPriority value);
 
 		virtual void setup(Setting& settings) {}
 		virtual void initialize() {}
@@ -75,6 +79,7 @@ namespace omega
 	private:
 		ServiceManager* myManager;
 		String myName;
+		ServicePollPriority myPriority;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +89,14 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline String Service::getName() 
 	{ return myName; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Service::ServicePollPriority Service::getPollPriority()
+	{ return myPriority; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Service::setPollPriority(Service::ServicePollPriority value)
+	{ myPriority = value; }
 }; // namespace omega
 
 #endif

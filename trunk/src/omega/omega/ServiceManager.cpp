@@ -139,10 +139,14 @@ void ServiceManager::stop()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::poll()
 {
-	MapIterator<ServiceDictionary> it(myServices);
-	while(it.hasMoreElements())
+	for(int pollPriority = Service::PollFirst; pollPriority <= Service::PollLast; pollPriority++)
 	{
-		it.getNext()->poll();
+		MapIterator<ServiceDictionary> it(myServices);
+		while(it.hasMoreElements())
+		{
+			Service* svc = it.getNext();
+			if(svc->getPollPriority() == pollPriority) svc->poll();
+		}
 	}
 }
 

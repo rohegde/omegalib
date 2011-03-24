@@ -100,7 +100,7 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 				myVisibleEntity->activate(handlePos);
 			}
 		}
-		if(myVisibleEntity->isActive())
+		if(myVisibleEntity != NULL && myVisibleEntity->isActive())
 		{
 			float z = 1.0f;
 			//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
@@ -210,7 +210,20 @@ bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 	switch(evt.serviceType)
 	{
 	case Service::Mocap:
-		processMocapEvent(evt, context);
+		if(evt.type == Event::Trace)
+		{
+			ofmsg("Tracing user %1%", %evt.sourceId);
+			myUI->onTraceUser(evt.sourceId);
+		}
+		else if(evt.type == Event::Untrace)
+		{
+			ofmsg("Untracing user %1%", %evt.sourceId);
+			myUI->onUntraceUser(evt.sourceId);
+		}
+		else
+		{
+			processMocapEvent(evt, context);
+		}
 		return true;
 	}
 	return false;

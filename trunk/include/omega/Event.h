@@ -44,6 +44,9 @@ namespace omega
 		//! Supported event types.
 		enum Type 
 		{ 
+			//! Update: Generated when the soruce of an event gets updated (what 'update') means depends
+			//! on the event source.
+			Update,
 			//! Move: Generated whenever the source of an event moves.
 			Move, 
 			//! Down: generated when the source of an event goes to a logical 'down' state (i.e. touch on a surface or 
@@ -96,7 +99,7 @@ namespace omega
 			RotateEnd,
 			//! Rotate: generated when an event source is stationary while a second source is rotating around the first.
 			//! parameters: position (center of gesture) pointSet[0, 1] (individual finger positions), rotation[0] (degrees).
-			Rotate,
+			Rotate
 		};
 
 		//! Defines some generic input event flags
@@ -155,9 +158,6 @@ namespace omega
 		int numberOfPoints;
 		Vector3f pointSet[MaxPointSetSize];
 
-		int userDataSize;
-		void* userData;
-
 		// NOTE: event serialization services are used only in clustered / multidisplay systems.
 		// If display system building is disabled, this code can be safely excluded.
 		// Right now, event serialization for NetService / oinputserver and display system
@@ -183,11 +183,6 @@ namespace omega
 			{
 				os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
 			}
-			os << userDataSize;
-			//if(userDataSize != 0)
-			//{
-				//os.write((const char*)userData, userDataSize);
-			//}
 		}
 
 		//! Deserialize an Event instance.
@@ -207,11 +202,6 @@ namespace omega
 			{
 				is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
 			}
-			is >> userDataSize;
-			//if(userDataSize != 0)
-			//{
-			//	is.read((char*)userData, userDataSize);
-			//}
 		}
 	#endif
 		bool isFlagSet(uint flag) const;
@@ -223,9 +213,7 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Event::Event():
-		processed(false),
-		userDataSize(0),
-		userData(NULL)
+		processed(false)
 	{}
 
 }; // namespace omega

@@ -38,7 +38,7 @@ void DefaultButton::renderContent()
 
 	Painter* painter = getPainter();
 
-	painter->drawRect(Vector2f::Zero(), getSize(), Color(1.0f, 1.0f, 1.0f, 0.2f));
+	painter->drawRect(Vector2f::Zero(), getSize(), myColor);
 	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color(1.0f, 1.0f, 1.0f, 1.0f));
 
 	myLabel.setPosition(Vector2f::Zero());

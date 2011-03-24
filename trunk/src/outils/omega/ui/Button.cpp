@@ -38,6 +38,7 @@ Button::Button(omega::String name):
 	//addChild(&myLabel);
 	myLabel.setText(name);
 	setMaximumHeight(22);
+	myColor = Color(0.2f, 0.2f, 0.2f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

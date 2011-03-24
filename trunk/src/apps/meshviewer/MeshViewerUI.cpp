@@ -45,6 +45,9 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
 
+	myUserUI = wf->createContainer("userUI", root, Container::LayoutHorizontal);
+	myUserUI->setVerticalAlign(Container::AlignBottom);
+
 	// Setup ui layout using from config file sections.
 	Config* cfg = SystemManager::instance()->getAppConfig();
 	if(cfg->exists("config/ui/entityButtons"))
@@ -98,4 +101,26 @@ void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
 	
 	texture->setDirty();
 	texture->refresh();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerUI::onTraceUser(int userId)
+{
+	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	String name = oformat("user %1%", %userId);
+	String label = oformat("User %1%", %userId);
+	Button* btn = wf->createButton(name, myUserUI);
+	btn->setText(label);
+
+	// Set button color through user id
+	OpenNIService* svc = myClient->getServiceManager()->findService<OpenNIService>("OpenNIService");
+	Color col = svc->getUserColor(userId);
+	btn->setColor(col.scale(0.2f));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerUI::onUntraceUser(int userId)
+{
+	String name = oformat("user %1%", %userId);
+	myUserUI->removeChild(name);
 }
