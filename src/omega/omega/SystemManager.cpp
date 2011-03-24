@@ -105,10 +105,18 @@ void SystemManager::setup(Config* appcfg)
 	if(!appcfg->isLoaded()) appcfg->load();
 	oassert(appcfg->isLoaded());
 
-	String systemCfgName = appcfg->lookup("config/systemConfig");
-
+	// If app config has a systemConfig entry, load a separate system configuration file, otherwise use
+	// the app configuration file as system configuration.
 	myAppConfig = appcfg;
-	mySystemConfig = new Config(systemCfgName);
+	if(appcfg->exists("config/systemConfig"))
+	{
+		String systemCfgName = appcfg->lookup("config/systemConfig");
+		mySystemConfig = new Config(systemCfgName);
+	}
+	else
+	{
+		mySystemConfig = appcfg;
+	}
 
 	// Make sure the configuration is loaded.
 	if(!mySystemConfig->isLoaded()) mySystemConfig->load();
