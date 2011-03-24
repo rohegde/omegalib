@@ -41,6 +41,7 @@ xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
 //xn::SceneMetaData OpenNIService::omg_sceneMD = NULL;
 bool OpenNIService::isCalibrated = false;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 OpenNIService::OpenNIService()
 {
 	Colors[0][0] = 0; Colors[0][1] = 1; Colors[0][2] = 1;
@@ -60,11 +61,23 @@ OpenNIService::OpenNIService()
 	myTransform  = AffineTransform3::Identity();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 OpenNIService::~OpenNIService()
 {
 	delete pDepthTexBuf;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Color OpenNIService::getUserColor(int userId)
+{
+	if(userId < 11)
+	{
+		return Color(Colors[userId][0], Colors[userId][1], Colors[userId][2], 1.0f);
+	}
+	else return Color(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void OpenNIService::initialize()
 {
 	myOpenNI = this;
@@ -121,7 +134,7 @@ void OpenNIService::initialize()
 
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void OpenNIService::setup(Setting& settings)
 {
 	Vector3f refTranslation = Vector3f::Zero();
@@ -229,7 +242,7 @@ void OpenNIService::poll(void)
 								theEvent->position = myTransform * pos;
 								theEvent->serviceType = Service::Mocap;
 								theEvent->sourceId = t.trackableId;
-								theEvent->type = Event::Trace;
+								theEvent->type = Event::Update;
 								theEvent->orientation = Quaternion::Identity();
 							}
 						}
@@ -240,9 +253,8 @@ void OpenNIService::poll(void)
 					Event* theEvent = myOpenNI->writeHead();
 					theEvent->sourceId = aUsers[i];
 					theEvent->serviceType = Service::Mocap;
-					//theEvent->userData = pDepthTexBuf;
-					//theEvent->userDataSize = 640 * 480 * 4;
 					theEvent->numberOfPoints = 25;
+					theEvent->type = Event::Move;
 
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
@@ -345,7 +357,15 @@ void XN_CALLBACK_TYPE OpenNIService::User_NewUser(xn::UserGenerator& generator, 
 // Callback: An existing user was lost
 void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie)
 {
-	ofmsg("Lost user %1%\n", %(int)nId);
+	//ofmsg("Lost user %1%\n", %(int)nId);
+	myOpenNI->lockEvents();
+	Event* theEvent = myOpenNI->writeHead();
+	theEvent->serviceType = Service::Mocap;
+	theEvent->sourceId = nId;
+	theEvent->type = Event::Untrace;
+	theEvent->position = Vector3f::Zero();
+	theEvent->orientation = Quaternion::Identity();
+	myOpenNI->unlockEvents();
 }
 
 // Callback: Detected a pose
@@ -368,10 +388,18 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 	if (bSuccess)
 	{
 		// Calibration succeeded
-		ofmsg("Calibration complete, start tracking user %1%\n", %(int)nId);
+		//ofmsg("Calibration complete, start tracking user %1%\n", %(int)nId);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
         //omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
         //isCalibrated = true;
+		myOpenNI->lockEvents();
+		Event* theEvent = myOpenNI->writeHead();
+		theEvent->serviceType = Service::Mocap;
+		theEvent->sourceId = nId;
+		theEvent->type = Event::Trace;
+		theEvent->position = Vector3f::Zero();
+		theEvent->orientation = Quaternion::Identity();
+		myOpenNI->unlockEvents();
 	}
 	else
 	{

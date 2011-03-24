@@ -57,8 +57,11 @@ namespace ui
 		void addChild(Widget* child);
 		//! Remove a child from this widget.
 		void removeChild(Widget* child);
+		void removeChild(const String& name);
 		//! Return the number of children
 		int getNumChildren();
+		//! Find a child by its name
+		Widget* getChildByName(const String& name);
 		//@}
 
 		//!Layout options

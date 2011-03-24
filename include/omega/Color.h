@@ -46,6 +46,8 @@ namespace omega
 			myData[2] = b;
 			myData[3] = a;
 		}
+
+		Color scale(float f, bool alpha = false) { return Color(myData[0] * f, myData[1] * f, myData[2] * f, alpha ? myData[3] * f : myData[3]); }
 	private:
 		float myData[4];
 	};

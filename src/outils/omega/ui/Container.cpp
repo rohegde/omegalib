@@ -131,6 +131,29 @@ void Container::removeChild(Widget* child)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::removeChild(const String& name)
+{
+	Widget* w = getChildByName(name);
+	if(w != NULL)
+	{
+		myChildren.remove(w);
+		w->setUIManager(NULL);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Widget* Container::getChildByName(const String& name)
+{
+	WidgetIterator it(myChildren.begin(), myChildren.end());
+	while(it.hasMoreElements())
+	{
+		Widget* w = it.getNext();
+		if(w->getName() == name) return w;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::setUIManager(UIManager* ui)
 {
 	Widget::setUIManager(ui);
@@ -344,34 +367,37 @@ void Container::computeGridLayout(Orientation orientation)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::layout()
 {
-	if(needLayoutRefresh())
+	if(getNumChildren() != 0)
 	{
-		if(myLayout == LayoutHorizontal)
+		if(needLayoutRefresh())
 		{
-			computeLinearLayout(Horizontal);
-		}
-		else if(myLayout == LayoutVertical)
-		{
-			computeLinearLayout(Vertical);
-		}
-		else if(myLayout == LayoutGridHorizontal)
-		{
-			computeGridLayout(Horizontal);
-		}
-		if(myLayout == LayoutGridVertical)
-		{
-			computeGridLayout(Vertical);
-		}
+			if(myLayout == LayoutHorizontal)
+			{
+				computeLinearLayout(Horizontal);
+			}
+			else if(myLayout == LayoutVertical)
+			{
+				computeLinearLayout(Vertical);
+			}
+			else if(myLayout == LayoutGridHorizontal)
+			{
+				computeGridLayout(Horizontal);
+			}
+			if(myLayout == LayoutGridVertical)
+			{
+				computeGridLayout(Vertical);
+			}
 
-		// Layout children.
-		WidgetIterator it(myChildren.begin(), myChildren.end());
-		while(it.hasMoreElements())
-		{
-			Widget* w = it.getNext();
-			w->layout();
-		}
+			// Layout children.
+			WidgetIterator it(myChildren.begin(), myChildren.end());
+			while(it.hasMoreElements())
+			{
+				Widget* w = it.getNext();
+				w->layout();
+			}
 
-		Widget::layout();
+			Widget::layout();
+		}
 	}
 }
 

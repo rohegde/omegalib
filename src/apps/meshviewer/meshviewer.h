@@ -110,12 +110,16 @@ public:
 	void initialize(MeshViewerClient* client);
 	void handleUIEvent(const UIEvent& evt);
 	void updateKinectTexture(OpenNIService* svc);
+	void onTraceUser(int userId);
+	void onUntraceUser(int userId);
 
 private:
 	MeshViewerClient* myClient;
 	Vector<Button*> myEntityButtons;
 	Image* depthImage;
 	Texture *texture;
+
+	Container* myUserUI;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

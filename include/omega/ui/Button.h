@@ -34,28 +34,44 @@ namespace omega
 {
 namespace ui
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OUTILS_API Button: public AbstractButton
-{
-public:
-	Button(omega::String name);
-	virtual ~Button();
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API Button: public AbstractButton
+	{
+	public:
+		Button(omega::String name);
+		virtual ~Button();
 
-	omega::String getText() { return myLabel.getText(); }
-	void setText(omega::String value) { myLabel.setText(value); }
+		omega::String getText() { return myLabel.getText(); }
+		void setText(omega::String value) { myLabel.setText(value); }
 
-	// Gets the label subobject used by the button.
-	Label* getLabel() { return &myLabel; }
-	virtual void autosize();
+		// Gets the label subobject used by the button.
+		Label* getLabel() { return &myLabel; }
+		virtual void autosize();
 
-protected:
-		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
-		virtual void renderContent();
+		Color getColor();
+		void setColor(Color value);
 
-protected:
-	Label myLabel;
-};
+	protected:
+			virtual void update(const omega::UpdateContext& context);
+			virtual bool processInputEvent(const omega::Event& evt);
+			virtual void renderContent();
+
+	protected:
+		Label myLabel;
+		Color myColor;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color Button::getColor()
+	{
+		return myColor;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Button::setColor(Color value)
+	{
+		myColor = value;
+	}
 }; // namespace gfx
 }; // namespace omega
 

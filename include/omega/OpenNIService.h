@@ -28,6 +28,7 @@
 #define __OPENNI_SERVICE_H__
 
 #include "omega/osystem.h"
+#include "omega/Color.h"
 #include "omega/ServiceManager.h"
 #include "natnet/NatNetTypes.h"
 #include "openni/XnCppWrapper.h"
@@ -83,6 +84,9 @@ namespace omega
 		void* getDepthImageData();
 		int getImageDataWidth();
 		int getImageDataHeight();
+
+		//! Returns the color used to identify the specific user id on the depth image.
+		Color getUserColor(int userId);
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	

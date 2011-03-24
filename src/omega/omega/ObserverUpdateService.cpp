@@ -37,6 +37,7 @@ ObserverUpdateService::ObserverUpdateService():
 	myEnableLookAt(false)
 {
 	myLookAt = Vector3f::Zero();
+	setPollPriority(Service::PollLast);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
