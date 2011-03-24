@@ -62,6 +62,7 @@ namespace ui
 		int getNumChildren();
 		//! Find a child by its name
 		Widget* getChildByName(const String& name);
+		Widget* getChildByIndex(int index);
 		//@}
 
 		//!Layout options

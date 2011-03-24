@@ -73,6 +73,10 @@ include_directories(
 
 add_subdirectory(omega)
 
+IF(OMEGA_USE_OPENNI)
+	ADD_DEFINITIONS( -DOMEGA_USE_OPENNI)
+ENDIF(OMEGA_USE_OPENNI)
+
 if(OMEGA_BUILD_UTILITY_LIB)
 	add_subdirectory(outils)
 endif(OMEGA_BUILD_UTILITY_LIB)
