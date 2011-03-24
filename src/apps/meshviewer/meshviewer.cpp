@@ -86,11 +86,11 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
 	//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-	Ray ray = Ray(evt.pointSet[OMEGA_SKEL_RIGHT_HAND], Vector3f(0, 0, -1.0f));
+	Ray ray = Ray(evt.pointSet[PointSetId::RightHand], Vector3f(0, 0, -1.0f));
 
 	//ofmsg("Ray pos: %1%", %ray.getOrigin());
 
-	if(evt.pointSet[OMEGA_SKEL_RIGHT_HAND].z() < 0.5f)
+	if(evt.pointSet[PointSetId::RightHand].z() < 0.5f)
 	{
 		if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
 		{
@@ -104,7 +104,7 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 		{
 			float z = 1.0f;
 			//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-			Ray ray = Ray(evt.pointSet[OMEGA_SKEL_RIGHT_HAND], Vector3f(0, 0, -1.0f));
+			Ray ray = Ray(evt.pointSet[PointSetId::RightHand], Vector3f(0, 0, -1.0f));
 
 			//if(evt.isFlagSet(Event::Left))
 			//{
@@ -252,9 +252,10 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
+#ifdef OMEGA_USE_OPENNI
 	OpenNIService* svc = getServiceManager()->findService<OpenNIService>("OpenNIService");
-
 	myUI->updateKinectTexture(svc);
+#endif
 
 	switch(context.layer)
 	{

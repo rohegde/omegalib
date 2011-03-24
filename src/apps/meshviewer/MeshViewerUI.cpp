@@ -68,9 +68,11 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 		myEntityButtons.push_back(btn);
 	}
 
+#ifdef OMEGA_USE_OPENNI
 	depthImage = wf->createImage("kinectDepthBuffer", entityButtons);
 	depthImage->setHeight(240);
 	depthImage->setWidth(320);
+#endif
 
 	texture = NULL;
 
@@ -90,6 +92,7 @@ void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef OMEGA_USE_OPENNI
 void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
 {
 	if( texture == NULL ) 
@@ -102,6 +105,7 @@ void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
 	texture->setDirty();
 	texture->refresh();
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerUI::onTraceUser(int userId)
@@ -113,9 +117,11 @@ void MeshViewerUI::onTraceUser(int userId)
 	btn->setText(label);
 
 	// Set button color through user id
+#ifdef OMEGA_USE_OPENNI
 	OpenNIService* svc = myClient->getServiceManager()->findService<OpenNIService>("OpenNIService");
 	Color col = svc->getUserColor(userId);
 	btn->setColor(col.scale(0.2f));
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
