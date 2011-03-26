@@ -33,6 +33,8 @@
 
 #include "ArgumentHelper.h"
 
+#define GLEW_MX
+#include "GL/glew.h"
 #include "GL/freeglut.h"
 
 using namespace omega;

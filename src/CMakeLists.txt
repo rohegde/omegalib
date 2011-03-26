@@ -50,14 +50,20 @@ ENDIF(OMEGA_BUILD_UTILITY_LIB)
 # Add subdirectiories
 add_subdirectory(3rdparty/libconfig)
 add_subdirectory(3rdparty/equalizer)
-add_subdirectory(3rdparty/FreeImage)
-add_subdirectory(3rdparty/freetype)
-add_subdirectory(3rdparty/ftgl)
 
-IF( OMEGA_USE_DISPLAY_GLUT) 
+if(OMEGA_BUILD_UTILITY_LIB)
+	add_subdirectory(3rdparty/FreeImage)
+	add_subdirectory(3rdparty/freetype)
+	add_subdirectory(3rdparty/ftgl)
+endif(OMEGA_BUILD_UTILITY_LIB)
+
+if( OMEGA_USE_DISPLAY_GLUT) 
 	add_subdirectory(3rdparty/freeglut)
-ENDIF(OMEGA_USE_DISPLAY_GLUT)
-add_subdirectory(3rdparty/glew)
+endif(OMEGA_USE_DISPLAY_GLUT)
+
+if(OMEGA_USE_DISPLAY)
+	add_subdirectory(3rdparty/glew)
+endif(OMEGA_USE_DISPLAY)
 
 include_directories(
   ${OmegaLib_SOURCE_DIR}/include/

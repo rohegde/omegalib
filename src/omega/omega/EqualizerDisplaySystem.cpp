@@ -33,6 +33,7 @@
 #include "omega/RenderTarget.h"
 #include "omega/MouseService.h"
 #include "omega/StringUtils.h"
+#include "omega/GpuManager.h"
 
 #ifdef OMEGA_OS_WIN
 // This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 

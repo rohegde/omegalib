@@ -26,6 +26,8 @@
 #define __GLUT_DISPLAY_SYSTEM_H__
 
 #include "DisplaySystem.h"
+#include "RenderTarget.h"
+#include "GpuManager.h"
 
 namespace omega
 {

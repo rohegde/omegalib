@@ -91,7 +91,7 @@ void Entity::setVisible(bool value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::resetTransform()
 {
-	mySceneNode->setPosition(0, -0.4, 0.0f);
+	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->resetOrientation();
 }
 
