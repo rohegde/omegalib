@@ -44,11 +44,13 @@ public:
 	static void mouseButtonCallback(int btn, int k, int x, int y);
 	static void mouseWheelCallback(int wheel, int x, int y);
 
-	OMEGA_API virtual void initialize();
-	OMEGA_API virtual void dispose();
+	virtual void setup(Setting& settings);
+	virtual void initialize();
+	virtual void dispose();
 
 private:
 	static MouseService* mysInstance;
+	static int screenX, screenY, serverX, serverY, screenOffsetX, screenOffsetY;
 };
 
 }; // namespace omega

@@ -47,6 +47,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 
 	myUserUI = wf->createContainer("userUI", root, Container::LayoutHorizontal);
 	myUserUI->setVerticalAlign(Container::AlignBottom);
+	myUserUI->setDebugModeEnabled(true);
 
 	// Setup ui layout using from config file sections.
 	Config* cfg = SystemManager::instance()->getAppConfig();
@@ -137,6 +138,6 @@ void MeshViewerUI::onTraceUser(int userId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerUI::onUntraceUser(int userId)
 {
-	String name = oformat("user %1%", %userId);
+	String name = oformat("%1%", %userId);
 	myUserUI->removeChild(name);
 }
