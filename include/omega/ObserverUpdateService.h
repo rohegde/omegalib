@@ -55,6 +55,8 @@ namespace omega
 		int mySourceId;
 		Vector3f myLookAt;
 		bool myEnableLookAt;
+		bool myDebug;
+		bool myUseHeadPointId;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

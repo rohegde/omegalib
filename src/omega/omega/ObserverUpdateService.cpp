@@ -34,7 +34,9 @@ using namespace omega;
 ObserverUpdateService::ObserverUpdateService():
 	myObserver(NULL),
 	mySourceId(0),
-	myEnableLookAt(false)
+	myEnableLookAt(false),
+	myDebug(false),
+	myUseHeadPointId(false)
 {
 	myLookAt = Vector3f::Zero();
 	setPollPriority(Service::PollLast);
@@ -46,6 +48,14 @@ void ObserverUpdateService::setup(Setting& settings)
 	if(settings.exists("sourceId"))
 	{
 		mySourceId = settings["sourceId"];
+	}
+	if(settings.exists("debug"))
+	{
+		myDebug = settings["debug"];
+	}
+	if(settings.exists("useHeadPointId"))
+	{
+		myUseHeadPointId = settings["useHeadPointId"];
 	}
 	if(settings.exists("lookAt"))
 	{
@@ -76,21 +86,28 @@ void ObserverUpdateService::poll()
 		{
 			if(evt->sourceId == mySourceId)
 			{
-				//ofmsg("Observer pos: %1%", %evt->position);
-				//myObserver->update(evt->position, evt->orientation);
-
-				Quaternion q = Quaternion::Identity();
-
-				// If look at is enabled, compute orientation using target lookat point.
-				if(myEnableLookAt)
+				Vector3f& pos = evt->position;
+				if(!myUseHeadPointId || evt->isValidPoint(Head))
 				{
-					Vector3f dir = myLookAt - evt->position;
-					dir.normalize();
-					Vector3f localZ = Vector3f(0, 0, -1);
-					q = Math::buildRotation(localZ, dir, Vector3f::Zero());
-				}
+					if(myUseHeadPointId) pos = evt->pointSet[Head];
+					if(myDebug)
+					{
+						ofmsg("Observer pos: %1%", %pos);
+					}
+					Quaternion q = Quaternion::Identity();
 
-				myObserver->update(evt->position, q);
+					// If look at is enabled, compute orientation using target lookat point.
+					if(myEnableLookAt)
+					{
+						Vector3f dir = myLookAt - pos;
+						dir.normalize();
+						Vector3f localZ = Vector3f(0, 0, -1);
+						q = Math::buildRotation(localZ, dir, Vector3f::Zero());
+						ofmsg("Observer orientation: %1%", %(q.x()));
+					}
+
+					myObserver->update(evt->position, q);
+				}
 			}
 		}
 	}

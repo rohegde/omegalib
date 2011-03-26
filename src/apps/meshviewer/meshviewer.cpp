@@ -120,7 +120,7 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 			//}
 			//else if(evt.isFlagSet(Event::Right))
 			//{
-				myVisibleEntity->manipulate(Entity::Rotate, ray);
+				//myVisibleEntity->manipulate(Entity::Rotate, ray);
 			//}
 			//else if(evt.isFlagSet(Event::Middle))
 			//{
@@ -230,7 +230,7 @@ bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 		}
 		else
 		{
-			processMocapEvent(evt, context);
+			//processMocapEvent(evt, context);
 		}
 		return true;
 	}

@@ -199,6 +199,7 @@ namespace omega
 
 		//! Point set
 		int numberOfPoints;
+		int validPoints;
 		Vector3f pointSet[MaxPointSetSize];
 
 		// NOTE: event serialization services are used only in clustered / multidisplay systems.
@@ -221,6 +222,7 @@ namespace omega
 			os << position[0] << position[1] << position[2];
 			os << orientation.x() << orientation.y() << orientation.z() << orientation.w();
 			os << value[0] << value[1] << value[2];
+			os << validPoints;
 			os << numberOfPoints;
 			for(int i = 0; i < numberOfPoints; i++)
 			{
@@ -240,6 +242,7 @@ namespace omega
 			is >> position[0] >> position[1] >> position[2];
 			is >> orientation.x() >> orientation.y() >> orientation.z() >> orientation.w();
 			is >> value[0] >> value[1] >> value[2];
+			is >> validPoints;
 			is >> numberOfPoints;
 			for(int i = 0; i < numberOfPoints; i++)
 			{
@@ -248,6 +251,9 @@ namespace omega
 		}
 	#endif
 		bool isFlagSet(uint flag) const;
+		void setValidPoint(int pointId);
+		void resetValidPoints();
+		bool isValidPoint(int pointId) const;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,8 +261,21 @@ namespace omega
 	{ return (flags & flag) == flag; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::resetValidPoints()
+	{ validPoints = 0; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setValidPoint(int pointId) 
+	{ validPoints |= (1 << pointId); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Event::isValidPoint(int pointId) const
+	{ return (validPoints & (1 << pointId)) == (1 << pointId); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Event::Event():
-		processed(false)
+		processed(false),
+		validPoints(0)
 	{}
 
 }; // namespace omega
