@@ -36,7 +36,7 @@ using namespace omega;
 using namespace omega::ui;
 
 // Uncomment to enable pointer debugging
-#define DEBUG_POINTER
+//#define DEBUG_POINTER
 
 #ifdef DEBUG_POINTER
 int gx = 0;

@@ -29,8 +29,6 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
-#include "GpuManager.h"
-//#include "Event.h"
 
 namespace omega
 {
@@ -75,22 +73,16 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationClient: public DynamicObject
+	class OMEGA_API ApplicationClient: public DynamicObject
 	{
 	friend class DisplaySystem;
 	public:
-		ApplicationClient(Application* app): myApplication(app) 
-		{
-			myGpu = new GpuManager();
-		}
-
-		virtual ~ApplicationClient() {}
+		ApplicationClient(Application* app);
+		virtual ~ApplicationClient(); 
 
 		virtual void setup() {}
-		virtual void initialize() 
-		{
-			myGpu->initialize();
-		}
+		virtual void initialize();
+
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
 		virtual bool handleEvent(const Event& evt, DrawContext& context) { return false; }

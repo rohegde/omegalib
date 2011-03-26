@@ -84,7 +84,7 @@ SET( headers
 if(OMEGA_USE_DISPLAY)
 	add_definitions( -DOMEGA_USE_DISPLAY)
 	set( srcs ${srcs}
-			omega/EqualizerDisplaySystem.cpp
+			omega/Application.cpp
 			omega/GpuBuffer.cpp
 			omega/GpuManager.cpp
 			omega/GpuProgram.cpp
@@ -256,4 +256,7 @@ if(OMEGA_USE_DIRECTINPUT)
 endif(OMEGA_USE_DIRECTINPUT)
 ###################################################################################################
 # Setup link info for additional libraries
-target_link_libraries( omega ${OPENGL_LIBRARY} glew libconfig Collage)
+target_link_libraries( omega libconfig Collage)
+if(OMEGA_USE_DISPLAY)
+target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+endif(OMEGA_USE_DISPLAY)

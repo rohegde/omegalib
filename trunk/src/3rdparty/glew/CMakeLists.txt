@@ -24,6 +24,6 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-add_definitions(-DGLEW_STATIC)
+add_definitions(-DGLEW_STATIC -DGLEW_MX)
 add_library(glew glew.c)
 set_target_properties(glew PROPERTIES FOLDER 3rdparty)

@@ -36,7 +36,7 @@ namespace omega
 class SystemManager;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OMEGA_API DisplaySystem
+class OMEGA_API DisplaySystem: public DynamicObject
 {
 public:
 	enum DisplaySystemType { Invalid, Equalizer, Glut };

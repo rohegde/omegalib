@@ -47,7 +47,7 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 
 	myUserUI = wf->createContainer("userUI", root, Container::LayoutHorizontal);
 	myUserUI->setVerticalAlign(Container::AlignBottom);
-	myUserUI->setDebugModeEnabled(true);
+	//myUserUI->setDebugModeEnabled(true);
 
 	// Setup ui layout using from config file sections.
 	Config* cfg = SystemManager::instance()->getAppConfig();
