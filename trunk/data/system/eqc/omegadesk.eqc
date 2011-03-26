@@ -20,7 +20,16 @@ server
                 {
                     name     "bottom"
                     viewport [ -1920 1080 1920 1080 ]
-                    channel { name "bottom"  }
+                    channel 
+					{ 
+						viewport [0 0 .5 1]
+						name "bottomleft"  
+					}
+                    channel 
+					{ 
+						viewport [.5 0 .5 1]
+						name "bottomright"  
+					}
                 }
                 window
                 {
@@ -71,12 +80,23 @@ server
             segment
             {
                 viewport [ 0 0 1 .5 ]
-                channel "bottom"
+                channel "bottomleft"
 				wall
 				{
 						bottom_left  [ -.7 -0.9 .9 ]
 						bottom_right [  .7 -0.9 .9 ]
-						top_left     [ -.7 -0.4 0 ]
+						top_left     [ -.7 -0.55 0 ]
+				}
+            }
+            segment
+            {
+                viewport [ 0 0 1 .5 ]
+                channel "bottomright"
+				wall
+				{
+						bottom_left  [ -.7 -0.9 .9 ]
+						bottom_right [  .7 -0.9 .9 ]
+						top_left     [ -.7 -0.55 0 ]
 				}
             }
             segment
@@ -108,17 +128,23 @@ server
         {
             compound
             {
+				eye [ LEFT ]
                 channel ( segment 0 layout "MultiView" view 0 )
             }
             compound
             {
+				eye [ RIGHT ]
+                channel ( segment 1 layout "MultiView" view 0 )
+            }
+            compound
+            {
 				eye [ LEFT ]
-                channel ( segment 1 layout "MultiView" view 1 )
+                channel ( segment 2 layout "MultiView" view 1 )
             }
             compound
             {
 				eye [ RIGHT ]
-                channel ( segment 2 layout "MultiView" view 1 )
+                channel ( segment 3 layout "MultiView" view 1 )
             }
         }
     }

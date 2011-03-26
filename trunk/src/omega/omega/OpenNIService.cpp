@@ -251,6 +251,7 @@ void OpenNIService::poll(void)
 				else
 				{
 					Event* theEvent = myOpenNI->writeHead();
+					theEvent->resetValidPoints();
 					theEvent->sourceId = aUsers[i];
 					theEvent->serviceType = Service::Mocap;
 					theEvent->numberOfPoints = 25;
@@ -290,6 +291,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 		// Transform position
 		Vector3f pos = myTransform * ps;
 
+		theEvent->setValidPoint(joint);
 		theEvent->pointSet[joint][0] = pos[0];
 		theEvent->pointSet[joint][1] = pos[1];
 		theEvent->pointSet[joint][2] = pos[2];
@@ -298,11 +300,6 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 		if( joint == OMEGA_SKEL_HEAD ) {
 			theEvent->position[0] = pos[0]; theEvent->position[1] = pos[1]; theEvent->position[2] = pos[2];
 		}
-	}
-	else {
-		theEvent->pointSet[joint][0] = FLT_MIN;
-		theEvent->pointSet[joint][1] = FLT_MIN;
-		theEvent->pointSet[joint][2] = FLT_MIN;
 	}
 }
 
@@ -371,7 +368,7 @@ void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator,
 // Callback: Detected a pose
 void XN_CALLBACK_TYPE OpenNIService::UserPose_PoseDetected(xn::PoseDetectionCapability& capability, const XnChar* strPose, XnUserID nId, void* pCookie)
 {
-	ofmsg("Pose %1% detected for user %2%\n", %strPose %(int)nId);
+	ofmsg("Pose %1% detected for user %2%", %strPose %(int)nId);
 	omg_UserGenerator.GetPoseDetectionCap().StopPoseDetection(nId);
 	omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
 }
@@ -379,7 +376,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserPose_PoseDetected(xn::PoseDetectionCapa
 // Callback: Started calibration
 void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationStart(xn::SkeletonCapability& capability, XnUserID nId, void* pCookie)
 {
-	ofmsg("Calibration started for user %1%\n", %(int)nId);
+	ofmsg("Calibration started for user %1%", %(int)nId);
 }
 
 // Callback: Finished calibration
@@ -388,7 +385,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 	if (bSuccess)
 	{
 		// Calibration succeeded
-		//ofmsg("Calibration complete, start tracking user %1%\n", %(int)nId);
+		ofmsg("Calibration complete, start tracking user %1%", %(int)nId);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
         //omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
         //isCalibrated = true;
@@ -404,7 +401,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 	else
 	{
 		// Calibration failed
-		ofmsg("Calibration failed for user %1%\n", %(int)nId);
+		ofmsg("Calibration failed for user %1%", %(int)nId);
 		if ( OpenNIService::omg_bNeedPose )
 		{
 			omg_UserGenerator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);
