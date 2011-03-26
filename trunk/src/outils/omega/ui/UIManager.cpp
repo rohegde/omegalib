@@ -30,8 +30,18 @@
 #include "omega/ui/Painter.h"
 #include "omega/glheaders.h"
 
+#include "omega/StringUtils.h"
+
 using namespace omega;
 using namespace omega::ui;
+
+// Uncomment to enable pointer debugging
+#define DEBUG_POINTER
+
+#ifdef DEBUG_POINTER
+int gx = 0;
+int gy = 0;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UIManager::UIManager():
@@ -94,6 +104,14 @@ void UIManager::draw(const Rect& viewport)
 	// Draw ui.
 	myRootContainer->draw();
 
+#ifdef DEBUG_POINTER
+	glPointSize(32);
+	glColor4f(0.0f, 1.0f, 1.0f, 1.0f);
+	glBegin(GL_POINTS);
+	glVertex2i(gx, gy);
+	glEnd();
+#endif
+
 	glDisable (GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
@@ -109,6 +127,11 @@ bool UIManager::processInputEvent(const Event& evt)
 	// UI widgets only manage touch and pointer events.
 	if(evt.serviceType == Service::Pointer)
 	{
+#ifdef DEBUG_POINTER
+		gx = (int)evt.position[0];
+		gy = (int)evt.position[1];
+		ofmsg("Pos: %d %d", %gx %gy);
+#endif
 		myRootContainer->processInputEvent(evt);
 	}
 	return true;

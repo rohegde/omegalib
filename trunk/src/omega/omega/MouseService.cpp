@@ -37,6 +37,14 @@ MouseService* MouseService::mysInstance = NULL;
 unsigned int sButtonFlags = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int MouseService::serverX = 1;
+int MouseService::serverY = 1; 
+int MouseService::screenX = 1;
+int MouseService::screenY = 1;
+int MouseService::screenOffsetX = 0; 
+int MouseService::screenOffsetY = 0;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseWheelCallback(int wheel, int x, int y)
 {
 	if(mysInstance)
@@ -56,9 +64,14 @@ void MouseService::mouseWheelCallback(int wheel, int x, int y)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseMotionCallback(int x, int y)
 {
+	oassert(serverX != 0 && serverY != 0);
+
 	if(mysInstance)
 	{
 		mysInstance->lockEvents();
+
+		x = x * screenX / serverX + screenOffsetX;
+		y = y * screenY / serverY + screenOffsetY;
 
 		Event* evt = mysInstance->writeHead();
 		evt->serviceType = Service::Pointer;
@@ -74,9 +87,14 @@ void MouseService::mouseMotionCallback(int x, int y)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 {
+	oassert(serverX != 0 && serverY != 0);
+
 	if(mysInstance)
 	{
 		mysInstance->lockEvents();
+
+		x = x * screenX / serverX + screenOffsetX;
+		y = y * screenY / serverY + screenOffsetY;
 
 		Event* evt = mysInstance->writeHead();
 		evt->serviceType = Service::Pointer;
@@ -118,6 +136,35 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		evt->flags = sButtonFlags;
 
 		mysInstance->unlockEvents();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MouseService::setup(Setting& settings)
+{
+	if(settings.exists("serverX"))
+	{
+		serverX =  settings["serverX"];
+	}
+	if(settings.exists("serverY"))
+	{
+		serverY =  settings["serverY"];
+	}
+	if(settings.exists("screenX"))
+	{
+		screenX =  settings["screenX"];
+	}
+	if(settings.exists("screenY"))
+	{
+		screenY =  settings["screenY"];
+	}
+	if(settings.exists("screenOffsetX"))
+	{
+		screenOffsetX =  settings["screenOffsetX"];
+	}
+	if(settings.exists("screenOffsetY"))
+	{
+		screenOffsetY =  settings["screenOffsetY"];
 	}
 }
 

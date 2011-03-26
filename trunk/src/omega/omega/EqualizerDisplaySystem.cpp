@@ -240,6 +240,8 @@ public:
 		return ret;
 	}
 
+#define USE_WINDOW_EVENTS
+
 	virtual bool handleEvent(const eq::ConfigEvent* event)
 	{
 		static int x;
@@ -247,6 +249,7 @@ public:
 		switch( event->data.type )
 		{
 #ifdef OMEGA_USE_MOUSE
+	#ifdef USE_WINDOW_EVENTS
 		case eq::Event::WINDOW_POINTER_MOTION:
 			{
 				eq::Window* w = this->find<eq::Window>(event->data.originator);
@@ -259,7 +262,6 @@ public:
 			}
 		case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
 			{
-				//
 				eq::Window* w = this->find<eq::Window>(event->data.originator);
 				const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
 
@@ -286,6 +288,37 @@ public:
 				MouseService::mouseButtonCallback(buttons, 0, x, y);
 				return true;
 			}
+	#else
+		case eq::Event::CHANNEL_POINTER_MOTION:
+			{
+				x = event->data.pointerMotion.x; 
+				y = event->data.pointerMotion.y; 
+				MouseService::mouseMotionCallback(x, y);
+				return true;
+			}
+		case eq::Event::CHANNEL_POINTER_BUTTON_PRESS:
+			{
+				x = event->data.pointerButtonPress.x;
+				y = event->data.pointerButtonPress.y;
+				uint buttons = 0;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
+				MouseService::mouseButtonCallback(buttons, 1, x, y);
+				return true;
+			}
+		case eq::Event::CHANNEL_POINTER_BUTTON_RELEASE:
+			{
+				x = event->data.pointerButtonPress.x;
+				y = event->data.pointerButtonPress.y;
+				uint buttons = 0;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
+				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
+				MouseService::mouseButtonCallback(buttons, 0, x, y);
+				return true;
+			}
+	#endif
 		case eq::Event::WINDOW_POINTER_WHEEL:
 			{
 				//x = event->data.pointerWheel.x;

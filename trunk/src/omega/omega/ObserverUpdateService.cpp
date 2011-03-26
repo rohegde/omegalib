@@ -103,7 +103,6 @@ void ObserverUpdateService::poll()
 						dir.normalize();
 						Vector3f localZ = Vector3f(0, 0, -1);
 						q = Math::buildRotation(localZ, dir, Vector3f::Zero());
-						ofmsg("Observer orientation: %1%", %(q.x()));
 					}
 
 					myObserver->update(evt->position, q);
