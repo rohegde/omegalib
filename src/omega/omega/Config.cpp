@@ -45,28 +45,51 @@ bool Config::load()
 	if(!myIsLoaded)
 	{
 		myCfgFile = new libconfig::Config();
+		bool useFile = true;
 
 		DataManager* dm = SystemManager::instance()->getDataManager();
-		DataStream* stream = dm->openStream(myCfgFilename, DataStream::Read);
-		if(stream == NULL)
+		DataStream* stream = NULL;
+		if(myCfgFilename[0] != '@')
 		{
-			oferror("Config::Load - Opening file failed: %1%", %myCfgFilename);
-			return false;
+			stream = dm->openStream(myCfgFilename, DataStream::Read);
+			if(stream == NULL)
+			{
+				oferror("Config::Load - Opening file failed: %1%", %myCfgFilename);
+				return false;
+			}
+		}
+		else
+		{
+			useFile = false;
 		}
 
 		ofmsg("Opened config file: %1%", %myCfgFilename);
 
 		try
 		{
-			myCfgFile->read(stream->getCFile());
+			if(useFile) 
+			{
+				myCfgFile->read(stream->getCFile());
+			}
+			else
+			{
+				const char* str = &myCfgFilename.c_str()[1];
+				myCfgFile->readString(str);
+			}
 		}
 		catch(libconfig::ParseException e)
 		{
 			oferror("Config loading: %1% at line %2%", %e.getError() %e.getLine());
-			dm->deleteStream(stream);
+			if(useFile)
+			{
+				dm->deleteStream(stream);
+			}
 			return false;
 		}
-		dm->deleteStream(stream);
+		if(useFile)
+		{
+			dm->deleteStream(stream);
+		}
 
 		myIsLoaded = true;
 	}
