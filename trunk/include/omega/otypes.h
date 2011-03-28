@@ -40,7 +40,7 @@
 #endif
 
 // Libconfig
-#include "libconfig.hh"
+#include "libconfig/libconfig.hh"
 
 // make sure the min and max macros are undefined.
 #ifdef min

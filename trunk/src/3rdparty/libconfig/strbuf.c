@@ -20,7 +20,7 @@
    ----------------------------------------------------------------------------
 */
 
-#include "strbuf.h"
+#include "libconfig/strbuf.h"
 
 #include <string.h>
 #include <stdlib.h>

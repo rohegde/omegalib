@@ -573,10 +573,10 @@ static yyconst flex_int32_t yy_rule_can_match_eol[42] =
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "grammar.h"
-#include "wincompat.h"
-#include "parsectx.h"
-#include "scanctx.h"
+#include "libconfig/grammar.h"
+#include "libconfig/wincompat.h"
+#include "libconfig/parsectx.h"
+#include "libconfig/scanctx.h"
 
 static unsigned long long fromhex(const char *s)
 {

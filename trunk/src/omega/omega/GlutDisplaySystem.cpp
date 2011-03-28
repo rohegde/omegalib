@@ -31,7 +31,7 @@
 #include "omega/GlutDisplaySystem.h"
 #include "omega/StringUtils.h"
 
-#include "ArgumentHelper.h"
+#include "libconfig/ArgumentHelper.h"
 
 #define GLEW_MX
 #include "GL/glew.h"

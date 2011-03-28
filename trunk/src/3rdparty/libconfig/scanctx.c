@@ -20,7 +20,7 @@
    ----------------------------------------------------------------------------
 */
 
-#include "scanctx.h"
+#include "libconfig/scanctx.h"
 
 #include <stddef.h>
 #include <stdlib.h>
