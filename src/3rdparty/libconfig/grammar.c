@@ -126,9 +126,9 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "libconfig.h"
+#include "libconfig/libconfig.h"
 #ifdef WIN32
-#include "wincompat.h"
+#include "libconfig/wincompat.h"
 
 /* prevent warnings about redefined malloc/free in generated code: */
 #ifndef _STDLIB_H
@@ -137,8 +137,8 @@
 
 #include <malloc.h>
 #endif
-#include "parsectx.h"
-#include "scanctx.h"
+#include "libconfig/parsectx.h"
+#include "libconfig/scanctx.h"
 
 /* these delcarations are provided to suppress compiler warnings */
 extern int libconfig_yylex();

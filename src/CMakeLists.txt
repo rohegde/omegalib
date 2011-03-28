@@ -48,6 +48,18 @@ ENDIF(OMEGA_BUILD_UTILITY_LIB)
 
 ###################################################################################################
 # Add subdirectiories
+include_directories(
+  ${OmegaLib_SOURCE_DIR}/include/
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/boost
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
+  ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
+  ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include/
+  ${OmegaLib_SOURCE_DIR}/ext/windows/include/
+  ${OmegaLib_SOURCE_DIR}/ext/windows/include/openni  )
+
 add_subdirectory(3rdparty/libconfig)
 add_subdirectory(3rdparty/equalizer)
 
@@ -64,18 +76,6 @@ endif(OMEGA_USE_DISPLAY_GLUT)
 if(OMEGA_USE_DISPLAY)
 	add_subdirectory(3rdparty/glew)
 endif(OMEGA_USE_DISPLAY)
-
-include_directories(
-  ${OmegaLib_SOURCE_DIR}/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/boost
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
-  ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include/
-  ${OmegaLib_SOURCE_DIR}/ext/windows/include/
-  ${OmegaLib_SOURCE_DIR}/ext/windows/include/openni  )
 
 add_subdirectory(omega)
 

@@ -29,12 +29,12 @@
 #include "ac_config.h"
 #endif
 
-#include "libconfig.h"
-#include "grammar.h"
-#include "scanner.h"
-#include "scanctx.h"
-#include "parsectx.h"
-#include "wincompat.h"
+#include "libconfig/libconfig.h"
+#include "libconfig/grammar.h"
+#include "libconfig/scanner.h"
+#include "libconfig/scanctx.h"
+#include "libconfig/parsectx.h"
+#include "libconfig/wincompat.h"
 
 #include <locale.h>
 
