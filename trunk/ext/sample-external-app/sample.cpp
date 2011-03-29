@@ -26,53 +26,50 @@
 
 using namespace omega;
 
-// Defined in teapot.cpp
-void teapot(GLint grid, GLdouble scale, GLenum type);
+const char* configString = 
+"@config: { "
+" display: { "
+"  type = \"Glut\";"
+"  config = \"854 480 --fov 10\";"
+"  views: { view3D: { layers = [0]; }; };"
+"  observers: { observer0: { referencePosition = [ 0.0, 0.0, 2.0 ]; }; };"
+"}; };";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloClient: public ApplicationClient
+class SampleClient: public ApplicationClient
 {
 public:
-	HelloClient(Application* app): ApplicationClient(app) {}
+	SampleClient(Application* app): ApplicationClient(app) {}
 	virtual void draw(const DrawContext& context);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public Application
+class SampleApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new HelloClient(this); }
+	virtual ApplicationClient* createClient() { return new SampleClient(this); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloClient::draw(const DrawContext& context)
+void SampleClient::draw(const DrawContext& context)
 {
 	// Enable depth testing and lighting.
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	
-	// Setup light.
-	glEnable(GL_LIGHT0);
-	glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
-	glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).data());
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
 
-	// Draw a rotating teapot.
-	glRotatef(10, 1, 0, 0);
-	glRotatef((float)context.frameNum * 0.1f, 0, 1, 0);
-	teapot(14, 0.1f, GL_FILL);
+	// As simple as it gets: draw a dot.
+	glPointSize(320);
+	glColor3f(0.8f, 1.0f, 0.8f);
+	glBegin(GL_POINTS);
+	glVertex3f(0, 0, 0);
+	glEnd();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	HelloApplication app;
-
-	// Read config file name from command line or use default one.
-	const char* cfgName = "ohello.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "ohello.log", new FilesystemDataSource("./../../data/"));
-	
+	SampleApplication app;
+	omain(app, configString, "ohello.log", new FilesystemDataSource("./../../data/"));
 	return 0;
 }

@@ -62,7 +62,16 @@ elseif(CMAKE_GENERATOR STREQUAL "Xcode")
 endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
 set(OMEGA_BUILD_NAME ${ARCH}-${TOOL})
-set(OMEGA_INCLUDE_DIR ${OMEGA_ROOT_DIR}/include)
+
+# the following are the include directories needed to build a 3rd party omegalib application.
+# in the future, just ${OMEGA_ROOT_DIR}/include will be needed, but for now, multiple paths 
+# have to be specified. If building a project without Cmake, remember to specify ALL these directories
+# as include paths for your compiler.
+set(OMEGA_INCLUDE_DIR 
+	${OMEGA_ROOT_DIR}/include
+	${OMEGA_ROOT_DIR}/src/3rdparty/glew
+	)
+	  
 set(OMEGA_LIB_DIR_RELEASE ${OMEGA_ROOT_DIR}/lib/${OMEGA_BUILD_NAME}-release)
 set(OMEGA_LIB_DIR_DEBUG ${OMEGA_ROOT_DIR}/lib/${OMEGA_BUILD_NAME}-debug)
 set(OMEGA_LIB_DIR ${OMEGA_ROOT_DIR}/lib/${OMEGA_BUILD_NAME})
@@ -93,16 +102,6 @@ if(MSVC)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
-	
-	# copy dlls to destination directory
-	file(COPY
-	  ${OMEGA_BIN_DIR_DEBUG}/*.dll
-	  DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
-	  )
-	file(COPY
-	  ${OMEGA_BIN_DIR_RELEASE}/*.dll
-	  DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
-	  )
 endif(MSVC)
 
 include_directories(${OMEGA_INCLUDE_DIR})
