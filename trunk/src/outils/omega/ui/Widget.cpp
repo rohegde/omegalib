@@ -47,10 +47,9 @@ Widget::Widget(omega::String name):
 	//myScale(1.0f),
 	myUserMoveEnabled(false),
 	myMoving(false),
-	myMaximumSize(std::numeric_limits<int>::max(), std::numeric_limits<int>::max()),
+	myMaximumSize(FLT_MAX, FLT_MAX),
 	myMinimumSize(0, 0)
 {
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +74,7 @@ Painter* Widget::getPainter()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::clearSizeConstaints()
 {
-	myMaximumSize = Vector2f(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
+	myMaximumSize = Vector2f(FLT_MAX, FLT_MAX);
 	myMinimumSize = Vector2f(0, 0);
 }
 
