@@ -107,7 +107,7 @@ namespace omega
 		ServiceDictionary myServices;
 
 		// Event buffer stuff.
-		Lock  myEventBufferLock;
+		Lock*  myEventBufferLock;
 		Event*		myEventBuffer;
 		int				myEventBufferHead;
 		int				myEventBufferTail;

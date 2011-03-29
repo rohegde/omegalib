@@ -58,7 +58,8 @@
 #include <omega/math/Plane.h>
 
 // Used for lock.
-#include "co/base/lock.h"
+
+namespace co { namespace base { class Lock; }; };
 
 // Forward declarations of some OpenGL and OpenCL types.
 // Using these, we can avoid including gl, cl (and windows) headers for every compiled source file.

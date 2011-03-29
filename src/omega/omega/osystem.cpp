@@ -30,6 +30,9 @@
 #include "omega/FilesystemDataSource.h"
 #include "omega/StringUtils.h"
 
+// Used for lock.
+#include "co/base/lock.h"
+
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
