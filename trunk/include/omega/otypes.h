@@ -32,6 +32,8 @@
 #include <list>
 #include <vector>
 
+#define NOMINMAX
+
 // Unordered map: use different implementations on linux & windows.
 #ifdef __GNUC__
 	#include <tr1/unordered_map>
@@ -58,6 +60,7 @@
 #include <omega/math/Plane.h>
 
 // Used for lock.
+#include <limits>
 
 namespace co { namespace base { class Lock; }; };
 
