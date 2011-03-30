@@ -59,10 +59,6 @@
 #include <omega/math/Sphere.h>
 #include <omega/math/Plane.h>
 
-// Used for lock.
-#include <limits>
-
-namespace co { namespace base { class Lock; }; };
 
 // Forward declarations of some OpenGL and OpenCL types.
 // Using these, we can avoid including gl, cl (and windows) headers for every compiled source file.
@@ -117,7 +113,6 @@ namespace omega
 	typedef unsigned long long uint64;
 	typedef unsigned long long int64;
 	typedef std::string String;
-	typedef co::base::Lock Lock;
 
 	// Container typedefs
 	#ifdef __GNUC__
