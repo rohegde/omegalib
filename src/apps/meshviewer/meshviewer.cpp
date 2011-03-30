@@ -94,59 +94,86 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
 	//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-	Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
+	//Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
+
+	if(evt.sourceId == myActiveUserId)
+	{
+		myHandsValid = evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand);
+		if(myHandsValid)
+		{
+			myLeftHandPosition = evt.pointSet[LeftHand];
+			myRightHandPosition = evt.pointSet[RightHand];
+			//myRightHandPosition.z() = myRightHandPosition.z() - 0.3f;
+			//myLeftHandPosition.z() = myLeftHandPosition.z() - 0.3f;
+			if(myVisibleEntity != NULL && myVisibleEntity->isActive())
+			{
+				Vector3f pos = (myLeftHandPosition + myRightHandPosition) / 2;
+				float size = (myLeftHandPosition - myRightHandPosition).norm();
+				myVisibleEntity->setPosition(pos);
+				myVisibleEntity->setSize(size);
+
+				Vector3f orig = Vector3f(0, 1, 0);
+				Vector3f dir = myLeftHandPosition - myRightHandPosition;
+				dir.normalize();
+				Quaternion q = Math::buildRotation(orig, dir, Vector3f::Zero());
+				myVisibleEntity->setOrientation(q);
+			}
+		}
+	}
 
 	//ofmsg("Ray pos: %1%", %ray.getOrigin());
 
-	if(evt.pointSet[RightHand].z() < 0.6f)
-	{
-		if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
-		{
-			Vector3f handlePos;
-			if(myVisibleEntity->hit(ray, &handlePos))
-			{
-				myVisibleEntity->activate(handlePos);
-			}
-		}
-		if(myVisibleEntity != NULL && myVisibleEntity->isActive())
-		{
-			float z = 1.0f;
-			//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-			Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
+	//float activationZ = 0.6f;
 
-			//if(evt.isFlagSet(Event::Left))
-			//{
-			//	myVisibleEntity->manipulate(Entity::Move, ray);
-			//}
-			//else if(evt.isFlagSet(Event::Right))
-			//{
-				//myVisibleEntity->manipulate(Entity::Rotate, ray);
-			//}
-			//else if(evt.isFlagSet(Event::Middle))
-			//{
-			//	myVisibleEntity->manipulate(Entity::Scale, ray);
-			//}
-		}
-	}
-	else if(evt.position.z() > 0.6f)
-	{
-		// Deselect objects.
-		if(myVisibleEntity != NULL)
-		{
-			myVisibleEntity->deactivate();
-		}
-	}
-	else if(evt.type == Event::Zoom)
-	{
-		// Manipulate object, if one is active.
-		if(myVisibleEntity != NULL)
-		{
-			float sc;
-			if(evt.value[0] < 0) sc = 0.9f;
-			else sc = 1.1f;
-			myVisibleEntity->scale(sc);
-		}
-	}
+	//if(evt.pointSet[RightHand].z() < activationZ)
+	//{
+	//	if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
+	//	{
+	//		Vector3f handlePos;
+	//		if(myVisibleEntity->hit(ray, &handlePos))
+	//		{
+	//			myVisibleEntity->activate(handlePos);
+	//		}
+	//	}
+	//	if(myVisibleEntity != NULL && myVisibleEntity->isActive())
+	//	{
+	//		float z = 1.0f;
+	//		//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+	//		Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
+
+	//		//if(evt.isFlagSet(Event::Left))
+	//		//{
+	//		//	myVisibleEntity->manipulate(Entity::Move, ray);
+	//		//}
+	//		//else if(evt.isFlagSet(Event::Right))
+	//		//{
+	//			//myVisibleEntity->manipulate(Entity::Rotate, ray);
+	//		//}
+	//		//else if(evt.isFlagSet(Event::Middle))
+	//		//{
+	//		//	myVisibleEntity->manipulate(Entity::Scale, ray);
+	//		//}
+	//	}
+	//}
+	//else if(evt.position.z() > activationZ)
+	//{
+	//	// Deselect objects.
+	//	if(myVisibleEntity != NULL)
+	//	{
+	//		myVisibleEntity->deactivate();
+	//	}
+	//}
+	//else if(evt.type == Event::Zoom)
+	//{
+	//	// Manipulate object, if one is active.
+	//	if(myVisibleEntity != NULL)
+	//	{
+	//		float sc;
+	//		if(evt.value[0] < 0) sc = 0.9f;
+	//		else sc = 1.1f;
+	//		myVisibleEntity->scale(sc);
+	//	}
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,15 +183,21 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 	float z = 1.0f;
 	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
 
+//#define MOUSE_INERACTION
+
 	if(evt.type == Event::Down)
 	{
 		if(myVisibleEntity != NULL)
 		{
+#ifdef MOUSE_INTERACTION
 			Vector3f handlePos;
 			if(myVisibleEntity->hit(ray, &handlePos))
 			{
 				myVisibleEntity->activate(handlePos);
 			}
+#else
+			myVisibleEntity->activate(Vector3f::Zero());
+#endif
 		}
 	}
 	else if(evt.type == Event::Up)
@@ -175,6 +208,7 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 			myVisibleEntity->deactivate();
 		}
 	}
+#ifdef MOUSE_INTERACTION
 	else if(evt.type == Event::Move)
 	{
 		// Manipulate object, if one is active.
@@ -209,6 +243,7 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 			myVisibleEntity->scale(sc);
 		}
 	}
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +265,7 @@ bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 		}
 		else
 		{
-			//processMocapEvent(evt, context);
+			processMocapEvent(evt, context);
 		}
 		return true;
 	}
@@ -276,6 +311,15 @@ void MeshViewerClient::draw(const DrawContext& context)
 	case 2:
 		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 		break;
+	}
+
+	if(myHandsValid)
+	{
+		//glColor3f(1.0f, 0.0f, 0.5f);
+		//glBegin(GL_LINES);
+		//glVertex3fv(myLeftHandPosition.data());
+		//glVertex3fv(myRightHandPosition.data());
+		//glEnd();
 	}
 }
 

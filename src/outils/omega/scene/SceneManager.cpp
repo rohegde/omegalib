@@ -34,6 +34,7 @@ using namespace omega::scene;
 void SceneManager::initialize()
 {
 	myRoot = new SceneNode(this);
+	myBackgroundColor = Color(0.1f, 0.1f, 0.15f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,15 +42,29 @@ void SceneManager::draw(const Rect& viewport)
 {
 	glDisable(GL_LIGHTING);
 
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
 	// Draw background
 	glDisable(GL_DEPTH_TEST);
+
 	glColor4fv(myBackgroundColor.data());
 	int width = viewport.width();
 	int height = viewport.height();
-	int x = viewport.x() - width / 2;
-	int y = viewport.y() - height / 2;
-	//glRecti(x, y, width, height);
+	int x = - width / 2;
+	int y = - height / 2;
+	glRectf(-1, -1, 1, 1);
 	glEnable(GL_DEPTH_TEST);
+
+	glPopMatrix();
+
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 
 	// Setup view matrix (read back from gl)
 	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.data() );

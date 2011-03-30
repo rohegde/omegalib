@@ -79,6 +79,9 @@ public:
 	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::Zero(), Vector3f::Zero()));
 	void scale(float scale);
 	void resetTransform();
+	void setPosition(const Vector3f& pos);
+	void setOrientation(const Quaternion& o);
+	void setSize(float size);
 
 	void activate(const Vector3f handlePos);
 	void deactivate();
@@ -132,7 +135,8 @@ private:
 class MeshViewerClient: public ApplicationClient
 {
 public:
-	MeshViewerClient(Application* app): ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL), myActiveUserId(1) {}
+	MeshViewerClient(Application* app): 
+	  ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL), myActiveUserId(1), myHandsValid(false) {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const Event& evt, DrawContext& context);
@@ -166,6 +170,9 @@ private:
 
 	// Active user id;
 	int myActiveUserId;
+	Vector3f myLeftHandPosition;
+	Vector3f myRightHandPosition;
+	bool myHandsValid;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
