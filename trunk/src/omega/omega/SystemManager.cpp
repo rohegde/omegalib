@@ -30,6 +30,8 @@
 #include "omega/Config.h"
 #include "omega/StringUtils.h"
 
+#include "co/base/lock.h"
+
 #include "omega/ObserverUpdateService.h"
 
 // Display system
@@ -68,6 +70,7 @@
 #endif
 
 using namespace omega;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager* SystemManager::mysInstance = NULL;

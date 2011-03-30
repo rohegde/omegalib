@@ -39,6 +39,7 @@ SET( srcs
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
+		omega/Lock.cpp
 		omega/ServiceManager.cpp
 		omega/Service.cpp
         omega/Observer.cpp
@@ -59,6 +60,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Event.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Lock.h
         ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Service.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
