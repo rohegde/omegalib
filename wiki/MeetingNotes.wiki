@@ -15,7 +15,7 @@
   * finalize meshviewer to a polished application.
  * fix oinputserver
  * Take a look at conferences where we can publish papers on omegadesk
-
+------------------------------------------------------------------------
 
 ==March 9 2011==
  * (*Dennis*) line by line demo likely to run by 16th demos
@@ -30,6 +30,7 @@
  * With kinect and pqlab now we can have touch ownership.
  * (*Khairi*) may be using omegalib + pqlabs on mac
  * (*Arthur*) find mac PqLabs drivers for mac.
+------------------------------------------------------------------------
 
 
 
@@ -38,6 +39,7 @@
  * (*Arthur*) working on xbox360 & ps3 controller integration
   * Agreed on using input event as a representation of the entire state of the controller (similar to what is done for mouse)
  * (*Alessandro*) meshviewer app: started integration with omegadesk inputs & working on UI lib
+------------------------------------------------------------------------
 
 
 ==January 19 2011==
@@ -50,6 +52,7 @@
   * Do we need optitrack for controller tracking or can we use kinect for everything?
   * Do kinect and optitrack interfere?
   * Are we able to render full res active stereo on the omegadesk machine? (Looks like we can't with the current video card)
+------------------------------------------------------------------------
 
 
 ==November 10 2010==
@@ -59,6 +62,7 @@
  * Brad & Arthur: think about porting their unity animation app (awesome ants) to omegadesk as a demo app using multitouch + 3d.
  * Khairi mentioned using omegalib in future version of raintable for multitouch (they may be using PQLab overlays)
  * Brad: need to have 2 tracked hands.
+------------------------------------------------------------------------
 
 ==October 6 2010==
  * Arthur: Omegalib NetService & oinputserver working
