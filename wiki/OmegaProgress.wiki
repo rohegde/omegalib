@@ -23,6 +23,7 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * fix 64bit support (windows only)
  * filters to join mocap & kinect data for controller / tangible object ownership
  * filters to join kinect & pqlabs to associate touches to user.
+------------------------------------------------------------------------
 
 
 
@@ -30,7 +31,6 @@ A complete demo application will be included (meshviewer) as well as kinect inte
 
 
 
-<br/><br/><br/><br/>
 = omegalib v0.3 (*delivered:* January 2011) =
 ==<u> Alessandro </u>==
  * OmegaLib / VTK Integration
@@ -43,6 +43,7 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * omegalib / Ogre integration?
  * omegalib >> Processing.
  * support linux builds (i386 only for now)
+------------------------------------------------------------------------
 
 
 = omegalib v0.2 (*delivered*: October 2010) =
