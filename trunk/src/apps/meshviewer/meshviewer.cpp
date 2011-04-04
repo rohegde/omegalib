@@ -26,6 +26,12 @@
  *************************************************************************************************/
 #include "meshviewer.h"
 
+// Uncomment to enable mouse move / zoom / rotate
+//#define MOUSE_INERACTION
+
+// Uncomment to enable two hand gestures for move / zoom / rotate
+#define TWO_HANDS
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
 {
@@ -96,6 +102,7 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 	//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
 	//Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
 
+#ifdef TWO_HANDS
 	if(evt.sourceId == myActiveUserId)
 	{
 		myHandsValid = evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand);
@@ -120,60 +127,67 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 			}
 		}
 	}
+#else
+	if(evt.sourceId == myActiveUserId)
+	{
+		myHandsValid = evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand);
+		if(myHandsValid)
+		{
+			//ofmsg("Ray pos: %1%", %ray.getOrigin());
 
-	//ofmsg("Ray pos: %1%", %ray.getOrigin());
+			//float activationZ = 0.6f;
 
-	//float activationZ = 0.6f;
+			//if(evt.pointSet[RightHand].z() < activationZ)
+			//{
+			//	if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
+			//	{
+			//		Vector3f handlePos;
+			//		if(myVisibleEntity->hit(ray, &handlePos))
+			//		{
+			//			myVisibleEntity->activate(handlePos);
+			//		}
+			//	}
+			//	if(myVisibleEntity != NULL && myVisibleEntity->isActive())
+			//	{
+			//		float z = 1.0f;
+			//		//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+			//		Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
 
-	//if(evt.pointSet[RightHand].z() < activationZ)
-	//{
-	//	if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
-	//	{
-	//		Vector3f handlePos;
-	//		if(myVisibleEntity->hit(ray, &handlePos))
-	//		{
-	//			myVisibleEntity->activate(handlePos);
-	//		}
-	//	}
-	//	if(myVisibleEntity != NULL && myVisibleEntity->isActive())
-	//	{
-	//		float z = 1.0f;
-	//		//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-	//		Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
-
-	//		//if(evt.isFlagSet(Event::Left))
-	//		//{
-	//		//	myVisibleEntity->manipulate(Entity::Move, ray);
-	//		//}
-	//		//else if(evt.isFlagSet(Event::Right))
-	//		//{
-	//			//myVisibleEntity->manipulate(Entity::Rotate, ray);
-	//		//}
-	//		//else if(evt.isFlagSet(Event::Middle))
-	//		//{
-	//		//	myVisibleEntity->manipulate(Entity::Scale, ray);
-	//		//}
-	//	}
-	//}
-	//else if(evt.position.z() > activationZ)
-	//{
-	//	// Deselect objects.
-	//	if(myVisibleEntity != NULL)
-	//	{
-	//		myVisibleEntity->deactivate();
-	//	}
-	//}
-	//else if(evt.type == Event::Zoom)
-	//{
-	//	// Manipulate object, if one is active.
-	//	if(myVisibleEntity != NULL)
-	//	{
-	//		float sc;
-	//		if(evt.value[0] < 0) sc = 0.9f;
-	//		else sc = 1.1f;
-	//		myVisibleEntity->scale(sc);
-	//	}
-	//}
+			//		//if(evt.isFlagSet(Event::Left))
+			//		//{
+			//		//	myVisibleEntity->manipulate(Entity::Move, ray);
+			//		//}
+			//		//else if(evt.isFlagSet(Event::Right))
+			//		//{
+			//			//myVisibleEntity->manipulate(Entity::Rotate, ray);
+			//		//}
+			//		//else if(evt.isFlagSet(Event::Middle))
+			//		//{
+			//		//	myVisibleEntity->manipulate(Entity::Scale, ray);
+			//		//}
+			//	}
+			//}
+			//else if(evt.position.z() > activationZ)
+			//{
+			//	// Deselect objects.
+			//	if(myVisibleEntity != NULL)
+			//	{
+			//		myVisibleEntity->deactivate();
+			//	}
+			//}
+			//else if(evt.type == Event::Zoom)
+			//{
+			//	// Manipulate object, if one is active.
+			//	if(myVisibleEntity != NULL)
+			//	{
+			//		float sc;
+			//		if(evt.value[0] < 0) sc = 0.9f;
+			//		else sc = 1.1f;
+			//		myVisibleEntity->scale(sc);
+			//	}
+			//}
+		}
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,8 +196,6 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
 	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-
-//#define MOUSE_INERACTION
 
 	if(evt.type == Event::Down)
 	{
@@ -300,6 +312,19 @@ void MeshViewerClient::draw(const DrawContext& context)
 	myUI->updateKinectTexture(svc);
 #endif
 
+	AlignedBox3 box(Vector3f(-1.0f, -1.5f, -0.5f), Vector3f(1.0f, 1.5f, 3.0f));
+	Color backCol(1.0f, 0.2f, 0.2f, 1.0f);
+	Color frontCol(1.0f, 0.2f, 0.2f, 1.0f);
+	Color leftCol(0.2f, 1.0f, 0.2f, 1.0f);
+	Color rightCol(0.2f, 1.0f, 0.2f, 1.0f);
+	Color bottomCol(0.2f, 0.2f, 1.0f, 1.0f);
+	Color topCol(0.2f, 0.2f, 1.0f, 1.0f);
+	Color gridCol(0.0f, 0.0f, 0.0f, 1.0f);
+
+	drawReferenceBox(box, 
+		bottomCol, topCol, leftCol, rightCol, frontCol, backCol, 
+		gridCol, 10);
+
 	switch(context.layer)
 	{
 	case 0:
@@ -321,6 +346,59 @@ void MeshViewerClient::draw(const DrawContext& context)
 		//glVertex3fv(myRightHandPosition.data());
 		//glEnd();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::drawReferenceBox(
+		const AlignedBox3& box, 
+		const Color& bottomColor, const Color& topColor, const Color& leftColor, const Color& rightColor, const Color& frontColor, const Color& backColor, 
+		const Color& gridColor, const int gridLines)
+{
+	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisZ, backColor);
+	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisX, leftColor);
+	drawReferencePlane(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, rightColor);
+	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, bottomColor);
+	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisY, topColor);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::drawReferencePlane(
+	const Vector3f& min, const Vector3f& max, Axis normal, const Color& color)
+{
+	Vector3f v1;
+	Vector3f v2;
+	Vector3f v3;
+	Vector3f v4;
+
+	switch(normal)
+	{
+	case AxisX:
+		v1 = Vector3f(min[0], min[1], min[2]);
+		v2 = Vector3f(min[0], max[1], min[2]);
+		v3 = Vector3f(min[0], min[1], max[2]);
+		v4 = Vector3f(min[0], max[1], max[2]);
+		break;
+	case AxisY:
+		v1 = Vector3f(min[0], min[1], min[2]);
+		v2 = Vector3f(min[0], min[1], max[2]);
+		v3 = Vector3f(max[0], min[1], min[2]);
+		v4 = Vector3f(max[0], min[1], max[2]);
+		break;
+	case AxisZ:
+		v1 = Vector3f(min[0], min[1], min[2]);
+		v2 = Vector3f(min[0], max[1], min[2]);
+		v3 = Vector3f(max[0], min[1], min[2]);
+		v4 = Vector3f(max[0], max[1], min[2]);
+		break;
+	}
+
+	glColor4fv(color.data());
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3fv(v1.data());
+	glVertex3fv(v2.data());
+	glVertex3fv(v3.data());
+	glVertex3fv(v4.data());
+	glEnd();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -38,6 +38,7 @@ namespace omega
 		const float& operator[](int i) const { return myData[i]; }
 		float& operator[](int i) { return myData[i]; }
 		float* data() { return (float*)myData; }
+		const float* data() const { return (const float*)myData; }
 	public:
 		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f)
 		{
