@@ -53,6 +53,9 @@ private:
 	int myCurMarker;
 	AffineTransform3 myTransform;
 	Vector3f myCurrentMocapReading;
+
+	bool myUseTrackable;
+	int myTrackableId;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +68,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MocalibClient::initialize()
 {
+	myUseTrackable = false;
 	myTransform = AffineTransform3::Identity();
 
 	Config* cfg = getSystemManager()->getAppConfig();
@@ -82,6 +86,12 @@ void MocalibClient::initialize()
 			myMarkers[myNumMarkers].reading = Vector3f::Zero();
 			myNumMarkers++;
 		}
+	}
+
+	if(cfg->exists("config/trackableId"))
+	{
+		myUseTrackable = true;
+		myTrackableId = cfg->lookup("config/trackableId");
 	}
 }
 
@@ -127,8 +137,18 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 	switch(evt.serviceType)
 	{
 	case Service::Mocap:
+		if(myUseTrackable)
+		{
+			if(evt.sourceId == myTrackableId)
+			{
+				myCurrentMocapReading = myTransform * evt.position;
+			}
+		}
+		else
+		{
+			myCurrentMocapReading = myTransform * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+		}
 		//ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
-		myCurrentMocapReading = myTransform * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
 		//ofmsg("%1% %2% %3%", 
 		//	%myCurrentMocapReading.x() 
 		//	%myCurrentMocapReading.y()

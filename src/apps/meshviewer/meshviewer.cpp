@@ -312,18 +312,22 @@ void MeshViewerClient::draw(const DrawContext& context)
 	myUI->updateKinectTexture(svc);
 #endif
 
-	AlignedBox3 box(Vector3f(-1.0f, -1.5f, -0.5f), Vector3f(1.0f, 1.5f, 3.0f));
-	Color backCol(1.0f, 0.2f, 0.2f, 1.0f);
-	Color frontCol(1.0f, 0.2f, 0.2f, 1.0f);
-	Color leftCol(0.2f, 1.0f, 0.2f, 1.0f);
-	Color rightCol(0.2f, 1.0f, 0.2f, 1.0f);
-	Color bottomCol(0.2f, 0.2f, 1.0f, 1.0f);
-	Color topCol(0.2f, 0.2f, 1.0f, 1.0f);
-	Color gridCol(0.0f, 0.0f, 0.0f, 1.0f);
+	AlignedBox3 box(Vector3f(-2.0f, -2.0f, -2.0f), Vector3f(2.0f, 2.0f, 2.0f));
+	Color backCol(0.3f, 0.2f, 0.2f, 1.0f);
+	Color frontCol(0.3f, 0.2f, 0.2f, 1.0f);
+	Color leftCol(0.2f, 0.3f, 0.2f, 1.0f);
+	Color rightCol(0.2f, 0.3f, 0.2f, 1.0f);
+	Color bottomCol(0.2f, 0.2f, 0.3f, 1.0f);
+	Color topCol(0.2f, 0.2f, 0.3f, 1.0f);
+	Color gridCol(0.8f, 0.8f, 1.0f, 1.0f);
 
 	drawReferenceBox(box, 
 		bottomCol, topCol, leftCol, rightCol, frontCol, backCol, 
-		gridCol, 10);
+		Color(0.2f, 0.2f, 0.3f, 1.0f), 50);
+
+	drawReferenceBox(box, 
+		bottomCol, topCol, leftCol, rightCol, frontCol, backCol, 
+		gridCol, 5);
 
 	switch(context.layer)
 	{
@@ -354,11 +358,25 @@ void MeshViewerClient::drawReferenceBox(
 		const Color& bottomColor, const Color& topColor, const Color& leftColor, const Color& rightColor, const Color& frontColor, const Color& backColor, 
 		const Color& gridColor, const int gridLines)
 {
-	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisZ, backColor);
-	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisX, leftColor);
-	drawReferencePlane(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, rightColor);
-	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, bottomColor);
-	drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisY, topColor);
+	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisZ, backColor);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisX, gridColor, gridLines);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisY, gridColor, gridLines);
+
+	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisX, leftColor);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisY, gridColor, gridLines);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisZ, gridColor, gridLines);
+
+	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, rightColor);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, gridColor, gridLines);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, gridColor, gridLines);
+
+	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, bottomColor);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, gridColor, gridLines);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, gridColor, gridLines);
+
+	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisY, topColor);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisX, gridColor, 10);
+	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisZ, gridColor, 10);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -399,6 +417,69 @@ void MeshViewerClient::drawReferencePlane(
 	glVertex3fv(v3.data());
 	glVertex3fv(v4.data());
 	glEnd();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::drawReferenceGrid(
+	const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines)
+{
+	glDisable(GL_DEPTH_TEST);
+
+	float vmin;
+	float vmax;
+	float vstep;
+
+	switch(normal)
+	{
+	case AxisX:
+		vmin = min[0];
+		vmax = max[0];
+		vstep = (vmax - vmin) / lines;
+		break;
+	case AxisY:
+		vmin = min[1];
+		vmax = max[1];
+		vstep = (vmax - vmin) / lines;
+		break;
+	case AxisZ:
+		vmin = min[2];
+		vmax = max[2];
+		vstep = (vmax - vmin) / lines;
+		break;
+	}
+
+	if(vmin > vmax)
+	{
+		float tmp = vmin;
+		vmin = vmax;
+		vmax = tmp;
+		vstep = -vstep;
+	}
+
+
+	glColor4fv(color.data());
+	glBegin(GL_LINES);
+	for(float v = vmin; v < vmax; v+= vstep)
+	{
+		switch(normal)
+		{
+		case AxisX:
+			glVertex3f(v, min[1], min[2]);
+			glVertex3f(v, max[1], max[2]);
+			break;
+		case AxisY:
+			glVertex3f(min[0], v, min[2]);
+			glVertex3f(max[0], v, max[2]);
+			break;
+		case AxisZ:
+			glVertex3f(min[0], min[1], v);
+			glVertex3f(max[0], max[1], v);
+			break;
+		}
+	}
+	glEnd();
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

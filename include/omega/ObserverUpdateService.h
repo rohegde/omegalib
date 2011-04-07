@@ -37,6 +37,7 @@ namespace omega
 	class ObserverUpdateService: public Service
 	{
 	public:
+		enum DynamicSourceTokenAttachPoint { AttachHead, AttachLeftHand, AttachRightHand };
 		// Allocator function
 		static ObserverUpdateService* New() { return new ObserverUpdateService(); }
 
@@ -51,12 +52,26 @@ namespace omega
 		void setSourceId(int value); 
 
 	private:
+		void updateDynamicSource(Event* evt);
+
+	private:
 		Observer* myObserver;
 		int mySourceId;
+		int myOrientationSourceId;
+		bool myEnableOrientationSource;
+		Quaternion myLastOrientation;
+		Vector3f myLastPosition;
 		Vector3f myLookAt;
 		bool myEnableLookAt;
 		bool myDebug;
 		bool myUseHeadPointId;
+
+		// Dynamic source stuff.
+		bool myUseDynamicSource;
+		int myDynamicSourceTokenId;
+		DynamicSourceTokenAttachPoint myDynamicSourceTokenAttachPoint;
+		float myDynamicSourceActivationDistance;
+		Vector3f myLastTokenPosition;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
