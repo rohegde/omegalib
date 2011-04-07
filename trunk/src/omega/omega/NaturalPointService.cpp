@@ -32,7 +32,6 @@
 using namespace omega;
 
 NaturalPointService* NaturalPointService :: myMoCap = NULL;
-bool NaturalPointService :: isEuler = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 NaturalPointService::NaturalPointService()
@@ -73,6 +72,30 @@ void NaturalPointService::setup(Setting& settings)
 	{
 		castType = atoi( (const char*) settings[ "castingType" ] );
 	}
+	Vector3f refTranslation = Vector3f::Zero();
+	Matrix3f refLinear = Matrix3f::Identity();
+	if(settings.exists("referenceTransform"))
+	{
+		Setting& srt = settings["referenceTransform"];
+		if(srt.exists("referenceTranslation"))
+		{
+			Setting& st = srt["referenceTranslation"];
+			refTranslation.x() = (float)st[0];
+			refTranslation.y() = (float)st[1];
+			refTranslation.z() = (float)st[2];
+		}
+		if(srt.exists("referenceLinear"))
+		{
+			Setting& st = srt["referenceLinear"];
+			for(int i = 0; i < 9; i++)
+			{
+				refLinear(i) = st[i];
+			}
+		}
+	}
+
+	myTransform.linear() = refLinear;
+	myTransform.translation() = refTranslation;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,23 +195,26 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 
 			//Set event type
 			//for now only trace and untraced are going to be supported with more complex types being implemented soon
-			theEvent->type = Event::Trace;
+			theEvent->type = Event::Move;
 
 			//get x,y,z coordinates
-			theEvent->position[0] = data->RigidBodies[i].x;
-			theEvent->position[1] = data->RigidBodies[i].y;
-			theEvent->position[2] = data->RigidBodies[i].z;
+			theEvent->position = myMoCap->myTransform * Vector3f(
+				data->RigidBodies[i].x,
+				data->RigidBodies[i].y,
+				data->RigidBodies[i].z);
 
-			//get makerset data (the points that define the rigid body)
-			int numberOfMarkers = data->RigidBodies[i].nMarkers;
-			for( int j = 0; j < numberOfMarkers; j++)
-			{
-				Vector3f aPoint;
-				aPoint[0] = data->RigidBodies[i].Markers[j][0];//x
-				aPoint[1] = data->RigidBodies[i].Markers[j][1];//y
-				aPoint[2] = data->RigidBodies[i].Markers[j][2];//z
-				theEvent->pointSet[j] = aPoint;
-			}
+			// Marker set uncommented for now, no real application using it at the moment.
+			// in the future, make this a configurable option
+			//get markerset data (the points that define the rigid body)
+			//int numberOfMarkers = data->RigidBodies[i].nMarkers;
+			//for( int j = 0; j < numberOfMarkers; j++)
+			//{
+			//	Vector3f aPoint;
+			//	aPoint[0] = data->RigidBodies[i].Markers[j][0];//x
+			//	aPoint[1] = data->RigidBodies[i].Markers[j][1];//y
+			//	aPoint[2] = data->RigidBodies[i].Markers[j][2];//z
+			//	theEvent->pointSet[j] = myTransform * aPoint;
+			//}
 
 			theEvent->orientation.w() = data->RigidBodies[i].qw;
 			theEvent->orientation.x() = data->RigidBodies[i].qx;
@@ -197,16 +223,4 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 		}
 		myMoCap->unlockEvents();
 	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void NaturalPointService::useEuler()
-{
-	isEuler = true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void NaturalPointService::useQuaternion()
-{
-	isEuler = false;
 }

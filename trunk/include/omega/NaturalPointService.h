@@ -52,8 +52,6 @@ namespace omega
 		virtual void start();//initialize and start service here
 		virtual void stop();//destroy service instance to stop
 		virtual void dispose();
-		void useQuaternion ();
-		void useEuler ();
 		//may want to support the option to choose whether to have unicast or multicast networking
 		//for now it is hard coded to multicast
 	private:
@@ -63,7 +61,9 @@ namespace omega
 		int castType;			//This determines wether the information is multicast or unicast across the network sockets. 0 = multicast and 1 = unicast
 		char localIP[128];		//the IP address of this machine, it is found automatically if it is set to an empty string (e.g. "")
 		char serverIP[128];		//Server's IP address assumed to be local if left blank
-		static bool isEuler;			//tells whether Euler or Quaternion angles are used. TRUE = Euler  FALSE = Quaternion
+
+		// Reference frame transform
+		AffineTransform3 myTransform;
 	};//class MoCapService
 
 };//namespace omega

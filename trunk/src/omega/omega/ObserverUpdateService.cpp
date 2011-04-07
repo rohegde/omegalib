@@ -36,7 +36,11 @@ ObserverUpdateService::ObserverUpdateService():
 	mySourceId(0),
 	myEnableLookAt(false),
 	myDebug(false),
-	myUseHeadPointId(false)
+	myEnableOrientationSource(false),
+	myUseHeadPointId(false),
+	myDynamicSourceTokenId(0),
+	myDynamicSourceTokenAttachPoint(AttachHead),
+	myDynamicSourceActivationDistance(0.1f)
 {
 	myLookAt = Vector3f::Zero();
 	setPollPriority(Service::PollLast);
@@ -49,6 +53,24 @@ void ObserverUpdateService::setup(Setting& settings)
 	{
 		mySourceId = settings["sourceId"];
 	}
+	else if(settings.exists("dynamicSource"))
+	{
+		Setting& st = settings["dynamicSource"];
+		myUseDynamicSource = true;
+		if(st.exists("tokenAttachPoint"))
+		{
+			String dstap = st["tokenAttachPoint"];
+			if(dstap == "head") myDynamicSourceTokenAttachPoint = AttachHead;
+			else if(dstap == "leftHand") myDynamicSourceTokenAttachPoint = AttachRightHand;
+			else if(dstap == "rightHand") myDynamicSourceTokenAttachPoint = AttachLeftHand;
+		}
+		myDynamicSourceTokenId = st["tokenId"];
+		if(st.exists("activationDistance"))
+		{
+			myDynamicSourceActivationDistance = st["activationDistance"];
+		}
+	}
+
 	if(settings.exists("debug"))
 	{
 		myDebug = settings["debug"];
@@ -64,6 +86,12 @@ void ObserverUpdateService::setup(Setting& settings)
 		myLookAt(0) = stLa[0];
 		myLookAt(1) = stLa[1];
 		myLookAt(2) = stLa[2];
+	}
+	else if(settings.exists("orientationSource"))
+	{
+		Setting& st = settings["orientationSource"];
+		myOrientationSourceId = st["sourceId"];
+		myEnableOrientationSource = true;
 	}
 }
 
@@ -84,6 +112,12 @@ void ObserverUpdateService::poll()
 		Event* evt = getEvent(i);
 		if(evt->serviceType == Service::Mocap)
 		{
+			// Dynamic source support.
+			if(myUseDynamicSource)
+			{
+				updateDynamicSource(evt);
+			}
+
 			if(evt->sourceId == mySourceId)
 			{
 				Vector3f& pos = evt->position;
@@ -104,9 +138,23 @@ void ObserverUpdateService::poll()
 						Vector3f localZ = Vector3f(0, 0, -1);
 						q = Math::buildRotation(localZ, dir, Vector3f::Zero());
 					}
+					else if(myEnableOrientationSource)
+					{
+						q = myLastOrientation;
+					}
 
-					myObserver->update(evt->position, q);
+					float d = (myLastPosition - pos).norm();
+					if(d > 0.015f)
+					{
+						myLastPosition = pos;
+						myObserver->update(myLastPosition, q);
+					}
 				}
+			}
+			else if(myEnableOrientationSource && evt->sourceId == myOrientationSourceId)
+			{
+				myLastOrientation = evt->orientation;
+				//myLastPosition = (myLastPosition + evt->position) / 2;
 			}
 		}
 	}
@@ -117,4 +165,56 @@ void ObserverUpdateService::poll()
 void ObserverUpdateService::dispose()
 {
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ObserverUpdateService::updateDynamicSource(Event* evt)
+{
+	// Update activator token position
+	if(evt->sourceId == myDynamicSourceTokenId)
+	{
+		myLastTokenPosition = evt->position;
+	}
+	else
+	{
+		Vector3f attachPt;
+		bool validPt = false;
+		switch(myDynamicSourceTokenAttachPoint)
+		{
+		case AttachHead:
+			if(evt->isValidPoint(Head))
+			{
+				validPt = true;
+				attachPt = evt->pointSet[Head];
+			}
+			break;
+		case AttachLeftHand:
+			if(evt->isValidPoint(LeftHand))
+			{
+				validPt = true;
+				attachPt = evt->pointSet[LeftHand];
+			}
+			break;
+		case AttachRightHand:
+			if(evt->isValidPoint(RightHand))
+			{
+				validPt = true;
+				attachPt = evt->pointSet[RightHand];
+			}
+			break;
+		}
+		if(validPt)
+		{
+			float dist = (attachPt - myLastTokenPosition).norm();
+			if(myDebug)
+			{
+				ofmsg("Token distance: %1%", %dist);
+			}
+			if(dist < myDynamicSourceActivationDistance)
+			{
+				mySourceId = evt->sourceId;
+			}
+		}
+	}
+}
+
 

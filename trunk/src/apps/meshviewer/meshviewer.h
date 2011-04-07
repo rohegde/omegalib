@@ -158,6 +158,7 @@ public:
 private:
 	void drawReferenceBox(const AlignedBox3& box, const Color& bottomColor, const Color& topColor, const Color& leftColor, const Color& rightColor, const Color& frontColor, const Color& backColor, const Color& gridColor, const int gridLines);
 	void drawReferencePlane(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color);
+	void drawReferenceGrid(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines);
 
 private:
 	// Engine
