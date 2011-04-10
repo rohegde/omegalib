@@ -51,6 +51,7 @@ SET( srcs
 		omega/scene/SceneNode.cpp
 		omega/scene/PlyDataReader.cpp
 		omega/scene/plyfile.cpp
+		omega/scene/ReferenceBox.cpp
 		omega/scene/RenderToTexture.cpp
 		
 		# omega::ui
@@ -90,6 +91,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/PlyDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/ply.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/ReferenceBox.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/RenderToTexture.h
 		
 		# omega::ui
