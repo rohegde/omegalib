@@ -27,10 +27,7 @@
 #include "meshviewer.h"
 
 // Uncomment to enable mouse move / zoom / rotate
-//#define MOUSE_INERACTION
-
-// Uncomment to enable two hand gestures for move / zoom / rotate
-#define TWO_HANDS
+#define MOUSE_INTERACTION
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
@@ -69,6 +66,14 @@ void MeshViewerClient::initialize()
 	// Create and initialize meshviewer UI
 	myUI = new MeshViewerUI();
 	myUI->initialize(this);
+
+
+	myReferenceBoxNode = new SceneNode(myEngine->getSceneManager());
+	myEngine->getSceneManager()->getRootNode()->addChild(myReferenceBoxNode);
+
+	myReferenceBox = new ReferenceBox();
+	myReferenceBoxNode->addDrawable(myReferenceBox);
+	myReferenceBox->setSize(Vector3f(0.2f, 0.2f, 0.2f));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,12 +102,6 @@ void MeshViewerClient::setActiveUser(int userId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& context)
 {
-	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
-	float z = 1.0f;
-	//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-	//Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
-
-#ifdef TWO_HANDS
 	if(evt.sourceId == myActiveUserId)
 	{
 		myHandsValid = evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand);
@@ -127,67 +126,6 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 			}
 		}
 	}
-#else
-	if(evt.sourceId == myActiveUserId)
-	{
-		myHandsValid = evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand);
-		if(myHandsValid)
-		{
-			//ofmsg("Ray pos: %1%", %ray.getOrigin());
-
-			//float activationZ = 0.6f;
-
-			//if(evt.pointSet[RightHand].z() < activationZ)
-			//{
-			//	if(myVisibleEntity != NULL && !myVisibleEntity->isActive())
-			//	{
-			//		Vector3f handlePos;
-			//		if(myVisibleEntity->hit(ray, &handlePos))
-			//		{
-			//			myVisibleEntity->activate(handlePos);
-			//		}
-			//	}
-			//	if(myVisibleEntity != NULL && myVisibleEntity->isActive())
-			//	{
-			//		float z = 1.0f;
-			//		//Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-			//		Ray ray = Ray(evt.pointSet[RightHand], Vector3f(0, 0, -1.0f));
-
-			//		//if(evt.isFlagSet(Event::Left))
-			//		//{
-			//		//	myVisibleEntity->manipulate(Entity::Move, ray);
-			//		//}
-			//		//else if(evt.isFlagSet(Event::Right))
-			//		//{
-			//			//myVisibleEntity->manipulate(Entity::Rotate, ray);
-			//		//}
-			//		//else if(evt.isFlagSet(Event::Middle))
-			//		//{
-			//		//	myVisibleEntity->manipulate(Entity::Scale, ray);
-			//		//}
-			//	}
-			//}
-			//else if(evt.position.z() > activationZ)
-			//{
-			//	// Deselect objects.
-			//	if(myVisibleEntity != NULL)
-			//	{
-			//		myVisibleEntity->deactivate();
-			//	}
-			//}
-			//else if(evt.type == Event::Zoom)
-			//{
-			//	// Manipulate object, if one is active.
-			//	if(myVisibleEntity != NULL)
-			//	{
-			//		float sc;
-			//		if(evt.value[0] < 0) sc = 0.9f;
-			//		else sc = 1.1f;
-			//		myVisibleEntity->scale(sc);
-			//	}
-			//}
-		}
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

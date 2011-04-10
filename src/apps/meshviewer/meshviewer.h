@@ -173,6 +173,9 @@ private:
 	// Active entity.
 	Entity* myVisibleEntity;
 
+	SceneNode* myReferenceBoxNode;
+	ReferenceBox* myReferenceBox;
+
 	// Active user id;
 	int myActiveUserId;
 	Vector3f myLeftHandPosition;

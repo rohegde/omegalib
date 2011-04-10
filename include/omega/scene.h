@@ -35,6 +35,7 @@
 #include "omega/scene/SceneQuery.h"
 #include "omega/scene/SimplePrimitive.h"
 #include "omega/scene/Camera.h"
+#include "omega/scene/ReferenceBox.h"
 #include "omega/scene/RenderToTexture.h"
 
 #endif
