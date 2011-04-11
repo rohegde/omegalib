@@ -29,6 +29,7 @@
 
 #include "omega/osystem.h"
 #include "omega/scene/Actor.h"
+#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
@@ -38,7 +39,22 @@ namespace scene
 	class OUTILS_API DefaultTwoHandsInteractor: public Actor
 	{
 	public:
+		DefaultTwoHandsInteractor(): myNode(NULL) {}
+
+		void setSceneNode(SceneNode* node);
+		SceneNode* getNode();
+
+	private:
+		SceneNode* myNode;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void DefaultTwoHandsInteractor::setSceneNode(SceneNode* node)
+	{ myNode = node; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneNode* DefaultTwoHandsInteractor::getNode()
+	{ return myNode; }
 }; // namespace scene
 }; // namespace omega
 
