@@ -39,6 +39,8 @@ SET( srcs
 		
 		# omega::scene
 		omega/scene/Camera.cpp
+		omega/scene/DefaultMouseInteractor.cpp
+		omega/scene/DefaultTwoHandsInteractor.cpp
 		omega/scene/Effect.cpp
 		omega/scene/EffectManager.cpp
 		omega/scene/Mesh.cpp
@@ -77,7 +79,10 @@ SET( headers
 		
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/DefaultMouseInteractor.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/DefaultTwoHandsInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Mesh.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshData.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/MeshManager.h
