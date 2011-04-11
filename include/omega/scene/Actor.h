@@ -24,21 +24,21 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OMEGA_SCENE_H__
-#define __OMEGA_SCENE_H__
+#ifndef __ACTOR_H__
+#define __ACTOR_H__
 
-#include "omega/scene/Actor.h"
-#include "omega/scene/DefaultMouseInteractor.h"
-#include "omega/scene/DefaultTwoHandsInteractor.h"
-#include "omega/scene/Drawable.h"
-#include "omega/scene/Mesh.h"
-#include "omega/scene/MeshManager.h"
-#include "omega/scene/SceneManager.h"
-#include "omega/scene/SceneNode.h"
-#include "omega/scene/SceneQuery.h"
-#include "omega/scene/SimplePrimitive.h"
-#include "omega/scene/Camera.h"
-#include "omega/scene/ReferenceBox.h"
-#include "omega/scene/RenderToTexture.h"
+#include "omega/osystem.h"
+
+namespace omega
+{
+namespace scene
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API Actor
+	{
+	public:
+	};
+}; // namespace scene
+}; // namespace omega
 
 #endif
