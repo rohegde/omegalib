@@ -28,8 +28,10 @@
 #define __SCENEMANAGER_H__
 
 #include "omega/osystem.h"
+#include "omega/Application.h"
 #include "omega/GpuManager.h"
 #include "omega/scene/SceneNode.h"
+#include "omega/scene/Actor.h"
 
 namespace omega
 {
@@ -55,6 +57,11 @@ namespace scene
 		Color getBackgroundColor();
 
 		void draw(const Rect& viewport);
+		void update(const UpdateContext& context);
+		bool handleEvent(const Event& evt);
+
+		void addActor(Actor* actor);
+		void removeActor(Actor* actor);
 
 	private:
 		AffineTransform3 myViewTransform;
@@ -62,6 +69,8 @@ namespace scene
 		omega::GpuManager* myGpuMng;
 		SceneNode* myRoot;
 		Color myBackgroundColor;
+
+		List<Actor*> myActors;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
