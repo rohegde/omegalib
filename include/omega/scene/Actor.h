@@ -28,6 +28,8 @@
 #define __ACTOR_H__
 
 #include "omega/osystem.h"
+#include "omega/Application.h"
+#include "omega/Event.h"
 
 namespace omega
 {
@@ -37,6 +39,10 @@ namespace scene
 	class OUTILS_API Actor
 	{
 	public:
+		virtual void update(const UpdateContext& context) {}
+		virtual bool handleEvent(const Event& evt) { return false; }
+
+	private:
 	};
 }; // namespace scene
 }; // namespace omega

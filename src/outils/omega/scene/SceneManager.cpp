@@ -84,3 +84,39 @@ void SceneManager::draw(const Rect& viewport)
 	myRoot->draw();
 	glPopMatrix();
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::update(const UpdateContext& context) 
+{
+	VectorIterator<List<Actor*> > it(myActors);
+	while(it.hasMoreElements())
+	{
+		Actor* a = it.getNext();
+		a->update(context);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneManager::handleEvent(const Event& evt) 
+{
+	bool handled = false;
+	VectorIterator<List<Actor*> > it(myActors);
+	while(it.hasMoreElements())
+	{
+		Actor* a = it.getNext();
+		handled |= a->handleEvent(evt);
+	}
+	return handled;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addActor(Actor* actor)
+{
+	myActors.push_back(actor);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::removeActor(Actor* actor)
+{
+	myActors.remove(actor);
+}
