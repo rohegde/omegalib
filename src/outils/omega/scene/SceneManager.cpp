@@ -97,14 +97,27 @@ void SceneManager::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::handleEvent(const Event& evt) 
+bool SceneManager::handleEvent(const Event& evt, DrawContext& context)
 {
 	bool handled = false;
 	VectorIterator<List<Actor*> > it(myActors);
 	while(it.hasMoreElements())
 	{
 		Actor* a = it.getNext();
-		handled |= a->handleEvent(evt);
+		handled |= a->handleEvent(evt, context);
+	}
+	return handled;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneManager::handleEvent(const Event& evt, UpdateContext& context) 
+{
+	bool handled = false;
+	VectorIterator<List<Actor*> > it(myActors);
+	while(it.hasMoreElements())
+	{
+		Actor* a = it.getNext();
+		handled |= a->handleEvent(evt, context);
 	}
 	return handled;
 }

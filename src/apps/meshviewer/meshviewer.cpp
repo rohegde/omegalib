@@ -30,6 +30,75 @@
 #define MOUSE_INTERACTION
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
+{
+	myName = name;
+	myMesh = m;
+	mySelectionSphere = new BoundingSphereDrawable();
+	mySelectionSphere->setVisible(false);
+	mySelectionSphere->setDrawOnSelected(true);
+
+
+	myVisible = false;
+	myActive = false;
+
+	mySceneNode = new SceneNode(sm);
+	mySceneNode->addDrawable(myMesh);
+	mySceneNode->addDrawable(mySelectionSphere);
+	mySceneNode->setPosition(Vector3f::Zero());
+	mySceneNode->setSelectable(true);
+	mySceneNode->setVisible(false);
+	sm->getRootNode()->addChild(mySceneNode);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setVisible(bool value)
+{
+	myVisible = value;
+	mySceneNode->setVisible(value);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::resetTransform()
+{
+	mySceneNode->setPosition(0, 0, 0.0f);
+	mySceneNode->resetOrientation();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setPosition(const Vector3f& pos)
+{
+	mySceneNode->setPosition(pos);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setOrientation(const Quaternion& o)
+{
+	mySceneNode->setOrientation(o);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setSize(float size)
+{
+	size *= 3;
+	mySceneNode->setScale(size, size, size);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::activate(const Vector3f handlePos)
+{
+	myActive = true;
+	mySelectionSphere->setVisible(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::deactivate()
+{
+	myActive = false;
+	mySelectionSphere->setVisible(false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
 {
 	myEngine = new EngineClient(this);
@@ -68,12 +137,12 @@ void MeshViewerClient::initialize()
 	myUI->initialize(this);
 
 
-	myReferenceBoxNode = new SceneNode(myEngine->getSceneManager());
-	myEngine->getSceneManager()->getRootNode()->addChild(myReferenceBoxNode);
-
 	myReferenceBox = new ReferenceBox();
-	myReferenceBoxNode->addDrawable(myReferenceBox);
-	myReferenceBox->setSize(Vector3f(0.2f, 0.2f, 0.2f));
+	myEngine->getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
+	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+
+	myCurrentInteractor = &myMouseInteractor;
+	myEngine->getSceneManager()->addActor(myCurrentInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +158,8 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 	myVisibleEntity = e;
 	myVisibleEntity->resetTransform();
 	myVisibleEntity->setVisible(true);
+
+	myCurrentInteractor->setSceneNode(e->getSceneNode());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,23 +202,12 @@ void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& contex
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& context)
 {
-	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
-	float z = 1.0f;
-	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-
+#ifndef MOUSE_INTERACTION
 	if(evt.type == Event::Down)
 	{
 		if(myVisibleEntity != NULL)
 		{
-#ifdef MOUSE_INTERACTION
-			Vector3f handlePos;
-			if(myVisibleEntity->hit(ray, &handlePos))
-			{
-				myVisibleEntity->activate(handlePos);
-			}
-#else
 			myVisibleEntity->activate(Vector3f::Zero());
-#endif
 		}
 	}
 	else if(evt.type == Event::Up)
@@ -158,48 +218,13 @@ void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& contex
 			myVisibleEntity->deactivate();
 		}
 	}
-#ifdef MOUSE_INTERACTION
-	else if(evt.type == Event::Move)
-	{
-		// Manipulate object, if one is active.
-		if(myVisibleEntity != NULL && myVisibleEntity->isActive())
-		{
-			float z = 1.0f;
-			Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
-
-			if(evt.isFlagSet(Event::Left))
-			{
-				myVisibleEntity->manipulate(Entity::Move, ray);
-			}
-			else if(evt.isFlagSet(Event::Right))
-			{
-				myVisibleEntity->manipulate(Entity::Rotate, ray);
-			}
-			else if(evt.isFlagSet(Event::Middle))
-			{
-				myVisibleEntity->manipulate(Entity::Scale, ray);
-			}
-
-		}
-	}
-	else if(evt.type == Event::Zoom)
-	{
-		// Manipulate object, if one is active.
-		if(myVisibleEntity != NULL)
-		{
-			float sc;
-			if(evt.value[0] < 0) sc = 0.9f;
-			else sc = 1.1f;
-			myVisibleEntity->scale(sc);
-		}
-	}
 #endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 {
-	myEngine->handleEvent(evt);
+	myEngine->handleEvent(evt, context);
 	switch(evt.serviceType)
 	{
 	case Service::Mocap:
@@ -225,12 +250,12 @@ bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
 {
-	myEngine->handleEvent(evt);
+	myEngine->handleEvent(evt, context);
 
 	switch(evt.serviceType)
 	{
 	case Service::Pointer:
-		processPointerEvent(evt, context);
+		//processPointerEvent(evt, context);
 		return true;
 	}
 	return false;
@@ -250,23 +275,6 @@ void MeshViewerClient::draw(const DrawContext& context)
 	myUI->updateKinectTexture(svc);
 #endif
 
-	AlignedBox3 box(Vector3f(-2.0f, -2.0f, -2.0f), Vector3f(2.0f, 2.0f, 2.0f));
-	Color backCol(0.3f, 0.2f, 0.2f, 1.0f);
-	Color frontCol(0.3f, 0.2f, 0.2f, 1.0f);
-	Color leftCol(0.2f, 0.3f, 0.2f, 1.0f);
-	Color rightCol(0.2f, 0.3f, 0.2f, 1.0f);
-	Color bottomCol(0.2f, 0.2f, 0.3f, 1.0f);
-	Color topCol(0.2f, 0.2f, 0.3f, 1.0f);
-	Color gridCol(0.8f, 0.8f, 1.0f, 1.0f);
-
-	drawReferenceBox(box, 
-		bottomCol, topCol, leftCol, rightCol, frontCol, backCol, 
-		Color(0.2f, 0.2f, 0.3f, 1.0f), 50);
-
-	drawReferenceBox(box, 
-		bottomCol, topCol, leftCol, rightCol, frontCol, backCol, 
-		gridCol, 5);
-
 	switch(context.layer)
 	{
 	case 0:
@@ -279,145 +287,6 @@ void MeshViewerClient::draw(const DrawContext& context)
 		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 		break;
 	}
-
-	if(myHandsValid)
-	{
-		//glColor3f(1.0f, 0.0f, 0.5f);
-		//glBegin(GL_LINES);
-		//glVertex3fv(myLeftHandPosition.data());
-		//glVertex3fv(myRightHandPosition.data());
-		//glEnd();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::drawReferenceBox(
-		const AlignedBox3& box, 
-		const Color& bottomColor, const Color& topColor, const Color& leftColor, const Color& rightColor, const Color& frontColor, const Color& backColor, 
-		const Color& gridColor, const int gridLines)
-{
-	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisZ, backColor);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisX, gridColor, gridLines);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisY, gridColor, gridLines);
-
-	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisX, leftColor);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisY, gridColor, gridLines);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisZ, gridColor, gridLines);
-
-	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, rightColor);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, gridColor, gridLines);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_RIGHT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, gridColor, gridLines);
-
-	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, bottomColor);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, gridColor, gridLines);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), box.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, gridColor, gridLines);
-
-	//drawReferencePlane(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisY, topColor);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisX, gridColor, 10);
-	drawReferenceGrid(box.getCorner(AlignedBox3::FAR_LEFT_TOP), box.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisZ, gridColor, 10);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::drawReferencePlane(
-	const Vector3f& min, const Vector3f& max, Axis normal, const Color& color)
-{
-	Vector3f v1;
-	Vector3f v2;
-	Vector3f v3;
-	Vector3f v4;
-
-	switch(normal)
-	{
-	case AxisX:
-		v1 = Vector3f(min[0], min[1], min[2]);
-		v2 = Vector3f(min[0], max[1], min[2]);
-		v3 = Vector3f(min[0], min[1], max[2]);
-		v4 = Vector3f(min[0], max[1], max[2]);
-		break;
-	case AxisY:
-		v1 = Vector3f(min[0], min[1], min[2]);
-		v2 = Vector3f(min[0], min[1], max[2]);
-		v3 = Vector3f(max[0], min[1], min[2]);
-		v4 = Vector3f(max[0], min[1], max[2]);
-		break;
-	case AxisZ:
-		v1 = Vector3f(min[0], min[1], min[2]);
-		v2 = Vector3f(min[0], max[1], min[2]);
-		v3 = Vector3f(max[0], min[1], min[2]);
-		v4 = Vector3f(max[0], max[1], min[2]);
-		break;
-	}
-
-	glColor4fv(color.data());
-	glBegin(GL_TRIANGLE_STRIP);
-	glVertex3fv(v1.data());
-	glVertex3fv(v2.data());
-	glVertex3fv(v3.data());
-	glVertex3fv(v4.data());
-	glEnd();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::drawReferenceGrid(
-	const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines)
-{
-	glDisable(GL_DEPTH_TEST);
-
-	float vmin;
-	float vmax;
-	float vstep;
-
-	switch(normal)
-	{
-	case AxisX:
-		vmin = min[0];
-		vmax = max[0];
-		vstep = (vmax - vmin) / lines;
-		break;
-	case AxisY:
-		vmin = min[1];
-		vmax = max[1];
-		vstep = (vmax - vmin) / lines;
-		break;
-	case AxisZ:
-		vmin = min[2];
-		vmax = max[2];
-		vstep = (vmax - vmin) / lines;
-		break;
-	}
-
-	if(vmin > vmax)
-	{
-		float tmp = vmin;
-		vmin = vmax;
-		vmax = tmp;
-		vstep = -vstep;
-	}
-
-
-	glColor4fv(color.data());
-	glBegin(GL_LINES);
-	for(float v = vmin; v < vmax; v+= vstep)
-	{
-		switch(normal)
-		{
-		case AxisX:
-			glVertex3f(v, min[1], min[2]);
-			glVertex3f(v, max[1], max[2]);
-			break;
-		case AxisY:
-			glVertex3f(min[0], v, min[2]);
-			glVertex3f(max[0], v, max[2]);
-			break;
-		case AxisZ:
-			glVertex3f(min[0], min[1], v);
-			glVertex3f(max[0], max[1], v);
-			break;
-		}
-	}
-	glEnd();
-
-	glEnable(GL_DEPTH_TEST);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

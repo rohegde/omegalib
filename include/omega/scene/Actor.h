@@ -30,6 +30,7 @@
 #include "omega/osystem.h"
 #include "omega/Application.h"
 #include "omega/Event.h"
+#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
@@ -39,11 +40,26 @@ namespace scene
 	class OUTILS_API Actor
 	{
 	public:
-		virtual void update(const UpdateContext& context) {}
-		virtual bool handleEvent(const Event& evt) { return false; }
+		Actor(): myNode(NULL)  {}
 
-	private:
+		void setSceneNode(SceneNode* node);
+		SceneNode* getNode();
+
+		virtual void update(const UpdateContext& context) {}
+		virtual bool handleEvent(const Event& evt, DrawContext& context) { return false; }
+		virtual bool handleEvent(const Event& evt, UpdateContext& context) { return false; }
+
+	protected:
+		SceneNode* myNode;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Actor::setSceneNode(SceneNode* node)
+	{ myNode = node; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneNode* Actor::getNode()
+	{ return myNode; }
 }; // namespace scene
 }; // namespace omega
 

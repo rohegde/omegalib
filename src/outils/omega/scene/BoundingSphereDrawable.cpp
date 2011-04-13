@@ -24,26 +24,46 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/scene/DefaultTwoHandsInteractor.h"
+#include "omega/scene/SceneNode.h"
+#include "omega/scene/BoundingSphereDrawable.h"
+
+#include "omega/glheaders.h"
 
 using namespace omega;
-using namespace omega::scene;
+using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
+void BoundingSphereDrawable::draw(SceneNode* node)
 {
-	if(myNode != NULL)
+	if(myVisible || (myDrawOnSelected && node->isSelected()))
 	{
+		float radius = node->getBoundingSphere().getRadius();
+		float stp = Math::Pi * 2 / 32;
+		float stp2 = Math::Pi * 2 / 16;
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
+	
+		for(float g = 0; g < 2 * Math::Pi; g+= stp2)
+		{
+			glBegin(GL_LINE_LOOP);
+			for(float t = 0; t < 2 * Math::Pi; t+= stp)
+			{
+				float ptx = Math::sin(t) * Math::sin(g) * radius;
+				float pty = Math::cos(t) * Math::sin(g) * radius;
+				float ptz = Math::cos(g) * radius;
+				glVertex3f(ptx, pty, ptz);
+			}
+			glEnd();
+			glBegin(GL_LINE_LOOP);
+			for(float t = 0; t < 2 * Math::Pi; t+= stp)
+			{
+				float ptz = Math::sin(t) * Math::sin(g) * radius;
+				float pty = Math::cos(t) * Math::sin(g) * radius;
+				float ptx = Math::cos(g) * radius;
+				glVertex3f(ptx, pty, ptz);
+			}
+			glEnd();
+		}
 	}
-	return false; 
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& context) 
-{
-	if(myNode != NULL)
-	{
-	}
-	return false; 
-}
-

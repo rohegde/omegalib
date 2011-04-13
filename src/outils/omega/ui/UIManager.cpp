@@ -132,9 +132,9 @@ bool UIManager::processInputEvent(const Event& evt)
 		gy = (int)evt.position[1];
 		ofmsg("Pos: %d %d", %gx %gy);
 #endif
-		myRootContainer->processInputEvent(evt);
+		return myRootContainer->processInputEvent(evt);
 	}
-	return true;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

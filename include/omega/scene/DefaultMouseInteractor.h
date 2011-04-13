@@ -29,7 +29,6 @@
 
 #include "omega/osystem.h"
 #include "omega/scene/Actor.h"
-#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
@@ -38,22 +37,17 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API DefaultMouseInteractor: public Actor
 	{
-		DefaultMouseInteractor(): myNode(NULL) {}
+	public:
+		DefaultMouseInteractor() {}
 
-		void setSceneNode(SceneNode* node);
-		SceneNode* getNode();
+		virtual bool handleEvent(const Event& evt, DrawContext& context);
 
 	private:
-		SceneNode* myNode;
+		Vector3f myHandlePosition;
+		Sphere myStartBSphere;
+		Quaternion myStartOrientation;
+		float myStartScale;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void DefaultMouseInteractor::setSceneNode(SceneNode* node)
-	{ myNode = node; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* DefaultMouseInteractor::getNode()
-	{ return myNode; }
 }; // namespace scene
 }; // namespace omega
 

@@ -61,12 +61,23 @@ void EngineClient::initialize()
 void EngineClient::update(const UpdateContext& context)
 {
 	myUIManager->update(context);
+	mySceneManager->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool EngineClient::handleEvent(const Event& evt)
+bool EngineClient::handleEvent(const Event& evt, UpdateContext& context)
 {
-	return myUIManager->processInputEvent(evt);
+	return mySceneManager->handleEvent(evt, context);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool EngineClient::handleEvent(const Event& evt, DrawContext& context)
+{
+	if(!myUIManager->processInputEvent(evt))
+	{
+		return mySceneManager->handleEvent(evt, context);
+	}
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
