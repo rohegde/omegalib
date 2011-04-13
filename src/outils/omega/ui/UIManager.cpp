@@ -45,13 +45,16 @@ int gy = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UIManager::UIManager():
-	myRootContainer(new Container("root")),
 	myWidgetFactory(new DefaultWidgetFactory()),
 	myDefaultFont(NULL),
 	myEventHandler(NULL),
 	myDefaultPainter(NULL)
 {
-	myRootContainer->setUIManager(this);
+	for(int i =0; i < Application::MaxLayers; i++)
+	{
+		myRootContainer[i] = new Container(ostr("root%1%", %i));
+		myRootContainer[i]->setUIManager(this);
+	}
 	myDefaultPainter = new Painter();
 }
 
@@ -63,25 +66,31 @@ UIManager::~UIManager()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::update(const UpdateContext& context)
 {
-	myRootContainer->update(context);
+	for(int i =0; i < Application::MaxLayers; i++)
+	{
+		myRootContainer[i]->update(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::draw(const Rect& viewport)
+void UIManager::draw(const DrawContext& context)
 {
+	Container* root = myRootContainer[context.layer];
+
+	const Rect& viewport = context.viewport;
 	// Update the root container size if necessary.
-	if((myRootContainer->getPosition().cwiseNotEqual(viewport.min.cast<float>())).all() ||
-		myRootContainer->getSize().cwiseNotEqual(viewport.max.cast<float>()).all())
+	if((root->getPosition().cwiseNotEqual(viewport.min.cast<float>())).all() ||
+		root->getSize().cwiseNotEqual(viewport.max.cast<float>()).all())
 	{
-		myRootContainer->setPosition(viewport.min.cast<float>());
-		myRootContainer->setSize(Vector2f(viewport.width(), viewport.height()));
+		root->setPosition(viewport.min.cast<float>());
+		root->setSize(Vector2f(viewport.width(), viewport.height()));
 	}
 
 	// Make sure all widget sizes are up to date (and perform autosize where necessary).
-	myRootContainer->updateSize();
+	root->updateSize();
 
 	// Layout ui.
-	myRootContainer->layout();
+	root->layout();
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -102,7 +111,7 @@ void UIManager::draw(const Rect& viewport)
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Draw ui.
-	myRootContainer->draw();
+	root->draw();
 
 #ifdef DEBUG_POINTER
 	glPointSize(32);
@@ -132,7 +141,12 @@ bool UIManager::processInputEvent(const Event& evt)
 		gy = (int)evt.position[1];
 		ofmsg("Pos: %d %d", %gx %gy);
 #endif
-		return myRootContainer->processInputEvent(evt);
+		bool handled = false;
+		for(int i =0; i < Application::MaxLayers; i++)
+		{
+			handled |= myRootContainer[i]->processInputEvent(evt);
+		}
+		return handled;
 	}
 	return false;
 }

@@ -38,7 +38,7 @@ void SceneManager::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::draw(const Rect& viewport)
+void SceneManager::draw(const DrawContext& context)
 {
 	glDisable(GL_LIGHTING);
 

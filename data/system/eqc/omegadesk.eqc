@@ -46,6 +46,16 @@ server
 						name "topright"  
 					}
                 }
+                window
+                {
+                    name     "control"
+                    viewport [ 100 100 800 600 ]
+                    channel 
+                    { 
+						viewport [0 0 1 1]
+						name "control"  
+					}
+                }
             }
         }
 
@@ -70,6 +80,12 @@ server
                 observer "observer0"
                 viewport [ 0 .5 1 .5 ]
             }
+            view
+            {
+                name "control"
+                observer "observer0"
+                viewport [ 1 0 1 1 ]
+            }
         }
 
         # Canvas using all layouts
@@ -83,9 +99,9 @@ server
                 channel "bottomleft"
 				wall
 				{
-						bottom_left  [ -.7 -0.9 .9 ]
-						bottom_right [  .7 -0.9 .9 ]
-						top_left     [ -.7 -0.55 0 ]
+						bottom_left  [ -.7 -0.85 .76 ]
+						bottom_right [  .7 -0.85 .76 ]
+						top_left     [ -.7 -0.56 0 ]
 				}
             }
             segment
@@ -94,9 +110,9 @@ server
                 channel "bottomright"
 				wall
 				{
-						bottom_left  [ -.7 -0.9 .9 ]
-						bottom_right [  .7 -0.9 .9 ]
-						top_left     [ -.7 -0.55 0 ]
+						bottom_left  [ -.7 -0.85 .76 ]
+						bottom_right [  .7 -0.85 .76 ]
+						top_left     [ -.7 -0.56 0 ]
 				}
             }
             segment
@@ -114,6 +130,17 @@ server
             {
                 viewport [ 0 .5 1 .5 ]
                 channel "topright"
+				wall
+				{
+						bottom_left  [ -.7 -.4 0 ]
+						bottom_right [  .7 -.4 0 ]
+						top_left     [ -.7 .4 0 ]
+				}
+            }
+            segment
+            {
+                viewport [ 1 0 1 1 ]
+                channel "control"
 				wall
 				{
 						bottom_left  [ -.7 -.4 0 ]

@@ -86,11 +86,11 @@ void EngineClient::draw(const DrawContext& context, uint flags)
 	myGpuManager->beginDraw();
 	if((flags & DrawScene) == DrawScene)
 	{
-		mySceneManager->draw(context.viewport);
+		mySceneManager->draw(context);
 	}
 	if((flags & DrawUI) == DrawUI)
 	{
-		myUIManager->draw(context.viewport);
+		myUIManager->draw(context);
 	}
 	myGpuManager->endDraw();
 }

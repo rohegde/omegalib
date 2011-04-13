@@ -27,7 +27,7 @@
 #include "meshviewer.h"
 
 // Uncomment to enable mouse move / zoom / rotate
-#define MOUSE_INTERACTION
+//#define MOUSE_INTERACTION
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
@@ -255,7 +255,7 @@ bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
 	switch(evt.serviceType)
 	{
 	case Service::Pointer:
-		//processPointerEvent(evt, context);
+		processPointerEvent(evt, context);
 		return true;
 	}
 	return false;
@@ -284,7 +284,7 @@ void MeshViewerClient::draw(const DrawContext& context)
 		myEngine->draw(context, EngineClient::DrawScene);
 		break;
 	case 2:
-		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
+		myEngine->draw(context, EngineClient::DrawUI);
 		break;
 	}
 }

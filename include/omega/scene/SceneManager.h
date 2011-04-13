@@ -56,7 +56,7 @@ namespace scene
 		void setBackgroundColor(const Color& value);
 		Color getBackgroundColor();
 
-		void draw(const Rect& viewport);
+		void draw(const DrawContext& context);
 		void update(const UpdateContext& context);
 		bool handleEvent(const Event& evt, UpdateContext& context);
 		bool handleEvent(const Event& evt, DrawContext& context);

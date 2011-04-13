@@ -44,6 +44,10 @@ ObserverUpdateService::ObserverUpdateService():
 {
 	myLookAt = Vector3f::Zero();
 	setPollPriority(Service::PollLast);
+	
+	myCurrentMovementThreshold = 0;
+	myMovementThresholdTarget = 0.02f;
+	myMovementThresholdCoeff = 4;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,11 +148,16 @@ void ObserverUpdateService::poll()
 					}
 
 					float d = (myLastPosition - pos).norm();
-					if(d > 0.015f)
+					if(d > myCurrentMovementThreshold)
 					{
+						//if(myCurrentMovementThreshold > (myMovementThresholdTarget - 0.01f)) myCurrentMovementThreshold = 0;
+						myCurrentMovementThreshold = 0.01f;
+
 						myLastPosition = pos;
-						myObserver->update(myLastPosition, q);
 					}
+					myCurrentMovementThreshold = (myCurrentMovementThreshold * myMovementThresholdCoeff + myMovementThresholdTarget) / (myMovementThresholdCoeff + 1);
+					ofmsg("mvth: %1%", %myCurrentMovementThreshold);
+					myObserver->update(myLastPosition, q);
 				}
 			}
 			else if(myEnableOrientationSource && evt->sourceId == myOrientationSourceId)
