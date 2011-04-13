@@ -51,10 +51,10 @@ namespace ui
 		~UIManager();
 
 		void update(const UpdateContext& context);
-		void draw(const Rect& viewport);
+		void draw(const DrawContext& context);
 		bool processInputEvent(const Event& evt);
 
-		Container* getRootContainer();
+		Container* getRootContainer(int layer);
 		Painter* getDefaultPainter();
 
 		omega::Font* getDefaultFont();
@@ -70,7 +70,7 @@ namespace ui
 		void dispatchUIEvent(const UIEvent& evt);
 
 	private:
-		Container* myRootContainer;
+		Container* myRootContainer[Application::MaxLayers];
 
 		Font* myDefaultFont;
 		Painter* myDefaultPainter;
@@ -79,8 +79,8 @@ namespace ui
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Container* UIManager::getRootContainer() 
-	{ return myRootContainer; }
+	inline Container* UIManager::getRootContainer(int layer) 
+	{ return myRootContainer[layer]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Painter* UIManager::getDefaultPainter() 

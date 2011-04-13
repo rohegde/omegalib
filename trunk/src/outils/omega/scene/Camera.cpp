@@ -84,7 +84,8 @@ void Camera::render()
 
 
 	myRenderTarget->beginDraw();
-	myScene->draw(viewport);
+	oerror("Reimplement, needs DrawContext");
+	//myScene->draw(viewport);
 	myRenderTarget->endDraw();
 
 	//glMatrixMode(GL_PROJECTION);

@@ -72,6 +72,11 @@ namespace omega
 		DynamicSourceTokenAttachPoint myDynamicSourceTokenAttachPoint;
 		float myDynamicSourceActivationDistance;
 		Vector3f myLastTokenPosition;
+
+		// Movement smoothing
+		float myCurrentMovementThreshold;
+		float myMovementThresholdTarget;
+		float myMovementThresholdCoeff;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

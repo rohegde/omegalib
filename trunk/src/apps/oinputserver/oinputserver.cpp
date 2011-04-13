@@ -579,10 +579,12 @@ void main(int argc, char** argv)
 			{
 				if( app.handleEvent(evts[evtNum]) ){ // is there an event?
 					// Send event to clients
+					printf("%s\n", app.getEvent());
 					app.sendToClients( app.getEvent() );
 				}
 			}
 		}// if
+		printf("------------------------------------------------------------------------------\n", app.getEvent());
 
 	}// while
 	

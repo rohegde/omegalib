@@ -40,14 +40,10 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	ui->setDefaultFont(defaultFont);
 
 	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer();
+	Container* root = ui->getRootContainer(0);
 	root->setLayout(Container::LayoutVertical);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-
-	myUserUI = wf->createContainer("userUI", root, Container::LayoutHorizontal);
-	myUserUI->setVerticalAlign(Container::AlignBottom);
-	//myUserUI->setDebugModeEnabled(true);
 
 	// Setup ui layout using from config file sections.
 	Config* cfg = SystemManager::instance()->getAppConfig();
@@ -70,9 +66,17 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	}
 
 #ifdef OMEGA_USE_OPENNI
-	depthImage = wf->createImage("kinectDepthBuffer", entityButtons);
-	depthImage->setHeight(240);
-	depthImage->setWidth(320);
+	root = ui->getRootContainer(2);
+	//root->setSize(Vector2f(800, 600));
+	root->setLayout(Container::LayoutVertical);
+	myUserUI = wf->createContainer("userUI", root, Container::LayoutHorizontal);
+	//myUserUI->setDebugModeEnabled(true);
+	myUserUI->setVerticalAlign(Container::AlignBottom);
+	//myUserUI->setSize(Vector2f(800, 600));
+
+	depthImage = wf->createImage("kinectDepthBuffer", myUserUI);
+	//depthImage->setHeight(480);
+	//depthImage->setWidth(640);
 #endif
 
 	texture = NULL;
@@ -122,8 +126,8 @@ void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
 void MeshViewerUI::onTraceUser(int userId)
 {
 	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
-	String name = oformat("%1%", %userId);
-	String label = oformat("User %1%", %userId);
+	String name = ostr("%1%", %userId);
+	String label = ostr("User %1%", %userId);
 	Button* btn = wf->createButton(name, myUserUI);
 	btn->setText(label);
 
@@ -138,6 +142,6 @@ void MeshViewerUI::onTraceUser(int userId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerUI::onUntraceUser(int userId)
 {
-	String name = oformat("%1%", %userId);
+	String name = ostr("%1%", %userId);
 	myUserUI->removeChild(name);
 }
