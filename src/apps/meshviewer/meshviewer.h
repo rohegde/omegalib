@@ -111,7 +111,12 @@ class MeshViewerClient: public ApplicationClient
 {
 public:
 	MeshViewerClient(Application* app): 
-	  ApplicationClient(app), myEngine(NULL), myVisibleEntity(NULL), myActiveUserId(1), myHandsValid(false) {}
+	  ApplicationClient(app), 
+		myEngine(NULL), 
+		myVisibleEntity(NULL), 
+		myActiveUserId(1), 
+		myHandsValid(false)
+	  {}
 
 	virtual void initialize();
 	virtual bool handleEvent(const Event& evt, DrawContext& context);
