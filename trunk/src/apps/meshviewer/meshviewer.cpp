@@ -35,9 +35,9 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 	myName = name;
 	myMesh = m;
 	mySelectionSphere = new BoundingSphereDrawable();
+	
 	mySelectionSphere->setVisible(false);
 	mySelectionSphere->setDrawOnSelected(true);
-
 
 	myVisible = false;
 	myActive = false;

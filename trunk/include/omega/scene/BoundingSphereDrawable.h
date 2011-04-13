@@ -43,7 +43,13 @@ namespace scene
 	class OUTILS_API BoundingSphereDrawable: public Drawable
 	{
 	public:
-		BoundingSphereDrawable(): myDrawOnSelected(false), myVisible(true) {}
+		BoundingSphereDrawable(): 
+		  myDrawOnSelected(false), 
+ 		  myVisible(true),
+		  mySlices(16),
+		  mySegments(32),
+		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
+
 		virtual void draw(SceneNode* node);
 
 		void setDrawOnSelected(bool value);
@@ -52,9 +58,21 @@ namespace scene
 		void setVisible(bool value);
 		bool getVisible();
 
+		Color getColor();
+		void setColor(const Color& value);
+
+		int getSegments();
+		void setSegments(int value);
+
+		int getSlices();
+		void setSlices(int value);
+
 	private:
 		bool myVisible;
 		bool myDrawOnSelected;
+		Color myColor;
+		int mySegments;
+		int mySlices;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,6 +98,30 @@ namespace scene
 	{
 		return myVisible;
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color BoundingSphereDrawable::getColor()
+	{ return myColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphereDrawable::setColor(const Color& value)
+	{ myColor = value;}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int BoundingSphereDrawable::getSegments()
+	{ return mySegments; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphereDrawable::setSegments(int value)
+	{ mySegments = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int BoundingSphereDrawable::getSlices()
+	{ return mySlices;}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphereDrawable::setSlices(int value)
+	{ mySlices = value; }
 }; // namespace scene
 }; // namespace omega
 
