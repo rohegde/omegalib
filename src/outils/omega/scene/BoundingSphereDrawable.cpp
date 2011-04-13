@@ -38,13 +38,14 @@ void BoundingSphereDrawable::draw(SceneNode* node)
 	if(myVisible || (myDrawOnSelected && node->isSelected()))
 	{
 		float radius = node->getBoundingSphere().getRadius();
-		float stp = Math::Pi * 2 / 32;
-		float stp2 = Math::Pi * 2 / 16;
+		float stp = Math::Pi * 2 / mySegments;
+		float stp2 = Math::Pi / (mySlices + 1);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
+
+		glColor4fv(myColor.data());
 	
-		for(float g = 0; g < 2 * Math::Pi; g+= stp2)
+		for(float g = 0; g <= Math::Pi; g+= stp2)
 		{
 			glBegin(GL_LINE_LOOP);
 			for(float t = 0; t < 2 * Math::Pi; t+= stp)
