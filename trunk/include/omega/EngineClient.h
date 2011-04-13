@@ -67,7 +67,8 @@ namespace omega
 		void initialize();
 		ApplicationClient* getApplicationClient();
 		void update(const UpdateContext& context);
-		bool handleEvent(const Event& evt);
+		bool handleEvent(const Event& evt, UpdateContext& context);
+		bool handleEvent(const Event& evt, DrawContext& context);
 		void draw(const DrawContext& context, uint flags);
 
 		//! Manager getters.

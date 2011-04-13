@@ -12,7 +12,6 @@
 # Source files
 SET( srcs 
         meshviewer.cpp
-		Entity.cpp
 		MeshViewerUI.cpp
         )
     

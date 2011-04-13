@@ -24,26 +24,63 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/scene/DefaultTwoHandsInteractor.h"
+#ifndef __BOUNDING_SPHERE_DRAWABLE_H__
+#define __BOUNDING_SPHERE_DRAWABLE_H__
 
-using namespace omega;
-using namespace omega::scene;
+#include "omega/osystem.h"
+#include "omega/scene/Effect.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
+namespace omega
 {
-	if(myNode != NULL)
-	{
-	}
-	return false; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& context) 
+namespace scene
 {
-	if(myNode != NULL)
-	{
-	}
-	return false; 
-}
+	// Forward declarations
+	class SceneNode;
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! @warning This is a work in progress! It may be deeply modified or removed altogether 
+	//! in future versions.
+	class OUTILS_API BoundingSphereDrawable: public Drawable
+	{
+	public:
+		BoundingSphereDrawable(): myDrawOnSelected(false), myVisible(true) {}
+		virtual void draw(SceneNode* node);
+
+		void setDrawOnSelected(bool value);
+		bool getDrawOnSelected();
+
+		void setVisible(bool value);
+		bool getVisible();
+
+	private:
+		bool myVisible;
+		bool myDrawOnSelected;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphereDrawable::setDrawOnSelected(bool value)
+	{
+		myDrawOnSelected = value;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool BoundingSphereDrawable::getDrawOnSelected()
+	{
+		return myDrawOnSelected;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphereDrawable::setVisible(bool value)
+	{
+		myVisible = value;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool BoundingSphereDrawable::getVisible()
+	{
+		return myVisible;
+	}
+}; // namespace scene
+}; // namespace omega
+
+#endif

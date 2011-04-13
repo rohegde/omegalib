@@ -30,3 +30,77 @@ using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context) 
+{
+	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
+	float z = 1.0f;
+	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+
+	if(myNode != NULL)
+	{
+		if(evt.type == Event::Down)
+		{
+			Vector3f handlePos;
+			if(myNode->hit(ray, &handlePos, SceneNode::HitBoundingSphere))
+			{
+				myStartBSphere = myNode->getBoundingSphere();
+				myStartOrientation = myNode->getOrientation();
+				myStartScale = myNode->getScale()[0];
+				myHandlePosition = handlePos; 
+				myNode->setSelected(true);
+			}
+		}
+		else if(evt.type == Event::Up)
+		{
+			myNode->setSelected(false);
+		}
+		else if(evt.type == Event::Move)
+		{
+			// Manipulate object, if one is active.
+			if(myNode->isSelected())
+			{
+				Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+
+				if(evt.isFlagSet(Event::Left))
+				{
+					Vector3f origin = ray.getOrigin();
+					Vector3f direction = ray.getDirection();
+					// Interstect the ray with the Z plane where the handle lies, to get
+					// the new handle position.
+					float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
+					float l = (tz - origin[2]) / direction[2];
+					float tx = origin[0] + l * direction[0];
+					float ty = origin[1] + l * direction[1];
+
+					Vector3f newPos = Vector3f(tx, ty, tz) - myHandlePosition;
+					myNode->setPosition(newPos);
+				}
+				else if(evt.isFlagSet(Event::Right))
+				{
+					// Intersect the ray with the bounding sphere. 
+					// If the point is outside the bounding sphere, perform no rotation.
+					std::pair<bool, float> p = ray.intersects(myStartBSphere);
+					if(p.first)
+					{
+						Vector3f pt = ray.getPoint(p.second);
+						pt -= myStartBSphere.getCenter();
+						Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::Zero() );
+						myNode->setOrientation(rot * myStartOrientation);
+					}
+				}
+			}
+		}
+		else if(evt.type == Event::Zoom)
+		{
+			// Manipulate object, if one is active.
+			if(myNode->isSelected())
+			{
+				float sc;
+				if(evt.value[0] < 0) sc = 0.9f;
+				else sc = 1.1f;
+				myNode->scale(sc, sc, sc);
+			}
+		}
+	}
+	return false; 
+}

@@ -24,12 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __DEFAULT_MOUSE_INTERACTOR_H__
-#define __DEFAULT_MOUSE_INTERACTOR_H__
+#ifndef __DEFAULT_TWO_HANDS_INTERACTOR_H__
+#define __DEFAULT_TWO_HANDS_INTERACTOR_H__
 
 #include "omega/osystem.h"
 #include "omega/scene/Actor.h"
-#include "omega/scene/SceneNode.h"
 
 namespace omega
 {
@@ -39,22 +38,11 @@ namespace scene
 	class OUTILS_API DefaultTwoHandsInteractor: public Actor
 	{
 	public:
-		DefaultTwoHandsInteractor(): myNode(NULL) {}
+		DefaultTwoHandsInteractor() {}
 
-		void setSceneNode(SceneNode* node);
-		SceneNode* getNode();
-
-	private:
-		SceneNode* myNode;
+		virtual bool handleEvent(const Event& evt, UpdateContext& context);
+		virtual bool handleEvent(const Event& evt, DrawContext& context);
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void DefaultTwoHandsInteractor::setSceneNode(SceneNode* node)
-	{ myNode = node; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* DefaultTwoHandsInteractor::getNode()
-	{ return myNode; }
 }; // namespace scene
 }; // namespace omega
 

@@ -29,7 +29,50 @@
 using namespace omega;
 using namespace omega::scene;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::setListener(SceneNodeListener* listener)
+{
+	if(listener != NULL && myListener != NULL)
+	{
+		owarn("Node switched listener: old listener won't receive notification anymore.");
+	}
+
+	myListener = listener;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneNodeListener* SceneNode::getListener()
+{
+	return myListener;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneNode::isVisible()
+{ 
+	return myVisible; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::setVisible(bool value)
+{ 
+	if(myListener) myListener->onVisibleChanged(this, value);
+	myVisible = value; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::setSelected(bool value)
+{
+	if(myListener) myListener->onSelectedChanged(this, value);
+	mySelected = value;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneNode::isSelected()
+{
+	return mySelected;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::addDrawable(Drawable* child) 
 { 
 	myDrawables.push_back(child); 
@@ -72,6 +115,7 @@ void SceneNode::draw()
 			Drawable* d = it.getNext();
 			d->draw(this);
 		}
+
 		// Draw children nodes.
 		ChildNodeIterator i = getChildIterator();
 		while(i.hasMoreElements())
@@ -122,7 +166,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().maxCoeff());
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::drawBoundingBox()
 {
 	glPushAttrib(GL_ENABLE_BIT);
@@ -171,4 +215,20 @@ void SceneNode::drawBoundingBox()
 	glEnd();
 
 	glPopAttrib();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneNode::hit(const Ray& ray, Vector3f* hitPoint, HitType hitType)
+{
+	if(hitType == HitBoundingSphere)
+	{
+		const Sphere& s = getBoundingSphere();
+		std::pair<bool, float> h = ray.intersects(s);
+		if(h.first)
+		{
+			(*hitPoint) = ray.getPoint(h.second) - s.getCenter();
+		}
+		return h.first;
+	}
+	return false;
 }

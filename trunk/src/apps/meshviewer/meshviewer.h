@@ -49,22 +49,6 @@ class Entity;
 class MeshViewerClient;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class SelectionSphere: public Drawable
-{
-public:
-	SelectionSphere(Entity* e): myEntity(e) {}
-
-	void draw(SceneNode* node);
-
-	void setVisible(bool value) { myVisible = value; }
-	bool isVisisble() { return myVisible; }
-
-private:
-	Entity* myEntity;
-	bool myVisible;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 class Entity: public DynamicObject
 {
 public:
@@ -75,9 +59,6 @@ public:
 
 	const String& getName() { return myName; }
 
-	bool hit(const Ray& ray, Vector3f* handlePos);
-	void manipulate(Operation op, const Ray& ray1, const Ray& ray2 = Ray(Vector3f::Zero(), Vector3f::Zero()));
-	void scale(float scale);
 	void resetTransform();
 	void setPosition(const Vector3f& pos);
 	void setOrientation(const Quaternion& o);
@@ -90,20 +71,14 @@ public:
 	bool isVisible() { return myVisible; }
 	void setVisible(bool value);
 
-	Vector3f getHandlePosition() { return myHandlePosition; }
+	SceneNode* getSceneNode() { return mySceneNode; }
 
 private:
-	// Interaction stuff
-	Vector3f myHandlePosition;
-	Sphere myStartBSphere;
-	Quaternion myStartOrientation;
-
 	String myName;
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
-	SelectionSphere* mySelectionSphere;
+	BoundingSphereDrawable* mySelectionSphere;
 
-	float myStartScale;
 	bool myActive;
 	bool myVisible;
 };
@@ -156,11 +131,6 @@ public:
 	void setActiveUser(int userId);
 
 private:
-	void drawReferenceBox(const AlignedBox3& box, const Color& bottomColor, const Color& topColor, const Color& leftColor, const Color& rightColor, const Color& frontColor, const Color& backColor, const Color& gridColor, const int gridLines);
-	void drawReferencePlane(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color);
-	void drawReferenceGrid(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines);
-
-private:
 	// Engine
 	EngineClient* myEngine;
 
@@ -173,8 +143,12 @@ private:
 	// Active entity.
 	Entity* myVisibleEntity;
 
-	SceneNode* myReferenceBoxNode;
 	ReferenceBox* myReferenceBox;
+
+	// Interactors.
+	Actor* myCurrentInteractor;
+	DefaultTwoHandsInteractor myTwoHandsInteractor;
+	DefaultMouseInteractor myMouseInteractor;
 
 	// Active user id;
 	int myActiveUserId;

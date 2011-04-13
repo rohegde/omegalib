@@ -38,17 +38,30 @@ namespace scene
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	class SceneNodeListener
+	{
+	public:
+		virtual void onVisibleChanged(SceneNode* source, bool value) {}
+		virtual void onSelectedChanged(SceneNode* source, bool value) {}
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API SceneNode: public Node
 	{
 		friend class SceneManager; // Needs to call the node draw method.
 	public:
+		enum HitType { HitBoundingSphere };
+
+	public:
 		SceneNode(SceneManager* scene):
 			myScene(scene),
+			myListener(NULL),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
 			mySelectable(false),
 			myChanged(false),
-			myVisible(true)
+			myVisible(true),
+			mySelected(false)
 			{}
 
 		SceneManager* getScene();
@@ -66,6 +79,8 @@ namespace scene
 		void setSelectable(bool value);
 		bool isVisible();
 		void setVisible(bool value);
+		void setSelected(bool value);
+		bool isSelected();
 		//@}
 
 		// Bounding box handling
@@ -78,6 +93,15 @@ namespace scene
 		void setBoundingBoxColor(const Color& color);
 		//@}
 
+		// Bounding box handling
+		//@{
+		void setListener(SceneNodeListener* listener);
+		SceneNodeListener* getListener();
+		//@}
+
+		//! Hit test.
+		bool hit(const Ray& ray, Vector3f* hitPoint, HitType type);
+
 		virtual void update(bool updateChildren, bool parentHasChanged);
 
 	private:
@@ -87,9 +111,12 @@ namespace scene
 	private:
 		SceneManager* myScene;
 
+		SceneNodeListener* myListener;
+
 		Vector<Drawable*> myDrawables;
 
 		bool mySelectable;
+		bool mySelected;
 		bool myVisible;
 
 		bool myChanged;
@@ -136,14 +163,6 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void SceneNode::setSelectable(bool value) 
 	{ mySelectable = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool SceneNode::isVisible()
-	{ return myVisible; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneNode::setVisible(bool value)
-	{ myVisible = value; }
 }; // namespace scene
 }; // namespace omega
 
