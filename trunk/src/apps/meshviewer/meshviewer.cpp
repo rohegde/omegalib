@@ -141,7 +141,8 @@ void MeshViewerClient::initialize()
 	myEngine->getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
-	myCurrentInteractor = &myMouseInteractor;
+	myTwoHandsInteractor.initialize("observerUpdateService");
+	myCurrentInteractor = &myTwoHandsInteractor;
 	myEngine->getSceneManager()->addActor(myCurrentInteractor);
 }
 
@@ -171,54 +172,8 @@ void MeshViewerClient::setActiveUser(int userId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::processMocapEvent(const Event& evt, UpdateContext& context)
-{
-	if(evt.sourceId == myActiveUserId)
-	{
-		myHandsValid = evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand);
-		if(myHandsValid)
-		{
-			myLeftHandPosition = evt.pointSet[LeftHand];
-			myRightHandPosition = evt.pointSet[RightHand];
-			//myRightHandPosition.z() = myRightHandPosition.z() - 0.3f;
-			//myLeftHandPosition.z() = myLeftHandPosition.z() - 0.3f;
-			if(myVisibleEntity != NULL && myVisibleEntity->isActive())
-			{
-				Vector3f pos = (myLeftHandPosition + myRightHandPosition) / 2;
-				float size = (myLeftHandPosition - myRightHandPosition).norm();
-				myVisibleEntity->setPosition(pos);
-				myVisibleEntity->setSize(size);
-
-				Vector3f orig = Vector3f(0, 1, 0);
-				Vector3f dir = myLeftHandPosition - myRightHandPosition;
-				dir.normalize();
-				Quaternion q = Math::buildRotation(orig, dir, Vector3f::Zero());
-				myVisibleEntity->setOrientation(q);
-			}
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& context)
 {
-#ifndef MOUSE_INTERACTION
-	if(evt.type == Event::Down)
-	{
-		if(myVisibleEntity != NULL)
-		{
-			myVisibleEntity->activate(Vector3f::Zero());
-		}
-	}
-	else if(evt.type == Event::Up)
-	{
-		// Deselect objects.
-		if(myVisibleEntity != NULL)
-		{
-			myVisibleEntity->deactivate();
-		}
-	}
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,10 +192,6 @@ bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 		{
 			ofmsg("Untracing user %1%", %evt.sourceId);
 			myUI->onUntraceUser(evt.sourceId);
-		}
-		else
-		{
-			processMocapEvent(evt, context);
 		}
 		return true;
 	}

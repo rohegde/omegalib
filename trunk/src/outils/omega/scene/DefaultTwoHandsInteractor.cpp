@@ -30,10 +30,51 @@ using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void DefaultTwoHandsInteractor::initialize(const String& observerUpdateServiceName)
+{
+	myActiveUserId = 0;
+	if(observerUpdateServiceName != "")
+	{
+		ServiceManager* sm = SystemManager::instance()->getServiceManager();
+		myObserverUpdateService =  sm->findService<ObserverUpdateService>(observerUpdateServiceName);
+	}
+	else
+	{
+		myObserverUpdateService = NULL;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
 {
+	if(myObserverUpdateService != NULL) 
+	{
+		myActiveUserId = myObserverUpdateService->getSourceId();
+	}
+
 	if(myNode != NULL)
 	{
+		if(evt.sourceId == myActiveUserId)
+		{
+			if(evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand))
+			{
+				Vector3f leftHandPosition = evt.pointSet[LeftHand];
+				Vector3f rightHandPosition = evt.pointSet[RightHand];
+				if(myNode->isSelected())
+				{
+					Vector3f pos = (leftHandPosition + rightHandPosition) / 2;
+					float size = (leftHandPosition - rightHandPosition).norm();
+					myNode->setPosition(pos);
+					myNode->setScale(size, size, size);
+
+					Vector3f orig = Vector3f(0, 1, 0);
+					Vector3f dir = leftHandPosition - rightHandPosition;
+					dir.normalize();
+					Quaternion q = Math::buildRotation(orig, dir, Vector3f::Zero());
+					myNode->setOrientation(q);
+				}
+			}
+		}
 	}
 	return false; 
 }
@@ -43,6 +84,14 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 {
 	if(myNode != NULL)
 	{
+		if(evt.type == Event::Down)
+		{
+			myNode->setSelected(true);
+		}
+		else if(evt.type == Event::Up)
+		{
+			myNode->setSelected(false);
+		}
 	}
 	return false; 
 }

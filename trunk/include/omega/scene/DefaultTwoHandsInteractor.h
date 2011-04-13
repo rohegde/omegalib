@@ -28,6 +28,7 @@
 #define __DEFAULT_TWO_HANDS_INTERACTOR_H__
 
 #include "omega/osystem.h"
+#include "omega/ObserverUpdateService.h"
 #include "omega/scene/Actor.h"
 
 namespace omega
@@ -40,9 +41,26 @@ namespace scene
 	public:
 		DefaultTwoHandsInteractor() {}
 
+		void initialize(const String& observerUpdateServiceName);
+
 		virtual bool handleEvent(const Event& evt, UpdateContext& context);
 		virtual bool handleEvent(const Event& evt, DrawContext& context);
+
+		int getActiveUserId();
+		void setActiveUserId(int value);
+
+	private:
+		ObserverUpdateService* myObserverUpdateService;
+		int myActiveUserId;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int DefaultTwoHandsInteractor::getActiveUserId()
+	{ return myActiveUserId; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void DefaultTwoHandsInteractor::setActiveUserId(int value)
+	{ myActiveUserId = value; }
 }; // namespace scene
 }; // namespace omega
 
