@@ -38,6 +38,11 @@ void BoundingSphereDrawable::draw(SceneNode* node)
 	if(myVisible || (myDrawOnSelected && node->isSelected()))
 	{
 		float radius = node->getBoundingSphere().getRadius();
+
+		glPushMatrix();
+		const Vector3f& scale = node->getScale();
+		glScalef(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
+
 		float stp = Math::Pi * 2 / mySegments;
 		float stp2 = Math::Pi / (mySlices + 1);
 		glEnable(GL_BLEND);
@@ -66,5 +71,7 @@ void BoundingSphereDrawable::draw(SceneNode* node)
 			}
 			glEnd();
 		}
+
+		glPopMatrix();
 	}
 }
