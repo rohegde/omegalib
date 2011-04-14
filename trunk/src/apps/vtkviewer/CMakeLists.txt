@@ -26,20 +26,33 @@
 ###################################################################################################
 
 ###################################################################################################
+FIND_PACKAGE(VTK)
+IF(NOT VTK_DIR)
+  MESSAGE(FATAL_ERROR "Please set VTK_DIR.")
+ENDIF(NOT VTK_DIR)
+INCLUDE(${VTK_USE_FILE})
+
+###################################################################################################
 # Source files
 set(SRCS 
-		meshviewer.cpp)
+		vtkviewer.cpp)
     
 ###################################################################################################
 # Headers
 set(HEADERS 
-		meshviewer.h) 
+		vtkviewer.h) 
         
 ###################################################################################################
 # Setup compile info
-add_executable(meshviewer ${SRCS} ${HEADERS})
+add_executable(vtkviewer ${SRCS} ${HEADERS})
 
 ###################################################################################################
 # Setup link info.
-target_link_libraries(meshviewer
-	omega outils)
+target_link_libraries(vtkviewer
+	omega 
+	outils
+    vtkRendering
+    vtkGraphics
+    vtkIO
+    vtkCommon
+    vtkHybrid)

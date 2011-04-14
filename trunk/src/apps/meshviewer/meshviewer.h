@@ -34,26 +34,13 @@
 #include "omega/Texture.h"
 #include "omega/ObserverUpdateService.h"
 
-#ifdef OMEGA_USE_OPENNI
-#include "omega/OpenNIService.h"
-#endif
-
-
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward declarations.
-class Entity;
-class MeshViewerClient;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 class Entity: public DynamicObject
 {
-public:
-	enum Operation { Move, Scale, Rotate, Compound };
-
 public:
 	Entity(const String& name, SceneManager* sm, Mesh* m);
 
@@ -70,27 +57,11 @@ private:
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
 	BoundingSphereDrawable* mySelectionSphere;
-
-	bool myActive;
 	bool myVisible;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerUI: public IUIEventHandler
-{
-public:
-	MeshViewerUI(): myClient(NULL) {}
-
-	void initialize(MeshViewerClient* client);
-	void handleUIEvent(const UIEvent& evt);
-
-private:
-	MeshViewerClient* myClient;
-	Vector<Button*> myEntityButtons;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient
+class MeshViewerClient: public EngineClient, IUIEventHandler
 {
 public:
 	MeshViewerClient(Application* app): 
@@ -99,22 +70,21 @@ public:
 	  {}
 
 	virtual void initialize();
+	void initUI();
 
+	void handleUIEvent(const UIEvent& evt);
 	void setVisibleEntity(int entityId);
-	int getNumEntities() { return myEntities.size(); }
-	Entity* getEntity(int entityId) { return myEntities[entityId]; }
 
 private:
-	// UI
-	MeshViewerUI* myUI;
-
-	// Entity list
+	// Entities
 	Vector<Entity*> myEntities;
-
-	// Active entity.
 	Entity* myVisibleEntity;
 
+	// Scene
 	ReferenceBox* myReferenceBox;
+
+	// UI
+	Vector<Button*> myEntityButtons;
 
 	// Interactors.
 	Actor* myCurrentInteractor;

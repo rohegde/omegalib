@@ -24,65 +24,77 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "meshviewer.h"
+#ifndef VTKVIEWER_H
+#define VTKVIEWER_H
+
+#include "omega.h"
+#include "omega/scene.h"
+#include "omega/ui.h"
+#include "omega/EngineClient.h"
+#include "omega/Texture.h"
+#include "omega/ObserverUpdateService.h"
+
+using namespace omega;
+using namespace omega::scene;
+using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::initialize(MeshViewerClient* client)
+class Entity: public DynamicObject
 {
-	myClient = client;
+public:
+	Entity(const String& name, SceneManager* sm, Mesh* m);
 
-	UIManager* ui = client->getUIManager();
-	ui->setEventHandler(this);
+	const String& getName() { return myName; }
 
-	//! Load and set default font.
-	FontManager* fm = client->getFontManager();
-	Font* defaultFont = fm->getFont("default");
-	ui->setDefaultFont(defaultFont);
+	void resetTransform();
+	bool isVisible() { return myVisible; }
+	void setVisible(bool value);
 
-	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer(0);
-	root->setLayout(Container::LayoutVertical);
+	SceneNode* getSceneNode() { return mySceneNode; }
 
-	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-
-	// Setup ui layout using from config file sections.
-	Config* cfg = SystemManager::instance()->getAppConfig();
-	if(cfg->exists("config/ui/entityButtons"))
-	{
-		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
-	}
-	if(cfg->exists("config/ui/root"))
-	{
-		root->load(cfg->lookup("config/ui/root"));
-	}
-
-	// Add buttons for each entity
-	for(int i = 0; i < myClient->getNumEntities(); i++)
-	{
-		Entity* e = myClient->getEntity(i);
-		Button* btn = wf->createButton(e->getName(), entityButtons);
-		myEntityButtons.push_back(btn);
-	}
-
-	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
-	if(myClient->getServiceManager()->findService<Service>("OpenNIService") != NULL)
-	{
-		root = ui->getRootContainer(2);
-		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
-		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
-	}
-}
+private:
+	String myName;
+	SceneNode* mySceneNode;
+	Mesh* myMesh;
+	BoundingSphereDrawable* mySelectionSphere;
+	bool myVisible;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::handleUIEvent(const UIEvent& evt)
+class VtkViewerClient: public EngineClient, IUIEventHandler
 {
-	for(int i = 0; i < myClient->getNumEntities(); i++)
-	{
-		if(myEntityButtons[i] == evt.source)
-		{
-			myClient->setVisibleEntity(i);
-			break;
-		}
-	}
-}
+public:
+	VtkViewerClient(Application* app): 
+	  EngineClient(app), 
+		myVisibleEntity(NULL)
+	  {}
+
+	virtual void initialize();
+	void initUI();
+
+	void handleUIEvent(const UIEvent& evt);
+	void setVisibleEntity(int entityId);
+
+private:
+	// Entities
+	Vector<Entity*> myEntities;
+	Entity* myVisibleEntity;
+
+	// Scene
+	ReferenceBox* myReferenceBox;
+
+	// UI
+	Vector<Button*> myEntityButtons;
+
+	// Interactors.
+	Actor* myCurrentInteractor;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class VtkViewerApplication: public Application
+{
+public:
+	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
+};
+
+#endif
