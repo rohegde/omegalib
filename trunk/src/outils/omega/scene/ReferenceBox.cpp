@@ -34,7 +34,7 @@ using namespace omega::scene;
 ReferenceBox::ReferenceBox()
 {
 	myPrimaryLineColor = Color(0, 0, 0, 1);
-	myPrimaryLineInterval = 0.1f;
+	myPrimaryLineInterval = 0.2f;
 
 	mySideColor[Back]   =  Color(0.3f, 0.2f, 0.2f, 1.0f);
 	mySideColor[Front]  =  Color(0.3f, 0.2f, 0.2f, 1.0f);

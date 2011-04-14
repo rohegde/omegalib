@@ -68,6 +68,7 @@ SET( srcs
 		omega/ui/Slider.cpp
 		omega/ui/UIManager.cpp
 		omega/ui/Widget.cpp
+		omega/ui/UserManagerPanel.cpp
         )
 		
 ###################################################################################################
@@ -113,6 +114,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Widget.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ui/UserManagerPanel.h
         ) 
         
 ###################################################################################################

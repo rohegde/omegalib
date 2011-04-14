@@ -60,14 +60,6 @@ public:
 	const String& getName() { return myName; }
 
 	void resetTransform();
-	void setPosition(const Vector3f& pos);
-	void setOrientation(const Quaternion& o);
-	void setSize(float size);
-
-	void activate(const Vector3f handlePos);
-	void deactivate();
-	bool isActive() { return myActive; }
-
 	bool isVisible() { return myVisible; }
 	void setVisible(bool value);
 
@@ -91,19 +83,10 @@ public:
 
 	void initialize(MeshViewerClient* client);
 	void handleUIEvent(const UIEvent& evt);
-#ifdef OMEGA_USE_OPENNI
-	void updateKinectTexture(OpenNIService* svc);
-#endif
-	void onTraceUser(int userId);
-	void onUntraceUser(int userId);
 
 private:
 	MeshViewerClient* myClient;
 	Vector<Button*> myEntityButtons;
-	Image* depthImage;
-	Texture *texture;
-
-	Container* myUserUI;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,9 +96,7 @@ public:
 	MeshViewerClient(Application* app): 
 	  ApplicationClient(app), 
 		myEngine(NULL), 
-		myVisibleEntity(NULL), 
-		myActiveUserId(1), 
-		myHandsValid(false)
+		myVisibleEntity(NULL)
 	  {}
 
 	virtual void initialize();
@@ -124,16 +105,11 @@ public:
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
 
-	void processPointerEvent(const Event& evt, DrawContext& context);
-	void processMocapEvent(const Event& evt, UpdateContext& context);
-
 	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);
 
 	int getNumEntities() { return myEntities.size(); }
 	Entity* getEntity(int entityId) { return myEntities[entityId]; }
-
-	void setActiveUser(int userId);
 
 private:
 	// Engine
@@ -154,12 +130,6 @@ private:
 	Actor* myCurrentInteractor;
 	DefaultTwoHandsInteractor myTwoHandsInteractor;
 	DefaultMouseInteractor myMouseInteractor;
-
-	// Active user id;
-	int myActiveUserId;
-	Vector3f myLeftHandPosition;
-	Vector3f myRightHandPosition;
-	bool myHandsValid;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

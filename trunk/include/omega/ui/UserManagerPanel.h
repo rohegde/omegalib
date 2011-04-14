@@ -24,12 +24,37 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/UserManager.h"
+#ifndef __USER_MANAGER_H__
+#define __USER_MANAGER_H__
 
-using namespace omega;
+#include "omega/osystem.h"
+#include "omega/ObserverUpdateService.h"
+#include "omega/Texture.h"
+#include "omega/ui/Container.h"
+#include "omega/ui/Image.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-UserManager::UserManager()
+namespace omega
 {
-}
+namespace ui
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API UserManagerPanel: public Container
+	{
+	public:
+		UserManagerPanel(const String& name): Container(name), myDepthTexture(NULL), myDepthImage(NULL) {}
 
+		void initialize(Container* owner, const String& openNIServiceName, const String& observerUpdateServiceName);
+	
+	protected:
+		virtual void update(const omega::UpdateContext& context);
+
+	private:
+		Service* myOpenNIService;
+		ObserverUpdateService* myObserverUpdateService;
+
+		Image* myDepthImage;
+		Texture* myDepthTexture;
+	};
+}; // namespace omega
+};
+#endif

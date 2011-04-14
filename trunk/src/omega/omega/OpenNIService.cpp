@@ -387,8 +387,8 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 		// Calibration succeeded
 		ofmsg("Calibration complete, start tracking user %1%", %(int)nId);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
-        //omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
-        //isCalibrated = true;
+        omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
+        isCalibrated = true;
 		myOpenNI->lockEvents();
 		Event* theEvent = myOpenNI->writeHead();
 		theEvent->serviceType = Service::Mocap;
