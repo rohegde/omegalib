@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "meshviewer.h"
+#include "vtkviewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(const String& name, SceneManager* sm, Mesh* m):
@@ -60,7 +60,7 @@ void Entity::resetTransform()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::initialize()
+void VtkViewerClient::initialize()
 {
 	EngineClient::initialize();
 
@@ -117,7 +117,7 @@ void MeshViewerClient::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::initUI()
+void VtkViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
 	ui->setEventHandler(this);
@@ -163,7 +163,7 @@ void MeshViewerClient::initUI()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::handleUIEvent(const UIEvent& evt)
+void VtkViewerClient::handleUIEvent(const UIEvent& evt)
 {
 	for(int i = 0; i < myEntities.size(); i++)
 	{
@@ -176,7 +176,7 @@ void MeshViewerClient::handleUIEvent(const UIEvent& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::setVisibleEntity(int entityId)
+void VtkViewerClient::setVisibleEntity(int entityId)
 {
 	if(myVisibleEntity != NULL)
 	{
@@ -197,13 +197,13 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 // Application entry point
 int main(int argc, char** argv)
 {
-	MeshViewerApplication app;
+	VtkViewerApplication app;
 
 	// Read config file name from command line or use default one.
-	const char* cfgName = "meshviewer.cfg";
+	const char* cfgName = "vtkviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "vtkviewer.log", new FilesystemDataSource("./../../data/"));
 
 	return 0;
 }
