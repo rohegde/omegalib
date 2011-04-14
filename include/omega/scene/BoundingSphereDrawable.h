@@ -46,7 +46,7 @@ namespace scene
 		BoundingSphereDrawable(): 
 		  myDrawOnSelected(false), 
  		  myVisible(true),
-		  mySlices(16),
+		  mySlices(5),
 		  mySegments(32),
 		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
 

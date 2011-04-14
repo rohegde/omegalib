@@ -93,13 +93,10 @@ bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context)
 		else if(evt.type == Event::Zoom)
 		{
 			// Manipulate object, if one is active.
-			if(myNode->isSelected())
-			{
-				float sc;
-				if(evt.value[0] < 0) sc = 0.9f;
-				else sc = 1.1f;
-				myNode->scale(sc, sc, sc);
-			}
+			float sc;
+			if(evt.value[0] < 0) sc = 0.9f;
+			else sc = 1.1f;
+			myNode->scale(sc, sc, sc);
 		}
 	}
 	return false; 

@@ -37,7 +37,7 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 	mySelectionSphere = new BoundingSphereDrawable();
 	
 	mySelectionSphere->setVisible(false);
-	mySelectionSphere->setDrawOnSelected(false);
+	mySelectionSphere->setDrawOnSelected(true);
 
 	myVisible = false;
 	myActive = false;
@@ -109,7 +109,7 @@ void MeshViewerClient::initialize()
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
 	myTwoHandsInteractor.initialize("ObserverUpdateService");
-	myCurrentInteractor = &myTwoHandsInteractor;
+	myCurrentInteractor = &myMouseInteractor;
 	myEngine->getSceneManager()->addActor(myCurrentInteractor);
 }
 
