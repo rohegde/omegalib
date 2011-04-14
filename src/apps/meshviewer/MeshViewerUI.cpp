@@ -31,11 +31,11 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 {
 	myClient = client;
 
-	UIManager* ui = client->getEngine()->getUIManager();
+	UIManager* ui = client->getUIManager();
 	ui->setEventHandler(this);
 
 	//! Load and set default font.
-	FontManager* fm = client->getEngine()->getFontManager();
+	FontManager* fm = client->getFontManager();
 	Font* defaultFont = fm->getFont("default");
 	ui->setDefaultFont(defaultFont);
 

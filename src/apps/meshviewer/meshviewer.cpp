@@ -63,8 +63,7 @@ void Entity::resetTransform()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
 {
-	myEngine = new EngineClient(this);
-	myEngine->initialize();
+	EngineClient::initialize();
 
 	Config* cfg = getSystemManager()->getAppConfig();
 
@@ -72,11 +71,11 @@ void MeshViewerClient::initialize()
 	if(cfg->exists("config/defaultFont"))
 	{
 		Setting& fontSetting = cfg->lookup("config/defaultFont");
-		myEngine->getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
+		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
 	}
 
 	// Load meshes specified in config file.
-	MeshManager* mm = myEngine->getMeshManager();
+	MeshManager* mm = getMeshManager();
 	if(cfg->exists("config/meshes"))
 	{
 		Setting& meshes = cfg->lookup("config/meshes");
@@ -89,7 +88,7 @@ void MeshViewerClient::initialize()
 
 			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.8f);
 			Mesh* mesh = mm->getMesh(meshName);
-			Entity* e = new Entity(meshLabel, myEngine->getSceneManager(), mesh);
+			Entity* e = new Entity(meshLabel, getSceneManager(), mesh);
 			myEntities.push_back(e);
 		}
 	}
@@ -100,7 +99,7 @@ void MeshViewerClient::initialize()
 
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
-	myEngine->getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
+	getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
 	// Set the interactor style used to manipulate meshes.
@@ -116,7 +115,7 @@ void MeshViewerClient::initialize()
 		interactor->initialize("ObserverUpdateService");
 		myCurrentInteractor = interactor;
 	}
-	myEngine->getSceneManager()->addActor(myCurrentInteractor);
+	getSceneManager()->addActor(myCurrentInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,30 +134,6 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 
 	// Tell the interactor what is the currently active scene node
 	myCurrentInteractor->setSceneNode(e->getSceneNode());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
-{
-	return myEngine->handleEvent(evt, context);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
-{
-	return myEngine->handleEvent(evt, context);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::update(const UpdateContext& context)
-{
-	myEngine->update(context);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::draw(const DrawContext& context)
-{
-	myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

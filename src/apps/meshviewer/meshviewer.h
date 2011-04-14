@@ -90,31 +90,21 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public ApplicationClient
+class MeshViewerClient: public EngineClient
 {
 public:
 	MeshViewerClient(Application* app): 
-	  ApplicationClient(app), 
-		myEngine(NULL), 
+	  EngineClient(app), 
 		myVisibleEntity(NULL)
 	  {}
 
 	virtual void initialize();
-	virtual bool handleEvent(const Event& evt, DrawContext& context);
-	virtual bool handleEvent(const Event& evt, UpdateContext& context);
-	virtual void update(const UpdateContext& context);
-	virtual void draw(const DrawContext& context);
 
-	EngineClient* getEngine() { return myEngine; }
 	void setVisibleEntity(int entityId);
-
 	int getNumEntities() { return myEntities.size(); }
 	Entity* getEntity(int entityId) { return myEntities[entityId]; }
 
 private:
-	// Engine
-	EngineClient* myEngine;
-
 	// UI
 	MeshViewerUI* myUI;
 
