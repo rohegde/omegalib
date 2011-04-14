@@ -55,19 +55,14 @@ public:
 	virtual void run() = 0;
 
 	// Layer and view management.
-	virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled) {}
-	virtual bool isLayerEnabled(int layerNum, const char* viewName) { return true;}
+	virtual void setLayer(const char* viewName, Layer::Enum layer) = 0;
+	virtual Layer::Enum getLayer(const char* viewName) = 0;
 
 	virtual Observer* getObserver(int observerId) { return NULL; }
 	
 	virtual void cleanup() {}
 
 	virtual DisplaySystemType getId() { return Invalid; }
-
-	//void setClientResolution(ApplicationClient* client, const Vector2i& resolution)
-	//{
-	//	client->setResolution(resolution);
-	//}
 
 protected:
 	DisplaySystem() {}

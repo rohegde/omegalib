@@ -49,8 +49,8 @@ namespace omega
 		void updateProjectionMatrix();
 
 		// Layer and view management.
-		virtual void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
-		virtual bool isLayerEnabled(int layerNum, const char* viewName);
+		virtual void setLayer(const char* viewName, Layer::Enum layer);
+		virtual Layer::Enum getLayer(const char* viewName);
 
 		Observer& getObserver() { return myObserver; }
 
@@ -77,7 +77,7 @@ namespace omega
 		ApplicationClient* myAppClient;
 		ApplicationServer* myAppServer;
 		RenderTarget* myFrameBuffer;
-		bool* myLayerEnabled;
+		Layer::Enum myLayer;
 	};
 }; // namespace omega
 

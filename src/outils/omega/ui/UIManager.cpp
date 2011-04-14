@@ -75,7 +75,9 @@ void UIManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UIManager::draw(const DrawContext& context)
 {
-	Container* root = myRootContainer[context.layer];
+	// Get the UI layer id (higher two bytes of 4 byte layer in DrawContext)
+	int layer = (context.layer >> 2) - 1;
+	Container* root = myRootContainer[layer];
 
 	const Rect& viewport = context.viewport;
 	// Update the root container size if necessary.

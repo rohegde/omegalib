@@ -64,27 +64,27 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class EqualizerDisplaySystem: public DisplaySystem
+class OMEGA_API EqualizerDisplaySystem: public DisplaySystem
 {
 public:
-	OMEGA_API EqualizerDisplaySystem();
-	OMEGA_API ~EqualizerDisplaySystem();
+	EqualizerDisplaySystem();
+	~EqualizerDisplaySystem();
 
 	// sets up the display system. Called before initalize.
-	OMEGA_API void setup(Setting& setting);
+	void setup(Setting& setting);
 
-	OMEGA_API void initialize(SystemManager* sys); 
-	OMEGA_API void run(); 
-	OMEGA_API void cleanup(); 
+	void initialize(SystemManager* sys); 
+	void run(); 
+	void cleanup(); 
 
-	OMEGA_API String getDisplayConfig() { return myDisplayConfig; }
-	OMEGA_API void setDisplayConfig(const String& value) { myDisplayConfig = value; }
+	String getDisplayConfig() { return myDisplayConfig; }
+	void setDisplayConfig(const String& value) { myDisplayConfig = value; }
 
-	OMEGA_API Observer* getObserver(int observerId);
+	Observer* getObserver(int observerId);
 
 	// Layer and view management.
-	OMEGA_API void setLayerEnabled(int layerNum, const char* viewName, bool enabled);
-	OMEGA_API bool isLayerEnabled(int layerNum, const char* viewName);
+	void setLayer(const char* viewName, Layer::Enum layer);
+	Layer::Enum getLayer(const char* viewName);
 
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 
