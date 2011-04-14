@@ -49,7 +49,6 @@ SET( srcs
 		omega/DataManager.cpp
 		omega/FileDataStream.cpp
 		omega/FilesystemDataSource.cpp
-		omega/UserManager.cpp
         )
 		
 ###################################################################################################
@@ -71,7 +70,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/UserManager.h
 
 		# eigenwrap
         ${OmegaLib_SOURCE_DIR}/include/omega/math/EigenWrappers.h

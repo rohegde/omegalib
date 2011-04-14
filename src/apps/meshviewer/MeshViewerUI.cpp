@@ -61,26 +61,17 @@ void MeshViewerUI::initialize(MeshViewerClient* client)
 	{
 		Entity* e = myClient->getEntity(i);
 		Button* btn = wf->createButton(e->getName(), entityButtons);
-		//btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 	}
 
-#ifdef OMEGA_USE_OPENNI
-	root = ui->getRootContainer(2);
-	//root->setSize(Vector2f(800, 600));
-	root->setLayout(Container::LayoutVertical);
-	myUserUI = wf->createContainer("userUI", root, Container::LayoutHorizontal);
-	//myUserUI->setDebugModeEnabled(true);
-	myUserUI->setVerticalAlign(Container::AlignBottom);
-	//myUserUI->setSize(Vector2f(800, 600));
-
-	depthImage = wf->createImage("kinectDepthBuffer", myUserUI);
-	//depthImage->setHeight(480);
-	//depthImage->setWidth(640);
-#endif
-
-	texture = NULL;
-
+	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
+	if(myClient->getServiceManager()->findService<Service>("OpenNIService") != NULL)
+	{
+		root = ui->getRootContainer(2);
+		root->setLayout(Container::LayoutVertical);
+		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
+		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,54 +85,4 @@ void MeshViewerUI::handleUIEvent(const UIEvent& evt)
 			break;
 		}
 	}
-	for(int j = 0; j < myUserUI->getNumChildren(); j++)
-	{
-		Widget* w = myUserUI->getChildByIndex(j);
-		if(w == evt.source)
-		{
-			int userId = atoi(w->getName().c_str());
-			ofmsg("Active User id: %1%", %userId);
-			myClient->setActiveUser(userId);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-#ifdef OMEGA_USE_OPENNI
-void MeshViewerUI::updateKinectTexture(OpenNIService* svc)
-{
-	if( texture == NULL ) 
-	{
-		texture = new Texture();
-		texture->initialize((byte*)svc->getDepthImageData(), svc->getImageDataWidth(), svc->getImageDataHeight());
-		depthImage->setTexture(texture);
-	}
-	
-	texture->setDirty();
-	texture->refresh();
-}
-#endif
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::onTraceUser(int userId)
-{
-	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
-	String name = ostr("%1%", %userId);
-	String label = ostr("User %1%", %userId);
-	Button* btn = wf->createButton(name, myUserUI);
-	btn->setText(label);
-
-	// Set button color through user id
-#ifdef OMEGA_USE_OPENNI
-	OpenNIService* svc = myClient->getServiceManager()->findService<OpenNIService>("OpenNIService");
-	Color col = svc->getUserColor(userId);
-	btn->setColor(col.scale(0.2f));
-#endif
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerUI::onUntraceUser(int userId)
-{
-	String name = ostr("%1%", %userId);
-	myUserUI->removeChild(name);
 }

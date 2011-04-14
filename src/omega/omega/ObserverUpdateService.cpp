@@ -156,7 +156,7 @@ void ObserverUpdateService::poll()
 						myLastPosition = pos;
 					}
 					myCurrentMovementThreshold = (myCurrentMovementThreshold * myMovementThresholdCoeff + myMovementThresholdTarget) / (myMovementThresholdCoeff + 1);
-					ofmsg("mvth: %1%", %myCurrentMovementThreshold);
+					//ofmsg("mvth: %1%", %myCurrentMovementThreshold);
 					myObserver->update(myLastPosition, q);
 				}
 			}

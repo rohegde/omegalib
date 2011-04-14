@@ -37,7 +37,7 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
 	mySelectionSphere = new BoundingSphereDrawable();
 	
 	mySelectionSphere->setVisible(false);
-	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setDrawOnSelected(false);
 
 	myVisible = false;
 	myActive = false;
@@ -63,39 +63,6 @@ void Entity::resetTransform()
 {
 	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->resetOrientation();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setPosition(const Vector3f& pos)
-{
-	mySceneNode->setPosition(pos);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setOrientation(const Quaternion& o)
-{
-	mySceneNode->setOrientation(o);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setSize(float size)
-{
-	size *= 3;
-	mySceneNode->setScale(size, size, size);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::activate(const Vector3f handlePos)
-{
-	myActive = true;
-	mySelectionSphere->setVisible(true);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::deactivate()
-{
-	myActive = false;
-	mySelectionSphere->setVisible(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +92,7 @@ void MeshViewerClient::initialize()
 			String meshFilename = meshSetting["filename"];
 			String meshLabel = meshSetting["label"];
 
-			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.2f);
+			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.8f);
 			Mesh* mesh = mm->getMesh(meshName);
 			Entity* e = new Entity(meshLabel, myEngine->getSceneManager(), mesh);
 			myEntities.push_back(e);
@@ -141,7 +108,7 @@ void MeshViewerClient::initialize()
 	myEngine->getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
-	myTwoHandsInteractor.initialize("observerUpdateService");
+	myTwoHandsInteractor.initialize("ObserverUpdateService");
 	myCurrentInteractor = &myTwoHandsInteractor;
 	myEngine->getSceneManager()->addActor(myCurrentInteractor);
 }
@@ -164,52 +131,15 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::setActiveUser(int userId)
-{
-	myActiveUserId = userId;
-	ObserverUpdateService* svc = getServiceManager()->findService<ObserverUpdateService>("ObserverUpdateService");
-	svc->setSourceId(userId);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::processPointerEvent(const Event& evt, DrawContext& context)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, UpdateContext& context)
 {
-	myEngine->handleEvent(evt, context);
-	switch(evt.serviceType)
-	{
-	case Service::Mocap:
-		if(evt.type == Event::Trace)
-		{
-			ofmsg("Tracing user %1%", %evt.sourceId);
-			myUI->onTraceUser(evt.sourceId);
-		}
-		else if(evt.type == Event::Untrace)
-		{
-			ofmsg("Untracing user %1%", %evt.sourceId);
-			myUI->onUntraceUser(evt.sourceId);
-		}
-		return true;
-	}
-	return false;
+	return myEngine->handleEvent(evt, context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt, DrawContext& context)
 {
-	myEngine->handleEvent(evt, context);
-
-	switch(evt.serviceType)
-	{
-	case Service::Pointer:
-		processPointerEvent(evt, context);
-		return true;
-	}
-	return false;
+	return myEngine->handleEvent(evt, context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,11 +151,6 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
-#ifdef OMEGA_USE_OPENNI
-	OpenNIService* svc = getServiceManager()->findService<OpenNIService>("OpenNIService");
-	myUI->updateKinectTexture(svc);
-#endif
-
 	switch(context.layer)
 	{
 	case 0:

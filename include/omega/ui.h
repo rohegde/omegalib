@@ -34,6 +34,7 @@
 #include "omega/ui/DefaultSkin.h"
 #include "omega/ui/Slider.h"
 #include "omega/ui/UIManager.h"
+#include "omega/ui/UserManagerPanel.h"
 #include "omega/ui/Widget.h"
 
 #endif
