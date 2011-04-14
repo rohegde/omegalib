@@ -128,8 +128,6 @@ private:
 
 	// Interactors.
 	Actor* myCurrentInteractor;
-	DefaultTwoHandsInteractor myTwoHandsInteractor;
-	DefaultMouseInteractor myMouseInteractor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

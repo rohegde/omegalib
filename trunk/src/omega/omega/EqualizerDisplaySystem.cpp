@@ -134,7 +134,7 @@ public:
 				{
 					for(int i = 0; i < Application::MaxLayers; i++)
 					{
-						os << myView->myEnabledLayers[i];
+						os << myView->myLayer;
 					}
 				}
 				if( dirtyBits & DIRTY_DRAW_STATS )
@@ -149,7 +149,7 @@ public:
 				{
 					for(int i = 0; i < Application::MaxLayers; i++)
 					{
-						is >> myView->myEnabledLayers[i];
+						is >> myView->myLayer;
 					}
 				}
 				if( dirtyBits & DIRTY_DRAW_STATS )
@@ -175,7 +175,7 @@ public:
 #pragma warning( pop )
 	{
 		myDrawStatistics = false;
-		memset(myEnabledLayers, 0, sizeof(bool) * Application::MaxLayers);
+		myLayer = Layer::Null;
 		setUserData(&myProxy);
 	}
 
@@ -184,14 +184,14 @@ public:
 		this->setUserData(NULL);
 	}
 
-	bool isLayerEnabled(int layer) 
+	Layer::Enum getLayer() 
 	{ 
-		return myEnabledLayers[layer]; 
+		return myLayer; 
 	}
 
-	void setLayerEnabled(int layer, bool enabled) 
+	void setLayer(Layer::Enum layer) 
 	{ 
-		myEnabledLayers[layer] = enabled; 
+		myLayer = layer; 
 		myProxy.setDirty( Proxy::DIRTY_LAYER );
 	}
 
@@ -208,7 +208,7 @@ public:
 
 private:
 	bool myDrawStatistics;
-	bool myEnabledLayers[Application::MaxLayers];
+	Layer::Enum myLayer;
 	Proxy myProxy;
 	friend class myProxy;
 };
@@ -411,12 +411,12 @@ public:
 		return static_cast< ViewImpl* >(layout->findView(viewName));
 	}
 	
-	void setLayerEnabled(const String& viewName, int layerId, bool enabled)
+	void setLayerEnabled(const String& viewName, Layer::Enum layer)
 	{
 		ViewImpl* view  = findView(viewName);
 		if(view != NULL)
 		{
-			view->setLayerEnabled(layerId, enabled);
+			view->setLayer(layer);
 		}
 	}
 
@@ -602,11 +602,11 @@ protected:
 		context.glContext = this;
 
 		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
-		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);;
+		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
 
 		// Can we get the matrix out of equalizer instead of using opengl?
 		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
-		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.data() );
+		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.data());
 
 		// Dispatch received events events to application client.
 		int av = fd.getNumEvents();
@@ -647,14 +647,8 @@ protected:
 			}
 		}
 
-		for(int i = 0; i < Application::MaxLayers; i++)
-		{
-			if(view->isLayerEnabled(i))
-			{
-				context.layer = i;
-				client->draw(context);
-			}
-		}
+		context.layer = view->getLayer();
+		client->draw(context);
 	}
 
 	virtual void frameViewFinish( const uint128_t& spin )
@@ -788,13 +782,10 @@ void EqualizerDisplaySystem::initLayers()
 			}
 
 			// Set enabled layers
-			if(stView.exists("layers"))
+			if(stView.exists("layer"))
 			{
-				Setting& stLayers = stView["layers"];
-				for(int j = 0; j < stLayers.getLength(); j++)
-				{
-					setLayerEnabled(stLayers[j], stView.getName(), true);
-				}
+				String layer = stView["layer"];
+				setLayer(stView.getName(), Layer::fromString(layer));
 			}
 			else
 			{
@@ -849,7 +840,7 @@ void EqualizerDisplaySystem::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled) 
+void EqualizerDisplaySystem::setLayer(const char* viewName, Layer::Enum layer) 
 {
 	if(!myConfig)
 	{
@@ -860,25 +851,25 @@ void EqualizerDisplaySystem::setLayerEnabled(int layerNum, const char* viewName,
 	ViewImpl* view = myConfig->findView(viewName);
 	if(view != NULL)
 	{
-		view->setLayerEnabled(layerNum, enabled);
+		view->setLayer(layer);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool EqualizerDisplaySystem::isLayerEnabled(int layerNum,const char* viewName) 
+Layer::Enum EqualizerDisplaySystem::getLayer(const char* viewName) 
 { 
 	if(!myConfig)
 	{
 		oerror("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::initialize");
-		return false;
+		return Layer::Null;
 	}
 
 	ViewImpl* view = myConfig->findView(viewName);
 	if(view != NULL)
 	{
-		return view->isLayerEnabled(layerNum);
+		return view->getLayer();
 	}
-	return false;
+	return Layer::Null;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

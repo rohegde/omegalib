@@ -37,7 +37,7 @@ namespace omega
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API Actor
+	class OUTILS_API Actor: public DynamicObject
 	{
 	public:
 		Actor(): myNode(NULL)  {}

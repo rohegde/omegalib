@@ -43,6 +43,39 @@ namespace omega
 	struct Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class Layer
+	{
+	public:
+		enum Enum
+		{
+			Null = 0,
+			Scene0 = 1,
+			Scene1 = 2,
+			Scene2 = 3,
+
+			UI0 = 4,
+			Scene0UI0 = 5,
+			Scene1UI0 = 6,
+			Scene2UI0 = 7,
+
+			UI1 = 8,
+			Scene0UI1 = 9,
+			Scene1UI1 = 10,
+			Scene2UI1 = 11,
+
+			UI2 = 12,
+			Scene0UI2 = 13,
+			Scene1UI2 = 14,
+			Scene2UI2 = 15
+		};
+
+		static Enum fromString(const String& str);
+
+	private:
+		Layer() {}
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Interface for objects that manage a single OpenGL context.
 	class IGLContextManager
 	{

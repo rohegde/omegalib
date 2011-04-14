@@ -26,21 +26,16 @@
  *************************************************************************************************/
 #include "meshviewer.h"
 
-// Uncomment to enable mouse move / zoom / rotate
-//#define MOUSE_INTERACTION
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(const String& name, SceneManager* sm, Mesh* m)
+Entity::Entity(const String& name, SceneManager* sm, Mesh* m):
+	myName(name),
+	myMesh(m),
+	myVisible(false),
+	myActive(false)
 {
-	myName = name;
-	myMesh = m;
 	mySelectionSphere = new BoundingSphereDrawable();
-	
 	mySelectionSphere->setVisible(false);
 	mySelectionSphere->setDrawOnSelected(true);
-
-	myVisible = false;
-	myActive = false;
 
 	mySceneNode = new SceneNode(sm);
 	mySceneNode->addDrawable(myMesh);
@@ -73,15 +68,15 @@ void MeshViewerClient::initialize()
 
 	Config* cfg = getSystemManager()->getAppConfig();
 
+	// Setup the system font.
 	if(cfg->exists("config/defaultFont"))
 	{
 		Setting& fontSetting = cfg->lookup("config/defaultFont");
 		myEngine->getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
 	}
 
-	MeshManager* mm = myEngine->getMeshManager();
-
 	// Load meshes specified in config file.
+	MeshManager* mm = myEngine->getMeshManager();
 	if(cfg->exists("config/meshes"))
 	{
 		Setting& meshes = cfg->lookup("config/meshes");
@@ -103,13 +98,24 @@ void MeshViewerClient::initialize()
 	myUI = new MeshViewerUI();
 	myUI->initialize(this);
 
-
+	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
 	myEngine->getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
-	myTwoHandsInteractor.initialize("ObserverUpdateService");
-	myCurrentInteractor = &myMouseInteractor;
+	// Set the interactor style used to manipulate meshes.
+	String interactorStyle = cfg->lookup("config/interactorStyle");
+	if(interactorStyle == "Mouse")
+	{
+		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
+		myCurrentInteractor = interactor;
+	}
+	else
+	{
+		DefaultTwoHandsInteractor* interactor = new DefaultTwoHandsInteractor();
+		interactor->initialize("ObserverUpdateService");
+		myCurrentInteractor = interactor;
+	}
 	myEngine->getSceneManager()->addActor(myCurrentInteractor);
 }
 
@@ -127,6 +133,7 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 	myVisibleEntity->resetTransform();
 	myVisibleEntity->setVisible(true);
 
+	// Tell the interactor what is the currently active scene node
 	myCurrentInteractor->setSceneNode(e->getSceneNode());
 }
 
@@ -151,18 +158,7 @@ void MeshViewerClient::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::draw(const DrawContext& context)
 {
-	switch(context.layer)
-	{
-	case 0:
-		myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
-		break;
-	case 1:
-		myEngine->draw(context, EngineClient::DrawScene);
-		break;
-	case 2:
-		myEngine->draw(context, EngineClient::DrawUI);
-		break;
-	}
+	myEngine->draw(context, EngineClient::DrawScene | EngineClient::DrawUI);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

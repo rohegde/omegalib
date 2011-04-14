@@ -28,6 +28,7 @@
 #define __ENGINE_CLIENT_H__
 
 #include "osystem.h"
+//#include "omega/Application.h"
 
 namespace omega
 {
@@ -48,7 +49,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API EngineClient
+	class OUTILS_API EngineClient//: public ApplicationClient
 	{
 	public:
 		enum DrawFlags { DrawScene = 1 << 1, DrawUI = 1 << 2 };

@@ -95,14 +95,8 @@ void displayCallback(void)
 		}
 	}
 
-	for(int layer = 0; layer < Application::MaxLayers; layer++)
-	{
-		if(ds->isLayerEnabled(layer, 0))
-		{
-			dc.layer = layer;
-			ac->draw(dc);
-		}
-	}
+	dc.layer = ds->getLayer(NULL);
+	ac->draw(dc);
 
 	glPopMatrix();
 
@@ -123,14 +117,12 @@ GlutDisplaySystem::GlutDisplaySystem():
 	mySys(NULL),
 	myFrameBuffer(NULL)
 {
-	myLayerEnabled = new bool[Application::MaxLayers];
-	memset(myLayerEnabled, 0, Application::MaxLayers * sizeof(bool));
+	myLayer = Layer::Null;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GlutDisplaySystem::~GlutDisplaySystem()
 {
-	delete myLayerEnabled;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,13 +225,10 @@ void GlutDisplaySystem::initLayers()
 		{
 			Setting& stView = stViews[i];
 
-			if(stView.exists("layers"))
+			if(stView.exists("layer"))
 			{
-				Setting& stLayers = stView["layers"];
-				for(int j = 0; j < stLayers.getLength(); j++)
-				{
-					setLayerEnabled(stLayers[j], stView.getName(), true);
-				}
+				String layer = stView["layer"];
+				setLayer(stView.getName(), Layer::fromString(layer));
 			}
 			else
 			{
@@ -264,14 +253,14 @@ void GlutDisplaySystem::initObservers()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GlutDisplaySystem::setLayerEnabled(int layerNum, const char* viewName, bool enabled)
+void GlutDisplaySystem::setLayer(const char* viewName, Layer::Enum layer)
 {
-	myLayerEnabled[layerNum] = enabled;
+	myLayer = layer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool GlutDisplaySystem::isLayerEnabled(int layerNum, const char* viewName)
+Layer::Enum GlutDisplaySystem::getLayer(const char* viewName)
 {
-	return myLayerEnabled[layerNum];
+	return myLayer;
 }
 
