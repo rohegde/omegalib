@@ -28,7 +28,7 @@
 #define __ENGINE_CLIENT_H__
 
 #include "osystem.h"
-//#include "omega/Application.h"
+#include "omega/Application.h"
 
 namespace omega
 {
@@ -49,14 +49,11 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API EngineClient//: public ApplicationClient
+	class OUTILS_API EngineClient: public ApplicationClient
 	{
 	public:
-		enum DrawFlags { DrawScene = 1 << 1, DrawUI = 1 << 2 };
-
-	public:
-		EngineClient(ApplicationClient* client):
-		  myClient(client),
+		EngineClient(Application* app):
+		  ApplicationClient(app),
 		  myGpuManager(NULL),
 		  myTextureManager(NULL),
 		  myFontManager(NULL),
@@ -65,12 +62,11 @@ namespace omega
 		  myEffectManager(NULL),
 		  myUIManager(NULL) {}
 
-		void initialize();
-		ApplicationClient* getApplicationClient();
-		void update(const UpdateContext& context);
-		bool handleEvent(const Event& evt, UpdateContext& context);
-		bool handleEvent(const Event& evt, DrawContext& context);
-		void draw(const DrawContext& context, uint flags);
+		virtual void initialize();
+		virtual bool handleEvent(const Event& evt, UpdateContext& context);
+		virtual bool handleEvent(const Event& evt, DrawContext& context);
+		virtual void update(const UpdateContext& context);
+		virtual void draw(const DrawContext& context);
 
 		//! Manager getters.
 		//@{
@@ -84,7 +80,6 @@ namespace omega
 		//@}
 
 	private:
-		ApplicationClient* myClient;
 		GpuManager* myGpuManager;
 		TextureManager* myTextureManager;
 		FontManager* myFontManager;
@@ -93,10 +88,6 @@ namespace omega
 		scene::EffectManager* myEffectManager;
 		ui::UIManager* myUIManager;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ApplicationClient* EngineClient::getApplicationClient()
-	{ return myClient; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline GpuManager* EngineClient::getGpuManager()

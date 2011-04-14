@@ -24,7 +24,6 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Application.h"
 #include "omega/EngineClient.h"
 #include "omega/GpuManager.h"
 #include "omega/FontManager.h"
@@ -41,7 +40,7 @@ using namespace omega::scene;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
-	myGpuManager = myClient->getGpu();
+	myGpuManager = getGpu();
 
 	myFontManager = new FontManager();
 	myTextureManager = new TextureManager();
@@ -81,14 +80,19 @@ bool EngineClient::handleEvent(const Event& evt, DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::draw(const DrawContext& context, uint flags)
+void EngineClient::draw(const DrawContext& context)
 {
+	// first two bits = scene layer
+	int sceneLayer = context.layer & 0x05;
+	// second two bits = ui layer
+	int uiLayer = (context.layer >> 2) & 0x05;
+
 	myGpuManager->beginDraw();
-	if((flags & DrawScene) == DrawScene)
+	if(sceneLayer != 0)
 	{
 		mySceneManager->draw(context);
 	}
-	if((flags & DrawUI) == DrawUI)
+	if(uiLayer != 0)
 	{
 		myUIManager->draw(context);
 	}
