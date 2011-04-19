@@ -48,36 +48,36 @@ void PQService::setup(Setting& settings)
 	}
 	if(settings.exists("maxBlobSize"))
 	{
-		maxBlobSize =  settings["maxBlobSize"];
+		maxBlobSize =  atoi((const char*)settings["maxBlobSize"]);
 	}
 	if(settings.exists("serverX"))
 	{
-		serverX =  settings["serverX"];
+		serverX =  atoi((const char*)settings["serverX"]);
 		printf("PQService: ServerX set to %d\n", serverX);
 	}
 	if(settings.exists("serverY"))
 	{
-		serverY =  settings["serverY"];
+		serverY =  atoi((const char*)settings["serverY"]);
 		printf("PQService: ServerY set to %d\n", serverY);
 	}
 	if(settings.exists("screenX"))
 	{
-		screenX =  settings["screenX"];
+		screenX =  atoi((const char*)settings["screenX"]);
 		printf("PQService: ScreenX set to %d\n", screenX);
 	}
 	if(settings.exists("screenY"))
 	{
-		screenY =  settings["screenY"];
+		screenY =  atoi((const char*)settings["screenY"]);
 		printf("PQService: ScreenY set to %d\n", screenY);
 	}
 	if(settings.exists("screenOffsetX"))
 	{
-		screenOffsetX =  settings["screenOffsetX"];
+		screenOffsetX =  atoi((const char*)settings["screenOffsetX"]);
 		printf("PQService: ScreenOffsetX set to %d\n", screenOffsetX);
 	}
 	if(settings.exists("screenOffsetY"))
 	{
-		screenOffsetY =  settings["screenOffsetY"];
+		screenOffsetY =  atoi((const char*)settings["screenOffsetY"]);
 		printf("PQService: ScreenOffsetY set to %d\n", screenOffsetY);
 	}
 }
