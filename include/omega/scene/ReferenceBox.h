@@ -30,6 +30,7 @@
 #include "omega/osystem.h"
 #include "omega/scene/Drawable.h"
 #include "omega/scene/Effect.h"
+#include "omega/scene/RenderPass.h"
 
 namespace omega
 {
@@ -47,7 +48,7 @@ namespace scene
 	public:
 		ReferenceBox();
 
-		virtual void draw(SceneNode* node);
+		virtual void draw(SceneNode* node, RenderState* state);
 
 		Color& getColor(Side side);
 		void setColor(Side side, const Color& color);

@@ -18,6 +18,7 @@
 #include "omega/scene/Drawable.h"
 #include "omega/scene/SceneManager.h"
 #include "omega/scene/MeshData.h"
+#include "omega/scene/RenderPass.h"
 
 namespace omega
 {
@@ -42,7 +43,7 @@ namespace scene
 		MeshData* getData() { return myData; }
 		void setData(MeshData* value) { myData = value; }
 
-		virtual void draw(SceneNode* node);
+		virtual void draw(SceneNode* node, RenderState* state);
 		void update();
 
 		const AlignedBox3* getBoundingBox();

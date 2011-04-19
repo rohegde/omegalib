@@ -47,31 +47,34 @@ ReferenceBox::ReferenceBox()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ReferenceBox::draw(SceneNode* node)
+void ReferenceBox::draw(SceneNode* node, RenderState* state)
 {
-	int gridLinesX = (int)(mySize[0] / myPrimaryLineInterval);
-	int gridLinesY = (int)(mySize[1] / myPrimaryLineInterval);
-	int gridLinesZ = (int)(mySize[2] / myPrimaryLineInterval);
+	if(state->isFlagSet(RenderPass::RenderOpaque))
+	{
+		int gridLinesX = (int)(mySize[0] / myPrimaryLineInterval);
+		int gridLinesY = (int)(mySize[1] / myPrimaryLineInterval);
+		int gridLinesZ = (int)(mySize[2] / myPrimaryLineInterval);
 
-	drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisZ, mySideColor[Back]);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisX, myPrimaryLineColor, gridLinesX);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisY, myPrimaryLineColor, gridLinesY);
+		drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisZ, mySideColor[Back]);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisX, myPrimaryLineColor, gridLinesX);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::FAR_RIGHT_BOTTOM), AxisY, myPrimaryLineColor, gridLinesY);
 
-	drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisX, mySideColor[Left]);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisY, myPrimaryLineColor, gridLinesY);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisZ, myPrimaryLineColor, gridLinesZ);
+		drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisX, mySideColor[Left]);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisY, myPrimaryLineColor, gridLinesY);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_LEFT_BOTTOM), AxisZ, myPrimaryLineColor, gridLinesZ);
 
-	drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_RIGHT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, mySideColor[Right]);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_RIGHT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, myPrimaryLineColor, gridLinesY);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_RIGHT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, myPrimaryLineColor, gridLinesZ);
+		drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_RIGHT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, mySideColor[Right]);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_RIGHT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, myPrimaryLineColor, gridLinesY);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_RIGHT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, myPrimaryLineColor, gridLinesZ);
 
-	drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, mySideColor[Bottom]);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, myPrimaryLineColor, gridLinesX);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, myPrimaryLineColor, gridLinesZ);
+		drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisY, mySideColor[Bottom]);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisX, myPrimaryLineColor, gridLinesX);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_BOTTOM), myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM), AxisZ, myPrimaryLineColor, gridLinesZ);
 
-	drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisY, mySideColor[Top]);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisX, myPrimaryLineColor, gridLinesX);
-	drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisZ, myPrimaryLineColor, gridLinesZ);
+		drawReferencePlane(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisY, mySideColor[Top]);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisX, myPrimaryLineColor, gridLinesX);
+		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisZ, myPrimaryLineColor, gridLinesZ);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

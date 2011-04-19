@@ -33,45 +33,48 @@ using namespace omega;
 using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BoundingSphereDrawable::draw(SceneNode* node)
+void BoundingSphereDrawable::draw(SceneNode* node, RenderState* state)
 {
-	if(myVisible || (myDrawOnSelected && node->isSelected()))
+	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
-		float radius = node->getBoundingSphere().getRadius();
-
-		glPushMatrix();
-		const Vector3f& scale = node->getScale();
-		glScalef(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
-
-		float stp = Math::Pi * 2 / mySegments;
-		float stp2 = Math::Pi / (mySlices + 1);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		glColor4fv(myColor.data());
-	
-		for(float g = 0; g <= Math::Pi; g+= stp2)
+		if(myVisible || (myDrawOnSelected && node->isSelected()))
 		{
-			glBegin(GL_LINE_LOOP);
-			for(float t = 0; t < 2 * Math::Pi; t+= stp)
-			{
-				float ptx = Math::sin(t) * Math::sin(g) * radius;
-				float pty = Math::cos(t) * Math::sin(g) * radius;
-				float ptz = Math::cos(g) * radius;
-				glVertex3f(ptx, pty, ptz);
-			}
-			glEnd();
-			glBegin(GL_LINE_LOOP);
-			for(float t = 0; t < 2 * Math::Pi; t+= stp)
-			{
-				float ptz = Math::sin(t) * Math::sin(g) * radius;
-				float pty = Math::cos(t) * Math::sin(g) * radius;
-				float ptx = Math::cos(g) * radius;
-				glVertex3f(ptx, pty, ptz);
-			}
-			glEnd();
-		}
+			float radius = node->getBoundingSphere().getRadius();
 
-		glPopMatrix();
+			glPushMatrix();
+			const Vector3f& scale = node->getScale();
+			glScalef(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
+
+			float stp = Math::Pi * 2 / mySegments;
+			float stp2 = Math::Pi / (mySlices + 1);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			glColor4fv(myColor.data());
+	
+			for(float g = 0; g <= Math::Pi; g+= stp2)
+			{
+				glBegin(GL_LINE_LOOP);
+				for(float t = 0; t < 2 * Math::Pi; t+= stp)
+				{
+					float ptx = Math::sin(t) * Math::sin(g) * radius;
+					float pty = Math::cos(t) * Math::sin(g) * radius;
+					float ptz = Math::cos(g) * radius;
+					glVertex3f(ptx, pty, ptz);
+				}
+				glEnd();
+				glBegin(GL_LINE_LOOP);
+				for(float t = 0; t < 2 * Math::Pi; t+= stp)
+				{
+					float ptz = Math::sin(t) * Math::sin(g) * radius;
+					float pty = Math::cos(t) * Math::sin(g) * radius;
+					float ptx = Math::cos(g) * radius;
+					glVertex3f(ptx, pty, ptz);
+				}
+				glEnd();
+			}
+
+			glPopMatrix();
+		}
 	}
 }

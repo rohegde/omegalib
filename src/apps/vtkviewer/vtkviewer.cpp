@@ -25,39 +25,17 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "vtkviewer.h"
+#include "VtkRenderPass.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(const String& name, SceneManager* sm, Mesh* m):
-	myName(name),
-	myMesh(m),
-	myVisible(false)
-{
-	mySelectionSphere = new BoundingSphereDrawable();
-	mySelectionSphere->setVisible(false);
-	mySelectionSphere->setDrawOnSelected(true);
-
-	mySceneNode = new SceneNode(sm);
-	mySceneNode->addDrawable(myMesh);
-	mySceneNode->addDrawable(mySelectionSphere);
-	mySceneNode->setPosition(Vector3f::Zero());
-	mySceneNode->setSelectable(true);
-	mySceneNode->setVisible(false);
-	sm->getRootNode()->addChild(mySceneNode);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setVisible(bool value)
-{
-	myVisible = value;
-	mySceneNode->setVisible(value);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::resetTransform()
-{
-	mySceneNode->setPosition(0, 0, 0.0f);
-	mySceneNode->resetOrientation();
-}
+// Vtk includes
+#include <vtkCylinderSource.h>
+#include <vtkContourFilter.h>
+#include <vtkQuadric.h>
+#include <vtkSampleFunction.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkActor.h>
+#include <vtkProperty.h>
+#include <vtkImageData.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkViewerClient::initialize()
@@ -73,27 +51,7 @@ void VtkViewerClient::initialize()
 		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
 	}
 
-	// Load meshes specified in config file.
-	MeshManager* mm = getMeshManager();
-	if(cfg->exists("config/meshes"))
-	{
-		Setting& meshes = cfg->lookup("config/meshes");
-		for(int i = 0; i < meshes.getLength(); i++)
-		{
-			Setting& meshSetting = meshes[i];
-			String meshName = meshSetting.getName();
-			String meshFilename = meshSetting["filename"];
-			String meshLabel = meshSetting["label"];
-
-			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.8f);
-			Mesh* mesh = mm->getMesh(meshName);
-			Entity* e = new Entity(meshLabel, getSceneManager(), mesh);
-			myEntities.push_back(e);
-		}
-	}
-
-	// Create and initialize meshviewer UI
-	initUI();
+	VtkDrawable* vdw = initVtk();
 
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
@@ -114,83 +72,59 @@ void VtkViewerClient::initialize()
 		myCurrentInteractor = interactor;
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
+
+	SceneNode* sn = new SceneNode(getSceneManager());
+	getSceneManager()->getRootNode()->addChild(sn);
+
+	BoundingSphereDrawable* ss = new BoundingSphereDrawable();
+	ss->setVisible(false);
+	ss->setDrawOnSelected(true);
+
+	sn->addDrawable(vdw);
+	sn->addDrawable(ss);
+
+	VtkRenderPass* vrp = new VtkRenderPass();
+	vrp->initialize();
+	getSceneManager()->addRenderPass(vrp);
+
+	myCurrentInteractor->setSceneNode(sn);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::initUI()
+VtkDrawable* VtkViewerClient::initVtk()
 {
-	UIManager* ui = getUIManager();
-	ui->setEventHandler(this);
+	vtkCylinderSource* source						= NULL;
+	vtkPolyDataMapper* mapper						= NULL;
+	vtkActor* actor									= NULL;
 
-	//! Load and set default font.
-	FontManager* fm = getFontManager();
-	Font* defaultFont = fm->getFont("default");
-	ui->setDefaultFont(defaultFont);
+	// create the quadric function definition
+	vtkQuadric *quadric = vtkQuadric::New();
+	quadric->SetCoefficients(.5,1,.3,0,.1,0,0,.2,0,0);
 
-	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer(0);
-	root->setLayout(Container::LayoutVertical);
+	// sample the quadric function
+	vtkSampleFunction *sample = vtkSampleFunction::New();
+	sample->SetSampleDimensions(50,50,50);
+	sample->SetImplicitFunction(quadric);
 
-	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
+	// Create five surfaces F(x,y,z) = constant between range specified
+	vtkContourFilter *contours = vtkContourFilter::New();
+	contours->SetInput(sample->GetOutput());
+	contours->GenerateValues(3, 0.0, 1.2);
 
-	// Setup ui layout using from config file sections.
-	Config* cfg = SystemManager::instance()->getAppConfig();
-	if(cfg->exists("config/ui/entityButtons"))
-	{
-		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
-	}
-	if(cfg->exists("config/ui/root"))
-	{
-		root->load(cfg->lookup("config/ui/root"));
-	}
+	// map the contours to graphical primitives
+	vtkPolyDataMapper *contMapper = vtkPolyDataMapper::New();
+	contMapper->SetInput(contours->GetOutput());
+	contMapper->SetScalarRange(0.0, 1.2); 
+  
+	// Actor in scene
+	actor = vtkActor::New();
+	actor->SetScale(0.2f);
+	actor->SetMapper(contMapper);
 
-	// Add buttons for each entity
-	for(int i = 0; i < myEntities.size(); i++)
-	{
-		Entity* e = myEntities[i];
-		Button* btn = wf->createButton(e->getName(), entityButtons);
-		myEntityButtons.push_back(btn);
-	}
+	VtkDrawable* vdw = new VtkDrawable();
+	vdw->setActor(actor);
 
-	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
-	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
-	{
-		root = ui->getRootContainer(2);
-		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
-		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::handleUIEvent(const UIEvent& evt)
-{
-	for(int i = 0; i < myEntities.size(); i++)
-	{
-		if(myEntityButtons[i] == evt.source)
-		{
-			setVisibleEntity(i);
-			return;
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::setVisibleEntity(int entityId)
-{
-	if(myVisibleEntity != NULL)
-	{
-		myVisibleEntity->setVisible(false);
-		myVisibleEntity = NULL;
-	}
-
-	Entity* e = myEntities[entityId];
-	myVisibleEntity = e;
-	myVisibleEntity->resetTransform();
-	myVisibleEntity->setVisible(true);
-
-	// Tell the interactor what is the currently active scene node
-	myCurrentInteractor->setSceneNode(e->getSceneNode());
+	return vdw;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

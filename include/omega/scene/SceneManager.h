@@ -64,6 +64,9 @@ namespace scene
 		void addActor(Actor* actor);
 		void removeActor(Actor* actor);
 
+		void addRenderPass(RenderPass* pass, bool addToFront = false);
+		void removeRenderPass(RenderPass* pass);
+
 	private:
 		AffineTransform3 myViewTransform;
 
@@ -72,6 +75,8 @@ namespace scene
 		Color myBackgroundColor;
 
 		List<Actor*> myActors;
+
+		List<RenderPass*> myRenderPassList;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

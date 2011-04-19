@@ -24,45 +24,51 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef VTKVIEWER_H
-#define VTKVIEWER_H
+#ifndef __VTK_DRAWABLE_H__
+#define __VTK_DRAWABLE_H__
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
-#include "VtkDrawable.h"
+#include "omega/osystem.h"
+#include "omega/scene/Effect.h"
+#include "omega/scene/SceneNode.h"
+#include "omega/scene/RenderPass.h"
+
+#include <vtkActor.h>
+#include <vtkMatrix4x4.h>
+
+class vtkActor;
 
 using namespace omega;
 using namespace omega::scene;
-using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
+class VtkDrawable: public Drawable
 {
 public:
-	VtkViewerClient(Application* app): 
-	  EngineClient(app)
-	  {}
+	VtkDrawable();
 
-	virtual void initialize();
-	VtkDrawable* initVtk();
+	virtual void draw(SceneNode* node, RenderState* state);
+
+	virtual const AlignedBox3* getBoundingBox();
+	virtual bool hasBoundingBox() { return (myActor != NULL); }
+
+	void setActor(vtkActor* value);
+	vtkActor* getActor();
 
 private:
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
+	vtkActor* myActor;
+	vtkMatrix4x4* myMatrix;
+	AlignedBox3 myBBox;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerApplication: public Application
+inline void VtkDrawable::setActor(vtkActor* value)
 {
-public:
-	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
-};
+	myActor = value;
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+inline vtkActor* VtkDrawable::getActor()
+{
+	return myActor;
+}
 #endif

@@ -104,8 +104,9 @@ namespace scene
 
 		virtual void update(bool updateChildren, bool parentHasChanged);
 
+		void draw(RenderState* state);
+
 	private:
-		void draw();
 		void drawBoundingBox();
 
 	private:

@@ -27,6 +27,7 @@
 
 #include "omega/osystem.h"
 #include "omega/scene/Effect.h"
+#include "omega/scene/RenderPass.h"
 
 namespace omega
 {
@@ -34,13 +35,14 @@ namespace scene
 {
 	// Forward declarations
 	class SceneNode;
+	class RenderPass;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
 	class OUTILS_API Drawable
 	{
 	public:
-		virtual void draw(SceneNode* node) = 0;
+		virtual void draw(SceneNode* node, RenderState* state) = 0;
 
 		virtual const AlignedBox3* getBoundingBox() { return NULL; }
 		virtual bool hasBoundingBox() { return false; }

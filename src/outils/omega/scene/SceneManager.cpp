@@ -25,16 +25,38 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/scene/SceneManager.h"
+#include "omega/scene/DefaultRenderPass.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addRenderPass(RenderPass* pass, bool addToFront)
+{
+	if(addToFront)
+	{
+		myRenderPassList.push_front(pass);
+	}
+	else
+	{
+		myRenderPassList.push_back(pass);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::removeRenderPass(RenderPass* pass)
+{
+	myRenderPassList.remove(pass);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initialize()
 {
 	myRoot = new SceneNode(this);
 	myBackgroundColor = Color(0.1f, 0.1f, 0.15f);
+
+	addRenderPass(new DefaultRenderPass());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,47 +64,20 @@ void SceneManager::draw(const DrawContext& context)
 {
 	glDisable(GL_LIGHTING);
 
-	//glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
-	//glLoadIdentity();
-
-	//glMatrixMode(GL_PROJECTION);
-	//glPushMatrix();
-	//glLoadIdentity();
-
-	//// Draw background
-	//glDisable(GL_DEPTH_TEST);
-
-	//glColor4fv(myBackgroundColor.data());
-	//int width = viewport.width();
-	//int height = viewport.height();
-	//int x = - width / 2;
-	//int y = - height / 2;
-	//glRectf(-1, -1, 1, 1);
-	//glEnable(GL_DEPTH_TEST);
-
-	//glPopMatrix();
-
-	//glMatrixMode(GL_MODELVIEW);
-	//glPopMatrix();
-
 	// Setup view matrix (read back from gl)
 	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.data() );
-
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadIdentity();
 
 	// Update transform hierarchy
 	myRoot->update(false, false);
 
-	// Draw background
-	//glDisable(GL_DEPTH_TEST);
+	// Execute all render passes in order.
+	VectorIterator<List<RenderPass*> > it(myRenderPassList);
+	while(it.hasMoreElements())
+	{
+		RenderPass* pass = it.getNext();
+		pass->render(this);
+	}
 
-	// Draw scene
-	myRoot->draw();
-	glPopMatrix();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,45 +24,46 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef VTKVIEWER_H
-#define VTKVIEWER_H
+#include "VtkRenderPass.h"
+#include "vtkGenericOpenGLRenderWindow.h"
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
-#include "VtkDrawable.h"
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkOpaquePass.h>
+#include <vtkRenderState.h>
 
 using namespace omega;
 using namespace omega::scene;
-using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
+VtkRenderPass::VtkRenderPass():
+	myPropQueueSize(0)
 {
-public:
-	VtkViewerClient(Application* app): 
-	  EngineClient(app)
-	  {}
-
-	virtual void initialize();
-	VtkDrawable* initVtk();
-
-private:
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerApplication: public Application
+void VtkRenderPass::initialize()
 {
-public:
-	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
-};
+	// Setup renderer and render window
+	myRenderer = vtkRenderer::New();
 
-#endif
+	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
+	myRenderWindow->AddRenderer(myRenderer);
+	myOpaquePass = vtkOpaquePass::New();
+	myRenderState = new vtkRenderState(myRenderer);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkRenderPass::render(SceneManager* mng)
+{
+	RenderState state;
+	state.pass = this;
+	state.flags = VtkRenderPass::RenderVtk;
+
+	myPropQueueSize = 0;
+
+	mng->getRootNode()->draw(&state);
+
+	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
+	myOpaquePass->Render(myRenderState);
+}
