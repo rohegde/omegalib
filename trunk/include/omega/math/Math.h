@@ -395,6 +395,8 @@ namespace omega { namespace math
 
 		static transform< 3, T, Eigen::Affine > computeMatchingPointsTransform(const matrix< 3, Eigen::Dynamic >& src, const matrix< 3, Eigen::Dynamic >& dst);
 
+		static void swapMinMax(T& min, T& max);
+
 
         static const T PositiveInfinity;
         static const T NegativeInfinity;
@@ -1475,6 +1477,17 @@ namespace omega { namespace math
 	{
 		matrix<4, 4, T> result = Eigen::umeyama(src, dst);
 		return result;
+	}
+
+	template< typename T >
+	void Math<T>::swapMinMax(T& min, T& max)
+	{
+		if(min > max)
+		{
+			float tmp = min;
+			min = max;
+			max = tmp;
+		}
 	}
 } // namespace eigenwrap
 }

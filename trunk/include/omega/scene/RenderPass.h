@@ -24,45 +24,39 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef VTKVIEWER_H
-#define VTKVIEWER_H
+#ifndef __RENDER_PASS_H__
+#define __RENDER_PASS_H__
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
-#include "VtkDrawable.h"
+#include "omega/osystem.h"
 
-using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
+namespace omega
 {
-public:
-	VtkViewerClient(Application* app): 
-	  EngineClient(app)
-	  {}
-
-	virtual void initialize();
-	VtkDrawable* initVtk();
-
-private:
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerApplication: public Application
+namespace scene
 {
-public:
-	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
+	class SceneManager;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OUTILS_API RenderPass
+	{
+	public:
+		enum RenderFlags { 
+			RenderOpaque = 1 << 1, 
+			RenderTransparent = 1 << 2,
+			RenderCustom = 1 << 8 };
+
+	public:
+		virtual void render(SceneManager* mng) = 0;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct RenderState
+	{
+		uint flags;
+		RenderPass* pass;
+
+		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }
+	};
 };
+}; // namespace omega
 
 #endif

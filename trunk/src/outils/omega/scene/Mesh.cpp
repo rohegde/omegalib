@@ -25,6 +25,7 @@
 
 #include "omega/scene/Mesh.h"
 #include "omega/scene/MeshManager.h"
+#include "omega/scene/DefaultRenderPass.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -36,14 +37,17 @@ Mesh::Mesh(MeshManager* manager): myVertexBuffer(NULL), myIndexData(NULL), myDat
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Mesh::draw(SceneNode* node)
+void Mesh::draw(SceneNode* node, RenderState* state)
 {
-	if(myEffect != NULL)
+	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
-		myEffect->activate();
-		myVertexBuffer->bind();
-		myEffect->getProgram()->runRenderStage(myData->getNumTriangles() * 3, GpuProgram::PrimTriangles, myIndexData);
-		myEffect->deactivate();
+		if(myEffect != NULL)
+		{
+			myEffect->activate();
+			myVertexBuffer->bind();
+			myEffect->getProgram()->runRenderStage(myData->getNumTriangles() * 3, GpuProgram::PrimTriangles, myIndexData);
+			myEffect->deactivate();
+		}
 	}
 }
 

@@ -29,6 +29,7 @@
 
 #include "omega/osystem.h"
 #include "omega/scene/Effect.h"
+#include "omega/scene/RenderPass.h"
 
 namespace omega
 {
@@ -50,7 +51,7 @@ namespace scene
 		  mySegments(32),
 		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
 
-		virtual void draw(SceneNode* node);
+		virtual void draw(SceneNode* node, RenderState* state);
 
 		void setDrawOnSelected(bool value);
 		bool getDrawOnSelected();

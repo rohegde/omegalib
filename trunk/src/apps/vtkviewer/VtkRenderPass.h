@@ -24,45 +24,56 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef VTKVIEWER_H
-#define VTKVIEWER_H
+#ifndef __VTK_RENDER_PASS_H__
+#define __VTK_RENDER_PASS_H__
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
-#include "VtkDrawable.h"
+#include "omega/osystem.h"
+#include "omega/scene/RenderPass.h"
+#include "omega/scene/SceneManager.h"
+
+class vtkProp;
+class vtkRenderer;
+class vtkOpaquePass;
+class vtkGenericOpenGLRenderWindow;
+class vtkRenderState;
 
 using namespace omega;
 using namespace omega::scene;
-using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
+class VtkRenderPass: public RenderPass
 {
+friend class VtkDrawable;
 public:
-	VtkViewerClient(Application* app): 
-	  EngineClient(app)
-	  {}
+	enum RenderFlags { RenderVtk = RenderPass::RenderCustom << 1 };
+	static const int MaxQueuedProps = 1024;
 
-	virtual void initialize();
-	VtkDrawable* initVtk();
+public:
+	VtkRenderPass();
+
+	void initialize();
+	virtual void render(SceneManager* mng);
 
 private:
-	// Scene
-	ReferenceBox* myReferenceBox;
+	void queueProp(vtkProp* actor);
 
-	// Interactors.
-	Actor* myCurrentInteractor;
+private:
+	vtkRenderer* myRenderer;
+	vtkOpaquePass* myOpaquePass;
+	vtkRenderState* myRenderState;
+	vtkGenericOpenGLRenderWindow* myRenderWindow;
+
+	vtkProp* myPropQueue[MaxQueuedProps];
+	int myPropQueueSize;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerApplication: public Application
+inline void VtkRenderPass::queueProp(vtkProp* actor)
 {
-public:
-	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
-};
+	if(myPropQueueSize < MaxQueuedProps)
+	{
+		myPropQueue[myPropQueueSize++] = actor;
+	}
+}
 
 #endif

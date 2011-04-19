@@ -24,45 +24,26 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef VTKVIEWER_H
-#define VTKVIEWER_H
-
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
-#include "VtkDrawable.h"
+#include "omega/scene/DefaultRenderPass.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
+using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
+void DefaultRenderPass::render(SceneManager* mng)
 {
-public:
-	VtkViewerClient(Application* app): 
-	  EngineClient(app)
-	  {}
+	RenderState state;
+	state.pass = this;
+	state.flags = RenderPass::RenderOpaque;
 
-	virtual void initialize();
-	VtkDrawable* initVtk();
+	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
+	// stored inside the scene nodes. So, create a new, clean transform on the stack.
+	glPushMatrix();
+	glLoadIdentity();
 
-private:
-	// Scene
-	ReferenceBox* myReferenceBox;
+	mng->getRootNode()->draw(&state);
 
-	// Interactors.
-	Actor* myCurrentInteractor;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
-};
-
-#endif
+	glPopMatrix();
+}

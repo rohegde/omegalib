@@ -35,11 +35,17 @@ INCLUDE(${VTK_USE_FILE})
 ###################################################################################################
 # Source files
 set(SRCS 
+		vtkGenericOpenGLRenderWindow.cpp
+		VtkDrawable.cpp
+		VtkRenderPass.cpp
 		vtkviewer.cpp)
     
 ###################################################################################################
 # Headers
 set(HEADERS 
+		vtkGenericOpenGLRenderWindow.h
+		VtkDrawable.h
+		VtkRenderPass.h
 		vtkviewer.h) 
         
 ###################################################################################################

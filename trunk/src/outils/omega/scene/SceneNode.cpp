@@ -93,7 +93,7 @@ void SceneNode::clearDrawables()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::draw()
+void SceneNode::draw(RenderState* state)
 {
 	if(myVisible)
 	{
@@ -113,7 +113,7 @@ void SceneNode::draw()
 		while(it.hasMoreElements())
 		{
 			Drawable* d = it.getNext();
-			d->draw(this);
+			d->draw(this, state);
 		}
 
 		// Draw children nodes.
@@ -121,7 +121,7 @@ void SceneNode::draw()
 		while(i.hasMoreElements())
 		{
 			SceneNode* n = (SceneNode*)i.getNext();
-			n->draw();
+			n->draw(state);
 		}
 
 		glPopMatrix();
@@ -162,8 +162,11 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 
 	myBBox.transformAffine(getFullTransform());
 
-	// Compute bounding sphere.
-	myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().maxCoeff());
+	if(!myBBox.isNull())
+	{
+		// Compute bounding sphere.
+		myBSphere = Sphere(myBBox.getCenter(), myBBox.getHalfSize().maxCoeff());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
