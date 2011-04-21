@@ -725,7 +725,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 		cfgInfo.path.c_str()
 	};
 
-	myNodeFactory = new EqualizerNodeFactory();
+	myNodeFactory = onew(EqualizerNodeFactory)();
 
 	omsg("\n\n--- Equalizer initialization --------------------------------------------------");
 	if( !eq::init( 3, (char**)argv, myNodeFactory ))

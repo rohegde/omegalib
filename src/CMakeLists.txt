@@ -27,24 +27,28 @@
 
 ###################################################################################################
 # Options
-SET(OMEGA_BUILD_STATIC false CACHE BOOL "Build omega as a static library")
-IF(OMEGA_BUILD_STATIC)
-	ADD_DEFINITIONS(-DOMEGA_STATIC)
-ENDIF(OMEGA_BUILD_STATIC)
+set(OMEGA_BUILD_STATIC false CACHE BOOL "Build omega as a static library")
+if(OMEGA_BUILD_STATIC)
+	add_definitions(-DOMEGA_STATIC)
+endif(OMEGA_BUILD_STATIC)
 
-SET(APPS_BUILD_INPUT_SERVER false CACHE BOOL "Build omegalib input server")
-SET(APPS_BUILD_MOCALIB false CACHE BOOL "Build motion capture calibration app")
+set(APPS_BUILD_INPUT_SERVER false CACHE BOOL "Build omegalib input server")
+set(APPS_BUILD_MOCALIB false CACHE BOOL "Build motion capture calibration app")
 
-SET(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
-IF(OMEGA_USE_DISPLAY)
-	SET(OMEGA_BUILD_UTILITY_LIB false CACHE BOOL "Enable build of the omegalib utility library (outils)")
-ENDIF(OMEGA_USE_DISPLAY)
+set(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
+if(OMEGA_USE_DISPLAY)
+	set(OMEGA_BUILD_UTILITY_LIB false CACHE BOOL "Enable build of the omegalib utility library (outils)")
+endif(OMEGA_USE_DISPLAY)
 
-IF(OMEGA_BUILD_UTILITY_LIB)
-	SET(APPS_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
-	SET(APPS_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
-	SET(APPS_BUILD_VTK_VIEWER false CACHE BOOL "Enable build of vtk viewer application ")
-ENDIF(OMEGA_BUILD_UTILITY_LIB)
+if(OMEGA_BUILD_UTILITY_LIB)
+	set(APPS_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
+	set(APPS_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
+	set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
+endif(OMEGA_BUILD_UTILITY_LIB)
+
+if(OMEGA_BUILD_VTK_LIB)
+	set(APPS_BUILD_VTK_VIEWER false CACHE BOOL "Enable build of vtk viewer application ")
+endif(OMEGA_BUILD_VTK_LIB)
 
 ###################################################################################################
 # Add subdirectiories
@@ -86,6 +90,10 @@ ENDIF(OMEGA_USE_OPENNI)
 if(OMEGA_BUILD_UTILITY_LIB)
 	add_subdirectory(outils)
 endif(OMEGA_BUILD_UTILITY_LIB)
+
+if(OMEGA_BUILD_VTK_LIB)
+	add_subdirectory(ovtk)
+endif(OMEGA_BUILD_VTK_LIB)
 
 IF(OMEGA_USE_DISPLAY) 
 add_subdirectory(apps/ohello)

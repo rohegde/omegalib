@@ -41,7 +41,7 @@ void DefaultRenderPass::render(SceneManager* mng)
 	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 	// stored inside the scene nodes. So, create a new, clean transform on the stack.
 	glPushMatrix();
-	glLoadIdentity();
+	glLoadMatrixf(mng->getViewTransform().data());
 
 	mng->getRootNode()->draw(&state);
 

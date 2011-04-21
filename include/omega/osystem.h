@@ -108,4 +108,7 @@ namespace omega
 #define odbg(str) omsg(str);
 #define oassert(c) if(!(c)) { oabort(__FILE__, __LINE__, #c); }
 
+#define onew(type) new type
+#define odelete(var) if(var != NULL) { delete var; var = NULL; }
+
 #endif

@@ -37,7 +37,7 @@
 #include "omega/scene/SceneManager.h"
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/SceneQuery.h"
-#include "omega/scene/SimplePrimitive.h"
+#include "omega/scene/Teapot.h"
 #include "omega/scene/Camera.h"
 #include "omega/scene/ReferenceBox.h"
 #include "omega/scene/RenderToTexture.h"

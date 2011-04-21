@@ -99,15 +99,12 @@ void SceneNode::draw(RenderState* state)
 	{
 		//if(myChanged) updateTransform();
 
-		glPushMatrix();
-
-		// Load the world transform matrix into gl.
-		glLoadMatrixf(myScene->getViewTransform().data());
-
 		if(myBoundingBoxVisible) drawBoundingBox();
 
-		glMultMatrixf(getFullTransform().data());
+		//glMultMatrixf(getFullTransform().data());
 
+		glPushMatrix();
+		glMultMatrixf(getFullTransform().data());
 		// Draw drawables attached to this node.
 		VectorIterator<Vector<Drawable*> > it(myDrawables);
 		while(it.hasMoreElements())
@@ -115,6 +112,7 @@ void SceneNode::draw(RenderState* state)
 			Drawable* d = it.getNext();
 			d->draw(this, state);
 		}
+		glPopMatrix();
 
 		// Draw children nodes.
 		ChildNodeIterator i = getChildIterator();
@@ -123,8 +121,6 @@ void SceneNode::draw(RenderState* state)
 			SceneNode* n = (SceneNode*)i.getNext();
 			n->draw(state);
 		}
-
-		glPopMatrix();
 	}
 }
 
