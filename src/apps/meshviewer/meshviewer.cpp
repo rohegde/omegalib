@@ -32,13 +32,13 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m):
 	myMesh(m),
 	myVisible(false)
 {
-	mySelectionSphere = new BoundingSphereDrawable();
+	mySelectionSphere = onew(BoundingSphere)();
 	mySelectionSphere->setVisible(false);
 	mySelectionSphere->setDrawOnSelected(true);
 
-	mySceneNode = new SceneNode(sm);
-	mySceneNode->addDrawable(myMesh);
-	mySceneNode->addDrawable(mySelectionSphere);
+	mySceneNode = onew(SceneNode)(sm);
+	mySceneNode->addRenderable(myMesh);
+	mySceneNode->addRenderable(mySelectionSphere);
 	mySceneNode->setPosition(Vector3f::Zero());
 	mySceneNode->setSelectable(true);
 	mySceneNode->setVisible(false);
@@ -97,19 +97,19 @@ void MeshViewerClient::initialize()
 
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
-	getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
+	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
 	{
-		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
+		DefaultMouseInteractor* interactor = onew(DefaultMouseInteractor)();
 		myCurrentInteractor = interactor;
 	}
 	else
 	{
-		DefaultTwoHandsInteractor* interactor = new DefaultTwoHandsInteractor();
+		DefaultTwoHandsInteractor* interactor = onew(DefaultTwoHandsInteractor)();
 		interactor->initialize("ObserverUpdateService");
 		myCurrentInteractor = interactor;
 	}

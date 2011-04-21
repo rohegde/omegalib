@@ -24,59 +24,65 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __VTK_DRAWABLE_H__
-#define __VTK_DRAWABLE_H__
+#include "ovtk/VtkRenderable.h"
+#include "ovtk/VtkRenderPass.h"
 
-#include "ovtk/ovtkbase.h"
-#include "omega/osystem.h"
-#include "omega/scene/Effect.h"
-#include "omega/scene/SceneNode.h"
-#include "omega/scene/RenderPass.h"
+using namespace ovtk;
 
-#include <vtkActor.h>
-#include <vtkMatrix4x4.h>
-
-class vtkActor;
-
-using namespace omega;
-using namespace omega::scene;
-
-namespace ovtk
+///////////////////////////////////////////////////////////////////////////////////////////////////
+VtkRenderable::VtkRenderable(): myActor(NULL) 
 {
-	using namespace omega;
-	using namespace omega::scene;
+	myMatrix = vtkMatrix4x4::New();
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkDrawable: public Drawable
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkRenderable::render(SceneNode* node, RenderState* state)
+{
+	// Do stuff only if render pass is a Vtk render pass
+	if(state->isFlagSet(VtkRenderPass::RenderVtk))
 	{
-	public:
-		VtkDrawable();
+		if(myActor != NULL)
+		{
+			const AffineTransform3& xform =  node->getFullTransform();
+			const omega::math::matrix<4, 4>& m = xform.matrix();
+			for(int i = 0; i < 4; i++)
+			{
+				for(int j = 0; j < 4; j++)
+				{
+					myMatrix->SetElement(i, j, m(i, j));
+				}
+			}
 
-		virtual void draw(SceneNode* node, RenderState* state);
+			myActor->SetUserMatrix(myMatrix);
 
-		virtual const AlignedBox3* getBoundingBox();
-		virtual bool hasBoundingBox() { return (myActor != NULL); }
-
-		void setActor(vtkActor* value);
-		vtkActor* getActor();
-
-	private:
-		vtkActor* myActor;
-		vtkMatrix4x4* myMatrix;
-		AlignedBox3 myBBox;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void VtkDrawable::setActor(vtkActor* value)
-	{
-		myActor = value;
+			// Add actor to render pass prop list.
+			// NOTE: we assume this cast works since only VtkRenderPass should set the 
+			// RenderVtk flag on a render state.
+			VtkRenderPass* vtkrp = (VtkRenderPass*)state->pass;
+			vtkrp->queueProp(myActor);
+		}
 	}
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline vtkActor* VtkDrawable::getActor()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const AlignedBox3* VtkRenderable::getBoundingBox()
+{
+	if(myActor != NULL)
 	{
-		return myActor;
+		double* bounds = myActor->GetBounds();
+		float fbounds[6];
+		fbounds[0] = bounds[0];
+		fbounds[1] = bounds[1];
+		fbounds[2] = bounds[2];
+		fbounds[3] = bounds[3];
+		fbounds[4] = bounds[4];
+		fbounds[5] = bounds[5];
+		//Math::swapMinMax(fbounds[0], fbounds[3]);
+		//Math::swapMinMax(fbounds[1], fbounds[4]);
+		//Math::swapMinMax(fbounds[2], fbounds[5]);
+		myBBox.setExtents(fbounds[0], fbounds[2], fbounds[4], fbounds[1], fbounds[3], fbounds[5]);
+		return &myBBox;
 	}
+	return NULL;
+}
 
-};
-#endif

@@ -28,10 +28,10 @@
 #define __OMEGA_SCENE_H__
 
 #include "omega/scene/Actor.h"
-#include "omega/scene/BoundingSphereDrawable.h"
+#include "omega/scene/BoundingSphere.h"
 #include "omega/scene/DefaultMouseInteractor.h"
 #include "omega/scene/DefaultTwoHandsInteractor.h"
-#include "omega/scene/Drawable.h"
+#include "omega/scene/Renderable.h"
 #include "omega/scene/Mesh.h"
 #include "omega/scene/MeshManager.h"
 #include "omega/scene/SceneManager.h"

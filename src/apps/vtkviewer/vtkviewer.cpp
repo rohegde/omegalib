@@ -42,7 +42,7 @@ void VtkViewerClient::initialize()
 
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
-	getSceneManager()->getRootNode()->addDrawable(myReferenceBox);
+	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
 	// Set the interactor style used to manipulate meshes.
@@ -66,7 +66,7 @@ void VtkViewerClient::initialize()
 
 	Teapot* tp = onew(Teapot)();
 	tp->setSize(0.1f);
-	getSceneManager()->getRootNode()->addDrawable(tp);
+	getSceneManager()->getRootNode()->addRenderable(tp);
 
 	myCurrentInteractor->setSceneNode(getSceneManager()->getRootNode());
 }

@@ -228,7 +228,7 @@ teapot(GLint grid, GLdouble scale, GLenum type)
 using namespace omega::scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Teapot::draw(SceneNode* node, RenderState* state)
+void Teapot::render(SceneNode* node, RenderState* state)
 {
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{

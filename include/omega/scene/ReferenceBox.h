@@ -28,7 +28,7 @@
 #define __REFERENCE_BOX_H__
 
 #include "omega/osystem.h"
-#include "omega/scene/Drawable.h"
+#include "omega/scene/Renderable.h"
 #include "omega/scene/Effect.h"
 #include "omega/scene/RenderPass.h"
 
@@ -40,7 +40,7 @@ namespace scene
 	class SceneNode;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API ReferenceBox: public Drawable
+	class OUTILS_API ReferenceBox: public Renderable
 	{
 	public:
 		enum Side { Left, Right, Top, Bottom, Front, Back, NumSides };
@@ -48,7 +48,7 @@ namespace scene
 	public:
 		ReferenceBox();
 
-		virtual void draw(SceneNode* node, RenderState* state);
+		virtual void render(SceneNode* node, RenderState* state);
 
 		Color& getColor(Side side);
 		void setColor(Side side, const Color& color);

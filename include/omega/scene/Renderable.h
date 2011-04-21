@@ -22,8 +22,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __DRAWABLE_H__
-#define __DRAWABLE_H__
+#ifndef __RENDERABLE_H__
+#define __RENDERABLE_H__
 
 #include "omega/osystem.h"
 #include "omega/scene/Effect.h"
@@ -39,10 +39,10 @@ namespace scene
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OUTILS_API Drawable
+	class OUTILS_API Renderable
 	{
 	public:
-		virtual void draw(SceneNode* node, RenderState* state) = 0;
+		virtual void render(SceneNode* node, RenderState* state) = 0;
 
 		virtual const AlignedBox3* getBoundingBox() { return NULL; }
 		virtual bool hasBoundingBox() { return false; }

@@ -47,7 +47,7 @@ ReferenceBox::ReferenceBox()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ReferenceBox::draw(SceneNode* node, RenderState* state)
+void ReferenceBox::render(SceneNode* node, RenderState* state)
 {
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{

@@ -73,22 +73,22 @@ bool SceneNode::isSelected()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::addDrawable(Drawable* child) 
+void SceneNode::addRenderable(Renderable* child) 
 { 
-	myDrawables.push_back(child); 
+	myRenderables.push_back(child); 
 	needUpdate();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int SceneNode::getNumDrawables()
+int SceneNode::getNumRenderables()
 { 
-	return myDrawables.size(); 
+	return myRenderables.size(); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::clearDrawables() 
+void SceneNode::clearRenderables() 
 {
-	myDrawables.empty();
+	myRenderables.empty();
 	needUpdate();
 }
 
@@ -106,11 +106,11 @@ void SceneNode::draw(RenderState* state)
 		glPushMatrix();
 		glMultMatrixf(getFullTransform().data());
 		// Draw drawables attached to this node.
-		VectorIterator<Vector<Drawable*> > it(myDrawables);
+		VectorIterator<Vector<Renderable*> > it(myRenderables);
 		while(it.hasMoreElements())
 		{
-			Drawable* d = it.getNext();
-			d->draw(this, state);
+			Renderable* d = it.getNext();
+			d->render(this, state);
 		}
 		glPopMatrix();
 
@@ -138,10 +138,10 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	// Reset bounding box.
 	myBBox.setNull();
 
-	VectorIterator<Vector<Drawable*> > it(myDrawables);
+	VectorIterator<Vector<Renderable*> > it(myRenderables);
 	while(it.hasMoreElements())
 	{
-		Drawable* d = it.getNext();
+		Renderable* d = it.getNext();
 		if(d->hasBoundingBox())
 		{
 			const AlignedBox3& bbox = *(d->getBoundingBox());

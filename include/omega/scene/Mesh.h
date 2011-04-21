@@ -15,7 +15,7 @@
 #include "omega/osystem.h"
 #include "omega/GpuBuffer.h"
 #include "omega/scene/Effect.h"
-#include "omega/scene/Drawable.h"
+#include "omega/scene/Renderable.h"
 #include "omega/scene/SceneManager.h"
 #include "omega/scene/MeshData.h"
 #include "omega/scene/RenderPass.h"
@@ -29,8 +29,7 @@ namespace scene
 	class MeshManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OUTILS_API Mesh: public Drawable
+	class OUTILS_API Mesh: public Renderable
 	{
 	public:
 		Mesh(MeshManager* manager);
@@ -43,7 +42,7 @@ namespace scene
 		MeshData* getData() { return myData; }
 		void setData(MeshData* value) { myData = value; }
 
-		virtual void draw(SceneNode* node, RenderState* state);
+		virtual void render(SceneNode* node, RenderState* state);
 		void update();
 
 		const AlignedBox3* getBoundingBox();

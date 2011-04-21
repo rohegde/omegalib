@@ -30,6 +30,7 @@
 #include "omega/osystem.h"
 #include "omega/scene/Effect.h"
 #include "omega/scene/RenderPass.h"
+#include "omega/scene/Renderable.h"
 
 namespace omega
 {
@@ -41,17 +42,17 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether 
 	//! in future versions.
-	class OUTILS_API BoundingSphereDrawable: public Drawable
+	class OUTILS_API BoundingSphere: public Renderable
 	{
 	public:
-		BoundingSphereDrawable(): 
+		BoundingSphere(): 
 		  myDrawOnSelected(false), 
  		  myVisible(true),
 		  mySlices(5),
 		  mySegments(32),
 		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
 
-		virtual void draw(SceneNode* node, RenderState* state);
+		virtual void render(SceneNode* node, RenderState* state);
 
 		void setDrawOnSelected(bool value);
 		bool getDrawOnSelected();
@@ -77,51 +78,51 @@ namespace scene
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphereDrawable::setDrawOnSelected(bool value)
+	inline void BoundingSphere::setDrawOnSelected(bool value)
 	{
 		myDrawOnSelected = value;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool BoundingSphereDrawable::getDrawOnSelected()
+	inline bool BoundingSphere::getDrawOnSelected()
 	{
 		return myDrawOnSelected;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphereDrawable::setVisible(bool value)
+	inline void BoundingSphere::setVisible(bool value)
 	{
 		myVisible = value;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool BoundingSphereDrawable::getVisible()
+	inline bool BoundingSphere::getVisible()
 	{
 		return myVisible;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color BoundingSphereDrawable::getColor()
+	inline Color BoundingSphere::getColor()
 	{ return myColor; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphereDrawable::setColor(const Color& value)
+	inline void BoundingSphere::setColor(const Color& value)
 	{ myColor = value;}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int BoundingSphereDrawable::getSegments()
+	inline int BoundingSphere::getSegments()
 	{ return mySegments; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphereDrawable::setSegments(int value)
+	inline void BoundingSphere::setSegments(int value)
 	{ mySegments = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int BoundingSphereDrawable::getSlices()
+	inline int BoundingSphere::getSlices()
 	{ return mySlices;}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphereDrawable::setSlices(int value)
+	inline void BoundingSphere::setSlices(int value)
 	{ mySlices = value; }
 }; // namespace scene
 }; // namespace omega
