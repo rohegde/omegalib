@@ -35,17 +35,11 @@ INCLUDE(${VTK_USE_FILE})
 ###################################################################################################
 # Source files
 set(SRCS 
-		vtkGenericOpenGLRenderWindow.cpp
-		VtkDrawable.cpp
-		VtkRenderPass.cpp
 		vtkviewer.cpp)
     
 ###################################################################################################
 # Headers
 set(HEADERS 
-		vtkGenericOpenGLRenderWindow.h
-		VtkDrawable.h
-		VtkRenderPass.h
 		vtkviewer.h) 
         
 ###################################################################################################
@@ -57,8 +51,4 @@ add_executable(vtkviewer ${SRCS} ${HEADERS})
 target_link_libraries(vtkviewer
 	omega 
 	outils
-    vtkRendering
-    vtkGraphics
-    vtkIO
-    vtkCommon
-    vtkHybrid)
+    ovtk)

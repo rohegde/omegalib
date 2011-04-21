@@ -25,17 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "vtkviewer.h"
-#include "VtkRenderPass.h"
-
-// Vtk includes
-#include <vtkCylinderSource.h>
-#include <vtkContourFilter.h>
-#include <vtkQuadric.h>
-#include <vtkSampleFunction.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkActor.h>
-#include <vtkProperty.h>
-#include <vtkImageData.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkViewerClient::initialize()
@@ -50,8 +39,6 @@ void VtkViewerClient::initialize()
 		Setting& fontSetting = cfg->lookup("config/defaultFont");
 		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
 	}
-
-	VtkDrawable* vdw = initVtk();
 
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
@@ -73,59 +60,17 @@ void VtkViewerClient::initialize()
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
 
-	SceneNode* sn = new SceneNode(getSceneManager());
-	getSceneManager()->getRootNode()->addChild(sn);
+	myVtkClient = onew(VtkClient)(this);
+	myVtkClient->initialize();
+	//myVtkClient->runScript("vtk/Sample.py");
 
-	BoundingSphereDrawable* ss = new BoundingSphereDrawable();
-	ss->setVisible(false);
-	ss->setDrawOnSelected(true);
+	Teapot* tp = onew(Teapot)();
+	tp->setSize(0.1f);
+	getSceneManager()->getRootNode()->addDrawable(tp);
 
-	sn->addDrawable(vdw);
-	sn->addDrawable(ss);
-
-	VtkRenderPass* vrp = new VtkRenderPass();
-	vrp->initialize();
-	getSceneManager()->addRenderPass(vrp);
-
-	myCurrentInteractor->setSceneNode(sn);
+	myCurrentInteractor->setSceneNode(getSceneManager()->getRootNode());
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkDrawable* VtkViewerClient::initVtk()
-{
-	vtkCylinderSource* source						= NULL;
-	vtkPolyDataMapper* mapper						= NULL;
-	vtkActor* actor									= NULL;
-
-	// create the quadric function definition
-	vtkQuadric *quadric = vtkQuadric::New();
-	quadric->SetCoefficients(.5,1,.3,0,.1,0,0,.2,0,0);
-
-	// sample the quadric function
-	vtkSampleFunction *sample = vtkSampleFunction::New();
-	sample->SetSampleDimensions(50,50,50);
-	sample->SetImplicitFunction(quadric);
-
-	// Create five surfaces F(x,y,z) = constant between range specified
-	vtkContourFilter *contours = vtkContourFilter::New();
-	contours->SetInput(sample->GetOutput());
-	contours->GenerateValues(3, 0.0, 1.2);
-
-	// map the contours to graphical primitives
-	vtkPolyDataMapper *contMapper = vtkPolyDataMapper::New();
-	contMapper->SetInput(contours->GetOutput());
-	contMapper->SetScalarRange(0.0, 1.2); 
-  
-	// Actor in scene
-	actor = vtkActor::New();
-	actor->SetScale(0.2f);
-	actor->SetMapper(contMapper);
-
-	VtkDrawable* vdw = new VtkDrawable();
-	vdw->setActor(actor);
-
-	return vdw;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point

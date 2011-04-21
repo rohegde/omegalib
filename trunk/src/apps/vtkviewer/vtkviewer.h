@@ -31,13 +31,12 @@
 #include "omega/scene.h"
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
-#include "VtkDrawable.h"
+#include "ovtk/VtkClient.h"
 
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;
+using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class VtkViewerClient: public EngineClient
@@ -48,9 +47,10 @@ public:
 	  {}
 
 	virtual void initialize();
-	VtkDrawable* initVtk();
 
 private:
+	VtkClient* myVtkClient;
+
 	// Scene
 	ReferenceBox* myReferenceBox;
 

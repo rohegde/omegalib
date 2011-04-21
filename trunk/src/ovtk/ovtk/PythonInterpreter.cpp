@@ -1,0 +1,192 @@
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Original code Copyright (c) Kitware, Inc.
+ * All rights reserved.
+ * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
+ *************************************************************************************************/
+#include "ovtk/PythonInterpreter.h"
+#include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
+#include "omega/DataManager.h"
+
+#include <vtkCommand.h>
+#include <vtkObjectFactory.h>
+#include <vtkStdString.h>
+#include <vtkWindows.h>
+#include <vtkActor.h>
+#include <vtksys/SystemTools.hxx>
+#include <vtkstd/algorithm>
+#include <vtkstd/string>
+
+#include <signal.h>  // for signal
+
+using namespace ovtk;
+
+#include "ovtk/PythonInterpreterWrapper.h"
+
+#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
+#define VTK_LIBRARY_DIR_POSTFIX "/Release"
+#else
+#define VTK_LIBRARY_DIR_POSTFIX 
+#endif
+
+struct vtkPythonMessage
+{
+  vtkStdString Message;
+  bool IsError;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PythonInterpreter::PythonInterpreter()
+{
+  myExecutablePath = 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PythonInterpreter::~PythonInterpreter()
+{
+  myExecutablePath = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::addPythonPath(const char* dir)
+{
+  // Convert slashes for this platform.
+  String out_dir = dir ? dir : "";
+#if defined(_WIN32) && !defined(__CYGWIN__)
+  vtkstd::replace(out_dir.begin(), out_dir.end(), '/', '\\');
+#endif
+
+  // Append the path to the python sys.path object.
+  PyObject* opath = PySys_GetObject(const_cast<char*>("path"));
+  PyObject* newpath = PyString_FromString(out_dir.c_str());
+  PyList_Insert(opath, 0, newpath);
+  Py_DECREF(newpath);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::initialize(const char* programName)
+{
+	// Set the program name, so that we can ask python to provide us
+	// full path.
+	Py_SetProgramName((char*)programName);
+
+	// initialize the statically linked modules
+	//CMakeLoadAllPythonModules();
+
+	// Initialize interpreter.
+	Py_Initialize();
+
+	// The following code will hack in the path for running VTK/Python
+	// from the build tree. Do not try this at home. We are
+	// professionals.
+
+	// Compute the directory containing this executable.  The python
+	// sys.executable variable contains the full path to the interpreter
+	// executable.
+	if (!myExecutablePath)
+	{
+		PyObject* executable = PySys_GetObject(const_cast<char*>("executable"));
+		char* exe_str = PyString_AsString(executable);
+		if (exe_str)
+		{
+			// Use the executable location to try to set sys.path to include
+			// the VTK python modules.
+			vtkstd::string self_dir;
+			vtkstd::string self_name;
+			omega::StringUtils::splitFilename(exe_str, self_name, self_dir);
+			addPythonPath(self_dir.c_str());
+			addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
+			addPythonPath(VTK_PYTHON_DIR);
+		}
+	}
+
+	// HACK: Calling PyRun_SimpleString for the first time for some reason results in
+	// a "\n" message being generated which is causing the error dialog to
+	// popup. So we flush that message out of the system before setting up the
+	// callbacks.
+	// The cast is necessary because PyRun_SimpleString() hasn't always been
+	// const-correct.
+	PyRun_SimpleString(const_cast<char*>(""));
+	PythonInterpreterWrapper* wrapperOut = vtkWrapInterpretor(this);
+	wrapperOut->DumpToError = false;
+
+	PythonInterpreterWrapper* wrapperErr = vtkWrapInterpretor(this);
+	wrapperErr->DumpToError = true;
+
+	// Redirect Python's stdout and stderr and stdin
+	PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
+	PySys_SetObject(const_cast<char*>("stderr"), reinterpret_cast<PyObject*>(wrapperErr));
+	PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
+
+	Py_DECREF(wrapperOut);
+	Py_DECREF(wrapperErr);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
+{
+	Py_InitModule(name, methods);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::runSimpleString(const String& script)
+{
+  //script.erase(vtkstd::remove(script.begin(), script.end(), '\r'), buffer.end());
+
+  // The cast is necessary because PyRun_SimpleString() hasn't always been const-correct
+  PyRun_SimpleString(const_cast<char*>(script.c_str()));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::runSimpleFile(const String& filename)
+{
+  //FILE* fp = fopen(filename, "r");
+  //if (!fp)
+  //  {
+    //vtkErrorMacro("Failed to open file " << filename);
+ //   return;
+  //  }
+
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo cfgInfo = dm->getInfo(filename);
+
+	if(!cfgInfo.isNull())
+	{
+		PyObject* PyFileObject = PyFile_FromString((char*)cfgInfo.path.c_str(), "r");
+		PyRun_SimpleFile(PyFile_AsFile(PyFileObject), filename.c_str());
+	}
+	else
+	{
+		ofwarn("PythonInterpreter: script not found: %1%", %filename);
+	}
+
+  // The cast is necessary because PyRun_SimpleFile() hasn't always been const-correct
+  //PyRun_SimpleFile(fp, const_cast<char*>(filename));
+
+  //fclose(fp);
+}

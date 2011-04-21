@@ -48,7 +48,7 @@ SET( srcs
 		omega/scene/MeshData.cpp
 		omega/scene/MeshManager.cpp
 		omega/scene/Node.cpp
-		omega/scene/SimplePrimitive.cpp
+		omega/scene/Teapot.cpp
 		omega/scene/SceneManager.cpp
 		omega/scene/SceneQuery.cpp
 		omega/scene/SceneNode.cpp
@@ -94,7 +94,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Effect.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/EffectManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/SimplePrimitive.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Teapot.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneQuery.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneNode.h
