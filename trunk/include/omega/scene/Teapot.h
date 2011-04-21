@@ -26,7 +26,7 @@
 #define __SIMPLE_PRIMITIVE_H__
 
 #include "omega/osystem.h"
-#include "omega/scene/Drawable.h"
+#include "omega/scene/Renderable.h"
 #include "omega/scene/Effect.h"
 
 namespace omega
@@ -37,12 +37,12 @@ namespace scene
 	class SceneNode;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API Teapot: public Drawable
+	class OUTILS_API Teapot: public Renderable
 	{
 	public:
 		Teapot(): mySize(1), myResolution(16), myEffect(NULL) {}
 
-		virtual void draw(SceneNode* node, RenderState* state);
+		virtual void render(SceneNode* node, RenderState* state);
 
 		float getSize() { return mySize; }
 		void setSize( float value) { mySize = value; }

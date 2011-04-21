@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/scene/SceneNode.h"
-#include "omega/scene/BoundingSphereDrawable.h"
+#include "omega/scene/BoundingSphere.h"
 
 #include "omega/glheaders.h"
 
@@ -33,7 +33,7 @@ using namespace omega;
 using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BoundingSphereDrawable::draw(SceneNode* node, RenderState* state)
+void BoundingSphere::render(SceneNode* node, RenderState* state)
 {
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{

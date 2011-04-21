@@ -37,7 +37,7 @@ Mesh::Mesh(MeshManager* manager): myVertexBuffer(NULL), myIndexData(NULL), myDat
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Mesh::draw(SceneNode* node, RenderState* state)
+void Mesh::render(SceneNode* node, RenderState* state)
 {
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{

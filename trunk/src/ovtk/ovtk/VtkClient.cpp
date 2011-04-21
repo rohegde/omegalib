@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "ovtk/VtkClient.h"
 #include "ovtk/PyVtk.h"
-#include "ovtk/VtkDrawable.h"
+#include "ovtk/VtkRenderable.h"
 #include "ovtk/PythonInterpreter.h"
 #include "omega/scene.h"
 #include "omega/SystemManager.h"
@@ -113,15 +113,15 @@ void VtkClient::addActor(vtkActor* actor)
 	SceneNode* sn = onew(SceneNode)(sm);
 	sm->getRootNode()->addChild(sn);
 
-	BoundingSphereDrawable* ss = onew(BoundingSphereDrawable)();
+	BoundingSphere* ss = onew(BoundingSphere)();
 	ss->setVisible(false);
 	ss->setDrawOnSelected(true);
 
-	VtkDrawable* vdw = onew(VtkDrawable)();
+	VtkRenderable* vdw = onew(VtkRenderable)();
 	vdw->setActor(actor);
 
-	sn->addDrawable(vdw);
-	sn->addDrawable(ss);
+	sn->addRenderable(vdw);
+	sn->addRenderable(ss);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

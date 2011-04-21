@@ -28,7 +28,7 @@
 #define __SCENENODE_H__
 
 #include "omega/osystem.h"
-#include "omega/scene/Drawable.h"
+#include "omega/scene/Renderable.h"
 #include "omega/scene/Node.h"
 
 namespace omega
@@ -68,9 +68,9 @@ namespace scene
 
 		// Drawables
 		//@{
-		void addDrawable(Drawable* child);
-		int getNumDrawables();
-		void clearDrawables();
+		void addRenderable(Renderable* child);
+		int getNumRenderables();
+		void clearRenderables();
 		//@}
 
 		// Options
@@ -114,7 +114,7 @@ namespace scene
 
 		SceneNodeListener* myListener;
 
-		Vector<Drawable*> myDrawables;
+		Vector<Renderable*> myRenderables;
 
 		bool mySelectable;
 		bool mySelected;

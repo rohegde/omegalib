@@ -39,7 +39,7 @@ SET( srcs
 		
 		# omega::scene
 		omega/scene/Camera.cpp
-		omega/scene/BoundingSphereDrawable.cpp
+		omega/scene/BoundingSphere.cpp
 		omega/scene/DefaultMouseInteractor.cpp
 		omega/scene/DefaultTwoHandsInteractor.cpp
 		omega/scene/Effect.cpp
@@ -83,7 +83,7 @@ SET( headers
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Actor.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/BoundingSphereDrawable.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/BoundingSphere.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/DefaultMouseInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/DefaultTwoHandsInteractor.h
@@ -93,7 +93,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Node.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Effect.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/EffectManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/scene/Drawable.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Renderable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Teapot.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/SceneQuery.h

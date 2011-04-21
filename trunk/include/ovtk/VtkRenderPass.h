@@ -45,7 +45,7 @@ namespace ovtk
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class VtkRenderPass: public RenderPass
 	{
-	friend class VtkDrawable;
+	friend class VtkRenderable;
 	public:
 		enum RenderFlags { RenderVtk = RenderPass::RenderCustom << 1 };
 		static const int MaxQueuedProps = 1024;

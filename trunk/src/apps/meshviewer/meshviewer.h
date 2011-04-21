@@ -56,7 +56,7 @@ private:
 	String myName;
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
-	BoundingSphereDrawable* mySelectionSphere;
+	BoundingSphere* mySelectionSphere;
 	bool myVisible;
 };
 
