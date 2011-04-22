@@ -42,6 +42,7 @@ SET( srcs
 		ovtk/PythonInterpreter.cpp
 		ovtk/PyVtk.cpp
 		ovtk/VtkClient.cpp
+		ovtk/VtkEntity.cpp
 		ovtk/VtkRenderable.cpp
 		ovtk/vtkGenericOpenGLRenderWindow.cpp
 		ovtk/VtkRenderPass.cpp
@@ -56,6 +57,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonInterpreterWrapper.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PyVtk.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkClient.h
+		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkEntity.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/vtkGenericOpenGLRenderWindow.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkRenderPass.h

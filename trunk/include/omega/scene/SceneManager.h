@@ -32,6 +32,7 @@
 #include "omega/GpuManager.h"
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/Actor.h"
+#include "omega/scene/Light.h"
 
 namespace omega
 {
@@ -40,6 +41,9 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API SceneManager: public DynamicObject
 	{
+	public:
+		static const int MaxLights = 8;
+
 	public:
 		SceneManager(omega::GpuManager* gpu): 
 		  myViewTransform(AffineTransform3::Identity()),
@@ -67,6 +71,8 @@ namespace scene
 		void addRenderPass(RenderPass* pass, bool addToFront = false);
 		void removeRenderPass(RenderPass* pass);
 
+		Light* getLight(int num);
+
 	private:
 		AffineTransform3 myViewTransform;
 
@@ -74,8 +80,8 @@ namespace scene
 		SceneNode* myRoot;
 		Color myBackgroundColor;
 
+		Light myLights[MaxLights];
 		List<Actor*> myActors;
-
 		List<RenderPass*> myRenderPassList;
 	};
 
@@ -98,6 +104,10 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Color SceneManager::getBackgroundColor()
 	{ return myBackgroundColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light* SceneManager::getLight(int num)
+	{ return &myLights[num]; }
 }; // namespace scene
 }; // namespace omega
 

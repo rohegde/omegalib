@@ -24,54 +24,74 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkRenderPass.h"
-#include "ovtk/vtkGenericOpenGLRenderWindow.h"
+#include "ovtk/VtkEntity.h"
+#include "ovtk/VtkRenderable.h"
+#include "ovtk/VtkClient.h"
 
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkOpaquePass.h>
-#include <vtkRenderState.h>
+#include <vtkActor.h>
 
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass():
-	myPropQueueSize(0)
+VtkEntity::VtkEntity(VtkClient* client)
 {
+	// Default representation size: 10cm.
+	myRepresentationSize = 0.1f;
+
+	myClient = client;
+
+	SceneManager* sm = myClient->getEngine()->getSceneManager();
+	mySceneNode = onew(SceneNode)(sm);
+	sm->getRootNode()->addChild(mySceneNode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::initialize()
+VtkEntity::~VtkEntity()
 {
-	// Setup renderer and render window
-	myRenderer = vtkRenderer::New();
+	VectorIterator<List<VtkRenderable*> > dit(myRenderables);
+	while(dit.hasMoreElements()) 
+	{
+		VtkRenderable* d = dit.getNext();
+		odelete(d);
+	}
 
-	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
-	myRenderWindow->AddRenderer(myRenderer);
-	myOpaquePass = vtkOpaquePass::New();
-	myRenderState = new vtkRenderState(myRenderer);
+	SceneNode::ChildNodeIterator it = mySceneNode->getChildIterator();
+	while(it.hasMoreElements()) 
+	{
+		SceneNode* sn = (SceneNode*)it.getNext();
+		odelete(sn);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng)
+void VtkEntity::loadScript(const String& filename)
 {
-	RenderState state;
-	state.pass = this;
-	state.flags = VtkRenderPass::RenderVtk;
+	myClient->setActiveEntity(this);
+	myClient->runScript(filename);
 
-	myPropQueueSize = 0;
+	mySceneNode->update(true, false);
+	const Sphere& bs = mySceneNode->getBoundingSphere();
 
-	mng->getRootNode()->draw(&state);
+	float scale = 0.1f / bs.getRadius();
+	Vector3f center = bs.getCenter();
 
-	glColor4f(1,1,1,1);
+	// Move all the nodes so they are recentered wrt the root Vtk node.
+	Node::ChildNodeIterator it = mySceneNode->getChildIterator();
+	while(it.hasMoreElements())
+	{
+		Node* child = it.getNext();
+		child->setPosition(-center);
+	}
+	mySceneNode->scale(scale, scale, scale);
+}
 
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
-
-	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
-	myOpaquePass->Render(myRenderState);
-
-	glPopMatrix();
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkEntity::addActor(vtkActor* actor)
+{
+	SceneManager* sm = myClient->getEngine()->getSceneManager();
+	SceneNode* sn = onew(SceneNode)(sm);
+	mySceneNode->addChild(sn);
+	VtkRenderable* vdw = onew(VtkRenderable)();
+	vdw->setActor(actor);
+	sn->addRenderable(vdw);
 }

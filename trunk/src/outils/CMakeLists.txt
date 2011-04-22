@@ -57,6 +57,7 @@ SET( srcs
 		omega/scene/ReferenceBox.cpp
 		omega/scene/RenderToTexture.cpp
 		omega/scene/DefaultRenderPass.cpp
+		omega/scene/LightingPass.cpp
 		
 		# omega::ui
 		omega/ui/AbstractButton.cpp
@@ -104,6 +105,8 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/RenderToTexture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/DefaultRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/LightingPass.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/Light.h
 		
 		# omega::ui
 		${OmegaLib_SOURCE_DIR}/include/omega/ui.h

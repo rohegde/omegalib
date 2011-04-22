@@ -40,6 +40,25 @@ void VtkViewerClient::initialize()
 		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
 	}
 
+	// Load entity library
+	MeshManager* mm = getMeshManager();
+	if(cfg->exists("config/entities"))
+	{
+		Setting& entities = cfg->lookup("config/entities");
+		for(int i = 0; i < entities.getLength(); i++)
+		{
+			EntityInfo* e = onew(EntityInfo)();
+			Setting& entitySetting = entities[i];
+			e->name = entitySetting.getName();
+			e->script = (String)entitySetting["script"];
+			e->label = (String)entitySetting["label"];
+
+			myEntityLibrary.push_back(e);
+		}
+	}
+
+	initUI();
+
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
 	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
@@ -62,15 +81,88 @@ void VtkViewerClient::initialize()
 
 	myVtkClient = onew(VtkClient)(this);
 	myVtkClient->initialize();
-	//myVtkClient->runScript("vtk/Sample.py");
 
-	Teapot* tp = onew(Teapot)();
-	tp->setSize(0.1f);
-	getSceneManager()->getRootNode()->addRenderable(tp);
-
-	myCurrentInteractor->setSceneNode(getSceneManager()->getRootNode());
+	Light* light = getSceneManager()->getLight(0);
+	light->setEnabled(true);
+	light->setPosition(Vector3f(0, -1, 0));
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerClient::initUI()
+{
+	UIManager* ui = getUIManager();
+	ui->setEventHandler(this);
+
+	//! Load and set default font.
+	FontManager* fm = getFontManager();
+	Font* defaultFont = fm->getFont("default");
+	ui->setDefaultFont(defaultFont);
+
+	WidgetFactory* wf = ui->getWidgetFactory();
+	Container* root = ui->getRootContainer(0);
+	root->setLayout(Container::LayoutVertical);
+
+	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
+
+	// Setup ui layout using from config file sections.
+	Config* cfg = SystemManager::instance()->getAppConfig();
+	if(cfg->exists("config/ui/entityButtons"))
+	{
+		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
+	}
+	if(cfg->exists("config/ui/root"))
+	{
+		root->load(cfg->lookup("config/ui/root"));
+	}
+
+	// Add buttons for each entity
+	for(int i = 0; i < myEntityLibrary.size(); i++)
+	{
+		EntityInfo* e = myEntityLibrary[i];
+		Button* btn = wf->createButton(e->label, entityButtons);
+		myEntityButtons.push_back(btn);
+	}
+
+	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
+	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
+	{
+		root = ui->getRootContainer(2);
+		root->setLayout(Container::LayoutVertical);
+		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
+		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerClient::handleUIEvent(const UIEvent& evt)
+{
+	for(int i = 0; i < myEntityLibrary.size(); i++)
+	{
+		if(myEntityButtons[i] == evt.source)
+		{
+			setVisibleEntity(i);
+			return;
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerClient::setVisibleEntity(int entityId)
+{
+	EntityInfo* ei = myEntityLibrary[entityId];
+
+	if(myVisibleEntity != NULL)
+	{
+		myVtkClient->destroyEntity(myVisibleEntity);
+		myVisibleEntity = NULL;
+	}
+
+	myVisibleEntity = myVtkClient->createEntity();
+	myVisibleEntity->loadScript(ei->script);
+
+	myCurrentInteractor->setSceneNode(myVisibleEntity->getSceneNode());
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point

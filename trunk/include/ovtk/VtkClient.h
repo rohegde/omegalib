@@ -39,6 +39,9 @@ namespace ovtk
 	using namespace omega::scene;
 
 	class PythonInterpreter;
+	class VtkDrawable;
+	class VtkEntity;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OVTK_API VtkClient
 	{
@@ -49,20 +52,43 @@ namespace ovtk
 		static VtkClient* instance();
 
 		void initialize();
-		void addActor(vtkActor* actor);
 
 		void runScript(const String& name);
+		EngineClient* getEngine();
+
+		VtkEntity* createEntity();
+		void destroyEntity(VtkEntity* entity);
+
+		//! Script ovtk calls will apply to this entity
+		void setActiveEntity(VtkEntity* entity);
+		VtkEntity* getActiveEntity();
 
 	private:
 		static VtkClient* myInstance;
 
+		SceneNode* myVtkNode;
 		EngineClient* myEngine;
 		VtkRenderPass* myRenderPass;
 		PythonInterpreter* myInterpreter;
+
+		List<VtkEntity*> myEntities;
+		VtkEntity* myActiveEntity;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	inline VtkClient* VtkClient::instance()
 	{ return myInstance; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline EngineClient* VtkClient::getEngine()
+	{ return myEngine; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void VtkClient::setActiveEntity(VtkEntity* entity)
+	{ myActiveEntity = entity; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline VtkEntity* VtkClient::getActiveEntity()
+	{ return myActiveEntity; }
 };
 #endif

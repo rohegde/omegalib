@@ -24,54 +24,41 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkRenderPass.h"
-#include "ovtk/vtkGenericOpenGLRenderWindow.h"
+#include "omega/scene/SceneManager.h"
+#include "omega/scene/LightingPass.h"
+#include "omega/scene/Light.h"
+#include "omega/glheaders.h"
 
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkOpaquePass.h>
-#include <vtkRenderState.h>
-
-using namespace ovtk;
+using namespace omega;
+using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass():
-	myPropQueueSize(0)
+void LightingPass::render(SceneManager* mng)
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::initialize()
-{
-	// Setup renderer and render window
-	myRenderer = vtkRenderer::New();
-
-	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
-	myRenderWindow->AddRenderer(myRenderer);
-	myOpaquePass = vtkOpaquePass::New();
-	myRenderState = new vtkRenderState(myRenderer);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng)
-{
-	RenderState state;
-	state.pass = this;
-	state.flags = VtkRenderPass::RenderVtk;
-
-	myPropQueueSize = 0;
-
-	mng->getRootNode()->draw(&state);
-
-	glColor4f(1,1,1,1);
-
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
 	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
+	//glLoadMatrixf(mng->getViewTransform().data());
+	glLoadIdentity();
+	glEnable(GL_LIGHTING);
 
-	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
-	myOpaquePass->Render(myRenderState);
+	GLenum lightId = GL_LIGHT0;
+	for(int i = 0; i < SceneManager::MaxLights; i++)
+	{
+		Light* light = mng->getLight(i);
+		if(light->isEnabled())
+		{
+			glEnable(lightId);
+
+			glLightfv(lightId, GL_COLOR, light->getColor().data());
+
+			// Set position
+			const Vector3f& pos = light->getPosition();
+			float fv[] = {pos[0], pos[1], pos[2], 0.0f };
+			glLightfv(lightId, GL_POSITION, fv);
+
+			lightId++;
+		}
+	}
+	//glDisable(GL_LIGHTING);
 
 	glPopMatrix();
 }

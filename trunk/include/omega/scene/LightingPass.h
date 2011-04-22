@@ -24,54 +24,21 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkRenderPass.h"
-#include "ovtk/vtkGenericOpenGLRenderWindow.h"
+#ifndef __LIGHTING_PASS_H__
+#define __LIGHTING_PASS_H__
 
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkOpaquePass.h>
-#include <vtkRenderState.h>
+#include "omega/osystem.h"
+#include "omega/scene/RenderPass.h"
 
-using namespace ovtk;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass():
-	myPropQueueSize(0)
+namespace omega
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::initialize()
+namespace scene
 {
-	// Setup renderer and render window
-	myRenderer = vtkRenderer::New();
+	class OUTILS_API LightingPass: public RenderPass
+	{
+		virtual void render(SceneManager* mng);
+	};
+};
+}; // namespace omega
 
-	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
-	myRenderWindow->AddRenderer(myRenderer);
-	myOpaquePass = vtkOpaquePass::New();
-	myRenderState = new vtkRenderState(myRenderer);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng)
-{
-	RenderState state;
-	state.pass = this;
-	state.flags = VtkRenderPass::RenderVtk;
-
-	myPropQueueSize = 0;
-
-	mng->getRootNode()->draw(&state);
-
-	glColor4f(1,1,1,1);
-
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
-
-	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
-	myOpaquePass->Render(myRenderState);
-
-	glPopMatrix();
-}
+#endif

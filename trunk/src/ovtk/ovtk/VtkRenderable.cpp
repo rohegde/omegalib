@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "ovtk/VtkRenderable.h"
 #include "ovtk/VtkRenderPass.h"
+#include "omega/StringUtils.h"
 
 using namespace ovtk;
 
@@ -69,6 +70,11 @@ const AlignedBox3* VtkRenderable::getBoundingBox()
 {
 	if(myActor != NULL)
 	{
+		// We have to make sure no transformation is applied to the actor, to get back the
+		// original bounding box.
+		myMatrix->Identity();
+		myActor->SetUserMatrix(myMatrix);
+
 		double* bounds = myActor->GetBounds();
 		float fbounds[6];
 		fbounds[0] = bounds[0];
@@ -77,9 +83,6 @@ const AlignedBox3* VtkRenderable::getBoundingBox()
 		fbounds[3] = bounds[3];
 		fbounds[4] = bounds[4];
 		fbounds[5] = bounds[5];
-		//Math::swapMinMax(fbounds[0], fbounds[3]);
-		//Math::swapMinMax(fbounds[1], fbounds[4]);
-		//Math::swapMinMax(fbounds[2], fbounds[5]);
 		myBBox.setExtents(fbounds[0], fbounds[2], fbounds[4], fbounds[1], fbounds[3], fbounds[5]);
 		return &myBBox;
 	}

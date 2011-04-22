@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/BoundingSphere.h"
+#include "omega/StringUtils.h"
 
 #include "omega/glheaders.h"
 
@@ -40,9 +41,10 @@ void BoundingSphere::render(SceneNode* node, RenderState* state)
 		if(myVisible || (myDrawOnSelected && node->isSelected()))
 		{
 			float radius = node->getBoundingSphere().getRadius();
+			//ofmsg("radius: %1%", %radius);
 
 			glPushMatrix();
-			const Vector3f& scale = node->getScale();
+			const Vector3f& scale = node->getDerivedScale();
 			glScalef(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
 
 			float stp = Math::Pi * 2 / mySegments;
