@@ -35,7 +35,7 @@ void Service::doSetup(Setting& settings)
 	// set the service name.
 	if(settings.exists("name"))
 	{
-		myName = (String)settings["name"];
+		myName = (const char*)settings["name"];
 	}
 	else
 	{

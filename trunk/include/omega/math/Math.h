@@ -1389,7 +1389,7 @@ namespace omega { namespace math
 			if (fallbackAxis != vector<3,T>::Zero())
 			{
 				// rotate 180 degrees about the fallback axis
-				q = AngleAxis(Math<T>::Pi, fallbackAxis);
+				q = Eigen::AngleAxis<T>(Math<T>::Pi, fallbackAxis);
 			}
 			else
 			{
@@ -1398,7 +1398,7 @@ namespace omega { namespace math
 				if (axis.norm() == 0) // pick another if colinear
 					axis = vector<3,T>::UnitY().cross(a);
 				axis.normalize();
-				q = AngleAxis(Math<T>::Pi, axis);
+				q = Eigen::AngleAxis<T>(Math<T>::Pi, axis);
 			}
 		}
 		else
