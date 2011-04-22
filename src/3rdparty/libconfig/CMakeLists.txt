@@ -41,3 +41,7 @@ add_definitions( -DLIBCONFIG_STATIC)
 # Setup compile info
 add_library(libconfig ${Sources})
 set_target_properties(libconfig PROPERTIES FOLDER 3rdparty)
+IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+  SET_TARGET_PROPERTIES(libconfig PROPERTIES COMPILE_FLAGS "-fPIC")
+ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+

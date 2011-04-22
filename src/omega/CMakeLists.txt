@@ -256,6 +256,7 @@ if(OMEGA_USE_DIRECTINPUT)
 		target_link_libraries( omega ${EXT_LIB_DIR}/dxguid.lib)
 	endif(WIN32)
 endif(OMEGA_USE_DIRECTINPUT)
+
 ###################################################################################################
 # Setup link info for additional libraries
 target_link_libraries( omega libconfig Collage)
