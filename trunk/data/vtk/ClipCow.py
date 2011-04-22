@@ -9,7 +9,7 @@ from vtk.util.colors import peacock, tomato
 # First start by reading a cow model. We also generate surface normals for
 # prettier rendering.
 cow = vtk.vtkBYUReader()
-cow.SetGeometryFileName(ovtk.findFile("/Data/Viewpoint/cow.g"))
+cow.SetGeometryFileName(ovtk.findFile("/vtk/data/Viewpoint/cow.g"))
 cowNormals = vtk.vtkPolyDataNormals()
 cowNormals.SetInputConnection(cow.GetOutputPort())
 
