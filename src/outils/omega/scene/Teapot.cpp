@@ -237,6 +237,7 @@ void Teapot::render(SceneNode* node, RenderState* state)
 			myEffect->activate();
 		}
 
+		glColor4f(1.0, 1.0, 1.0, 1.0);
 		teapot(myResolution, mySize, GL_FILL);
 
 		if(myEffect != NULL)

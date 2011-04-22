@@ -64,6 +64,18 @@ namespace scene
 			mySelected(false)
 			{}
 
+		SceneNode(SceneManager* scene, const String& name):
+			Node(name),
+			myScene(scene),
+			myListener(NULL),
+			myBoundingBoxColor(1, 1, 1, 1),
+			myBoundingBoxVisible(false),
+			mySelectable(false),
+			myChanged(false),
+			myVisible(true),
+			mySelected(false)
+			{}
+
 		SceneManager* getScene();
 
 		// Drawables

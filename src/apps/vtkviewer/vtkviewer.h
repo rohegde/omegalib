@@ -32,6 +32,7 @@
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
 #include "ovtk/VtkClient.h"
+#include "ovtk/VtkEntity.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -39,17 +40,38 @@ using namespace omega::ui;
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
+struct EntityInfo
+{
+	String name;
+	String label;
+	String script;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class VtkViewerClient: public EngineClient, IUIEventHandler
 {
 public:
 	VtkViewerClient(Application* app): 
-	  EngineClient(app)
+	  EngineClient(app),
+	  myVisibleEntity(NULL)
 	  {}
 
 	virtual void initialize();
+	void initUI();
+	void handleUIEvent(const UIEvent& evt);
+	void setVisibleEntity(int entityId);
 
 private:
 	VtkClient* myVtkClient;
+
+	// Enabled entity
+	VtkEntity* myVisibleEntity;
+
+	// Entity info library
+	Vector<EntityInfo*> myEntityLibrary;
+
+	// UI
+	Vector<Button*> myEntityButtons;
 
 	// Scene
 	ReferenceBox* myReferenceBox;

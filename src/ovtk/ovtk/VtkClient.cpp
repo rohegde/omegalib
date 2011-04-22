@@ -25,12 +25,15 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "ovtk/VtkClient.h"
+#include "ovtk/VtkEntity.h"
 #include "ovtk/PyVtk.h"
 #include "ovtk/VtkRenderable.h"
 #include "ovtk/PythonInterpreter.h"
 #include "omega/scene.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
+
+#include <vtkActor.h>
 
 using namespace ovtk;
 
@@ -45,7 +48,7 @@ static PyObject* ovtk_addActor(PyObject* self, PyObject* args)
 	PyVTKObject* pyvtkactor = (PyVTKObject *)pyactor;
 	vtkActor* vtkactor = (vtkActor*)pyvtkactor->vtk_ptr;
 
-	VtkClient::instance()->addActor(vtkactor);
+	VtkClient::instance()->getActiveEntity()->addActor(vtkactor);
 
 	return Py_BuildValue("s", "ok");
 }
@@ -104,29 +107,50 @@ void VtkClient::initialize()
 	myInterpreter->addModule("ovtk", ovtkMethods);
 
 	myEngine->getSceneManager()->addRenderPass(myRenderPass);
-}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkClient::addActor(vtkActor* actor)
-{
 	SceneManager* sm = myEngine->getSceneManager();
-	SceneNode* sn = onew(SceneNode)(sm);
-	sm->getRootNode()->addChild(sn);
+	myVtkNode = onew(SceneNode)(sm, "vtk");
+	sm->getRootNode()->addChild(myVtkNode);
 
 	BoundingSphere* ss = onew(BoundingSphere)();
 	ss->setVisible(false);
 	ss->setDrawOnSelected(true);
+	myVtkNode->addRenderable(ss);
+}
 
-	VtkRenderable* vdw = onew(VtkRenderable)();
-	vdw->setActor(actor);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+VtkEntity* VtkClient::createEntity()
+{
+	VtkEntity* e = onew(VtkEntity)(this);
+	myEntities.push_back(e);
+	return e;
+}
 
-	sn->addRenderable(vdw);
-	sn->addRenderable(ss);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkClient::destroyEntity(VtkEntity* entity)
+{
+	oassert(entity != NULL);
+	myEntities.remove(entity);
+	odelete(entity);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkClient::runScript(const String& name)
 {
 	myInterpreter->runSimpleFile(name.c_str());
+	myVtkNode->update(true, false);
+	const Sphere& bs = myVtkNode->getBoundingSphere();
+
+	float scale = 0.1f / bs.getRadius();
+	Vector3f center = bs.getCenter();
+
+	// Move all the nodes so they are recentered wrt the root Vtk node.
+	Node::ChildNodeIterator it = myVtkNode->getChildIterator();
+	while(it.hasMoreElements())
+	{
+		Node* child = it.getNext();
+		child->setPosition(-center);
+	}
+	myVtkNode->scale(scale, scale, scale);
 }
 

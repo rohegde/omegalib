@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/scene/SceneManager.h"
+#include "omega/scene/LightingPass.h"
 #include "omega/scene/DefaultRenderPass.h"
 #include "omega/glheaders.h"
 
@@ -53,16 +54,17 @@ void SceneManager::removeRenderPass(RenderPass* pass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initialize()
 {
-	myRoot = new SceneNode(this);
+	myRoot = new SceneNode(this, "root");
 	myBackgroundColor = Color(0.1f, 0.1f, 0.15f);
 
+	addRenderPass(new LightingPass());
 	addRenderPass(new DefaultRenderPass());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::draw(const DrawContext& context)
 {
-	glDisable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 
 	// Setup view matrix (read back from gl)
 	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.data() );

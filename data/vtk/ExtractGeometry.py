@@ -30,12 +30,13 @@ skinExtractor.SetInputConnection(v16.GetOutputPort())
 skinExtractor.SetValue(0, 500)
 skinNormals = vtk.vtkPolyDataNormals()
 skinNormals.SetInputConnection(skinExtractor.GetOutputPort())
-skinNormals.SetFeatureAngle(60.0)
+skinNormals.SetFeatureAngle(270.0)
 skinMapper = vtk.vtkPolyDataMapper()
 skinMapper.SetInputConnection(skinNormals.GetOutputPort())
 skinMapper.ScalarVisibilityOff()
 skin = vtk.vtkActor()
 skin.SetMapper(skinMapper)
+skin.GetProperty().SetRepresentationToWireframe()
 
 # An outline provides context around the data.
 outlineData = vtk.vtkOutlineFilter()
@@ -45,13 +46,10 @@ mapOutline.SetInputConnection(outlineData.GetOutputPort())
 outline = vtk.vtkActor()
 outline.SetMapper(mapOutline)
 outline.GetProperty().SetColor(0, 0, 0)
-
-outline.SetScale(0.001)
-skin.SetScale(0.001)
-
+outline.GetProperty().SetRepresentationToWireframe()
 
 # Actors are added to the renderer. An initial camera view is created.
 # The Dolly() method moves the camera towards the FocalPoint,
 # thereby enlarging the image.
-ovtk.addActor(outline)
+#ovtk.addActor(outline)
 ovtk.addActor(skin)

@@ -24,54 +24,48 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkRenderPass.h"
-#include "ovtk/vtkGenericOpenGLRenderWindow.h"
+#ifndef __LIGHT_H__
+#define __LIGHT_H__
 
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkOpaquePass.h>
-#include <vtkRenderState.h>
+#include "omega/osystem.h"
+#include "omega/Color.h"
+//#include "omega/scene/RenderPass.h"
 
-using namespace ovtk;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass():
-	myPropQueueSize(0)
+namespace omega
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::initialize()
+namespace scene
 {
-	// Setup renderer and render window
-	myRenderer = vtkRenderer::New();
+	class Light: public DynamicObject
+	{
+	public:
+		enum Type { Point, Directional, Spot };
 
-	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
-	myRenderWindow->AddRenderer(myRenderer);
-	myOpaquePass = vtkOpaquePass::New();
-	myRenderState = new vtkRenderState(myRenderer);
-}
+	public:
+		Light():
+			myPosition(0, 0, 0),
+			myColor(1, 1, 1),
+			myType(Point),
+			myEnabled(false) {}
+			
+		const Vector3f& getPosition() { return myPosition; }
+		void setPosition(const Vector3f& value) { myPosition = value; }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng)
-{
-	RenderState state;
-	state.pass = this;
-	state.flags = VtkRenderPass::RenderVtk;
+		const Color& getColor() { return myColor; }
+		void setCOlor(const Color& value) { myColor = value; }
 
-	myPropQueueSize = 0;
+		Type getType() { return myType; }
+		void setType(Type value) { myType = value; }
 
-	mng->getRootNode()->draw(&state);
+		bool isEnabled() { return myEnabled; }
+		void setEnabled(bool value) { myEnabled = value; }
 
-	glColor4f(1,1,1,1);
+	private:
+		Vector3f myPosition;
+		Color myColor;
+		Type myType;
+		bool myEnabled;
+	};
+};
+}; // namespace omega
 
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
-
-	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
-	myOpaquePass->Render(myRenderState);
-
-	glPopMatrix();
-}
+#endif

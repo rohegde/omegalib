@@ -24,54 +24,62 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#ifndef __VTK_ENTITY_H__
+#define __VTK_ENTITY_H__
+
+#include "ovtk/ovtkbase.h"
+
+#include "omega/osystem.h"
+#include "omega/EngineClient.h"
+
 #include "ovtk/VtkRenderPass.h"
-#include "ovtk/vtkGenericOpenGLRenderWindow.h"
 
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkOpaquePass.h>
-#include <vtkRenderState.h>
-
-using namespace ovtk;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass():
-	myPropQueueSize(0)
+class vtkActor;
+namespace ovtk
 {
-}
+	using namespace omega;
+	using namespace omega::scene;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::initialize()
-{
-	// Setup renderer and render window
-	myRenderer = vtkRenderer::New();
+	class VtkDrawable;
+	class VtkClient;
 
-	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
-	myRenderWindow->AddRenderer(myRenderer);
-	myOpaquePass = vtkOpaquePass::New();
-	myRenderState = new vtkRenderState(myRenderer);
-}
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OVTK_API VtkEntity
+	{
+	friend class VtkClient;
+	public:
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng)
-{
-	RenderState state;
-	state.pass = this;
-	state.flags = VtkRenderPass::RenderVtk;
+		float getRepresentationSize();
+		void setRepresentationSize(float value);
 
-	myPropQueueSize = 0;
+		SceneNode* getSceneNode();
 
-	mng->getRootNode()->draw(&state);
+		void loadScript(const String& filename);
 
-	glColor4f(1,1,1,1);
+		//! Internal
+		void addActor(vtkActor* actor);
 
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
+	private:
+		VtkEntity(VtkClient* client);
+		~VtkEntity();
 
-	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
-	myOpaquePass->Render(myRenderState);
+	private:
+		List<VtkRenderable*> myRenderables;
+		SceneNode* mySceneNode;
+		VtkClient* myClient;
+		float myRepresentationSize;
+	};
 
-	glPopMatrix();
-}
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneNode* VtkEntity::getSceneNode()
+	{ return mySceneNode; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float VtkEntity::getRepresentationSize()
+	{ return myRepresentationSize; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void VtkEntity::setRepresentationSize(float value)
+	{ myRepresentationSize = value; }
+};
+#endif

@@ -49,6 +49,7 @@ ReferenceBox::ReferenceBox()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ReferenceBox::render(SceneNode* node, RenderState* state)
 {
+	glDisable(GL_LIGHTING);
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
 		int gridLinesX = (int)(mySize[0] / myPrimaryLineInterval);
@@ -75,6 +76,7 @@ void ReferenceBox::render(SceneNode* node, RenderState* state)
 		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisX, myPrimaryLineColor, gridLinesX);
 		drawReferenceGrid(myBox.getCorner(AlignedBox3::FAR_LEFT_TOP), myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP), AxisZ, myPrimaryLineColor, gridLinesZ);
 	}
+	glEnable(GL_LIGHTING);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

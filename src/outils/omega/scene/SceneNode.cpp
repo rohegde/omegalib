@@ -25,6 +25,7 @@
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/SceneManager.h"
 #include "omega/glheaders.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -148,6 +149,9 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 			myBBox.merge(bbox);
 		}
 	}
+
+	myBBox.transformAffine(getFullTransform());
+
 	ChildNodeIterator i = getChildIterator();
 	while(i.hasMoreElements())
 	{
@@ -155,8 +159,6 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 		const AlignedBox3& bbox = n->getBoundingBox();
 		myBBox.merge(bbox);
 	}
-
-	myBBox.transformAffine(getFullTransform());
 
 	if(!myBBox.isNull())
 	{
