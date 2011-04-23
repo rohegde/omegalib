@@ -30,6 +30,9 @@
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkOpaquePass.h>
+#include <vtkDepthPeelingPass.h>
+#include <vtkTranslucentPass.h>
+#include <vtkOverlayPass.h>
 #include <vtkRenderState.h>
 
 using namespace ovtk;
@@ -49,7 +52,12 @@ void VtkRenderPass::initialize()
 	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
 	myRenderWindow->AddRenderer(myRenderer);
 	myOpaquePass = vtkOpaquePass::New();
+	myTranslucentPass = vtkDepthPeelingPass::New();
 	myRenderState = new vtkRenderState(myRenderer);
+
+	myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
+	//myTranslucentPass->SetOcclusionRatio(0.1f);
+	//myTranslucentPass->SetMaximumNumberOfPeels(0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,15 +71,19 @@ void VtkRenderPass::render(SceneManager* mng)
 
 	mng->getRootNode()->draw(&state);
 
-	glColor4f(1,1,1,1);
-
 	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 	// stored inside the scene nodes. So, create a new, clean transform on the stack.
 	glPushMatrix();
 	glLoadMatrixf(mng->getViewTransform().data());
 
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glEnable(GL_NORMALIZE);
+	glEnable(GL_BLEND);
+
 	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
 	myOpaquePass->Render(myRenderState);
+	myTranslucentPass->Render(myRenderState);
 
+	glPopAttrib();
 	glPopMatrix();
 }

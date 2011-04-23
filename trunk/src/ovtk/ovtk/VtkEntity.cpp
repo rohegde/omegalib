@@ -29,6 +29,8 @@
 #include "ovtk/VtkClient.h"
 
 #include <vtkActor.h>
+#include <vtkProperty.h>
+#include <vtkMapper.h>
 
 using namespace ovtk;
 
@@ -88,6 +90,9 @@ void VtkEntity::loadScript(const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkEntity::addActor(vtkActor* actor)
 {
+	//actor->GetProperty()->SetAmbient(0.1f);
+	//actor->GetProperty()->SetDiffuse(0.2f);
+
 	SceneManager* sm = myClient->getEngine()->getSceneManager();
 	SceneNode* sn = onew(SceneNode)(sm);
 	mySceneNode->addChild(sn);

@@ -40,6 +40,8 @@ void LightingPass::render(SceneManager* mng)
 	glLoadIdentity();
 	glEnable(GL_LIGHTING);
 
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mng->getAmbientLightColor().data());
+
 	GLenum lightId = GL_LIGHT0;
 	for(int i = 0; i < SceneManager::MaxLights; i++)
 	{
@@ -48,7 +50,7 @@ void LightingPass::render(SceneManager* mng)
 		{
 			glEnable(lightId);
 
-			glLightfv(lightId, GL_COLOR, light->getColor().data());
+			glLightfv(lightId, GL_DIFFUSE, light->getColor().data());
 
 			// Set position
 			const Vector3f& pos = light->getPosition();
@@ -58,7 +60,9 @@ void LightingPass::render(SceneManager* mng)
 			lightId++;
 		}
 	}
-	//glDisable(GL_LIGHTING);
+
+    glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glEnable( GL_COLOR_MATERIAL );
 
 	glPopMatrix();
 }

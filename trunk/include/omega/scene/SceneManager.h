@@ -49,7 +49,8 @@ namespace scene
 		  myViewTransform(AffineTransform3::Identity()),
 		  myGpuMng(gpu), 
 		  myRoot(NULL),
-		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f) {}
+		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f), 
+		  myAmbientLightColor(0.2f, 0.2f, 0.2f, 1.0f) {}
 
 		void initialize();
 
@@ -59,6 +60,9 @@ namespace scene
 
 		void setBackgroundColor(const Color& value);
 		Color getBackgroundColor();
+
+		void setAmbientLightColor(const Color& value);
+		Color getAmbientLightColor();
 
 		void draw(const DrawContext& context);
 		void update(const UpdateContext& context);
@@ -81,6 +85,8 @@ namespace scene
 		Color myBackgroundColor;
 
 		Light myLights[MaxLights];
+		Color myAmbientLightColor;
+
 		List<Actor*> myActors;
 		List<RenderPass*> myRenderPassList;
 	};
@@ -104,6 +110,14 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Color SceneManager::getBackgroundColor()
 	{ return myBackgroundColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SceneManager::setAmbientLightColor(const Color& value)
+	{ myAmbientLightColor = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color SceneManager::getAmbientLightColor()
+	{ return myAmbientLightColor; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Light* SceneManager::getLight(int num)

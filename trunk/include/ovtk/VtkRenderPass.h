@@ -34,6 +34,7 @@
 class vtkProp;
 class vtkRenderer;
 class vtkOpaquePass;
+class vtkDepthPeelingPass;
 class vtkGenericOpenGLRenderWindow;
 class vtkRenderState;
 
@@ -62,6 +63,7 @@ namespace ovtk
 	private:
 		vtkRenderer* myRenderer;
 		vtkOpaquePass* myOpaquePass;
+		vtkDepthPeelingPass* myTranslucentPass;
 		vtkRenderState* myRenderState;
 		vtkGenericOpenGLRenderWindow* myRenderWindow;
 
