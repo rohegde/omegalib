@@ -14,7 +14,7 @@ contours.GenerateValues(6, 0.0, 2)
 
 normals = vtk.vtkPolyDataNormals()
 normals.SetInputConnection(contours.GetOutputPort())
-normals.SetFeatureAngle(0.0)
+normals.SetFeatureAngle(270.0)
 
 contMapper = vtk.vtkPolyDataMapper()
 contMapper.SetInput(normals.GetOutput())
