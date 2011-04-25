@@ -12,6 +12,10 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * kinect integration (*Victor*)
  * mocap calibration application (*Alessandro*)
  * improve ease of integration into external applications (*Alessandro*) 
+ * Vtk integration library (*Alessandro*)
+ * vtk viewer demo application (*Alessandro*)
+ * filters to join mocap & kinect data for controller / tangible object ownership (*Alessandro*)
+ * Linux 64bit build of basic services (*Arthur*)
 
 ==Work In Progress==
  * complete meshviewer application (*Alessandro*)
@@ -19,10 +23,7 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * Integration of XBox 360 controller (*Arthur*)
 
 ==Wish List==
- * Vtk integration library
- * vtk viewer demo application
  * fix 64bit support (windows only)
- * filters to join mocap & kinect data for controller / tangible object ownership
  * filters to join kinect & pqlabs to associate touches to user.
 ------------------------------------------------------------------------
 
