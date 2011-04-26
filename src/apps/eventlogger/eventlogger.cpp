@@ -62,11 +62,10 @@ int main(int argc, char** argv)
 		sm->poll(); 
 
 		// Get available events
-		int av = sm->getAvailableEvents();
-		if(av != 0)
+		Event evts[OMEGA_MAX_EVENTS];
+		int av;
+		if(0 != (av = sm->getEvents(evts, ServiceManager::MaxEvents)))
 		{
-			Event evts[OMEGA_MAX_EVENTS];
-			sm->getEvents(evts, ServiceManager::MaxEvents);
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
 				logEvent(evts[evtNum]);
