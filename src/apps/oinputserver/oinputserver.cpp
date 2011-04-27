@@ -25,14 +25,12 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega.h"
-#include "omega/MouseService.h"
 
 #include <time.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <vector>
 
-//using namespace std;
 using namespace omega;
 
 #ifdef WIN32
@@ -549,14 +547,32 @@ void main(int argc, char** argv)
 	}
 
 	sys->setup(cfg);
-	sys->setApplication(&app);
 	sys->initialize();
 	sys->getServiceManager()->start();
 
-	//sys->run(); // Not used for oinputserver
+	/* ////////// NetService Testing ///////////////////////////////////////////////////
+	// Remember to change config to netservice.cfg
+	while(true){
+		sys->getServiceManager()->poll();
+		
+		Event events[1024];
+		
+		int nEvents = 0;
+		if( (nEvents = sys->getServiceManager()->getEvents(events, ServiceManager::MaxEvents)) > 0 ){
+			for( int i = 0; i < nEvents; i++){
+				printf("Event %d at: %f %f \n", events[i].serviceType, events[i].position[0], events[i].position[1] );
+			}
+		}
+
+		
+	}
+	*/
+
 	app.startConnection();
 	
 	float delay = 0.1f; // Seconds to delay sending events (-1 disables delay)
+	bool testStream = false;
+	char* testPacket;
 
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){
@@ -570,7 +586,7 @@ void main(int argc, char** argv)
 
 		// Get events
 		int av = sys->getServiceManager()->getAvailableEvents();
-		if(av != 0)
+		if(av != 0 && !testStream )
 		{
 			// @todo: Instead of copying the event list, we can lock the main one.
 			Event evts[OMEGA_MAX_EVENTS];
@@ -583,8 +599,18 @@ void main(int argc, char** argv)
 					app.sendToClients( app.getEvent() );
 				}
 			}
+			printf("------------------------------------------------------------------------------\n", app.getEvent());
 		}// if
-		printf("------------------------------------------------------------------------------\n", app.getEvent());
+		else if( testStream ){
+			testPacket = new char[99];
+			// example touch string: '2:-10,0.5,0.5,0.1,0.1 '
+			itoa(2, testPacket, 10); // Append input type
+			strcat( testPacket, ":-10,0.5,0.5,0.1,0.1 " );
+			printf("OInputServer: main() ----- WARNING: TEST STREAM MODE ACTIVE -----\n",testPacket);
+			printf("%s\n",testPacket);
+			app.sendToClients( testPacket );
+		}
+		
 
 	}// while
 	

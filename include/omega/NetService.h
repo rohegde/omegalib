@@ -68,6 +68,7 @@ public:
 	virtual void dispose();
 	void setServer(const char*,const char*);
 	void setDataport(const char*);
+	void setScreenResolution(int,int);
 private:
 	void initHandshake();
 	void parseDGram(int);

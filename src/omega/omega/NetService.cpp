@@ -15,27 +15,27 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::setup(Setting& settings)
 {
-	if(settings.exists("ServerIP"))
+	if(settings.exists("serverIP"))
 	{
-		serverAddress =  (const char*)settings["ServerIP"];
+		serverAddress =  (const char*)settings["serverIP"];
 	}
-	if(settings.exists("MsgPort"))
+	if(settings.exists("msgPort"))
 	{
-		serverPort = (const char*)settings["MsgPort"];
+		serverPort = (const char*)settings["msgPort"];
 	}
-	if(settings.exists("DataPort"))
+	if(settings.exists("dataPort"))
 	{
-		dataPort = (const char*)settings["DataPort"];
+		dataPort = (const char*)settings["dataPort"];
 	}
-	if(settings.exists("ScreenX"))
+	if(settings.exists("screenX"))
 	{
-		screenX =  atoi((const char*)settings["ScreenX"]);
-		printf("NetService: ScreenX set to %d\n", screenX);
+		screenX =  atoi((const char*)settings["screenX"]);
+		printf("NetService: screenX set to %d\n", screenX);
 	}
-	if(settings.exists("ScreenY"))
+	if(settings.exists("screenY"))
 	{
-		screenY =  atoi((const char*)settings["ScreenY"]);
-		printf("NetService: ScreenY set to %d\n", screenY);
+		screenY =  atoi((const char*)settings["screenY"]);
+		printf("NetService: screenY set to %d\n", screenY);
 	}
 }
 
@@ -43,7 +43,7 @@ void NetService::setup(Setting& settings)
 void NetService::initialize() 
 {
 	mysInstance = this;
-#if defined (WIN32)
+#if defined(WIN32)
 	/*
 	* Based on MSDN Winsock examples:
 	* http://msdn.microsoft.com/en-us/library/ms738566(VS.85).aspx
@@ -115,12 +115,12 @@ void NetService::initialize()
 		printf("NetService: Connected to server!\n");
 	}
 #endif
-#if defined (linux)
+#if defined(linux)
 	/*
 	* Based on Beej's Guide to Network Programming:
 	* http://beej.us/guide/bgnet/output/html/multipage/index.html
 	*/
-	printf("NetService: Initializing using Linux\n");
+	printf("NetService: Initializing using linux\n");
 
 	struct addrinfo hints, *res;
 
@@ -162,15 +162,15 @@ void NetService::initHandshake()
 
 	printf("NetService: Sending handshake: '%s'\n", sendbuf);
 
-	int errno; // Linux error code
+	int errno; // linux error code
 	iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf), 0);
-#if defined (linux)
+#if defined(linux)
 	if (iResult == -1) {
 		printf("NetService: Send failed: %s\n", strerror(errno));
 		return;
 	}
 #endif
-#if defined (WIN32)
+#if defined(WIN32)
 	if (iResult == SOCKET_ERROR) {
 		printf("NetService: Send failed: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
@@ -196,17 +196,17 @@ void NetService::initHandshake()
 #endif
 #if defined(linux)
 	/*
-	 * Based on Beej's Guide to Network Programming:
-	 * http://beej.us/guide/bgnet/output/html/multipage/index.html
+	* Based on Beej's Guide to Network Programming:
+	* http://beej.us/guide/bgnet/output/html/multipage/index.html
 
-	 */
+	*/
 	struct addrinfo hints, *res;
 
 	// First, load up address structs with getaddrinfo():
 	memset(&hints, 0, sizeof hints);
 	hints.ai_family = AF_UNSPEC; // set to AF_INET to force IPv4
-    	hints.ai_socktype = SOCK_DGRAM;
-    	hints.ai_flags = AI_PASSIVE; // use my IP
+	hints.ai_socktype = SOCK_DGRAM;
+	hints.ai_flags = AI_PASSIVE; // use my IP
 
 	// Get the server address
 	getaddrinfo(NULL, dataPort, &hints, &res);
@@ -247,7 +247,7 @@ void NetService::poll()
 
 		timeout.tv_sec  = 0;
 		timeout.tv_usec = 0;
-		
+
 		// Check if UDP socket has data waiting to be read before
 		// socket blocks to attempt to read.
 		result = select(RecvSocket+1, &ReadFDs, &WriteFDs, &ExceptFDs, &timeout);
@@ -255,7 +255,7 @@ void NetService::poll()
 		// -1: error occurred
 		// 0: timed out
 		// > 0: data ready to be read
-		// if -1 WSAGetLastError() can return error code
+		// if -1 WSAGetLastError() can return error code (Windows only)
 		if( result > 0 ){
 			parseDGram(result);
 		} else {
@@ -275,17 +275,15 @@ void NetService::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::parseDGram(int result)
 {
-	char RecvBuf[100];
-	int  BufLen = 100;
 #if defined(WIN32)
 	result = recvfrom(RecvSocket, 
-		RecvBuf, 
-		BufLen, 
+		recvbuf,
+		DEFAULT_BUFLEN-1,
 		0, // If non-zero, socket is non-blocking
 		(SOCKADDR *)&SenderAddr, 
 		&SenderAddrSize);
 #endif
-#if defined (linux)
+#if defined(linux)
 	socklen_t addr_len;
 	struct sockaddr_storage their_addr;
 	int numbytes;
@@ -293,12 +291,12 @@ void NetService::parseDGram(int result)
 
 	addr_len = sizeof their_addr;
 	numbytes = recvfrom(RecvSocket,
-		 recvbuf,
-		 DEFAULT_BUFLEN-1,
-		 0,
-		 (struct sockaddr *)&their_addr,
-		 &addr_len);
-	
+		recvbuf,
+		DEFAULT_BUFLEN-1,
+		0,
+		(struct sockaddr *)&their_addr,
+		&addr_len);
+
 	struct sockaddr *sa = (struct sockaddr *)&their_addr;
 	const void *inAddr;
 	if (sa->sa_family == AF_INET){
@@ -307,19 +305,19 @@ void NetService::parseDGram(int result)
 		inAddr = &(((struct sockaddr_in6*)sa)->sin6_addr);
 	}
 
-	printf("listener: got packet from %s\n",
-	    inet_ntop(their_addr.ss_family,
-	    inAddr,
-	    s, sizeof s));
-	printf("listener: packet is %d bytes long\n", numbytes);
+	//printf("listener: got packet from %s\n",
+	//    inet_ntop(their_addr.ss_family,
+	//    inAddr,
+	//    s, sizeof s));
+	//printf("listener: packet is %d bytes long\n", numbytes);
 	recvbuf[numbytes] = '\0';
-	printf("listener: packet contains \"%s\"\n", recvbuf);
+	//printf("listener: packet contains \"%s\"\n", recvbuf);
 	result = numbytes;
 #endif
 	if( result > 0 ){
 		int msgLen = result - 1;
 		char* message = new char[msgLen];
-		std::string msgStr = RecvBuf;
+		std::string msgStr = recvbuf;
 
 		// Parse message out of datagram
 		int lastIndex = 0;
@@ -337,55 +335,57 @@ void NetService::parseDGram(int result)
 				lastIndex = i + 1;
 				currentParam++;
 			}
-			message[i] = RecvBuf[i];
+			message[i] = recvbuf[i];
 			message[i+1] = '\0';
 		}// for
 
 		// Append last parameter
 		params[currentParam] = atof( msgStr.substr(lastIndex,msgLen).c_str() );
-#if defined(WIN32)
+
 		mysInstance->lockEvents();
 		Event* evt;
 
 		switch(inputType){
-					case(1): // MoCap
-						evt = mysInstance->writeHead();
-						evt->serviceType = Service::Mocap;
+			case(Service::Mocap): // MoCap
+				evt = mysInstance->writeHead();
+				evt->serviceType = Service::Mocap;
 
-						evt->sourceId = (int)(params[0] + 0.5);
-						evt->position[0] = params[1];
-						evt->position[1] = params[2];
-						evt->position[2] = params[3];
+				evt->sourceId = (int)(params[0] + 0.5);
+				evt->position[0] = params[1];
+				evt->position[1] = params[2];
+				evt->position[2] = params[3];
 
-						evt->orientation.x() = params[4];
-						evt->orientation.y() = params[5];
-						evt->orientation.z() = params[6];
-						evt->orientation.w() = params[7];
-						break;
-					case(2): // Touch (points only not gestures)
-						evt = mysInstance->writeHead();
-						evt->serviceType = Service::Pointer;
-						if( (int)(params[0]) == TP_DOWN ){
-							evt->type = Event::Down;
-						}
-						else if( (int)(params[0]) == TP_MOVE ){
-							evt->type = Event::Move;
-						}
-						else if( (int)(params[0]) == TP_UP ){
-							evt->type = Event::Up;
-						}
-						evt->sourceId = (int)(params[1]);
-						evt->position[0] = params[2] * (float)screenX;
-						evt->position[1] = params[3] * (float)screenY;
+				evt->orientation.x() = params[4];
+				evt->orientation.y() = params[5];
+				evt->orientation.z() = params[6];
+				evt->orientation.w() = params[7];
+				break;
+			case(Service::Pointer): // Touch (points only not gestures)
+				evt = mysInstance->writeHead();
+				evt->serviceType = Service::Pointer;
+				if( (int)(params[0]) == TP_DOWN ){
+					evt->type = Event::Down;
+				}
+				else if( (int)(params[0]) == TP_MOVE ){
+					evt->type = Event::Move;
+				}
+				else if( (int)(params[0]) == TP_UP ){
+					evt->type = Event::Up;
+				}
+				evt->sourceId = (int)(params[1]);
+				evt->position[0] = params[2] * (float)screenX;
+				evt->position[1] = params[3] * (float)screenY;
 
-						evt->numberOfPoints = 1;
-						evt->pointSet[0][0] = params[4] * (float)screenX;
-						evt->pointSet[0][1] = params[5] * (float)screenY;
-						break;
+				evt->numberOfPoints = 1;
+				evt->pointSet[0][0] = params[4] * (float)screenX;
+				evt->pointSet[0][1] = params[5] * (float)screenY;
+				break;
+			default:
+				printf("NetService: Unsupported input type %d \n", inputType);
+				break;
 		}// switch
 		mysInstance->unlockEvents();
-#endif
-		printf("Receiving datagram '%s'\n", message);
+		//printf("Receiving datagram '%s'\n", message);
 	} else {
 #if defined(WIN32)
 		printf("recvfrom failed with error code '%d'\n", WSAGetLastError());
@@ -409,4 +409,12 @@ void NetService::setDataport(const char* port)
 {
 	printf("Dataport set to '%s'\n", port);
 	dataPort = port;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void NetService::setScreenResolution(int x, int y) 
+{
+	printf("Screen resolution set to %d %d\n", x, y);
+	screenX = x;
+	screenY = y;
 }
