@@ -141,12 +141,12 @@ ovtk.addActor(saggital)
 ovtk.addActor(axial)
 ovtk.addActor(coronal)
 ovtk.addActor(skin)
-ovtk.addActor(bone)
+#ovtk.addActor(bone)
 
 # Turn off bone for this example.
-bone.VisibilityOff()
+#bone.VisibilityOff()
 
 # Set skin to semi-transparent.
-skin.GetProperty().SetOpacity(0.1)
-bone.GetProperty().SetOpacity(0.2)
+#skin.GetProperty().SetOpacity(0.5)
+#bone.GetProperty().SetOpacity(0.9)
 

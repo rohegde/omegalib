@@ -47,6 +47,17 @@ void DefaultTwoHandsInteractor::initialize(const String& observerUpdateServiceNa
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
 {
+	if(evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand))
+	{
+		myHandsValid = true;
+		myLeftHand = evt.pointSet[LeftHand];
+		myRightHand = evt.pointSet[RightHand];
+	}
+	else
+	{
+		myHandsValid = false;
+	}
+
 	if(myObserverUpdateService != NULL) 
 	{
 		myActiveUserId = myObserverUpdateService->getSourceId();
@@ -56,21 +67,19 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& con
 	{
 		if(evt.sourceId == myActiveUserId)
 		{
-			if(evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand))
+			if(myHandsValid)
 			{
-				Vector3f leftHandPosition = evt.pointSet[LeftHand];
-				Vector3f rightHandPosition = evt.pointSet[RightHand];
 				if(myNode->isSelected())
 				{
-					Vector3f pos = (leftHandPosition + rightHandPosition) / 2;
-					float size = (leftHandPosition - rightHandPosition).norm();
-					myNode->setPosition(pos);
+					Vector3f pos = (myLeftHand + myRightHand) / 2;
+					float size = (myLeftHand - myRightHand).norm() * myInitialScale;
+					
+					myNode->setPosition(pos - myInitialPosition);
 					myNode->setScale(size, size, size);
 
-					Vector3f orig = Vector3f(0, 1, 0);
-					Vector3f dir = leftHandPosition - rightHandPosition;
+					Vector3f dir = myLeftHand - myRightHand;
 					dir.normalize();
-					Quaternion q = Math::buildRotation(orig, dir, Vector3f::Zero());
+					Quaternion q = Math::buildRotation(myInitialHandDirection, dir, Vector3f::Zero()) * myInitialOrientation;
 					myNode->setOrientation(q);
 				}
 			}
@@ -86,7 +95,17 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 	{
 		if(evt.type == Event::Down)
 		{
-			myNode->setSelected(true);
+			if(myHandsValid)
+			{
+				myNode->setSelected(true);
+				myInitialOrientation = myNode->getOrientation();
+
+				myInitialScale = myNode->getScale()[0] / (myLeftHand - myRightHand).norm();
+				myInitialHandDirection = myLeftHand - myRightHand;
+				myInitialHandDirection.normalize();
+
+				myInitialPosition = ((myLeftHand + myRightHand) / 2) - myNode->getPosition();
+			}
 		}
 		else if(evt.type == Event::Up)
 		{

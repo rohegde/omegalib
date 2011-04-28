@@ -127,7 +127,7 @@ void VtkViewerClient::initUI()
 	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
 	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
 	{
-		root = ui->getRootContainer(2);
+		root = ui->getRootContainer(1);
 		root->setLayout(Container::LayoutVertical);
 		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");

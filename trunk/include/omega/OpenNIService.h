@@ -118,6 +118,7 @@ namespace omega
 
 		float Colors[11][3];
         static bool isCalibrated;
+		static bool autocalibrate;
 
 		// Reference frame transform
 		AffineTransform3 myTransform;

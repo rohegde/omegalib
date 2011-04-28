@@ -31,6 +31,7 @@
 
 #include "omega/osystem.h"
 #include "omega/EngineClient.h"
+#include "omega/scene/BoundingSphere.h"
 
 #include "ovtk/VtkRenderPass.h"
 
@@ -64,6 +65,7 @@ namespace ovtk
 		~VtkEntity();
 
 	private:
+		BoundingSphere* myBSphere;
 		List<VtkRenderable*> myRenderables;
 		SceneNode* mySceneNode;
 		VtkClient* myClient;

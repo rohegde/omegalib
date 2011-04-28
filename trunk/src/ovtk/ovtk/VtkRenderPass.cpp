@@ -78,10 +78,15 @@ void VtkRenderPass::render(SceneManager* mng)
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
     glEnable(GL_NORMALIZE);
-	glEnable(GL_BLEND);
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 
 	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
 	myOpaquePass->Render(myRenderState);
+
+	glEnable(GL_BLEND);
+	//glDisable(GL_DEPTH_TEST);
+
 	myTranslucentPass->Render(myRenderState);
 
 	glPopAttrib();

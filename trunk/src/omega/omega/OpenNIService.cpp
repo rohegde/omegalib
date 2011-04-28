@@ -40,6 +40,7 @@ xn::DepthGenerator OpenNIService::omg_DepthGenerator = NULL;
 xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
 //xn::SceneMetaData OpenNIService::omg_sceneMD = NULL;
 bool OpenNIService::isCalibrated = false;
+bool OpenNIService::autocalibrate = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OpenNIService::OpenNIService()
@@ -161,6 +162,11 @@ void OpenNIService::setup(Setting& settings)
 
 	myTransform.linear() = refLinear;
 	myTransform.translation() = refTranslation;
+
+	if(settings.exists("autocalibrate"))
+	{
+		autocalibrate = settings["autocalibrate"];
+	}
 
 	myUseTrackables = false;
 	if(settings.exists("useTrackables"))
@@ -331,7 +337,7 @@ bool OpenNIService::getJointPosition(XnUserID player, XnSkeletonJoint joint, Vec
 void XN_CALLBACK_TYPE OpenNIService::User_NewUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie)
 {
 	ofmsg("New User %1%", %(int)nId);
-    if( isCalibrated ) 
+    if( isCalibrated && autocalibrate) 
     {
         omg_UserGenerator.GetSkeletonCap().LoadCalibrationData(nId, 0);
         omg_UserGenerator.GetSkeletonCap().StartTracking(nId);

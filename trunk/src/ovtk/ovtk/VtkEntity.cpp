@@ -45,6 +45,11 @@ VtkEntity::VtkEntity(VtkClient* client)
 	SceneManager* sm = myClient->getEngine()->getSceneManager();
 	mySceneNode = onew(SceneNode)(sm);
 	sm->getRootNode()->addChild(mySceneNode);
+
+	myBSphere = onew(BoundingSphere)();
+	myBSphere->setVisible(false);
+	myBSphere->setDrawOnSelected(true);
+	mySceneNode->addRenderable(myBSphere);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +89,7 @@ void VtkEntity::loadScript(const String& filename)
 		Node* child = it.getNext();
 		child->setPosition(-center);
 	}
+
 	mySceneNode->scale(scale, scale, scale);
 }
 
