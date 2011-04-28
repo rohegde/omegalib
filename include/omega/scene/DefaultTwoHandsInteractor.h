@@ -52,6 +52,16 @@ namespace scene
 	private:
 		ObserverUpdateService* myObserverUpdateService;
 		int myActiveUserId;
+		
+		float myInitialScale;
+		
+		Quaternion myInitialOrientation;
+		Vector3f myInitialHandDirection;
+		Vector3f myInitialPosition;
+
+		Vector3f myLeftHand;
+		Vector3f myRightHand;
+		bool myHandsValid;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

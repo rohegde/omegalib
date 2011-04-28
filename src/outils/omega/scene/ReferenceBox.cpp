@@ -34,12 +34,14 @@ using namespace omega::scene;
 ReferenceBox::ReferenceBox()
 {
 	myPrimaryLineColor = Color(0, 0, 0, 1);
-	myPrimaryLineInterval = 0.2f;
+	myPrimaryLineInterval = 0.5f;
 
-	mySideColor[Back]   =  Color(0.3f, 0.2f, 0.2f, 1.0f);
-	mySideColor[Front]  =  Color(0.3f, 0.2f, 0.2f, 1.0f);
-	mySideColor[Left]   =  Color(0.2f, 0.3f, 0.2f, 1.0f);
-	mySideColor[Right]  =  Color(0.2f, 0.3f, 0.2f, 1.0f);
+	//myPrimaryLineColor = Color(0.8, 0.8, 1, 1);
+
+	mySideColor[Back]   =  Color(0.3f, 0.2f, 0.2f, 0.2f);
+	mySideColor[Front]  =  Color(0.3f, 0.2f, 0.2f, 0.2f);
+	mySideColor[Left]   =  Color(0.2f, 0.3f, 0.2f, 0.2f);
+	mySideColor[Right]  =  Color(0.2f, 0.3f, 0.2f, 0.2f);
 	mySideColor[Bottom] =  Color(0.2f, 0.2f, 0.3f, 1.0f);
 	mySideColor[Top]    =  Color(0.2f, 0.2f, 0.3f, 1.0f);
 
@@ -50,6 +52,7 @@ ReferenceBox::ReferenceBox()
 void ReferenceBox::render(SceneNode* node, RenderState* state)
 {
 	glDisable(GL_LIGHTING);
+	glDisable(GL_BLEND);
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
 		int gridLinesX = (int)(mySize[0] / myPrimaryLineInterval);

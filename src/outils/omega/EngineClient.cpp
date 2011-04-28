@@ -83,9 +83,9 @@ bool EngineClient::handleEvent(const Event& evt, DrawContext& context)
 void EngineClient::draw(const DrawContext& context)
 {
 	// first two bits = scene layer
-	int sceneLayer = context.layer & 0x05;
+	int sceneLayer = context.layer & 0x03;
 	// second two bits = ui layer
-	int uiLayer = (context.layer >> 2) & 0x05;
+	int uiLayer = (context.layer >> 2) & 0x03;
 
 	myGpuManager->beginDraw();
 	if(sceneLayer != 0)
