@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/ui/Button.h"
 #include "omega/ui/DefaultSkin.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -69,7 +70,13 @@ bool Button::processInputEvent(const Event& evt)
 {
 	Vector2f point  = Vector2f(evt.position[0], evt.position[1]);
 	
-	transformPoint(point);
+	point = transformPoint(point);
+
+	//if(evt.type == Event::Down)
+	//{
+	//	ofmsg("Button %1% : %2%", %getName() %point);
+	//}
+
 
 	if(hitTest(point))
 	{

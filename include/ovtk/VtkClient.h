@@ -31,6 +31,7 @@
 #include "omega/EngineClient.h"
 #include "ovtk/ovtkbase.h"
 #include "ovtk/VtkRenderPass.h"
+#include "ovtk/PythonUIEventHandler.h"
 
 class vtkActor;
 namespace ovtk
@@ -63,6 +64,8 @@ namespace ovtk
 		void setActiveEntity(VtkEntity* entity);
 		VtkEntity* getActiveEntity();
 
+		PythonInterpreter* getInterpreter();
+
 	private:
 		static VtkClient* myInstance;
 
@@ -90,5 +93,9 @@ namespace ovtk
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	inline VtkEntity* VtkClient::getActiveEntity()
 	{ return myActiveEntity; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline PythonInterpreter* VtkClient::getInterpreter()
+	{ return myInterpreter; }
 };
 #endif

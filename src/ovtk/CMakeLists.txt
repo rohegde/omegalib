@@ -40,6 +40,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 # Source files
 SET( srcs 
 		ovtk/PythonInterpreter.cpp
+		ovtk/PythonUIEventHandler.cpp
 		ovtk/PyVtk.cpp
 		ovtk/VtkClient.cpp
 		ovtk/VtkEntity.cpp
@@ -55,6 +56,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/ovtk/ovtkbase.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonInterpreterWrapper.h
+		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonUIEventHandler.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PyVtk.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkClient.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkEntity.h
