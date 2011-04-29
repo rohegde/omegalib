@@ -28,6 +28,8 @@
 #include "ovtk/VtkRenderable.h"
 #include "ovtk/VtkClient.h"
 
+#include "omega/ui.h"
+
 #include <vtkActor.h>
 #include <vtkProperty.h>
 #include <vtkMapper.h>
@@ -45,6 +47,12 @@ VtkEntity::VtkEntity(VtkClient* client)
 	SceneManager* sm = myClient->getEngine()->getSceneManager();
 	mySceneNode = onew(SceneNode)(sm);
 	sm->getRootNode()->addChild(mySceneNode);
+
+	UIManager* um = client->getEngine()->getUIManager();
+	myUI = um->getWidgetFactory()->createContainer("vtk", um->getRootContainer(0), Container::LayoutVertical);
+	um->getRootContainer(0)->setDebugColor(Color(0.8f, 0.8f, 1.0f));
+	um->getRootContainer(0)->setDebugModeEnabled(true);
+	myUI->setDebugModeEnabled(true);
 
 	myBSphere = onew(BoundingSphere)();
 	myBSphere->setVisible(false);
@@ -91,18 +99,30 @@ void VtkEntity::loadScript(const String& filename)
 	}
 
 	mySceneNode->scale(scale, scale, scale);
+	//mySceneNode->setBoundingBoxVisible(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkEntity::addActor(vtkActor* actor)
+void VtkEntity::addActor(vtkProp3D* actor)
 {
-	//actor->GetProperty()->SetAmbient(0.1f);
-	//actor->GetProperty()->SetDiffuse(0.2f);
-
 	SceneManager* sm = myClient->getEngine()->getSceneManager();
 	SceneNode* sn = onew(SceneNode)(sm);
 	mySceneNode->addChild(sn);
 	VtkRenderable* vdw = onew(VtkRenderable)();
 	vdw->setActor(actor);
 	sn->addRenderable(vdw);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkEntity::addButton(const String& name, const String& clickCommand)
+{
+	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	Button* btn = wf->createButton(name, myUI);
+	btn->setText(name);
+
+	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
+	myEventHandlers.push_back(puieh);
+	
+	btn->setEventHandler(puieh);
+	puieh->setClickCommand(clickCommand);
 }

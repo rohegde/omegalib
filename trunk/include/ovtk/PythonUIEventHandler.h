@@ -24,40 +24,42 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ui/AbstractButton.h"
-#include "omega/StringUtils.h"
+#ifndef __PYTHON_UI_EVENT_HANDLER_H__
+#define __PYTHON_UI_EVENT_HANDLER_H__
 
-using namespace omega;
-using namespace omega::ui;
+#include "ovtk/ovtkbase.h"
+#include "ovtk/PythonInterpreter.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::AbstractButton(omega::String name):
-	Widget(name),
-	myCheckable(false),
-	myChecked(false),
-	myPressed(false)
+#include "omega/osystem.h"
+#include "omega/ui/UIManager.h"
+
+namespace ovtk
 {
+	using namespace omega;
+	using namespace omega::ui;
 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::~AbstractButton()
-{
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AbstractButton::update(const omega::UpdateContext& context) 
-{
-	if(myPressedStateChanged)
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class PythonUIEventHandler: public IUIEventHandler
 	{
-		if(myPressed)
-		{
-			// Create and dispatch an ui event.
-			//UIEvent evt(this, UIEvent::Click, &myLastEvent);
-			UIEvent evt(this, UIEvent::Click);
-			dispatchUIEvent(evt);
-		}
-		myPressedStateChanged = false;
-	}
+	public:
+		PythonUIEventHandler(PythonInterpreter* interp);
+
+		virtual void handleUIEvent(const UIEvent& evt);
+
+		void setClickCommand(const String& value);
+		const String& getClickCommand();
+
+	private:
+		String myClickCommand;
+		PythonInterpreter* myInterpreter;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void PythonUIEventHandler::setClickCommand(const String& value)
+	{ myClickCommand = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline const String& PythonUIEventHandler::getClickCommand()
+	{ return myClickCommand; }
 };
+#endif

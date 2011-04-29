@@ -57,23 +57,23 @@ namespace ovtk
 		virtual const AlignedBox3* getBoundingBox();
 		virtual bool hasBoundingBox() { return (myActor != NULL); }
 
-		void setActor(vtkActor* value);
-		vtkActor* getActor();
+		void setActor(vtkProp3D* value);
+		vtkProp3D* getActor();
 
 	private:
-		vtkActor* myActor;
+		vtkProp3D* myActor;
 		vtkMatrix4x4* myMatrix;
 		AlignedBox3 myBBox;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void VtkRenderable::setActor(vtkActor* value)
+	inline void VtkRenderable::setActor(vtkProp3D* value)
 	{
 		myActor = value;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline vtkActor* VtkRenderable::getActor()
+	inline vtkProp3D* VtkRenderable::getActor()
 	{
 		return myActor;
 	}

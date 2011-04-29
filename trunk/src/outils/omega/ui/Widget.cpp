@@ -37,6 +37,7 @@ using namespace omega::ui;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(omega::String name):
 	myUIMng(NULL),
+	myEventHandler(NULL),
 	myName(name),
 	myContainer(NULL),
 	myVisible(true),
@@ -128,10 +129,10 @@ void Widget::renderContent()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Widget::hitTest(const Vector2f& point)
 {
-	float x1 = myPosition[0];
-	float y1 = myPosition[1];
-	float x2 = myPosition[0] + mySize[0];
-	float y2 = myPosition[1] + mySize[1];
+	float x1 = 0; //myPosition[0];
+	float y1 = 0; //myPosition[1];
+	float x2 = mySize[0]; // myPosition[0] + mySize[0];
+	float y2 = mySize[1]; //myPosition[1] + mySize[1];
 
 	if(point[0] >= x1 && point[1] >= y1 && point[0] < x2 && point[1] < y2) return true;
 	return false;
@@ -152,12 +153,13 @@ bool Widget::hitTest(const Vector2f& point, const Vector2f& pos, const Vector2f&
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector2f Widget::transformPoint(const Vector2f& point)
 {
-	//if(myParent)
-	//{
-	//	myParent->transformPoint(point);
-	//}
-	Vector2f res;
+	Vector2f res = point;
+	if(myContainer)
+	{
+		res = myContainer->transformPoint(point);
+	}
 	res -= myPosition;
+
 	if(myRotation != 0)
 	{
 		Vector2f center = myPosition + (mySize / 2);
@@ -176,7 +178,8 @@ Vector2f Widget::transformPoint(const Vector2f& point)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::dispatchUIEvent(UIEvent& evt)
 {
-	if(myContainer != NULL) myContainer->dispatchUIEvent(evt);
+	if(myEventHandler != NULL) myEventHandler->handleUIEvent(evt);
+	else if(myContainer != NULL) myContainer->dispatchUIEvent(evt);
 	else myUIMng->dispatchUIEvent(evt);
 }
 

@@ -35,8 +35,10 @@ class vtkProp;
 class vtkRenderer;
 class vtkOpaquePass;
 class vtkDepthPeelingPass;
+class vtkOverlayPass;
 class vtkGenericOpenGLRenderWindow;
 class vtkRenderState;
+class vtkVolumetricPass;
 
 namespace ovtk
 {
@@ -62,13 +64,17 @@ namespace ovtk
 
 	private:
 		vtkRenderer* myRenderer;
-		vtkOpaquePass* myOpaquePass;
-		vtkDepthPeelingPass* myTranslucentPass;
 		vtkRenderState* myRenderState;
 		vtkGenericOpenGLRenderWindow* myRenderWindow;
 
 		vtkProp* myPropQueue[MaxQueuedProps];
 		int myPropQueueSize;
+
+		// Rendering passes
+		vtkOpaquePass* myOpaquePass;
+		vtkDepthPeelingPass* myTranslucentPass;
+		vtkOverlayPass* myOverlayPass;
+		vtkVolumetricPass* myVolumetricPass;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

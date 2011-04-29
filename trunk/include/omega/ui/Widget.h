@@ -46,6 +46,9 @@ namespace ui
 		Widget(omega::String name);
 		virtual ~Widget();
 
+		IUIEventHandler* getEventHandler();
+		void setEventHandler(IUIEventHandler* value);
+
 		//! Gets the color used when widget debug mode is enabled.
 		Color getDebugColor() { return myDebugModeColor; }
 
@@ -150,6 +153,8 @@ namespace ui
 		Container* myContainer;
 		UIManager* myUIMng;
 
+		IUIEventHandler* myEventHandler;
+
 		bool myNeedLayoutRefresh;
 
 		// Debug mode.
@@ -179,6 +184,14 @@ namespace ui
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline UIManager* Widget::getUIManager() 
 	{ oassert(myUIMng != NULL); return myUIMng; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline IUIEventHandler* Widget::getEventHandler() 
+	{ return myEventHandler; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Widget::setEventHandler(IUIEventHandler* value)
+	{ myEventHandler = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Widget::setAutosize(bool value)

@@ -28,18 +28,21 @@
 #define __VTK_ENTITY_H__
 
 #include "ovtk/ovtkbase.h"
+#include "ovtk/VtkRenderPass.h"
+#include "ovtk/PythonUIEventHandler.h"
 
 #include "omega/osystem.h"
 #include "omega/EngineClient.h"
+#include "omega/ui.h"
 #include "omega/scene/BoundingSphere.h"
 
-#include "ovtk/VtkRenderPass.h"
 
-class vtkActor;
+class vtkProp3D;
 namespace ovtk
 {
 	using namespace omega;
 	using namespace omega::scene;
+	using namespace omega::ui;
 
 	class VtkDrawable;
 	class VtkClient;
@@ -58,7 +61,8 @@ namespace ovtk
 		void loadScript(const String& filename);
 
 		//! Internal
-		void addActor(vtkActor* actor);
+		void addActor(vtkProp3D* actor);
+		void addButton(const String& name, const String& clickCommand);
 
 	private:
 		VtkEntity(VtkClient* client);
@@ -67,9 +71,12 @@ namespace ovtk
 	private:
 		BoundingSphere* myBSphere;
 		List<VtkRenderable*> myRenderables;
-		SceneNode* mySceneNode;
 		VtkClient* myClient;
 		float myRepresentationSize;
+
+		SceneNode* mySceneNode;
+		Container* myUI;
+		List<PythonUIEventHandler*> myEventHandlers;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

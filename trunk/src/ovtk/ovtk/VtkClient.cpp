@@ -33,7 +33,7 @@
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
 
-#include <vtkActor.h>
+#include <vtkProp3D.h>
 
 using namespace ovtk;
 
@@ -46,7 +46,7 @@ static PyObject* ovtk_addActor(PyObject* self, PyObject* args)
 	PyArg_ParseTuple(args, "O", &pyactor);
 
 	PyVTKObject* pyvtkactor = (PyVTKObject *)pyactor;
-	vtkActor* vtkactor = (vtkActor*)pyvtkactor->vtk_ptr;
+	vtkProp3D* vtkactor = (vtkActor*)pyvtkactor->vtk_ptr;
 
 	VtkClient::instance()->getActiveEntity()->addActor(vtkactor);
 
@@ -71,10 +71,23 @@ static PyObject* ovtk_findFile(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* ovtk_addButton(PyObject* self, PyObject* args)
+{
+	const char* buttonName;
+	const char* command;
+	if(!PyArg_ParseTuple(args, "s|s", &buttonName, &command)) return NULL;
+
+	VtkClient::instance()->getActiveEntity()->addButton(buttonName, command);
+
+	return Py_BuildValue("s", "ok");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef ovtkMethods[] = 
 {
     {"addActor", ovtk_addActor, METH_VARARGS, "Adds an actor."},
     {"findFile", ovtk_findFile, METH_VARARGS, "Finds a file given a partial path using the omegalib data manager."},
+    {"addButton", ovtk_addButton, METH_VARARGS, "Add button."},
     {NULL, NULL, 0, NULL}
 };
 
@@ -111,11 +124,6 @@ void VtkClient::initialize()
 	SceneManager* sm = myEngine->getSceneManager();
 	myVtkNode = onew(SceneNode)(sm, "vtk");
 	sm->getRootNode()->addChild(myVtkNode);
-
-	BoundingSphere* ss = onew(BoundingSphere)();
-	ss->setVisible(false);
-	ss->setDrawOnSelected(true);
-	myVtkNode->addRenderable(ss);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

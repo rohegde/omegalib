@@ -24,40 +24,22 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ui/AbstractButton.h"
-#include "omega/StringUtils.h"
+#include "ovtk/PythonUIEventHandler.h"
 
-using namespace omega;
-using namespace omega::ui;
+using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::AbstractButton(omega::String name):
-	Widget(name),
-	myCheckable(false),
-	myChecked(false),
-	myPressed(false)
+PythonUIEventHandler::PythonUIEventHandler(PythonInterpreter* interp):
+	myInterpreter(interp)
 {
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::~AbstractButton()
+void PythonUIEventHandler::handleUIEvent(const UIEvent& evt)
 {
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void AbstractButton::update(const omega::UpdateContext& context) 
-{
-	if(myPressedStateChanged)
+	if(evt.type == UIEvent::Click)
 	{
-		if(myPressed)
-		{
-			// Create and dispatch an ui event.
-			//UIEvent evt(this, UIEvent::Click, &myLastEvent);
-			UIEvent evt(this, UIEvent::Click);
-			dispatchUIEvent(evt);
-		}
-		myPressedStateChanged = false;
+		myInterpreter->runSimpleString(myClickCommand);
 	}
-};
+}
+

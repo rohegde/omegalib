@@ -27,12 +27,14 @@
 #include "ovtk/VtkRenderPass.h"
 #include "ovtk/vtkGenericOpenGLRenderWindow.h"
 
+#include <vtkCamera.h>
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkOpaquePass.h>
 #include <vtkDepthPeelingPass.h>
 #include <vtkTranslucentPass.h>
 #include <vtkOverlayPass.h>
+#include <vtkVolumetricPass.h>
 #include <vtkRenderState.h>
 
 using namespace ovtk;
@@ -51,13 +53,15 @@ void VtkRenderPass::initialize()
 
 	myRenderWindow = vtkGenericOpenGLRenderWindow::New();
 	myRenderWindow->AddRenderer(myRenderer);
+	
 	myOpaquePass = vtkOpaquePass::New();
 	myTranslucentPass = vtkDepthPeelingPass::New();
+	myOverlayPass = vtkOverlayPass::New();
+	myVolumetricPass = vtkVolumetricPass::New();
+
 	myRenderState = new vtkRenderState(myRenderer);
 
 	myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
-	//myTranslucentPass->SetOcclusionRatio(0.1f);
-	//myTranslucentPass->SetMaximumNumberOfPeels(0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +92,14 @@ void VtkRenderPass::render(SceneManager* mng)
 	//glDisable(GL_DEPTH_TEST);
 
 	myTranslucentPass->Render(myRenderState);
+	
+	// Volume rendering not supported for now: it requires forwarding to vtk information
+	// about the view through the renderer active camera (vtkCamera) and also information
+	// about the viewport. This is doable but will probably require a custom version of
+	// vtkCamera and vtkRenderer
+	//myVolumetricPass->Render(myRenderState);
+	
+	myOverlayPass->Render(myRenderState);
 
 	glPopAttrib();
 	glPopMatrix();

@@ -84,7 +84,7 @@ void VtkViewerClient::initialize()
 
 	Light* light = getSceneManager()->getLight(0);
 	light->setEnabled(true);
-	light->setPosition(Vector3f(0, -1, 0));
+	light->setPosition(Vector3f(0, 1, 0));
 }
 
 
