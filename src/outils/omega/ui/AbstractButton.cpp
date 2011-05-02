@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ui/AbstractButton.h"
-#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -54,9 +53,16 @@ void AbstractButton::update(const omega::UpdateContext& context)
 		if(myPressed)
 		{
 			// Create and dispatch an ui event.
-			//UIEvent evt(this, UIEvent::Click, &myLastEvent);
 			UIEvent evt(this, UIEvent::Click);
 			dispatchUIEvent(evt);
+
+			// If button is checkable, toggle check state.
+			if(myCheckable)
+			{
+				myChecked = !myChecked;
+				UIEvent evt(this, UIEvent::Toggle);
+				dispatchUIEvent(evt);
+			}
 		}
 		myPressedStateChanged = false;
 	}

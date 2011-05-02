@@ -50,9 +50,6 @@ VtkEntity::VtkEntity(VtkClient* client)
 
 	UIManager* um = client->getEngine()->getUIManager();
 	myUI = um->getWidgetFactory()->createContainer("vtk", um->getRootContainer(0), Container::LayoutVertical);
-	um->getRootContainer(0)->setDebugColor(Color(0.8f, 0.8f, 1.0f));
-	um->getRootContainer(0)->setDebugModeEnabled(true);
-	myUI->setDebugModeEnabled(true);
 
 	myBSphere = onew(BoundingSphere)();
 	myBSphere->setVisible(false);
@@ -117,7 +114,7 @@ void VtkEntity::addActor(vtkProp3D* actor)
 void VtkEntity::addButton(const String& name, const String& clickCommand)
 {
 	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
-	Button* btn = wf->createButton(name, myUI);
+	Button* btn = wf->createCheckButton(name, myUI);
 	btn->setText(name);
 
 	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
@@ -125,4 +122,23 @@ void VtkEntity::addButton(const String& name, const String& clickCommand)
 	
 	btn->setEventHandler(puieh);
 	puieh->setClickCommand(clickCommand);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkEntity::addCheckButton(const String& name, const String& getValueCommand, const String& changeValueCommand)
+{
+	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	Button* btn = wf->createCheckButton(name, myUI);
+	btn->setText(name);
+
+	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
+	myEventHandlers.push_back(puieh);
+	
+	btn->setEventHandler(puieh);
+	puieh->setChangeValueCommand(changeValueCommand);
+
+	int value = 1;
+	myClient->getInterpreter()->eval(getValueCommand.c_str(), "i", &value);
+
+	if(value != 0) btn->setChecked(true);
 }

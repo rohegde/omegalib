@@ -49,8 +49,12 @@ namespace ovtk
 		void setClickCommand(const String& value);
 		const String& getClickCommand();
 
+		void setChangeValueCommand(const String& value);
+		const String& getChangeValueCommand();
+
 	private:
 		String myClickCommand;
+		String myChangeValueCommand;
 		PythonInterpreter* myInterpreter;
 	};
 
@@ -61,5 +65,13 @@ namespace ovtk
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	inline const String& PythonUIEventHandler::getClickCommand()
 	{ return myClickCommand; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void PythonUIEventHandler::setChangeValueCommand(const String& value)
+	{ myChangeValueCommand = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline const String& PythonUIEventHandler::getChangeValueCommand()
+	{ return myChangeValueCommand; }
 };
 #endif

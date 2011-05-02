@@ -28,3 +28,20 @@
 
 using namespace omega;
 
+const Color Color::White = Color(1.0f, 1.0f, 1.0f);
+const Color Color::Black = Color(0.0f, 0.0f, 0.0f);
+const Color Color::Orange = Color(1.0f, 0.65f, 0.0f);
+const Color Color::Silver = Color(0.75f, 0.75f, 0.75f);
+const Color Color::Gray = Color(0.5f, 0.5f, 0.5f);
+const Color Color::Red = Color(1.0f, 0.0f, 0.0f);
+const Color Color::Maroon = Color(0.5f, 0.0f, 0.0f);
+const Color Color::Yellow = Color(1.0f, 1.0f, 0.0f);
+const Color Color::Olive = Color(0.5f, 0.5f, 0.0f);
+const Color Color::Lime = Color(0.0f, 1.0f, 0.0f);
+const Color Color::Green = Color(0.0f, 0.5f, 0.0f);
+const Color Color::Aqua = Color(0.0f, 1.0f, 1.0f);
+const Color Color::Teal = Color(0.0f, 0.5f, 0.5f);
+const Color Color::Blue = Color(0.0f, 0.0f, 1.0f);
+const Color Color::Navy = Color(0.0f, 0.0f, 0.5f);
+const Color Color::Fuchsia = Color(1.0f, 0.0f, 1.0f);
+const Color Color::Purple = Color(0.5f, 0.0f, 0.5f);

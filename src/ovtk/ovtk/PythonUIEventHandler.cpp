@@ -24,6 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omega/StringUtils.h"
+#include "omega/ui/AbstractButton.h"
 #include "ovtk/PythonUIEventHandler.h"
 
 using namespace ovtk;
@@ -39,7 +41,13 @@ void PythonUIEventHandler::handleUIEvent(const UIEvent& evt)
 {
 	if(evt.type == UIEvent::Click)
 	{
-		myInterpreter->runSimpleString(myClickCommand);
+		myInterpreter->eval(myClickCommand);
+	}
+	else if(evt.type == UIEvent::Toggle)
+	{
+		AbstractButton* btn = (AbstractButton*)evt.source;
+		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %btn->isChecked()));
+		myInterpreter->eval(expr);
 	}
 }
 

@@ -32,13 +32,33 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Color
+	class OMEGA_API Color
 	{
 	public:
 		const float& operator[](int i) const { return myData[i]; }
 		float& operator[](int i) { return myData[i]; }
 		float* data() { return (float*)myData; }
 		const float* data() const { return (const float*)myData; }
+
+	public:
+		static const Color White;
+		static const Color Black;
+		static const Color Orange;
+		static const Color Silver;
+		static const Color Gray;
+		static const Color Red;
+		static const Color Maroon;
+		static const Color Yellow;
+		static const Color Olive;
+		static const Color Lime;
+		static const Color Green;
+		static const Color Aqua;
+		static const Color Teal;
+		static const Color Blue;
+		static const Color Navy;
+		static const Color Fuchsia;
+		static const Color Purple;
+
 	public:
 		Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f)
 		{

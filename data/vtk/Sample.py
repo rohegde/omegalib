@@ -19,9 +19,11 @@ normals.SetFeatureAngle(270.0)
 contMapper = vtk.vtkPolyDataMapper()
 contMapper.SetInput(normals.GetOutput())
 contMapper.SetScalarRange(0.0, 1.2)
+contMapper.SetScalarVisibility(0)
 
 actor = vtk.vtkActor()
 actor.SetMapper(contMapper)
 
 ovtk.addActor(actor)
+ovtk.addCheckButton("testButton", 'contMapper.GetScalarVisibility()', 'contMapper.SetScalarVisibility(${value})')
 

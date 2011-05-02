@@ -41,35 +41,42 @@ namespace ui
 	public:
 		virtual Widget* createWidget(String name, Container* container)
 		{
-			Widget* widget = new Widget(name);
+			Widget* widget = onew(Widget)(name);
 			container->addChild(widget);
 			return widget;
 		}
 
 		virtual Button* createButton(String name, Container* container)
 		{
-			Button* button = new Button(name);
+			Button* button = onew(Button)(name);
 			container->addChild(button);
+			return button;
+		}
+
+		virtual Button* createCheckButton(String name, Container* container)
+		{
+			Button* button = createButton(name, container);
+			button->setCheckable(true);
 			return button;
 		}
 
 		virtual Slider* createSlider(String name, Container* container)
 		{
-			Slider* slider = new Slider(name);
+			Slider* slider = onew(Slider)(name);
 			container->addChild(slider);
 			return slider;
 		}
 
 		virtual Image* createImage(String name, Container* container)
 		{
-			Image* image = new Image(name);
+			Image* image = onew(Image)(name);
 			container->addChild(image);
 			return image;
 		}
 
 		virtual Label* createLabel(String name, Container* container, String text = "")
 		{
-			Label* lbl = new Label(name);
+			Label* lbl = onew(Label)(name);
 			if(text.size()  == 0) text = name;
 			lbl->setText(text);
 			container->addChild(lbl);
@@ -79,7 +86,7 @@ namespace ui
 		virtual Container* createContainer(String name, Container* container, 
 			Container::Layout layout = Container::LayoutHorizontal)
 		{
-			Container* c = new Container(name);
+			Container* c = onew(Container)(name);
 			c->setLayout(layout);
 			container->addChild(c);
 			return c;

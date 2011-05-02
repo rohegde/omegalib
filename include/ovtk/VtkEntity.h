@@ -63,6 +63,7 @@ namespace ovtk
 		//! Internal
 		void addActor(vtkProp3D* actor);
 		void addButton(const String& name, const String& clickCommand);
+		void addCheckButton(const String& name, const String& getValueCommand, const String& setValueCommand);
 
 	private:
 		VtkEntity(VtkClient* client);
