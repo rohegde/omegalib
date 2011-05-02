@@ -72,12 +72,6 @@ bool Button::processInputEvent(const Event& evt)
 	
 	point = transformPoint(point);
 
-	//if(evt.type == Event::Down)
-	//{
-	//	ofmsg("Button %1% : %2%", %getName() %point);
-	//}
-
-
 	if(hitTest(point))
 	{
 		if(evt.type == Event::Down)

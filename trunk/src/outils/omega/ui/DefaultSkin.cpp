@@ -39,10 +39,28 @@ void DefaultButton::renderContent()
 	Painter* painter = getPainter();
 
 	painter->drawRect(Vector2f::Zero(), getSize(), myColor);
-	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color(1.0f, 1.0f, 1.0f, 1.0f));
+	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color::White);
+
+	Vector2f size = getSize();
+
+	// If button is checkable, draw check box.
+	if(isCheckable())
+	{
+		size[0] -= 18;
+		Vector2f checkBoxSize = Vector2f(14, 14);
+		Vector2f checkBoxPosition = Vector2f(size[0], 4);
+		painter->drawRectOutline(checkBoxPosition, checkBoxSize, Color::White);
+
+		if(isChecked())
+		{
+			checkBoxSize -= Vector2f(5, 5);
+			checkBoxPosition += Vector2f(2, 2);
+			painter->drawRect(checkBoxPosition, checkBoxSize, Color::Lime);
+		}
+	}
 
 	myLabel.setPosition(Vector2f::Zero());
-	myLabel.setSize(getSize());
+	myLabel.setSize(size);
 	myLabel.draw();
 
 	myAnim *= 0.8f;

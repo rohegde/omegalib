@@ -40,6 +40,10 @@ void BoundingSphere::render(SceneNode* node, RenderState* state)
 	{
 		if(myVisible || (myDrawOnSelected && node->isSelected()))
 		{
+			glPushAttrib(GL_ENABLE_BIT);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_BLEND);
+
 			float radius = node->getBoundingSphere().getRadius();
 			//ofmsg("radius: %1%", %radius);
 
@@ -76,6 +80,7 @@ void BoundingSphere::render(SceneNode* node, RenderState* state)
 				glEnd();
 			}
 
+			glPopAttrib();
 			glPopMatrix();
 		}
 	}

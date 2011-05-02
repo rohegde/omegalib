@@ -154,16 +154,37 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::runSimpleString(const String& script)
+void PythonInterpreter::eval(const String& script, const char* format, ...)
 {
-  //script.erase(vtkstd::remove(script.begin(), script.end(), '\r'), buffer.end());
+	char* str = const_cast<char*>(script.c_str());
+	if(format == NULL)
+	{
+		PyRun_SimpleString(str);
+	}
+	else
+	{
+		PyObject * module = PyImport_AddModule("__main__");
+		PyObject* dict = PyModule_GetDict(module);
+		PyObject* result = PyRun_String(str, Py_eval_input, dict, dict);
+	
+		if(format != NULL && result != NULL)
+		{
+			va_list args;
+			va_start(args, format);
 
-  // The cast is necessary because PyRun_SimpleString() hasn't always been const-correct
-  PyRun_SimpleString(const_cast<char*>(script.c_str()));
+			char* fmt = const_cast<char*>(format);
+			if(!PyArg_Parse(result, "i", va_arg(args, void*)))
+			{
+				ofwarn("PythonInterpreter: result of statement '%1%' cannot be parsed by format string '%2%'", %str %fmt);
+			}
+
+			va_end(args);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::runSimpleFile(const String& filename)
+void PythonInterpreter::runFile(const String& filename)
 {
   //FILE* fp = fopen(filename, "r");
   //if (!fp)

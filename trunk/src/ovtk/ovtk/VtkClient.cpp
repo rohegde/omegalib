@@ -83,11 +83,25 @@ static PyObject* ovtk_addButton(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* ovtk_addCheckButton(PyObject* self, PyObject* args)
+{
+	const char* buttonName;
+	const char* getValueCommand;
+	const char* changeValueCommand;
+	if(!PyArg_ParseTuple(args, "s|s|s", &buttonName, &getValueCommand, &changeValueCommand)) return NULL;
+
+	VtkClient::instance()->getActiveEntity()->addCheckButton(buttonName, getValueCommand, changeValueCommand);
+
+	return Py_BuildValue("s", "ok");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef ovtkMethods[] = 
 {
     {"addActor", ovtk_addActor, METH_VARARGS, "Adds an actor."},
     {"findFile", ovtk_findFile, METH_VARARGS, "Finds a file given a partial path using the omegalib data manager."},
     {"addButton", ovtk_addButton, METH_VARARGS, "Add button."},
+    {"addCheckButton", ovtk_addCheckButton, METH_VARARGS, "Add check button."},
     {NULL, NULL, 0, NULL}
 };
 
@@ -145,7 +159,7 @@ void VtkClient::destroyEntity(VtkEntity* entity)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkClient::runScript(const String& name)
 {
-	myInterpreter->runSimpleFile(name.c_str());
+	myInterpreter->runFile(name.c_str());
 	myVtkNode->update(true, false);
 	const Sphere& bs = myVtkNode->getBoundingSphere();
 

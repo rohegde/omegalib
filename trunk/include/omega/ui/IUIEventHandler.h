@@ -40,12 +40,11 @@ class Widget;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct UIEvent
 {
-	enum Type { Click };
+	enum Type { Click, Toggle };
 
 	UIEvent(Widget* _source, Type _type):
 	type(_type), source(_source) {}
 		
-
 	Widget* source;
 	Type type;
 	//omega::InputEvent* inputEvent;
