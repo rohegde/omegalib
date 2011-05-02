@@ -73,37 +73,17 @@ void DefaultButton::renderContent()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultSlider::draw()
+void DefaultSlider::renderContent()
 {
-	////float d = 0.5f;
-	////if(myPressed) d = 1.0f;
+	Widget::renderContent();
 
-	//Vector2f sliderPos, sliderSize;
-	//getSliderCoords(&sliderPos, &sliderSize);
+	Painter* painter = getPainter();
 
-	//Label* lbl = getLabel();
-	//if(!getProgressBarMode())
-	//{
-	//	lbl->setPosition(sliderPos);
-	//	lbl->setSize(sliderSize);
-	//	lbl->setColor(Color(0, 0, 0,  255));
-	//}
-	//else
-	//{
-	//	lbl->setPosition(myPosition + Vector2f(mySize[0], 0));
-	//	lbl->setSize(mySize);
-	//	lbl->setHorizontalAlign(Label::AlignLeft);
-	//	lbl->setColor(Color(255, 255, 255,  255));
-	//}
+	Vector2f sliderPos = getSliderPosition();
+	Vector2f sliderSize = getSliderSize();
 
-	//myAnim *= 0.8f;
-	//if(myPressed) myAnim = 1.0f;
-
-	////GfxUtils::drawVGradient(sliderPos, sliderSize, Color(200, 200, 250, 200 + myAnim * 50 ), Color(200, 200, 250, 200 + myAnim * 50), 0);
-
-	//glColor4ub(255, 255, 255, 255);
-	////GfxUtils::drawDRect(myPosition, mySize, 0);
-
-	//Slider::draw();
+	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color::White);
+	painter->drawRect(sliderPos, sliderSize, Color::Gray);
+	painter->drawRectOutline(sliderPos, sliderSize, Color::White);
 }
 

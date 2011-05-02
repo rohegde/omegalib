@@ -173,7 +173,7 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			va_start(args, format);
 
 			char* fmt = const_cast<char*>(format);
-			if(!PyArg_Parse(result, "i", va_arg(args, void*)))
+			if(!PyArg_Parse(result, format, va_arg(args, void*)))
 			{
 				ofwarn("PythonInterpreter: result of statement '%1%' cannot be parsed by format string '%2%'", %str %fmt);
 			}
@@ -186,13 +186,6 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::runFile(const String& filename)
 {
-  //FILE* fp = fopen(filename, "r");
-  //if (!fp)
-  //  {
-    //vtkErrorMacro("Failed to open file " << filename);
- //   return;
-  //  }
-
 	DataManager* dm = SystemManager::instance()->getDataManager();
 	DataInfo cfgInfo = dm->getInfo(filename);
 
@@ -205,9 +198,4 @@ void PythonInterpreter::runFile(const String& filename)
 	{
 		ofwarn("PythonInterpreter: script not found: %1%", %filename);
 	}
-
-  // The cast is necessary because PyRun_SimpleFile() hasn't always been const-correct
-  //PyRun_SimpleFile(fp, const_cast<char*>(filename));
-
-  //fclose(fp);
 }

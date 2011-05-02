@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/StringUtils.h"
 #include "omega/ui/AbstractButton.h"
+#include "omega/ui/Slider.h"
 #include "ovtk/PythonUIEventHandler.h"
 
 using namespace ovtk;
@@ -47,6 +48,14 @@ void PythonUIEventHandler::handleUIEvent(const UIEvent& evt)
 	{
 		AbstractButton* btn = (AbstractButton*)evt.source;
 		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %btn->isChecked()));
+		myInterpreter->eval(expr);
+	}
+	else if(evt.type == UIEvent::ValueChange)
+	{
+		Slider* sld = (Slider*)evt.source;
+		float interval = mySliderMaxValue - mySliderMinValue;
+		float value = ((float)sld->getValue() / sld->getTicks() * interval) + mySliderMinValue;
+		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %value));
 		myInterpreter->eval(expr);
 	}
 }

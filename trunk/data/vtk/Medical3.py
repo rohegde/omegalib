@@ -147,6 +147,6 @@ ovtk.addActor(skin)
 #bone.VisibilityOff()
 
 # Set skin to semi-transparent.
-#skin.GetProperty().SetOpacity(0.5)
+skin.GetProperty().SetOpacity(0.8)
 #bone.GetProperty().SetOpacity(0.9)
 

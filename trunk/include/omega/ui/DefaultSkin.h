@@ -53,7 +53,7 @@ class OUTILS_API DefaultSlider: public Slider
 public:
 	DefaultSlider(String name): Slider(name) {}
 protected:
-	void draw();
+	void renderContent();
 private:
 	float myAnim;
 };

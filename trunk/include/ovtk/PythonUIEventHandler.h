@@ -52,10 +52,22 @@ namespace ovtk
 		void setChangeValueCommand(const String& value);
 		const String& getChangeValueCommand();
 
+		void setSliderMaxValue(float value);
+		float getSliderMaxValue();
+
+		void setSliderMinValue(float value);
+		float getSliderMinValue();
+
+		void setSliderStep(float value);
+		float getSliderStep();
+
 	private:
 		String myClickCommand;
 		String myChangeValueCommand;
 		PythonInterpreter* myInterpreter;
+		float mySliderMaxValue;
+		float mySliderMinValue;
+		float mySliderStep;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,5 +85,29 @@ namespace ovtk
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	inline const String& PythonUIEventHandler::getChangeValueCommand()
 	{ return myChangeValueCommand; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void PythonUIEventHandler::setSliderMaxValue(float value)
+	{ mySliderMaxValue = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float PythonUIEventHandler::getSliderMaxValue()
+	{ return mySliderMaxValue; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void PythonUIEventHandler::setSliderMinValue(float value)
+	{ mySliderMinValue = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float PythonUIEventHandler::getSliderMinValue()
+	{ return mySliderMinValue; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void PythonUIEventHandler::setSliderStep(float value)
+	{ mySliderStep = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float PythonUIEventHandler::getSliderStep()
+	{ return mySliderStep; }
 };
 #endif
