@@ -148,6 +148,12 @@ namespace ui
 		virtual bool processInputEvent(const Event& evt);
 		void dispatchUIEvent(UIEvent& evt);
 
+	protected:
+		omega::Vector2f myPosition;
+		omega::Vector2f mySize;
+		float myRotation;
+		//float myScale;
+
 	private:
 		omega::String myName;
 		Container* myContainer;
@@ -166,11 +172,6 @@ namespace ui
 		omega::Vector2f myUserMovePosition;
 
 		bool myVisible;
-
-		omega::Vector2f myPosition;
-		omega::Vector2f mySize;
-		float myRotation;
-		//float myScale;
 
 		// Size constraints.
 		omega::Vector2f myMinimumSize;

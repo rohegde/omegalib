@@ -137,8 +137,33 @@ void VtkEntity::addCheckButton(const String& name, const String& getValueCommand
 	btn->setEventHandler(puieh);
 	puieh->setChangeValueCommand(changeValueCommand);
 
-	int value = 1;
+	int value = 0;
 	myClient->getInterpreter()->eval(getValueCommand.c_str(), "i", &value);
 
 	if(value != 0) btn->setChecked(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkEntity::addSlider(const String& name, float minValue, float maxValue, float step, const String& getValueCommand, const String& changeValueCommand)
+{
+	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	Slider* sld = wf->createSlider(name, myUI);
+	sld->setDeferUpdate(true);
+
+	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
+	myEventHandlers.push_back(puieh);
+	
+	sld->setEventHandler(puieh);
+	puieh->setChangeValueCommand(changeValueCommand);
+	puieh->setSliderMaxValue(maxValue);
+	puieh->setSliderMinValue(minValue);
+	puieh->setSliderStep(step);
+
+	sld->setTicks((int)((maxValue - minValue) / step));
+
+	float value = 0;
+	myClient->getInterpreter()->eval(getValueCommand.c_str(), "f", &value);
+
+	int tickValue = (int)((value - minValue) / step);
+	sld->setValue(tickValue);
 }

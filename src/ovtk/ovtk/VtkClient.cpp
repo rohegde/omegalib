@@ -96,12 +96,29 @@ static PyObject* ovtk_addCheckButton(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* ovtk_addSlider(PyObject* self, PyObject* args)
+{
+	const char* sliderName;
+	const char* getValueCommand;
+	const char* changeValueCommand;
+	float minValue;
+	float maxValue;
+	float step;
+	if(!PyArg_ParseTuple(args, "s|f|f|f|s|s", &sliderName, &minValue, &maxValue, &step, &getValueCommand, &changeValueCommand)) return NULL;
+
+	VtkClient::instance()->getActiveEntity()->addSlider(sliderName, minValue, maxValue, step, getValueCommand, changeValueCommand);
+
+	return Py_BuildValue("s", "ok");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef ovtkMethods[] = 
 {
     {"addActor", ovtk_addActor, METH_VARARGS, "Adds an actor."},
     {"findFile", ovtk_findFile, METH_VARARGS, "Finds a file given a partial path using the omegalib data manager."},
     {"addButton", ovtk_addButton, METH_VARARGS, "Add button."},
     {"addCheckButton", ovtk_addCheckButton, METH_VARARGS, "Add check button."},
+    {"addSlider", ovtk_addSlider, METH_VARARGS, "Add slider."},
     {NULL, NULL, 0, NULL}
 };
 

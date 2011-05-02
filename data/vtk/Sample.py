@@ -26,4 +26,5 @@ actor.SetMapper(contMapper)
 
 ovtk.addActor(actor)
 ovtk.addCheckButton("testButton", 'contMapper.GetScalarVisibility()', 'contMapper.SetScalarVisibility(${value})')
+ovtk.addSlider("slider", 1, 10, 1, '6', 'contours.GenerateValues(${value}, 0, 2)')
 
