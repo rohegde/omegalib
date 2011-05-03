@@ -35,10 +35,10 @@ using namespace omega::scene;
 Effect::Effect(EffectManager* mng): 
 	myMng(mng), 
 	myEmissiveColor(0, 0, 0, 1), 
-	mySpecularColor(0, 0, 0, 1), 
+	mySpecularColor(1, 1, 1, 1), 
 	myAmbientColor(1, 1, 1, 1),
 	myDiffuseColor(1, 1, 1, 1),
-	myShininess(100) 
+	myShininess(32) 
 {
 	myProgram = myMng->getGpuManager()->getDefaultProgram();
 }
@@ -48,6 +48,7 @@ void Effect::activate()
 {
 	myParams.bind(myProgram, GpuProgram::RenderStage);
 	//glDisable(GL_COLOR_MATERIAL);
+	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.data());
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.data());
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.data());

@@ -224,6 +224,8 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
         free( elemNames[i] );
     free( elemNames );
 
+	calculateNormals(true);
+
 	if(this->normals.size() != 0) myHasNormals = true;
 	else myHasNormals = false;
 

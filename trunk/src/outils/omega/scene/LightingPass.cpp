@@ -38,6 +38,7 @@ void LightingPass::render(SceneManager* mng)
 	glPushMatrix();
 	//glLoadMatrixf(mng->getViewTransform().data());
 	glLoadIdentity();
+    glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mng->getAmbientLightColor().data());
@@ -51,6 +52,7 @@ void LightingPass::render(SceneManager* mng)
 			glEnable(lightId);
 
 			glLightfv(lightId, GL_DIFFUSE, light->getColor().data());
+			glLightfv(lightId, GL_SPECULAR, light->getColor().data());
 
 			// Set position
 			const Vector3f& pos = light->getPosition();

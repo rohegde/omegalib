@@ -155,11 +155,38 @@ void MeshViewerClient::initUI()
 	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
 	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
 	{
-		root = ui->getRootContainer(2);
+		root = ui->getRootContainer(1);
 		root->setLayout(Container::LayoutVertical);
 		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
+
+	getSceneManager()->setAmbientLightColor(Color::Black);
+
+	Light* light = getSceneManager()->getLight(0);
+	light->setEnabled(true);
+	light->setColor(Color(0.5f, 0.5f, 0.5f));
+	light->setPosition(Vector3f(0, 3, 3));
+
+	light = getSceneManager()->getLight(1);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(-3, 0, 0));
+
+	light = getSceneManager()->getLight(2);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(3, 0, 0));
+
+	light = getSceneManager()->getLight(3);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.3f, 0.35f));
+	light->setPosition(Vector3f(0, -3, 0));
+
+	light = getSceneManager()->getLight(4);
+	light->setEnabled(true);
+	light->setColor(Color(0.35f, 0.3f, 0.3f));
+	light->setPosition(Vector3f(0, 0, -3));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
