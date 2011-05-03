@@ -25,6 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/scene/DefaultTwoHandsInteractor.h"
+#include "omega/scene/Light.h"
+#include "omega/scene/SceneManager.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -107,11 +109,19 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 				Vector3f handCenter = ((myLeftHand + myRightHand) / 2);
 				myInitialPosition = handCenter - myNode->getPosition();
 
-				if(evt.isFlagSet(Event::Right))
+				if(evt.isFlagSet(Event::Left))
 				{
 					myNode->setPosition(handCenter);
 				}
+				myInitialPosition = handCenter - myNode->getPosition();
 			}
+			//else if(evt.isFlagSet(Event::Right))
+			//{
+			//	SceneManager* sm = myNode->getScene();
+			//	Light* light = sm->getLight(0);
+			//	light->setEnabled(true);
+			//	light->setPosition(myRightHand);
+			//}
 		}
 		else if(evt.type == Event::Up)
 		{

@@ -51,7 +51,7 @@ namespace scene
 		void setPosition(const Vector3f& value) { myPosition = value; }
 
 		const Color& getColor() { return myColor; }
-		void setCOlor(const Color& value) { myColor = value; }
+		void setColor(const Color& value) { myColor = value; }
 
 		Type getType() { return myType; }
 		void setType(Type value) { myType = value; }
