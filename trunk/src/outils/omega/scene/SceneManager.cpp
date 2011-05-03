@@ -64,7 +64,7 @@ void SceneManager::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::draw(const DrawContext& context)
 {
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 
 	// Setup view matrix (read back from gl)
 	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.data() );

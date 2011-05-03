@@ -27,6 +27,8 @@
 #include "omega/scene/MeshManager.h"
 #include "omega/scene/DefaultRenderPass.h"
 
+#include "omega/glheaders.h"
+
 using namespace omega;
 using namespace omega::scene;
 

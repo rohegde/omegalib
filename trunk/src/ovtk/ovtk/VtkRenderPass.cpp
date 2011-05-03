@@ -40,8 +40,7 @@
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass():
-	myPropQueueSize(0)
+VtkRenderPass::VtkRenderPass()
 {
 }
 
@@ -55,13 +54,24 @@ void VtkRenderPass::initialize()
 	myRenderWindow->AddRenderer(myRenderer);
 	
 	myOpaquePass = vtkOpaquePass::New();
-	myTranslucentPass = vtkDepthPeelingPass::New();
+	myTranslucentPass = vtkTranslucentPass::New();
 	myOverlayPass = vtkOverlayPass::New();
 	myVolumetricPass = vtkVolumetricPass::New();
 
 	myRenderState = new vtkRenderState(myRenderer);
 
-	myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
+	//myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void VtkRenderPass::queueProp(vtkProp* actor, QueueType queue)
+{
+	oassert(queue < NumQueues);
+
+	if(myPropQueueSize[queue] < MaxQueuedProps)
+	{
+		myPropQueue[queue][myPropQueueSize[queue]++] = actor;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +81,7 @@ void VtkRenderPass::render(SceneManager* mng)
 	state.pass = this;
 	state.flags = VtkRenderPass::RenderVtk;
 
-	myPropQueueSize = 0;
+	for(int i = 0; i < NumQueues; i++) myPropQueueSize[i] = 0;
 
 	mng->getRootNode()->draw(&state);
 
@@ -85,12 +95,15 @@ void VtkRenderPass::render(SceneManager* mng)
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
-	myRenderState->SetPropArrayAndCount(myPropQueue, myPropQueueSize);
+	myRenderState->SetPropArrayAndCount(myPropQueue[QueueOpaque], myPropQueueSize[QueueOpaque]);
 	myOpaquePass->Render(myRenderState);
 
 	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	//glBlendFunc(GL_ONE, GL_ONE);
 	//glDisable(GL_DEPTH_TEST);
 
+	myRenderState->SetPropArrayAndCount(myPropQueue[QueueTransparent], myPropQueueSize[QueueTransparent]);
 	myTranslucentPass->Render(myRenderState);
 	
 	// Volume rendering not supported for now: it requires forwarding to vtk information
@@ -99,6 +112,7 @@ void VtkRenderPass::render(SceneManager* mng)
 	// vtkCamera and vtkRenderer
 	//myVolumetricPass->Render(myRenderState);
 	
+	myRenderState->SetPropArrayAndCount(myPropQueue[QueueOverlay], myPropQueueSize[QueueOverlay]);
 	myOverlayPass->Render(myRenderState);
 
 	glPopAttrib();

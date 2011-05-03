@@ -159,7 +159,7 @@ void VtkEntity::addSlider(const String& name, float minValue, float maxValue, fl
 	puieh->setSliderMinValue(minValue);
 	puieh->setSliderStep(step);
 
-	sld->setTicks((int)((maxValue - minValue) / step));
+	sld->setTicks((int)Math::ceil(((maxValue - minValue) / step)) + 1);
 
 	float value = 0;
 	myClient->getInterpreter()->eval(getValueCommand.c_str(), "f", &value);
