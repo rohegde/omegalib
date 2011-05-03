@@ -35,6 +35,7 @@ class vtkProp;
 class vtkRenderer;
 class vtkOpaquePass;
 class vtkDepthPeelingPass;
+class vtkTranslucentPass;
 class vtkOverlayPass;
 class vtkGenericOpenGLRenderWindow;
 class vtkRenderState;
@@ -50,8 +51,9 @@ namespace ovtk
 	{
 	friend class VtkRenderable;
 	public:
+		enum QueueType { QueueOpaque, QueueTransparent, QueueVolume, QueueOverlay, NumQueues };
 		enum RenderFlags { RenderVtk = RenderPass::RenderCustom << 1 };
-		static const int MaxQueuedProps = 1024;
+		static const int MaxQueuedProps = 128;
 
 	public:
 		VtkRenderPass();
@@ -60,30 +62,21 @@ namespace ovtk
 		virtual void render(SceneManager* mng);
 
 	private:
-		void queueProp(vtkProp* actor);
+		void queueProp(vtkProp* actor, QueueType queue);
 
 	private:
 		vtkRenderer* myRenderer;
 		vtkRenderState* myRenderState;
 		vtkGenericOpenGLRenderWindow* myRenderWindow;
 
-		vtkProp* myPropQueue[MaxQueuedProps];
-		int myPropQueueSize;
+		vtkProp* myPropQueue[NumQueues][MaxQueuedProps];
+		int myPropQueueSize[NumQueues];
 
 		// Rendering passes
 		vtkOpaquePass* myOpaquePass;
-		vtkDepthPeelingPass* myTranslucentPass;
+		vtkTranslucentPass* myTranslucentPass;
 		vtkOverlayPass* myOverlayPass;
 		vtkVolumetricPass* myVolumetricPass;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void VtkRenderPass::queueProp(vtkProp* actor)
-	{
-		if(myPropQueueSize < MaxQueuedProps)
-		{
-			myPropQueue[myPropQueueSize++] = actor;
-		}
-	}
 };
 #endif

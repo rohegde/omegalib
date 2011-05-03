@@ -42,7 +42,7 @@ void VtkRenderable::render(SceneNode* node, RenderState* state)
 	// Do stuff only if render pass is a Vtk render pass
 	if(state->isFlagSet(VtkRenderPass::RenderVtk))
 	{
-		if(myActor != NULL)
+		if(myActor != NULL && myActor->GetVisibility() != 0)
 		{
 			const AffineTransform3& xform =  node->getFullTransform();
 			const omega::math::matrix<4, 4>& m = xform.matrix();
@@ -60,7 +60,15 @@ void VtkRenderable::render(SceneNode* node, RenderState* state)
 			// NOTE: we assume this cast works since only VtkRenderPass should set the 
 			// RenderVtk flag on a render state.
 			VtkRenderPass* vtkrp = (VtkRenderPass*)state->pass;
-			vtkrp->queueProp(myActor);
+
+			if(myActor->HasTranslucentPolygonalGeometry())
+			{
+				vtkrp->queueProp(myActor, VtkRenderPass::QueueTransparent);
+			}
+			else
+			{
+				vtkrp->queueProp(myActor, VtkRenderPass::QueueOpaque);
+			}
 		}
 	}
 }

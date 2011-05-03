@@ -104,7 +104,13 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 				myInitialHandDirection = myLeftHand - myRightHand;
 				myInitialHandDirection.normalize();
 
-				myInitialPosition = ((myLeftHand + myRightHand) / 2) - myNode->getPosition();
+				Vector3f handCenter = ((myLeftHand + myRightHand) / 2);
+				myInitialPosition = handCenter - myNode->getPosition();
+
+				if(evt.isFlagSet(Event::Right))
+				{
+					myNode->setPosition(handCenter);
+				}
 			}
 		}
 		else if(evt.type == Event::Up)

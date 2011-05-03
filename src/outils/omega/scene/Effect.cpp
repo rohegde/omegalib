@@ -47,7 +47,7 @@ Effect::Effect(EffectManager* mng):
 void Effect::activate()
 {
 	myParams.bind(myProgram, GpuProgram::RenderStage);
-	glDisable(GL_COLOR_MATERIAL);
+	//glDisable(GL_COLOR_MATERIAL);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.data());
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.data());
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.data());
