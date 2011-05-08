@@ -50,6 +50,10 @@ if(OMEGA_BUILD_VTK_LIB)
 	set(APPS_BUILD_VTK_VIEWER false CACHE BOOL "Enable build of vtk viewer application ")
 endif(OMEGA_BUILD_VTK_LIB)
 
+if(OMEGA_USE_OPENCL)
+	set(APPS_BUILD_NIGHTFIELD false CACHE BOOL "Enable build of nightfield application ")
+endif(OMEGA_USE_OPENCL)
+
 ###################################################################################################
 # Add subdirectiories
 include_directories(
@@ -120,3 +124,7 @@ ENDIF(APPS_BUILD_KINECT)
 IF(APPS_BUILD_VTK_VIEWER)
 	ADD_SUBDIRECTORY(apps/vtkviewer)
 ENDIF(APPS_BUILD_VTK_VIEWER)
+
+IF(APPS_BUILD_NIGHTFIELD)
+	ADD_SUBDIRECTORY(apps/nightfield)
+ENDIF(APPS_BUILD_NIGHTFIELD)

@@ -44,6 +44,8 @@
 
 namespace omega
 {
+	class CLManager;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, VertexShader*> pairs.
 	typedef Dictionary<String, VertexShader*> VertexShaderDictionary;
@@ -101,16 +103,9 @@ namespace omega
 		void setFrameBuffer(RenderTarget* fb);
 		//@}
 
-#ifdef OMEGA_USE_OPENCL
-		//! OpenCL support
-		//@{
-		cl_context getCLContext() { return myCLContext; }
-		cl_command_queue getCLCommandQueue() { return myCLCommandQueue; }
-		//@}
-#endif
-	private:
-		void  initCL();
+		CLManager* getCLManager() { return myCLManager; }
 
+	private:
 		GLuint loadGlShader(const String& filename, GLenum type);
 		void printShaderLog(GLuint shader);
 
@@ -129,12 +124,7 @@ namespace omega
 		// Default gpu program
 		GpuProgram* myDefaultProgram;
 
-#ifdef OMEGA_USE_OPENCL
-		// OpenCL stuff.
-		cl_context myCLContext;
-		cl_device_id* myCLDevices;
-		cl_command_queue myCLCommandQueue;
-#endif
+		CLManager* myCLManager;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,7 @@
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
 #include "omega/StringUtils.h"
+#include "omega/DataManager.h"
 
 #include "omega/glheaders.h"
 
@@ -35,8 +36,14 @@ using namespace omega;
 
 #define HANDLE_STATUS(id) case id: { oerror(#id); break; }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef OMEGA_USE_OPENCL
+#include "omega/CLManager.h"
+#else
+class CLManager {};
+#endif
+
+#ifdef OMEGA_USE_OPENCL
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool omega::__clSuccessOrDie(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return true;
@@ -97,6 +104,7 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 	SystemManager::instance()->postExitRequest("Fatal OpenCL failure");
 	return false;
 }
+
 #endif
 #undef HANDLE_STATUS
 
@@ -109,7 +117,16 @@ String readTextFile(const String& filename)
 
 	int count=0;
 
-	fp = fopen(filename.c_str(), "rt");
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo info = dm->getInfo(filename);
+
+	if(info.isNull())
+	{
+		ofwarn("GpuManager: Could not open text file %1%", %filename);
+		return "";
+	}
+
+	fp = fopen(info.path.c_str(), "rt");
 
 	if (fp != NULL) 
 	{
@@ -138,7 +155,8 @@ String readTextFile(const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager():
 	myInitialized(false),
-	myFrameBuffer(NULL)
+	myFrameBuffer(NULL),
+	myCLManager(NULL)
 {
 	myDefaultProgram = new GpuProgram(this);
 }
@@ -153,110 +171,14 @@ void GpuManager::initialize(unsigned int initFlags)
 {
 	myInitFlags = initFlags;
 
+#ifdef OMEGA_USE_OPENCL
 	if(isCLEnabled())
 	{
-		initCL();
+		myCLManager = onew(CLManager)(this);
+		myCLManager->initialize();
 	}
-	myInitialized = true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::initCL()
-{
-#ifdef OMEGA_USE_OPENCL
-	cl_int status = 0;
-    size_t deviceListSize;
-
-	// Have a look at the available platforms and pick either
-	// the AMD one if available or a reasonable default.
-    cl_uint numPlatforms;
-    cl_platform_id platform = NULL;
-    
-    status = clGetPlatformIDs(0, NULL, &numPlatforms);
-    if(!clSuccessOrDie(status)) return;
-    
-    if(numPlatforms > 0)
-    {
-        cl_platform_id* platforms = (cl_platform_id *)malloc(numPlatforms*sizeof(cl_platform_id));
-        status = clGetPlatformIDs(numPlatforms, platforms, NULL);
-        if(!clSuccessOrDie(status)) return;
-        for(unsigned int i=0; i < numPlatforms; ++i)
-        {
-            char pbuff[100];
-            status = clGetPlatformInfo(
-                        platforms[i],
-                        CL_PLATFORM_VENDOR,
-                        sizeof(pbuff),
-                        pbuff,
-                        NULL);
-			if(!clSuccessOrDie(status)) return;
-            platform = platforms[i];
-            if(!strcmp(pbuff, "Advanced Micro Devices, Inc."))
-            {
-                break;
-            }
-        }
-        delete platforms;
-    }
-
-	// If we could find our platform, use it. Otherwise pass a NULL and get whatever the
-	// implementation thinks we should be using.
-	cl_context_properties* cps;
-
-	if(isGLEnabled())
-	{
-		// The properties specify an OpenGL / OpenCL shared context
-		cl_context_properties glcps[] = 
-		{ 
-			CL_CONTEXT_PLATFORM, (cl_context_properties)platform, 
-			CL_GL_CONTEXT_KHR,
-			(cl_context_properties)wglGetCurrentContext(),
-			CL_WGL_HDC_KHR,
-			(cl_context_properties)wglGetCurrentDC(),
-			0
-		};
-		cps = glcps;
-	}
-	else
-	{
-		// The properties specify an OpenGL / OpenCL shared context
-		cl_context_properties noglcps[] = 
-		{ 
-			CL_CONTEXT_PLATFORM, (cl_context_properties)platform, 
-			0
-		};
-		cps = noglcps;
-	}
-
-    cl_context_properties* cprops = (NULL == platform) ? NULL : cps;
-
-
-	// Create an OpenCL context
-    myCLContext = clCreateContextFromType(cprops, CL_DEVICE_TYPE_GPU, NULL, NULL, &status);
-    if(!clSuccessOrDie(status)) return;
-
-    // First, get the size of device list data
-    status = clGetContextInfo(myCLContext, CL_CONTEXT_DEVICES, 0, NULL, &deviceListSize);
-    if(!clSuccessOrDie(status)) return;
-
-	// Detect OpenCL devices
-    myCLDevices = (cl_device_id *)malloc(deviceListSize);
-	if(myCLDevices == 0)
-	{
-		oerror("Error: No devices found.\n");
-		return;
-	}
-
-    /* Now, get the device list data */
-    status = clGetContextInfo(myCLContext, CL_CONTEXT_DEVICES, deviceListSize, myCLDevices, NULL);
-    if(!clSuccessOrDie(status)) return;
-
-	// Create an OpenCL command queue
-    myCLCommandQueue = clCreateCommandQueue(myCLContext, myCLDevices[0], 0, &status);
-    if(!clSuccessOrDie(status)) return;
-
-	omsg("OpenCL: initialization successful!");
 #endif
+	myInitialized = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -290,23 +212,25 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
 	cl_int status = 0;
     
 	String ss = readTextFile(filename);
+	if(ss == "") return;
+
     const char * source    = ss.c_str();
     size_t sourceSize[]    = { strlen(source) };
 
 	ofmsg("Loading OpenCL program: %1%", %filename);
 
-	cl_program program = clCreateProgramWithSource(myCLContext, 1, &source, sourceSize, &status);
+	cl_program program = clCreateProgramWithSource(myCLManager->getContext(), 1, &source, sourceSize, &status);
     if(!clSuccessOrDie(status)) return;
 
     // create a cl program executable for all the devices specified 
-    status = clBuildProgram(program, 1, myCLDevices, NULL, NULL, NULL);
+    status = clBuildProgram(program, 1, myCLManager->getDevices(), NULL, NULL, NULL);
 
 	// Get build log
-	char *build_log;
+	char* build_log;
 	size_t ret_val_size;
-	clGetProgramBuildInfo(program, myCLDevices[0], CL_PROGRAM_BUILD_LOG, 0, NULL, &ret_val_size);
+	clGetProgramBuildInfo(program, myCLManager->getDevices()[0], CL_PROGRAM_BUILD_LOG, 0, NULL, &ret_val_size);
 	build_log = (char*)malloc(ret_val_size+1);
-	clGetProgramBuildInfo(program, myCLDevices[0], CL_PROGRAM_BUILD_LOG, ret_val_size, build_log, NULL);
+	clGetProgramBuildInfo(program, myCLManager->getDevices()[0], CL_PROGRAM_BUILD_LOG, ret_val_size, build_log, NULL);
 
 	// to be carefully, terminate with \0
 	// there's no information in the reference whether the string is 0 terminated or not
@@ -358,12 +282,16 @@ GLuint GpuManager::loadGlShader(const String& filename, GLenum type)
 {
 	GLuint s = glCreateShader(type);
 	String ss = readTextFile(filename);
-	const char* cstr = ss.c_str();
-	glShaderSource(s, 1, &cstr, NULL);
-	glCompileShader(s);
-	printShaderLog(s);
+	if(ss != "")
+	{
+		const char* cstr = ss.c_str();
+		glShaderSource(s, 1, &cstr, NULL);
+		glCompileShader(s);
+		printShaderLog(s);
 
-	return s;
+		return s;
+	}
+	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -395,3 +323,102 @@ void GpuManager::endDraw()
 {
 	myFrameBuffer->endDraw();
 }
+
+#ifdef OMEGA_USE_OPENCL
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CLManager::initialize()
+{
+	cl_int status = 0;
+    size_t deviceListSize;
+
+	// Have a look at the available platforms and pick either
+	// the AMD one if available or a reasonable default.
+    cl_uint numPlatforms;
+    cl_platform_id platform = NULL;
+    
+    status = clGetPlatformIDs(0, NULL, &numPlatforms);
+    if(!clSuccessOrDie(status)) return;
+    
+    if(numPlatforms > 0)
+    {
+        cl_platform_id* platforms = (cl_platform_id *)malloc(numPlatforms*sizeof(cl_platform_id));
+        status = clGetPlatformIDs(numPlatforms, platforms, NULL);
+        if(!clSuccessOrDie(status)) return;
+        for(unsigned int i=0; i < numPlatforms; ++i)
+        {
+            char pbuff[100];
+            status = clGetPlatformInfo(
+                        platforms[i],
+                        CL_PLATFORM_VENDOR,
+                        sizeof(pbuff),
+                        pbuff,
+                        NULL);
+			if(!clSuccessOrDie(status)) return;
+            platform = platforms[i];
+            if(!strcmp(pbuff, "Advanced Micro Devices, Inc."))
+            {
+                break;
+            }
+        }
+        free(platforms);
+    }
+
+	// If we could find our platform, use it. Otherwise pass a NULL and get whatever the
+	// implementation thinks we should be using.
+	cl_context_properties* cps;
+
+	if(myGpu->isGLEnabled())
+	{
+		// The properties specify an OpenGL / OpenCL shared context
+		cl_context_properties glcps[] = 
+		{ 
+			CL_CONTEXT_PLATFORM, (cl_context_properties)platform, 
+			CL_GL_CONTEXT_KHR,
+			(cl_context_properties)wglGetCurrentContext(),
+			CL_WGL_HDC_KHR,
+			(cl_context_properties)wglGetCurrentDC(),
+			0
+		};
+		cps = glcps;
+	}
+	else
+	{
+		// The properties specify an OpenGL / OpenCL shared context
+		cl_context_properties noglcps[] = 
+		{ 
+			CL_CONTEXT_PLATFORM, (cl_context_properties)platform, 
+			0
+		};
+		cps = noglcps;
+	}
+
+    cl_context_properties* cprops = (NULL == platform) ? NULL : cps;
+
+
+	// Create an OpenCL context
+    myCLContext = clCreateContextFromType(cprops, CL_DEVICE_TYPE_GPU, NULL, NULL, &status);
+    if(!clSuccessOrDie(status)) return;
+
+    // First, get the size of device list data
+    status = clGetContextInfo(myCLContext, CL_CONTEXT_DEVICES, 0, NULL, &deviceListSize);
+    if(!clSuccessOrDie(status)) return;
+
+	//// Detect OpenCL devices
+    myCLDevices = (cl_device_id *)malloc(deviceListSize);
+	if(myCLDevices == 0)
+	{
+		oerror("Error: No devices found.\n");
+		return;
+	}
+
+    /* Now, get the device list data */
+    status = clGetContextInfo(myCLContext, CL_CONTEXT_DEVICES, deviceListSize, myCLDevices, NULL);
+    if(!clSuccessOrDie(status)) return;
+
+	// Create an OpenCL command queue
+    myCLCommandQueue = clCreateCommandQueue(myCLContext, myCLDevices[0], 0, &status);
+    if(!clSuccessOrDie(status)) return;
+
+	omsg("OpenCL: initialization successful!");
+}
+#endif

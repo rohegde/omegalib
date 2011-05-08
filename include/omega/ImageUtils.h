@@ -27,16 +27,31 @@
 #ifndef __IMAGE_UTILS_H__
 #define __IMAGE_UTILS_H__
 
-#include "osystem.h"
+#include "omega/osystem.h"
+#include "omega/TextureManager.h"
 
 namespace omega
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct ImageData
+	{
+		bool monochrome;
+		bool alpha;
+		byte* data;
+		int width;
+		int height;
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads images and manages OpenGL textures.
 	class OUTILS_API ImageUtils
 	{
 	public:
-		static byte* loadImage(const String& filename);
+		//! Load an image from a file.
+		static bool loadImage(const String& filename, ImageData* data);
+
+		//! Utility method to load an image from a file and use it to create a texture.
+		static Texture* createTexture(TextureManager* mng, const String& name, const String& filename);
 
 	private:
 		ImageUtils() {}

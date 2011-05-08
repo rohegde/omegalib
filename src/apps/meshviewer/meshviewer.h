@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef MESHVIEWER_H
-#define MESHVIEWER_H
+#ifndef __MESHVIEWER_H__
+#define __MESHVIEWER_H__
 
 #include "omega.h"
 #include "omega/scene.h"

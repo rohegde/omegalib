@@ -39,6 +39,7 @@
 #include "omega/Observer.h"
 #include "omega/RenderTarget.h"
 #include "omega/SystemManager.h"
+#include "omega/Texture.h"
 #include "omega/TextureManager.h"
 #include "omega/StringUtils.h"
 
