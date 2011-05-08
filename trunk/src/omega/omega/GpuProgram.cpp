@@ -27,6 +27,10 @@
 #include "omega/GpuBuffer.h"
 #include "omega/glheaders.h"
 
+#ifdef OMEGA_USE_OPENCL
+#include "omega/CLManager.h"
+#endif
+
 using namespace omega;
 
 
@@ -168,22 +172,24 @@ void GpuProgram::printProgramLog(GLuint program)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#ifdef OMEGA_USE_OPENCL
-void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads)
+void GpuProgram::runComputeStage(const ComputeStageOptions& options, GpuProgramParams* params)
 {
+#ifdef OMEGA_USE_OPENCL
+	if(params != NULL) params->bind(this, GpuProgram::ComputeStage);
+
 	cl_event events;
 	cl_int status;
 
 	cl_kernel kern = myComputeShader->getCLKernel();
-	cl_command_queue clqueue = myGpuMng->getCLCommandQueue();
+	cl_command_queue clqueue = myGpuMng->getCLManager()->getCommandQueue();
 
 	status = clEnqueueNDRangeKernel(
 					clqueue,
 					kern,
-					myComputeDimensions,
+					options.dimensions,
 					NULL,
-					myGlobalComputeThreads,
-					myLocalComputeThreads,
+					(size_t*)options.globalThreads.data(),
+					(size_t*)options.localThreads.data(),
 					0,
 					NULL,
 					&events);
@@ -191,33 +197,39 @@ void GpuProgram::runComputeStage(int dimensions, const Vector3i& localThreads, c
 	status = clWaitForEvents(1, &events);
 	if(!clSuccessOrDie(status)) return;
 	clReleaseEvent(events);
-}
+
+	if(params != NULL) params->unbind(this, GpuProgram::ComputeStage);
 #endif
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuProgram::runRenderStage(int items, PrimType primType, unsigned int* indices)
+void GpuProgram::runRenderStage(const RenderStageOptions& options, GpuProgramParams* params)
 {
-	if(primType != PrimNone)
+	if(params != NULL) params->bind(this, GpuProgram::RenderStage);
+
+	if(options.primType != RenderStageOptions::PrimNone)
 	{
 		GLenum mode = GL_POINTS;
-		switch(primType)
+		switch(options.primType)
 		{
-		case PrimPoints: mode = GL_POINTS;
-		case PrimTriangles: mode = GL_TRIANGLES;
+		case RenderStageOptions::PrimPoints: mode = GL_POINTS; break;
+		case RenderStageOptions::PrimTriangles: mode = GL_TRIANGLES; break;
 		}
 
 		glUseProgram(myGLProgram);
 
-		if(indices == NULL)
+		if(options.indices == NULL)
 		{
-			glDrawArrays(mode, 0, items);
+			glDrawArrays(mode, 0, options.items);
 		}
 		else
 		{
-			glDrawElements(mode, items, GL_UNSIGNED_INT, indices);
+			glDrawElements(mode, options.items, GL_UNSIGNED_INT, options.indices);
 		}
 
 		glUseProgram(0);
 	}
+
+	if(params != NULL) params->unbind(this, GpuProgram::RenderStage);
 }
 

@@ -72,7 +72,7 @@ __kernel void behavior(
 		float t0 = t0num / t0den;
 		float4 ptol = pos - (iorig + t0 * idir);
 		float idist = length(ptol);
-		if(idist < 0.2)
+		if(idist < 0.2f)
 		{
 			vel += (ptol / idist) * interactor[j].s1;
 		}

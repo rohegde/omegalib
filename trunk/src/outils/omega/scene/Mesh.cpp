@@ -47,7 +47,11 @@ void Mesh::render(SceneNode* node, RenderState* state)
 		{
 			myEffect->activate();
 			myVertexBuffer->bind();
-			myEffect->getProgram()->runRenderStage(myData->getNumTriangles() * 3, GpuProgram::PrimTriangles, myIndexData);
+			RenderStageOptions options;
+			options.items = myData->getNumTriangles() * 3;
+			options.primType = RenderStageOptions::PrimTriangles;
+			options.indices = myIndexData;
+			myEffect->getProgram()->runRenderStage(options);
 			myEffect->deactivate();
 		}
 	}

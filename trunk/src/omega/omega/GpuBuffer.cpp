@@ -26,6 +26,10 @@
 #include "omega/GpuManager.h"
 #include "omega/glheaders.h"
 
+#ifdef OMEGA_USE_OPENCL
+#include "omega/CLManager.h"
+#endif
+
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +107,7 @@ void GpuBuffer::initialize(int size, int elementSize, void* data, unsigned int f
 #ifdef OMEGA_USE_OPENCL
 		// This buffer is an OpenCL native buffer, create it through the OpenCL API
 		cl_int status;
-		myCLBuffer = clCreateBuffer(myGpu->getCLContext(), CL_MEM_READ_WRITE, mySize, data, &status);
+		myCLBuffer = clCreateBuffer(myGpu->getCLManager()->getContext(), CL_MEM_READ_WRITE, mySize, data, &status);
 		if(!clSuccessOrDie(status)) return;
 #endif
 	}
@@ -120,7 +124,7 @@ void GpuBuffer::acquireGLBuffer()
 #ifdef OMEGA_USE_OPENCL
 	cl_int status;
 	cl_event events;
-	cl_command_queue clqueue = myGpu->getCLCommandQueue();
+	cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
 
 	status = clEnqueueAcquireGLObjects(clqueue, 1, &myCLBuffer, 0, NULL, &events);
 	if(!clSuccessOrDie(status)) return;
@@ -136,7 +140,7 @@ void GpuBuffer::unacquireGLBuffer()
 #ifdef OMEGA_USE_OPENCL
 	cl_int status;
 	cl_event events;
-	cl_command_queue clqueue = myGpu->getCLCommandQueue();
+	cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
 
 	status = clEnqueueReleaseGLObjects(clqueue, 1, &myCLBuffer, 0, NULL, &events);
 	if(!clSuccessOrDie(status)) return;
@@ -154,7 +158,7 @@ void GpuBuffer::setData(void* data)
 #ifdef OMEGA_USE_OPENCL
 		// Write to the GPU buffer through the OpenCL API
 		cl_int status;
-		cl_command_queue clqueue = myGpu->getCLCommandQueue();
+		cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
 		cl_mem clbuf = getCLBuffer();
 
 		status = clEnqueueWriteBuffer(clqueue, myCLBuffer, true, 0, mySize, data, 0, NULL, NULL);
@@ -176,7 +180,7 @@ void GpuBuffer::setData(void* data)
 		{
 #ifdef OMEGA_USE_OPENCL
 			cl_int status;
-			cl_command_queue clqueue = myGpu->getCLCommandQueue();
+			cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
 
 			acquireGLBuffer();
 
@@ -198,7 +202,7 @@ void GpuBuffer::copyTo(GpuBuffer* dest, int srcOffset, int dstOffset, int length
 	if(!dest->isCLNative()) dest->acquireGLBuffer();
 
 	cl_int status;
-	cl_command_queue clqueue = myGpu->getCLCommandQueue();
+	cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
 
 	status = clEnqueueCopyBuffer(clqueue, myCLBuffer, dest->getCLBuffer(), srcOffset, dstOffset, length, 0, NULL, NULL);
 	if(!clSuccessOrDie(status)) return;
@@ -215,19 +219,18 @@ void GpuBuffer::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 	if(stage == GpuProgram::ComputeStage)
 	{
 #ifdef OMEGA_USE_OPENCL
-		// Check to see if this buffer is a native OpenCL buffer. In that case, nothing
-		// needs to be done here.
+		cl_int status;
+		cl_event events;
+		cl_kernel kernel = prog->getComputeShader()->getCLKernel();
+		cl_command_queue clqueue = prog->getManager()->getCLManager()->getCommandQueue();
+		cl_mem clbuf = getCLBuffer();
+
+		status = clSetKernelArg(kernel, index, sizeof(cl_mem), (const void*)&clbuf);
+		if(!clSuccessOrDie(status)) return;
+
+		// If buffer is not CL native, acquire it.
 		if(!(myBufferFlags & BufferFlagsCLNative))
 		{
-			cl_int status;
-			cl_event events;
-			cl_kernel kernel = prog->getComputeShader()->getCLKernel();
-			cl_command_queue clqueue = prog->getManager()->getCLCommandQueue();
-			cl_mem clbuf = getCLBuffer();
-
-			status = clSetKernelArg(kernel, index, sizeof(cl_mem), (const void*)&clbuf);
-			if(!clSuccessOrDie(status)) return;
-
 			status = clEnqueueAcquireGLObjects(clqueue, 1, &clbuf, 0, NULL, &events);
 			if(!clSuccessOrDie(status)) return;
 			status = clWaitForEvents(1, &events);
@@ -256,7 +259,7 @@ void GpuBuffer::unbind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 			cl_int status;
 			cl_event events;
 			cl_kernel kernel = prog->getComputeShader()->getCLKernel();
-			cl_command_queue clqueue = prog->getManager()->getCLCommandQueue();
+			cl_command_queue clqueue = prog->getManager()->getCLManager()->getCommandQueue();
 			cl_mem clbuf = getCLBuffer();
 
 			status = clEnqueueReleaseGLObjects(clqueue, 1, &clbuf, 0, NULL, &events);
@@ -355,7 +358,7 @@ cl_mem GpuBuffer::getCLBuffer()
 	if(myCLBuffer == NULL)
 	{
 		cl_int status;
-		myCLBuffer = clCreateFromGLBuffer(myGpu->getCLContext(), CL_MEM_READ_WRITE, myGLBuffer, &status);
+		myCLBuffer = clCreateFromGLBuffer(myGpu->getCLManager()->getContext(), CL_MEM_READ_WRITE, myGLBuffer, &status);
 		if(!clSuccessOrDie(status)) return NULL;
 	}
 	return myCLBuffer; 

@@ -24,17 +24,37 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OUTILS_H__
-#define __OUTILS_H__
+#ifndef __CL_MANAGER_H__
+#define __CL_MANAGER_H__
 
-#include "omega/FontManager.h"
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Container.h"
-#include "omega/ui/Button.h"
-#include "omega/ui/Label.h"
-#include "omega/ui/UIManager.h"
-#include "omega/ui/Widget.h"
-#include "omega/ui/WidgetFactory.h"
-#include "omega/ImageUtils.h"
+#include "osystem.h"
+
+namespace omega
+{
+	class GpuManager;
+
+	class CLManager
+	{
+	public:
+		CLManager(GpuManager* mng): myGpu(mng) {}
+
+		//! OpenCL support
+		//@{
+		cl_context getContext() { return myCLContext; }
+		cl_command_queue getCommandQueue() { return myCLCommandQueue; }
+		cl_device_id* getDevices() { return myCLDevices; }
+		//@}
+
+		void initialize();
+
+	private:
+		GpuManager* myGpu;
+
+		// OpenCL stuff.
+		cl_context myCLContext;
+		cl_device_id* myCLDevices;
+		cl_command_queue myCLCommandQueue;
+	};
+}; // namespace omega
 
 #endif

@@ -122,13 +122,35 @@ namespace omega
 		omega::String myName;
 	};
 
+	class GpuProgramParams;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct ComputeStageOptions
+	{
+		int dimensions;
+		Vector3i localThreads;
+		Vector3i globalThreads;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct RenderStageOptions
+	{
+		enum PrimType { PrimNone, PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
+
+		RenderStageOptions():
+		items(0), primType(PrimNone), indices(NULL) {}
+
+		int items;
+		PrimType primType;
+		unsigned int* indices;
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Represents a program runnable on a Gpu unit.
 	//! A program is composed by a geometry, vertex and fragment shader. Not all programs need to be present.
 	class OMEGA_API GpuProgram
 	{
 	public:
-		enum PrimType { PrimNone, PrimPoints, PrimLines, PrimTriangles, PrimTriangleStrip };
 		enum Stage { ComputeStage, RenderStage };
 
 	public:
@@ -162,10 +184,8 @@ namespace omega
 
 		void initialize();
 
-		int getComputeDimensions() { return myComputeDimensions; }
-		void setComputeDimensions(int value) { myComputeDimensions = value; }
-		void runComputeStage(int dimensions, const Vector3i& localThreads, const Vector3i globalThreads);
-		void runRenderStage(int items, PrimType primType = PrimNone, unsigned int* indices = NULL);
+		void runComputeStage(const ComputeStageOptions& options, GpuProgramParams* params = NULL);
+		void runRenderStage(const RenderStageOptions& options, GpuProgramParams* params = NULL);
 
 	private:
 		void printProgramLog(GLuint program);
@@ -181,11 +201,6 @@ namespace omega
 		VertexShader* myVertexShader;
 		FragmentShader* myFragmentShader;
 		ComputeShader* myComputeShader;
-
-		// OpenCL program stuff.
-		int myComputeDimensions;
-	    size_t myGlobalComputeThreads[3];
-	    size_t myLocalComputeThreads[3];
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

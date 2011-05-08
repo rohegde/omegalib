@@ -25,37 +25,61 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ImageUtils.h"
-#include "FreeImage.h"
 #include "omega/StringUtils.h"
+#include "omega/DataManager.h"
+#include "omega/SystemManager.h"
+#include "FreeImage.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-byte* ImageUtils::loadImage(const String& filename)
+bool ImageUtils::loadImage(const String& filename, ImageData* data)
 {
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filename.c_str(), 0);
-	FIBITMAP* image = FreeImage_Load(format, filename.c_str());
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo info = dm->getInfo(filename);
+
+	if(info.isNull())
+	{
+		return false;
+	}
+
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(info.path.c_str(), 0);
+	FIBITMAP* image = FreeImage_Load(format, info.path.c_str());
 	
 	FIBITMAP* temp = image;
 	image = FreeImage_ConvertTo32Bits(image);
 	FreeImage_Unload(temp);
 	
-	int w = FreeImage_GetWidth(image);
-	int h = FreeImage_GetHeight(image);
+	data->width = FreeImage_GetWidth(image);
+	data->height = FreeImage_GetHeight(image);
 
-	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %w %h);
+	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %data->width %data->height);
 	
-	GLubyte* data = new GLubyte[4*w*h];
+	data->data = onew(GLubyte[4 * data->width * data->height]);
 	char* pixels = (char*)FreeImage_GetBits(image);
 	
-	for(int j= 0; j<w*h; j++){
-		data[j*4+0]= pixels[j*4+2];
-		data[j*4+1]= pixels[j*4+1];
-		data[j*4+2]= pixels[j*4+0];
-		data[j*4+3]= pixels[j*4+3];
+	for(int j= 0; j < data->width * data->height ; j++)
+	{
+		data->data[j*4+0]= pixels[j*4+2];
+		data->data[j*4+1]= pixels[j*4+1];
+		data->data[j*4+2]= pixels[j*4+0];
+		data->data[j*4+3]= pixels[j*4+3];
 	}
 	
 	FreeImage_Unload(image);
 
-	return data;
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* ImageUtils::createTexture(TextureManager* mng, const String& name, const String& filename)
+{
+	ImageData id;
+	if(loadImage(filename, &id))
+	{
+		Texture* tex = mng->createTexture(name, id.width, id.height, id.data);
+		odelete(id.data);
+		return tex;
+	}
+	return NULL;
 }

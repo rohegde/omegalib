@@ -488,7 +488,7 @@ protected:
 			myClient->initialize();
 			myInitialized = true;
 		}
-		else
+		//else
 		{
 			// Syncronize frame data (containing input events and possibly other stuff)
 			myFrameData.sync(frameID);
