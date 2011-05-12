@@ -62,7 +62,8 @@ bool Slider::processInputEvent(const Event& evt)
 		myPressed = false;
 		if(myValueChanged)
 		{
-			dispatchUIEvent(UIEvent(this, UIEvent::ValueChange));
+			UIEvent evt = UIEvent(this, UIEvent::ValueChange);
+			dispatchUIEvent(evt);
 		}
 	}
 
