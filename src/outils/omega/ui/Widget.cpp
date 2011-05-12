@@ -31,7 +31,7 @@
 
 #include "omega/glheaders.h"
 
-#include <math.h>
+#include <float.h>
 
 using namespace omega;
 using namespace omega::ui;
