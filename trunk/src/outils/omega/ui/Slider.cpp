@@ -89,7 +89,8 @@ bool Slider::processInputEvent(const Event& evt)
 				myValue = newValue;
 				if(!myDeferUpdate)
 				{
-					dispatchUIEvent(UIEvent(this, UIEvent::ValueChange));
+					UIEvent evt = UIEvent(this, UIEvent::ValueChange);
+					dispatchUIEvent(evt);
 				}
 				else
 				{
