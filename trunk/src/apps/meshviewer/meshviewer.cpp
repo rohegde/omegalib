@@ -97,7 +97,7 @@ void MeshViewerClient::initialize()
 
 	// Create a reference box around the scene.
 	myReferenceBox = new ReferenceBox();
-	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
+	//getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
 	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
 	// Set the interactor style used to manipulate meshes.
