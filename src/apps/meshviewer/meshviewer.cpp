@@ -136,6 +136,12 @@ void MeshViewerClient::initialize()
 		myCurrentInteractor = interactor;
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
+	
+	Texture* leftImage = ImageUtils::createTexture(getTextureManager(), "leftNut", "data/images/SET_Chart_LEFT_1280X1024_Dispersion.jpg");
+	Texture* rightImage = ImageUtils::createTexture(getTextureManager(), "rightNut", "data/images/SET_Chart_RIGHT_1280X1024_Dispersion.jpg");
+	setTextureBackgroundEnabled( true );
+	setTextureBackground( DrawContext::EyeLeft , leftImage );
+	setTextureBackground( DrawContext::EyeRight , rightImage );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

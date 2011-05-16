@@ -28,10 +28,14 @@
 #include "omega/GpuManager.h"
 #include "omega/FontManager.h"
 #include "omega/TextureManager.h"
+#include "omega/Texture.h"
 #include "omega/ui/UIManager.h"
 #include "omega/scene/SceneManager.h"
 #include "omega/scene/EffectManager.h"
 #include "omega/scene/MeshManager.h"
+#include "omega/glheaders.h"
+#include "omega/ui/Painter.h"
+
 
 using namespace omega;
 using namespace omega::ui;
@@ -56,6 +60,34 @@ void EngineClient::initialize()
 	//myUIManager->initialize(myClient);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::setTextureBackground(DrawContext::Eye eye, Texture* value)
+{
+	switch(eye)
+	{
+	case DrawContext::EyeLeft:
+	case DrawContext::EyeCyclop:
+		myLeftBackgroundTexture = value;
+		break;
+	case DrawContext::EyeRight:
+		myRightBackgroundTexture = value;
+		break;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+Texture* EngineClient::getTextureBackground(DrawContext::Eye eye)
+{
+	switch(eye)
+	{
+	case DrawContext::EyeLeft:
+	case DrawContext::EyeCyclop:
+		return myLeftBackgroundTexture;
+	case DrawContext::EyeRight:
+		return myRightBackgroundTexture;
+	}
+	return NULL;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::update(const UpdateContext& context)
 {
@@ -88,6 +120,11 @@ void EngineClient::draw(const DrawContext& context)
 	int uiLayer = (context.layer >> 2) & 0x03;
 
 	myGpuManager->beginDraw();
+	if(myTextureBackgroundEnabled)
+	{
+		drawBackGrd( context );
+	}
+	
 	if(sceneLayer != 0)
 	{
 		mySceneManager->draw(context);
@@ -98,3 +135,53 @@ void EngineClient::draw(const DrawContext& context)
 	}
 	myGpuManager->endDraw();
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::drawBackGrd( const DrawContext& theContext )
+{
+	glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef(0.0, theContext.viewport.height() - 1, 0.0);
+    glScalef(1.0, -1.0, 1.0);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, theContext.viewport.width(), 0, theContext.viewport.height(), -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	Vector2f position(0, 0);
+	Vector2f size(theContext.viewport.width(), theContext.viewport.height());
+
+	Painter backGrdPainter;
+	switch( theContext.eye )
+	{
+		case DrawContext::EyeLeft:
+		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
+		break;
+		case DrawContext::EyeRight:
+		backGrdPainter.drawRectTexture( myRightBackgroundTexture , position, size );
+		break;
+		case DrawContext::EyeCyclop:
+		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
+		break;
+	}
+	//draw here
+	
+	glDisable (GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+	
+}
+
