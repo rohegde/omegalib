@@ -52,6 +52,10 @@ public:
 
 	SceneNode* getSceneNode() { return mySceneNode; }
 
+	Mesh* getMesh() { return myMesh; }
+	Texture* getRightImage() { return myRightImage; }
+	Texture* getLeftImage() { return myLeftImage; }
+
 private:
 	String myName;
 	SceneNode* mySceneNode;

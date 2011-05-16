@@ -35,24 +35,30 @@ Entity::Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage
 	myRightImage(rightImage),
 	myVisible(false)
 {
-	mySelectionSphere = onew(BoundingSphere)();
-	mySelectionSphere->setVisible(false);
-	mySelectionSphere->setDrawOnSelected(true);
+	if(myMesh != NULL)
+	{
+		mySelectionSphere = onew(BoundingSphere)();
+		mySelectionSphere->setVisible(false);
+		mySelectionSphere->setDrawOnSelected(true);
 
-	mySceneNode = onew(SceneNode)(sm);
-	mySceneNode->addRenderable(myMesh);
-	mySceneNode->addRenderable(mySelectionSphere);
-	mySceneNode->setPosition(Vector3f::Zero());
-	mySceneNode->setSelectable(true);
-	mySceneNode->setVisible(false);
-	sm->getRootNode()->addChild(mySceneNode);
+		mySceneNode = onew(SceneNode)(sm);
+		mySceneNode->addRenderable(myMesh);
+		mySceneNode->addRenderable(mySelectionSphere);
+		mySceneNode->setPosition(Vector3f::Zero());
+		mySceneNode->setSelectable(true);
+		mySceneNode->setVisible(false);
+		sm->getRootNode()->addChild(mySceneNode);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::setVisible(bool value)
 {
 	myVisible = value;
-	mySceneNode->setVisible(value);
+	if(myMesh != NULL)
+	{
+		mySceneNode->setVisible(value);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,12 +142,6 @@ void MeshViewerClient::initialize()
 		myCurrentInteractor = interactor;
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
-	
-	Texture* leftImage = ImageUtils::createTexture(getTextureManager(), "leftNut", "images/SET_Chart_LEFT_1280X1024_Dispersion.jpg");
-	Texture* rightImage = ImageUtils::createTexture(getTextureManager(), "rightNut", "images/SET_Chart_RIGHT_1280X1024_Dispersion.jpg");
-	setTextureBackgroundEnabled( true );
-	setTextureBackground( DrawContext::EyeLeft , leftImage );
-	setTextureBackground( DrawContext::EyeRight , rightImage );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,11 +241,26 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 
 	Entity* e = myEntities[entityId];
 	myVisibleEntity = e;
-	myVisibleEntity->resetTransform();
-	myVisibleEntity->setVisible(true);
 
-	// Tell the interactor what is the currently active scene node
-	myCurrentInteractor->setSceneNode(e->getSceneNode());
+	if(e->getMesh() != NULL)
+	{
+		myVisibleEntity->resetTransform();
+		myVisibleEntity->setVisible(true);
+
+		// Tell the interactor what is the currently active scene node
+		myCurrentInteractor->setSceneNode(e->getSceneNode());
+	}
+
+	if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
+	{
+		setTextureBackgroundEnabled( true );
+		setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
+		setTextureBackground( DrawContext::EyeRight , e->getRightImage());
+	}
+	else
+	{
+		setTextureBackgroundEnabled( false );
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
