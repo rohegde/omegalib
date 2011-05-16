@@ -164,12 +164,15 @@ void EngineClient::drawBackGrd( const DrawContext& theContext )
 	switch( theContext.eye )
 	{
 		case DrawContext::EyeLeft:
+		oassert(myLeftBackgroundTexture);
 		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
 		break;
 		case DrawContext::EyeRight:
+		oassert(myRightBackgroundTexture);
 		backGrdPainter.drawRectTexture( myRightBackgroundTexture , position, size );
 		break;
 		case DrawContext::EyeCyclop:
+		oassert(myLeftBackgroundTexture);
 		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
 		break;
 	}

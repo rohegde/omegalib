@@ -62,7 +62,9 @@ namespace omega
 		  myMeshManager(NULL),
 		  myEffectManager(NULL),
 		  myUIManager(NULL),
-		  myTextureBackgroundEnabled(false) {}
+		  myTextureBackgroundEnabled(false),
+		  myLeftBackgroundTexture(NULL),
+		  myRightBackgroundTexture(NULL) {}
 
 		virtual void initialize();
 		virtual bool handleEvent(const Event& evt, UpdateContext& context);
