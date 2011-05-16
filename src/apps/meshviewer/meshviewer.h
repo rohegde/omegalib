@@ -42,7 +42,7 @@ using namespace omega::ui;
 class Entity: public DynamicObject
 {
 public:
-	Entity(const String& name, SceneManager* sm, Mesh* m);
+	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
 
 	const String& getName() { return myName; }
 
@@ -57,6 +57,8 @@ private:
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
 	BoundingSphere* mySelectionSphere;
+	Texture* myLeftImage;
+	Texture* myRightImage;
 	bool myVisible;
 };
 

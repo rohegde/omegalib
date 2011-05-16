@@ -49,15 +49,21 @@ void DefaultTwoHandsInteractor::initialize(const String& observerUpdateServiceNa
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
 {
-	if(evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand))
+	if(evt.sourceId == myActiveUserId)
 	{
-		myHandsValid = true;
-		myLeftHand = evt.pointSet[LeftHand];
-		myRightHand = evt.pointSet[RightHand];
-	}
-	else
-	{
-		myHandsValid = false;
+		if(evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand))
+		{
+			if(!myHandsValid) omsg("HANDS OK");
+
+			myHandsValid = true;
+			myLeftHand = evt.pointSet[LeftHand];
+			myRightHand = evt.pointSet[RightHand];
+		}
+		else
+		{
+			if(myHandsValid) omsg("NO HANDS");
+			myHandsValid = false;
+		}
 	}
 
 	if(myObserverUpdateService != NULL) 

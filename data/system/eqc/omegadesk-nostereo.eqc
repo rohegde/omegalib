@@ -1,0 +1,126 @@
+#Equalizer 1.0 ascii
+
+global
+{
+    EQ_CONFIG_FATTR_EYE_BASE        0.06
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+
+server
+{
+    config
+    {
+        appNode											
+        {
+            
+            pipe									#Bottom Window
+            {
+                name "GPU 1"
+                window
+                {
+                    name     "bottom"
+                    viewport [ -1920 1080 1920 1080 ]
+                    channel 
+					{ 
+						viewport [0 0 1 1]
+						name "bottom"  
+					}
+                }
+                window
+                {
+                    name     "top"
+                    viewport [ -1920 0 1920 1080 ]
+                    channel 
+                    { 
+						viewport [0 0 1 1]
+						name "top"  
+					}
+                }
+                window
+                {
+                    name     "control"
+                    viewport [ 100 100 800 600 ]
+                    channel 
+                    { 
+						viewport [0 0 1 1]
+						name "control"  
+					}
+                }
+            }
+        }
+
+		observer 
+		{ 
+			name "observer0" 
+		}
+
+        # Layouts - one for each demo mode
+        layout
+        {
+            name "MultiView"
+            view
+            {
+                name "bottom"
+				observer "observer0"                
+                viewport [ 0 0 1 .5 ]
+            }
+            view
+            {
+                name "top"
+                observer "observer0"
+                viewport [ 0 .5 1 .5 ]
+            }
+            view
+            {
+                name "control"
+                observer "observer0"
+                viewport [ 1 0 1 1 ]
+            }
+        }
+
+        # Canvas using all layouts
+        canvas
+        {
+            layout "MultiView"
+
+            segment
+            {
+                viewport [ 0 0 1 .5 ]
+                channel "bottom"
+				wall
+				{
+						bottom_left  [ -.7 -0.85 .76 ]
+						bottom_right [  .7 -0.85 .76 ]
+						top_left     [ -.7 -0.56 0 ]
+				}
+            }
+            segment
+            {
+                viewport [ 0 .5 1 .5 ]
+                channel "top"
+				wall
+				{
+						bottom_left  [ -.7 -.4 0 ]
+						bottom_right [  .7 -.4 0 ]
+						top_left     [ -.7 .4 0 ]
+				}
+            }
+            segment
+            {
+                viewport [ 1 0 1 1 ]
+                channel "control"
+				wall
+				{
+						bottom_left  [ -.7 -.4 0 ]
+						bottom_right [  .7 -.4 0 ]
+						top_left     [ -.7 .4 0 ]
+				}
+            }
+        }
+
+        # wall compound - need swap barrier
+        compound
+        {
+        }
+    }
+}

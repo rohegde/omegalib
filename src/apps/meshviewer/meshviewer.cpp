@@ -25,11 +25,14 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "meshviewer.h"
+#include "omega/ImageUtils.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(const String& name, SceneManager* sm, Mesh* m):
+Entity::Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage):
 	myName(name),
 	myMesh(m),
+	myLeftImage(leftImage),
+	myRightImage(rightImage),
 	myVisible(false)
 {
 	mySelectionSphere = onew(BoundingSphere)();
@@ -75,19 +78,35 @@ void MeshViewerClient::initialize()
 
 	// Load meshes specified in config file.
 	MeshManager* mm = getMeshManager();
-	if(cfg->exists("config/meshes"))
+	if(cfg->exists("config/entities"))
 	{
-		Setting& meshes = cfg->lookup("config/meshes");
+		Setting& meshes = cfg->lookup("config/entities");
 		for(int i = 0; i < meshes.getLength(); i++)
 		{
-			Setting& meshSetting = meshes[i];
-			String meshName = meshSetting.getName();
-			String meshFilename = meshSetting["filename"];
-			String meshLabel = meshSetting["label"];
+			Setting& entitySetting = meshes[i];
+			String name = entitySetting.getName();
+			String label = entitySetting["label"];
 
-			mm->loadMesh(meshName, meshFilename, MeshManager::MeshFormatPly, 0.8f);
-			Mesh* mesh = mm->getMesh(meshName);
-			Entity* e = new Entity(meshLabel, getSceneManager(), mesh);
+			Mesh* mesh = NULL;
+			if(entitySetting.exists("mesh"))
+			{
+				String meshFilename = entitySetting["mesh"];
+				mm->loadMesh(name, meshFilename, MeshManager::MeshFormatPly, 0.8f);
+				mesh = mm->getMesh(name);
+			}
+
+			Texture* leftImage = NULL;
+			Texture* rightImage = NULL;
+			if(entitySetting.exists("leftImage") && entitySetting.exists("rightImage"))
+			{
+				String leftImageFilename = entitySetting["leftImage"];
+				String rightImageFilename = entitySetting["rightImage"];
+
+				leftImage = ImageUtils::createTexture(getTextureManager(), name, leftImageFilename);
+				rightImage = ImageUtils::createTexture(getTextureManager(), name, rightImageFilename);
+			}
+
+			Entity* e = new Entity(label, getSceneManager(), mesh, leftImage, rightImage);
 			myEntities.push_back(e);
 		}
 	}
@@ -96,9 +115,12 @@ void MeshViewerClient::initialize()
 	initUI();
 
 	// Create a reference box around the scene.
-	myReferenceBox = new ReferenceBox();
-	//getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
-	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+	if(cfg->exists("config/referenceBox"))
+	{
+		myReferenceBox = new ReferenceBox();
+		getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
+		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+	}
 
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
