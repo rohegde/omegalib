@@ -57,6 +57,12 @@ namespace omega
 		bool isDrawing();
 		//@}
 
+		//! Drawing control
+		//@{
+		void pushTransform(const AffineTransform3& transform);
+		void popTransform();
+		//@}
+
 		//! Drawing methods
 		//@{
 		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
