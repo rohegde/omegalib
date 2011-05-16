@@ -39,6 +39,7 @@ void DefaultRenderPass::render(SceneManager* mng, const DrawContext& context)
 	state.pass = this;
 	state.flags = RenderPass::RenderOpaque;
 	state.renderer = mng->getRenderer();
+	state.context = &context;
 
 	state.renderer->beginDraw3D(context);
 

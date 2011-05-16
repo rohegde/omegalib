@@ -27,6 +27,7 @@
 #include "omega/scene/SceneManager.h"
 #include "omega/scene/LightingPass.h"
 #include "omega/scene/DefaultRenderPass.h"
+#include "omega/scene/OverlayRenderPass.h"
 #include "omega/Renderer.h"
 #include "omega/glheaders.h"
 
@@ -60,6 +61,7 @@ void SceneManager::initialize()
 
 	addRenderPass(onew(LightingPass)());
 	addRenderPass(onew(DefaultRenderPass)());
+	addRenderPass(onew(OverlayRenderPass)());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -63,7 +63,7 @@ namespace omega
 		void popTransform();
 		//@}
 
-		//! Drawing methods
+		//! 2D Drawing methods
 		//@{
 		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
 			Color startColor, Color endColor, float pc = 0.5f);
@@ -71,6 +71,12 @@ namespace omega
 		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
 		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
 		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size);
+		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
+		//@}
+
+		//! 3D Drawing methods
+		//@{
+		void drawWireSphere(const Color& color, int segments, int slices);
 		//@}
 
 	private:

@@ -245,3 +245,62 @@ void Renderer::drawRectTexture(Texture* texture, const Vector2f& position, const
 	texture->unbind();
 	glDisable(GL_TEXTURE_2D);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::drawCircleOutline(Vector2f position, float radius, const Color& color, int segments)
+{
+	glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_BLEND);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4fv(color.data());
+
+	float stp = Math::Pi * 2 / segments;
+	glBegin(GL_LINE_LOOP);
+	for(float t = 0; t < 2 * Math::Pi; t+= stp)
+	{
+		float ptx = Math::sin(t) * radius + position[0];
+		float pty = Math::cos(t) * radius + position[1];
+		glVertex2f(ptx, pty);
+	}
+	glEnd();
+	glPopAttrib();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::drawWireSphere(const Color& color, int segments, int slices)
+{
+	glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_BLEND);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4fv(color.data());
+
+	float stp = Math::Pi * 2 / segments;
+	float stp2 = Math::Pi / (slices + 1);
+	for(float g = 0; g <= Math::Pi; g+= stp2)
+	{
+		glBegin(GL_LINE_LOOP);
+		for(float t = 0; t < 2 * Math::Pi; t+= stp)
+		{
+			float ptx = Math::sin(t) * Math::sin(g);
+			float pty = Math::cos(t) * Math::sin(g);
+			float ptz = Math::cos(g);
+			glVertex3f(ptx, pty, ptz);
+		}
+		glEnd();
+		glBegin(GL_LINE_LOOP);
+		for(float t = 0; t < 2 * Math::Pi; t+= stp)
+		{
+			float ptz = Math::sin(t) * Math::sin(g);
+			float pty = Math::cos(t) * Math::sin(g);
+			float ptx = Math::cos(g);
+			glVertex3f(ptx, pty, ptz);
+		}
+		glEnd();
+	}
+
+	glPopAttrib();
+}
