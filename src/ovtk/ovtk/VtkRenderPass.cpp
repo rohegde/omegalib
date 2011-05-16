@@ -75,11 +75,12 @@ void VtkRenderPass::queueProp(vtkProp* actor, QueueType queue)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng)
+void VtkRenderPass::render(SceneManager* mng, const DrawContext& context)
 {
 	RenderState state;
 	state.pass = this;
 	state.flags = VtkRenderPass::RenderVtk;
+	state.renderer = mng->getRenderer();
 
 	for(int i = 0; i < NumQueues; i++) myPropQueueSize[i] = 0;
 

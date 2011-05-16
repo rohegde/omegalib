@@ -59,7 +59,7 @@ namespace ovtk
 		VtkRenderPass();
 
 		void initialize();
-		virtual void render(SceneManager* mng);
+		virtual void render(SceneManager* mng, const DrawContext& context);
 
 	private:
 		void queueProp(vtkProp* actor, QueueType queue);

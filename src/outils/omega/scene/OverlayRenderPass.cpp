@@ -32,11 +32,12 @@ using namespace omega;
 using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OverlayRenderPass::render(SceneManager* mng)
+void OverlayRenderPass::render(SceneManager* mng, const DrawContext& context)
 {
 	RenderState state;
 	state.pass = this;
 	state.flags = RenderPass::RenderOverlay;
+	state.renderer = mng->getRenderer();
 
 	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 	// stored inside the scene nodes. So, create a new, clean transform on the stack.

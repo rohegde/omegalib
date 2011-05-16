@@ -136,32 +136,16 @@ void EngineClient::draw(const DrawContext& context)
 	myGpuManager->endDraw();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::drawBackGrd( const DrawContext& theContext )
+void EngineClient::drawBackGrd( const DrawContext& context )
 {
-	glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glTranslatef(0.0, theContext.viewport.height() - 1, 0.0);
-    glScalef(1.0, -1.0, 1.0);
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, theContext.viewport.width(), 0, theContext.viewport.height(), -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
-
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
 	Vector2f position(0, 0);
-	Vector2f size(theContext.viewport.width(), theContext.viewport.height());
+	Vector2f size(context.viewport.width(), context.viewport.height());
 
 	Renderer backGrdPainter;
-	switch( theContext.eye )
+	backGrdPainter.beginDraw2D(context);
+	glEnable(GL_TEXTURE_2D);
+
+	switch( context.eye )
 	{
 		case DrawContext::EyeLeft:
 		oassert(myLeftBackgroundTexture);
@@ -176,15 +160,7 @@ void EngineClient::drawBackGrd( const DrawContext& theContext )
 		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
 		break;
 	}
-	//draw here
 	
-	glDisable (GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-	
+	backGrdPainter.endDraw();
 }
 

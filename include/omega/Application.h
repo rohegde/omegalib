@@ -77,12 +77,12 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Interface for objects that manage a single OpenGL context.
-	class IGLContextManager
-	{
-	public:
-		//! Makes the context current.
-		virtual void makeCurrent() = 0;
-	};
+	//class IGLContextManager
+	//{
+	//public:
+	//	//! Makes the context current.
+	//	virtual void makeCurrent() = 0;
+	//};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct UpdateContext
@@ -103,7 +103,7 @@ namespace omega
 		Rect viewport;
 		//! The pixel viewport coordinates of this context with respect to the global canvas managed by the display system.
 		Rect globalViewport;
-		IGLContextManager* glContext;
+		//IGLContextManager* glContext;
 		Eye eye;
 	};
 

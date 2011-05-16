@@ -33,7 +33,7 @@ using namespace omega;
 using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void LightingPass::render(SceneManager* mng)
+void LightingPass::render(SceneManager* mng, const DrawContext& context)
 {
 	glPushMatrix();
 	//glLoadMatrixf(mng->getViewTransform().data());

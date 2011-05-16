@@ -36,7 +36,7 @@ namespace scene
 {
 	class OUTILS_API LightingPass: public RenderPass
 	{
-		virtual void render(SceneManager* mng);
+		virtual void render(SceneManager* mng, const DrawContext& context);
 	};
 };
 }; // namespace omega

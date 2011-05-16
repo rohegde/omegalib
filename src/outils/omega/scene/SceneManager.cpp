@@ -27,6 +27,7 @@
 #include "omega/scene/SceneManager.h"
 #include "omega/scene/LightingPass.h"
 #include "omega/scene/DefaultRenderPass.h"
+#include "omega/Renderer.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -55,18 +56,15 @@ void SceneManager::removeRenderPass(RenderPass* pass)
 void SceneManager::initialize()
 {
 	myRoot = new SceneNode(this, "root");
-	myBackgroundColor = Color(0.1f, 0.1f, 0.15f);
+	myDefaultRenderer = onew(Renderer)();
 
-	addRenderPass(new LightingPass());
-	addRenderPass(new DefaultRenderPass());
+	addRenderPass(onew(LightingPass)());
+	addRenderPass(onew(DefaultRenderPass)());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::draw(const DrawContext& context)
 {
-	// Setup view matrix (read back from gl)
-	glGetFloatv( GL_MODELVIEW_MATRIX, myViewTransform.data() );
-
 	// Update transform hierarchy
 	myRoot->update(false, false);
 
@@ -75,7 +73,7 @@ void SceneManager::draw(const DrawContext& context)
 	while(it.hasMoreElements())
 	{
 		RenderPass* pass = it.getNext();
-		pass->render(this);
+		pass->render(this, context);
 	}
 
 }

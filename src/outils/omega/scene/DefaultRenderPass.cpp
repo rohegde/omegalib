@@ -26,24 +26,30 @@
  *************************************************************************************************/
 #include "omega/scene/DefaultRenderPass.h"
 #include "omega/scene/SceneManager.h"
+#include "omega/Renderer.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
 using namespace scene;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultRenderPass::render(SceneManager* mng)
+void DefaultRenderPass::render(SceneManager* mng, const DrawContext& context)
 {
 	RenderState state;
 	state.pass = this;
 	state.flags = RenderPass::RenderOpaque;
+	state.renderer = mng->getRenderer();
+
+	state.renderer->beginDraw3D(context);
 
 	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
+	//glPushMatrix();
+	//glLoadMatrixf(mng->getViewTransform().data());
 
 	mng->getRootNode()->draw(&state);
 
-	glPopMatrix();
+	//glPopMatrix();
+
+	state.renderer->endDraw();
 }

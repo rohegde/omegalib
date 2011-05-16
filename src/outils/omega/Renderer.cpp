@@ -39,14 +39,59 @@ Renderer::Renderer():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::beginDraw()
+void Renderer::beginDraw3D(const DrawContext& context)
 {
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+	glLoadMatrixf(context.modelview.data());
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+	glLoadMatrixf(context.projection.data());
+
+    glMatrixMode(GL_MODELVIEW);
+
+	glViewport(context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height());
+
+	glPushAttrib(GL_ENABLE_BIT);
+
+	myDrawing = true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::beginDraw2D(const DrawContext& context)
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef(0.0, context.viewport.height() - 1, 0.0);
+    glScalef(1.0, -1.0, 1.0);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, context.viewport.width(), 0, context.viewport.height(), -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+
+	glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+	//glEnable(GL_TEXTURE_2D);
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	myDrawing = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::endDraw()
 {
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+	glPopAttrib();
 	myDrawing = false;
 }
 

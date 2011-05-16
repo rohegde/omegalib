@@ -28,9 +28,11 @@
 #define __RENDER_PASS_H__
 
 #include "omega/osystem.h"
+#include "omega/Application.h"
 
 namespace omega
 {
+	class Renderer;
 namespace scene
 {
 	class SceneManager;
@@ -46,7 +48,7 @@ namespace scene
 			RenderCustom = 1 << 8 };
 
 	public:
-		virtual void render(SceneManager* mng) = 0;
+		virtual void render(SceneManager* mng, const DrawContext& context) = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +56,7 @@ namespace scene
 	{
 		uint flags;
 		RenderPass* pass;
+		Renderer* renderer;
 
 		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }
 	};

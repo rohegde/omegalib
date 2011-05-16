@@ -562,7 +562,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
-class ChannelImpl: public eq::Channel, IGLContextManager
+class ChannelImpl: public eq::Channel/*, IGLContextManager*/
 {
 public:
 	ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) 
@@ -599,7 +599,7 @@ protected:
 		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
 		DrawContext context;
 		context.frameNum = spin.low();
-		context.glContext = this;
+		//context.glContext = this;
 
 		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
 		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
