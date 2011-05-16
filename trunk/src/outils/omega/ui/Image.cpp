@@ -25,8 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/ui/Image.h"
-#include "omega/ui/Painter.h"
 #include "omega/ui/UIManager.h"
+#include "omega/Renderer.h"
 
 using namespace omega;
 using namespace omega::ui;
@@ -52,6 +52,6 @@ void Image::renderContent()
 
 	if(myTexture != NULL)
 	{
-		getPainter()->drawRectTexture(myTexture, Vector2f::Zero(), getSize());
+		getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), getSize());
 	}
 }

@@ -124,6 +124,7 @@ if(OMEGA_USE_DISPLAY)
 	# OpenCL Module
 	set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
 	if(OMEGA_USE_OPENCL)
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
 		add_definitions( -DOMEGA_USE_OPENCL)
 	endif(OMEGA_USE_OPENCL)
 endif(OMEGA_USE_DISPLAY)

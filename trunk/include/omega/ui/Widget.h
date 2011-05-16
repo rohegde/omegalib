@@ -32,6 +32,7 @@
 
 namespace omega
 {
+	class Renderer;
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,9 +40,6 @@ namespace ui
 	{
 	friend class UIManager;
 	friend class Container;
-	public:
-		enum Orientation {Horizontal = 0, Vertical = 1};
-
 	public:
 		Widget(omega::String name);
 		virtual ~Widget();
@@ -128,7 +126,7 @@ namespace ui
 		UIManager* getUIManager();
 		virtual void setUIManager(UIManager* ui);
 
-		Painter* getPainter();
+		Renderer* getRenderer();
 
 	protected:
 		//! internal layout management

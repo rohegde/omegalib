@@ -42,6 +42,7 @@ namespace scene
 		enum RenderFlags { 
 			RenderOpaque = 1 << 1, 
 			RenderTransparent = 1 << 2,
+			RenderOverlay = 1 << 3,
 			RenderCustom = 1 << 8 };
 
 	public:
