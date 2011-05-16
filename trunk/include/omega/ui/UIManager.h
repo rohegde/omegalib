@@ -73,7 +73,7 @@ namespace ui
 		Container* myRootContainer[Application::MaxLayers];
 
 		Font* myDefaultFont;
-		Renderer* myDefaultPainter;
+		Renderer* myDefaultRenderer;
 		IUIEventHandler* myEventHandler;
 		WidgetFactory* myWidgetFactory;
 	};
@@ -84,7 +84,7 @@ namespace ui
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Renderer* UIManager::getDefaultPainter() 
-	{ return myDefaultPainter; }
+	{ return myDefaultRenderer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline omega::Font* UIManager::getDefaultFont() 

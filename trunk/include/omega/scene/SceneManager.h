@@ -36,6 +36,7 @@
 
 namespace omega
 {
+	class Renderer;
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,10 +47,8 @@ namespace scene
 
 	public:
 		SceneManager(omega::GpuManager* gpu): 
-		  myViewTransform(AffineTransform3::Identity()),
 		  myGpuMng(gpu), 
 		  myRoot(NULL),
-		  myBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f), 
 		  myAmbientLightColor(0.3f, 0.3f, 0.4f, 1.0f) {}
 
 		void initialize();
@@ -57,9 +56,6 @@ namespace scene
 		GpuManager* getGpuManager();
 		SceneNode* getRootNode();
 		const AffineTransform3& getViewTransform();
-
-		void setBackgroundColor(const Color& value);
-		Color getBackgroundColor();
 
 		void setAmbientLightColor(const Color& value);
 		Color getAmbientLightColor();
@@ -77,18 +73,19 @@ namespace scene
 
 		Light* getLight(int num);
 
-	private:
-		AffineTransform3 myViewTransform;
+		Renderer* getRenderer();
 
+	private:
 		omega::GpuManager* myGpuMng;
 		SceneNode* myRoot;
-		Color myBackgroundColor;
 
 		Light myLights[MaxLights];
 		Color myAmbientLightColor;
 
 		List<Actor*> myActors;
 		List<RenderPass*> myRenderPassList;
+
+		Renderer* myDefaultRenderer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,18 +95,6 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline SceneNode* SceneManager::getRootNode() 
 	{ return myRoot; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& SceneManager::getViewTransform() 
-	{ return myViewTransform; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SceneManager::setBackgroundColor(const Color& value)
-	{ myBackgroundColor = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color SceneManager::getBackgroundColor()
-	{ return myBackgroundColor; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void SceneManager::setAmbientLightColor(const Color& value)
@@ -122,6 +107,10 @@ namespace scene
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Light* SceneManager::getLight(int num)
 	{ return &myLights[num]; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Renderer* SceneManager::getRenderer()
+	{ return myDefaultRenderer; }
 }; // namespace scene
 }; // namespace omega
 

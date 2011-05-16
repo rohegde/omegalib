@@ -28,6 +28,7 @@
 #define __RENDERER_H__
 
 #include "omega/osystem.h"
+#include "omega/Application.h"
 #include "omega/Color.h"
 
 namespace omega
@@ -50,7 +51,8 @@ namespace omega
 
 		//! Drawing control
 		//@{
-		void beginDraw();
+		void beginDraw3D(const DrawContext& context);
+		void beginDraw2D(const DrawContext& context);
 		void endDraw();
 		bool isDrawing();
 		//@}

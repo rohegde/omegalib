@@ -48,14 +48,14 @@ UIManager::UIManager():
 	myWidgetFactory(new DefaultWidgetFactory()),
 	myDefaultFont(NULL),
 	myEventHandler(NULL),
-	myDefaultPainter(NULL)
+	myDefaultRenderer(NULL)
 {
 	for(int i =0; i < Application::MaxLayers; i++)
 	{
 		myRootContainer[i] = new Container(ostr("root%1%", %i));
 		myRootContainer[i]->setUIManager(this);
 	}
-	myDefaultPainter = new Renderer();
+	myDefaultRenderer = new Renderer();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,24 +94,7 @@ void UIManager::draw(const DrawContext& context)
 	// Layout ui.
 	root->layout();
 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glTranslatef(0.0, viewport.height() - 1, 0.0);
-    glScalef(1.0, -1.0, 1.0);
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, viewport.width(), 0, viewport.height(), -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
-
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
-	//glEnable(GL_TEXTURE_2D);
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	myDefaultRenderer->beginDraw2D(context);
 
 	// Draw ui.
 	root->draw();
@@ -124,13 +107,7 @@ void UIManager::draw(const DrawContext& context)
 	glEnd();
 #endif
 
-	glDisable (GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
+	myDefaultRenderer->endDraw();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
