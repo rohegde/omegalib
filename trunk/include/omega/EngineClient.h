@@ -37,6 +37,7 @@ namespace omega
 	class TextureManager;
 	class GpuManager;
 	class FontManager;
+	class Texture;
 	namespace scene
 	{
 		class SceneManager;
@@ -60,7 +61,8 @@ namespace omega
 		  mySceneManager(NULL),
 		  myMeshManager(NULL),
 		  myEffectManager(NULL),
-		  myUIManager(NULL) {}
+		  myUIManager(NULL),
+		  myTextureBackgroundEnabled(false) {}
 
 		virtual void initialize();
 		virtual bool handleEvent(const Event& evt, UpdateContext& context);
@@ -77,9 +79,15 @@ namespace omega
 		scene::MeshManager* getMeshManager();
 		ui::UIManager* getUIManager();
 		FontManager* getFontManager();
+		bool isTextureBackgroundEnabled();
+		void setTextureBackgroundEnabled(bool value);
+		void setTextureBackground(DrawContext::Eye eye, Texture* texture);	
+		Texture* getTextureBackground(DrawContext::Eye eye);	
 		//@}
 
 	private:
+		void drawBackGrd( const DrawContext& theContext );
+	
 		GpuManager* myGpuManager;
 		TextureManager* myTextureManager;
 		FontManager* myFontManager;
@@ -87,6 +95,10 @@ namespace omega
 		scene::MeshManager* myMeshManager;
 		scene::EffectManager* myEffectManager;
 		ui::UIManager* myUIManager;
+
+		bool myTextureBackgroundEnabled;
+		Texture* myLeftBackgroundTexture;
+		Texture* myRightBackgroundTexture;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,6 +128,14 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ui::UIManager* EngineClient::getUIManager()
 	{ return myUIManager; }
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool EngineClient::isTextureBackgroundEnabled()
+	{ return myTextureBackgroundEnabled; }
+		
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void EngineClient::setTextureBackgroundEnabled(bool value)
+	{ myTextureBackgroundEnabled = value; }
 }; // namespace omega
 
 #endif
