@@ -33,7 +33,7 @@ server
 					}
                     attributes
 					{
-						hint_decoration OFF
+						hint_decoration ON
 						hint_stereo PASSIVE
 					}
                 }

@@ -603,6 +603,19 @@ protected:
 
 		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
 		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
+		
+		switch( getEye() )
+		{
+			case eq::fabric::EYE_LEFT:
+				context.eye = DrawContext::EyeLeft;
+				break;
+			case eq::fabric::EYE_RIGHT:
+				context.eye = DrawContext::EyeRight;
+				break;
+			case eq::fabric::EYE_CYCLOP:
+				context.eye = DrawContext::EyeCyclop;
+				break;
+		}
 
 		// Can we get the matrix out of equalizer instead of using opengl?
 		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
