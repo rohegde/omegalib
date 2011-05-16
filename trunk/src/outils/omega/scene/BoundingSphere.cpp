@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/BoundingSphere.h"
+#include "omega/Renderer.h"
 #include "omega/StringUtils.h"
 
 #include "omega/glheaders.h"
@@ -40,48 +41,15 @@ void BoundingSphere::render(SceneNode* node, RenderState* state)
 	{
 		if(myVisible || (myDrawOnSelected && node->isSelected()))
 		{
-			glPushAttrib(GL_ENABLE_BIT);
-			glDisable(GL_LIGHTING);
-			glDisable(GL_BLEND);
-
 			float radius = node->getBoundingSphere().getRadius();
-			//ofmsg("radius: %1%", %radius);
+			Vector3f center = node->getBoundingSphere().getCenter();
 
-			glPushMatrix();
-			const Vector3f& scale = node->getDerivedScale();
-			glScalef(1.0f / scale[0], 1.0f / scale[1], 1.0f / scale[2]);
-
-			float stp = Math::Pi * 2 / mySegments;
-			float stp2 = Math::Pi / (mySlices + 1);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-			glColor4fv(myColor.data());
-	
-			for(float g = 0; g <= Math::Pi; g+= stp2)
-			{
-				glBegin(GL_LINE_LOOP);
-				for(float t = 0; t < 2 * Math::Pi; t+= stp)
-				{
-					float ptx = Math::sin(t) * Math::sin(g) * radius;
-					float pty = Math::cos(t) * Math::sin(g) * radius;
-					float ptz = Math::cos(g) * radius;
-					glVertex3f(ptx, pty, ptz);
-				}
-				glEnd();
-				glBegin(GL_LINE_LOOP);
-				for(float t = 0; t < 2 * Math::Pi; t+= stp)
-				{
-					float ptz = Math::sin(t) * Math::sin(g) * radius;
-					float pty = Math::cos(t) * Math::sin(g) * radius;
-					float ptx = Math::cos(g) * radius;
-					glVertex3f(ptx, pty, ptz);
-				}
-				glEnd();
-			}
-
-			glPopAttrib();
-			glPopMatrix();
+			AffineTransform3 xform;
+			xform.fromPositionOrientationScale(center, node->getOrientation(), Vector3f(radius, radius, radius));
+			
+			state->renderer->pushTransform(xform);
+			state->renderer->drawWireSphere(myColor, mySegments, mySlices);
+			state->renderer->popTransform();
 		}
 	}
 }

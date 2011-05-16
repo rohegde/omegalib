@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/scene/OverlayRenderPass.h"
 #include "omega/scene/SceneManager.h"
+#include "omega/Renderer.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -38,13 +39,9 @@ void OverlayRenderPass::render(SceneManager* mng, const DrawContext& context)
 	state.pass = this;
 	state.flags = RenderPass::RenderOverlay;
 	state.renderer = mng->getRenderer();
+	state.context = &context;
 
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(mng->getViewTransform().data());
-
+	state.renderer->beginDraw2D(context);
 	mng->getRootNode()->draw(&state);
-
-	glPopMatrix();
+	state.renderer->endDraw();
 }

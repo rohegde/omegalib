@@ -57,6 +57,7 @@ namespace scene
 		uint flags;
 		RenderPass* pass;
 		Renderer* renderer;
+		const DrawContext* context;
 
 		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }
 	};

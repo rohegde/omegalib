@@ -26,8 +26,7 @@
 #include "omega/scene/Mesh.h"
 #include "omega/scene/MeshManager.h"
 #include "omega/scene/DefaultRenderPass.h"
-
-#include "omega/glheaders.h"
+#include "omega/Renderer.h"
 
 using namespace omega;
 using namespace omega::scene;
@@ -43,6 +42,7 @@ void Mesh::render(SceneNode* node, RenderState* state)
 {
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
+		state->renderer->pushTransform(node->getFullTransform());
 		if(myEffect != NULL)
 		{
 			myEffect->activate();
@@ -54,6 +54,7 @@ void Mesh::render(SceneNode* node, RenderState* state)
 			myEffect->getProgram()->runRenderStage(options);
 			myEffect->deactivate();
 		}
+		state->renderer->popTransform();
 	}
 }
 

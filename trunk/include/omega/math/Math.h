@@ -388,8 +388,10 @@ namespace omega { namespace math
 		/** Compute a quaternion rotation transforming vector a to vector b **/
 		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::Zero());
 
-		static inline 
+		static 
 		Ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z);
+		static 
+		vector<3, float> project(const vector<3, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport);
 
 		static vector< 3, T > normal(const vector< 3, T >& aa, const vector< 3, T >& bb, const vector< 3, T >& cc);
 
@@ -434,7 +436,7 @@ namespace omega { namespace math
     template<typename T>
     T *Math<T>::mTanTable = NULL;
 
-    //-----------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	Math<T>::Math( unsigned int trigTableSize )
     {
@@ -447,7 +449,7 @@ namespace omega { namespace math
         buildTrigTables();
     }
 
-    //-----------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     Math<T>::~Math()
     {
@@ -457,7 +459,7 @@ namespace omega { namespace math
 		mTanTable = NULL;
     }
 
-    //-----------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     void Math<T>::buildTrigTables(void)
     {
@@ -473,7 +475,8 @@ namespace omega { namespace math
             mTanTable[i] = tan(angle);
         }
     }
-	//-----------------------------------------------------------------------	
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	T Math<T>::SinTable (T fValue)
     {
@@ -490,7 +493,8 @@ namespace omega { namespace math
 
         return mSinTable[idx];
     }
-	//-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	T Math<T>::TanTable (T fValue)
     {
@@ -498,13 +502,15 @@ namespace omega { namespace math
 		int idx = int(fValue *= mTrigTableFactor) % mTrigTableSize;
 		return mTanTable[idx];
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     int Math<T>::isign (int iValue)
     {
         return ( iValue > 0 ? +1 : ( iValue < 0 ? -1 : 0 ) );
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     T Math<T>::acos (T fValue)
     {
@@ -520,7 +526,8 @@ namespace omega { namespace math
             return Pi;
         }
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     T Math<T>::asin (T fValue)
     {
@@ -536,7 +543,8 @@ namespace omega { namespace math
             return -HalfPi;
         }
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     T Math<T>::sign (T fValue)
     {
@@ -548,26 +556,29 @@ namespace omega { namespace math
 
         return 0.0;
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     T Math<T>::unitRandom ()
 	{
 		return ((T)rand() / RAND_MAX);
 	}    
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     T Math<T>::rangeRandom (T fLow, T fHigh)
     {
         return (fHigh-fLow)*unitRandom() + fLow;
     }
 
-    //-----------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     T Math<T>::symmetricRandom ()
     {
 		return 2.0f * unitRandom() - 1.0f;
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	bool Math<T>::pointInTri2D(const vector<2,T>& p, const vector<2,T>& a, 
 		const vector<2,T>& b, const vector<2,T>& c)
@@ -616,7 +627,8 @@ namespace omega { namespace math
 
 		return true;
     }
-	//-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	bool Math<T>::pointInTri3D(const vector<3,T>& p, const vector<3,T>& a, 
 		const vector<3,T>& b, const vector<3,T>& c, const vector<3,T>& normal)
@@ -665,7 +677,8 @@ namespace omega { namespace math
 
         return true;
 	}
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     bool Math<T>::floatEqual( T a, T b, T tolerance )
     {
@@ -675,7 +688,7 @@ namespace omega { namespace math
             return false;
     }
 
-    //-----------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const Plane<T>& plane)
     {
@@ -694,7 +707,8 @@ namespace omega { namespace math
         }
         
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, 
         const std::vector<Plane<T> >& planes, bool normalIsOutside)
@@ -706,7 +720,8 @@ namespace omega { namespace math
 		}
 		return intersects(ray, planesList, normalIsOutside);
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, 
         const std::list<Plane<T> >& planes, bool normalIsOutside)
@@ -790,7 +805,8 @@ namespace omega { namespace math
 		}
 		return ret;
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const Sphere<T>& sphere, 
         bool discardInside)
@@ -833,7 +849,8 @@ namespace omega { namespace math
 
 
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const AlignedBox3<T>& box)
 	{
@@ -962,7 +979,8 @@ namespace omega { namespace math
 		return std::pair<bool, T>(hit, lowt);
 
 	} 
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     bool Math<T>::intersects(const Ray<T>& ray, const AlignedBox3<T>& box,
         T* d1, T* d2)
@@ -1051,7 +1069,8 @@ namespace omega { namespace math
 
         return true;
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const vector<3,T>& a,
         const vector<3,T>& b, const vector<3,T>& c, const vector<3,T>& normal,
@@ -1145,7 +1164,8 @@ namespace omega { namespace math
 
         return std::pair<bool, T>(true, t);
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     std::pair<bool, T> Math<T>::intersects(const Ray<T>& ray, const vector<3,T>& a,
         const vector<3,T>& b, const vector<3,T>& c,
@@ -1154,7 +1174,8 @@ namespace omega { namespace math
         vector<3,T> normal = calculateBasicFaceNormalWithoutNormalize(a, b, c);
         return intersects(ray, a, b, c, normal, positiveSide, negativeSide);
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     bool Math<T>::intersects(const Sphere<T>& sphere, const AlignedBox3<T>& box)
     {
@@ -1185,13 +1206,15 @@ namespace omega { namespace math
 		return d <= radius * radius;
 
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     bool Math<T>::intersects(const Plane<T>& plane, const AlignedBox3<T>& box)
     {
         return (plane.getSide(box) == BOTH_SIDE);
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     bool Math<T>::intersects(const Sphere<T>& sphere, const Plane<T>& plane)
     {
@@ -1199,7 +1222,8 @@ namespace omega { namespace math
             Math<T>::abs(plane.getDistance(sphere.getCenter()))
             <= sphere.getRadius() );
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     vector<3,T> Math<T>::calculateTangentSpaceVector(
         const vector<3,T>& position1, const vector<3,T>& position2, const vector<3,T>& position3,
@@ -1247,7 +1271,7 @@ namespace omega { namespace math
     //        -2 * p.normal.z() * p.normal.x(),       -2 * p.normal.z() * p.normal.y(),       -2 * p.normal.z() * p.normal.z() + 1,   -2 * p.normal.z() * p.d, 
     //        0,                                  0,                                  0,                                  1);
     //}
-    //-----------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     vector<4,T> Math<T>::calculateFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
@@ -1255,7 +1279,8 @@ namespace omega { namespace math
         // Now set up the w (distance of tri from origin
         return vector<4,T>(normal.x(), normal.y(), normal.z(), -(normal.dot(v1)));
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     vector<3,T> Math<T>::calculateBasicFaceNormal(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
@@ -1263,7 +1288,8 @@ namespace omega { namespace math
         normal.normalize();
         return normal;
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     vector<4,T> Math<T>::calculateFaceNormalWithoutNormalize(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
@@ -1271,14 +1297,16 @@ namespace omega { namespace math
         // Now set up the w (distance of tri from origin)
         return vector<4,T>(normal.x(), normal.y(), normal.z(), -(normal.dot(v1)));
     }
-    //-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
     vector<3,T> Math<T>::calculateBasicFaceNormalWithoutNormalize(const vector<3,T>& v1, const vector<3,T>& v2, const vector<3,T>& v3)
     {
         vector<3,T> normal = (v2 - v1).cross(v3 - v1);
         return normal;
     }
-	//-----------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	T Math<T>::gaussianDistribution(T x, T offset, T scale)
 	{
@@ -1289,7 +1317,8 @@ namespace omega { namespace math
 		return nom / denom;
 
 	}
-	//---------------------------------------------------------------------
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	transform<3, T, Eigen::Affine> Math<T>::makeViewMatrix(const vector<3,T>& position, const quaternion<T>& orientation)
 	{
@@ -1327,7 +1356,7 @@ namespace omega { namespace math
 
 	}
 
-	//---------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T>
 	inline matrix<4,4,T> Math<T>::makePerspectiveMatrix(float fov, float a, float n, float f)
 	{
@@ -1343,7 +1372,7 @@ namespace omega { namespace math
 		return m;
 	}
 
-	//---------------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
 	T Math<T>::boundingRadiusFromAABB(const AlignedBox3<T>& aabb)
 	{
@@ -1416,9 +1445,12 @@ namespace omega { namespace math
 		}
 		return q;
 	}
-	//---------------------------------------------------------------------
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
     template<typename T> inline 
-	Ray<T> Math<T>::unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z)
+	Ray<T> Math<T>::unproject(
+		const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, 
+		const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z)
 	{
 		vector<3, T> origin;
 		vector<3, T> direction;
@@ -1453,6 +1485,58 @@ namespace omega { namespace math
 		return Ray<T>(origin, direction);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template< typename T >
+	vector<3, float> Math<T>::project(
+		const vector<3, float>& point, const transform<3, T, Eigen::Affine>& mmodelview, 
+		const transform<3, T, Eigen::Projective>& mprojection, const Rect& rviewport)
+	{
+		   const float* modelview = mmodelview.data();
+		   const float* projection = mprojection.data();
+		   float viewport[4];
+
+		   viewport[0] = rviewport.x();
+		   viewport[1] = rviewport.y();
+		   viewport[2] = rviewport.width();
+		   viewport[3] = rviewport.height();
+
+		   float objx = point[0];
+		   float objy = point[1];
+		   float objz = point[2];
+
+		   vector<3, float> windowCoordinate;
+
+		  //Transformation vectors
+		  float fTempo[8];
+		  //Modelview transform
+		  fTempo[0]=modelview[0]*objx+modelview[4]*objy+modelview[8]*objz+modelview[12];  //w is always 1
+		  fTempo[1]=modelview[1]*objx+modelview[5]*objy+modelview[9]*objz+modelview[13];
+		  fTempo[2]=modelview[2]*objx+modelview[6]*objy+modelview[10]*objz+modelview[14];
+		  fTempo[3]=modelview[3]*objx+modelview[7]*objy+modelview[11]*objz+modelview[15];
+		  //Projection transform, the final row of projection matrix is always [0 0 -1 0]
+		  //so we optimize for that.
+		  fTempo[4]=projection[0]*fTempo[0]+projection[4]*fTempo[1]+projection[8]*fTempo[2]+projection[12]*fTempo[3];
+		  fTempo[5]=projection[1]*fTempo[0]+projection[5]*fTempo[1]+projection[9]*fTempo[2]+projection[13]*fTempo[3];
+		  fTempo[6]=projection[2]*fTempo[0]+projection[6]*fTempo[1]+projection[10]*fTempo[2]+projection[14]*fTempo[3];
+		  fTempo[7]=-fTempo[2];
+		  //The result normalizes between -1 and 1
+		  //if(fTempo[7]==0.0)	//The w value
+		  // return 0;
+		  fTempo[7]=1.0/fTempo[7];
+		  //Perspective division
+		  fTempo[4]*=fTempo[7];
+		  fTempo[5]*=fTempo[7];
+		  fTempo[6]*=fTempo[7];
+		  //Window coordinates
+		  //Map x, y to range 0-1
+		  windowCoordinate[0]=(fTempo[4]*0.5+0.5)*viewport[2]+viewport[0];
+		  windowCoordinate[1]=viewport[3] - (fTempo[5]*0.5+0.5)*viewport[3]+viewport[1];
+		  //This is only correct when glDepthRange(0.0, 1.0)
+		  windowCoordinate[2]=(1.0+fTempo[6])*0.5;	//Between 0 and 1
+		  return windowCoordinate;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	template< typename T >
 	vector< 3, T > Math<T>::normal(
 	    const vector< 3, T >& aa, 
@@ -1470,6 +1554,7 @@ namespace omega { namespace math
 		return tmp;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	template< typename T >
 	transform< 3, T, Eigen::Affine > Math<T>::computeMatchingPointsTransform(
 		const matrix< 3, Eigen::Dynamic >& src, 
@@ -1479,6 +1564,7 @@ namespace omega { namespace math
 		return result;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	template< typename T >
 	void Math<T>::swapMinMax(T& min, T& max)
 	{

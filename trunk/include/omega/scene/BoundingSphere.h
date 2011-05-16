@@ -40,8 +40,6 @@ namespace scene
 	class SceneNode;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! @warning This is a work in progress! It may be deeply modified or removed altogether 
-	//! in future versions.
 	class OUTILS_API BoundingSphere: public Renderable
 	{
 	public:

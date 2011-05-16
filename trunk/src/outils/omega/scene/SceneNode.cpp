@@ -104,8 +104,6 @@ void SceneNode::draw(RenderState* state)
 
 		if(myBoundingBoxVisible) drawBoundingBox();
 
-		state->renderer->pushTransform(getFullTransform());
-
 		// Draw drawables attached to this node.
 		VectorIterator<Vector<Renderable*> > it(myRenderables);
 		while(it.hasMoreElements())
@@ -113,8 +111,6 @@ void SceneNode::draw(RenderState* state)
 			Renderable* d = it.getNext();
 			d->render(this, state);
 		}
-
-		state->renderer->popTransform();
 
 		// Draw children nodes.
 		ChildNodeIterator i = getChildIterator();
