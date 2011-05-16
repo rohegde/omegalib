@@ -355,7 +355,7 @@ void CLManager::initialize()
                         NULL);
 			if(!clSuccessOrDie(status)) return;
             platform = platforms[i];
-            if(!strcmp(pbuff, "Advanced Micro Devices, Inc."))
+            if(!strcmp(pbuff, "Advanced Micro Devices, Inc.") || !strcmp(pbuff, "NVIDIA Corporation"))
             {
                 break;
             }
