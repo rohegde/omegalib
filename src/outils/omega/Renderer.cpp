@@ -24,34 +24,34 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ui/Painter.h"
+#include "omega/Renderer.h"
 #include "omega/Texture.h"
+#include "omega/FontManager.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
-using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Painter::Painter():
+Renderer::Renderer():
 	myTargetTexture(NULL),
 	myDrawing(false)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::beginDraw()
+void Renderer::beginDraw()
 {
 	myDrawing = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::endDraw()
+void Renderer::endDraw()
 {
 	myDrawing = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRectGradient(Vector2f pos, Vector2f size, Widget::Orientation orientation, 
+void Renderer::drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
 	Color startColor, Color endColor, float pc)
 {
 	int x = pos[0];
@@ -62,7 +62,7 @@ void Painter::drawRectGradient(Vector2f pos, Vector2f size, Widget::Orientation 
 	float s = 0;
 
 	glColor4fv(startColor.data());
-	if(orientation == Widget::Horizontal)
+	if(orientation == Horizontal)
 	{
 		// draw full color portion
 		s = int(height * pc);
@@ -97,7 +97,7 @@ void Painter::drawRectGradient(Vector2f pos, Vector2f size, Widget::Orientation 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRect(Vector2f pos, Vector2f size, Color color)
+void Renderer::drawRect(Vector2f pos, Vector2f size, Color color)
 {
 	int x = pos[0];
 	int y = pos[1];
@@ -109,7 +109,7 @@ void Painter::drawRect(Vector2f pos, Vector2f size, Color color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRectOutline(Vector2f pos, Vector2f size, Color color)
+void Renderer::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 {
 	int x = pos[0];
 	int y = pos[1];
@@ -136,7 +136,7 @@ void Painter::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
+void Renderer::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
 { 
 	Vector2f rect = font->computeSize(text);
 	float x, y;
@@ -153,7 +153,7 @@ void Painter::drawText(const String& text, Font* font, const Vector2f& position,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Painter::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size)
+void Renderer::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size)
 {
 	glEnable(GL_TEXTURE_2D);
 	texture->bind(GpuManager::TextureUnit0);

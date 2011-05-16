@@ -24,66 +24,21 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ui/DefaultSkin.h"
-#include "omega/Renderer.h"
-#include "omega/glheaders.h"
+#ifndef __OVERLAY_RENDER_PASS_H__
+#define __OVERLAY_RENDER_PASS_H__
 
-using namespace omega;
-using namespace omega::ui;
+#include "omega/osystem.h"
+#include "omega/scene/RenderPass.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultButton::renderContent()
+namespace omega
 {
-	Button::renderContent();
-
-	Renderer* painter = getRenderer();
-
-	painter->drawRect(Vector2f::Zero(), getSize(), myColor);
-	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color::White);
-
-	Vector2f size = getSize();
-
-	// If button is checkable, draw check box.
-	if(isCheckable())
+namespace scene
+{
+	class OUTILS_API OverlayRenderPass: public RenderPass
 	{
-		size[0] -= 18;
-		Vector2f checkBoxSize = Vector2f(14, 14);
-		Vector2f checkBoxPosition = Vector2f(size[0], 4);
-		painter->drawRectOutline(checkBoxPosition, checkBoxSize, Color::White);
+		virtual void render(SceneManager* mng);
+	};
+};
+}; // namespace omega
 
-		if(isChecked())
-		{
-			checkBoxSize -= Vector2f(5, 5);
-			checkBoxPosition += Vector2f(2, 2);
-			painter->drawRect(checkBoxPosition, checkBoxSize, Color::Lime);
-		}
-	}
-
-	myLabel.setPosition(Vector2f::Zero());
-	myLabel.setSize(size);
-	myLabel.draw();
-
-	myAnim *= 0.8f;
-	if(myPressed) myAnim = 1.0f;
-
-	//GfxUtils::drawVGradient(myPosition, mySize, Color(80, 80, 100, 100 + myAnim * 100), Color(80, 80, 100, 100 + myAnim * 100));
-
-	glColor4ub(255, 255, 255, 255);
-	//GfxUtils::drawDRect(myPosition, mySize, 0);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultSlider::renderContent()
-{
-	Widget::renderContent();
-
-	Renderer* painter = getRenderer();
-
-	Vector2f sliderPos = getSliderPosition();
-	Vector2f sliderSize = getSliderSize();
-
-	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color::White);
-	painter->drawRect(sliderPos, sliderSize, Color::Gray);
-	painter->drawRectOutline(sliderPos, sliderSize, Color::White);
-}
-
+#endif

@@ -33,6 +33,7 @@
 
 namespace omega
 {
+	class Renderer;
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +41,6 @@ namespace ui
 	class Widget;
 	class Container;
 	class WidgetFactory;
-	class Painter;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API UIManager
@@ -55,7 +55,7 @@ namespace ui
 		bool processInputEvent(const Event& evt);
 
 		Container* getRootContainer(int layer);
-		Painter* getDefaultPainter();
+		Renderer* getDefaultPainter();
 
 		omega::Font* getDefaultFont();
 		void setDefaultFont(Font* value);
@@ -73,7 +73,7 @@ namespace ui
 		Container* myRootContainer[Application::MaxLayers];
 
 		Font* myDefaultFont;
-		Painter* myDefaultPainter;
+		Renderer* myDefaultPainter;
 		IUIEventHandler* myEventHandler;
 		WidgetFactory* myWidgetFactory;
 	};
@@ -83,7 +83,7 @@ namespace ui
 	{ return myRootContainer[layer]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Painter* UIManager::getDefaultPainter() 
+	inline Renderer* UIManager::getDefaultPainter() 
 	{ return myDefaultPainter; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

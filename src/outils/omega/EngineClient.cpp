@@ -34,7 +34,7 @@
 #include "omega/scene/EffectManager.h"
 #include "omega/scene/MeshManager.h"
 #include "omega/glheaders.h"
-#include "omega/ui/Painter.h"
+#include "omega/Renderer.h"
 
 
 using namespace omega;
@@ -160,7 +160,7 @@ void EngineClient::drawBackGrd( const DrawContext& theContext )
 	Vector2f position(0, 0);
 	Vector2f size(theContext.viewport.width(), theContext.viewport.height());
 
-	Painter backGrdPainter;
+	Renderer backGrdPainter;
 	switch( theContext.eye )
 	{
 		case DrawContext::EyeLeft:

@@ -27,7 +27,7 @@
 #include "omega/ui/DefaultSkin.h"
 #include "omega/ui/UIManager.h"
 #include "omega/ui/Container.h"
-#include "omega/ui/Painter.h"
+#include "omega/Renderer.h"
 #include "omega/glheaders.h"
 
 #include "omega/StringUtils.h"
@@ -55,7 +55,7 @@ UIManager::UIManager():
 		myRootContainer[i] = new Container(ostr("root%1%", %i));
 		myRootContainer[i]->setUIManager(this);
 	}
-	myDefaultPainter = new Painter();
+	myDefaultPainter = new Renderer();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

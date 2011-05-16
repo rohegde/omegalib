@@ -36,6 +36,7 @@ SET( srcs
 		omega/FontManager.cpp
 		omega/ImageUtils.cpp
 		omega/EngineClient.cpp
+		omega/Renderer.cpp
 		
 		# omega::scene
 		omega/scene/Camera.cpp
@@ -57,6 +58,7 @@ SET( srcs
 		omega/scene/ReferenceBox.cpp
 		omega/scene/RenderToTexture.cpp
 		omega/scene/DefaultRenderPass.cpp
+		omega/scene/OverlayRenderPass.cpp
 		omega/scene/LightingPass.cpp
 		
 		# omega::ui
@@ -65,7 +67,6 @@ SET( srcs
 		omega/ui/Container.cpp
 		omega/ui/Image.cpp
 		omega/ui/Label.cpp
-		omega/ui/Painter.cpp
 		omega/ui/DefaultSkin.cpp
 		omega/ui/Slider.cpp
 		omega/ui/UIManager.cpp
@@ -80,6 +81,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EngineClient.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
 		
 		# omega::scene
 		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
@@ -105,6 +107,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/RenderToTexture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/DefaultRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene/OverlayRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/scene/Light.h
 		
@@ -115,7 +118,6 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Container.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Image.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Label.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ui/Painter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/DefaultSkin.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Slider.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h

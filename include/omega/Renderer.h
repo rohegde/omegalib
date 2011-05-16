@@ -24,25 +24,25 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __PAINTER_H__
-#define __PAINTER_H__
+#ifndef __RENDERER_H__
+#define __RENDERER_H__
 
-#include "omega/ui/Widget.h"
+#include "omega/osystem.h"
+#include "omega/Color.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class Texture;
-namespace ui
-{
+	class Font;
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Painter
+	class Renderer
 	{
 	public:
-		Painter();
+		Renderer();
 
-		//! Painter options
+		//! Renderer options
 		//@{
 		void setTargetTexture(Texture* texture);
 		Texture* getTargetTexture();
@@ -57,7 +57,7 @@ namespace ui
 
 		//! Drawing methods
 		//@{
-		void drawRectGradient(Vector2f pos, Vector2f size, Widget::Orientation orientation, 
+		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
 			Color startColor, Color endColor, float pc = 0.5f);
 		void drawRect(Vector2f pos, Vector2f size, Color color);
 		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
@@ -71,18 +71,16 @@ namespace ui
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Painter::isDrawing()
+	inline bool Renderer::isDrawing()
 	{ return myDrawing; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Painter::setTargetTexture(Texture* texture)
+	inline void Renderer::setTargetTexture(Texture* texture)
 	{ myTargetTexture = texture; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Texture* Painter::getTargetTexture()
+	inline Texture* Renderer::getTargetTexture()
 	{ return myTargetTexture; }
-
-}; // namespace ui
 }; // namespace omega
 
 #endif

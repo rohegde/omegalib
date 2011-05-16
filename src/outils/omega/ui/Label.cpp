@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/ui/Label.h"
 #include "omega/ui/UIManager.h"
-#include "omega/ui/Painter.h"
+#include "omega/Renderer.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -121,6 +121,6 @@ void Label::renderContent()
 
 		glColor4fv(myColor.data());
 
-		getPainter()->drawText(myText, myFont, textPos, alignFlags);
+		getRenderer()->drawText(myText, myFont, textPos, alignFlags);
 	}
 }

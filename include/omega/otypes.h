@@ -156,6 +156,13 @@ namespace omega
 		AxisZ
 	};
 
+	//! Enumeration for orientation.
+	enum Orientation 
+	{
+		Horizontal = 0, 
+		Vertical = 1
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Utility class to generate a sequentially numbered series of names
 	//-------------------------------------------------------------------------------------------------

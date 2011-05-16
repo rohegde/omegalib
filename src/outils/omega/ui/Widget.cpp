@@ -27,7 +27,7 @@
 #include "omega/ui/Widget.h"
 #include "omega/ui/Container.h"
 #include "omega/ui/DefaultSkin.h"
-#include "omega/ui/Painter.h"
+#include "omega/Renderer.h"
 
 #include "omega/glheaders.h"
 
@@ -68,7 +68,7 @@ void Widget::setUIManager(UIManager* ui)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Painter* Widget::getPainter()
+Renderer* Widget::getRenderer()
 {
 	oassert(myUIMng != NULL);
 	return myUIMng->getDefaultPainter();
@@ -124,7 +124,7 @@ void Widget::renderContent()
 {
 	if(myDebugModeEnabled)
 	{
-		getPainter()->drawRectOutline(Vector2f::Zero(), mySize, myDebugModeColor);
+		getRenderer()->drawRectOutline(Vector2f::Zero(), mySize, myDebugModeColor);
 	}
 }
 
