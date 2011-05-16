@@ -94,6 +94,7 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct DrawContext
 	{
+		enum Eye { EyeLeft , EyeRight, EyeCyclop };
 		uint64 frameNum;
 		unsigned int layer;
 		AffineTransform3 modelview;
@@ -103,6 +104,7 @@ namespace omega
 		//! The pixel viewport coordinates of this context with respect to the global canvas managed by the display system.
 		Rect globalViewport;
 		IGLContextManager* glContext;
+		Eye eye;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
