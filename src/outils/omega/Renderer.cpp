@@ -96,6 +96,21 @@ void Renderer::endDraw()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::pushTransform(const AffineTransform3& transform)
+{
+    glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glMultMatrixf(transform.data());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::popTransform()
+{
+    glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
 	Color startColor, Color endColor, float pc)
 {
