@@ -1,6 +1,28 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 
-= omegalib v0.4 (*current developement version*) =
+= omegalib v0.5 (*current developement version*) =
+==Summary==
+Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Possibly, initial experiments running on clustered display systems.
+
+*Expected delivery*: September 2011
+
+==Completed Tasks==
+==Work In Progress==
+ * Integration of PS3 controller (*Arthur*)
+ * New version of meshviewer supporting multiple object interaction and more polished look & feel. (*Alessandro*)
+ * Vtk library / viewer: (*Alessandro*)
+   * Support visualization of multiple entities.
+   * Script loading in separate thread.
+   * UI interface for interaction with Vtk pipelines
+   * Script templates.
+ 
+
+==Wish List==
+ * filters to join kinect & pqlabs to associate touches to user.
+
+------------------------------------------------------------------------
+
+= omegalib v0.4 (*delivered:* May 2011) =
 ==Summary==
 This version will the first one to compile on linux as well on windows.
 A complete demo application will be included (meshviewer) as well as kinect integration. Sperimental integration with vtk and a small demo application is also planned to be integrated into omegalib 0.4.
@@ -17,14 +39,8 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * filters to join mocap & kinect data for controller / tangible object ownership (*Alessandro*)
  * Linux 64bit build of basic services (*Arthur*)
  * complete meshviewer application (*Alessandro*)
-
-==Work In Progress==
- * Integration of PS3 controller (*Arthur*)
  * Integration of XBox 360 controller (*Arthur*)
-
-==Wish List==
- * fix 64bit support (windows only)
- * filters to join kinect & pqlabs to associate touches to user.
+ * Linux 64bit build of complete system except GLUT
 ------------------------------------------------------------------------
 
 
