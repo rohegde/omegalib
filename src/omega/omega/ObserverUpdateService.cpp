@@ -23,7 +23,8 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "omega/SystemManager.h"
-#include "omega/DisplaySystem.h"
+
+//#include "omega/DisplaySystem.h"
 #include "omega/Observer.h"
 #include "omega/ObserverUpdateService.h"
 #include "omega/StringUtils.h"

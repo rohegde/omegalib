@@ -43,7 +43,6 @@ SET( srcs
 		omega/ServiceManager.cpp
 		omega/Service.cpp
         omega/Observer.cpp
-		omega/ObserverUpdateService.cpp
 		omega/SystemManager.cpp
 		omega/StringUtils.cpp
 		omega/DataManager.cpp
@@ -64,7 +63,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Service.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
@@ -93,6 +91,7 @@ if(OMEGA_USE_DISPLAY)
 			omega/RenderTarget.cpp
 			omega/Texture.cpp
 			omega/TextureManager.cpp
+ 		    omega/ObserverUpdateService.cpp
 			)
 	set( headers ${headers}
 			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
@@ -102,7 +101,8 @@ if(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
 			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-			${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h	) 
+			${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h	
+	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
 	
 	# Equalizer Display Module
 	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
@@ -127,14 +127,14 @@ if(OMEGA_USE_DISPLAY)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
 		add_definitions( -DOMEGA_USE_OPENCL)
 	endif(OMEGA_USE_OPENCL)
+	
+	set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
+	if(OMEGA_USE_MOUSE)
+		set( srcs	 ${srcs} omega/MouseService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
+		add_definitions( -DOMEGA_USE_MOUSE)
+	endif(OMEGA_USE_MOUSE)
 endif(OMEGA_USE_DISPLAY)
-
-set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
-if(OMEGA_USE_MOUSE)
-	set( srcs	 ${srcs} omega/MouseService.cpp )
-	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
-	add_definitions( -DOMEGA_USE_MOUSE)
-endif(OMEGA_USE_MOUSE)
 
 if(WIN32)
 	set(OMEGA_USE_NATURAL_POINT true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
