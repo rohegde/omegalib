@@ -28,7 +28,7 @@
 #define __INPUT_MANAGER_H__
 
 #include "osystem.h"
-#include "Application.h"
+//#include "Application.h"
 #include "Event.h"
 #include "Lock.h"
 

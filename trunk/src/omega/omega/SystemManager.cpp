@@ -32,11 +32,10 @@
 
 #include "co/base/lock.h"
 
-#include "omega/ObserverUpdateService.h"
-
 // Display system
 #ifdef OMEGA_USE_DISPLAY
 	#include "omega/DisplaySystem.h"
+	#include "omega/ObserverUpdateService.h"
 #endif
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
@@ -161,7 +160,9 @@ void SystemManager::setupServiceManager()
 	myServiceManager->registerService("OpenNIService", (ServiceAllocator)OpenNIService::New);
 #endif
 
+#ifdef OMEGA_USE_DISPLAY
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
+#endif
 
 	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
 	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
@@ -230,8 +231,10 @@ void SystemManager::initialize()
 #endif
 	myServiceManager->initialize();
 
+#ifdef OMEGA_USE_DISPLAY
 	// Initialize the application object (if present)
 	if(myApplication) myApplication->initialize();
+#endif
 
 	myIsInitialized = true;
 }
