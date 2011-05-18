@@ -9,6 +9,9 @@ function Awake () {
 function Update () {
 	// Get the input vector from kayboard or analog stick
 	var directionVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+	if( gameObject.GetComponent("OmegaControllerScript") != null ){
+		directionVector = gameObject.GetComponent("OmegaControllerScript").movementVector;
+	}
 	
 	if (directionVector != Vector3.zero) {
 		// Get the length of the directon vector and then normalize it

@@ -570,7 +570,7 @@ void main(int argc, char** argv)
 
 	app.startConnection();
 	
-	float delay = 0.1f; // Seconds to delay sending events (-1 disables delay)
+	float delay = -1.0f; // Seconds to delay sending events (-1 disables delay)
 	bool testStream = false;
 	char* testPacket;
 
