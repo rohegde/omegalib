@@ -24,7 +24,7 @@
  *********************************************************************************************************************/
  
 /*
- * This example touch script inherits from TouchScript.cs. This simply colors the object base on received touch events.
+ * This example touch script inherits from TouchScript.cs. This simply colors the object based on received touch events.
  */
 
 using UnityEngine;

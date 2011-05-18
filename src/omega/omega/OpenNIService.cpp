@@ -235,10 +235,10 @@ void OpenNIService::poll(void)
 			{
 				if(myUseTrackables)
 				{
-					for(int i = 0; i < myTrackables.size(); i++)
+					for(int j = 0; j < myTrackables.size(); j++)
 					{
-						Trackable& t = myTrackables[i];
-						if(t.userId == i)
+						Trackable& t = myTrackables[j];
+						if(t.userId == aUsers[i])
 						{
 							// Write a trackable event for the specified joint.
 							Vector3f pos;

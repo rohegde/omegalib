@@ -24,14 +24,14 @@
  *********************************************************************************************************************/
  
 /*
- * InputServiceScript handles all network connentions to the input server and sends events out to objects tagged as OmegaListener.
+ * InputServiceScript handles all network connentions to the input server and sends events out to objects tagged as listeners.
  * Currently supported input servers:
  * 		- OmegaLib (touch and controllers)
  *		- TouchAPI connector
  *
- * Scripts that handle events: These scripts should be attached to the receiving game object. These scripts sends messages upward with the input data.
- * You should write your own scripts to receive these messages.
- *		- TouchScript.cs
+ * Scripts that handle events: These scripts should be attached to the receiving game object. These scripts handle messages with the input data.
+ * You should write your own scripts that inherit from these.
+ *		- TouchScript.cs (GameObjects using these are tagged as 'TouchListener')
  *		- OmegaControllerScript.cs
  *
  * To run make sure Enable Input Service is checked and the correct Server and Msg Ports are set.
@@ -144,7 +144,7 @@ public class InputServiceScript : MonoBehaviour {
 	
 	private Hashtable touchList;
 	
-	public int touchTimeOut = 250; // Milliseconds before an idle touch is maked is auto-removed and an up event is sent.
+	public int touchTimeOut = 250; // Milliseconds before an idle touch is auto-removed and an up event is sent.
 	
 	// Use this for initialization
 	void Start () {
@@ -308,7 +308,7 @@ public class InputServiceScript : MonoBehaviour {
             System.Console.WriteLine("Dgram uses OmegaLib format");
 			int inputType = int.Parse(words[0]);
 			// Words[] parameters
-            // 0 = Input type ( 0 = mouse, 1 = mocap, 2 = touch, 4 = controller )
+            // 0 = Input type ( See ServiceType enum above )
 			// 1 - n = type dependent
 			
 			if( inputType == (int)ServiceType.Pointer ){ // Touch
@@ -371,6 +371,14 @@ public class InputServiceScript : MonoBehaviour {
 				float pitch = int.Parse(words[24]) / 1000.0f;
 				
 				ProcessControllerEvent( ID, analogLeft, analogRight, buttons, slider, roll, pitch );
+			}  else if( inputType == (int)ServiceType.Mocap ){
+				//Debug.Log("Mocap: " + dGram);
+				int ID = int.Parse(words[1]);
+				float xPos = float.Parse(words[2]);
+				float yPos = float.Parse(words[3]);
+				float zPos = float.Parse(words[4]);
+				GameObject.FindGameObjectWithTag("OmegaListener").GetComponent<MocapScript>().UpdateMocapPosition(xPos,yPos,zPos);
+				//ProcessMocapEvent(xPos,yPos,zPos);
 			}
         }
 		else
@@ -385,6 +393,7 @@ public class InputServiceScript : MonoBehaviour {
 		if( EnableInputService ){
 			udpClient.Close();
 			listenerThread.Abort();
+			Debug.Log("InputService: Disconnected");
 		}
     }
 	
