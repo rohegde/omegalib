@@ -24,7 +24,7 @@
  *********************************************************************************************************************/
 #include "omega/SystemManager.h"
 
-//#include "omega/DisplaySystem.h"
+#include "omega/DisplaySystem.h"
 #include "omega/Observer.h"
 #include "omega/ObserverUpdateService.h"
 #include "omega/StringUtils.h"

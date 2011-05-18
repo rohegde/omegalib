@@ -29,12 +29,12 @@ void NetService::setup(Setting& settings)
 	}
 	if(settings.exists("screenX"))
 	{
-		screenX =  atoi((const char*)settings["screenX"]);
+		screenX =  settings["screenX"];
 		printf("NetService: screenX set to %d\n", screenX);
 	}
 	if(settings.exists("screenY"))
 	{
-		screenY =  atoi((const char*)settings["screenY"]);
+		screenY =  settings["screenY"];
 		printf("NetService: screenY set to %d\n", screenY);
 	}
 }

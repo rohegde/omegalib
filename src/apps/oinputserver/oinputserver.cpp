@@ -78,14 +78,14 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OInputServer: public Application
+class OInputServer
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Checks the type of event. If a valid event, creates an event packet and returns true. Else return false.
 	virtual bool handleEvent(const Event& evt)
 	{
-		eventPacket = new char[99];
+		eventPacket = new char[256];
 		
 		itoa(evt.serviceType, eventPacket, 10); // Append input type
 		strcat( eventPacket, ":" );
