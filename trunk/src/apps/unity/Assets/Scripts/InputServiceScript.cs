@@ -140,7 +140,7 @@ public class InputServiceScript : MonoBehaviour {
     private static int screenHeight;
 	
 	static Touches MouseTouch;
-	private static string dgram;
+	private static ArrayList dgrams;
 	
 	private Hashtable touchList;
 	
@@ -153,6 +153,7 @@ public class InputServiceScript : MonoBehaviour {
         Debug.Log("InputService: Screen resolution " + screenWidth + "," + screenHeight);
 
 		touchList = new Hashtable();
+		dgrams = new ArrayList();
 		
 		if( EnableInputService ){
 			Debug.Log("InputService: Initializing... ");
@@ -205,7 +206,9 @@ public class InputServiceScript : MonoBehaviour {
 
             // Blocks until a message returns on this socket from a remote host.
 			Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-            dgram = Encoding.ASCII.GetString(receiveBytes);
+			lock(dgrams.SyncRoot){
+				dgrams.Add( Encoding.ASCII.GetString(receiveBytes) );
+			}
         }
     }
 
@@ -373,11 +376,15 @@ public class InputServiceScript : MonoBehaviour {
 				ProcessControllerEvent( ID, analogLeft, analogRight, buttons, slider, roll, pitch );
 			}  else if( inputType == (int)ServiceType.Mocap ){
 				//Debug.Log("Mocap: " + dGram);
-				int ID = int.Parse(words[1]);
-				float xPos = float.Parse(words[2]);
-				float yPos = float.Parse(words[3]);
-				float zPos = float.Parse(words[4]);
-				GameObject.FindGameObjectWithTag("OmegaListener").GetComponent<MocapScript>().UpdateMocapPosition(xPos,yPos,zPos);
+				//int ID = int.Parse(words[1]);
+				//float xPos = float.Parse(words[2]);
+				//float yPos = float.Parse(words[3]);
+				//float zPos = float.Parse(words[4]);
+				GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
+				foreach (GameObject touchObj in touchObjects) {
+					touchObj.BroadcastMessage("UpdateMocapPosition",words);
+				}
+				//GameObject.FindGameObjectWithTag("OmegaListener").GetComponent<MocapScript>().UpdateMocapPosition(ID,xPos,yPos,zPos);
 				//ProcessMocapEvent(xPos,yPos,zPos);
 			}
         }
@@ -446,10 +453,19 @@ public class InputServiceScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if( dgram != null ){
-			ParseDGram(dgram);
-			dgram = null;
+		lock(dgrams.SyncRoot)
+		{
+			foreach (String dgram in dgrams)
+			{
+				ParseDGram(dgram);
+			}
+			dgrams.Clear();
 		}
+		
+		//if( dgram != null ){
+		//	ParseDGram(dgram);
+		//	dgram = null;
+		//}
 		
 		Hashtable tempList = new Hashtable(touchList);
 		foreach( DictionaryEntry elem in tempList )
