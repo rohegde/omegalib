@@ -570,13 +570,13 @@ void main(int argc, char** argv)
 
 	app.startConnection();
 	
-	float delay = -1.0f; // Seconds to delay sending events (-1 disables delay)
+	float delay = -0.1f; // Seconds to delay sending events (<= 0 disables delay)
 	bool testStream = false;
 	char* testPacket;
 
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){
-		if( delay != -1.0 )
+		if( delay > 0.0 )
 			Sleep(1000.0*delay); // Delay sending of data out
 
 		sys->getServiceManager()->poll(); // Required for DirectInputService
