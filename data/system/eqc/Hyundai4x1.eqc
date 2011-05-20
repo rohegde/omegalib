@@ -34,6 +34,8 @@ server
                     attributes
 					{
 						hint_decoration OFF
+            			hint_fullscreen OFF
+
 					}
                 }
                 
@@ -54,6 +56,7 @@ server
                     attributes
 					{
 						hint_decoration OFF
+            			hint_fullscreen OFF
 					}
                 }
              
@@ -74,6 +77,7 @@ server
                     attributes
 					{
 						hint_decoration OFF
+            			hint_fullscreen OFF
 					}
                 }   
                 
@@ -94,8 +98,25 @@ server
                     attributes
 					{
 						hint_decoration OFF
+            			hint_fullscreen OFF
 					}
                 }   
+                window
+                {
+                    name     "stupid"
+                    viewport [ 0 -10 10 10]
+                    channel 
+                    { 
+						viewport [.5 0 .5 1]
+						name "stupidL"  
+					}
+                    attributes
+					{
+						hint_decoration ON
+            			hint_fullscreen OFF
+					}
+                }   
+                
             }
         }
 
@@ -134,6 +155,13 @@ server
                 observer "observer0"
                 viewport [ 0 0 1 .25 ]
             }
+            view
+            {
+                name "stupid"
+                observer "observer0"
+                viewport [ 0 -.25 1 .25 ]
+            }
+
         }
 		
 		# Canvas using all layouts
@@ -197,6 +225,13 @@ server
                 viewport [ 0 0 1 .25 ]
                 channel "display3R"
             }
+            
+            #stupid
+            segment
+            {
+                viewport [ 0 -.25 1 .25 ]
+                channel "stupidL"
+            }
         }
 
         # wall compound - need swap barrier
@@ -248,6 +283,8 @@ server
 				eye [ LEFT ]
                 channel ( segment 7 layout "MultiView" view 3 )
             }
+            
+           
         }
     }
 }

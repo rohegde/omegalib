@@ -134,6 +134,14 @@ if(OMEGA_USE_DISPLAY)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
 		add_definitions( -DOMEGA_USE_MOUSE)
 	endif(OMEGA_USE_MOUSE)
+    
+    set(OMEGA_USE_KEYBOARD true CACHE BOOL "Enable/disable mouse input support")
+	if(OMEGA_USE_KEYBOARD)
+		set( srcs	 ${srcs} omega/KeyboardService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h )
+		add_definitions( -DOMEGA_USE_KEYBOARD)
+	endif(OMEGA_USE_KEYBOARD)
+    
 endif(OMEGA_USE_DISPLAY)
 
 if(WIN32)
