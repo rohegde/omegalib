@@ -52,6 +52,9 @@
 #ifdef OMEGA_USE_NATURAL_POINT
 	#include "omega/NaturalPointService.h"
 #endif
+#ifdef OMEGA_USE_KEYBOARD
+	#include "omega/KeyboardService.h"
+#endif
 #ifdef OMEGA_USE_MOUSE
 	#include "omega/MouseService.h"
 #endif
@@ -143,6 +146,9 @@ void SystemManager::setupServiceManager()
 #endif
 #ifdef OMEGA_USE_MOUSE
 	myServiceManager->registerService("MouseService", (ServiceAllocator)MouseService::New);
+#endif
+#ifdef OMEGA_USE_KEYBOARD
+	myServiceManager->registerService("KeyboardService", (ServiceAllocator)KeyboardService::New);
 #endif
 #ifdef OMEGA_USE_NATURAL_POINT
 	myServiceManager->registerService("NaturalPointService", (ServiceAllocator)NaturalPointService::New);

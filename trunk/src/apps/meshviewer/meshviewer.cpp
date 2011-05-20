@@ -142,6 +142,8 @@ void MeshViewerClient::initialize()
 		myCurrentInteractor = interactor;
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
+    
+    myShowUI = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,6 +217,32 @@ void MeshViewerClient::initUI()
 	light->setEnabled(true);
 	light->setColor(Color(0.35f, 0.3f, 0.3f));
 	light->setPosition(Vector3f(0, 0, -3));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::draw( const DrawContext& context)
+{
+    DrawContext copyContext = context;
+    if( !myShowUI )copyContext.layer = Layer::Scene0;
+    
+    EngineClient::draw( copyContext );
+    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
+{
+    if( evt.serviceType == Service::Keyboard )
+    {
+        if((char)evt.sourceId == 'q') exit(0);
+        if((char)evt.sourceId == 's' && evt.type == Event::Down) 
+        {
+            myShowUI = !myShowUI;
+        }
+        
+        //printf("%c\n", evt.sourceId);
+    }
+    return EngineClient::handleEvent( evt , context );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

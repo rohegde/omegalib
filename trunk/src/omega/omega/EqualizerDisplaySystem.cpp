@@ -32,6 +32,7 @@
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
 #include "omega/MouseService.h"
+#include "omega/KeyboardService.h"
 #include "omega/StringUtils.h"
 #include "omega/GpuManager.h"
 
@@ -247,8 +248,23 @@ public:
 	{
 		static int x;
 		static int y;
+
 		switch( event->data.type )
 		{
+#ifdef OMEGA_USE_KEYBOARD
+            
+            case eq::Event::KEY_PRESS:
+            {
+                KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Down);
+                return true;   
+            }
+            case eq::Event::KEY_RELEASE:
+            {
+                KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Up);
+				return true;   
+            }
+#endif //OMEGA_USE_KEYBOARD
+
 #ifdef OMEGA_USE_MOUSE
 	#ifdef USE_WINDOW_EVENTS
 		case eq::Event::WINDOW_POINTER_MOTION:
