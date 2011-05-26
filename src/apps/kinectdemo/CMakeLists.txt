@@ -28,7 +28,7 @@ SET( headers
 
 #######################################################################################################################
 # Include Directories
-INCLUDE_DIRECTORIES(${OmegaLib_SOURCE_DIR}/include/openni)
+#INCLUDE_DIRECTORIES(${OmegaLib_SOURCE_DIR}/include/openni)
 
 #######################################################################################################################
 # Setup compile info
