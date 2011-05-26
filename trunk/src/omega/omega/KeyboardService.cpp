@@ -37,7 +37,6 @@ using namespace omega;
 KeyboardService* KeyboardService::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void KeyboardService::keyboardButtonCallback( uint key, Event::Type type )
 {
 	if(mysInstance)
@@ -53,13 +52,26 @@ void KeyboardService::keyboardButtonCallback( uint key, Event::Type type )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void glutKeyDown(unsigned char key, int x, int y)
+{
+	KeyboardService::keyboardButtonCallback((uint)key, Event::Down);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void glutKeyUp(unsigned char key, int x, int y)
+{
+	KeyboardService::keyboardButtonCallback((uint)key, Event::Up);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void KeyboardService::initialize() 
 {
 	mysInstance = this;
 #ifdef OMEGA_USE_DISPLAY_GLUT
 	if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
 	{
-        glutKeyboardFunc(keyboardButtonCallback); 
+        glutKeyboardFunc(glutKeyDown); 
+        glutKeyboardUpFunc(glutKeyUp); 
 	}
 #endif
 }
