@@ -4,6 +4,8 @@
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
+ * Contributors:
+ *  Victor Mateevitsi		mvictoras@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -36,7 +38,11 @@
 #endif
 
 #ifdef OMEGA_USE_OPENNI
+#ifdef _WIN32
+#include <XnCppWrapper.h>
+#else
 #include <ni/XnCppWrapper.h>
+#endif
 #endif
 
 namespace omega
