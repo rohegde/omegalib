@@ -65,9 +65,13 @@ include_directories(
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
   ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include/
-  ${OmegaLib_SOURCE_DIR}/ext/windows/include/
- ) 
   
+  )
+  
+IF(WIN32)
+	INCLUDE_DIRECTORIES($ENV{PROGRAMFILES}/OpenNI/Include)
+ENDIF(WIN32)
+
 add_subdirectory(3rdparty/libconfig)
 add_subdirectory(3rdparty/equalizer)
 
