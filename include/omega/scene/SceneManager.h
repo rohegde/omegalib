@@ -55,7 +55,6 @@ namespace scene
 
 		GpuManager* getGpuManager();
 		SceneNode* getRootNode();
-		const AffineTransform3& getViewTransform();
 
 		void setAmbientLightColor(const Color& value);
 		Color getAmbientLightColor();
