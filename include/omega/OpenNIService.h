@@ -31,10 +31,11 @@
 #include "omega/Color.h"
 #include "omega/ServiceManager.h"
 #include "natnet/NatNetTypes.h"
-#include "openni/XnCppWrapper.h"
+#include <ni/XnCppWrapper.h>
 
+#ifdef WIN32
 #include "winsock2.h"
-
+#endif
 //#define KINECT_CONFIG "../../data/openni/conf/KinectConfig.xml"
 #define KINECT_CONFIG "./../../data/openni/conf/KinectConfig.xml"
 #define OMEGA_OPENNI_MAX_USERS 15
