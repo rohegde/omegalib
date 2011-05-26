@@ -36,7 +36,7 @@
 #endif
 
 #ifdef OMEGA_USE_OPENNI
-#include "openni/XnCppWrapper.h"
+#include <ni/XnCppWrapper.h>
 #endif
 
 namespace omega
