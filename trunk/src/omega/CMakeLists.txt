@@ -113,8 +113,12 @@ if(OMEGA_USE_DISPLAY)
 	endif(OMEGA_USE_DISPLAY_EQUALIZER)
 	
 	# Glut Display Module
-	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
-	if(OMEGA_USE_DISPLAY_GLUT)
+
+    if( WIN32 )
+	    set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+	endif( WIN32 )
+
+    if(OMEGA_USE_DISPLAY_GLUT)
 		add_definitions( -DOMEGA_USE_DISPLAY_GLUT)
 		set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
@@ -256,8 +260,10 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
-	target_link_libraries(omega freeglut)
-	include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/freeglut/include)
+    if( WIN32 )
+	    target_link_libraries(omega freeglut)
+	    include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/freeglut/include)
+    endif( WIN32 )
 endif(OMEGA_USE_DISPLAY_GLUT)
 
 if(OMEGA_USE_OPENCL)

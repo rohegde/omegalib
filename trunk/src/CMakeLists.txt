@@ -82,7 +82,9 @@ if(OMEGA_BUILD_UTILITY_LIB)
 endif(OMEGA_BUILD_UTILITY_LIB)
 
 if( OMEGA_USE_DISPLAY_GLUT) 
-	add_subdirectory(3rdparty/freeglut)
+    if(NOT APPLE) 
+	    add_subdirectory(3rdparty/freeglut)
+    endif(NOT APPLE)
 endif(OMEGA_USE_DISPLAY_GLUT)
 
 if(OMEGA_USE_DISPLAY)
@@ -90,6 +92,13 @@ if(OMEGA_USE_DISPLAY)
 endif(OMEGA_USE_DISPLAY)
 
 add_subdirectory(omega)
+
+# Check if 32bit MAC or 64bit MAC
+IF( APPLE )
+    if(_CMAKE_OSX_MACHINE MATCHES "64")
+        option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
+    endif()
+ENDIF( APPLE )
 
 if(OMEGA_BUILD_UTILITY_LIB)
 	add_subdirectory(outils)
