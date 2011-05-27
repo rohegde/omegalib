@@ -99,7 +99,7 @@ bool BitmapFont< OMT >::_initGLX( const std::string& name, const uint32_t size )
     font << "-*-";
 
     if( name.empty( ))
-        font << "times";
+        font << "arial";
     else
         font << name;
     font << "-*-r-*-*-" << size << "-*-*-*-*-*-*-*";
@@ -155,7 +155,7 @@ bool BitmapFont< OMT >::_initWGL( const std::string& name, const uint32_t size )
     font.lfPitchAndFamily = FF_DONTCARE | DEFAULT_QUALITY;
 
     if( name.empty( ))
-        strncpy( font.lfFaceName, "Times New Roman", LF_FACESIZE );
+        strncpy( font.lfFaceName, "Arial", LF_FACESIZE );
     else
         strncpy( font.lfFaceName, name.c_str(), LF_FACESIZE );
 
