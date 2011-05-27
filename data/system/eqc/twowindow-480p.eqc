@@ -19,13 +19,13 @@ server
                 window
                 {
                     name     "window1"
-                    viewport [ 50 50 427 480 ]
+                    viewport [ 50 50 854 480 ]
                     channel { name "channel1"  }
                 }
                 window
                 {
                     name     "window2"
-                    viewport [ 477 50 427 480 ]
+                    viewport [ 477 530 854 480 ]
                     channel { name "channel2"  }
                 }
             }
@@ -55,18 +55,18 @@ server
 
 			wall
 			{
-					bottom_left  [ -.7 -.4 0 ]
-					bottom_right [  .7 -.4 0 ]
-					top_left     [ -.7 .4 0 ]
+					bottom_left  [ -.7 -.8 0 ]
+					bottom_right [  .7 -.8 0 ]
+					top_left     [ -.7 .8 0 ]
 			}
             segment
             {
-                viewport [ 0 0 0.5 1 ]
+                viewport [ 0 0 1 0.5 ]
                 channel "channel1"
             }
             segment
             {
-                viewport [ 0.5 0 0.5 1 ]
+                viewport [ 0 0.5 1 0.5 ]
                 channel "channel2"
             }
         }
