@@ -15,10 +15,8 @@ server
             
             pipe									#Bottom Window
             {
-                name "GPU 1"
                 window
                 {
-                    name     "window1"
                     viewport [ 50 50 854 480 ]
                     channel { name "channel1"  }
                 }
@@ -33,7 +31,6 @@ server
         # Layouts - one for each demo mode
         layout
         {
-            name "MultiView"
             view
             {
                 name "view3D"
@@ -45,28 +42,20 @@ server
         # Canvas using all layouts
         canvas
         {
-            layout "MultiView"
-
-            segment
-            {
-                viewport [ 0 0 1 1 ]
-                channel "channel1"
-				wall
-				{
-						bottom_left  [ -.7 -.4 0 ]
-						bottom_right [  .7 -.4 0 ]
-						top_left     [ -.7 .4 0 ]
-				}
-            }
+            layout 0
+			wall
+			{
+					bottom_left  [ -.7 -.4 0 ]
+					bottom_right [  .7 -.4 0 ]
+					top_left     [ -.7 .4 0 ]
+			}
+            segment { channel "channel1" }
         }
 
         # wall compound - need swap barrier
         compound
         {
-            compound
-            {
-                channel ( segment 0 layout "MultiView" view 0 )
-            }
+			channel ( segment 0 layout 0 view 0 )
         }
     }
 }
