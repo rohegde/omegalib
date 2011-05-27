@@ -264,8 +264,6 @@ public:
 		return ret;
 	}
 
-#define USE_WINDOW_EVENTS
-
 	virtual bool handleEvent(const eq::ConfigEvent* event)
 	{
 		static int x;
@@ -288,7 +286,6 @@ public:
 #endif //OMEGA_USE_KEYBOARD
 
 #ifdef OMEGA_USE_MOUSE
-	#ifdef USE_WINDOW_EVENTS
 		case eq::Event::WINDOW_POINTER_MOTION:
 			{
 				eq::Window* w = this->find<eq::Window>(event->data.originator);
@@ -328,36 +325,6 @@ public:
 				return true;
 			}
 	#else
-		case eq::Event::CHANNEL_POINTER_MOTION:
-			{
-				x = event->data.pointerMotion.x; 
-				y = event->data.pointerMotion.y; 
-				MouseService::mouseMotionCallback(x, y);
-				return true;
-			}
-		case eq::Event::CHANNEL_POINTER_BUTTON_PRESS:
-			{
-				x = event->data.pointerButtonPress.x;
-				y = event->data.pointerButtonPress.y;
-				uint buttons = 0;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
-				MouseService::mouseButtonCallback(buttons, 1, x, y);
-				return true;
-			}
-		case eq::Event::CHANNEL_POINTER_BUTTON_RELEASE:
-			{
-				x = event->data.pointerButtonPress.x;
-				y = event->data.pointerButtonPress.y;
-				uint buttons = 0;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
-				if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
-				MouseService::mouseButtonCallback(buttons, 0, x, y);
-				return true;
-			}
-	#endif
 		case eq::Event::WINDOW_POINTER_WHEEL:
 			{
 				//x = event->data.pointerWheel.x;
@@ -612,6 +579,41 @@ public:
 
 protected:
 
+	void setupDrawContext(DrawContext* context, const uint128_t& spin)
+	{
+		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+		ApplicationClient* client = pipe->getClient();
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+
+		eq::PixelViewport pvp = getPixelViewport();
+		eq::PixelViewport gpvp = getWindow()->getPixelViewport();
+
+		// setup the context viewport.
+		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
+		context->frameNum = spin.low();
+		//context.glContext = this;
+
+		context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+		context->globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
+		
+		switch( getEye() )
+		{
+			case eq::fabric::EYE_LEFT:
+				context->eye = DrawContext::EyeLeft;
+				break;
+			case eq::fabric::EYE_RIGHT:
+				context->eye = DrawContext::EyeRight;
+				break;
+			case eq::fabric::EYE_CYCLOP:
+				context->eye = DrawContext::EyeCyclop;
+				break;
+		}
+
+		memcpy(context->modelview.data(), getHeadTransform().begin(), 16 * sizeof(float));
+		memcpy(context->projection.data(), getFrustum().compute_matrix().begin(), 16 * sizeof(float));
+	}
+
 	virtual void makeCurrent() 
 	{
 		myWindow->makeCurrent(false);
@@ -622,9 +624,7 @@ protected:
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-		FrameData& fd = pipe->getFrameData();
 		ApplicationClient* client = pipe->getClient();
-		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
 		//String chName = this->getName();
 		//ofmsg("%1%", %chName);
@@ -634,34 +634,25 @@ protected:
 		// setup OpenGL State
 		eq::Channel::frameDraw( spin );
 
-		eq::PixelViewport pvp = getPixelViewport();
-		eq::PixelViewport gpvp = getWindow()->getPixelViewport();
-
-		// setup the context viewport.
-		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
 		DrawContext context;
-		context.frameNum = spin.low();
-		//context.glContext = this;
+		setupDrawContext(&context, spin);
 
-		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
-		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
-		
-		switch( getEye() )
-		{
-			case eq::fabric::EYE_LEFT:
-				context.eye = DrawContext::EyeLeft;
-				break;
-			case eq::fabric::EYE_RIGHT:
-				context.eye = DrawContext::EyeRight;
-				break;
-			case eq::fabric::EYE_CYCLOP:
-				context.eye = DrawContext::EyeCyclop;
-				break;
-		}
+		context.layer = view->getLayer() & 0x03;
+		client->draw(context);
+	}
 
-		// Can we get the matrix out of equalizer instead of using opengl?
-		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
-		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.data());
+	virtual void frameViewStart( const uint128_t& spin )
+	{
+		eq::Channel::frameViewStart( spin );
+
+		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+		FrameData& fd = pipe->getFrameData();
+		ApplicationClient* client = pipe->getClient();
+
+		DrawContext context;
+		setupDrawContext(&context, spin);
+		context.layer = view->getLayer() & 0x0c;
 
 		// Dispatch received events events to application client.
 		int av = fd.getNumEvents();
@@ -683,7 +674,7 @@ protected:
 						int vy1 = context.globalViewport.y() + context.viewport.y();
 						int vx2 = vx1 + context.viewport.width();
 						int vy2 = vy1 + context.viewport.height();
-						ofmsg("pos %1% %2%", %vx1 %vx2);
+						//ofmsg("pos %1% (%2%-%3% %4%-%5%)", %evt.position %vx1 %vx2 %vy1 %vy2);
 
 						if(evt.position[0] > vx1 &&
 							evt.position[0] < vx2 &&
@@ -692,6 +683,7 @@ protected:
 						{
 							evt.position[0] -= context.globalViewport.x();
 							evt.position[1] -= context.globalViewport.y();
+							//ofmsg("pos %1%", %evt.position);
 							evt.processed = client->handleEvent(evt, context);
 						}
 					}
@@ -702,48 +694,18 @@ protected:
 				}
 			}
 		}
-
-		context.layer = view->getLayer() & 0x03;
-		client->draw(context);
 	}
 
 	virtual void frameViewFinish( const uint128_t& spin )
 	{
+		eq::Channel::frameViewFinish( spin );
+
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-		FrameData& fd = pipe->getFrameData();
 		ApplicationClient* client = pipe->getClient();
-		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
-		eq::PixelViewport pvp = getPixelViewport();
-		eq::PixelViewport gpvp = getWindow()->getPixelViewport();
-
-		// setup the context viewport.
-		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
 		DrawContext context;
-		context.frameNum = spin.low();
-		//context.glContext = this;
-
-		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
-		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
-		
-		switch( getEye() )
-		{
-			case eq::fabric::EYE_LEFT:
-				context.eye = DrawContext::EyeLeft;
-				break;
-			case eq::fabric::EYE_RIGHT:
-				context.eye = DrawContext::EyeRight;
-				break;
-			case eq::fabric::EYE_CYCLOP:
-				context.eye = DrawContext::EyeCyclop;
-				break;
-		}
-
-		// Can we get the matrix out of equalizer instead of using opengl?
-		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
-		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.data());
-
+		setupDrawContext(&context, spin);
 		context.layer = view->getLayer() & 0x0c;
 
 		if(context.layer != 0)
