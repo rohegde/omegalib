@@ -127,6 +127,7 @@ public:
 			{
 				DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
 				DIRTY_DRAW_STATS       = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
+				DIRTY_DRAW_FPS       = eq::fabric::Serializable::DIRTY_CUSTOM << 2,
 			};
 
 			virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
@@ -142,6 +143,10 @@ public:
 				{
 					os << myView->myDrawStatistics;
 				}
+				if( dirtyBits & DIRTY_DRAW_FPS )
+				{
+					os << myView->myDrawFps;
+				}
 			}
 
 			virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
@@ -156,6 +161,10 @@ public:
 				if( dirtyBits & DIRTY_DRAW_STATS )
 				{
 					is >> myView->myDrawStatistics;
+				}
+				if( dirtyBits & DIRTY_DRAW_FPS )
+				{
+					is >> myView->myDrawFps;
 				}
 			}
 
@@ -176,6 +185,7 @@ public:
 #pragma warning( pop )
 	{
 		myDrawStatistics = false;
+		myDrawFps = false;
 		myLayer = Layer::Null;
 		setUserData(&myProxy);
 	}
@@ -207,8 +217,20 @@ public:
 		return myDrawStatistics;
 	}
 
+	void drawFps(bool enable)
+	{
+		myDrawFps = enable;
+		myProxy.setDirty( Proxy::DIRTY_DRAW_FPS );
+	}
+
+	bool isDrawFpsEnabled()
+	{
+		return myDrawFps;
+	}
+
 private:
 	bool myDrawStatistics;
+	bool myDrawFps;
 	Layer::Enum myLayer;
 	Proxy myProxy;
 	friend class myProxy;
@@ -355,6 +377,7 @@ public:
 
 	virtual uint32_t startFrame( const uint128_t& version )
 	{
+		//omsg("----------------");
 		myFrameData.commit();
 		return eq::Config::startFrame( version );
 	}
@@ -603,6 +626,9 @@ protected:
 		ApplicationClient* client = pipe->getClient();
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
+		//String chName = this->getName();
+		//ofmsg("%1%", %chName);
+
 		//makeCurrent();
 
 		// setup OpenGL State
@@ -657,6 +683,7 @@ protected:
 						int vy1 = context.globalViewport.y() + context.viewport.y();
 						int vx2 = vx1 + context.viewport.width();
 						int vy2 = vy1 + context.viewport.height();
+						ofmsg("pos %1% %2%", %vx1 %vx2);
 
 						if(evt.position[0] > vx1 &&
 							evt.position[0] < vx2 &&
@@ -676,16 +703,72 @@ protected:
 			}
 		}
 
-		context.layer = view->getLayer();
+		context.layer = view->getLayer() & 0x03;
 		client->draw(context);
 	}
 
 	virtual void frameViewFinish( const uint128_t& spin )
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+		FrameData& fd = pipe->getFrameData();
+		ApplicationClient* client = pipe->getClient();
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+
+		eq::PixelViewport pvp = getPixelViewport();
+		eq::PixelViewport gpvp = getWindow()->getPixelViewport();
+
+		// setup the context viewport.
+		// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
+		DrawContext context;
+		context.frameNum = spin.low();
+		//context.glContext = this;
+
+		context.viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
+		context.globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
+		
+		switch( getEye() )
+		{
+			case eq::fabric::EYE_LEFT:
+				context.eye = DrawContext::EyeLeft;
+				break;
+			case eq::fabric::EYE_RIGHT:
+				context.eye = DrawContext::EyeRight;
+				break;
+			case eq::fabric::EYE_CYCLOP:
+				context.eye = DrawContext::EyeCyclop;
+				break;
+		}
+
+		// Can we get the matrix out of equalizer instead of using opengl?
+		glGetFloatv( GL_MODELVIEW_MATRIX, context.modelview.data());
+		glGetFloatv( GL_PROJECTION_MATRIX, context.projection.data());
+
+		context.layer = view->getLayer() & 0x0c;
+
+		if(context.layer != 0)
+		{
+			client->draw(context);
+		}
+
 		if(view->isDrawStatisticsEnabled())
 		{
 			drawStatistics();
+		}
+		else if(view->isDrawFpsEnabled())
+		{
+			EQ_GL_CALL( applyBuffer( ));
+			EQ_GL_CALL( applyViewport( ));
+			EQ_GL_CALL( setupAssemblyState( ));
+
+			glMatrixMode( GL_PROJECTION );
+			glLoadIdentity();
+			applyScreenFrustum();
+
+			glMatrixMode( GL_MODELVIEW );
+			glDisable( GL_LIGHTING );
+
+			getWindow()->drawFPS();
 		}
 	}
 
@@ -808,6 +891,8 @@ void EqualizerDisplaySystem::initLayers()
 			{
 				if(stView.exists("drawStatistics"))
 					view->drawStatistics(stView["drawStatistics"]);
+				if(stView.exists("drawFps"))
+					view->drawFps(stView["drawFps"]);
 			}
 
 			// Set enabled layers

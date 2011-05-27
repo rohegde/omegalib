@@ -127,7 +127,13 @@ Log& Log::instance( const char* subdir, const char* file,
         _logInstance = log;
     }
 
-    log->setLogInfo( subdir, file, line );
+	const char* pfile = strrchr(file, '/');
+	if(pfile == NULL)
+	{
+		pfile = strrchr(file, '\\');
+	}
+
+    log->setLogInfo( subdir, pfile, line );
     return *log;
 }
 

@@ -144,6 +144,7 @@ void MeshViewerClient::initialize()
 	getSceneManager()->addActor(myCurrentInteractor);
     
     myShowUI = true;
+	setVisibleEntity(0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -53,20 +53,20 @@ namespace omega
 			Scene1 = 2,
 			Scene2 = 3,
 
-			UI0 = 4,
-			Scene0UI0 = 5,
-			Scene1UI0 = 6,
-			Scene2UI0 = 7,
+			Overlay0 = 4,
+			Scene0Overlay0 = 5,
+			Scene1Overlay0 = 6,
+			Scene2Overlay0 = 7,
 
-			UI1 = 8,
-			Scene0UI1 = 9,
-			Scene1UI1 = 10,
-			Scene2UI1 = 11,
+			Overlay1 = 8,
+			Scene0Overlay1 = 9,
+			Scene1Overlay1 = 10,
+			Scene2Overlay1 = 11,
 
-			UI2 = 12,
-			Scene0UI2 = 13,
-			Scene1UI2 = 14,
-			Scene2UI2 = 15
+			Overlay2 = 12,
+			Scene0Overlay2 = 13,
+			Scene1Overlay2 = 14,
+			Scene2Overlay2 = 15
 		};
 
 		static Enum fromString(const String& str);
