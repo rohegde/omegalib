@@ -109,7 +109,9 @@ namespace omega
 
 	// Basic typedefs
 	typedef unsigned char byte;
+	#ifndef __GNUC__
 	typedef unsigned int uint;
+	#endif
 	typedef unsigned long long uint64;
 	typedef unsigned long long int64;
 	typedef std::string String;
