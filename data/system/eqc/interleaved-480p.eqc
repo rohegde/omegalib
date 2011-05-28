@@ -17,28 +17,23 @@ server
             {
                 window
                 {
-                    viewport [ 50 480 854 240 ]
-					attributes 
-					{ 
-						hint_drawable FBO 
-						hint_doublebuffer OFF
-					}
-                    channel { name "cleft" }
-                }
-                window
-                {
-                    viewport [ 50 700 854 240 ]
-					attributes 
-					{ 
-						hint_drawable FBO 
-						hint_doublebuffer OFF
-					}
-                    channel { name "cright" }
-                }
-                window
-                {
                     viewport [ 50 50 854 480 ]
-                    channel { name "channel1"  }
+                    channel 
+					{
+						name "cright" 
+						viewport [ 0 0 1 .5 ]
+						drawable [ FBO_COLOR ]
+					}
+                    channel 
+					{
+						name "cleft" 
+						viewport [ 0 0 1 .5 ]
+						drawable [ FBO_COLOR ]
+					}
+                    channel 
+					{ 
+						name "channel1"  
+					}
                 }
             }
         }
@@ -78,14 +73,12 @@ server
 			channel ( segment 0 view 0 )
 			eye [ LEFT RIGHT ]
 			attributes { stereo_mode PASSIVE }
-			task [ ASSEMBLE ]
             compound
             {
 				eye [ RIGHT ]
                 channel "cleft"
                 pixel [ 0 0 1 2 ]
                 outputframe { type texture }
-				attributes { stereo_mode PASSIVE }
             }
             compound
             {
@@ -93,7 +86,6 @@ server
                 channel "cright"
                 pixel [ 0 1 1 2 ]
                 outputframe { type texture }
-				attributes { stereo_mode PASSIVE }
             }
             inputframe { name "frame.cleft" }
             inputframe { name "frame.cright" }
