@@ -7,6 +7,10 @@ Main objectives for this release: support of multiple object manipulation throug
 *Expected delivery*: September 2011
 
 ==Completed Tasks==
+* Compiles under Mac OSX in i386 mode
+* Can use XCode as compiler (cmake -G XCode)
+*OpenNI library works under Linux
+
 ==Work In Progress==
  * Integration of PS3 controller (*Arthur*)
  * New version of meshviewer supporting multiple object interaction and more polished look & feel. (*Alessandro*)
