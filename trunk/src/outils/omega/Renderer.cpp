@@ -54,6 +54,7 @@ void Renderer::beginDraw3D(const DrawContext& context)
 	glViewport(context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height());
 
 	glPushAttrib(GL_ENABLE_BIT);
+	glEnable(GL_DEPTH_TEST);
 
 	myDrawing = true;
 }
