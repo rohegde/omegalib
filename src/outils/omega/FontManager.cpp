@@ -43,6 +43,7 @@ Vector2f Font::computeSize(const omega::String& text)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Font::render(const omega::String& text, float x, float y) 
 { 
+	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glScalef(1.0f, -1.0f, 1.0f);
 

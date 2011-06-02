@@ -712,7 +712,6 @@ protected:
 		{
 			client->draw(context);
 		}
-
 		if(view->isDrawStatisticsEnabled())
 		{
 			drawStatistics();
@@ -722,7 +721,6 @@ protected:
 			EQ_GL_CALL( applyBuffer( ));
 			EQ_GL_CALL( applyViewport( ));
 			EQ_GL_CALL( setupAssemblyState( ));
-
 			glMatrixMode( GL_PROJECTION );
 			glLoadIdentity();
 			applyScreenFrustum();
@@ -731,6 +729,7 @@ protected:
 			glDisable( GL_LIGHTING );
 
 			getWindow()->drawFPS();
+			EQ_GL_CALL( resetAssemblyState( ));
 		}
 	}
 
