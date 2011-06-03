@@ -115,21 +115,23 @@ bool EngineClient::handleEvent(const Event& evt, DrawContext& context)
 void EngineClient::draw(const DrawContext& context)
 {
 	// first two bits = scene layer
-	int sceneLayer = context.layer & 0x03;
+	int sceneId = context.layer & 0x03;
 	// second two bits = ui layer
-	int uiLayer = (context.layer >> 2) & 0x03;
+	int overlayId = (context.layer >> 2) & 0x03;
 
 	myGpuManager->beginDraw();
-	if(myTextureBackgroundEnabled)
+	// NOTE: Background rendering is active only for SCENE rendering.
+	// When rendering overlays only, don't draw background again or it may delete whatever has been drawn before overlays.
+	if(myTextureBackgroundEnabled && (sceneId != 0 || overlayId == 0))
 	{
 		drawBackGrd( context );
 	}
 	
-	if(sceneLayer != 0)
+	if(sceneId != 0)
 	{
 		mySceneManager->draw(context);
 	}
-	if(uiLayer != 0)
+	if(overlayId != 0)
 	{
 		myUIManager->draw(context);
 	}

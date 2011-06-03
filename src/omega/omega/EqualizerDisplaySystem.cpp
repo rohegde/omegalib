@@ -571,14 +571,17 @@ private:
 class ChannelImpl: public eq::Channel/*, IGLContextManager*/
 {
 public:
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	ChannelImpl( eq::Window* parent ) : eq::Channel( parent ), myWindow(parent) 
-	{
-	}
+	{}
 
-	virtual ~ChannelImpl() {}
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	virtual ~ChannelImpl() 
+	{}
 
 protected:
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	void setupDrawContext(DrawContext* context, const uint128_t& spin)
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
@@ -614,12 +617,14 @@ protected:
 		memcpy(context->projection.data(), getFrustum().compute_matrix().begin(), 16 * sizeof(float));
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void makeCurrent() 
 	{
 		myWindow->makeCurrent(false);
 		glewSetContext(this->glewGetContext());
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void frameDraw( const uint128_t& spin )
 	{
 		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
@@ -641,6 +646,7 @@ protected:
 		client->draw(context);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void frameViewStart( const uint128_t& spin )
 	{
 		eq::Channel::frameViewStart( spin );
@@ -696,6 +702,7 @@ protected:
 		}
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void frameViewFinish( const uint128_t& spin )
 	{
 		eq::Channel::frameViewFinish( spin );
