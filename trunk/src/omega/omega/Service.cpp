@@ -44,6 +44,7 @@ void Service::doSetup(Setting& settings)
 
 	// call service specific setup method
 	setup(settings);
+	bLeftHandedSystem = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,4 +82,9 @@ Event* Service::readTail()
 Event* Service::getEvent(int index)
 {
 	return myManager->getEvent(index);
+}
+
+void Service::setLeftHandedSystem(bool leftHanded)
+{
+	bLeftHandedSystem = leftHanded;
 }
