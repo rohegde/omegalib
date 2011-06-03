@@ -71,6 +71,8 @@ namespace omega
 		Event* readHead();
 		Event* readTail();
 		Event* getEvent(int index);
+		bool bLeftHandedSystem;
+		void setLeftHandedSystem(bool leftHanded);
 
 	private:
 		void doSetup(Setting& settings);

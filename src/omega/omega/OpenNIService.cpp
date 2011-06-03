@@ -250,6 +250,9 @@ void OpenNIService::poll(void)
 								theEvent->sourceId = t.trackableId;
 								theEvent->type = Event::Update;
 								theEvent->orientation = Quaternion::Identity();
+
+								if( bLeftHandedSystem ) 
+									theEvent->position[2] = - theEvent->position[2];
 							}
 						}
 					}
