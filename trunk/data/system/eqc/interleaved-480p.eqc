@@ -2,7 +2,7 @@
 
 global
 {
-    EQ_CONFIG_FATTR_EYE_BASE        1.025
+    EQ_CONFIG_FATTR_EYE_BASE        0.06
     EQ_WINDOW_IATTR_PLANES_STENCIL ON
 }
 
@@ -22,13 +22,13 @@ server
 					{
 						name "cright" 
 						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR ]
+						drawable [ FBO_COLOR FBO_DEPTH]
 					}
                     channel 
 					{
 						name "cleft" 
 						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR ]
+						drawable [ FBO_COLOR FBO_DEPTH]
 					}
                     channel 
 					{ 
