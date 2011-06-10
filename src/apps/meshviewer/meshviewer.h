@@ -84,6 +84,7 @@ public:
 
 	void handleUIEvent(const UIEvent& evt);
 	void setVisibleEntity(int entityId);
+	void update(const UpdateContext& context);
 
 private:
 	// Entities
@@ -100,6 +101,7 @@ private:
 	Actor* myCurrentInteractor;
     
     bool myShowUI;
+   	bool autoRotate;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

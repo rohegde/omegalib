@@ -144,6 +144,7 @@ void MeshViewerClient::initialize()
 	getSceneManager()->addActor(myCurrentInteractor);
     
     myShowUI = true;
+    autoRotate = true;
 	setVisibleEntity(0);
 }
 
@@ -240,6 +241,10 @@ bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
         {
             myShowUI = !myShowUI;
         }
+        if((char)evt.sourceId == 'r' && evt.type == Event::Down) 
+        {
+            autoRotate = !autoRotate;
+        }
         
         //printf("%c\n", evt.sourceId);
     }
@@ -290,6 +295,19 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 	{
 		setTextureBackgroundEnabled( false );
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::update(const UpdateContext& context)
+{
+	SceneNode* daSceneNode = myVisibleEntity->getSceneNode();
+	if ( autoRotate )
+	{
+		daSceneNode->yaw( 0.01 );
+	}
+	//else daSceneNode->yaw(  0.0 );
+    return EngineClient::update( context );
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
