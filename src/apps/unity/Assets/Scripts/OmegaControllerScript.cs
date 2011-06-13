@@ -65,6 +65,40 @@ public class OmegaControllerScript : MonoBehaviour {
 		Camera.main.transform.Rotate(rotationVector+tiltVector);
 	}
 	
+	public void UpdateControllerData( string[] words ){
+		int ID = int.Parse(words[1]);
+		
+		if( ID == 0 ){
+			float[] analogLeft = new float[2];
+			float[] analogRight = new float[2];
+			int[] buttons = new int[16];
+				
+			// Normalize axis data and scale to sensitivity variable
+			analogLeft[0] = int.Parse(words[2]) / 1000.0f;
+			analogLeft[1]  = int.Parse(words[3]) / 1000.0f;
+			analogRight[0] = int.Parse(words[4]) / 1000.0f;
+			analogRight[1] = int.Parse(words[5]) / 1000.0f;
+					
+			for( int i = 0; i < 16; i++ ){
+				buttons[i] = int.Parse(words[i+6]);
+			}
+		//int POV = int.Parse(words[21]);
+		//float slider = int.Parse(words[22]) / 1000.0f;
+		float roll = int.Parse(words[23]) / 1000.0f;
+		float pitch = int.Parse(words[24]) / 1000.0f;
+		
+		
+			MoveVector(analogLeft);
+			RotateVector(analogRight);
+			TiltVector(roll, pitch);
+			Buttons(buttons);
+		} else {
+			//GameObject.FindGameObjectWithTag("Player2").GetComponent<OmegaControllerScript>().MoveVector(analogLeft);
+			//GameObject.FindGameObjectWithTag("Player2").GetComponent<OmegaControllerScript>().RotateVector(analogRight);
+			//GameObject.FindGameObjectWithTag("Player2").GetComponent<OmegaControllerScript>().TiltVector(roll, pitch);
+		}
+	}
+	
 	public void MoveVector( float[] value ){
 		movementVector = new Vector3( value[0], 0, -value[1] );
 		//transform.Translate(new Vector3( value[0], 0, -value[1] ));
