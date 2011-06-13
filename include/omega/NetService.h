@@ -30,9 +30,11 @@
 
 #include "omega/osystem.h"
 #include "omega/ServiceManager.h"
+#include <sys/timeb.h>
 
 #include "pqlabs/PQMTClient.h"
 using namespace PQ_SDK_MultiTouch;
+#define OMEGA_US_LINUX
 
 #if defined (linux)
 #include <stdio.h>
@@ -90,17 +92,17 @@ private:
 	const char* serverPort;
 	const char* dataPort;
 	
-	
 	#define DEFAULT_BUFLEN 512
 	char recvbuf[DEFAULT_BUFLEN];
 	int iResult, iSendResult;
 
-	
 	int SenderAddrSize;
 	int recvbuflen;
 	bool readyToReceive;
 	int screenX;
 	int screenY;
+
+	std::map<int,float*> touchlist;
 };
 
 }; // namespace omega
