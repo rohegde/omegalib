@@ -148,6 +148,13 @@ if(OMEGA_USE_DISPLAY)
     
 endif(OMEGA_USE_DISPLAY)
 
+set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
+if(OMEGA_USE_NETSERVICE)
+	set( srcs	 ${srcs} omega/NetService.cpp )
+	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NetService.h )
+	add_definitions( -DOMEGA_USE_NETSERVICE)
+endif(OMEGA_USE_NETSERVICE)
+
 SET(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support")
 IF(OMEGA_USE_OPENNI)
 	SET( srcs	 ${srcs} omega/OpenNIService.cpp )
@@ -182,13 +189,6 @@ if(WIN32)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/PQService.h )
 		add_definitions( -DOMEGA_USE_PQLABS)
 	endif(OMEGA_USE_PQLABS)
-
-	set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
-	if(OMEGA_USE_NETSERVICE)
-		set( srcs	 ${srcs} omega/NetService.cpp )
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NetService.h )
-		add_definitions( -DOMEGA_USE_NETSERVICE)
-	endif(OMEGA_USE_NETSERVICE)
 
 	SET(OMEGA_USE_DIRECTINPUT true CACHE BOOL "Enable/disable DirectX Input support")
 	IF(OMEGA_USE_DIRECTINPUT)
