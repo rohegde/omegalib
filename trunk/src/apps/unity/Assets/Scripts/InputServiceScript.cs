@@ -31,6 +31,7 @@
  *
  * Scripts that handle events: These scripts should be attached to the receiving game object. These scripts handle messages with the input data.
  * You should write your own scripts that inherit from these.
+ *		- MocapScript.cs (GameObjects using these are tagged as 'OmegaListener')
  *		- TouchScript.cs (GameObjects using these are tagged as 'TouchListener')
  *		- OmegaControllerScript.cs
  *
@@ -359,7 +360,7 @@ public class InputServiceScript : MonoBehaviour {
 				int[] buttons = new int[16];
 				
 				// Normalize axis data and scale to sensitivity variable
-				int ID = int.Parse(words[1]);
+				//int ID = int.Parse(words[1]);
 				analogLeft[0] = int.Parse(words[2]) / 1000.0f;
 				analogLeft[1]  = int.Parse(words[3]) / 1000.0f;
 				analogRight[0] = int.Parse(words[4]) / 1000.0f;
@@ -369,11 +370,15 @@ public class InputServiceScript : MonoBehaviour {
 					buttons[i] = int.Parse(words[i+6]);
 				}
 				//int POV = int.Parse(words[21]);
-				float slider = int.Parse(words[22]) / 1000.0f;
-				float roll = int.Parse(words[23]) / 1000.0f;
-				float pitch = int.Parse(words[24]) / 1000.0f;
+				//float slider = int.Parse(words[22]) / 1000.0f;
+				//float roll = int.Parse(words[23]) / 1000.0f;
+				//float pitch = int.Parse(words[24]) / 1000.0f;
 				
-				ProcessControllerEvent( ID, analogLeft, analogRight, buttons, slider, roll, pitch );
+				GameObject[] eventObjects = GameObject.FindGameObjectsWithTag("ControllerListener");
+				foreach (GameObject eventObj in eventObjects) {
+					eventObj.BroadcastMessage("UpdateControllerData",words,SendMessageOptions.DontRequireReceiver);
+				}
+				//ProcessControllerEvent( ID, analogLeft, analogRight, buttons, slider, roll, pitch );
 			}  else if( inputType == (int)ServiceType.Mocap ){
 				//Debug.Log("Mocap: " + dGram);
 				//int ID = int.Parse(words[1]);
@@ -382,7 +387,7 @@ public class InputServiceScript : MonoBehaviour {
 				//float zPos = float.Parse(words[4]);
 				GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
 				foreach (GameObject touchObj in touchObjects) {
-					touchObj.BroadcastMessage("UpdateMocapPosition",words);
+					touchObj.BroadcastMessage("UpdateMocapPosition",words,SendMessageOptions.DontRequireReceiver);
 				}
 				//GameObject.FindGameObjectWithTag("OmegaListener").GetComponent<MocapScript>().UpdateMocapPosition(ID,xPos,yPos,zPos);
 				//ProcessMocapEvent(xPos,yPos,zPos);
@@ -392,7 +397,6 @@ public class InputServiceScript : MonoBehaviour {
         {
             Debug.Log("Unknown Dgram format: " + dGram);
         }
-
     }
 
     void OnApplicationQuit()
@@ -405,6 +409,11 @@ public class InputServiceScript : MonoBehaviour {
     }
 	
 	void ProcessControllerEvent( int ID,  float[] analogLeft, float[] analogRight, int[] buttons, float slider, float roll, float pitch ){
+		/*
+		GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("TouchListener");
+		foreach (GameObject touchObj in touchObjects) {
+			touchObj.BroadcastMessage("OnTouch",touch,SendMessageOptions.DontRequireReceiver);
+		}
 		if( ID == 0 ){
 			GameObject.FindGameObjectWithTag("Player").GetComponent<OmegaControllerScript>().MoveVector(analogLeft);
 			GameObject.FindGameObjectWithTag("Player").GetComponent<OmegaControllerScript>().RotateVector(analogRight);
@@ -415,6 +424,7 @@ public class InputServiceScript : MonoBehaviour {
 			//GameObject.FindGameObjectWithTag("Player2").GetComponent<OmegaControllerScript>().RotateVector(analogRight);
 			//GameObject.FindGameObjectWithTag("Player2").GetComponent<OmegaControllerScript>().TiltVector(roll, pitch);
 		}
+		*/
 	}
 	
 	void ProcessTouchEvent( Touches touch ){
