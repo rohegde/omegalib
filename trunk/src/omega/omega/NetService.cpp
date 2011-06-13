@@ -17,7 +17,7 @@ void NetService::setup(Setting& settings)
 {
 	if(settings.exists("serverIP"))
 	{
-		serverAddress =  (const char*)settings["serverIP"];
+		serverAddress = (const char*)settings["serverIP"];
 	}
 	if(settings.exists("msgPort"))
 	{
@@ -29,12 +29,12 @@ void NetService::setup(Setting& settings)
 	}
 	if(settings.exists("screenX"))
 	{
-		screenX =  settings["screenX"];
+		screenX = settings["screenX"];
 		printf("NetService: screenX set to %d\n", screenX);
 	}
 	if(settings.exists("screenY"))
 	{
-		screenY =  settings["screenY"];
+		screenY = settings["screenY"];
 		printf("NetService: screenY set to %d\n", screenY);
 	}
 }
@@ -322,7 +322,7 @@ void NetService::parseDGram(int result)
 		// Parse message out of datagram
 		int lastIndex = 0;
 		int inputType = -1;
-		float params[7];
+		float params[16];
 		int currentParam = 0;
 
 		for(int i = 0; i < msgLen; i++ ){
@@ -344,6 +344,9 @@ void NetService::parseDGram(int result)
 
 		mysInstance->lockEvents();
 		Event* evt;
+		timeb tb;
+		ftime( &tb );
+		int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
 
 		switch(inputType){
 			case(Service::Mocap): // MoCap
@@ -363,15 +366,8 @@ void NetService::parseDGram(int result)
 			case(Service::Pointer): // Touch (points only not gestures)
 				evt = mysInstance->writeHead();
 				evt->serviceType = Service::Pointer;
-				if( (int)(params[0]) == TP_DOWN ){
-					evt->type = Event::Down;
-				}
-				else if( (int)(params[0]) == TP_MOVE ){
-					evt->type = Event::Move;
-				}
-				else if( (int)(params[0]) == TP_UP ){
-					evt->type = Event::Up;
-				}
+				evt->timestamp = curTime;
+				
 				evt->sourceId = (int)(params[1]);
 				evt->position[0] = params[2] * (float)screenX;
 				evt->position[1] = params[3] * (float)screenY;
@@ -379,13 +375,60 @@ void NetService::parseDGram(int result)
 				evt->numberOfPoints = 1;
 				evt->pointSet[0][0] = params[4] * (float)screenX;
 				evt->pointSet[0][1] = params[5] * (float)screenY;
+
+				params[6] = curTime;
+
+				if( (int)(params[0]) == TP_DOWN ){
+					evt->type = Event::Down;
+					touchlist[params[1]] = params;
+				}
+				else if( (int)(params[0]) == TP_MOVE ){
+					evt->type = Event::Move;
+					touchlist[params[1]] = params;
+				}
+				else if( (int)(params[0]) == TP_UP ){
+					evt->type = Event::Up;
+				}
+				
 				break;
 			default:
 				printf("NetService: Unsupported input type %d \n", inputType);
 				break;
 		}// switch
+		
 		mysInstance->unlockEvents();
 		//printf("Receiving datagram '%s'\n", message);
+
+	
+	
+	int touchTimeout = 250; // milliseconds
+
+	
+	std::map<int, float*>::iterator p;
+	printf("------------------\n");
+	for(p = touchlist.begin(); p != touchlist.end(); p++) {
+		
+		float* touch = p->second;
+		
+		printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)touch[6], (int)touch[1], touch[2],touch[3] );
+		/*
+		if( curTime > evt->timestamp + touchTimeout ){
+			// Touch will be removed from touchlist - send touch up event
+			Event* newEvt = mysInstance->writeHead();
+			newEvt->type = Event::Up;
+			newEvt->position = evt->position;
+
+			newEvt->numberOfPoints = 1;
+			newEvt->pointSet[0][0] = evt->pointSet[0][0];
+			newEvt->pointSet[0][1] = evt->pointSet[0][1];
+			newEvt->sourceId = evt->sourceId;
+		} else {
+			newTouchlist[evt->sourceId] = evt; // Copy active touches
+		}
+		*/
+	}
+	printf("------------------\n");
+	
 	} else {
 #if defined(WIN32)
 		printf("recvfrom failed with error code '%d'\n", WSAGetLastError());

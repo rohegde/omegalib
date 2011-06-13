@@ -25,15 +25,14 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega.h"
-
 #include <time.h>
-#include <winsock2.h>
-#include <ws2tcpip.h>
 #include <vector>
 
 using namespace omega;
 
 #ifdef WIN32
+#include <ws2tcpip.h>
+#include <winsock2.h>
 #define itoa _itoa
 #endif
 
