@@ -12,7 +12,11 @@ Main objectives for this release: support of multiple object manipulation throug
  * OpenNI library works under Linux
 
 ==Work In Progress==
- * Integration of PS3 controller (*Arthur*)
+ * Integration of PS3 and Wii controller (*Arthur*)
+     * PS3 needs to directly connect without using MotionInJoy.
+     * Wii remote orientation using Wii Motion Plus.
+ * Unity example project: (*Arthur*)
+     * Using touch, Kinect, 3D, controllers. 
  * New version of meshviewer supporting multiple object interaction and more polished look & feel. (*Alessandro*)
  * Integration with OpenSceneGraph (*Alessandro*)
  * Integration with Qt (*Alessandro*)
