@@ -2,7 +2,7 @@
 
 = omegalib v0.5 (*current developement version*) =
 ==Summary==
-Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Possibly, initial experiments running on clustered display systems.
+Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Integration with External scene graph and UI libraries (like OpenSceneGraph and Qt) is also planned for this version. Possibily, initial experiments running on clustered display systems. 
 
 *Expected delivery*: September 2011
 
@@ -14,6 +14,8 @@ Main objectives for this release: support of multiple object manipulation throug
 ==Work In Progress==
  * Integration of PS3 controller (*Arthur*)
  * New version of meshviewer supporting multiple object interaction and more polished look & feel. (*Alessandro*)
+ * Integration with OpenSceneGraph (*Alessandro*)
+ * Integration with Qt (*Alessandro*)
  * Vtk library / viewer: (*Alessandro*)
    * Support visualization of multiple entities.
    * Script loading in separate thread.
