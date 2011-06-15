@@ -147,6 +147,7 @@ void NetService::initialize()
 	}
 #endif
 	initHandshake();
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,10 +262,57 @@ void NetService::poll()
 		} else {
 			//if( result == 0 )
 			//	printf("UDP socket has no data to receive '%d'\n", WSAGetLastError());
-			//if( result == -1 )
-			//	printf("UDP socket error code '%d'\n", WSAGetLastError());
+                        //if( result == -1 )
+                        //	printf("UDP socket error code '%d'\n", WSAGetLastError());
 		}// if-else select result
 	}
+	
+	//-----------------------------------------------
+	// Check touchlist for old touches (haven't been updated recently) and remove them
+	Event* evt;
+	timeb tb;
+	ftime( &tb );
+	int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
+	int touchTimeout = 250; // milliseconds
+
+	
+	std::map<int, float*>::iterator p;
+	//printf("------------------\n");
+	swaplist.clear();
+	for(p = touchlist.begin(); p != touchlist.end(); p++) {
+		
+		float* params = p->second;
+		
+		//printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)params[1], params[2],params[3] );
+		int ts = (int)params[6] + touchTimeout;
+		//printf("Time: %d > %d ?? \n", curTime , ts );
+		if( curTime > (int)params[6] + touchTimeout ){
+			mysInstance->lockEvents();
+			// Touch will be removed from touchlist - send touch up event
+			Event* newEvt = mysInstance->writeHead();
+			newEvt->type = Event::Up;
+			newEvt = mysInstance->writeHead();
+			newEvt->serviceType = Service::Pointer;
+			newEvt->timestamp = curTime;
+				
+			newEvt->sourceId = (int)(params[1]);
+			newEvt->position[0] = params[2] * (float)screenX;
+			newEvt->position[1] = params[3] * (float)screenY;
+
+			newEvt->numberOfPoints = 1;
+			newEvt->pointSet[0][0] = params[4] * (float)screenX;
+			newEvt->pointSet[0][1] = params[5] * (float)screenY;
+
+			mysInstance->unlockEvents();
+			//printf("Touch ID %d removed at (%f, %f)\n", (int)params[1], params[2],params[3] );
+			swaplist.erase( (int)params[1] );
+		} else {
+			swaplist[evt->sourceId] = params; // Copy active touches
+		}
+		
+	}
+	touchlist = swaplist;
+	//printf("------------------\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,7 +395,7 @@ void NetService::parseDGram(int result)
 		timeb tb;
 		ftime( &tb );
 		int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
-
+		//printf("New Time %d \n", curTime );
 		switch(inputType){
 			case(Service::Mocap): // MoCap
 				evt = mysInstance->writeHead();
@@ -377,17 +425,23 @@ void NetService::parseDGram(int result)
 				evt->pointSet[0][1] = params[5] * (float)screenY;
 
 				params[6] = curTime;
-
-				if( (int)(params[0]) == TP_DOWN ){
+				//printf("New Time set %d \n", curTime );
+				///printf("New Time param %d \n", (int)params[6] );
+				if( (int)(params[0]) == Event::Down ){
 					evt->type = Event::Down;
-					touchlist[params[1]] = params;
+					touchlist[(int)params[1]] = params;
+					//pair<map<int,float*>::iterator,bool> ret
+					//ret = touchlist.insert (pair<int,float*>(params[1],params) );
+					printf("NetService: Touch ID %d - DOWN\n", (int)(params[1]));
 				}
-				else if( (int)(params[0]) == TP_MOVE ){
+				else if( (int)(params[0]) == Event::Move ){
 					evt->type = Event::Move;
-					touchlist[params[1]] = params;
+					touchlist[(int)params[1]] = params;
+					printf("NetService: Touch ID %d - MOVE\n", (int)(params[1]));
 				}
-				else if( (int)(params[0]) == TP_UP ){
+				else if( (int)(params[0]) == Event::Up ){
 					evt->type = Event::Up;
+					printf("NetService: Touch ID %d - UP\n", (int)(params[1]));
 				}
 				
 				break;
@@ -398,36 +452,7 @@ void NetService::parseDGram(int result)
 		
 		mysInstance->unlockEvents();
 		//printf("Receiving datagram '%s'\n", message);
-
 	
-	
-	int touchTimeout = 250; // milliseconds
-
-	
-	std::map<int, float*>::iterator p;
-	printf("------------------\n");
-	for(p = touchlist.begin(); p != touchlist.end(); p++) {
-		
-		float* touch = p->second;
-		
-		printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)touch[6], (int)touch[1], touch[2],touch[3] );
-		/*
-		if( curTime > evt->timestamp + touchTimeout ){
-			// Touch will be removed from touchlist - send touch up event
-			Event* newEvt = mysInstance->writeHead();
-			newEvt->type = Event::Up;
-			newEvt->position = evt->position;
-
-			newEvt->numberOfPoints = 1;
-			newEvt->pointSet[0][0] = evt->pointSet[0][0];
-			newEvt->pointSet[0][1] = evt->pointSet[0][1];
-			newEvt->sourceId = evt->sourceId;
-		} else {
-			newTouchlist[evt->sourceId] = evt; // Copy active touches
-		}
-		*/
-	}
-	printf("------------------\n");
 	
 	} else {
 #if defined(WIN32)
