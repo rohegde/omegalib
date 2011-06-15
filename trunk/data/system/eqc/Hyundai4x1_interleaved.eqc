@@ -72,7 +72,7 @@ server
 					}
                 }
                 
-                
+          
                 #----- display2 -----#
                 
                 window
@@ -93,7 +93,7 @@ server
 					attributes 
 					{ 
 						hint_decoration OFF
-            			hint_fullscreen OFF
+						hint_fullscreen OFF
             			hint_doublebuffer ON
 					}
                     channel 

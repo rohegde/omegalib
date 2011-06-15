@@ -146,6 +146,7 @@ void MeshViewerClient::initialize()
     myShowUI = true;
     autoRotate = true;
 	setVisibleEntity(0);
+	deltaScale = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,8 +246,17 @@ bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
         {
             autoRotate = !autoRotate;
         }
+        //up
+        if((char)evt.sourceId == 'z' && evt.type == Event::Down) 
+        {
+			deltaScale = 0.01;
+        }
         
-        //printf("%c\n", evt.sourceId);
+        if((char)evt.sourceId == 'x' && evt.type == Event::Down)  
+        {
+            deltaScale = -0.01;
+        }
+
     }
     return EngineClient::handleEvent( evt , context );
 }
@@ -305,8 +315,18 @@ void MeshViewerClient::update(const UpdateContext& context)
 	{
 		daSceneNode->yaw( 0.01 );
 	}
-	//else daSceneNode->yaw(  0.0 );
-    return EngineClient::update( context );
+	
+	if( deltaScale != 0 )
+	{
+		Vector3f curScale = daSceneNode->getScale( );
+		curScale[0] += deltaScale;
+		curScale[1] += deltaScale;
+		curScale[2] += deltaScale;
+		daSceneNode->scale( curScale );	
+		deltaScale = 0;
+	}
+		
+	return EngineClient::update( context );
 
 }
 
