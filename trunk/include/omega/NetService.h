@@ -103,6 +103,7 @@ private:
 	int screenY;
 
 	std::map<int,float*> touchlist;
+	std::map<int,float*> swaplist;
 };
 
 }; // namespace omega
