@@ -15,121 +15,143 @@ server
             pipe									#Bottom Window
             {
                 #----- display0 -----#
-                window
+                
+                window		#Display0 : left img
                 {
-                    viewport [ 0 0 1366 768 ]
-                    channel 
-					{
-						name "display0_right" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+					# x and y are not important here
+					viewport[ 0 0 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
-                    channel 
-					{
-						name "display0_left" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+                    channel { name "display0_left" }
+				}
+				window		#Display0 : rt img
+                {
+					# x and y are not important here
+					viewport[ 0 0 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
+                    channel { name "display0_right" }
+				}
+				window		#Display0
+                {
+					viewport[ 0 0 1366 768 ]
 					attributes 
 					{ 
 						hint_decoration OFF
             			hint_fullscreen OFF
-            			hint_doublebuffer ON
 					}
-                    channel 
-					{ 
-						name "display0_ch"  
-					}
+                    channel { name "display0_ch" }
                 }
                 
                 #----- display1 -----#
                 
-                window
+                window		#Display1 : left img
                 {
-                    viewport [ 0 768 1366 768 ]
-                    channel 
-					{
-						name "display1_right" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+					# x and y are not important here
+					viewport[ 0 768 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
-                    channel 
-					{
-						name "display1_left" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+                    channel { name "display1_left" }
+				}
+				window		#Display1 : rt img
+                {
+					# x and y are not important here
+					viewport[ 0 768 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
+                    channel { name "display1_right" }
+				}
+				window		#Display1
+                {
+					viewport[ 0 768 1366 768 ]
 					attributes 
 					{ 
 						hint_decoration OFF
             			hint_fullscreen OFF
-            			hint_doublebuffer ON
 					}
-
-                    channel 
-					{ 
-						name "display1_ch"  
-					}
+                    channel { name "display1_ch" }
                 }
-                
-          
+           
                 #----- display2 -----#
                 
-                window
+                window		#Display2 : left img
                 {
-                    viewport [ 0 1536 1366 768 ]
-                    channel 
-					{
-						name "display2_right" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+					# x and y are not important here
+					viewport[ 0 1536 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
-                    channel 
-					{
-						name "display2_left" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+                    channel { name "display2_left" }
+				}
+				window		#Display2 : rt img
+                {
+					# x and y are not important here
+					viewport[ 0 1536 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
+                    channel { name "display2_right" }
+				}
+				window		#Display2
+                {
+					viewport[ 0 1536 1366 768 ]
 					attributes 
 					{ 
 						hint_decoration OFF
-						hint_fullscreen OFF
-            			hint_doublebuffer ON
+            			hint_fullscreen OFF
 					}
-                    channel 
-					{ 
-						name "display2_ch"  
-					}
+                    channel { name "display2_ch" }
                 }
-                
                 
                 #----- display3 -----#
                 
-                window
+                window		#Display3 : left img
                 {
-                    viewport [ 0 2304 1366 768 ]
-                    channel 
-					{
-						name "display3_right" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+					# x and y are not important here
+					viewport[ 0 2304 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
-                    channel 
-					{
-						name "display3_left" 
-						viewport [ 0 0 1 .5 ]
-						drawable [ FBO_COLOR FBO_DEPTH]
+                    channel { name "display3_left" }
+				}
+				window		#Display3 : rt img
+                {
+					# x and y are not important here
+					viewport[ 0 2304 1366 384 ]
+					attributes 
+					{ 
+						hint_drawable FBO 
+						hint_doublebuffer OFF
 					}
+                    channel { name "display3_right" }
+				}
+				window		#Display3
+                {
+					viewport[ 0 2304 1366 768 ]
 					attributes 
 					{ 
 						hint_decoration OFF
             			hint_fullscreen OFF
-            			hint_doublebuffer ON
 					}
-                    channel 
-					{ 
-						name "display3_ch"  
-					}
+                    channel { name "display3_ch" }
                 }
                 
                 #----- stupid -----#
@@ -146,9 +168,7 @@ server
 					{
 						hint_decoration ON
             			hint_fullscreen OFF
-            			hint_doublebuffer OFF
 					}
-
                 }  
                 
             }
@@ -271,7 +291,7 @@ server
 				eye [ RIGHT ]
                 channel "display0_left"
                 pixel [ 0 0 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             compound
@@ -279,7 +299,7 @@ server
 				eye [ LEFT ]
                 channel "display0_right"
                 pixel [ 0 1 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             inputframe { name "frame.display0_left" }
@@ -298,7 +318,7 @@ server
 				eye [ RIGHT ]
                 channel "display1_left"
                 pixel [ 0 0 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             compound
@@ -306,7 +326,7 @@ server
 				eye [ LEFT ]
                 channel "display1_right"
                 pixel [ 0 1 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             inputframe { name "frame.display1_left" }
@@ -326,7 +346,7 @@ server
 				eye [ RIGHT ]
                 channel "display2_left"
                 pixel [ 0 0 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             compound
@@ -334,7 +354,7 @@ server
 				eye [ LEFT ]
                 channel "display2_right"
                 pixel [ 0 1 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             inputframe { name "frame.display2_left" }
@@ -353,7 +373,7 @@ server
 				eye [ RIGHT ]
                 channel "display3_left"
                 pixel [ 0 0 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             compound
@@ -361,7 +381,7 @@ server
 				eye [ LEFT ]
                 channel "display3_right"
                 pixel [ 0 1 1 2 ]     # which pixels to assemble
-                outputframe { type texture }
+                outputframe {   }
 				attributes { stereo_mode PASSIVE }
             }
             inputframe { name "frame.display3_left" }
