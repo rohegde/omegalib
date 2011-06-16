@@ -249,12 +249,12 @@ bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
         //up
         if((char)evt.sourceId == 'z' && evt.type == Event::Down) 
         {
-			deltaScale = 0.01;
+			deltaScale = 0.1;
         }
         
         if((char)evt.sourceId == 'x' && evt.type == Event::Down)  
         {
-            deltaScale = -0.01;
+            deltaScale = -0.1;
         }
 
     }
@@ -316,14 +316,15 @@ void MeshViewerClient::update(const UpdateContext& context)
 		daSceneNode->yaw( 0.01 );
 	}
 	
+	printf( "deltaScale: %f \n" , deltaScale );
+	
 	if( deltaScale != 0 )
 	{
+		// if it is negative 
+		
 		Vector3f curScale = daSceneNode->getScale( );
-		curScale[0] += deltaScale;
-		curScale[1] += deltaScale;
-		curScale[2] += deltaScale;
-		daSceneNode->scale( curScale );	
-		deltaScale = 0;
+		daSceneNode->setScale( curScale + curScale * deltaScale );	
+		deltaScale = 0.0;
 	}
 		
 	return EngineClient::update( context );
