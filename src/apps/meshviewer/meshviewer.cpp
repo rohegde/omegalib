@@ -65,6 +65,7 @@ void Entity::setVisible(bool value)
 void Entity::resetTransform()
 {
 	mySceneNode->setPosition(0, 0, 0.0f);
+	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
 	mySceneNode->resetOrientation();
 }
 
@@ -315,8 +316,6 @@ void MeshViewerClient::update(const UpdateContext& context)
 	{
 		daSceneNode->yaw( 0.01 );
 	}
-	
-	printf( "deltaScale: %f \n" , deltaScale );
 	
 	if( deltaScale != 0 )
 	{
