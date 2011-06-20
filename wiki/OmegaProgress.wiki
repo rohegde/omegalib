@@ -17,6 +17,8 @@ Main objectives for this release: support of multiple object manipulation throug
      * Wii remote orientation using Wii Motion Plus.
  * Unity example project: (*Arthur*)
      * Using touch, Kinect, 3D, controllers. 
+ * Add a multi-user touch gestures (*Arthur*)
+     * Zoom, drag, and other current SAGE touch gestures
  * New version of meshviewer supporting multiple object interaction and more polished look & feel. (*Alessandro*)
  * Integration with OpenSceneGraph (*Alessandro*)
  * Integration with Qt (*Alessandro*)
