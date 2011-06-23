@@ -54,6 +54,15 @@ using namespace PQ_SDK_MultiTouch;
 #include <ws2tcpip.h>
 #endif
 
+struct Touches{
+	int ID;
+	float xPos;
+	float yPos;
+	float xWidth;
+	float yWidth;
+	int timestamp;
+};
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +70,7 @@ class NetService: public Service
 {
 public:
 	// Allocator function
+	NetService();
 	static NetService* New() { return new NetService(); }
 
 public:
@@ -71,6 +81,7 @@ public:
 	void setServer(const char*,const char*);
 	void setDataport(const char*);
 	void setScreenResolution(int,int);
+	void setTouchTimeout(int);
 private:
 	void initHandshake();
 	void parseDGram(int);
@@ -91,7 +102,8 @@ private:
 	const char* serverAddress;
 	const char* serverPort;
 	const char* dataPort;
-	
+	int touchTimeout;
+
 	#define DEFAULT_BUFLEN 512
 	char recvbuf[DEFAULT_BUFLEN];
 	int iResult, iSendResult;
@@ -102,8 +114,8 @@ private:
 	int screenX;
 	int screenY;
 
-	std::map<int,float*> touchlist;
-	std::map<int,float*> swaplist;
+	std::map<int,Touches> touchlist;
+	std::map<int,Touches> swaplist;
 };
 
 }; // namespace omega
