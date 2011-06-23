@@ -13,6 +13,11 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+NetService::NetService(){
+	touchTimeout = 250; // milliseconds
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::setup(Setting& settings)
 {
 	if(settings.exists("serverIP"))
@@ -185,7 +190,7 @@ void NetService::initHandshake()
 	SenderAddrSize = sizeof(SenderAddr);
 
 	// Create a UDP receiver socket to receive datagrams
-	// http://msdn.microsoft.com/en-us/library/ms740120
+	// 
 	RecvSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	//-----------------------------------------------
@@ -273,41 +278,40 @@ void NetService::poll()
 	timeb tb;
 	ftime( &tb );
 	int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
-	int touchTimeout = 250; // milliseconds
-
-	
-	std::map<int, float*>::iterator p;
+		
+	std::map<int, Touches>::iterator p;
 	//printf("------------------\n");
 	swaplist.clear();
+
 	for(p = touchlist.begin(); p != touchlist.end(); p++) {
 		
-		float* params = p->second;
+		Touches touch = p->second;
 		
-		//printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)params[1], params[2],params[3] );
-		int ts = (int)params[6] + touchTimeout;
+		//printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)p->first, params[2],params[3] );
+		//printf("dTime: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)params[1], params[2],params[3] );
+		int ts = touch.timestamp + touchTimeout;
 		//printf("Time: %d > %d ?? \n", curTime , ts );
-		if( curTime > (int)params[6] + touchTimeout ){
+		if( curTime > ts ){
 			mysInstance->lockEvents();
 			// Touch will be removed from touchlist - send touch up event
 			Event* newEvt = mysInstance->writeHead();
 			newEvt->type = Event::Up;
-			newEvt = mysInstance->writeHead();
 			newEvt->serviceType = Service::Pointer;
 			newEvt->timestamp = curTime;
 				
-			newEvt->sourceId = (int)(params[1]);
-			newEvt->position[0] = params[2] * (float)screenX;
-			newEvt->position[1] = params[3] * (float)screenY;
+			newEvt->sourceId = touch.ID;
+			newEvt->position[0] = touch.xPos * (float)screenX;
+			newEvt->position[1] = touch.yPos * (float)screenY;
 
 			newEvt->numberOfPoints = 1;
-			newEvt->pointSet[0][0] = params[4] * (float)screenX;
-			newEvt->pointSet[0][1] = params[5] * (float)screenY;
+			newEvt->pointSet[0][0] = touch.xWidth * (float)screenX;
+			newEvt->pointSet[0][1] = touch.yWidth * (float)screenY;
 
 			mysInstance->unlockEvents();
-			//printf("Touch ID %d removed at (%f, %f)\n", (int)params[1], params[2],params[3] );
-			swaplist.erase( (int)params[1] );
+			printf("Touch ID %d removed at (%f, %f)\n", touch.ID, touch.xPos, touch.yPos );
+			swaplist.erase( touch.ID );
 		} else {
-			swaplist[evt->sourceId] = params; // Copy active touches
+			swaplist[touch.ID] = touch; // Copy active touches
 		}
 		
 	}
@@ -318,6 +322,25 @@ void NetService::poll()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::dispose() 
 {
+	// Close the socket when finished receiving datagrams
+	printf("NetService: Finished receiving. Closing socket.\n");
+	#if defined(linux)
+	int errno; // linux error code
+	iResult = close(RecvSocket);
+	if (iResult == -1) {
+		printf("NetService: Closesocket failed with error %d\n", strerror(errno));
+		return;
+	}
+	#endif
+	#if defined(WIN32)
+	iResult = closesocket(RecvSocket);
+	if (iResult == SOCKET_ERROR) {
+		printf("NetService: Closesocket failed with error %d\n", WSAGetLastError());
+		return;
+	}
+	WSACleanup();
+	#endif
+	printf("NetService: Shutting down.");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -425,23 +448,33 @@ void NetService::parseDGram(int result)
 				evt->pointSet[0][1] = params[5] * (float)screenY;
 
 				params[6] = curTime;
+
+				Touches touch;
+				touch.ID = (int)(params[1]);
+				touch.xPos = params[2];
+				touch.yPos = params[3];
+				touch.xWidth = params[4];
+				touch.yWidth = params[5];
+				touch.timestamp = params[6];
+				
 				//printf("New Time set %d \n", curTime );
 				///printf("New Time param %d \n", (int)params[6] );
-				if( (int)(params[0]) == Event::Down ){
+				if( (int)(params[0]) == Event::Down && touchlist.count(touch.ID) == 0 ){
 					evt->type = Event::Down;
-					touchlist[(int)params[1]] = params;
+					touchlist[touch.ID] = touch;
 					//pair<map<int,float*>::iterator,bool> ret
 					//ret = touchlist.insert (pair<int,float*>(params[1],params) );
-					printf("NetService: Touch ID %d - DOWN\n", (int)(params[1]));
+					printf("NetService: Touch ID %d - DOWN\n", touch.ID);
 				}
 				else if( (int)(params[0]) == Event::Move ){
 					evt->type = Event::Move;
-					touchlist[(int)params[1]] = params;
-					printf("NetService: Touch ID %d - MOVE\n", (int)(params[1]));
+					touchlist[touch.ID] = touch;
+					printf("NetService: Touch ID %d - MOVE\n", touch.ID);
 				}
 				else if( (int)(params[0]) == Event::Up ){
 					evt->type = Event::Up;
-					printf("NetService: Touch ID %d - UP\n", (int)(params[1]));
+					touchlist.erase( touch.ID );
+					printf("NetService: Touch ID %d - UP\n", touch.ID);
 				}
 				
 				break;
@@ -485,4 +518,11 @@ void NetService::setScreenResolution(int x, int y)
 	printf("Screen resolution set to %d %d\n", x, y);
 	screenX = x;
 	screenY = y;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void NetService::setTouchTimeout( int millisTimeout ) 
+{
+	printf("Touch timeout set to %d millisecond\n", millisTimeout);
+	touchTimeout = millisTimeout;
 }
