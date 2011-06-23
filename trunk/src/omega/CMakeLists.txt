@@ -192,10 +192,13 @@ if(WIN32)
 
 	SET(OMEGA_USE_DIRECTINPUT true CACHE BOOL "Enable/disable DirectX Input support")
 	IF(OMEGA_USE_DIRECTINPUT)
-		SET( srcs	 ${srcs} omega/DirectXInputService.cpp )
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h )
+		SET( srcs	 ${srcs} omega/DirectXInputService.cpp
+					 ${srcs} omega/Wiimote.cpp )
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
+								${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
 		ADD_DEFINITIONS( -DOMEGA_USE_DIRECTINPUT)
-		INCLUDE_DIRECTORIES(${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h)
+		INCLUDE_DIRECTORIES( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
+							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
 	ENDIF(OMEGA_USE_DIRECTINPUT)
 endif(WIN32)
 ###################################################################################################
@@ -276,6 +279,8 @@ if(OMEGA_USE_DIRECTINPUT)
 	if(WIN32)
 		target_link_libraries( omega ${EXT_LIB_DIR}/dinput8.lib)
 		target_link_libraries( omega ${EXT_LIB_DIR}/dxguid.lib)
+		target_link_libraries( omega ${EXT_LIB_DIR}/hid.lib)
+		target_link_libraries( omega ${EXT_LIB_DIR}/setupapi.lib)
 	endif(WIN32)
 endif(OMEGA_USE_DIRECTINPUT)
 
