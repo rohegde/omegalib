@@ -7,7 +7,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  * [LICENSE NOTE]
  *---------------------------------------------------------------------------------------------------------------------
- * Uses the Microsoft DirectInput component of the DirectX API to access game controllers.
+ * 
  *---------------------------------------------------------------------------------------------------------------------
  * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -26,69 +26,34 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __DIRECTXINPUT__SERVICE_H__
-#define __DIRECTXINPUT__SERVICE_H__
 
-#include "omega/osystem.h"
-#include "omega/ServiceManager.h"
-#include "omega/dinput.h"
-#include "omega/wiimote.h"
+#ifndef _WIIMOTE_H
+#define _WIIMOTE_H
 
-//#include "resource.h" // contained defines below
-#define IDI_MAIN                        102
-#define IDD_JOYST_IMM                   103
-#define IDR_ACCELERATOR1                103
-#define IDC_CLOSE                       1001
-#define IDC_X_AXIS                      1010
-#define IDC_Y_AXIS                      1011
-#define IDC_Z_AXIS                      1012
-#define IDC_X_AXIS_TEXT                 1013
-#define IDC_Y_AXIS_TEXT                 1014
-#define IDC_Z_AXIS_TEXT                 1015
-#define IDC_X_ROT_TEXT                  1016
-#define IDC_Y_ROT_TEXT                  1017
-#define IDC_Z_ROT_TEXT                  1018
-#define IDC_SLIDER0_TEXT                1019
-#define IDC_X_ROT                       1020
-#define IDC_Y_ROT                       1021
-#define IDC_Z_ROT                       1022
-#define IDC_SLIDER1_TEXT                1023
-#define IDC_POV0_TEXT                   1024
-#define IDC_POV1_TEXT                   1025
-#define IDC_POV2_TEXT                   1026
-#define IDC_POV3_TEXT                   1027
-#define IDC_SLIDER0                     1030
-#define IDC_SLIDER1                     1031
-#define IDC_POV                         1040
-#define IDC_POV0                        1040
-#define IDC_BUTTONS                     1041
-#define IDC_POV1                        1042
-#define IDC_POV2                        1043
-#define IDC_POV3                        1044
+//#include "omega/wiimote_state.h"
+//#include <setupapi.h>
+//#include <hidsdi.h>
 
 namespace omega
 {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class DirectXInputService: public Service
+
+class Wiimote //: public wiimote_state
 {
 public:
-	// Allocator function
-	static DirectXInputService* New() { return new DirectXInputService(); }
+	Wiimote();
+	virtual ~Wiimote();
 
-public:
-	OMEGA_API virtual void initialize();
-	virtual void poll();
-	OMEGA_API virtual void dispose();
-	void checkForNewControllers();
+	bool Connect();
+	void Disconnect();
 
 private:
-	static DirectXInputService* mysInstance;
+	HANDLE Handle; // read/write device handle
 
-	Wiimote remote;
-	
-
+	// wiimote device IDs:
+	static const int VID = 0x057e; // 'Nintendo'
+	static const int PID = 0x0306; // 'Wiimote'
 };
 
-}; // namespace omega
+} // namespace
 
-#endif
+#endif // _WIIMOTE_H

@@ -202,6 +202,12 @@ void DirectXInputService::initialize()
 	
 	checkForNewControllers();
 
+	// Wiimote
+	printf("DirectXInputService: Waiting for Wiimote\n");
+	remote.Connect();
+	//while(!remote.Connect()) {
+	//}
+
 	if( nControllers == 0 ){
 		printf("DirectXInputService: No joysticks detected.\n");
         return;
@@ -258,8 +264,6 @@ void DirectXInputService::checkForNewControllers()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DirectXInputService::poll() 
 {
-	//checkForNewControllers(); // Currently only works on initialization
-
 	//printf("DirectXInputService: Poll.\n");
 	HRESULT hr;
 	DIJOYSTATE2 js;           // DInput joystick state 
