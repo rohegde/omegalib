@@ -1,0 +1,8 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
+  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
+  rankdir=LR;
+  Node1 [label="omega::TextureManager",height=0.2,width=0.4,color="black",URL="$classomega_1_1_texture_manager.html",tooltip="Loads images and manages OpenGL textures."];
+}
