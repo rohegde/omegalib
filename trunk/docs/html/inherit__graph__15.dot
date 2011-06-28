@@ -1,0 +1,8 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
+  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
+  rankdir=LR;
+  Node1 [label="_DIOBJECTDATAFORMAT",height=0.2,width=0.4,color="black",URL="$struct___d_i_o_b_j_e_c_t_d_a_t_a_f_o_r_m_a_t.html"];
+}
