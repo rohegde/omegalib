@@ -1,8 +1,0 @@
-digraph G
-{
-  bgcolor="transparent";
-  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
-  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
-  rankdir=LR;
-  Node1 [label="DIDEVICEOBJECTINSTANCEA",height=0.2,width=0.4,color="black",URL="$struct_d_i_d_e_v_i_c_e_o_b_j_e_c_t_i_n_s_t_a_n_c_e_a.html"];
-}
