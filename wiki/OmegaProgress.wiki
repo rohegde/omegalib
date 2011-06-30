@@ -28,6 +28,7 @@ Main objectives for this release: support of multiple object manipulation throug
    * UI interface for interaction with Vtk pipelines
    * Script templates.
  * VRPN Integration
+   * Preliminary work (*Arthur*)
  
 
 ==Wish List==
