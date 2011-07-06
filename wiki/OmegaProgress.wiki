@@ -1,17 +1,17 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 
 = omegalib v0.5 (*current developement version*) =
-==Summary==
+== Summary ==
 Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Integration with External scene graph and UI libraries (like OpenSceneGraph and Qt) is also planned for this version. Possibily, initial experiments running on clustered display systems. 
 
-*Expected delivery*: September 2011
+*Expected delivery*: `September 2011`
 
-==Completed Tasks==
+== Completed Tasks ==
  * Compiles under Mac OSX in i386 mode 
  * Can use XCode as compiler (cmake -G XCode)
  * OpenNI library works under Linux
 
-==Work In Progress==
+== Work In Progress ==
  * Integration of PS3 and Wii controller (*Arthur*)
      * PS3 needs to directly connect without using MotionInJoy.
      * Wii remote orientation using Wii Motion Plus.
@@ -31,17 +31,17 @@ Main objectives for this release: support of multiple object manipulation throug
    * Preliminary work (*Arthur*)
  
 
-==Wish List==
+== Wish List ==
  * filters to join kinect & pqlabs to associate touches to user.
 
 ------------------------------------------------------------------------
 
 = omegalib v0.4 (*delivered:* May 2011) =
-==Summary==
+== Summary ==
 This version will the first one to compile on linux as well on windows.
 A complete demo application will be included (meshviewer) as well as kinect integration. Sperimental integration with vtk and a small demo application is also planned to be integrated into omegalib 0.4.
 
-==Completed Tasks==
+== Completed Tasks ==
  * All of codebase compiles on linux (*Alessandro*)
  * kinect integration (*Victor*)
  * mocap calibration application (*Alessandro*)
@@ -62,14 +62,14 @@ A complete demo application will be included (meshviewer) as well as kinect inte
 
 
 = omegalib v0.3 (*delivered:* January 2011) =
-==<u> Alessandro </u>==
+== <u> Alessandro </u> ==
  * OmegaLib / VTK Integration
   * Render vtk content into omegalib / equalizer channels (*done*)
   * Integrate OmegaLib input into vtk interaction system (control camera by mouse / touch?)
   * Create separate ovtk library 
  * Test active stereo rendering
 
-==<u> Unassigned </u>==
+== <u> Unassigned </u> ==
  * omegalib / Ogre integration?
  * omegalib >> Processing.
  * support linux builds (i386 only for now)
@@ -78,12 +78,12 @@ A complete demo application will be included (meshviewer) as well as kinect inte
 
 = omegalib v0.2 (*delivered*: October 2010) =
 
-==<u> Dennis </u>== 
+== <u> Dennis </u> == 
  * Convert oTest to oDemo (*DONE*)
  * Documentation for Cristian and Shannon (optiTrack support) (*DONE*)
  * Add to concepts page
  
-==<u> Alessandro </u>==
+== <u> Alessandro </u> ==
  * Configuration system support (*done*)
   Omega applications should be set up through configuration files and not through code. Working on config file support. 
     
@@ -101,21 +101,21 @@ A complete demo application will be included (meshviewer) as well as kinect inte
     
 
 
-==<u> Victor </u>==
+== <u> Victor </u>==
  * Integrating Kinect and OpenNI to omegalib
 
  * Waiting for:
   * Gestures
   * Rigid body movements (will it work on 64bit?)
 
-==<u> Brad </u>==
+== <u> Brad </u>==
  * Reading papers on 3D gesturing and gesture disambiguation.
  
  * Start working on a simple application to have pattern recognition for
    3D gesturing.
   * Going to try to get a wave and a rotate/pivot gesture working first.
 
-==<u> Arthur </u>==
+== <u> Arthur </u>==
  * Paint 3D teapot by painting 2D texture map via multi-touch (*delivery*: ?)
 
  * Update PQService to use config files (*done*)
@@ -138,6 +138,6 @@ A complete demo application will be included (meshviewer) as well as kinect inte
  * Integration of PS3 controller (*delivery*: Spring '11?)
  * Integration of XBox 360 controller (*delivery*: Spring '11?)
 
-==<u> Unassigned </u>==
+== <u> Unassigned </u>==
  * TacTile integration (*delivery*: ?)
   Implement TacTileService.
