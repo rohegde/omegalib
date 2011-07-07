@@ -1,6 +1,18 @@
-=OmegaLib Meeting Notes=
+= OmegaLib Meeting Notes =
 
-==March 16 2011==
+== July 6 2011 ==
+ * Help docs: we need to start working on better doc. One of the main things we need to work on is list the set of input events supported by every specific input service.
+ * Keyboard & mouse support without needing to create dummy windows. Brad will take a look into this.
+ * VICON: 25-26July they will be around. We should have Vrpn support ready by now. *Priority*
+ * Other things to do (in order of importance)
+   * Write a config for two Gpus on Thor and make it work.
+   * Fix the interlaced problem.
+   * Have a generic Keyboard / mouse input service.
+ 
+
+------------------------------------------------------------------------
+
+== March 16 2011 ==
  * Fix display position on omegadesk
  * Fix head orientation using center screen orientation + possibly kinect head tilt?
  * What's the 'interaction metaphor' with omegadesk?
@@ -17,7 +29,7 @@
  * Take a look at conferences where we can publish papers on omegadesk
 ------------------------------------------------------------------------
 
-==March 9 2011==
+== March 9 2011 ==
  * (*Dennis*) line by line demo likely to run by 16th demos
  * Things needed for demo
   * Kinect working & calibrated
@@ -34,7 +46,7 @@
 
 
 
-==February 9 2011==
+== February 9 2011 ==
  * (*Victor*) still working on Kinect integration. Should be ready in a couple weeks
  * (*Arthur*) working on xbox360 & ps3 controller integration
   * Agreed on using input event as a representation of the entire state of the controller (similar to what is done for mouse)
@@ -42,7 +54,7 @@
 ------------------------------------------------------------------------
 
 
-==January 19 2011==
+== January 19 2011 ==
  * (*Alessandro*) added a bunch of utility classes for math & geometry to omegalib
  * (*Alessandro*) working on meshviewer application
  * (*Victor*) integrating kinect into omegalib
@@ -55,7 +67,7 @@
 ------------------------------------------------------------------------
 
 
-==November 10 2010==
+== November 10 2010 ==
  * Alessandro: Compile without Equalizer support, needed in about a week.
  * Brad needs to compile omegalib inside linux, hopefully be solved by disabling equalizer  support and compiling a dependency free version of the lib.
  * Brad: put updated version of mocap config in repository
@@ -64,7 +76,7 @@
  * Brad: need to have 2 tracked hands.
 ------------------------------------------------------------------------
 
-==October 6 2010==
+== October 6 2010 ==
  * Arthur: Omegalib NetService & oinputserver working
  * Alessandro: tested vtk demo on new omegadesk. Still have to get active stereo working (Equalizer problem?)
  * Next week: merging 0.2 and 0.3
