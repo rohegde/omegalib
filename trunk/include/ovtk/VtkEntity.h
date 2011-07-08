@@ -28,8 +28,8 @@
 #define __VTK_ENTITY_H__
 
 #include "ovtk/ovtkbase.h"
-#include "ovtk/VtkRenderPass.h"
 #include "ovtk/PythonUIEventHandler.h"
+#include "ovtk/VtkRenderPass.h"
 
 #include "omega/osystem.h"
 #include "omega/EngineClient.h"
