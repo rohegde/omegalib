@@ -155,7 +155,7 @@ if(OMEGA_USE_NETSERVICE)
 	add_definitions( -DOMEGA_USE_NETSERVICE)
 endif(OMEGA_USE_NETSERVICE)
 
-SET(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support")
+SET(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support (OpenNI libraries must be installed in the system)")
 IF(OMEGA_USE_OPENNI)
 	SET( srcs	 ${srcs} omega/OpenNIService.cpp )
 	SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OpenNIService.h )
