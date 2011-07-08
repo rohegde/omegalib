@@ -27,12 +27,12 @@
 #ifndef VTKVIEWER_H
 #define VTKVIEWER_H
 
+#include "ovtk/VtkClient.h"
+#include "ovtk/VtkEntity.h"
 #include "omega.h"
 #include "omega/scene.h"
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
-#include "ovtk/VtkClient.h"
-#include "ovtk/VtkEntity.h"
 
 using namespace omega;
 using namespace omega::scene;

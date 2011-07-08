@@ -42,8 +42,10 @@ typedef UINT16     uint16_t;
 typedef INT16      int16_t;
 typedef UINT8      uint8_t;
 typedef INT8       int8_t;
+// Not really using it - and causes double definition error when including python. - just keep this commented out.
 #    ifndef HAVE_SSIZE_T
-typedef SSIZE_T    ssize_t;
+//typedef SSIZE_T    ssize_t;
+#define ssize_t SSIZE_T
 #    endif
 #  endif // Win32, Visual C++
 #endif // Win32

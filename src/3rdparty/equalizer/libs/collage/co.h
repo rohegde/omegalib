@@ -73,4 +73,9 @@
 #include <co/object.h>
 #include <co/base/base.h>
 
+// ssize_t is defined or other libraries 
+#ifdef ssize_t
+#undef ssize_t
+#endif
+
 #endif // CO_H

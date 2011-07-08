@@ -32,13 +32,15 @@
 #include "osystem.h"
 #include "Service.h"
 
-#ifdef OMEGA_USE_DISPLAY_EQUALIZER
-// Equalizer includes
-#include <eq/eq.h>
-#endif
+#include <co/co.h>
+
+//#ifdef OMEGA_USE_DISPLAY_EQUALIZER
+//// Equalizer includes
+//#include <eq/eq.h>
+//#endif
 
 #ifdef OMEGA_USE_OPENNI
-#ifdef _WIN32
+#ifdef OMEGA_OS_WIN
 #include <XnCppWrapper.h>
 #else
 #include <ni/XnCppWrapper.h>
@@ -208,14 +210,6 @@ namespace omega
 		int validPoints;
 		Vector3f pointSet[MaxPointSetSize];
 
-		// NOTE: event serialization services are used only in clustered / multidisplay systems.
-		// If display system building is disabled, this code can be safely excluded.
-		// Right now, event serialization for NetService / oinputserver and display system
-		// serialization (this) are implemented as separate facilities. We may think of joining them
-		// sometime in the future.
-		// ALso, this feature relies on Equalizer data streams, so it is enabled only for builds
-		// that support equalizer.
-	#ifdef OMEGA_USE_DISPLAY_EQUALIZER
 		//! Serialize an Event instance.
 		void serialize(co::DataOStream& os)
 		{
@@ -255,7 +249,7 @@ namespace omega
 				is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
 			}
 		}
-	#endif
+
 		bool isFlagSet(uint flag) const;
 		void setValidPoint(int pointId);
 		void resetValidPoints();

@@ -24,11 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "ovtk/PyVtk.h"
+#include "ovtk/PythonInterpreter.h"
 #include "ovtk/VtkClient.h"
 #include "ovtk/VtkEntity.h"
-#include "ovtk/PyVtk.h"
 #include "ovtk/VtkRenderable.h"
-#include "ovtk/PythonInterpreter.h"
 #include "omega/scene.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
