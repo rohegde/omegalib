@@ -24,10 +24,53 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "vtkviewer.h"
+#include "osgviewer.h"
+#include "omega/ImageUtils.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::initialize()
+Entity::Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage):
+	myName(name),
+	myMesh(m),
+	myLeftImage(leftImage),
+	myRightImage(rightImage),
+	myVisible(false)
+{
+	if(myMesh != NULL)
+	{
+		mySelectionSphere = onew(BoundingSphere)();
+		mySelectionSphere->setVisible(false);
+		mySelectionSphere->setDrawOnSelected(true);
+
+		mySceneNode = onew(SceneNode)(sm);
+		mySceneNode->addRenderable(myMesh);
+		mySceneNode->addRenderable(mySelectionSphere);
+		mySceneNode->setPosition(Vector3f::Zero());
+		mySceneNode->setSelectable(true);
+		mySceneNode->setVisible(false);
+		sm->getRootNode()->addChild(mySceneNode);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setVisible(bool value)
+{
+	myVisible = value;
+	if(myMesh != NULL)
+	{
+		mySceneNode->setVisible(value);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::resetTransform()
+{
+	mySceneNode->setPosition(0, 0, 0.0f);
+	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
+	mySceneNode->resetOrientation();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::initialize()
 {
 	EngineClient::initialize();
 
@@ -40,56 +83,75 @@ void VtkViewerClient::initialize()
 		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
 	}
 
-	// Load entity library
+	// Load meshes specified in config file.
 	MeshManager* mm = getMeshManager();
 	if(cfg->exists("config/entities"))
 	{
-		Setting& entities = cfg->lookup("config/entities");
-		for(int i = 0; i < entities.getLength(); i++)
+		Setting& meshes = cfg->lookup("config/entities");
+		for(int i = 0; i < meshes.getLength(); i++)
 		{
-			EntityInfo* e = onew(EntityInfo)();
-			Setting& entitySetting = entities[i];
-			e->name = entitySetting.getName();
-			e->script = (String)entitySetting["script"];
-			e->label = (String)entitySetting["label"];
+			Setting& entitySetting = meshes[i];
+			String name = entitySetting.getName();
+			String label = entitySetting["label"];
 
-			myEntityLibrary.push_back(e);
+			Mesh* mesh = NULL;
+			if(entitySetting.exists("mesh"))
+			{
+				String meshFilename = entitySetting["mesh"];
+				mm->loadMesh(name, meshFilename, MeshManager::MeshFormatPly, 0.8f);
+				mesh = mm->getMesh(name);
+			}
+
+			Texture* leftImage = NULL;
+			Texture* rightImage = NULL;
+			if(entitySetting.exists("leftImage") && entitySetting.exists("rightImage"))
+			{
+				String leftImageFilename = entitySetting["leftImage"];
+				String rightImageFilename = entitySetting["rightImage"];
+
+				leftImage = ImageUtils::createTexture(getTextureManager(), name, leftImageFilename);
+				rightImage = ImageUtils::createTexture(getTextureManager(), name, rightImageFilename);
+			}
+
+			Entity* e = new Entity(label, getSceneManager(), mesh, leftImage, rightImage);
+			myEntities.push_back(e);
 		}
 	}
 
+	// Create and initialize meshviewer UI
 	initUI();
 
 	// Create a reference box around the scene.
-	myReferenceBox = new ReferenceBox();
-	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
-	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+	if(cfg->exists("config/referenceBox"))
+	{
+		myReferenceBox = new ReferenceBox();
+		getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
+		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+	}
 
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
 	{
-		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
+		DefaultMouseInteractor* interactor = onew(DefaultMouseInteractor)();
 		myCurrentInteractor = interactor;
 	}
 	else
 	{
-		DefaultTwoHandsInteractor* interactor = new DefaultTwoHandsInteractor();
+		DefaultTwoHandsInteractor* interactor = onew(DefaultTwoHandsInteractor)();
 		interactor->initialize("ObserverUpdateService");
 		myCurrentInteractor = interactor;
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
-
-	myVtkClient = onew(VtkClient)(this);
-	myVtkClient->initialize();
-
-	Light* light = getSceneManager()->getLight(0);
-	light->setEnabled(true);
-	light->setPosition(Vector3f(0, 3, 0));
+    
+    myShowUI = true;
+    autoRotate = true;
+	setVisibleEntity(0);
+	deltaScale = 0;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::initUI()
+void MeshViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
 	ui->setEventHandler(this);
@@ -117,10 +179,10 @@ void VtkViewerClient::initUI()
 	}
 
 	// Add buttons for each entity
-	for(int i = 0; i < myEntityLibrary.size(); i++)
+	for(int i = 0; i < myEntities.size(); i++)
 	{
-		EntityInfo* e = myEntityLibrary[i];
-		Button* btn = wf->createButton(e->label, entityButtons);
+		Entity* e = myEntities[i];
+		Button* btn = wf->createButton(e->getName(), entityButtons);
 		myEntityButtons.push_back(btn);
 	}
 
@@ -132,12 +194,78 @@ void VtkViewerClient::initUI()
 		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
+
+	getSceneManager()->setAmbientLightColor(Color::Black);
+
+	Light* light = getSceneManager()->getLight(0);
+	light->setEnabled(true);
+	light->setColor(Color(0.5f, 0.5f, 0.5f));
+	light->setPosition(Vector3f(0, 3, 3));
+
+	light = getSceneManager()->getLight(1);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(-3, 0, 0));
+
+	light = getSceneManager()->getLight(2);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(3, 0, 0));
+
+	light = getSceneManager()->getLight(3);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.3f, 0.35f));
+	light->setPosition(Vector3f(0, -3, 0));
+
+	light = getSceneManager()->getLight(4);
+	light->setEnabled(true);
+	light->setColor(Color(0.35f, 0.3f, 0.3f));
+	light->setPosition(Vector3f(0, 0, -3));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::handleUIEvent(const UIEvent& evt)
+void MeshViewerClient::draw( const DrawContext& context)
 {
-	for(int i = 0; i < myEntityLibrary.size(); i++)
+    DrawContext copyContext = context;
+    if( !myShowUI )copyContext.layer = Layer::Scene0;
+    
+    EngineClient::draw( copyContext );
+    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
+{
+    if( evt.serviceType == Service::Keyboard )
+    {
+        if((char)evt.sourceId == 'q') exit(0);
+        if((char)evt.sourceId == 's' && evt.type == Event::Down) 
+        {
+            myShowUI = !myShowUI;
+        }
+        if((char)evt.sourceId == 'r' && evt.type == Event::Down) 
+        {
+            autoRotate = !autoRotate;
+        }
+        //up
+        if((char)evt.sourceId == 'z' && evt.type == Event::Down) 
+        {
+			deltaScale = 0.1;
+        }
+        
+        if((char)evt.sourceId == 'x' && evt.type == Event::Down)  
+        {
+            deltaScale = -0.1;
+        }
+
+    }
+    return EngineClient::handleEvent( evt , context );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::handleUIEvent(const UIEvent& evt)
+{
+	for(int i = 0; i < myEntities.size(); i++)
 	{
 		if(myEntityButtons[i] == evt.source)
 		{
@@ -148,33 +276,71 @@ void VtkViewerClient::handleUIEvent(const UIEvent& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::setVisibleEntity(int entityId)
+void MeshViewerClient::setVisibleEntity(int entityId)
 {
-	EntityInfo* ei = myEntityLibrary[entityId];
-
 	if(myVisibleEntity != NULL)
 	{
-		myVtkClient->destroyEntity(myVisibleEntity);
+		myVisibleEntity->setVisible(false);
 		myVisibleEntity = NULL;
 	}
 
-	myVisibleEntity = myVtkClient->createEntity();
-	myVisibleEntity->loadScript(ei->script);
+	Entity* e = myEntities[entityId];
+	myVisibleEntity = e;
 
-	myCurrentInteractor->setSceneNode(myVisibleEntity->getSceneNode());
+	if(e->getMesh() != NULL)
+	{
+		myVisibleEntity->resetTransform();
+		myVisibleEntity->setVisible(true);
+
+		// Tell the interactor what is the currently active scene node
+		myCurrentInteractor->setSceneNode(e->getSceneNode());
+	}
+
+	if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
+	{
+		setTextureBackgroundEnabled( true );
+		setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
+		setTextureBackground( DrawContext::EyeRight , e->getRightImage());
+	}
+	else
+	{
+		setTextureBackgroundEnabled( false );
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::update(const UpdateContext& context)
+{
+	SceneNode* daSceneNode = myVisibleEntity->getSceneNode();
+	if ( autoRotate )
+	{
+		daSceneNode->yaw( 0.01 );
+	}
+	
+	if( deltaScale != 0 )
+	{
+		// if it is negative 
+		
+		Vector3f curScale = daSceneNode->getScale( );
+		daSceneNode->setScale( curScale + curScale * deltaScale );	
+		deltaScale = 0.0;
+	}
+		
+	return EngineClient::update( context );
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	VtkViewerApplication app;
+	MeshViewerApplication app;
 
 	// Read config file name from command line or use default one.
-	const char* cfgName = "vtkviewer.cfg";
+	const char* cfgName = "meshviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "vtkviewer.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("./../../data/"));
 
 	return 0;
 }

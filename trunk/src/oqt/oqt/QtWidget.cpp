@@ -24,92 +24,21 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
-
-#include "omega.h"
+#include "oqt/QtClient.h"
+#include "oqt/QtWidget.h"
 #include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
+#include "omega/SystemManager.h"
+#include "omega/DataManager.h"
 
-using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
+using namespace oqt;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+QtWidget::QtWidget()
 {
-public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
-
-	const String& getName() { return myName; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
-
-private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient, IUIEventHandler
+QtWidget::~QtWidget()
 {
-public:
-	MeshViewerClient(Application* app): 
-	  EngineClient(app), 
-		myVisibleEntity(NULL)
-	  {}
+}
 
-	virtual void initialize();
-	void initUI();
-
-	virtual bool handleEvent(const Event& evt , UpdateContext &context );
-    void draw( const DrawContext& context);
-
-
-	void handleUIEvent(const UIEvent& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient() { return new MeshViewerClient(this); }
-};
-
-#endif

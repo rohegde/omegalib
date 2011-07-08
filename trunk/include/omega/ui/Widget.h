@@ -42,6 +42,7 @@ namespace ui
 	friend class Container;
 	public:
 		Widget(omega::String name);
+		Widget();
 		virtual ~Widget();
 
 		IUIEventHandler* getEventHandler();
@@ -153,6 +154,8 @@ namespace ui
 		//float myScale;
 
 	private:
+        static NameGenerator mysNameGenerator;
+
 		omega::String myName;
 		Container* myContainer;
 		UIManager* myUIMng;
