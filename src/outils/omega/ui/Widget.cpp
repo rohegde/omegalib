@@ -36,11 +36,32 @@
 using namespace omega;
 using namespace omega::ui;
 
+NameGenerator Widget::mysNameGenerator("Widget_");
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(omega::String name):
 	myUIMng(NULL),
 	myEventHandler(NULL),
 	myName(name),
+	myContainer(NULL),
+	myVisible(true),
+	myDebugModeColor(255, 0, 255),
+	myDebugModeEnabled(false),
+	myAutosize(false),
+	myRotation(0),
+	//myScale(1.0f),
+	myUserMoveEnabled(false),
+	myMoving(false),
+	myMaximumSize(FLT_MAX, FLT_MAX),
+	myMinimumSize(0, 0)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Widget::Widget():
+	myUIMng(NULL),
+	myEventHandler(NULL),
+	myName(mysNameGenerator.generate()),
 	myContainer(NULL),
 	myVisible(true),
 	myDebugModeColor(255, 0, 255),
