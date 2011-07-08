@@ -44,11 +44,16 @@ if(OMEGA_BUILD_UTILITY_LIB)
 	set(APPS_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
 	set(APPS_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
 	set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
+	set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
 endif(OMEGA_BUILD_UTILITY_LIB)
 
 if(OMEGA_BUILD_VTK_LIB)
 	set(APPS_BUILD_VTK_VIEWER false CACHE BOOL "Enable build of vtk viewer application ")
 endif(OMEGA_BUILD_VTK_LIB)
+
+if(OMEGA_BUILD_OSG_LIB)
+	set(APPS_BUILD_OSG_VIEWER false CACHE BOOL "Enable build of osg viewer application ")
+endif(OMEGA_BUILD_OSG_LIB)
 
 if(OMEGA_USE_OPENCL)
 	set(APPS_BUILD_NIGHTFIELD false CACHE BOOL "Enable build of nightfield application ")
@@ -68,9 +73,9 @@ include_directories(
   
   )
   
-IF(WIN32)
-	INCLUDE_DIRECTORIES($ENV{PROGRAMFILES}/OpenNI/Include)
-ENDIF(WIN32)
+if(WIN32)
+	include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
+endif(WIN32)
 
 add_subdirectory(3rdparty/libconfig)
 add_subdirectory(3rdparty/equalizer)
@@ -91,14 +96,18 @@ if(OMEGA_USE_DISPLAY)
 	add_subdirectory(3rdparty/glew)
 endif(OMEGA_USE_DISPLAY)
 
+# Add the core omega project
 add_subdirectory(omega)
 
+# Add the basic test app for omegalib (a simple input event logger)
+add_subdirectory(apps/eventlogger)
+
 # Check if 32bit MAC or 64bit MAC
-IF( APPLE )
+if( APPLE )
     if(_CMAKE_OSX_MACHINE MATCHES "64")
         option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
     endif()
-ENDIF( APPLE )
+endif( APPLE )
 
 if(OMEGA_BUILD_UTILITY_LIB)
 	add_subdirectory(outils)
@@ -108,32 +117,34 @@ if(OMEGA_BUILD_VTK_LIB)
 	add_subdirectory(ovtk)
 endif(OMEGA_BUILD_VTK_LIB)
 
-IF(OMEGA_USE_DISPLAY) 
-add_subdirectory(apps/ohello)
-ENDIF(OMEGA_USE_DISPLAY)
+if(OMEGA_BUILD_OSG_LIB)
+	add_subdirectory(oosg)
+endif(OMEGA_BUILD_OSG_LIB)
 
-add_subdirectory(apps/eventlogger)
+if(OMEGA_USE_DISPLAY) 
+	add_subdirectory(apps/ohello)
+endif(OMEGA_USE_DISPLAY)
 
 if(APPS_BUILD_INPUT_SERVER)
-	ADD_SUBDIRECTORY(apps/oinputserver)
+	add_subdirectory(apps/oinputserver)
 endif(APPS_BUILD_INPUT_SERVER)
 
 if(APPS_BUILD_MOCALIB)
-	ADD_SUBDIRECTORY(apps/mocalib)
+	add_subdirectory(apps/mocalib)
 endif(APPS_BUILD_MOCALIB)
 
 if(APPS_BUILD_MESH_VIEWER)
 	add_subdirectory(apps/meshviewer)
 endif(APPS_BUILD_MESH_VIEWER)
 
-IF(APPS_BUILD_KINECT)
-	ADD_SUBDIRECTORY(apps/kinectdemo)
-ENDIF(APPS_BUILD_KINECT)
+if(APPS_BUILD_KINECT)
+	add_subdirectory(apps/kinectdemo)
+endif(APPS_BUILD_KINECT)
 
-IF(APPS_BUILD_VTK_VIEWER)
-	ADD_SUBDIRECTORY(apps/vtkviewer)
-ENDIF(APPS_BUILD_VTK_VIEWER)
+if(APPS_BUILD_VTK_VIEWER)
+	add_subdirectory(apps/vtkviewer)
+endif(APPS_BUILD_VTK_VIEWER)
 
-IF(APPS_BUILD_NIGHTFIELD)
-	ADD_SUBDIRECTORY(apps/nightfield)
-ENDIF(APPS_BUILD_NIGHTFIELD)
+if(APPS_BUILD_NIGHTFIELD)
+	add_subdirectory(apps/nightfield)
+endif(APPS_BUILD_NIGHTFIELD)
