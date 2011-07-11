@@ -187,6 +187,9 @@ namespace omega
 		//! Unique id of the service that generated this event.
 		int serviceId;
 
+		//! Id of the device in case there are multiple devices
+		int deviceId;
+
 		//! The event type.
 		enum Type type;
 
@@ -215,6 +218,7 @@ namespace omega
 		{
 			os << processed;
 			os << sourceId;
+			os << deviceId;
 			os << serviceType;
 			os << type;
 			os << flags;
@@ -235,6 +239,7 @@ namespace omega
 		{
 			is >> processed;
 			is >> sourceId;
+			is >> deviceId;
 			is >> serviceType;
 			is >> type;
 			is >> flags;

@@ -33,7 +33,8 @@ using namespace omega;
 struct Marker
 {
 	Vector3f reference;
-	Vector3f reading;
+	Vector3f readingR;
+	Vector3f readingL;
 };
 
 #define MAX_MARKERS 32
@@ -51,8 +52,11 @@ private:
 	int myNumMarkers;
 	Marker myMarkers[MAX_MARKERS];
 	int myCurMarker;
-	AffineTransform3 myTransform;
-	Vector3f myCurrentMocapReading;
+	AffineTransform3 myTransformR;
+	AffineTransform3 myTransformL;
+
+	Vector3f myCurrentMocapReadingR;
+	Vector3f myCurrentMocapReadingL;
 
 	bool myUseTrackable;
 	int myTrackableId;
@@ -69,7 +73,8 @@ public:
 void MocalibClient::initialize()
 {
 	myUseTrackable = false;
-	myTransform = AffineTransform3::Identity();
+	myTransformR = AffineTransform3::Identity();
+	myTransformL = AffineTransform3::Identity();
 
 	Config* cfg = getSystemManager()->getAppConfig();
 
@@ -83,7 +88,8 @@ void MocalibClient::initialize()
 			myMarkers[myNumMarkers].reference.x() = smk[0];
 			myMarkers[myNumMarkers].reference.y() = smk[1];
 			myMarkers[myNumMarkers].reference.z() = smk[2];
-			myMarkers[myNumMarkers].reading = Vector3f::Zero();
+			myMarkers[myNumMarkers].readingR = Vector3f::Zero();
+			myMarkers[myNumMarkers].readingL = Vector3f::Zero();
 			myNumMarkers++;
 		}
 	}
@@ -98,35 +104,50 @@ void MocalibClient::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MocalibClient::processData()
 {
-	Vectors3f src;
+	Vectors3f srcR;
+	Vectors3f srcL;
 	Vectors3f dst;
 
-	src.resize(3, myNumMarkers);
+	srcR.resize(3, myNumMarkers);
+	srcL.resize(3, myNumMarkers);
 	dst.resize(3, myNumMarkers);
 
 	for(int i = 0; i < myNumMarkers; i++)
 	{
 		dst.col(i) = myMarkers[i].reference;
-		src.col(i) = myMarkers[i].reading;
+		srcR.col(i) = myMarkers[i].readingR;
+		srcL.col(i) = myMarkers[i].readingL;
 	}
-	myTransform = Math::computeMatchingPointsTransform(src, dst);
-	omsg("src:");
-	ofmsg("%1%", %src);
+	myTransformR = Math::computeMatchingPointsTransform(srcR, dst);
+	myTransformL = Math::computeMatchingPointsTransform(srcL, dst);
+	omsg("srcR:");
+	ofmsg("%1%", %srcR);
+	omsg("srcL:");
+	ofmsg("%1%", %srcL);
 
 	omsg("dst:");
 	ofmsg("%1%", %dst);
 
-	Vector3f tr = myTransform.translation();
-	Matrix3f ln = myTransform.linear();
+	Vector3f trR = myTransformR.translation();
+	Matrix3f lnR = myTransformR.linear();
+
+	Vector3f trL = myTransformL.translation();
+	Matrix3f lnL = myTransformL.linear();
 
 	omsg("Reference frame settings (copy the following code into mocap service configuration section)");
 	omsg("-------------------------------------------------");
 	omsg("referenceTransform:");
 	omsg("{");
-	ofmsg("referenceTranslation = [%.6f, %.6f, %.6f];", 
-		%tr(0) %tr(1) %tr(2));
-	ofmsg("referenceLinear = [%.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f];", 
-		%ln(0) %ln(1) %ln(2) %ln(3) %ln(4) %ln(5) %ln(6) %ln(7) %ln(8));
+	ofmsg("referenceTranslationR = [%.6f, %.6f, %.6f];", 
+		%trR(0) %trR(1) %trR(2));
+	ofmsg("referenceLinearR = [%.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f];", 
+		%lnR(0) %lnR(1) %lnR(2) %lnR(3) %lnR(4) %lnR(5) %lnR(6) %lnR(7) %lnR(8));
+	omsg("};");
+	omsg("{");
+	ofmsg("referenceTranslationL = [%.6f, %.6f, %.6f];", 
+		%trL(0) %trL(1) %trL(2));
+	ofmsg("referenceLinearL = [%.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f, %.8f];", 
+		%lnL(0) %lnL(1) %lnL(2) %lnL(3) %lnL(4) %lnL(5) %lnL(6) %lnL(7) %lnL(8));
 	omsg("};");
 	omsg("-------------------------------------------------");
 }
@@ -137,16 +158,20 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 	switch(evt.serviceType)
 	{
 	case Service::Mocap:
+		// What is this ?? - Vic
 		if(myUseTrackable)
 		{
 			if(evt.sourceId == myTrackableId)
 			{
-				myCurrentMocapReading = myTransform * evt.position;
+				if( evt.deviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.position;
+				else if( evt.deviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.position;
 			}
 		}
 		else
 		{
-			myCurrentMocapReading = myTransform * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+			//ofmsg("Got from device: %1% this: %2%", %(int)evt.deviceId %(float)evt.pointSet[OMEGA_SKEL_LEFT_HAND][0]);
+			if( evt.deviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+			else if( evt.deviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
 		}
 		//ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
 		//ofmsg("%1% %2% %3%", 
@@ -157,7 +182,8 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 	case Service::Pointer:
 		if(evt.type == Event::Down)
 		{
-			myMarkers[myCurMarker].reading = myCurrentMocapReading; 
+			myMarkers[myCurMarker].readingR = myCurrentMocapReadingR; 
+			myMarkers[myCurMarker].readingL = myCurrentMocapReadingL; 
 			myCurMarker++;
 			if(myCurMarker == myNumMarkers) processData();
 		}
@@ -186,8 +212,16 @@ void MocalibClient::draw(const DrawContext& context)
 		glColor3f(0.3f, 1.0f, 0.3f);
 		glBegin(GL_POINTS);
 		glVertex3f(
-			myCurrentMocapReading.x(),
-			myCurrentMocapReading.y(),
+			myCurrentMocapReadingR.x(),
+			myCurrentMocapReadingR.y(),
+			0.0f);
+		glEnd();
+
+		glColor3f(1.0f, 0.3f, 0.3f);
+		glBegin(GL_POINTS);
+		glVertex3f(
+			myCurrentMocapReadingL.x(),
+			myCurrentMocapReadingL.y(),
 			0.0f);
 		glEnd();
 	}

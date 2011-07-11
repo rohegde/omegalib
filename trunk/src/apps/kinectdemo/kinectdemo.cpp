@@ -10,6 +10,14 @@ void KinectDemoClient::draw(const DrawContext& context)
 	glPushMatrix();
 	glLoadIdentity();
 
+	GLuint texID = 0;
+	glGenTextures(1,&texID);
+
+	glBindTexture(GL_TEXTURE_2D,texID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	//xn::DepthMetaData depthMD;
 
 	SystemManager::instance()->getServiceManager()->poll();
@@ -29,19 +37,29 @@ void KinectDemoClient::draw(const DrawContext& context)
 				
 				ofmsg("Position: %1%", %ptrEvents[i].position);
 
-				//for( int j = 1; j < 25; j++ ) {
-				//	if( ptrEvents[i].pointSet[j][0] != FLT_MIN ) {
-				//		char debug_message[256];
-				//		sprintf(debug_message, "Joint found. ID:%d, X:%.2f, Y:%.2f, Z:%.2f\n", i, ptrEvents[i].pointSet[j][0], ptrEvents[i].pointSet[j][1], ptrEvents[i].pointSet[j][2] );
-				//		omsg(debug_message);
-				//	}
+				glBindTexture(GL_TEXTURE_2D, texID);
+				//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, ptrEvents[i].userData);
 
-				//}
+				// Display the OpenGL texture map
+				glColor4f(0.75,0.75,0.75,1);
+
+				glEnable(GL_TEXTURE_2D);
+				GLfloat verts[8] = {	640, 0,
+					640, 480,
+					0, 480,
+					0, 0
+				};
+				glVertexPointer(2, GL_FLOAT, 0, verts);
+				glDrawArrays(GL_TRIANGLE_FAN, 0, 4);	
+				glDisable(GL_TEXTURE_2D);
 			}
 		}
 	}
 
-	glDisable(GL_TEXTURE_2D);
+
+
+
+	//glDisable(GL_TEXTURE_2D);
 }
 
 int main(int argc, char** argv)
