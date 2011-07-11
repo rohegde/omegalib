@@ -142,6 +142,10 @@ if(APPS_BUILD_MOCALIB)
 	add_subdirectory(apps/mocalib)
 endif(APPS_BUILD_MOCALIB)
 
+if(APPS_BUILD_MOCALIB)
+	ADD_SUBDIRECTORY(apps/multipleKinectDemo)
+endif(APPS_BUILD_MOCALIB)
+
 if(APPS_BUILD_MESH_VIEWER)
 	add_subdirectory(apps/meshviewer)
 endif(APPS_BUILD_MESH_VIEWER)

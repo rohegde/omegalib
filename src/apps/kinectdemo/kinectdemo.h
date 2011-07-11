@@ -16,7 +16,8 @@ public:
 class KinectDemoApplication : public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new KinectDemoClient(this); }
+	virtual ApplicationClient* createClient() { return new KinectDemoClient(this); }
+
 };
 
 #endif

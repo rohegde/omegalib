@@ -30,17 +30,22 @@
 #include "omega/SystemManager.h"
 #include "omega/StringUtils.h"
 
+#include "libconfig/libconfig.hh"
+
 using namespace omega;
+using namespace xn;
 
 OpenNIService* OpenNIService::myOpenNI = NULL;
 XnChar OpenNIService::omg_strPose[20] = ""; // XXX - What is this ???
 XnBool OpenNIService::omg_bNeedPose = FALSE;
 xn::Context OpenNIService::omg_Context = NULL;
-xn::DepthGenerator OpenNIService::omg_DepthGenerator = NULL;
-xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
+//xn::DepthGenerator OpenNIService::omg_DepthGenerator = NULL;
+//xn::UserGenerator OpenNIService::omg_UserGenerator = NULL;
+Vector<xn::DepthGenerator> *OpenNIService::omg_DepthGenerator_v;
+Vector<xn::UserGenerator> *OpenNIService::omg_UserGenerator_v;
 //xn::SceneMetaData OpenNIService::omg_sceneMD = NULL;
-bool OpenNIService::isCalibrated = false;
-bool OpenNIService::autocalibrate = false;
+bool OpenNIService::loadCalibrationFromFile = false;
+const char* OpenNIService::calibrationFile = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OpenNIService::OpenNIService()
@@ -59,13 +64,20 @@ OpenNIService::OpenNIService()
 
 	pDepthTexBuf = new unsigned char[640 * 480 * 4];
 
-	myTransform  = AffineTransform3::Identity();
+	omg_DepthGenerator_v = new Vector<DepthGenerator>();
+	omg_UserGenerator_v = new Vector<UserGenerator>();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OpenNIService::~OpenNIService()
 {
+	omg_Context.Shutdown();
+
 	delete pDepthTexBuf;
+	delete omg_DepthGenerator_v;
+	delete omg_UserGenerator_v;
+	delete [] myTransform;
+	delete [] deviceId;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,93 +91,201 @@ Color OpenNIService::getUserColor(int userId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// XXX HACKED TO WORK FOR 1 OR 2 KINECTS.
+// BUG IN OPENNI
 void OpenNIService::initialize()
 {
 	myOpenNI = this;
-
-	// Check the return value of nRetVal
-	//if( omg_Context.Init() != XN_STATUS_OK ) 
-	//{
-		// Display an error
-	//}
 	
-	
-	if( omg_Context.InitFromXmlFile(KINECT_CONFIG) != XN_STATUS_OK )
-	{
-		// Display an error
-		omsg("ERROR initializing");
+	omg_Context.Init();
+	omg_Context.SetGlobalMirror(true);
+	// Enumerate devices
+	// enumerate devices 
+	static xn::NodeInfoList node_info_list; 
+	static xn::NodeInfoList depth_nodes; 
+	static xn::NodeInfoList user_nodes;
+
+	if (omg_Context.EnumerateProductionTrees(XN_NODE_TYPE_DEVICE, NULL, node_info_list) != XN_STATUS_OK && node_info_list.Begin () !=  node_info_list.End ()) 
+		omsg("enumerating devices failed. Reason: "); 
+
+	omg_Context.EnumerateProductionTrees (XN_NODE_TYPE_DEPTH, NULL, depth_nodes, NULL);
+	omg_Context.EnumerateProductionTrees (XN_NODE_TYPE_USER, NULL, user_nodes, NULL);
+
+
+	Vector<xn::NodeInfo> device_info;
+
+	//for (xn::NodeInfoList::Iterator nodeIt = node_info_list.Begin (); nodeIt != node_info_list.End (); ++nodeIt) 
+	// DEPTH GENERATOR
+	int j = 0;
+	for (xn::NodeInfoList::Iterator nodeIt = depth_nodes.Begin (); nodeIt != depth_nodes.End() && j < nmbKinects; ++nodeIt, j++) 
+	{ 
+		xn::NodeInfo info = *nodeIt;  
+        omg_Context.CreateProductionTree (info); 
+		const XnProductionNodeDescription& description = info.GetDescription(); 
+		omsg("image: vendor" + String(description.strVendor) + " name " + String(description.strName) + " instance " + info.GetInstanceName());
+
+		DepthGenerator omg_DepthGenerator;
+
+		info.GetInstance( omg_DepthGenerator ); 
+		omg_DepthGenerator.StartGenerating();
+		omg_DepthGenerator_v->push_back(omg_DepthGenerator);
 	}
 
-	if( omg_Context.FindExistingNode(XN_NODE_TYPE_DEPTH, omg_DepthGenerator) != XN_STATUS_OK ) 
-	{
-		omsg("Error initializing Depth Generator.");
-	}
-	if( omg_Context.FindExistingNode(XN_NODE_TYPE_USER,  omg_UserGenerator)  != XN_STATUS_OK ) 
-	{
-		omsg("Error initializing User Generator.");
-		omg_UserGenerator.Create(omg_Context);
-	}
+	// USER GENERATOR
+	int i = 1;
+	int nmbKinects_fake = 1;
+	j = 0;
+	if( nmbKinects == 2 ) nmbKinects_fake = 4;
+	for (xn::NodeInfoList::Iterator nodeIt = user_nodes.Begin(); nodeIt != user_nodes.End () && j < nmbKinects_fake; ++nodeIt, i++, j++) 
+	{ 
+		if(i == 1 || i == 4) {
+			xn::NodeInfo info = *nodeIt;  
+			omg_Context.CreateProductionTree (info); 
+			const XnProductionNodeDescription& description = info.GetDescription(); 
+			omsg("image: vendor" + String(description.strVendor) + " name " + String(description.strName) + " instance " + info.GetInstanceName());
 
-	// Callbacks
-	XnCallbackHandle hUserCallbacks, hCalibrationCallbacks, hPoseCallbacks;
+			UserGenerator omg_UserGenerator;
+	 
+			info.GetInstance( omg_UserGenerator ); 
+			omg_UserGenerator.StartGenerating();
+			omg_UserGenerator_v->push_back(omg_UserGenerator);
+		
 
-	if (!omg_UserGenerator.IsCapabilitySupported(XN_CAPABILITY_SKELETON))
-	{
-		printf("Supplied user generator doesn't support skeleton\n");
+		
+
+			// Callbacks
+			// XXX - HACKED TO WORK FOR 1 OR 2 KINECTS
+			if( i == 1 ) {
+				XnCallbackHandle hUserCallbacks, hCalibrationCallbacks, hPoseCallbacks;
+
+				if (!omg_UserGenerator.IsCapabilitySupported(XN_CAPABILITY_SKELETON))
+				{
+					printf("Supplied user generator doesn't support skeleton\n");
+					
+				}
+				omg_UserGenerator.RegisterUserCallbacks(User_NewUser, User_LostUser, NULL, hUserCallbacks);
+				omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, deviceId + 0, hCalibrationCallbacks); // device 0
+
+				if (omg_UserGenerator.GetSkeletonCap().NeedPoseForCalibration())
+				{
+					OpenNIService::omg_bNeedPose = TRUE;
+
+					if (!omg_UserGenerator.IsCapabilitySupported(XN_CAPABILITY_POSE_DETECTION))
+					{
+						printf("Pose required, but not supported\n");
+						//return 1;
+					}
+
+					omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, deviceId + 0, hPoseCallbacks);
+					omg_UserGenerator.GetSkeletonCap().GetCalibrationPose(omg_strPose);
+				}
+
+				omg_UserGenerator.GetSkeletonCap().SetSkeletonProfile(XN_SKEL_PROFILE_ALL);
+			}
+
+			if( i == 4 ) {
+				XnCallbackHandle hUserCallbacks, hCalibrationCallbacks, hPoseCallbacks;
+
+				if (!omg_UserGenerator.IsCapabilitySupported(XN_CAPABILITY_SKELETON))
+				{
+					printf("Supplied user generator doesn't support skeleton\n");
+					
+				}
+				omg_UserGenerator.RegisterUserCallbacks(User_NewUser, User_LostUser, NULL, hUserCallbacks);
+				omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, deviceId + 1, hCalibrationCallbacks); // device 2
+
+				if (omg_UserGenerator.GetSkeletonCap().NeedPoseForCalibration())
+				{
+					OpenNIService::omg_bNeedPose = TRUE;
+
+					if (!omg_UserGenerator.IsCapabilitySupported(XN_CAPABILITY_POSE_DETECTION))
+					{
+						printf("Pose required, but not supported\n");
+						//return 1;
+					}
+					omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, deviceId + 1, hPoseCallbacks);
+					omg_UserGenerator.GetSkeletonCap().GetCalibrationPose(omg_strPose);
+				}
+
+				omg_UserGenerator.GetSkeletonCap().SetSkeletonProfile(XN_SKEL_PROFILE_ALL);
+			}
+		}
 		
 	}
-	omg_UserGenerator.RegisterUserCallbacks(User_NewUser, User_LostUser, NULL, hUserCallbacks);
-	omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, NULL, hCalibrationCallbacks);
-
-	if (omg_UserGenerator.GetSkeletonCap().NeedPoseForCalibration())
-	{
-		OpenNIService::omg_bNeedPose = TRUE;
-
-		if (!omg_UserGenerator.IsCapabilitySupported(XN_CAPABILITY_POSE_DETECTION))
-		{
-			printf("Pose required, but not supported\n");
-			//return 1;
-		}
-		omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, NULL, hPoseCallbacks);
-		omg_UserGenerator.GetSkeletonCap().GetCalibrationPose(omg_strPose);
-	}
-
-	omg_UserGenerator.GetSkeletonCap().SetSkeletonProfile(XN_SKEL_PROFILE_ALL);
-	omg_Context.StartGeneratingAll();	
+	
+	
+	//omg_Context.SetGlobalMirror(true);
+	//omg_Context.StartGeneratingAll();	
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OpenNIService::setup(Setting& settings)
 {
-	Vector3f refTranslation = Vector3f::Zero();
-	Matrix3f refLinear = Matrix3f::Identity();
+	/* Find the number of kinects */
+	nmbKinects = 1;
+	if(settings.exists("nmbKinects"))
+	{
+		nmbKinects = settings["nmbKinects"];
+	}
+	myTransform = new AffineTransform3[nmbKinects]();
+	deviceId = new int[nmbKinects]();
+
+	for(int i = 0; i < nmbKinects; i++ ) 
+	{	
+		myTransform[i] = AffineTransform3::Identity();
+		deviceId[i] = i;
+	}
+
 	if(settings.exists("referenceTransform"))
 	{
 		Setting& srt = settings["referenceTransform"];
-		if(srt.exists("referenceTranslation"))
+		for(int i = 0; i < nmbKinects; i++ ) 
 		{
-			Setting& st = srt["referenceTranslation"];
-			refTranslation.x() = (float)st[0];
-			refTranslation.y() = (float)st[1];
-			refTranslation.z() = (float)st[2];
-		}
-		if(srt.exists("referenceLinear"))
-		{
-			Setting& st = srt["referenceLinear"];
-			for(int i = 0; i < 9; i++)
+			Vector3f refTranslation = Vector3f::Zero();
+			Matrix3f refLinear = Matrix3f::Identity();
+
+			char buffer[50];
+			sprintf(buffer, "referenceTranslation%d", i);
+
+			if(srt.exists(buffer))
 			{
-				refLinear(i) = st[i];
+				Setting& st = srt[buffer];
+				refTranslation.x() = (float)st[0];
+				refTranslation.y() = (float)st[1];
+				refTranslation.z() = (float)st[2];
 			}
+
+			sprintf(buffer, "referenceLinear%d", i);
+			if(srt.exists(buffer))
+			{
+				Setting& st = srt[buffer];
+				for(int i = 0; i < 9; i++)
+				{
+					refLinear(i) = st[i];
+				}
+			}
+
+			/* For compatibility with previous versions of omegalib */
+			if(srt.exists("referenceTranslation"))
+			{
+				Setting& st = srt["referenceTranslation"];
+				refTranslation.x() = (float)st[0];
+				refTranslation.y() = (float)st[1];
+				refTranslation.z() = (float)st[2];
+			}
+			if(srt.exists("referenceLinear" + i))
+			{
+				Setting& st = srt["referenceLinear"];
+				for(int i = 0; i < 9; i++)
+				{
+					refLinear(i) = st[i];
+				}
+			}
+
+			myTransform[i].linear() = refLinear;
+			myTransform[i].translation() = refTranslation;
 		}
-	}
-
-	myTransform.linear() = refLinear;
-	myTransform.translation() = refTranslation;
-
-	if(settings.exists("autocalibrate"))
-	{
-		autocalibrate = settings["autocalibrate"];
 	}
 
 	myUseTrackables = false;
@@ -186,6 +306,24 @@ void OpenNIService::setup(Setting& settings)
 			myTrackables.push_back(trackable);
 		}
 	}
+
+	streamAll = false;
+	if(settings.exists("streamAll"))
+	{
+		streamAll = settings["streamAll"];
+	}
+
+	loadCalibrationFromFile = false;
+	if(settings.exists("loadCalibrationFromFile"))
+	{
+		if( settings["loadCalibrationFromFile"].getType() == Setting.TypeBoolean )
+			loadCalibrationFromFile = settings["loadCalibrationFromFile"];
+		else
+		{
+			loadCalibrationFromFile = true;
+			calibrationFile = (const char*) settings["loadCalibrationFromFile"];
+		}
+	}
 }
 
 void OpenNIService::start()
@@ -202,10 +340,14 @@ void OpenNIService::dispose()
 }
 
 
+// Have to poll from both devices !
 void OpenNIService::poll(void)
 {
 	if( myOpenNI )
 	{
+		xn::DepthGenerator omg_DepthGenerator = omg_DepthGenerator_v->at(0);
+		xn::UserGenerator omg_UserGenerator = omg_UserGenerator_v->at(0);
+		
 		omg_Context.WaitAndUpdateAll();
 
 		xn::SceneMetaData sceneMD;
@@ -219,7 +361,16 @@ void OpenNIService::poll(void)
 		//process the frame data and store it in events, one event per rigid body
 		XnUserID aUsers[OMEGA_OPENNI_MAX_USERS];
 		XnUInt16 nUsers = OMEGA_OPENNI_MAX_USERS;
-		omg_UserGenerator.GetUsers(aUsers, nUsers);
+
+		int counter = 0;
+		do
+		{
+			omg_DepthGenerator = omg_DepthGenerator_v->at(counter);
+			omg_UserGenerator = omg_UserGenerator_v->at(counter);
+			omg_UserGenerator.GetUsers(aUsers, nUsers);
+			counter++;
+		} while( aUsers[counter] == 0 && counter < nmbKinects );
+
 
 		// Store the texture
 		getTexture(depthMD, sceneMD);
@@ -231,9 +382,44 @@ void OpenNIService::poll(void)
 			omg_UserGenerator.GetCoM(aUsers[i], com);
 			omg_DepthGenerator.ConvertRealWorldToProjective(1, &com, &com);
 
-			if ( omg_UserGenerator.GetSkeletonCap().IsTracking(aUsers[i]) )
-			{
-				if(myUseTrackables)
+			//if ( omg_UserGenerator_v->at(0).GetSkeletonCap().IsTracking(aUsers[i]) || omg_UserGenerator_v->at(1).GetSkeletonCap().IsTracking(aUsers[i]) )
+			//{
+				if(streamAll)
+				{
+					for(int j = 0; j < nmbKinects; j++) 
+					{
+						omg_UserGenerator = omg_UserGenerator_v->at(j);
+						if( omg_UserGenerator.GetSkeletonCap().IsTracking(aUsers[i]) ) {
+							Event* theEvent = myOpenNI->writeHead();
+							theEvent->resetValidPoints();
+							theEvent->sourceId = aUsers[i];
+							theEvent->serviceType = Service::Mocap;
+							theEvent->numberOfPoints = 25;
+							theEvent->type = Event::Move;
+
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_TORSO, theEvent, j);
+
+							// Left side
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_SHOULDER, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_ELBOW, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_HAND, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_HIP, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_KNEE, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_FOOT, theEvent, j);
+
+							// Right side
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_SHOULDER, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_ELBOW, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_HAND, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_HIP, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_KNEE, theEvent, j);
+							joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_FOOT, theEvent, j);
+						}
+					}
+				}
+				else if(myUseTrackables)
 				{
 					for(int j = 0; j < myTrackables.size(); j++)
 					{
@@ -245,14 +431,11 @@ void OpenNIService::poll(void)
 							if( getJointPosition(aUsers[i], (OmegaSkeletonJoint)t.jointId, pos) ) 
 							{
 								Event* theEvent = this->writeHead();
-								theEvent->position = myTransform * pos;
+								theEvent->position = pos;
 								theEvent->serviceType = Service::Mocap;
 								theEvent->sourceId = t.trackableId;
 								theEvent->type = Event::Update;
-								theEvent->orientation = Quaternion::Identity();
-
-								if( bLeftHandedSystem ) 
-									theEvent->position[2] = - theEvent->position[2];
+								theEvent->orientation = Quaternion::Identity();						
 							}
 						}
 					}
@@ -268,7 +451,7 @@ void OpenNIService::poll(void)
 
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
-					joint2eventPointSet(aUsers[i], OMEGA_SKEL_TORSO, theEvent);
+					joint2eventPointSet(aUsers[i], OMEGA_SKEL_TORSO, theEvent );
 
 					// Left side
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_LEFT_SHOULDER, theEvent);
@@ -287,23 +470,43 @@ void OpenNIService::poll(void)
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_RIGHT_FOOT, theEvent);
 
 				}
-			}
+			//}
 		}
 		myOpenNI->unlockEvents();
 	}
 }
 
-void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent) {
+void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent, int kinectID) {
 	Vector3f ps;
-	if( getJointPosition(player, joint, ps) ) {
+	if( getJointPosition(player, joint, ps, kinectID) ) {
 
 		// Transform position
-		Vector3f pos = myTransform * ps;
+		Vector3f pos;
+		pos = myTransform[kinectID] * ps;
 
 		theEvent->setValidPoint(joint);
 		theEvent->pointSet[joint][0] = pos[0];
 		theEvent->pointSet[joint][1] = pos[1];
 		theEvent->pointSet[joint][2] = pos[2];
+		theEvent->deviceId = kinectID;
+
+
+		// Event position = Head position (simplifies compatibility with head tracking service)
+		if( joint == OMEGA_SKEL_HEAD ) {
+			theEvent->position[0] = pos[0]; theEvent->position[1] = pos[1]; theEvent->position[2] = pos[2];
+		}
+	}
+}
+
+void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent) {
+	Vector3f pos;
+	if( getJointPosition(player, joint, pos) ) {
+
+		theEvent->setValidPoint(joint);
+		theEvent->pointSet[joint][0] = pos[0];
+		theEvent->pointSet[joint][1] = pos[1];
+		theEvent->pointSet[joint][2] = pos[2];
+
 
 		// Event position = Head position (simplifies compatibility with head tracking service)
 		if( joint == OMEGA_SKEL_HEAD ) {
@@ -314,48 +517,90 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 
 /**
   * getJointPosition: 
-  * returns false if there is a problem
-  * else position of joint is stored in pos
+  * Get the joint from kinectID device
   */
-bool OpenNIService::getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos) {
+bool OpenNIService::getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos, int kinectID) {
+	xn::DepthGenerator omg_DepthGenerator = omg_DepthGenerator_v->at(kinectID);
+	xn::UserGenerator omg_UserGenerator = omg_UserGenerator_v->at(kinectID);
+
 	if( !omg_UserGenerator.GetSkeletonCap().IsTracking(player) )
 		return false;
 
 	XnSkeletonJointPosition jointPos;
 	omg_UserGenerator.GetSkeletonCap().GetSkeletonJointPosition(player, joint, jointPos);
 
-	if( jointPos.fConfidence < 0.5 )
-		return false;
+	// if the confidence from the first is low, try the second one!
+	if( jointPos.fConfidence < 0.5 ) return false;
 
-	// Do we need this ???
-	//omg_DepthGenerator.ConvertRealWorldToProjective(2, pt, pt);
 	pos[0] = jointPos.position.X;
 	pos[1] = jointPos.position.Y;
 	pos[2] = jointPos.position.Z;
 
 	return true;
+	
+}
+
+/**
+  * getJointPosition: 
+  * Gets the  joint from kinect1. If no joint, then gets from kinect2.
+  * returns false if there is a problem
+  * position of joint is stored in pos
+  */
+bool OpenNIService::getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos) {
+	//xn::DepthGenerator omg_DepthGenerator = omg_DepthGenerator_v->at(0);
+	//xn::UserGenerator omg_UserGenerator = omg_UserGenerator_v->at(0);
+
+	XnSkeletonJointPosition jointPos;
+	//omg_UserGenerator.GetSkeletonCap().GetSkeletonJointPosition(player, joint, jointPos);
+
+	// if the confidence from the first is low, try the second one!
+	for(int i = 0; i < nmbKinects; i++ ) 
+	{
+		//if( !omg_UserGenerator.GetSkeletonCap().IsTracking(player) || jointPos.fConfidence < 0.5 )
+		//{
+			xn::DepthGenerator omg_DepthGenerator = omg_DepthGenerator_v->at(i);
+			xn::UserGenerator omg_UserGenerator = omg_UserGenerator_v->at(i);
+			omg_UserGenerator.GetSkeletonCap().GetSkeletonJointPosition(player, joint, jointPos);
+
+			// If we find ANY of the kinects to contain the correct information
+			// then save it and return true. Else return false.
+			if( jointPos.fConfidence >= 0.5 )
+			{
+				pos[0] = jointPos.position.X;
+				pos[1] = jointPos.position.Y;
+				pos[2] = jointPos.position.Z;
+
+				pos = myTransform[i] * pos;
+				return true;
+			}
+		//}
+	}
+
+	return false;
 }
 
 // Callback: New user was detected
 void XN_CALLBACK_TYPE OpenNIService::User_NewUser(xn::UserGenerator& generator, XnUserID nId, void* pCookie)
 {
 	ofmsg("New User %1%", %(int)nId);
-    if( isCalibrated && autocalibrate) 
-    {
-        omg_UserGenerator.GetSkeletonCap().LoadCalibrationData(nId, 0);
-        omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
-    }
+
+	if(loadCalibrationFromFile)
+	{
+		XnStatus status = generator.GetSkeletonCap().LoadCalibrationDataFromFile(nId, calibrationFile);
+		ofmsg("User %1% tracked on %2%", %(int)nId %(bool)generator.GetSkeletonCap().IsCalibrated(nId) );
+        generator.GetSkeletonCap().StartTracking(nId);
+	}
     else 
     {
 
 	    // New user found
 	    if ( OpenNIService::omg_bNeedPose)
 	    {
-		    omg_UserGenerator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);
+		    generator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);
         }	
 	    else
 	    {
-		    omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
+		    generator.GetSkeletonCap().RequestCalibration(nId, TRUE);
         }
     }
 }
@@ -377,7 +622,11 @@ void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator,
 // Callback: Detected a pose
 void XN_CALLBACK_TYPE OpenNIService::UserPose_PoseDetected(xn::PoseDetectionCapability& capability, const XnChar* strPose, XnUserID nId, void* pCookie)
 {
-	ofmsg("Pose %1% detected for user %2%", %strPose %(int)nId);
+	int device = ((int*)(pCookie))[0];
+	xn::DepthGenerator omg_DepthGenerator = omg_DepthGenerator_v->at(device);
+	xn::UserGenerator omg_UserGenerator = omg_UserGenerator_v->at(device);
+
+	ofmsg("Pose %1% detected for user %2% on Device%3%", %strPose %(int)nId %device);
 	omg_UserGenerator.GetPoseDetectionCap().StopPoseDetection(nId);
 	omg_UserGenerator.GetSkeletonCap().RequestCalibration(nId, TRUE);
 }
@@ -385,19 +634,23 @@ void XN_CALLBACK_TYPE OpenNIService::UserPose_PoseDetected(xn::PoseDetectionCapa
 // Callback: Started calibration
 void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationStart(xn::SkeletonCapability& capability, XnUserID nId, void* pCookie)
 {
-	ofmsg("Calibration started for user %1%", %(int)nId);
+	int device = ((int*)(pCookie))[0];
+	ofmsg("Calibration started for user %1% on Device%2%", %(int)nId %device);
 }
 
 // Callback: Finished calibration
 void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::SkeletonCapability& capability, XnUserID nId, XnBool bSuccess, void* pCookie)
 {
+	int device = ((int*)(pCookie))[0];
+	xn::DepthGenerator omg_DepthGenerator = omg_DepthGenerator_v->at(device);
+	xn::UserGenerator omg_UserGenerator = omg_UserGenerator_v->at(device);
 	if (bSuccess)
 	{
 		// Calibration succeeded
-		ofmsg("Calibration complete, start tracking user %1%", %(int)nId);
+		ofmsg("Calibration complete, start tracking user %1% on Device%2%", %(int)nId %device);
 		omg_UserGenerator.GetSkeletonCap().StartTracking(nId);
+
         omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
-        isCalibrated = true;
 		myOpenNI->lockEvents();
 		Event* theEvent = myOpenNI->writeHead();
 		theEvent->serviceType = Service::Mocap;
@@ -410,7 +663,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 	else
 	{
 		// Calibration failed
-		ofmsg("Calibration failed for user %1%", %(int)nId);
+		ofmsg("Calibration failed for user %1% on Device%2%", %(int)nId %device);
 		if ( OpenNIService::omg_bNeedPose )
 		{
 			omg_UserGenerator.GetPoseDetectionCap().StartPoseDetection(omg_strPose, nId);

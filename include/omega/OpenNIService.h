@@ -124,8 +124,10 @@ namespace omega
 		static XnChar omg_strPose[20]; // XXX - What is this ???
 		static XnBool omg_bNeedPose;
 		static xn::Context omg_Context;
-		static xn::DepthGenerator omg_DepthGenerator;
-		static xn::UserGenerator omg_UserGenerator;
+		
+		static Vector<xn::DepthGenerator> *omg_DepthGenerator_v;
+		static Vector<xn::UserGenerator> *omg_UserGenerator_v;
+		
 		static xn::SceneMetaData omg_sceneMD;
 
 	private:
@@ -135,12 +137,15 @@ namespace omega
 		unsigned char* pDepthTexBuf;
 
 		float Colors[11][3];
-        static bool isCalibrated;
-		static bool autocalibrate;
+		static bool loadCalibrationFromFile;
+		static const char* calibrationFile;
 
 		// Reference frame transform
-		AffineTransform3 myTransform;
+		AffineTransform3 *myTransform;
 		bool myUseTrackables;
+		bool streamAll;
+		int nmbKinects;
+		int *deviceId;
 
 		Vector<Trackable> myTrackables;
 
@@ -154,7 +159,10 @@ namespace omega
 
 		static void XN_CALLBACK_TYPE UserCalibration_CalibrationEnd(xn::SkeletonCapability& capability, XnUserID nId, XnBool bSuccess, void* pCookie);
 
+		// XXX Do we need all those ????
 		bool getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos);
+		bool getJointPosition(XnUserID player, XnSkeletonJoint joint, Vector3f &pos, int kinectID);
+		void joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent, int kinectID);
 		void joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, Event* theEvent);
 
 		void getTexture(xn::DepthMetaData& dmd, xn::SceneMetaData& smd);
