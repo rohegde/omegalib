@@ -30,8 +30,6 @@
 #include "omega/SystemManager.h"
 #include "omega/StringUtils.h"
 
-#include "libconfig/libconfig.hh"
-
 using namespace omega;
 using namespace xn;
 
@@ -316,7 +314,7 @@ void OpenNIService::setup(Setting& settings)
 	loadCalibrationFromFile = false;
 	if(settings.exists("loadCalibrationFromFile"))
 	{
-		if( settings["loadCalibrationFromFile"].getType() == Setting.TypeBoolean )
+		if( settings["loadCalibrationFromFile"].getType() == Setting::TypeBoolean )
 			loadCalibrationFromFile = settings["loadCalibrationFromFile"];
 		else
 		{
