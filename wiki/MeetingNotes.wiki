@@ -1,5 +1,15 @@
 = OmegaLib Meeting Notes =
 
+== July 12 2011 ==
+ * OmegaDesk paper: what needs to be done.
+ * Physics manipulation using Kinect: close to working
+ * Two kinects working
+ * OmegaDesk modalities: 2D/2D, 3D/2D, etc. What are the reasons / guidelines to choose one specific modality?
+  * Create framework to map application requirement to device / interaction modality (remember Garzotto paper)
+  * NGCave / OmegaDesk / Dynallax: do we build separate frameworks for each device or a single one covering them all?
+  
+------------------------------------------------------------------------
+
 == July 6 2011 ==
  * Help docs: we need to start working on better doc. One of the main things we need to work on is list the set of input events supported by every specific input service.
  * Keyboard & mouse support without needing to create dummy windows. Brad will take a look into this.
