@@ -32,11 +32,7 @@
 #include "omega/ServiceManager.h"
 #include "natnet/NatNetTypes.h"
 
-#ifdef _WIN32
 #include <XnCppWrapper.h>
-#else
-#include <ni/XnCppWrapper.h>
-#endif
 
 #ifdef WIN32
 #include "winsock2.h"
