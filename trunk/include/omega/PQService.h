@@ -38,6 +38,20 @@
 
 using namespace PQ_SDK_MultiTouch;
 
+struct Touches{
+	int ID;
+	float xPos;
+	float yPos;
+	float xWidth;
+	float yWidth;
+	int timestamp;
+
+	// Gestures
+	int gestureType;
+	int ID_1; // IDs of other touches in the same gesture
+	int ID_2;
+};
+
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +77,9 @@ private:
 	int touchID[1000]; // Max IDs assigned before resetting
 	static int maxTouches; // Should be same number as touchID array init
 	int nextID;
+	static int move_threshold;// in pixels
+
+	std::map<int,Touches> touchlist; // Internal touch list to generate custom gestures
 
 	//////////////////////call back functions///////////////////////
 	// onReceivePointFrame: function to handle when recieve touch point frame

@@ -279,13 +279,13 @@ void NetService::poll()
 	ftime( &tb );
 	int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
 		
-	std::map<int, Touches>::iterator p;
+	std::map<int, NetTouches>::iterator p;
 	//printf("------------------\n");
 	swaplist.clear();
 
 	for(p = touchlist.begin(); p != touchlist.end(); p++) {
 		
-		Touches touch = p->second;
+		NetTouches touch = p->second;
 		
 		//printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)p->first, params[2],params[3] );
 		//printf("dTime: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)params[1], params[2],params[3] );
@@ -449,7 +449,7 @@ void NetService::parseDGram(int result)
 
 				params[6] = curTime;
 
-				Touches touch;
+				NetTouches touch;
 				touch.ID = (int)(params[1]);
 				touch.xPos = params[2];
 				touch.yPos = params[3];

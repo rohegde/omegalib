@@ -99,27 +99,25 @@ bool Wiimote::Connect(){
 
 		// open a shared handle to the device to query it (this will succeed even
 		//  if the wiimote is already Connect()'ed)
-		printf(".. querying device %s\n", didetail->DevicePath);
+		//printf(".. querying device %s\n", didetail->DevicePath);
 		Handle = CreateFile(didetail->DevicePath, 0, FILE_SHARE_READ|FILE_SHARE_WRITE,
 												  NULL, OPEN_EXISTING, 0, NULL);
 		if(Handle == INVALID_HANDLE_VALUE) {
-			printf(".... failed with err %x (probably harmless).\n", 
-					   GetLastError());
+			//printf(".... failed with err %x (probably harmless).\n", GetLastError());
 			goto skip;
 			}
 	
 		// get the device attributes
 		HIDD_ATTRIBUTES attrib;
 		attrib.Size = sizeof(attrib);
-		if(HidD_GetAttributes(Handle, &attrib))
-			{
+		if(HidD_GetAttributes(Handle, &attrib))	{
 			// is this a wiimote?
 				if((attrib.VendorID != VID) || (attrib.ProductID != PID)){
-					printf("Non-wiimote found VID %d PID %d \n", attrib.VendorID, attrib.ProductID );
+					//printf("Non-wiimote found VID %d PID %d \n", attrib.VendorID, attrib.ProductID );
 					goto skip;
 				}
 			// yes, but is it the one we're interested in?
-				printf("Wiimote found VID %d PID %d \n", attrib.VendorID, attrib.ProductID );
+			printf("Wiimote found VID %d PID %d \n", attrib.VendorID, attrib.ProductID );
 			++wiimotes_found;
 			//if((wiimote_index != FIRST_AVAILABLE) &&
 			//   (wiimote_index != wiimotes_found))

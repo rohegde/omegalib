@@ -38,6 +38,7 @@ int PQService::screenX = 0; // If set to 1,1 PQService will send events as a nor
 int PQService::screenY = 0;
 int PQService::screenOffsetX = 0; 
 int PQService::screenOffsetY = 0;
+int PQService::move_threshold = 1; // pixels
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PQService::setup(Setting& settings)
@@ -79,6 +80,11 @@ void PQService::setup(Setting& settings)
 	{
 		screenOffsetY =  settings["screenOffsetY"];
 		printf("PQService: ScreenOffsetY set to %d\n", screenOffsetY);
+	}
+	if(settings.exists("moveThreshold"))
+	{
+		move_threshold =  settings["moveThreshold"];
+		printf("PQService: move threshold set to %d\n", move_threshold);
 	}
 }
 
@@ -133,12 +139,11 @@ int PQService::init()
 	}
 	//////////////you can set the move_threshold when the tcq.type is RQST_RAWDATA_INSIDE;
 	//send threshold
-	//int move_threshold = 1;// 1 pixel
-	//if((err_code = SendThreshold(move_threshold) != PQMTE_SUCESS){
-	//	printf(" send threadhold fail, error code:" << err_code << endl;
-	//	return err_code;
-	//}
-	//
+	if((err_code = SendThreshold(move_threshold)) != PQMTE_SUCESS){
+		printf(" send threadhold fail, error code:" , err_code );
+		return err_code;
+	}
+	
 	////////////////////////
 	//get server resolution
 	if((err_code = GetServerResolution(OnGetServerResolution, NULL)) != PQMTE_SUCESS){
@@ -613,7 +618,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 {
 	timeb tb;
 	ftime( &tb );
-	int nCount = tb.millitm + (tb.time & 0xfffff) * 1000;
+	int timestamp = tb.millitm + (tb.time & 0xfffff) * 1000;
 	
 	int tEvent = tp.point_event;
 	int xWidth = tp.dx;
@@ -622,6 +627,15 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 	if(mysInstance && xWidth <= maxBlobSize && yWidth <= maxBlobSize)
 	{
 		mysInstance->lockEvents();
+	
+		Touches touch;
+		touch.ID = touchID[tp.id];
+		touch.xPos = tp.x * (float)screenX / (float)serverX;
+		touch.yPos = tp.y * (float)screenY / (float)serverY;
+		touch.xWidth = xWidth * (float)screenX / (float)serverX;
+		touch.yWidth = yWidth * (float)screenY / (float)serverY;
+
+		touch.timestamp = timestamp;
 
 		Event* evt = mysInstance->writeHead();
 		switch(tp.point_event)
@@ -634,12 +648,15 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				} else {
 					nextID = 0;
 				}
+				touchlist[touch.ID] = touch;
 				break;
 			case TP_MOVE:
 				evt->type = Event::Move;
+				touchlist[touch.ID] = touch;
 				break;
 			case TP_UP:
 				evt->type  = Event::Up;
+				touchlist.erase( touch.ID );
 				break;
 		}		
 		evt->serviceType = Service::Pointer;
