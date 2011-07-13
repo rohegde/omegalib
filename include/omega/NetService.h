@@ -54,13 +54,18 @@ using namespace PQ_SDK_MultiTouch;
 #include <ws2tcpip.h>
 #endif
 
-struct Touches{
+struct NetTouches{
 	int ID;
 	float xPos;
 	float yPos;
 	float xWidth;
 	float yWidth;
 	int timestamp;
+
+	// Gestures
+	int gestureType;
+	int ID_1; // IDs of other touches in the same gesture
+	int ID_2;
 };
 
 namespace omega
@@ -114,8 +119,8 @@ private:
 	int screenX;
 	int screenY;
 
-	std::map<int,Touches> touchlist;
-	std::map<int,Touches> swaplist;
+	std::map<int,NetTouches> touchlist;
+	std::map<int,NetTouches> swaplist;
 };
 
 }; // namespace omega
