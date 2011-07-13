@@ -30,7 +30,7 @@
 #include "omega/osystem.h"
 #include "omega/Color.h"
 #include "omega/ServiceManager.h"
-#include "natnet/NatNetTypes.h"
+//#include "natnet/NatNetTypes.h"
 
 #include <XnCppWrapper.h>
 
