@@ -243,17 +243,11 @@ class ConfigImpl: public eq::Config
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
-	ConfigImpl( co::base::RefPtr< eq::Server > parent): eq::Config(parent), myServer(NULL) {}
+	ConfigImpl( co::base::RefPtr< eq::Server > parent): eq::Config(parent) {}
 
 	virtual bool init(const uint128_t& initID)
 	{
-		Application* app = SystemManager::instance()->getApplication();
-
-		myServer = app->createServer();
-		myServer->initialize();
-
 		registerObject(&myFrameData);
-
 		return eq::Config::init(initID);
 	}
 
@@ -344,7 +338,6 @@ public:
 
 	virtual uint32_t startFrame( const uint128_t& version )
 	{
-		//omsg("----------------");
 		myFrameData.commit();
 		return eq::Config::startFrame( version );
 	}
@@ -353,18 +346,7 @@ public:
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		ServiceManager* im = SystemManager::instance()->getServiceManager();
-
 		im->poll();
-
-		// update observer head matrices.
-		for( unsigned int i = 0; i < getObservers().size(); i++) 
-		{
-			Observer* obs  = ds->getObserver(i);
-			eq::fabric::Matrix4f om;
-			const AffineTransform3& ht = obs->getHeadTransform();
-			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
-			getObservers().at(i)->setHeadMatrix(om);
-		}
 
 		// Process events.
 		int av = im->getAvailableEvents();
@@ -377,7 +359,7 @@ public:
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
 				Event* evt = im->getEvent(evtNum);
-				myServer->handleEvent(*evt);
+				//myServer->handleEvent(*evt);
 				// Copy events to frame data.
 				myFrameData.getEvent(evtNum) = *evt;
 			}
@@ -385,14 +367,15 @@ public:
 		}
 		im->clearEvents();
 
-		static float lt = 0.0f;
-		// Compute dt.
-		float t = (float)((double)clock() / CLOCKS_PER_SEC);
-		lt = t;
-		UpdateContext uc;
-		uc.dt = t - lt;
-
-		myServer->update(uc);
+		// update observer head matrices.
+		for( unsigned int i = 0; i < getObservers().size(); i++) 
+		{
+			Observer* obs  = ds->getObserver(i);
+			eq::fabric::Matrix4f om;
+			const AffineTransform3& ht = obs->getHeadTransform();
+			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
+			getObservers().at(i)->setHeadMatrix(om);
+		}
 
 		// Process exit requests.
 		if(SystemManager::instance()->isExitRequested())
@@ -407,7 +390,6 @@ public:
 				oferror("Application exit request (reason: %1%) FAILED!", %ereason);
 			}
 		}
-
 		return eq::Config::finishFrame();
 	}
 
@@ -427,6 +409,80 @@ public:
 	}
 
 	const FrameData& getFrameData() { return myFrameData; }
+
+private:
+	FrameData myFrameData;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal
+class NodeImpl: public eq::Node
+{
+public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+public:
+    NodeImpl( eq::Config* parent ):
+	  Node(parent),
+	  myServer(NULL)
+	{
+	}
+
+protected:
+    virtual bool configInit( const eq::uint128_t& initID )
+	{
+		Application* app = SystemManager::instance()->getApplication();
+
+		myServer = app->createServer();
+		myServer->initialize();
+
+		// Map the frame data object.
+		ConfigImpl* config = static_cast<ConfigImpl*>( getConfig( ));
+		const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
+		oassert( mapped );
+
+		return Node::configInit(initID);
+	}
+
+    virtual bool configExit()
+	{
+		eq::Config* config = getConfig();
+		config->unmapObject( &myFrameData );
+
+		odelete(myServer);
+
+		return Node::configExit();
+	}
+
+    virtual void frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
+	{
+		static float lt = 0.0f;
+		// Compute dt.
+		float t = (float)((double)clock() / CLOCKS_PER_SEC);
+		lt = t;
+		UpdateContext uc;
+		uc.dt = t - lt;
+		uc.frameNum = frameNumber;
+
+		// Syncronize frame data (containing input events and possibly other stuff)
+		myFrameData.sync(frameID);
+
+		// Dispatch received events events to application server.
+		int av = myFrameData.getNumEvents();
+		if(av != 0)
+		{
+			for( int evtNum = 0; evtNum < av; evtNum++)
+			{
+				Event& evt = myFrameData.getEvent(evtNum);
+				if(!evt.processed)
+				{
+					evt.processed = myServer->handleEvent(evt, uc);
+				}
+			}
+		}
+		myServer->update(uc);
+
+		Node::frameStart(frameID, frameNumber);
+	}
 
 private:
 	ApplicationServer* myServer;
@@ -761,6 +817,8 @@ public:
 		{ return new WindowImpl(parent); }
 	virtual eq::Pipe* createPipe(eq::Node* parent)
 		{ return new PipeImpl(parent); }
+    virtual eq::Node* createNode( eq::Config* parent )
+       { return new NodeImpl( parent ); }
 };
 
 }; // namespace omega
