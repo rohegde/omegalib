@@ -38,8 +38,11 @@ namespace omega
 	class Texture;
 	class Font;
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Renderer
+	class OUTILS_API Renderer
 	{
+	public:
+		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };
+
 	public:
 		Renderer();
 
@@ -70,7 +73,7 @@ namespace omega
 		void drawRect(Vector2f pos, Vector2f size, Color color);
 		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
 		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
-		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size);
+		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0);
 		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
 		//@}
 
