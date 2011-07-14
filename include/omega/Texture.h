@@ -42,25 +42,29 @@ namespace omega
 		  myData(NULL),
 		  myTextureUnit(GpuManager::TextureUnitInvalid) {}
 
+		//! Initializes this texture object
 		void initialize(byte* data, int width, int height); 
+
+		//! Resets the texture object specifying a new size and data pointer for it.
+		void reset(byte* data, int width, int height);
 
 		bool isDirty() { return myDirty; }
 		void setDirty() { myDirty = true; }
 
-		//byte* getData() { return myData; }
+		byte* getData() { return myData; }
+		void setData(byte* value) { myData = value; }
 
 		int getWidth();
 		int getHeight();
 
 		//! Texture operations
 		//@{
-			GLuint getGLTexture();
-			void bind(GpuManager::TextureUnit unit);
-			void unbind();
-			void refresh();
-			bool isBound();
-			GpuManager::TextureUnit getTextureUnit();
-
+		GLuint getGLTexture();
+		void bind(GpuManager::TextureUnit unit);
+		void unbind();
+		void refresh();
+		bool isBound();
+		GpuManager::TextureUnit getTextureUnit();
 		//@}
 
 	private:
