@@ -42,4 +42,4 @@ add_executable(meshviewer ${SRCS} ${HEADERS})
 ###################################################################################################
 # Setup link info.
 target_link_libraries(meshviewer
-	omega outils)
+	omega outils oqt ${QT_LIBRARIES})

@@ -127,6 +127,24 @@ if(OMEGA_BUILD_OSG_LIB)
 endif(OMEGA_BUILD_OSG_LIB)
 
 if(OMEGA_BUILD_QT_LIB)
+	######################################################################
+	# Configure Qt													     #
+	######################################################################
+
+	# Find QT and provide a hint on where it might be
+	find_package(Qt4 REQUIRED)
+
+	if(${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} LESS 4.6)
+		message(FATAL_ERROR "Qt version 4.6 or higher required. Found version ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.")
+	endif(${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} LESS 4.6)
+
+	message("Using Qt version "${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.)
+
+	set(QT_USE_QTUITOOLS TRUE)
+	include(${QT_USE_FILE})
+	include_directories(${QT_INCLUDES})
+	link_directories(${QT_LIB_DIR})
+	
 	add_subdirectory(oqt)
 endif(OMEGA_BUILD_QT_LIB)
 

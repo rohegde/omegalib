@@ -23,22 +23,178 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  *-------------------------------------------------------------------------------------------------
+ * Part of code taken from Cutexture
+ * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
+#include <QApplication>
+#include <QUiLoader>
+#include <QPainter>
+#include <QImage>
+#include <QFile>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+
+#include "oqt/QtWidget.h"
 #include "oqt/QtClient.h"
 #include "omega/scene.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
+#include "omega/StringUtils.h"
 
 using namespace oqt;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 QtClient::QtClient(EngineClient* engine): 
-	myEngine(engine)
+	myEngine(engine),
+	myFocusedWidget(NULL)
 {
+	char* argv = "";
+	int argcp = 1;
+	myQApp = onew(QApplication)(argcp, &argv);
+
+	myWidgetScene = onew(QGraphicsScene)(this);
+	myWidgetView = onew(QGraphicsView)(myWidgetScene);
+	myWidgetView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+		
+	// for debugging, show Qt's window with
+	// mWidgetView->show();
+
+	// We need to manually tell the scene that a visible view is watching.
+	// A QGraphicsView doesn't do that when it is not visible as 
+	// a widget on screen.
+	QEvent wsce(QEvent::WindowActivate);
+	QApplication::sendEvent(myWidgetScene, &wsce);
+		
+	connect(myWidgetScene, SIGNAL(changed(const QList<QRectF> &)), this, SLOT(setUiDirty()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 QtClient::~QtClient()
 {
+	QEvent wsce(QEvent::WindowDeactivate);
+	QApplication::sendEvent(myWidgetScene, &wsce);
+		
+	// Note: For ~QGraphicsScene to be able to run, qApp must still be valid.
+	odelete(myWidgetView);
+	odelete(myWidgetScene);
+	odelete(myQApp);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+QtWidget* QtClient::createWidget(const String& name, Container* container, QWidget* widget)
+{
+	oassert(container != NULL);
+	oassert(widget != NULL);
+
+	QtWidget* w = onew(QtWidget)(this, name);
+	w->setWidget(widget);
+	container->addChild(w);
+
+	return w;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+QtWidget* QtClient::loadUiFile(const String& filename, Container* container)
+{
+	QUiLoader uiLoader;
+	
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo cfgInfo = dm->getInfo(filename);
+	if(!cfgInfo.isNull())
+	{
+		QFile file(cfgInfo.path.c_str());
+		file.open(QFile::ReadOnly);
+	
+		QWidget* generatedWidget = uiLoader.load(&file, NULL);
+	
+		file.close();
+
+		QtWidget* w = onew(QtWidget)(this, filename);
+		w->setWidget(generatedWidget);
+		container->addChild(w);
+
+		return w;
+	}
+	else
+	{
+		ofwarn("PythonInterpreter: script not found: %1%", %filename);
+	}
+
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtClient::setActiveWidget(QWidget *aWidget)
+{
+	oassert(myWidgetScene);
+		
+	if (myTopLevelWidget && myTopLevelWidget != aWidget)
+	{
+		if (myFocusedWidget)
+		{
+			QEvent foe(QEvent::FocusOut);
+			QApplication::sendEvent(myFocusedWidget, &foe);
+			myFocusedWidget = NULL;
+		}
+
+		myWidgetScene->clear();
+		myTopLevelWidget = NULL;
+	}
+	
+	myWidgetScene->addWidget(aWidget);
+	myTopLevelWidget = aWidget;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtClient::renderIntoTexture(Texture* aTexture)
+{
+	oassert(aTexture != NULL);
+
+	myWidgetView->setGeometry(QRect(0, 0, aTexture->getWidth(), aTexture->getHeight()));
+
+	byte* texData = aTexture->getData();
+
+	// render into texture buffer
+	QImage textureImg(texData, aTexture->getWidth(), aTexture->getHeight(), QImage::Format_ARGB32);
+	textureImg.fill(0);
+		
+	QPainter painter(&textureImg);
+	myWidgetView->render(&painter, QRect(QPoint(0, 0), myWidgetView->size()), QRect(QPoint(0, 0), myWidgetView->size()));
+
+	aTexture->setDirty();
+	aTexture->refresh();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtClient::setUiDirty(bool aDirty)
+{
+	myUiDirty = aDirty;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtClient::initialize()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool QtClient::handleEvent(const Event& evt, UpdateContext& context)
+{
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool QtClient::handleEvent(const Event& evt, DrawContext& context)
+{
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtClient::update(const UpdateContext& context)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtClient::draw(const DrawContext& context)
+{
+}

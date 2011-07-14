@@ -47,20 +47,24 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/oqt/QtWidget.h
         ) 
         
+qt4_wrap_cpp(OQT_MOC_SOURCES ${headers})
+
 ###################################################################################################
-SOURCE_GROUP(oqt REGULAR_EXPRESSION oqt/)		
+source_group(oqt REGULAR_EXPRESSION oqt/)		
+source_group( Moc REGULAR_EXPRESSION moc_.*)
 
 ###################################################################################################
 # Setup compile info
-IF(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( oqt ${srcs} ${headers})
-ELSE(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( oqt SHARED ${srcs} ${headers})
-ENDIF(OMEGA_BUILD_STATIC)
+if(OMEGA_BUILD_STATIC)
+	add_library( oqt ${srcs} ${headers} ${OQT_MOC_SOURCES})
+else(OMEGA_BUILD_STATIC)
+	add_library( oqt SHARED ${srcs} ${headers} ${OQT_MOC_SOURCES})
+endif(OMEGA_BUILD_STATIC)
 
 ###################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( oqt 
+target_link_libraries( oqt 
+    ${QT_LIBRARIES}
 	omega 
 	outils
 	)
