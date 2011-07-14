@@ -214,7 +214,7 @@ void Renderer::drawText(const String& text, Font* font, const Vector2f& position
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size)
+void Renderer::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags)
 {
 	glEnable(GL_TEXTURE_2D);
 	texture->bind(GpuManager::TextureUnit0);
@@ -225,20 +225,36 @@ void Renderer::drawRectTexture(Texture* texture, const Vector2f& position, const
 	float width = size[0];
 	float height = size[1];
 
+	float minx = 0;
+	float miny = 0;
+	float maxx = 1;
+	float maxy = 1;
+
+	if((flipFlags & FlipX) == FlipX)
+	{
+		minx = 1;
+		maxx = 0;
+	}
+	if((flipFlags & FlipY) == FlipY)
+	{
+		miny = 1;
+		maxy = 0;
+	}
+
 	glColor4ub(255, 255, 255, 255);
 
 	glBegin(GL_TRIANGLE_STRIP);
 
-	glTexCoord2f(0.0f, 1.0f);
+	glTexCoord2f(minx, miny);
 	glVertex2f(x, y);
 
-	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(maxx, miny);
 	glVertex2f(x + width, y);
 
-	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(minx, maxy);
 	glVertex2f(x, y + height);
 
-	glTexCoord2f(1.0f, 0.0f);
+	glTexCoord2f(maxx, maxy);
 	glVertex2f(x + width, y + height);
 
 	glEnd();
