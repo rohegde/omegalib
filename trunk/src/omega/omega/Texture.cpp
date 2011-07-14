@@ -53,6 +53,19 @@ void Texture::initialize(byte* data, int width, int height)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::reset(byte* data, int width, int height)
+{
+	oassert(myInitialized);
+
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	myDirty = true;
+	refresh();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Texture::refresh()
 {
 	if(myDirty)
