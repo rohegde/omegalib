@@ -23,12 +23,24 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Part of code taken from Cutexture
+ * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
 #ifndef __QT_CLIENT_H__
 #define __QT_CLIENT_H__
 
+#include <QObject>
+#include <QApplication>
+
 #include "oqt/oqtbase.h"
+#include "oqt/QtWidget.h"
 #include "omega/EngineClient.h"
+#include "omega/Texture.h"
+#include "omega/ui/Container.h"
+
+class QGraphicsView;
+class QGraphicsScene;
 
 namespace oqt
 {
@@ -36,7 +48,7 @@ namespace oqt
 	using namespace omega::ui;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OQT_API QtClient
+	class OQT_API QtClient: public QObject
 	{
 	public:
 		QtClient(EngineClient* engine);
@@ -44,8 +56,40 @@ namespace oqt
 
 		EngineClient* getEngine();
 
+		QtWidget* createWidget(const String& name, Container* container, QWidget* widget);
+		QtWidget* loadUiFile(const String& filename, Container* container);
+		void setActiveWidget(QWidget *aWidget);
+		void setUiDirty(bool aDirty);
+		void renderIntoTexture(Texture* aTexture);
+
+		void initialize();
+		bool handleEvent(const Event& evt, UpdateContext& context);
+		bool handleEvent(const Event& evt, DrawContext& context);
+		void update(const UpdateContext& context);
+		void draw(const DrawContext& context);
+
 	private:
+		QApplication* myQApp;
+
 		EngineClient* myEngine;
+
+		/** Scene which contains all the user interface widgets
+		 * as QGraphicsWidget items. */
+		QGraphicsScene* myWidgetScene;
+
+		/** View which visualizes the scene containing UI widgets. */
+		QGraphicsView* myWidgetView;
+
+		/** Top-level widget in the graphics scene. */
+		QWidget* myTopLevelWidget;
+
+		/** Pointer to the widget currently possessing keyboard focus. 
+		 * Null if no focus set. */
+		QWidget* myFocusedWidget;
+
+		/** Indicates if the UI texture needs to be updated due to a  
+		 * change in mWidgetScene. */
+		bool myUiDirty;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

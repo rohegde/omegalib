@@ -23,11 +23,17 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Part of code taken from Cutexture
+ * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
 #ifndef __OQT_WIDGET_H__
 #define __OQT_WIDGET_H__
 
+#include <QWidget>
+
 #include "oqt/oqtbase.h"
+#include "omega/Texture.h"
 #include "omega/ui/Widget.h"
 
 namespace oqt
@@ -35,14 +41,37 @@ namespace oqt
 	using namespace omega;
 	using namespace omega::ui;
 
+	class QtClient;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OQT_API QtWidget: public Widget
 	{
 	public:
-		QtWidget();
+		QtWidget(QtClient* owner, const String& name);
+		QtWidget(QtClient* owner);
 		~QtWidget();
 
+		QWidget* getWidget();
+		void setWidget(QWidget* value);
+
+	protected:
+		virtual void renderContent();
+
 	private:
+		void initialize(QtClient* owner);
+
+	private:
+		QtClient* myOwner;
+		QWidget* myWidget;
+		Texture* myTexture;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline QWidget* QtWidget::getWidget()
+	{ return myWidget; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void QtWidget::setWidget(QWidget* value)
+	{ myWidget = value; }
 };
 #endif

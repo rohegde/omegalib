@@ -23,22 +23,72 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Part of code taken from Cutexture
+ * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
 #include "oqt/QtClient.h"
 #include "oqt/QtWidget.h"
+
 #include "omega/scene.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
+#include "omega/Renderer.h"
 
 using namespace oqt;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtWidget::QtWidget()
+QtWidget::QtWidget(QtClient* owner, const String& name):
+	Widget(name)
 {
+	initialize(owner);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+QtWidget::QtWidget(QtClient* owner)
+{
+	initialize(owner);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 QtWidget::~QtWidget()
 {
+	odelete(myTexture);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtWidget::initialize(QtClient* owner)
+{
+	myOwner = owner;
+	myWidget = NULL;
+	myTexture = onew(Texture)();
+
+	requestLayoutRefresh();
+	myTexture->initialize(NULL, 16, 16);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtWidget::renderContent()
+{
+	if(myTexture->getWidth() != getWidth() || myTexture->getHeight() != getHeight())
+	{
+		layout();
+
+		byte* data = myTexture->getData();
+		if(data != NULL)
+		{
+			free(data);
+		}
+
+		data = (byte*)malloc(getWidth() * getHeight() * 4);
+
+		myTexture->reset(data, getWidth(), getHeight());
+
+		myOwner->setActiveWidget(myWidget);
+		myOwner->renderIntoTexture(myTexture);
+	}
+
+	Widget::renderContent();
+	getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), getSize());
 }
 
