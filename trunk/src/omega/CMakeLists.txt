@@ -108,8 +108,18 @@ if(OMEGA_USE_DISPLAY)
 	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	if(OMEGA_USE_DISPLAY_EQUALIZER)
 		add_definitions( -DOMEGA_USE_DISPLAY_EQUALIZER)
-		set( srcs ${srcs} omega/EqualizerDisplaySystem.cpp)
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
+		set( srcs ${srcs} 
+			omega/EqualizerDisplaySystem.cpp
+			omega/eqinternal/ChannelImpl.cpp
+			omega/eqinternal/ConfigImpl.cpp
+			omega/eqinternal/ViewImpl.cpp
+			omega/eqinternal/WindowImpl.cpp
+			omega/eqinternal/NodeImpl.cpp
+			omega/eqinternal/Pipe.cpp
+			)
+		set( headers ${headers} 
+			omega/eqinternal/eqinternal.h
+			${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 	endif(OMEGA_USE_DISPLAY_EQUALIZER)
 	
 	# Glut Display Module
@@ -208,6 +218,7 @@ source_group(omega REGULAR_EXPRESSION omega/)
 source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
 source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
 source_group(omega::math REGULAR_EXPRESSION omega/math)		
+source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers
