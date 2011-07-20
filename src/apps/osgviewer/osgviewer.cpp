@@ -24,323 +24,213 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "SceneView.h"
 #include "osgviewer.h"
-#include "omega/ImageUtils.h"
+#include "omega/FilesystemDataSource.h"
+#include "omega/StringUtils.h"
+#include "omega/DataManager.h"
+
+#include <osg/Light>
+#include <osg/LightSource>
+#include <osg/Node>
+#include <osg/MatrixTransform>
+#include <osgDB/ReadFile>
+#include <osgUtil/Optimizer>
+#include <osgUtil/UpdateVisitor>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage):
-	myName(name),
-	myMesh(m),
-	myLeftImage(leftImage),
-	myRightImage(rightImage),
-	myVisible(false)
+osg::ref_ptr<osg::Node> OsgViewerServer::readModel( const std::string& filename )
 {
-	if(myMesh != NULL)
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo cfgInfo = dm->getInfo(filename);
+	if(!cfgInfo.isNull())
 	{
-		mySelectionSphere = onew(BoundingSphere)();
-		mySelectionSphere->setVisible(false);
-		mySelectionSphere->setDrawOnSelected(true);
-
-		mySceneNode = onew(SceneNode)(sm);
-		mySceneNode->addRenderable(myMesh);
-		mySceneNode->addRenderable(mySelectionSphere);
-		mySceneNode->setPosition(Vector3f::Zero());
-		mySceneNode->setSelectable(true);
-		mySceneNode->setVisible(false);
-		sm->getRootNode()->addChild(mySceneNode);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setVisible(bool value)
-{
-	myVisible = value;
-	if(myMesh != NULL)
-	{
-		mySceneNode->setVisible(value);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::resetTransform()
-{
-	mySceneNode->setPosition(0, 0, 0.0f);
-	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
-	mySceneNode->resetOrientation();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::initialize()
-{
-	EngineClient::initialize();
-
-	Config* cfg = getSystemManager()->getAppConfig();
-
-	// Setup the system font.
-	if(cfg->exists("config/defaultFont"))
-	{
-		Setting& fontSetting = cfg->lookup("config/defaultFont");
-		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
-	}
-
-	// Load meshes specified in config file.
-	MeshManager* mm = getMeshManager();
-	if(cfg->exists("config/entities"))
-	{
-		Setting& meshes = cfg->lookup("config/entities");
-		for(int i = 0; i < meshes.getLength(); i++)
+		osg::ref_ptr<osg::Node> root = osgDB::readNodeFile( cfgInfo.path );
+		if ( !root.valid( )) 
 		{
-			Setting& entitySetting = meshes[i];
-			String name = entitySetting.getName();
-			String label = entitySetting["label"];
-
-			Mesh* mesh = NULL;
-			if(entitySetting.exists("mesh"))
-			{
-				String meshFilename = entitySetting["mesh"];
-				mm->loadMesh(name, meshFilename, MeshManager::MeshFormatPly, 0.8f);
-				mesh = mm->getMesh(name);
-			}
-
-			Texture* leftImage = NULL;
-			Texture* rightImage = NULL;
-			if(entitySetting.exists("leftImage") && entitySetting.exists("rightImage"))
-			{
-				String leftImageFilename = entitySetting["leftImage"];
-				String rightImageFilename = entitySetting["rightImage"];
-
-				leftImage = ImageUtils::createTexture(getTextureManager(), name, leftImageFilename);
-				rightImage = ImageUtils::createTexture(getTextureManager(), name, rightImageFilename);
-			}
-
-			Entity* e = new Entity(label, getSceneManager(), mesh, leftImage, rightImage);
-			myEntities.push_back(e);
+			oferror("Failed to load model: %1%", %filename);
+			return root;
 		}
-	}
 
-	// Create and initialize meshviewer UI
-	initUI();
-
-	// Create a reference box around the scene.
-	if(cfg->exists("config/referenceBox"))
-	{
-		myReferenceBox = new ReferenceBox();
-		getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
-		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
-	}
-
-	// Set the interactor style used to manipulate meshes.
-	String interactorStyle = cfg->lookup("config/interactorStyle");
-	if(interactorStyle == "Mouse")
-	{
-		DefaultMouseInteractor* interactor = onew(DefaultMouseInteractor)();
-		myCurrentInteractor = interactor;
+		//Optimize scenegraph
+		osgUtil::Optimizer optOSGFile;
+		optOSGFile.optimize( root.get( ));
+		return root;
 	}
 	else
 	{
-		DefaultTwoHandsInteractor* interactor = onew(DefaultTwoHandsInteractor)();
-		interactor->initialize("ObserverUpdateService");
-		myCurrentInteractor = interactor;
+		oferror("File not found: %1%", %filename);
 	}
-	getSceneManager()->addActor(myCurrentInteractor);
-    
-    myShowUI = true;
-    autoRotate = true;
-	setVisibleEntity(0);
-	deltaScale = 0;
+	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::initUI()
+void OsgViewerServer::initialize() 
 {
-	UIManager* ui = getUIManager();
-	ui->setEventHandler(this);
+    //Config* config = static_cast<Config*>( getConfig( ));
+    //if( !config->mapData( initID ))
+    //    return false;
 
-	//! Load and set default font.
-	FontManager* fm = getFontManager();
-	Font* defaultFont = fm->getFont("default");
-	ui->setDefaultFont(defaultFont);
+    myFrameStamp = new osg::FrameStamp;
+    myUpdateVisitor = new osgUtil::UpdateVisitor;
+    myUpdateVisitor->setFrameStamp( myFrameStamp );
+    //_contextID = 0;
 
-	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer(0);
-	root->setLayout(Container::LayoutVertical);
-
-	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-
-	// Setup ui layout using from config file sections.
-	Config* cfg = SystemManager::instance()->getAppConfig();
-	if(cfg->exists("config/ui/entityButtons"))
-	{
-		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
-	}
-	if(cfg->exists("config/ui/root"))
-	{
-		root->load(cfg->lookup("config/ui/root"));
-	}
-
-	// Add buttons for each entity
-	for(int i = 0; i < myEntities.size(); i++)
-	{
-		Entity* e = myEntities[i];
-		Button* btn = wf->createButton(e->getName(), entityButtons);
-		myEntityButtons.push_back(btn);
-	}
-
-	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
-	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
-	{
-		root = ui->getRootContainer(1);
-		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
-		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
-	}
-
-	getSceneManager()->setAmbientLightColor(Color::Black);
-
-	Light* light = getSceneManager()->getLight(0);
-	light->setEnabled(true);
-	light->setColor(Color(0.5f, 0.5f, 0.5f));
-	light->setPosition(Vector3f(0, 3, 3));
-
-	light = getSceneManager()->getLight(1);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(-3, 0, 0));
-
-	light = getSceneManager()->getLight(2);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(3, 0, 0));
-
-	light = getSceneManager()->getLight(3);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.3f, 0.35f));
-	light->setPosition(Vector3f(0, -3, 0));
-
-	light = getSceneManager()->getLight(4);
-	light->setEnabled(true);
-	light->setColor(Color(0.35f, 0.3f, 0.3f));
-	light->setPosition(Vector3f(0, 0, -3));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::draw( const DrawContext& context)
-{
-    DrawContext copyContext = context;
-    if( !myShowUI )copyContext.layer = Layer::Scene0;
-    
-    EngineClient::draw( copyContext );
-    
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
-{
-    if( evt.serviceType == Service::Keyboard )
+    // load model at first config run
+    if( !myModel )
     {
-        if((char)evt.sourceId == 'q') exit(0);
-        if((char)evt.sourceId == 's' && evt.type == Event::Down) 
+        const std::string& modelFile = "osg/cessna.osg"; 
+        if( !modelFile.empty( ))
         {
-            myShowUI = !myShowUI;
-        }
-        if((char)evt.sourceId == 'r' && evt.type == Event::Down) 
-        {
-            autoRotate = !autoRotate;
-        }
-        //up
-        if((char)evt.sourceId == 'z' && evt.type == Event::Down) 
-        {
-			deltaScale = 0.1;
-        }
-        
-        if((char)evt.sourceId == 'x' && evt.type == Event::Down)  
-        {
-            deltaScale = -0.1;
-        }
+            myModel = readModel( modelFile );
 
+            if( myModel.valid( ))
+            {
+                osg::Matrix matrix;
+                matrix.makeRotate( -osg::PI_2, osg::Vec3( 1., 0., 0. ));
+				matrix.makeScale( 0.01, 0.01, 0.01 );
+
+                osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform();
+                transform->setMatrix( matrix );
+                transform->addChild( myModel );
+                transform->setDataVariance( osg::Object::STATIC );
+
+				const osg::BoundingSphere& bs = transform->getBound();
+				float x = bs.center()[0];
+				float y = bs.center()[1];
+				float z = bs.center()[2];
+				float r = bs.radius();
+
+				ofmsg("Model %1% bounding sphere center: (%2% %3% %4%) radius: %5%", %modelFile %x %y %z %r);
+
+                myModel = transform;
+            }
+        }
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgViewerServer::finalize()
+{
+    //_contextID = 0;
+    myFrameStamp = 0;
+    myUpdateVisitor = 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgViewerServer::update(const UpdateContext& context) 
+{
+	myFrameStamp->setFrameNumber(context.frameNum);
+
+	const double time = static_cast< double >( context.time ) / 1000.;
+    myFrameStamp->setReferenceTime(time);
+    myFrameStamp->setSimulationTime(time);
+	myUpdateVisitor->setTraversalNumber(context.frameNum);
+    myModel->accept(*myUpdateVisitor);
+    myModel->getBound();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool OsgViewerServer::handleEvent(const Event& evt, const UpdateContext& context) 
+{ 
+	return false; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgViewerClient::initialize()
+{
+	EngineClient::initialize();
+        
+    mySceneView =  new SceneView;
+    mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
+	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 1.0));
+    //_sceneView->setFrameStamp( node->getFrameStamp( ));
+    mySceneView->init();
+    //_sceneView->getState()->setContextID( node->getUniqueContextID( ));
+    mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)());
+
+    //osg::ref_ptr< osg::Node > model = node->getModel();
+    //_sceneView->setSceneData( model );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgViewerClient::finalize()
+{
+	mySceneView = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgViewerClient::draw( const DrawContext& context)
+{
+    EngineClient::draw( context );
+    
+	mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
+
+    // - Stereo
+    //mySceneView->setDrawBufferValue( getDrawBuffer( ));
+    //const eq::ColorMask& colorMask = getDrawBufferMask();
+
+    //osgUtil::RenderStage* stage = mySceneView->getRenderStage();
+    //osg::ref_ptr< osg::ColorMask > osgMask = stage->getColorMask();
+    //osgMask->setMask( colorMask.red, colorMask.green, colorMask.blue, true );
+
+    // - Frustum (Projection matrix)
+    //const eq::Frustumf& frustum = getFrustum();
+    //mySceneView->setProjectionMatrixAsFrustum( 
+    //    frustum.left(), frustum.right(), frustum.bottom(), frustum.top(),
+    //    frustum.near_plane(), frustum.far_plane( ));
+
+	mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
+
+    // - Camera (Model Matrix)
+    //const Pipe *pipe = static_cast< const Pipe* >( getPipe( ));
+    //const FrameData& frameData = pipe->getFrameData();
+    
+    //const eq::Vector3f position = frameData.getCameraPosition();
+    //const eq::Vector3f lookAt = frameData.getCameraLookAtPoint();
+    //const eq::Vector3f upVector = frameData.getCameraUpVector();
+
+    //const osg::Vec3f pos( position.x(), position.y(), position.z( ));
+    //const osg::Vec3f look( lookAt.x(), lookAt.y(), lookAt.z( ));
+    //const osg::Vec3f up( upVector.x(), upVector.y(), upVector.z( ));
+  
+    //mySceneView->setViewMatrixAsLookAt( pos, look, up );
+
+	mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
+
+    // - Frustum position (View Matrix)
+    //osg::Matrix headView = mySceneView->getViewMatrix();
+    //headView.postMult( buildOsgMatrix( context.modelview ));
+    //mySceneView->setViewMatrix( headView );
+
+    // - Render
+    mySceneView->cull();
+    mySceneView->draw();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool OsgViewerClient::handleEvent(const Event& evt , UpdateContext &context )
+{
     return EngineClient::handleEvent( evt , context );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::handleUIEvent(const UIEvent& evt)
+void OsgViewerClient::update(const UpdateContext& context)
 {
-	for(int i = 0; i < myEntities.size(); i++)
-	{
-		if(myEntityButtons[i] == evt.source)
-		{
-			setVisibleEntity(i);
-			return;
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::setVisibleEntity(int entityId)
-{
-	if(myVisibleEntity != NULL)
-	{
-		myVisibleEntity->setVisible(false);
-		myVisibleEntity = NULL;
-	}
-
-	Entity* e = myEntities[entityId];
-	myVisibleEntity = e;
-
-	if(e->getMesh() != NULL)
-	{
-		myVisibleEntity->resetTransform();
-		myVisibleEntity->setVisible(true);
-
-		// Tell the interactor what is the currently active scene node
-		myCurrentInteractor->setSceneNode(e->getSceneNode());
-	}
-
-	if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
-	{
-		setTextureBackgroundEnabled( true );
-		setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
-		setTextureBackground( DrawContext::EyeRight , e->getRightImage());
-	}
-	else
-	{
-		setTextureBackgroundEnabled( false );
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::update(const UpdateContext& context)
-{
-	SceneNode* daSceneNode = myVisibleEntity->getSceneNode();
-	if ( autoRotate )
-	{
-		daSceneNode->yaw( 0.01 );
-	}
-	
-	if( deltaScale != 0 )
-	{
-		// if it is negative 
-		
-		Vector3f curScale = daSceneNode->getScale( );
-		daSceneNode->setScale( curScale + curScale * deltaScale );	
-		deltaScale = 0.0;
-	}
-		
 	return EngineClient::update( context );
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	MeshViewerApplication app;
+	OsgViewerApplication app;
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "osgviewer.log", new FilesystemDataSource("./../../data/"));
 
 	return 0;
 }

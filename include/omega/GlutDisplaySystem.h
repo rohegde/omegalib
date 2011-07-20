@@ -33,6 +33,8 @@ namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements a display system based on GLUT, offering a single render window and mouse input support.
+	//! Note: this display system is not well maintained. It may not work / work partially. Developers are advised to
+	//! use EqualizerDisplaySystem in most circumstances.
 	class OMEGA_API GlutDisplaySystem: public DisplaySystem
 	{
 	public:

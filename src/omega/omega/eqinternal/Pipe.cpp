@@ -102,7 +102,13 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 		// Syncronize frame data (containing input events and possibly other stuff)
 		myFrameData.sync(frameID);
 
+		static float lt = 0.0f;
+		// Compute dt.
+		float t = (float)((double)clock() / CLOCKS_PER_SEC);
 		UpdateContext context;
+		if(lt == 0) lt = t;
+		context.time = t - lt;
+		context.dt = t - context.time;
 		context.frameNum = frameNumber;
 
 		// Dispatch received events events to application client.

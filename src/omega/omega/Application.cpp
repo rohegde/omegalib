@@ -62,7 +62,7 @@ Layer::Enum Layer::fromString(const String& str)
 ApplicationClient::ApplicationClient(Application* app): myApplication(app) 
 {
 #ifdef OMEGA_USE_DISPLAY
-	myGpu = new GpuManager();
+	myGpu = onew(GpuManager)();
 #else
 	myGpu = NULL;
 #endif
@@ -72,8 +72,7 @@ ApplicationClient::ApplicationClient(Application* app): myApplication(app)
 ApplicationClient::~ApplicationClient() 
 {
 #ifdef OMEGA_USE_DISPLAY
-	delete myGpu;
-	myGpu = NULL;
+	odelete(myGpu);
 #endif
 }
 
