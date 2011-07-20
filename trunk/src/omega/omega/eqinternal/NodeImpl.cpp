@@ -70,9 +70,10 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 	static float lt = 0.0f;
 	// Compute dt.
 	float t = (float)((double)clock() / CLOCKS_PER_SEC);
-	lt = t;
+	if(lt == 0) lt = t;
 	UpdateContext uc;
-	uc.dt = t - lt;
+	uc.time = t - lt;
+	uc.dt = t - uc.time;
 	uc.frameNum = frameNumber;
 
 	// Syncronize frame data (containing input events and possibly other stuff)

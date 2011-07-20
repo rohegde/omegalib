@@ -26,13 +26,29 @@
 ###################################################################################################
 
 ###################################################################################################
+find_package(OpenSceneGraph 2.9.8 COMPONENTS osgDB osgUtil)
+if(OSG_LIBRARY MATCHES "OSG_LIBRARY-NOTFOUND")
+  message(STATUS "Skipping osgviewer example (OSG not found)")	 
+  return()
+endif()
+if(${OPENSCENEGRAPH_VERSION} VERSION_LESS "2.9.8")
+  message(STATUS "Skipping osgviewer (OSG ${OPENSCENEGRAPH_VERSION} found, need >= 2.9.8)")
+  return()
+endif()
+
+
+include_directories(SYSTEM ${OPENSCENEGRAPH_INCLUDE_DIRS})
+
+###################################################################################################
 # Source files
 set(SRCS 
+		SceneView.cpp
 		osgviewer.cpp)
     
 ###################################################################################################
 # Headers
 set(HEADERS 
+		SceneView.h
 		osgviewer.h) 
         
 ###################################################################################################
@@ -44,4 +60,5 @@ add_executable(osgviewer ${SRCS} ${HEADERS})
 target_link_libraries(osgviewer
 	omega 
 	outils
-    oosg)
+    oosg
+	${OPENSCENEGRAPH_LIBRARIES})

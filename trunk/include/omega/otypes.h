@@ -132,6 +132,7 @@ namespace omega
 	typedef math::Ray<float> Ray;
 	typedef math::AlignedBox3<float> AlignedBox3;
 	typedef math::matrix< 3, 3, float >  Matrix3f; //!< A 3x3 float matrix
+	typedef math::matrix< 4, 4, float >  Matrix4f; //!< A 3x3 float matrix
 	typedef math::matrix< 3, Eigen::Dynamic, float >  Vectors3f; //!< A 3x3 float matrix
 	typedef math::vector< 2, float > Vector2f; //!< A two-component float vector
 	typedef math::vector< 3, float > Vector3f; //!< A three-component float vector

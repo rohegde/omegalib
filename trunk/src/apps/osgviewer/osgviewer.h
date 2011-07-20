@@ -27,89 +27,76 @@
 #ifndef __MESHVIEWER_H__
 #define __MESHVIEWER_H__
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
+#include "omega/Application.h"
 #include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
 
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+///////////////////////////////////////////////////////////////////////////////////////////////
+inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
+{
+    return osg::Matrix( matrix( 0, 0 ), matrix( 1, 0 ),
+                        matrix( 2, 0 ), matrix( 3, 0 ),
+                        matrix( 0, 1 ), matrix( 1, 1 ),
+                        matrix( 2, 1 ), matrix( 3, 1 ),
+                        matrix( 0, 2 ), matrix( 1, 2 ),
+                        matrix( 2, 2 ), matrix( 3, 2 ),
+                        matrix( 0, 3 ), matrix( 1, 3 ),
+                        matrix( 2, 3 ), matrix( 3, 3 ));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+class OsgViewerServer: public ApplicationServer
 {
 public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
+	OsgViewerServer(Application* app): ApplicationServer(app) {}
+	virtual ~OsgViewerServer() {}
 
-	const String& getName() { return myName; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
+	virtual void initialize();
+	virtual void finalize();
+	virtual void update(const UpdateContext& context);
+	virtual bool handleEvent(const Event& evt, const UpdateContext& context);
 
 private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
+    osg::ref_ptr< osg::Node > createSceneGraph();
+    osg::ref_ptr< osg::Node > createSceneGraph( osg::ref_ptr<osg::Image> );
+    osg::ref_ptr< osg::Group > initSceneGraph();
+    osg::ref_ptr< osg::LightSource > createLightSource();
+	osg::ref_ptr< osg::Node > readModel( const std::string& filename );
+
+private:
+    //co::base::a_int32_t myContextID;
+    osg::ref_ptr< osg::Node > myModel;
+    osg::ref_ptr< osg::FrameStamp > myFrameStamp;
+    osg::ref_ptr< osg::NodeVisitor > myUpdateVisitor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient, IUIEventHandler
+class OsgViewerClient: public EngineClient
 {
 public:
-	MeshViewerClient(Application* app): 
-	  EngineClient(app), 
-		myVisibleEntity(NULL)
-	  {}
+	OsgViewerClient(Application* app): 
+	  EngineClient(app) {}
 
 	virtual void initialize();
-	void initUI();
+	virtual void finalize();
 
 	virtual bool handleEvent(const Event& evt , UpdateContext &context );
     void draw( const DrawContext& context);
-
-
-	void handleUIEvent(const UIEvent& evt);
-	void setVisibleEntity(int entityId);
 	void update(const UpdateContext& context);
 
 private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
+	osg::ref_ptr< SceneView > mySceneView;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
+class OsgViewerApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new MeshViewerClient(this); }
+	virtual ApplicationClient* createClient() { return new OsgViewerClient(this); }
+	virtual ApplicationServer* createServer() { return new OsgViewerServer(this); }
 };
 
 #endif

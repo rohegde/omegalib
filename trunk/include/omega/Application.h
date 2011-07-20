@@ -43,6 +43,7 @@ namespace omega
 	struct Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! The Layer class contains enumerated values representing drawing layers.
 	class Layer
 	{
 	public:
@@ -76,18 +77,10 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Interface for objects that manage a single OpenGL context.
-	//class IGLContextManager
-	//{
-	//public:
-	//	//! Makes the context current.
-	//	virtual void makeCurrent() = 0;
-	//};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct UpdateContext
 	{
 		uint64 frameNum;
+		float time;
 		float dt;
 	};
 
@@ -117,6 +110,7 @@ namespace omega
 
 		virtual void setup() {}
 		virtual void initialize();
+		virtual void finalize() {}
 
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
@@ -147,6 +141,7 @@ namespace omega
 		virtual ~ApplicationServer() {}
 
 		virtual void initialize() {}
+		virtual void finalize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual bool handleEvent(const Event& evt, const UpdateContext& context) { return false; }
 
