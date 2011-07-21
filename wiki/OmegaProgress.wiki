@@ -2,7 +2,7 @@
 
 = omegalib v0.5 (*current developement version*) =
 == Summary ==
-Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Integration with External scene graph and UI libraries (like OpenSceneGraph and Qt) is also planned for this version. Possibily, initial experiments running on clustered display systems. 
+Main objectives for this release: support of multiple object manipulation through kinect / mocap and a better integration with Vtk. Integration with External scene graph and UI libraries (like OpenSceneGraph and Qt) is also planned for this version. Possibily, initial experiments running on clustered / multigpu display systems. 
 
 *Expected delivery*: `September 2011`
 
@@ -10,6 +10,10 @@ Main objectives for this release: support of multiple object manipulation throug
  * Compiles under Mac OSX in i386 mode 
  * Can use XCode as compiler (cmake -G XCode)
  * OpenNI library works under Linux
+ * Vtk integration:
+   * ovtk library core
+   * Python script loader
+   * Vtk viewer application
 
 == Work In Progress ==
  * Integration of PS3 and Wii controller (*Arthur*)
@@ -19,10 +23,9 @@ Main objectives for this release: support of multiple object manipulation throug
      * Using touch, Kinect, 3D, controllers. 
  * Add a multi-user touch gestures (*Arthur*)
      * Zoom, drag, and other current SAGE touch gestures
- * New version of meshviewer supporting multiple object interaction and more polished look & feel. (*Alessandro*)
  * Integration with OpenSceneGraph (*Alessandro*)
  * Integration with Qt (*Alessandro*)
- * Vtk library / viewer: (*Alessandro*)
+ * Vtk integration: (*Alessandro*)
    * Support visualization of multiple entities.
    * Script loading in separate thread.
    * UI interface for interaction with Vtk pipelines
@@ -30,7 +33,6 @@ Main objectives for this release: support of multiple object manipulation throug
  * VRPN Integration
    * Preliminary work (*Arthur*)
  
-
 == Wish List ==
  * filters to join kinect & pqlabs to associate touches to user.
 
