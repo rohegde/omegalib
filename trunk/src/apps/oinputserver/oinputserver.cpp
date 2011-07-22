@@ -594,11 +594,11 @@ void main(int argc, char** argv)
 			{
 				if( app.handleEvent(evts[evtNum]) ){ // is there an event?
 					// Send event to clients
-					//printf("%s\n", app.getEvent());
+					printf("%s\n", app.getEvent());
 					app.sendToClients( app.getEvent() );
 				}
 			}
-			//printf("------------------------------------------------------------------------------\n", app.getEvent());
+			printf("------------------------------------------------------------------------------\n", app.getEvent());
 		}// if
 		else if( testStream ){
 			testPacket = new char[99];

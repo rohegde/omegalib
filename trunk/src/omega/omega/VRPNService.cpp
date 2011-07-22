@@ -137,16 +137,14 @@ void VRPNService::initialize()
 void VRPNService::poll() 
 {
 	int done = 0;
-	while ( ! done ) {
-		for(int i = 0; i < trackerRemotes.size(); i++)
-		{
-			vrpn_Tracker_Remote *tkr = trackerRemotes[i];
-			// Let the tracker do it's thing
-                // It will call the callback funtions you registered above
-				// as needed
-			tkr->mainloop();
-		}
-    }
+	for(int i = 0; i < trackerRemotes.size(); i++)
+	{
+		vrpn_Tracker_Remote *tkr = trackerRemotes[i];
+		// Let the tracker do it's thing
+               // It will call the callback funtions you registered above
+			// as needed
+		tkr->mainloop();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,10 +175,10 @@ void VRPNService::generateEvent(vrpn_TRACKERCB t, int id)
 
 	evt->orientation = qpitch * qyaw * qroll;
 
-	printf("handle_tracker\tObject %d POS: (%g,%g,%g) QUAT: (%g,%g,%g)\n", 
-	 id,
-	 t.pos[0], t.pos[1], t.pos[2],
-	 t.quat[0], t.quat[1], t.quat[2]
-		);
+	//printf("handle_tracker\tObject %d POS: (%g,%g,%g) QUAT: (%g,%g,%g)\n", 
+	// id,
+	// t.pos[0], t.pos[1], t.pos[2],
+	// t.quat[0], t.quat[1], t.quat[2]
+	//	);
 	mysInstance->unlockEvents();
 }
