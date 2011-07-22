@@ -211,6 +211,24 @@ if(WIN32)
 		INCLUDE_DIRECTORIES( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
 							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
 	ENDIF(OMEGA_USE_DIRECTINPUT)
+	
+	SET(OMEGA_USE_VRPN true CACHE BOOL "Enable/disable VRPN Client support")
+	IF(OMEGA_USE_VRPN)
+		SET( srcs	 ${srcs} omega/VRPNService.cpp )
+		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_BaseClass.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Configure.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Connection.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Shared.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Tracker.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Types.h
+					 
+			)
+		ADD_DEFINITIONS( -DOMEGA_USE_VRPN)
+		INCLUDE_DIRECTORIES( ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
+							 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn
+			)
+	ENDIF(OMEGA_USE_VRPN)
 endif(WIN32)
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
@@ -295,6 +313,12 @@ if(OMEGA_USE_DIRECTINPUT)
 		target_link_libraries( omega ${EXT_LIB_DIR}/setupapi.lib)
 	endif(WIN32)
 endif(OMEGA_USE_DIRECTINPUT)
+
+if(OMEGA_USE_VRPN)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/vrpn.lib)
+	endif(WIN32)
+endif(OMEGA_USE_VRPN)
 
 ###################################################################################################
 # Setup link info for additional libraries
