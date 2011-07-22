@@ -70,6 +70,9 @@
 #ifdef OMEGA_USE_OPENNI
 	#include "omega/OpenNIService.h"
 #endif
+#ifdef OMEGA_USE_VRPN
+	#include "omega/VRPNService.h"
+#endif
 
 using namespace omega;
 
@@ -158,6 +161,9 @@ void SystemManager::setupServiceManager()
 #endif
 #ifdef OMEGA_USE_PQLABS
 	myServiceManager->registerService("PQService", (ServiceAllocator)PQService::New);
+#endif
+#ifdef OMEGA_USE_VRPN
+	myServiceManager->registerService("VRPNService", (ServiceAllocator)VRPNService::New);
 #endif
 #ifdef OMEGA_USE_OPTITRACK
 	myServiceManager->registerService("OptiTrackService", (ServiceAllocator)OptiTrackService::New);
