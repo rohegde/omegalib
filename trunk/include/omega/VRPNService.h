@@ -50,7 +50,7 @@ public:
 	OMEGA_API virtual void initialize();
 	virtual void poll();
 	OMEGA_API virtual void dispose();
-	void generateEvent(vrpn_TRACKERCB);
+	void generateEvent(vrpn_TRACKERCB, int);
 private:
 	static VRPNService* mysInstance;
 	
@@ -71,7 +71,8 @@ struct VRPNStruct
 {
 	const char* server_ip;
 	const char* object_name;
-	static VRPNService* vrnpService;
+	int object_id;
+	VRPNService* vrnpService;
 };
 
 }; // namespace omega

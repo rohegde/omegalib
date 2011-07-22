@@ -67,7 +67,8 @@ void VRPN_CALLBACK handle_tracker(void *userdata, const vrpn_TRACKERCB t)
 	 t.quat[0], t.quat[1], t.quat[2]
 		);
 */
-	((VRPNService*)userdata)->generateEvent(t);
+	VRPNService* vrpnService = ((VRPNStruct*)userdata)->vrnpService;
+	vrpnService->generateEvent(t, ((VRPNStruct*)userdata)->object_id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,9 +79,9 @@ void VRPNService::setup(Setting& settings)
 		server_ip =  (const char*)settings["serverIP"];
 	}
 
-	if(settings.exists("rigidBodies"))
+	if(settings.exists("trackedObjects"))
 	{
-		Setting& strs = settings["rigidBodies"];
+		Setting& strs = settings["trackedObjects"];
         for(int i = 0; i < strs.getLength(); i++)
         {
 			Setting& str = strs[i];
@@ -119,8 +120,13 @@ void VRPNService::initialize()
 		// Open the tracker: '[object name]@[tracker IP]'
 		vrpn_Tracker_Remote *tkr = new vrpn_Tracker_Remote(trackerName);
 
+		VRPNStruct* vrpnData = new VRPNStruct();
+		vrpnData->object_name = t.object_name;
+		vrpnData->object_id = t.trackableId;
+		vrpnData->vrnpService = this;
+
 		// Set up the tracker callback handler
-		tkr->register_change_handler((void*)this, handle_tracker);
+		tkr->register_change_handler((void*)vrpnData, handle_tracker);
 
 		// Add to tracker remote list
 		trackerRemotes.push_back(tkr);
@@ -150,7 +156,7 @@ void VRPNService::dispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void VRPNService::generateEvent(vrpn_TRACKERCB t) 
+void VRPNService::generateEvent(vrpn_TRACKERCB t, int id) 
 {
 	Event* evt = mysInstance->writeHead();
 	//	evt->id = OM_ID_MOUSE;
@@ -158,7 +164,7 @@ void VRPNService::generateEvent(vrpn_TRACKERCB t)
 	//	evt->type = OM_EVENT_MOVE;
 	evt->serviceType = Service::Mocap;
 
-	evt->sourceId = 1;
+	evt->sourceId = id;
 	evt->position[0] = t.pos[0];
 	evt->position[1] = t.pos[1];
 	evt->position[2] = t.pos[2];
@@ -172,7 +178,7 @@ void VRPNService::generateEvent(vrpn_TRACKERCB t)
 	evt->orientation = qpitch * qyaw * qroll;
 
 	printf("handle_tracker\tObject %d POS: (%g,%g,%g) QUAT: (%g,%g,%g)\n", 
-	 0,
+	 id,
 	 t.pos[0], t.pos[1], t.pos[2],
 	 t.quat[0], t.quat[1], t.quat[2]
 		);
