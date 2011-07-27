@@ -53,8 +53,8 @@ namespace omega
 	class OUTILS_API EngineClient: public ApplicationClient
 	{
 	public:
-		EngineClient(Application* app):
-		  ApplicationClient(app),
+		EngineClient(ApplicationServer* server):
+		  ApplicationClient(server),
 		  myGpuManager(NULL),
 		  myTextureManager(NULL),
 		  myFontManager(NULL),

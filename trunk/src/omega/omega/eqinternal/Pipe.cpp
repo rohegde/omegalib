@@ -59,11 +59,14 @@ bool PipeImpl::configInit( const uint128_t& initID )
 
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
+	NodeImpl* node = static_cast<NodeImpl*>( getNode( ));
+
+
 	// Create and initialize an application client.
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		myClient = app->createClient();
+		myClient = app->createClient(node->getApplicationServer());
 		const eq::fabric::PixelViewport pw = getPixelViewport();
 		myClient->setup();
 	}

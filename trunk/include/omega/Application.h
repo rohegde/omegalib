@@ -100,12 +100,14 @@ namespace omega
 		Eye eye;
 	};
 
+	class ApplicationServer;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API ApplicationClient: public DynamicObject
 	{
 	friend class DisplaySystem;
 	public:
-		ApplicationClient(Application* app);
+		ApplicationClient(ApplicationServer* app);
 		virtual ~ApplicationClient(); 
 
 		virtual void setup() {}
@@ -117,7 +119,7 @@ namespace omega
 		virtual bool handleEvent(const Event& evt, DrawContext& context) { return false; }
 		virtual bool handleEvent(const Event& evt, UpdateContext& context) { return false; }
 
-		Application* getApplication() { return myApplication; }
+		ApplicationServer* getServer() { return myServer; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
@@ -129,7 +131,7 @@ namespace omega
 	private:
 
 	private:
-		Application* myApplication;
+		ApplicationServer* myServer;
 		GpuManager* myGpu;
 	};
 
@@ -145,6 +147,7 @@ namespace omega
 		virtual void update(const UpdateContext& context) {}
 		virtual bool handleEvent(const Event& evt, const UpdateContext& context) { return false; }
 
+		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		Application* getApplication() { return myApplication; }
 
 	private:
@@ -164,7 +167,7 @@ namespace omega
 		//! Users redefine this method to create instances of their own Channel objects.
 		//! @param impl - the internal DisplaySystem-dependent channel implementation.
 		virtual ApplicationServer* createServer() { return new ApplicationServer(this); };
-		virtual ApplicationClient* createClient() { return new ApplicationClient(this); };
+		virtual ApplicationClient* createClient(ApplicationServer* server) { return new ApplicationClient(server); };
 
 		//! Called once for entire application initialization tasks.
 		virtual void initialize() {}

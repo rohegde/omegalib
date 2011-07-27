@@ -24,21 +24,59 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oosg/OsgClient.h"
-#include "omega/scene.h"
-#include "omega/SystemManager.h"
-#include "omega/DataManager.h"
+#include "oosg/OsgRenderable.h"
+#include "oosg/OsgRenderPass.h"
+#include "omega/StringUtils.h"
+
+#include <osg/Node>
+#include <osg/MatrixTransform>
 
 using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgClient::OsgClient(EngineClient* engine): 
-	myEngine(engine)
+OsgRenderable::OsgRenderable(osg::Node* model)
 {
+    myOsgNode = new osg::MatrixTransform();
+    myOsgNode->addChild( model );
+    myOsgNode->setDataVariance( osg::Object::STATIC );
+
+	const osg::BoundingSphere& bs = model->getBound();
+	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
+	Vector3f radius(bs.radius(), bs.radius(), bs.radius());
+	myBBox.setExtents(center - radius, center + radius);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgClient::~OsgClient()
+OsgRenderable::~OsgRenderable()
 {
+	myOsgNode->unref();
+	myOsgNode = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgRenderable::render(SceneNode* node, RenderState* state)
+{
+	// Do stuff only if render pass is a Vtk render pass
+	if(state->isFlagSet(OsgRenderPass::RenderOsg))
+	{
+		const AffineTransform3& xform =  node->getFullTransform();
+		const omega::math::matrix<4, 4>& m = xform.matrix();
+		osg::Matrix oxform;
+		oxform.set(m.data());
+		myOsgNode->setMatrix( oxform );
+
+		// NOTE: we assume this cast works since only VtkRenderPass should set the 
+		// RenderVtk flag on a render state.
+		OsgRenderPass* osgrp = (OsgRenderPass*)state->pass;
+
+		// Render this osg node.
+		osgrp->renderNode(myOsgNode);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const AlignedBox3* OsgRenderable::getBoundingBox()
+{
+	return &myBBox;
 }
 

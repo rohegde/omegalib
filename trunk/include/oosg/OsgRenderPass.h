@@ -24,62 +24,45 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Application.h"
+#ifndef __OSG_RENDER_PASS_H__
+#define __OSG_RENDER_PASS_H__
 
-#ifdef OMEGA_USE_DISPLAY
-#include "omega/GpuManager.h"
-#endif
+#include "oosg/oosgbase.h"
+#include "omega/osystem.h"
+#include "omega/scene/RenderPass.h"
+#include "omega/scene/SceneManager.h"
 
-#include "omega/StringUtils.h"
+class SceneView;
 
-using namespace omega;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum Layer::fromString(const String& str)
+namespace osg
 {
-	String tmp = StringUtils::replaceAll(str, " ", "");
-	String s = StringUtils::replaceAll(tmp, "ui", "overlay");
-	StringUtils::toLowerCase(s);
-	if(s == "scene0") return Scene0;
-	if(s == "scene1") return Scene1;
-	if(s == "scene2") return Scene2;
-	if(s == "overlay0") return Overlay0;
-	if(s == "scene0overlay0") return Scene0Overlay0;
-	if(s == "scene1overlay0") return Scene1Overlay0;
-	if(s == "scene2overlay0") return Scene2Overlay0;
-	if(s == "overlay1") return Overlay1;
-	if(s == "scene0overlay1") return Scene0Overlay1;
-	if(s == "scene1overlay1") return Scene1Overlay1;
-	if(s == "scene2overlay1") return Scene2Overlay1;
-	if(s == "overlay2") return Overlay2;
-	if(s == "scene0overlay2") return Scene0Overlay2;
-	if(s == "scene1overlay2") return Scene1Overlay2;
-	if(s == "scene2overlay2") return Scene2Overlay2;
-	return Null;
+	class Node;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server) 
+namespace oosg
 {
-#ifdef OMEGA_USE_DISPLAY
-	myGpu = onew(GpuManager)();
-#else
-	myGpu = NULL;
-#endif
-}
+	using namespace omega;
+	using namespace omega::scene;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::~ApplicationClient() 
-{
-#ifdef OMEGA_USE_DISPLAY
-	odelete(myGpu);
-#endif
-}
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OOSG_API OsgRenderPass: public RenderPass
+	{
+	friend class OsgRenderable;
+	public:
+		enum RenderFlags { RenderOsg = RenderPass::RenderCustom << 2 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ApplicationClient::initialize() 
-{
-#ifdef OMEGA_USE_DISPLAY
-	myGpu->initialize();
+	public:
+		OsgRenderPass();
+		~OsgRenderPass();
+
+		void initialize();
+		virtual void render(SceneManager* mng, const DrawContext& context);
+
+	private:
+		void renderNode(osg::Node* node);
+
+	private:
+		 SceneView* mySceneView;
+	};
+};
 #endif
-}

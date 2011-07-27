@@ -197,8 +197,8 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		myAppClient = app->createClient();
 		myAppServer = app->createServer();
+		myAppClient = app->createClient(myAppServer);
 
 		myAppServer->initialize();
 

@@ -24,110 +24,37 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "SceneView.h"
 #include "osgviewer.h"
-#include "omega/FilesystemDataSource.h"
-#include "omega/StringUtils.h"
-#include "omega/DataManager.h"
-
-#include <osg/Light>
-#include <osg/LightSource>
-#include <osg/Node>
-#include <osg/MatrixTransform>
-#include <osgDB/ReadFile>
-#include <osgUtil/Optimizer>
-#include <osgUtil/UpdateVisitor>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-osg::ref_ptr<osg::Node> OsgViewerServer::readModel( const std::string& filename )
+void OsgViewerServer::initialize()
 {
-	DataManager* dm = SystemManager::instance()->getDataManager();
-	DataInfo cfgInfo = dm->getInfo(filename);
-	if(!cfgInfo.isNull())
+	Config* cfg = getSystemManager()->getAppConfig();
+
+	// Load entity library
+	if(cfg->exists("config/scene"))
 	{
-		osg::ref_ptr<osg::Node> root = osgDB::readNodeFile( cfgInfo.path );
-		if ( !root.valid( )) 
-		{
-			oferror("Failed to load model: %1%", %filename);
-			return root;
-		}
+		Setting& sscene = cfg->lookup("config/scene");
+		String filename = (String)sscene["filename"];
 
-		//Optimize scenegraph
-		osgUtil::Optimizer optOSGFile;
-		optOSGFile.optimize( root.get( ));
-		return root;
+		myEntity = onew(OsgEntity)();
+		myEntity->load(filename);
 	}
-	else
-	{
-		oferror("File not found: %1%", %filename);
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgViewerServer::initialize() 
-{
-    //Config* config = static_cast<Config*>( getConfig( ));
-    //if( !config->mapData( initID ))
-    //    return false;
-
-    myFrameStamp = new osg::FrameStamp;
-    myUpdateVisitor = new osgUtil::UpdateVisitor;
-    myUpdateVisitor->setFrameStamp( myFrameStamp );
-    //_contextID = 0;
-
-    // load model at first config run
-    if( !myModel )
-    {
-        const std::string& modelFile = "osg/cessna.osg"; 
-        if( !modelFile.empty( ))
-        {
-            myModel = readModel( modelFile );
-
-            if( myModel.valid( ))
-            {
-                osg::Matrix matrix;
-                matrix.makeRotate( -osg::PI_2, osg::Vec3( 1., 0., 0. ));
-				matrix.makeScale( 0.01, 0.01, 0.01 );
-
-                osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform();
-                transform->setMatrix( matrix );
-                transform->addChild( myModel );
-                transform->setDataVariance( osg::Object::STATIC );
-
-				const osg::BoundingSphere& bs = transform->getBound();
-				float x = bs.center()[0];
-				float y = bs.center()[1];
-				float z = bs.center()[2];
-				float r = bs.radius();
-
-				ofmsg("Model %1% bounding sphere center: (%2% %3% %4%) radius: %5%", %modelFile %x %y %z %r);
-
-                myModel = transform;
-            }
-        }
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewerServer::finalize()
 {
-    //_contextID = 0;
-    myFrameStamp = 0;
-    myUpdateVisitor = 0;
+	odelete(myEntity);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewerServer::update(const UpdateContext& context) 
 {
-	myFrameStamp->setFrameNumber(context.frameNum);
-
-	const double time = static_cast< double >( context.time ) / 1000.;
-    myFrameStamp->setReferenceTime(time);
-    myFrameStamp->setSimulationTime(time);
-	myUpdateVisitor->setTraversalNumber(context.frameNum);
-    myModel->accept(*myUpdateVisitor);
-    myModel->getBound();
+	if(myEntity != NULL)
+	{
+		myEntity->update(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,72 +67,46 @@ bool OsgViewerServer::handleEvent(const Event& evt, const UpdateContext& context
 void OsgViewerClient::initialize()
 {
 	EngineClient::initialize();
-        
-    mySceneView =  new SceneView;
-    mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
-	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 1.0));
-    //_sceneView->setFrameStamp( node->getFrameStamp( ));
-    mySceneView->init();
-    //_sceneView->getState()->setContextID( node->getUniqueContextID( ));
-    mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)());
 
-    //osg::ref_ptr< osg::Node > model = node->getModel();
-    //_sceneView->setSceneData( model );
+	// Add an osg render pass to the scene manager so osg objects can be rendered
+	myRenderPass = onew(OsgRenderPass)();
+	getSceneManager()->addRenderPass(myRenderPass);
+
+	myEntityNode = onew(SceneNode)(getSceneManager());
+	getSceneManager()->getRootNode()->addChild(myEntityNode);
+
+	myServer->getEntity()->addToScene(myEntityNode);
+
+	// Set the interactor style used to manipulate meshes.
+	Config* cfg = getSystemManager()->getAppConfig();
+	String interactorStyle = cfg->lookup("config/interactorStyle");
+	if(interactorStyle == "Mouse")
+	{
+		DefaultMouseInteractor* interactor = onew(DefaultMouseInteractor)();
+		myCurrentInteractor = interactor;
+	}
+	else
+	{
+		DefaultTwoHandsInteractor* interactor = onew(DefaultTwoHandsInteractor)();
+		interactor->initialize("ObserverUpdateService");
+		myCurrentInteractor = interactor;
+	}
+
+	myCurrentInteractor->setSceneNode(myEntityNode);
+
+	getSceneManager()->addActor(myCurrentInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewerClient::finalize()
 {
-	mySceneView = NULL;
+	odelete(myEntityNode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewerClient::draw( const DrawContext& context)
 {
     EngineClient::draw( context );
-    
-	mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
-
-    // - Stereo
-    //mySceneView->setDrawBufferValue( getDrawBuffer( ));
-    //const eq::ColorMask& colorMask = getDrawBufferMask();
-
-    //osgUtil::RenderStage* stage = mySceneView->getRenderStage();
-    //osg::ref_ptr< osg::ColorMask > osgMask = stage->getColorMask();
-    //osgMask->setMask( colorMask.red, colorMask.green, colorMask.blue, true );
-
-    // - Frustum (Projection matrix)
-    //const eq::Frustumf& frustum = getFrustum();
-    //mySceneView->setProjectionMatrixAsFrustum( 
-    //    frustum.left(), frustum.right(), frustum.bottom(), frustum.top(),
-    //    frustum.near_plane(), frustum.far_plane( ));
-
-	mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
-
-    // - Camera (Model Matrix)
-    //const Pipe *pipe = static_cast< const Pipe* >( getPipe( ));
-    //const FrameData& frameData = pipe->getFrameData();
-    
-    //const eq::Vector3f position = frameData.getCameraPosition();
-    //const eq::Vector3f lookAt = frameData.getCameraLookAtPoint();
-    //const eq::Vector3f upVector = frameData.getCameraUpVector();
-
-    //const osg::Vec3f pos( position.x(), position.y(), position.z( ));
-    //const osg::Vec3f look( lookAt.x(), lookAt.y(), lookAt.z( ));
-    //const osg::Vec3f up( upVector.x(), upVector.y(), upVector.z( ));
-  
-    //mySceneView->setViewMatrixAsLookAt( pos, look, up );
-
-	mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
-
-    // - Frustum position (View Matrix)
-    //osg::Matrix headView = mySceneView->getViewMatrix();
-    //headView.postMult( buildOsgMatrix( context.modelview ));
-    //mySceneView->setViewMatrix( headView );
-
-    // - Render
-    mySceneView->cull();
-    mySceneView->draw();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,7 +128,7 @@ int main(int argc, char** argv)
 	OsgViewerApplication app;
 
 	// Read config file name from command line or use default one.
-	const char* cfgName = "meshviewer.cfg";
+	const char* cfgName = "osgviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
 	omain(app, cfgName, "osgviewer.log", new FilesystemDataSource("./../../data/"));

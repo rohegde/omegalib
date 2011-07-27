@@ -70,8 +70,8 @@ private:
 class QtDemoClient: public EngineClient, IUIEventHandler
 {
 public:
-	QtDemoClient(Application* app): 
-	  EngineClient(app), 
+	QtDemoClient(ApplicationServer* server): 
+	  EngineClient(server), 
 		myVisibleEntity(NULL)
 	  {}
 
@@ -109,7 +109,7 @@ private:
 class QtDemoApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new QtDemoClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new QtDemoClient(server); }
 };
 
 #endif

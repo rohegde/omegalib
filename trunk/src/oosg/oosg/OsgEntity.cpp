@@ -24,92 +24,97 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
+#include "omega/StringUtils.h"
+#include "omega/DataManager.h"
+#include "oosg/OsgEntity.h"
+#include "oosg/OsgRenderable.h"
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
+#include <osgUtil/Optimizer>
+#include <osgUtil/UpdateVisitor>
+#include <osgDB/ReadFile>
+#include <osg/Node>
+#include <osg/FrameStamp>
 
-using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
-{
-public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
-
-	const String& getName() { return myName; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
-
-private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
+using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient, IUIEventHandler
+OsgEntity::OsgEntity():
+	myRepresentationSize(0.1)
 {
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineClient(server), 
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-
-	virtual bool handleEvent(const Event& evt , UpdateContext &context );
-    void draw( const DrawContext& context);
-
-
-	void handleUIEvent(const UIEvent& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
+    myFrameStamp = new osg::FrameStamp;
+    myUpdateVisitor = new osgUtil::UpdateVisitor;
+    myUpdateVisitor->setFrameStamp( myFrameStamp );
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
+OsgEntity::~OsgEntity()
 {
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
-};
+	if(myModel != NULL)
+	{
+		myModel->unref();
+		myModel = NULL;
+	}
+    myFrameStamp->unref();
+	myFrameStamp = NULL;
+    myUpdateVisitor->unref();
+	myUpdateVisitor = NULL;
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgEntity::load(const String& filename)
+{
+	myModel = NULL;
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo cfgInfo = dm->getInfo(filename);
+	if(!cfgInfo.isNull())
+	{
+		myModel = osgDB::readNodeFile(cfgInfo.path);
+		if ( myModel == NULL) 
+		{
+			oferror("Failed to load model: %1%", %filename);
+		}
+
+		//Optimize scenegraph
+		osgUtil::Optimizer optOSGFile;
+		optOSGFile.optimize(myModel);
+	}
+	else
+	{
+		oferror("File not found: %1%", %filename);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgEntity::addToScene(SceneNode* node)
+{
+	oassert(node);
+
+	OsgRenderable* renderable;
+	BoundingSphere* bsphere = onew(BoundingSphere)();
+	bsphere->setVisible(false);
+	bsphere->setDrawOnSelected(true);
+	node->addRenderable(bsphere);
+
+	renderable = onew(OsgRenderable)(myModel);
+	node->addRenderable(renderable);
+
+	node->update(true, false);
+	const Sphere& bs = node->getBoundingSphere();
+
+	float scale = myRepresentationSize / bs.getRadius();
+	node->scale(scale, scale, scale);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgEntity::update(const UpdateContext& context)
+{
+	myFrameStamp->setFrameNumber(context.frameNum);
+
+	const double time = static_cast< double >( context.time ) / 1000.;
+    myFrameStamp->setReferenceTime(time);
+    myFrameStamp->setSimulationTime(time);
+	myUpdateVisitor->setTraversalNumber(context.frameNum);
+    myModel->accept(*myUpdateVisitor);
+    myModel->getBound();
+}
+

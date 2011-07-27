@@ -188,6 +188,9 @@ public:
 public:
     NodeImpl( eq::Config* parent );
 
+	//! Returns the application server instance running on this node.
+	ApplicationServer* getApplicationServer();
+
 protected:
     virtual bool configInit( const eq::uint128_t& initID );
     virtual bool configExit();
@@ -197,6 +200,10 @@ private:
 	ApplicationServer* myServer;
 	FrameData myFrameData;
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+inline ApplicationServer* NodeImpl::getApplicationServer()
+{ return myServer; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal

@@ -24,92 +24,65 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
+#include "oosg/OsgRenderPass.h"
+#include "oosg/SceneView.h"
 
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
+using namespace oosg;
 
-using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
+///////////////////////////////////////////////////////////////////////////////////////////////
+inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
+{
+    return osg::Matrix( matrix( 0, 0 ), matrix( 1, 0 ),
+                        matrix( 2, 0 ), matrix( 3, 0 ),
+                        matrix( 0, 1 ), matrix( 1, 1 ),
+                        matrix( 2, 1 ), matrix( 3, 1 ),
+                        matrix( 0, 2 ), matrix( 1, 2 ),
+                        matrix( 2, 2 ), matrix( 3, 2 ),
+                        matrix( 0, 3 ), matrix( 1, 3 ),
+                        matrix( 2, 3 ), matrix( 3, 3 ));
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+OsgRenderPass::OsgRenderPass()
 {
-public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
-
-	const String& getName() { return myName; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
-
-private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
+	mySceneView = new SceneView;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient, IUIEventHandler
+OsgRenderPass::~OsgRenderPass()
 {
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineClient(server), 
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-
-	virtual bool handleEvent(const Event& evt , UpdateContext &context );
-    void draw( const DrawContext& context);
-
-
-	void handleUIEvent(const UIEvent& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
+	mySceneView->unref();
+	mySceneView = NULL;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
+void OsgRenderPass::initialize()
 {
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
-};
+    mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
+	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 1.0));
+    mySceneView->init();
+    mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)());
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgRenderPass::render(SceneManager* mng, const DrawContext& context)
+{
+	RenderState state;
+	state.pass = this;
+	state.flags = OsgRenderPass::RenderOsg;
+	state.renderer = mng->getRenderer();
+
+	mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
+	mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
+	mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
+
+	mng->getRootNode()->draw(&state);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgRenderPass::renderNode(osg::Node* node)
+{
+    mySceneView->setSceneData(node);
+    mySceneView->cull();
+    mySceneView->draw();
+}

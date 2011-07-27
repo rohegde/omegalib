@@ -24,28 +24,19 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
+#ifndef __OSGVIEWER_H__
+#define __OSGVIEWER_H__
 
-#include "omega/Application.h"
-#include "omega/EngineClient.h"
+#include "omega.h"
+#include "omega/scene.h"
+
+#include "oosg/OsgEntity.h"
+#include "oosg/OsgRenderPass.h"
 
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
-{
-    return osg::Matrix( matrix( 0, 0 ), matrix( 1, 0 ),
-                        matrix( 2, 0 ), matrix( 3, 0 ),
-                        matrix( 0, 1 ), matrix( 1, 1 ),
-                        matrix( 2, 1 ), matrix( 3, 1 ),
-                        matrix( 0, 2 ), matrix( 1, 2 ),
-                        matrix( 2, 2 ), matrix( 3, 2 ),
-                        matrix( 0, 3 ), matrix( 1, 3 ),
-                        matrix( 2, 3 ), matrix( 3, 3 ));
-}
+using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class OsgViewerServer: public ApplicationServer
@@ -59,26 +50,19 @@ public:
 	virtual void update(const UpdateContext& context);
 	virtual bool handleEvent(const Event& evt, const UpdateContext& context);
 
-private:
-    osg::ref_ptr< osg::Node > createSceneGraph();
-    osg::ref_ptr< osg::Node > createSceneGraph( osg::ref_ptr<osg::Image> );
-    osg::ref_ptr< osg::Group > initSceneGraph();
-    osg::ref_ptr< osg::LightSource > createLightSource();
-	osg::ref_ptr< osg::Node > readModel( const std::string& filename );
+	OsgEntity* getEntity() { return myEntity; }
 
 private:
-    //co::base::a_int32_t myContextID;
-    osg::ref_ptr< osg::Node > myModel;
-    osg::ref_ptr< osg::FrameStamp > myFrameStamp;
-    osg::ref_ptr< osg::NodeVisitor > myUpdateVisitor;
+	OsgEntity* myEntity;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class OsgViewerClient: public EngineClient
 {
 public:
-	OsgViewerClient(Application* app): 
-	  EngineClient(app) {}
+	OsgViewerClient(ApplicationServer* server): 
+	  EngineClient(server),
+	  myServer((OsgViewerServer*)server) {}
 
 	virtual void initialize();
 	virtual void finalize();
@@ -88,14 +72,17 @@ public:
 	void update(const UpdateContext& context);
 
 private:
-	osg::ref_ptr< SceneView > mySceneView;
+	OsgRenderPass* myRenderPass;
+	OsgViewerServer* myServer;
+	SceneNode* myEntityNode;
+	Actor* myCurrentInteractor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class OsgViewerApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new OsgViewerClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new OsgViewerClient(server); }
 	virtual ApplicationServer* createServer() { return new OsgViewerServer(this); }
 };
 
