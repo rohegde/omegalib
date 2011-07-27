@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
  * OpenSceneGraph Public License for more details.
 */
-#include "sceneView.h"
+#include "oosg/SceneView.h"
 
 #include <osgUtil/UpdateVisitor>
 #include <osgUtil/GLObjectsVisitor>

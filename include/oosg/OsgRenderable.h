@@ -24,32 +24,44 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OSG_CLIENT_H__
-#define __OSG_CLIENT_H__
+#ifndef __OSG_RENDERABLE_H__
+#define __OSG_RENDERABLE_H__
 
 #include "oosg/oosgbase.h"
-#include "omega/EngineClient.h"
+#include "omega/osystem.h"
+
+#include "omega/scene/SceneNode.h"
+#include "omega/scene/RenderPass.h"
+
+using namespace omega;
+using namespace omega::scene;
+
+namespace osg
+{
+	class MatrixTransform;
+	class Node;
+}
 
 namespace oosg
 {
 	using namespace omega;
 	using namespace omega::scene;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgClient
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OOSG_API OsgRenderable: public Renderable
 	{
 	public:
-		OsgClient(EngineClient* engine);
-		~OsgClient();
+		OsgRenderable(osg::Node* model);
+		~OsgRenderable();
 
-		EngineClient* getEngine();
+		virtual void render(SceneNode* node, RenderState* state);
+
+		virtual const AlignedBox3* getBoundingBox();
+		virtual bool hasBoundingBox() { return true; }
 
 	private:
-		EngineClient* myEngine;
+		osg::MatrixTransform* myOsgNode;
+		AlignedBox3 myBBox;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClient* OsgClient::getEngine()
-	{ return myEngine; }
 };
 #endif

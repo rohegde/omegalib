@@ -26,6 +26,17 @@
 ###################################################################################################
 
 ###################################################################################################
+find_package(OpenSceneGraph 2.9.8 COMPONENTS osgDB osgUtil)
+if(OSG_LIBRARY MATCHES "OSG_LIBRARY-NOTFOUND")
+  message(STATUS "Skipping osgviewer example (OSG not found)")	 
+  return()
+endif()
+if(${OPENSCENEGRAPH_VERSION} VERSION_LESS "2.9.8")
+  message(STATUS "Skipping osgviewer (OSG ${OPENSCENEGRAPH_VERSION} found, need >= 2.9.8)")
+  return()
+endif()
+
+include_directories(SYSTEM ${OPENSCENEGRAPH_INCLUDE_DIRS})
 
 ###################################################################################################
 # Compile definitions
@@ -34,7 +45,10 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOOSG_EXPORTING)
 ###################################################################################################
 # Source files
 SET( srcs 
-		oosg/OsgClient.cpp
+		oosg/OsgEntity.cpp
+		oosg/OsgRenderPass.cpp
+		oosg/OsgRenderable.cpp
+		oosg/SceneView.cpp
         )
 		
 ###################################################################################################
@@ -42,11 +56,14 @@ SET( srcs
 SET( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/oosg/oosgbase.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/OsgClient.h
+		${OmegaLib_SOURCE_DIR}/include/oosg/OsgEntity.h
+		${OmegaLib_SOURCE_DIR}/include/oosg/OsgRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/oosg/OsgRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oosg/SceneView.h
         ) 
         
 ###################################################################################################
-SOURCE_GROUP(ovtk REGULAR_EXPRESSION ovtk/)		
+SOURCE_GROUP(oosg REGULAR_EXPRESSION oosg/)		
 
 ###################################################################################################
 # Setup compile info
@@ -61,4 +78,4 @@ ENDIF(OMEGA_BUILD_STATIC)
 TARGET_LINK_LIBRARIES( oosg 
 	omega 
 	outils
-	)
+	${OPENSCENEGRAPH_LIBRARIES})

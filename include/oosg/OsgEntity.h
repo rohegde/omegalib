@@ -24,62 +24,66 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Application.h"
+#ifndef __OSG_ENTITY_H__
+#define __OSG_ENTITY_H__
 
-#ifdef OMEGA_USE_DISPLAY
-#include "omega/GpuManager.h"
-#endif
+#include "oosg/oosgbase.h"
+#include "oosg/OsgRenderPass.h"
 
-#include "omega/StringUtils.h"
+#include "omega/osystem.h"
+#include "omega/EngineClient.h"
+#include "omega/ui.h"
+#include "omega/scene/BoundingSphere.h"
 
-using namespace omega;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum Layer::fromString(const String& str)
+namespace osg
 {
-	String tmp = StringUtils::replaceAll(str, " ", "");
-	String s = StringUtils::replaceAll(tmp, "ui", "overlay");
-	StringUtils::toLowerCase(s);
-	if(s == "scene0") return Scene0;
-	if(s == "scene1") return Scene1;
-	if(s == "scene2") return Scene2;
-	if(s == "overlay0") return Overlay0;
-	if(s == "scene0overlay0") return Scene0Overlay0;
-	if(s == "scene1overlay0") return Scene1Overlay0;
-	if(s == "scene2overlay0") return Scene2Overlay0;
-	if(s == "overlay1") return Overlay1;
-	if(s == "scene0overlay1") return Scene0Overlay1;
-	if(s == "scene1overlay1") return Scene1Overlay1;
-	if(s == "scene2overlay1") return Scene2Overlay1;
-	if(s == "overlay2") return Overlay2;
-	if(s == "scene0overlay2") return Scene0Overlay2;
-	if(s == "scene1overlay2") return Scene1Overlay2;
-	if(s == "scene2overlay2") return Scene2Overlay2;
-	return Null;
+	class Node;
+	class FrameStamp;
+	class NodeVisitor;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server) 
+namespace oosg
 {
-#ifdef OMEGA_USE_DISPLAY
-	myGpu = onew(GpuManager)();
-#else
-	myGpu = NULL;
-#endif
-}
+	using namespace omega;
+	using namespace omega::scene;
+	using namespace omega::ui;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::~ApplicationClient() 
-{
-#ifdef OMEGA_USE_DISPLAY
-	odelete(myGpu);
-#endif
-}
+	class OsgRenderable;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ApplicationClient::initialize() 
-{
-#ifdef OMEGA_USE_DISPLAY
-	myGpu->initialize();
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Stores data relative to one Osg scene hierarchy. OsgScene also supports loading scenes from 
+	//! .osg files. Scenes can be rendered by attaching them to OsgRenderable instances.
+	class OOSG_API OsgEntity
+	{
+	public:
+		OsgEntity();
+		~OsgEntity();
+
+		float getRepresentationSize();
+		void setRepresentationSize(float value);
+
+		void update(const UpdateContext& context);
+		void load(const String& filename);
+		void addToScene(SceneNode* node);
+
+	private:
+		float myRepresentationSize;
+
+		osg::Node* myModel;
+		osg::FrameStamp* myFrameStamp;
+		osg::NodeVisitor* myUpdateVisitor;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline SceneNode* OsgEntity::getSceneNode()
+	//{ return mySceneNode; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float OsgEntity::getRepresentationSize()
+	{ return myRepresentationSize; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void OsgEntity::setRepresentationSize(float value)
+	{ myRepresentationSize = value; }
+};
 #endif
-}

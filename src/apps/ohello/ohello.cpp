@@ -33,7 +33,7 @@ void teapot(GLint grid, GLdouble scale, GLenum type);
 class HelloClient: public ApplicationClient
 {
 public:
-	HelloClient(Application* app): ApplicationClient(app) {}
+	HelloClient(ApplicationServer* server): ApplicationClient(server) {}
 	virtual void draw(const DrawContext& context);
 };
 
@@ -41,7 +41,7 @@ public:
 class HelloApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new HelloClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new HelloClient(server); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

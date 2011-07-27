@@ -51,8 +51,8 @@ struct EntityInfo
 class VtkViewerClient: public EngineClient, IUIEventHandler
 {
 public:
-	VtkViewerClient(Application* app): 
-	  EngineClient(app),
+	VtkViewerClient(ApplicationServer* server): 
+	  EngineClient(server),
 	  myVisibleEntity(NULL)
 	  {}
 
@@ -84,7 +84,7 @@ private:
 class VtkViewerApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new VtkViewerClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new VtkViewerClient(server); }
 };
 
 #endif
