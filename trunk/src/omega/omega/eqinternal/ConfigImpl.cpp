@@ -117,7 +117,6 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 			MouseService::mouseButtonCallback(buttons, 0, x, y);
 			return true;
 		}
-#else
 	case eq::Event::WINDOW_POINTER_WHEEL:
 		{
 			//x = event->data.pointerWheel.x;
