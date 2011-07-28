@@ -34,7 +34,7 @@ using namespace omega;
 class MultipleKinectDemoClient: public ApplicationClient
 {
 public:
-	MultipleKinectDemoClient(Application* app): ApplicationClient(app) {}
+	MultipleKinectDemoClient(ApplicationServer* server): ApplicationClient(server) {}
 	virtual void initialize();
 	virtual bool handleEvent(const Event& evt, UpdateContext& context);
 	virtual void draw(const DrawContext& context);
@@ -52,7 +52,7 @@ private:
 class MultipleKinectDemoApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new MultipleKinectDemoClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MultipleKinectDemoClient(server); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

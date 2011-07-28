@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __INPUT_SERVICE_H__
-#define __INPUT_SERVICE_H__
+#ifndef __SERVICE_H__
+#define __SERVICE_H__
 
 #include "osystem.h"
 
@@ -33,7 +33,7 @@ namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
-	struct Event;
+	class Event;
 	class ServiceManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

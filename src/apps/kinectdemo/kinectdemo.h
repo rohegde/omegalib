@@ -9,14 +9,14 @@ class KinectDemoClient : public ApplicationClient
 {
 
 public:
-	KinectDemoClient(Application* app): ApplicationClient(app) {}
+	KinectDemoClient(ApplicationServer* server): ApplicationClient(server) {}
 	virtual void draw(const DrawContext& context);	
 };
 
 class KinectDemoApplication : public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new KinectDemoClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new KinectDemoClient(server); }
 
 };
 

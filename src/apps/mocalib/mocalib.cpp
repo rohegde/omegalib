@@ -43,7 +43,7 @@ struct Marker
 class MocalibClient: public ApplicationClient
 {
 public:
-	MocalibClient(Application* app): ApplicationClient(app), myCurMarker(0) {}
+	MocalibClient(ApplicationServer* server): ApplicationClient(server), myCurMarker(0) {}
 	virtual void initialize();
 	virtual bool handleEvent(const Event& evt, UpdateContext& context);
 	virtual void draw(const DrawContext& context);
@@ -66,7 +66,7 @@ private:
 class MocalibApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new MocalibClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MocalibClient(server); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,15 +163,15 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 		{
 			if(evt.sourceId == myTrackableId)
 			{
-				if( evt.deviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.position;
-				else if( evt.deviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.position;
+				if( evt.serviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.position;
+				else if( evt.serviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.position;
 			}
 		}
 		else
 		{
-			//ofmsg("Got from device: %1% this: %2%", %(int)evt.deviceId %(float)evt.pointSet[OMEGA_SKEL_LEFT_HAND][0]);
-			if( evt.deviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
-			else if( evt.deviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+			//ofmsg("Got from device: %1% this: %2%", %(int)evt.serviceId %(float)evt.pointSet[OMEGA_SKEL_LEFT_HAND][0]);
+			if( evt.serviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+			else if( evt.serviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
 		}
 		//ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
 		//ofmsg("%1% %2% %3%", 

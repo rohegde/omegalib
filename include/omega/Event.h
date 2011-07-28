@@ -26,18 +26,13 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __INPUT_EVENT_H__
-#define __INPUT_EVENT_H__
+#ifndef __EVENT_H__
+#define __EVENT_H__
 
 #include "osystem.h"
 #include "Service.h"
 
 #include <co/co.h>
-
-//#ifdef OMEGA_USE_DISPLAY_EQUALIZER
-//// Equalizer includes
-//#include <eq/eq.h>
-//#endif
 
 #ifdef OMEGA_USE_OPENNI
 #ifdef OMEGA_OS_WIN
@@ -89,9 +84,11 @@ namespace omega
 	};
 #endif
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct Event: public DynamicObject
+	class Event: public DynamicObject
 	{
-		Event();
+	public:
+		static const int MaxPointSetSize = 32;
+
 		//! Supported event types.
 		enum Type 
 		{ 
@@ -173,9 +170,10 @@ namespace omega
 			User = 1 << 16
 		};
 
-		static const int MaxPointSetSize = 32;
+	public:
+		Event();
 
-		//! Set to true if this even has been processed already.
+		//! Set to true if this event has been processed already.
 		bool processed;
 
 		//! id of the source of this event. Input services associate unique ids to each of their event sources.
@@ -184,11 +182,11 @@ namespace omega
 		//! Type of the service that generated this event.
 		enum Service::ServiceType serviceType;
 
-		//! Unique id of the service that generated this event.
+		//! Unique id of the service and / or hardware device that generated this event.
 		int serviceId;
 
 		//! Id of the device in case there are multiple devices
-		int deviceId;
+		//int serviceId;
 
 		//! The event type.
 		enum Type type;
@@ -214,52 +212,57 @@ namespace omega
 		Vector3f pointSet[MaxPointSetSize];
 
 		//! Serialize an Event instance.
-		void serialize(co::DataOStream& os)
-		{
-			os << processed;
-			os << sourceId;
-			os << deviceId;
-			os << serviceType;
-			os << type;
-			os << flags;
-			os << timestamp;
-			os << position[0] << position[1] << position[2];
-			os << orientation.x() << orientation.y() << orientation.z() << orientation.w();
-			os << value[0] << value[1] << value[2];
-			os << validPoints;
-			os << numberOfPoints;
-			for(int i = 0; i < numberOfPoints; i++)
-			{
-				os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
-			}
-		}
-
+		void serialize(co::DataOStream& os);
 		//! Deserialize an Event instance.
-		void deserialize( co::DataIStream& is)
-		{
-			is >> processed;
-			is >> sourceId;
-			is >> deviceId;
-			is >> serviceType;
-			is >> type;
-			is >> flags;
-			is >> timestamp;
-			is >> position[0] >> position[1] >> position[2];
-			is >> orientation.x() >> orientation.y() >> orientation.z() >> orientation.w();
-			is >> value[0] >> value[1] >> value[2];
-			is >> validPoints;
-			is >> numberOfPoints;
-			for(int i = 0; i < numberOfPoints; i++)
-			{
-				is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
-			}
-		}
+		void deserialize( co::DataIStream& is);
 
 		bool isFlagSet(uint flag) const;
 		void setValidPoint(int pointId);
 		void resetValidPoints();
 		bool isValidPoint(int pointId) const;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::serialize(co::DataOStream& os)
+	{
+		os << processed;
+		os << sourceId;
+		//os << serviceId;
+		os << serviceType;
+		os << type;
+		os << flags;
+		os << timestamp;
+		os << position[0] << position[1] << position[2];
+		os << orientation.x() << orientation.y() << orientation.z() << orientation.w();
+		os << value[0] << value[1] << value[2];
+		os << validPoints;
+		os << numberOfPoints;
+		for(int i = 0; i < numberOfPoints; i++)
+		{
+			os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::deserialize( co::DataIStream& is)
+	{
+		is >> processed;
+		is >> sourceId;
+		//is >> serviceId;
+		is >> serviceType;
+		is >> type;
+		is >> flags;
+		is >> timestamp;
+		is >> position[0] >> position[1] >> position[2];
+		is >> orientation.x() >> orientation.y() >> orientation.z() >> orientation.w();
+		is >> value[0] >> value[1] >> value[2];
+		is >> validPoints;
+		is >> numberOfPoints;
+		for(int i = 0; i < numberOfPoints; i++)
+		{
+			is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
+		}
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool Event::isFlagSet(uint flag) const
