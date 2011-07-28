@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "oosg/OsgRenderable.h"
 #include "oosg/OsgRenderPass.h"
+#include "oosg/OsgEntity.h"
 #include "omega/StringUtils.h"
 
 #include <osg/Node>
@@ -34,15 +35,20 @@
 using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgRenderable::OsgRenderable(osg::Node* model)
+OsgRenderable::OsgRenderable(OsgEntity* entity)
 {
+	myEntity = entity;
+
     myOsgNode = new osg::MatrixTransform();
-    myOsgNode->addChild( model );
+    myOsgNode->addChild( entity->getModel() );
     myOsgNode->setDataVariance( osg::Object::STATIC );
 
-	const osg::BoundingSphere& bs = model->getBound();
+	const osg::BoundingSphere& bs = entity->getModel()->getBound();
 	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
 	Vector3f radius(bs.radius(), bs.radius(), bs.radius());
+
+	ofmsg("OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+
 	myBBox.setExtents(center - radius, center + radius);
 }
 
@@ -70,7 +76,7 @@ void OsgRenderable::render(SceneNode* node, RenderState* state)
 		OsgRenderPass* osgrp = (OsgRenderPass*)state->pass;
 
 		// Render this osg node.
-		osgrp->renderNode(myOsgNode);
+		osgrp->renderEntity(myOsgNode, myEntity);
 	}
 }
 

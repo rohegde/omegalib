@@ -44,6 +44,8 @@ namespace oosg
 	using namespace omega;
 	using namespace omega::scene;
 
+	class OsgEntity;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OOSG_API OsgRenderPass: public RenderPass
 	{
@@ -59,7 +61,7 @@ namespace oosg
 		virtual void render(SceneManager* mng, const DrawContext& context);
 
 	private:
-		void renderNode(osg::Node* node);
+		void renderEntity(osg::Node* node, OsgEntity* entity);
 
 	private:
 		 SceneView* mySceneView;

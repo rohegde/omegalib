@@ -95,7 +95,7 @@ void OsgEntity::addToScene(SceneNode* node)
 	bsphere->setDrawOnSelected(true);
 	node->addRenderable(bsphere);
 
-	renderable = onew(OsgRenderable)(myModel);
+	renderable = onew(OsgRenderable)(this);
 	node->addRenderable(renderable);
 
 	node->update(true, false);
@@ -109,12 +109,13 @@ void OsgEntity::addToScene(SceneNode* node)
 void OsgEntity::update(const UpdateContext& context)
 {
 	myFrameStamp->setFrameNumber(context.frameNum);
+    myFrameStamp->setReferenceTime(context.time);
+    myFrameStamp->setSimulationTime(context.time);
 
-	const double time = static_cast< double >( context.time ) / 1000.;
-    myFrameStamp->setReferenceTime(time);
-    myFrameStamp->setSimulationTime(time);
+	myUpdateVisitor->reset();
+	myUpdateVisitor->setFrameStamp(myFrameStamp);
 	myUpdateVisitor->setTraversalNumber(context.frameNum);
     myModel->accept(*myUpdateVisitor);
-    myModel->getBound();
+    //myModel->getBound();
 }
 
