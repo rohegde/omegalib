@@ -27,7 +27,7 @@
  * Part of code taken from Cutexture
  * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
-#include "oqt/QtClient.h"
+#include "oqt/QtWidgetManager.h"
 #include "oqt/QtWidget.h"
 
 #include "omega/scene.h"
@@ -38,14 +38,14 @@
 using namespace oqt;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtWidget::QtWidget(QtClient* owner, const String& name):
+QtWidget::QtWidget(QtWidgetManager* owner, const String& name):
 	Widget(name)
 {
 	initialize(owner);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtWidget::QtWidget(QtClient* owner)
+QtWidget::QtWidget(QtWidgetManager* owner)
 {
 	initialize(owner);
 }
@@ -57,7 +57,7 @@ QtWidget::~QtWidget()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtWidget::initialize(QtClient* owner)
+void QtWidget::initialize(QtWidgetManager* owner)
 {
 	myOwner = owner;
 	myWidget = NULL;

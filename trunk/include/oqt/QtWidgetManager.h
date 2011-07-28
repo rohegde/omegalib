@@ -27,8 +27,8 @@
  * Part of code taken from Cutexture
  * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
-#ifndef __QT_CLIENT_H__
-#define __QT_CLIENT_H__
+#ifndef __QT_SERVER_H__
+#define __QT_SERVER_H__
 
 #include <QObject>
 #include <QApplication>
@@ -48,16 +48,16 @@ namespace oqt
 	using namespace omega::ui;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OQT_API QtClient: public QObject
+	class OQT_API QtWidgetManager: public QObject
 	{
 	public:
-		QtClient(EngineClient* engine);
-		~QtClient();
+		QtWidgetManager();
+		~QtWidgetManager();
 
-		EngineClient* getEngine();
+		//EngineClient* getEngine();
 
-		QtWidget* createWidget(const String& name, Container* container, QWidget* widget);
-		QtWidget* loadUiFile(const String& filename, Container* container);
+		//QtWidget* createWidget(const String& name, Container* container, QWidget* widget);
+		QtWidget* loadUiFile(const String& filename);
 		void setActiveWidget(QWidget *aWidget);
 		void setUiDirty(bool aDirty);
 		void renderIntoTexture(Texture* aTexture);
@@ -71,7 +71,7 @@ namespace oqt
 	private:
 		QApplication* myQApp;
 
-		EngineClient* myEngine;
+		//EngineClient* myEngine;
 
 		/** Scene which contains all the user interface widgets
 		 * as QGraphicsWidget items. */
@@ -93,7 +93,7 @@ namespace oqt
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClient* QtClient::getEngine()
-	{ return myEngine; }
+	//inline EngineClient* QtClient::getEngine()
+	//{ return myEngine; }
 };
 #endif

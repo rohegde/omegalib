@@ -36,7 +36,7 @@
 #include <QGraphicsScene>
 
 #include "oqt/QtWidget.h"
-#include "oqt/QtClient.h"
+#include "oqt/QtWidgetManager.h"
 #include "omega/scene.h"
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
@@ -45,8 +45,8 @@
 using namespace oqt;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtClient::QtClient(EngineClient* engine): 
-	myEngine(engine),
+QtWidgetManager::QtWidgetManager(): 
+	//myEngine(engine),
 	myFocusedWidget(NULL)
 {
 	char* argv = "";
@@ -70,7 +70,7 @@ QtClient::QtClient(EngineClient* engine):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtClient::~QtClient()
+QtWidgetManager::~QtWidgetManager()
 {
 	QEvent wsce(QEvent::WindowDeactivate);
 	QApplication::sendEvent(myWidgetScene, &wsce);
@@ -82,20 +82,20 @@ QtClient::~QtClient()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtWidget* QtClient::createWidget(const String& name, Container* container, QWidget* widget)
-{
-	oassert(container != NULL);
-	oassert(widget != NULL);
-
-	QtWidget* w = onew(QtWidget)(this, name);
-	w->setWidget(widget);
-	container->addChild(w);
-
-	return w;
-}
+//QtWidget* QtWidgetManager::createWidget(const String& name, Container* container, QWidget* widget)
+//{
+//	oassert(container != NULL);
+//	oassert(widget != NULL);
+//
+//	QtWidget* w = onew(QtWidget)(this, name);
+//	w->setWidget(widget);
+//	container->addChild(w);
+//
+//	return w;
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtWidget* QtClient::loadUiFile(const String& filename, Container* container)
+QtWidget* QtWidgetManager::loadUiFile(const String& filename)
 {
 	QUiLoader uiLoader;
 	
@@ -107,12 +107,13 @@ QtWidget* QtClient::loadUiFile(const String& filename, Container* container)
 		file.open(QFile::ReadOnly);
 	
 		QWidget* generatedWidget = uiLoader.load(&file, NULL);
+		generatedWidget->setAttribute(Qt::WA_TranslucentBackground);
+
 	
 		file.close();
 
 		QtWidget* w = onew(QtWidget)(this, filename);
 		w->setWidget(generatedWidget);
-		container->addChild(w);
 
 		return w;
 	}
@@ -125,7 +126,7 @@ QtWidget* QtClient::loadUiFile(const String& filename, Container* container)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtClient::setActiveWidget(QWidget *aWidget)
+void QtWidgetManager::setActiveWidget(QWidget *aWidget)
 {
 	oassert(myWidgetScene);
 		
@@ -147,7 +148,7 @@ void QtClient::setActiveWidget(QWidget *aWidget)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtClient::renderIntoTexture(Texture* aTexture)
+void QtWidgetManager::renderIntoTexture(Texture* aTexture)
 {
 	oassert(aTexture != NULL);
 
@@ -167,34 +168,34 @@ void QtClient::renderIntoTexture(Texture* aTexture)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtClient::setUiDirty(bool aDirty)
+void QtWidgetManager::setUiDirty(bool aDirty)
 {
 	myUiDirty = aDirty;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtClient::initialize()
+void QtWidgetManager::initialize()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool QtClient::handleEvent(const Event& evt, UpdateContext& context)
-{
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool QtClient::handleEvent(const Event& evt, DrawContext& context)
+bool QtWidgetManager::handleEvent(const Event& evt, UpdateContext& context)
 {
 	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtClient::update(const UpdateContext& context)
+bool QtWidgetManager::handleEvent(const Event& evt, DrawContext& context)
+{
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void QtWidgetManager::update(const UpdateContext& context)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void QtClient::draw(const DrawContext& context)
+void QtWidgetManager::draw(const DrawContext& context)
 {
 }
