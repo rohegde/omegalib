@@ -40,7 +40,7 @@ namespace omega
 	class Application;
 	class ChannelImpl;
 	class GpuManager;
-	struct Event;
+	class Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! The Layer class contains enumerated values representing drawing layers.

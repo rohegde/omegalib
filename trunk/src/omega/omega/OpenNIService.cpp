@@ -75,7 +75,7 @@ OpenNIService::~OpenNIService()
 	delete omg_DepthGenerator_v;
 	delete omg_UserGenerator_v;
 	delete [] myTransform;
-	delete [] deviceId;
+	delete [] serviceId;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ void OpenNIService::initialize()
 					
 				}
 				omg_UserGenerator.RegisterUserCallbacks(User_NewUser, User_LostUser, NULL, hUserCallbacks);
-				omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, deviceId + 0, hCalibrationCallbacks); // device 0
+				omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, serviceId + 0, hCalibrationCallbacks); // device 0
 
 				if (omg_UserGenerator.GetSkeletonCap().NeedPoseForCalibration())
 				{
@@ -174,7 +174,7 @@ void OpenNIService::initialize()
 						//return 1;
 					}
 
-					omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, deviceId + 0, hPoseCallbacks);
+					omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, serviceId + 0, hPoseCallbacks);
 					omg_UserGenerator.GetSkeletonCap().GetCalibrationPose(omg_strPose);
 				}
 
@@ -190,7 +190,7 @@ void OpenNIService::initialize()
 					
 				}
 				omg_UserGenerator.RegisterUserCallbacks(User_NewUser, User_LostUser, NULL, hUserCallbacks);
-				omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, deviceId + 1, hCalibrationCallbacks); // device 2
+				omg_UserGenerator.GetSkeletonCap().RegisterCalibrationCallbacks(UserCalibration_CalibrationStart, UserCalibration_CalibrationEnd, serviceId + 1, hCalibrationCallbacks); // device 2
 
 				if (omg_UserGenerator.GetSkeletonCap().NeedPoseForCalibration())
 				{
@@ -201,7 +201,7 @@ void OpenNIService::initialize()
 						printf("Pose required, but not supported\n");
 						//return 1;
 					}
-					omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, deviceId + 1, hPoseCallbacks);
+					omg_UserGenerator.GetPoseDetectionCap().RegisterToPoseCallbacks(UserPose_PoseDetected, NULL, serviceId + 1, hPoseCallbacks);
 					omg_UserGenerator.GetSkeletonCap().GetCalibrationPose(omg_strPose);
 				}
 
@@ -227,12 +227,12 @@ void OpenNIService::setup(Setting& settings)
 		nmbKinects = settings["nmbKinects"];
 	}
 	myTransform = new AffineTransform3[nmbKinects]();
-	deviceId = new int[nmbKinects]();
+	serviceId = new int[nmbKinects]();
 
 	for(int i = 0; i < nmbKinects; i++ ) 
 	{	
 		myTransform[i] = AffineTransform3::Identity();
-		deviceId[i] = i;
+		serviceId[i] = i;
 	}
 
 	if(settings.exists("referenceTransform"))
@@ -486,7 +486,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 		theEvent->pointSet[joint][0] = pos[0];
 		theEvent->pointSet[joint][1] = pos[1];
 		theEvent->pointSet[joint][2] = pos[2];
-		theEvent->deviceId = kinectID;
+		theEvent->serviceId = kinectID;
 
 
 		// Event position = Head position (simplifies compatibility with head tracking service)

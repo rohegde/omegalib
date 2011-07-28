@@ -141,7 +141,7 @@ namespace omega
 		bool myUseTrackables;
 		bool streamAll;
 		int nmbKinects;
-		int *deviceId;
+		int *serviceId;
 
 		Vector<Trackable> myTrackables;
 
