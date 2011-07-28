@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "oosg/OsgRenderPass.h"
 #include "oosg/SceneView.h"
+#include "oosg/OsgEntity.h"
 
 using namespace oosg;
 
@@ -59,7 +60,7 @@ OsgRenderPass::~OsgRenderPass()
 void OsgRenderPass::initialize()
 {
     mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
-	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 1.0));
+	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 0.0));
     mySceneView->init();
     mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)());
 }
@@ -80,9 +81,10 @@ void OsgRenderPass::render(SceneManager* mng, const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgRenderPass::renderNode(osg::Node* node)
+void OsgRenderPass::renderEntity(osg::Node* node, OsgEntity* e)
 {
     mySceneView->setSceneData(node);
+	mySceneView->setFrameStamp(e->getFrameStamp());
     mySceneView->cull();
     mySceneView->draw();
 }

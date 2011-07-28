@@ -66,6 +66,9 @@ namespace oosg
 		void load(const String& filename);
 		void addToScene(SceneNode* node);
 
+		osg::FrameStamp* getFrameStamp() { return myFrameStamp; }
+		osg::Node* getModel() { return myModel; }
+
 	private:
 		float myRepresentationSize;
 

@@ -70,7 +70,7 @@ void OsgViewerClient::initialize()
 
 	// Add an osg render pass to the scene manager so osg objects can be rendered
 	myRenderPass = onew(OsgRenderPass)();
-	getSceneManager()->addRenderPass(myRenderPass);
+	getSceneManager()->addRenderPass(myRenderPass, true);
 
 	myEntityNode = onew(SceneNode)(getSceneManager());
 	getSceneManager()->getRootNode()->addChild(myEntityNode);

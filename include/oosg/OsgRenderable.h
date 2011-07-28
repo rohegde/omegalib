@@ -47,11 +47,13 @@ namespace oosg
 	using namespace omega;
 	using namespace omega::scene;
 
+	class OsgEntity;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OOSG_API OsgRenderable: public Renderable
 	{
 	public:
-		OsgRenderable(osg::Node* model);
+		OsgRenderable(OsgEntity* entity);
 		~OsgRenderable();
 
 		virtual void render(SceneNode* node, RenderState* state);
@@ -60,6 +62,7 @@ namespace oosg
 		virtual bool hasBoundingBox() { return true; }
 
 	private:
+		OsgEntity* myEntity;
 		osg::MatrixTransform* myOsgNode;
 		AlignedBox3 myBBox;
 	};
