@@ -34,7 +34,7 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOQT_EXPORTING)
 ###################################################################################################
 # Source files
 SET( srcs 
-		oqt/QtClient.cpp
+		oqt/QtWidgetManager.cpp
 		oqt/QtWidget.cpp
         )
 		
@@ -43,7 +43,7 @@ SET( srcs
 SET( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/oqt/oqtbase.h
-		${OmegaLib_SOURCE_DIR}/include/oqt/QtClient.h
+		${OmegaLib_SOURCE_DIR}/include/oqt/QtWidgetManager.h
 		${OmegaLib_SOURCE_DIR}/include/oqt/QtWidget.h
         ) 
         

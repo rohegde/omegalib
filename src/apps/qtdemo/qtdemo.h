@@ -34,75 +34,39 @@
 #include "omega/Texture.h"
 #include "omega/ObserverUpdateService.h"
 
+#include "oqt/QtWidgetManager.h"
+
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+///////////////////////////////////////////////////////////////////////////////////////////////
+class QtDemoServer: public ApplicationServer
 {
 public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
+	QtDemoServer(Application* app): ApplicationServer(app) {}
+	virtual ~QtDemoServer() {}
 
-	const String& getName() { return myName; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
+	virtual void initialize();
 
 private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class QtDemoClient: public EngineClient, IUIEventHandler
+class QtDemoClient: public EngineClient
 {
 public:
-	QtDemoClient(ApplicationServer* server): 
-	  EngineClient(server), 
-		myVisibleEntity(NULL)
+	QtDemoClient(ApplicationServer* server):
+		myServer((QtDemoServer*)server),
+		EngineClient(server)
 	  {}
 
 	virtual void initialize();
-	void initUI();
-
-	virtual bool handleEvent(const Event& evt , UpdateContext &context );
-    void draw( const DrawContext& context);
-
-
-	void handleUIEvent(const UIEvent& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
 
 private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
+	QtDemoServer* myServer;
+	oqt::QtWidgetManager* myQtWidgetManager;
+	oqt::QtWidget* myQtWidget;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +74,7 @@ class QtDemoApplication: public Application
 {
 public:
 	virtual ApplicationClient* createClient(ApplicationServer* server) { return new QtDemoClient(server); }
+	virtual ApplicationServer* createServer() { return new QtDemoServer(this); }
 };
 
 #endif

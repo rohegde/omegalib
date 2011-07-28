@@ -41,14 +41,14 @@ namespace oqt
 	using namespace omega;
 	using namespace omega::ui;
 
-	class QtClient;
+	class QtWidgetManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OQT_API QtWidget: public Widget
 	{
 	public:
-		QtWidget(QtClient* owner, const String& name);
-		QtWidget(QtClient* owner);
+		QtWidget(QtWidgetManager* owner, const String& name);
+		QtWidget(QtWidgetManager* owner);
 		~QtWidget();
 
 		QWidget* getWidget();
@@ -58,10 +58,10 @@ namespace oqt
 		virtual void renderContent();
 
 	private:
-		void initialize(QtClient* owner);
+		void initialize(QtWidgetManager* owner);
 
 	private:
-		QtClient* myOwner;
+		QtWidgetManager* myOwner;
 		QWidget* myWidget;
 		Texture* myTexture;
 	};
