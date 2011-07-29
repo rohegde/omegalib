@@ -274,7 +274,7 @@ void NetService::poll()
 	
 	//-----------------------------------------------
 	// Check touchlist for old touches (haven't been updated recently) and remove them
-	Event* evt;
+	//Event* evt;
 	timeb tb;
 	ftime( &tb );
 	int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
@@ -300,8 +300,7 @@ void NetService::poll()
 			newEvt->timestamp = curTime;
 				
 			newEvt->sourceId = touch.ID;
-			newEvt->position[0] = touch.xPos * (float)screenX;
-			newEvt->position[1] = touch.yPos * (float)screenY;
+			newEvt->setPosition(touch.xPos * (float)screenX, touch.yPos * (float)screenY);
 
 			newEvt->numberOfPoints = 1;
 			newEvt->pointSet[0][0] = touch.xWidth * (float)screenX;
@@ -425,9 +424,7 @@ void NetService::parseDGram(int result)
 				evt->serviceType = Service::Mocap;
 
 				evt->sourceId = (int)(params[0] + 0.5);
-				evt->position[0] = params[1];
-				evt->position[1] = params[2];
-				evt->position[2] = params[3];
+				evt->setPosition(params[1], params[2], params[3]);
 
 				evt->orientation.x() = params[4];
 				evt->orientation.y() = params[5];
@@ -440,8 +437,7 @@ void NetService::parseDGram(int result)
 				evt->timestamp = curTime;
 				
 				evt->sourceId = (int)(params[1]);
-				evt->position[0] = params[2] * (float)screenX;
-				evt->position[1] = params[3] * (float)screenY;
+				evt->setPosition(params[2] * (float)screenX, params[3] * (float)screenY);
 
 				evt->numberOfPoints = 1;
 				evt->pointSet[0][0] = params[4] * (float)screenX;

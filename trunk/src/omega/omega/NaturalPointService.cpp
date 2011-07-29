@@ -198,10 +198,10 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 			theEvent->type = Event::Move;
 
 			//get x,y,z coordinates
-			theEvent->position = myMoCap->myTransform * Vector3f(
+			theEvent->setPosition(myMoCap->myTransform * Vector3f(
 				data->RigidBodies[i].x,
 				data->RigidBodies[i].y,
-				data->RigidBodies[i].z);
+				data->RigidBodies[i].z));
 
 			// Marker set uncommented for now, no real application using it at the moment.
 			// in the future, make this a configurable option

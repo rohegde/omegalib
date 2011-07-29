@@ -434,7 +434,7 @@ bool Container::processInputEvent(const Event& evt)
 	//myLastEvent = evt;
 	bool processed = false;
 
-	Vector2f point = Vector2f(evt.position[0], evt.position[1]);
+	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
 	transformPoint(point);
 

@@ -163,9 +163,7 @@ void VRPNService::generateEvent(vrpn_TRACKERCB t, int id)
 	evt->serviceType = Service::Mocap;
 
 	evt->sourceId = id;
-	evt->position[0] = t.pos[0];
-	evt->position[1] = t.pos[1];
-	evt->position[2] = t.pos[2];
+	evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
 
 	Quaternion qyaw, qpitch, qroll;
 

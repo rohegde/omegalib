@@ -140,13 +140,14 @@ void ChannelImpl::frameViewStart( const uint128_t& spin )
 					int vy2 = vy1 + context.viewport.height();
 					//ofmsg("pos %1% (%2%-%3% %4%-%5%)", %evt.position %vx1 %vx2 %vy1 %vy2);
 
-					if(evt.position[0] > vx1 &&
-						evt.position[0] < vx2 &&
-						evt.position[1] > vy1 &&
-						evt.position[1] < vy2)
+					Vector3f position = evt.getPosition();
+					if(position[0] > vx1 &&
+						position[0] < vx2 &&
+						position[1] > vy1 &&
+						position[1] < vy2)
 					{
-						evt.position[0] -= context.globalViewport.x();
-						evt.position[1] -= context.globalViewport.y();
+						position[0] -= context.globalViewport.x();
+						position[1] -= context.globalViewport.y();
 						//ofmsg("pos %1%", %evt.position);
 						evt.processed = client->handleEvent(evt, context);
 					}
