@@ -163,7 +163,7 @@ void ObserverUpdateService::poll()
 			}
 			else if(myEnableOrientationSource && evt->sourceId == myOrientationSourceId)
 			{
-				myLastOrientation = evt->orientation;
+				myLastOrientation = evt->getOrientation();
 				//myLastPosition = (myLastPosition + evt->position) / 2;
 			}
 		}

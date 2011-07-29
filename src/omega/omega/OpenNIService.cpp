@@ -433,7 +433,7 @@ void OpenNIService::poll(void)
 								theEvent->serviceType = Service::Mocap;
 								theEvent->sourceId = t.trackableId;
 								theEvent->type = Event::Update;
-								theEvent->orientation = Quaternion::Identity();						
+								theEvent->setOrientation(Quaternion::Identity());						
 							}
 						}
 					}
@@ -613,7 +613,7 @@ void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator,
 	theEvent->sourceId = nId;
 	theEvent->type = Event::Untrace;
 	theEvent->setPosition(Vector3f::Zero());
-	theEvent->orientation = Quaternion::Identity();
+	theEvent->setOrientation(Quaternion::Identity());
 	myOpenNI->unlockEvents();
 }
 
@@ -655,7 +655,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 		theEvent->sourceId = nId;
 		theEvent->type = Event::Trace;
 		theEvent->setPosition(Vector3f::Zero());
-		theEvent->orientation = Quaternion::Identity();
+		theEvent->setOrientation(Quaternion::Identity());
 		myOpenNI->unlockEvents();
 	}
 	else
