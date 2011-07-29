@@ -205,7 +205,9 @@ namespace omega
 		void setPosition(float x, float y);
 
 		//! Rotation.
-		Quaternion orientation;
+		const Quaternion& getOrientation() const;
+		void setOrientation(const Quaternion& value);
+		void setOrientation(float w, float x, float y, float z);
 
 		//! Vector storing additional event parameters (i.e. split distance / ratio for Split events)
 		Vector3f value;
@@ -267,6 +269,24 @@ namespace omega
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Quaternion& Event::getOrientation() const
+	{
+		return myOrientation;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setOrientation(const Quaternion& value)
+	{
+		myOrientation = value;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setOrientation(float w, float x, float y, float z)
+	{
+		myOrientation = Quaternion(w, x, y, z);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::serialize(co::DataOStream& os)
 	{
 		os << processed;
@@ -277,7 +297,7 @@ namespace omega
 		os << flags;
 		os << timestamp;
 		os << myPosition[0] << myPosition[1] << myPosition[2];
-		os << orientation.x() << orientation.y() << orientation.z() << orientation.w();
+		os << myOrientation.x() << myOrientation.y() << myOrientation.z() << myOrientation.w();
 		os << value[0] << value[1] << value[2];
 		os << validPoints;
 		os << numberOfPoints;
@@ -298,7 +318,7 @@ namespace omega
 		is >> flags;
 		is >> timestamp;
 		is >> myPosition[0] >> myPosition[1] >> myPosition[2];
-		is >> orientation.x() >> orientation.y() >> orientation.z() >> orientation.w();
+		is >> myOrientation.x() >> myOrientation.y() >> myOrientation.z() >> myOrientation.w();
 		is >> value[0] >> value[1] >> value[2];
 		is >> validPoints;
 		is >> numberOfPoints;

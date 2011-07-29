@@ -426,10 +426,7 @@ void NetService::parseDGram(int result)
 				evt->sourceId = (int)(params[0] + 0.5);
 				evt->setPosition(params[1], params[2], params[3]);
 
-				evt->orientation.x() = params[4];
-				evt->orientation.y() = params[5];
-				evt->orientation.z() = params[6];
-				evt->orientation.w() = params[7];
+				evt->setOrientation(params[7], params[4], params[5], params[6]);
 				break;
 			case(Service::Pointer): // Touch (points only not gestures)
 				evt = mysInstance->writeHead();

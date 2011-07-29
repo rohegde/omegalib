@@ -160,7 +160,7 @@ void OptiTrackService::poll()
 			qyaw = AngleAxis(yaw.dblVal, Vector3f::UnitY());
 			qroll = AngleAxis(roll.dblVal, Vector3f::UnitZ());
 
-			evt->orientation = qpitch * qyaw * qroll;
+			evt->setOrientation(qpitch * qyaw * qroll);
 
 			unlockEvents();
 

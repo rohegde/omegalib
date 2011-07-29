@@ -216,10 +216,11 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 			//	theEvent->pointSet[j] = myTransform * aPoint;
 			//}
 
-			theEvent->orientation.w() = data->RigidBodies[i].qw;
-			theEvent->orientation.x() = data->RigidBodies[i].qx;
-			theEvent->orientation.y() = data->RigidBodies[i].qy;
-			theEvent->orientation.z() = data->RigidBodies[i].qz;
+			theEvent->setOrientation(
+				data->RigidBodies[i].qw, 
+				data->RigidBodies[i].qx, 
+				data->RigidBodies[i].qy, 
+				data->RigidBodies[i].qz);
 		}
 		myMoCap->unlockEvents();
 	}

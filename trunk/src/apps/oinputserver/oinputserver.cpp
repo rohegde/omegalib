@@ -149,7 +149,7 @@ public:
 				if( evt.type == Event::Rotate ){
 					// Converts rotation to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.orientation.x() );
+					sprintf(floatChar,"%f", evt.getOrientation().x() );
 					strcat( eventPacket, floatChar );
 				} else if( evt.type == Event::Split ){
 					// Converts values to char, appends to eventPacket
@@ -204,22 +204,22 @@ public:
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts xRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation.x());
+			sprintf(floatChar,"%f",evt.getOrientation().x());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts yRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation.y());
+			sprintf(floatChar,"%f",evt.getOrientation().y());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts zRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation.z());
+			sprintf(floatChar,"%f",evt.getOrientation().z());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, " " ); // Spacer
 
 			// Converts zRot to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.orientation.w());
+			sprintf(floatChar,"%f",evt.getOrientation().w());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, " " ); // Spacer
 			return true;

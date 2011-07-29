@@ -165,13 +165,13 @@ void VRPNService::generateEvent(vrpn_TRACKERCB t, int id)
 	evt->sourceId = id;
 	evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
 
-	Quaternion qyaw, qpitch, qroll;
+	//Quaternion qyaw, qpitch, qroll;
 
-	qpitch = AngleAxis(t.quat[0], Vector3f::UnitX());
-	qyaw = AngleAxis(t.quat[1], Vector3f::UnitY());
-	qroll = AngleAxis(t.quat[2], Vector3f::UnitZ());
+	//qpitch = AngleAxis(t.quat[0], Vector3f::UnitX());
+	//qyaw = AngleAxis(t.quat[1], Vector3f::UnitY());
+	//qroll = AngleAxis(t.quat[2], Vector3f::UnitZ());
 
-	evt->orientation = qpitch * qyaw * qroll;
+	evt->setOrientation(t.quat[0], t.quat[1], t.quat[2], t.quat[3]);
 
 	//printf("handle_tracker\tObject %d POS: (%g,%g,%g) QUAT: (%g,%g,%g)\n", 
 	// id,
