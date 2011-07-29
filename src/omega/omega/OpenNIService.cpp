@@ -429,7 +429,7 @@ void OpenNIService::poll(void)
 							if( getJointPosition(aUsers[i], (OmegaSkeletonJoint)t.jointId, pos) ) 
 							{
 								Event* theEvent = this->writeHead();
-								theEvent->position = pos;
+								theEvent->setPosition(pos);
 								theEvent->serviceType = Service::Mocap;
 								theEvent->sourceId = t.trackableId;
 								theEvent->type = Event::Update;
@@ -491,7 +491,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 
 		// Event position = Head position (simplifies compatibility with head tracking service)
 		if( joint == OMEGA_SKEL_HEAD ) {
-			theEvent->position[0] = pos[0]; theEvent->position[1] = pos[1]; theEvent->position[2] = pos[2];
+			theEvent->setPosition(pos);
 		}
 	}
 }
@@ -508,7 +508,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 
 		// Event position = Head position (simplifies compatibility with head tracking service)
 		if( joint == OMEGA_SKEL_HEAD ) {
-			theEvent->position[0] = pos[0]; theEvent->position[1] = pos[1]; theEvent->position[2] = pos[2];
+			theEvent->setPosition(pos);
 		}
 	}
 }
@@ -612,7 +612,7 @@ void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator,
 	theEvent->serviceType = Service::Mocap;
 	theEvent->sourceId = nId;
 	theEvent->type = Event::Untrace;
-	theEvent->position = Vector3f::Zero();
+	theEvent->setPosition(Vector3f::Zero());
 	theEvent->orientation = Quaternion::Identity();
 	myOpenNI->unlockEvents();
 }
@@ -654,7 +654,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
 		theEvent->serviceType = Service::Mocap;
 		theEvent->sourceId = nId;
 		theEvent->type = Event::Trace;
-		theEvent->position = Vector3f::Zero();
+		theEvent->setPosition(Vector3f::Zero());
 		theEvent->orientation = Quaternion::Identity();
 		myOpenNI->unlockEvents();
 	}

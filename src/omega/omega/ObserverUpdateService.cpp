@@ -125,7 +125,7 @@ void ObserverUpdateService::poll()
 
 			if(evt->sourceId == mySourceId)
 			{
-				Vector3f& pos = evt->position;
+				Vector3f pos = evt->getPosition();
 				if(!myUseHeadPointId || evt->isValidPoint(Head))
 				{
 					if(myUseHeadPointId) pos = evt->pointSet[Head];
@@ -182,7 +182,7 @@ void ObserverUpdateService::updateDynamicSource(Event* evt)
 	// Update activator token position
 	if(evt->sourceId == myDynamicSourceTokenId)
 	{
-		myLastTokenPosition = evt->position;
+		myLastTokenPosition = evt->getPosition();
 	}
 	else
 	{

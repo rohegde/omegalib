@@ -149,9 +149,10 @@ void OptiTrackService::poll()
 			evt->serviceType = Service::Mocap;
 
 			evt->sourceId = 1;
-			evt->position[0] = -x.dblVal / 1000.0f;
-			evt->position[1] = y.dblVal  / 1000.0f;
-			evt->position[2] = z.dblVal  / 1000.0f;
+			evt->setPosition(
+				-x.dblVal / 1000.0f,
+				y.dblVal  / 1000.0f,
+				z.dblVal  / 1000.0f);
 			
 			Quaternion qyaw, qpitch, qroll;
 

@@ -54,8 +54,7 @@ void MouseService::mouseWheelCallback(int wheel, int x, int y)
 		Event* evt = mysInstance->writeHead();
 		evt->serviceType = Service::Pointer;
 		evt->type = Event::Zoom;
-		evt->position[0] = x;
-		evt->position[1] = y;
+		evt->setPosition(x, y);
 		evt->value[0] = wheel;
 		mysInstance->unlockEvents();
 	}
@@ -76,8 +75,7 @@ void MouseService::mouseMotionCallback(int x, int y)
 		Event* evt = mysInstance->writeHead();
 		evt->serviceType = Service::Pointer;
 		evt->type = Event::Move;
-		evt->position[0] = x;
-		evt->position[1] = y;
+		evt->setPosition(x, y);
 		evt->flags = sButtonFlags;
 
 		mysInstance->unlockEvents();
@@ -131,8 +129,7 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 			//	sButtonFlags &= ~button;
 			}
 		}
-		evt->position[0] = x;
-		evt->position[1] = y;
+		evt->setPosition(x, y);
 		evt->flags = sButtonFlags;
 
 		mysInstance->unlockEvents();

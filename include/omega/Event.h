@@ -197,8 +197,12 @@ namespace omega
 		//! Event timestamp.
 		unsigned int timestamp;
 
-		//! Position 
-		Vector3f position;
+		//! Get the event position 
+		const Vector3f& getPosition() const;
+		float getPosition(int component) const;
+		void setPosition(const Vector3f& value);
+		void setPosition(float x, float y, float z);
+		void setPosition(float x, float y);
 
 		//! Rotation.
 		Quaternion orientation;
@@ -220,7 +224,47 @@ namespace omega
 		void setValidPoint(int pointId);
 		void resetValidPoints();
 		bool isValidPoint(int pointId) const;
+	
+	private:
+		Vector3f myPosition;
+		Quaternion myOrientation;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Vector3f& Event::getPosition() const
+	{
+		return myPosition;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline float Event::getPosition(int component) const
+	{
+		return myPosition[component];
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setPosition(const Vector3f& v)
+	{
+		myPosition[0] = v[0];
+		myPosition[1] = v[1];
+		myPosition[2] = v[2];
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setPosition(float x, float y, float z)
+	{
+		myPosition[0] = x;
+		myPosition[1] = y;
+		myPosition[2] = z;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setPosition(float x, float y)
+	{
+		myPosition[0] = x;
+		myPosition[1] = y;
+		myPosition[2] = 0;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::serialize(co::DataOStream& os)
@@ -232,7 +276,7 @@ namespace omega
 		os << type;
 		os << flags;
 		os << timestamp;
-		os << position[0] << position[1] << position[2];
+		os << myPosition[0] << myPosition[1] << myPosition[2];
 		os << orientation.x() << orientation.y() << orientation.z() << orientation.w();
 		os << value[0] << value[1] << value[2];
 		os << validPoints;
@@ -253,7 +297,7 @@ namespace omega
 		is >> type;
 		is >> flags;
 		is >> timestamp;
-		is >> position[0] >> position[1] >> position[2];
+		is >> myPosition[0] >> myPosition[1] >> myPosition[2];
 		is >> orientation.x() >> orientation.y() >> orientation.z() >> orientation.w();
 		is >> value[0] >> value[1] >> value[2];
 		is >> validPoints;

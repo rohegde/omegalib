@@ -163,8 +163,8 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 		{
 			if(evt.sourceId == myTrackableId)
 			{
-				if( evt.serviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.position;
-				else if( evt.serviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.position;
+				if( evt.serviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.getPosition();
+				else if( evt.serviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.getPosition();
 			}
 		}
 		else

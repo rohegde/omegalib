@@ -50,7 +50,7 @@ Slider::~Slider()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool Slider::processInputEvent(const Event& evt)
 {
-	Vector2f point = Vector2f(evt.position[0], evt.position[1]);
+	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
 	point = transformPoint(point);
 
@@ -72,7 +72,7 @@ bool Slider::processInputEvent(const Event& evt)
 		if(evt.type == Event::Down)
 		{
 			myPressed = true;
-			myPressPos = evt.position[0];
+			myPressPos = evt.getPosition(0);
 		}
 		return true;
 	}

@@ -34,7 +34,7 @@ bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context)
 {
 	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
 	float z = 1.0f;
-	Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+	Ray ray = Math::unproject(Vector2f(evt.getPosition(0), evt.getPosition(1)), context.modelview, context.projection, context.viewport, z);
 
 	if(myNode != NULL)
 	{
@@ -59,7 +59,7 @@ bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context)
 			// Manipulate object, if one is active.
 			if(myNode->isSelected())
 			{
-				Ray ray = Math::unproject(Vector2f(evt.position[0], evt.position[1]), context.modelview, context.projection, context.viewport, z);
+				Ray ray = Math::unproject(Vector2f(evt.getPosition(0), evt.getPosition(1)), context.modelview, context.projection, context.viewport, z);
 
 				if(evt.isFlagSet(Event::Left))
 				{

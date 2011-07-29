@@ -33,9 +33,9 @@ void KinectDemoClient::draw(const DrawContext& context)
 
 				// Select only the openni events
 			if( ptrEvents[i].serviceType == omega::Service::Mocap ) {
-				ptrEvents[i].position *= 0.001;
+				Vector3f pos = ptrEvents[i].getPosition() * 0.001;
 				
-				ofmsg("Position: %1%", %ptrEvents[i].position);
+				ofmsg("Position: %1%", %pos);
 
 				glBindTexture(GL_TEXTURE_2D, texID);
 				//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, ptrEvents[i].userData);
