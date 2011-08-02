@@ -14,6 +14,10 @@ Main objectives for this release: support of multiple object manipulation throug
    * ovtk library core
    * Python script loader
    * Vtk viewer application
+ * VRPN Integration (*Arthur*)
+   * Preliminary work
+   * Data streamed from VICON tracker into mocap events
+   * Set multiple objects in configuration file
 
 == Work In Progress ==
  * Integration of PS3 and Wii controller (*Arthur*)
@@ -30,8 +34,6 @@ Main objectives for this release: support of multiple object manipulation throug
    * Script loading in separate thread.
    * UI interface for interaction with Vtk pipelines
    * Script templates.
- * VRPN Integration
-   * Preliminary work (*Arthur*)
  
 == Wish List ==
  * filters to join kinect & pqlabs to associate touches to user.
