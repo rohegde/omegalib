@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$_mo_cap_service_8h.html" title="D:/Workspace/omegalib/include/omega/input/MoCapService.h" alt="" coords="5,85,480,117"/>
-<area shape="rect" id="node5" href="$_mouse_service_8h.html" title="D:/Workspace/omegalib/include/omega/input/MouseService.h" alt="" coords="504,85,973,117"/>
-<area shape="rect" id="node7" href="$_net_service_8h.html" title="D:/Workspace/omegalib/include/omega/input/NetService.h" alt="" coords="997,85,1443,117"/>
-<area shape="rect" id="node9" href="$_optitrack_service_8h.html" title="D:/Workspace/omegalib/include/omega/input/OptitrackService.h" alt="" coords="1467,85,1955,117"/>
-<area shape="rect" id="node11" href="$_p_q_service_8h.html" title="D:/Workspace/omegalib/include/omega/input/PQService.h" alt="" coords="1979,85,2424,117"/>
-</map>
