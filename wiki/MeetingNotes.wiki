@@ -1,5 +1,15 @@
 = OmegaLib Meeting Notes =
 
+== August 12 2011 ==
+ * Omegalib stability issues: have two versions from now on. 
+ * omegalib kinect: users not detected from time to time. (Do we need better debug messages)
+ * Unity: when hands are active problems with tracking. Head tracking alone works fine apparently.
+ * VR class: we are going to use Unity + oinputserver for event streaming (mocap from VICON)
+  * Paul will work on a simple unity demo. And figure out iif controller input should go through omegalib or unity will handle it directly.
+ 
+  
+------------------------------------------------------------------------
+
 == July 12 2011 ==
  * OmegaDesk paper: what needs to be done.
  * Physics manipulation using Kinect: close to working

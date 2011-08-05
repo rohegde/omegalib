@@ -10,6 +10,7 @@ Main objectives for this release: support of multiple object manipulation throug
  * Compiles under Mac OSX in i386 mode 
  * Can use XCode as compiler (cmake -G XCode)
  * OpenNI library works under Linux
+ * (*experimental*) OpenSceneGraph integration
  * Vtk integration:
    * ovtk library core
    * Python script loader
@@ -27,7 +28,6 @@ Main objectives for this release: support of multiple object manipulation throug
      * Using touch, Kinect, 3D, controllers. 
  * Add a multi-user touch gestures (*Arthur*)
      * Zoom, drag, and other current SAGE touch gestures
- * Integration with OpenSceneGraph (*Alessandro*)
  * Integration with Qt (*Alessandro*)
  * Vtk integration: (*Alessandro*)
    * Support visualization of multiple entities.
