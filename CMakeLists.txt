@@ -105,8 +105,6 @@ else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 	file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
-# TEST NEW FEATURE
-
 ###################################################################################################
 # Couple utility variables for library linking
 #SET (LIB_DEBUG ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-debug)

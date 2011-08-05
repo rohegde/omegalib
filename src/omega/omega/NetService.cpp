@@ -270,18 +270,22 @@ void NetService::poll()
 		timeout.tv_sec  = 0;
 		timeout.tv_usec = 0;
 
-		do
-		{
-			// Check if UDP socket has data waiting to be read before
-			// socket blocks to attempt to read.
-			result = select(RecvSocket+1, &ReadFDs, &WriteFDs, &ExceptFDs, &timeout);
-			// Possible return values:
-			// -1: error occurred
-			// 0: timed out
-			// > 0: data ready to be read
-			// if -1 WSAGetLastError() can return error code (Windows only)
-			if( result > 0 ) parseDGram(result);
-		} while(result > 0);
+		// Check if UDP socket has data waiting to be read before
+		// socket blocks to attempt to read.
+		result = select(RecvSocket+1, &ReadFDs, &WriteFDs, &ExceptFDs, &timeout);
+		// Possible return values:
+		// -1: error occurred
+		// 0: timed out
+		// > 0: data ready to be read
+		// if -1 WSAGetLastError() can return error code (Windows only)
+		if( result > 0 ){
+			parseDGram(result);
+		} else {
+			//if( result == 0 )
+			//	printf("UDP socket has no data to receive '%d'\n", WSAGetLastError());
+                        //if( result == -1 )
+                        //	printf("UDP socket error code '%d'\n", WSAGetLastError());
+		}// if-else select result
 	}
 	
 	//-----------------------------------------------
