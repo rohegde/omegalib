@@ -39,7 +39,7 @@
 namespace omega
 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class VRPNService: public Service
+class OMEGA_API VRPNService: public Service
 {
 public:
 	// Allocator function
@@ -47,10 +47,18 @@ public:
 
 public:
 	void setup(Setting& settings);
-	OMEGA_API virtual void initialize();
+	virtual void initialize();
 	virtual void poll();
-	OMEGA_API virtual void dispose();
+	virtual void dispose();
+
 	void generateEvent(vrpn_TRACKERCB, int);
+
+	//! Sets the data update interval, in seconds. This is the interval at which this service will generate events
+	//! If set to zero, the service will generate events as fast as possible.
+	void setUpdateInterval(float value);
+	//! @see setUpdateInterval
+	float getUpdateInterval();
+
 private:
 	static VRPNService* mysInstance;
 	
@@ -65,6 +73,8 @@ private:
 
 	Vector<TrackerInfo> trackerNames; // Vector of the TrackerInfo struct
 	Vector<vrpn_Tracker_Remote*> trackerRemotes; // Vector of actual vrpn tracker remote objects
+
+	float myUpdateInterval;
 };
 
 struct VRPNStruct
@@ -75,6 +85,13 @@ struct VRPNStruct
 	VRPNService* vrnpService;
 };
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void VRPNService::setUpdateInterval(float value) 
+	{ myUpdateInterval = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline float VRPNService::getUpdateInterval() 
+	{ return myUpdateInterval; }
 }; // namespace omega
 
 #endif
