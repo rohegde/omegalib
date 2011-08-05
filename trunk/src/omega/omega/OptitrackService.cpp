@@ -25,7 +25,7 @@ using namespace omega;
 //		Event* evt = mysInstance->writeHead();
 //		//	evt->id = OM_ID_MOUSE;
 //		//	evt->source = OM_DC_POINTER;
-//		//	evt->type = OM_EVENT_MOVE;
+//		//	evt->getType() = OM_EVENT_MOVE;
 //		evt->x = x;
 //		evt->y = y;
 //
@@ -143,12 +143,7 @@ void OptiTrackService::poll()
 			lockEvents();
 
 			Event* evt = writeHead();
-			//	evt->id = OM_ID_MOUSE;
-			//	evt->source = OM_DC_POINTER;
-			//	evt->type = OM_EVENT_MOVE;
-			evt->serviceType = Service::Mocap;
-
-			evt->sourceId = 1;
+			evt->reset(Event::Move, Service::Mocap, 1);
 			evt->setPosition(
 				-x.dblVal / 1000.0f,
 				y.dblVal  / 1000.0f,

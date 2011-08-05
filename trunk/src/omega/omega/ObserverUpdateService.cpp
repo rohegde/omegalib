@@ -115,7 +115,7 @@ void ObserverUpdateService::poll()
 	for(int i = 0; i < numEvts; i++)
 	{
 		Event* evt = getEvent(i);
-		if(evt->serviceType == Service::Mocap)
+		if(evt->getServiceType() == Service::Mocap)
 		{
 			// Dynamic source support.
 			if(myUseDynamicSource)
@@ -123,12 +123,12 @@ void ObserverUpdateService::poll()
 				updateDynamicSource(evt);
 			}
 
-			if(evt->sourceId == mySourceId)
+			if(evt->getSourceId() == mySourceId)
 			{
 				Vector3f pos = evt->getPosition();
-				if(!myUseHeadPointId || evt->isValidPoint(Head))
+				if(!myUseHeadPointId || !evt->isExtraDataNull(Head))
 				{
-					if(myUseHeadPointId) pos = evt->pointSet[Head];
+					if(myUseHeadPointId) pos = evt->getExtraDataVector3(Head);
 					if(myDebug)
 					{
 						ofmsg("Observer pos: %1%", %pos);
@@ -161,7 +161,7 @@ void ObserverUpdateService::poll()
 					myObserver->update(myLastPosition, q);
 				}
 			}
-			else if(myEnableOrientationSource && evt->sourceId == myOrientationSourceId)
+			else if(myEnableOrientationSource && evt->getSourceId() == myOrientationSourceId)
 			{
 				myLastOrientation = evt->getOrientation();
 				//myLastPosition = (myLastPosition + evt->position) / 2;
@@ -180,7 +180,7 @@ void ObserverUpdateService::dispose()
 void ObserverUpdateService::updateDynamicSource(Event* evt)
 {
 	// Update activator token position
-	if(evt->sourceId == myDynamicSourceTokenId)
+	if(evt->getSourceId() == myDynamicSourceTokenId)
 	{
 		myLastTokenPosition = evt->getPosition();
 	}
@@ -191,24 +191,24 @@ void ObserverUpdateService::updateDynamicSource(Event* evt)
 		switch(myDynamicSourceTokenAttachPoint)
 		{
 		case AttachHead:
-			if(evt->isValidPoint(Head))
+			if(!evt->isExtraDataNull(Head))
 			{
 				validPt = true;
-				attachPt = evt->pointSet[Head];
+				attachPt = evt->getExtraDataVector3(Head);
 			}
 			break;
 		case AttachLeftHand:
-			if(evt->isValidPoint(LeftHand))
+			if(!evt->isExtraDataNull(LeftHand))
 			{
 				validPt = true;
-				attachPt = evt->pointSet[LeftHand];
+				attachPt = evt->getExtraDataVector3(LeftHand);
 			}
 			break;
 		case AttachRightHand:
-			if(evt->isValidPoint(RightHand))
+			if(!evt->isExtraDataNull(RightHand))
 			{
 				validPt = true;
-				attachPt = evt->pointSet[RightHand];
+				attachPt = evt->getExtraDataVector3(RightHand);
 			}
 			break;
 		}
@@ -221,7 +221,7 @@ void ObserverUpdateService::updateDynamicSource(Event* evt)
 			}
 			if(dist < myDynamicSourceActivationDistance)
 			{
-				mySourceId = evt->sourceId;
+				mySourceId = evt->getSourceId();
 			}
 		}
 	}

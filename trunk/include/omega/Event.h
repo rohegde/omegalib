@@ -34,6 +34,10 @@
 
 #include <co/co.h>
 
+// Used for timestamp
+#include <sys/timeb.h>
+
+
 #ifdef OMEGA_USE_OPENNI
 #ifdef OMEGA_OS_WIN
 #include <XnCppWrapper.h>
@@ -41,6 +45,10 @@
 #include <ni/XnCppWrapper.h>
 #endif
 #endif
+
+#define FLOAT_PTR(x) *((float*)&x)
+#define INT_PTR(x) *((int*)&x)
+
 
 namespace omega
 {
@@ -87,7 +95,8 @@ namespace omega
 	class Event: public DynamicObject
 	{
 	public:
-		static const int MaxPointSetSize = 32;
+		static const int ExtraDataSize = 1024;
+		static const int MaxExtraDataItems = 32;
 
 		//! Supported event types.
 		enum Type 
@@ -170,32 +179,38 @@ namespace omega
 			User = 1 << 16
 		};
 
+		enum ExtraDataType
+		{
+			ExtraDataNull,
+			ExtraDataFloatArray,
+			ExtraDataIntArray,
+			ExtraDataVector3Array,
+			ExtraDataString
+		};
+
 	public:
 		Event();
 
-		//! Set to true if this event has been processed already.
-		bool processed;
+		void reset(Type type, Service::ServiceType serviceType, unsigned int sourceId = 0, int serviceId = 0);
 
 		//! id of the source of this event. Input services associate unique ids to each of their event sources.
-		unsigned int sourceId;
-	
+		unsigned int getSourceId() const;
+
 		//! Type of the service that generated this event.
-		enum Service::ServiceType serviceType;
+		Service::ServiceType getServiceType() const;
 
 		//! Unique id of the service and / or hardware device that generated this event.
-		int serviceId;
-
-		//! Id of the device in case there are multiple devices
-		//int serviceId;
+		int getServiceId() const;
 
 		//! The event type.
-		enum Type type;
+		Type getType() const;
 
-		//! Event flags.
-		unsigned int flags;
+		//! Gets the event timestamp. The timestamp is updated everytime the Event::reset is called.
+		unsigned int getTimestamp() const;
 
-		//! Event timestamp.
-		unsigned int timestamp;
+		//! Set to true if this event has been processed already.
+		void setProcessed();
+		bool isProcessed();
 
 		//! Get the event position 
 		const Vector3f& getPosition() const;
@@ -209,40 +224,116 @@ namespace omega
 		void setOrientation(const Quaternion& value);
 		void setOrientation(float w, float x, float y, float z);
 
+		
+		//! Event flags.
+		bool isFlagSet(uint flag) const;
+		void setFlags(uint flags);
+		void clearFlags();
+
 		//! Vector storing additional event parameters (i.e. split distance / ratio for Split events)
-		Vector3f value;
+		//Vector3f value;
 
 		//! Point set
-		int numberOfPoints;
-		int validPoints;
-		Vector3f pointSet[MaxPointSetSize];
+		void setExtraDataType(ExtraDataType type);
+		ExtraDataType getExtraDataType() const;
+		float getExtraDataFloat(int index) const;
+		void setExtraDataFloat(int index, float value);
+		int getExtraDataInt(int index) const;
+		void setExtraDataInt(int index, int value);
+		Vector3f getExtraDataVector3(int index) const;
+		void setExtraDataVector3(int index, const Vector3f value);
+		const char* getExtraDataString() const;
+		void setExtraDataString(const String& value);
+		void resetExtraData();
+		bool isExtraDataNull(int pointId) const;
 
-		//! Serialize an Event instance.
+		//! Returns the size in bytes of the event extra data.
+		int getExtraDataSize() const;
+
+		//! Serializes an Event instance.
 		void serialize(co::DataOStream& os);
-		//! Deserialize an Event instance.
+		//! Deserializes an Event instance.
 		void deserialize( co::DataIStream& is);
 
-		bool isFlagSet(uint flag) const;
-		void setValidPoint(int pointId);
-		void resetValidPoints();
-		bool isValidPoint(int pointId) const;
-	
 	private:
+		unsigned int mySourceId;
+		enum Service::ServiceType myServiceType;
+		int myServiceId;
+		enum Type myType;
+
 		Vector3f myPosition;
 		Quaternion myOrientation;
+		bool myProcessed;
+		int myTimestamp;
+
+		unsigned int myFlags;
+
+		ExtraDataType myExtraDataType;
+		int myExtraDataLength;
+		int myExtraDataValidMask;
+		byte myExtraData[ExtraDataSize];
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Vector3f& Event::getPosition() const
+	inline Event::Event():
+		myProcessed(false),
+		myFlags(0),
+		myExtraDataType(ExtraDataNull),
+		myExtraDataValidMask(0)
+	{}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::reset(Type type, Service::ServiceType serviceType, unsigned int sourceId, int serviceId)
 	{
-		return myPosition;
+		myType = type;
+		mySourceId = sourceId;
+		myServiceType = serviceType;
+		myServiceId = serviceId;
+		myFlags = 0;
+		myExtraDataValidMask = 0;
+		myExtraDataType = ExtraDataNull;
+
+		timeb tb;
+		ftime( &tb );
+		int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
+		myTimestamp = curTime;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline unsigned int Event::getTimestamp() const
+	{ return myTimestamp; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline unsigned int Event::getSourceId() const
+	{ return mySourceId; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Service::ServiceType Event::getServiceType() const
+	{ return myServiceType;	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Event::getServiceId() const
+	{ return myServiceId; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Event::Type Event::getType() const
+	{ return myType; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setProcessed()
+	{ myProcessed = true; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Event::isProcessed()
+	{ return myProcessed; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Vector3f& Event::getPosition() const
+	{ return myPosition; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline float Event::getPosition(int component) const
-	{
-		return myPosition[component];
-	}
+	{ return myPosition[component]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::setPosition(const Vector3f& v)
@@ -270,86 +361,196 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline const Quaternion& Event::getOrientation() const
-	{
-		return myOrientation;
-	}
+	{ return myOrientation; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::setOrientation(const Quaternion& value)
-	{
-		myOrientation = value;
-	}
+	{ myOrientation = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::setOrientation(float w, float x, float y, float z)
+	{ myOrientation = Quaternion(w, x, y, z); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Event::isFlagSet(uint flag) const
+	{ return (myFlags & flag) == flag; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setFlags(uint flags)
+	{ myFlags |= flags; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::clearFlags()
+	{ myFlags = 0; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setExtraDataType(Event::ExtraDataType type)
+	{ myExtraDataType = type; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Event::ExtraDataType Event::getExtraDataType() const
+	{ return myExtraDataType; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline float Event::getExtraDataFloat(int index) const
 	{
-		myOrientation = Quaternion(w, x, y, z);
+		oassert(myExtraDataType == ExtraDataFloatArray);
+		oassert(!isExtraDataNull(index));
+		return FLOAT_PTR(myExtraData[index * 4]);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setExtraDataFloat(int index, float value)
+	{
+		oassert(myExtraDataType == ExtraDataFloatArray);
+		oassert(index < MaxExtraDataItems);
+		if(index >= myExtraDataLength) myExtraDataLength = index + 1;
+		// Mark this entry bit as valid in the extra data validity mask
+		myExtraDataValidMask |= (1 << index);
+		FLOAT_PTR(myExtraData[index * 4]) = value;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Event::getExtraDataInt(int index) const
+	{
+		oassert(myExtraDataType == ExtraDataIntArray);
+		oassert(!isExtraDataNull(index));
+		return INT_PTR(myExtraData[index * 4]);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setExtraDataInt(int index, int value)
+	{
+		oassert(myExtraDataType == ExtraDataIntArray);
+		oassert(index < MaxExtraDataItems);
+		if(index >= myExtraDataLength) myExtraDataLength = index + 1;
+		// Mark this entry bit as valid in the extra data validity mask
+		myExtraDataValidMask |= (1 << index);
+		INT_PTR(myExtraData[index * 4]) = value;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Vector3f Event::getExtraDataVector3(int index) const
+	{
+		oassert(myExtraDataType == ExtraDataVector3Array);
+		oassert(!isExtraDataNull(index));
+		int offset = index * 3 * 4;
+		float x = FLOAT_PTR(myExtraData[offset]);
+		float y = FLOAT_PTR(myExtraData[offset + 4]);
+		float z = FLOAT_PTR(myExtraData[offset + 8]);
+		return Vector3f(x, y, z);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setExtraDataVector3(int index, const Vector3f value)
+	{
+		oassert(myExtraDataType == ExtraDataVector3Array);
+		oassert(index < MaxExtraDataItems);
+		if(index >= myExtraDataLength) myExtraDataLength = index + 1;
+		// Mark this entry bit as valid in the extra data validity mask
+		myExtraDataValidMask |= (1 << index);
+		int offset = index * 3 * 4;
+		FLOAT_PTR(myExtraData[offset]) = value[0];
+		FLOAT_PTR(myExtraData[offset + 4]) = value[1];
+		FLOAT_PTR(myExtraData[offset + 8]) = value[2];
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const char* Event::getExtraDataString() const
+	{
+		oassert(myExtraDataType == ExtraDataString);
+		return (const char*)myExtraData;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::setExtraDataString(const String& value)
+	{
+		oassert(myExtraDataType == ExtraDataString);
+		strcpy((char*)myExtraData, value.c_str());
+		myExtraDataLength = value.size();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Event::resetExtraData()
+	{ 
+		myExtraDataValidMask = 0; 
+		myExtraDataType = ExtraDataNull;
+		myExtraDataLength = 0;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Event::isExtraDataNull(int index) const
+	{ return !((myExtraDataValidMask & (1 << index)) == (1 << index)); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Event::getExtraDataSize() const
+	{
+		switch(myExtraDataType)
+		{
+		case ExtraDataNull:
+			return 0;
+		case ExtraDataFloatArray:
+		case ExtraDataIntArray:
+			return myExtraDataLength * 4;
+			break;
+		case ExtraDataVector3Array:
+			return myExtraDataLength * 4 * 3;
+		case ExtraDataString:
+			return myExtraDataLength;
+		default:
+			oerror("Event::getExtraDataSize: unknown extra data type");
+		}
+
+		// Default: return data length
+		return myExtraDataLength;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::serialize(co::DataOStream& os)
 	{
-		os << processed;
-		os << sourceId;
-		//os << serviceId;
-		os << serviceType;
-		os << type;
-		os << flags;
-		os << timestamp;
+		os << myProcessed;
+		os << mySourceId;
+		os << myServiceId;
+		os << myServiceType;
+		os << myType;
+		os << myFlags;
 		os << myPosition[0] << myPosition[1] << myPosition[2];
 		os << myOrientation.x() << myOrientation.y() << myOrientation.z() << myOrientation.w();
-		os << value[0] << value[1] << value[2];
-		os << validPoints;
-		os << numberOfPoints;
-		for(int i = 0; i < numberOfPoints; i++)
+
+		// Serialize extra data
+		os << myExtraDataType;
+		if(myExtraDataType != NULL)
 		{
-			os << pointSet[i][0] << pointSet[i][1] << pointSet[i][2];
+			os << myExtraDataLength;
+			os << myExtraDataValidMask;
+			os.write(myExtraData, getExtraDataSize());
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::deserialize( co::DataIStream& is)
 	{
-		is >> processed;
-		is >> sourceId;
-		//is >> serviceId;
-		is >> serviceType;
-		is >> type;
-		is >> flags;
-		is >> timestamp;
+		is >> myProcessed;
+		is >> mySourceId;
+		is >> myServiceId;
+		is >> myServiceType;
+		is >> myType;
+		is >> myFlags;
 		is >> myPosition[0] >> myPosition[1] >> myPosition[2];
 		is >> myOrientation.x() >> myOrientation.y() >> myOrientation.z() >> myOrientation.w();
-		is >> value[0] >> value[1] >> value[2];
-		is >> validPoints;
-		is >> numberOfPoints;
-		for(int i = 0; i < numberOfPoints; i++)
+
+		// Deserialize extra data
+		is >> myExtraDataType;
+		if(myExtraDataType != NULL)
 		{
-			is >> pointSet[i][0] >> pointSet[i][1] >> pointSet[i][2];
+			is >> myExtraDataLength;
+			is >> myExtraDataValidMask;
+			is.read(myExtraData, getExtraDataSize());
 		}
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Event::isFlagSet(uint flag) const
-	{ return (flags & flag) == flag; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Event::resetValidPoints()
-	{ validPoints = 0; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Event::setValidPoint(int pointId) 
-	{ validPoints |= (1 << pointId); }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Event::isValidPoint(int pointId) const
-	{ return (validPoints & (1 << pointId)) == (1 << pointId); }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Event::Event():
-		processed(false),
-		validPoints(0)
-	{}
-
 }; // namespace omega
+
+#undef FLOAT_PTR
+#undef INT_PTR
 
 #endif

@@ -126,13 +126,13 @@ void ChannelImpl::frameViewStart( const uint128_t& spin )
 		{
 			Event& evt = fd.getEvent(evtNum);
 			// If event has not been processed during update, handle it now.
-			if(!evt.processed)
+			if(!evt.isProcessed())
 			{
 				// Pointer type events get special treatment: they are delivered
 				// only to channels whose pixel viewport contains the event source position.
 				// Also, the event poistion is converted from global pixel coordinates to
 				// window coordinates.
-				if(evt.serviceType == Service::Pointer)
+				if(evt.getServiceType() == Service::Pointer)
 				{
 					int vx1 = context.globalViewport.x() + context.viewport.x();
 					int vy1 = context.globalViewport.y() + context.viewport.y();
@@ -149,12 +149,18 @@ void ChannelImpl::frameViewStart( const uint128_t& spin )
 						position[0] -= context.globalViewport.x();
 						position[1] -= context.globalViewport.y();
 						//ofmsg("pos %1%", %evt.position);
-						evt.processed = client->handleEvent(evt, context);
+						if(client->handleEvent(evt, context))
+						{
+							evt.setProcessed();
+						}
 					}
 				}
 				else
 				{
-					evt.processed = client->handleEvent(evt, context);
+					if(client->handleEvent(evt, context))
+					{
+						evt.setProcessed();
+					}
 				}
 			}
 		}

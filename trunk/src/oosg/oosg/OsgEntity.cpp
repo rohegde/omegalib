@@ -39,7 +39,7 @@ using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgEntity::OsgEntity():
-	myRepresentationSize(0.1)
+	myRepresentationSize(0.4)
 {
     myFrameStamp = new osg::FrameStamp;
     myUpdateVisitor = new osgUtil::UpdateVisitor;

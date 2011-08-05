@@ -38,7 +38,7 @@ bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context)
 
 	if(myNode != NULL)
 	{
-		if(evt.type == Event::Down)
+		if(evt.getType() == Event::Down)
 		{
 			Vector3f handlePos;
 			if(myNode->hit(ray, &handlePos, SceneNode::HitBoundingSphere))
@@ -50,11 +50,11 @@ bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context)
 				myNode->setSelected(true);
 			}
 		}
-		else if(evt.type == Event::Up)
+		else if(evt.getType() == Event::Up)
 		{
 			myNode->setSelected(false);
 		}
-		else if(evt.type == Event::Move)
+		else if(evt.getType() == Event::Move)
 		{
 			// Manipulate object, if one is active.
 			if(myNode->isSelected())
@@ -90,11 +90,11 @@ bool DefaultMouseInteractor::handleEvent(const Event& evt, DrawContext& context)
 				}
 			}
 		}
-		else if(evt.type == Event::Zoom)
+		else if(evt.getType() == Event::Zoom)
 		{
 			// Manipulate object, if one is active.
 			float sc;
-			if(evt.value[0] < 0) sc = 0.9f;
+			if(evt.getExtraDataInt(0) < 0) sc = 0.9f;
 			else sc = 1.1f;
 			myNode->scale(sc, sc, sc);
 		}

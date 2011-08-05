@@ -1,14 +1,30 @@
-/********************************************************************************************************************** 
-* THE OMEGA LIB PROJECT
-*---------------------------------------------------------------------------------------------------------------------
-* Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
-* Authors:										
-*  Arthur Nishimoto							anishimoto42@gmail.com
-*---------------------------------------------------------------------------------------------------------------------
-* [LICENSE NOTE]
-*---------------------------------------------------------------------------------------------------------------------
-* NetService method definitions. See NetService.h for more details.
-*********************************************************************************************************************/
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Arthur Nishimoto		anishimoto42@gmail.com
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 #include "omega/NetService.h"
 using namespace omega;
 
@@ -295,16 +311,12 @@ void NetService::poll()
 			mysInstance->lockEvents();
 			// Touch will be removed from touchlist - send touch up event
 			Event* newEvt = mysInstance->writeHead();
-			newEvt->type = Event::Up;
-			newEvt->serviceType = Service::Pointer;
-			newEvt->timestamp = curTime;
-				
-			newEvt->sourceId = touch.ID;
+			newEvt->reset(Event::Up, Service::Pointer, touch.ID);
 			newEvt->setPosition(touch.xPos * (float)screenX, touch.yPos * (float)screenY);
 
-			newEvt->numberOfPoints = 1;
-			newEvt->pointSet[0][0] = touch.xWidth * (float)screenX;
-			newEvt->pointSet[0][1] = touch.yWidth * (float)screenY;
+			newEvt->setExtraDataType(Event::ExtraDataFloatArray);
+			newEvt->setExtraDataFloat(0, touch.xWidth * (float)screenX);
+			newEvt->setExtraDataFloat(1, touch.xWidth * (float)screenX);
 
 			mysInstance->unlockEvents();
 			printf("Touch ID %d removed at (%f, %f)\n", touch.ID, touch.xPos, touch.yPos );
@@ -414,33 +426,23 @@ void NetService::parseDGram(int result)
 
 		mysInstance->lockEvents();
 		Event* evt;
-		timeb tb;
-		ftime( &tb );
-		int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
 		//printf("New Time %d \n", curTime );
 		switch(inputType){
 			case(Service::Mocap): // MoCap
 				evt = mysInstance->writeHead();
-				evt->serviceType = Service::Mocap;
-
-				evt->sourceId = (int)(params[0] + 0.5);
+				evt->reset(Event::Move, Service::Mocap, (int)(params[0] + 0.5));
 				evt->setPosition(params[1], params[2], params[3]);
 
 				evt->setOrientation(params[7], params[4], params[5], params[6]);
 				break;
 			case(Service::Pointer): // Touch (points only not gestures)
 				evt = mysInstance->writeHead();
-				evt->serviceType = Service::Pointer;
-				evt->timestamp = curTime;
 				
-				evt->sourceId = (int)(params[1]);
 				evt->setPosition(params[2] * (float)screenX, params[3] * (float)screenY);
 
-				evt->numberOfPoints = 1;
-				evt->pointSet[0][0] = params[4] * (float)screenX;
-				evt->pointSet[0][1] = params[5] * (float)screenY;
-
-				params[6] = curTime;
+				evt->setExtraDataType(Event::ExtraDataFloatArray);
+				evt->setExtraDataFloat(0, params[4] * (float)screenX);
+				evt->setExtraDataFloat(1, params[5] * (float)screenY);
 
 				NetTouches touch;
 				touch.ID = (int)(params[1]);
@@ -448,28 +450,30 @@ void NetService::parseDGram(int result)
 				touch.yPos = params[3];
 				touch.xWidth = params[4];
 				touch.yWidth = params[5];
-				touch.timestamp = params[6];
-				
+
 				//printf("New Time set %d \n", curTime );
 				///printf("New Time param %d \n", (int)params[6] );
 				if( (int)(params[0]) == Event::Down && touchlist.count(touch.ID) == 0 ){
-					evt->type = Event::Down;
+					evt->reset(Event::Down, Service::Pointer, touch.ID);
 					touchlist[touch.ID] = touch;
 					//pair<map<int,float*>::iterator,bool> ret
 					//ret = touchlist.insert (pair<int,float*>(params[1],params) );
 					printf("NetService: Touch ID %d - DOWN\n", touch.ID);
 				}
 				else if( (int)(params[0]) == Event::Move ){
-					evt->type = Event::Move;
+					evt->reset(Event::Move, Service::Pointer, touch.ID);
 					touchlist[touch.ID] = touch;
 					printf("NetService: Touch ID %d - MOVE\n", touch.ID);
 				}
 				else if( (int)(params[0]) == Event::Up ){
-					evt->type = Event::Up;
+					evt->reset(Event::Up, Service::Pointer, touch.ID);
 					touchlist.erase( touch.ID );
 					printf("NetService: Touch ID %d - UP\n", touch.ID);
 				}
 				
+				params[6] = evt->getTimestamp();
+				touch.timestamp = params[6];
+
 				break;
 			default:
 				printf("NetService: Unsupported input type %d \n", inputType);

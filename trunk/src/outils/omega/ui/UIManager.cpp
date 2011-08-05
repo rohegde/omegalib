@@ -114,7 +114,7 @@ void UIManager::draw(const DrawContext& context)
 bool UIManager::processInputEvent(const Event& evt)
 {
 	// UI widgets only manage touch and pointer events.
-	if(evt.serviceType == Service::Pointer)
+	if(evt.getServiceType() == Service::Pointer)
 	{
 #ifdef DEBUG_POINTER
 		gx = (int)evt.position[0];

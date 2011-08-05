@@ -74,12 +74,12 @@ bool Button::processInputEvent(const Event& evt)
 
 	if(hitTest(point))
 	{
-		if(evt.type == Event::Down)
+		if(evt.getType() == Event::Down)		
 		{
 			myPressed = true;
 			myPressedStateChanged = true;
 		}
-		else if(evt.type == Event::Up)
+		else if(evt.getType() == Event::Up)
 		{
 			myPressed = false;
 			myPressedStateChanged = true;

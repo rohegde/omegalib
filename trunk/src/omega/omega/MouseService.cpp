@@ -52,10 +52,12 @@ void MouseService::mouseWheelCallback(int wheel, int x, int y)
 		mysInstance->lockEvents();
 
 		Event* evt = mysInstance->writeHead();
-		evt->serviceType = Service::Pointer;
-		evt->type = Event::Zoom;
+		evt->reset(Event::Zoom, Service::Pointer);
 		evt->setPosition(x, y);
-		evt->value[0] = wheel;
+
+		evt->setExtraDataType(Event::ExtraDataIntArray);
+		evt->setExtraDataInt(0, wheel);
+
 		mysInstance->unlockEvents();
 	}
 }
@@ -73,10 +75,9 @@ void MouseService::mouseMotionCallback(int x, int y)
 		y = y * screenY / serverY + screenOffsetY;
 
 		Event* evt = mysInstance->writeHead();
-		evt->serviceType = Service::Pointer;
-		evt->type = Event::Move;
+		evt->reset(Event::Move, Service::Pointer);
 		evt->setPosition(x, y);
-		evt->flags = sButtonFlags;
+		evt->setFlags(sButtonFlags);
 
 		mysInstance->unlockEvents();
 	}
@@ -95,15 +96,14 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		y = y * screenY / serverY + screenOffsetY;
 
 		Event* evt = mysInstance->writeHead();
-		evt->serviceType = Service::Pointer;
 #ifdef OMEGA_USE_DISPLAY_GLUT
 		// Glut mouse callback button states are inverted wrt equalizer callbacks.
 		if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
 		{
-			evt->type = state ? Event::Up : Event::Down;
+			evt->reset(state ? Event::Up : Event::Down, Service::Pointer);
 
 			// Update button flags
-			if(evt->type == Event::Down)
+			if(evt->getType() == Event::Down)
 			{
 				if(button == GLUT_LEFT_BUTTON) sButtonFlags |= Event::Left;
 				if(button == GLUT_RIGHT_BUTTON) sButtonFlags |= Event::Right;
@@ -119,18 +119,11 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		else
 #endif
 		{
-			evt->type = state ? Event::Down : Event::Up;
-			//if(evt->type == Event::Down)
-			{
-				sButtonFlags = button;
-			}
-			//else
-			{
-			//	sButtonFlags &= ~button;
-			}
+			evt->reset(state ? Event::Down : Event::Up, Service::Pointer);
+			sButtonFlags = button;
 		}
 		evt->setPosition(x, y);
-		evt->flags = sButtonFlags;
+		evt->setFlags(sButtonFlags);
 
 		mysInstance->unlockEvents();
 	}

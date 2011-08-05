@@ -44,9 +44,7 @@ void KeyboardService::keyboardButtonCallback( uint key, Event::Type type )
 		mysInstance->lockEvents();
 
 		Event* evt = mysInstance->writeHead();
-		evt->serviceType = Service::Keyboard;
-        evt->type = type;
-        evt->sourceId = key;    
+		evt->reset(type, Service::Keyboard, key);
 		mysInstance->unlockEvents();
 	}
 }

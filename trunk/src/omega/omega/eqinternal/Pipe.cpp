@@ -121,9 +121,12 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
 				Event& evt = myFrameData.getEvent(evtNum);
-				if(!evt.processed)
+				if(!evt.isProcessed())
 				{
-					evt.processed = myClient->handleEvent(evt, context);
+					if(myClient->handleEvent(evt, context))
+					{
+						evt.setProcessed();
+					}
 				}
 			}
 		}

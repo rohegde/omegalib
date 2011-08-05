@@ -390,10 +390,9 @@ void OpenNIService::poll(void)
 						if( omg_UserGenerator.GetSkeletonCap().IsTracking(aUsers[i]) ) {
 							Event* theEvent = myOpenNI->writeHead();
 							theEvent->resetValidPoints();
-							theEvent->sourceId = aUsers[i];
-							theEvent->serviceType = Service::Mocap;
+							// j is the kinect index, used as service / device id
+							theEvent->reset(Event::Move, Service::Mocap, aUsers[i], j);
 							theEvent->numberOfPoints = 25;
-							theEvent->type = Event::Move;
 
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent, j);
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent, j);
@@ -429,10 +428,8 @@ void OpenNIService::poll(void)
 							if( getJointPosition(aUsers[i], (OmegaSkeletonJoint)t.jointId, pos) ) 
 							{
 								Event* theEvent = this->writeHead();
+								theEvent->reset(Event::Update, Service::Mocap, t.trackableId);
 								theEvent->setPosition(pos);
-								theEvent->serviceType = Service::Mocap;
-								theEvent->sourceId = t.trackableId;
-								theEvent->type = Event::Update;
 								theEvent->setOrientation(Quaternion::Identity());						
 							}
 						}
@@ -442,10 +439,8 @@ void OpenNIService::poll(void)
 				{
 					Event* theEvent = myOpenNI->writeHead();
 					theEvent->resetValidPoints();
-					theEvent->sourceId = aUsers[i];
-					theEvent->serviceType = Service::Mocap;
+					theEvent->reset(Event::Move, Service::Mocap, aUsers[i]);
 					theEvent->numberOfPoints = 25;
-					theEvent->type = Event::Move;
 
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
@@ -486,7 +481,6 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 		theEvent->pointSet[joint][0] = pos[0];
 		theEvent->pointSet[joint][1] = pos[1];
 		theEvent->pointSet[joint][2] = pos[2];
-		theEvent->serviceId = kinectID;
 
 
 		// Event position = Head position (simplifies compatibility with head tracking service)
@@ -609,9 +603,7 @@ void XN_CALLBACK_TYPE OpenNIService::User_LostUser(xn::UserGenerator& generator,
 	//ofmsg("Lost user %1%\n", %(int)nId);
 	myOpenNI->lockEvents();
 	Event* theEvent = myOpenNI->writeHead();
-	theEvent->serviceType = Service::Mocap;
-	theEvent->sourceId = nId;
-	theEvent->type = Event::Untrace;
+	theEvent->reset(Event::Untrace, Service::Mocap, nId);
 	theEvent->setPosition(Vector3f::Zero());
 	theEvent->setOrientation(Quaternion::Identity());
 	myOpenNI->unlockEvents();
@@ -651,9 +643,7 @@ void XN_CALLBACK_TYPE OpenNIService::UserCalibration_CalibrationEnd(xn::Skeleton
         omg_UserGenerator.GetSkeletonCap().SaveCalibrationData(nId, 0);
 		myOpenNI->lockEvents();
 		Event* theEvent = myOpenNI->writeHead();
-		theEvent->serviceType = Service::Mocap;
-		theEvent->sourceId = nId;
-		theEvent->type = Event::Trace;
+		theEvent->reset(Event::Trace, Service::Mocap, nId);
 		theEvent->setPosition(Vector3f::Zero());
 		theEvent->setOrientation(Quaternion::Identity());
 		myOpenNI->unlockEvents();

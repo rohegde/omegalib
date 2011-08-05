@@ -49,15 +49,15 @@ void DefaultTwoHandsInteractor::initialize(const String& observerUpdateServiceNa
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
 {
-	if(evt.sourceId == myActiveUserId)
+	if(evt.getSourceId() == myActiveUserId)
 	{
-		if(evt.isValidPoint(RightHand) && evt.isValidPoint(LeftHand))
+		if(!evt.isExtraDataNull(RightHand) && evt.isExtraDataNull(LeftHand))
 		{
 			if(!myHandsValid) omsg("HANDS OK");
 
 			myHandsValid = true;
-			myLeftHand = evt.pointSet[LeftHand];
-			myRightHand = evt.pointSet[RightHand];
+			myLeftHand = evt.getExtraDataVector3(LeftHand);
+			myRightHand = evt.getExtraDataVector3(RightHand);
 		}
 		else
 		{
@@ -73,7 +73,7 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& con
 
 	if(myNode != NULL)
 	{
-		if(evt.sourceId == myActiveUserId)
+		if(evt.getSourceId() == myActiveUserId)
 		{
 			if(myHandsValid)
 			{
@@ -101,7 +101,7 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 {
 	if(myNode != NULL)
 	{
-		if(evt.type == Event::Down)
+		if(evt.getType() == Event::Down)
 		{
 			if(myHandsValid)
 			{
@@ -129,7 +129,7 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 			//	light->setPosition(myRightHand);
 			//}
 		}
-		else if(evt.type == Event::Up)
+		else if(evt.getType() == Event::Up)
 		{
 			myNode->setSelected(false);
 		}

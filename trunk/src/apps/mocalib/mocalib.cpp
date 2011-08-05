@@ -155,23 +155,23 @@ void MocalibClient::processData()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 {
-	switch(evt.serviceType)
+	switch(evt.getServiceType())
 	{
 	case Service::Mocap:
 		// What is this ?? - Vic
 		if(myUseTrackable)
 		{
-			if(evt.sourceId == myTrackableId)
+			if(evt.getSourceId() == myTrackableId)
 			{
-				if( evt.serviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.getPosition();
-				else if( evt.serviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.getPosition();
+				if( evt.getServiceId() == 0 ) myCurrentMocapReadingR = myTransformR * evt.getPosition();
+				else if( evt.getServiceId() == 1 ) myCurrentMocapReadingL = myTransformL * evt.getPosition();
 			}
 		}
 		else
 		{
 			//ofmsg("Got from device: %1% this: %2%", %(int)evt.serviceId %(float)evt.pointSet[OMEGA_SKEL_LEFT_HAND][0]);
-			if( evt.serviceId == 0 ) myCurrentMocapReadingR = myTransformR * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
-			else if( evt.serviceId == 1 ) myCurrentMocapReadingL = myTransformL * evt.pointSet[OMEGA_SKEL_LEFT_HAND];
+			if( evt.getServiceId() == 0 ) myCurrentMocapReadingR = myTransformR * evt.getExtraDataVector3(OMEGA_SKEL_LEFT_HAND);
+			else if( evt.getServiceId() == 1 ) myCurrentMocapReadingL = myTransformL * evt.getExtraDataVector3(OMEGA_SKEL_LEFT_HAND);
 		}
 		//ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
 		//ofmsg("%1% %2% %3%", 
@@ -180,7 +180,7 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 		//	%myCurrentMocapReading.z());
 		return true;
 	case Service::Pointer:
-		if(evt.type == Event::Down)
+		if(evt.getType() == Event::Down)
 		{
 			myMarkers[myCurMarker].readingR = myCurrentMocapReadingR; 
 			myMarkers[myCurMarker].readingL = myCurrentMocapReadingL; 

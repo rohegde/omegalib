@@ -302,38 +302,36 @@ void DirectXInputService::poll()
 			mysInstance->lockEvents();
 
 			Event* evt = mysInstance->writeHead();
-			evt->serviceType = Service::Controller;
+			evt->reset(Event::Update, Service::Controller, j);
+
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
 
 			// PS3
-			evt->numberOfPoints = 19;
-			evt->pointSet[0][0] = js.lX; // Left analog (-left, +right)
-			evt->pointSet[0][1] = js.lY; // Left analog (-up, +down)
+			evt->setExtraDataFloat(0, js.lX); 
+			evt->setExtraDataFloat(1, js.lY);  // Left analog (-up, +down)
 
-			evt->pointSet[1][0] = js.lRx; // Right analog (-left, +right)
-			evt->pointSet[1][1] = js.lRy; // Right analog (-up, +down)
+			evt->setExtraDataFloat(2, js.lRx); // Right analog (-left, +right)
+			evt->setExtraDataFloat(3, js.lRy); // Right analog (-up, +down)
 
-			evt->pointSet[2][0] = js.lZ; // Trigger 2 (+left, -right)
+			evt->setExtraDataFloat(4, js.lZ); // Trigger 2 (+left, -right)
 			
 			// Buttons
 			for( int i = 0; i < 15; i++ )
 			{
 				if( js.rgbButtons[i] & 0x80 )
 				{
-					evt->pointSet[i+3][0] = 1;
+					evt->setExtraDataFloat(i + 5, 1);
 				}
 				else
 				{
-					evt->pointSet[i+3][0] = 0;
+					evt->setExtraDataFloat(i + 5, 0);
 				}
 			 }
-			evt->pointSet[18][0] = js.rgdwPOV[0]; // DPad
+			evt->setExtraDataFloat(18, js.rgdwPOV[0]); // DPad
 
-			evt->pointSet[19][0] = js.lRz; // Tilt (+left, -right)
-			evt->pointSet[19][1] = js.rglSlider[1]; // Tilt (+back, -forward)
+			evt->setExtraDataFloat(18, js.lRz); // Tilt (+left, -right)
+			evt->setExtraDataFloat(18, js.rglSlider[1]); // Tilt (+back, -forward)
 			
-			// Controller ID
-			evt->sourceId = j;
-
 			mysInstance->unlockEvents();
 		}
 	

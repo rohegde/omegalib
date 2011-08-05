@@ -72,11 +72,11 @@ void MultipleKinectDemoClient::processData()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MultipleKinectDemoClient::handleEvent(const Event& evt, UpdateContext& context)
 {
-	switch(evt.serviceType)
+	switch(evt.getServiceType())
 	{
 	case Service::Mocap:
-		myCurrentMocapReadingL = evt.pointSet[OMEGA_SKEL_LEFT_HAND];
-		myCurrentMocapReadingR = evt.pointSet[OMEGA_SKEL_RIGHT_HAND];
+		myCurrentMocapReadingL = evt.getExtraDataVector3(OMEGA_SKEL_LEFT_HAND);
+		myCurrentMocapReadingR = evt.getExtraDataVector3(OMEGA_SKEL_RIGHT_HAND);
 		
 		return true;
 	}

@@ -32,7 +32,7 @@ void KinectDemoClient::draw(const DrawContext& context)
 		for ( int i = 0; i < numberOfEvents; i++ ) {
 
 				// Select only the openni events
-			if( ptrEvents[i].serviceType == omega::Service::Mocap ) {
+			if( ptrEvents[i].getServiceType() == omega::Service::Mocap ) {
 				Vector3f pos = ptrEvents[i].getPosition() * 0.001;
 				
 				ofmsg("Position: %1%", %pos);
