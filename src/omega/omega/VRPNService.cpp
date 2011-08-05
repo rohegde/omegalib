@@ -157,12 +157,7 @@ void VRPNService::dispose()
 void VRPNService::generateEvent(vrpn_TRACKERCB t, int id) 
 {
 	Event* evt = mysInstance->writeHead();
-	//	evt->id = OM_ID_MOUSE;
-	//	evt->source = OM_DC_POINTER;
-	//	evt->type = OM_EVENT_MOVE;
-	evt->serviceType = Service::Mocap;
-
-	evt->sourceId = id;
+	evt->reset(Event::Update, Service::Mocap, id);
 	evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
 
 	//Quaternion qyaw, qpitch, qroll;

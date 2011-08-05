@@ -86,23 +86,23 @@ public:
 	{
 		eventPacket = new char[256];
 		
-		itoa(evt.serviceType, eventPacket, 10); // Append input type
+		itoa(evt.getServiceType(), eventPacket, 10); // Append input type
 		strcat( eventPacket, ":" );
 		char floatChar[32];
 		
-		switch(evt.serviceType)
+		switch(evt.getServiceType())
 		{
 		case Service::Pointer:
-			//printf(" Touch type %d \n", evt.type); 
+			//printf(" Touch type %d \n", evt.getType()); 
 			//printf("               at %f %f \n", x, y ); 
 
 			// Converts gesture type to char, appends to eventPacket
-			sprintf(floatChar,"%d",evt.type);
+			sprintf(floatChar,"%d",evt.getType());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
 			// Converts id to char, appends to eventPacket
-			sprintf(floatChar,"%d",evt.sourceId);
+			sprintf(floatChar,"%d",evt.getSourceId());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
@@ -146,12 +146,12 @@ public:
 				sprintf(floatChar,"%f", evt.pointSet[1][1] );
 				strcat( eventPacket, floatChar );
 
-				if( evt.type == Event::Rotate ){
+				if( evt.getType() == Event::Rotate ){
 					// Converts rotation to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
 					sprintf(floatChar,"%f", evt.getOrientation().x() );
 					strcat( eventPacket, floatChar );
-				} else if( evt.type == Event::Split ){
+				} else if( evt.getType() == Event::Split ){
 					// Converts values to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
 					sprintf(floatChar,"%f", evt.value[0] ); // Delta distance
@@ -184,7 +184,7 @@ public:
 		case Service::Mocap:
 		{
 			// Converts id to char, appends to eventPacket
-			sprintf(floatChar,"%d",evt.sourceId);
+			sprintf(floatChar,"%d",evt.getSourceId());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
@@ -228,7 +228,7 @@ public:
 
 		case Service::Controller:
 			// Converts id to char, appends to eventPacket
-			sprintf(floatChar,"%d",evt.sourceId);
+			sprintf(floatChar,"%d",evt.getSourceId());
 			strcat( eventPacket, floatChar );
 			strcat( eventPacket, "," ); // Spacer
 
@@ -559,7 +559,7 @@ void main(int argc, char** argv)
 		int nEvents = 0;
 		if( (nEvents = sys->getServiceManager()->getEvents(events, ServiceManager::MaxEvents)) > 0 ){
 			for( int i = 0; i < nEvents; i++){
-				printf("Event %d at: %f %f \n", events[i].serviceType, events[i].position[0], events[i].position[1] );
+				printf("Event %d at: %f %f \n", events[i].getServiceType(), events[i].position[0], events[i].position[1] );
 			}
 		}
 

@@ -188,14 +188,8 @@ void __cdecl NaturalPointService::frameController( sFrameOfMocapData* data, void
 
 			//actions to process each rigid body into an event
 			Event* theEvent = myMoCap->writeHead();
-			theEvent->numberOfPoints = data->RigidBodies[i].nMarkers;
 
-			theEvent->sourceId = data->RigidBodies[i].ID;
-			theEvent->serviceType = Service::Mocap;
-
-			//Set event type
-			//for now only trace and untraced are going to be supported with more complex types being implemented soon
-			theEvent->type = Event::Move;
+			theEvent->reset(Event::Move, Service::Mocap, data->RigidBodies[i].ID);
 
 			//get x,y,z coordinates
 			theEvent->setPosition(myMoCap->myTransform * Vector3f(

@@ -30,7 +30,6 @@
 
 #include "omega/osystem.h"
 #include "omega/ServiceManager.h"
-#include <sys/timeb.h>
 
 #include "pqlabs/PQMTClient.h"
 using namespace PQ_SDK_MultiTouch;

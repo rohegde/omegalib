@@ -57,7 +57,7 @@ bool Slider::processInputEvent(const Event& evt)
 	Vector2f sliderPos = getSliderPosition();
 	Vector2f sliderSize = getSliderSize();
 
-	if(evt.type == Event::Up)
+	if(evt.getType() == Event::Up)
 	{
 		myPressed = false;
 		if(myValueChanged)
@@ -69,7 +69,7 @@ bool Slider::processInputEvent(const Event& evt)
 
 	if(hitTest(point, sliderPos, sliderSize))
 	{
-		if(evt.type == Event::Down)
+		if(evt.getType() == Event::Down)
 		{
 			myPressed = true;
 			myPressPos = evt.getPosition(0);
@@ -78,7 +78,7 @@ bool Slider::processInputEvent(const Event& evt)
 	}
 	if(hitTest(point))
 	{
-		if(myPressed && evt.type == Event::Move)
+		if(myPressed && evt.getType() == Event::Move)
 		{
 			int newValue = (point[0] + sliderSize[0] / 2) * myTicks / mySize[0]; 
 			if(newValue < 0) newValue = 0;

@@ -236,24 +236,24 @@ void MeshViewerClient::draw( const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
 {
-    if( evt.serviceType == Service::Keyboard )
+    if( evt.getServiceType() == Service::Keyboard )
     {
-        if((char)evt.sourceId == 'q') exit(0);
-        if((char)evt.sourceId == 's' && evt.type == Event::Down) 
+        if((char)evt.getSourceId() == 'q') exit(0);
+        if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
         {
             myShowUI = !myShowUI;
         }
-        if((char)evt.sourceId == 'r' && evt.type == Event::Down) 
+        if((char)evt.getSourceId() == 'r' && evt.getType() == Event::Down) 
         {
             autoRotate = !autoRotate;
         }
         //up
-        if((char)evt.sourceId == 'z' && evt.type == Event::Down) 
+        if((char)evt.getSourceId() == 'z' && evt.getType() == Event::Down) 
         {
 			deltaScale = 0.1;
         }
         
-        if((char)evt.sourceId == 'x' && evt.type == Event::Down)  
+        if((char)evt.getSourceId() == 'x' && evt.getType() == Event::Down)  
         {
             deltaScale = -0.1;
         }

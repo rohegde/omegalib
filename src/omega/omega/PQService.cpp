@@ -137,7 +137,7 @@ int PQService::init()
 		printf("PQService: send request failed, error code: %d\n", err_code);
 		return err_code;
 	}
-	//////////////you can set the move_threshold when the tcq.type is RQST_RAWDATA_INSIDE;
+	//////////////you can set the move_threshold when the tcq.getType() is RQST_RAWDATA_INSIDE;
 	//send threshold
 	if((err_code = SendThreshold(move_threshold)) != PQMTE_SUCESS){
 		printf(" send threadhold fail, error code:" , err_code );
@@ -390,236 +390,255 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 	float x = 0;
 	float y = 0;
 	
-	bool validEvent = false;
+	//bool validEvent = false;
 	switch(tg.type)
 	{
 		case TG_DOWN:
 			evt = mysInstance->writeHead();
-			evt->type = Event::Down;
+			evt->reset(Event::Down, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y );
 			}
-			validEvent = true;
 			break;
 
 		case TG_MOVE:
 			evt = mysInstance->writeHead();
-			evt->type = Event::Move;
+			evt->reset(Event::Move, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch move at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_UP:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::Up;
+			evt->reset(Event::Up, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_CLICK:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::Click;
+			evt->reset(Event::Click, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_DB_CLICK:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::DoubleClick;
+			evt->reset(Event::DoubleClick, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch db click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_MOVE_RIGHT:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::MoveRight;
+			evt->reset(Event::MoveRight, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch move right at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_MOVE_UP:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::MoveUp;
+			evt->reset(Event::MoveUp, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch move up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_MOVE_LEFT:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::MoveLeft;
+			evt->reset(Event::MoveLeft, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch move left at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_MOVE_DOWN:
 			evt = mysInstance->writeHead();
-			evt->type  = Event::MoveDown;
+			evt->reset(Event::MoveDown, Service::Pointer, -1);
 			x = tg.params[0] * screenX / serverX + screenOffsetX;
 			y = tg.params[1] * screenY / serverY + screenOffsetY;
 			evt->setPosition(x, y);
 			if( debugText ){
 				printf(" Touch move down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
 			}
-			validEvent = true;
 			break;
 		case TG_SPLIT_START:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::SplitStart;
-
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // x2
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // y2
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // x1
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // y1
-
-			evt->setPosition((evt->pointSet[0] + evt->pointSet[1]) / 2);
-			if( debugText ){
-				printf(" Touch Split start at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[0][1] );
-				printf("                      %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::SplitStart, Service::Pointer, -1);
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			Vector3f pt1(
+				tg.params[0] * screenX / specialDividerX + screenOffsetX,
+				tg.params[1] * screenY / specialDividerY + screenOffsetY,
+				0);
+			Vector3f pt2(
+				tg.params[2] * screenX / specialDividerX + screenOffsetX,
+				tg.params[3] * screenY / specialDividerY + screenOffsetY,
+				0);
+			evt->setExtraDataFloat(0, pt1[0]); // x2
+			evt->setExtraDataFloat(1, pt1[1]); // y2
+			evt->setExtraDataFloat(2, pt2[0]); // x1
+			evt->setExtraDataFloat(3, pt2[1]); // y1
+			evt->setPosition((pt1 + pt2) / 2);
+			//if( debugText ){
+			//	printf(" Touch Split start at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[0][1] );
+			//	printf("                      %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		case TG_SPLIT_END:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::SplitEnd;
-
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // x2
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // y2
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // x1
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // y1
-
-			evt->setPosition((evt->pointSet[0] + evt->pointSet[1]) / 2);
-			if( debugText ){
-				printf(" Touch Split end at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
-				printf("                    %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::SplitEnd, Service::Pointer, -1);
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			Vector3f pt1(
+				tg.params[0] * screenX / specialDividerX + screenOffsetX,
+				tg.params[1] * screenY / specialDividerY + screenOffsetY,
+				0);
+			Vector3f pt2(
+				tg.params[2] * screenX / specialDividerX + screenOffsetX,
+				tg.params[3] * screenY / specialDividerY + screenOffsetY,
+				0);
+			evt->setExtraDataFloat(0, pt1[0]); // x2
+			evt->setExtraDataFloat(1, pt1[1]); // y2
+			evt->setExtraDataFloat(2, pt2[0]); // x1
+			evt->setExtraDataFloat(3, pt2[1]); // y1
+			evt->setPosition((pt1 + pt2) / 2);
+			//if( debugText ){
+			//	printf(" Touch Split end at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
+			//	printf("                    %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		case TG_SPLIT_APART:
 		case TG_SPLIT_CLOSE:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::Split;
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[2] * screenX / specialDividerX + screenOffsetX; // x2
-			evt->pointSet[0][1] = tg.params[3] * screenY / specialDividerY + screenOffsetY; // y2
-			evt->pointSet[1][0] = tg.params[4] * screenX / specialDividerX + screenOffsetX; // x1
-			evt->pointSet[1][1] = tg.params[5] * screenY / specialDividerY + screenOffsetY; // y1
-
-			evt->setPosition((evt->pointSet[0] + evt->pointSet[1]) / 2); // midpoint
-
-			evt->value[0] = tg.params[0]; // delta distance
-			evt->value[1] = tg.params[1]; // delta ratio
-			if( debugText ){
-				printf(" Touch Split at %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[0][0], evt->pointSet[1][0] );
-				printf("                %f,%f (%f, %f)\n", tg.params[4], tg.params[5], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::Split, Service::Pointer, -1);
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			Vector3f pt1(
+				tg.params[2] * screenX / specialDividerX + screenOffsetX,
+				tg.params[3] * screenY / specialDividerY + screenOffsetY,
+				0);
+			Vector3f pt2(
+				tg.params[4] * screenX / specialDividerX + screenOffsetX,
+				tg.params[5] * screenY / specialDividerY + screenOffsetY,
+				0);
+			evt->setExtraDataFloat(0, pt1[0]); // x2
+			evt->setExtraDataFloat(1, pt1[1]); // y2
+			evt->setExtraDataFloat(2, pt2[0]); // x1
+			evt->setExtraDataFloat(3, pt2[1]); // y1
+			evt->setPosition((pt1 + pt2) / 2);
+			evt->setExtraDataFloat(4, tg.params[0]); // delta distance
+			evt->setExtraDataFloat(5, tg.params[1]); // delta ratio
+			//if( debugText ){
+			//	printf(" Touch Split at %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[0][0], evt->pointSet[1][0] );
+			//	printf("                %f,%f (%f, %f)\n", tg.params[4], tg.params[5], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		case TG_ROTATE_START:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::RotateStart;
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // anchorX
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // anchorY
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // rotFingerY
-			evt->setPosition(evt->pointSet[0]);	// Point 0 is the center of rotation.
-			if( debugText ){
-				printf(" Touch rotate start at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
-				printf("                       %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::RotateStart, Service::Pointer, -1);
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			float x = tg.params[0] * screenX / serverX + screenOffsetX;
+			float y = tg.params[0] * screenY / serverY + screenOffsetY;
+			evt->setExtraDataFloat(0, x); // anchorX
+			evt->setExtraDataFloat(1, y); // anchorY
+			evt->setExtraDataFloat(2, tg.params[2] * screenX / serverX + screenOffsetX); // rotFingerX
+			evt->setExtraDataFloat(3, tg.params[3] * screenY / serverY + screenOffsetY); // rotFingerY
+			evt->setPosition(x, y);	// Point 0 is the center of rotation.
+			//if( debugText ){
+			//	printf(" Touch rotate start at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
+			//	printf("                       %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		case TG_ROTATE_END:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::RotateEnd;
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[0] * screenX / serverX + screenOffsetX; // anchorX
-			evt->pointSet[0][1] = tg.params[1] * screenY / serverY + screenOffsetY; // anchorY
-			evt->pointSet[1][0] = tg.params[2] * screenX / serverX + screenOffsetX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[3] * screenY / serverY + screenOffsetY; // rotFingerY
-			evt->setPosition(evt->pointSet[0]);	// Point 0 is the center of rotation.
-			if( debugText ){
-				printf(" Touch rotate end at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
-				printf("                     %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::RotateEnd, Service::Pointer, -1);
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			float x = tg.params[0] * screenX / serverX + screenOffsetX;
+			float y = tg.params[0] * screenY / serverY + screenOffsetY;
+			evt->setExtraDataFloat(0, x); // anchorX
+			evt->setExtraDataFloat(1, y); // anchorY
+			evt->setExtraDataFloat(2, tg.params[2] * screenX / serverX + screenOffsetX); // rotFingerX
+			evt->setExtraDataFloat(3, tg.params[3] * screenY / serverY + screenOffsetY); // rotFingerY
+			evt->setPosition(x, y);	// Point 0 is the center of rotation.
+			//if( debugText ){
+			//	printf(" Touch rotate end at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], evt->pointSet[0][0], evt->pointSet[1][0] );
+			//	printf("                     %f,%f (%f, %f)\n", tg.params[2], tg.params[3], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		case TG_ROTATE_ANTICLOCK:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::Rotate;
-
-			evt->value[0] = -tg.params[0]; // angle
-
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX + screenOffsetX; // anchorX
-			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY + screenOffsetY; // anchorY
-			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX + screenOffsetX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY + screenOffsetY; // rotFingerY
-			evt->setPosition(evt->pointSet[0]); // Point 0 is the center of rotation.
-			if( debugText ){
-				printf(" Touch Rotate anti-clock at %f,%f (%f, %f)\n", tg.params[1], tg.params[2], evt->pointSet[0][0], evt->pointSet[1][0] );
-				printf("                            %f,%f (%f, %f)\n", tg.params[3], tg.params[4], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::Rotate, Service::Pointer, -1);
+			float x = tg.params[0] * screenX / serverX + screenOffsetX;
+			float y = tg.params[0] * screenY / serverY + screenOffsetY;
+			evt->setExtraDataFloat(0, x); // anchorX
+			evt->setExtraDataFloat(1, y); // anchorY
+			evt->setExtraDataFloat(2, tg.params[2] * screenX / serverX + screenOffsetX); // rotFingerX
+			evt->setExtraDataFloat(3, tg.params[3] * screenY / serverY + screenOffsetY); // rotFingerY
+			evt->setExtraDataFloat(4, -tg.params[0]); // angle
+			evt->setPosition(x, y);	// Point 0 is the center of rotation.
+			//if( debugText ){
+			//	printf(" Touch Rotate anti-clock at %f,%f (%f, %f)\n", tg.params[1], tg.params[2], evt->pointSet[0][0], evt->pointSet[1][0] );
+			//	printf("                            %f,%f (%f, %f)\n", tg.params[3], tg.params[4], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		case TG_ROTATE_CLOCK:
+		{
 			evt = mysInstance->writeHead();
-			evt->type  = Event::Rotate;
-
-			evt->value[0] = tg.params[0]; // angle
-
-			evt->numberOfPoints = 2;
-			evt->pointSet[0][0] = tg.params[1] * screenX / specialDividerX + screenOffsetX; // anchorX
-			evt->pointSet[0][1] = tg.params[2] * screenY / specialDividerY + screenOffsetY; // anchorY
-			evt->pointSet[1][0] = tg.params[3] * screenX / specialDividerX + screenOffsetX; // rotFingerX
-			evt->pointSet[1][1] = tg.params[4] * screenY / specialDividerY + screenOffsetY; // rotFingerY
-			evt->setPosition(evt->pointSet[0]); // Point 0 is the center of rotation.
-			if( debugText ){
-				printf(" Touch Rotate clock at %f,%f (%f, %f)\n", tg.params[1], tg.params[2], evt->pointSet[0][0], evt->pointSet[1][0] );
-				printf("                       %f,%f (%f, %f)\n", tg.params[3], tg.params[4], evt->pointSet[1][0], evt->pointSet[1][1] );
-			}
-			validEvent = true;
+			evt->reset(Event::Rotate, Service::Pointer, -1);
+			evt->reset(Event::Rotate, Service::Pointer, -1);
+			float x = tg.params[0] * screenX / serverX + screenOffsetX;
+			float y = tg.params[0] * screenY / serverY + screenOffsetY;
+			evt->setExtraDataFloat(0, x); // anchorX
+			evt->setExtraDataFloat(1, y); // anchorY
+			evt->setExtraDataFloat(2, tg.params[2] * screenX / serverX + screenOffsetX); // rotFingerX
+			evt->setExtraDataFloat(3, tg.params[3] * screenY / serverY + screenOffsetY); // rotFingerY
+			evt->setExtraDataFloat(4, -tg.params[0]); // angle
+			evt->setPosition(x, y);	// Point 0 is the center of rotation.
+			//if( debugText ){
+			//	printf(" Touch Rotate clock at %f,%f (%f, %f)\n", tg.params[1], tg.params[2], evt->pointSet[0][0], evt->pointSet[1][0] );
+			//	printf("                       %f,%f (%f, %f)\n", tg.params[3], tg.params[4], evt->pointSet[1][0], evt->pointSet[1][1] );
+			//}
 			break;
+		}
 		default:
 			break;
 	}// switch		
-	if( validEvent ){
-		evt->serviceType = Service::Pointer;
-		evt->sourceId = -1; // Gestures have no id
-	}
+	//if( validEvent ){
+	//	evt->serviceType = Service::Pointer;
+	//	evt->sourceId = -1; // Gestures have no id
+	//}
 	mysInstance->unlockEvents();
 }
 
@@ -653,7 +672,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		switch(tp.point_event)
 		{
 			case TP_DOWN:
-				evt->type = Event::Down;
+				evt->reset(Event::Down, Service::Pointer, nextID);
 				touchID[tp.id] = nextID;
 				if( nextID < maxTouches - 100 ){
 					nextID++;
@@ -663,34 +682,32 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				touchlist[touch.ID] = touch;
 				break;
 			case TP_MOVE:
-				evt->type = Event::Move;
+				evt->reset(Event::Move, Service::Pointer, nextID);
 				touchlist[touch.ID] = touch;
 				break;
 			case TP_UP:
-				evt->type  = Event::Up;
+				evt->reset(Event::Up, Service::Pointer, nextID);
 				touchlist.erase( touch.ID );
 				break;
 		}		
-		evt->serviceType = Service::Pointer;
 		if( serverX != 0 && serverY != 0 ){
 			evt->setPosition(
 			tp.x * (float)screenX / (float)serverX,
 			tp.y * (float)screenY / (float)serverY);
 
-			evt->numberOfPoints = 1;
-			evt->pointSet[0][0] = xWidth * (float)screenX / (float)serverX;
-			evt->pointSet[0][1] = yWidth * (float)screenY / (float)serverY;
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			evt->setExtraDataFloat(0, xWidth * (float)screenX / (float)serverX);
+			evt->setExtraDataFloat(0, yWidth * (float)screenY / (float)serverY);
 		} else {
 			evt->setPosition(tp.x, tp.y);
 
-			evt->numberOfPoints = 1;
-			evt->pointSet[0][0] = xWidth;
-			evt->pointSet[0][1] = yWidth;
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+			evt->setExtraDataFloat(0, xWidth);
+			evt->setExtraDataFloat(0, yWidth);
 		}
 
 		//printf(" Server %d,%d Screen %d, %d\n", serverX, serverY, screenX, screenY );
 		//printf("      at %d,%d (%f, %f)\n", tp.x, tp.y, evt->position[0], evt->position[1] );
-		evt->sourceId = touchID[tp.id];
 		mysInstance->unlockEvents();
 	}
 }
