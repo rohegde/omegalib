@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::StringUtils Class Reference</title>
+<title>omegalib: omega::StringUtils Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -44,52 +43,50 @@
 <p>Utility class for manipulating Strings.  
 <a href="#_details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="_string_utils_8h_source.html">StringUtils.h</a>&gt;</code></p>
-
 <p><a href="classomega_1_1_string_utils-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#adef28394d51c9114696be5defb30ee31">trim</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, bool left=true, bool right=true)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Removes any whitespace characters, be it standard space or TABs and so on.  <a href="#adef28394d51c9114696be5defb30ee31"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a67c97f63575359da90bb82dc7f2eec32">split</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;delims=&quot;\t\n &quot;, unsigned int maxSplits=0)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a StringVector that contains all the substrings delimited by the characters in the passed <code>delims</code> argument.  <a href="#a67c97f63575359da90bb82dc7f2eec32"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a61c056a2614ae40a473da179473fe53e">tokenise</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;delims=&quot;\t\n &quot;, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;doubleDelims=&quot;\&quot;&quot;, unsigned int maxSplits=0)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a StringVector that contains all the substrings delimited by the characters in the passed <code>delims</code> argument, or in the <code>doubleDelims</code> argument, which is used to include (normal) delimeters in the tokenised string.  <a href="#a61c056a2614ae40a473da179473fe53e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#afb831165a36b369fc3c37cd798909494">toLowerCase</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Lower-cases all the characters in the string.  <a href="#afb831165a36b369fc3c37cd798909494"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#ad682a06e1921c92f3b37f956c46a25d2">toUpperCase</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Upper-cases all the characters in the string.  <a href="#ad682a06e1921c92f3b37f956c46a25d2"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a64450c8c90c1477dae34e2f7f2d9cff1">startsWith</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;pattern, bool lowerCase=true)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns whether the string begins with the pattern passed in.  <a href="#a64450c8c90c1477dae34e2f7f2d9cff1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a575a13af83e99ff664d2165f24807c5c">endsWith</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;pattern, bool lowerCase=true)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns whether the string ends with the pattern passed in.  <a href="#a575a13af83e99ff664d2165f24807c5c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a3e609c24b5c43706e26ef61ad9e3bb62">standardisePath</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;init)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for standardising paths - use forward slashes only, end with slash.  <a href="#a3e609c24b5c43706e26ef61ad9e3bb62"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a9d1918514c01583ff5ef1809896ee449">splitFilename</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;qualifiedName, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outBasename, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outPath)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for splitting a fully qualified filename into the base name and path.  <a href="#a9d1918514c01583ff5ef1809896ee449"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a75e2350f8dc190261a29cacc2120f81a">splitFullFilename</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;qualifiedName, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outBasename, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outExtention, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outPath)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for splitting a fully qualified filename into the base name, extension and path.  <a href="#a75e2350f8dc190261a29cacc2120f81a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a8fc7d1100c739a290ec214541b70839a">splitBaseFilename</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;fullName, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outBasename, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outExtention)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for splitting a filename into the base name and extension.  <a href="#a8fc7d1100c739a290ec214541b70839a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a6675259b24ca85ab2f6a9bdbb1e88e1e">match</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;pattern, bool caseSensitive=true)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simple pattern-matching routine allowing a wildcard pattern.  <a href="#a6675259b24ca85ab2f6a9bdbb1e88e1e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#aeaae3951b55f6461ff0cfd3f591c6789">replaceAll</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;source, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;replaceWhat, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;replaceWithWhat)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">replace all instances of a sub-string with a another sub-string.  <a href="#aeaae3951b55f6461ff0cfd3f591c6789"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a17bdd69b6167901d4811dba83abaa3aa">trim</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, bool left=true, bool right=true)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Removes any whitespace characters, be it standard space or TABs and so on.  <a href="#a17bdd69b6167901d4811dba83abaa3aa"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#acc922bf281e2398de7b70fa4af08ba32">split</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;delims=&quot;\t\n &quot;, unsigned int maxSplits=0)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a StringVector that contains all the substrings delimited by the characters in the passed <code>delims</code> argument.  <a href="#acc922bf281e2398de7b70fa4af08ba32"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#af726aa60e75e0e0850bab618927f218a">tokenise</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;delims=&quot;\t\n &quot;, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;doubleDelims=&quot;\&quot;&quot;, unsigned int maxSplits=0)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a StringVector that contains all the substrings delimited by the characters in the passed <code>delims</code> argument, or in the <code>doubleDelims</code> argument, which is used to include (normal) delimeters in the tokenised string.  <a href="#af726aa60e75e0e0850bab618927f218a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#aa4c30084d11d5c73c6839e0ce459cb6a">toLowerCase</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Lower-cases all the characters in the string.  <a href="#aa4c30084d11d5c73c6839e0ce459cb6a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a21681b52ad405f77f1f0274f5f79bc9c">toUpperCase</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Upper-cases all the characters in the string.  <a href="#a21681b52ad405f77f1f0274f5f79bc9c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#adccc4ca9e59b1af34972629fc7165733">startsWith</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;pattern, bool lowerCase=true)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns whether the string begins with the pattern passed in.  <a href="#adccc4ca9e59b1af34972629fc7165733"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#af656138fab7267e68a66826cb7957325">endsWith</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;pattern, bool lowerCase=true)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns whether the string ends with the pattern passed in.  <a href="#af656138fab7267e68a66826cb7957325"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a1a4d50ec498ac719f0460b63d378181c">standardisePath</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;init)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for standardising paths - use forward slashes only, end with slash.  <a href="#a1a4d50ec498ac719f0460b63d378181c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a55f6f6f908b20fdd59b1b247da7a37d4">splitFilename</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;qualifiedName, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outBasename, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outPath)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for splitting a fully qualified filename into the base name and path.  <a href="#a55f6f6f908b20fdd59b1b247da7a37d4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a2577173cee995f1ea20c3b7a9540d9f8">splitFullFilename</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;qualifiedName, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outBasename, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outExtention, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outPath)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for splitting a fully qualified filename into the base name, extension and path.  <a href="#a2577173cee995f1ea20c3b7a9540d9f8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a45cece50da9a9674744b3741a763bc11">splitBaseFilename</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;fullName, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outBasename, <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;outExtention)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Method for splitting a filename into the base name and extension.  <a href="#a45cece50da9a9674744b3741a763bc11"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a3b686d8e00046b472b66af1618a691c9">match</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;str, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;pattern, bool caseSensitive=true)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simple pattern-matching routine allowing a wildcard pattern.  <a href="#a3b686d8e00046b472b66af1618a691c9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a9c70cd26faf53ab8f4e1a70575ddaa64">replaceAll</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;source, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;replaceWhat, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;replaceWithWhat)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">replace all instances of a sub-string with a another sub-string.  <a href="#a9c70cd26faf53ab8f4e1a70575ddaa64"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a36e9be873bfcaa4a723098d430481ddd">BLANK</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constant blank string, useful for returning by ref where local does not exist.  <a href="#a36e9be873bfcaa4a723098d430481ddd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_string_utils.html#a6975483f7af4687ace889a4f04d2a059">BLANK</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constant blank string, useful for returning by ref where local does not exist.  <a href="#a6975483f7af4687ace889a4f04d2a059"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Utility class for manipulating Strings. </p>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a575a13af83e99ff664d2165f24807c5c"></a><!-- doxytag: member="omega::StringUtils::endsWith" ref="a575a13af83e99ff664d2165f24807c5c" args="(const String &amp;str, const String &amp;pattern, bool lowerCase=true)" -->
+<a class="anchor" id="af656138fab7267e68a66826cb7957325"></a><!-- doxytag: member="omega::StringUtils::endsWith" ref="af656138fab7267e68a66826cb7957325" args="(const String &amp;str, const String &amp;pattern, bool lowerCase=true)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static bool omega::StringUtils::endsWith </td>
+          <td class="memname">bool StringUtils::endsWith </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em>, </td>
@@ -126,12 +123,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6675259b24ca85ab2f6a9bdbb1e88e1e"></a><!-- doxytag: member="omega::StringUtils::match" ref="a6675259b24ca85ab2f6a9bdbb1e88e1e" args="(const String &amp;str, const String &amp;pattern, bool caseSensitive=true)" -->
+<a class="anchor" id="a3b686d8e00046b472b66af1618a691c9"></a><!-- doxytag: member="omega::StringUtils::match" ref="a3b686d8e00046b472b66af1618a691c9" args="(const String &amp;str, const String &amp;pattern, bool caseSensitive=true)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static bool omega::StringUtils::match </td>
+          <td class="memname">bool StringUtils::match </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em>, </td>
@@ -169,12 +166,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aeaae3951b55f6461ff0cfd3f591c6789"></a><!-- doxytag: member="omega::StringUtils::replaceAll" ref="aeaae3951b55f6461ff0cfd3f591c6789" args="(const String &amp;source, const String &amp;replaceWhat, const String &amp;replaceWithWhat)" -->
+<a class="anchor" id="a9c70cd26faf53ab8f4e1a70575ddaa64"></a><!-- doxytag: member="omega::StringUtils::replaceAll" ref="a9c70cd26faf53ab8f4e1a70575ddaa64" args="(const String &amp;source, const String &amp;replaceWhat, const String &amp;replaceWithWhat)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> omega::StringUtils::replaceAll </td>
+          <td class="memname">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> StringUtils::replaceAll </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>source</em>, </td>
@@ -213,12 +210,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a67c97f63575359da90bb82dc7f2eec32"></a><!-- doxytag: member="omega::StringUtils::split" ref="a67c97f63575359da90bb82dc7f2eec32" args="(const String &amp;str, const String &amp;delims=&quot;\t\n &quot;, unsigned int maxSplits=0)" -->
+<a class="anchor" id="acc922bf281e2398de7b70fa4af08ba32"></a><!-- doxytag: member="omega::StringUtils::split" ref="acc922bf281e2398de7b70fa4af08ba32" args="(const String &amp;str, const String &amp;delims=&quot;\t\n &quot;, unsigned int maxSplits=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static std::vector&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&gt; omega::StringUtils::split </td>
+          <td class="memname"><a class="el" href="namespaceomega.html#ac54cc871c234dbe4f7dd7fe39e33b1e2">StringVector</a> StringUtils::split </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em>, </td>
@@ -255,12 +252,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8fc7d1100c739a290ec214541b70839a"></a><!-- doxytag: member="omega::StringUtils::splitBaseFilename" ref="a8fc7d1100c739a290ec214541b70839a" args="(const String &amp;fullName, String &amp;outBasename, String &amp;outExtention)" -->
+<a class="anchor" id="a45cece50da9a9674744b3741a763bc11"></a><!-- doxytag: member="omega::StringUtils::splitBaseFilename" ref="a45cece50da9a9674744b3741a763bc11" args="(const String &amp;fullName, String &amp;outBasename, String &amp;outExtention)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static void omega::StringUtils::splitBaseFilename </td>
+          <td class="memname">void StringUtils::splitBaseFilename </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>fullName</em>, </td>
@@ -290,12 +287,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9d1918514c01583ff5ef1809896ee449"></a><!-- doxytag: member="omega::StringUtils::splitFilename" ref="a9d1918514c01583ff5ef1809896ee449" args="(const String &amp;qualifiedName, String &amp;outBasename, String &amp;outPath)" -->
+<a class="anchor" id="a55f6f6f908b20fdd59b1b247da7a37d4"></a><!-- doxytag: member="omega::StringUtils::splitFilename" ref="a55f6f6f908b20fdd59b1b247da7a37d4" args="(const String &amp;qualifiedName, String &amp;outBasename, String &amp;outPath)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static void omega::StringUtils::splitFilename </td>
+          <td class="memname">void StringUtils::splitFilename </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>qualifiedName</em>, </td>
@@ -326,12 +323,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a75e2350f8dc190261a29cacc2120f81a"></a><!-- doxytag: member="omega::StringUtils::splitFullFilename" ref="a75e2350f8dc190261a29cacc2120f81a" args="(const String &amp;qualifiedName, String &amp;outBasename, String &amp;outExtention, String &amp;outPath)" -->
+<a class="anchor" id="a2577173cee995f1ea20c3b7a9540d9f8"></a><!-- doxytag: member="omega::StringUtils::splitFullFilename" ref="a2577173cee995f1ea20c3b7a9540d9f8" args="(const String &amp;qualifiedName, String &amp;outBasename, String &amp;outExtention, String &amp;outPath)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static void omega::StringUtils::splitFullFilename </td>
+          <td class="memname">void StringUtils::splitFullFilename </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>qualifiedName</em>, </td>
@@ -368,12 +365,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3e609c24b5c43706e26ef61ad9e3bb62"></a><!-- doxytag: member="omega::StringUtils::standardisePath" ref="a3e609c24b5c43706e26ef61ad9e3bb62" args="(const String &amp;init)" -->
+<a class="anchor" id="a1a4d50ec498ac719f0460b63d378181c"></a><!-- doxytag: member="omega::StringUtils::standardisePath" ref="a1a4d50ec498ac719f0460b63d378181c" args="(const String &amp;init)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> omega::StringUtils::standardisePath </td>
+          <td class="memname"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> StringUtils::standardisePath </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>init</em></td>
@@ -388,12 +385,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a64450c8c90c1477dae34e2f7f2d9cff1"></a><!-- doxytag: member="omega::StringUtils::startsWith" ref="a64450c8c90c1477dae34e2f7f2d9cff1" args="(const String &amp;str, const String &amp;pattern, bool lowerCase=true)" -->
+<a class="anchor" id="adccc4ca9e59b1af34972629fc7165733"></a><!-- doxytag: member="omega::StringUtils::startsWith" ref="adccc4ca9e59b1af34972629fc7165733" args="(const String &amp;str, const String &amp;pattern, bool lowerCase=true)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static bool omega::StringUtils::startsWith </td>
+          <td class="memname">bool StringUtils::startsWith </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em>, </td>
@@ -430,12 +427,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a61c056a2614ae40a473da179473fe53e"></a><!-- doxytag: member="omega::StringUtils::tokenise" ref="a61c056a2614ae40a473da179473fe53e" args="(const String &amp;str, const String &amp;delims=&quot;\t\n &quot;, const String &amp;doubleDelims=&quot;\&quot;&quot;, unsigned int maxSplits=0)" -->
+<a class="anchor" id="af726aa60e75e0e0850bab618927f218a"></a><!-- doxytag: member="omega::StringUtils::tokenise" ref="af726aa60e75e0e0850bab618927f218a" args="(const String &amp;str, const String &amp;delims=&quot;\t\n &quot;, const String &amp;doubleDelims=&quot;\&quot;&quot;, unsigned int maxSplits=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static std::vector&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&gt; omega::StringUtils::tokenise </td>
+          <td class="memname"><a class="el" href="namespaceomega.html#ac54cc871c234dbe4f7dd7fe39e33b1e2">StringVector</a> StringUtils::tokenise </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em>, </td>
@@ -480,12 +477,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afb831165a36b369fc3c37cd798909494"></a><!-- doxytag: member="omega::StringUtils::toLowerCase" ref="afb831165a36b369fc3c37cd798909494" args="(String &amp;str)" -->
+<a class="anchor" id="aa4c30084d11d5c73c6839e0ce459cb6a"></a><!-- doxytag: member="omega::StringUtils::toLowerCase" ref="aa4c30084d11d5c73c6839e0ce459cb6a" args="(String &amp;str)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static void omega::StringUtils::toLowerCase </td>
+          <td class="memname">void StringUtils::toLowerCase </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em></td>
@@ -500,12 +497,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad682a06e1921c92f3b37f956c46a25d2"></a><!-- doxytag: member="omega::StringUtils::toUpperCase" ref="ad682a06e1921c92f3b37f956c46a25d2" args="(String &amp;str)" -->
+<a class="anchor" id="a21681b52ad405f77f1f0274f5f79bc9c"></a><!-- doxytag: member="omega::StringUtils::toUpperCase" ref="a21681b52ad405f77f1f0274f5f79bc9c" args="(String &amp;str)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static void omega::StringUtils::toUpperCase </td>
+          <td class="memname">void StringUtils::toUpperCase </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em></td>
@@ -520,12 +517,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="adef28394d51c9114696be5defb30ee31"></a><!-- doxytag: member="omega::StringUtils::trim" ref="adef28394d51c9114696be5defb30ee31" args="(String &amp;str, bool left=true, bool right=true)" -->
+<a class="anchor" id="a17bdd69b6167901d4811dba83abaa3aa"></a><!-- doxytag: member="omega::StringUtils::trim" ref="a17bdd69b6167901d4811dba83abaa3aa" args="(String &amp;str, bool left=true, bool right=true)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static void omega::StringUtils::trim </td>
+          <td class="memname">void StringUtils::trim </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>str</em>, </td>
@@ -557,12 +554,12 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a36e9be873bfcaa4a723098d430481ddd"></a><!-- doxytag: member="omega::StringUtils::BLANK" ref="a36e9be873bfcaa4a723098d430481ddd" args="" -->
+<a class="anchor" id="a6975483f7af4687ace889a4f04d2a059"></a><!-- doxytag: member="omega::StringUtils::BLANK" ref="a6975483f7af4687ace889a4f04d2a059" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> <a class="el" href="classomega_1_1_string_utils.html#a36e9be873bfcaa4a723098d430481ddd">omega::StringUtils::BLANK</a><code> [static]</code></td>
+          <td class="memname">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> <a class="el" href="classomega_1_1_string_utils.html#a6975483f7af4687ace889a4f04d2a059">StringUtils::BLANK</a><code> [static]</code></td>
         </tr>
       </table>
 </div>
@@ -572,11 +569,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_string_utils_8h_source.html">StringUtils.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:26 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::GpuBuffer Class Reference</title>
+<title>omegalib: omega::GpuBuffer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -41,8 +40,13 @@
 <h1>omega::GpuBuffer Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::GpuBuffer" --><!-- doxytag: inherits="omega::GpuData" -->
-<p><code>#include &lt;<a class="el" href="_gpu_buffer_8h_source.html">GpuBuffer.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::GpuBuffer" --><!-- doxytag: inherits="omega::GpuData" --><div class="dynheader">
+Inheritance diagram for omega::GpuBuffer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1_gpu_buffer__inherit__graph.png" border="0" usemap="#omega_1_1_gpu_buffer_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1_gpu_buffer_inherit__map" id="omega_1_1_gpu_buffer_inherit__map">
+<area shape="rect" id="node7" href="classomega_1_1_vertex_buffer.html" title="omega::VertexBuffer" alt="" coords="15,237,153,267"/><area shape="rect" id="node2" href="classomega_1_1_gpu_data.html" title="omega::GpuData" alt="" coords="24,83,144,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_gpu_buffer-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -52,18 +56,18 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a84ac997954b71e9a6b76102497e8dcb1">GpuBuffer</a> (<a class="el" href="classomega_1_1_gpu_manager.html">GpuManager</a> *mng)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#ab4b7d320f5f3aef82158fed4d3659cc6">~GpuBuffer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a513977a06b2b5f895f11454d52f6d293">initialize</a> (int size, int elementSize, void *data=NULL, unsigned int bufferFlags=0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a8764834b88315f3b088b9241fd2a011d">bind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog, int index, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a52e60dbd96d16828370278b293f00938">unbind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog, int index, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a2e340e877d374feb88e9c2789c93ec37">copyTo</a> (<a class="el" href="classomega_1_1_gpu_buffer.html">GpuBuffer</a> *destination, int srcOffset, int dstOffset, int length)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a7d7d9d7ce7a9900be226ea2fa9b9fca0">GpuBuffer</a> (<a class="el" href="classomega_1_1_gpu_manager.html">GpuManager</a> *mng)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a643a2fbee87068d916a1895c67f095be">~GpuBuffer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a322c9936405bedc4ff71dc273198711e">initialize</a> (int size, int elementSize, void *data=NULL, unsigned int bufferFlags=0)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a10c829f1b530596e49f41f3e6476e0c9">bind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog, int index, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#ac7942fc16c6938c87442820e54ffdb6a">unbind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog, int index, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#abe08babb91a10b962905281732a052af">copyTo</a> (<a class="el" href="classomega_1_1_gpu_buffer.html">GpuBuffer</a> *destination, int srcOffset, int dstOffset, int length)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a26e23032c1e5d199375e4992a7727e1a">isCLNative</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets wether this buffer is a CL native buffer.  <a href="#a26e23032c1e5d199375e4992a7727e1a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#ac74cde84a27351277d2a33932c8a60ef">setData</a> (void *data)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the gpu buffer data.  <a href="#ac74cde84a27351277d2a33932c8a60ef"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a8790a20e65533938d9b0d1fb025f0524">getGLBuffer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="otypes_8h.html#a0bc3cbcf5a2c3b8a26e05326e1751703">cl_mem</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#af47dcefa644814d2c2b3921d8936aa91">getCLBuffer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a79e53626c9225526e2a4e2ba4ead9697">setData</a> (void *data)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the gpu buffer data.  <a href="#a79e53626c9225526e2a4e2ba4ead9697"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLuint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a8790a20e65533938d9b0d1fb025f0524">getGLBuffer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">cl_mem&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a667ed8d60457afd12007380ddf0a224b">getCLBuffer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a6e715c78509141e6ef54d4f053c3416c">getSize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#ae2ed4d07e4a2885e3624a7845bc29bf8">getElementSize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#ac227872ee8bba78d38aff805856f6b11">getLength</a> ()</td></tr>
@@ -92,12 +96,12 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a84ac997954b71e9a6b76102497e8dcb1"></a><!-- doxytag: member="omega::GpuBuffer::GpuBuffer" ref="a84ac997954b71e9a6b76102497e8dcb1" args="(GpuManager *mng)" -->
+<a class="anchor" id="a7d7d9d7ce7a9900be226ea2fa9b9fca0"></a><!-- doxytag: member="omega::GpuBuffer::GpuBuffer" ref="a7d7d9d7ce7a9900be226ea2fa9b9fca0" args="(GpuManager *mng)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">omega::GpuBuffer::GpuBuffer </td>
+          <td class="memname">GpuBuffer::GpuBuffer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_manager.html">GpuManager</a> *&nbsp;</td>
           <td class="paramname"> <em>mng</em></td>
@@ -110,12 +114,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab4b7d320f5f3aef82158fed4d3659cc6"></a><!-- doxytag: member="omega::GpuBuffer::~GpuBuffer" ref="ab4b7d320f5f3aef82158fed4d3659cc6" args="()" -->
+<a class="anchor" id="a643a2fbee87068d916a1895c67f095be"></a><!-- doxytag: member="omega::GpuBuffer::~GpuBuffer" ref="a643a2fbee87068d916a1895c67f095be" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">omega::GpuBuffer::~GpuBuffer </td>
+          <td class="memname">GpuBuffer::~GpuBuffer </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -128,12 +132,12 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a8764834b88315f3b088b9241fd2a011d"></a><!-- doxytag: member="omega::GpuBuffer::bind" ref="a8764834b88315f3b088b9241fd2a011d" args="(GpuProgram *prog, int index, GpuProgram::Stage stage)" -->
+<a class="anchor" id="a10c829f1b530596e49f41f3e6476e0c9"></a><!-- doxytag: member="omega::GpuBuffer::bind" ref="a10c829f1b530596e49f41f3e6476e0c9" args="(GpuProgram *prog, int index, GpuProgram::Stage stage)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::GpuBuffer::bind </td>
+          <td class="memname">void GpuBuffer::bind </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td>
           <td class="paramname"> <em>prog</em>, </td>
@@ -161,16 +165,16 @@ Protected Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classomega_1_1_gpu_data.html#a5307a4e022d35c9a87c41cbed57a5a1c">omega::GpuData</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_vertex_buffer.html#a2d194122994a9c2864ef2bfefa223d1c">omega::VertexBuffer</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_vertex_buffer.html#a060efe52cb437434f99e6bd76f05b1ea">omega::VertexBuffer</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2e340e877d374feb88e9c2789c93ec37"></a><!-- doxytag: member="omega::GpuBuffer::copyTo" ref="a2e340e877d374feb88e9c2789c93ec37" args="(GpuBuffer *destination, int srcOffset, int dstOffset, int length)" -->
+<a class="anchor" id="abe08babb91a10b962905281732a052af"></a><!-- doxytag: member="omega::GpuBuffer::copyTo" ref="abe08babb91a10b962905281732a052af" args="(GpuBuffer *destination, int srcOffset, int dstOffset, int length)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::GpuBuffer::copyTo </td>
+          <td class="memname">void GpuBuffer::copyTo </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_buffer.html">GpuBuffer</a> *&nbsp;</td>
           <td class="paramname"> <em>destination</em>, </td>
@@ -204,12 +208,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af47dcefa644814d2c2b3921d8936aa91"></a><!-- doxytag: member="omega::GpuBuffer::getCLBuffer" ref="af47dcefa644814d2c2b3921d8936aa91" args="()" -->
+<a class="anchor" id="a667ed8d60457afd12007380ddf0a224b"></a><!-- doxytag: member="omega::GpuBuffer::getCLBuffer" ref="a667ed8d60457afd12007380ddf0a224b" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="otypes_8h.html#a0bc3cbcf5a2c3b8a26e05326e1751703">cl_mem</a> omega::GpuBuffer::getCLBuffer </td>
+          <td class="memname">cl_mem GpuBuffer::getCLBuffer </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -243,7 +247,7 @@ Protected Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> omega::GpuBuffer::getGLBuffer </td>
+          <td class="memname">GLuint omega::GpuBuffer::getGLBuffer </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -289,12 +293,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a513977a06b2b5f895f11454d52f6d293"></a><!-- doxytag: member="omega::GpuBuffer::initialize" ref="a513977a06b2b5f895f11454d52f6d293" args="(int size, int elementSize, void *data=NULL, unsigned int bufferFlags=0)" -->
+<a class="anchor" id="a322c9936405bedc4ff71dc273198711e"></a><!-- doxytag: member="omega::GpuBuffer::initialize" ref="a322c9936405bedc4ff71dc273198711e" args="(int size, int elementSize, void *data=NULL, unsigned int bufferFlags=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::GpuBuffer::initialize </td>
+          <td class="memname">void GpuBuffer::initialize </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>size</em>, </td>
@@ -347,12 +351,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac74cde84a27351277d2a33932c8a60ef"></a><!-- doxytag: member="omega::GpuBuffer::setData" ref="ac74cde84a27351277d2a33932c8a60ef" args="(void *data)" -->
+<a class="anchor" id="a79e53626c9225526e2a4e2ba4ead9697"></a><!-- doxytag: member="omega::GpuBuffer::setData" ref="a79e53626c9225526e2a4e2ba4ead9697" args="(void *data)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::GpuBuffer::setData </td>
+          <td class="memname">void GpuBuffer::setData </td>
           <td>(</td>
           <td class="paramtype">void *&nbsp;</td>
           <td class="paramname"> <em>data</em></td>
@@ -367,12 +371,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a52e60dbd96d16828370278b293f00938"></a><!-- doxytag: member="omega::GpuBuffer::unbind" ref="a52e60dbd96d16828370278b293f00938" args="(GpuProgram *prog, int index, GpuProgram::Stage stage)" -->
+<a class="anchor" id="ac7942fc16c6938c87442820e54ffdb6a"></a><!-- doxytag: member="omega::GpuBuffer::unbind" ref="ac7942fc16c6938c87442820e54ffdb6a" args="(GpuProgram *prog, int index, GpuProgram::Stage stage)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::GpuBuffer::unbind </td>
+          <td class="memname">void GpuBuffer::unbind </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td>
           <td class="paramname"> <em>prog</em>, </td>
@@ -400,7 +404,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classomega_1_1_gpu_data.html#a567283280c217ca6b84701e8f3067727">omega::GpuData</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_vertex_buffer.html#a5041d26db55c4884f783cd1823d5da28">omega::VertexBuffer</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_vertex_buffer.html#ab21005b2cd65d609c70b59a2d7d397c6">omega::VertexBuffer</a>.</p>
 
 </div>
 </div>
@@ -418,11 +422,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_gpu_buffer_8h_source.html">GpuBuffer.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:19 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::Texture Class Reference</title>
+<title>omegalib: omega::Texture Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -40,26 +39,29 @@
 </div>
 <div class="contents">
 <!-- doxytag: class="omega::Texture" -->
-<p><code>#include &lt;<a class="el" href="_texture_8h_source.html">Texture.h</a>&gt;</code></p>
-
 <p><a href="classomega_1_1_texture-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#ab6afd932f25bcef4478ffcaa6acd8ea8">Texture</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a124040f8b8817fbd2e7f17de62ccf793">initialize</a> (<a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *data, int width, int height)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a4f985da7c920ff677ded66e1e14198e0">initialize</a> (<a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *data, int width, int height)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initializes this texture object.  <a href="#a4f985da7c920ff677ded66e1e14198e0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a1c527d725d3fee8a0de49579c40f0855">reset</a> (<a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *data, int width, int height)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Resets the texture object specifying a new size and data pointer for it.  <a href="#a1c527d725d3fee8a0de49579c40f0855"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#aac74368e561a9fe210d9efe534bb577b">isDirty</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#aaf98285bdca73c2371f7af6376cf93d6">setDirty</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a852fce3278a7c68db0539c8528ad099f">getData</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#aa7dfa4a0af81460693e838871b7e9183">setData</a> (<a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a2cb66a7968a4eba03bf25c3fab7e112e">getWidth</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#aa4dcba0ae988138779e582c799cbe0ef">getHeight</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a81f3fea828442239c4313348301935c0">getGLTexture</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">GLuint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a81f3fea828442239c4313348301935c0">getGLTexture</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_texture.html">Texture</a> operations.  <a href="#a81f3fea828442239c4313348301935c0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a028d1bdf426dab3461d03e95b0c748d9">bind</a> (<a class="el" href="classomega_1_1_gpu_manager.html#a5ea19535d233baecdcb50561267384d3">GpuManager::TextureUnit</a> unit)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#ac1c3f99d0f4d41e6257f359e8a41c9f9">unbind</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a7e39d24b29152a831c0be98644f47fa1">refresh</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#ab8964454bf6fb96f4b8e36028c211a88">bind</a> (<a class="el" href="classomega_1_1_gpu_manager.html#a5ea19535d233baecdcb50561267384d3">GpuManager::TextureUnit</a> unit)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a8480eed7ed703a937c3e6ab528f559bd">unbind</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#a6169cae39408f818f07f932eb844d8b3">refresh</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#ac39ddc669c6926e700daf6b78baf9518">isBound</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_gpu_manager.html#a5ea19535d233baecdcb50561267384d3">GpuManager::TextureUnit</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_texture.html#aefde7fb245f4c73e8c5544105a07e8d6">getTextureUnit</a> ()</td></tr>
 </table>
@@ -82,12 +84,12 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a028d1bdf426dab3461d03e95b0c748d9"></a><!-- doxytag: member="omega::Texture::bind" ref="a028d1bdf426dab3461d03e95b0c748d9" args="(GpuManager::TextureUnit unit)" -->
+<a class="anchor" id="ab8964454bf6fb96f4b8e36028c211a88"></a><!-- doxytag: member="omega::Texture::bind" ref="ab8964454bf6fb96f4b8e36028c211a88" args="(GpuManager::TextureUnit unit)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Texture::bind </td>
+          <td class="memname">void Texture::bind </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_manager.html#a5ea19535d233baecdcb50561267384d3">GpuManager::TextureUnit</a>&nbsp;</td>
           <td class="paramname"> <em>unit</em></td>
@@ -100,12 +102,29 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a852fce3278a7c68db0539c8528ad099f"></a><!-- doxytag: member="omega::Texture::getData" ref="a852fce3278a7c68db0539c8528ad099f" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a>* omega::Texture::getData </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a81f3fea828442239c4313348301935c0"></a><!-- doxytag: member="omega::Texture::getGLTexture" ref="a81f3fea828442239c4313348301935c0" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="otypes_8h.html#aa311c7f0d6ec4f1a33f9235c3651b86b">GLuint</a> omega::Texture::getGLTexture </td>
+          <td class="memname">GLuint omega::Texture::getGLTexture </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -170,12 +189,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a124040f8b8817fbd2e7f17de62ccf793"></a><!-- doxytag: member="omega::Texture::initialize" ref="a124040f8b8817fbd2e7f17de62ccf793" args="(byte *data, int width, int height)" -->
+<a class="anchor" id="a4f985da7c920ff677ded66e1e14198e0"></a><!-- doxytag: member="omega::Texture::initialize" ref="a4f985da7c920ff677ded66e1e14198e0" args="(byte *data, int width, int height)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Texture::initialize </td>
+          <td class="memname">void Texture::initialize </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *&nbsp;</td>
           <td class="paramname"> <em>data</em>, </td>
@@ -200,6 +219,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Initializes this texture object. </p>
 
 </div>
 </div>
@@ -237,16 +258,69 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7e39d24b29152a831c0be98644f47fa1"></a><!-- doxytag: member="omega::Texture::refresh" ref="a7e39d24b29152a831c0be98644f47fa1" args="()" -->
+<a class="anchor" id="a6169cae39408f818f07f932eb844d8b3"></a><!-- doxytag: member="omega::Texture::refresh" ref="a6169cae39408f818f07f932eb844d8b3" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Texture::refresh </td>
+          <td class="memname">void Texture::refresh </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1c527d725d3fee8a0de49579c40f0855"></a><!-- doxytag: member="omega::Texture::reset" ref="a1c527d725d3fee8a0de49579c40f0855" args="(byte *data, int width, int height)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Texture::reset </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *&nbsp;</td>
+          <td class="paramname"> <em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>height</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Resets the texture object specifying a new size and data pointer for it. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa7dfa4a0af81460693e838871b7e9183"></a><!-- doxytag: member="omega::Texture::setData" ref="aa7dfa4a0af81460693e838871b7e9183" args="(byte *value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Texture::setData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomega.html#a84baadc28e5a280ca8a7af10d23643f4">byte</a> *&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -271,12 +345,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac1c3f99d0f4d41e6257f359e8a41c9f9"></a><!-- doxytag: member="omega::Texture::unbind" ref="ac1c3f99d0f4d41e6257f359e8a41c9f9" args="()" -->
+<a class="anchor" id="a8480eed7ed703a937c3e6ab528f559bd"></a><!-- doxytag: member="omega::Texture::unbind" ref="a8480eed7ed703a937c3e6ab528f559bd" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Texture::unbind </td>
+          <td class="memname">void Texture::unbind </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -288,11 +362,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_texture_8h_source.html">Texture.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:26 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

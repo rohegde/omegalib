@@ -1,8 +1,0 @@
-digraph G
-{
-  bgcolor="transparent";
-  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
-  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
-  rankdir=LR;
-  Node1 [label="omega::math::Rect",height=0.2,width=0.4,color="black",URL="$structomega_1_1math_1_1_rect.html"];
-}

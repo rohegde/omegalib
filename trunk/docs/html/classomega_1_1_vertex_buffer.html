@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::VertexBuffer Class Reference</title>
+<title>omegalib: omega::VertexBuffer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -39,8 +38,13 @@
 <h1>omega::VertexBuffer Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::VertexBuffer" --><!-- doxytag: inherits="omega::GpuBuffer" -->
-<p><code>#include &lt;<a class="el" href="_gpu_buffer_8h_source.html">GpuBuffer.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::VertexBuffer" --><!-- doxytag: inherits="omega::GpuBuffer" --><div class="dynheader">
+Inheritance diagram for omega::VertexBuffer:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1_vertex_buffer__inherit__graph.png" border="0" usemap="#omega_1_1_vertex_buffer_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1_vertex_buffer_inherit__map" id="omega_1_1_vertex_buffer_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1_gpu_buffer.html" title="omega::GpuBuffer" alt="" coords="12,83,137,112"/><area shape="rect" id="node4" href="classomega_1_1_gpu_data.html" title="omega::GpuData" alt="" coords="15,5,135,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_vertex_buffer-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -51,9 +55,9 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrp0c4ff91c3a91eb20cea9cd2d9b50f6e2"></a> </p>
 </div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_vertex_attribute.html">VertexAttribute</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#a2b75acb0117d9a3e46efe35049d97e7e">getAttribute</a> (int index)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#ae20b6d6baf6b41f33928fc23623d777c">clearAttributes</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#a667e5b490dcc25faa63ca803dea05875">getNumAttributes</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#add137c9249013e6c71945c2e74d0f78a">addAttribute</a> (const <a class="el" href="structomega_1_1_vertex_attribute.html">VertexAttribute</a> &amp;attrib)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#a881253eb060c37ddd74e91e2ff99aa78">clearAttributes</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#ad44c171ab65ef7821edbcd7a820f28cd">getNumAttributes</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#ae1c114fb8644f3b853e449e337fb3a15">addAttribute</a> (const <a class="el" href="structomega_1_1_vertex_attribute.html">VertexAttribute</a> &amp;attrib)</td></tr>
 <tr><td colspan="2"><h2><a name="member-group"></a>
 Internal Functions</h2></td></tr>
 <tr><td colspan="2"><p><a class="anchor" id="amgrpae260ff3a3a80dad696f01482c30bb91"></a></p>
@@ -61,8 +65,8 @@ Internal Functions</h2></td></tr>
 <p>Applies the vertex buffer attributes, binding vertex data to their specified semantics. This method is always called before rendering data from the vertex buffer. </p>
 <dl class="remark"><dt><b>Remarks:</b></dt><dd>if stage is RenderStage, the prog and index parameters will be ignored. </dd></dl>
 <br/><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#a2d194122994a9c2864ef2bfefa223d1c">bind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog=NULL, int index=0, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage=GpuProgram::RenderStage)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#a5041d26db55c4884f783cd1823d5da28">unbind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog=NULL, int index=0, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage=GpuProgram::RenderStage)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#a060efe52cb437434f99e6bd76f05b1ea">bind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog=NULL, int index=0, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage=GpuProgram::RenderStage)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_vertex_buffer.html#ab21005b2cd65d609c70b59a2d7d397c6">unbind</a> (<a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *prog=NULL, int index=0, <a class="el" href="classomega_1_1_gpu_program.html#a1d24952f02ab7be123cc853f1e79371f">GpuProgram::Stage</a> stage=GpuProgram::RenderStage)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a116bd56c32875ba6952fa6a2a75791f0"></a><!-- doxytag: member="omega::VertexBuffer::VertexBuffer" ref="a116bd56c32875ba6952fa6a2a75791f0" args="(GpuManager *mng)" -->
@@ -84,12 +88,12 @@ Internal Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="add137c9249013e6c71945c2e74d0f78a"></a><!-- doxytag: member="omega::VertexBuffer::addAttribute" ref="add137c9249013e6c71945c2e74d0f78a" args="(const VertexAttribute &amp;attrib)" -->
+<a class="anchor" id="ae1c114fb8644f3b853e449e337fb3a15"></a><!-- doxytag: member="omega::VertexBuffer::addAttribute" ref="ae1c114fb8644f3b853e449e337fb3a15" args="(const VertexAttribute &amp;attrib)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int omega::VertexBuffer::addAttribute </td>
+          <td class="memname">int VertexBuffer::addAttribute </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_vertex_attribute.html">VertexAttribute</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>attrib</em></td>
@@ -102,12 +106,12 @@ Internal Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2d194122994a9c2864ef2bfefa223d1c"></a><!-- doxytag: member="omega::VertexBuffer::bind" ref="a2d194122994a9c2864ef2bfefa223d1c" args="(GpuProgram *prog=NULL, int index=0, GpuProgram::Stage stage=GpuProgram::RenderStage)" -->
+<a class="anchor" id="a060efe52cb437434f99e6bd76f05b1ea"></a><!-- doxytag: member="omega::VertexBuffer::bind" ref="a060efe52cb437434f99e6bd76f05b1ea" args="(GpuProgram *prog=NULL, int index=0, GpuProgram::Stage stage=GpuProgram::RenderStage)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::VertexBuffer::bind </td>
+          <td class="memname">void VertexBuffer::bind </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td>
           <td class="paramname"> <em>prog</em> = <code>NULL</code>, </td>
@@ -133,16 +137,16 @@ Internal Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1_gpu_buffer.html#a8764834b88315f3b088b9241fd2a011d">omega::GpuBuffer</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1_gpu_buffer.html#a10c829f1b530596e49f41f3e6476e0c9">omega::GpuBuffer</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae20b6d6baf6b41f33928fc23623d777c"></a><!-- doxytag: member="omega::VertexBuffer::clearAttributes" ref="ae20b6d6baf6b41f33928fc23623d777c" args="()" -->
+<a class="anchor" id="a881253eb060c37ddd74e91e2ff99aa78"></a><!-- doxytag: member="omega::VertexBuffer::clearAttributes" ref="a881253eb060c37ddd74e91e2ff99aa78" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::VertexBuffer::clearAttributes </td>
+          <td class="memname">void VertexBuffer::clearAttributes </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -172,12 +176,12 @@ Internal Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a667e5b490dcc25faa63ca803dea05875"></a><!-- doxytag: member="omega::VertexBuffer::getNumAttributes" ref="a667e5b490dcc25faa63ca803dea05875" args="()" -->
+<a class="anchor" id="ad44c171ab65ef7821edbcd7a820f28cd"></a><!-- doxytag: member="omega::VertexBuffer::getNumAttributes" ref="ad44c171ab65ef7821edbcd7a820f28cd" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int omega::VertexBuffer::getNumAttributes </td>
+          <td class="memname">int VertexBuffer::getNumAttributes </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -189,12 +193,12 @@ Internal Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5041d26db55c4884f783cd1823d5da28"></a><!-- doxytag: member="omega::VertexBuffer::unbind" ref="a5041d26db55c4884f783cd1823d5da28" args="(GpuProgram *prog=NULL, int index=0, GpuProgram::Stage stage=GpuProgram::RenderStage)" -->
+<a class="anchor" id="ab21005b2cd65d609c70b59a2d7d397c6"></a><!-- doxytag: member="omega::VertexBuffer::unbind" ref="ab21005b2cd65d609c70b59a2d7d397c6" args="(GpuProgram *prog=NULL, int index=0, GpuProgram::Stage stage=GpuProgram::RenderStage)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::VertexBuffer::unbind </td>
+          <td class="memname">void VertexBuffer::unbind </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td>
           <td class="paramname"> <em>prog</em> = <code>NULL</code>, </td>
@@ -220,15 +224,12 @@ Internal Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1_gpu_buffer.html#a52e60dbd96d16828370278b293f00938">omega::GpuBuffer</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1_gpu_buffer.html#ac7942fc16c6938c87442820e54ffdb6a">omega::GpuBuffer</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_gpu_buffer_8h_source.html">GpuBuffer.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:20 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
