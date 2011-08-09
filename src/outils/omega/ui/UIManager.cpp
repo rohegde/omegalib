@@ -45,15 +45,14 @@ int gy = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UIManager::UIManager():
-	myWidgetFactory(new DefaultWidgetFactory()),
 	myDefaultFont(NULL),
 	myEventHandler(NULL),
 	myDefaultRenderer(NULL)
 {
+	myWidgetFactory = onew(DefaultWidgetFactory)(this);
 	for(int i =0; i < Application::MaxLayers; i++)
 	{
-		myRootContainer[i] = new Container(ostr("root%1%", %i));
-		myRootContainer[i]->setUIManager(this);
+		myRootContainer[i] = new Container(this);
 	}
 	myDefaultRenderer = new Renderer();
 }
@@ -132,7 +131,7 @@ bool UIManager::processInputEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::dispatchUIEvent(const UIEvent& evt)
+void UIManager::dispatchEvent(const Event& evt)
 {
 	if(myEventHandler)
 	{

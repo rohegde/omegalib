@@ -32,26 +32,9 @@
 using namespace omega;
 using namespace omega::ui;
 
-NameGenerator Label::mysNameGenerator("Label_");
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Label::Label():
-	Widget(mysNameGenerator.generate()),
-	myText(getName()),
-	myFont(NULL),
-	myColor(255, 255, 255),
-	myVerticalAlign(AlignMiddle),
-	myHorizontalAlign(AlignCenter),
-	myAutosizeHorizontalPadding(6),
-	myAutosizeVerticalPadding(6)
-{
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Label::Label(omega::String name):
-	Widget(name),
-	myText(name),
+Label::Label(UIManager* mng):
+	Widget(mng),
 	myFont(NULL),
 	myColor(255, 255, 255),
 	myVerticalAlign(AlignMiddle),
@@ -72,7 +55,7 @@ Label::~Label()
 void Label::autosize()
 {
 	// If not font has been set, use default ui font.
-	if(!myFont) myFont = getUIManager()->getDefaultFont();
+	if(!myFont) myFont = getManager()->getDefaultFont();
 	if(myFont)
 	{
 		Vector2f size = myFont->computeSize(myText);
@@ -106,7 +89,7 @@ void Label::renderContent()
 	Widget::renderContent();
 
 	// If not font has been set, use default ui font.
-	if(!myFont) myFont = getUIManager()->getDefaultFont();
+	if(!myFont) myFont = getManager()->getDefaultFont();
 
 	if(myFont)
 	{

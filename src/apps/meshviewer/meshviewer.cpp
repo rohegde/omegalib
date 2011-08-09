@@ -191,7 +191,7 @@ void MeshViewerClient::initUI()
 	{
 		root = ui->getRootContainer(1);
 		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
+		UserManagerPanel* ump = new UserManagerPanel(ui);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
 
@@ -263,11 +263,11 @@ bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::handleUIEvent(const UIEvent& evt)
+void MeshViewerClient::handleUIEvent(const Event& evt)
 {
 	for(int i = 0; i < myEntities.size(); i++)
 	{
-		if(myEntityButtons[i] == evt.source)
+		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
 			setVisibleEntity(i);
 			return;

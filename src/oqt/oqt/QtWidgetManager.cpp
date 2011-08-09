@@ -45,8 +45,8 @@
 using namespace oqt;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-QtWidgetManager::QtWidgetManager(): 
-	//myEngine(engine),
+QtWidgetManager::QtWidgetManager(UIManager* mng): 
+	myUIManager(mng),
 	myFocusedWidget(NULL)
 {
 	char* argv = "";
@@ -109,10 +109,10 @@ QtWidget* QtWidgetManager::loadUiFile(const String& filename)
 		QWidget* generatedWidget = uiLoader.load(&file, NULL);
 		generatedWidget->setAttribute(Qt::WA_TranslucentBackground);
 
-	
 		file.close();
 
-		QtWidget* w = onew(QtWidget)(this, filename);
+		QtWidget* w = onew(QtWidget)(this, myUIManager);
+		w->setName(filename);
 		w->setWidget(generatedWidget);
 
 		return w;

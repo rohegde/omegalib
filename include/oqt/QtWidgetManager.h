@@ -38,6 +38,7 @@
 #include "omega/EngineClient.h"
 #include "omega/Texture.h"
 #include "omega/ui/Container.h"
+#include "omega/ui/UIManager.h"
 
 class QGraphicsView;
 class QGraphicsScene;
@@ -51,7 +52,7 @@ namespace oqt
 	class OQT_API QtWidgetManager: public QObject
 	{
 	public:
-		QtWidgetManager();
+		QtWidgetManager(UIManager* mng);
 		~QtWidgetManager();
 
 		//EngineClient* getEngine();
@@ -70,6 +71,8 @@ namespace oqt
 
 	private:
 		QApplication* myQApp;
+
+		UIManager* myUIManager;
 
 		//EngineClient* myEngine;
 

@@ -38,7 +38,7 @@ namespace ui
 	class OUTILS_API Button: public AbstractButton
 	{
 	public:
-		Button(omega::String name);
+		Button(UIManager* mng);
 		virtual ~Button();
 
 		omega::String getText() { return myLabel.getText(); }

@@ -38,7 +38,7 @@ namespace ui
 	class Slider: public Widget
 	{
 	public:
-		Slider(omega::String name);
+		Slider(UIManager* mng);
 		virtual ~Slider();
 
 		int getValue();

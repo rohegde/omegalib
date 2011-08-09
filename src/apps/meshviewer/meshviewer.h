@@ -82,7 +82,7 @@ public:
     void draw( const DrawContext& context);
 
 
-	void handleUIEvent(const UIEvent& evt);
+	void handleUIEvent(const Event& evt);
 	void setVisibleEntity(int entityId);
 	void update(const UpdateContext& context);
 

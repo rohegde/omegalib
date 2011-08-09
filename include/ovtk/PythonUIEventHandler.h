@@ -42,9 +42,9 @@ namespace ovtk
 	class PythonUIEventHandler: public IUIEventHandler
 	{
 	public:
-		PythonUIEventHandler(PythonInterpreter* interp);
+		PythonUIEventHandler(UIManager* ui, PythonInterpreter* interp);
 
-		virtual void handleUIEvent(const UIEvent& evt);
+		virtual void handleUIEvent(const Event& evt);
 
 		void setClickCommand(const String& value);
 		const String& getClickCommand();
@@ -64,6 +64,7 @@ namespace ovtk
 	private:
 		String myClickCommand;
 		String myChangeValueCommand;
+		UIManager* myUI;
 		PythonInterpreter* myInterpreter;
 		float mySliderMaxValue;
 		float mySliderMinValue;
