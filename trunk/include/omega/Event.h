@@ -245,9 +245,6 @@ namespace omega
 		void setFlags(uint flags);
 		void clearFlags();
 
-		//! Vector storing additional event parameters (i.e. split distance / ratio for Split events)
-		//Vector3f value;
-
 		//! Point set
 		void setExtraDataType(ExtraDataType type);
 		ExtraDataType getExtraDataType() const;
@@ -264,6 +261,9 @@ namespace omega
 
 		//! Returns the size in bytes of the event extra data.
 		int getExtraDataSize() const;
+
+		//! Returns the number of elements stored in the extra data section of the Event.
+		int getExtraDataLength() const;
 
 		//! Serializes an Event instance.
 		void serialize(co::DataOStream& os);
@@ -502,6 +502,10 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool Event::isExtraDataNull(int index) const
 	{ return !((myExtraDataValidMask & (1 << index)) == (1 << index)); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Event::getExtraDataLength() const
+	{ return myExtraDataLength; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int Event::getExtraDataSize() const
