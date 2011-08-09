@@ -38,9 +38,7 @@ set(HEADERS
 ###################################################################################################
 # Setup compile info
 add_executable(qtdemo ${SRCS} ${HEADERS})
-
-###################################################################################################
-# Setup link info.
+set_target_properties(qtdemo PROPERTIES FOLDER apps)
 target_link_libraries(qtdemo
 	omega 
 	outils

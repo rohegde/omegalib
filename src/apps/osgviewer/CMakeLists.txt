@@ -40,9 +40,7 @@ set(HEADERS
 ###################################################################################################
 # Setup compile info
 add_executable(osgviewer ${SRCS} ${HEADERS})
-
-###################################################################################################
-# Setup link info.
+set_target_properties(osgviewer PROPERTIES FOLDER apps)
 target_link_libraries(osgviewer
 	omega 
 	outils

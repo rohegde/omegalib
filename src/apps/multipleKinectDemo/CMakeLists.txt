@@ -36,11 +36,9 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE(multipleKinectDemo ${srcs} ${headers})
-
-#######################################################################################################################
-# Setup link info.
-TARGET_LINK_LIBRARIES(multipleKinectDemo
+add_executable(multipleKinectDemo ${srcs} ${headers})
+set_target_properties(multipleKinectDemo PROPERTIES FOLDER apps)
+target_link_libraries(multipleKinectDemo
 	omega)
 
 
