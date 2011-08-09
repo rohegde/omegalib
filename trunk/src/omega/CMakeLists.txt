@@ -115,7 +115,7 @@ if(OMEGA_USE_DISPLAY)
 			omega/eqinternal/ViewImpl.cpp
 			omega/eqinternal/WindowImpl.cpp
 			omega/eqinternal/NodeImpl.cpp
-			omega/eqinternal/Pipe.cpp
+			omega/eqinternal/PipeImpl.cpp
 			)
 		set( headers ${headers} 
 			omega/eqinternal/eqinternal.h

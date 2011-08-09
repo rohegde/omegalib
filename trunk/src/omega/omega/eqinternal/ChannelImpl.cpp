@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "eqinternal.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace co::base;
@@ -148,7 +149,8 @@ void ChannelImpl::frameViewStart( const uint128_t& spin )
 					{
 						position[0] -= context.globalViewport.x();
 						position[1] -= context.globalViewport.y();
-						//ofmsg("pos %1%", %evt.position);
+						//ofmsg("pos %1%", %position);
+						evt.setPosition(position);
 						if(client->handleEvent(evt, context))
 						{
 							evt.setProcessed();
