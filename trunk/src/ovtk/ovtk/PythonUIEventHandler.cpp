@@ -32,27 +32,28 @@
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PythonUIEventHandler::PythonUIEventHandler(PythonInterpreter* interp):
-	myInterpreter(interp)
+PythonUIEventHandler::PythonUIEventHandler(UIManager* ui, PythonInterpreter* interp):
+	myInterpreter(interp),
+	myUI(ui)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonUIEventHandler::handleUIEvent(const UIEvent& evt)
+void PythonUIEventHandler::handleUIEvent(const Event& evt)
 {
-	if(evt.type == UIEvent::Click)
+	if(evt.getType() == Event::Click)
 	{
 		myInterpreter->eval(myClickCommand);
 	}
-	else if(evt.type == UIEvent::Toggle)
+	else if(evt.getType() == Event::Toggle)
 	{
-		AbstractButton* btn = (AbstractButton*)evt.source;
+		AbstractButton* btn = myUI->getWidgetById<AbstractButton>(evt.getSourceId());
 		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %btn->isChecked()));
 		myInterpreter->eval(expr);
 	}
-	else if(evt.type == UIEvent::ValueChange)
+	else if(evt.getType() == Event::ChangeValue)
 	{
-		Slider* sld = (Slider*)evt.source;
+		Slider* sld = myUI->getWidgetById<Slider>(evt.getSourceId());
 		float interval = mySliderMaxValue - mySliderMinValue;
 		float value = ((float)sld->getValue() / sld->getTicks() * interval) + mySliderMinValue;
 		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %value));

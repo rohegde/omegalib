@@ -46,7 +46,7 @@ namespace ui
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Container(omega::String name);
+		Container(UIManager* mng);
 		virtual ~Container();
 
 		void load(Setting& setting);
@@ -84,7 +84,6 @@ namespace ui
 		//@}
 
 		virtual void draw();
-		virtual void setUIManager(UIManager* ui);
 		virtual void updateSize();
 
 	protected:

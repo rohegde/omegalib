@@ -129,17 +129,17 @@ void VtkViewerClient::initUI()
 	{
 		root = ui->getRootContainer(1);
 		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
+		UserManagerPanel* ump = new UserManagerPanel(ui);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::handleUIEvent(const UIEvent& evt)
+void VtkViewerClient::handleUIEvent(const Event& evt)
 {
 	for(int i = 0; i < myEntityLibrary.size(); i++)
 	{
-		if(myEntityButtons[i] == evt.source)
+		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
 			setVisibleEntity(i);
 			return;

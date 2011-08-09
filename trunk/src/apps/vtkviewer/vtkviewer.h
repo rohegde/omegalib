@@ -58,7 +58,7 @@ public:
 
 	virtual void initialize();
 	void initUI();
-	void handleUIEvent(const UIEvent& evt);
+	void handleUIEvent(const Event& evt);
 	void setVisibleEntity(int entityId);
 
 private:

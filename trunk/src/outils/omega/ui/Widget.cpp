@@ -27,6 +27,7 @@
 #include "omega/ui/Widget.h"
 #include "omega/ui/Container.h"
 #include "omega/ui/DefaultSkin.h"
+#include "omega/ui/UIManager.h"
 #include "omega/Renderer.h"
 
 #include "omega/glheaders.h"
@@ -39,10 +40,9 @@ using namespace omega::ui;
 NameGenerator Widget::mysNameGenerator("Widget_");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Widget::Widget(omega::String name):
-	myUIMng(NULL),
+Widget::Widget(UIManager* mng):
+	myManager(mng),
 	myEventHandler(NULL),
-	myName(name),
 	myContainer(NULL),
 	myVisible(true),
 	myDebugModeColor(255, 0, 255),
@@ -55,25 +55,8 @@ Widget::Widget(omega::String name):
 	myMaximumSize(FLT_MAX, FLT_MAX),
 	myMinimumSize(0, 0)
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Widget::Widget():
-	myUIMng(NULL),
-	myEventHandler(NULL),
-	myName(mysNameGenerator.generate()),
-	myContainer(NULL),
-	myVisible(true),
-	myDebugModeColor(255, 0, 255),
-	myDebugModeEnabled(false),
-	myAutosize(false),
-	myRotation(0),
-	//myScale(1.0f),
-	myUserMoveEnabled(false),
-	myMoving(false),
-	myMaximumSize(FLT_MAX, FLT_MAX),
-	myMinimumSize(0, 0)
-{
+	myId = mysNameGenerator.getNext();
+	myName = mysNameGenerator.generate();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,16 +66,10 @@ Widget::~Widget()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::setUIManager(UIManager* ui) 
-{
-	myUIMng = ui; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderer* Widget::getRenderer()
 {
-	oassert(myUIMng != NULL);
-	return myUIMng->getDefaultPainter();
+	oassert(myManager != NULL);
+	return myManager->getDefaultPainter();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,8 +82,8 @@ void Widget::clearSizeConstaints()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::setContainer(Container* value) 
 { 
+	oassert(value && value->getManager() == myManager);
 	myContainer = value; 
-	setUIManager(myContainer->getUIManager());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,11 +176,11 @@ Vector2f Widget::transformPoint(const Vector2f& point)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::dispatchUIEvent(UIEvent& evt)
+void Widget::dispatchUIEvent(const Event& evt)
 {
 	if(myEventHandler != NULL) myEventHandler->handleUIEvent(evt);
 	else if(myContainer != NULL) myContainer->dispatchUIEvent(evt);
-	else myUIMng->dispatchUIEvent(evt);
+	else myManager->dispatchEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,3 +226,10 @@ bool Widget::processInputEvent(const Event& evt)
 {
 	return false; 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int Widget::getId()
+{
+	return myId;
+}
+

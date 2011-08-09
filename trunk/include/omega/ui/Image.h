@@ -38,7 +38,7 @@ namespace ui
 	class OUTILS_API Image: public Widget
 	{
 	public:
-		Image(omega::String name);
+		Image(UIManager* mng);
 		virtual ~Image();
 
 		Texture* getTexture() { return myTexture; }

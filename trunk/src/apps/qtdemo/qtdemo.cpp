@@ -40,7 +40,7 @@ void QtDemoClient::initialize()
 	EngineClient::initialize();
 	UIManager* ui = getUIManager();
 
-	myQtWidgetManager = onew(oqt::QtWidgetManager)();
+	myQtWidgetManager = onew(oqt::QtWidgetManager)(ui);
 	myQtWidgetManager->initialize();
 	myQtWidget = myQtWidgetManager->loadUiFile("ui/GeoDataMeshPanel.ui");
 	myQtWidget->setPosition(Vector2f(10, 10));

@@ -31,8 +31,8 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Slider::Slider(omega::String name):
-	Widget(name),
+Slider::Slider(UIManager* mng):
+	Widget(mng),
 	myTicks(100),
 	myValue(0),
 	myDeferUpdate(false),
@@ -62,8 +62,9 @@ bool Slider::processInputEvent(const Event& evt)
 		myPressed = false;
 		if(myValueChanged)
 		{
-			UIEvent evt = UIEvent(this, UIEvent::ValueChange);
-			dispatchUIEvent(evt);
+			Event e;
+			e.reset(Event::ChangeValue, Service::UI, getId());
+			dispatchUIEvent(e);
 		}
 	}
 
@@ -89,7 +90,8 @@ bool Slider::processInputEvent(const Event& evt)
 				myValue = newValue;
 				if(!myDeferUpdate)
 				{
-					UIEvent evt = UIEvent(this, UIEvent::ValueChange);
+					Event e;
+					e.reset(Event::ChangeValue, Service::UI, getId());
 					dispatchUIEvent(evt);
 				}
 				else

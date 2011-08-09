@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/ui/UserManagerPanel.h"
 #include "omega/ui/WidgetFactory.h"
+#include "omega/ui/UIManager.h"
 
 #ifdef OMEGA_USE_OPENNI
 #include "omega/OpenNIService.h"
@@ -41,7 +42,7 @@ void UserManagerPanel::initialize(Container* owner, const String& openNIServiceN
 	myObserverUpdateService =  sm->findService<ObserverUpdateService>(observerUpdateServiceName);
 
 	owner->addChild(this);
-	WidgetFactory* wf = getUIManager()->getWidgetFactory();
+	WidgetFactory* wf = getManager()->getWidgetFactory();
 
 #ifdef OMEGA_USE_OPENNI
 	myOpenNIService = sm->findService<OpenNIService>(openNIServiceName);

@@ -27,23 +27,28 @@
 #ifndef __WIDGET_H__
 #define __WIDGET_H__
 
+#include "omega/otypes.h"
 #include "omega/Color.h"
-#include "omega/ui/UIManager.h"
+#include "omega/Application.h"
+#include "omega/ui/IUIEventHandler.h"
 
 namespace omega
 {
 	class Renderer;
 namespace ui
 {
+	class UIManager;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API Widget
 	{
 	friend class UIManager;
 	friend class Container;
 	public:
-		Widget(omega::String name);
-		Widget();
+		Widget(UIManager* mng);
 		virtual ~Widget();
+
+		UIManager* getManager();
 
 		IUIEventHandler* getEventHandler();
 		void setEventHandler(IUIEventHandler* value);
@@ -61,8 +66,10 @@ namespace ui
 		//! When debug mode is enabled, the widget bounding box will be displayed.
 		void setDebugModeEnabled(bool value) { myDebugModeEnabled = value; }
 
-		//! Gets the widget unique name.
-		String getName() { return myName; }
+		//! Returns the widget name.
+		String getName();
+		//! Sets the widget name.
+		void setName(const String& name);
 
 		//! Position and rotation
 		//@{
@@ -124,10 +131,10 @@ namespace ui
 
 		virtual void draw();
 
-		UIManager* getUIManager();
-		virtual void setUIManager(UIManager* ui);
-
 		Renderer* getRenderer();
+
+		//! Returns the unique Widget id.
+		int getId();
 
 	protected:
 		//! internal layout management
@@ -145,7 +152,7 @@ namespace ui
 		void postDraw();
 		virtual void renderContent();
 		virtual bool processInputEvent(const Event& evt);
-		void dispatchUIEvent(UIEvent& evt);
+		void dispatchUIEvent(const Event& evt);
 
 	protected:
 		omega::Vector2f myPosition;
@@ -154,11 +161,14 @@ namespace ui
 		//float myScale;
 
 	private:
+		UIManager* myManager;
+
         static NameGenerator mysNameGenerator;
+
+		unsigned int myId;
 
 		omega::String myName;
 		Container* myContainer;
-		UIManager* myUIMng;
 
 		IUIEventHandler* myEventHandler;
 
@@ -178,14 +188,19 @@ namespace ui
 		omega::Vector2f myMinimumSize;
 		omega::Vector2f myMaximumSize;
 		bool myAutosize;
-
-		// Last handled input event.
-		//omega::Event myLastEvent;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline UIManager* Widget::getUIManager() 
-	{ oassert(myUIMng != NULL); return myUIMng; }
+	inline UIManager* Widget::getManager()
+	{ return myManager; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline String Widget::getName() 
+	{ return myName; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Widget::setName(const String& name)
+	{ myName = name; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline IUIEventHandler* Widget::getEventHandler() 

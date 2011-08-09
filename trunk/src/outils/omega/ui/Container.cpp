@@ -30,8 +30,8 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Container::Container(omega::String name):
-		Widget(name),
+Container::Container(UIManager* mng):
+		Widget(mng),
 		myPadding(5),
 		myMargin(5),
 		myHorizontalAlign(AlignCenter),
@@ -137,7 +137,6 @@ void Container::removeChild(const String& name)
 	if(w != NULL)
 	{
 		myChildren.remove(w);
-		w->setUIManager(NULL);
 	}
 }
 
@@ -167,19 +166,6 @@ Widget* Container::getChildByIndex(int index)
 		i++;
 	}
 	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Container::setUIManager(UIManager* ui)
-{
-	Widget::setUIManager(ui);
-	// set the ui manager for all children.
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
-	{
-		Widget* w = it.getNext();
-		w->setUIManager(ui);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
