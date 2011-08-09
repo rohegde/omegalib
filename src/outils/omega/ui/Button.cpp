@@ -68,10 +68,6 @@ bool Button::processInputEvent(const Event& evt)
 	Vector2f point  = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
 	point = transformPoint(point);
-	if(evt.getType() == Event::Down)
-	{
-		ofmsg("Pos %1%", %evt.getPosition());
-	}
 
 	if(hitTest(point))
 	{
