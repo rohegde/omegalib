@@ -115,50 +115,50 @@ public:
 			sprintf(floatChar,"%f",evt.getPosition(1));
 			strcat( eventPacket, floatChar );
 
-			if( evt.numberOfPoints == 1 ){ // TouchPoint down/up/move
+			if( evt.getExtraDataLength() == 2){ // TouchPoint down/up/move
 				// Converts xWidth to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.pointSet[0][0] );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(0) );
 				strcat( eventPacket, floatChar );
 				
 				// Converts yWidth to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.pointSet[0][1] );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(1) );
 				strcat( eventPacket, floatChar );
-			} else if( evt.numberOfPoints == 2 ){ // Touch Gestures
+			} else { // Touch Gestures
 				// Converts value to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.pointSet[0][0] );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(0) );
 				strcat( eventPacket, floatChar );
 				
 				// Converts value to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.pointSet[0][1] );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(1) );
 				strcat( eventPacket, floatChar );
 
 				// Converts value to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.pointSet[1][0] );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(2) );
 				strcat( eventPacket, floatChar );
 
 				// Converts value to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.pointSet[1][1] );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(3) );
 				strcat( eventPacket, floatChar );
 
 				if( evt.getType() == Event::Rotate ){
 					// Converts rotation to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.getOrientation().x() );
+					sprintf(floatChar,"%f", evt.getExtraDataFloat(4) );
 					strcat( eventPacket, floatChar );
 				} else if( evt.getType() == Event::Split ){
 					// Converts values to char, appends to eventPacket
 					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.value[0] ); // Delta distance
+					sprintf(floatChar,"%f", evt.getExtraDataFloat(4) ); // Delta distance
 					strcat( eventPacket, floatChar );
 
 					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.value[1] ); // Delta ratio
+					sprintf(floatChar,"%f", evt.getExtraDataFloat(5) ); // Delta ratio
 					strcat( eventPacket, floatChar );
 				}
 			}
@@ -233,42 +233,12 @@ public:
 			strcat( eventPacket, "," ); // Spacer
 
 			// See DirectXInputService.cpp for parameter details
-			
 			// Analog sticks
-			sprintf(floatChar,"%d",(int)evt.pointSet[0][0]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," ); // Spacer
-
-			sprintf(floatChar,"%d",(int)evt.pointSet[0][1]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," ); // Spacer
-
-			sprintf(floatChar,"%d",(int)evt.pointSet[1][0]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," ); // Spacer
-
-			sprintf(floatChar,"%d",(int)evt.pointSet[1][1]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," ); // Spacer
-
-			for( int i = 3; i < 19; i++ ){
-				sprintf(floatChar,"%d", (int)evt.pointSet[i][0]);
+			for( int i = 0; i < 21; i++ ){
+				sprintf(floatChar,"%d", (int)evt.getExtraDataFloat(i));
 				strcat( eventPacket, floatChar );
 				strcat( eventPacket, "," ); // Spacer
 			}
-
-			sprintf(floatChar,"%d",(int)evt.pointSet[2][0]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," ); // Spacer
-					
-			sprintf(floatChar,"%d",(int)evt.pointSet[19][0]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, "," ); // Spacer
-
-			sprintf(floatChar,"%d",(int)evt.pointSet[19][1]);
-			strcat( eventPacket, floatChar );
-			strcat( eventPacket, " " ); // Spacer
-
 			return true;
 			break;
 		default: break;

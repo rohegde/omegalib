@@ -329,8 +329,8 @@ void DirectXInputService::poll()
 			 }
 			evt->setExtraDataFloat(18, js.rgdwPOV[0]); // DPad
 
-			evt->setExtraDataFloat(18, js.lRz); // Tilt (+left, -right)
-			evt->setExtraDataFloat(18, js.rglSlider[1]); // Tilt (+back, -forward)
+			evt->setExtraDataFloat(19, js.lRz); // Tilt (+left, -right)
+			evt->setExtraDataFloat(20, js.rglSlider[1]); // Tilt (+back, -forward)
 			
 			mysInstance->unlockEvents();
 		}
