@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classomega_1_1scene_1_1_default_mouse_interactor.html" title="omega::scene::DefaultMouseInteractor" alt="" coords="5,160,251,189"/>
+<area shape="rect" id="node7" href="$classomega_1_1scene_1_1_default_two_hands_interactor.html" title="omega::scene::DefaultTwoHandsInteractor" alt="" coords="275,160,541,189"/>
+<area shape="rect" id="node2" href="$classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="189,5,347,35"/>
+</map>
