@@ -36,11 +36,9 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE(mocalib ${srcs} ${headers})
-
-#######################################################################################################################
-# Setup link info.
-TARGET_LINK_LIBRARIES(mocalib
+add_executable(mocalib ${srcs} ${headers})
+set_target_properties(mocalib PROPERTIES FOLDER apps)
+target_link_libraries(mocalib
 	omega)
 
 

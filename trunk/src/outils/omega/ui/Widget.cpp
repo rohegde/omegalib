@@ -49,7 +49,6 @@ Widget::Widget(UIManager* mng):
 	myDebugModeEnabled(false),
 	myAutosize(false),
 	myRotation(0),
-	//myScale(1.0f),
 	myUserMoveEnabled(false),
 	myMoving(false),
 	myMaximumSize(FLT_MAX, FLT_MAX),

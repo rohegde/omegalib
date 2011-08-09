@@ -24,8 +24,6 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-
-#TEST BUGFIX
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
 cmake_minimum_required(VERSION 2.8.1) 
 
@@ -104,8 +102,6 @@ else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 	file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
-
-# TEST NEW FEATURE
 
 ###################################################################################################
 # Couple utility variables for library linking

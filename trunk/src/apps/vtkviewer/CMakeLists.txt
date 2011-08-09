@@ -43,11 +43,8 @@ set(HEADERS
 		vtkviewer.h) 
         
 ###################################################################################################
-# Setup compile info
 add_executable(vtkviewer ${SRCS} ${HEADERS})
-
-###################################################################################################
-# Setup link info.
+set_target_properties(vtkviewer PROPERTIES FOLDER apps)
 target_link_libraries(vtkviewer
 	omega 
 	outils

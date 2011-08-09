@@ -38,8 +38,6 @@ set(HEADERS
 ###################################################################################################
 # Setup compile info
 add_executable(meshviewer ${SRCS} ${HEADERS})
-
-###################################################################################################
-# Setup link info.
+set_target_properties(meshviewer PROPERTIES FOLDER apps)
 target_link_libraries(meshviewer
 	omega outils)
