@@ -20,13 +20,13 @@ server
                 {
                     name     "window1"
                     viewport [ 50 50 854 480 ]
-                    channel { name "channel1"  }
+                    channel { name "channel2"  }
                 }
                 window
                 {
                     name     "window2"
-                    viewport [ 477 530 854 480 ]
-                    channel { name "channel2"  }
+                    viewport [ 50 530 854 480 ]
+                    channel { name "channel1"  }
                 }
             }
         }
