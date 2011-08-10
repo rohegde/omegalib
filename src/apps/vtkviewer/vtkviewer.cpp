@@ -50,8 +50,8 @@ void VtkViewerClient::initialize()
 			EntityInfo* e = onew(EntityInfo)();
 			Setting& entitySetting = entities[i];
 			e->name = entitySetting.getName();
-			e->script = (String)((const char*)entitySetting["script"]);
-			e->label = (String)((const char*)entitySetting["label"]);
+			e->script = (String)entitySetting["script"];
+			e->label = (String)entitySetting["label"];
 
 			myEntityLibrary.push_back(e);
 		}

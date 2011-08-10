@@ -547,7 +547,7 @@ namespace omega
 		// Serialize extra data
 		os << myExtraDataType;
 		os << myExtraDataLength;
-		if(myExtraDataType != ExtraDataNull)
+		if(myExtraDataType != NULL)
 		{
 			os << myExtraDataValidMask;
 			os.write(myExtraData, getExtraDataSize());
@@ -570,7 +570,7 @@ namespace omega
 		// Deserialize extra data
 		is >> myExtraDataType;
 		is >> myExtraDataLength;
-		if(myExtraDataType != ExtraDataNull)
+		if(myExtraDataType != NULL)
 		{
 			is >> myExtraDataValidMask;
 			is.read(myExtraData, getExtraDataSize());

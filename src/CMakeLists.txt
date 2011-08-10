@@ -24,7 +24,7 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-
+# TEST NEW FEATURE
 # TODO: move this to omega CMakeFile, inside Equalizer block
 # Check if 32bit MAC or 64bit MAC
 if( APPLE )
@@ -93,10 +93,7 @@ add_subdirectory(omega)
 
 if(OMEGA_BUILD_APPS)
 	add_subdirectory(apps/eventlogger)
-	# oinputserver currently works only on Windows (uses WINSOCK)
-	if(WIN32)
-		add_subdirectory(apps/oinputserver)
-	endif(WIN32)
+	add_subdirectory(apps/oinputserver)
 endif(OMEGA_BUILD_APPS)
 
 if(OMEGA_USE_DISPLAY)

@@ -25,9 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega.h"
-#ifdef OMEGA_USE_OPENNI
 #include "omega/OpenNIService.h"
-#endif
 
 using namespace omega;
 
@@ -171,11 +169,9 @@ bool MocalibClient::handleEvent(const Event& evt, UpdateContext& context)
 		}
 		else
 		{
-#ifdef OMEGA_USE_OPENNI
 			//ofmsg("Got from device: %1% this: %2%", %(int)evt.serviceId %(float)evt.pointSet[OMEGA_SKEL_LEFT_HAND][0]);
 			if( evt.getServiceId() == 0 ) myCurrentMocapReadingR = myTransformR * evt.getExtraDataVector3(OMEGA_SKEL_LEFT_HAND);
 			else if( evt.getServiceId() == 1 ) myCurrentMocapReadingL = myTransformL * evt.getExtraDataVector3(OMEGA_SKEL_LEFT_HAND);
-#endif
 		}
 		//ofmsg("id: %1% pos: %2%", %evt.sourceId %evt.position);
 		//ofmsg("%1% %2% %3%", 
