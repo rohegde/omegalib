@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::EngineClient Class Reference</title>
+<title>omegalib: omega::EngineClient Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -39,19 +38,24 @@
 <h1>omega::EngineClient Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::EngineClient" --><!-- doxytag: inherits="omega::ApplicationClient" -->
-<p><code>#include &lt;<a class="el" href="_engine_client_8h_source.html">EngineClient.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::EngineClient" --><!-- doxytag: inherits="omega::ApplicationClient" --><div class="dynheader">
+Inheritance diagram for omega::EngineClient:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1_engine_client__inherit__graph.png" border="0" usemap="#omega_1_1_engine_client_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1_engine_client_inherit__map" id="omega_1_1_engine_client_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1_application_client.html" title="omega::ApplicationClient" alt="" coords="89,83,255,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node6" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="187,5,336,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_engine_client-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#aaad2fa30b2999d5e105b8f7b9e9f7ddc">EngineClient</a> (<a class="el" href="classomega_1_1_application.html">Application</a> *app)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a10e67ecbfaf45e6f090fa9060e04303b">initialize</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a8738e4e2d15623087c0dc7b1a95ce0da">handleEvent</a> (const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a94f59aa551cf658e756c6f0ec0f147b0">handleEvent</a> (const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a3d9253665813360e197f94311ecf5723">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a780a74f6303ceda978360305a8a3e9f8">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a668182b1ffe989d02746e0c4591bea90">EngineClient</a> (<a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *server)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a300519eea2704b096db711dcaf4e825c">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a43fcc012ec872fa902e21e06fbae7fd8">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a807c3add8178e2e710c8122a80e37bac">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a2e418ce80622ba9115ca23b9a2fa1d9b">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a58c538dd4fa24a3feadcc1f7f081b2b9">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -65,19 +69,19 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_font_manager.html">FontManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a7dc850a9e066ed307d4444e5231659e7">getFontManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a052c83bc6041e5a9a143716806231cd2">isTextureBackgroundEnabled</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#aae0c1c3f69bed95587c598b9eb9836d5">setTextureBackgroundEnabled</a> (bool value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#ae597ef4b597da61b85c5ab17d1b71704">setTextureBackground</a> (<a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">DrawContext::Eye</a> eye, <a class="el" href="classomega_1_1_texture.html">Texture</a> *texture)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_texture.html">Texture</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a7c9296cfe55cfac588d0e9dad3dfba45">getTextureBackground</a> (<a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">DrawContext::Eye</a> eye)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#aeb29bd5cab58ea5544de007725dc3936">setTextureBackground</a> (<a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">DrawContext::Eye</a> eye, <a class="el" href="classomega_1_1_texture.html">Texture</a> *texture)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_texture.html">Texture</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a58694321c88b1b638f43c80a03101d95">getTextureBackground</a> (<a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">DrawContext::Eye</a> eye)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aaad2fa30b2999d5e105b8f7b9e9f7ddc"></a><!-- doxytag: member="omega::EngineClient::EngineClient" ref="aaad2fa30b2999d5e105b8f7b9e9f7ddc" args="(Application *app)" -->
+<a class="anchor" id="a668182b1ffe989d02746e0c4591bea90"></a><!-- doxytag: member="omega::EngineClient::EngineClient" ref="a668182b1ffe989d02746e0c4591bea90" args="(ApplicationServer *server)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">omega::EngineClient::EngineClient </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_application.html">Application</a> *&nbsp;</td>
-          <td class="paramname"> <em>app</em></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *&nbsp;</td>
+          <td class="paramname"> <em>server</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
         </tr>
@@ -88,12 +92,12 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a780a74f6303ceda978360305a8a3e9f8"></a><!-- doxytag: member="omega::EngineClient::draw" ref="a780a74f6303ceda978360305a8a3e9f8" args="(const DrawContext &amp;context)" -->
+<a class="anchor" id="a58c538dd4fa24a3feadcc1f7f081b2b9"></a><!-- doxytag: member="omega::EngineClient::draw" ref="a58c538dd4fa24a3feadcc1f7f081b2b9" args="(const DrawContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::EngineClient::draw </td>
+          <td class="memname">void EngineClient::draw </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>context</em></td>
@@ -195,12 +199,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7c9296cfe55cfac588d0e9dad3dfba45"></a><!-- doxytag: member="omega::EngineClient::getTextureBackground" ref="a7c9296cfe55cfac588d0e9dad3dfba45" args="(DrawContext::Eye eye)" -->
+<a class="anchor" id="a58694321c88b1b638f43c80a03101d95"></a><!-- doxytag: member="omega::EngineClient::getTextureBackground" ref="a58694321c88b1b638f43c80a03101d95" args="(DrawContext::Eye eye)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_texture.html">Texture</a>* omega::EngineClient::getTextureBackground </td>
+          <td class="memname"><a class="el" href="classomega_1_1_texture.html">Texture</a> * EngineClient::getTextureBackground </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">DrawContext::Eye</a>&nbsp;</td>
           <td class="paramname"> <em>eye</em></td>
@@ -247,14 +251,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8738e4e2d15623087c0dc7b1a95ce0da"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="a8738e4e2d15623087c0dc7b1a95ce0da" args="(const Event &amp;evt, UpdateContext &amp;context)" -->
+<a class="anchor" id="a43fcc012ec872fa902e21e06fbae7fd8"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="a43fcc012ec872fa902e21e06fbae7fd8" args="(const Event &amp;evt, UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool omega::EngineClient::handleEvent </td>
+          <td class="memname">bool EngineClient::handleEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>evt</em>, </td>
         </tr>
         <tr>
@@ -276,14 +280,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a94f59aa551cf658e756c6f0ec0f147b0"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="a94f59aa551cf658e756c6f0ec0f147b0" args="(const Event &amp;evt, DrawContext &amp;context)" -->
+<a class="anchor" id="a807c3add8178e2e710c8122a80e37bac"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="a807c3add8178e2e710c8122a80e37bac" args="(const Event &amp;evt, DrawContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool omega::EngineClient::handleEvent </td>
+          <td class="memname">bool EngineClient::handleEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>evt</em>, </td>
         </tr>
         <tr>
@@ -305,12 +309,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a10e67ecbfaf45e6f090fa9060e04303b"></a><!-- doxytag: member="omega::EngineClient::initialize" ref="a10e67ecbfaf45e6f090fa9060e04303b" args="()" -->
+<a class="anchor" id="a300519eea2704b096db711dcaf4e825c"></a><!-- doxytag: member="omega::EngineClient::initialize" ref="a300519eea2704b096db711dcaf4e825c" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::EngineClient::initialize </td>
+          <td class="memname">void EngineClient::initialize </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -320,7 +324,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_client.html#a62775189a91115fb1f0efc6a930a0556">omega::ApplicationClient</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1_application_client.html#a2f62035be1a5bf0d14ca2e963632cc81">omega::ApplicationClient</a>.</p>
 
 </div>
 </div>
@@ -341,12 +345,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae597ef4b597da61b85c5ab17d1b71704"></a><!-- doxytag: member="omega::EngineClient::setTextureBackground" ref="ae597ef4b597da61b85c5ab17d1b71704" args="(DrawContext::Eye eye, Texture *texture)" -->
+<a class="anchor" id="aeb29bd5cab58ea5544de007725dc3936"></a><!-- doxytag: member="omega::EngineClient::setTextureBackground" ref="aeb29bd5cab58ea5544de007725dc3936" args="(DrawContext::Eye eye, Texture *texture)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::EngineClient::setTextureBackground </td>
+          <td class="memname">void EngineClient::setTextureBackground </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">DrawContext::Eye</a>&nbsp;</td>
           <td class="paramname"> <em>eye</em>, </td>
@@ -386,12 +390,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3d9253665813360e197f94311ecf5723"></a><!-- doxytag: member="omega::EngineClient::update" ref="a3d9253665813360e197f94311ecf5723" args="(const UpdateContext &amp;context)" -->
+<a class="anchor" id="a2e418ce80622ba9115ca23b9a2fa1d9b"></a><!-- doxytag: member="omega::EngineClient::update" ref="a2e418ce80622ba9115ca23b9a2fa1d9b" args="(const UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::EngineClient::update </td>
+          <td class="memname">void EngineClient::update </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>context</em></td>
@@ -406,11 +410,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_engine_client_8h_source.html">EngineClient.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:19 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

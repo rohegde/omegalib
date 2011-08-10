@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classomega_1_1ui_1_1_widget.html" title="omega::ui::Widget" alt="" coords="5,139,133,168"/>
+<area shape="rect" id="node3" href="$classomega_1_1ui_1_1_abstract_button.html" title="omega::ui::AbstractButton" alt="" coords="183,5,356,35"/>
+<area shape="rect" id="node9" href="$classomega_1_1ui_1_1_container.html" title="omega::ui::Container" alt="" coords="199,59,340,88"/>
+<area shape="rect" id="node13" href="$classomega_1_1ui_1_1_image.html" title="omega::ui::Image" alt="" coords="208,112,331,141"/>
+<area shape="rect" id="node15" href="$classomega_1_1ui_1_1_label.html" title="omega::ui::Label" alt="" coords="211,165,328,195"/>
+<area shape="rect" id="node17" href="$classomega_1_1ui_1_1_slider.html" title="omega::ui::Slider" alt="" coords="209,219,329,248"/>
+<area shape="rect" id="node21" href="$classoqt_1_1_qt_widget.html" title="oqt::QtWidget" alt="" coords="219,272,320,301"/>
+<area shape="rect" id="node5" href="$classomega_1_1ui_1_1_button.html" title="omega::ui::Button" alt="" coords="441,5,567,35"/>
+<area shape="rect" id="node7" href="$classomega_1_1ui_1_1_default_button.html" title="omega::ui::DefaultButton" alt="" coords="651,5,816,35"/>
+<area shape="rect" id="node11" href="$classomega_1_1ui_1_1_user_manager_panel.html" title="omega::ui::UserManagerPanel" alt="" coords="405,59,603,88"/>
+<area shape="rect" id="node19" href="$classomega_1_1ui_1_1_default_slider.html" title="omega::ui::DefaultSlider" alt="" coords="424,219,584,248"/>
+</map>

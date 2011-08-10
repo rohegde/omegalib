@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::scene::SceneNode Class Reference</title>
+<title>omegalib: omega::scene::SceneNode Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -42,8 +41,13 @@
 <h1>omega::scene::SceneNode Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::scene::SceneNode" --><!-- doxytag: inherits="omega::scene::Node" -->
-<p><code>#include &lt;<a class="el" href="_scene_node_8h_source.html">SceneNode.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::scene::SceneNode" --><!-- doxytag: inherits="omega::scene::Node" --><div class="dynheader">
+Inheritance diagram for omega::scene::SceneNode:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1scene_1_1_scene_node__inherit__graph.png" border="0" usemap="#omega_1_1scene_1_1_scene_node_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1scene_1_1_scene_node_inherit__map" id="omega_1_1scene_1_1_scene_node_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1scene_1_1_node.html" title="Class representing a general&#45;purpose node an articulated scene graph." alt="" coords="24,83,165,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="16,5,173,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1scene_1_1_scene_node-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -56,26 +60,26 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#ab73dd8d35ce50593a77a46999984ac4c">SceneNode</a> (<a class="el" href="classomega_1_1scene_1_1_scene_manager.html">SceneManager</a> *scene)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a3b7e15472b603a3c4b2ba26562226c29">SceneNode</a> (<a class="el" href="classomega_1_1scene_1_1_scene_manager.html">SceneManager</a> *scene, const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html">SceneManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#ae9d5700e86f8d37e3ab08c43bfcabd6e">getScene</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a09482ae1f03fa4e500c6ae9e88a1ac82">hit</a> (const <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> &amp;ray, <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> *hitPoint, <a class="el" href="classomega_1_1scene_1_1_scene_node.html#aac125931ee71246f96a26b75f71f634b">HitType</a> type)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Hit test.  <a href="#a09482ae1f03fa4e500c6ae9e88a1ac82"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a8db9fd19d4dfa000b214493ed353adfc">update</a> (bool updateChildren, bool parentHasChanged)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Internal method to update the <a class="el" href="classomega_1_1scene_1_1_node.html" title="Class representing a general-purpose node an articulated scene graph.">Node</a>.  <a href="#a8db9fd19d4dfa000b214493ed353adfc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#ab223154eaa0c0a18c76a906fe29b09ce">draw</a> (<a class="el" href="structomega_1_1scene_1_1_render_state.html">RenderState</a> *state)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#aff1cf1db475f27e14065e8a9f209b97b">hit</a> (const <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> &amp;ray, <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> *hitPoint, <a class="el" href="classomega_1_1scene_1_1_scene_node.html#aac125931ee71246f96a26b75f71f634b">HitType</a> type)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Hit test.  <a href="#aff1cf1db475f27e14065e8a9f209b97b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#aa01f6997768b5007a99630353f114aa6">update</a> (bool updateChildren, bool parentHasChanged)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Internal method to update the <a class="el" href="classomega_1_1scene_1_1_node.html" title="Class representing a general-purpose node an articulated scene graph.">Node</a>.  <a href="#aa01f6997768b5007a99630353f114aa6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a8ce2f7336b6b07ed56cd4d3a60682c5d">draw</a> (<a class="el" href="structomega_1_1scene_1_1_render_state.html">RenderState</a> *state)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a0ea0f6c383a3835c578e0817842c7561">addRenderable</a> (<a class="el" href="classomega_1_1scene_1_1_renderable.html">Renderable</a> *child)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a36503dbc2ca3808e5ad1a28d93aab5b7">getNumRenderables</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a9572e1961856d6d76e3451eef9394743">clearRenderables</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a49d05f6d27291fa841cd94674cd35465">addRenderable</a> (<a class="el" href="classomega_1_1scene_1_1_renderable.html">Renderable</a> *child)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a2ea6d8aec4fd4728367b9451d5c18b7a">getNumRenderables</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#aef3105a5bd7df35c9154a21e947b227f">clearRenderables</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a718b4e335e636e78d641758955ce6233">isSelectable</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#aad54e413097598da5ef51943abe157d5">setSelectable</a> (bool value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a06faec36bc9fbb2d50d54ef65334e924">isVisible</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#aec4a696fc5f2ea9fe070e04b80dcc385">setVisible</a> (bool value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a87a4aaf29d41092bf404684f61028517">setSelected</a> (bool value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a95231db1546afe2c93fd5628833d6ae4">isSelected</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a3227c4c7570c917f1edb5a40d3b46ec9">isVisible</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#ad859ebcb8dc5f8ab39ff6d60e8d3584a">setVisible</a> (bool value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a364d1a2ca7e4cdeb6de1aaa5c0794019">setSelected</a> (bool value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#adf28d9323010ced3d70d35bbd49688f5">isSelected</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -88,8 +92,8 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a7bd364bda7b03642e7e317a72487e56c">setListener</a> (<a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a> *listener)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#ade061c3942d789cc376ee1c3d156abea">getListener</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a7d40c3eed18aee40f290ef00f0154e19">setListener</a> (<a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a> *listener)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a65433b5d3f1efc478005aed1012d523b">getListener</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_node.html#a284464b0561a6f2915f04b0245b987f0">SceneManager</a></td></tr>
@@ -161,12 +165,12 @@ Friends</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a0ea0f6c383a3835c578e0817842c7561"></a><!-- doxytag: member="omega::scene::SceneNode::addRenderable" ref="a0ea0f6c383a3835c578e0817842c7561" args="(Renderable *child)" -->
+<a class="anchor" id="a49d05f6d27291fa841cd94674cd35465"></a><!-- doxytag: member="omega::scene::SceneNode::addRenderable" ref="a49d05f6d27291fa841cd94674cd35465" args="(Renderable *child)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneNode::addRenderable </td>
+          <td class="memname">void SceneNode::addRenderable </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_renderable.html">Renderable</a> *&nbsp;</td>
           <td class="paramname"> <em>child</em></td>
@@ -179,12 +183,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9572e1961856d6d76e3451eef9394743"></a><!-- doxytag: member="omega::scene::SceneNode::clearRenderables" ref="a9572e1961856d6d76e3451eef9394743" args="()" -->
+<a class="anchor" id="aef3105a5bd7df35c9154a21e947b227f"></a><!-- doxytag: member="omega::scene::SceneNode::clearRenderables" ref="aef3105a5bd7df35c9154a21e947b227f" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneNode::clearRenderables </td>
+          <td class="memname">void SceneNode::clearRenderables </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -196,12 +200,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab223154eaa0c0a18c76a906fe29b09ce"></a><!-- doxytag: member="omega::scene::SceneNode::draw" ref="ab223154eaa0c0a18c76a906fe29b09ce" args="(RenderState *state)" -->
+<a class="anchor" id="a8ce2f7336b6b07ed56cd4d3a60682c5d"></a><!-- doxytag: member="omega::scene::SceneNode::draw" ref="a8ce2f7336b6b07ed56cd4d3a60682c5d" args="(RenderState *state)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneNode::draw </td>
+          <td class="memname">void SceneNode::draw </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structomega_1_1scene_1_1_render_state.html">RenderState</a> *&nbsp;</td>
           <td class="paramname"> <em>state</em></td>
@@ -265,12 +269,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ade061c3942d789cc376ee1c3d156abea"></a><!-- doxytag: member="omega::scene::SceneNode::getListener" ref="ade061c3942d789cc376ee1c3d156abea" args="()" -->
+<a class="anchor" id="a65433b5d3f1efc478005aed1012d523b"></a><!-- doxytag: member="omega::scene::SceneNode::getListener" ref="a65433b5d3f1efc478005aed1012d523b" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a>* omega::scene::SceneNode::getListener </td>
+          <td class="memname"><a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a> * SceneNode::getListener </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -282,12 +286,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a36503dbc2ca3808e5ad1a28d93aab5b7"></a><!-- doxytag: member="omega::scene::SceneNode::getNumRenderables" ref="a36503dbc2ca3808e5ad1a28d93aab5b7" args="()" -->
+<a class="anchor" id="a2ea6d8aec4fd4728367b9451d5c18b7a"></a><!-- doxytag: member="omega::scene::SceneNode::getNumRenderables" ref="a2ea6d8aec4fd4728367b9451d5c18b7a" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int omega::scene::SceneNode::getNumRenderables </td>
+          <td class="memname">int SceneNode::getNumRenderables </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -316,12 +320,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a09482ae1f03fa4e500c6ae9e88a1ac82"></a><!-- doxytag: member="omega::scene::SceneNode::hit" ref="a09482ae1f03fa4e500c6ae9e88a1ac82" args="(const Ray &amp;ray, Vector3f *hitPoint, HitType type)" -->
+<a class="anchor" id="aff1cf1db475f27e14065e8a9f209b97b"></a><!-- doxytag: member="omega::scene::SceneNode::hit" ref="aff1cf1db475f27e14065e8a9f209b97b" args="(const Ray &amp;ray, Vector3f *hitPoint, HitType type)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool omega::scene::SceneNode::hit </td>
+          <td class="memname">bool SceneNode::hit </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>ray</em>, </td>
@@ -385,12 +389,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a95231db1546afe2c93fd5628833d6ae4"></a><!-- doxytag: member="omega::scene::SceneNode::isSelected" ref="a95231db1546afe2c93fd5628833d6ae4" args="()" -->
+<a class="anchor" id="adf28d9323010ced3d70d35bbd49688f5"></a><!-- doxytag: member="omega::scene::SceneNode::isSelected" ref="adf28d9323010ced3d70d35bbd49688f5" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool omega::scene::SceneNode::isSelected </td>
+          <td class="memname">bool SceneNode::isSelected </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -402,12 +406,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a06faec36bc9fbb2d50d54ef65334e924"></a><!-- doxytag: member="omega::scene::SceneNode::isVisible" ref="a06faec36bc9fbb2d50d54ef65334e924" args="()" -->
+<a class="anchor" id="a3227c4c7570c917f1edb5a40d3b46ec9"></a><!-- doxytag: member="omega::scene::SceneNode::isVisible" ref="a3227c4c7570c917f1edb5a40d3b46ec9" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool omega::scene::SceneNode::isVisible </td>
+          <td class="memname">bool SceneNode::isVisible </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -455,12 +459,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7bd364bda7b03642e7e317a72487e56c"></a><!-- doxytag: member="omega::scene::SceneNode::setListener" ref="a7bd364bda7b03642e7e317a72487e56c" args="(SceneNodeListener *listener)" -->
+<a class="anchor" id="a7d40c3eed18aee40f290ef00f0154e19"></a><!-- doxytag: member="omega::scene::SceneNode::setListener" ref="a7d40c3eed18aee40f290ef00f0154e19" args="(SceneNodeListener *listener)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneNode::setListener </td>
+          <td class="memname">void SceneNode::setListener </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_scene_node_listener.html">SceneNodeListener</a> *&nbsp;</td>
           <td class="paramname"> <em>listener</em></td>
@@ -491,12 +495,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a87a4aaf29d41092bf404684f61028517"></a><!-- doxytag: member="omega::scene::SceneNode::setSelected" ref="a87a4aaf29d41092bf404684f61028517" args="(bool value)" -->
+<a class="anchor" id="a364d1a2ca7e4cdeb6de1aaa5c0794019"></a><!-- doxytag: member="omega::scene::SceneNode::setSelected" ref="a364d1a2ca7e4cdeb6de1aaa5c0794019" args="(bool value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneNode::setSelected </td>
+          <td class="memname">void SceneNode::setSelected </td>
           <td>(</td>
           <td class="paramtype">bool&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
@@ -509,12 +513,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aec4a696fc5f2ea9fe070e04b80dcc385"></a><!-- doxytag: member="omega::scene::SceneNode::setVisible" ref="aec4a696fc5f2ea9fe070e04b80dcc385" args="(bool value)" -->
+<a class="anchor" id="ad859ebcb8dc5f8ab39ff6d60e8d3584a"></a><!-- doxytag: member="omega::scene::SceneNode::setVisible" ref="ad859ebcb8dc5f8ab39ff6d60e8d3584a" args="(bool value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneNode::setVisible </td>
+          <td class="memname">void SceneNode::setVisible </td>
           <td>(</td>
           <td class="paramtype">bool&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
@@ -527,12 +531,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8db9fd19d4dfa000b214493ed353adfc"></a><!-- doxytag: member="omega::scene::SceneNode::update" ref="a8db9fd19d4dfa000b214493ed353adfc" args="(bool updateChildren, bool parentHasChanged)" -->
+<a class="anchor" id="aa01f6997768b5007a99630353f114aa6"></a><!-- doxytag: member="omega::scene::SceneNode::update" ref="aa01f6997768b5007a99630353f114aa6" args="(bool updateChildren, bool parentHasChanged)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::scene::SceneNode::update </td>
+          <td class="memname">void SceneNode::update </td>
           <td>(</td>
           <td class="paramtype">bool&nbsp;</td>
           <td class="paramname"> <em>updateChildren</em>, </td>
@@ -562,7 +566,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_node.html#a6cb9f260c13bcb3380f653ccfe3702d9">omega::scene::Node</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_node.html#ae3541d1bf654e3d7788aae3021adba64">omega::scene::Node</a>.</p>
 
 </div>
 </div>
@@ -580,11 +584,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/scene/<a class="el" href="_scene_node_8h_source.html">SceneNode.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:29 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

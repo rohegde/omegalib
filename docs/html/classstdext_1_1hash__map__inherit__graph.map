@@ -1,0 +1,15 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; omega::String, Effect * \&gt;" alt="" coords="145,59,380,88"/>
+<area shape="rect" id="node7" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; omega::String, Mesh * \&gt;" alt="" coords="145,112,380,141"/>
+<area shape="rect" id="node9" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, ComputeShader * \&gt;" alt="" coords="139,165,387,195"/>
+<area shape="rect" id="node11" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, DataSource * \&gt;" alt="" coords="152,219,373,248"/>
+<area shape="rect" id="node13" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Font * \&gt;" alt="" coords="172,272,353,301"/>
+<area shape="rect" id="node15" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, FragmentShader * \&gt;" alt="" coords="137,325,388,355"/>
+<area shape="rect" id="node17" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, GeometryShader * \&gt;" alt="" coords="136,379,389,408"/>
+<area shape="rect" id="node19" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Node * \&gt;" alt="" coords="171,432,355,461"/>
+<area shape="rect" id="node21" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Service * \&gt;" alt="" coords="164,485,361,515"/>
+<area shape="rect" id="node23" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, ServiceAllocator \&gt;" alt="" coords="144,539,381,568"/>
+<area shape="rect" id="node25" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Texture * \&gt;" alt="" coords="164,592,361,621"/>
+<area shape="rect" id="node27" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, VertexShader * \&gt;" alt="" coords="145,645,380,675"/>
+<area shape="rect" id="node29" href="$classomega_1_1_dictionary.html" title="omega::Dictionary\&lt; K, T \&gt;" alt="" coords="176,699,349,728"/>
+</map>

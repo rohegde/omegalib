@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::ServiceManager Class Reference</title>
+<title>omegalib: omega::ServiceManager Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -42,50 +41,48 @@
 </div>
 <div class="contents">
 <!-- doxytag: class="omega::ServiceManager" -->
-<p><code>#include &lt;<a class="el" href="_service_manager_8h_source.html">ServiceManager.h</a>&gt;</code></p>
-
 <p><a href="classomega_1_1_service_manager-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a6a61de185385510658e0e085415c3605">ServiceManager</a> (<a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *sys)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#ac3bc8fda8101248f2aeb8f105fe4e135">~ServiceManager</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a638737d7c4f2a959c45108cd2ff8c2d0">registerService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName, <a class="el" href="namespaceomega.html#aa4889d14213b4b4aa1d06e87d936b035">ServiceAllocator</a> creationFunc)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#aa4889d14213b4b4aa1d06e87d936b035">ServiceAllocator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a1ba756d952f072be4ae9776e90a33a97">findServiceAllocator</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find an input service allocator given the input service name.  <a href="#a1ba756d952f072be4ae9776e90a33a97"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a35ecc4256bfefbaf93433452cd189465">addService</a> (<a class="el" href="classomega_1_1_service.html">Service</a> *svc)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aa8b4886e830f69507941add8cdab5a78">removeService</a> (<a class="el" href="classomega_1_1_service.html">Service</a> *svc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a3a314934bd3bf53211f7cb089bb511e7">ServiceManager</a> (<a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *sys)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a87b207df58ccd316320d490c003c7eda">~ServiceManager</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a2cda9acff32f70d5b5717850ba10b0a0">registerService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName, <a class="el" href="namespaceomega.html#aa4889d14213b4b4aa1d06e87d936b035">ServiceAllocator</a> creationFunc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#aa4889d14213b4b4aa1d06e87d936b035">ServiceAllocator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a88056f0cbe47c7a5c41e717d6c4554ed">findServiceAllocator</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find an input service allocator given the input service name.  <a href="#a88056f0cbe47c7a5c41e717d6c4554ed"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aaaa94b28db1a66f95aa9240deaef0642">addService</a> (<a class="el" href="classomega_1_1_service.html">Service</a> *svc)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a52e16c716876e27e36e4f9c8c9d243e9">removeService</a> (<a class="el" href="classomega_1_1_service.html">Service</a> *svc)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_service.html">Service</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a54e8585688121fcb0efb09e8e86359f1">findService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName)</td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">T *&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a3d923425e03d07a8f10caf284b9b5510">findService</a> (<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> svcName)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a2325e98dbfe9fef046c7eb4d4ad41e81">setup</a> (<a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;settings)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a8406e21bcf47fd5844b1f550c6e0bbc2">initialize</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aab37ac7ae784013fe0f4330a73b67a39">start</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aba412504b87ad55cf7fe06839eb48a79">stop</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a49b08dbf1a021cc6c5b46f394c54137e">dispose</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a25b76fbd283de52ed751e13f582e6c73">poll</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#acd28ed523b6a6fbc99c3d09e8a8453b5">setup</a> (<a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;settings)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aaeacb50f0461d68542012a7ca2026f03">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a152abcaf7cea5a41322551ddef4234a4">start</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a4f3917b47ecc25ef4887970d82403585">stop</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a665342aeebd30201d1068f1f836405f4">dispose</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a13642601bad15bde801d637fe68c72cb">poll</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a207c1b6c93eb7cf2b7f683b96ce7e43b">getAvailableEvents</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#ab63b161653f936a964fbb76c06637463">getDroppedEvents</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a785068849068baf7707e8e071fe04944">resetDroppedEvents</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a4374cffd7b07b0f4ab8aa68562b43509">getEvents</a> (<a class="el" href="structomega_1_1_event.html">Event</a> *ptr, int maxEvents)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aa73069f9a00fce6f8e985c3753750043">getEvent</a> (int index)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a6d1cb33ae28451c75fbfc029c8772531">clearEvents</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#af6d35a963819f680ff712e666f94e34b">lockEvents</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#ab55fb27021d91631f9c9457aff7db385">unlockEvents</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#af0549675dfbf41d9d81e62d8f99ca08c">getEvents</a> (<a class="el" href="classomega_1_1_event.html">Event</a> *ptr, int maxEvents)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#ad8b22f9092233d0e6e427123a4b8e39c">getEvent</a> (int index)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a04b3208b5a71ae654ca96fe711f0910f">clearEvents</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a83dc5e54d17a3d33a9da0e1032c4b404">lockEvents</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#af724e6e311b4ade1ae573eed76a0c2db">unlockEvents</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#aabb0fe2ee55541ab672569b03eb1b8c2">MaxEvents</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a797f4f6b666260e052dbfea3280701c3">MaxEvents</a> = OMEGA_MAX_EVENTS</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service_manager.html#a6474ceb8669761e879329b39c3afb899">Service</a></td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6a61de185385510658e0e085415c3605"></a><!-- doxytag: member="omega::ServiceManager::ServiceManager" ref="a6a61de185385510658e0e085415c3605" args="(SystemManager *sys)" -->
+<a class="anchor" id="a3a314934bd3bf53211f7cb089bb511e7"></a><!-- doxytag: member="omega::ServiceManager::ServiceManager" ref="a3a314934bd3bf53211f7cb089bb511e7" args="(SystemManager *sys)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">omega::ServiceManager::ServiceManager </td>
+          <td class="memname">ServiceManager::ServiceManager </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *&nbsp;</td>
           <td class="paramname"> <em>sys</em></td>
@@ -98,12 +95,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac3bc8fda8101248f2aeb8f105fe4e135"></a><!-- doxytag: member="omega::ServiceManager::~ServiceManager" ref="ac3bc8fda8101248f2aeb8f105fe4e135" args="()" -->
+<a class="anchor" id="a87b207df58ccd316320d490c003c7eda"></a><!-- doxytag: member="omega::ServiceManager::~ServiceManager" ref="a87b207df58ccd316320d490c003c7eda" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">omega::ServiceManager::~ServiceManager </td>
+          <td class="memname">ServiceManager::~ServiceManager </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -116,12 +113,12 @@ Friends</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a35ecc4256bfefbaf93433452cd189465"></a><!-- doxytag: member="omega::ServiceManager::addService" ref="a35ecc4256bfefbaf93433452cd189465" args="(Service *svc)" -->
+<a class="anchor" id="aaaa94b28db1a66f95aa9240deaef0642"></a><!-- doxytag: member="omega::ServiceManager::addService" ref="aaaa94b28db1a66f95aa9240deaef0642" args="(Service *svc)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::addService </td>
+          <td class="memname">void ServiceManager::addService </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_service.html">Service</a> *&nbsp;</td>
           <td class="paramname"> <em>svc</em></td>
@@ -134,12 +131,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6d1cb33ae28451c75fbfc029c8772531"></a><!-- doxytag: member="omega::ServiceManager::clearEvents" ref="a6d1cb33ae28451c75fbfc029c8772531" args="()" -->
+<a class="anchor" id="a04b3208b5a71ae654ca96fe711f0910f"></a><!-- doxytag: member="omega::ServiceManager::clearEvents" ref="a04b3208b5a71ae654ca96fe711f0910f" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::clearEvents </td>
+          <td class="memname">void ServiceManager::clearEvents </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -151,12 +148,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a49b08dbf1a021cc6c5b46f394c54137e"></a><!-- doxytag: member="omega::ServiceManager::dispose" ref="a49b08dbf1a021cc6c5b46f394c54137e" args="()" -->
+<a class="anchor" id="a665342aeebd30201d1068f1f836405f4"></a><!-- doxytag: member="omega::ServiceManager::dispose" ref="a665342aeebd30201d1068f1f836405f4" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::dispose </td>
+          <td class="memname">void ServiceManager::dispose </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -206,12 +203,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a1ba756d952f072be4ae9776e90a33a97"></a><!-- doxytag: member="omega::ServiceManager::findServiceAllocator" ref="a1ba756d952f072be4ae9776e90a33a97" args="(String svcName)" -->
+<a class="anchor" id="a88056f0cbe47c7a5c41e717d6c4554ed"></a><!-- doxytag: member="omega::ServiceManager::findServiceAllocator" ref="a88056f0cbe47c7a5c41e717d6c4554ed" args="(String svcName)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceomega.html#aa4889d14213b4b4aa1d06e87d936b035">ServiceAllocator</a> omega::ServiceManager::findServiceAllocator </td>
+          <td class="memname"><a class="el" href="namespaceomega.html#aa4889d14213b4b4aa1d06e87d936b035">ServiceAllocator</a> ServiceManager::findServiceAllocator </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td>
           <td class="paramname"> <em>svcName</em></td>
@@ -261,12 +258,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aa73069f9a00fce6f8e985c3753750043"></a><!-- doxytag: member="omega::ServiceManager::getEvent" ref="aa73069f9a00fce6f8e985c3753750043" args="(int index)" -->
+<a class="anchor" id="ad8b22f9092233d0e6e427123a4b8e39c"></a><!-- doxytag: member="omega::ServiceManager::getEvent" ref="ad8b22f9092233d0e6e427123a4b8e39c" args="(int index)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structomega_1_1_event.html">Event</a>* omega::ServiceManager::getEvent </td>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html">Event</a> * ServiceManager::getEvent </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>index</em></td>
@@ -279,14 +276,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a4374cffd7b07b0f4ab8aa68562b43509"></a><!-- doxytag: member="omega::ServiceManager::getEvents" ref="a4374cffd7b07b0f4ab8aa68562b43509" args="(Event *ptr, int maxEvents)" -->
+<a class="anchor" id="af0549675dfbf41d9d81e62d8f99ca08c"></a><!-- doxytag: member="omega::ServiceManager::getEvents" ref="af0549675dfbf41d9d81e62d8f99ca08c" args="(Event *ptr, int maxEvents)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int omega::ServiceManager::getEvents </td>
+          <td class="memname">int ServiceManager::getEvents </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_event.html">Event</a> *&nbsp;</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_event.html">Event</a> *&nbsp;</td>
           <td class="paramname"> <em>ptr</em>, </td>
         </tr>
         <tr>
@@ -306,12 +303,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a8406e21bcf47fd5844b1f550c6e0bbc2"></a><!-- doxytag: member="omega::ServiceManager::initialize" ref="a8406e21bcf47fd5844b1f550c6e0bbc2" args="()" -->
+<a class="anchor" id="aaeacb50f0461d68542012a7ca2026f03"></a><!-- doxytag: member="omega::ServiceManager::initialize" ref="aaeacb50f0461d68542012a7ca2026f03" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::initialize </td>
+          <td class="memname">void ServiceManager::initialize </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -323,12 +320,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="af6d35a963819f680ff712e666f94e34b"></a><!-- doxytag: member="omega::ServiceManager::lockEvents" ref="af6d35a963819f680ff712e666f94e34b" args="()" -->
+<a class="anchor" id="a83dc5e54d17a3d33a9da0e1032c4b404"></a><!-- doxytag: member="omega::ServiceManager::lockEvents" ref="a83dc5e54d17a3d33a9da0e1032c4b404" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::lockEvents </td>
+          <td class="memname">void ServiceManager::lockEvents </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -340,12 +337,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a25b76fbd283de52ed751e13f582e6c73"></a><!-- doxytag: member="omega::ServiceManager::poll" ref="a25b76fbd283de52ed751e13f582e6c73" args="()" -->
+<a class="anchor" id="a13642601bad15bde801d637fe68c72cb"></a><!-- doxytag: member="omega::ServiceManager::poll" ref="a13642601bad15bde801d637fe68c72cb" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::poll </td>
+          <td class="memname">void ServiceManager::poll </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -357,12 +354,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a638737d7c4f2a959c45108cd2ff8c2d0"></a><!-- doxytag: member="omega::ServiceManager::registerService" ref="a638737d7c4f2a959c45108cd2ff8c2d0" args="(String svcName, ServiceAllocator creationFunc)" -->
+<a class="anchor" id="a2cda9acff32f70d5b5717850ba10b0a0"></a><!-- doxytag: member="omega::ServiceManager::registerService" ref="a2cda9acff32f70d5b5717850ba10b0a0" args="(String svcName, ServiceAllocator creationFunc)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::registerService </td>
+          <td class="memname">void ServiceManager::registerService </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td>
           <td class="paramname"> <em>svcName</em>, </td>
@@ -384,12 +381,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aa8b4886e830f69507941add8cdab5a78"></a><!-- doxytag: member="omega::ServiceManager::removeService" ref="aa8b4886e830f69507941add8cdab5a78" args="(Service *svc)" -->
+<a class="anchor" id="a52e16c716876e27e36e4f9c8c9d243e9"></a><!-- doxytag: member="omega::ServiceManager::removeService" ref="a52e16c716876e27e36e4f9c8c9d243e9" args="(Service *svc)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::removeService </td>
+          <td class="memname">void ServiceManager::removeService </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_service.html">Service</a> *&nbsp;</td>
           <td class="paramname"> <em>svc</em></td>
@@ -419,12 +416,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a2325e98dbfe9fef046c7eb4d4ad41e81"></a><!-- doxytag: member="omega::ServiceManager::setup" ref="a2325e98dbfe9fef046c7eb4d4ad41e81" args="(Setting &amp;settings)" -->
+<a class="anchor" id="acd28ed523b6a6fbc99c3d09e8a8453b5"></a><!-- doxytag: member="omega::ServiceManager::setup" ref="acd28ed523b6a6fbc99c3d09e8a8453b5" args="(Setting &amp;settings)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::setup </td>
+          <td class="memname">void ServiceManager::setup </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>settings</em></td>
@@ -437,12 +434,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aab37ac7ae784013fe0f4330a73b67a39"></a><!-- doxytag: member="omega::ServiceManager::start" ref="aab37ac7ae784013fe0f4330a73b67a39" args="()" -->
+<a class="anchor" id="a152abcaf7cea5a41322551ddef4234a4"></a><!-- doxytag: member="omega::ServiceManager::start" ref="a152abcaf7cea5a41322551ddef4234a4" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::start </td>
+          <td class="memname">void ServiceManager::start </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -454,12 +451,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aba412504b87ad55cf7fe06839eb48a79"></a><!-- doxytag: member="omega::ServiceManager::stop" ref="aba412504b87ad55cf7fe06839eb48a79" args="()" -->
+<a class="anchor" id="a4f3917b47ecc25ef4887970d82403585"></a><!-- doxytag: member="omega::ServiceManager::stop" ref="a4f3917b47ecc25ef4887970d82403585" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::stop </td>
+          <td class="memname">void ServiceManager::stop </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -471,12 +468,12 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ab55fb27021d91631f9c9457aff7db385"></a><!-- doxytag: member="omega::ServiceManager::unlockEvents" ref="ab55fb27021d91631f9c9457aff7db385" args="()" -->
+<a class="anchor" id="af724e6e311b4ade1ae573eed76a0c2db"></a><!-- doxytag: member="omega::ServiceManager::unlockEvents" ref="af724e6e311b4ade1ae573eed76a0c2db" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ServiceManager::unlockEvents </td>
+          <td class="memname">void ServiceManager::unlockEvents </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -503,12 +500,12 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="aabb0fe2ee55541ab672569b03eb1b8c2"></a><!-- doxytag: member="omega::ServiceManager::MaxEvents" ref="aabb0fe2ee55541ab672569b03eb1b8c2" args="" -->
+<a class="anchor" id="a797f4f6b666260e052dbfea3280701c3"></a><!-- doxytag: member="omega::ServiceManager::MaxEvents" ref="a797f4f6b666260e052dbfea3280701c3" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int <a class="el" href="classomega_1_1_service_manager.html#aabb0fe2ee55541ab672569b03eb1b8c2">omega::ServiceManager::MaxEvents</a><code> [static]</code></td>
+          <td class="memname">const int <a class="el" href="classomega_1_1_service_manager.html#a797f4f6b666260e052dbfea3280701c3">ServiceManager::MaxEvents</a> = OMEGA_MAX_EVENTS<code> [static]</code></td>
         </tr>
       </table>
 </div>
@@ -516,11 +513,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_service_manager_8h_source.html">ServiceManager.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:26 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

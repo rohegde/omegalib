@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::Service Class Reference</title>
+<title>omegalib: omega::Service Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -37,23 +36,31 @@
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>omega::Service Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::Service" --><!-- doxytag: inherits="omega::DynamicObject" -->
-<p><code>#include &lt;<a class="el" href="_service_8h_source.html">Service.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::Service" --><!-- doxytag: inherits="omega::DynamicObject" --><div class="dynheader">
+Inheritance diagram for omega::Service:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1_service__inherit__graph.png" border="0" usemap="#omega_1_1_service_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1_service_inherit__map" id="omega_1_1_service_inherit__map">
+<area shape="rect" id="node5" href="classomega_1_1_direct_x_input_service.html" title="omega::DirectXInputService" alt="" coords="385,5,564,35"/><area shape="rect" id="node7" href="classomega_1_1_keyboard_service.html" title="omega::KeyboardService" alt="" coords="392,59,557,88"/><area shape="rect" id="node9" href="classomega_1_1_mouse_service.html" title="omega::MouseService" alt="" coords="400,112,549,141"/><area shape="rect" id="node11" href="classomega_1_1_natural_point_service.html" title="omega::NaturalPointService" alt="" coords="384,165,565,195"/><area shape="rect" id="node13" href="classomega_1_1_net_service.html" title="omega::NetService" alt="" coords="409,219,540,248"/><area shape="rect" id="node15" href="classomega_1_1_observer_update_service.html" title="omega::ObserverUpdateService" alt="" coords="373,272,576,301"/><area shape="rect" id="node17" href="classomega_1_1_open_n_i_service.html" title="omega::OpenNIService" alt="" coords="397,325,552,355"/><area shape="rect" id="node19" href="classomega_1_1_opti_track_service.html" title="omega::OptiTrackService" alt="" coords="392,379,557,408"/><area shape="rect" id="node21" href="classomega_1_1_p_q_service.html" title="omega::PQService" alt="" coords="409,432,540,461"/><area shape="rect" id="node23" href="classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="400,485,549,515"/><area shape="rect" id="node25" href="classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,539,548,568"/><area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,272,164,301"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_service-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837fa">ServiceType</a> { <a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa7cf050220eb1f7060730d03f4c61f98b">Pointer</a>, 
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837fa">ServiceType</a> { <br/>
+&nbsp;&nbsp;<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa7cf050220eb1f7060730d03f4c61f98b">Pointer</a>, 
 <a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faab9203a7f567011eb2b13ca05fc765549">Mocap</a>, 
 <a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa2fb7f2cb53da9c03c8ea0d94a7c99410">Keyboard</a>, 
-<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4">Controller</a>
+<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4">Controller</a>, 
+<br/>
+&nbsp;&nbsp;<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736">UI</a>
+<br/>
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a40b411be842d43ff093833bf1a2e125a">ServicePollPriority</a> { <a class="el" href="classomega_1_1_service.html#a40b411be842d43ff093833bf1a2e125aa42a166659cf68c88181cdd94eef44263">PollFirst</a>, 
 <a class="el" href="classomega_1_1_service.html#a40b411be842d43ff093833bf1a2e125aa54ab5a963280f4ffec0105a159999b38">PollNormal</a>, 
@@ -75,16 +82,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a2119d75beac303c22c19b6f1695622e8">dispose</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a336a88f7c4e40ac848b03be518ec10aa">lockEvents</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#ab8aff9128c693e90e2a1e46e12ea9c30">unlockEvents</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#aa973a3c5a601a7d439c6660f61233d4c">writeHead</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a699055115f1974bef01e6a07be33c3d7">readHead</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a4f90f652aefa49b951e17b371664a3b9">readTail</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#ac45455d97737e3b828593f4081272ef0">getEvent</a> (int index)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a1228f0703d6720ec1357fb32bd8377cf">setLeftHandedSystem</a> (bool leftHanded)</td></tr>
-<tr><td colspan="2"><h2><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#aea5854aaffb84123bd9293355cb8e9ec">bLeftHandedSystem</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a2ebbbc29803e12d76c838e2450f61762">lockEvents</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a4988b037034f1227990a1e5503f41a50">unlockEvents</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a8c48e9cfc1da15d318cfd8c8799b250d">writeHead</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a16672cb19bd571a49badc76c2dbb9998">readHead</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a68cf2538b4d4874483d9a830dc41eb02">readTail</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html">Event</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a9c2443cf7582e17d9afb113c0d145516">getEvent</a> (int index)</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#afbee2935cd32a05038cdd44f6d753735">ServiceManager</a></td></tr>
@@ -131,6 +134,8 @@ Friends</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a77fd0da037ab225e53b0949e06a837faa2fb7f2cb53da9c03c8ea0d94a7c99410"></a><!-- doxytag: member="Keyboard" ref="a77fd0da037ab225e53b0949e06a837faa2fb7f2cb53da9c03c8ea0d94a7c99410" args="" -->Keyboard</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4"></a><!-- doxytag: member="Controller" ref="a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4" args="" -->Controller</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736"></a><!-- doxytag: member="UI" ref="a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736" args="" -->UI</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -189,16 +194,16 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#aaaa674b1c45f0a7ef1ed0a83b7f9d50a">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_keyboard_service.html#a0b8b57a16ca10ff24c0dc211be61741a">omega::KeyboardService</a>, <a class="el" href="classomega_1_1_mouse_service.html#ad81f7b65381df16e0bb4128db0cee9af">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#a65a3acdc98b7121a3924cdb997b759a8">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#a90601a2b48b9fb822737a120f7116dae">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a2e17f9fef1867ee7387326b7d87603f5">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a121d86946fdefa8f51fcb3ba3afe283f">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#a76888774ca5152b86d057ca915688d53">omega::OptiTrackService</a>, and <a class="el" href="classomega_1_1_p_q_service.html#a1fced430607c4596a6b48b735ea7629d">omega::PQService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#a958c16360ed379262b1cbdd1c285e2dc">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_keyboard_service.html#a3c27e69ac0904b7d5fe61d666549e26b">omega::KeyboardService</a>, <a class="el" href="classomega_1_1_mouse_service.html#a524d8b5821e2a7eab1e7473c7dad98ee">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#abfd17735f0c9a8f22abd31f8aa8fef56">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#ae1c2c5d07a393c03a1f397fb047c86da">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a4d27d5900b6409a4e6b72ff019fefd63">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#aec205e7e76ce3f27d8e08f9e100aa8b5">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#ab32fd416d10a17ef4d7c408a3d97562b">omega::OptiTrackService</a>, <a class="el" href="classomega_1_1_p_q_service.html#aa74ae45e2a860fcfa060b368d46074e3">omega::PQService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#aaa15a97f6895350d058a2673f1078b6c">omega::VRPNService</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac45455d97737e3b828593f4081272ef0"></a><!-- doxytag: member="omega::Service::getEvent" ref="ac45455d97737e3b828593f4081272ef0" args="(int index)" -->
+<a class="anchor" id="a9c2443cf7582e17d9afb113c0d145516"></a><!-- doxytag: member="omega::Service::getEvent" ref="a9c2443cf7582e17d9afb113c0d145516" args="(int index)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structomega_1_1_event.html">Event</a>* omega::Service::getEvent </td>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html">Event</a> * Service::getEvent </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>index</em></td>
@@ -235,7 +240,6 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> omega::Service::getName </td>
           <td>(</td>
-          <td class="paramtype">void&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
@@ -278,16 +282,16 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#a7cfe820cfd789c437c0de4416bd03644">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_keyboard_service.html#a6745fae15361d544dc188d0206f9a59b">omega::KeyboardService</a>, <a class="el" href="classomega_1_1_mouse_service.html#a7f532706ee89a2ac1934866f521f8151">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#acdbb5ff0aaadc544aace5835997a29cd">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#a2f326d109cda4131cd2ebf68f4b53695">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a56509d1e23106143a352789007dd3fbc">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a42a82704ef998acb5bc8169b2721bf11">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#a3c49b9dfffc05024536274e8ddfe43f9">omega::OptiTrackService</a>, and <a class="el" href="classomega_1_1_p_q_service.html#ace01f6e7be36755aa5dd87ba2cbad066">omega::PQService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#ab2daf8601b2bb4acf921682e264854eb">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_keyboard_service.html#a287c0bb9b2c5bce5b9a13d177f38feb8">omega::KeyboardService</a>, <a class="el" href="classomega_1_1_mouse_service.html#affdaf9c04a3ecabcf7488e47e60ac728">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#a8b28acbdb2aa2cae15e194618f381656">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#ac786733b77e24814bba5fb5fd03155b7">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#ae6b1404ea0d41f10ac625cdaec94d291">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a8653e8e678ba13efae0fd3d116a255d9">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#a40acd9182362f684ea25767223f9d3c0">omega::OptiTrackService</a>, <a class="el" href="classomega_1_1_p_q_service.html#aac5b20cf86f959151e83938c7e9faeac">omega::PQService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#af425aecf93d307d61bbd8995d495ce6a">omega::VRPNService</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a336a88f7c4e40ac848b03be518ec10aa"></a><!-- doxytag: member="omega::Service::lockEvents" ref="a336a88f7c4e40ac848b03be518ec10aa" args="()" -->
+<a class="anchor" id="a2ebbbc29803e12d76c838e2450f61762"></a><!-- doxytag: member="omega::Service::lockEvents" ref="a2ebbbc29803e12d76c838e2450f61762" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Service::lockEvents </td>
+          <td class="memname">void Service::lockEvents </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -306,6 +310,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">virtual void omega::Service::poll </td>
           <td>(</td>
+          <td class="paramtype">void&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline, virtual]</code></td>
@@ -314,16 +319,16 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#ac9577b752f486ebf967279067776838b">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_net_service.html#a2b1f108bb93bf918835d15eb016d0dc3">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a89cdb852de5d99b1d464fa49eee8df6d">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a027ad8c1e3b313cf5f7fd30f4685ea7c">omega::OpenNIService</a>, and <a class="el" href="classomega_1_1_opti_track_service.html#a734c6662786b8580edf1b0957f83567f">omega::OptiTrackService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#afb606f1e643772fe8f7967706fbd0db5">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_net_service.html#a859839e1c5e644da63054c46c3a64ca9">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#ab629d2a3bddf792b8b7d5bbdbd7e8e43">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a206715b29dd323d41e052853ea49caf2">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#afdc1a77a744995805d3dc874ee47727f">omega::OptiTrackService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#aa43f7d1929a27e7d39de48dbe29d0265">omega::VRPNService</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a699055115f1974bef01e6a07be33c3d7"></a><!-- doxytag: member="omega::Service::readHead" ref="a699055115f1974bef01e6a07be33c3d7" args="()" -->
+<a class="anchor" id="a16672cb19bd571a49badc76c2dbb9998"></a><!-- doxytag: member="omega::Service::readHead" ref="a16672cb19bd571a49badc76c2dbb9998" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structomega_1_1_event.html">Event</a>* omega::Service::readHead </td>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html">Event</a> * Service::readHead </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -335,32 +340,14 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4f90f652aefa49b951e17b371664a3b9"></a><!-- doxytag: member="omega::Service::readTail" ref="a4f90f652aefa49b951e17b371664a3b9" args="()" -->
+<a class="anchor" id="a68cf2538b4d4874483d9a830dc41eb02"></a><!-- doxytag: member="omega::Service::readTail" ref="a68cf2538b4d4874483d9a830dc41eb02" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structomega_1_1_event.html">Event</a>* omega::Service::readTail </td>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html">Event</a> * Service::readTail </td>
           <td>(</td>
           <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a1228f0703d6720ec1357fb32bd8377cf"></a><!-- doxytag: member="omega::Service::setLeftHandedSystem" ref="a1228f0703d6720ec1357fb32bd8377cf" args="(bool leftHanded)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::Service::setLeftHandedSystem </td>
-          <td>(</td>
-          <td class="paramtype">bool&nbsp;</td>
-          <td class="paramname"> <em>leftHanded</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [protected]</code></td>
         </tr>
@@ -404,7 +391,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_mouse_service.html#ae581a4b7d79ae0a3eebcb9b9a1813089">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#a58481426970855afc73bb7e43180d331">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#a55b78c188c2150f755a7a8a54fa92e0b">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#ade0b67ac01739724314a7b1384041024">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#af82b14196d78a6b03538f37a17a7b11b">omega::OpenNIService</a>, and <a class="el" href="classomega_1_1_p_q_service.html#a8d918efd4fb13a52b010971bef79499c">omega::PQService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_mouse_service.html#aaae9de51fd6ccc33e3b48602cf9cdb80">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#a20e9691b58b6e3e3ec8eedf82b5dcd81">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#a59aaeb3dd188c974747f77f73bba1a19">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a272b991dc094d4a5540433c091d85e8d">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a05a369063d83c11d4a54bbbec9f5366c">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_p_q_service.html#a51dac273bc676f993529ccfa2ac78249">omega::PQService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#a43fdfcda6b26e09b7dbafb1653d48122">omega::VRPNService</a>.</p>
 
 </div>
 </div>
@@ -423,7 +410,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_natural_point_service.html#ac1220de44076c5979bb4ee7f96049561">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a5ea9a3207e4f163de8d60a543d68af41">omega::OpenNIService</a>, and <a class="el" href="classomega_1_1_opti_track_service.html#a6c367633e988513c065f29ca6241ceae">omega::OptiTrackService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_natural_point_service.html#ae6e5d5a1e027549d3e6441ccddecddb0">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#aefbbd57e273f8f78d811466c10d6f47d">omega::OpenNIService</a>, and <a class="el" href="classomega_1_1_opti_track_service.html#a6d1fc95e7955c94fc2f4abe66d72825f">omega::OptiTrackService</a>.</p>
 
 </div>
 </div>
@@ -442,16 +429,16 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_natural_point_service.html#a31345de42dec085bd34f1a640d9a4945">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a537d6756cd418ef1e627e6a75e8f942a">omega::OpenNIService</a>, and <a class="el" href="classomega_1_1_opti_track_service.html#a88cea922f6382876ec341814123141e4">omega::OptiTrackService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_natural_point_service.html#a0a3d8c2e2167369dd77ec9259d47facb">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a3f8cfe26b750c8307d377ae46d6fc5c4">omega::OpenNIService</a>, and <a class="el" href="classomega_1_1_opti_track_service.html#a1999331c062e5b9ca0981cd24517d91c">omega::OptiTrackService</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab8aff9128c693e90e2a1e46e12ea9c30"></a><!-- doxytag: member="omega::Service::unlockEvents" ref="ab8aff9128c693e90e2a1e46e12ea9c30" args="()" -->
+<a class="anchor" id="a4988b037034f1227990a1e5503f41a50"></a><!-- doxytag: member="omega::Service::unlockEvents" ref="a4988b037034f1227990a1e5503f41a50" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Service::unlockEvents </td>
+          <td class="memname">void Service::unlockEvents </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -463,12 +450,12 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa973a3c5a601a7d439c6660f61233d4c"></a><!-- doxytag: member="omega::Service::writeHead" ref="aa973a3c5a601a7d439c6660f61233d4c" args="()" -->
+<a class="anchor" id="a8c48e9cfc1da15d318cfd8c8799b250d"></a><!-- doxytag: member="omega::Service::writeHead" ref="a8c48e9cfc1da15d318cfd8c8799b250d" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structomega_1_1_event.html">Event</a>* omega::Service::writeHead </td>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html">Event</a> * Service::writeHead </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -494,25 +481,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="aea5854aaffb84123bd9293355cb8e9ec"></a><!-- doxytag: member="omega::Service::bLeftHandedSystem" ref="aea5854aaffb84123bd9293355cb8e9ec" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classomega_1_1_service.html#aea5854aaffb84123bd9293355cb8e9ec">omega::Service::bLeftHandedSystem</a><code> [protected]</code></td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/<a class="el" href="_service_8h_source.html">Service.h</a></li>
-</ul>
-</div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:26 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

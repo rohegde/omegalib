@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::scene::SceneManager Class Reference</title>
+<title>omegalib: omega::scene::SceneManager Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -41,27 +40,32 @@
 <h1>omega::scene::SceneManager Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::scene::SceneManager" --><!-- doxytag: inherits="omega::DynamicObject" -->
-<p><code>#include &lt;<a class="el" href="_scene_manager_8h_source.html">SceneManager.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::scene::SceneManager" --><!-- doxytag: inherits="omega::DynamicObject" --><div class="dynheader">
+Inheritance diagram for omega::scene::SceneManager:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1scene_1_1_scene_manager__inherit__graph.png" border="0" usemap="#omega_1_1scene_1_1_scene_manager_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1scene_1_1_scene_manager_inherit__map" id="omega_1_1scene_1_1_scene_manager_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="25,5,183,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1scene_1_1_scene_manager-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#af8b1627fe1c7ef0b636a34a864629ac6">SceneManager</a> (<a class="el" href="classomega_1_1_gpu_manager.html">omega::GpuManager</a> *gpu)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a26226d07a03bdf8d9642dfcac0962304">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#adbce1645b569940b70a252504593403c">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_gpu_manager.html">GpuManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a2e305d42f3224a2feb247333ad498791">getGpuManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1scene_1_1_scene_node.html">SceneNode</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a72eb54b3787859360f1899eeecea6862">getRootNode</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#adf939a5177da8af97e87ec7ea055db8d">setAmbientLightColor</a> (const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_color.html">Color</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a4ae92eb4051cdb11418edf6aaa2228e9">getAmbientLightColor</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a4a3314eb27f94119952a99a9fe7be019">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#aaab4ffd1696f6e66cc6ed4c31a45a313">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#ab2be23bb89b358ff01a4e4f37ba25d68">handleEvent</a> (const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a7914fe93ce80daee78fadb3bd27a8a64">handleEvent</a> (const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#ab5e3a64f8dd6813135c870d04c5d4a4e">addActor</a> (<a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *actor)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a3451c4f38ed6e3265453731094cce2b4">removeActor</a> (<a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *actor)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a5b48d14d2ac0a3e4ad19579911cd80be">addRenderPass</a> (<a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *pass, bool addToFront=false)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a96504f071e67e217329dbd9c18bc8d8f">removeRenderPass</a> (<a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *pass)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a57a565f040dcb1c9905762bcd2b9dded">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a79a2af07c478aecda3d63f92bc14117c">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a0a9891341352ecd7c2e408de8c60ffd9">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a0269244827f3d5a1f4f1f08746194a54">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a207d7bc0cfdcccb73a1401d4b7d7bc13">addActor</a> (<a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *actor)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#aee865366296661914f8c406b8ef28760">removeActor</a> (<a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *actor)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#aa07b3742391a1cdabd69f55d6ab2dd30">addRenderPass</a> (<a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *pass, bool addToFront=false)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#aad4659ee2cd25389d4c51016dfc9f50e">removeRenderPass</a> (<a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *pass)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1scene_1_1_light.html">Light</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#afc74d3a41ff314be28c33e1130e67b44">getLight</a> (int num)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#ac057668a5526a20d6eea6f88ce3e1b97">getRenderer</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
@@ -88,12 +92,12 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="ab5e3a64f8dd6813135c870d04c5d4a4e"></a><!-- doxytag: member="omega::scene::SceneManager::addActor" ref="ab5e3a64f8dd6813135c870d04c5d4a4e" args="(Actor *actor)" -->
+<a class="anchor" id="a207d7bc0cfdcccb73a1401d4b7d7bc13"></a><!-- doxytag: member="omega::scene::SceneManager::addActor" ref="a207d7bc0cfdcccb73a1401d4b7d7bc13" args="(Actor *actor)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::addActor </td>
+          <td class="memname">void SceneManager::addActor </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *&nbsp;</td>
           <td class="paramname"> <em>actor</em></td>
@@ -106,12 +110,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5b48d14d2ac0a3e4ad19579911cd80be"></a><!-- doxytag: member="omega::scene::SceneManager::addRenderPass" ref="a5b48d14d2ac0a3e4ad19579911cd80be" args="(RenderPass *pass, bool addToFront=false)" -->
+<a class="anchor" id="aa07b3742391a1cdabd69f55d6ab2dd30"></a><!-- doxytag: member="omega::scene::SceneManager::addRenderPass" ref="aa07b3742391a1cdabd69f55d6ab2dd30" args="(RenderPass *pass, bool addToFront=false)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::addRenderPass </td>
+          <td class="memname">void SceneManager::addRenderPass </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *&nbsp;</td>
           <td class="paramname"> <em>pass</em>, </td>
@@ -133,12 +137,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4a3314eb27f94119952a99a9fe7be019"></a><!-- doxytag: member="omega::scene::SceneManager::draw" ref="a4a3314eb27f94119952a99a9fe7be019" args="(const DrawContext &amp;context)" -->
+<a class="anchor" id="a57a565f040dcb1c9905762bcd2b9dded"></a><!-- doxytag: member="omega::scene::SceneManager::draw" ref="a57a565f040dcb1c9905762bcd2b9dded" args="(const DrawContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::draw </td>
+          <td class="memname">void SceneManager::draw </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>context</em></td>
@@ -237,14 +241,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7914fe93ce80daee78fadb3bd27a8a64"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="a7914fe93ce80daee78fadb3bd27a8a64" args="(const Event &amp;evt, DrawContext &amp;context)" -->
+<a class="anchor" id="a0269244827f3d5a1f4f1f08746194a54"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="a0269244827f3d5a1f4f1f08746194a54" args="(const Event &amp;evt, DrawContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool omega::scene::SceneManager::handleEvent </td>
+          <td class="memname">bool SceneManager::handleEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>evt</em>, </td>
         </tr>
         <tr>
@@ -264,14 +268,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab2be23bb89b358ff01a4e4f37ba25d68"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="ab2be23bb89b358ff01a4e4f37ba25d68" args="(const Event &amp;evt, UpdateContext &amp;context)" -->
+<a class="anchor" id="a0a9891341352ecd7c2e408de8c60ffd9"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="a0a9891341352ecd7c2e408de8c60ffd9" args="(const Event &amp;evt, UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool omega::scene::SceneManager::handleEvent </td>
+          <td class="memname">bool SceneManager::handleEvent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>evt</em>, </td>
         </tr>
         <tr>
@@ -291,12 +295,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a26226d07a03bdf8d9642dfcac0962304"></a><!-- doxytag: member="omega::scene::SceneManager::initialize" ref="a26226d07a03bdf8d9642dfcac0962304" args="()" -->
+<a class="anchor" id="adbce1645b569940b70a252504593403c"></a><!-- doxytag: member="omega::scene::SceneManager::initialize" ref="adbce1645b569940b70a252504593403c" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::initialize </td>
+          <td class="memname">void SceneManager::initialize </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -308,12 +312,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3451c4f38ed6e3265453731094cce2b4"></a><!-- doxytag: member="omega::scene::SceneManager::removeActor" ref="a3451c4f38ed6e3265453731094cce2b4" args="(Actor *actor)" -->
+<a class="anchor" id="aee865366296661914f8c406b8ef28760"></a><!-- doxytag: member="omega::scene::SceneManager::removeActor" ref="aee865366296661914f8c406b8ef28760" args="(Actor *actor)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::removeActor </td>
+          <td class="memname">void SceneManager::removeActor </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *&nbsp;</td>
           <td class="paramname"> <em>actor</em></td>
@@ -326,12 +330,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a96504f071e67e217329dbd9c18bc8d8f"></a><!-- doxytag: member="omega::scene::SceneManager::removeRenderPass" ref="a96504f071e67e217329dbd9c18bc8d8f" args="(RenderPass *pass)" -->
+<a class="anchor" id="aad4659ee2cd25389d4c51016dfc9f50e"></a><!-- doxytag: member="omega::scene::SceneManager::removeRenderPass" ref="aad4659ee2cd25389d4c51016dfc9f50e" args="(RenderPass *pass)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::removeRenderPass </td>
+          <td class="memname">void SceneManager::removeRenderPass </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *&nbsp;</td>
           <td class="paramname"> <em>pass</em></td>
@@ -362,12 +366,12 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aaab4ffd1696f6e66cc6ed4c31a45a313"></a><!-- doxytag: member="omega::scene::SceneManager::update" ref="aaab4ffd1696f6e66cc6ed4c31a45a313" args="(const UpdateContext &amp;context)" -->
+<a class="anchor" id="a79a2af07c478aecda3d63f92bc14117c"></a><!-- doxytag: member="omega::scene::SceneManager::update" ref="a79a2af07c478aecda3d63f92bc14117c" args="(const UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::scene::SceneManager::update </td>
+          <td class="memname">void SceneManager::update </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>context</em></td>
@@ -394,11 +398,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/scene/<a class="el" href="_scene_manager_8h_source.html">SceneManager.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:29 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

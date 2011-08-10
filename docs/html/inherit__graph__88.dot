@@ -1,8 +1,0 @@
-digraph G
-{
-  bgcolor="transparent";
-  edge [fontname="FreeSans.ttf",fontsize="10",labelfontname="FreeSans.ttf",labelfontsize="10"];
-  node [fontname="FreeSans.ttf",fontsize="10",shape=record];
-  rankdir=LR;
-  Node1 [label="omega::math::Plane\< T \>",height=0.2,width=0.4,color="black",URL="$classomega_1_1math_1_1_plane.html",tooltip="Defines a plane in 3D space."];
-}
