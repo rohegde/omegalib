@@ -67,7 +67,7 @@ int main(int argc, char** argv)
 	KinectDemoApplication app;
 	const char* cfgName = "kinect.cfg";
 
-	omain(app, cfgName, "kinect.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "kinect.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	return 0;
 }

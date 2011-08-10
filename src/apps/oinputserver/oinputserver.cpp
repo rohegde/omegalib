@@ -500,7 +500,7 @@ void main(int argc, char** argv)
 {
 	OInputServer app;
 
-	DataSource* dataSource = new FilesystemDataSource("./../../data/");
+	DataSource* dataSource = new FilesystemDataSource(OMEGA_DATA_PATH);
 
 	Config* cfg = new Config("oinputserver.cfg");
 	SystemManager* sys = SystemManager::instance();

@@ -22,6 +22,10 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ######################################################################################################################
+if(NOT OMEGA_USE_OPENNI)
+	message("APP multipleKinectDemo won't be built. Requires OpenNI.")
+	return()
+endif()
 
 #######################################################################################################################
 # Source files

@@ -389,10 +389,8 @@ void OpenNIService::poll(void)
 						omg_UserGenerator = omg_UserGenerator_v->at(j);
 						if( omg_UserGenerator.GetSkeletonCap().IsTracking(aUsers[i]) ) {
 							Event* theEvent = myOpenNI->writeHead();
-							theEvent->resetValidPoints();
 							// j is the kinect index, used as service / device id
 							theEvent->reset(Event::Move, Service::Mocap, aUsers[i], j);
-							theEvent->numberOfPoints = 25;
 
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent, j);
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent, j);
@@ -438,9 +436,7 @@ void OpenNIService::poll(void)
 				else
 				{
 					Event* theEvent = myOpenNI->writeHead();
-					theEvent->resetValidPoints();
 					theEvent->reset(Event::Move, Service::Mocap, aUsers[i]);
-					theEvent->numberOfPoints = 25;
 
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent);
 					joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent);
@@ -476,12 +472,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 		// Transform position
 		Vector3f pos;
 		pos = myTransform[kinectID] * ps;
-
-		theEvent->setValidPoint(joint);
-		theEvent->pointSet[joint][0] = pos[0];
-		theEvent->pointSet[joint][1] = pos[1];
-		theEvent->pointSet[joint][2] = pos[2];
-
+		theEvent->setExtraDataVector3(joint, pos);
 
 		// Event position = Head position (simplifies compatibility with head tracking service)
 		if( joint == OMEGA_SKEL_HEAD ) {
@@ -494,11 +485,7 @@ void OpenNIService::joint2eventPointSet(XnUserID player, XnSkeletonJoint joint, 
 	Vector3f pos;
 	if( getJointPosition(player, joint, pos) ) {
 
-		theEvent->setValidPoint(joint);
-		theEvent->pointSet[joint][0] = pos[0];
-		theEvent->pointSet[joint][1] = pos[1];
-		theEvent->pointSet[joint][2] = pos[2];
-
+		theEvent->setExtraDataVector3(joint, pos);
 
 		// Event position = Head position (simplifies compatibility with head tracking service)
 		if( joint == OMEGA_SKEL_HEAD ) {
