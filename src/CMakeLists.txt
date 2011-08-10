@@ -93,7 +93,10 @@ add_subdirectory(omega)
 
 if(OMEGA_BUILD_APPS)
 	add_subdirectory(apps/eventlogger)
-	add_subdirectory(apps/oinputserver)
+	# oinputserver currently works only on Windows (uses WINSOCK)
+	if(WIN32)
+		add_subdirectory(apps/oinputserver)
+	endif(WIN32)
 endif(OMEGA_BUILD_APPS)
 
 if(OMEGA_USE_DISPLAY)
