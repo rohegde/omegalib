@@ -72,6 +72,18 @@ SET( srcs
 		omega/ui/UIManager.cpp
 		omega/ui/Widget.cpp
 		omega/ui/UserManagerPanel.cpp
+
+		#omega::mvc
+		omega/mvc/Model.cpp
+		omega/mvc/View.cpp
+		omega/mvc/Controller.cpp
+		omega/mvc/View3d.cpp
+
+		#omega::script
+		omega/script/ScriptInterpreter.cpp
+		omega/script/ScriptModule.cpp
+		omega/script/PythonInterpreter.cpp
+		omega/script/PythonModule.cpp
         )
 		
 ###################################################################################################
@@ -123,12 +135,26 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/UIManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/Widget.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ui/UserManagerPanel.h
+
+		#omega::mvc
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/Model.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/View.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/Controller.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/View3d.h
+
+		#omega::script
+		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptModule.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonInterpreter.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonModule.h
         ) 
         
 ###################################################################################################
 SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
 SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
 SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
+SOURCE_GROUP(omega::mvc REGULAR_EXPRESSION omega/mvc/)		
+SOURCE_GROUP(omega::script REGULAR_EXPRESSION omega/script/)		
 
 ###################################################################################################
 # Setup compile info
