@@ -49,6 +49,8 @@ namespace ui
 		Container(UIManager* mng);
 		virtual ~Container();
 
+		virtual void handleEvent(const omega::Event& evt);
+
 		void load(Setting& setting);
 
 		//! Child management
@@ -87,7 +89,6 @@ namespace ui
 		virtual void updateSize();
 
 	protected:
-		virtual bool processInputEvent(const omega::Event& evt);
 		virtual void update(const omega::UpdateContext& context);
 		virtual void layout();
 

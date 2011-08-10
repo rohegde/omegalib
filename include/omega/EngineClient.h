@@ -67,8 +67,7 @@ namespace omega
 		  myRightBackgroundTexture(NULL) {}
 
 		virtual void initialize();
-		virtual bool handleEvent(const Event& evt, UpdateContext& context);
-		virtual bool handleEvent(const Event& evt, DrawContext& context);
+		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
 		virtual void draw(const DrawContext& context);
 

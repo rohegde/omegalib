@@ -92,7 +92,7 @@ void VtkViewerClient::initialize()
 void VtkViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
-	ui->setEventHandler(this);
+	ui->setUIEventHandler(this);
 
 	//! Load and set default font.
 	FontManager* fm = getFontManager();
@@ -131,6 +131,19 @@ void VtkViewerClient::initUI()
 		root->setLayout(Container::LayoutVertical);
 		UserManagerPanel* ump = new UserManagerPanel(ui);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerClient::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == Service::UI) 
+	{
+		handleUIEvent(evt);
+	}
+	else
+	{
+		EngineClient::handleEvent(evt);
 	}
 }
 

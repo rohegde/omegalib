@@ -59,6 +59,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Event.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/IEventListener.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Lock.h
         ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Service.h

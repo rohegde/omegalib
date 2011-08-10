@@ -29,6 +29,7 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
+#include "IEventListener.h"
 
 namespace omega
 {
@@ -103,7 +104,7 @@ namespace omega
 	class ApplicationServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationClient: public DynamicObject
+	class OMEGA_API ApplicationClient: public DynamicObject, public IEventListener
 	{
 	friend class DisplaySystem;
 	public:
@@ -116,8 +117,7 @@ namespace omega
 
 		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
-		virtual bool handleEvent(const Event& evt, DrawContext& context) { return false; }
-		virtual bool handleEvent(const Event& evt, UpdateContext& context) { return false; }
+		virtual void handleEvent(const Event& evt) { }
 
 		ApplicationServer* getServer() { return myServer; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
@@ -136,7 +136,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationServer: public DynamicObject
+	class ApplicationServer: public DynamicObject, public IEventListener
 	{
 	public:
 		ApplicationServer(Application* app): myApplication(app) {}
@@ -145,7 +145,7 @@ namespace omega
 		virtual void initialize() {}
 		virtual void finalize() {}
 		virtual void update(const UpdateContext& context) {}
-		virtual bool handleEvent(const Event& evt, const UpdateContext& context) { return false; }
+		virtual void handleEvent(const Event& evt) { }
 
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		Application* getApplication() { return myApplication; }

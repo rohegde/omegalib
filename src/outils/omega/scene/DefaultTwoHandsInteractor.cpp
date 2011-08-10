@@ -47,7 +47,7 @@ void DefaultTwoHandsInteractor::initialize(const String& observerUpdateServiceNa
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& context) 
+void DefaultTwoHandsInteractor::handleEvent(const Event& evt) 
 {
 	if(evt.getSourceId() == myActiveUserId)
 	{
@@ -73,34 +73,6 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, UpdateContext& con
 
 	if(myNode != NULL)
 	{
-		if(evt.getSourceId() == myActiveUserId)
-		{
-			if(myHandsValid)
-			{
-				if(myNode->isSelected())
-				{
-					Vector3f pos = (myLeftHand + myRightHand) / 2;
-					float size = (myLeftHand - myRightHand).norm() * myInitialScale;
-					
-					myNode->setPosition(pos - myInitialPosition);
-					myNode->setScale(size, size, size);
-
-					Vector3f dir = myLeftHand - myRightHand;
-					dir.normalize();
-					Quaternion q = Math::buildRotation(myInitialHandDirection, dir, Vector3f::Zero()) * myInitialOrientation;
-					myNode->setOrientation(q);
-				}
-			}
-		}
-	}
-	return false; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& context) 
-{
-	if(myNode != NULL)
-	{
 		if(evt.getType() == Event::Down)
 		{
 			if(myHandsValid)
@@ -121,19 +93,30 @@ bool DefaultTwoHandsInteractor::handleEvent(const Event& evt, DrawContext& conte
 				}
 				myInitialPosition = handCenter - myNode->getPosition();
 			}
-			//else if(evt.isFlagSet(Event::Right))
-			//{
-			//	SceneManager* sm = myNode->getScene();
-			//	Light* light = sm->getLight(0);
-			//	light->setEnabled(true);
-			//	light->setPosition(myRightHand);
-			//}
 		}
 		else if(evt.getType() == Event::Up)
 		{
 			myNode->setSelected(false);
 		}
-	}
-	return false; 
-}
 
+		if(evt.getSourceId() == myActiveUserId)
+		{
+			if(myHandsValid)
+			{
+				if(myNode->isSelected())
+				{
+					Vector3f pos = (myLeftHand + myRightHand) / 2;
+					float size = (myLeftHand - myRightHand).norm() * myInitialScale;
+					
+					myNode->setPosition(pos - myInitialPosition);
+					myNode->setScale(size, size, size);
+
+					Vector3f dir = myLeftHand - myRightHand;
+					dir.normalize();
+					Quaternion q = Math::buildRotation(myInitialHandDirection, dir, Vector3f::Zero()) * myInitialOrientation;
+					myNode->setOrientation(q);
+				}
+			}
+		}
+	}
+}

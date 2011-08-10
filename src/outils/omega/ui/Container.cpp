@@ -415,11 +415,8 @@ void Container::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Container::processInputEvent(const Event& evt)
+void Container::handleEvent(const Event& evt)
 {
-	//myLastEvent = evt;
-	bool processed = false;
-
 	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
 	transformPoint(point);
@@ -428,7 +425,6 @@ bool Container::processInputEvent(const Event& evt)
 	while(it.hasMoreElements())
 	{
 		Widget* w = it.getNext();
-		processed |= w->processInputEvent(evt);
+		w->handleEvent(evt);
 	}
-	return processed;
 }
