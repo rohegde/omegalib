@@ -1,0 +1,84 @@
+#Equalizer 1.0 ascii
+
+global
+{
+    EQ_CONFIG_FATTR_EYE_BASE        1.025
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+
+server
+{
+    config
+    {
+        appNode											
+        {
+            
+            pipe									#Bottom Window
+            {
+                name "GPU 1"
+                window
+                {
+                    name     "window1"
+                    viewport [ 50 50 854 480 ]
+                    channel { name "channel2"  }
+                }
+                window
+                {
+                    name     "window2"
+                    viewport [ 50 530 854 480 ]
+                    channel { name "channel1"  }
+                }
+            }
+        }
+
+		observer 
+		{ 
+			name "observer0" 
+		}
+
+        # Layouts - one for each demo mode
+        layout
+        {
+            name "MultiView"
+            view
+            {
+                name "view3D"
+                observer "observer0"
+                viewport [ 0 0 1 1 ]
+            }
+        }
+
+        # Canvas using all layouts
+        canvas
+        {
+            layout "MultiView"
+
+			wall
+			{
+					bottom_left  [ -.7 -.8 0 ]
+					bottom_right [  .7 -.8 0 ]
+					top_left     [ -.7 .8 0 ]
+			}
+            segment
+            {
+                viewport [ 0 0 1 0.5 ]
+                channel "channel1"
+            }
+            segment
+            {
+                viewport [ 0 0.5 1 0.5 ]
+                channel "channel2"
+            }
+        }
+
+        # wall compound - need swap barrier
+        compound
+        {
+            compound
+            {
+                channel ( segment 0 layout "MultiView" view 0 )
+                channel ( segment 1 layout "MultiView" view 0 )
+            }
+        }
+    }
+}
