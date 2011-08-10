@@ -113,28 +113,30 @@ void VtkEntity::addActor(vtkProp3D* actor)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkEntity::addButton(const String& name, const String& clickCommand)
 {
-	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	UIManager* uiMng = myClient->getEngine()->getUIManager();
+	WidgetFactory* wf = uiMng->getWidgetFactory();
 	Button* btn = wf->createCheckButton(name, myUI);
 	btn->setText(name);
 
-	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
+	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(uiMng, myClient->getInterpreter());
 	myEventHandlers.push_back(puieh);
 	
-	btn->setEventHandler(puieh);
+	btn->setUIEventHandler(puieh);
 	puieh->setClickCommand(clickCommand);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkEntity::addCheckButton(const String& name, const String& getValueCommand, const String& changeValueCommand)
 {
-	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	UIManager* uiMng = myClient->getEngine()->getUIManager();
+	WidgetFactory* wf = uiMng->getWidgetFactory();
 	Button* btn = wf->createCheckButton(name, myUI);
 	btn->setText(name);
 
-	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
+	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(uiMng, myClient->getInterpreter());
 	myEventHandlers.push_back(puieh);
 	
-	btn->setEventHandler(puieh);
+	btn->setUIEventHandler(puieh);
 	puieh->setChangeValueCommand(changeValueCommand);
 
 	int value = 0;
@@ -146,14 +148,15 @@ void VtkEntity::addCheckButton(const String& name, const String& getValueCommand
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkEntity::addSlider(const String& name, float minValue, float maxValue, float step, const String& getValueCommand, const String& changeValueCommand)
 {
-	WidgetFactory* wf = myClient->getEngine()->getUIManager()->getWidgetFactory();
+	UIManager* uiMng = myClient->getEngine()->getUIManager();
+	WidgetFactory* wf = uiMng->getWidgetFactory();
 	Slider* sld = wf->createSlider(name, myUI);
 	sld->setDeferUpdate(true);
 
-	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(myClient->getInterpreter());
+	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(uiMng, myClient->getInterpreter());
 	myEventHandlers.push_back(puieh);
 	
-	sld->setEventHandler(puieh);
+	sld->setUIEventHandler(puieh);
 	puieh->setChangeValueCommand(changeValueCommand);
 	puieh->setSliderMaxValue(maxValue);
 	puieh->setSliderMinValue(minValue);

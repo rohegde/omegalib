@@ -40,7 +40,7 @@ void QtDemoClient::initialize()
 	EngineClient::initialize();
 	UIManager* ui = getUIManager();
 
-	myQtWidgetManager = onew(oqt::QtWidgetManager)();
+	myQtWidgetManager = onew(oqt::QtWidgetManager)(ui);
 	myQtWidgetManager->initialize();
 	myQtWidget = myQtWidgetManager->loadUiFile("ui/GeoDataMeshPanel.ui");
 	myQtWidget->setPosition(Vector2f(10, 10));
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 	const char* cfgName = "meshviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "qtdemo.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "qtdemo.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	return 0;
 }

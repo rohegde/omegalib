@@ -39,46 +39,55 @@ namespace ui
 	class WidgetFactory
 	{
 	public:
-		virtual Widget* createWidget(String name, Container* container)
+		WidgetFactory(UIManager* mng): myManager(mng) {}
+
+		UIManager* getManager() { return myManager; }
+
+		virtual Widget* createWidget(const String& name, Container* container)
 		{
-			Widget* widget = onew(Widget)(name);
+			Widget* widget = onew(Widget)(myManager);
+			widget->setName(name);
 			container->addChild(widget);
 			return widget;
 		}
 
-		virtual Button* createButton(String name, Container* container)
+		virtual Button* createButton(const String& name, Container* container)
 		{
-			Button* button = onew(Button)(name);
+			Button* button = onew(Button)(myManager);
+			button->setName(name);
 			container->addChild(button);
 			return button;
 		}
 
-		virtual Button* createCheckButton(String name, Container* container)
+		virtual Button* createCheckButton(const String& name, Container* container)
 		{
 			Button* button = createButton(name, container);
+			button->setName(name);
 			button->setCheckable(true);
 			return button;
 		}
 
-		virtual Slider* createSlider(String name, Container* container)
+		virtual Slider* createSlider(const String& name, Container* container)
 		{
-			Slider* slider = onew(Slider)(name);
+			Slider* slider = onew(Slider)(myManager);
+			slider->setName(name);
 			container->addChild(slider);
 			return slider;
 		}
 
-		virtual Image* createImage(String name, Container* container)
+		virtual Image* createImage(const String& name, Container* container)
 		{
-			Image* image = onew(Image)(name);
+			Image* image = onew(Image)(myManager);
 			container->addChild(image);
 			return image;
 		}
 
-		virtual Label* createLabel(String name, Container* container, String text = "")
+		virtual Label* createLabel(const String& name, Container* container, const String& text = "")
 		{
-			Label* lbl = onew(Label)(name);
-			if(text.size()  == 0) text = name;
-			lbl->setText(text);
+			Label* lbl = onew(Label)(myManager);
+			lbl->setName(name);
+			if(text.size()  == 0) lbl->setText(name);
+			else lbl->setText(text);
 			container->addChild(lbl);
 			return lbl;
 		}
@@ -86,11 +95,15 @@ namespace ui
 		virtual Container* createContainer(String name, Container* container, 
 			Container::Layout layout = Container::LayoutHorizontal)
 		{
-			Container* c = onew(Container)(name);
+			Container* c = onew(Container)(myManager);
+			c->setName(name);
 			c->setLayout(layout);
 			container->addChild(c);
 			return c;
 		}
+
+	private:
+		UIManager* myManager;
 	};
 }; // namespace ui
 }; // namespace omega

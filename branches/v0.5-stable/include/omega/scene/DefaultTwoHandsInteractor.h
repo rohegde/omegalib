@@ -43,8 +43,7 @@ namespace scene
 
 		void initialize(const String& observerUpdateServiceName);
 
-		virtual bool handleEvent(const Event& evt, UpdateContext& context);
-		virtual bool handleEvent(const Event& evt, DrawContext& context);
+		virtual void handleEvent(const Event& evt);
 
 		int getActiveUserId();
 		void setActiveUserId(int value);

@@ -29,7 +29,8 @@
 
 #include "omega/Application.h"
 #include "omega/FontManager.h"
-#include "omega/ui/IUIEventHandler.h"
+#include "omega/Service.h"
+#include "omega/ui/Widget.h"
 
 namespace omega
 {
@@ -38,12 +39,11 @@ namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward class declarations.
-	class Widget;
 	class Container;
 	class WidgetFactory;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API UIManager
+	class OUTILS_API UIManager: public Service, IEventListener
 	{
 	friend class Widget;
 	public:
@@ -52,7 +52,7 @@ namespace ui
 
 		void update(const UpdateContext& context);
 		void draw(const DrawContext& context);
-		bool processInputEvent(const Event& evt);
+		void handleEvent(const Event& evt);
 
 		Container* getRootContainer(int layer);
 		Renderer* getDefaultPainter();
@@ -60,22 +60,29 @@ namespace ui
 		omega::Font* getDefaultFont();
 		void setDefaultFont(Font* value);
 
-		IUIEventHandler* getEventHandler();
-		void setEventHandler(IUIEventHandler* value);
-
 		WidgetFactory* getWidgetFactory();
 		void setWidgetFactory(WidgetFactory* value);
 
+		IEventListener* getUIEventHandler(); 
+		void setUIEventHandler(IEventListener* value);
+
+		void registerWidget(Widget* w);
+		void unregisterWidget(Widget* w);
+		template<typename T> T* getWidgetById(int id);
+
 	private:
-		void dispatchUIEvent(const UIEvent& evt);
+		void dispatchUIEvent(const Event& evt);
 
 	private:
 		Container* myRootContainer[Application::MaxLayers];
 
+		IEventListener* myEventHandler;
+
 		Font* myDefaultFont;
 		Renderer* myDefaultRenderer;
-		IUIEventHandler* myEventHandler;
 		WidgetFactory* myWidgetFactory;
+
+		Dictionary<int, Widget*> myWidgetDictionary;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,11 +102,11 @@ namespace ui
 	{ myDefaultFont = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline IUIEventHandler* UIManager::getEventHandler() 
+	inline IEventListener* UIManager::getUIEventHandler() 
 	{ return myEventHandler; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void UIManager::setEventHandler(IUIEventHandler* value)
+	inline void UIManager::setUIEventHandler(IEventListener* value)
 	{ myEventHandler = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +116,18 @@ namespace ui
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void UIManager::setWidgetFactory(WidgetFactory* value) 
 	{ myWidgetFactory = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void UIManager::registerWidget(Widget* w)
+	{ myWidgetDictionary[w->getId()] = w; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void UIManager::unregisterWidget(Widget* w)
+	{ myWidgetDictionary[w->getId()] = NULL; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename T> inline T* UIManager::getWidgetById(int id)
+	{ return (T*)myWidgetDictionary[id]; }
 };
 }; // namespace omega
 

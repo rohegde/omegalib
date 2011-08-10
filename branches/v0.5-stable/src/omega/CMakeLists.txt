@@ -59,6 +59,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Event.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/IEventListener.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Lock.h
         ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Service.h
@@ -115,49 +116,49 @@ if(OMEGA_USE_DISPLAY)
 			omega/eqinternal/ViewImpl.cpp
 			omega/eqinternal/WindowImpl.cpp
 			omega/eqinternal/NodeImpl.cpp
-			omega/eqinternal/Pipe.cpp
+			omega/eqinternal/PipeImpl.cpp
 			)
 		set( headers ${headers} 
 			omega/eqinternal/eqinternal.h
 			${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 	endif(OMEGA_USE_DISPLAY_EQUALIZER)
-	
+		
 	# Glut Display Module
-
-    if( WIN32 )
-	    set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+	if( WIN32 )
+		set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+		if(OMEGA_USE_DISPLAY_GLUT)
+			add_definitions( -DOMEGA_USE_DISPLAY_GLUT)
+			set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
+			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
+		endif(OMEGA_USE_DISPLAY_GLUT)
+		set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	endif( WIN32 )
-
-    if(OMEGA_USE_DISPLAY_GLUT)
-		add_definitions( -DOMEGA_USE_DISPLAY_GLUT)
-		set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
-	endif(OMEGA_USE_DISPLAY_GLUT)
-	SET(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
-	
+		
 	# OpenCL Module
 	set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
 	if(OMEGA_USE_OPENCL)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
 		add_definitions( -DOMEGA_USE_OPENCL)
 	endif(OMEGA_USE_OPENCL)
-	
-	set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
-	if(OMEGA_USE_MOUSE)
-		set( srcs	 ${srcs} omega/MouseService.cpp )
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
-		add_definitions( -DOMEGA_USE_MOUSE)
-	endif(OMEGA_USE_MOUSE)
-    
-    set(OMEGA_USE_KEYBOARD true CACHE BOOL "Enable/disable mouse input support")
+
+	# Mouse input support	
+		set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
+		if(OMEGA_USE_MOUSE)
+			set( srcs	 ${srcs} omega/MouseService.cpp )
+			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
+			add_definitions( -DOMEGA_USE_MOUSE)
+		endif(OMEGA_USE_MOUSE)
+		
+	# Keyboard input support	
+	set(OMEGA_USE_KEYBOARD true CACHE BOOL "Enable/disable mouse input support")
 	if(OMEGA_USE_KEYBOARD)
 		set( srcs	 ${srcs} omega/KeyboardService.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h )
 		add_definitions( -DOMEGA_USE_KEYBOARD)
 	endif(OMEGA_USE_KEYBOARD)
-    
 endif(OMEGA_USE_DISPLAY)
 
+# Network input support    
 set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
 if(OMEGA_USE_NETSERVICE)
 	set( srcs	 ${srcs} omega/NetService.cpp )
@@ -165,6 +166,7 @@ if(OMEGA_USE_NETSERVICE)
 	add_definitions( -DOMEGA_USE_NETSERVICE)
 endif(OMEGA_USE_NETSERVICE)
 
+# OpenNI (Kinect) support
 SET(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support (OpenNI libraries must be installed in the system)")
 IF(OMEGA_USE_OPENNI)
 	SET( srcs	 ${srcs} omega/OpenNIService.cpp )
@@ -178,7 +180,7 @@ IF(OMEGA_USE_OPENNI)
 	ENDIF(WIN32)
 ENDIF(OMEGA_USE_OPENNI)
 	
-
+# NaturalPoint Motion capture system support
 if(WIN32)
 	set(OMEGA_USE_NATURAL_POINT true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
 	if(OMEGA_USE_NATURAL_POINT)
@@ -186,36 +188,48 @@ if(WIN32)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NaturalPointService.h )
 		add_definitions( -DOMEGA_USE_NATURAL_POINT)
 	ENDIF(OMEGA_USE_NATURAL_POINT)
+endif(WIN32)
 
+# Optitrack tracking system support
+if(WIN32)
 	set(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
 	if(OMEGA_USE_OPTITRACK)
 		set( srcs	 ${srcs} omega/OptiTrackService.cpp )
 		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OptiTrackService.h )
 		add_definitions( -DOMEGA_USE_OPTITRACK)
 	endif(OMEGA_USE_OPTITRACK)
+endif(WIN32)
 
+# PQLabs touch surface module
+if(WIN32)
 	set(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
 	if(OMEGA_USE_PQLABS)
 		set( srcs	 ${srcs} omega/PQService.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/PQService.h )
 		add_definitions( -DOMEGA_USE_PQLABS)
 	endif(OMEGA_USE_PQLABS)
+endif(WIN32)
 
-	SET(OMEGA_USE_DIRECTINPUT true CACHE BOOL "Enable/disable DirectX Input support")
-	IF(OMEGA_USE_DIRECTINPUT)
-		SET( srcs	 ${srcs} omega/DirectXInputService.cpp
+# DirectInput support
+if(WIN32)
+	set(OMEGA_USE_DIRECTINPUT true CACHE BOOL "Enable/disable DirectX Input support")
+	if(OMEGA_USE_DIRECTINPUT)
+		set( srcs	 ${srcs} omega/DirectXInputService.cpp
 					 ${srcs} omega/Wiimote.cpp )
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
 								${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
-		ADD_DEFINITIONS( -DOMEGA_USE_DIRECTINPUT)
-		INCLUDE_DIRECTORIES( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
+		add_definitions( -DOMEGA_USE_DIRECTINPUT)
+		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
 							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
-	ENDIF(OMEGA_USE_DIRECTINPUT)
+	endif(OMEGA_USE_DIRECTINPUT)
+endif(WIN32)
 	
-	SET(OMEGA_USE_VRPN true CACHE BOOL "Enable/disable VRPN Client support")
-	IF(OMEGA_USE_VRPN)
-		SET( srcs	 ${srcs} omega/VRPNService.cpp )
-		SET( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
+# VRPN module support
+if(WIN32)
+	set(OMEGA_USE_VRPN true CACHE BOOL "Enable/disable VRPN Client support")
+	if(OMEGA_USE_VRPN)
+		set( srcs	 ${srcs} omega/VRPNService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
 					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_BaseClass.h
 					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Configure.h
 					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Connection.h
@@ -224,12 +238,13 @@ if(WIN32)
 					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Types.h
 					 
 			)
-		ADD_DEFINITIONS( -DOMEGA_USE_VRPN)
-		INCLUDE_DIRECTORIES( ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
+		add_definitions( -DOMEGA_USE_VRPN)
+		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
 							 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn
 			)
-	ENDIF(OMEGA_USE_VRPN)
+	endif(OMEGA_USE_VRPN)
 endif(WIN32)
+
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
@@ -324,5 +339,5 @@ endif(OMEGA_USE_VRPN)
 # Setup link info for additional libraries
 target_link_libraries( omega libconfig Collage)
 if(OMEGA_USE_DISPLAY)
-target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+target_link_libraries( omega ${OPENGL_LIBRARY} glew-1.5.7.3-MX-Equalizer)
 endif(OMEGA_USE_DISPLAY)

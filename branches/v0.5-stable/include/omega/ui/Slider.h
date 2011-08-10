@@ -38,8 +38,10 @@ namespace ui
 	class Slider: public Widget
 	{
 	public:
-		Slider(omega::String name);
+		Slider(UIManager* mng);
 		virtual ~Slider();
+
+		virtual void handleEvent(const omega::Event& evt);
 
 		int getValue();
 		void setValue(int value);
@@ -55,7 +57,6 @@ namespace ui
 
 	protected:
 		virtual void update(const omega::UpdateContext& context);
-		virtual bool processInputEvent(const omega::Event& evt);
 
 	protected:
 		bool myPressed;

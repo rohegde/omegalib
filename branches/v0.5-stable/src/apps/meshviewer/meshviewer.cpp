@@ -154,7 +154,7 @@ void MeshViewerClient::initialize()
 void MeshViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
-	ui->setEventHandler(this);
+	ui->setUIEventHandler(this);
 
 	//! Load and set default font.
 	FontManager* fm = getFontManager();
@@ -191,7 +191,7 @@ void MeshViewerClient::initUI()
 	{
 		root = ui->getRootContainer(1);
 		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
+		UserManagerPanel* ump = new UserManagerPanel(ui);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
 
@@ -234,9 +234,13 @@ void MeshViewerClient::draw( const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
+void MeshViewerClient::handleEvent(const Event& evt)
 {
-    if( evt.getServiceType() == Service::Keyboard )
+	if(evt.getServiceType() == Service::UI) 
+	{
+		handleUIEvent(evt);
+	}
+    else if( evt.getServiceType() == Service::Keyboard )
     {
         if((char)evt.getSourceId() == 'q') exit(0);
         if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
@@ -257,17 +261,16 @@ bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
         {
             deltaScale = -0.1;
         }
-
     }
-    return EngineClient::handleEvent( evt , context );
+    EngineClient::handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::handleUIEvent(const UIEvent& evt)
+void MeshViewerClient::handleUIEvent(const Event& evt)
 {
 	for(int i = 0; i < myEntities.size(); i++)
 	{
-		if(myEntityButtons[i] == evt.source)
+		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
 			setVisibleEntity(i);
 			return;
@@ -340,7 +343,7 @@ int main(int argc, char** argv)
 	const char* cfgName = "meshviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "meshviewer.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	return 0;
 }

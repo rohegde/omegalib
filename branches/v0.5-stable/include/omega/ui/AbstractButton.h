@@ -37,7 +37,7 @@ namespace ui
 class OUTILS_API AbstractButton: public Widget
 {
 public:
-	AbstractButton(omega::String name);
+	AbstractButton(UIManager* mng);
 	virtual ~AbstractButton();
 
 	bool isCheckable() { return myCheckable; }

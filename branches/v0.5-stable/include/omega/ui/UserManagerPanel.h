@@ -41,7 +41,7 @@ namespace ui
 	class OUTILS_API UserManagerPanel: public Container
 	{
 	public:
-		UserManagerPanel(const String& name): Container(name), myDepthTexture(NULL), myDepthImage(NULL) {}
+		UserManagerPanel(UIManager* mng): Container(mng), myDepthTexture(NULL), myDepthImage(NULL) {}
 
 		void initialize(Container* owner, const String& openNIServiceName, const String& observerUpdateServiceName);
 	

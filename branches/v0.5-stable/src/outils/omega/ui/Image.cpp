@@ -32,8 +32,8 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Image::Image(omega::String name):
-	Widget(name),
+Image::Image(UIManager* mng):
+	Widget(mng),
 	myTexture(NULL)
 {
 

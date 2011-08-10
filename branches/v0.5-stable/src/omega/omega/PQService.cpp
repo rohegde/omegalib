@@ -697,13 +697,13 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 
 			evt->setExtraDataType(Event::ExtraDataFloatArray);
 			evt->setExtraDataFloat(0, xWidth * (float)screenX / (float)serverX);
-			evt->setExtraDataFloat(0, yWidth * (float)screenY / (float)serverY);
+			evt->setExtraDataFloat(1, yWidth * (float)screenY / (float)serverY);
 		} else {
 			evt->setPosition(tp.x, tp.y);
 
 			evt->setExtraDataType(Event::ExtraDataFloatArray);
 			evt->setExtraDataFloat(0, xWidth);
-			evt->setExtraDataFloat(0, yWidth);
+			evt->setExtraDataFloat(1, yWidth);
 		}
 
 		//printf(" Server %d,%d Screen %d, %d\n", serverX, serverY, screenX, screenY );

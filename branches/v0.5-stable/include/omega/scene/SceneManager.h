@@ -61,8 +61,7 @@ namespace scene
 
 		void draw(const DrawContext& context);
 		void update(const UpdateContext& context);
-		bool handleEvent(const Event& evt, UpdateContext& context);
-		bool handleEvent(const Event& evt, DrawContext& context);
+		void handleEvent(const Event& evt);
 
 		void addActor(Actor* actor);
 		void removeActor(Actor* actor);

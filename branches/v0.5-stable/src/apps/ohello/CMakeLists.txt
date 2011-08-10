@@ -37,11 +37,9 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE(ohello ${srcs} ${headers})
-
-#######################################################################################################################
-# Setup link info.
-TARGET_LINK_LIBRARIES(ohello
+add_executable(ohello ${srcs} ${headers})
+set_target_properties(ohello PROPERTIES FOLDER apps)
+target_link_libraries(ohello
 	omega)
 
 

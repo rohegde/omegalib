@@ -48,7 +48,7 @@ struct EntityInfo
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient, IUIEventHandler
+class VtkViewerClient: public EngineClient
 {
 public:
 	VtkViewerClient(ApplicationServer* server): 
@@ -58,7 +58,8 @@ public:
 
 	virtual void initialize();
 	void initUI();
-	void handleUIEvent(const UIEvent& evt);
+	void handleEvent(const Event& evt);
+	void handleUIEvent(const Event& evt);
 	void setVisibleEntity(int entityId);
 
 private:

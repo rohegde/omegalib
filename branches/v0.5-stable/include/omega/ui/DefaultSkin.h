@@ -38,7 +38,7 @@ namespace ui
 class OUTILS_API DefaultButton: public Button
 {
 public:
-	DefaultButton(String name): Button(name) {}
+	DefaultButton(UIManager* mng): Button(mng) {}
 
 protected:
 	void renderContent();
@@ -51,7 +51,7 @@ private:
 class OUTILS_API DefaultSlider: public Slider
 {
 public:
-	DefaultSlider(String name): Slider(name) {}
+	DefaultSlider(UIManager* mng): Slider(mng) {}
 protected:
 	void renderContent();
 private:
@@ -62,16 +62,20 @@ private:
 class DefaultWidgetFactory: public WidgetFactory
 {
 public:
-	virtual Button* createButton(String name, Container* container)
+	DefaultWidgetFactory(UIManager* mng): WidgetFactory(mng) {}
+
+	virtual Button* createButton(const String& name, Container* container)
 	{
-		Button* button = new DefaultButton(name);
+		Button* button = new DefaultButton(getManager());
+		button->setName(name);
+		button->getLabel()->setText(name);
 		container->addChild(button);
 		return button;
 	}
 
-	virtual Slider* createSlider(String name, Container* container)
+	virtual Slider* createSlider(const String& name, Container* container)
 	{
-		Slider* slider = new DefaultSlider(name);
+		Slider* slider = new DefaultSlider(getManager());
 		container->addChild(slider);
 		return slider;
 	}

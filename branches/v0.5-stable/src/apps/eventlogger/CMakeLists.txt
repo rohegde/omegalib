@@ -42,11 +42,9 @@ SET( headers
 
 ###################################################################################################
 # Setup compile info
-ADD_EXECUTABLE( eventlogger ${srcs} ${headers})
-
-###################################################################################################
-# Setup link info.
-TARGET_LINK_LIBRARIES( eventlogger 
+add_executable(eventlogger ${srcs} ${headers})
+set_target_properties(eventlogger PROPERTIES FOLDER apps)
+target_link_libraries(eventlogger 
 	omega)
 
 

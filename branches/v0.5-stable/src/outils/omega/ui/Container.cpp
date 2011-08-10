@@ -30,8 +30,8 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Container::Container(omega::String name):
-		Widget(name),
+Container::Container(UIManager* mng):
+		Widget(mng),
 		myPadding(5),
 		myMargin(5),
 		myHorizontalAlign(AlignCenter),
@@ -137,7 +137,6 @@ void Container::removeChild(const String& name)
 	if(w != NULL)
 	{
 		myChildren.remove(w);
-		w->setUIManager(NULL);
 	}
 }
 
@@ -167,19 +166,6 @@ Widget* Container::getChildByIndex(int index)
 		i++;
 	}
 	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Container::setUIManager(UIManager* ui)
-{
-	Widget::setUIManager(ui);
-	// set the ui manager for all children.
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
-	{
-		Widget* w = it.getNext();
-		w->setUIManager(ui);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -429,11 +415,8 @@ void Container::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Container::processInputEvent(const Event& evt)
+void Container::handleEvent(const Event& evt)
 {
-	//myLastEvent = evt;
-	bool processed = false;
-
 	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
 	transformPoint(point);
@@ -442,7 +425,6 @@ bool Container::processInputEvent(const Event& evt)
 	while(it.hasMoreElements())
 	{
 		Widget* w = it.getNext();
-		processed |= w->processInputEvent(evt);
+		w->handleEvent(evt);
 	}
-	return processed;
 }

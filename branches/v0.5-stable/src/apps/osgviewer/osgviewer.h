@@ -48,7 +48,7 @@ public:
 	virtual void initialize();
 	virtual void finalize();
 	virtual void update(const UpdateContext& context);
-	virtual bool handleEvent(const Event& evt, const UpdateContext& context);
+	virtual void handleEvent(const Event& evt);
 
 	OsgEntity* getEntity() { return myEntity; }
 
@@ -67,7 +67,7 @@ public:
 	virtual void initialize();
 	virtual void finalize();
 
-	virtual bool handleEvent(const Event& evt , UpdateContext &context );
+	virtual void handleEvent(const Event& evt);
     void draw( const DrawContext& context);
 	void update(const UpdateContext& context);
 

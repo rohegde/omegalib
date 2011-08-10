@@ -38,8 +38,10 @@ namespace ui
 	class OUTILS_API Button: public AbstractButton
 	{
 	public:
-		Button(omega::String name);
+		Button(UIManager* mng);
 		virtual ~Button();
+
+		virtual void handleEvent(const omega::Event& evt);
 
 		omega::String getText() { return myLabel.getText(); }
 		void setText(omega::String value) { myLabel.setText(value); }
@@ -53,7 +55,6 @@ namespace ui
 
 	protected:
 			virtual void update(const omega::UpdateContext& context);
-			virtual bool processInputEvent(const omega::Event& evt);
 			virtual void renderContent();
 
 	protected:
