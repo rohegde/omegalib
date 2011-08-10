@@ -25,6 +25,14 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 
+# TODO: move this to omega CMakeFile, inside Equalizer block
+# Check if 32bit MAC or 64bit MAC
+if( APPLE )
+    if(_CMAKE_OSX_MACHINE MATCHES "64")
+        option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
+    endif()
+endif( APPLE )
+
 ###################################################################################################
 # Options
 set(OMEGA_BUILD_STATIC false CACHE BOOL "Build omega as a static library")
@@ -32,40 +40,17 @@ if(OMEGA_BUILD_STATIC)
 	add_definitions(-DOMEGA_STATIC)
 endif(OMEGA_BUILD_STATIC)
 
-set(APPS_BUILD_INPUT_SERVER false CACHE BOOL "Build omegalib input server")
-set(APPS_BUILD_MOCALIB false CACHE BOOL "Build motion capture calibration app")
+set(OMEGA_BUILD_APPS false CACHE BOOL "Enable building of omegalib applications. When disabled, only libraries will be built.")
 
 set(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
 if(OMEGA_USE_DISPLAY)
-	set(OMEGA_BUILD_UTILITY_LIB false CACHE BOOL "Enable build of the omegalib utility library (outils)")
-endif(OMEGA_USE_DISPLAY)
-
-if(OMEGA_BUILD_UTILITY_LIB)
-	set(APPS_BUILD_MESH_VIEWER false CACHE BOOL "Enable build of demo applications included in Omegalib")
-	set(APPS_BUILD_KINECT false CACHE BOOL "Enable build of kinect demo")
 	set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
 	set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
 	set(OMEGA_BUILD_QT_LIB false CACHE BOOL "Enable build of Qt integration library")
-endif(OMEGA_BUILD_UTILITY_LIB)
-
-if(OMEGA_BUILD_VTK_LIB)
-	set(APPS_BUILD_VTK_VIEWER false CACHE BOOL "Enable build of vtk viewer application ")
-endif(OMEGA_BUILD_VTK_LIB)
-
-if(OMEGA_BUILD_OSG_LIB)
-	set(APPS_BUILD_OSG_VIEWER false CACHE BOOL "Enable build of osg viewer application ")
-endif(OMEGA_BUILD_OSG_LIB)
-
-if(OMEGA_BUILD_QT_LIB)
-	set(APPS_BUILD_QT_DEMO false CACHE BOOL "Enable build of qt demo application ")
-endif(OMEGA_BUILD_QT_LIB)
-
-if(OMEGA_USE_OPENCL)
-	set(APPS_BUILD_NIGHTFIELD false CACHE BOOL "Enable build of nightfield application ")
-endif(OMEGA_USE_OPENCL)
+endif(OMEGA_USE_DISPLAY)
 
 ###################################################################################################
-# Add subdirectiories
+# Set include paths
 include_directories(
   ${OmegaLib_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/boost
@@ -76,113 +61,100 @@ include_directories(
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
   ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include/
   )
-  
-if(WIN32)
-	include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
-endif(WIN32)
+
+###################################################################################################
+# Add libraries and applications to the project.
 
 add_subdirectory(3rdparty/libconfig)
 add_subdirectory(3rdparty/equalizer)
 
-if(OMEGA_BUILD_UTILITY_LIB)
+# TODO: should this be moved inside then omega OPENNI module block?
+if(WIN32)
+	include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
+endif(WIN32)
+
+# Add some libraries used for display support.
+if(OMEGA_USE_DISPLAY)
 	add_subdirectory(3rdparty/FreeImage)
 	add_subdirectory(3rdparty/freetype)
 	add_subdirectory(3rdparty/ftgl)
-endif(OMEGA_BUILD_UTILITY_LIB)
+	add_subdirectory(3rdparty/glew)
+endif(OMEGA_USE_DISPLAY)
 
-if( OMEGA_USE_DISPLAY_GLUT) 
+# OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
+if(OMEGA_USE_DISPLAY_GLUT) 
     if(NOT APPLE) 
 	    add_subdirectory(3rdparty/freeglut)
     endif(NOT APPLE)
 endif(OMEGA_USE_DISPLAY_GLUT)
 
-if(OMEGA_USE_DISPLAY)
-	add_subdirectory(3rdparty/glew)
-endif(OMEGA_USE_DISPLAY)
-
 # Add the core omega project
 add_subdirectory(omega)
 
-# Add the basic test app for omegalib (a simple input event logger)
-add_subdirectory(apps/eventlogger)
+if(OMEGA_BUILD_APPS)
+	add_subdirectory(apps/eventlogger)
+	add_subdirectory(apps/oinputserver)
+endif(OMEGA_BUILD_APPS)
 
-# Check if 32bit MAC or 64bit MAC
-if( APPLE )
-    if(_CMAKE_OSX_MACHINE MATCHES "64")
-        option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
-    endif()
-endif( APPLE )
-
-if(OMEGA_BUILD_UTILITY_LIB)
+if(OMEGA_USE_DISPLAY)
 	add_subdirectory(outils)
-endif(OMEGA_BUILD_UTILITY_LIB)
+	if(OMEGA_BUILD_APPS)
+		add_subdirectory(apps/ohello)
+		add_subdirectory(apps/mocalib)
+		add_subdirectory(apps/multipleKinectDemo)
+		add_subdirectory(apps/meshviewer)
+		add_subdirectory(apps/kinectdemo)
+		add_subdirectory(apps/nightfield)
+	endif(OMEGA_BUILD_APPS)
+endif(OMEGA_USE_DISPLAY)
 
+# vtk configuration, libraries and applications
 if(OMEGA_BUILD_VTK_LIB)
+	find_package(VTK)
+	if(NOT VTK_DIR)
+	  message(FATAL_ERROR "Please set VTK_DIR.")
+	endif(NOT VTK_DIR)
+	include(${VTK_USE_FILE})
+	
 	add_subdirectory(ovtk)
+	if(OMEGA_BUILD_APPS)
+		add_subdirectory(apps/vtkviewer)
+	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_VTK_LIB)
 
+# Open Scene Graph configuration, libraries and applications
 if(OMEGA_BUILD_OSG_LIB)
+	find_package(OpenSceneGraph 2.9.8 COMPONENTS osgDB osgUtil)
+	if(OSG_LIBRARY MATCHES "OSG_LIBRARY-NOTFOUND")
+	  message(FATAL_ERROR "OSG not found")	 
+	endif()
+	if(${OPENSCENEGRAPH_VERSION} VERSION_LESS "2.9.8")
+	  message(FATAL_ERROR "Wrong OSG version: ${OPENSCENEGRAPH_VERSION} found, need >= 2.9.8")
+	endif()
+	include_directories(SYSTEM ${OPENSCENEGRAPH_INCLUDE_DIRS})
+	
 	add_subdirectory(oosg)
+	if(OMEGA_BUILD_APPS)
+		add_subdirectory(apps/osgviewer)
+	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_OSG_LIB)
 
+# Qt configuration, libraries and applications
 if(OMEGA_BUILD_QT_LIB)
-	######################################################################
-	# Configure Qt													     #
-	######################################################################
-
 	# Find QT and provide a hint on where it might be
 	find_package(Qt4 REQUIRED)
-
 	if(${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} LESS 4.6)
 		message(FATAL_ERROR "Qt version 4.6 or higher required. Found version ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.")
 	endif(${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} LESS 4.6)
-
-	message("Using Qt version "${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.)
-
+	message(STATUS "Using Qt version "${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.)
 	set(QT_USE_QTUITOOLS TRUE)
 	include(${QT_USE_FILE})
 	include_directories(${QT_INCLUDES})
 	link_directories(${QT_LIB_DIR})
 	
 	add_subdirectory(oqt)
+	if(OMEGA_BUILD_APPS)
+		add_subdirectory(apps/qtdemo)
+	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_QT_LIB)
 
-if(OMEGA_USE_DISPLAY) 
-	add_subdirectory(apps/ohello)
-endif(OMEGA_USE_DISPLAY)
-
-if(APPS_BUILD_INPUT_SERVER)
-	add_subdirectory(apps/oinputserver)
-endif(APPS_BUILD_INPUT_SERVER)
-
-if(APPS_BUILD_MOCALIB)
-	add_subdirectory(apps/mocalib)
-endif(APPS_BUILD_MOCALIB)
-
-if(APPS_BUILD_MOCALIB)
-	ADD_SUBDIRECTORY(apps/multipleKinectDemo)
-endif(APPS_BUILD_MOCALIB)
-
-if(APPS_BUILD_MESH_VIEWER)
-	add_subdirectory(apps/meshviewer)
-endif(APPS_BUILD_MESH_VIEWER)
-
-if(APPS_BUILD_KINECT)
-	add_subdirectory(apps/kinectdemo)
-endif(APPS_BUILD_KINECT)
-
-if(APPS_BUILD_VTK_VIEWER)
-	add_subdirectory(apps/vtkviewer)
-endif(APPS_BUILD_VTK_VIEWER)
-
-if(APPS_BUILD_OSG_VIEWER)
-	add_subdirectory(apps/osgviewer)
-endif(APPS_BUILD_OSG_VIEWER)
-
-if(APPS_BUILD_QT_DEMO)
-	add_subdirectory(apps/qtdemo)
-endif(APPS_BUILD_QT_DEMO)
-
-if(APPS_BUILD_NIGHTFIELD)
-	add_subdirectory(apps/nightfield)
-endif(APPS_BUILD_NIGHTFIELD)

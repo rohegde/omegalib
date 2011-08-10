@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	// Add a default filesystem data sources (used to retrieve configuration files and other resources)
 	DataManager* dm = sys->getDataManager();
 	dm->addSource(new FilesystemDataSource("./"));
-	dm->addSource(new FilesystemDataSource("./../../data/"));
+	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	// Load a configuration file for this application and setup the system manager.
 	Config* cfg = new Config("eventlogger.cfg");
