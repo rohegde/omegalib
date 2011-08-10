@@ -27,6 +27,7 @@
 #ifndef __LABEL_H__
 #define __LABEL_H__
 
+#include "omega/FontManager.h"
 #include "omega/ui/Widget.h"
 
 namespace omega
@@ -41,8 +42,7 @@ namespace ui
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Label();
-		Label(omega::String name);
+		Label(UIManager* mng);
 		virtual ~Label();
 
 		String getText();

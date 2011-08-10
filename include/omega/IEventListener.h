@@ -24,39 +24,23 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __IUI_EVENT_HANDLER_H__
-#define __IUI_EVENT_HANDLER_H__
+#ifndef __IEVENT_LISTENER_H__
+#define __IEVENT_LISTENER_H__
 
-#include "omega/Event.h"
+#include "osystem.h"
+#include "Event.h"
 
 namespace omega
 {
-namespace ui
-{
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward class declarations.
-class Widget;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! The IEventListener interface is implemented by objects that can receive and process events.
+	//! @see { Event }
+	class IEventListener
+	{
+	public:
+		virtual void handleEvent(const Event& evt) = 0;
+	};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct UIEvent
-{
-	enum Type { Click, Toggle, ValueChange };
-
-	UIEvent(Widget* _source, Type _type):
-	type(_type), source(_source) {}
-		
-	Widget* source;
-	Type type;
-	//omega::InputEvent* inputEvent;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class IUIEventHandler
-{
-public:
-	virtual void handleUIEvent(const UIEvent& evt) = 0;
-};
-};
 }; // namespace omega
 
 #endif

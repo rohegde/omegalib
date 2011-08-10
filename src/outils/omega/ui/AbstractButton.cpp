@@ -30,8 +30,8 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::AbstractButton(omega::String name):
-	Widget(name),
+AbstractButton::AbstractButton(UIManager* mng):
+	Widget(mng),
 	myCheckable(false),
 	myChecked(false),
 	myPressed(false)
@@ -52,15 +52,17 @@ void AbstractButton::update(const omega::UpdateContext& context)
 	{
 		if(myPressed)
 		{
-			// Create and dispatch an ui event.
-			UIEvent evt(this, UIEvent::Click);
+			Event evt;
+			evt.reset(Event::Click, Service::UI, getId());
+
 			dispatchUIEvent(evt);
 
 			// If button is checkable, toggle check state.
 			if(myCheckable)
 			{
 				myChecked = !myChecked;
-				UIEvent evt(this, UIEvent::Toggle);
+				Event evt;
+				evt.reset(Event::Toggle, Service::UI, getId());
 				dispatchUIEvent(evt);
 			}
 		}

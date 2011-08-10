@@ -47,8 +47,7 @@ namespace oqt
 	class OQT_API QtWidget: public Widget
 	{
 	public:
-		QtWidget(QtWidgetManager* owner, const String& name);
-		QtWidget(QtWidgetManager* owner);
+		QtWidget(QtWidgetManager* owner, UIManager* mng);
 		~QtWidget();
 
 		QWidget* getWidget();
@@ -56,9 +55,6 @@ namespace oqt
 
 	protected:
 		virtual void renderContent();
-
-	private:
-		void initialize(QtWidgetManager* owner);
 
 	private:
 		QtWidgetManager* myOwner;

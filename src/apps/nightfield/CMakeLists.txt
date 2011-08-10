@@ -24,30 +24,31 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-
-#######################################################################################################################
+if(NOT OMEGA_USE_OPENCL)
+	message("APP nighfied won't be build. Requires OpenCL.")
+	return()
+endif()
+###################################################################################################
 # Compile definitions
 ADD_DEFINITIONS( )
 
-#######################################################################################################################
+###################################################################################################
 # Source files
 SET( SRCS 
         nightfield.cpp
         )
     
-#######################################################################################################################
+####################################################################################################
 # Headers
 SET( HEADERS 
 		nightfield.h
         ) 
         
-#######################################################################################################################
+###################################################################################################
 # Setup compile info
-ADD_EXECUTABLE( nightfield ${SRCS} ${HEADERS})
-
-#######################################################################################################################
-# Setup link info.
-TARGET_LINK_LIBRARIES( nightfield
+add_executable( nightfield ${SRCS} ${HEADERS})
+set_target_properties(nightfield PROPERTIES FOLDER apps)
+target_link_libraries( nightfield
 	omega outils)
 
 

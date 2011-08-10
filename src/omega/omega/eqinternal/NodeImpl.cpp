@@ -86,9 +86,9 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 		for( int evtNum = 0; evtNum < av; evtNum++)
 		{
 			Event& evt = myFrameData.getEvent(evtNum);
-			if(!evt.processed)
+			if(!evt.isProcessed())
 			{
-				evt.processed = myServer->handleEvent(evt, uc);
+				myServer->handleEvent(evt);
 			}
 		}
 	}

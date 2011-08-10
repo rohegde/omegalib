@@ -37,7 +37,7 @@ namespace omega
 namespace scene
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API Actor: public DynamicObject
+	class OUTILS_API Actor: public DynamicObject, IEventListener
 	{
 	public:
 		Actor(): myNode(NULL)  {}
@@ -46,8 +46,8 @@ namespace scene
 		SceneNode* getNode();
 
 		virtual void update(const UpdateContext& context) {}
-		virtual bool handleEvent(const Event& evt, DrawContext& context) { return false; }
-		virtual bool handleEvent(const Event& evt, UpdateContext& context) { return false; }
+		virtual void preDraw(const DrawContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
 
 	protected:
 		SceneNode* myNode;

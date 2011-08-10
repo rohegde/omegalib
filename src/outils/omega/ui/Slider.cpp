@@ -31,8 +31,8 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Slider::Slider(omega::String name):
-	Widget(name),
+Slider::Slider(UIManager* mng):
+	Widget(mng),
 	myTicks(100),
 	myValue(0),
 	myDeferUpdate(false),
@@ -48,7 +48,7 @@ Slider::~Slider()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Slider::processInputEvent(const Event& evt)
+void Slider::handleEvent(const Event& evt)
 {
 	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
@@ -62,8 +62,9 @@ bool Slider::processInputEvent(const Event& evt)
 		myPressed = false;
 		if(myValueChanged)
 		{
-			UIEvent evt = UIEvent(this, UIEvent::ValueChange);
-			dispatchUIEvent(evt);
+			Event e;
+			e.reset(Event::ChangeValue, Service::UI, getId());
+			dispatchUIEvent(e);
 		}
 	}
 
@@ -74,7 +75,7 @@ bool Slider::processInputEvent(const Event& evt)
 			myPressed = true;
 			myPressPos = evt.getPosition(0);
 		}
-		return true;
+		evt.setProcessed();
 	}
 	if(hitTest(point))
 	{
@@ -89,7 +90,8 @@ bool Slider::processInputEvent(const Event& evt)
 				myValue = newValue;
 				if(!myDeferUpdate)
 				{
-					UIEvent evt = UIEvent(this, UIEvent::ValueChange);
+					Event e;
+					e.reset(Event::ChangeValue, Service::UI, getId());
 					dispatchUIEvent(evt);
 				}
 				else
@@ -98,9 +100,8 @@ bool Slider::processInputEvent(const Event& evt)
 				}
 			}
 		}
-		return true;
+		evt.setProcessed();
 	}
-	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -95,9 +95,8 @@ void displayCallback(void)
 		// Dispatch events to application server.
 		for( int evtNum = 0; evtNum < av; evtNum++)
 		{
-			as->handleEvent(evts[evtNum], uc);
-			ac->handleEvent(evts[evtNum], uc);
-			ac->handleEvent(evts[evtNum], dc);
+			as->handleEvent(evts[evtNum]);
+			ac->handleEvent(evts[evtNum]);
 		}
 	}
 

@@ -121,12 +121,10 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 			for( int evtNum = 0; evtNum < av; evtNum++)
 			{
 				Event& evt = myFrameData.getEvent(evtNum);
-				if(!evt.isProcessed())
+				// Pointer events are sent out by channels, after being converted to correct viewport coordinates.
+				if(evt.getServiceType() != Service::Pointer)
 				{
-					if(myClient->handleEvent(evt, context))
-					{
-						evt.setProcessed();
-					}
+					if(!evt.isProcessed()) myClient->handleEvent(evt);
 				}
 			}
 		}

@@ -67,7 +67,7 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient, IUIEventHandler
+class MeshViewerClient: public EngineClient
 {
 public:
 	MeshViewerClient(ApplicationServer* server): 
@@ -78,11 +78,11 @@ public:
 	virtual void initialize();
 	void initUI();
 
-	virtual bool handleEvent(const Event& evt , UpdateContext &context );
+	virtual void handleEvent(const Event& evt);
     void draw( const DrawContext& context);
 
 
-	void handleUIEvent(const UIEvent& evt);
+	void handleUIEvent(const Event& evt);
 	void setVisibleEntity(int entityId);
 	void update(const UpdateContext& context);
 

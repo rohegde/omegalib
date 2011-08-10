@@ -22,6 +22,10 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ######################################################################################################################
+if(NOT OMEGA_USE_OPENNI)
+	message("APP multipleKinectDemo won't be built. Requires OpenNI.")
+	return()
+endif()
 
 #######################################################################################################################
 # Source files
@@ -36,11 +40,9 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-ADD_EXECUTABLE(multipleKinectDemo ${srcs} ${headers})
-
-#######################################################################################################################
-# Setup link info.
-TARGET_LINK_LIBRARIES(multipleKinectDemo
+add_executable(multipleKinectDemo ${srcs} ${headers})
+set_target_properties(multipleKinectDemo PROPERTIES FOLDER apps)
+target_link_libraries(multipleKinectDemo
 	omega)
 
 

@@ -92,7 +92,7 @@ void VtkViewerClient::initialize()
 void VtkViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
-	ui->setEventHandler(this);
+	ui->setUIEventHandler(this);
 
 	//! Load and set default font.
 	FontManager* fm = getFontManager();
@@ -129,17 +129,30 @@ void VtkViewerClient::initUI()
 	{
 		root = ui->getRootContainer(1);
 		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel("userManagerPanel");
+		UserManagerPanel* ump = new UserManagerPanel(ui);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::handleUIEvent(const UIEvent& evt)
+void VtkViewerClient::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == Service::UI) 
+	{
+		handleUIEvent(evt);
+	}
+	else
+	{
+		EngineClient::handleEvent(evt);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerClient::handleUIEvent(const Event& evt)
 {
 	for(int i = 0; i < myEntityLibrary.size(); i++)
 	{
-		if(myEntityButtons[i] == evt.source)
+		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
 			setVisibleEntity(i);
 			return;
@@ -174,7 +187,7 @@ int main(int argc, char** argv)
 	const char* cfgName = "vtkviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "vtkviewer.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "vtkviewer.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	return 0;
 }

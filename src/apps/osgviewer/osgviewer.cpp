@@ -58,9 +58,8 @@ void OsgViewerServer::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool OsgViewerServer::handleEvent(const Event& evt, const UpdateContext& context) 
+void OsgViewerServer::handleEvent(const Event& evt) 
 { 
-	return false; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,9 +109,9 @@ void OsgViewerClient::draw( const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool OsgViewerClient::handleEvent(const Event& evt , UpdateContext &context )
+void OsgViewerClient::handleEvent(const Event& evt)
 {
-    return EngineClient::handleEvent( evt , context );
+    EngineClient::handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +130,7 @@ int main(int argc, char** argv)
 	const char* cfgName = "osgviewer.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "osgviewer.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "osgviewer.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	return 0;
 }

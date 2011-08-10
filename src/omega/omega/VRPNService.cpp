@@ -28,6 +28,7 @@
  *********************************************************************************************************************/
 
 #include "omega/VRPNService.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -97,6 +98,11 @@ void VRPNService::setup(Setting& settings)
 
 		}
 
+		myUpdateInterval = 0.0f;
+		if(settings.exists("updateInterval"))
+		{
+			myUpdateInterval = settings["updateInterval"];
+		}
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +121,7 @@ void VRPNService::initialize()
 		strcpy(trackerName,t.object_name);
 		strcat(trackerName,"@");
 		strcat(trackerName,t.server_ip);
-		printf("Added %s \n" , trackerName);
+		ofmsg("Added %1%" , %trackerName);
 
 		// Open the tracker: '[object name]@[tracker IP]'
 		vrpn_Tracker_Remote *tkr = new vrpn_Tracker_Remote(trackerName);
@@ -156,22 +162,16 @@ void VRPNService::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void VRPNService::generateEvent(vrpn_TRACKERCB t, int id) 
 {
-	Event* evt = mysInstance->writeHead();
-	evt->reset(Event::Update, Service::Mocap, id);
-	evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
-
-	//Quaternion qyaw, qpitch, qroll;
-
-	//qpitch = AngleAxis(t.quat[0], Vector3f::UnitX());
-	//qyaw = AngleAxis(t.quat[1], Vector3f::UnitY());
-	//qroll = AngleAxis(t.quat[2], Vector3f::UnitZ());
-
-	evt->setOrientation(t.quat[0], t.quat[1], t.quat[2], t.quat[3]);
-
-	//printf("handle_tracker\tObject %d POS: (%g,%g,%g) QUAT: (%g,%g,%g)\n", 
-	// id,
-	// t.pos[0], t.pos[1], t.pos[2],
-	// t.quat[0], t.quat[1], t.quat[2]
-	//	);
-	mysInstance->unlockEvents();
+	static float lastt;
+	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
+	if(curt - lastt > myUpdateInterval)
+	{
+		mysInstance->lockEvents();
+		Event* evt = mysInstance->writeHead();
+		evt->reset(Event::Update, Service::Mocap, id);
+		evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
+		evt->setOrientation(t.quat[0], t.quat[1], t.quat[2], t.quat[3]);
+		mysInstance->unlockEvents();
+		lastt = curt;
+	}
 }

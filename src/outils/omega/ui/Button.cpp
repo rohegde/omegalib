@@ -32,14 +32,15 @@ using namespace omega;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Button::Button(omega::String name):
-	AbstractButton(name),
-	myLabel(name + ".label")
+Button::Button(UIManager* mng):
+	AbstractButton(mng),
+	myLabel(mng)
 {
 	//addChild(&myLabel);
-	myLabel.setText(name);
+	//myLabel.setText(name);
 	setMaximumHeight(22);
 	myColor = Color(0.2f, 0.2f, 0.2f);
+	setDebugModeEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,8 +52,6 @@ Button::~Button()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::autosize()
 {
-	// Make sure label ui manager is set.
-	myLabel.setUIManager(getUIManager());
 	myLabel.autosize();
 	setSize(myLabel.getSize());
 }
@@ -60,13 +59,11 @@ void Button::autosize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::update(const omega::UpdateContext& context)
 {
-	// Make sure label ui manager is set.
-	myLabel.setUIManager(getUIManager());
 	AbstractButton::update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Button::processInputEvent(const Event& evt)
+void Button::handleEvent(const Event& evt)
 {
 	Vector2f point  = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
@@ -84,15 +81,12 @@ bool Button::processInputEvent(const Event& evt)
 			myPressed = false;
 			myPressedStateChanged = true;
 		}
-		return true;
+		evt.setProcessed();
 	}
-	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::renderContent()
 {
-	// Make sure label ui manager is set.
-	myLabel.setUIManager(getUIManager());
 	AbstractButton::renderContent();
 }

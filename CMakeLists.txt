@@ -24,8 +24,6 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-
-#TEST BUGFIX
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
 cmake_minimum_required(VERSION 2.8.1) 
 
@@ -39,76 +37,70 @@ endif(COMMAND cmake_policy)
 ###################################################################################################
 # Create a build name depending on the OS, Toolset and architecture.
 if(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
-	set(ARCH "win32")
-	set(TOOL "vs9")
+	#set(ARCH "win32")
+	#set(TOOL "vs9")
 	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN32 -DOMEGA_TOOL_VS9)
 elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008 Win64")
-	set(ARCH "win64")
-	set(TOOL "vs9")
+	#set(ARCH "win64")
+	#set(TOOL "vs9")
 	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN64 -DOMEGA_TOOL_VS9)
 elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 10")
-	set(ARCH "win32")
-	set(TOOL "vs10")
+	#set(ARCH "win32")
+	#set(TOOL "vs10")
 	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN32 -DOMEGA_TOOL_VS10)
 elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 10 Win64")
-	set(ARCH "win64")
-	set(TOOL "vs10")
+	#set(ARCH "win64")
+	#set(TOOL "vs10")
 	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN64 -DOMEGA_TOOL_VS10)
 elseif(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
 	if(APPLE)
-		set(ARCH "OSX-i386")
-		set(CMAKE_OSX_ARCHITECTURES "i386")
+		#set(ARCH "OSX-i386")
+		#set(CMAKE_OSX_ARCHITECTURES "i386")
 		add_definitions(-DOMEGA_OS_OSX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
 	else(APPLE)
 		if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
-			set(ARCH "linux-amd64")
+		#	set(ARCH "linux-amd64")
 			add_definitions(-DOMEGA_OS_LINUX -DOMEGA_ARCH_AMD64 -DOMEGA_TOOL_GCC)
 		else()
-			set(ARCH "linux-i386")
+		#	set(ARCH "linux-i386")
 			add_definitions(-DOMEGA_OS_LINUX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
 		endif()
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -ldl -lrt")	
 	endif(APPLE)
 	#get the gcc version
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-	set(TOOL "gcc${GCC_VERSION}")
+	#set(TOOL "gcc${GCC_VERSION}")
 elseif(CMAKE_GENERATOR STREQUAL "Xcode")
-	set(ARCH "OSX-i386")
+	#set(ARCH "OSX-i386")
 	#get the gcc version
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-	set(TOOL "gcc${GCC_VERSION}")
+	#set(TOOL "gcc${GCC_VERSION}")
 	add_definitions(-DOMEGA_OS_OSX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
-	
 endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
-set(OMEGA_BUILD_NAME ${ARCH}-${TOOL} CACHE STRING "The omegalib build name. A directory with this name will be created in the bin and lib directories to store the final build products.")
+add_definitions(-DOMEGA_DATA_PATH="${OmegaLib_SOURCE_DIR}/data")
 
 ###################################################################################################
 # Set the output directories for libraries and binary files
 if(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 	# Since visual studio builds are multiconfiguration, set two separate directories for debug and release builds
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-debug)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-release)
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME}-debug)
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME}-release)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-debug)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME}-release)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_BINARY_DIR}/bin/debug)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_BINARY_DIR}/bin/release)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_BINARY_DIR}/lib/debug)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_BINARY_DIR}/lib/release)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OmegaLib_BINARY_DIR}/bin/debug)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OmegaLib_BINARY_DIR}/bin/release)
 	# Make sure the output bin directories exist, so the cmake scripts can copy 
 	# third party dlls there if needed.
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG})
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE})
 else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME})
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/lib/${OMEGA_BUILD_NAME})
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OmegaLib_SOURCE_DIR}/bin/${OMEGA_BUILD_NAME})
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OmegaLib_BINARY_DIR}/bin)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OmegaLib_BINARY_DIR}/lib)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OmegaLib_BINARY_DIR}/bin)
 	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 	file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
-
-###################################################################################################
-# Couple utility variables for library linking
-#SET (LIB_DEBUG ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-debug)
-#SET (LIB_RELEASE ${PROJECT_SOURCE_DIR}/lib/${ARCH}-${TOOL}-release)
 
 ###################################################################################################
 # Visual studio specific options.
