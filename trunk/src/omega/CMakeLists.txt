@@ -69,6 +69,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Type.h
 
 		# eigenwrap
         ${OmegaLib_SOURCE_DIR}/include/omega/math/EigenWrappers.h
