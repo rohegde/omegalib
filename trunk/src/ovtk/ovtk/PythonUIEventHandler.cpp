@@ -39,7 +39,7 @@ PythonUIEventHandler::PythonUIEventHandler(UIManager* ui, PythonInterpreter* int
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonUIEventHandler::handleUIEvent(const Event& evt)
+void PythonUIEventHandler::handleEvent(const Event& evt)
 {
 	if(evt.getType() == Event::Click)
 	{

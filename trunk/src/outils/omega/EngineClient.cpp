@@ -96,19 +96,13 @@ void EngineClient::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool EngineClient::handleEvent(const Event& evt, UpdateContext& context)
+void EngineClient::handleEvent(const Event& evt)
 {
-	return mySceneManager->handleEvent(evt, context);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool EngineClient::handleEvent(const Event& evt, DrawContext& context)
-{
-	if(!myUIManager->processInputEvent(evt))
+	myUIManager->handleEvent(evt);
+	if(!evt.isProcessed())
 	{
-		return mySceneManager->handleEvent(evt, context);
+		return mySceneManager->handleEvent(evt);
 	}
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

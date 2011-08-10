@@ -67,6 +67,14 @@ void SceneManager::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::draw(const DrawContext& context)
 {
+	// Call predraw method on actors.
+	VectorIterator<List<Actor*> > ait(myActors);
+	while(ait.hasMoreElements())
+	{
+		Actor* a = ait.getNext();
+		a->preDraw(context);
+	}
+
 	// Update transform hierarchy
 	myRoot->update(false, false);
 
@@ -92,29 +100,14 @@ void SceneManager::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::handleEvent(const Event& evt, DrawContext& context)
+void SceneManager::handleEvent(const Event& evt) 
 {
-	bool handled = false;
 	VectorIterator<List<Actor*> > it(myActors);
 	while(it.hasMoreElements())
 	{
 		Actor* a = it.getNext();
-		handled |= a->handleEvent(evt, context);
+		a->handleEvent(evt);
 	}
-	return handled;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::handleEvent(const Event& evt, UpdateContext& context) 
-{
-	bool handled = false;
-	VectorIterator<List<Actor*> > it(myActors);
-	while(it.hasMoreElements())
-	{
-		Actor* a = it.getNext();
-		handled |= a->handleEvent(evt, context);
-	}
-	return handled;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -151,18 +151,12 @@ void ChannelImpl::frameViewStart( const uint128_t& spin )
 						position[1] -= context.globalViewport.y();
 						//ofmsg("pos %1%", %position);
 						evt.setPosition(position);
-						if(client->handleEvent(evt, context))
-						{
-							evt.setProcessed();
-						}
+						client->handleEvent(evt);
 					}
 				}
 				else
 				{
-					if(client->handleEvent(evt, context))
-					{
-						evt.setProcessed();
-					}
+					client->handleEvent(evt);
 				}
 			}
 		}

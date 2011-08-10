@@ -110,7 +110,7 @@ void UIManager::draw(const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool UIManager::processInputEvent(const Event& evt)
+void UIManager::handleEvent(const Event& evt)
 {
 	// UI widgets only manage touch and pointer events.
 	if(evt.getServiceType() == Service::Pointer)
@@ -120,21 +120,18 @@ bool UIManager::processInputEvent(const Event& evt)
 		gy = (int)evt.position[1];
 		ofmsg("Pos: %d %d", %gx %gy);
 #endif
-		bool handled = false;
 		for(int i =0; i < Application::MaxLayers; i++)
 		{
-			handled |= myRootContainer[i]->processInputEvent(evt);
+			myRootContainer[i]->handleEvent(evt);
 		}
-		return handled;
 	}
-	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UIManager::dispatchEvent(const Event& evt)
+void UIManager::dispatchUIEvent(const Event& evt)
 {
 	if(myEventHandler)
 	{
-		myEventHandler->handleUIEvent(evt);
+		myEventHandler->handleEvent(evt);
 	}
 }

@@ -154,7 +154,7 @@ void MeshViewerClient::initialize()
 void MeshViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
-	ui->setEventHandler(this);
+	ui->setUIEventHandler(this);
 
 	//! Load and set default font.
 	FontManager* fm = getFontManager();
@@ -234,9 +234,13 @@ void MeshViewerClient::draw( const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
+void MeshViewerClient::handleEvent(const Event& evt)
 {
-    if( evt.getServiceType() == Service::Keyboard )
+	if(evt.getServiceType() == Service::UI) 
+	{
+		handleUIEvent(evt);
+	}
+    else if( evt.getServiceType() == Service::Keyboard )
     {
         if((char)evt.getSourceId() == 'q') exit(0);
         if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
@@ -257,9 +261,8 @@ bool MeshViewerClient::handleEvent(const Event& evt , UpdateContext &context )
         {
             deltaScale = -0.1;
         }
-
     }
-    return EngineClient::handleEvent( evt , context );
+    EngineClient::handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

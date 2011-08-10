@@ -121,7 +121,7 @@ void VtkEntity::addButton(const String& name, const String& clickCommand)
 	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(uiMng, myClient->getInterpreter());
 	myEventHandlers.push_back(puieh);
 	
-	btn->setEventHandler(puieh);
+	btn->setUIEventHandler(puieh);
 	puieh->setClickCommand(clickCommand);
 }
 
@@ -136,7 +136,7 @@ void VtkEntity::addCheckButton(const String& name, const String& getValueCommand
 	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(uiMng, myClient->getInterpreter());
 	myEventHandlers.push_back(puieh);
 	
-	btn->setEventHandler(puieh);
+	btn->setUIEventHandler(puieh);
 	puieh->setChangeValueCommand(changeValueCommand);
 
 	int value = 0;
@@ -156,7 +156,7 @@ void VtkEntity::addSlider(const String& name, float minValue, float maxValue, fl
 	PythonUIEventHandler* puieh = onew(PythonUIEventHandler)(uiMng, myClient->getInterpreter());
 	myEventHandlers.push_back(puieh);
 	
-	sld->setEventHandler(puieh);
+	sld->setUIEventHandler(puieh);
 	puieh->setChangeValueCommand(changeValueCommand);
 	puieh->setSliderMaxValue(maxValue);
 	puieh->setSliderMinValue(minValue);

@@ -63,7 +63,7 @@ void Button::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool Button::processInputEvent(const Event& evt)
+void Button::handleEvent(const Event& evt)
 {
 	Vector2f point  = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
@@ -81,9 +81,8 @@ bool Button::processInputEvent(const Event& evt)
 			myPressed = false;
 			myPressedStateChanged = true;
 		}
-		return true;
+		evt.setProcessed();
 	}
-	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

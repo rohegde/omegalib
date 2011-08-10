@@ -169,7 +169,9 @@ namespace omega
 			RotateEnd,
 			//! Rotate: generated when an event source is stationary while a second source is rotating around the first.
 			//! parameters: position (center of gesture) pointSet[0, 1] (individual finger positions), rotation[0] (degrees).
-			Rotate
+			Rotate,
+			//! Null: generic null value for event type.
+			Null
 		};
 
 		//! Defines some generic input event flags
@@ -224,8 +226,8 @@ namespace omega
 		unsigned int getTimestamp() const;
 
 		//! Set to true if this event has been processed already.
-		void setProcessed();
-		bool isProcessed();
+		void setProcessed() const;
+		bool isProcessed() const;
 
 		//! Get the event position 
 		const Vector3f& getPosition() const;
@@ -278,7 +280,7 @@ namespace omega
 
 		Vector3f myPosition;
 		Quaternion myOrientation;
-		bool myProcessed;
+		mutable bool myProcessed;
 		int myTimestamp;
 
 		unsigned int myFlags;
@@ -305,6 +307,7 @@ namespace omega
 		myServiceType = serviceType;
 		myServiceId = serviceId;
 		myFlags = 0;
+		myExtraDataLength = 0;
 		myExtraDataValidMask = 0;
 		myExtraDataType = ExtraDataNull;
 
@@ -316,9 +319,7 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::copyFrom(const Event& e)
-	{
-		memcpy(this, &e, sizeof(Event));
-	}
+	{ memcpy(this, &e, sizeof(Event)); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline unsigned int Event::getTimestamp() const
@@ -341,11 +342,11 @@ namespace omega
 	{ return myType; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Event::setProcessed()
+	inline void Event::setProcessed() const
 	{ myProcessed = true; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Event::isProcessed()
+	inline bool Event::isProcessed() const
 	{ return myProcessed; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -534,6 +535,7 @@ namespace omega
 	inline void Event::serialize(co::DataOStream& os)
 	{
 		os << myProcessed;
+		os << myTimestamp;
 		os << mySourceId;
 		os << myServiceId;
 		os << myServiceType;
@@ -544,9 +546,9 @@ namespace omega
 
 		// Serialize extra data
 		os << myExtraDataType;
+		os << myExtraDataLength;
 		if(myExtraDataType != NULL)
 		{
-			os << myExtraDataLength;
 			os << myExtraDataValidMask;
 			os.write(myExtraData, getExtraDataSize());
 		}
@@ -556,6 +558,7 @@ namespace omega
 	inline void Event::deserialize( co::DataIStream& is)
 	{
 		is >> myProcessed;
+		is >> myTimestamp;
 		is >> mySourceId;
 		is >> myServiceId;
 		is >> myServiceType;
@@ -566,9 +569,9 @@ namespace omega
 
 		// Deserialize extra data
 		is >> myExtraDataType;
+		is >> myExtraDataLength;
 		if(myExtraDataType != NULL)
 		{
-			is >> myExtraDataLength;
 			is >> myExtraDataValidMask;
 			is.read(myExtraData, getExtraDataSize());
 		}

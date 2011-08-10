@@ -40,13 +40,22 @@ namespace scene
 	public:
 		DefaultMouseInteractor() {}
 
-		virtual bool handleEvent(const Event& evt, DrawContext& context);
+		virtual void handleEvent(const Event& evt);
+		virtual void preDraw(const DrawContext& context);
 
 	private:
 		Vector3f myHandlePosition;
 		Sphere myStartBSphere;
 		Quaternion myStartOrientation;
 		float myStartScale;
+
+		// pointer event data.
+		bool myPointerEventReceived;
+		Vector2f myPointerPosition;
+		Event::Type myPointerEventType;
+		int myPointerEventData;
+		bool myPointerButton1Pressed;
+		bool myPointerButton2Pressed;
 	};
 }; // namespace scene
 }; // namespace omega

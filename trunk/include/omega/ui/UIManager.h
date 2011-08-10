@@ -43,7 +43,7 @@ namespace ui
 	class WidgetFactory;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OUTILS_API UIManager: public Service
+	class OUTILS_API UIManager: public Service, IEventListener
 	{
 	friend class Widget;
 	public:
@@ -52,7 +52,7 @@ namespace ui
 
 		void update(const UpdateContext& context);
 		void draw(const DrawContext& context);
-		bool processInputEvent(const Event& evt);
+		void handleEvent(const Event& evt);
 
 		Container* getRootContainer(int layer);
 		Renderer* getDefaultPainter();
@@ -63,20 +63,20 @@ namespace ui
 		WidgetFactory* getWidgetFactory();
 		void setWidgetFactory(WidgetFactory* value);
 
-		IUIEventHandler* getEventHandler(); 
-		void setEventHandler(IUIEventHandler* value);
+		IEventListener* getUIEventHandler(); 
+		void setUIEventHandler(IEventListener* value);
 
 		void registerWidget(Widget* w);
 		void unregisterWidget(Widget* w);
 		template<typename T> T* getWidgetById(int id);
 
 	private:
-		void dispatchEvent(const Event& evt);
+		void dispatchUIEvent(const Event& evt);
 
 	private:
 		Container* myRootContainer[Application::MaxLayers];
 
-		IUIEventHandler* myEventHandler;
+		IEventListener* myEventHandler;
 
 		Font* myDefaultFont;
 		Renderer* myDefaultRenderer;
@@ -102,11 +102,11 @@ namespace ui
 	{ myDefaultFont = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline IUIEventHandler* UIManager::getEventHandler() 
+	inline IEventListener* UIManager::getUIEventHandler() 
 	{ return myEventHandler; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void UIManager::setEventHandler(IUIEventHandler* value)
+	inline void UIManager::setUIEventHandler(IEventListener* value)
 	{ myEventHandler = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

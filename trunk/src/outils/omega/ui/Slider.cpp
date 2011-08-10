@@ -48,7 +48,7 @@ Slider::~Slider()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Slider::processInputEvent(const Event& evt)
+void Slider::handleEvent(const Event& evt)
 {
 	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
@@ -75,7 +75,7 @@ bool Slider::processInputEvent(const Event& evt)
 			myPressed = true;
 			myPressPos = evt.getPosition(0);
 		}
-		return true;
+		evt.setProcessed();
 	}
 	if(hitTest(point))
 	{
@@ -100,9 +100,8 @@ bool Slider::processInputEvent(const Event& evt)
 				}
 			}
 		}
-		return true;
+		evt.setProcessed();
 	}
-	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
