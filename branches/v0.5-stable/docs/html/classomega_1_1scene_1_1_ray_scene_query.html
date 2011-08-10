@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>OmegaLib: omega::scene::RaySceneQuery Class Reference</title>
+<title>omegalib: omega::scene::RaySceneQuery Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -14,7 +14,6 @@
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
   <div class="tabs2">
@@ -40,8 +39,13 @@
 <h1>omega::scene::RaySceneQuery Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::scene::RaySceneQuery" --><!-- doxytag: inherits="omega::scene::SceneQuery" -->
-<p><code>#include &lt;<a class="el" href="_scene_query_8h_source.html">SceneQuery.h</a>&gt;</code></p>
+<!-- doxytag: class="omega::scene::RaySceneQuery" --><!-- doxytag: inherits="omega::scene::SceneQuery" --><div class="dynheader">
+Inheritance diagram for omega::scene::RaySceneQuery:</div>
+<div class="dyncontent">
+<div class="center"><img src="classomega_1_1scene_1_1_ray_scene_query__inherit__graph.png" border="0" usemap="#omega_1_1scene_1_1_ray_scene_query_inherit__map" alt="Inheritance graph"/></div>
+<map name="omega_1_1scene_1_1_ray_scene_query_inherit__map" id="omega_1_1scene_1_1_ray_scene_query_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1scene_1_1_scene_query.html" title="omega::scene::SceneQuery" alt="" coords="16,5,200,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1scene_1_1_ray_scene_query-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -51,7 +55,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_ray_scene_query.html#ac480144345729af75b799ce3f71cda80">setRay</a> (<a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> &amp;ray)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_ray_scene_query.html#ab369344ee230ebdddc2d880f9e58dc77">getRay</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const <br class="typebreak"/>
-<a class="el" href="namespaceomega_1_1scene.html#a69e99068edf23659de1c0402626e7244">SceneQueryResultList</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_ray_scene_query.html#a7200d854542c92d912dedeccd7abe748">execute</a> (<a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> flags=0)</td></tr>
+<a class="el" href="namespaceomega_1_1scene.html#a69e99068edf23659de1c0402626e7244">SceneQueryResultList</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_ray_scene_query.html#a6eaf4ab8ba5525551a269b8928fbf516">execute</a> (<a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> flags=0)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3fe54836ad99ed3da73e6b601572080e"></a><!-- doxytag: member="omega::scene::RaySceneQuery::RaySceneQuery" ref="a3fe54836ad99ed3da73e6b601572080e" args="(SceneManager *scene)" -->
@@ -73,12 +77,12 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a7200d854542c92d912dedeccd7abe748"></a><!-- doxytag: member="omega::scene::RaySceneQuery::execute" ref="a7200d854542c92d912dedeccd7abe748" args="(uint flags=0)" -->
+<a class="anchor" id="a6eaf4ab8ba5525551a269b8928fbf516"></a><!-- doxytag: member="omega::scene::RaySceneQuery::execute" ref="a6eaf4ab8ba5525551a269b8928fbf516" args="(uint flags=0)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual const <a class="el" href="namespaceomega_1_1scene.html#a69e99068edf23659de1c0402626e7244">SceneQueryResultList</a>&amp; omega::scene::RaySceneQuery::execute </td>
+          <td class="memname">const <a class="el" href="namespaceomega_1_1scene.html#a69e99068edf23659de1c0402626e7244">SceneQueryResultList</a> &amp; RaySceneQuery::execute </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a>&nbsp;</td>
           <td class="paramname"> <em>flags</em> = <code>0</code></td>
@@ -128,11 +132,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>D:/Workspace/omegalib/trunk/include/omega/scene/<a class="el" href="_scene_query_8h_source.html">SceneQuery.h</a></li>
-</ul>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jul 1 2011 21:41:05 for OmegaLib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:30 for omegalib by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
