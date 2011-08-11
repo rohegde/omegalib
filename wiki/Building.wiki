@@ -1,0 +1,46 @@
+= Building omegalib and omegalib projects=
+
+== Using CMake to Build omegalib ==
+
+=== Dependencies ===
+Omegalib libraries and basic can be compiled out of the box without needing any external libraries. Optionally, support for external graphic libraries and toolkits can be added by enabling the specific options inside CMake, and configuring the libraries accordingly.
+==== Python ====
+*todo*
+==== Open Scene Graph ====
+*todo*
+==== The Visualization Toolkit ====
+*todo*
+==== Qt ====
+
+=== CMake variables ===
+ * `OMEGA_USE_DISPLAY`
+ * `OMEGA_BUILD_APPS`
+ * `OMEGA_BUILD_STATIC`
+ * `OMEGA_USE_DISPLAY`
+ * `OMEGA_USE_PYTHON`
+ * `OMEGA_BUILD_VTK_LIB`
+ * `OMEGA_BUILD_OSG_LIB`
+ * `OMEGA_BUILD_QT_LIB`
+
+=== Compiler definitions ===
+Definitions identifying the operating system
+ * `OMEGA_OS_WIN`
+ * `OMEGA_OS_OSX`
+ * `OMEGA_OS_LINUX`
+Definitions identifying 64 bit builds
+ * `OMEGA_ARCH_WIN32`
+ * `OMEGA_ARCH_WIN64`
+ * `OMEGA_ARCH_I386`
+ * `OMEGA_ARCH_AMD64`
+Definitions identifying the build toolset
+ * `OMEGA_TOOL_VS9`
+ * `OMEGA_TOOL_VS10`
+ * `OMEGA_TOOL_XCODE`
+ * `OMEGA_TOOL_GCC`
+
+------------------------------------------------------------------------
+== Creating external projects using omegalib ==
+
+=== external projects using CMake ===
+
+=== external projects using Visual Studio ===
