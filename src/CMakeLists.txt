@@ -49,6 +49,17 @@ if(OMEGA_USE_DISPLAY)
 	set(OMEGA_BUILD_QT_LIB false CACHE BOOL "Enable build of Qt integration library")
 endif(OMEGA_USE_DISPLAY)
 
+set(OMEGA_USE_PYTHON false CACHE BOOL "Enable python scripting support.")
+if(OMEGA_USE_PYTHON)
+	find_package(PythonLibs)
+	if(PYTHONLIBS_FOUND)
+		include_directories(${PYTHON_INCLUDE_DIRS})
+	else(PYTHONLIBS_FOUND)
+		message(ERROR "Python libraries not found")
+	endif(PYTHONLIBS_FOUND)
+	add_definitions(-DOMEGA_USE_PYTHON)
+endif(OMEGA_USE_PYTHON)
+
 ###################################################################################################
 # Set include paths
 include_directories(

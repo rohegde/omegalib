@@ -27,11 +27,11 @@
 
 ###################################################################################################
 # Compile definitions
-ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOUTILS_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
+add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOUTILS_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
 
 ###################################################################################################
 # Source files
-SET( srcs 
+set( srcs 
 		# omega
 		omega/FontManager.cpp
 		omega/ImageUtils.cpp
@@ -82,13 +82,11 @@ SET( srcs
 		#omega::script
 		omega/script/ScriptInterpreter.cpp
 		omega/script/ScriptModule.cpp
-		omega/script/PythonInterpreter.cpp
-		omega/script/PythonModule.cpp
         )
 		
 ###################################################################################################
 # Headers
-SET( headers 
+set( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/omega/FontManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
@@ -145,35 +143,38 @@ SET( headers
 		#omega::script
 		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptModule.h
-		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonInterpreter.h
-		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonModule.h
         ) 
+
+if(OMEGA_USE_PYTHON)
+	set( headers ${headers}
+		omega/script/PythonInterpreterWrapper.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonInterpreter.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonModule.h)
+
+			
+	set( srcs ${srcs}
+		omega/script/PythonInterpreter.cpp
+		omega/script/PythonModule.cpp)
+endif(OMEGA_USE_PYTHON)
         
 ###################################################################################################
-SOURCE_GROUP(omega REGULAR_EXPRESSION omega/)		
-SOURCE_GROUP(omega::ui REGULAR_EXPRESSION omega/ui/)		
-SOURCE_GROUP(omega::scene REGULAR_EXPRESSION omega/scene/)		
-SOURCE_GROUP(omega::mvc REGULAR_EXPRESSION omega/mvc/)		
-SOURCE_GROUP(omega::script REGULAR_EXPRESSION omega/script/)		
+source_group(omega REGULAR_EXPRESSION omega/)		
+source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
+source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
+source_group(omega::mvc REGULAR_EXPRESSION omega/mvc/)		
+source_group(omega::script REGULAR_EXPRESSION omega/script/)		
 
 ###################################################################################################
 # Setup compile info
-IF(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( outils ${srcs} ${headers})
-ELSE(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( outils SHARED ${srcs} ${headers})
-ENDIF(OMEGA_BUILD_STATIC)
-
-###################################################################################################
-if(MSVC)
-	# Horrible horrible hack, ignore multiple symbol decinitions, but apparently 
-	# needed to have VS2008 work with NstNetLib static...
-	# See if you can remove this in the future.
-    #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /FORCE:MULTIPLE")
-    #set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /FORCE:MULTIPLE")
-	#add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
-endif(MSVC)
+if(OMEGA_BUILD_STATIC)
+	add_library( outils ${srcs} ${headers})
+else(OMEGA_BUILD_STATIC)
+	add_library( outils SHARED ${srcs} ${headers})
+endif(OMEGA_BUILD_STATIC)
 
 ###################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( outils omega freetype ftgl FreeImage)
+target_link_libraries( outils omega freetype ftgl FreeImage)
+if(OMEGA_USE_PYTHON)
+	target_link_libraries( outils ${PYTHON_LIBRARIES})
+endif(OMEGA_USE_PYTHON)

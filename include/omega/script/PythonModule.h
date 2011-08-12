@@ -29,12 +29,29 @@
 
 #include "omega/script/ScriptModule.h"
 
+struct PyMethodDef;
+
 namespace omega { namespace script {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class PythonModule: public ScriptModule
 	{
 		OMEGA_DECLARE_TYPE(PythonModule);
+	public:
+		PythonModule(PyMethodDef* defs);
+		PyMethodDef* getDefs();
+
+	private:
+		PyMethodDef* myDefs;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline PythonModule::PythonModule(PyMethodDef* defs):
+		myDefs(defs) 
+	{}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline PyMethodDef* PythonModule::getDefs()
+	{ return myDefs; }
 }; }; // namespace omega
 
 #endif
