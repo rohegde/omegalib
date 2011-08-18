@@ -1,0 +1,2 @@
+= Tutorial1: Building a basic omegalib =
+This tutorial will explain how to obtain and build a basic omegalib distribution, and launch a basic example. It will also give a brief introduction on how configuration files work.
