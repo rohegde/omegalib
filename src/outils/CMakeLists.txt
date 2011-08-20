@@ -75,9 +75,12 @@ set( srcs
 
 		#omega::mvc
 		omega/mvc/Model.cpp
+		omega/mvc/ViewManager.cpp
 		omega/mvc/View.cpp
+		omega/mvc/ViewClient.cpp
 		omega/mvc/Controller.cpp
-		omega/mvc/View3d.cpp
+		omega/mvc/DynamicController.cpp
+		omega/mvc/UiDynamicController.cpp
 
 		#omega::script
 		omega/script/ScriptInterpreter.cpp
@@ -136,9 +139,12 @@ set( headers
 
 		#omega::mvc
 		${OmegaLib_SOURCE_DIR}/include/omega/mvc/Model.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/ViewManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/mvc/View.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/ViewClient.h
 		${OmegaLib_SOURCE_DIR}/include/omega/mvc/Controller.h
-		${OmegaLib_SOURCE_DIR}/include/omega/mvc/View3d.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/DynamicController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/UiDynamicController.h
 
 		#omega::script
 		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h

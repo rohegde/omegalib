@@ -27,7 +27,7 @@
 #ifndef __SCRIPT_INTERPRETER_H__
 #define __SCRIPT_INTERPRETER_H__
 
-#include "omega/Type.h"
+#include "omega/osystem.h"
 
 namespace omega { namespace script {
 	

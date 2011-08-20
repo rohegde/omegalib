@@ -32,6 +32,10 @@
 #include <list>
 #include <vector>
 
+// boost includes
+#include <boost/foreach.hpp>
+#define foreach BOOST_FOREACH
+
 #define NOMINMAX
 
 // Unordered map: use different implementations on linux & windows.
@@ -58,7 +62,6 @@
 #include <omega/math/AlignedBox.h>
 #include <omega/math/Sphere.h>
 #include <omega/math/Plane.h>
-
 
 // Forward declarations of some OpenGL and OpenCL types.
 // Using these, we can avoid including gl, cl (and windows) headers for every compiled source file.
