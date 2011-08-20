@@ -25,9 +25,58 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/mvc/View.h"
+#include "omega/mvc/ViewClient.h"
 
 using namespace omega::mvc;
 
 OMEGA_DEFINE_TYPE_NOBASE(View);
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+View::View():
+	myModel(NULL)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void View::setModel(Model* value)
+{ 
+	if(myModel != NULL) myModel->removeListener(this);
+	myModel = value; 
+	if(myModel != NULL) myModel->addListener(this);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void View::attachController(Controller* controller)
+{
+	myControllers.push_back(controller);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void View::detachController(Controller* controller)
+{
+	myControllers.remove(controller);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void View::attachClient(ViewClient* client)
+{
+	myClients.push_back(client);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void View::detachClient(ViewClient* client)
+{
+	myClients.remove(client);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void View::onModelStateChanged(Model* model) 
+{
+	foreach(ViewClient* i, myClients) i->onModelStateChanged(model);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void View::onModelOperationProgress(Model* model, int progress) 
+{
+	foreach(ViewClient* i, myClients) i->onModelOperationProgress(model, progress); 
+}

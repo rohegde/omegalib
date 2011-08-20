@@ -27,24 +27,35 @@
 #ifndef VTKVIEWER_H
 #define VTKVIEWER_H
 
-#include "ovtk/VtkClient.h"
-#include "ovtk/VtkEntity.h"
+#include "ovtk/VtkModule.h"
+#include "ovtk/VtkModel.h"
 #include "omega.h"
 #include "omega/scene.h"
 #include "omega/ui.h"
 #include "omega/EngineClient.h"
+#include "omega/mvc/ViewManager.h"
+
 
 using namespace omega;
 using namespace omega::scene;
 using namespace omega::ui;
+using namespace omega::mvc;
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-struct EntityInfo
+class VtkViewerServer: public ApplicationServer
 {
-	String name;
-	String label;
-	String script;
+public:
+	VtkViewerServer(Application* app);
+	virtual void initialize();
+
+	ViewManager* getViewManager() { return myViewManager; }
+	VtkModule* getVtkModule() { return myVtkModule; }
+	void setVisibleModel(int modelId);
+
+private:
+	VtkModule* myVtkModule;
+	ViewManager* myViewManager;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,24 +63,21 @@ class VtkViewerClient: public EngineClient
 {
 public:
 	VtkViewerClient(ApplicationServer* server): 
-	  EngineClient(server),
-	  myVisibleEntity(NULL)
+		EngineClient(server),
+		myVisibleEntity(NULL)
 	  {}
 
 	virtual void initialize();
 	void initUI();
 	void handleEvent(const Event& evt);
 	void handleUIEvent(const Event& evt);
-	void setVisibleEntity(int entityId);
 
 private:
-	VtkClient* myVtkClient;
-
 	// Enabled entity
 	VtkEntity* myVisibleEntity;
 
 	// Entity info library
-	Vector<EntityInfo*> myEntityLibrary;
+	Vector<VtkModel*> myEntityLibrary;
 
 	// UI
 	Vector<Button*> myEntityButtons;
@@ -85,6 +93,7 @@ private:
 class VtkViewerApplication: public Application
 {
 public:
+	virtual ApplicationServer* createServer() { return new VtkViewerServer(this); }
 	virtual ApplicationClient* createClient(ApplicationServer* server) { return new VtkViewerClient(server); }
 };
 
