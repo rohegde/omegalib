@@ -105,10 +105,8 @@ void SceneNode::draw(RenderState* state)
 		if(myBoundingBoxVisible) drawBoundingBox();
 
 		// Draw drawables attached to this node.
-		VectorIterator<Vector<Renderable*> > it(myRenderables);
-		while(it.hasMoreElements())
+		foreach(Renderable* d, myRenderables)
 		{
-			Renderable* d = it.getNext();
 			d->render(this, state);
 		}
 
@@ -134,10 +132,8 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 	// Reset bounding box.
 	myBBox.setNull();
 
-	VectorIterator<Vector<Renderable*> > it(myRenderables);
-	while(it.hasMoreElements())
+	foreach(Renderable* d, myRenderables)
 	{
-		Renderable* d = it.getNext();
 		if(d->hasBoundingBox())
 		{
 			const AlignedBox3& bbox = *(d->getBoundingBox());

@@ -68,10 +68,8 @@ void SceneManager::initialize()
 void SceneManager::draw(const DrawContext& context)
 {
 	// Call predraw method on actors.
-	VectorIterator<List<Actor*> > ait(myActors);
-	while(ait.hasMoreElements())
+	foreach(Actor* a, myActors)
 	{
-		Actor* a = ait.getNext();
 		a->preDraw(context);
 	}
 
@@ -79,10 +77,8 @@ void SceneManager::draw(const DrawContext& context)
 	myRoot->update(false, false);
 
 	// Execute all render passes in order.
-	VectorIterator<List<RenderPass*> > it(myRenderPassList);
-	while(it.hasMoreElements())
+	foreach(RenderPass* pass, myRenderPassList)
 	{
-		RenderPass* pass = it.getNext();
 		pass->render(this, context);
 	}
 
@@ -91,10 +87,8 @@ void SceneManager::draw(const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::update(const UpdateContext& context) 
 {
-	VectorIterator<List<Actor*> > it(myActors);
-	while(it.hasMoreElements())
+	foreach(Actor* a, myActors)
 	{
-		Actor* a = it.getNext();
 		a->update(context);
 	}
 }
@@ -102,10 +96,8 @@ void SceneManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
-	VectorIterator<List<Actor*> > it(myActors);
-	while(it.hasMoreElements())
+	foreach(Actor* a, myActors)
 	{
-		Actor* a = it.getNext();
 		a->handleEvent(evt);
 	}
 }
