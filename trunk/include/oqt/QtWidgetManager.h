@@ -30,6 +30,7 @@
 #ifndef __QT_SERVER_H__
 #define __QT_SERVER_H__
 
+#define QT_NO_KEYWORDS  // Avoid double definition warning of foreach macro
 #include <QObject>
 #include <QApplication>
 

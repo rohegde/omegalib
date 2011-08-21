@@ -113,10 +113,8 @@ void SceneNode::draw(RenderState* state)
 		}
 
 		// Draw children nodes.
-		ChildNodeIterator i = getChildIterator();
-		while(i.hasMoreElements())
+		foreach(SceneNode::Child n, getChildren())
 		{
-			SceneNode* n = (SceneNode*)i.getNext();
 			n->draw(state);
 		}
 	}
@@ -149,10 +147,8 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 
 	myBBox.transformAffine(getFullTransform());
 
-	ChildNodeIterator i = getChildIterator();
-	while(i.hasMoreElements())
+	foreach(SceneNode::Child n, getChildren())
 	{
-		SceneNode* n = (SceneNode*)i.getNext();
 		const AlignedBox3& bbox = n->getBoundingBox();
 		myBBox.merge(bbox);
 	}

@@ -37,6 +37,19 @@ namespace omega
 {
 namespace scene 
 {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class Node;
+	template<typename T>
+	class ChildNode: public std::pair<String, T*>
+	{
+	public:
+		ChildNode(const String& k, Node* v): std::pair<String, T*>(k, v) {}
+		ChildNode(std::pair<String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
+		const String& getName() { return this->first; }
+		T* getNode() { return this->second; }
+		T* operator->() { return this->second; }
+	};
+
 	/** Class representing a general-purpose node an articulated scene graph.
         @remarks
             A node in the scene graph is a node in a structured tree. A node contains
@@ -61,10 +74,11 @@ namespace scene
             /// Transform is relative to world space
             TransformWorld
         };
-        typedef Dictionary<String, Node*> ChildNodeMap;
 
-        typedef MapIterator<ChildNodeMap> ChildNodeIterator;
-		typedef ConstMapIterator<ChildNodeMap> ConstChildNodeIterator;
+        typedef Dictionary<String, Node*> ChildNodeMap;
+		typedef ChildNode<Node> Child;
+		typedef std::pair< ChildNodeMap::iterator, ChildNodeMap::iterator> ChildNodeRange;
+		typedef std::pair< ChildNodeMap::const_iterator, ChildNodeMap::const_iterator> ConstChildNodeRange;
 
     public:
         /** Constructor, should only be called by parent, not directly.
@@ -371,7 +385,7 @@ namespace scene
             store up changes for later. Note that calling methods on returned items in 
             the iterator IS allowed and does not invalidate the iterator.
         */
-        virtual ChildNodeIterator getChildIterator(void);
+        virtual ChildNodeRange getChildren(void);
 
         /** Retrieves an iterator for efficiently looping through all children of this node.
         @remarks
@@ -383,7 +397,7 @@ namespace scene
             store up changes for later. Note that calling methods on returned items in 
             the iterator IS allowed and does not invalidate the iterator.
         */
-		virtual ConstChildNodeIterator getChildIterator(void) const;
+		virtual ConstChildNodeRange getChildren(void) const;
 
         /** Drops the specified child from this node. 
         @remarks

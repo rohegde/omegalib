@@ -75,10 +75,8 @@ void VtkViewClient::onModelStateChanged(Model* model)
 		Vector3f center = bs.getCenter();
 
 		// Move all the nodes so they are recentered wrt the root Vtk node.
-		Node::ChildNodeIterator it = mySceneNode->getChildIterator();
-		while(it.hasMoreElements())
+		foreach(SceneNode::Child child, mySceneNode->getChildren())
 		{
-			Node* child = it.getNext();
 			child->setPosition(-center);
 		}
 		mySceneNode->scale(scale, scale, scale);
