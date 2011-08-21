@@ -143,10 +143,8 @@ void Container::removeChild(const String& name)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget* Container::getChildByName(const String& name)
 {
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		if(w->getName() == name) return w;
 	}
 	return NULL;
@@ -157,11 +155,9 @@ Widget* Container::getChildByIndex(int index)
 {
 	oassert(getNumChildren() > index);
 
-	WidgetIterator it(myChildren.begin(), myChildren.end());
 	int i = 0;
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		if(i == index) return w;
 		i++;
 	}
@@ -177,10 +173,8 @@ void Container::draw()
 	renderContent();
 
 	// draw children.
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		w->draw();
 	}
 
@@ -190,10 +184,8 @@ void Container::draw()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::updateSize()
 {
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		w->updateSize();
 	}
 	Widget::autosize();
@@ -206,10 +198,8 @@ int Container::expandStep(int availableSpace, Orientation orientation)
 	int childSpace = availableSpace / getNumChildren();
 	int spaceLeft = availableSpace;
 
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		int size = w->getSize()[orientation] + childSpace;
 		w->setActualSize(size, orientation);
 		spaceLeft -= w->getSize(orientation);
@@ -231,10 +221,8 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 		(orientation == Vertical && myVerticalAlign == AlignBottom))
 	{
 		p = getSize(orientation) - myPadding;
-		WidgetIterator it(myChildren.begin(), myChildren.end());
-		while(it.hasMoreElements())
+		foreach(Widget* w, myChildren)
 		{
-			Widget* w = it.getNext();
 			p -= (w->getSize(orientation) + myMargin);
 		}
 	}
@@ -243,10 +231,8 @@ void Container::updateChildrenLayoutPosition(Orientation orientation)
 		// TODO: Compute center align start position
 		p = myPadding;
 	}
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		w->setPosition(p, orientation);
 		p += w->getSize()[orientation] + myMargin;
 	}
@@ -258,11 +244,8 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 	// Compute the maximum available size
 	int available = getSize()[orientation] - myPadding * 2;
 
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
-
 		// Set child size.
 		w->setActualSize(available, orientation);
 
@@ -291,10 +274,8 @@ void Container::updateChildrenFreeBounds(Orientation orientation)
 void Container::resetChildrenSize(Orientation orientation)
 {
 	// Initialize widget width to 0
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())	
+	foreach(Widget* w, myChildren)
 	{ 
-		Widget* w = it.getNext();	
 		w->setActualSize(0, orientation); 
 	}
 }
@@ -335,10 +316,8 @@ void Container::computeGridLayout(Orientation orientation)
 	int cellX = myPadding;
 	int cellY = myPadding;
 
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		w->setActualSize(cellWidth, Horizontal);
 		w->setActualSize(cellHeight, Vertical);
 
@@ -391,10 +370,8 @@ void Container::layout()
 			}
 
 			// Layout children.
-			WidgetIterator it(myChildren.begin(), myChildren.end());
-			while(it.hasMoreElements())
+			foreach(Widget* w, myChildren)
 			{
-				Widget* w = it.getNext();
 				w->layout();
 			}
 
@@ -406,10 +383,8 @@ void Container::layout()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::update(const omega::UpdateContext& context)
 {
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		w->update(context);
 	}
 }
@@ -421,10 +396,8 @@ void Container::handleEvent(const Event& evt)
 	
 	transformPoint(point);
 
-	WidgetIterator it(myChildren.begin(), myChildren.end());
-	while(it.hasMoreElements())
+	foreach(Widget* w, myChildren)
 	{
-		Widget* w = it.getNext();
 		w->handleEvent(evt);
 	}
 }

@@ -28,8 +28,6 @@
 
 using namespace omega;
 
-typedef ConstMapIterator<Dictionary< String, DataSource*> > DataSourceIterator;
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DataManager::addSource(DataSource* source)
 {
@@ -51,10 +49,8 @@ DataSource* DataManager::getSource(const String& name)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 DataInfo DataManager::getInfo(const String& path)
 {
-	DataSourceIterator it = DataSourceIterator(mySources);
-	while(it.hasMoreElements())
+	foreach(SourceDictionary::Item ds, mySources)
 	{
-		DataSource* ds = it.getNext();
 		if(ds->exists(path))
 		{
 			return ds->getInfo(path);
@@ -67,11 +63,9 @@ DataInfo DataManager::getInfo(const String& path)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 DataStream* DataManager::createStream(const String& path)
 {
-	DataSourceIterator it = DataSourceIterator(mySources);
 	DataStream* stream = NULL;
-	while(it.hasMoreElements())
+	foreach(SourceDictionary::Item ds, mySources)
 	{
-		DataSource* ds = it.getNext();
 		stream = ds->newStream(path);
 		if(stream != NULL) break;
 	}
