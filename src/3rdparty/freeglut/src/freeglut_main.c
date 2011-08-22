@@ -1895,7 +1895,7 @@ LRESULT CALLBACK fgWindowProc( HWND hWnd, UINT uMsg, WPARAM wParam,
     }
     break;
 
-    case 0x020a:
+    case WM_MOUSEWHEEL:
         /* Should be WM_MOUSEWHEEL but my compiler doesn't recognize it */
     {
         /*
@@ -1903,8 +1903,9 @@ LRESULT CALLBACK fgWindowProc( HWND hWnd, UINT uMsg, WPARAM wParam,
          * XXX Should use WHEEL_DELTA instead of 120
          */
         int wheel_number = LOWORD( wParam );
-        short ticks = ( short )HIWORD( wParam ) / 120;
+		short ticks = GET_WHEEL_DELTA_WPARAM( wParam );
         int direction = 1;
+		printf("%d\n", ticks);
 
         if( ticks < 0 )
         {
