@@ -27,14 +27,14 @@
 #ifndef __VTK_MODULE_H__
 #define __VTK_MODULE_H__
 
-#include "omega/osystem.h"
-#include "omega/EngineClient.h"
-#include "omega/mvc/ViewManager.h"
 #include "ovtk/ovtkbase.h"
 #include "ovtk/VtkRenderPass.h"
 #include "ovtk/VtkViewClient.h"
 
-#include "ovtkbase.h"
+#include "omega/osystem.h"
+#include "omega/EngineClient.h"
+#include "omega/mvc/ViewManager.h"
+
 
 class vtkActor;
 namespace ovtk

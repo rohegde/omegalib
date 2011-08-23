@@ -33,7 +33,8 @@
 #include "omega/Event.h"
 
 // Equalizer includes
-#include <eq/eq.h>
+#include "eq/eq.h"
+#include "co/co.h"
 
 #ifdef OMEGA_OS_WIN
 // This include is needed to use Layout::findView since equalizer code doesn't use this method, and its 
@@ -45,9 +46,17 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-namespace omega
-{
+namespace omega {
 class RenderTarget;
+
+	class EqUtils
+	{
+	public:
+		static void serializeEvent(Event& evt, co::DataOStream& os);
+		static void deserializeEvent(Event& evt, co::DataIStream& is);
+	private:
+		EqUtils() {}
+	};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
@@ -81,7 +90,7 @@ protected:
 			os << myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				myEventBuffer[i].serialize(os);
+				EqUtils::serializeEvent(myEventBuffer[i], os);
 			}
 		}
 	}
@@ -95,7 +104,7 @@ protected:
 			is >> myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				myEventBuffer[i].deserialize(is);
+				EqUtils::deserializeEvent(myEventBuffer[i], is);
 			}
 		}
 	}
@@ -263,6 +272,7 @@ protected:
 	virtual void frameDraw( const uint128_t& spin );
 	virtual void frameViewStart( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
+	//virtual void drawStatistics();
 
 private:
 	eq::Window* myWindow;

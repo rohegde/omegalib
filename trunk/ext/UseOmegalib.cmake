@@ -31,7 +31,7 @@ if(COMMAND cmake_policy)
       #cmake_policy(SET CMP0008 NEW)
 endif(COMMAND cmake_policy)
 
-set(OMEGA_ROOT_DIR CACHE PATH "Path of the omegalib main directory (the one containing the include, bin and lib folders")
+set(OMEGA_ROOT_DIR CACHE PATH "Path of the omegalib bin directory (the one containing the include, bin and lib folders")
 
 ###################################################################################################
 # Create a build name depending on the OS, Toolset and architecture.

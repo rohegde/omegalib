@@ -27,8 +27,8 @@
 #ifndef VTKVIEWER_H
 #define VTKVIEWER_H
 
-#include "ovtk/VtkModule.h"
 #include "ovtk/VtkModel.h"
+#include "ovtk/VtkModule.h"
 #include "omega.h"
 #include "omega/scene.h"
 #include "omega/ui.h"

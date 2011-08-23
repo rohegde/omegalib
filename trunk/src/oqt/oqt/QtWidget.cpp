@@ -61,13 +61,13 @@ void QtWidget::renderContent()
 	{
 		layout();
 
-		byte* data = myTexture->getData();
+		omega::byte* data = myTexture->getData();
 		if(data != NULL)
 		{
 			free(data);
 		}
 
-		data = (byte*)malloc(getWidth() * getHeight() * 4);
+		data = (omega::byte*)malloc(getWidth() * getHeight() * 4);
 
 		myTexture->reset(data, getWidth(), getHeight());
 
