@@ -1,2 +1,2 @@
-= Tutorial 4 - Graphics Intro Part 1: A Basic OpenGL Application =
+#summary Graphics Intro Part 1: A Basic OpenGL Application
 In this tutorial we will atart experimenting with graphics inside omegalib. We will start with a very basic OpenGL application.
