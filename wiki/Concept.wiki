@@ -4,6 +4,9 @@ This page offers a general overview of the omegalib structure, presenting some o
 
 <img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="300"/>
 
+_^An overview of the omegalib architecture.^_
+
+
 Inside Omegalib, hardware abstraction is implemented through two concepts: _display system abstraction_ and _input system abstraction_.
 
 = Display System Abstraction =
@@ -26,7 +29,7 @@ Event services allow for a great deal of flexibility. They abstract the physical
 
 <img src="http://omegalib.googlecode.com/svn/wiki/oinputserver.png" width="700" align="middle"/>
 
-_^omegalib supports event distribution either through integrating event services in the application, or by streaming them over  a network connection^_
+_^omegalib supports event distribution either through integrating event services in the application, or by streaming them over  a network connection.^_
 
 Omegalib also supports the streaming of events to external applications, acting as a display-less input server. This simplifies the development of OmegaDesk applications using differents toolsets (as Unity or Processing) and streamlines the integration of input support into legacy applications that treat the device displays as normal screens, but want to use the motion capture, tracking or multitouch capabilities of OmegaDesk.
 
@@ -40,5 +43,7 @@ We think a certain, predefined number of interaction metaphors would satisfy mos
 
 = Integration With Scientific Visualization Tools =
 <img src="http://omegalib.googlecode.com/svn/wiki/ovtk.png" width="600"/>
+
+_^. The integration of VTK pipelines inside Omegalib is done through a support module that performs VTK actor encapsulation and feeds back user actions to the pipeline.^_
 
 One of the purposes of OmegaDesk is to be used as a scientific visualization tool: it is therefore necessary to integrate it with standard tools and libraries, like the [www.vtk.org Visualization Toolkit (VTK)]. Through Omegalib, Omegadesk is able to load VTK pipelines as python scripts, render them through the omegalib display sys-tem and interact with VTK actors and 3D models using the interaction schemes presented in the previous section. VTK python scripts can also create user interface widgets that modify the visualization pipeline, and can be controlled through the touch screen. It is also possible to create VTK programs for OmegaDesk natively, using the C++ VTK API directly. This makes it extremely easy to build VTK programs for OmegaDesk or port legacy pipelines to the system. 
