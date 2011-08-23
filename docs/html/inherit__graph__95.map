@@ -1,4 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomega_1_1_iterator_wrapper.html" title="omega::IteratorWrapper\&lt; T, IteratorType, T::value_type \&gt;" alt="" coords="5,5,355,35"/>
-<area shape="rect" id="node3" href="$classomega_1_1_vector_iterator_wrapper.html" title="Prepiared IteratorWrapper for container like std::vector." alt="" coords="404,5,705,35"/>
+<area shape="rect" id="node1" href="$classomega_1_1math_1_1_aligned_box3.html" title="A 3D box aligned with the x/y/z axes." alt="" coords="5,5,216,35"/>
 </map>

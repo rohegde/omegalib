@@ -47,7 +47,7 @@ Inheritance diagram for omega::ui::Container:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1ui_1_1_container__inherit__graph.png" border="0" usemap="#omega_1_1ui_1_1_container_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1ui_1_1_container_inherit__map" id="omega_1_1ui_1_1_container_inherit__map">
-<area shape="rect" id="node5" href="classomega_1_1ui_1_1_user_manager_panel.html" title="omega::ui::UserManagerPanel" alt="" coords="5,160,203,189"/><area shape="rect" id="node2" href="classomega_1_1ui_1_1_widget.html" title="omega::ui::Widget" alt="" coords="40,5,168,35"/></map>
+<area shape="rect" id="node7" href="classomega_1_1ui_1_1_user_manager_panel.html" title="omega::ui::UserManagerPanel" alt="" coords="5,237,203,267"/><area shape="rect" id="node2" href="classomega_1_1ui_1_1_widget.html" title="omega::ui::Widget" alt="" coords="40,83,168,112"/><area shape="rect" id="node4" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="29,5,179,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1ui_1_1_container-members.html">List of all members.</a></p>
@@ -75,6 +75,7 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#a2eab57a18ab120fad0cca5665c645c12">Container</a> (<a class="el" href="classomega_1_1ui_1_1_u_i_manager.html">UIManager</a> *mng)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#ae9f5d07bfc3defda274aa06091c19f56">~Container</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#ac1999d60aec5e24bc5f5cc64313a3b36">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">omega::Event</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#a952760074c1616a1e374555d19c3acec">load</a> (<a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;setting)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#ac8feb6b3a790483f85aad40a46327f24">draw</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#af2805885c23dd063746a7c0ecfb8245d">updateSize</a> ()</td></tr>
@@ -111,7 +112,6 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#aa6e26ee831ac2b0baa628db7f611e350">setGridColumns</a> (int value)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#a7ce48690969c60b529112e6d0c924228">processInputEvent</a> (const <a class="el" href="classomega_1_1_event.html">omega::Event</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#a386ed695ebe3c9dd4d267512da5900f8">update</a> (const <a class="el" href="structomega_1_1_update_context.html">omega::UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_container.html#a52af1f47df823d44cd2a857b21e201f4">layout</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
@@ -445,6 +445,26 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac1999d60aec5e24bc5f5cc64313a3b36"></a><!-- doxytag: member="omega::ui::Container::handleEvent" ref="ac1999d60aec5e24bc5f5cc64313a3b36" args="(const omega::Event &amp;evt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Container::handleEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">omega::Event</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>evt</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1ui_1_1_widget.html#a5758dff9b9d41098aa879d0254c047be">omega::ui::Widget</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a52af1f47df823d44cd2a857b21e201f4"></a><!-- doxytag: member="omega::ui::Container::layout" ref="a52af1f47df823d44cd2a857b21e201f4" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -482,23 +502,23 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7ce48690969c60b529112e6d0c924228"></a><!-- doxytag: member="omega::ui::Container::processInputEvent" ref="a7ce48690969c60b529112e6d0c924228" args="(const omega::Event &amp;evt)" -->
+<a class="anchor" id="a6ae465718f0088d1fb2911f084bfbe27"></a><!-- doxytag: member="omega::ui::Container::removeChild" ref="a6ae465718f0088d1fb2911f084bfbe27" args="(Widget *child)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Container::processInputEvent </td>
+          <td class="memname">void Container::removeChild </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">omega::Event</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td>
+          <td class="paramname"> <em>child</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected, virtual]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1ui_1_1_widget.html#ad462490b14d8cfbd514214c70c4a1510">omega::ui::Widget</a>.</p>
+<p>Remove a child from this widget. </p>
 
 </div>
 </div>
@@ -517,26 +537,6 @@ Friends</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a6ae465718f0088d1fb2911f084bfbe27"></a><!-- doxytag: member="omega::ui::Container::removeChild" ref="a6ae465718f0088d1fb2911f084bfbe27" args="(Widget *child)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Container::removeChild </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td>
-          <td class="paramname"> <em>child</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Remove a child from this widget. </p>
 
 </div>
 </div>
@@ -726,7 +726,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:30 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

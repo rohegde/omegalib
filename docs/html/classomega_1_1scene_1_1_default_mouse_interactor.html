@@ -44,7 +44,7 @@ Inheritance diagram for omega::scene::DefaultMouseInteractor:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1scene_1_1_default_mouse_interactor__inherit__graph.png" border="0" usemap="#omega_1_1scene_1_1_default_mouse_interactor_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1scene_1_1_default_mouse_interactor_inherit__map" id="omega_1_1scene_1_1_default_mouse_interactor_inherit__map">
-<area shape="rect" id="node2" href="classomega_1_1scene_1_1_actor.html" title="omega::scene::Actor" alt="" coords="57,83,199,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="49,5,207,35"/></map>
+<area shape="rect" id="node2" href="classomega_1_1scene_1_1_actor.html" title="omega::scene::Actor" alt="" coords="101,83,243,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node6" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="187,5,336,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1scene_1_1_default_mouse_interactor-members.html">List of all members.</a></p>
@@ -52,7 +52,8 @@ Inheritance diagram for omega::scene::DefaultMouseInteractor:</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_default_mouse_interactor.html#a6603680b02d8c28a7b1efbdf8274be7d">DefaultMouseInteractor</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_default_mouse_interactor.html#abf4d39452434d32b677505990269631d">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_default_mouse_interactor.html#a6e35265a2b644d2a4b85757b07c64cde">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_default_mouse_interactor.html#aca4195a300ea00cdc0bc1969247cf5fe">preDraw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a6603680b02d8c28a7b1efbdf8274be7d"></a><!-- doxytag: member="omega::scene::DefaultMouseInteractor::DefaultMouseInteractor" ref="a6603680b02d8c28a7b1efbdf8274be7d" args="()" -->
@@ -73,37 +74,48 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="abf4d39452434d32b677505990269631d"></a><!-- doxytag: member="omega::scene::DefaultMouseInteractor::handleEvent" ref="abf4d39452434d32b677505990269631d" args="(const Event &amp;evt, DrawContext &amp;context)" -->
+<a class="anchor" id="a6e35265a2b644d2a4b85757b07c64cde"></a><!-- doxytag: member="omega::scene::DefaultMouseInteractor::handleEvent" ref="a6e35265a2b644d2a4b85757b07c64cde" args="(const Event &amp;evt)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool DefaultMouseInteractor::handleEvent </td>
+          <td class="memname">void DefaultMouseInteractor::handleEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [virtual]</code></td>
+          <td class="paramname"> <em>evt</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_actor.html#abba500076f789e96dcbe54c9a7b66318">omega::scene::Actor</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_actor.html#ac8315daad235b97ce1b9b28d800945ec">omega::scene::Actor</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aca4195a300ea00cdc0bc1969247cf5fe"></a><!-- doxytag: member="omega::scene::DefaultMouseInteractor::preDraw" ref="aca4195a300ea00cdc0bc1969247cf5fe" args="(const DrawContext &amp;context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DefaultMouseInteractor::preDraw </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>context</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_actor.html#ab6cf8ee354f819c72487efd84f3786b4">omega::scene::Actor</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:28 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

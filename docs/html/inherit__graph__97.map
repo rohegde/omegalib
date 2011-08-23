@@ -1,5 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomega_1_1_iterator_wrapper.html" title="omega::IteratorWrapper\&lt; T, T::const_iterator, T::mapped_type \&gt;" alt="" coords="5,5,397,35"/>
-<area shape="rect" id="node3" href="$classomega_1_1_map_iterator_wrapper.html" title="omega::MapIteratorWrapper\&lt; T, T::const_iterator \&gt;" alt="" coords="447,5,761,35"/>
-<area shape="rect" id="node5" href="$classomega_1_1_const_map_iterator.html" title="Concrete IteratorWrapper for const access to the underlying key&#45;value container." alt="" coords="812,5,1009,35"/>
+<area shape="rect" id="node3" href="$classomega_1_1math_1_1matrix.html" title="omega::math::matrix\&lt; M, N, T \&gt;" alt="" coords="113,5,321,35"/>
+<area shape="rect" id="node5" href="$classomega_1_1math_1_1vector.html" title="omega::math::vector\&lt; M, T \&gt;" alt="" coords="123,59,312,88"/>
 </map>

@@ -60,8 +60,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_color.html">Color</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a4ae92eb4051cdb11418edf6aaa2228e9">getAmbientLightColor</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a57a565f040dcb1c9905762bcd2b9dded">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a79a2af07c478aecda3d63f92bc14117c">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a0a9891341352ecd7c2e408de8c60ffd9">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a0269244827f3d5a1f4f1f08746194a54">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a388db3d97cac8dd660b834dd87688265">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#a207d7bc0cfdcccb73a1401d4b7d7bc13">addActor</a> (<a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *actor)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#aee865366296661914f8c406b8ef28760">removeActor</a> (<a class="el" href="classomega_1_1scene_1_1_actor.html">Actor</a> *actor)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_scene_manager.html#aa07b3742391a1cdabd69f55d6ab2dd30">addRenderPass</a> (<a class="el" href="classomega_1_1scene_1_1_render_pass.html">RenderPass</a> *pass, bool addToFront=false)</td></tr>
@@ -241,53 +240,17 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0269244827f3d5a1f4f1f08746194a54"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="a0269244827f3d5a1f4f1f08746194a54" args="(const Event &amp;evt, DrawContext &amp;context)" -->
+<a class="anchor" id="a388db3d97cac8dd660b834dd87688265"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="a388db3d97cac8dd660b834dd87688265" args="(const Event &amp;evt)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool SceneManager::handleEvent </td>
+          <td class="memname">void SceneManager::handleEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"> <em>evt</em></td>
+          <td>&nbsp;)&nbsp;</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a0a9891341352ecd7c2e408de8c60ffd9"></a><!-- doxytag: member="omega::scene::SceneManager::handleEvent" ref="a0a9891341352ecd7c2e408de8c60ffd9" args="(const Event &amp;evt, UpdateContext &amp;context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SceneManager::handleEvent </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
@@ -399,7 +362,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:29 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

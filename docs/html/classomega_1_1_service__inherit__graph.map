@@ -1,14 +1,15 @@
 <map id="G" name="G">
 <area shape="rect" id="node5" href="$classomega_1_1_direct_x_input_service.html" title="omega::DirectXInputService" alt="" coords="385,5,564,35"/>
-<area shape="rect" id="node7" href="$classomega_1_1_keyboard_service.html" title="omega::KeyboardService" alt="" coords="392,59,557,88"/>
-<area shape="rect" id="node9" href="$classomega_1_1_mouse_service.html" title="omega::MouseService" alt="" coords="400,112,549,141"/>
-<area shape="rect" id="node11" href="$classomega_1_1_natural_point_service.html" title="omega::NaturalPointService" alt="" coords="384,165,565,195"/>
-<area shape="rect" id="node13" href="$classomega_1_1_net_service.html" title="omega::NetService" alt="" coords="409,219,540,248"/>
-<area shape="rect" id="node15" href="$classomega_1_1_observer_update_service.html" title="omega::ObserverUpdateService" alt="" coords="373,272,576,301"/>
-<area shape="rect" id="node17" href="$classomega_1_1_open_n_i_service.html" title="omega::OpenNIService" alt="" coords="397,325,552,355"/>
-<area shape="rect" id="node19" href="$classomega_1_1_opti_track_service.html" title="omega::OptiTrackService" alt="" coords="392,379,557,408"/>
-<area shape="rect" id="node21" href="$classomega_1_1_p_q_service.html" title="omega::PQService" alt="" coords="409,432,540,461"/>
-<area shape="rect" id="node23" href="$classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="400,485,549,515"/>
-<area shape="rect" id="node25" href="$classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,539,548,568"/>
-<area shape="rect" id="node2" href="$classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,272,164,301"/>
+<area shape="rect" id="node7" href="$classomega_1_1_heartbeat_service.html" title="HearthbeatService implements a very simple event service, that sends out update events at a predefine..." alt="" coords="392,59,557,88"/>
+<area shape="rect" id="node9" href="$classomega_1_1_keyboard_service.html" title="omega::KeyboardService" alt="" coords="392,112,557,141"/>
+<area shape="rect" id="node11" href="$classomega_1_1_mouse_service.html" title="omega::MouseService" alt="" coords="400,165,549,195"/>
+<area shape="rect" id="node13" href="$classomega_1_1_natural_point_service.html" title="omega::NaturalPointService" alt="" coords="384,219,565,248"/>
+<area shape="rect" id="node15" href="$classomega_1_1_net_service.html" title="omega::NetService" alt="" coords="409,272,540,301"/>
+<area shape="rect" id="node17" href="$classomega_1_1_observer_update_service.html" title="omega::ObserverUpdateService" alt="" coords="373,325,576,355"/>
+<area shape="rect" id="node19" href="$classomega_1_1_open_n_i_service.html" title="omega::OpenNIService" alt="" coords="397,379,552,408"/>
+<area shape="rect" id="node21" href="$classomega_1_1_opti_track_service.html" title="omega::OptiTrackService" alt="" coords="392,432,557,461"/>
+<area shape="rect" id="node23" href="$classomega_1_1_p_q_service.html" title="omega::PQService" alt="" coords="409,485,540,515"/>
+<area shape="rect" id="node25" href="$classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="400,539,549,568"/>
+<area shape="rect" id="node27" href="$classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,592,548,621"/>
+<area shape="rect" id="node2" href="$classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,299,164,328"/>
 </map>
