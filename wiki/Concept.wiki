@@ -1,7 +1,7 @@
 = Opegalib Concept =
 This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 
-<img src="http://omegalib.googlecode.com/svn/wiki/architecture.png"/>
+<img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="200"/>
 
 Inside Omegalib, hardware abstraction is implemented through two concepts: display system abstraction and input system abstraction.
 
