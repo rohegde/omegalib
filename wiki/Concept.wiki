@@ -1,5 +1,5 @@
+#summary This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 = Opegalib Concept =
-This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 <wiki:toc max_depth="2" />
 
 <img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="400"/>
