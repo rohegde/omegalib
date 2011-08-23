@@ -65,7 +65,8 @@ if(OMEGA_USE_PYTHON)
 endif(OMEGA_USE_PYTHON)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-	# Equalizer support enabled: uncompress and prepare the external project.
+# Equalizer support enabled: uncompress and prepare the external project.
+# PUT ALL OF THIS IN EXTERNAL SCRIPT
 	ExternalProject_Add(
 		equalizer
 		URL ${CMAKE_SOURCE_DIR}/ext/Equalizer.tar.gz
@@ -78,20 +79,27 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 	set_target_properties(equalizer PROPERTIES FOLDER "3rdparty")
 	# define path to libraries built by the equalizer external project
 	set(EQUALIZER_BINARY_DIR ${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build)
-	
-	set(EQUALIZER_CLIENT_LIBS_DEBUG 
-		${EQUALIZER_BINARY_DIR}/libs/collage/Debug/Collage.lib
-		${EQUALIZER_BINARY_DIR}/libs/client/Debug/Equalizer.lib)
-		
-	set(EQUALIZER_CLIENT_LIBS_RELEASE 
-		${EQUALIZER_BINARY_DIR}/libs/collage/Release/Collage.lib
-		${EQUALIZER_BINARY_DIR}/libs/client/Release/Equalizer.lib)
+	# NEED SECTIONS DEPENDENT ON BUILD TOOL, NOT OS!
+	if(WIN32)
+		set(EQUALIZER_CLIENT_LIBS_DEBUG 
+			${EQUALIZER_BINARY_DIR}/libs/collage/Debug/Collage.lib
+			${EQUALIZER_BINARY_DIR}/libs/client/Debug/Equalizer.lib)
+		set(EQUALIZER_CLIENT_LIBS_RELEASE 
+			${EQUALIZER_BINARY_DIR}/libs/collage/Release/Collage.libb
+			${EQUALIZER_BINARY_DIR}/libs/client/Release/Equalizer.lib)
+	else(WIN32)
+		set(EQUALIZER_CLIENT_LIBS_DEBUG 
+			${EQUALIZER_BINARY_DIR}/libs/collage/libCollage.so
+			${EQUALIZER_BINARY_DIR}/libs/client/libEqualizer.so)
+		set(EQUALIZER_CLIENT_LIBS_RELEASE ${EQUALIZER_CLIENT_LIBS_DEBUG})
+	endif(WIN32)
 	include_directories(${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build/include)
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 ###################################################################################################
 # Set include paths
 include_directories(
+  ${OmegaLib_BINARY_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  

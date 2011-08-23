@@ -24,79 +24,35 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SERVICE_H__
-#define __SERVICE_H__
+#ifndef __HEARTBEAT__SERVICE_H__
+#define __HEARTBEAT__SERVICE_H__
 
-#include "osystem.h"
+#include "omega/osystem.h"
+#include "omega/ServiceManager.h"
 
-namespace omega
-{
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	// Forward declarations
-	class Event;
-	class ServiceManager;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Service: public DynamicObject
+	//! HearthbeatService implements a very simple event service, that sends out update events 
+	//! at a predefined rate.
+	//! HearthbeatService main function is to test the omegalib event distribution system. It can
+	//! also be used as an example and a starting point to develop custom event services.
+	class HeartbeatService: public Service
 	{
-	friend class ServiceManager;
 	public:
-		enum ServiceType { Pointer, Mocap, Keyboard, Controller, UI, Generic }; 
-		enum ServicePollPriority { PollFirst, PollNormal, PollLast }; 
+		//! Allocator function (will be used to register the service inside SystemManager)
+		static HeartbeatService* New() { return new HeartbeatService(); }
 
 	public:
-		// Class constructor
-		Service(): myManager(NULL), myPriority(PollNormal) {}
+		HeartbeatService();
 
-	   // Class destructor
-		virtual ~Service() {}
-
-		ServiceManager* getManager();
-		String getName();
-
-		ServicePollPriority getPollPriority();
-		void setPollPriority(ServicePollPriority value);
-
-		virtual void setup(Setting& settings) {}
-		virtual void initialize() {}
-		virtual void start() {}
-		virtual void poll() {}
-		virtual void stop() {}
-		virtual void dispose() {}
-
-	protected:
-		void lockEvents();
-		void unlockEvents();
-		Event* writeHead();
-		Event* readHead();
-		Event* readTail();
-		Event* getEvent(int index);
+		virtual void setup(Setting& settings);
+		virtual void poll();
 
 	private:
-		void doSetup(Setting& settings);
-		void setManager(ServiceManager* mng) { myManager = mng; }
-
-	private:
-		ServiceManager* myManager;
-		String myName;
-		ServicePollPriority myPriority;
+		// The rate at which events should be generated.
+		float myRate;
+		float myLastEventTime;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ServiceManager* Service::getManager() 
-	{ return myManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline String Service::getName() 
-	{ return myName; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Service::ServicePollPriority Service::getPollPriority()
-	{ return myPriority; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Service::setPollPriority(Service::ServicePollPriority value)
-	{ myPriority = value; }
 }; // namespace omega
 
 #endif
