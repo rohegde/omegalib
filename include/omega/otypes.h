@@ -112,7 +112,7 @@ namespace omega
 
 	// Basic typedefs
 	typedef unsigned char byte;
-	#ifndef __GNUC__
+	#ifndef OMEGA_OS_LINUX 
 	typedef unsigned int uint;
 	#endif
 	typedef unsigned long long uint64;
