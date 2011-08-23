@@ -22,7 +22,7 @@ Omegalib gives applications access to input devices through the concept of _even
  * process events from other sources to act as a _background utility service_. For example, a service can get position data for the user head from a tracking or motion capture service, update the observer head matrices for a scene and send the application updates on the user tracking status).
 Event services allow for a great deal of flexibility. They abstract the physical input devices available to the system. Also, they allow to modularize several common components of a virtual reality application (like user tracking or network message passing), so that they can easily be reused in applications.
 
-<img src="http://omegalib.googlecode.com/svn/wiki/oinputserver.png" width="600"/>
+<img src="http://omegalib.googlecode.com/svn/wiki/oinputserver.png" width="800"/>
 
 Omegalib also supports the streaming of events to external applications, acting as a display-less input server. This simplifies the development of OmegaDesk applications using differents toolsets (as Unity or Processing) and streamlines the integration of input support into legacy applications that treat the device displays as normal screens, but want to use the motion capture, tracking or multitouch capabilities of OmegaDesk.
 
@@ -36,4 +36,5 @@ We think a certain, predefined number of interaction metaphors would satisfy mos
 
 == Integration With Scientific Visualization Tools ==
 <img src="http://omegalib.googlecode.com/svn/wiki/ovtk.png" width="600"/>
+
 One of the purposes of OmegaDesk is to be used as a scientific visualization tool: it is therefore necessary to integrate it with standard tools and libraries, like the <a href="www.vtk.org">Visualization Toolkit (VTK)</a>. Through Omegalib, Omegadesk is able to load VTK pipelines as python scripts, render them through the omegalib display sys-tem and interact with VTK actors and 3D models using the interaction schemes presented in the previous section. VTK python scripts can also create user interface widgets that modify the visualization pipeline, and can be controlled through the touch screen. It is also possible to create VTK programs for OmegaDesk natively, using the C++ VTK API directly. This makes it extremely easy to build VTK programs for OmegaDesk or port legacy pipelines to the system. 
