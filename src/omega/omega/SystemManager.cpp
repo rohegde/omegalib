@@ -30,7 +30,7 @@
 #include "omega/Config.h"
 #include "omega/StringUtils.h"
 
-#include "co/base/lock.h"
+#include "omega/HeartbeatService.h"
 
 // Display system
 #ifdef OMEGA_USE_DISPLAY
@@ -143,7 +143,8 @@ void SystemManager::setupServiceManager()
 	myServiceManager = new ServiceManager(this);
 
 	// register standard input services.
-	// @todo: I don't understand why a static_cast does not work here.
+	myServiceManager->registerService("HeartbeatService", (ServiceAllocator)HeartbeatService::New);
+
 #ifdef OMEGA_USE_DIRECTINPUT
 	myServiceManager->registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);
 #endif

@@ -42,7 +42,7 @@ public:
 public:
 	static void mouseMotionCallback(int x, int y);
 	static void mouseButtonCallback(int btn, int k, int x, int y);
-	static void mouseWheelCallback(int wheel, int x, int y);
+	static void mouseWheelCallback(int btn, int wheel, int x, int y);
 
 	virtual void setup(Setting& settings);
 	virtual void initialize();

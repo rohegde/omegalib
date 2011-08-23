@@ -34,9 +34,6 @@ namespace omega
 namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	typedef VectorIterator<std::list<Widget*> > WidgetIterator;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OUTILS_API Container: public Widget
 	{
 	friend class UIManager;
@@ -101,7 +98,7 @@ namespace ui
 		void computeGridLayout(Orientation orientation);
 
 	private:
-		std::list<Widget*> myChildren;
+		List<Widget*> myChildren;
 		Layout myLayout;
 		float myPadding;
 		float myMargin;

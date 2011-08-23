@@ -50,6 +50,7 @@ namespace scene
 	{
 		friend class SceneManager; // Needs to call the node draw method.
 	public:
+		typedef ChildNode<SceneNode> Child;
 		enum HitType { HitBoundingSphere };
 
 	public:

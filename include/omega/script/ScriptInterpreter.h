@@ -27,13 +27,22 @@
 #ifndef __SCRIPT_INTERPRETER_H__
 #define __SCRIPT_INTERPRETER_H__
 
-#include "omega/Type.h"
+#include "omega/osystem.h"
 
 namespace omega { namespace script {
+	
+	class ScriptModule;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class ScriptInterpreter
 	{
 		OMEGA_DECLARE_TYPE(ScriptInterpreter);
+	public:
+	  virtual void initialize(const char* programName) = 0;
+	  virtual void addModule(const char* name, ScriptModule* methods) = 0;
+ 	  virtual void eval(const String& script, const char* format = NULL, ...) = 0;
+	  virtual void runFile(const String& filename) = 0;
+	  virtual void addPath(const char*) = 0;
 	};
 }; }; // namespace omega
 

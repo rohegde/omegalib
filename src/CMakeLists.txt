@@ -27,11 +27,13 @@
 
 # TODO: move this to omega CMakeFile, inside Equalizer block
 # Check if 32bit MAC or 64bit MAC
-if( APPLE )
-    if(_CMAKE_OSX_MACHINE MATCHES "64")
-        option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
-    endif()
-endif( APPLE )
+#if( APPLE )
+#    if(_CMAKE_OSX_MACHINE MATCHES "64")
+#        option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
+#    endif()
+#endif( APPLE )
+
+include(ExternalProject)
 
 ###################################################################################################
 # Options
@@ -47,26 +49,69 @@ if(OMEGA_USE_DISPLAY)
 	set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
 	set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
 	set(OMEGA_BUILD_QT_LIB false CACHE BOOL "Enable build of Qt integration library")
+	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 endif(OMEGA_USE_DISPLAY)
+
+set(OMEGA_USE_PYTHON false CACHE BOOL "Enable python scripting support.")
+
+if(OMEGA_USE_PYTHON)
+	find_package(PythonLibs)
+	if(PYTHONLIBS_FOUND)
+		include_directories(${PYTHON_INCLUDE_DIRS})
+	else(PYTHONLIBS_FOUND)
+		message(ERROR "Python libraries not found")
+	endif(PYTHONLIBS_FOUND)
+	add_definitions(-DOMEGA_USE_PYTHON)
+endif(OMEGA_USE_PYTHON)
+
+if(OMEGA_USE_DISPLAY_EQUALIZER)
+# Equalizer support enabled: uncompress and prepare the external project.
+# PUT ALL OF THIS IN EXTERNAL SCRIPT
+	ExternalProject_Add(
+		equalizer
+		URL ${CMAKE_SOURCE_DIR}/ext/Equalizer.tar.gz
+		#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
+		CMAKE_ARGS 
+			-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
+			-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}
+		INSTALL_COMMAND ""
+		)
+	set_target_properties(equalizer PROPERTIES FOLDER "3rdparty")
+	# define path to libraries built by the equalizer external project
+	set(EQUALIZER_BINARY_DIR ${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build)
+	# NEED SECTIONS DEPENDENT ON BUILD TOOL, NOT OS!
+	if(WIN32)
+		set(EQUALIZER_CLIENT_LIBS_DEBUG 
+			${EQUALIZER_BINARY_DIR}/libs/collage/Debug/Collage.lib
+			${EQUALIZER_BINARY_DIR}/libs/client/Debug/Equalizer.lib)
+		set(EQUALIZER_CLIENT_LIBS_RELEASE 
+			${EQUALIZER_BINARY_DIR}/libs/collage/Release/Collage.libb
+			${EQUALIZER_BINARY_DIR}/libs/client/Release/Equalizer.lib)
+	else(WIN32)
+		set(EQUALIZER_CLIENT_LIBS_DEBUG 
+			${EQUALIZER_BINARY_DIR}/libs/collage/libCollage.so
+			${EQUALIZER_BINARY_DIR}/libs/client/libEqualizer.so)
+		set(EQUALIZER_CLIENT_LIBS_RELEASE ${EQUALIZER_CLIENT_LIBS_DEBUG})
+	endif(WIN32)
+	include_directories(${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build/include)
+endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 ###################################################################################################
 # Set include paths
 include_directories(
+  ${OmegaLib_BINARY_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/boost
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
-  ${OmegaLib_BINARY_DIR}/src/3rdparty/equalizer/include/
   )
 
 ###################################################################################################
 # Add libraries and applications to the project.
-
 add_subdirectory(3rdparty/libconfig)
-add_subdirectory(3rdparty/equalizer)
+add_subdirectory(3rdparty/OpenThreads)
 
 # TODO: should this be moved inside then omega OPENNI module block?
 if(WIN32)

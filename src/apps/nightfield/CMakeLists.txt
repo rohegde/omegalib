@@ -25,7 +25,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 if(NOT OMEGA_USE_OPENCL)
-	message("APP nighfied won't be build. Requires OpenCL.")
+	message("APP nighfield won't be built. It requires OpenCL.")
 	return()
 endif()
 ###################################################################################################

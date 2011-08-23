@@ -27,14 +27,36 @@
 #ifndef __CONTROLLER_H__
 #define __CONTROLLER_H__
 
-#include "omega/Type.h"
+#include "omega/Application.h"
 
 namespace omega { namespace mvc {
+	class View;
+	class ViewClient;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Controller
+	class OUTILS_API Controller
 	{
-		OMEGA_DECLARE_TYPE(Controller);
+	OMEGA_DECLARE_TYPE(Controller);
+	friend class View;
+	public:
+		virtual void update(const UpdateContext& context, ViewClient* client) {}
+		virtual void handleEvent(const Event& evt, ViewClient* client) {}
+		View* getView();
+
+	protected:
+		void setView(View* value);
+
+	private:
+		View* myView;	
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline View* Controller::getView()
+	{ return myView; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Controller::setView(View* value)
+	{ myView = value; }
 }; }; // namespace omega
 
 #endif

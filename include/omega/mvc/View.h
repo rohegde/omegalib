@@ -24,17 +24,51 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CONTROLLER_H__
-#define __CONTROLLER_H__
+#ifndef __VIEW_H__
+#define __VIEW_H__
 
-#include "omega/Type.h"
+#include "omega/Application.h"
+#include "omega/mvc/Model.h"
+#include "omega/mvc/Controller.h"
 
 namespace omega { namespace mvc {
+	class ViewClient;
+	class Controller;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class View
+	class OUTILS_API View: public IModelListener
 	{
-		OMEGA_DECLARE_TYPE(View);
+	OMEGA_DECLARE_TYPE(View);
+	public:
+		View();
+
+		void update(const UpdateContext& context) {}
+
+		void setModel(Model* value);
+		Model* getModel();
+
+		void attachController(Controller* controller);
+		void detachController(Controller* controller);
+
+		void attachClient(ViewClient* client);
+		void detachClient(ViewClient* client);
+
+		virtual void onModelStateChanged(Model* model);
+		virtual void onModelOperationProgress(Model* model, int progress);
+
+	protected:
+		//virtual void create();
+		//virtual void destroy();
+		
+	private:
+		Model* myModel;
+		List<Controller*> myControllers;
+		List<ViewClient*> myClients;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Model* View::getModel()
+	{ return myModel; }
 }; }; // namespace omega
 
 #endif
