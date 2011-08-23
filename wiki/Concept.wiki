@@ -1,8 +1,6 @@
 = Opegalib Concept =
 This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 
-sdlfks fdlfjsa flsd jvksvh ldfkvh lskdlkg dfkvshd fk dvkadkljgjdflkfje w;lv dsd ldj vlksdj vlkdfjv ldkfb dlfvj lfdv jdflkv ljs;lkfvj lkksdj fgj slfj  dlkfjd dsfl;j sdfjlk dsfksd fkl; 
-
 <img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="400"/>
 
 Inside Omegalib, hardware abstraction is implemented through two concepts: _display system abstraction_ and _input system abstraction_.
@@ -14,7 +12,9 @@ Omegalib manages rendering using the concept of display systems: A display syste
 
 The separation between rendering management and the actual application rendering code allowed us to support the concept of rendering layers. Layers represent conceptually separate sets of graphical primitives (for instance a 3D scene and a 2D interface) that can be enabled or disabled for specific output channels of the display system. In this way, it is very easy to implement separate 3D views for the same application, or create a management window running on a secondary display, showing an administration UI or a debug-mode scene rendering.
 
-It is also possible to perform rendering of layers on separate threads, and compose them in the target channel frame buffer: this can be used to make the rendering performance of 2D elements of the application independent from the complexity of the 3D scene, in order to maintain a good frame rate and responsiveness on the UI as the visualized scene grows in complexity.
+It is also possible to perform rendering of layers on separate threads, and compose them in the target channel frame buffer: 
+
+this can be used to make the rendering performance of 2D elements of the application independent from the complexity of the 3D scene, in order to maintain a good frame rate and responsiveness on the UI as the visualized scene grows in complexity.
 
 == Input Device Abstraction ==
 Omegalib gives applications access to input devices through the concept of _event services_: an event service manages one physical or logical event source in the system. For instance it can:
