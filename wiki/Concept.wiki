@@ -1,0 +1,9 @@
+= Opegalib Concept =
+This page offers a general overview of the omegalib structure, presenting some of its main functionality.
+
+<img src="http://omegalib.googlecode.com/svn/wiki/architecture.png"/>
+
+Inside Omegalib, hardware abstraction is implemented through two concepts: display system abstraction and input system abstraction.
+
+== Display System Abstraction ==
+Omegalib manages rendering using the concept of display systems: A display system takes care of setting up the graphical hardware system, creating windows and viewports, setting up transformations and rendering pipelines and calling the appropriate application-level rendering functions. Currently, two display systems have been implemented: a simple GLUT based display system used mainly for debug purposes, and an Equalizer based display system.
