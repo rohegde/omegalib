@@ -71,6 +71,9 @@
 
 #include "otypes.h"
 
+// Include the omega type class, used for RTTI
+#include <omega/TypeInfo.h>
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
 #define OMEGA_VERSION "0.6"

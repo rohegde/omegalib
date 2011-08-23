@@ -98,20 +98,18 @@ void ServiceManager::initialize()
 	myEventBuffer = new Event[MaxEvents];
 	ofmsg("Event buffer allocated. Max events: %1%", %MaxEvents);
 
-	MapIterator<ServiceDictionary> it(myServices);
-	while(it.hasMoreElements())
+	foreach(ServiceDictionary::Item it, myServices)
 	{
-		it.getNext()->initialize();
+		it->initialize();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::dispose()
 {
-	MapIterator<ServiceDictionary> it(myServices);
-	while(it.hasMoreElements())
+	foreach(ServiceDictionary::Item it, myServices)
 	{
-		it.getNext()->dispose();
+		it->dispose();
 	}
 
 	delete[] myEventBuffer;
@@ -120,20 +118,18 @@ void ServiceManager::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::start()
 {
-	MapIterator<ServiceDictionary> it(myServices);
-	while(it.hasMoreElements())
+	foreach(ServiceDictionary::Item it, myServices)
 	{
-		it.getNext()->start();
+		it->start();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::stop()
 {
-	MapIterator<ServiceDictionary> it(myServices);
-	while(it.hasMoreElements())
+	foreach(ServiceDictionary::Item it, myServices)
 	{
-		it.getNext()->stop();
+		it->stop();
 	}
 }
 
@@ -142,10 +138,8 @@ void ServiceManager::poll()
 {
 	for(int pollPriority = Service::PollFirst; pollPriority <= Service::PollLast; pollPriority++)
 	{
-		MapIterator<ServiceDictionary> it(myServices);
-		while(it.hasMoreElements())
+		foreach(ServiceDictionary::Item svc, myServices)
 		{
-			Service* svc = it.getNext();
 			if(svc->getPollPriority() == pollPriority) svc->poll();
 		}
 	}

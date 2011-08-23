@@ -109,6 +109,9 @@ namespace omega
 	class OMEGA_API DataManager
 	{
 	public:
+		typedef Dictionary<String, DataSource*> SourceDictionary;
+
+	public:
 		//! Data sources
 		//@{
 		void addSource(DataSource* source);
@@ -125,7 +128,7 @@ namespace omega
 		//@}
 
 	private:
-		Dictionary<String, DataSource*> mySources;
+		SourceDictionary mySources;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -672,15 +672,15 @@ Node* Node::removeChild(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node::ChildNodeIterator Node::getChildIterator(void)
+Node::ChildNodeRange Node::getChildren(void)
 {
-    return ChildNodeIterator(mChildren.begin(), mChildren.end());
+    return ChildNodeRange(mChildren.begin(), mChildren.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node::ConstChildNodeIterator Node::getChildIterator(void) const
+Node::ConstChildNodeRange Node::getChildren(void) const
 {
-	return ConstChildNodeIterator(mChildren.begin(), mChildren.end());
+	return ConstChildNodeRange(mChildren.begin(), mChildren.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

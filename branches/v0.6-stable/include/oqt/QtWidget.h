@@ -30,6 +30,7 @@
 #ifndef __OQT_WIDGET_H__
 #define __OQT_WIDGET_H__
 
+#define QT_NO_KEYWORDS  // Avoid double definition warning of foreach macro
 #include <QWidget>
 
 #include "oqt/oqtbase.h"

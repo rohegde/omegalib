@@ -45,7 +45,7 @@ int MouseService::screenOffsetX = 0;
 int MouseService::screenOffsetY = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MouseService::mouseWheelCallback(int wheel, int x, int y)
+void MouseService::mouseWheelCallback(int btn, int wheel, int x, int y)
 {
 	if(mysInstance)
 	{
@@ -101,6 +101,9 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		if(SystemManager::instance()->getDisplaySystem()->getId() == DisplaySystem::Glut)
 		{
 			evt->reset(state ? Event::Up : Event::Down, Service::Pointer);
+
+			if(button == 3) mouseWheelCallback(button, 1, x, y);
+			if(button == 4) mouseWheelCallback(button, -1, x, y);
 
 			// Update button flags
 			if(evt->getType() == Event::Down)
@@ -168,6 +171,7 @@ void MouseService::initialize()
 		glutPassiveMotionFunc(mouseMotionCallback);
 		glutMotionFunc(mouseMotionCallback);
 		glutMouseFunc(mouseButtonCallback);
+		glutMouseWheelFunc(mouseWheelCallback);
 	}
 #endif
 }

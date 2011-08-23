@@ -27,6 +27,13 @@
  * Part of code taken from Cutexture
  * Copyright (c) 2010 Markus Weiland, Kevin Lang
  *************************************************************************************************/
+#include "oqt/QtWidget.h"
+#include "oqt/QtWidgetManager.h"
+#include "omega/scene.h"
+#include "omega/SystemManager.h"
+#include "omega/DataManager.h"
+#include "omega/StringUtils.h"
+
 #include <QApplication>
 #include <QUiLoader>
 #include <QPainter>
@@ -34,13 +41,6 @@
 #include <QFile>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-
-#include "oqt/QtWidget.h"
-#include "oqt/QtWidgetManager.h"
-#include "omega/scene.h"
-#include "omega/SystemManager.h"
-#include "omega/DataManager.h"
-#include "omega/StringUtils.h"
 
 using namespace oqt;
 
@@ -154,7 +154,7 @@ void QtWidgetManager::renderIntoTexture(Texture* aTexture)
 
 	myWidgetView->setGeometry(QRect(0, 0, aTexture->getWidth(), aTexture->getHeight()));
 
-	byte* texData = aTexture->getData();
+	omega::byte* texData = aTexture->getData();
 
 	// render into texture buffer
 	QImage textureImg(texData, aTexture->getWidth(), aTexture->getHeight(), QImage::Format_ARGB32);

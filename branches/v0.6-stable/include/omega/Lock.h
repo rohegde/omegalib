@@ -30,7 +30,7 @@
 #include "osystem.h"
 
 // Used for lock.
-namespace co { namespace base { class Lock; }; };
+namespace OpenThreads { class Mutex; };
 
 namespace omega
 {
@@ -45,7 +45,7 @@ namespace omega
 		void unlock();
 
 	private:
-		co::base::Lock* myLockImpl;
+		OpenThreads::Mutex* myLockImpl;
 	};
 
 }; // namespace omega

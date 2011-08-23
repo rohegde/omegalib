@@ -5,10 +5,6 @@
  * Authors:										
  *  Arthur Nishimoto							anishimoto42@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * [LICENSE NOTE]
- *---------------------------------------------------------------------------------------------------------------------
- * VRPN Client service.
- *---------------------------------------------------------------------------------------------------------------------
  * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 

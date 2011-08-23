@@ -36,6 +36,52 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+void EqUtils::serializeEvent(Event& evt, co::DataOStream& os)
+{
+	os << evt.myProcessed;
+	os << evt.myTimestamp;
+	os << evt.mySourceId;
+	os << evt.myServiceId;
+	os << evt.myServiceType;
+	os << evt.myType;
+	os << evt.myFlags;
+	os << evt.myPosition[0] << evt.myPosition[1] << evt.myPosition[2];
+	os << evt.myOrientation.x() << evt.myOrientation.y() << evt.myOrientation.z() << evt.myOrientation.w();
+
+	// Serialize extra data
+	os << evt.myExtraDataType;
+	os << evt.myExtraDataLength;
+	if(evt.myExtraDataType != Event::ExtraDataNull)
+	{
+		os << evt.myExtraDataValidMask;
+		os.write(evt.myExtraData, evt.getExtraDataSize());
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void EqUtils::deserializeEvent(Event& evt, co::DataIStream& is)
+{
+	is >> evt.myProcessed;
+	is >> evt.myTimestamp;
+	is >> evt.mySourceId;
+	is >> evt.myServiceId;
+	is >> evt.myServiceType;
+	is >> evt.myType;
+	is >> evt.myFlags;
+	is >> evt.myPosition[0] >> evt.myPosition[1] >> evt.myPosition[2];
+	is >> evt.myOrientation.x() >> evt.myOrientation.y() >> evt.myOrientation.z() >> evt.myOrientation.w();
+
+	// Deserialize extra data
+	is >> evt.myExtraDataType;
+	is >> evt.myExtraDataLength;
+	if(evt.myExtraDataType != Event::ExtraDataNull)
+	{
+		is >> evt.myExtraDataValidMask;
+		is.read(evt.myExtraData, evt.getExtraDataSize());
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent): 
 	eq::Config(parent) 
@@ -126,7 +172,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
 			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
 			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
-			MouseService::mouseWheelCallback(wheel, x, y);
+			MouseService::mouseWheelCallback(buttons, wheel, x, y);
 			return true;
 		}
 #endif

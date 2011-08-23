@@ -27,9 +27,46 @@
 #include "vtkviewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+VtkViewerServer::VtkViewerServer(Application* app):
+	ApplicationServer(app),
+	myViewManager(NULL)
+{}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerServer::initialize()
+{
+	myViewManager = new ViewManager();
+	myVtkModule = new VtkModule();
+
+	myVtkModule->initialize(myViewManager);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewerServer::setVisibleModel(int modelId)
+{
+	//VtkModel* ei = myEntityLibrary[entityId];
+
+	//if(myVisibleEntity != NULL)
+	//{
+	//	myVtkModule->destroyEntity(myVisibleEntity);
+	//	myVisibleEntity = NULL;
+	//}
+
+	//myVisibleEntity = myVtkModule->createEntity();
+	//myVisibleEntity->loadScript(ei->getSource());
+
+	//myCurrentInteractor->setSceneNode(myVisibleEntity->getSceneNode());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkViewerClient::initialize()
 {
 	EngineClient::initialize();
+
+	// Register this client with the view manager.
+	VtkViewerServer* srv = (VtkViewerServer*)getServer();
+	srv->getViewManager()->addClient(this);
+	srv->getVtkModule()->initialize(this);
 
 	Config* cfg = getSystemManager()->getAppConfig();
 
@@ -47,11 +84,11 @@ void VtkViewerClient::initialize()
 		Setting& entities = cfg->lookup("config/entities");
 		for(int i = 0; i < entities.getLength(); i++)
 		{
-			EntityInfo* e = onew(EntityInfo)();
+			VtkModel* e = onew(VtkModel)();
 			Setting& entitySetting = entities[i];
-			e->name = entitySetting.getName();
-			e->script = (String)((const char*)entitySetting["script"]);
-			e->label = (String)((const char*)entitySetting["label"]);
+			e->setName(entitySetting.getName());
+			e->setSource((String)((const char*)entitySetting["script"]));
+			e->setLabel((String)((const char*)entitySetting["label"]));
 
 			myEntityLibrary.push_back(e);
 		}
@@ -78,9 +115,6 @@ void VtkViewerClient::initialize()
 		myCurrentInteractor = interactor;
 	}
 	getSceneManager()->addActor(myCurrentInteractor);
-
-	myVtkClient = onew(VtkClient)(this);
-	myVtkClient->initialize();
 
 	Light* light = getSceneManager()->getLight(0);
 	light->setEnabled(true);
@@ -119,8 +153,8 @@ void VtkViewerClient::initUI()
 	// Add buttons for each entity
 	for(int i = 0; i < myEntityLibrary.size(); i++)
 	{
-		EntityInfo* e = myEntityLibrary[i];
-		Button* btn = wf->createButton(e->label, entityButtons);
+		VtkModel* e = myEntityLibrary[i];
+		Button* btn = wf->createButton(e->getLabel(), entityButtons);
 		myEntityButtons.push_back(btn);
 	}
 
@@ -154,27 +188,11 @@ void VtkViewerClient::handleUIEvent(const Event& evt)
 	{
 		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
-			setVisibleEntity(i);
+			VtkViewerServer* srv = (VtkViewerServer*)getServer();
+			srv->setVisibleModel(i);
 			return;
 		}
 	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::setVisibleEntity(int entityId)
-{
-	EntityInfo* ei = myEntityLibrary[entityId];
-
-	if(myVisibleEntity != NULL)
-	{
-		myVtkClient->destroyEntity(myVisibleEntity);
-		myVisibleEntity = NULL;
-	}
-
-	myVisibleEntity = myVtkClient->createEntity();
-	myVisibleEntity->loadScript(ei->script);
-
-	myCurrentInteractor->setSceneNode(myVisibleEntity->getSceneNode());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
