@@ -2,7 +2,8 @@
 This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 <wiki:toc max_depth="2" />
 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="300"/></p><p align="middle">_^An overview of the omegalib architecture.^_
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="300"/></p><p align="middle">
+_^An overview of the omegalib architecture.^_
 </p>
 
 
@@ -26,9 +27,7 @@ Omegalib gives applications access to input devices through the concept of _even
 
 Event services allow for a great deal of flexibility. They abstract the physical input devices available to the system. Also, they allow to modularize several common components of a virtual reality application (like user tracking or network message passing), so that they can easily be reused in applications.
 
-<p align="middle">
-<img src="http://omegalib.googlecode.com/svn/wiki/oinputserver.png" width="700" align="middle"/>
-
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/oinputserver.png" width="700"/></p><p align="middle">
 _^omegalib supports event distribution either through integrating event services in the application, or by streaming them over  a network connection.^_
 </p>
 
@@ -43,9 +42,7 @@ Through use of tracker based mocap, Kinect user tracking and touch screens Omega
 We think a certain, predefined number of interaction metaphors would satisfy most of the interaction needs of final applications. In this case, it makes sense to modularize them and make them available to application developers as packaged interaction schemes that can be easily turned on, off or switched inside an application, allowing for both consistency and reuse of interaction schemes, and fast prototyping of applications using different interaction techniques. To implement this, omegalib offers support for a simple scene graph system based on [http://www.ogre3d.org Ogre] that can be controlled through interaction objects. These objects implement interaction policies, by getting input from the event services and controlling nodes and objects in the scene graph. 
 
 = Integration With Scientific Visualization Tools =
-<p align="middle">
-<img src="http://omegalib.googlecode.com/svn/wiki/ovtk.png" width="600"/>
-
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/ovtk.png" width="600"/></p><p align="middle">
 _^. The integration of VTK pipelines inside Omegalib is done through a support module that performs VTK actor encapsulation and feeds back user actions to the pipeline.^_
 </p>
 
