@@ -45,6 +45,7 @@ namespace scene
 	public:
 		ChildNode(const String& k, Node* v): std::pair<String, T*>(k, v) {}
 		ChildNode(std::pair<String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
+		ChildNode(std::pair<const String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
 		const String& getName() { return this->first; }
 		T* getNode() { return this->second; }
 		T* operator->() { return this->second; }

@@ -126,6 +126,7 @@ namespace omega
 	public:
 		KeyValue(const K& k, T v): std::pair<K, T>(k, v) {}
 		KeyValue(std::pair<K, T> src): std::pair<K, T>(src.first, src.second) {}
+		KeyValue(std::pair<const K, T> src): std::pair<K, T>(src.first, src.second) {}
 		const K& getKey() { return this->first; }
 		T getValue() { return this->second; }
 		T operator->() { return this->second; }
