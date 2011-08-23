@@ -25,14 +25,16 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Lock.h"
-#include "co/base/lock.h"
+
+#include "OpenThreads\Mutex"
+
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Lock::Lock()
 {
-	myLockImpl = new co::base::Lock();
+	myLockImpl = new OpenThreads::Mutex();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,11 +47,11 @@ Lock::~Lock()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Lock::lock()
 {
-	myLockImpl->set();
+	myLockImpl->lock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Lock::unlock()
 {
-	myLockImpl->unset();
+	myLockImpl->unlock();
 }

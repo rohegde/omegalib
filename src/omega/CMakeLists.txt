@@ -27,7 +27,9 @@
 
 ###################################################################################################
 # Find required packages
-find_package(OpenGL)
+if(OMEGA_USE_DISPLAY)
+	find_package(OpenGL)
+endif(OMEGA_USE_DISPLAY)
 
 ###################################################################################################
 # Compile definitions
@@ -108,7 +110,6 @@ if(OMEGA_USE_DISPLAY)
 	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
 	
 	# Equalizer Display Module
-	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
 	if(OMEGA_USE_DISPLAY_EQUALIZER)
 		add_definitions( -DOMEGA_USE_DISPLAY_EQUALIZER)
 		set( srcs ${srcs} 
@@ -263,6 +264,8 @@ else(OMEGA_BUILD_STATIC)
 	add_library( omega SHARED ${srcs} ${headers})
 endif(OMEGA_BUILD_STATIC)
 
+target_link_libraries( omega libconfig OpenThreads)
+
 ###################################################################################################
 # Setup module-specific link info
 set(EXT_LIB_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/libs32)
@@ -305,8 +308,12 @@ IF(OMEGA_USE_OPENNI)
 	ENDIF(WIN32)
 ENDIF(OMEGA_USE_OPENNI)
 
+if(OMEGA_USE_DISPLAY)
+	target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+endif(OMEGA_USE_DISPLAY)
+
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-	target_link_libraries(omega Equalizer)
+	target_link_libraries( omega debug ${EQUALIZER_CLIENT_LIBS_DEBUG})
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
@@ -336,10 +343,3 @@ if(OMEGA_USE_VRPN)
 		target_link_libraries( omega ${EXT_LIB_DIR}/vrpn.lib)
 	endif(WIN32)
 endif(OMEGA_USE_VRPN)
-
-###################################################################################################
-# Setup link info for additional libraries
-target_link_libraries( omega libconfig Collage)
-if(OMEGA_USE_DISPLAY)
-target_link_libraries( omega ${OPENGL_LIBRARY} glew-1.5.7.3-MX-Equalizer)
-endif(OMEGA_USE_DISPLAY)

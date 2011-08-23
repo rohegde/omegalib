@@ -30,8 +30,6 @@
 #include "omega/Config.h"
 #include "omega/StringUtils.h"
 
-#include "co/base/lock.h"
-
 // Display system
 #ifdef OMEGA_USE_DISPLAY
 	#include "omega/DisplaySystem.h"

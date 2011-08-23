@@ -34,6 +34,10 @@ if(COMMAND cmake_policy)
       #cmake_policy(SET CMP0008 NEW)
 endif(COMMAND cmake_policy)
 
+# We have some custom .cmake scripts not in the official distribution.
+# Maybe this can be used override existing behavior if needed?
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
+
 ###################################################################################################
 # Create a build name depending on the OS, Toolset and architecture.
 if(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")

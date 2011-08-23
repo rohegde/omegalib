@@ -31,6 +31,8 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+using namespace eq;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
 	:eq::Channel( parent ), myWindow(parent) 
@@ -41,7 +43,7 @@ ChannelImpl::~ChannelImpl()
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::setupDrawContext(DrawContext* context, const uint128_t& spin)
+void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128_t& spin)
 {
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
@@ -84,7 +86,7 @@ void ChannelImpl::makeCurrent()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameDraw( const uint128_t& spin )
+void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 {
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
@@ -106,7 +108,7 @@ void ChannelImpl::frameDraw( const uint128_t& spin )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameViewStart( const uint128_t& spin )
+void ChannelImpl::frameViewStart( const co::base::uint128_t& spin )
 {
 	eq::Channel::frameViewStart( spin );
 
@@ -164,7 +166,7 @@ void ChannelImpl::frameViewStart( const uint128_t& spin )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameViewFinish( const uint128_t& spin )
+void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
 {
 	eq::Channel::frameViewFinish( spin );
 
@@ -200,3 +202,375 @@ void ChannelImpl::frameViewFinish( const uint128_t& spin )
 		EQ_GL_CALL( resetAssemblyState( ));
 	}
 }
+
+namespace
+{
+#define HEIGHT 12
+#define SPACE  2
+
+struct EntityData
+{
+    EntityData() : yPos( 0 ), doubleHeight( false ) {}
+    uint32_t yPos;
+    bool doubleHeight;
+    std::string name;
+};
+
+struct IdleData
+{
+    IdleData() : idle( 0 ), nIdle( 0 ) {}
+    uint32_t idle;
+    uint32_t nIdle;
+    std::string name;
+};
+
+static bool _compare( const Statistic& stat1, const Statistic& stat2 )
+{ return stat1.type < stat2.type; }
+
+}
+
+//void ChannelImpl::drawStatistics()
+//{
+//    const PixelViewport& pvp = getPixelViewport();
+//    EQASSERT( pvp.hasArea( ));
+//    if( !pvp.hasArea( ))
+//        return;
+//
+//    eq::Config* config = getConfig();
+//    EQASSERT( config );
+//
+//    std::vector< eq::FrameStatistics > statistics;
+//    config->getStatistics( statistics );
+//
+//    if( statistics.empty( )) 
+//        return;
+//
+//    EQ_GL_CALL( applyBuffer( ));
+//    EQ_GL_CALL( applyViewport( ));
+//    EQ_GL_CALL( setupAssemblyState( ));
+//
+//    glMatrixMode( GL_PROJECTION );
+//    glLoadIdentity();
+//    applyScreenFrustum();
+//
+//    glMatrixMode( GL_MODELVIEW );
+//    glDisable( GL_LIGHTING );
+//    
+//    Window* window = getWindow();
+//    const Window::Font* font = window->getSmallFont();
+//
+//    // find min/max time
+//    int64_t xMax = 0;
+//    int64_t xMin = std::numeric_limits< int64_t >::max();
+//
+//    std::map< co::base::UUID, EntityData > entities;
+//    std::map< co::base::UUID, IdleData >   idles;
+//
+//	std::vector< eq::FrameStatistics >::iterator sbegin = statistics.begin();
+//	std::vector< eq::FrameStatistics >::iterator send = statistics.end();
+//
+//    for( std::vector< eq::FrameStatistics >::iterator i = sbegin;
+//         i != send; ++i )
+//    {
+//        eq::FrameStatistics& frameStats  = *i;
+//        SortedStatistics& configStats = frameStats.second;
+//
+//        for( SortedStatistics::iterator j = configStats.begin();
+//             j != configStats.end(); ++j )
+//        {
+//            const co::base::UUID& id = j->first;
+//            Statistics& stats = j->second;
+//            std::sort( stats.begin(), stats.end(), _compare );
+//
+//            if( entities.find( id ) == entities.end( ))
+//            {
+//                EntityData& data = entities[ id ];
+//                data.name = stats.front().resourceName;
+//            }
+//
+//            for( Statistics::const_iterator k = stats.begin(); 
+//                 k != stats.end(); ++k )
+//            {
+//                const Statistic& stat = *k;
+//
+//                switch( stat.type )
+//                {
+//                case Statistic::PIPE_IDLE:
+//                {
+//                    IdleData& data = idles[ id ];
+//                    std::map< co::base::UUID, EntityData >::iterator l = 
+//                        entities.find( id );
+//
+//                    if( l != entities.end( ))
+//                    {
+//                        entities.erase( l );
+//                        data.name = stat.resourceName;
+//                    }
+//
+//                    data.idle += (stat.idleTime * 100ll / stat.totalTime);
+//                    ++data.nIdle;
+//                    continue;
+//                }
+//                case Statistic::CHANNEL_FRAME_TRANSMIT:
+//                case Statistic::CHANNEL_FRAME_COMPRESS:
+//                case Statistic::CHANNEL_FRAME_WAIT_SENDTOKEN:
+//                    entities[ id ].doubleHeight = true;
+//                    break;
+//                default:
+//                    break;
+//                }
+//
+//                xMax = EQ_MAX( xMax, stat.endTime );
+//                xMin = EQ_MIN( xMin, stat.startTime );
+//            }
+//        }
+//    }
+//    const Viewport& vp = getViewport();
+//    const uint32_t width = uint32_t( pvp.w/vp.w );
+//    
+//	float scale = (float)(xMax - xMin) / width;
+//
+//    //while( (xMax - xMin) / scale > width )
+//    //    scale *= 2;
+//
+//    xMax  /= scale;
+//    int64_t xStart = xMax - width + SPACE;
+//
+//    const uint32_t height = uint32_t( pvp.h / vp.h);
+//    uint32_t nextY = height - SPACE;
+//
+//    float dim = 0.0f;
+//    for( std::vector< eq::FrameStatistics >::reverse_iterator 
+//             i = statistics.rbegin(); i != statistics.rend(); ++i )
+//    {
+//        const eq::FrameStatistics& frameStats  = *i;
+//        const SortedStatistics& configStats = frameStats.second;
+//
+//        int64_t     frameMin = xMax;
+//        int64_t     frameMax = 0;
+//
+//        // draw stats
+//        for( SortedStatistics::const_iterator j = configStats.begin();
+//             j != configStats.end(); ++j )
+//        {
+//            const co::base::UUID&    id    = j->first;
+//            const Statistics& stats = j->second;
+//
+//            if( stats.empty( ))
+//                continue;
+//
+//            std::map< co::base::UUID, EntityData >::iterator l = entities.find( id );
+//            if( l == entities.end( ))
+//                continue;
+//
+//            EntityData& data = l->second;
+//            if( data.yPos == 0 )
+//            {
+//                data.yPos = nextY;
+//                nextY -= (HEIGHT + SPACE);
+//                if( data.doubleHeight )
+//                    nextY -= (HEIGHT + SPACE);
+//            }
+//
+//            uint32_t y = data.yPos;
+//
+//            for( Statistics::const_iterator k = stats.begin(); 
+//                 k != stats.end(); ++k )
+//            {
+//                const Statistic& stat = *k;
+//
+//                switch( stat.type )
+//                {
+//                case Statistic::PIPE_IDLE:
+//                    continue;
+//
+//                case Statistic::CHANNEL_FRAME_TRANSMIT:
+//                case Statistic::CHANNEL_FRAME_COMPRESS:
+//                case Statistic::CHANNEL_FRAME_WAIT_SENDTOKEN:
+//                    y = data.yPos - (HEIGHT + SPACE);
+//                    break;
+//                default:
+//                    break;
+//                }
+//
+//                const int64_t startTime = stat.startTime / scale;
+//                const int64_t endTime   = stat.endTime   / scale;
+//
+//                frameMin = EQ_MIN( frameMin, startTime );
+//                frameMax = EQ_MAX( frameMax, endTime   );
+//
+//                if( endTime < xStart || endTime == startTime )
+//                    continue;
+//
+//                float y1 = static_cast< float >( y );
+//                float y2 = static_cast< float >( y - HEIGHT );
+//                const float x1 = static_cast< float >( startTime - xStart );
+//                const float x2 = static_cast< float >( endTime   - xStart );
+//                std::stringstream text;
+//                
+//                switch( stat.type )
+//                {
+//                case Statistic::CONFIG_WAIT_FINISH_FRAME:
+//                case Statistic::CHANNEL_FRAME_WAIT_READY:
+//                case Statistic::CHANNEL_FRAME_WAIT_SENDTOKEN:
+//                    y1 -= SPACE;
+//                    y2 += SPACE;
+//                    break;
+//
+//                case Statistic::CHANNEL_FRAME_COMPRESS:
+//                    y1 -= SPACE;
+//                    y2 += SPACE;
+//                    // no break;
+//                case Statistic::CHANNEL_READBACK:
+//                    text << unsigned( 100.f * stat.ratio ) << '%';
+//                    break;
+//
+//                default:
+//                    break;
+//                }
+//                
+//                //const Vector3f color( Statistic::getColor( stat.type ) - dim );
+//                glColor3fv( (Statistic::getColor( stat.type ) - dim).array );
+//
+//                glBegin( GL_QUADS );
+//                glVertex3f( x2, y1, 0.f );
+//                glVertex3f( x1, y1, 0.f );
+//                glVertex3f( x1, y2, 0.f);
+//                glVertex3f( x2, y2, 0.f );
+//                glEnd();
+//
+//                if( !text.str().empty( ))
+//                {
+//                    glColor3f( 0.f, 0.f, 0.f );
+//                    glRasterPos3f( x1+1, y2, 0.f );
+//                    font->draw( text.str( ));
+//                }
+//            }
+//        }
+//
+//        frameMin -= xStart;
+//        frameMax -= xStart;
+//
+//        float x = static_cast< float >( frameMin );
+//        const float y1 = static_cast< float >( nextY );
+//        const float y2 = static_cast< float >( height );
+//
+//        glBegin( GL_LINES );
+//        glColor3f( .5f-dim, 1.0f-dim, .5f-dim );
+//        glVertex3f( x, y1, 0.3f );
+//        glVertex3f( x, y2, 0.3f );
+//
+//        x = static_cast< float >( frameMax );
+//        glColor3f( .5f-dim, .5f-dim, .5f-dim );
+//        glVertex3f( x, y1, 0.3f );
+//        glVertex3f( x, y2, 0.3f );
+//        glEnd();
+//
+//        dim += .1f;
+//    }
+//
+//    // Entitity names
+//    for( std::map< co::base::UUID, EntityData >::const_iterator i = entities.begin();
+//         i != entities.end(); ++i )
+//    {
+//        const EntityData& data = i->second;
+//
+//        glColor3f( 1.f, 1.f, 1.f );
+//        glRasterPos3f( 60.f, data.yPos-SPACE-12.0f, 0.99f );
+//        font->draw( data.name );
+//    }
+//
+//    // Global stats (scale, GPU idle)
+//    glColor3f( 1.f, 1.f, 1.f );
+//    nextY -= (HEIGHT + SPACE);
+//    glRasterPos3f( 60.f, static_cast< float >( nextY ), 0.99f );
+//    std::ostringstream text;
+//    text << scale << "ms/pixel";
+//
+//    if( !idles.empty( ))
+//        text << ", Idle:";
+//
+//    for( std::map< co::base::UUID, IdleData >::const_iterator i = idles.begin();
+//         i != idles.end(); ++i )
+//    {
+//        const IdleData& data = i->second;
+//        EQASSERT( data.nIdle > 0 );
+//
+//        text << " " << data.name << ":" << data.idle / data.nIdle << "%";
+//    }
+//
+//    font->draw( text.str( ));
+//    
+//    // Legend
+//    nextY -= SPACE;
+//    float x = 0.f;
+//
+//    glRasterPos3f( x+1.f, nextY-12.f, 0.f );
+//    glColor3f( 1.f, 1.f, 1.f );
+//    font->draw( "channel" );
+//
+//    for( size_t i = 1; i < Statistic::CONFIG_START_FRAME; ++i )
+//    {
+//        const Statistic::Type type = static_cast< Statistic::Type >( i );
+//        if( type == Statistic::CHANNEL_DRAW_FINISH ||
+//            type == Statistic::PIPE_IDLE )
+//        {
+//            continue;
+//        }
+//
+//        switch( type )
+//        {
+//          case Statistic::CHANNEL_FRAME_TRANSMIT:
+//            x = 0.f;
+//            nextY -= (HEIGHT + SPACE);
+//
+//            glColor3f( 1.f, 1.f, 1.f );
+//            glRasterPos3f( x+1.f, nextY-12.f, 0.f );
+//            break;
+//
+//          case Statistic::WINDOW_FINISH:
+//            x = 0.f;
+//            nextY -= (HEIGHT + SPACE);
+//
+//            glColor3f( 1.f, 1.f, 1.f );
+//            glRasterPos3f( x+1.f, nextY-12.f, 0.f );
+//            font->draw( "window" );
+//            break;
+//
+//          case Statistic::NODE_FRAME_DECOMPRESS:
+//            x = 0.f;
+//            nextY -= (HEIGHT + SPACE);
+//
+//            glColor3f( 1.f, 1.f, 1.f );
+//            glRasterPos3f( x+1.f, nextY-12.f, 0.f );
+//            font->draw( "node" );
+//            break;
+//
+//          default:
+//            break;
+//        }
+//
+//        x += 60.f;
+//        const float x2 = x + 60.f - SPACE; 
+//        const float y1 = static_cast< float >( nextY );
+//        const float y2 = static_cast< float >( nextY - HEIGHT );
+//
+//        glColor3fv( Statistic::getColor( type ).array );
+//        glBegin( GL_QUADS );
+//        glVertex3f( x2, y1, 0.f );
+//        glVertex3f( x,  y1, 0.f );
+//        glVertex3f( x,  y2, 0.f );
+//        glVertex3f( x2, y2, 0.f );
+//        glEnd();
+//
+//        glColor3f( 0.f, 0.f, 0.f );
+//        glRasterPos3f( x+1.f, nextY-12.f, 0.f );
+//        font->draw( Statistic::getName( type ));
+//    }
+//    // nextY -= (HEIGHT + SPACE);
+//    
+//    glColor3f( 1.f, 1.f, 1.f );
+//    window->drawFPS();
+//    EQ_GL_CALL( resetAssemblyState( ));
+//}
+
