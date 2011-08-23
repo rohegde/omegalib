@@ -25,7 +25,8 @@ Omegalib gives applications access to input devices through the concept of _even
 Event services allow for a great deal of flexibility. They abstract the physical input devices available to the system. Also, they allow to modularize several common components of a virtual reality application (like user tracking or network message passing), so that they can easily be reused in applications.
 
 <img src="http://omegalib.googlecode.com/svn/wiki/oinputserver.png" width="700" align="middle"/>
-*^omegalib supports event distribution either through integrating event services in the application, or by streaming them over  a network connection^*
+
+_^omegalib supports event distribution either through integrating event services in the application, or by streaming them over  a network connection^_
 
 Omegalib also supports the streaming of events to external applications, acting as a display-less input server. This simplifies the development of OmegaDesk applications using differents toolsets (as Unity or Processing) and streamlines the integration of input support into legacy applications that treat the device displays as normal screens, but want to use the motion capture, tracking or multitouch capabilities of OmegaDesk.
 
