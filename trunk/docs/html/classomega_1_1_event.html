@@ -35,7 +35,8 @@
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>omega::Event Class Reference</h1>  </div>
 </div>
@@ -82,7 +83,8 @@ Public Types</h2></td></tr>
 <a class="el" href="classomega_1_1_event.html#ae408816191dd0d0ea5ac9bb4a31cecfcaed50d9c69db012c7c817472f18b600ae">RotateStart</a>, 
 <br/>
 &nbsp;&nbsp;<a class="el" href="classomega_1_1_event.html#ae408816191dd0d0ea5ac9bb4a31cecfca363713e7b9399f8e763966271c1b511b">RotateEnd</a>, 
-<a class="el" href="classomega_1_1_event.html#ae408816191dd0d0ea5ac9bb4a31cecfcab747c6759cc24c24951623fa79b042d1">Rotate</a>
+<a class="el" href="classomega_1_1_event.html#ae408816191dd0d0ea5ac9bb4a31cecfcab747c6759cc24c24951623fa79b042d1">Rotate</a>, 
+<a class="el" href="classomega_1_1_event.html#ae408816191dd0d0ea5ac9bb4a31cecfcab0cff98c0a838e9b8e52b7ad18869f26">Null</a>
 <br/>
  }</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Supported event types. </p>
@@ -124,9 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The event type.  <a href="#a850c8dd58c03b9c28367705e372bc57b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#ad77e66be2f1f1cbba072ef57e50d3647">getTimestamp</a> () const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the event timestamp. The timestamp is updated everytime the <a class="el" href="classomega_1_1_event.html#a9e8bceb83607559a2e4a4db830fd87dd">Event::reset</a> is called.  <a href="#ad77e66be2f1f1cbba072ef57e50d3647"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#acbb90f356afedd9bd1fbd09a87e4b205">setProcessed</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set to true if this event has been processed already.  <a href="#acbb90f356afedd9bd1fbd09a87e4b205"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a6743050a3bd756ce097070c98d33b55a">isProcessed</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a0493d64d77b5fc653cb285193a5d8ed3">setProcessed</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set to true if this event has been processed already.  <a href="#a0493d64d77b5fc653cb285193a5d8ed3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#aa235b28dcb0dddcacda6da1f94dbc4f2">isProcessed</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a734318e25293fb79dbfa391382fb8811">getPosition</a> () const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the event position.  <a href="#a734318e25293fb79dbfa391382fb8811"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#af25fb36933198b5e133d0a358fc5219d">getPosition</a> (int component) const </td></tr>
@@ -142,7 +144,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#af97620333d38a8d4b972de5fdee45194">setFlags</a> (<a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> flags)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a4575f0bfb07f577d53ac9fc6188d5446">clearFlags</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#aba8c346f54bb3e177f57e76945a571ef">setExtraDataType</a> (<a class="el" href="classomega_1_1_event.html#a57c51b602dcfd080456b0c4718832ca9">ExtraDataType</a> type)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_vector.html">Vector</a> storing additional event parameters (i.e. split distance / ratio for Split events).  <a href="#aba8c346f54bb3e177f57e76945a571ef"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Point set.  <a href="#aba8c346f54bb3e177f57e76945a571ef"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html#a57c51b602dcfd080456b0c4718832ca9">ExtraDataType</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#ad47e0d197d28193f544615bb05dde8c5">getExtraDataType</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a41e72713f34c89645629a661888cd49c">getExtraDataFloat</a> (int index) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#ac17fb28f6590ee0011d79f440effb56c">setExtraDataFloat</a> (int index, float value)</td></tr>
@@ -156,14 +158,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#afeb887b9a957521d02aa8c1b6207beb7">isExtraDataNull</a> (int pointId) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#ae6e5916c1e6c99fa37da45b3b6c841c0">getExtraDataSize</a> () const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the size in bytes of the event extra data.  <a href="#ae6e5916c1e6c99fa37da45b3b6c841c0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a864cb76b73c33b948501f6549a80b20b">serialize</a> (co::DataOStream &amp;os)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Serializes an <a class="el" href="classomega_1_1_event.html" title="Events are generated by Service instances.">Event</a> instance.  <a href="#a864cb76b73c33b948501f6549a80b20b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#ab9acfb0df046848a281fc152622d5ac3">deserialize</a> (co::DataIStream &amp;is)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Deserializes an <a class="el" href="classomega_1_1_event.html" title="Events are generated by Service instances.">Event</a> instance.  <a href="#ab9acfb0df046848a281fc152622d5ac3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a8db51c68f300e8891cdb6486883a905d">getExtraDataLength</a> () const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the number of elements stored in the extra data section of the <a class="el" href="classomega_1_1_event.html" title="Events are generated by Service instances.">Event</a>.  <a href="#a8db51c68f300e8891cdb6486883a905d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#aa604a5c75a2c464ab5a65e79eb4110c4">ExtraDataSize</a> = 1024</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a068275745de061e8e091b99f28f507ca">MaxExtraDataItems</a> = 32</td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_event.html#a20d3864ace1e97921f7a31630f609715">EqUtils</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Events are generated by <a class="el" href="classomega_1_1_service.html">Service</a> instances. </p>
@@ -331,6 +334,9 @@ Static Public Attributes</h2></td></tr>
 <p>Rotate: generated when an event source is stationary while a second source is rotating around the first. </p>
 <p>parameters: position (center of gesture) pointSet[0, 1] (individual finger positions), rotation[0] (degrees). </p>
 </td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ae408816191dd0d0ea5ac9bb4a31cecfcab0cff98c0a838e9b8e52b7ad18869f26"></a><!-- doxytag: member="Null" ref="ae408816191dd0d0ea5ac9bb4a31cecfcab0cff98c0a838e9b8e52b7ad18869f26" args="" -->Null</em>&nbsp;</td><td>
+<p>Null: generic null value for event type. </p>
+</td></tr>
 </table>
 </dd>
 </dl>
@@ -391,26 +397,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab9acfb0df046848a281fc152622d5ac3"></a><!-- doxytag: member="omega::Event::deserialize" ref="ab9acfb0df046848a281fc152622d5ac3" args="(co::DataIStream &amp;is)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::Event::deserialize </td>
-          <td>(</td>
-          <td class="paramtype">co::DataIStream &amp;&nbsp;</td>
-          <td class="paramname"> <em>is</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Deserializes an <a class="el" href="classomega_1_1_event.html" title="Events are generated by Service instances.">Event</a> instance. </p>
-
-</div>
-</div>
 <a class="anchor" id="a41e72713f34c89645629a661888cd49c"></a><!-- doxytag: member="omega::Event::getExtraDataFloat" ref="a41e72713f34c89645629a661888cd49c" args="(int index) const " -->
 <div class="memitem">
 <div class="memproto">
@@ -444,6 +430,25 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8db51c68f300e8891cdb6486883a905d"></a><!-- doxytag: member="omega::Event::getExtraDataLength" ref="a8db51c68f300e8891cdb6486883a905d" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int omega::Event::getExtraDataLength </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the number of elements stored in the extra data section of the <a class="el" href="classomega_1_1_event.html" title="Events are generated by Service instances.">Event</a>. </p>
 
 </div>
 </div>
@@ -707,7 +712,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6743050a3bd756ce097070c98d33b55a"></a><!-- doxytag: member="omega::Event::isProcessed" ref="a6743050a3bd756ce097070c98d33b55a" args="()" -->
+<a class="anchor" id="aa235b28dcb0dddcacda6da1f94dbc4f2"></a><!-- doxytag: member="omega::Event::isProcessed" ref="aa235b28dcb0dddcacda6da1f94dbc4f2" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -716,7 +721,7 @@ Static Public Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -777,26 +782,6 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a864cb76b73c33b948501f6549a80b20b"></a><!-- doxytag: member="omega::Event::serialize" ref="a864cb76b73c33b948501f6549a80b20b" args="(co::DataOStream &amp;os)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::Event::serialize </td>
-          <td>(</td>
-          <td class="paramtype">co::DataOStream &amp;&nbsp;</td>
-          <td class="paramname"> <em>os</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Serializes an <a class="el" href="classomega_1_1_event.html" title="Events are generated by Service instances.">Event</a> instance. </p>
 
 </div>
 </div>
@@ -888,8 +873,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p><a class="el" href="classomega_1_1_vector.html">Vector</a> storing additional event parameters (i.e. split distance / ratio for Split events). </p>
-<p>Point set </p>
+<p>Point set. </p>
 
 </div>
 </div>
@@ -995,39 +979,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a31a1e2137bbd10ed9753073609c54da6"></a><!-- doxytag: member="omega::Event::setPosition" ref="a31a1e2137bbd10ed9753073609c54da6" args="(float x, float y, float z)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::Event::setPosition </td>
-          <td>(</td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>z</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="afb4ebfe2629902f7e240d11eebca679a"></a><!-- doxytag: member="omega::Event::setPosition" ref="afb4ebfe2629902f7e240d11eebca679a" args="(const Vector3f &amp;value)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1073,7 +1024,40 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acbb90f356afedd9bd1fbd09a87e4b205"></a><!-- doxytag: member="omega::Event::setProcessed" ref="acbb90f356afedd9bd1fbd09a87e4b205" args="()" -->
+<a class="anchor" id="a31a1e2137bbd10ed9753073609c54da6"></a><!-- doxytag: member="omega::Event::setPosition" ref="a31a1e2137bbd10ed9753073609c54da6" args="(float x, float y, float z)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::Event::setPosition </td>
+          <td>(</td>
+          <td class="paramtype">float&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&nbsp;</td>
+          <td class="paramname"> <em>z</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0493d64d77b5fc653cb285193a5d8ed3"></a><!-- doxytag: member="omega::Event::setProcessed" ref="a0493d64d77b5fc653cb285193a5d8ed3" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1082,13 +1066,27 @@ Static Public Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>Set to true if this event has been processed already. </p>
+
+</div>
+</div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a20d3864ace1e97921f7a31630f609715"></a><!-- doxytag: member="omega::Event::EqUtils" ref="a20d3864ace1e97921f7a31630f609715" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classomega_1_1_eq_utils.html">EqUtils</a><code> [friend]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -1120,7 +1118,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:19 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

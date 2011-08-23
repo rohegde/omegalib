@@ -1,4 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomega_1_1_data_source.html" title="omega::DataSource" alt="" coords="7,5,143,35"/>
-<area shape="rect" id="node3" href="$classomega_1_1_filesystem_data_source.html" title="omega::FilesystemDataSource" alt="" coords="193,5,393,35"/>
+<area shape="rect" id="node1" href="$structomega_1_1_draw_context.html" title="omega::DrawContext" alt="" coords="7,5,148,35"/>
 </map>
