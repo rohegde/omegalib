@@ -3,10 +3,9 @@ This page offers a general overview of the omegalib structure, presenting some o
 <wiki:toc max_depth="2" />
 
 <p align="middle">
-<img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="300"/>
+<img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="300"/></p>
 
-_^An overview of the omegalib architecture.^_
-</p>
+<p align="middle">_^An overview of the omegalib architecture.^_</p>
 
 
 Inside Omegalib, hardware abstraction is implemented through two concepts: _display system abstraction_ and _input system abstraction_.
