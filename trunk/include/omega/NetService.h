@@ -33,9 +33,11 @@
 
 #include "pqlabs/PQMTClient.h"
 using namespace PQ_SDK_MultiTouch;
-#define OMEGA_US_LINUX
 
-#if defined (linux)
+#ifdef OMEGA_OS_WIN
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,10 +49,6 @@ using namespace PQ_SDK_MultiTouch;
 #include <errno.h>
 #include <unistd.h> // needed for close()
 #include <string>
-#endif
-#if defined (WIN32)
-#include <winsock2.h>
-#include <ws2tcpip.h>
 #endif
 
 struct NetTouches{
@@ -91,12 +89,11 @@ private:
 	void parseDGram(int);
 private:
 	NetService* mysInstance;
-#if defined (WIN32)
-	WSADATA wsaData;
+#ifdef OMEGA_OS_WIN	
+    WSADATA wsaData;
 	SOCKET ConnectSocket;
 	SOCKET RecvSocket;	
-#endif
-#if defined (linux)
+#else
 	int ConnectSocket;
 	int RecvSocket;
 #endif
