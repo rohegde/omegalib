@@ -74,13 +74,5 @@ if(OMEGA_BINARY_DIR)
 		set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
 		add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
 	endif(MSVC)
-
-	# (windows only) You can use the following commands to copy the omegalib dlls into the destinaton binary directory
-	if(WIN32)
-		make_directory(${CMAKE_CURRENT_BINARY_DIR}/Release)
-		make_directory(${CMAKE_CURRENT_BINARY_DIR}/Debug)
-		file(COPY ${OMEGA_BIN_DIR_RELEASE}/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release FILES_MATCHING PATTERN *.dll )
-		file(COPY ${OMEGA_BIN_DIR_DEBUG}/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug FILES_MATCHING PATTERN *.dll )
-	endif(WIN32)
 endif(OMEGA_BINARY_DIR)
 

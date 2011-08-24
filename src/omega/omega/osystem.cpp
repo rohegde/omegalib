@@ -24,16 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-
-//#include "omega/Application.h"
 #include "omega/Config.h"
 #include "omega/DataManager.h"
 #include "omega/SystemManager.h"
 #include "omega/FilesystemDataSource.h"
 #include "omega/StringUtils.h"
-
-// Used for lock.
-//#include "co/base/lock.h"
 
 namespace omega
 {

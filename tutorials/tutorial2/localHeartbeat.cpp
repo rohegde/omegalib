@@ -28,28 +28,34 @@
 
 using namespace omega;
 
+// A simple configuration, creating a Heartbeat service 
+// and setting it's rate to 1 event per second
+const char* configString = 
+"@config: { "
+" services: { "
+"  HeartbeatService: { "
+"   rate = 1.0;"
+"  };"
+" };"
+"};";
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
+	// Load a configuration using the config string specified before. 
+	// If we don't want to hardcode the configuration we can pass a the path to a file 
+	// containing the config instead.
+	Config cfg(configString);
+
+	// Create an initialize the system manager.
 	SystemManager* sys = SystemManager::instance();
-
-	// Add a default filesystem data sources (used to retrieve configuration files and other resources)
-	DataManager* dm = sys->getDataManager();
-	dm->addSource(new FilesystemDataSource("./"));
-	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	// Load a configuration file for this application and setup the system manager.
-	Config* cfg = new Config("eventlogger.cfg");
-	sys->setup(cfg);
-
-	// Initialize the system manager
+	sys->setup(&cfg);
 	sys->initialize();
 
-	// Start running services and listening to events.
+	// Start services and begin listening to events.
 	ServiceManager* sm = sys->getServiceManager();
 	sm->start();
 
-	omsg("eventlogger start logging events...");
 	while(true)
 	{
 		// Poll services for new events.
@@ -57,20 +63,14 @@ int main(int argc, char** argv)
 
 		// Get available events
 		Event evts[OMEGA_MAX_EVENTS];
-		int av;
-		if(0 != (av = sm->getEvents(evts, ServiceManager::MaxEvents)))
+		int av = sm->getEvents(evts, ServiceManager::MaxEvents);
+		for(int evtNum = 0; evtNum < av; evtNum++)
 		{
-			for( int evtNum = 0; evtNum < av; evtNum++)
-			{
-				//ofmsg("Event received: position %1%", %e.getPosition());
-			}
+			ofmsg("Event received: timestamp %1%", %evts[evtNum].getTimestamp());
 		}
-
 	}
 	
 	sys->cleanup();
-
-	delete cfg;
 }
 
 

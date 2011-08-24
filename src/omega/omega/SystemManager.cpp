@@ -131,10 +131,17 @@ void SystemManager::setup(Config* appcfg)
 
 	oassert(mySystemConfig->isLoaded());
 
-	setupServiceManager();
+	try
+	{
+		setupServiceManager();
 #ifdef OMEGA_USE_DISPLAY
-	setupDisplaySystem();
+		setupDisplaySystem();
 #endif
+	}
+	catch(libconfig::SettingTypeException ste)
+	{
+		oferror("Wrong setting type at %1% (HINT: make floats have a decimal part in your configuration)", %ste.getPath());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
