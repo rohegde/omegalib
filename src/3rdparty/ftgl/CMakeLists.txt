@@ -94,3 +94,7 @@ include_directories(msvc src ../freetype/include)
 add_library(ftgl STATIC ${ftgl_SOURCES})
 target_link_libraries( ftgl freetype)
 SET_TARGET_PROPERTIES(ftgl PROPERTIES FOLDER 3rdparty)
+IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+  SET_TARGET_PROPERTIES(ftgl PROPERTIES COMPILE_FLAGS "-fPIC")
+ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+
