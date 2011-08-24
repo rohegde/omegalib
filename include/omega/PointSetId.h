@@ -4,6 +4,8 @@
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
+ * Contributors:
+ *  Victor Mateevitsi		mvictoras@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
@@ -24,59 +26,58 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include <omega>
+#ifndef __POINTSET_ID_H__
+#define __POINTSET_ID_H__
 
-using namespace omega;
+#ifdef OMEGA_USE_OPENNI
+#ifdef OMEGA_OS_WIN
+#include <XnCppWrapper.h>
+#else
+#include <ni/XnCppWrapper.h>
+#endif
+#endif
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void logEvent(const Event& e)
+namespace omega
 {
-	ofmsg("Event received: position %1%", %e.getPosition());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int main(int argc, char** argv)
-{
-	SystemManager* sys = SystemManager::instance();
-
-	// Add a default filesystem data sources (used to retrieve configuration files and other resources)
-	DataManager* dm = sys->getDataManager();
-	dm->addSource(new FilesystemDataSource("./"));
-	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	// Load a configuration file for this application and setup the system manager.
-	Config* cfg = new Config("eventlogger.cfg");
-	sys->setup(cfg);
-
-	// Initialize the system manager
-	sys->initialize();
-
-	// Start running services and listening to events.
-	ServiceManager* sm = sys->getServiceManager();
-	sm->start();
-
-	omsg("eventlogger start logging events...");
-	while(true)
+#ifdef OMEGA_USE_OPENNI
+	enum PointSetId
 	{
-		// Poll services for new events.
-		sm->poll(); 
+		Head = XN_SKEL_HEAD,
+		Neck = XN_SKEL_NECK,
+		Torso = XN_SKEL_TORSO,
+		LeftShoulder = XN_SKEL_LEFT_SHOULDER,
+		LeftElbow = XN_SKEL_LEFT_ELBOW,
+		LeftHand = XN_SKEL_LEFT_HAND,
+		LeftHip = XN_SKEL_LEFT_HIP,
+		LeftKnee = XN_SKEL_LEFT_KNEE,
+		LeftFoot = XN_SKEL_LEFT_FOOT,
+		RightShoulder = XN_SKEL_RIGHT_SHOULDER,
+		RightElbow = XN_SKEL_RIGHT_ELBOW,
+		RightHand = XN_SKEL_RIGHT_HAND,
+		RightHip = XN_SKEL_RIGHT_HIP,
+		RightKnee = XN_SKEL_RIGHT_KNEE,
+		RightFoot = XN_SKEL_RIGHT_FOOT
+	};
+#else
+	enum PointSetId
+	{
+		Head,
+		Neck,
+		Torso,
+		LeftShoulder,
+		LeftElbow,
+		LeftHand,
+		LeftHip,
+		LeftKnee,
+		LeftFoot,
+		RightShoulder,
+		RightElbow,
+		RightHand,
+		RightHip,
+		RightKnee,
+		RightFoot
+	};
+#endif
+}; // namespace omega
 
-		// Get available events
-		Event evts[OMEGA_MAX_EVENTS];
-		int av;
-		if(0 != (av = sm->getEvents(evts, ServiceManager::MaxEvents)))
-		{
-			for( int evtNum = 0; evtNum < av; evtNum++)
-			{
-				logEvent(evts[evtNum]);
-			}
-		}// if
-
-	}// while
-	
-	sys->cleanup();
-
-	delete cfg;
-}
-
-
+#endif

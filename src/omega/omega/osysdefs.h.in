@@ -24,59 +24,41 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include <omega>
+// Operating system
+#cmakedefine OMEGA_OS_WIN
+#cmakedefine OMEGA_OS_OSX
+#cmakedefine OMEGA_OS_LINUX
 
-using namespace omega;
+// Architecture (32/64bit)
+#cmakedefine OMEGA_ARCH_32
+#cmakedefine OMEGA_ARCH_64
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void logEvent(const Event& e)
-{
-	ofmsg("Event received: position %1%", %e.getPosition());
-}
+// Build toolset
+#cmakedefine OMEGA_TOOL_VS9
+#cmakedefine OMEGA_TOOL_VS10
+#cmakedefine OMEGA_TOOL_XCODE
+#cmakedefine OMEGA_TOOL_GCC
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int main(int argc, char** argv)
-{
-	SystemManager* sys = SystemManager::instance();
+// Build options
+#cmakedefine OMEGA_BUILD_STATIC
 
-	// Add a default filesystem data sources (used to retrieve configuration files and other resources)
-	DataManager* dm = sys->getDataManager();
-	dm->addSource(new FilesystemDataSource("./"));
-	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	// Load a configuration file for this application and setup the system manager.
-	Config* cfg = new Config("eventlogger.cfg");
-	sys->setup(cfg);
-
-	// Initialize the system manager
-	sys->initialize();
-
-	// Start running services and listening to events.
-	ServiceManager* sm = sys->getServiceManager();
-	sm->start();
-
-	omsg("eventlogger start logging events...");
-	while(true)
-	{
-		// Poll services for new events.
-		sm->poll(); 
-
-		// Get available events
-		Event evts[OMEGA_MAX_EVENTS];
-		int av;
-		if(0 != (av = sm->getEvents(evts, ServiceManager::MaxEvents)))
-		{
-			for( int evtNum = 0; evtNum < av; evtNum++)
-			{
-				logEvent(evts[evtNum]);
-			}
-		}// if
-
-	}// while
-	
-	sys->cleanup();
-
-	delete cfg;
-}
+// Enabled modules
+#cmakedefine OMEGA_USE_DISPLAY
+#cmakedefine OMEGA_USE_DISPLAY
+#cmakedefine OMEGA_USE_DISPLAY_GLUT
+#cmakedefine OMEGA_USE_DISPLAY_EQUALIZER
+#cmakedefine OMEGA_USE_PYTHON
+#cmakedefine OMEGA_USE_OPENCL
+#cmakedefine OMEGA_USE_MOUSE
+#cmakedefine OMEGA_USE_KEYBOARD
+#cmakedefine OMEGA_USE_NETSERVICE
+#cmakedefine OMEGA_USE_OPENNI
+#cmakedefine OMEGA_USE_NATURAL_POINT
+#cmakedefine OMEGA_USE_OPTITRACK
+#cmakedefine OMEGA_USE_PQLABS
+#cmakedefine OMEGA_USE_DIRECTINPUT
+#cmakedefine OMEGA_USE_VRPN
 
 
+
+#define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"

@@ -3,7 +3,6 @@
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Arthur Nishimoto		anishimoto42@gmail.com
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
@@ -27,6 +26,8 @@
  *************************************************************************************************/
 #include "omega/SystemManager.h"
 #include "omega/HeartbeatService.h"
+
+#include <time.h>
 
 using namespace omega;
 
@@ -56,7 +57,7 @@ void HeartbeatService::poll()
 	// Get the current system clock time in seconds.
 	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
 
-	float interval = 1 / myRate;
+	float interval = 1.0f / myRate;
 
 	// If we need an update (depending on the rate) send out a new event now.
 	if(curt - myLastEventTime > interval)
@@ -72,5 +73,7 @@ void HeartbeatService::poll()
 
 		// We are done: unlock the event list.
 		unlockEvents();
+
+		myLastEventTime = curt;
 	}
 }

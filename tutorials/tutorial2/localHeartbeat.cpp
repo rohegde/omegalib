@@ -24,92 +24,53 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
-
 #include <omega>
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
+
+// A simple configuration, creating a Heartbeat service 
+// and setting it's rate to 1 event per second
+const char* configString = 
+"@config: { "
+" services: { "
+"  HeartbeatService: { "
+"   rate = 1.0;"
+"  };"
+" };"
+"};";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+int main(int argc, char** argv)
 {
-public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
+	// Load a configuration using the config string specified before. 
+	// If we don't want to hardcode the configuration we can pass a the path to a file 
+	// containing the config instead.
+	Config cfg(configString);
 
-	const String& getName() { return myName; }
+	// Create an initialize the system manager.
+	SystemManager* sys = SystemManager::instance();
+	sys->setup(&cfg);
+	sys->initialize();
 
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
+	// Start services and begin listening to events.
+	ServiceManager* sm = sys->getServiceManager();
+	sm->start();
 
-	SceneNode* getSceneNode() { return mySceneNode; }
+	while(true)
+	{
+		// Poll services for new events.
+		sm->poll(); 
 
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
-
-private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient
-{
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineClient(server), 
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-
-	virtual void handleEvent(const Event& evt);
-    void draw( const DrawContext& context);
+		// Get available events
+		Event evts[OMEGA_MAX_EVENTS];
+		int av = sm->getEvents(evts, ServiceManager::MaxEvents);
+		for(int evtNum = 0; evtNum < av; evtNum++)
+		{
+			ofmsg("Event received: timestamp %1%", %evts[evtNum].getTimestamp());
+		}
+	}
+	
+	sys->cleanup();
+}
 
 
-	void handleUIEvent(const Event& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
-};
-
-#endif
