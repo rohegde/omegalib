@@ -34,6 +34,8 @@ if(COMMAND cmake_policy)
       #cmake_policy(SET CMP0008 NEW)
 endif(COMMAND cmake_policy)
 
+message("CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+
 ###################################################################################################
 # Create a build name depending on the OS, Toolset and architecture.
 if(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
@@ -119,7 +121,7 @@ endif(MSVC)
 
 # setup a cmake file containing some information about this build. 
 # used by FindOmegalib.cmake
-configure_file(${CMAKE_SOURCE_DIR}/CmakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
 
 ###################################################################################################
 # Add subdirectiories
