@@ -67,9 +67,13 @@ Public Types</h2></td></tr>
  <a href="classomega_1_1scene_1_1_node.html#aed32a4c83d3a099c6fbd3f831af973cb">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_dictionary.html">Dictionary</a>&lt; <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>, <br class="typebreak"/>
 <a class="el" href="classomega_1_1scene_1_1_node.html">Node</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#aa83b745e87ba5c3063350f067c31c628">ChildNodeMap</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_map_iterator.html">MapIterator</a>&lt; <a class="el" href="classomega_1_1_dictionary.html">ChildNodeMap</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#a5510cbf7c94d9b2ad7d872bf49972a1b">ChildNodeIterator</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_const_map_iterator.html">ConstMapIterator</a><br class="typebreak"/>
-&lt; <a class="el" href="classomega_1_1_dictionary.html">ChildNodeMap</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#ab936067548a97d2eecbd3fc81c9696f4">ConstChildNodeIterator</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1scene_1_1_child_node.html">ChildNode</a>&lt; <a class="el" href="classomega_1_1scene_1_1_node.html">Node</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#a9660ca9ccc1456bff64c5f53911ef659">Child</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::pair<br class="typebreak"/>
+&lt; ChildNodeMap::iterator, <br class="typebreak"/>
+ChildNodeMap::iterator &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#aaa85154fb6c82a8b917fa6aab0c5ef6b">ChildNodeRange</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef std::pair<br class="typebreak"/>
+&lt; ChildNodeMap::const_iterator, <br class="typebreak"/>
+ChildNodeMap::const_iterator &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#a86f0885dad68b9eb07f8a2c72147baf0">ConstChildNodeRange</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#ad7a34779cad45d997bfd6d3d8043c75f">Node</a> ()</td></tr>
@@ -141,10 +145,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets a pointer to a child node.  <a href="#af01f5814115581c55ef5b8c08a8020dc"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1scene_1_1_node.html">Node</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#a564866c72a3ca1b824804711e1ba5a8e">getChild</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;name) const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets a pointer to a named child node.  <a href="#a564866c72a3ca1b824804711e1ba5a8e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_map_iterator.html">ChildNodeIterator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#ad13bc71fa80ed4d0610bb1caee38bdf7">getChildIterator</a> (void)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves an iterator for efficiently looping through all children of this node.  <a href="#ad13bc71fa80ed4d0610bb1caee38bdf7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_const_map_iterator.html">ConstChildNodeIterator</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#ae3298a269a6f18af81bc39e6a34095ac">getChildIterator</a> (void) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves an iterator for efficiently looping through all children of this node.  <a href="#ae3298a269a6f18af81bc39e6a34095ac"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1scene_1_1_node.html#aaa85154fb6c82a8b917fa6aab0c5ef6b">ChildNodeRange</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#a2a766074721094059081a7d94f88e3f0">getChildren</a> (void)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves an iterator for efficiently looping through all children of this node.  <a href="#a2a766074721094059081a7d94f88e3f0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1scene_1_1_node.html#a86f0885dad68b9eb07f8a2c72147baf0">ConstChildNodeRange</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#ac5c725178891f63f4268d462f2b9ca22">getChildren</a> (void) const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Retrieves an iterator for efficiently looping through all children of this node.  <a href="#ac5c725178891f63f4268d462f2b9ca22"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1scene_1_1_node.html">Node</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#aabae61b372af0f21c2d779126561e997">removeChild</a> (unsigned short index)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Drops the specified child from this node.  <a href="#aabae61b372af0f21c2d779126561e997"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1scene_1_1_node.html">Node</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1scene_1_1_node.html#ab53dd6926b0e922b8ed671d9cda1be7b">removeChild</a> (<a class="el" href="classomega_1_1scene_1_1_node.html">Node</a> *child)</td></tr>
@@ -240,16 +244,18 @@ Static Protected Attributes</h2></td></tr>
 <dl class="remark"><dt><b>Remarks:</b></dt><dd>A node in the scene graph is a node in a structured tree. A node contains information about the transformation which will apply to it and all of it's children. Child nodes can have transforms of their own, which are combined with their parent's transformations. </dd></dl>
 <dl class="user"><dt><b></b></dt><dd>This is an abstract class - concrete classes are based on this for specific purposes, e.g. <a class="el" href="classomega_1_1scene_1_1_scene_node.html">SceneNode</a>, Bone </dd></dl>
 <hr/><h2>Member Typedef Documentation</h2>
-<a class="anchor" id="a5510cbf7c94d9b2ad7d872bf49972a1b"></a><!-- doxytag: member="omega::scene::Node::ChildNodeIterator" ref="a5510cbf7c94d9b2ad7d872bf49972a1b" args="" -->
+<a class="anchor" id="a9660ca9ccc1456bff64c5f53911ef659"></a><!-- doxytag: member="omega::scene::Node::Child" ref="a9660ca9ccc1456bff64c5f53911ef659" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classomega_1_1_map_iterator.html">MapIterator</a>&lt;<a class="el" href="classomega_1_1_dictionary.html">ChildNodeMap</a>&gt; <a class="el" href="classomega_1_1_map_iterator.html">omega::scene::Node::ChildNodeIterator</a></td>
+          <td class="memname">typedef <a class="el" href="classomega_1_1scene_1_1_child_node.html">ChildNode</a>&lt;<a class="el" href="classomega_1_1scene_1_1_node.html">Node</a>&gt; <a class="el" href="classomega_1_1scene_1_1_child_node.html">omega::scene::Node::Child</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classomega_1_1scene_1_1_scene_node.html#ac877b1788d89ed7a079825b3e09b78c5">omega::scene::SceneNode</a>.</p>
 
 </div>
 </div>
@@ -259,6 +265,19 @@ Static Protected Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">typedef <a class="el" href="classomega_1_1_dictionary.html">Dictionary</a>&lt;<a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>, <a class="el" href="classomega_1_1scene_1_1_node.html">Node</a>*&gt; <a class="el" href="classomega_1_1_dictionary.html">omega::scene::Node::ChildNodeMap</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aaa85154fb6c82a8b917fa6aab0c5ef6b"></a><!-- doxytag: member="omega::scene::Node::ChildNodeRange" ref="aaa85154fb6c82a8b917fa6aab0c5ef6b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::pair&lt; ChildNodeMap::iterator, ChildNodeMap::iterator&gt; <a class="el" href="classomega_1_1scene_1_1_node.html#aaa85154fb6c82a8b917fa6aab0c5ef6b">omega::scene::Node::ChildNodeRange</a></td>
         </tr>
       </table>
 </div>
@@ -279,12 +298,12 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab936067548a97d2eecbd3fc81c9696f4"></a><!-- doxytag: member="omega::scene::Node::ConstChildNodeIterator" ref="ab936067548a97d2eecbd3fc81c9696f4" args="" -->
+<a class="anchor" id="a86f0885dad68b9eb07f8a2c72147baf0"></a><!-- doxytag: member="omega::scene::Node::ConstChildNodeRange" ref="a86f0885dad68b9eb07f8a2c72147baf0" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classomega_1_1_const_map_iterator.html">ConstMapIterator</a>&lt;<a class="el" href="classomega_1_1_dictionary.html">ChildNodeMap</a>&gt; <a class="el" href="classomega_1_1_const_map_iterator.html">omega::scene::Node::ConstChildNodeIterator</a></td>
+          <td class="memname">typedef std::pair&lt; ChildNodeMap::const_iterator, ChildNodeMap::const_iterator&gt; <a class="el" href="classomega_1_1scene_1_1_node.html#a86f0885dad68b9eb07f8a2c72147baf0">omega::scene::Node::ConstChildNodeRange</a></td>
         </tr>
       </table>
 </div>
@@ -591,12 +610,12 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae3298a269a6f18af81bc39e6a34095ac"></a><!-- doxytag: member="omega::scene::Node::getChildIterator" ref="ae3298a269a6f18af81bc39e6a34095ac" args="(void) const " -->
+<a class="anchor" id="ac5c725178891f63f4268d462f2b9ca22"></a><!-- doxytag: member="omega::scene::Node::getChildren" ref="ac5c725178891f63f4268d462f2b9ca22" args="(void) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_const_map_iterator.html">Node::ConstChildNodeIterator</a> Node::getChildIterator </td>
+          <td class="memname"><a class="el" href="classomega_1_1scene_1_1_node.html#a86f0885dad68b9eb07f8a2c72147baf0">Node::ConstChildNodeRange</a> Node::getChildren </td>
           <td>(</td>
           <td class="paramtype">void&nbsp;</td>
           <td class="paramname"></td>
@@ -612,12 +631,12 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad13bc71fa80ed4d0610bb1caee38bdf7"></a><!-- doxytag: member="omega::scene::Node::getChildIterator" ref="ad13bc71fa80ed4d0610bb1caee38bdf7" args="(void)" -->
+<a class="anchor" id="a2a766074721094059081a7d94f88e3f0"></a><!-- doxytag: member="omega::scene::Node::getChildren" ref="a2a766074721094059081a7d94f88e3f0" args="(void)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_map_iterator.html">Node::ChildNodeIterator</a> Node::getChildIterator </td>
+          <td class="memname"><a class="el" href="classomega_1_1scene_1_1_node.html#aaa85154fb6c82a8b917fa6aab0c5ef6b">Node::ChildNodeRange</a> Node::getChildren </td>
           <td>(</td>
           <td class="paramtype">void&nbsp;</td>
           <td class="paramname"></td>
@@ -2122,7 +2141,7 @@ See setInheritOrientation for more info. </dd></dl>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:29 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

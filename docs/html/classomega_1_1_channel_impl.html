@@ -55,11 +55,11 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a657a18d522e722bfb131a0bbe6c50ea6">~ChannelImpl</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#ab2a846789c830f6a0051b80936acda11">setupDrawContext</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> *context, const uint128_t &amp;spin)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a412b9e10e109f7ed52640e40b8d4bbe1">setupDrawContext</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> *context, const uint128_t &amp;spin)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a647b659a901de007edc630f6de0ba913">makeCurrent</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a4ee00e8aad1868b4c990f27e0c4fd2a9">frameDraw</a> (const uint128_t &amp;spin)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a5a7febd05fe48b69c3c19b51f51a7790">frameViewStart</a> (const uint128_t &amp;spin)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#aee0a6af7e63fe520639d76e8bcc205e4">frameViewFinish</a> (const uint128_t &amp;spin)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a88150fc9def3c4b1246ccf6fdb5f334f">frameDraw</a> (const uint128_t &amp;spin)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a0d7e43c89d567846ddbf392e765f95ad">frameViewStart</a> (const uint128_t &amp;spin)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a6fef1867b333b814afa8fd5be65f8dff">frameViewFinish</a> (const uint128_t &amp;spin)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p><b>For internal use only.</b></p>
@@ -100,12 +100,12 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a4ee00e8aad1868b4c990f27e0c4fd2a9"></a><!-- doxytag: member="omega::ChannelImpl::frameDraw" ref="a4ee00e8aad1868b4c990f27e0c4fd2a9" args="(const uint128_t &amp;spin)" -->
+<a class="anchor" id="a88150fc9def3c4b1246ccf6fdb5f334f"></a><!-- doxytag: member="omega::ChannelImpl::frameDraw" ref="a88150fc9def3c4b1246ccf6fdb5f334f" args="(const uint128_t &amp;spin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ChannelImpl::frameDraw </td>
+          <td class="memname">virtual void omega::ChannelImpl::frameDraw </td>
           <td>(</td>
           <td class="paramtype">const uint128_t &amp;&nbsp;</td>
           <td class="paramname"> <em>spin</em></td>
@@ -118,12 +118,12 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aee0a6af7e63fe520639d76e8bcc205e4"></a><!-- doxytag: member="omega::ChannelImpl::frameViewFinish" ref="aee0a6af7e63fe520639d76e8bcc205e4" args="(const uint128_t &amp;spin)" -->
+<a class="anchor" id="a6fef1867b333b814afa8fd5be65f8dff"></a><!-- doxytag: member="omega::ChannelImpl::frameViewFinish" ref="a6fef1867b333b814afa8fd5be65f8dff" args="(const uint128_t &amp;spin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ChannelImpl::frameViewFinish </td>
+          <td class="memname">virtual void omega::ChannelImpl::frameViewFinish </td>
           <td>(</td>
           <td class="paramtype">const uint128_t &amp;&nbsp;</td>
           <td class="paramname"> <em>spin</em></td>
@@ -136,12 +136,12 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5a7febd05fe48b69c3c19b51f51a7790"></a><!-- doxytag: member="omega::ChannelImpl::frameViewStart" ref="a5a7febd05fe48b69c3c19b51f51a7790" args="(const uint128_t &amp;spin)" -->
+<a class="anchor" id="a0d7e43c89d567846ddbf392e765f95ad"></a><!-- doxytag: member="omega::ChannelImpl::frameViewStart" ref="a0d7e43c89d567846ddbf392e765f95ad" args="(const uint128_t &amp;spin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ChannelImpl::frameViewStart </td>
+          <td class="memname">virtual void omega::ChannelImpl::frameViewStart </td>
           <td>(</td>
           <td class="paramtype">const uint128_t &amp;&nbsp;</td>
           <td class="paramname"> <em>spin</em></td>
@@ -171,12 +171,12 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab2a846789c830f6a0051b80936acda11"></a><!-- doxytag: member="omega::ChannelImpl::setupDrawContext" ref="ab2a846789c830f6a0051b80936acda11" args="(DrawContext *context, const uint128_t &amp;spin)" -->
+<a class="anchor" id="a412b9e10e109f7ed52640e40b8d4bbe1"></a><!-- doxytag: member="omega::ChannelImpl::setupDrawContext" ref="a412b9e10e109f7ed52640e40b8d4bbe1" args="(DrawContext *context, const uint128_t &amp;spin)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ChannelImpl::setupDrawContext </td>
+          <td class="memname">void omega::ChannelImpl::setupDrawContext </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> *&nbsp;</td>
           <td class="paramname"> <em>context</em>, </td>
@@ -199,7 +199,7 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:18 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

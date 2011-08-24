@@ -1,4 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classstd_1_1streambuf.html" title="streambuf" alt="" coords="7,5,84,35"/>
-<area shape="rect" id="node3" href="$classomega_1_1_equalizer_log_stream_buf.html" title="omega::EqualizerLogStreamBuf" alt="" coords="133,5,339,35"/>
+<area shape="rect" id="node1" href="$classstd_1_1vector.html" title="vector" alt="" coords="5,5,61,35"/>
+<area shape="rect" id="node3" href="$classomega_1_1_vector.html" title="omega::Vector\&lt; T \&gt;" alt="" coords="109,5,248,35"/>
 </map>
