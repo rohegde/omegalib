@@ -28,6 +28,7 @@
 #include "omega/Observer.h"
 #include "omega/ObserverUpdateService.h"
 #include "omega/StringUtils.h"
+#include "omega/PointSetId.h"
 
 using namespace omega;
 

@@ -57,7 +57,6 @@ SET( srcs
 ###################################################################################################
 # Headers
 SET( headers 
-        ${OmegaLib_SOURCE_DIR}/include/omega.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
@@ -348,3 +347,4 @@ endif(OMEGA_USE_VRPN)
 
 ###################################################################################################
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
+configure_file(omega.in ${CMAKE_BINARY_DIR}/include/omega)

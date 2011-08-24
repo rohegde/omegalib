@@ -24,92 +24,53 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
-
 #include <omega>
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+int main(int argc, char** argv)
 {
-public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
+	SystemManager* sys = SystemManager::instance();
 
-	const String& getName() { return myName; }
+	// Add a default filesystem data sources (used to retrieve configuration files and other resources)
+	DataManager* dm = sys->getDataManager();
+	dm->addSource(new FilesystemDataSource("./"));
+	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
 
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
+	// Load a configuration file for this application and setup the system manager.
+	Config* cfg = new Config("eventlogger.cfg");
+	sys->setup(cfg);
 
-	SceneNode* getSceneNode() { return mySceneNode; }
+	// Initialize the system manager
+	sys->initialize();
 
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
+	// Start running services and listening to events.
+	ServiceManager* sm = sys->getServiceManager();
+	sm->start();
 
-private:
-	String myName;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
+	omsg("eventlogger start logging events...");
+	while(true)
+	{
+		// Poll services for new events.
+		sm->poll(); 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient
-{
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineClient(server), 
-		myVisibleEntity(NULL)
-	  {}
+		// Get available events
+		Event evts[OMEGA_MAX_EVENTS];
+		int av;
+		if(0 != (av = sm->getEvents(evts, ServiceManager::MaxEvents)))
+		{
+			for( int evtNum = 0; evtNum < av; evtNum++)
+			{
+				//ofmsg("Event received: position %1%", %e.getPosition());
+			}
+		}
 
-	virtual void initialize();
-	void initUI();
+	}
+	
+	sys->cleanup();
 
-	virtual void handleEvent(const Event& evt);
-    void draw( const DrawContext& context);
+	delete cfg;
+}
 
 
-	void handleUIEvent(const Event& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
-};
-
-#endif
