@@ -27,6 +27,7 @@
 #include "omega/scene/DefaultTwoHandsInteractor.h"
 #include "omega/scene/Light.h"
 #include "omega/scene/SceneManager.h"
+#include "omega/PointSetId.h"
 
 using namespace omega;
 using namespace omega::scene;

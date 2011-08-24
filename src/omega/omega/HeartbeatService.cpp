@@ -3,7 +3,6 @@
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
- *  Arthur Nishimoto		anishimoto42@gmail.com
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
  * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
@@ -27,6 +26,8 @@
  *************************************************************************************************/
 #include "omega/SystemManager.h"
 #include "omega/HeartbeatService.h"
+
+#include <time.h>
 
 using namespace omega;
 

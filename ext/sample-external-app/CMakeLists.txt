@@ -24,10 +24,3 @@ target_link_libraries(sample ${OPENGL_LIBRARY}
 #	debug ${OMEGA_LIB_DEBUG} ${OUTILS_LIB_DEBUG}
 # optimized ${OMEGA_LIB_RELEASE} ${OUTILS_LIB_RELEASE})
 
-# (windows only) You can use the following commands to copy the omegalib dlls into the destinaton binary directory
-if(WIN32)
-	make_directory(${CMAKE_CURRENT_BINARY_DIR}/Release)
-	make_directory(${CMAKE_CURRENT_BINARY_DIR}/Debug)
-	file(COPY ${OMEGA_BIN_DIR_RELEASE}/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release FILES_MATCHING PATTERN *.dll )
-	file(COPY ${OMEGA_BIN_DIR_DEBUG}/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug FILES_MATCHING PATTERN *.dll )
-endif(WIN32)
