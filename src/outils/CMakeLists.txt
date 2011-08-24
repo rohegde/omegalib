@@ -80,7 +80,7 @@ set( srcs
 		omega/mvc/ViewClient.cpp
 		omega/mvc/Controller.cpp
 		omega/mvc/DynamicController.cpp
-		omega/mvc/UiDynamicController.cpp
+		omega/mvc/UIDynamicController.cpp
 
 		#omega::script
 		omega/script/ScriptInterpreter.cpp
