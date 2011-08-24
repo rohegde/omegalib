@@ -1,4 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node5" href="$classomega_1_1ui_1_1_user_manager_panel.html" title="omega::ui::UserManagerPanel" alt="" coords="5,160,203,189"/>
-<area shape="rect" id="node2" href="$classomega_1_1ui_1_1_widget.html" title="omega::ui::Widget" alt="" coords="40,5,168,35"/>
+<area shape="rect" id="node7" href="$classomega_1_1ui_1_1_user_manager_panel.html" title="omega::ui::UserManagerPanel" alt="" coords="5,237,203,267"/>
+<area shape="rect" id="node2" href="$classomega_1_1ui_1_1_widget.html" title="omega::ui::Widget" alt="" coords="40,83,168,112"/>
+<area shape="rect" id="node4" href="$classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="29,5,179,35"/>
 </map>

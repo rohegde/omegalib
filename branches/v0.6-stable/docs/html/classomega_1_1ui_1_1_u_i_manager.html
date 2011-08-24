@@ -40,12 +40,12 @@
 <h1>omega::ui::UIManager Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="omega::ui::UIManager" --><!-- doxytag: inherits="omega::Service" --><div class="dynheader">
+<!-- doxytag: class="omega::ui::UIManager" --><!-- doxytag: inherits="omega::Service,omega::IEventListener" --><div class="dynheader">
 Inheritance diagram for omega::ui::UIManager:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1ui_1_1_u_i_manager__inherit__graph.png" border="0" usemap="#omega_1_1ui_1_1_u_i_manager_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1ui_1_1_u_i_manager_inherit__map" id="omega_1_1ui_1_1_u_i_manager_inherit__map">
-<area shape="rect" id="node2" href="classomega_1_1_service.html" title="omega::Service" alt="" coords="29,83,139,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/></map>
+<area shape="rect" id="node2" href="classomega_1_1_service.html" title="omega::Service" alt="" coords="29,83,139,112"/><area shape="rect" id="node4" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node6" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="163,83,312,112"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1ui_1_1_u_i_manager-members.html">List of all members.</a></p>
@@ -56,15 +56,15 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#aeac3e2a8fd4ba49821ce653f4d2fa6b6">~UIManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#ad7aab2c749b16bdeca1ad017faa94faf">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a16526eba47e1747c62b306a355eac938">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a1a6a9adf1a8e374618f895cd0efa7d07">processInputEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a8c6554ca989547ab5c642b5754241902">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1ui_1_1_container.html">Container</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a0457b6b338e5fa90821a08f71aa58d3f">getRootContainer</a> (int layer)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a96a8a9b0ab4e47dfae9f6c1363f39215">getDefaultPainter</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_font.html">omega::Font</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a43c243847629db4b72f3e00659fd2944">getDefaultFont</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a9673e666774d995738f6c4e89fbb89db">setDefaultFont</a> (<a class="el" href="classomega_1_1_font.html">Font</a> *value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1ui_1_1_widget_factory.html">WidgetFactory</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a3cf58a7f1ceb5405d9c0db5fd5e58697">getWidgetFactory</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a2441244f9eeb068d2dca946b03af3a9e">setWidgetFactory</a> (<a class="el" href="classomega_1_1ui_1_1_widget_factory.html">WidgetFactory</a> *value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a561b407326c54dca674d835973fc70d8">getEventHandler</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a4b13e2361314e8e82084646bd454bba2">setEventHandler</a> (<a class="el" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a> *value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_i_event_listener.html">IEventListener</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#ae9bad1af0a21a282f0196e9423101a30">getUIEventHandler</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a39f6fea4637b7ce9769b95d2371c5a38">setUIEventHandler</a> (<a class="el" href="classomega_1_1_i_event_listener.html">IEventListener</a> *value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#aa9c7f5368488d4d97596582193ab429c">registerWidget</a> (<a class="el" href="classomega_1_1ui_1_1_widget.html">Widget</a> *w)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1ui_1_1_u_i_manager.html#a9b52fd698e6cb9bdd52ec1ccd473a2a3">unregisterWidget</a> (<a class="el" href="classomega_1_1ui_1_1_widget.html">Widget</a> *w)</td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -161,23 +161,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a561b407326c54dca674d835973fc70d8"></a><!-- doxytag: member="omega::ui::UIManager::getEventHandler" ref="a561b407326c54dca674d835973fc70d8" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a> * omega::ui::UIManager::getEventHandler </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a0457b6b338e5fa90821a08f71aa58d3f"></a><!-- doxytag: member="omega::ui::UIManager::getRootContainer" ref="a0457b6b338e5fa90821a08f71aa58d3f" args="(int layer)" -->
 <div class="memitem">
 <div class="memproto">
@@ -187,6 +170,23 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>layer</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae9bad1af0a21a282f0196e9423101a30"></a><!-- doxytag: member="omega::ui::UIManager::getUIEventHandler" ref="ae9bad1af0a21a282f0196e9423101a30" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_i_event_listener.html">IEventListener</a> * omega::ui::UIManager::getUIEventHandler </td>
+          <td>(</td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
         </tr>
@@ -233,21 +233,23 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a1a6a9adf1a8e374618f895cd0efa7d07"></a><!-- doxytag: member="omega::ui::UIManager::processInputEvent" ref="a1a6a9adf1a8e374618f895cd0efa7d07" args="(const Event &amp;evt)" -->
+<a class="anchor" id="a8c6554ca989547ab5c642b5754241902"></a><!-- doxytag: member="omega::ui::UIManager::handleEvent" ref="a8c6554ca989547ab5c642b5754241902" args="(const Event &amp;evt)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool UIManager::processInputEvent </td>
+          <td class="memname">void UIManager::handleEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>evt</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td></td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Implements <a class="el" href="classomega_1_1_i_event_listener.html#a474e903543d96a7ba007eb57d9f0ce7b">omega::IEventListener</a>.</p>
 
 </div>
 </div>
@@ -287,14 +289,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a4b13e2361314e8e82084646bd454bba2"></a><!-- doxytag: member="omega::ui::UIManager::setEventHandler" ref="a4b13e2361314e8e82084646bd454bba2" args="(IUIEventHandler *value)" -->
+<a class="anchor" id="a39f6fea4637b7ce9769b95d2371c5a38"></a><!-- doxytag: member="omega::ui::UIManager::setUIEventHandler" ref="a39f6fea4637b7ce9769b95d2371c5a38" args="(IEventListener *value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::ui::UIManager::setEventHandler </td>
+          <td class="memname">void omega::ui::UIManager::setUIEventHandler </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1ui_1_1_i_u_i_event_handler.html">IUIEventHandler</a> *&nbsp;</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_i_event_listener.html">IEventListener</a> *&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
@@ -374,7 +376,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:30 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

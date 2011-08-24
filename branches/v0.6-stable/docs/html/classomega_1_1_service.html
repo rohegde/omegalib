@@ -46,7 +46,7 @@ Inheritance diagram for omega::Service:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1_service__inherit__graph.png" border="0" usemap="#omega_1_1_service_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_service_inherit__map" id="omega_1_1_service_inherit__map">
-<area shape="rect" id="node5" href="classomega_1_1_direct_x_input_service.html" title="omega::DirectXInputService" alt="" coords="385,5,564,35"/><area shape="rect" id="node7" href="classomega_1_1_keyboard_service.html" title="omega::KeyboardService" alt="" coords="392,59,557,88"/><area shape="rect" id="node9" href="classomega_1_1_mouse_service.html" title="omega::MouseService" alt="" coords="400,112,549,141"/><area shape="rect" id="node11" href="classomega_1_1_natural_point_service.html" title="omega::NaturalPointService" alt="" coords="384,165,565,195"/><area shape="rect" id="node13" href="classomega_1_1_net_service.html" title="omega::NetService" alt="" coords="409,219,540,248"/><area shape="rect" id="node15" href="classomega_1_1_observer_update_service.html" title="omega::ObserverUpdateService" alt="" coords="373,272,576,301"/><area shape="rect" id="node17" href="classomega_1_1_open_n_i_service.html" title="omega::OpenNIService" alt="" coords="397,325,552,355"/><area shape="rect" id="node19" href="classomega_1_1_opti_track_service.html" title="omega::OptiTrackService" alt="" coords="392,379,557,408"/><area shape="rect" id="node21" href="classomega_1_1_p_q_service.html" title="omega::PQService" alt="" coords="409,432,540,461"/><area shape="rect" id="node23" href="classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="400,485,549,515"/><area shape="rect" id="node25" href="classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,539,548,568"/><area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,272,164,301"/></map>
+<area shape="rect" id="node5" href="classomega_1_1_direct_x_input_service.html" title="omega::DirectXInputService" alt="" coords="385,5,564,35"/><area shape="rect" id="node7" href="classomega_1_1_heartbeat_service.html" title="HearthbeatService implements a very simple event service, that sends out update events at a predefine..." alt="" coords="392,59,557,88"/><area shape="rect" id="node9" href="classomega_1_1_keyboard_service.html" title="omega::KeyboardService" alt="" coords="392,112,557,141"/><area shape="rect" id="node11" href="classomega_1_1_mouse_service.html" title="omega::MouseService" alt="" coords="400,165,549,195"/><area shape="rect" id="node13" href="classomega_1_1_natural_point_service.html" title="omega::NaturalPointService" alt="" coords="384,219,565,248"/><area shape="rect" id="node15" href="classomega_1_1_net_service.html" title="omega::NetService" alt="" coords="409,272,540,301"/><area shape="rect" id="node17" href="classomega_1_1_observer_update_service.html" title="omega::ObserverUpdateService" alt="" coords="373,325,576,355"/><area shape="rect" id="node19" href="classomega_1_1_open_n_i_service.html" title="omega::OpenNIService" alt="" coords="397,379,552,408"/><area shape="rect" id="node21" href="classomega_1_1_opti_track_service.html" title="omega::OptiTrackService" alt="" coords="392,432,557,461"/><area shape="rect" id="node23" href="classomega_1_1_p_q_service.html" title="omega::PQService" alt="" coords="409,485,540,515"/><area shape="rect" id="node25" href="classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="400,539,549,568"/><area shape="rect" id="node27" href="classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,592,548,621"/><area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,299,164,328"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_service-members.html">List of all members.</a></p>
@@ -59,7 +59,8 @@ Public Types</h2></td></tr>
 <a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa2fb7f2cb53da9c03c8ea0d94a7c99410">Keyboard</a>, 
 <a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4">Controller</a>, 
 <br/>
-&nbsp;&nbsp;<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736">UI</a>
+&nbsp;&nbsp;<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736">UI</a>, 
+<a class="el" href="classomega_1_1_service.html#a77fd0da037ab225e53b0949e06a837faaf6f91bf2399ad06870bfbdd2ac433440">Generic</a>
 <br/>
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_service.html#a40b411be842d43ff093833bf1a2e125a">ServicePollPriority</a> { <a class="el" href="classomega_1_1_service.html#a40b411be842d43ff093833bf1a2e125aa42a166659cf68c88181cdd94eef44263">PollFirst</a>, 
@@ -136,6 +137,8 @@ Friends</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4"></a><!-- doxytag: member="Controller" ref="a77fd0da037ab225e53b0949e06a837faaba2c7c9a762a794c2dfc88416c8621c4" args="" -->Controller</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736"></a><!-- doxytag: member="UI" ref="a77fd0da037ab225e53b0949e06a837faa1a8045c1c36266ab27524566fa70e736" args="" -->UI</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a77fd0da037ab225e53b0949e06a837faaf6f91bf2399ad06870bfbdd2ac433440"></a><!-- doxytag: member="Generic" ref="a77fd0da037ab225e53b0949e06a837faaf6f91bf2399ad06870bfbdd2ac433440" args="" -->Generic</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -319,7 +322,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#afb606f1e643772fe8f7967706fbd0db5">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_net_service.html#a859839e1c5e644da63054c46c3a64ca9">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#ab629d2a3bddf792b8b7d5bbdbd7e8e43">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a206715b29dd323d41e052853ea49caf2">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#afdc1a77a744995805d3dc874ee47727f">omega::OptiTrackService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#aa43f7d1929a27e7d39de48dbe29d0265">omega::VRPNService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_direct_x_input_service.html#afb606f1e643772fe8f7967706fbd0db5">omega::DirectXInputService</a>, <a class="el" href="classomega_1_1_heartbeat_service.html#a2e2071363a5816c508f1cdff25bee9c3">omega::HeartbeatService</a>, <a class="el" href="classomega_1_1_net_service.html#a859839e1c5e644da63054c46c3a64ca9">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#ab629d2a3bddf792b8b7d5bbdbd7e8e43">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a206715b29dd323d41e052853ea49caf2">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_opti_track_service.html#afdc1a77a744995805d3dc874ee47727f">omega::OptiTrackService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#aa43f7d1929a27e7d39de48dbe29d0265">omega::VRPNService</a>.</p>
 
 </div>
 </div>
@@ -391,7 +394,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_mouse_service.html#aaae9de51fd6ccc33e3b48602cf9cdb80">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#a20e9691b58b6e3e3ec8eedf82b5dcd81">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#a59aaeb3dd188c974747f77f73bba1a19">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a272b991dc094d4a5540433c091d85e8d">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a05a369063d83c11d4a54bbbec9f5366c">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_p_q_service.html#a51dac273bc676f993529ccfa2ac78249">omega::PQService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#a43fdfcda6b26e09b7dbafb1653d48122">omega::VRPNService</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_heartbeat_service.html#a7c1bf27c98f081dc26ec8972b30d1f07">omega::HeartbeatService</a>, <a class="el" href="classomega_1_1_mouse_service.html#aaae9de51fd6ccc33e3b48602cf9cdb80">omega::MouseService</a>, <a class="el" href="classomega_1_1_natural_point_service.html#a20e9691b58b6e3e3ec8eedf82b5dcd81">omega::NaturalPointService</a>, <a class="el" href="classomega_1_1_net_service.html#a59aaeb3dd188c974747f77f73bba1a19">omega::NetService</a>, <a class="el" href="classomega_1_1_observer_update_service.html#a272b991dc094d4a5540433c091d85e8d">omega::ObserverUpdateService</a>, <a class="el" href="classomega_1_1_open_n_i_service.html#a05a369063d83c11d4a54bbbec9f5366c">omega::OpenNIService</a>, <a class="el" href="classomega_1_1_p_q_service.html#a51dac273bc676f993529ccfa2ac78249">omega::PQService</a>, and <a class="el" href="classomega_1_1_v_r_p_n_service.html#a43fdfcda6b26e09b7dbafb1653d48122">omega::VRPNService</a>.</p>
 
 </div>
 </div>
@@ -482,7 +485,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:26 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>

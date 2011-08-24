@@ -52,8 +52,7 @@ Inheritance diagram for omega::EngineClient:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a668182b1ffe989d02746e0c4591bea90">EngineClient</a> (<a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *server)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a300519eea2704b096db711dcaf4e825c">initialize</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a43fcc012ec872fa902e21e06fbae7fd8">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a807c3add8178e2e710c8122a80e37bac">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt, <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#aa2fcb16c2e7407eed1556c9f1ed63e24">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a2e418ce80622ba9115ca23b9a2fa1d9b">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_engine_client.html#a58c538dd4fa24a3feadcc1f7f081b2b9">draw</a> (const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
@@ -251,61 +250,23 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a43fcc012ec872fa902e21e06fbae7fd8"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="a43fcc012ec872fa902e21e06fbae7fd8" args="(const Event &amp;evt, UpdateContext &amp;context)" -->
+<a class="anchor" id="aa2fcb16c2e7407eed1556c9f1ed63e24"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="aa2fcb16c2e7407eed1556c9f1ed63e24" args="(const Event &amp;evt)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool EngineClient::handleEvent </td>
+          <td class="memname">void EngineClient::handleEvent </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [virtual]</code></td>
+          <td class="paramname"> <em>evt</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_client.html#a8c0afdeeb262d7699aedce864183829d">omega::ApplicationClient</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a807c3add8178e2e710c8122a80e37bac"></a><!-- doxytag: member="omega::EngineClient::handleEvent" ref="a807c3add8178e2e710c8122a80e37bac" args="(const Event &amp;evt, DrawContext &amp;context)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool EngineClient::handleEvent </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>evt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>context</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_client.html#ac888e16c78b6a3808db82ea6747f8a70">omega::ApplicationClient</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_1_1_application_client.html#a8fcf4f23d00f94cfb0c66c0b755344c5">omega::ApplicationClient</a>.</p>
 
 </div>
 </div>
@@ -411,7 +372,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 </div>
-<hr class="footer"/><address class="footer"><small>Generated on Tue Aug 9 2011 12:31:19 for omegalib by&nbsp;
+<hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.1 </small></address>
 </body>
