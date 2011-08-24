@@ -24,10 +24,10 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega.h"
-#include <time.h>
+#include <omega>
 #include <vector>
 
+#include <time.h>
 using namespace omega;
 
 #ifdef WIN32

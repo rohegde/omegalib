@@ -24,15 +24,7 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-
-# TODO: move this to omega CMakeFile, inside Equalizer block
-# Check if 32bit MAC or 64bit MAC
-#if( APPLE )
-#    if(_CMAKE_OSX_MACHINE MATCHES "64")
-#        option(EQUALIZER_PREFER_AGL "Prefer AGL over GLX on Mac OS X" OFF)
-#    endif()
-#endif( APPLE )
-
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 include(ExternalProject)
 
 ###################################################################################################

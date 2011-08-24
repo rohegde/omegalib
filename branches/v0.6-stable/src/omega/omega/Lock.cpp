@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/Lock.h"
 
-#include "OpenThreads\Mutex"
+#include "OpenThreads/Mutex"
 
 
 using namespace omega;

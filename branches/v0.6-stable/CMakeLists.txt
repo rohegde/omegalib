@@ -34,37 +34,57 @@ if(COMMAND cmake_policy)
       #cmake_policy(SET CMP0008 NEW)
 endif(COMMAND cmake_policy)
 
-# We have some custom .cmake scripts not in the official distribution.
-# Maybe this can be used override existing behavior if needed?
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-
 ###################################################################################################
 # Create a build name depending on the OS, Toolset and architecture.
 if(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
-	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN32 -DOMEGA_TOOL_VS9)
+	set(OMEGA_OS_WIN 1)
+	set(OMEGA_ARCH_32 1)
+	set(OMEGA_ARCH_WIN32 1)
+	set(OMEGA_TOOL_VS9 1)
 elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008 Win64")
-	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN64 -DOMEGA_TOOL_VS9)
+	set(OMEGA_OS_WIN 1)
+	set(OMEGA_ARCH_64 1)
+	set(OMEGA_ARCH_WIN32 1)
+	set(OMEGA_TOOL_VS9 1)
 elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 10")
-	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN32 -DOMEGA_TOOL_VS10)
+	set(OMEGA_OS_WIN 1)
+	set(OMEGA_ARCH_32 1)
+	set(OMEGA_ARCH_WIN32 1)
+	set(OMEGA_TOOL_VS10 1)
 elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 10 Win64")
-	add_definitions(-DOMEGA_OS_WIN -DOMEGA_ARCH_WIN64 -DOMEGA_TOOL_VS10)
+	set(OMEGA_OS_WIN 1)
+	set(OMEGA_ARCH_64 1)
+	set(OMEGA_ARCH_WIN32 1)
+	set(OMEGA_TOOL_VS10 1)
 elseif(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
 	if(APPLE)
-		add_definitions(-DOMEGA_OS_OSX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
+		set(OMEGA_OS_OSX 1)
+		set(OMEGA_ARCH_32 1)
+		set(OMEGA_ARCH_I386 1)
+		set(OMEGA_TOOL_GCC 1)
 	else(APPLE)
 		if("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8")
-			add_definitions(-DOMEGA_OS_LINUX -DOMEGA_ARCH_AMD64 -DOMEGA_TOOL_GCC)
+			set(OMEGA_OS_LINUX 1)
+			set(OMEGA_ARCH_64 1)
+			set(OMEGA_ARCH_AMD64 1)
+			set(OMEGA_TOOL_GCC 1)
 		else()
-			add_definitions(-DOMEGA_OS_LINUX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
+			set(OMEGA_OS_LINUX 1)
+			set(OMEGA_ARCH_32 1)
+			set(OMEGA_ARCH_I386 1)
+			set(OMEGA_TOOL_GCC 1)
 		endif()
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -ldl -lrt")	
 	endif(APPLE)
 elseif(CMAKE_GENERATOR STREQUAL "Xcode")
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-	add_definitions(-DOMEGA_OS_OSX -DOMEGA_ARCH_I386 -DOMEGA_TOOL_GCC)
+	set(OMEGA_OS_OSX 1)
+	set(OMEGA_ARCH_32 1)
+	set(OMEGA_ARCH_I386 1)
+	set(OMEGA_TOOL_GCC 1)
 endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
-add_definitions(-DOMEGA_DATA_PATH="${OmegaLib_SOURCE_DIR}/data")
+set(OMEGA_DATA_PATH "${OmegaLib_SOURCE_DIR}/data")
 
 ###################################################################################################
 # Set the output directories for libraries and binary files
@@ -96,6 +116,10 @@ if(MSVC)
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
 endif(MSVC)
+
+# setup a cmake file containing some information about this build. 
+# used by FindOmegalib.cmake
+configure_file(${CMAKE_SOURCE_DIR}/CmakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
 
 ###################################################################################################
 # Add subdirectiories
