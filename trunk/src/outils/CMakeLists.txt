@@ -144,7 +144,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/mvc/ViewClient.h
 		${OmegaLib_SOURCE_DIR}/include/omega/mvc/Controller.h
 		${OmegaLib_SOURCE_DIR}/include/omega/mvc/DynamicController.h
-		${OmegaLib_SOURCE_DIR}/include/omega/mvc/UiDynamicController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/mvc/UIDynamicController.h
 
 		#omega::script
 		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h
