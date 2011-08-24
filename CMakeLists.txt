@@ -119,7 +119,7 @@ endif(MSVC)
 
 # setup a cmake file containing some information about this build. 
 # used by FindOmegalib.cmake
-configure_file(${CMAKE_SOURCE_DIR}/CmakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
 
 ###################################################################################################
 # Add subdirectiories
