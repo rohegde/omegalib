@@ -1,6 +1,19 @@
 = OmegaLib Meeting Notes =
 
 == August 12 2011 ==
+ * Tutorials
+  * (*Alessandro*) working on basic ones
+  * (*Arthur*) tutorial for setting up omegalib in unity (assume inputserver working already, from previous tutorials)
+  * Tutorial on using omegalib in processing (put code for integration as part of tutorial, in svn)
+  * BASIC IDEA: tutorial code will be starting point for projects in C++, Processing, Unity, ...
+  
+
+
+------------------------------------------------------------------------
+
+
+
+== August 12 2011 ==
  * Omegalib stability issues: have two versions from now on. 
  * omegalib kinect: users not detected from time to time. (Do we need better debug messages)
  * Unity: when hands are active problems with tracking. Head tracking alone works fine apparently.

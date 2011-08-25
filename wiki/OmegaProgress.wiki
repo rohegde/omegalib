@@ -8,6 +8,8 @@ for clustered / multigpu display systems.
 *Expected delivery*: `December 2011`
 
 == Completed Tasks ==
+ * Basic model-view-controller toolkit in outils
+ * Streamlined support for integration of omegalib into third party projects
 
 == Work In Progress ==
  * Integration of PS3 and Wii controller (*Arthur*)
@@ -18,7 +20,11 @@ for clustered / multigpu display systems.
  * Add a multi-user touch gestures (*Arthur*)
      * Zoom, drag, and other current SAGE touch gestures
  * Integration with Qt (*Alessandro*)
- * Basic model-view-controller toolkit in outils (*Alessandro*)
+ * Tutorials
+   * Tutorial 1: Building A Basic Omegalib (*Alessandro*)
+   * Tutorial 2: Using Omegalib Event Services: Direct Integration (*Alessandro*)
+   * Tutorial 3: Using Omegalib Event Services Part 2: oinputserver (*Alessandro*)
+   * Tutorial 4: Graphics Intro Part 1: A Basic OpenGL Application (*Alessandro*)
  * Vtk integration: (*Alessandro*)
    * Support visualization of multiple entities.
    * Script loading in separate thread.
@@ -40,7 +46,7 @@ Main objectives for this release: support of multiple object manipulation throug
    * ovtk library core
    * Python script loader
    * Vtk viewer application
- * VRPN Integration (*Arthur*)
+ * VRPN Integration
    * Preliminary work
    * Data streamed from VICON tracker into mocap events
    * Set multiple objects in configuration file
