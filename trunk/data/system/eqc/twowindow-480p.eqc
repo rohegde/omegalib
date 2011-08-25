@@ -13,20 +13,22 @@ server
         appNode											
         {
             
-            pipe									#Bottom Window
+            pipe
             {
-                name "GPU 1"
                 window
                 {
-                    name     "window1"
-                    viewport [ 50 50 854 480 ]
-                    channel { name "channel2"  }
+                    name     "win0x0"
+                    viewport [ 0 0 427 480 ]
+                    channel { name "ch0x0"  }
                 }
+			}
+            pipe
+            {
                 window
                 {
-                    name     "window2"
-                    viewport [ 50 530 854 480 ]
-                    channel { name "channel1"  }
+                    name     "win1x0"
+                    viewport [ 427 0 427 480 ]
+                    channel { name "ch1x0"  }
                 }
             }
         }
@@ -36,13 +38,12 @@ server
 			name "observer0" 
 		}
 
-        # Layouts - one for each demo mode
         layout
         {
-            name "MultiView"
+            name "layout"
             view
             {
-                name "view3D"
+                name "main"
                 observer "observer0"
                 viewport [ 0 0 1 1 ]
             }
@@ -51,34 +52,30 @@ server
         # Canvas using all layouts
         canvas
         {
-            layout "MultiView"
-
+            layout "layout"
 			wall
 			{
-					bottom_left  [ -.7 -.8 0 ]
-					bottom_right [  .7 -.8 0 ]
-					top_left     [ -.7 .8 0 ]
+				bottom_left  [ -.7 -.4 0 ]
+				bottom_right [  .7 -.4 0 ]
+				top_left     [ -.7 .4 0 ]
 			}
             segment
             {
-                viewport [ 0 0 1 0.5 ]
-                channel "channel1"
+                viewport [ 0 0 0.5 1 ]
+                channel "ch0x0"
             }
             segment
             {
-                viewport [ 0 0.5 1 0.5 ]
-                channel "channel2"
+                viewport [ 0.5 0 0.5 1 ]
+                channel "ch1x0"
             }
         }
 
         # wall compound - need swap barrier
-        compound
-        {
-            compound
-            {
-                channel ( segment 0 layout "MultiView" view 0 )
-                channel ( segment 1 layout "MultiView" view 0 )
-            }
-        }
+		compound
+		{
+			channel ( segment 0 layout "layout" view 0 )
+			channel ( segment 1 layout "layout" view 0 )
+		}
     }
 }
