@@ -241,6 +241,12 @@ public:
 			}
 			return true;
 			break;
+		case Service::Generic:
+			// Converts id to char, appends to eventPacket
+			sprintf(floatChar,"%d",evt.getSourceId());
+			strcat( eventPacket, floatChar );
+			return true;
+			break;
 		default: break;
 		}
 		
@@ -502,7 +508,11 @@ void main(int argc, char** argv)
 
 	DataSource* dataSource = new FilesystemDataSource(OMEGA_DATA_PATH);
 
-	Config* cfg = new Config("oinputserver.cfg");
+	// Read config file name from command line or use default one.
+	const char* cfgName = "oinputserver.cfg";
+	if(argc == 2) cfgName = argv[1];
+
+	Config* cfg = new Config(cfgName);
 	SystemManager* sys = SystemManager::instance();
 
 	DataManager* dm = sys->getDataManager();

@@ -28,27 +28,21 @@
 
 using namespace omega;
 
-// A simple configuration, creating a Heartbeat service 
-// and setting it's rate to 1 event per second
-const char* configString = 
-"@config: { "
-" services: { "
-"  HeartbeatService: { "
-"   rate = 1.0;"
-"  };"
-" };"
-"};";
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
 	// Load a configuration using the config string specified before. 
 	// If we don't want to hardcode the configuration we can pass a the path to a file 
 	// containing the config instead.
-	Config cfg(configString);
+	Config cfg("system/local-netservice.cfg");
 
 	// Get the system manager instance.
 	SystemManager* sys = SystemManager::instance();
+
+	// Add a filesystem source pointing to the data path included 
+	// in the source omega distribution.
+	DataManager* dm = sys->getDataManager();
+	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	// Setup and initialize the system manager.
 	sys->setup(&cfg);
