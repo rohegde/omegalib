@@ -2,10 +2,127 @@
 
 = Introduction =
 
-Add your content here.
+Datagram Structure:
+'{Service Type}:{Event Type},{Source ID},{Param1},...,{ParamN} '
+
+Number of parameters depend on the service type. Note the trailing space at the end of the datagram. Source ID is a unique identifier for that touch, rigid body, controller, etc. Service and event types are described below.
+
+= Service Types =
+
+Each service type is defined by an enumeration. The types currently used by oinputserver are listed below. A full list can be found in Service.h.
+
+0: Pointer
+
+1: Mocap
+
+3: Controller
+
+----
+
+== Pointer Datagram ==
+
+There are three kinds of pointer datagrams: mouse, touch point, and touch gesture.
+
+=== <u> Mouse </u> ===
+'0:{Event ID},{Source ID},{X Position},{Y Position} '
 
 
-= Details =
+=== <u> Touch Point </u> ===
+'0:{Event ID},{Source ID},{X Position},{Y Position},{X Width},{Y Width} '
+
+=== <u> Touch Gestures </u> ===
+Touch gestures parameters depend on the event type. See Event ID Types below for a listing of all event types.
+
+==== Touch Down / Move / Up / Click / Move ====
+This applies for Click, DoubleClick, MoveRight, MoveUp, MoveLeft, and MoveDown.
+
+'0:{Event ID},{X Position},{Y Position} '
+
+==== SplitStart / SplitEnd ====
+Denotes the beginning or end of a two finger split/zoom gesture and lists the coordinates of each finger. X3 and Y3 are the midpoints of position 1 and 2.
+
+'0:{Event ID},{Source ID},{X3 Position},{Y3 Position},{X2 Position},{Y2 Position},{X1 Position},{Y1 Position} '
+
+==== Split ====
+A two finger split/zoom gesture. Lists the coordinates of each finger, delta distance, and delta ratio. X3 and Y3 are the midpoints of position 1 and 2.
+
+'0:{Event ID},{Source ID},{X3 Position},{Y3 Position},{X2 Position},{Y2 Position},{X1 Position},{Y1 Position},{Delta distance},{Delta ratio} '
+
+==== Rotate Start/End ====
+Denotes the start/end of a two finger rotation gesture. One finger (anchor) is stationary while the other rotates around it. The X,Y position is the center of rotation/anchor.
+
+'0:{Event ID},{X Position},{Y Position},{Anchor X},{Anchor Y},{Rotating X},{Rotating Y} '
+
+==== Rotate ====
+A two finger rotation gesture. One finger (anchor) is stationary while the other rotates around it. The X,Y position is the center of rotation/anchor. Angle is in radians.
+
+'0:{Event ID},{Source ID},{X Position},{Y Position},{Anchor X},{Anchor Y},{Rotating X},{Rotating Y},{Angle} '
+
+----
+
+== Mocap Datagram ==
+
+'1:{Source ID},{X Position},{Y Position},{Z Position},{X Rotation},{Y Rotation},{Z Rotation} '
+
+----
+
+== Controller Datagram ==
+
+Controller datagrams depend of the controller type: Xbox 360, PS3, Wiimote.
+
+'2:{Source ID} '
+
+----
+
+= Event ID Types =
+
+Each event type is defined by an enumeration. (See Event.h)
+
+0: Select
+
+1: Toggle
+
+2: ChangeValue
+
+3: Update
+
+4: Move
+
+5: Down
+
+6: Trace
+
+7: Untrace
+
+8: Click
+
+9: DoubleClick
+
+10: MoveLeft
+
+11: MoveRight
+
+12: MoveUp
+
+13: MoveDown
+
+14: Zoom
+
+15: SplitStart
+
+16: SplitEnd
+
+17: Split
+
+18: RotateStart
+
+19: RotateEnd
+
+20: Rotate
+
+21: Null
+
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
