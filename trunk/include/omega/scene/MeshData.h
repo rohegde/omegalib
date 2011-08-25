@@ -43,7 +43,7 @@ namespace scene
 	//! Used to store mesh data loaded from a file in a common format, before transfering it to vertex and index 
 	//! buffers and material specifications. Mesh readers either derive from this class, or have a method that returns
 	//! an instance of it.
-    class MeshData
+    class OUTILS_API MeshData
     {
     public:
 		int getNumVertices() { return vertices.size(); }

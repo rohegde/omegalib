@@ -39,12 +39,24 @@ using namespace omega::scene;
 using namespace omega::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+class EntityData
+{
+public:
+	EntityData():
+	  meshData(NULL) {}
+
+	String name;
+	String label;
+	MeshData* meshData;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 class Entity: public DynamicObject
 {
 public:
-	Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage);
+	Entity(EntityData* data, EngineClient* client);
 
-	const String& getName() { return myName; }
+	EntityData* getData() { return myData; }
 
 	void resetTransform();
 	bool isVisible() { return myVisible; }
@@ -57,13 +69,32 @@ public:
 	Texture* getLeftImage() { return myLeftImage; }
 
 private:
-	String myName;
+	EntityData* myData;
+	EngineClient* myClient;
+
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
 	BoundingSphere* mySelectionSphere;
 	Texture* myLeftImage;
 	Texture* myRightImage;
 	bool myVisible;
+};
+
+class MeshViewerClient;
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class MeshViewerServer: public ApplicationServer
+{
+public:
+	typedef Dictionary<String, EntityData*> EntityDictionary;
+public:
+	MeshViewerServer(Application* app): ApplicationServer(app) {}
+
+	virtual void initialize();
+	void createEntities(MeshViewerClient* client);
+
+private:
+	EntityDictionary myEntities;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,9 +109,10 @@ public:
 	virtual void initialize();
 	void initUI();
 
+	void addEntity(EntityData* ed);
+
 	virtual void handleEvent(const Event& evt);
     void draw( const DrawContext& context);
-
 
 	void handleUIEvent(const Event& evt);
 	void setVisibleEntity(int entityId);
@@ -109,6 +141,7 @@ private:
 class MeshViewerApplication: public Application
 {
 public:
+	virtual ApplicationServer* createServer() { return new MeshViewerServer(this); }
 	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
 };
 

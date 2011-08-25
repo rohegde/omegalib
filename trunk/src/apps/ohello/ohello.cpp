@@ -61,7 +61,7 @@ void HelloClient::draw(const DrawContext& context)
 		// Draw a rotating teapot.
 		glRotatef(10, 1, 0, 0);
 		glRotatef((float)context.frameNum * 0.1f, 0, 1, 0);
-		teapot(14, 0.1f, GL_FILL);
+		teapot(14, 0.3f, GL_FILL);
 	}
 }
 
