@@ -424,6 +424,10 @@ void NetService::parseDGram(int result)
 		Event* evt;
 		//printf("New Time %d \n", curTime );
 		switch(inputType){
+			case(Service::Generic): // Generic
+				evt = mysInstance->writeHead();
+				evt->reset(Event::Update, Service::Generic, (int)(params[0] + 0.5));
+				break;
 			case(Service::Mocap): // MoCap
 				evt = mysInstance->writeHead();
 				evt->reset(Event::Move, Service::Mocap, (int)(params[0] + 0.5));
