@@ -99,7 +99,18 @@ namespace omega
 		Rect globalViewport;
 		//IGLContextManager* glContext;
 		Eye eye;
+
+		bool isSceneActive(int id) const;
+		bool isOverlayActive(int id) const;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool DrawContext::isSceneActive(int id) const
+	{ return (((layer & 0x03) - 1) == id); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool DrawContext::isOverlayActive(int id) const
+	{ return (((layer >> 2) & 0x03) == id); }
 
 	class ApplicationServer;
 

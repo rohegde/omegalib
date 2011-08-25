@@ -47,8 +47,10 @@ int main(int argc, char** argv)
 	// containing the config instead.
 	Config cfg(configString);
 
-	// Create an initialize the system manager.
+	// Get the system manager instance.
 	SystemManager* sys = SystemManager::instance();
+
+	// Setup and initialize the system manager.
 	sys->setup(&cfg);
 	sys->initialize();
 
