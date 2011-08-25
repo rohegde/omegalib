@@ -25,16 +25,17 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "meshviewer.h"
-#include "omega/ImageUtils.h"
+//#include "omega/ImageUtils.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(const String& name, SceneManager* sm, Mesh* m, Texture* leftImage, Texture* rightImage):
-	myName(name),
-	myMesh(m),
-	myLeftImage(leftImage),
-	myRightImage(rightImage),
+Entity::Entity(EntityData* data, EngineClient* client):
+	myData(data),
+	myClient(client),
 	myVisible(false)
 {
+	myMesh = client->getMeshManager()->addMesh(data->name, data->meshData);
+	SceneManager* sm = client->getSceneManager();
+
 	if(myMesh != NULL)
 	{
 		mySelectionSphere = onew(BoundingSphere)();
@@ -70,9 +71,69 @@ void Entity::resetTransform()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerServer::initialize()
+{
+	ApplicationServer::initialize();
+
+	Config* cfg = getSystemManager()->getAppConfig();
+	if(cfg->exists("config/entities"))
+	{
+		Setting& entities = cfg->lookup("config/entities");
+		for(int i = 0; i < entities.getLength(); i++)
+		{
+			Setting& entitySetting = entities[i];
+
+			EntityData* ed = new EntityData();
+
+			ed->name = entitySetting.getName();
+			ed->label = (String)entitySetting["label"];
+
+			if(entitySetting.exists("mesh"))
+			{
+				String meshFilename = entitySetting["mesh"];
+
+				PlyDataReader* reader = new PlyDataReader();
+				reader->readPlyFile(meshFilename);
+				reader->scale(0.8f);
+
+				ed->meshData = reader;
+			}
+
+			myEntities[ed->name] = ed;
+
+			//Texture* leftImage = NULL;
+			//Texture* rightImage = NULL;
+			//if(entitySetting.exists("leftImage") && entitySetting.exists("rightImage"))
+			//{
+			//	String leftImageFilename = entitySetting["leftImage"];
+			//	String rightImageFilename = entitySetting["rightImage"];
+
+			//	leftImage = ImageUtils::createTexture(getTextureManager(), name, leftImageFilename);
+			//	rightImage = ImageUtils::createTexture(getTextureManager(), name, rightImageFilename);
+			//}
+
+			//Entity* e = new Entity(label, getSceneManager(), mesh, leftImage, rightImage);
+			//myEntities.push_back(e);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerServer::createEntities(MeshViewerClient* client)
+{
+	foreach(EntityDictionary::Item i, myEntities)
+	{
+		client->addEntity(i.getValue());
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
 {
 	EngineClient::initialize();
+
+	MeshViewerServer* srv = (MeshViewerServer*)getServer();
+	srv->createEntities(this);
 
 	Config* cfg = getSystemManager()->getAppConfig();
 
@@ -81,41 +142,6 @@ void MeshViewerClient::initialize()
 	{
 		Setting& fontSetting = cfg->lookup("config/defaultFont");
 		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
-	}
-
-	// Load meshes specified in config file.
-	MeshManager* mm = getMeshManager();
-	if(cfg->exists("config/entities"))
-	{
-		Setting& meshes = cfg->lookup("config/entities");
-		for(int i = 0; i < meshes.getLength(); i++)
-		{
-			Setting& entitySetting = meshes[i];
-			String name = entitySetting.getName();
-			String label = entitySetting["label"];
-
-			Mesh* mesh = NULL;
-			if(entitySetting.exists("mesh"))
-			{
-				String meshFilename = entitySetting["mesh"];
-				mm->loadMesh(name, meshFilename, MeshManager::MeshFormatPly, 0.8f);
-				mesh = mm->getMesh(name);
-			}
-
-			Texture* leftImage = NULL;
-			Texture* rightImage = NULL;
-			if(entitySetting.exists("leftImage") && entitySetting.exists("rightImage"))
-			{
-				String leftImageFilename = entitySetting["leftImage"];
-				String rightImageFilename = entitySetting["rightImage"];
-
-				leftImage = ImageUtils::createTexture(getTextureManager(), name, leftImageFilename);
-				rightImage = ImageUtils::createTexture(getTextureManager(), name, rightImageFilename);
-			}
-
-			Entity* e = new Entity(label, getSceneManager(), mesh, leftImage, rightImage);
-			myEntities.push_back(e);
-		}
 	}
 
 	// Create and initialize meshviewer UI
@@ -151,6 +177,13 @@ void MeshViewerClient::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewerClient::addEntity(EntityData* ed)
+{
+	Entity* e = new Entity(ed, this);
+	myEntities.push_back(e);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initUI()
 {
 	UIManager* ui = getUIManager();
@@ -182,7 +215,7 @@ void MeshViewerClient::initUI()
 	for(int i = 0; i < myEntities.size(); i++)
 	{
 		Entity* e = myEntities[i];
-		Button* btn = wf->createButton(e->getName(), entityButtons);
+		Button* btn = wf->createButton(e->getData()->name, entityButtons);
 		myEntityButtons.push_back(btn);
 	}
 
@@ -299,16 +332,16 @@ void MeshViewerClient::setVisibleEntity(int entityId)
 		myCurrentInteractor->setSceneNode(e->getSceneNode());
 	}
 
-	if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
-	{
-		setTextureBackgroundEnabled( true );
-		setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
-		setTextureBackground( DrawContext::EyeRight , e->getRightImage());
-	}
-	else
-	{
-		setTextureBackgroundEnabled( false );
-	}
+	//if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
+	//{
+	//	setTextureBackgroundEnabled( true );
+	//	setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
+	//	setTextureBackground( DrawContext::EyeRight , e->getRightImage());
+	//}
+	//else
+	//{
+	//	setTextureBackgroundEnabled( false );
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

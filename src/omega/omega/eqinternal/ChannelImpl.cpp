@@ -203,31 +203,31 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
 	}
 }
 
-namespace
-{
-#define HEIGHT 12
-#define SPACE  2
-
-struct EntityData
-{
-    EntityData() : yPos( 0 ), doubleHeight( false ) {}
-    uint32_t yPos;
-    bool doubleHeight;
-    std::string name;
-};
-
-struct IdleData
-{
-    IdleData() : idle( 0 ), nIdle( 0 ) {}
-    uint32_t idle;
-    uint32_t nIdle;
-    std::string name;
-};
-
-static bool _compare( const Statistic& stat1, const Statistic& stat2 )
-{ return stat1.type < stat2.type; }
-
-}
+//namespace
+//{
+//#define HEIGHT 12
+//#define SPACE  2
+//
+//struct EntityData
+//{
+//    EntityData() : yPos( 0 ), doubleHeight( false ) {}
+//    uint32_t yPos;
+//    bool doubleHeight;
+//    std::string name;
+//};
+//
+//struct IdleData
+//{
+//    IdleData() : idle( 0 ), nIdle( 0 ) {}
+//    uint32_t idle;
+//    uint32_t nIdle;
+//    std::string name;
+//};
+//
+//static bool _compare( const Statistic& stat1, const Statistic& stat2 )
+//{ return stat1.type < stat2.type; }
+//
+//}
 
 //void ChannelImpl::drawStatistics()
 //{

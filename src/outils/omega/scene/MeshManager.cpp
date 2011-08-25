@@ -46,19 +46,6 @@ MeshManager::~MeshManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshManager::loadMesh(omega::String name, omega::String filename, MeshFormat format, float rescale)
-{
-	if(format == MeshManager::MeshFormatPly)
-	{
-		PlyDataReader* reader = new PlyDataReader();
-		reader->readPlyFile(filename);
-		if(rescale != 0.0f)	reader->scale(rescale);
-
-		addMesh(name, reader);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 Mesh* MeshManager::getMesh(omega::String name)
 {
 	return myMeshes[name];
@@ -70,10 +57,11 @@ void MeshManager::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshManager::addMesh(omega::String name, MeshData* data)
+Mesh* MeshManager::addMesh(omega::String name, MeshData* data)
 {
 	Mesh* mesh = new Mesh(this);
 	myMeshes[name] = mesh;
 	mesh->setData(data);
 	mesh->update();
+	return mesh;
 }

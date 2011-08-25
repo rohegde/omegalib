@@ -45,7 +45,7 @@ namespace omega
 namespace scene 
 {
     /*  Holds the flat data and offers routines to read, scale and sort it.  */
-    class PlyDataReader: public MeshData
+    class OUTILS_API PlyDataReader: public MeshData
     {
     public:
         PlyDataReader();

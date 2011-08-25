@@ -18,7 +18,7 @@ server
                 window
                 {
                     name     "win0x0"
-                    viewport [ 0 0 427 480 ]
+                    viewport [ 50 50 427 480 ]
                     channel { name "ch0x0"  }
                 }
 			}
@@ -27,7 +27,7 @@ server
                 window
                 {
                     name     "win1x0"
-                    viewport [ 427 0 427 480 ]
+                    viewport [ 477 50 427 480 ]
                     channel { name "ch1x0"  }
                 }
             }
