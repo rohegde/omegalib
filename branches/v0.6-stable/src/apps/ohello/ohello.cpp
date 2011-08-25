@@ -47,19 +47,22 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloClient::draw(const DrawContext& context)
 {
-	// Enable depth testing and lighting.
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
+	if(context.isSceneActive(0))
+	{
+		// Enable depth testing and lighting.
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LIGHTING);
 	
-	// Setup light.
-	glEnable(GL_LIGHT0);
-	glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
-	glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).data());
+		// Setup light.
+		glEnable(GL_LIGHT0);
+		glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
+		glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).data());
 
-	// Draw a rotating teapot.
-	glRotatef(10, 1, 0, 0);
-	glRotatef((float)context.frameNum * 0.1f, 0, 1, 0);
-	teapot(14, 0.1f, GL_FILL);
+		// Draw a rotating teapot.
+		glRotatef(10, 1, 0, 0);
+		glRotatef((float)context.frameNum * 0.1f, 0, 1, 0);
+		teapot(14, 0.1f, GL_FILL);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
