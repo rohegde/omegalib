@@ -75,6 +75,7 @@ public:
 	// Allocator function
 	static DirectXInputService* New() { return new DirectXInputService(); }
 
+	enum ControllerType { Xbox360, PS3, Wiimote, Wii_Nunchuck };
 public:
 	OMEGA_API virtual void initialize();
 	virtual void poll();
@@ -84,7 +85,7 @@ public:
 private:
 	static DirectXInputService* mysInstance;
 
-	Wiimote remote;
+	wiimote remote;
 	
 
 };
