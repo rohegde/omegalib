@@ -70,7 +70,60 @@ A two finger rotation gesture. One finger (anchor) is stationary while the other
 
 Controller datagrams depend of the controller type: Xbox 360, PS3, Wiimote.
 
-'2:{Source ID} '
+Controller Type ID:
+
+0: Xbox 360
+
+1: PS3 Sixaxis
+
+2: Wiimote
+
+
+=== Xbox 360 Datagram ===
+
+'3:{Source ID},0,{Left analog left/right},{Left analog up/down},{Right analog left/right},{Right analog up/down},{Triggers},A,B,X,Y,LB,RB,Back,Start,0,0,0,0,0,DPAD,0,0 '
+
+Analog stick values range from -1000 to 1000 where negative is left or up. Thus a value of 1000 would represent an analog stick moved fully to the right or down.
+
+The trigger value ranges from -1000 to 1000. In this case, pressing the left trigger will set the value from 0 to 1000, the right trigger will set the value from 0 to -1000. Not pressing the triggers or fully pressing down on both will result in a value of 0. 
+
+The button fields (A,B,X,Y,LB,RB,Back,Start) will either be 0 (not pressed) or 1 (pressed).
+
+The DPAD values are as follows:
+ * Negative: Not pressed
+ * 0: Up
+ * 4500: Up-Right
+ * 9000: Right
+ * 13500: Right-Down
+ * 18000: Down
+ * 22500: Left-Down
+ * 27000: Left
+ * 31500: Up-Left
+
+=== PS3 Sixaxis Datagram ===
+
+'3:{Source ID},1,{Left analog left/right},{Left analog up/down},{Right analog left/right},{Right analog up/down},{Triggers},Cross,Circle,Square,Triangle,L1,R1,Select,Start,L3,R3,PS Button,Up,Down,DPAD,Roll,Pitch '
+
+Analog stick values range from -1000 to 1000 where negative is left or up. Thus a value of 1000 would represent an analog stick moved fully to the right or down.
+
+The trigger value ranges from -1000 to 1000. In this case, pressing the left trigger will set the value from 0 to 1000, the right trigger will set the value from 0 to -1000. Not pressing the triggers or fully pressing down on both will result in a value of 0. 
+
+The button fields (Cross,Circle,Square,Triangle,L1,R1,Select,Start,L3,R3,PS Button,Up,Down) will either be 0 (not pressed) or 1 (pressed). L3 and R3 are the analog stick buttons.
+
+The DPAD values are as follows. *Note:* This is different from the Xbox:
+ * Negative: Not pressed
+ * 0: Up
+ * 4500: *No data*
+ * 9000: Down
+ * 13500: Left-Down
+ * 18000: Left
+ * 22500: *No data*
+ * 27000: Right
+ * 31500: Up-Right
+
+The Roll value range from -1000 to 1000. Where positive is tilting to left.
+
+The Roll value range from -1000 to 1000. Where positive is tilting to up toward the player.
 
 ----
 
@@ -121,10 +174,3 @@ Each event type is defined by an enumeration. (See Event.h)
 20: Rotate
 
 21: Null
-
-
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
