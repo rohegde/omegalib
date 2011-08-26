@@ -78,6 +78,8 @@ Controller Type ID:
 
 2: Wiimote
 
+3: Wii Nunchuck
+
 
 === Xbox 360 Datagram ===
 
@@ -124,6 +126,37 @@ The DPAD values are as follows. *Note:* This is different from the Xbox:
 The Roll value range from -1000 to 1000. Where positive is tilting to left.
 
 The Roll value range from -1000 to 1000. Where positive is tilting to up toward the player.
+
+=== Wiimote Datagram ===
+
+Wiimote integration is provided by WiiYourself! by gl.tter
+
+'3:{Source ID},2,Acceleration X,Acceleration Y,Acceleration Z,A,B,Plus,Home,Minus,One,Two,Up,Down,Left,Right,Extension,0,0,Yaw,Pitch,Roll,0 '
+
+Acceleration values are integers where 1000 is the force of gravity. X represents motion to the left and right (right+). Y represents motion forward and back (forward+). Z represents motion up and down (down+). Thus an acceleration value of 0,0,1000 represents a Wiimote on a flat surface with the buttons facing up.
+
+The button fields (A,B,Plus,Home,Minus,One,Two,Up,Down,Left,Right) will either be 0 (not pressed) or 1 (pressed).
+
+Extension represents what is currently plugged into the Wiimote extension slot:
+ * 0: Nothing
+ * 1: Nunchuk
+ * 2: Classic Controller *(Not Currently Supported)*
+ * 3: Guitar Hero 3/World Tour Guitar *(Not Currently Supported)*
+ * 4: World Tour Drumset *(Not Currently Supported)*
+ * 5: Balance Board *(Not Currently Supported)*
+ * 6: Wii MotionPlus
+
+Pitch, Roll, and Yaw represent the acceleration data from the Wii MotionPlus extension.  *Further documentation pending*
+
+=== Wii Nunchuck Datagram ===
+
+'3:{Source ID},3,Analog X,Analog Y,Acceleration X,Acceleration Y,Acceleration Z,C,Z,0,0,0,0,0,0,0,0,0,0,0,0,0,0 '
+
+Analog stick values range from -1000 to 1000 where negative is left or up. Thus a value of 1000 would represent an analog stick moved fully to the right or down.
+
+Acceleration values are integers where 1000 is the force of gravity. X represents motion to the left and right (right+). Y represents motion forward and back (forward+). Z represents motion up and down (down+). Thus an acceleration value of 0,0,1000 represents a Wiimote on a flat surface with the buttons facing up.
+
+The button fields (C,Z) will either be 0 (not pressed) or 1 (pressed).
 
 ----
 
