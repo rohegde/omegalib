@@ -221,10 +221,14 @@ if(WIN32)
 		set( srcs	 ${srcs} omega/DirectXInputService.cpp
 					 ${srcs} omega/Wiimote.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
-								${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
+								${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h 
+								${OmegaLib_SOURCE_DIR}/include/omega/wiimote_common.h 
+								${OmegaLib_SOURCE_DIR}/include/omega/wiimote_state.h )
 		#add_definitions( -DOMEGA_USE_DIRECTINPUT)
 		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
-							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h )
+							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h 
+							 ${OmegaLib_SOURCE_DIR}/include/omega/wiimote_common.h 
+							 ${OmegaLib_SOURCE_DIR}/include/omega/wiimote_state.h )
 	endif(OMEGA_USE_DIRECTINPUT)
 endif(WIN32)
 	
