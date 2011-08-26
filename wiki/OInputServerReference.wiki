@@ -104,6 +104,8 @@ The DPAD values are as follows:
 
 === PS3 Sixaxis Datagram ===
 
+*Note:* PS3 controller support requires MotioninJoy.
+
 '3:{Source ID},1,{Left analog left/right},{Left analog up/down},{Right analog left/right},{Right analog up/down},{Triggers},Cross,Circle,Square,Triangle,L1,R1,Select,Start,L3,R3,PS Button,Up,Down,DPAD,Roll,Pitch '
 
 Analog stick values range from -1000 to 1000 where negative is left or up. Thus a value of 1000 would represent an analog stick moved fully to the right or down.
