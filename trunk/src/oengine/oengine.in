@@ -1,0 +1,79 @@
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+#ifndef __OENGINE_H__
+#define __OENGINE_H__
+
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/oenginebase.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/FontManager.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ImageUtils.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/EngineClient.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Renderer.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Actor.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/BoundingSphere.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Camera.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/DefaultMouseInteractor.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Mesh.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/MeshData.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/MeshManager.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Node.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Effect.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/EffectManager.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Renderable.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Teapot.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/SceneManager.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/SceneQuery.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/SceneNode.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/PlyDataReader.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ply.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ReferenceBox.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/RenderToTexture.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/RenderPass.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/DefaultRenderPass.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/OverlayRenderPass.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/LightingPass.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/Light.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/AbstractButton.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/Button.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/Container.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/Image.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/Label.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/DefaultSkin.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/Slider.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/UiManager.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/Widget.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/Model.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/ViewManager.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/View.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/ViewClient.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/Controller.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/DynamicController.h"
+		#include "${CMAKE_SOURCE_DIR}/include/oengine/mvc/UiDynamicController.h"
+
+#endif

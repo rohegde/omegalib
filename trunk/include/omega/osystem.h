@@ -56,19 +56,11 @@
 		#else
 		   #define OMEGA_API    __declspec(dllimport)
 		#endif
-		// Omega DLL import / export macros
-		#ifdef OUTILS_EXPORTING
-		   #define OUTILS_API    __declspec(dllexport)
-		#else
-		   #define OUTILS_API    __declspec(dllimport)
-		#endif
 	#else
 		#define OMEGA_API
-		#define OUTILS_API
 	#endif
 #else
 	#define OMEGA_API
-	#define OUTILS_API
 #endif
 
 #include "otypes.h"

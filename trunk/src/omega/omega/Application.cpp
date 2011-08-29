@@ -59,8 +59,16 @@ Layer::Enum Layer::fromString(const String& str)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ApplicationServer::addClient(ApplicationClient* cli)
+{
+	myClients.push_back(cli);
+	cli->myId = myClientId++;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server) 
 {
+	myServer->addClient(this);
 #ifdef OMEGA_USE_DISPLAY
 	myGpu = onew(GpuManager)();
 #else
