@@ -28,15 +28,11 @@
 #define __MESHVIEWER_H__
 
 #include <omega>
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/Texture.h"
-#include "omega/ObserverUpdateService.h"
+#include <oengine>
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
+using namespace oengine;
+using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class EntityData
@@ -131,6 +127,8 @@ private:
 
 	// Interactors.
 	Actor* myCurrentInteractor;
+
+	Effect* myColorIdEffect;
     
     bool myShowUI;
    	bool autoRotate;

@@ -45,3 +45,29 @@ const Color Color::Blue = Color(0.0f, 0.0f, 1.0f);
 const Color Color::Navy = Color(0.0f, 0.0f, 0.5f);
 const Color Color::Fuchsia = Color(1.0f, 0.0f, 1.0f);
 const Color Color::Purple = Color(0.5f, 0.0f, 0.5f);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const Color& Color::getColorByIndex(int index)
+{
+	switch(index)
+	{
+	case 0:	return Red;
+	case 1:	return Orange;
+	case 2:	return Lime;
+	case 3: return Teal;
+	case 4:	return Olive;
+	case 5: return Purple;
+	case 6:	return Yellow;
+	case 7:	return Green;
+	case 8:	return Maroon;
+	case 9:	return Aqua;
+	case 10: return Blue;
+	case 11: return Fuchsia;
+	case 12: return Navy;
+	case 13: return White;
+	case 14: return Silver;
+	case 15: return Gray;
+	case 16: return Black;
+	}
+	return Black;
+}

@@ -41,6 +41,7 @@ namespace omega
 		const float* data() const { return (const float*)myData; }
 
 	public:
+		static const Color& getColorByIndex(int index);
 		static const Color White;
 		static const Color Black;
 		static const Color Orange;

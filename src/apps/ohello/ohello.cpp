@@ -58,9 +58,12 @@ void HelloClient::draw(const DrawContext& context)
 		glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
 		glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(-1.0, 1.0, 0.0).data());
 
+		// Color using the client id.
+		glColor3fv(Color::getColorByIndex(getId()).data());
+
 		// Draw a rotating teapot.
 		glRotatef(10, 1, 0, 0);
-		glRotatef((float)context.frameNum * 0.1f, 0, 1, 0);
+		glRotatef((float)context.frameNum * 0.2f, 0, 1, 0);
 		teapot(14, 0.3f, GL_FILL);
 	}
 }

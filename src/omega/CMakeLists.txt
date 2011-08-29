@@ -52,6 +52,10 @@ SET( srcs
 		omega/FileDataStream.cpp
 		omega/FilesystemDataSource.cpp
 		omega/TypeInfo.cpp
+		
+		#omega::script
+		omega/script/ScriptInterpreter.cpp
+		omega/script/ScriptModule.cpp
         )
 		
 ###################################################################################################
@@ -83,10 +87,26 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/math/Plane.h
         ${OmegaLib_SOURCE_DIR}/include/omega/math/AlignedBox.h
         ${OmegaLib_SOURCE_DIR}/include/omega/math/PlaneBoundedVolume.h
+		
+		#omega::script
+		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptModule.h
         ) 
         
 ###################################################################################################
 # Enable / disable specific modules within omegalib
+if(OMEGA_USE_PYTHON)
+	set( headers ${headers}
+		omega/script/PythonInterpreterWrapper.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonInterpreter.h
+		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonModule.h)
+
+			
+	set( srcs ${srcs}
+		omega/script/PythonInterpreter.cpp
+		omega/script/PythonModule.cpp)
+endif(OMEGA_USE_PYTHON)
+
 if(OMEGA_USE_DISPLAY)
 	#add_definitions( -DOMEGA_USE_DISPLAY)
 	set( srcs ${srcs}
@@ -256,10 +276,9 @@ endif(WIN32)
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
-source_group(omega::ui REGULAR_EXPRESSION omega/ui/)		
-source_group(omega::scene REGULAR_EXPRESSION omega/scene/)		
 source_group(omega::math REGULAR_EXPRESSION omega/math)		
 source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
+source_group(omega::script REGULAR_EXPRESSION omega/script/)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers

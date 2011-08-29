@@ -132,6 +132,10 @@ void MeshViewerClient::initialize()
 {
 	EngineClient::initialize();
 
+	myColorIdEffect = new Effect(getEffectManager());
+	myColorIdEffect->setDiffuseColor(Color::getColorByIndex(getId()));
+	myColorIdEffect->setForcedDiffuseColor(true);
+
 	MeshViewerServer* srv = (MeshViewerServer*)getServer();
 	srv->createEntities(this);
 
@@ -146,6 +150,33 @@ void MeshViewerClient::initialize()
 
 	// Create and initialize meshviewer UI
 	initUI();
+
+	getSceneManager()->setAmbientLightColor(Color::Black);
+
+	Light* light = getSceneManager()->getLight(0);
+	light->setEnabled(true);
+	light->setColor(Color(0.5f, 0.5f, 0.5f));
+	light->setPosition(Vector3f(0, 3, 3));
+
+	light = getSceneManager()->getLight(1);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(-3, 0, 0));
+
+	light = getSceneManager()->getLight(2);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(3, 0, 0));
+
+	light = getSceneManager()->getLight(3);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.3f, 0.35f));
+	light->setPosition(Vector3f(0, -3, 0));
+
+	light = getSceneManager()->getLight(4);
+	light->setEnabled(true);
+	light->setColor(Color(0.35f, 0.3f, 0.3f));
+	light->setPosition(Vector3f(0, 0, -3));
 
 	// Create a reference box around the scene.
 	if(cfg->exists("config/referenceBox"))
@@ -180,13 +211,14 @@ void MeshViewerClient::initialize()
 void MeshViewerClient::addEntity(EntityData* ed)
 {
 	Entity* e = new Entity(ed, this);
+	//e->getMesh()->setEffect(myColorIdEffect);
 	myEntities.push_back(e);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initUI()
 {
-	UIManager* ui = getUIManager();
+	UiManager* ui = getUiManager();
 	ui->setUIEventHandler(this);
 
 	//! Load and set default font.
@@ -227,33 +259,6 @@ void MeshViewerClient::initUI()
 		UserManagerPanel* ump = new UserManagerPanel(ui);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
-
-	getSceneManager()->setAmbientLightColor(Color::Black);
-
-	Light* light = getSceneManager()->getLight(0);
-	light->setEnabled(true);
-	light->setColor(Color(0.5f, 0.5f, 0.5f));
-	light->setPosition(Vector3f(0, 3, 3));
-
-	light = getSceneManager()->getLight(1);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(-3, 0, 0));
-
-	light = getSceneManager()->getLight(2);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(3, 0, 0));
-
-	light = getSceneManager()->getLight(3);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.3f, 0.35f));
-	light->setPosition(Vector3f(0, -3, 0));
-
-	light = getSceneManager()->getLight(4);
-	light->setEnabled(true);
-	light->setColor(Color(0.35f, 0.3f, 0.3f));
-	light->setPosition(Vector3f(0, 0, -3));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,8 +267,11 @@ void MeshViewerClient::draw( const DrawContext& context)
     DrawContext copyContext = context;
     if( !myShowUI )copyContext.layer = Layer::Scene0;
     
+	// Color using the client id.
+	glColor3fv(Color::getColorByIndex(getId()).data());
+
+
     EngineClient::draw( copyContext );
-    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
