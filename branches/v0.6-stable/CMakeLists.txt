@@ -29,6 +29,8 @@ cmake_minimum_required(VERSION 2.8.1)
 
 project(OmegaLib)
 
+include(CPack)
+
 if(COMMAND cmake_policy)
       cmake_policy(SET CMP0003 NEW)
       #cmake_policy(SET CMP0008 NEW)
