@@ -24,49 +24,56 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include <omega.h>
+#ifndef __OENGINE_H__
+#define __OENGINE_H__
 
-using namespace omega;
+#include "oengine/oenginebase.h"
+#include "oengine/FontManager.h"
+#include "oengine/ImageUtils.h"
+#include "oengine/EngineClient.h"
+#include "oengine/Renderer.h"
+#include "oengine/Actor.h"
+#include "oengine/BoundingSphere.h"
+#include "oengine/Camera.h"
+#include "oengine/DefaultMouseInteractor.h"
+#include "oengine/DefaultTwoHandsInteractor.h"
+#include "oengine/Mesh.h"
+#include "oengine/MeshData.h"
+#include "oengine/MeshManager.h"
+#include "oengine/Node.h"
+#include "oengine/Effect.h"
+#include "oengine/EffectManager.h"
+#include "oengine/Renderable.h"
+#include "oengine/Teapot.h"
+#include "oengine/SceneManager.h"
+#include "oengine/SceneQuery.h"
+#include "oengine/SceneNode.h"
+#include "oengine/PlyDataReader.h"
+#include "oengine/ply.h"
+#include "oengine/ReferenceBox.h"
+#include "oengine/RenderToTexture.h"
+#include "oengine/RenderPass.h"
+#include "oengine/DefaultRenderPass.h"
+#include "oengine/OverlayRenderPass.h"
+#include "oengine/LightingPass.h"
+#include "oengine/Light.h"
+#include "oengine/ui/AbstractButton.h"
+#include "oengine/ui/Button.h"
+#include "oengine/ui/Container.h"
+#include "oengine/ui/Image.h"
+#include "oengine/ui/Label.h"
+#include "oengine/ui/DefaultSkin.h"
+#include "oengine/ui/Slider.h"
+#include "oengine/ui/UiManager.h"
+#include "oengine/ui/Widget.h"
+#include "oengine/ui/WidgetFactory.h"
+#include "oengine/ui/UserManagerPanel.h"
+#include "oengine/mvc/Model.h"
+#include "oengine/mvc/ViewManager.h"
+#include "oengine/mvc/View.h"
+#include "oengine/mvc/ViewClient.h"
+#include "oengine/mvc/Controller.h"
+#include "oengine/mvc/DynamicController.h"
+#include "oengine/mvc/UiDynamicController.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int main(int argc, char** argv)
-{
-	// Load a configuration using the config string specified before. 
-	// If we don't want to hardcode the configuration we can pass a the path to a file 
-	// containing the config instead.
-	Config cfg("system/local-netservice.cfg");
-
-	// Get the system manager instance.
-	SystemManager* sys = SystemManager::instance();
-
-	// Add a filesystem source pointing to the data path included 
-	// in the source omega distribution.
-	DataManager* dm = sys->getDataManager();
-	dm->addSource(new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	// Setup and initialize the system manager.
-	sys->setup(&cfg);
-	sys->initialize();
-
-	// Start services and begin listening to events.
-	ServiceManager* sm = sys->getServiceManager();
-	sm->start();
-
-	while(true)
-	{
-		// Poll services for new events.
-		sm->poll(); 
-
-		// Get available events
-		Event evts[OMEGA_MAX_EVENTS];
-		int av = sm->getEvents(evts, ServiceManager::MaxEvents);
-		for(int evtNum = 0; evtNum < av; evtNum++)
-		{
-			ofmsg("Event received: timestamp %1%", %evts[evtNum].getTimestamp());
-		}
-	}
-	
-	sys->cleanup();
-}
-
-
+#endif
