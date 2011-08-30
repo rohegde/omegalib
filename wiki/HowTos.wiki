@@ -12,6 +12,6 @@ This error is due to some incorrect dependencies in the equalizer project, and v
 
 === "When enabling DirectInput support, the build fails because `hidsdi.h` is not found" ===
 For DirectInput to work, you have to make sure the Visual Studio compiler searches for DirectInput headers from the windows DDK.
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/DirectInputConfig.png" width="400"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/DirectInputConfig.png" width="500"/></p><p align="middle">
 _^Make sure the WinDDK include directory is the first one in the include directories section under Project Options >> Projects and Solutions >> VC++ Directories^_
 </p>
