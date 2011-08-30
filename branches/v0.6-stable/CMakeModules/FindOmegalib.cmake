@@ -63,8 +63,8 @@ if(OMEGA_BINARY_DIR)
 		find_library(OUTILS_LIB_RELEASE NAMES omega PATHS ${OMEGA_BIN_DIR})
 	endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
-	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE})
-	set(OUTILS_LIB debug ${OUTILS_LIB_DEBUG} optimized ${OUTILS_LIB_RELEASE})
+	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OMEGA_LIB_RELEASE} ${OPENGL_LIBRARY})
+	set(OUTILS_LIB debug ${OUTILS_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OUTILS_LIB_RELEASE} ${OPENGL_LIBRARY})
 
 	###################################################################################################
 	# Visual studio specific options.

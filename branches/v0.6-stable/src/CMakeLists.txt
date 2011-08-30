@@ -80,7 +80,7 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 			${EQUALIZER_BINARY_DIR}/libs/collage/Debug/Collage.lib
 			${EQUALIZER_BINARY_DIR}/libs/client/Debug/Equalizer.lib)
 		set(EQUALIZER_CLIENT_LIBS_RELEASE 
-			${EQUALIZER_BINARY_DIR}/libs/collage/Release/Collage.libb
+			${EQUALIZER_BINARY_DIR}/libs/collage/Release/Collage.lib
 			${EQUALIZER_BINARY_DIR}/libs/client/Release/Equalizer.lib)
 	else(WIN32)
 		set(EQUALIZER_CLIENT_LIBS_DEBUG 
@@ -88,6 +88,7 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 			${EQUALIZER_BINARY_DIR}/libs/client/libEqualizer.so)
 		set(EQUALIZER_CLIENT_LIBS_RELEASE ${EQUALIZER_CLIENT_LIBS_DEBUG})
 	endif(WIN32)
+	set(EQUALIZER_LIBS debug ${EQUALIZER_CLIENT_LIBS_DEBUG} optimized ${EQUALIZER_CLIENT_LIBS_RELEASE})
 	include_directories(${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build/include)
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
@@ -113,15 +114,20 @@ if(WIN32)
 	include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
 endif(WIN32)
 
+if(OMEGA_USE_DISPLAY)
+	add_subdirectory(3rdparty/glew)
+	if(OMEGA_BUILD_APPS)
+		add_subdirectory(apps/ohello)
+	endif(OMEGA_BUILD_APPS)
+endif(OMEGA_USE_DISPLAY)
+
 # Add some libraries used for display support.
 if(OMEGA_BUILD_ENGINE)
 	add_subdirectory(3rdparty/FreeImage)
 	add_subdirectory(3rdparty/freetype)
 	add_subdirectory(3rdparty/ftgl)
-	add_subdirectory(3rdparty/glew)
 	add_subdirectory(oengine)
 	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/ohello)
 		add_subdirectory(apps/mocalib)
 		add_subdirectory(apps/multipleKinectDemo)
 		add_subdirectory(apps/meshviewer)

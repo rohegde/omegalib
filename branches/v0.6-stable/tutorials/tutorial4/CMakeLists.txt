@@ -24,5 +24,14 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-set(OMEGA_SOURCE_DIR ${CMAKE_SOURCE_DIR})
-set(OPENGL_LIBRARY ${OPENGL_LIBRARY})
+cmake_minimum_required(VERSION 2.8.1) 
+project(Tutorial4)
+
+include(${CMAKE_SOURCE_DIR}/../../CMakeModules/FindOmegalib.cmake)
+
+include_directories(${OMEGA_INCLUDE_DIRS})
+add_executable(simplegl simplegl.cpp)
+target_link_libraries(simplegl ${OMEGA_LIB})
+
+
+
