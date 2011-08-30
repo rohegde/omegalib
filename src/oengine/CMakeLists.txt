@@ -125,7 +125,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Label.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/DefaultSkin.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Slider.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UiManager.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UIManager.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Widget.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h
