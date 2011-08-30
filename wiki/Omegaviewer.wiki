@@ -1,0 +1,16 @@
+#summary Developement proposal and design for omegaviewer
+This document contains the omegaviewer application concept, timeline and developement notes.
+
+= Omegaviewer: Meshviewer on steroids =
+Omegaviewer will use meshviewer as a starting point but allow users to interact with the applications in a more advanced way
+  * The application will support free viewpoint definition and navigation using controllers
+  * The application will allow users to interact with objects through a tablet interface
+  
+== Tablet interaction ==
+The tablet will offer a dynamic, ad hoc UI that will depend on the currently active object. Different object will offer different customization / interaction options.
+
+The tablet can also be used to define the object transformation though gestures:
+ * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
+ * two finger pushing  in the z direction *with respect to the user viewpoint*
+ * rotation (?)
+ * pinch zoom to scale the object.

@@ -1,0 +1,24 @@
+#summary List of steps to create a binary distribution of omegalib
+This is the current way of creating an omegalib distribution package. Hopefully will become obsolete in the future when we'll start using CPack.
+This document is mostly for internal use. 
+
+= How to Package omegalib =
+  * create folder with version name - config - os
+    * config can be
+      * `zero` for versions with just netservice
+	  * `lite` for versions with omega only
+	  * `` (nothing) for versions with omega and oengine
+	  * `full` for versions with all the integration libraries enabled
+  * copy UseOmegalib.cmake from binary distribution to package root dir.
+  * copy include dir from binary distribution
+  * copy bin dir from binary distribution
+  * cleanup bin dir
+    * in debug, delete *.ilk
+  * copy lib dir from binary distribution
+  * svn export include dir from source distribution
+  * svn export data dir from source distribution
+  * cleanup data dir
+    * for lite builds, just keep system
+	* for normal builds keep everything except for osg, vtk, ui
+  * svn export CMakeModules
+  * svn export tutorials
