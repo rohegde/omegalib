@@ -118,9 +118,13 @@ namespace omega
 	class OMEGA_API ApplicationClient: public DynamicObject, public IEventListener
 	{
 	friend class DisplaySystem;
+	friend class ApplicationServer;
 	public:
 		ApplicationClient(ApplicationServer* app);
 		virtual ~ApplicationClient(); 
+
+		//! Returns a numeric identifier for this client (relative to server).
+		uint getId();
 
 		virtual void setup() {}
 		virtual void initialize();
@@ -142,15 +146,22 @@ namespace omega
 	private:
 
 	private:
+		uint myId;
+
 		ApplicationServer* myServer;
 		GpuManager* myGpu;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline uint ApplicationClient::getId()
+	{ return myId; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class ApplicationServer: public DynamicObject, public IEventListener
 	{
+	friend class ApplicationClient;
 	public:
-		ApplicationServer(Application* app): myApplication(app) {}
+		ApplicationServer(Application* app): myApplication(app), myClientId(0) {}
 		virtual ~ApplicationServer() {}
 
 		virtual void initialize() {}
@@ -162,7 +173,12 @@ namespace omega
 		Application* getApplication() { return myApplication; }
 
 	private:
+		void addClient(ApplicationClient* cli);
+
+	private:
+		uint myClientId;
 		Application* myApplication;
+		List<ApplicationClient*> myClients;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

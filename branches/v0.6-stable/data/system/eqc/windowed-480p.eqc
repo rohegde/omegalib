@@ -33,7 +33,7 @@ server
         {
             view
             {
-                name "view3D"
+                name "main"
                 observer "observer0"
                 viewport [ 0 0 1 1 ]
             }

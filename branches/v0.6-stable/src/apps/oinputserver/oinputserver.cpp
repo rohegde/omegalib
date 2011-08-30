@@ -234,7 +234,7 @@ public:
 
 			// See DirectXInputService.cpp for parameter details
 			// Analog sticks
-			for( int i = 0; i < 21; i++ ){
+			for( int i = 0; i < 22; i++ ){
 				sprintf(floatChar,"%d", (int)evt.getExtraDataFloat(i));
 				strcat( eventPacket, floatChar );
 				strcat( eventPacket, "," ); // Spacer
@@ -553,6 +553,8 @@ void main(int argc, char** argv)
 	bool testStream = false;
 	char* testPacket;
 
+	bool printOutput = true;
+
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){
 		if( delay > 0.0 )
@@ -574,11 +576,13 @@ void main(int argc, char** argv)
 			{
 				if( app.handleEvent(evts[evtNum]) ){ // is there an event?
 					// Send event to clients
-					printf("%s\n", app.getEvent());
+					if( printOutput )
+						printf("%s\n", app.getEvent());
 					app.sendToClients( app.getEvent() );
 				}
 			}
-			printf("------------------------------------------------------------------------------\n", app.getEvent());
+			if( printOutput )
+				printf("------------------------------------------------------------------------------\n", app.getEvent());
 		}// if
 		else if( testStream ){
 			testPacket = new char[99];

@@ -84,6 +84,9 @@ namespace omega
 		bool isGLEnabled() { return ((myInitFlags & InitGL) == InitGL); }
 		//@}
 
+		//! Returns a numeric identifier for this gpu.
+		uint getId();
+
 		void loadVertexShader(const String& name, const String& filename);
 		void loadFragmentShader(const String& name, const String& filename);
 		void loadGeometryShader(const String& name, const String& filename);
@@ -112,6 +115,8 @@ namespace omega
 	private:
 		bool myInitialized;
 		unsigned int myInitFlags;
+
+		uint myId;
 
 		VertexShaderDictionary myVertexShaders;
 		FragmentShaderDictionary myFragmentShaders;
