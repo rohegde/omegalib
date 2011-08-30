@@ -61,7 +61,6 @@ SET( srcs
 ###################################################################################################
 # Headers
 SET( headers 
-		${OmegaLib_SOURCE_DIR}/include/omega.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
@@ -338,7 +337,7 @@ if(OMEGA_USE_DISPLAY)
 endif(OMEGA_USE_DISPLAY)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-	target_link_libraries( omega ${EQUALIZER_LIBS} )
+	target_link_libraries( omega ${EQUALIZER_LIBS})
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
@@ -371,6 +370,7 @@ endif(OMEGA_USE_VRPN)
 
 ###################################################################################################
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
+configure_file(omega.in ${CMAKE_BINARY_DIR}/include/omega)
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
 
 

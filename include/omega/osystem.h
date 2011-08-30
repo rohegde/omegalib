@@ -70,7 +70,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
-#define OMEGA_VERSION "0.6.1"
+#define OMEGA_VERSION "0.6"
 
 // Creates an integer identifier out of a 4 character string.
 #define OID(s) (unsigned int)(s[0] | s[1] << 8 | s[2] << 16 | s[3] << 24)

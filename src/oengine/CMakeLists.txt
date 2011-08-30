@@ -85,7 +85,6 @@ set( srcs
 # Headers
 set( headers 
 		# omega
-		${OmegaLib_SOURCE_DIR}/include/oengine.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/oenginebase.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/FontManager.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ImageUtils.h
@@ -162,4 +161,5 @@ endif(OMEGA_USE_PYTHON)
 
 ###################################################################################################
 # configure include header
+configure_file(oengine.in ${CMAKE_BINARY_DIR}/include/oengine)
 

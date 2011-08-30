@@ -44,7 +44,7 @@ Graphics, Inc., 2011 N.  Shoreline Blvd., Mountain View, CA
 OpenGL(TM) is a trademark of Silicon Graphics, Inc.
 */
 
-#include <omega.h>
+#include <omega>
 
 #ifdef WIN32
 	#pragma warning( disable : 4305)
