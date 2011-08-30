@@ -372,3 +372,17 @@ endif(OMEGA_USE_VRPN)
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
 configure_file(omega.in ${CMAKE_BINARY_DIR}/include/omega)
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
+
+
+###################################################################################################
+install(
+    TARGETS omega
+    ARCHIVE DESTINATION lib COMPONENT omegalib
+    LIBRARY DESTINATION lib COMPONENT omegalib
+    RUNTIME DESTINATION bin COMPONENT omegalib
+)
+install(
+    FILES ${headers}
+    DESTINATION include/omega
+    COMPONENT omegalib
+)
