@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node5" href="$classomega_1_1ui_1_1_abstract_button.html" title="omega::ui::AbstractButton" alt="" coords="383,5,556,35"/>
+<area shape="rect" id="node9" href="$classomega_1_1ui_1_1_container.html" title="omega::ui::Container" alt="" coords="399,59,540,88"/>
+<area shape="rect" id="node13" href="$classomega_1_1ui_1_1_image.html" title="omega::ui::Image" alt="" coords="408,112,531,141"/>
+<area shape="rect" id="node15" href="$classomega_1_1ui_1_1_label.html" title="omega::ui::Label" alt="" coords="411,165,528,195"/>
+<area shape="rect" id="node17" href="$classomega_1_1ui_1_1_slider.html" title="omega::ui::Slider" alt="" coords="409,219,529,248"/>
+<area shape="rect" id="node21" href="$classoqt_1_1_qt_widget.html" title="oqt::QtWidget" alt="" coords="419,272,520,301"/>
+<area shape="rect" id="node2" href="$classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="7,139,156,168"/>
+<area shape="rect" id="node7" href="$classomega_1_1ui_1_1_button.html" title="omega::ui::Button" alt="" coords="641,5,767,35"/>
+<area shape="rect" id="node11" href="$classomega_1_1ui_1_1_user_manager_panel.html" title="omega::ui::UserManagerPanel" alt="" coords="605,59,803,88"/>
+<area shape="rect" id="node19" href="$classomega_1_1ui_1_1_default_slider.html" title="omega::ui::DefaultSlider" alt="" coords="624,219,784,248"/>
+</map>
