@@ -17,7 +17,7 @@ Each service type is defined by an enumeration. The types currently used by oinp
 
 3: Controller
 
-----
+------------------------------------------------------------
 
 == Pointer Datagram ==
 
@@ -58,13 +58,13 @@ A two finger rotation gesture. One finger (anchor) is stationary while the other
 
 '0:{Event ID},{Source ID},{X Position},{Y Position},{Anchor X},{Anchor Y},{Rotating X},{Rotating Y},{Angle} '
 
-----
+------------------------------------------------------------
 
 == Mocap Datagram ==
 
 '1:{Source ID},{X Position},{Y Position},{Z Position},{X Rotation},{Y Rotation},{Z Rotation} '
 
-----
+------------------------------------------------------------
 
 == Controller Datagram ==
 
@@ -160,7 +160,7 @@ Acceleration values are integers where 1000 is the force of gravity. X represent
 
 The button fields (C,Z) will either be 0 (not pressed) or 1 (pressed).
 
-----
+------------------------------------------------------------
 
 = Event ID Types =
 
