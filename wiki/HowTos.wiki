@@ -1,3 +1,13 @@
-= How-Tos =
+#summary omegalib How-tos, tips and tricks
+
 This page contains suggestions, code snippets and tips that are not elaborate enough (yet) to become a full tutorial.
+
+= Building on Visual Studio =
+omegalib supports builds in visual studio 2008 and 2010. Both 32 and 64 bit builds should work, but currently only
+Visual studio 2010 32 bit builds are tested regularly.
+
+== Visual Studio 2010 Notes ==
+=== "When building omegalib from scratch with equalizer enabled the build fails with the compiler complaining about not finding `lexer.cpp`" ===
+This error is due to some incorrect dependencies in the equalizer project, and visual studio spawning multiple compiler processes on multiprocessor machines. Simply ignore the error and build the solution again. After one-two additional builds the problem should go away. This won't happen anymore, unless you rebuild omegalib from scratch.
+
 
