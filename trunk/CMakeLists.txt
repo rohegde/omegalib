@@ -119,10 +119,6 @@ if(MSVC)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
 endif(MSVC)
 
-# setup a cmake file containing some information about this build. 
-# used by FindOmegalib.cmake
-configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
-
 ###################################################################################################
 # Add subdirectiories
 add_subdirectory(src)
