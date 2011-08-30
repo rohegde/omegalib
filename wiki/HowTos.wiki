@@ -9,3 +9,11 @@ Visual studio 2010 32 bit builds are tested regularly.
 == Visual Studio 2010 Notes ==
 === "When building omegalib from scratch with equalizer enabled the build fails with the compiler complaining about not finding `lexer.cpp`" ===
 This error is due to some incorrect dependencies in the equalizer project, and visual studio spawning multiple compiler processes on multiprocessor machines. Simply ignore the error and build the solution again. After one-two additional builds the problem should go away. This won't happen anymore, unless you rebuild omegalib from scratch.
+
+=== "When enabling DirectInput support, the build fails because `hidsdi.h` is not found" ===
+For DirectInput to work, you have to make sure the Visual Studio compiler searches for DirectInput headers from the windows DDK.
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/DirectInputConfig.png"/></p><p align="middle">
+_^Make sure the WinDDK include directory is the first one in the include directories section under Project Options >> Projects and Solutions >> VC++ Directories^_
+</p>
+
+
