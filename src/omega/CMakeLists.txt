@@ -337,7 +337,7 @@ if(OMEGA_USE_DISPLAY)
 endif(OMEGA_USE_DISPLAY)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-	target_link_libraries( omega debug ${EQUALIZER_CLIENT_LIBS_DEBUG})
+	target_link_libraries( omega ${EQUALIZER_LIBS})
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
@@ -371,3 +371,4 @@ endif(OMEGA_USE_VRPN)
 ###################################################################################################
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
 configure_file(omega.in ${CMAKE_BINARY_DIR}/include/omega)
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
