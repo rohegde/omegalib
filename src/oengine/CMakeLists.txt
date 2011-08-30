@@ -67,7 +67,7 @@ set( srcs
 		oengine/ui/Label.cpp
 		oengine/ui/DefaultSkin.cpp
 		oengine/ui/Slider.cpp
-		oengine/ui/UIManager.cpp
+		oengine/ui/UiManager.cpp
 		oengine/ui/Widget.cpp
 		oengine/ui/UserManagerPanel.cpp
 
