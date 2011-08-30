@@ -42,6 +42,10 @@ using namespace omega;
 LPDIRECTINPUTDEVICE8 g_pJoystick[10];
 LPDIRECTINPUT8 g_pDI;
 int nControllers = 0;
+int nWiimotes = 0;
+int nConnectedWiimotes = 0;
+int wiimoteID = -1;
+int controllerType[10]; // Stores the type enum for each controller added
 
 //-----------------------------------------------------------------------------
 // Name: EnumJoysticksCallback()
@@ -59,7 +63,24 @@ BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance,
 		printf("DirectXInputService: Failed to enumerate joystick.\n");
 		return DIENUM_CONTINUE;
 	} else {
+		if( pdidInstance->guidProduct.Data1 == 50726270 ){ // Ignore 'Nintendo Wiimote' product ID: 50726270
+			//printf("DirectXInputService: Connecting to Wiimote.\n",pdidInstance->guidProduct.Data1);
+			nWiimotes++;
+			controllerType[nControllers] = omega::DirectXInputService::ControllerType::Wiimote;
+			wiimoteID = nControllers;
+			//return DIENUM_CONTINUE; 
+		} else if( pdidInstance->guidProduct.Data1 == 44106846 ){ // 'Xbox360' product ID: 44106846
+			printf("DirectXInputService: Connecting to Xbox 360 controller.\n",pdidInstance->guidProduct.Data1);
+			controllerType[nControllers] = omega::DirectXInputService::ControllerType::Xbox360;
+		} else if( pdidInstance->guidProduct.Data1 == 50890888 ){ // 'PS3 Sixaxis' product ID: 44106846
+			printf("DirectXInputService: Connecting to PS3 Sixaxis controller.\n",pdidInstance->guidProduct.Data1);
+			controllerType[nControllers] = omega::DirectXInputService::ControllerType::PS3;
+		} else {
+			printf("DirectXInputService: Connecting to controller GUID %d.\n",pdidInstance->guidProduct.Data1);
+			controllerType[nControllers] = -1;
+		}
 		printf("DirectXInputService: Connecting to controller ID %d.\n",nControllers);
+		
 		nControllers++;
 		return DIENUM_CONTINUE;
 	}
@@ -184,6 +205,86 @@ BOOL CALLBACK EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi,
 DirectXInputService* DirectXInputService::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ------------------------------------------------------------------------------------
+//  state-change callback example for wiimote (we use polling for everything else):
+// ------------------------------------------------------------------------------------
+void on_state_change (wiimote			  &remote,
+					  state_change_flags  changed,
+					  const wiimote_state &new_state)
+	{
+	// we use this callback to set report types etc. to respond to key events
+	//  (like the wiimote connecting or extensions (dis)connecting).
+	
+	// NOTE: don't access the public state from the 'remote' object here, as it will
+	//		  be out-of-date (it's only updated via RefreshState() calls, and these
+	//		  are reserved for the main application so it can be sure the values
+	//		  stay consistent between calls).  Instead query 'new_state' only.
+
+	// the wiimote just connected
+	if(changed & WIIMOTE_CONNECTED)
+		{
+		// ask the wiimote to report everything (using the 'non-continous updates'
+		//  default mode - updates will be frequent anyway due to the acceleration/IR
+		//  values changing):
+
+		// note1: you don't need to set a report type for Balance Boards - the
+		//		   library does it automatically.
+		
+		// note2: for wiimotes, the report mode that includes the extension data
+		//		   unfortunately only reports the 'BASIC' IR info (ie. no dot sizes),
+		//		   so let's choose the best mode based on the extension status:
+		if(new_state.ExtensionType != wiimote::BALANCE_BOARD)
+			{
+			if(new_state.bExtension)
+				remote.SetReportType(wiimote::IN_BUTTONS_ACCEL_IR_EXT); // no IR dots
+			else
+				remote.SetReportType(wiimote::IN_BUTTONS_ACCEL_IR);		//    IR dots
+			}
+		}
+	// a MotionPlus was detected
+	if(changed & MOTIONPLUS_DETECTED)
+		{
+		// enable it if there isn't a normal extension plugged into it
+		// (MotionPlus devices don't report like normal extensions until
+		//  enabled - and then, other extensions attached to it will no longer be
+		//  reported (so disable the M+ when you want to access them again).
+		if(remote.ExtensionType == wiimote_state::NONE) {
+			bool res = remote.EnableMotionPlus();
+			_ASSERT(res);
+			}
+		}
+	// an extension is connected to the MotionPlus
+	else if(changed & MOTIONPLUS_EXTENSION_CONNECTED)
+		{
+		// We can't read it if the MotionPlus is currently enabled, so disable it:
+		if(remote.MotionPlusEnabled())
+			remote.DisableMotionPlus();
+		}
+	// an extension disconnected from the MotionPlus
+	else if(changed & MOTIONPLUS_EXTENSION_DISCONNECTED)
+		{
+		// enable the MotionPlus data again:
+		if(remote.MotionPlusConnected())
+			remote.EnableMotionPlus();
+		}
+	// another extension was just connected:
+	else if(changed & EXTENSION_CONNECTED)
+		{
+		// switch to a report mode that includes the extension data (we will
+		//  loose the IR dot sizes)
+		// note: there is no need to set report types for a Balance Board.
+		if(!remote.IsBalanceBoard())
+			remote.SetReportType(wiimote::IN_BUTTONS_ACCEL_IR_EXT);
+		}
+	// extension was just disconnected:
+	else if(changed & EXTENSION_DISCONNECTED)
+		{
+		// use a non-extension report mode (this gives us back the IR dot sizes)
+		remote.SetReportType(wiimote::IN_BUTTONS_ACCEL_IR);
+		}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DirectXInputService::initialize() 
 {
 	printf("DirectXInputService: Initialize\n");
@@ -203,10 +304,26 @@ void DirectXInputService::initialize()
 	checkForNewControllers();
 
 	// Wiimote
-	printf("DirectXInputService: Waiting for Wiimote\n");
-	remote.Connect();
-	//while(!remote.Connect()) {
-	//}
+	if( nWiimotes > 0 ){
+		printf("DirectXInputService: Waiting for Wiimote.\n");
+
+		// in this demo we use a state-change callback to get notified of
+		//  extension-related events, and polling for everything else
+		// (note you don't have to use both, use whatever suits your app):
+		remote.ChangedCallback		= on_state_change;
+		//  notify us only when the wiimote connected sucessfully, or something
+		//   related to extensions changes
+		remote.CallbackTriggerFlags = (state_change_flags)(WIIMOTE_CONNECTED |
+														   EXTENSION_CHANGED |
+														   MOTIONPLUS_CHANGED);
+		while(!remote.Connect(wiimote::FIRST_AVAILABLE)) {
+		}
+		printf("DirectXInputService: Wiimote Connected.\n");
+		nConnectedWiimotes++;
+
+		// Set all LEDs on
+		remote.SetLEDs(0x0f);
+	}
 
 	if( nControllers == 0 ){
 		printf("DirectXInputService: No joysticks detected.\n");
@@ -265,13 +382,102 @@ void DirectXInputService::checkForNewControllers()
 void DirectXInputService::poll() 
 {
 	//printf("DirectXInputService: Poll.\n");
+
+	if( nConnectedWiimotes > 0 ){
+		// Update the Wiimote state (this is essential for polling data)
+		remote.RefreshState();
+		//printf("  X %+2.3f  Y %+2.3f  Z %+2.3f  \n",
+		//			remote.Acceleration.X,
+		//			remote.Acceleration.Y,
+		//			remote.Acceleration.Z);
+		if(mysInstance)
+		{
+			mysInstance->lockEvents();
+
+			Event* evt = mysInstance->writeHead();
+			evt->reset(Event::Update, Service::Controller, wiimoteID);
+
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+	
+			evt->setExtraDataFloat(0, ControllerType::Wiimote); 
+			evt->setExtraDataFloat(1, remote.Acceleration.X * 1000);
+			evt->setExtraDataFloat(2, remote.Acceleration.Y * 1000);
+			evt->setExtraDataFloat(3, remote.Acceleration.Z * 1000);
+
+			evt->setExtraDataFloat(4, remote.Button.A());
+			evt->setExtraDataFloat(5, remote.Button.B());
+			evt->setExtraDataFloat(6, remote.Button.Plus());
+			evt->setExtraDataFloat(7, remote.Button.Home());
+			evt->setExtraDataFloat(8, remote.Button.Minus());
+			evt->setExtraDataFloat(9, remote.Button.One());
+			evt->setExtraDataFloat(10, remote.Button.Two());
+			evt->setExtraDataFloat(11, remote.Button.Up());
+			evt->setExtraDataFloat(12, remote.Button.Down());
+			evt->setExtraDataFloat(13, remote.Button.Left());
+			evt->setExtraDataFloat(14, remote.Button.Right());
+			
+			evt->setExtraDataFloat(15, remote.ExtensionType);
+			evt->setExtraDataFloat(16, 0);
+			evt->setExtraDataFloat(17, 0);
+			evt->setExtraDataFloat(18, remote.MotionPlus.Raw.Yaw);
+			evt->setExtraDataFloat(19, remote.MotionPlus.Raw.Pitch);
+			evt->setExtraDataFloat(20, remote.MotionPlus.Raw.Roll);
+			evt->setExtraDataFloat(21, 0);
+		}
+		mysInstance->unlockEvents();
+
+		if( remote.NunchukConnected() ){
+			mysInstance->lockEvents();
+
+			Event* evt = mysInstance->writeHead();
+			evt->reset(Event::Update, Service::Controller, wiimoteID);
+
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+	
+			evt->setExtraDataFloat(0, ControllerType::Wii_Nunchuck); 
+			evt->setExtraDataFloat(1, remote.Nunchuk.Joystick.X * 1000);
+			evt->setExtraDataFloat(2, remote.Nunchuk.Joystick.Y * 1000);
+
+			evt->setExtraDataFloat(3, remote.Nunchuk.Acceleration.X * 1000);
+			evt->setExtraDataFloat(4, remote.Nunchuk.Acceleration.Y * 1000);
+			evt->setExtraDataFloat(5, remote.Nunchuk.Acceleration.Z * 1000);
+
+			evt->setExtraDataFloat(6, remote.Nunchuk.C);
+			evt->setExtraDataFloat(7, remote.Nunchuk.Z);
+			evt->setExtraDataFloat(8, 0);
+			evt->setExtraDataFloat(9, 0);
+			evt->setExtraDataFloat(10, 0);
+			evt->setExtraDataFloat(11, 0);
+			evt->setExtraDataFloat(12, 0);
+			evt->setExtraDataFloat(13, 0);
+			evt->setExtraDataFloat(14, 0);
+			
+			evt->setExtraDataFloat(15, 0);
+			evt->setExtraDataFloat(16, 0);
+			evt->setExtraDataFloat(17, 0);
+			evt->setExtraDataFloat(18, 0);
+			evt->setExtraDataFloat(19, 0);
+			evt->setExtraDataFloat(20, 0);
+			evt->setExtraDataFloat(21, 0);
+
+		}
+
+		if( remote.Button.Home() ){
+			//remote.Disconnect();
+			//nConnectedWiimotes--;
+			//nControllers--;
+		}
+	}
+
 	HRESULT hr;
 	DIJOYSTATE2 js;           // DInput joystick state 
+	LPDIDEVICEINSTANCE inputInfo;
+
 	for(int j = 0; j < nControllers; j++){
 			
 		if( NULL == g_pJoystick[j] )
 			return;
-		
+
 		// Poll the device to read the current state
 		hr = g_pJoystick[j]->Poll();
 		if( FAILED( hr ) )
@@ -306,35 +512,37 @@ void DirectXInputService::poll()
 
 			evt->setExtraDataType(Event::ExtraDataFloatArray);
 
-			// PS3
-			evt->setExtraDataFloat(0, js.lX); 
-			evt->setExtraDataFloat(1, js.lY);  // Left analog (-up, +down)
+			if( controllerType[j] == ControllerType::Xbox360 ){
+				evt->setExtraDataFloat(0, ControllerType::Xbox360); 
+			} else if( controllerType[j] == ControllerType::PS3 ){
+				evt->setExtraDataFloat(0, ControllerType::PS3);
+			}
+			evt->setExtraDataFloat(1, js.lX); 
+			evt->setExtraDataFloat(2, js.lY);  // Left analog (-up, +down)
 
-			evt->setExtraDataFloat(2, js.lRx); // Right analog (-left, +right)
-			evt->setExtraDataFloat(3, js.lRy); // Right analog (-up, +down)
+			evt->setExtraDataFloat(3, js.lRx); // Right analog (-left, +right)
+			evt->setExtraDataFloat(4, js.lRy); // Right analog (-up, +down)
 
-			evt->setExtraDataFloat(4, js.lZ); // Trigger 2 (+left, -right)
-			
+			evt->setExtraDataFloat(5, js.lZ); // Trigger 2 (+left, -right)
+				
 			// Buttons
 			for( int i = 0; i < 15; i++ )
 			{
 				if( js.rgbButtons[i] & 0x80 )
 				{
-					evt->setExtraDataFloat(i + 5, 1);
+					evt->setExtraDataFloat(i + 6, 1);
 				}
 				else
 				{
-					evt->setExtraDataFloat(i + 5, 0);
+					evt->setExtraDataFloat(i + 6, 0);
 				}
 			 }
-			evt->setExtraDataFloat(18, js.rgdwPOV[0]); // DPad
+			evt->setExtraDataFloat(19, js.rgdwPOV[0]); // DPad
 
-			evt->setExtraDataFloat(19, js.lRz); // Tilt (+left, -right)
-			evt->setExtraDataFloat(20, js.rglSlider[1]); // Tilt (+back, -forward)
-			
+			evt->setExtraDataFloat(20, js.lRz); // Tilt (+left, -right)
+			evt->setExtraDataFloat(21, js.rglSlider[1]); // Tilt (+back, -forward)
 			mysInstance->unlockEvents();
 		}
-	
 	}
 	
 	/*
