@@ -1,7 +1,7 @@
 #ifndef __KINECTDEMO_H__
 #define __KINECTDEMO_H__
 
-#include <omega>
+#include <omega.h>
 
 using namespace omega;
 
