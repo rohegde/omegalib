@@ -70,15 +70,6 @@ set( srcs
 		oengine/ui/UiManager.cpp
 		oengine/ui/Widget.cpp
 		oengine/ui/UserManagerPanel.cpp
-
-		#omega::mvc
-		oengine/mvc/Model.cpp
-		oengine/mvc/ViewManager.cpp
-		oengine/mvc/View.cpp
-		oengine/mvc/ViewClient.cpp
-		oengine/mvc/Controller.cpp
-		oengine/mvc/DynamicController.cpp
-		oengine/mvc/UiDynamicController.cpp
         )
 		
 ###################################################################################################
@@ -129,15 +120,6 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Widget.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h
-
-		#omega::mvc
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/Model.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/ViewManager.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/View.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/ViewClient.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/Controller.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/DynamicController.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/mvc/UiDynamicController.h
         ) 
 
 ###################################################################################################
