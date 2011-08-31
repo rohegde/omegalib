@@ -41,7 +41,7 @@
 		#define OENGINE_API
 	#endif
 #else
-	#define OVTK_API
+	#define OENGINE_API
 #endif
 
 using namespace omega;
