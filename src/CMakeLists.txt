@@ -93,8 +93,8 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 			# COMPONENT omegalib
 		# )
 	else(WIN32)
-		set(EQUALIZER_EQ_LIB_RELEASE ${EQUALIZER_BINARY_DIR}/libs/client/libEqualizer.so)
-		set(EQUALIZER_CO_LIB_RELEASE ${EQUALIZER_BINARY_DIR}/libs/collage/libCollage.so)
+		set(EQUALIZER_EQ_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/client/libEqualizer.so)
+		set(EQUALIZER_CO_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/collage/libCollage.so)
 		set(EQUALIZER_LIBS_DEBUG debug ${EQUALIZER_EQ_LIB_DEBUG} debug ${EQUALIZER_CO_LIB_DEBUG})
 		set(EQUALIZER_LIBS_RELEASE ${EQUALIZER_CLIENT_LIB_DEBUG})
 		# install(
