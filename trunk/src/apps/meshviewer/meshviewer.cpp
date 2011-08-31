@@ -86,11 +86,11 @@ void MeshViewerServer::initialize()
 			EntityData* ed = new EntityData();
 
 			ed->name = entitySetting.getName();
-			ed->label = (String)entitySetting["label"];
+			ed->label = String((const char*)entitySetting["label"]);
 
 			if(entitySetting.exists("mesh"))
 			{
-				String meshFilename = entitySetting["mesh"];
+				String meshFilename = String((const char*)entitySetting["mesh"]);
 
 				PlyDataReader* reader = new PlyDataReader();
 				reader->readPlyFile(meshFilename);
