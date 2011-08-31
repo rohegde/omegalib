@@ -44,11 +44,14 @@ public:
 	virtual ApplicationClient* createClient(ApplicationServer* server) { return new HelloClient(server); }
 };
 
+Lock l;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloClient::draw(const DrawContext& context)
 {
 	if(context.isSceneActive(0))
 	{
+		l.lock();
 		// Enable depth testing and lighting.
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LIGHTING);
@@ -65,6 +68,8 @@ void HelloClient::draw(const DrawContext& context)
 		glRotatef(10, 1, 0, 0);
 		glRotatef((float)context.frameNum * 0.2f, 0, 1, 0);
 		teapot(14, 0.3f, GL_FILL);
+		
+		l.unlock();
 	}
 }
 
