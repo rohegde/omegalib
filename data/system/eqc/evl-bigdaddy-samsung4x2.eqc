@@ -8,11 +8,11 @@ server
             pipe
             {
 				port 0
-				device 2
+				device 0
                 window
                 {
                     name     "win0x0"
-                    viewport [ 0 0 1366 768 ]
+                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch0x0"  
@@ -27,11 +27,11 @@ server
             pipe
             {
 				port 0
-				device 3
+				device 1
                 window
                 {
                     name     "win1x0"
-                    viewport [ 0 0 1366 768 ]
+                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch1x0"  
@@ -46,11 +46,11 @@ server
             pipe
             {
 				port 0
-				device 0
+				device 2
                 window
                 {
                     name     "win0x1"
-                    viewport [ 0 0 1366 768 ]
+                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch0x1"  
@@ -65,11 +65,11 @@ server
             pipe
             {
 				port 0
-				device 1
+				device 3
                 window
                 {
                     name     "win1x1"
-                    viewport [ 0 0 1366 768 ]
+                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch1x1"  
@@ -105,9 +105,9 @@ server
 
 			wall
 			{
-				bottom_left  [ -.7 -.4 0 ]
-				bottom_right [  .7 -.4 0 ]
-				top_left     [ -.7 .4 0 ]
+				bottom_left  [ -1.4 -.4 0 ]
+				bottom_right [  1.4 -.4 0 ]
+				top_left     [ -1.4 .4 0 ]
 			}
 
             segment
