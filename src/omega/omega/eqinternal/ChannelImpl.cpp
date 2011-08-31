@@ -95,7 +95,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 	//String chName = this->getName();
 	//ofmsg("%1%", %chName);
 
-	//makeCurrent();
+	makeCurrent();
 
 	// setup OpenGL State
 	eq::Channel::frameDraw( spin );
