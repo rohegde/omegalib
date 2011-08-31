@@ -97,6 +97,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 
 	makeCurrent();
 	EQ_GL_CALL(applyBuffer());
+	EQ_GL_CALL( setupAssemblyState( ));
 
 	// setup OpenGL State
 	eq::Channel::frameDraw( spin );
@@ -106,6 +107,8 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 
 	context.layer = view->getLayer() & 0x03;
 	client->draw(context);
+
+	EQ_GL_CALL( resetAssemblyState( ));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
