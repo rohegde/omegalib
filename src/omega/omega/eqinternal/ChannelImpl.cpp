@@ -96,6 +96,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 	//ofmsg("%1%", %chName);
 
 	makeCurrent();
+	EQ_GL_CALL(applyBuffer());
 
 	// setup OpenGL State
 	eq::Channel::frameDraw( spin );
