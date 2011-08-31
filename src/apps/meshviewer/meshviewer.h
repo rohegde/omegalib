@@ -28,7 +28,7 @@
 #define __MESHVIEWER_H__
 
 #include <omega.h>
-#include <oengine>
+#include <oengine.h>
 
 using namespace omega;
 using namespace oengine;
