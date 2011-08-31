@@ -5,6 +5,10 @@ server
     {
         appNode											
         {
+			attributes
+			{
+				thread_model ASYNC
+			}
             pipe
             {
 				port 0
@@ -134,10 +138,26 @@ server
 
 		compound
 		{
-			channel ( segment 0 layout "layout" view 0 )
-			channel ( segment 1 layout "layout" view 0 )
-			channel ( segment 2 layout "layout" view 0 )
-			channel ( segment 3 layout "layout" view 0 )
+			compound
+			{
+				channel ( segment 0 layout "layout" view 0 )
+				swapbarrier { NV_group 0 }
+			}
+			compound
+			{
+				channel ( segment 1 layout "layout" view 0 )
+				swapbarrier { NV_group 0 }
+			}
+			compound
+			{
+				channel ( segment 2 layout "layout" view 0 )
+				swapbarrier { NV_group 0 }
+			}
+			compound
+			{
+				channel ( segment 3 layout "layout" view 0 )
+				swapbarrier { NV_group 0 }
+			}
 		}
     }
 }
