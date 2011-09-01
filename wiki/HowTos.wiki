@@ -1,4 +1,5 @@
 #summary omegalib How-tos, tips and tricks
+#sidebar Sidebar
 
 This page contains suggestions, code snippets and tips that are not elaborate enough (yet) to become a full tutorial.
 
