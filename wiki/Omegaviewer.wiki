@@ -1,4 +1,5 @@
 #summary Developement proposal and design for omegaviewer
+#sidebar Sidebar
 This document contains the omegaviewer application concept, timeline and developement notes.
 
 = Omegaviewer: Meshviewer on steroids =
