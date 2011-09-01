@@ -138,26 +138,23 @@ server
 
 		compound
 		{
-			compound
-			{
-				channel ( segment 0 layout "layout" view 0 )
-				swapbarrier { NV_group 0 }
-			}
-			compound
-			{
-				channel ( segment 1 layout "layout" view 0 )
-				swapbarrier { NV_group 0 }
-			}
-			compound
-			{
-				channel ( segment 2 layout "layout" view 0 )
-				swapbarrier { NV_group 0 }
-			}
-			compound
-			{
-				channel ( segment 3 layout "layout" view 0 )
-				swapbarrier { NV_group 0 }
-			}
+			channel ( segment 0 layout "layout" view 0 )
+			DFR_equalizer { framerate 60 }
+		}
+		compound
+		{
+			channel ( segment 1 layout "layout" view 0 )
+			DFR_equalizer { framerate 60 }
+		}
+		compound
+		{
+			channel ( segment 2 layout "layout" view 0 )
+			DFR_equalizer { framerate 60 }
+		}
+		compound
+		{
+			channel ( segment 3 layout "layout" view 0 )
+			DFR_equalizer { framerate 60 }
 		}
     }
 }
