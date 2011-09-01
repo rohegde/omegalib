@@ -14,7 +14,7 @@ This document is mostly for internal use.
   * copy include dir from binary distribution
   * copy bin dir from binary distribution
   * cleanup bin dir
-    * in debug, delete *.ilk
+    * in debug, delete all ilk files
   * copy lib dir from binary distribution
   * svn export include dir from source distribution
   * svn export data dir from source distribution
