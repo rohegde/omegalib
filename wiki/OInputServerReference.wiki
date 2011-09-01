@@ -1,4 +1,5 @@
 #summary Documentation of OInputServer and NetService datagrams.
+#sidebar Sidebar
 
 = Introduction =
 
