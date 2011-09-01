@@ -1,7 +1,7 @@
 #summary OmegaLib Meeting Notes
 #sidebar Sidebar
 
-== August 12 2011 ==
+== August 26 2011 ==
  * Tutorials
   * (*Alessandro*) working on basic ones
   * (*Arthur*) tutorial for setting up omegalib in unity (assume inputserver working already, from previous tutorials)
