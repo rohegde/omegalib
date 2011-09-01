@@ -1,4 +1,5 @@
 #summary Building omegalib and omegalib projects
+#sidebar Sidebar
 
 = Dependencies =
 Omegalib libraries and basic can be compiled out of the box without needing any external libraries. Optionally, support for external graphic libraries and toolkits can be added by enabling the specific options inside CMake, and configuring the libraries accordingly.
