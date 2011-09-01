@@ -1,4 +1,5 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
+#sidebar Sidebar
 
 = omegalib v0.6 (*current developement version*) =
 == Summary ==
