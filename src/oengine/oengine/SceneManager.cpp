@@ -59,9 +59,9 @@ void SceneManager::initialize()
 	myRoot = new SceneNode(this, "root");
 	myDefaultRenderer = onew(Renderer)();
 
-	addRenderPass(onew(LightingPass)());
+	//addRenderPass(onew(LightingPass)());
 	addRenderPass(onew(DefaultRenderPass)());
-	addRenderPass(onew(OverlayRenderPass)());
+	//addRenderPass(onew(OverlayRenderPass)());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -91,8 +91,8 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 	// methods can handle openGL buffers associated with this Pipe.
 	// NOTE: getting the glew context from the first window is correct since all
 	// windows attached to the same pape share the same Glew (and OpenGL) contexts.
-	//const GLEWContext* glewc = getWindows()[0]->glewGetContext();
-	//glewSetContext(glewc);
+	const GLEWContext* glewc = getWindows()[0]->glewGetContext();
+	glewSetContext(glewc);
 
 	// Initialize the client at the first frame.
 	if(!myInitialized)
