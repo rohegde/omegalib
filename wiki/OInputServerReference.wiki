@@ -84,13 +84,13 @@ Controller Type ID:
 
 === Xbox 360 Datagram ===
 
-'3:{Source ID},0,{Left analog left/right},{Left analog up/down},{Right analog left/right},{Right analog up/down},{Triggers},A,B,X,Y,LB,RB,Back,Start,0,0,0,0,0,DPAD,0,0 '
+'3:{Source ID},0,{Left analog left/right},{Left analog up/down},{Right analog left/right},{Right analog up/down},{Triggers},A,B,X,Y,LB,RB,Back,Start,LA,RA,0,0,0,0,0,DPAD,0,0 '
 
 Analog stick values range from -1000 to 1000 where negative is left or up. Thus a value of 1000 would represent an analog stick moved fully to the right or down.
 
 The trigger value ranges from -1000 to 1000. In this case, pressing the left trigger will set the value from 0 to 1000, the right trigger will set the value from 0 to -1000. Not pressing the triggers or fully pressing down on both will result in a value of 0. 
 
-The button fields (A,B,X,Y,LB,RB,Back,Start) will either be 0 (not pressed) or 1 (pressed).
+The button fields (A,B,X,Y,LB,RB,Back,Start,LA,RA) will either be 0 (not pressed) or 1 (pressed). LA and LR stand for the left/right analog trigger buttons.
 
 The DPAD values are as follows:
  * Negative: Not pressed

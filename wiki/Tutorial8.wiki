@@ -1,0 +1,57 @@
+#summary Using Unity with OInputServer.
+
+= Tutorial 8 - Using Unity =
+
+This tutorial will demonstrate how to grab and use OmegaLib input data in Unity.
+
+Currently Unity supports OmegaLib input through the following scripts:
+ * InputServiceScript.cs
+ * TouchScript.cs
+ * MocapScript.cs
+ * OmegaControllerScript.cs
+ 
+=== Setting up the InputService ===
+
+InputServiceScript handles communication with OInputServer as well as streaming the apperperiate data to the other scripts listed above. The other scripts parse and store the data revalent to that input device.
+
+ # Create an empty gameobject and name it InputService.
+ # Drag InputServiceScript.cs on your InputService gameobject.
+ # When you click on the InputService gameobject, you will see the following options:
+
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/InputServiceScript.png" width="500"/></p><p align="middle"></p>
+
+ * Input Server - IP address of the tracker machine where OInputServer is running.
+ * Data Port - The port on the Unity machine where you want the data sent to.
+ * Msg Port - The message port on the tracker machine that OInputServer is listening for clients.
+ * Enable Input Service - Toggles the threaded network connection between Unity and OInputServer. This is useful to disable for testing without OInputServer.
+ * NEC_Wall_LEFT/NEC_Wall_Right - Adjusts the scale of the touch data to work on half of the touch display only *(Touch Only)*.
+ * Touch Time Out - Time in milliseconds before a touch is considered lost/dropped due to packet loss.
+ 
+ === Adding a Touch Object ===
+ 
+ WIP
+ 
+ === Adding a Mocap Object ===
+
+See the Vicon tutorial for creating rigid bodies and adding them to the rigid body list.
+  
+ # Create a gameobject to have tracked using the mocap script.
+ # Set the tag of that gameobject to "OmegaListener"
+	 * Create this tag if you haven't already using the Tag drop down menu and Add Tag.
+	 
+	<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnityAddTag.png" width="500"/></p><p align="middle"></p>
+ 
+ # Create a new C# script that extends MocapScript called MyMocapScript.
+ 
+ <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnityMyMocapScript.png" width="500"/></p><p align="middle"></p>
+ 
+ # You can call functions like getPosition() and getOrientation() to get the mocap data as a Vector3. You can use the transform function shown in MocapExampleScript.cs.
+ 
+ # Click on the gameobject you attached MyMocapScript to and check the inspector view. Set the variable My ID to the ID of the rigid body you want to track.
+ 
+  <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnityMocapScriptID.png" width="500"/></p><p align="middle"></p>
+  
+  === Adding a Controller Object ===
+ 
+ WIP
+ 
