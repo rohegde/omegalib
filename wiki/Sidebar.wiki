@@ -11,7 +11,6 @@
      * [Tutorial3]
      * [Tutorial4]
      * [Tutorial5]
- * Tutorials
  * Internal docs
    * [PackagingChecklist Packaging checklist]
    * [Omegaviewer Omegaviewer design notes]
