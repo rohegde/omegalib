@@ -1,4 +1,5 @@
 #summary Using Omegalib Event Services: Direct Integration
+#sidebar Sidebar
 This tutorial will explain how to integrate omegalib inside your own project and get events from it.
 
 To simplify thing, we will assume your project uses CMake as a build system as well. 
