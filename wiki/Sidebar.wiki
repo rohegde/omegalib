@@ -1,6 +1,18 @@
+ * General
+   * [Concept introduction and design]
+   * [OmegaProgress omegalib history]
+ * Help & Reference
+   * [HowTos How-tos & FAQ]
+   * [BuildSystemReference CMake reference]
+   * [OInputServerReference oinputserver protocol reference]
+   * Tutorials
+     * [Tutorial1]
+     * [Tutorial2]
+     * [Tutorial3]
+     * [Tutorial4]
+     * [Tutorial5]
  * Tutorials
-   * [Tutorial1]
-   * [Tutorial2]
-   * [Tutorial3]
-   * [Tutorial4]
-   * [Tutorial5]
+ * Internal docs
+   * [PackagingChecklist Packaging checklist]
+   * [Omegaviewer Omegaviewer design notes]
+   * [MeetingNotes notes from omegalib meetings]
