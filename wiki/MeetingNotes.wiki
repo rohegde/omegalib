@@ -1,4 +1,5 @@
-= OmegaLib Meeting Notes =
+#summary OmegaLib Meeting Notes
+#sidebar Sidebar
 
 == August 12 2011 ==
  * Tutorials
