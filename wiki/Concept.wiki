@@ -1,4 +1,5 @@
 #summary Omegalib Concept And Design Basics
+#sidebar Sidebar
 This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 <wiki:toc max_depth="2" />
 
