@@ -1,4 +1,5 @@
 #summary List of steps to create a binary distribution of omegalib
+#sidebar Sidebar
 This is the current way of creating an omegalib distribution package. Hopefully will become obsolete in the future when we'll start using CPack.
 This document is mostly for internal use. 
 
