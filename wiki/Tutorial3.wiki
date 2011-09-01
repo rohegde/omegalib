@@ -1,2 +1,3 @@
 #summary Using Omegalib Event Services Part 2: oinputserver
+#sidebar Sidebar
 This tutorial will explain how to use omegalib input services through a remote connection to an omegalib input server application.
