@@ -23,14 +23,14 @@ The tablet can also be used to define the object transformation though gestures:
  * Receive and display images from server
  
 Tablet app should have 2 _work modes_
- - UI Mode
- - Gesture Mode
+ # UI Mode
+ # Gesture Mode
  
 Also, UIs can have multiple panels (for instance, one for mesh / object selection and another to control the currently active mesh / object)
 
 == Example interaction scenario ==
- - UI mode with buttons to select model
- - Select model & switch interface to gesture mode
- - Use gestures to interact with object
- - Switch back to UI model, choose mesh parameters panel and change something about the mesh (i.e. switch to wireframe view)
+ # UI mode with buttons to select model
+ # Select model & switch interface to gesture mode
+ # Use gestures to interact with object
+ # Switch back to UI model, choose mesh parameters panel and change something about the mesh (i.e. switch to wireframe view)
  
