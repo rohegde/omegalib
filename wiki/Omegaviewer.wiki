@@ -7,7 +7,7 @@ Omegaviewer will use meshviewer as a starting point but allow users to interact 
   * The application will support free viewpoint definition and navigation using controllers
   * The application will allow users to interact with objects through a tablet interface
   
-== Tablet interaction ==
+= Tablet interaction =
 The tablet will offer a dynamic, ad hoc UI that will depend on the currently active object. Different object will offer different customization / interaction options.
 
 The tablet can also be used to define the object transformation though gestures:
@@ -15,3 +15,22 @@ The tablet can also be used to define the object transformation though gestures:
  * two finger pushing  in the z direction *with respect to the user viewpoint*
  * rotation (?)
  * pinch zoom to scale the object.
+ 
+== Required Tablet features ==
+ * Receive commands to create UIs dynamically
+ * Send UI commands to server
+ * Send gestures to server
+ * Receive and display images from server
+ 
+Tablet app should have 2 _work modes_
+ - UI Mode
+ - Gesture Mode
+ 
+Also, UIs can have multiple panels (for instance, one for mesh / object selection and another to control the currently active mesh / object)
+
+== Example interaction scenario ==
+ - UI mode with buttons to select model
+ - Select model & switch interface to gesture mode
+ - Use gestures to interact with object
+ - Switch back to UI model, choose mesh parameters panel and change something about the mesh (i.e. switch to wireframe view)
+ 
