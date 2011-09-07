@@ -33,7 +33,7 @@
  * You should write your own scripts that inherit from these.
  *		- MocapScript.cs (GameObjects using these are tagged as 'OmegaListener')
  *		- TouchScript.cs (GameObjects using these are tagged as 'TouchListener')
- *		- OmegaControllerScript.cs
+ *		- OmegaControllerScript.cs (GameObjects using these are tagged as 'OmegaListener')
  *
  * To run make sure Enable Input Service is checked and the correct Server and Msg Ports are set.
  */
@@ -129,11 +129,11 @@ public class InputServiceScript : MonoBehaviour {
     private static UdpClient udpClient;
     private static Thread listenerThread;
 	
-	public String InputServer = "131.193.77.102";
+	public String InputServer = "euclid.evl.uic.edu";
     public Int32 dataPort = 7000;
-    public Int32 msgPort = 7340;
+    public Int32 msgPort = 27000;
 	
-	public bool EnableInputService = false;
+	public bool EnableInputService = true;
 	
 	public bool NEC_Wall_LEFT = false;
 	public bool NEC_Wall_RIGHT = false;
@@ -329,62 +329,15 @@ public class InputServiceScript : MonoBehaviour {
 				//float yW = float.Parse(words[6]) * screenHeight;
 				ProcessTouchEvent( new Touches( new Vector2(xPos, yPos), ID ) );
 			} else if( inputType == (int)ServiceType.Controller ){ // Controller
-				// 1 = ID
-				// 2 = Left analog left ( 0 to -1000 ) or right (0 to 1000)
-				// 3 = Left analog up (0, -1000) or down (0,1000)
-				// 4 = Right analog left ( 0 to -1000 ) or right (0 to 1000)
-				// 5 = Right analog up (0, -1000) or down (0,1000)
-				// 6 = Button 1 pressed (0 = false, 1 = true) PS3: Cross
-				// 7 = Button 2 pressed (0 = false, 1 = true) PS3: Circle
-				// 8 = Button 3 pressed (0 = false, 1 = true) PS3: Square
-				// 9 = Button 4 pressed (0 = false, 1 = true) PS3: Triangle
-				// 10 = Button 5 pressed (0 = false, 1 = true) PS3: L1
-				// 11 = Button 6 pressed (0 = false, 1 = true) PS3: R1
-				// 12 = Button 7 pressed (0 = false, 1 = true) PS3: Select
-				// 13 = Button 8 pressed (0 = false, 1 = true) PS3: Start
-				// 14 = Button 9 pressed (0 = false, 1 = true) PS3: Left analog button
-				// 15 = Button 10 pressed (0 = false, 1 = true) PS3: Right analog button
-				// 16 = Button 11 pressed (0 = false, 1 = true) PS3: PS Button
-				// 17 = Button 12 pressed (0 = false, 1 = true) PS3: DPad Up
-				// 18 = Button 13 pressed (0 = false, 1 = true) PS3: DPad Down
-				// 19 = Button 14 pressed (0 = false, 1 = true) PS3: DPad Left
-				// 20 = Button 15 pressed (0 = false, 1 = true) PS3: DPad Right
-				// 21 = DPad/POV position ( -1 = neutral, 0 = Up, 9000 = Right, 18000 = Down, 27000 = Left, 4500 Up and Left, etc.)
-				// 22 = Sliders. PS3: L2 (0, 1000) and R2 (0, -1000)
-				// 23 = Tilt. PS3 tilt left (0,1000) and tilt right (0,-1000)
-				// 24 = Tilt2. PS3 tilt back (0,1000) and tilt forward (0,-1000)
-				Debug.Log("Controller: " + dGram);
+				//Debug.Log("Controller: " + dGram);
 				
-				float[] analogLeft = new float[2];
-				float[] analogRight = new float[2];
-				int[] buttons = new int[16];
-				
-				// Normalize axis data and scale to sensitivity variable
-				//int ID = int.Parse(words[1]);
-				analogLeft[0] = int.Parse(words[2]) / 1000.0f;
-				analogLeft[1]  = int.Parse(words[3]) / 1000.0f;
-				analogRight[0] = int.Parse(words[4]) / 1000.0f;
-				analogRight[1] = int.Parse(words[5]) / 1000.0f;
-				
-				for( int i = 0; i < 16; i++ ){
-					buttons[i] = int.Parse(words[i+6]);
-				}
-				//int POV = int.Parse(words[21]);
-				//float slider = int.Parse(words[22]) / 1000.0f;
-				//float roll = int.Parse(words[23]) / 1000.0f;
-				//float pitch = int.Parse(words[24]) / 1000.0f;
-				
-				GameObject[] eventObjects = GameObject.FindGameObjectsWithTag("ControllerListener");
+				GameObject[] eventObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
 				foreach (GameObject eventObj in eventObjects) {
 					eventObj.BroadcastMessage("UpdateControllerData",words,SendMessageOptions.DontRequireReceiver);
 				}
-				//ProcessControllerEvent( ID, analogLeft, analogRight, buttons, slider, roll, pitch );
 			}  else if( inputType == (int)ServiceType.Mocap ){
 				//Debug.Log("Mocap: " + dGram);
-				//int ID = int.Parse(words[1]);
-				//float xPos = float.Parse(words[2]);
-				//float yPos = float.Parse(words[3]);
-				//float zPos = float.Parse(words[4]);
+
 				GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
 				foreach (GameObject touchObj in touchObjects) {
 					touchObj.BroadcastMessage("UpdateMocapPosition",words,SendMessageOptions.DontRequireReceiver);
