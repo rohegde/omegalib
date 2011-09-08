@@ -549,11 +549,11 @@ void main(int argc, char** argv)
 
 	app.startConnection();
 	
-	float delay = -0.1f; // Seconds to delay sending events (<= 0 disables delay)
+	float delay = 0.01f; // Seconds to delay sending events (<= 0 disables delay)
 	bool testStream = false;
 	char* testPacket;
 
-	bool printOutput = true;
+	bool printOutput = false;
 
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){

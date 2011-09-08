@@ -64,7 +64,7 @@ void NetService::setup(Setting& settings)
 void NetService::initialize() 
 {
 	mysInstance = this;
-#if defined(WIN32)
+#ifdef OMEGA_OS_WIN     
 	/*
 	* Based on MSDN Winsock examples:
 	* http://msdn.microsoft.com/en-us/library/ms738566(VS.85).aspx
@@ -135,8 +135,7 @@ void NetService::initialize()
 	} else {
 		printf("NetService: Connected to server!\n");
 	}
-#endif
-#if defined(linux)
+#else
 	/*
 	* Based on Beej's Guide to Network Programming:
 	* http://beej.us/guide/bgnet/output/html/multipage/index.html
@@ -186,13 +185,16 @@ void NetService::initHandshake()
 
 	int errno; // linux error code
 	iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf), 0);
-#if defined(linux)
+
+
+#ifndef OMEGA_OS_WIN     
 	if (iResult == -1) {
 		printf("NetService: Send failed: %s\n", strerror(errno));
 		return;
 	}
 #endif
-#if defined(WIN32)
+
+#ifdef OMEGA_OS_WIN     
 	if (iResult == SOCKET_ERROR) {
 		printf("NetService: Send failed: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
@@ -215,8 +217,7 @@ void NetService::initHandshake()
 	RecvAddr.sin_port = htons(atoi(dataPort));
 	RecvAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	bind(RecvSocket, (SOCKADDR *) &RecvAddr, sizeof(RecvAddr));
-#endif
-#if defined(linux)
+#else
 	/*
 	* Based on Beej's Guide to Network Programming:
 	* http://beej.us/guide/bgnet/output/html/multipage/index.html
@@ -331,38 +332,37 @@ void NetService::dispose()
 {
 	// Close the socket when finished receiving datagrams
 	printf("NetService: Finished receiving. Closing socket.\n");
-	#if defined(linux)
-	int errno; // linux error code
-	iResult = close(RecvSocket);
-	if (iResult == -1) {
-		printf("NetService: Closesocket failed with error %d\n", strerror(errno));
-		return;
-	}
-	#endif
-	#if defined(WIN32)
+#ifdef OMEGA_OS_WIN     
 	iResult = closesocket(RecvSocket);
 	if (iResult == SOCKET_ERROR) {
 		printf("NetService: Closesocket failed with error %d\n", WSAGetLastError());
 		return;
 	}
 	WSACleanup();
-	#endif
-	printf("NetService: Shutting down.");
+#else
+	int errno; // linux error code
+	iResult = close(RecvSocket);
+	if (iResult == -1) {
+		printf("NetService: Closesocket failed with error %d\n", strerror(errno));
+		return;
+	}
+#endif	
+    printf("NetService: Shutting down.");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NetService::parseDGram(int result)
 {
-#if defined(WIN32)
+    
+#ifdef OMEGA_OS_WIN     
 	result = recvfrom(RecvSocket, 
 		recvbuf,
 		DEFAULT_BUFLEN-1,
 		0, // If non-zero, socket is non-blocking
 		(SOCKADDR *)&SenderAddr, 
 		&SenderAddrSize);
-#endif
-#if defined(linux)
-	socklen_t addr_len;
+#else
+    socklen_t addr_len;
 	struct sockaddr_storage their_addr;
 	int numbytes;
 	char s[INET6_ADDRSTRLEN];
@@ -485,10 +485,9 @@ void NetService::parseDGram(int result)
 	
 	
 	} else {
-#if defined(WIN32)
+#ifdef OMEGA_OS_WIN     
 		printf("recvfrom failed with error code '%d'\n", WSAGetLastError());
-#endif
-#if defined(linux)
+#else
 		printf("recvfrom failed with error: '%s'\n", strerror(errno));
 #endif
 	}// if-else recv result

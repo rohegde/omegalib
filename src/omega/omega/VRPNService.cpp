@@ -138,14 +138,19 @@ void VRPNService::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void VRPNService::poll() 
 {
-	int done = 0;
-	for(int i = 0; i < trackerRemotes.size(); i++)
+	static float lastt;
+	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
+	if(curt - lastt > myUpdateInterval)
 	{
-		vrpn_Tracker_Remote *tkr = trackerRemotes[i];
-		// Let the tracker do it's thing
-               // It will call the callback funtions you registered above
-			// as needed
-		tkr->mainloop();
+		for(int i = 0; i < trackerRemotes.size(); i++)
+		{
+			vrpn_Tracker_Remote *tkr = trackerRemotes[i];
+			// Let the tracker do it's thing
+				   // It will call the callback funtions you registered above
+				// as needed
+			tkr->mainloop();
+		}
+		lastt = curt;
 	}
 }
 
@@ -158,16 +163,11 @@ void VRPNService::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void VRPNService::generateEvent(vrpn_TRACKERCB t, int id) 
 {
-	static float lastt;
-	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
-	if(curt - lastt > myUpdateInterval)
-	{
-		mysInstance->lockEvents();
-		Event* evt = mysInstance->writeHead();
-		evt->reset(Event::Update, Service::Mocap, id);
-		evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
-		evt->setOrientation(t.quat[0], t.quat[1], t.quat[2], t.quat[3]);
-		mysInstance->unlockEvents();
-		lastt = curt;
-	}
+	
+	mysInstance->lockEvents();
+	Event* evt = mysInstance->writeHead();
+	evt->reset(Event::Update, Service::Mocap, id);
+	evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
+	evt->setOrientation(t.quat[0], t.quat[1], t.quat[2], t.quat[3]);
+	mysInstance->unlockEvents();
 }
