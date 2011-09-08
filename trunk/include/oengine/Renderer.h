@@ -28,7 +28,7 @@
 #define __RENDERER_H__
 
 #include "oenginebase.h"
-#include "oengine/FontManager.h"
+#include "oengine/Font.h"
 #include "omega/Application.h"
 #include "omega/Color.h"
 #include "omega/Texture.h"
@@ -79,9 +79,17 @@ namespace oengine {
 		void drawWireSphere(const Color& color, int segments, int slices);
 		//@}
 
+		//! Font management
+		//@{
+		Font* createFont(omega::String fontName, omega::String filename, int size);
+		Font* getFont(omega::String fontName);
+		//@}
+
 	private:
 		bool myDrawing;
 		Texture* myTargetTexture;
+		Dictionary<String, Font*> myFonts;
+		Lock myLock;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

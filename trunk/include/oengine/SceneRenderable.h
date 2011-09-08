@@ -24,10 +24,34 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#ifndef __SCENE_RENDERABLE_H__
+#define __SCENE_RENDERABLE_H__
 
-using namespace omega::script;
+#include "Renderable.h"
+#include "SceneNode.h"
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+namespace oengine {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API SceneRenderable: public Renderable
+	{
+	public:
+		SceneRenderable();
+		virtual ~SceneRenderable();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+		void setSceneNode(SceneNode* value);
+		SceneNode* getSceneNode();
+	
+	private:
+		SceneNode* mySceneNode;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SceneRenderable::setSceneNode(SceneNode* value)
+	{ mySceneNode = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneNode* SceneRenderable::getSceneNode()
+	{ return mySceneNode; }
+}; // namespace oengine
+
+#endif

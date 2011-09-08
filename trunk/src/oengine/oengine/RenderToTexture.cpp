@@ -28,7 +28,6 @@
 #include "omega/Texture.h"
 #include "omega/TextureManager.h"
 #include "oengine/Camera.h"
-#include "oengine/SceneManager.h"
 #include "oengine/RenderToTexture.h"
 
 using namespace omega;

@@ -28,7 +28,7 @@
 //#include "omega/ImageUtils.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(EntityData* data, EngineClient* client):
+Entity::Entity(EntityData* data, EngineServer* client):
 	myData(data),
 	myClient(client),
 	myVisible(false)
@@ -130,7 +130,7 @@ void MeshViewerServer::createEntities(MeshViewerClient* client)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewerClient::initialize()
 {
-	EngineClient::initialize();
+	EngineServer::initialize();
 
 	myColorIdEffect = new Effect(getEffectManager());
 	myColorIdEffect->setDiffuseColor(Color::getColorByIndex(getId()));
@@ -271,7 +271,7 @@ void MeshViewerClient::draw( const DrawContext& context)
 	glColor3fv(Color::getColorByIndex(getId()).data());
 
 
-    EngineClient::draw( copyContext );
+    EngineServer::draw( copyContext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,7 +303,7 @@ void MeshViewerClient::handleEvent(const Event& evt)
             deltaScale = -0.1;
         }
     }
-    EngineClient::handleEvent(evt);
+    EngineServer::handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -370,7 +370,7 @@ void MeshViewerClient::update(const UpdateContext& context)
 		deltaScale = 0.0;
 	}
 		
-	return EngineClient::update( context );
+	return EngineServer::update( context );
 
 }
 

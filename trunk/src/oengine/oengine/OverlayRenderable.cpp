@@ -24,10 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#include "oengine/OverlayRenderable.h"
 
-using namespace omega::script;
+using namespace omega;
+using namespace oengine;
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+OMEGA_DEFINE_TYPE(OverlayRenderable, Renderable)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,123 +24,107 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
-
-#include <omega.h>
-#include <oengine.h>
+#include "oengine/EngineServer.h"
+#include "oengine/LightingPass.h"
+#include "oengine/OverlayRenderPass.h"
+#include "oengine/DefaultRenderPass.h"
 
 using namespace omega;
 using namespace oengine;
-using namespace oengine::ui;
+//using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class EntityData
+EngineServer::EngineServer(Application* app):
+	ApplicationServer(app)
 {
-public:
-	EntityData():
-	  meshData(NULL) {}
 
-	String name;
-	String label;
-	MeshData* meshData;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+void EngineServer::addRenderPass(String renderPass, bool addToFront)
 {
-public:
-	Entity(EntityData* data, EngineServer* client);
-
-	EntityData* getData() { return myData; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
-
-private:
-	EntityData* myData;
-	EngineServer* myClient;
-
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
-
-class MeshViewerClient;
-	
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerServer: public ApplicationServer
-{
-public:
-	typedef Dictionary<String, EntityData*> EntityDictionary;
-public:
-	MeshViewerServer(Application* app): ApplicationServer(app) {}
-
-	virtual void initialize();
-	void createEntities(MeshViewerClient* client);
-
-private:
-	EntityDictionary myEntities;
-};
+	RenderPassFactory rpNew = myRenderPassFactories[renderPass];
+	if(rpNew != NULL)
+	{
+		foreach(EngineClient* client, myClients)
+		{
+			client->addRenderPass(rpNew(), addToFront);
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineServer
+void EngineServer::removeRenderPass(String renderPass)
 {
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineServer(server), 
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-
-	void addEntity(EntityData* ed);
-
-	virtual void handleEvent(const Event& evt);
-    void draw( const DrawContext& context);
-
-	void handleUIEvent(const Event& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-
-	Effect* myColorIdEffect;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
+	oassert(false); // Not implemented.
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
+void EngineServer::addClient(EngineClient* client)
 {
-public:
-	virtual ApplicationServer* createServer() { return new MeshViewerServer(this); }
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
-};
+	oassert(client != NULL);
+	myClients.push_back(client);
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::initialize()
+{
+	for(int i = 0; i < MaxScenes; i++)
+	{
+		myScene[i] = new SceneNode(this, "root");
+	}
+	for(int i = 0; i < MaxUis; i++)
+	{
+		//myUi[i] = new Container(this);
+	}
+
+	// Setup default render chain.
+	registerRenderPassClass<LightingPass>();
+	registerRenderPassClass<OverlayRenderPass>();
+	registerRenderPassClass<DefaultRenderPass>();
+
+	addRenderPass("LightingPass");
+	addRenderPass("DefaultRenderPass");
+	addRenderPass("OverlayRenderPass");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+SceneNode* EngineServer::getScene(int id)
+{
+	oassert(id >= 0 && id < EngineServer::MaxScenes);
+	return myScene[id];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//Container* EngineServer::getUi(int id)
+//{
+//	oassert(id >= 0 && id < EngineServer::MaxUis);
+//	return myUi[id];
+//}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::update(const UpdateContext& context)
+{
+	// Update actors.
+	//foreach(Actor* a, myActors)
+	//{
+	//	a->update(context);
+	//}
+
+	// Update scene.
+	for(int i = 0; i < MaxScenes; i++)
+	{
+		myScene[i]->update(false, false);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::handleEvent(const Event& evt)
+{
+/*	myUiManager->handleEvent(evt);
+	if(!evt.isProcessed())
+	{
+		return mySceneManager->handleEvent(evt);
+	}*/
+}
+

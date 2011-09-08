@@ -24,10 +24,62 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#include "oengine/RenderingClient.h"
+#include "oengine/LightingPass.h"
+#include "oengine/DefaultRenderPass.h"
+#include "oengine/OverlayRenderPass.h"
+#include "oengine/Renderer.h"
+#include "omega/glheaders.h"
 
-using namespace omega::script;
-
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+using namespace omega;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderingClient::addRenderPass(RenderPass* pass, bool addToFront)
+{
+	if(addToFront)
+	{
+		myRenderPassList.push_front(pass);
+	}
+	else
+	{
+		myRenderPassList.push_back(pass);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderingClient::removeRenderPass(RenderPass* pass)
+{
+	myRenderPassList.remove(pass);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderingClient::initialize()
+{
+	myRoot = new SceneNode(this, "root");
+	myDefaultRenderer = onew(Renderer)();
+
+	addRenderPass(onew(LightingPass)());
+	addRenderPass(onew(DefaultRenderPass)());
+	addRenderPass(onew(OverlayRenderPass)());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderingClient::draw(const DrawContext& context)
+{
+	// Call predraw method on actors.
+	foreach(Actor* a, myActors)
+	{
+		a->preDraw(context);
+	}
+
+	// Update transform hierarchy
+	myRoot->update(false, false);
+
+	// Execute all render passes in order.
+	foreach(RenderPass* pass, myRenderPassList)
+	{
+		pass->render(this, context);
+	}
+
+}

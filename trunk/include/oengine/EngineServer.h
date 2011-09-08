@@ -24,10 +24,68 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#ifndef __ENGINE_SERVER_H__
+#define __ENGINE_SERVER_H__
 
-using namespace omega::script;
+#include "oenginebase.h"
+#include "EngineClient.h"
+#include "SceneNode.h"
+#include "Renderable.h"
+//#include "ui/Container.h"
+#include "omega/Application.h"
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+namespace oengine {
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+	typedef List<EngineClient*> EngineClientList;
+		
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API EngineServer: public ApplicationServer
+	{
+	public:
+		typedef RenderPass* (*RenderPassFactory)();
+
+	public:
+		static const int MaxScenes = 3;
+		static const int MaxUis = 3;
+
+	public:
+		EngineServer(Application* app);
+
+		void addClient(EngineClient* client);
+		EngineClientList& getClients();
+
+		//!{ Render pass management
+		template<typename T> void registerRenderPassClass();
+		void addRenderPass(String renderPass, bool addToFront = false);
+		void removeRenderPass(String renderPass);
+		//!}
+
+		SceneNode* getScene(int id);
+		//ui::Container* getUi(int id);
+
+		virtual void initialize();
+		virtual void handleEvent(const Event& evt);
+		virtual void update(const UpdateContext& context);
+
+	private:
+		List<EngineClient*> myClients;
+
+		Dictionary<String, RenderPassFactory> myRenderPassFactories;
+
+		SceneNode* myScene[MaxScenes];
+		//ui::Container* myUi[MaxUis];
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename T> 
+	inline void EngineServer::registerRenderPassClass()
+	{
+		myRenderPassFactories[T::Type->getName()] = (RenderPassFactory)T::createInstance;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline EngineClientList& EngineServer::getClients()
+	{ return myClients; }
+}; // namespace oengine
+
+#endif

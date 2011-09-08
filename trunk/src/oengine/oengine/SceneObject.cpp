@@ -24,10 +24,22 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#include "oengine/SceneObject.h"
+#include "oengine/EngineServer.h"
 
-using namespace omega::script;
-
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+using namespace omega;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneObject::SceneObject()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneObject::draw(SceneNode* node, RenderState* state)
+{ 
+	SceneRenderable* sr = (SceneRenderable*)getRenderable(state->client);
+	sr->setSceneNode(node);
+	sr->draw(state);
+}
+

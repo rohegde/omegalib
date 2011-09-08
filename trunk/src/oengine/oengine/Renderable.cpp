@@ -24,10 +24,52 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#include "oengine/Renderable.h"
+#include "oengine/EngineClient.h"
+#include "oengine/EngineServer.h"
 
-using namespace omega::script;
+using namespace omega;
+using namespace oengine;
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+OMEGA_DEFINE_TYPE(Renderable, OmegaObject)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable::Renderable():
+	myClient(NULL)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderableFactory::initialize(EngineServer* srv)
+{
+	myServer = srv;
+	foreach(EngineClient* client, srv->getClients())
+	{
+		Renderable* r = createRenderable();
+		myRenderables.push_back(r);
+		client->queueRenderableCommand(
+			RenderableCommand(r, RenderableCommand::Initialize));
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderableFactory::dispose()
+{
+	foreach(Renderable* r, myRenderables)
+	{
+		r->getClient()->queueRenderableCommand(
+			RenderableCommand(r, RenderableCommand::Dispose));
+	}
+	myRenderables.empty();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* RenderableFactory::getRenderable(EngineClient* client)
+{
+	foreach(Renderable* r, myRenderables)
+	{
+		if(r->getClient() == client) return r;
+	}
+	return NULL;
+}
+

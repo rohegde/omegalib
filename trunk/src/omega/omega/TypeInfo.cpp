@@ -28,6 +28,8 @@
 
 using namespace omega;
 
+const omega::TypeInfo* OmegaObject::Type = new omega::TypeInfo("OmegaObject", NULL);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool TypeInfo::isDerivedFrom(const TypeInfo* base) const
 {

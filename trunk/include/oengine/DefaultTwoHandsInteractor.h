@@ -28,8 +28,8 @@
 #define __DEFAULT_TWO_HANDS_INTERACTOR_H__
 
 #include "oenginebase.h"
-#include "omega/ObserverUpdateService.h"
 #include "oengine/Actor.h"
+#include "omega/ObserverUpdateService.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -38,7 +38,7 @@ const SceneQueryResultList& RaySceneQuery::execute(uint flags)
 {
 	bool queryOne = ((flags & SceneQuery::QueryFirst) == SceneQuery::QueryFirst) ? true : false;
 
-	queryNode(myScene->getRootNode(), myResults, queryOne);
+	queryNode(myScene, myResults, queryOne);
 
 	if((flags & SceneQuery::QuerySort) == SceneQuery::QuerySort)
 	{

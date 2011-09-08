@@ -24,123 +24,83 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
-
-#include <omega.h>
-#include <oengine.h>
+#include "oengine/Box.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace oengine;
-using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class EntityData
+Box::Box()
 {
-public:
-	EntityData():
-	  meshData(NULL) {}
-
-	String name;
-	String label;
-	MeshData* meshData;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+Renderable* Box::createRenderable()
 {
-public:
-	Entity(EntityData* data, EngineServer* client);
-
-	EntityData* getData() { return myData; }
-
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-
-	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
-
-private:
-	EntityData* myData;
-	EngineServer* myClient;
-
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
-	bool myVisible;
-};
-
-class MeshViewerClient;
-	
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerServer: public ApplicationServer
-{
-public:
-	typedef Dictionary<String, EntityData*> EntityDictionary;
-public:
-	MeshViewerServer(Application* app): ApplicationServer(app) {}
-
-	virtual void initialize();
-	void createEntities(MeshViewerClient* client);
-
-private:
-	EntityDictionary myEntities;
-};
+	return new BoxRenderable(this);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineServer
+BoxRenderable::BoxRenderable(Box* box):
+	myBox(box)
 {
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineServer(server), 
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-
-	void addEntity(EntityData* ed);
-
-	virtual void handleEvent(const Event& evt);
-    void draw( const DrawContext& context);
-
-	void handleUIEvent(const Event& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
-
-private:
-	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-
-	Effect* myColorIdEffect;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
+BoxRenderable::~BoxRenderable()
 {
-public:
-	virtual ApplicationServer* createServer() { return new MeshViewerServer(this); }
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
-};
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void BoxRenderable::initialize()
+{
+	// Initialize cube normals.
+	myNormals[0] = Vector3f(-1, 0, 0);
+	myNormals[1] = Vector3f(0, 1, 0);
+	myNormals[2] = Vector3f(1, 0, 0);
+	myNormals[3] = Vector3f(0, -1, 0);
+	myNormals[4] = Vector3f(0, 0, 1);
+	myNormals[5] = Vector3f(0, 0, -1);
+
+	// Initialize cube face indices.
+	myFaces[0] = Vector4i(0, 1, 2, 3);
+	myFaces[1] = Vector4i(3, 2, 6, 7);
+	myFaces[2] = Vector4i(7, 6, 5, 4);
+	myFaces[3] = Vector4i(4, 5, 1, 0);
+	myFaces[4] = Vector4i(5, 6, 2, 1);
+	myFaces[5] = Vector4i(7, 4, 0, 3);
+
+	// Initialize cube face colors.
+	myFaceColors[0] = Color::Aqua;
+	myFaceColors[1] = Color::Orange;
+	myFaceColors[2] = Color::Olive;
+	myFaceColors[3] = Color::Navy;
+	myFaceColors[4] = Color::Red;
+	myFaceColors[5] = Color::Yellow;
+
+	// Setup cube vertex data
+	float size = 0.2f;
+	myVertices[0][0] = myVertices[1][0] = myVertices[2][0] = myVertices[3][0] = -size;
+	myVertices[4][0] = myVertices[5][0] = myVertices[6][0] = myVertices[7][0] = size;
+	myVertices[0][1] = myVertices[1][1] = myVertices[4][1] = myVertices[5][1] = -size;
+	myVertices[2][1] = myVertices[3][1] = myVertices[6][1] = myVertices[7][1] = size;
+	myVertices[0][2] = myVertices[3][2] = myVertices[4][2] = myVertices[7][2] = size;
+	myVertices[1][2] = myVertices[2][2] = myVertices[5][2] = myVertices[6][2] = -size;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void BoxRenderable::draw(RenderState* state)
+{
+	for (int i = 0; i < 6; i++) 
+	{
+		glBegin(GL_QUADS);
+		glColor3fv(myFaceColors[i].data());
+		glNormal3fv(myNormals[i].data());
+		glVertex3fv(myVertices[myFaces[i][0]].data());
+		glVertex3fv(myVertices[myFaces[i][1]].data());
+		glVertex3fv(myVertices[myFaces[i][2]].data());
+		glVertex3fv(myVertices[myFaces[i][3]].data());
+		glEnd();
+	}
+}

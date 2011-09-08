@@ -27,7 +27,6 @@
 #include "oengine/DefaultMouseInteractor.h"
 #include "omega/StringUtils.h"
 
-using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

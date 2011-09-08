@@ -24,10 +24,29 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#include "oengine/Font.h"
+#include "omega/glheaders.h"
 
-using namespace omega::script;
-
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+using namespace omega;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector2f Font::computeSize(const omega::String& text) 
+{ 
+	FTBBox bbox = myFontImpl->BBox(text.c_str());
+	Vector2f size = Vector2f((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf());
+	return size;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Font::render(const omega::String& text, float x, float y) 
+{ 
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glScalef(1.0f, -1.0f, 1.0f);
+
+	myFontImpl->Render(text.c_str(), text.length(), FTPoint(x, y, 0.0f)); 
+
+	glPopMatrix();
+}
+
