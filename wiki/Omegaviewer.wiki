@@ -22,7 +22,7 @@ Using the iPad an interface we will build, the user can select and change the mo
 
 Once loaded the img will give you a general display.
 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/architecture.png" width="300"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/IpadUI.png" width="300"/></p><p align="middle">
 _^An overview of the omegalib architecture.^_
 </p>
 
