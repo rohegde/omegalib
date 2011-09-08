@@ -33,6 +33,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <queue>
 
 // boost includes
 #include <boost/foreach.hpp>
@@ -146,6 +147,7 @@ namespace omega
 
 	template<typename T> class Vector: public std::vector<T> {};
 	template<typename T> class List: public std::list<T> {};
+	template<typename T> class Queue: public std::queue<T> {};
 
 	// Math and linear algebra typedefs
 	typedef math::Math<float> Math;

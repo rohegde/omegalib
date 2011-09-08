@@ -25,9 +25,12 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/Renderer.h"
-#include "oengine/FontManager.h"
 #include "omega/Texture.h"
+#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
+#include "omega/Lock.h"
+#include "omega/SystemManager.h"
+#include "omega/DataManager.h"
 
 using namespace omega;
 using namespace oengine;
@@ -321,4 +324,50 @@ void Renderer::drawWireSphere(const Color& color, int segments, int slices)
 	}
 
 	glPopAttrib();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Font* Renderer::createFont(omega::String fontName, omega::String filename, int size)
+{
+	if(getFont(fontName))
+	{
+		ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
+		return getFont(fontName);
+	}
+
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo info = dm->getInfo(filename);
+	oassert(!info.isNull());
+	oassert(info.local);
+
+	myLock.lock();
+
+	FTFont* fontImpl = new FTTextureFont(info.path.c_str());
+
+	myLock.unlock();
+
+	//delete data;
+
+	if(fontImpl->Error())
+	{
+		ofwarn("Font %1% failed to open", %filename);
+		delete fontImpl;
+	}
+
+	if(!fontImpl->FaceSize(size))
+	{
+		ofwarn("Font %1% failed to set size %2%", %filename %size);
+		delete fontImpl;
+	}
+
+	Font* font = new Font(fontImpl);
+
+	myFonts[fontName] = font;
+	return font;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Font* Renderer::getFont(omega::String fontName)
+{
+	return myFonts[fontName];
 }

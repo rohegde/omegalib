@@ -22,45 +22,40 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
+#ifndef __TEAPOT_H__
+#define __TEAPOT_H__
+
+#include "oenginebase.h"
+#include "oengine/oenginebase.h"
+#include "oengine/Renderable.h"
 #include "oengine/Effect.h"
-#include "omega/GpuManager.h"
-#include "omega/glheaders.h"
 
-using namespace omega;
-using namespace oengine;
+namespace oengine {
+	// Forward declarations
+	class SceneNode;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Effect::Effect(): 
-	myEmissiveColor(0, 0, 0, 1), 
-	mySpecularColor(1, 1, 1, 1), 
-	myAmbientColor(1, 1, 1, 1),
-	myDiffuseColor(1, 1, 1, 1),
-	myForcedDiffuseColor(false),
-	myShininess(32) 
-{
-	//myProgram = myMng->getGpuManager()->getDefaultProgram();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Effect::activate()
-{
-	myParams.bind(myProgram, GpuProgram::RenderStage);
-	glEnable(GL_COLOR_MATERIAL);
-	if(myForcedDiffuseColor)
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API Teapot: public Renderable
 	{
-		glDisableClientState(GL_COLOR_ARRAY);
-	}
-	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, myAmbientColor.data());
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, myDiffuseColor.data());
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.data());
-	glMaterialfv(GL_FRONT, GL_EMISSION, myEmissiveColor.data());
-	glMaterialf(GL_FRONT, GL_SHININESS, myShininess);
-}
+	public:
+		Teapot(): mySize(1), myResolution(16), myEffect(NULL) {}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Effect::deactivate()
-{
-	myParams.unbind(myProgram, GpuProgram::RenderStage);
-}
+		virtual void render(SceneNode* node, RenderState* state);
 
+		float getSize() { return mySize; }
+		void setSize( float value) { mySize = value; }
+
+		int getResolution() { return myResolution; }
+		void setResolution( float value) { myResolution = value; }
+
+		Effect* getEffect() { return myEffect; }
+		void setEffect(Effect* value) { myEffect = value; }
+
+	private:
+		float mySize;
+		int myResolution;
+		Effect* myEffect;
+	};
+}; // namespace oengine
+
+#endif

@@ -25,12 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/EngineClient.h"
-#include "oengine/FontManager.h"
-#include "oengine/ui/UiManager.h"
-#include "oengine/SceneManager.h"
-#include "oengine/EffectManager.h"
-#include "oengine/MeshManager.h"
-#include "oengine/Renderer.h"
+#include "oengine/EngineServer.h"
 
 #include "omega/GpuManager.h"
 #include "omega/TextureManager.h"
@@ -40,124 +35,76 @@
 
 using namespace omega;
 using namespace oengine;
-using namespace oengine::ui;
+//using namespace oengine::ui;
+
+OMEGA_DEFINE_TYPE(RenderPass, OmegaObject)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+EngineClient::EngineClient(ApplicationServer* server):
+	ApplicationClient(server)
+{
+	myRenderer = new Renderer();
+	myServer = (EngineServer*)server;
+	myServer->addClient(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::addRenderPass(RenderPass* pass, bool addToFront)
+{
+	if(addToFront)
+	{
+		myRenderPassList.push_front(pass);
+	}
+	else
+	{
+		myRenderPassList.push_back(pass);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::removeRenderPass(RenderPass* pass)
+{
+	myRenderPassList.remove(pass);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
-	myGpuManager = getGpu();
-
-	myFontManager = new FontManager();
-	myTextureManager = new TextureManager();
-	myUiManager = new UiManager();
-	myFontManager = new FontManager();
-
-	mySceneManager = new SceneManager(myGpuManager);
-	myEffectManager = new EffectManager(myGpuManager);
-	myMeshManager = new MeshManager(myGpuManager, myEffectManager);
-
-	mySceneManager->initialize();
-
-	//myUiManager->initialize(myClient);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::setTextureBackground(DrawContext::Eye eye, Texture* value)
-{
-	switch(eye)
-	{
-	case DrawContext::EyeLeft:
-	case DrawContext::EyeCyclop:
-		myLeftBackgroundTexture = value;
-		break;
-	case DrawContext::EyeRight:
-		myRightBackgroundTexture = value;
-		break;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-Texture* EngineClient::getTextureBackground(DrawContext::Eye eye)
-{
-	switch(eye)
-	{
-	case DrawContext::EyeLeft:
-	case DrawContext::EyeCyclop:
-		return myLeftBackgroundTexture;
-	case DrawContext::EyeRight:
-		return myRightBackgroundTexture;
-	}
-	return NULL;
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::update(const UpdateContext& context)
-{
-	myUiManager->update(context);
-	mySceneManager->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::handleEvent(const Event& evt)
+void EngineClient::queueRenderableCommand(RenderableCommand& cmd)
 {
-	myUiManager->handleEvent(evt);
-	if(!evt.isProcessed())
-	{
-		return mySceneManager->handleEvent(evt);
-	}
+	myRenderableCommands.push(cmd);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::draw(const DrawContext& context)
 {
-	// first two bits = scene layer
-	int sceneId = context.layer & 0x03;
-	// second two bits = ui layer
-	int overlayId = (context.layer >> 2) & 0x03;
+	// First of all execute renderable commands.
+	while(!myRenderableCommands.empty())
+	{
+		myRenderableCommands.front().execute();
+		myRenderableCommands.pop();
+	}
 
-	myGpuManager->beginDraw();
-	// NOTE: Background rendering is active only for SCENE rendering.
-	// When rendering overlays only, don't draw background again or it may delete whatever has been drawn before overlays.
-	if(myTextureBackgroundEnabled && (sceneId != 0 || overlayId == 0))
+	getGpu()->beginDraw();
+
+	// Call predraw method on actors.
+	// FIX ME.
+	//foreach(Actor* a, myActors)
+	//{
+	//	a->preDraw(context);
+	//}
+
+	// Update transform hierarchy
+	//myRoot->update(false, false);
+
+	// Execute all render passes in order.
+	foreach(RenderPass* pass, myRenderPassList)
 	{
-		drawBackGrd( context );
+		pass->render(this, context);
 	}
-	
-	if(sceneId != 0)
-	{
-		mySceneManager->draw(context);
-	}
-	if(overlayId != 0)
-	{
-		myUiManager->draw(context);
-	}
-	myGpuManager->endDraw();
+
+	getGpu()->endDraw();
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::drawBackGrd( const DrawContext& context )
-{
-	Vector2f position(0, 0);
-	Vector2f size(context.viewport.width(), context.viewport.height());
-
-	Renderer backGrdPainter;
-	backGrdPainter.beginDraw2D(context);
-	glEnable(GL_TEXTURE_2D);
-
-	switch( context.eye )
-	{
-		case DrawContext::EyeLeft:
-		oassert(myLeftBackgroundTexture);
-		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
-		break;
-		case DrawContext::EyeRight:
-		oassert(myRightBackgroundTexture);
-		backGrdPainter.drawRectTexture( myRightBackgroundTexture , position, size );
-		break;
-		case DrawContext::EyeCyclop:
-		oassert(myLeftBackgroundTexture);
-		backGrdPainter.drawRectTexture( myLeftBackgroundTexture , position, size );
-		break;
-	}
-	
-	backGrdPainter.endDraw();
-}
-

@@ -24,10 +24,17 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#include "oengine/SceneRenderable.h"
 
-using namespace omega::script;
-
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+using namespace omega;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneRenderable::SceneRenderable()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneRenderable::~SceneRenderable()
+{
+}

@@ -31,15 +31,11 @@
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// forawrd declarations.
-	class EffectManager;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
 	class OENGINE_API Effect
 	{
 	public:
-		Effect(EffectManager* mng);
+		Effect();
 
 		void setProgram(GpuProgram* program) { myProgram = program; }
 		GpuProgram* getProgram() { return myProgram; }
@@ -76,7 +72,6 @@ namespace oengine {
 		bool getForcedDiffuseColor() { return myForcedDiffuseColor; }
 
 	private:
-		EffectManager* myMng;
 		GpuProgram* myProgram;
 		GpuProgramParams myParams;
 		bool myForcedDiffuseColor;

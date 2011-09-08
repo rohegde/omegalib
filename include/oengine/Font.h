@@ -24,10 +24,30 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#ifndef __FONT_H__
+#define __FONT_H__
 
-using namespace omega::script;
+#include "oengine/oenginebase.h"
+#include "omega/Lock.h"
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+#include "FTGL/ftgl.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+namespace oengine {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API Font
+	{
+	public:
+		enum Align {HALeft = 1 << 0, HARight = 1 << 1, HACenter = 1 << 2,
+					VATop = 1 << 3, VABottom = 1 << 4, VAMiddle = 1 << 5};
+	public:
+		Font(FTFont* fontImpl): myFontImpl(fontImpl) {}
+
+		void render(const String& text, float x, float y);
+		Vector2f computeSize(const omega::String& text);
+
+	private:
+		FTFont* myFontImpl;
+	};
+}; // namespace oengine
+
+#endif

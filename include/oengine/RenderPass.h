@@ -28,15 +28,15 @@
 #define __RENDER_PASS_H__
 
 #include "oenginebase.h"
-#include "omega/Application.h"
+#include "Renderer.h"
 
 namespace oengine {
-	class Renderer;
-	class SceneManager;
+	class EngineClient;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API RenderPass
+	class OENGINE_API RenderPass: public OmegaObject
 	{
+	OMEGA_DECLARE_ABSTRACT_TYPE(RenderPass)
 	public:
 		enum RenderFlags { 
 			RenderOpaque = 1 << 1, 
@@ -45,7 +45,7 @@ namespace oengine {
 			RenderCustom = 1 << 8 };
 
 	public:
-		virtual void render(SceneManager* mng, const DrawContext& context) = 0;
+		virtual void render(EngineClient* client, const DrawContext& context) = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ namespace oengine {
 	{
 		uint flags;
 		RenderPass* pass;
-		Renderer* renderer;
+		EngineClient* client;
 		const DrawContext* context;
 
 		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }

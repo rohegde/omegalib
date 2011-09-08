@@ -54,17 +54,17 @@ if(OMEGA_BINARY_DIR)
 		# Since visual studio and Xcode builds are multiconfiguration, set two separate directories for debug and release builds
 		find_library(OMEGA_LIB_DEBUG NAMES omega PATHS ${OMEGA_LIB_DIR_DEBUG})
 		find_library(OMEGA_LIB_RELEASE NAMES omega PATHS ${OMEGA_LIB_DIR_RELEASE})
-		find_library(OUTILS_LIB_DEBUG NAMES outils PATHS ${OMEGA_LIB_DIR_DEBUG})
-		find_library(OUTILS_LIB_RELEASE NAMES outils PATHS ${OMEGA_LIB_DIR_RELEASE})
+		find_library(OENGINE_LIB_DEBUG NAMES oengine PATHS ${OMEGA_LIB_DIR_DEBUG})
+		find_library(OENGINE_LIB_RELEASE NAMES oengine PATHS ${OMEGA_LIB_DIR_RELEASE})
 	else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 		find_library(OMEGA_LIB_DEBUG NAMES omega PATHS ${OMEGA_BIN_DIR})
 		find_library(OMEGA_LIB_RELEASE NAMES omega PATHS ${OMEGA_BIN_DIR})
-		find_library(OUTILS_LIB_DEBUG NAMES omega PATHS ${OMEGA_BIN_DIR})
-		find_library(OUTILS_LIB_RELEASE NAMES omega PATHS ${OMEGA_BIN_DIR})
+		find_library(OENGINE_LIB_DEBUG NAMES oengine PATHS ${OMEGA_BIN_DIR})
+		find_library(OENGINE_LIB_RELEASE NAMES oengine PATHS ${OMEGA_BIN_DIR})
 	endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
 	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OMEGA_LIB_RELEASE} ${OPENGL_LIBRARY})
-	set(OUTILS_LIB debug ${OUTILS_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OUTILS_LIB_RELEASE} ${OPENGL_LIBRARY})
+	set(OENGINE_LIB debug ${OENGINE_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OENGINE_LIB_RELEASE} ${OPENGL_LIBRARY})
 
 	###################################################################################################
 	# Visual studio specific options.

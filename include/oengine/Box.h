@@ -24,10 +24,41 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#ifndef __BOX_H__
+#define __BOX_H__
 
-using namespace omega::script;
+#include "SceneObject.h"
+#include "SceneRenderable.h"
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+namespace oengine {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API Box: public SceneObject
+	{
+	public:
+		Box();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+		virtual Renderable* createRenderable();
+
+	private:
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class BoxRenderable: public SceneRenderable
+	{
+	public:
+		BoxRenderable(Box* box);
+		virtual ~BoxRenderable();
+		void initialize();
+		void draw(RenderState* state);
+
+	private:
+		Box* myBox;
+
+		Vector3f myNormals[6];
+		Vector4i myFaces[6]; 
+		Vector3f myVertices[8];
+		Color myFaceColors[6];
+	};
+}; // namespace oengine
+
+#endif

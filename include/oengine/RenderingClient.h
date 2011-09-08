@@ -24,73 +24,83 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __RENDERABLE_H__
-#define __RENDERABLE_H__
+#ifndef __RENDERINGCLIENT_H__
+#define __RENDERINGCLIENT_H__
 
 #include "oenginebase.h"
-#include "RenderPass.h"
+#include "omega/Application.h"
+#include "omega/GpuManager.h"
+#include "oengine/SceneNode.h"
+#include "oengine/Actor.h"
+#include "oengine/Light.h"
 
 namespace oengine {
+	class Renderer;
 	class EngineServer;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Renderable: public OmegaObject
-	{
-	OMEGA_DECLARE_ABSTRACT_TYPE(Renderable)
-	public:
-		Renderable();
-
-		void setClient(EngineClient* client);
-		EngineClient* getClient();
-
-		virtual void initialize() {}
-		virtual void dispose() {}
-		virtual void draw(RenderState* state) = 0;
-
-	private:
-		EngineClient* myClient;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct RenderableCommand
-	{
-		enum Command { Initialize, Dispose };
-		Renderable* renderable;
-		Command command;
-
-		RenderableCommand(Renderable* r, Command c): renderable(r), command(c) {}
-		void execute()
-		{
-			switch(command)
-			{
-			case Initialize: renderable->initialize(); break;
-			case Dispose: renderable->initialize(); break;
-			}
-		}
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Base class for objects that can create renderables.
-	class RenderableFactory
+	class OENGINE_API RenderingClient: public DynamicObject
 	{
 	public:
-		virtual Renderable* createRenderable() = 0;
-		void initialize(EngineServer* srv);
-		void dispose();
-		Renderable* getRenderable(EngineClient* client);
+		static const int MaxLights = 8;
+
+	public:
+		SceneManager(GpuManager* gpu): 
+		  myGpuMng(gpu), 
+		  myRoot(NULL),
+		  myAmbientLightColor(0.3f, 0.3f, 0.4f, 1.0f) {}
+
+		void initialize();
+
+		GpuManager* getGpuManager();
+		SceneNode* getRootNode();
+
+		void setAmbientLightColor(const Color& value);
+		Color getAmbientLightColor();
+
+		void draw(const DrawContext& context);
+
+		void addRenderPass(RenderPass* pass, bool addToFront = false);
+		void removeRenderPass(RenderPass* pass);
+
+		Light* getLight(int num);
+
+		Renderer* getRenderer();
 
 	private:
-		EngineServer* myServer;
-		List<Renderable*> myRenderables;
+		GpuManager* myGpuMng;
+		SceneNode* myRoot;
+
+		Light myLights[MaxLights];
+		Color myAmbientLightColor;
+
+		List<RenderPass*> myRenderPassList;
+
+		Renderer* myDefaultRenderer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Renderable::setClient(EngineClient* value)
-	{ myClient = value; }
+	inline GpuManager* SceneManager::getGpuManager() 
+	{ return myGpuMng; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClient* Renderable::getClient()
-	{ return myClient; }
+	inline SceneNode* SceneManager::getRootNode() 
+	{ return myRoot; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SceneManager::setAmbientLightColor(const Color& value)
+	{ myAmbientLightColor = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color SceneManager::getAmbientLightColor()
+	{ return myAmbientLightColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light* SceneManager::getLight(int num)
+	{ return &myLights[num]; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Renderer* SceneManager::getRenderer()
+	{ return myDefaultRenderer; }
 }; // namespace oengine
 
 #endif
