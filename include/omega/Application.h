@@ -157,7 +157,7 @@ namespace omega
 	{ return myId; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationServer: public DynamicObject, public IEventListener
+	class OMEGA_API ApplicationServer: public DynamicObject, public IEventListener
 	{
 	friend class ApplicationClient;
 	public:

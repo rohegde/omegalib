@@ -27,7 +27,6 @@
 #ifndef __LABEL_H__
 #define __LABEL_H__
 
-#include "oengine/FontManager.h"
 #include "oengine/ui/Widget.h"
 
 namespace oengine { namespace ui {

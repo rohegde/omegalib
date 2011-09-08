@@ -32,6 +32,8 @@
 #include "omega/SystemManager.h"
 #include "omega/DataManager.h"
 
+#include "FTGL/ftgl.h"
+
 using namespace omega;
 using namespace oengine;
 

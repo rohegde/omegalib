@@ -71,7 +71,7 @@ namespace oengine {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Base class for objects that can create renderables.
-	class RenderableFactory
+	class OENGINE_API RenderableFactory
 	{
 	public:
 		virtual Renderable* createRenderable() = 0;
