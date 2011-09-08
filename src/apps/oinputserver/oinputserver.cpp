@@ -216,7 +216,7 @@ public:
 			// Converts zRot to char, appends to eventPacket
 			sprintf(floatChar,"%f",evt.getOrientation().z());
 			strcat( eventPacket, floatChar );
-			strcat( eventPacket, " " ); // Spacer
+			strcat( eventPacket, "," ); // Spacer
 
 			// Converts zRot to char, appends to eventPacket
 			sprintf(floatChar,"%f",evt.getOrientation().w());
