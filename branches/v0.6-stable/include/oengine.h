@@ -68,12 +68,5 @@
 #include "oengine/ui/Widget.h"
 #include "oengine/ui/WidgetFactory.h"
 #include "oengine/ui/UserManagerPanel.h"
-#include "oengine/mvc/Model.h"
-#include "oengine/mvc/ViewManager.h"
-#include "oengine/mvc/View.h"
-#include "oengine/mvc/ViewClient.h"
-#include "oengine/mvc/Controller.h"
-#include "oengine/mvc/DynamicController.h"
-#include "oengine/mvc/UiDynamicController.h"
 
 #endif

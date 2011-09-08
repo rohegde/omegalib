@@ -27,6 +27,8 @@
 #ifndef __OTYPES_H__
 #define __OTYPES_H__
 
+#include "osysdefs.h"
+
 // Stdlib includes
 #include <string>
 #include <list>

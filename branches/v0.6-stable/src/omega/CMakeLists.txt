@@ -338,7 +338,7 @@ if(OMEGA_USE_DISPLAY)
 endif(OMEGA_USE_DISPLAY)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-	target_link_libraries( omega ${EQUALIZER_LIBS} )
+	target_link_libraries( omega ${EQUALIZER_LIBS})
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 if(OMEGA_USE_DISPLAY_GLUT)
