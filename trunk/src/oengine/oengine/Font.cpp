@@ -27,6 +27,8 @@
 #include "oengine/Font.h"
 #include "omega/glheaders.h"
 
+#include "FTGL/ftgl.h"
+
 using namespace omega;
 using namespace oengine;
 

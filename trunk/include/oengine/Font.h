@@ -30,7 +30,7 @@
 #include "oengine/oenginebase.h"
 #include "omega/Lock.h"
 
-#include "FTGL/ftgl.h"
+class FTFont;
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
