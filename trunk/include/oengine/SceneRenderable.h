@@ -40,6 +40,8 @@ namespace oengine {
 
 		void setSceneNode(SceneNode* value);
 		SceneNode* getSceneNode();
+		void pushNodeTransform();
+		void popNodeTransform();
 	
 	private:
 		SceneNode* mySceneNode;

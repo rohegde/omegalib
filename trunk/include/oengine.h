@@ -30,6 +30,7 @@
 #include "oengine/oenginebase.h"
 #include "oengine/Actor.h"
 #include "oengine/BoundingSphere.h"
+#include "oengine/Box.h"
 #include "oengine/Camera.h"
 #include "oengine/DefaultMouseInteractor.h"
 #include "oengine/DefaultTwoHandsInteractor.h"

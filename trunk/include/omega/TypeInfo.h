@@ -63,6 +63,7 @@ namespace omega
 	class OMEGA_API OmegaObject
 	{
 	public:  
+		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 		static const omega::TypeInfo* Type; 
 	};
 

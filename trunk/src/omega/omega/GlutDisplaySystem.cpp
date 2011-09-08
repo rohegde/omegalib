@@ -203,7 +203,7 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 		myFrameBuffer = new RenderTarget();
 		myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
-		myAppClient->setup();
+		//myAppClient->setup();
 		myAppClient->initialize();
 		myAppClient->getGpu()->setFrameBuffer(myFrameBuffer);
 	}

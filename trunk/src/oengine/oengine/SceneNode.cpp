@@ -82,6 +82,8 @@ void SceneNode::addObject(SceneObject* o)
 { 
 	myObjects.push_back(o); 
 	needUpdate();
+	// If the object has not been initialized yet, do it now.
+	if(!o->isInitialized()) o->initialize(myServer);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

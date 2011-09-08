@@ -126,7 +126,7 @@ namespace omega
 		//! Returns a numeric identifier for this client (relative to server).
 		uint getId();
 
-		virtual void setup() {}
+		//virtual void setup() {}
 		virtual void initialize();
 		virtual void finalize() {}
 

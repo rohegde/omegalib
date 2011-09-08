@@ -28,6 +28,7 @@
 #include "oengine/LightingPass.h"
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/DefaultRenderPass.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace oengine;
@@ -62,6 +63,8 @@ void EngineServer::removeRenderPass(String renderPass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::addClient(EngineClient* client)
 {
+	ofmsg("EngineServer::addClient: id = %1%", %client->getId());
+
 	oassert(client != NULL);
 	myClients.push_back(client);
 }

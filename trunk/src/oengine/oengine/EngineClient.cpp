@@ -31,6 +31,7 @@
 #include "omega/TextureManager.h"
 #include "omega/Texture.h"
 #include "omega/glheaders.h"
+#include "omega/StringUtils.h"
 
 
 using namespace omega;
@@ -70,6 +71,7 @@ void EngineClient::removeRenderPass(RenderPass* pass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
+	ofmsg("EngineClient::Initialize: id = %1%", %getId());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
