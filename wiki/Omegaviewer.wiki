@@ -4,6 +4,7 @@ This document contains the omegaviewer application concept, timeline and develop
 
 =Intro=   
 (mostly flushed out )
+
 As Scalable Adaptive Graphics Environment (SAGE) and Cave Automatic Virtual Environment (CAVE) have shown, the need to push and interact with the digital data in large display environments is apparent.  Next Generation Cave (NGCave) is arguably a merging of the LCD tileDisplay nature of SAGE and the VR nature of CAVE.  One current unknown is: what will the best and most intuitive interaction schema be.  Will it be a blending of the old interaction schemes.  Or will the old schemes be so diametrically opposed that they can not be blending.  The later resulting in a whole new way of interacting with NGCave.
 
 One goal of this project is lay the framework needed to researching this very question.  One test bed that tries to blend 2D/3D interaction in a VR environment is the OmegaDesk.  Though that effort, the support for multitouch, kinetic, 3D hand gesturing, and head tracking has been established.  Additionally the efforts of SAGENext will be working on how to push content to a large  scale LCD tiled display via laptop.  In short, framework needed to test various interaction modalities is certainly coming together.   
@@ -33,14 +34,42 @@ _^An overview of the omegalib architecture.^_
 
 	2) Interaction Area
 		This will allow the user to freely manipulate the data via touch.
-		 * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
-		 * two finger pushing  in the z direction *with respect to the user viewpoint*
-		 * rotation (?)
-		 * pinch zoom to scale the object.
+			 * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
+			 * two finger pushing  in the z direction *with respect to the user viewpoint*
+			 * rotation (?)
+			 * pinch zoom to scale the object.
 
 		Update 
 			These changes will be reflected on the 2x2 Hyundai VR Display.
 			A thumb may be given/updated on the tablet if there is time.
+
+
+=One Page Project Management (OPPM) for OmegaViewer=
+(integrate the table here )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 = Omegaviewer: Meshviewer on steroids =
 Omegaviewer will use meshviewer as a starting point but allow users to interact with the applications in a more advanced way
