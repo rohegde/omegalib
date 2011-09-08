@@ -74,12 +74,15 @@ namespace oengine {
 	class OENGINE_API RenderableFactory
 	{
 	public:
+		RenderableFactory();
 		virtual Renderable* createRenderable() = 0;
 		void initialize(EngineServer* srv);
 		void dispose();
+		bool isInitialized();
 		Renderable* getRenderable(EngineClient* client);
 
 	private:
+		bool myInitialized;
 		EngineServer* myServer;
 		List<Renderable*> myRenderables;
 	};
@@ -91,6 +94,10 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline EngineClient* Renderable::getClient()
 	{ return myClient; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool RenderableFactory::isInitialized()
+	{ return myInitialized; }
 }; // namespace oengine
 
 #endif

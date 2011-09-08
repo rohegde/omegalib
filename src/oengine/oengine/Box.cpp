@@ -92,6 +92,7 @@ void BoxRenderable::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void BoxRenderable::draw(RenderState* state)
 {
+	pushNodeTransform();
 	for (int i = 0; i < 6; i++) 
 	{
 		glBegin(GL_QUADS);
@@ -103,4 +104,5 @@ void BoxRenderable::draw(RenderState* state)
 		glVertex3fv(myVertices[myFaces[i][3]].data());
 		glEnd();
 	}
+	popNodeTransform();
 }

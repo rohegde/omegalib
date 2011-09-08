@@ -31,39 +31,43 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class SimpleSceneServer: public EngineServer
+class SimpleScene: public EngineServer
 {
 public:
-	SimpleSceneServer(Application* app): EngineServer(app) {}
+	SimpleScene(Application* app): EngineServer(app) {}
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
 
 private:
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class SimpleSceneApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new EngineClient(server); }
-	virtual ApplicationServer* createServer() { return new SimpleSceneServer(this); }
+	SceneNode* myCubeNode;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SimpleSceneServer::initialize()
+void SimpleScene::initialize()
 {
+	EngineServer::initialize();
+
+	SceneNode* scene = getScene(0);
+
+	myCubeNode = new SceneNode(this);
+	Box* cube = new Box();
+	
+	scene->addChild(myCubeNode);
+	myCubeNode->addObject(cube);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SimpleSceneServer::update(const UpdateContext& context)
+void SimpleScene::update(const UpdateContext& context)
 {
+	myCubeNode->roll(0.1f * context.dt);
+	myCubeNode->yaw(0.2f * context.dt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	SimpleSceneApplication app;
+	EngineApplication<SimpleScene> app;
 
 	// Read config file name from command line or use default one.
 	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 

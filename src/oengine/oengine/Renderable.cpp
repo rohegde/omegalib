@@ -40,16 +40,25 @@ Renderable::Renderable():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderableFactory::RenderableFactory():
+	myInitialized(false),
+	myServer(NULL)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderableFactory::initialize(EngineServer* srv)
 {
 	myServer = srv;
 	foreach(EngineClient* client, srv->getClients())
 	{
 		Renderable* r = createRenderable();
+		r->setClient(client);
 		myRenderables.push_back(r);
 		client->queueRenderableCommand(
 			RenderableCommand(r, RenderableCommand::Initialize));
 	}
+	myInitialized = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

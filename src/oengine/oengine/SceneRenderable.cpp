@@ -25,6 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/SceneRenderable.h"
+#include "oengine/EngineClient.h"
+#include "oengine/Renderer.h"
 
 using namespace omega;
 using namespace oengine;
@@ -37,4 +39,18 @@ SceneRenderable::SceneRenderable()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneRenderable::~SceneRenderable()
 {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneRenderable::pushNodeTransform()
+{
+	Renderer* r = getClient()->getRenderer();
+	r->pushTransform(mySceneNode->getFullTransform());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneRenderable::popNodeTransform()
+{
+	Renderer* r = getClient()->getRenderer();
+	r->popTransform();
 }
