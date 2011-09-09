@@ -156,7 +156,6 @@ void NetService::initialize()
 	ConnectSocket = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 
 	// Connect to server
-	int errno;
 	int result = connect(ConnectSocket, res->ai_addr, res->ai_addrlen);
 
 	if (result == -1) {
@@ -183,7 +182,6 @@ void NetService::initHandshake()
 
 	printf("NetService: Sending handshake: '%s'\n", sendbuf);
 
-	int errno; // linux error code
 	iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf), 0);
 
 
@@ -340,7 +338,6 @@ void NetService::dispose()
 	}
 	WSACleanup();
 #else
-	int errno; // linux error code
 	iResult = close(RecvSocket);
 	if (iResult == -1) {
 		printf("NetService: Closesocket failed with error %d\n", strerror(errno));
