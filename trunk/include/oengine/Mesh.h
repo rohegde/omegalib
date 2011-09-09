@@ -37,44 +37,37 @@
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	// Forward declarations
-	class MeshManager;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Mesh: public SceneObject
 	{
-	//OMEGA_DECLARE_TYPE(Mesh);
-
-	public:
-		class Renderable: SceneRenderable
-		{
-		//OMEGA_DECLARE_TYPE(Renderable);
-		public:
-			Renderable(Mesh* mesh): myMesh(mesh) {}
-			Effect* getEffect() { return myEffect; }
-			void setEffect(Effect* value) { myEffect = value; }
-			virtual void render(RenderState* state);
-
-		private:
-			Mesh* myMesh;
-			VertexBuffer* myVertexBuffer;
-			unsigned int* myIndexData;
-			Effect* myEffect;
-		};
-
 	public:
 		Mesh();
+		~Mesh();
+		virtual Renderable* createRenderable();
 
-		MeshData* getData() { return myData; }
-		void setData(MeshData* value) { myData = value; }
-
-		void update();
+		MeshData* getData();
+		void setData(MeshData* value);
 
 		const AlignedBox3* getBoundingBox();
 		bool hasBoundingBox();
 
 	private:
 		MeshData* myData;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API MeshRenderable: public SceneRenderable
+	{
+	public:
+		MeshRenderable(Mesh* mesh);
+		~MeshRenderable();
+		void initialize();
+		void draw(RenderState* state);
+		void refresh();
+
+	private:
+		Mesh* myMesh;
+		VertexBuffer* myVertexBuffer;
+		unsigned int* myIndexData;
 	};
 }; // namespace oengine
 

@@ -49,7 +49,7 @@ set( srcs
 #		oengine/BoundingSphere.cpp
 		oengine/DefaultMouseInteractor.cpp
 		oengine/DefaultTwoHandsInteractor.cpp
-#		oengine/Mesh.cpp
+		oengine/Mesh.cpp
 		oengine/MeshData.cpp
 		oengine/Node.cpp
 		oengine/glteapot.cpp
@@ -92,7 +92,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultMouseInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/MeshData.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Node.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Effect.h
