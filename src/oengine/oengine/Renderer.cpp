@@ -329,6 +329,21 @@ void Renderer::drawWireSphere(const Color& color, int segments, int slices)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::drawIndexedPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
+{
+	GLenum mode = GL_POINTS;
+	switch(type)
+	{
+	case DrawPoints: mode = GL_POINTS; break;
+	case DrawTriangles: mode = GL_TRIANGLES; break;
+	}
+
+	vertices->bind();
+	glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
+	vertices->unbind();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Font* Renderer::createFont(omega::String fontName, omega::String filename, int size)
 {
 	if(getFont(fontName))

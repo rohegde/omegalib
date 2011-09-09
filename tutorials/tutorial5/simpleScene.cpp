@@ -50,10 +50,18 @@ void SimpleScene::initialize()
 	SceneNode* scene = getScene(0);
 
 	myCubeNode = new SceneNode(this);
-	Box* cube = new Box();
+	//Box* cube = new Box();
+
+	PlyDataReader* meshData = new PlyDataReader();
+	meshData->readPlyFile("meshes/walker.ply");
+	meshData->scale(0.8f);
+
+	Mesh* mesh = new Mesh();
 	
 	scene->addChild(myCubeNode);
-	myCubeNode->addObject(cube);
+	myCubeNode->addObject(mesh);
+
+	mesh->setData(meshData);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

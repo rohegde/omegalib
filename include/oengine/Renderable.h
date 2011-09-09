@@ -42,9 +42,11 @@ namespace oengine {
 
 		void setClient(EngineClient* client);
 		EngineClient* getClient();
+		Renderer* getRenderer();
 
 		virtual void initialize() {}
 		virtual void dispose() {}
+		virtual void refresh() {}
 		virtual void draw(RenderState* state) = 0;
 
 	private:
@@ -54,7 +56,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct RenderableCommand
 	{
-		enum Command { Initialize, Dispose };
+		enum Command { Initialize, Dispose, Refresh };
 		Renderable* renderable;
 		Command command;
 
@@ -65,6 +67,7 @@ namespace oengine {
 			{
 			case Initialize: renderable->initialize(); break;
 			case Dispose: renderable->initialize(); break;
+			case Refresh: renderable->refresh(); break;
 			}
 		}
 	};
@@ -78,6 +81,7 @@ namespace oengine {
 		virtual Renderable* createRenderable() = 0;
 		void initialize(EngineServer* srv);
 		void dispose();
+		void refresh();
 		bool isInitialized();
 		Renderable* getRenderable(EngineClient* client);
 

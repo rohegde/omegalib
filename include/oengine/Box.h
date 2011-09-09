@@ -36,7 +36,6 @@ namespace oengine {
 	{
 	public:
 		Box();
-
 		virtual Renderable* createRenderable();
 
 	private:

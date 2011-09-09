@@ -40,6 +40,8 @@ namespace oengine {
 	public:
 		SceneObject();
 
+		//! This method is called by engine client threads to traverse the scene hierarchy during
+		//! rendering.
 		void draw(SceneNode* node, RenderState* state);
 
 		virtual const AlignedBox3* getBoundingBox() { return NULL; }
