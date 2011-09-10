@@ -2,103 +2,79 @@
 #sidebar Sidebar
 This document contains the omegaviewer application concept, timeline and developement notes.
 
-=Intro=   
-(mostly flushed out )
-
+= Intro =   
 As Scalable Adaptive Graphics Environment (SAGE) and Cave Automatic Virtual Environment (CAVE) have shown, the need to push and interact with the digital data in large display environments is apparent.  Next Generation Cave (NGCave) is arguably a merging of the LCD tileDisplay nature of SAGE and the VR nature of CAVE.  One current unknown is: what will the best and most intuitive interaction schema be.  Will it be a blending of the old interaction schemes.  Or will the old schemes be so diametrically opposed that they can not be blending.  The later resulting in a whole new way of interacting with NGCave.
 
 One goal of this project is lay the framework needed to researching this very question.  One test bed that tries to blend 2D/3D interaction in a VR environment is the OmegaDesk.  Though that effort, the support for multitouch, kinetic, 3D hand gesturing, and head tracking has been established.  Additionally the efforts of SAGENext will be working on how to push content to a large  scale LCD tiled display via laptop.  In short, framework needed to test various interaction modalities is certainly coming together.   
 
+== Research Questions ==
 However, Alessandro and I feel there is still a missing piece: mobile and tablet devices.  Given their prevalence, what impact do they have on the interaction schema of NGCave, if any.  Certainly the goal of this semester project is not to answer this complex question, but to lay the foundations for exploring this avenue of research.
 
-=Conceptual=
-(Need actual sentences or something more formal )
+= Application Concept =
+The application we are going to implement will be a testbed for some interaction schemata we want to implement in NGCave. The application will be a 3d model manipulation system implemented using a tiled stereo display, head tracked stereo glasses, and a tablet interface.
 
-What it will look like 
-
-We will generate a simple virtual scene with one object.
-
-Using the iPad an interface we will build, the user can select and change the model being shown.
-
-Once loaded the img will give you a general display.
+Using the iPad an interface we will build, the user can select and change the model being shown. Once loaded the img will give you a general display.
 
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/IpadUI.png" width="300"/</p>
 <p align="middle">_^An overview of the omegalib architecture.^_</p>
+# Custom ui:
+	The ui is determined based on the type of parameters used to alter the data. This is all specified by the user programmatically or via a configuration file. This specification, like the model itself, will be given by the user. We are unsure whether it will be done programmatically or via a configuration file.
 
-	1) Custom ui.
-		The ui is determined based on the type of parameters used to alter the data.
-		This is all specified by the user programmatically or via a configuration file.
-		This specification, like the model itself, will be given by the user.
-		We are unsure whether it will be done programmatically or via a configuration file.
+# Interaction Area:
+	This will allow the user to freely manipulate the data via touch.
+		 * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
+		 * two finger pushing  in the z direction *with respect to the user viewpoint*
+		 * rotation (?)
+		 * pinch zoom to scale the object.
 
-	2) Interaction Area
-		This will allow the user to freely manipulate the data via touch.
-			 * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
-			 * two finger pushing  in the z direction *with respect to the user viewpoint*
-			 * rotation (?)
-			 * pinch zoom to scale the object.
+Update 
+	These changes will be reflected on the 2x2 Hyundai VR Display.
+	A thumb may be given/updated on the tablet if there is time.
 
-		Update 
-			These changes will be reflected on the 2x2 Hyundai VR Display.
-			A thumb may be given/updated on the tablet if there is time.
-
-
-=One Page Project Management (OPPM) for OmegaViewer=
+= Technical Overview =
+ * The VR system will be driven by omegalib + Equalizer in order to control all 4 displays and 2 GPUs available in the system. The rendering load will be distributed between the Gpus, allowing to display fairly complex models.
+ * Head tracking (and possibly controller input) will be received from a secondary machine running an omegalib input server. 
+ * The tablet device will run a custom program, connecting to the main machine through TCP and exchanging input messages using the same protocol implemented by the input server [OInputServerReference]
+ 
+== Tablet technical features ==
+ * Receive commands to create UIs dynamically
+ * Send UI commands to server
+ * Send gestures to server
+ * Receive and display images from server
+ 
+= List of proposed features =
+== Primary Features ==
+ * The application will connect to a single tablet device
+ * The user will be able to choose a 3d model from a list of available ones displayed on the tablet. The model will be visualized on the 3d display
+ * The application will support interaction with the tablet (as explained in the Conceptual section) to move, rotate and scale the object.
+ * The user will be able to open a secondary user interface on the tablet, and modify propeties of the displayed model or of the scene. Supported properties:
+  * The model draw mode (wireframe, shaded, wireframe + shaded)
+  * The model material properties
+  * The placement of lights in the scene and their color.
+ * At any time, the user will be able to switch to another model.
+ * The entire system will be head tracked. Object manipulation will always happen wrt the user view point.
+== Wishlist / Future work ==
+ * In addition to the UI, the tabled displays a dynamic thumbnail of the 3d model or some other image streamed by the VR system.
+ * In addition to tablets, controller interaction to navigate around the model will be supported
+ * Interaction with multiple models in the scene
+  * The user can display a set of models in the scene and interact with them separately.
+  * Multiple users can use separate tablets to interact with objects
+ * Loading of more complex models (i.e. Vtk visualizations)
+ * Interaction with complex model parameters (i.e. controlling a vtk pipeline)
+ * Multiple display surfaces controlled by the system (hyundai + samsung)
+ 
+= One Page Project Management (OPPM) for OmegaViewer =
 (integrate the table here )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 = Omegaviewer: Meshviewer on steroids =
 Omegaviewer will use meshviewer as a starting point but allow users to interact with the applications in a more advanced way
   * The application will support free viewpoint definition and navigation using controllers
   * The application will allow users to interact with objects through a tablet interface
   
-= Tablet interaction =
-The tablet will offer a dynamic, ad hoc UI that will depend on the currently active object. Different object will offer different customization / interaction options.
-
-The tablet can also be used to define the object transformation though gestures:
- * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
- * two finger pushing  in the z direction *with respect to the user viewpoint*
- * rotation (?)
- * pinch zoom to scale the object.
- 
-== Required Tablet features ==
- * Receive commands to create UIs dynamically
- * Send UI commands to server
- * Send gestures to server
- * Receive and display images from server
- 
 Tablet app should have 2 _work modes_
  # UI Mode
  # Gesture Mode
  
 Also, UIs can have multiple panels (for instance, one for mesh / object selection and another to control the currently active mesh / object)
 
-== Example interaction scenario ==
- # UI mode with buttons to select model
- # Select model & switch interface to gesture mode
- # Use gestures to interact with object
- # Switch back to UI model, choose mesh parameters panel and change something about the mesh (i.e. switch to wireframe view)
  
