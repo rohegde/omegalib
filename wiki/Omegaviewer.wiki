@@ -29,7 +29,7 @@ Using the iPad an interface we will build, the user can select and change the mo
 
 Update 
 	These changes will be reflected on the 2x2 Hyundai VR Display.
-	A thumb may be given/updated on the tablet if there is time.
+	A thumbnail may be given/updated on the tablet if there is time.
 
 = Technical Overview =
  * The VR system will be driven by omegalib + Equalizer in order to control all 4 displays and 2 GPUs available in the system. The rendering load will be distributed between the Gpus, allowing to display fairly complex models.
@@ -40,22 +40,23 @@ Update
  * Receive commands to create UIs dynamically
  * Send UI commands to server
  * Send gestures to server
- * Receive and display images from server
+ * Receive and display images to the tablet as a thumbnail
  
 = List of proposed features =
 == Primary Features ==
  * The application will connect to a single tablet device
  * The user will be able to choose a 3d model from a list of available ones displayed on the tablet. The model will be visualized on the 3d display
  * The application will support interaction with the tablet (as explained in the Conceptual section) to move, rotate and scale the object.
- * The user will be able to open a secondary user interface on the tablet, and modify propeties of the displayed model or of the scene. Supported properties:
+ * The user will be able to open a secondary user interface on the tablet, and modify properties of the displayed model or of the scene. Supported properties:
   * The model draw mode (wireframe, shaded, wireframe + shaded)
   * The model material properties
   * The placement of lights in the scene and their color.
  * At any time, the user will be able to switch to another model.
- * The entire system will be head tracked. Object manipulation will always happen wrt the user view point.
+ * The entire system will be head tracked. Object manipulation will always happen with respect to the user view point.
+
 == Wishlist / Future work ==
  * In addition to the UI, the tabled displays a dynamic thumbnail of the 3d model or some other image streamed by the VR system.
- * In addition to tablets, controller interaction to navigate around the model will be supported
+ * In addition to tablets, game controller interaction to navigate around the model will be supported
  * Interaction with multiple models in the scene
   * The user can display a set of models in the scene and interact with them separately.
   * Multiple users can use separate tablets to interact with objects
@@ -64,7 +65,8 @@ Update
  * Multiple display surfaces controlled by the system (hyundai + samsung)
  
 = One Page Project Management (OPPM) for OmegaViewer =
-(integrate the table here )
+[[iframe http://docs.google.com/spreadsheet/ccc?key=0Ak41PBgfmhF7dEM5ZEVpTTJZVThLTjhOTjdzM0tOUnc&hl=en_US width="100%" height="500"]]
+
 
 = Omegaviewer: Meshviewer on steroids =
 Omegaviewer will use meshviewer as a starting point but allow users to interact with the applications in a more advanced way
