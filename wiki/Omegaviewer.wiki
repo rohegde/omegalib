@@ -17,10 +17,10 @@ The iPad will provide an interface that allows the user to select and change the
 
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/IpadUI.png" width="300"/</p>
 <p align="middle">_^An overview of the omegalib architecture.^_</p>
-  1) Custom UI:
-   The UI is determined based on the type of parameters used to alter the data. This is all specified by the user programmatically or via a configuration file. This specification, like the model itself, will be given by the user. Currently it is unsure whether this will be done programmatically or via a configuration file.
-  2) Free Interaction Area:
-   This will allow the user to freely manipulate the data via touch.  Interactions such as translation, rotation and scaling will be implemented using iPad's multitouch capability.  Implementing the Free Interaction Area is the stepping stone to answering the above research question.  Additionally it will demonstrate that the subtleties of a VR system are understood by this group.
+1) Custom UI:
+ The UI is determined based on the type of parameters used to alter the data. This is all specified by the user programmatically or via a configuration file. This specification, like the model itself, will be given by the user. Currently it is unsure whether this will be done programmatically or via a configuration file.
+2) Free Interaction Area:
+ This will allow the user to freely manipulate the data via touch.  Interactions such as translation, rotation and scaling will be implemented using iPad's multitouch capability.  Implementing the Free Interaction Area is the stepping stone to answering the above research question.  Additionally it will demonstrate that the subtleties of a VR system are understood by this group.
 
 Changes to either the Custum UI or the Free Interaction Area will be reflected on the 2x2 Hyundai VR Display.  One "wishlist" item is to provide a thumbnail of the model on the iPad.  This would require the streaming of image data from the application to the iPad at each update.
 
