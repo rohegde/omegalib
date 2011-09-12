@@ -2,27 +2,21 @@
 #sidebar Sidebar
 This document contains the omegaviewer application concept, timeline and developement notes.
 
-= Intro =   
-As Scalable Adaptive Graphics Environment (SAGE) and Cave Automatic Virtual Environment (CAVE) have shown, the need to push and interact with the digital data in large display environments is apparent.  Next Generation Cave (NGCave) is arguably a merging of the LCD tileDisplay nature of SAGE and the VR nature of CAVE.  One current unknown is: what will the best and most intuitive interaction schema be.  Will it be a blending of the old interaction schemes.  Or will the old schemes be so diametrically opposed that they can not be merged together.  The later resulting in a whole new way of interacting with NGCave.
+= Introduction and Research Question =   
+As Scalable Adaptive Graphics Environment (SAGE) and Cave Automatic Virtual Environment (CAVE) have shown, large display environments are an effective way to visualize, interact and manipulate complex data. The Next Generation Cave (NGCave) technology aims to be a blending of the 2D nature of SAGE and the immersive nature of CAVE systems. However, given their different nature, SAGE and CAVE systems use very different metaphors to interact with the represented data. A currently open question is: what will the best and most intuitive interaction(s) schema on this new, potentially hybrid device. Will it be a blending of the old interaction metaphors, or will it be a radical departure from them?
 
-One goal of this project is lay the framework needed to researching this very question.  An avenue of research that tries to blend 2D/3D interaction in a VR environment is the OmegaDesk.  Though that effort, the framework for multitouch, kinetic, 3D hand gesturing, and head tracking support has been established.  Additionally the efforts of SAGENext will focus on how to push content to a large scale LCD tiled display via laptop.  In short, overall framework needed to test various interaction modalities is certainly coming together.   
+One goal of this project is lay the framework needed to investigate this question. A device that already tried to blend 2D/3D interaction in a VR environment is the [http://www.evl.uic.edu/files/pdf/ISVC11_Febretti.pdf OmegaDesk].  As a part of OmegaDesk research, we developed omegalib, a framework for multitouch, kinect, 3D hand gesturing, and head tracking support. Additional work for SAGENext will focus on how to push content to a large scale LCD tiled display via laptop.  
 
-== Research Questions ==
 However, there is still a missing piece: mobile and tablet devices.  Given their prevalence, what impact do they have on the interaction schema of NGCave, if any.  Certainly the goal of this semester project is not to answer this complex question, but to lay the foundations for exploring this avenue of research.
 
 = Application Concept =
-The application we are going to implement will be a testbed for some interaction schemata that can later be adapted to NGCave. The application will be a 3d model manipulation system implemented using a tiled stereo display, head tracked stereo glasses, and a tablet interface.  The tablet of choice for this experiment will be a second generation iPad.
+The application we are going to implement will be a testbed for some interaction metaphors that can later be adapted to NGCave. The application will be a 3d model manipulation system implemented using a tiled stereo display, head tracked stereo glasses, and a tablet interface.  The tablet of choice for this experiment will be a second generation iPad.
 
 The iPad will provide an interface that allows the user to select and change the model being shown on the Hyundai 2x2 VR System.  Once a model is loaded, the image below gives a generalized version of what the user should expect:
 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/IpadUI.png" width="300"/</p>
-<p align="middle">_^An overview of the omegalib architecture.^_</p>
+ # *Free Interaction Area*: This will allow the user to freely manipulate the data via touch.  Interactions such as translation, rotation and scaling will be implemented using iPad's multitouch capability.  Implementing the Free Interaction Area is the stepping stone to answering the above research questions.  Additionally it will demonstrate that the subtleties of a VR system are understood by this group.
 
-1) Free Interaction Area:
- This will allow the user to freely manipulate the data via touch.  Interactions such as translation, rotation and scaling will be implemented using iPad's multitouch capability.  Implementing the Free Interaction Area is the stepping stone to answering the above research questions.  Additionally it will demonstrate that the subtleties of a VR system are understood by this group.
-
-2) Custom UI:
- The UI is determined based on the type of parameters used to alter the data/model. These specification, like the data/model itself, will be given by the user.  Currently it is unsure whether this will be done programmatically or via a configuration file.
+ # *Custom UI*: The UI is determined based on the type of parameters used to alter the data/model. These specification, like the data/model itself, will be given by the user.  Currently it is unsure whether this will be done programmatically or via a configuration file.
 
 Changes to either the Custom UI or the Free Interaction Area will be reflected on the 2x2 Hyundai VR Display.  One "wishlist" item is to provide a thumbnail of the model on the iPad.  This would require the streaming of image data from the application to the iPad at each update.
 

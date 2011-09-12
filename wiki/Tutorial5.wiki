@@ -1,1 +1,1 @@
-= Tutorial 5 - Graphics Intro Part 2: Layers =
+= Tutorial 5 - Graphics Intro Part 2: The omega engine =
