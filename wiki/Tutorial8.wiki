@@ -2,6 +2,8 @@
 
 = Tutorial 8 - Using Unity =
 
+<wiki:toc max_depth="4"/>
+
 This tutorial will demonstrate how to grab and use OmegaLib input data in Unity.
 
 Currently Unity supports OmegaLib input through the following scripts:
@@ -9,8 +11,10 @@ Currently Unity supports OmegaLib input through the following scripts:
  * TouchScript.cs
  * MocapScript.cs
  * OmegaControllerScript.cs
- 
-=== Setting up the InputService ===
+
+All of these scripts along with an example Unity project with different scenes for touch, mocap, controller, and stereoscopic examples can be found on the svn under 'trunk/tutorials/tutorial8'.
+
+=== Setting up the Input Service ===
 
 InputServiceScript handles communication with OInputServer as well as streaming the apperperiate data to the other scripts listed above. The other scripts parse and store the data revalent to that input device.
 
@@ -30,7 +34,53 @@ InputServiceScript handles communication with OInputServer as well as streaming 
 === Adding a Touch Object ===
  
  WIP
+  
+=== Adding a Controller Object ===
+ 
+1. Create a gameobject that you want to use with a controller.
 
+2. Set the tag of that gameobject as "OmegaListener"
+ * If you want to have your gameobject as a particular tag other than "OmegaListener" you can make this a child of your gameobject.
+ * Create this tag if you haven't already using the Tag drop down menu and Add Tag.
+	 
+	<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnityAddTag.png"/></p><p align="middle"></p>
+	
+3. Create a new C# script that extends OmegaController Script. Let's call it MyControllerScript.
+
+4. You'll notice a few public variables in the inspector view:
+ * Controller ID is the controller ID you want this object to respond to. A unique ID assigned to each controller from the OmegaLib tracker. Typically if you're using only one controller, this will have an ID of 0. You will have to check the OInputServer output for which controller IDs were assigned.
+ * Controller Type is what kind of controller the Controller ID corresponds to:
+	* 0 = Xbox 360
+	* 1 = PS3 Sixaxis
+	* 2 = Wiimote
+
+5. You can use the following accessor methods to get various data:
+ * Vector3 getLeftAnalogStick()
+ * Vector3 getRightAnalogStick()
+ * Vector3 getNunchukAnalogStick()
+ * float getTrigger()
+ * int getButton( Button.[name] )
+	* Button is an enumeration to access various buttons based on the controller type so replace name with one of the following:
+		* Xbox360: A,B,X,Y,LB,RB,Back,Start,LA,RA,Up,Down,Left,Right
+			* LA/RA are the left/right analog stick buttons
+		* PS3: Cross,Circle,Square,Triangle,L1,R1,Select,Start,L3,R3,PS,Up,Down,Left,Right
+			* L3/R3 are the left/right analog stick buttons
+		* Wii: A,B,Plus,Home,Minus,One,Two,Up,Down,Left,Right,Z,C
+	* Example: getButton( Button.A ) will return either 0 (button not pressed) or 1 (button pressed) for button A. If there is no A button for this particular controller, method will just return 0.
+ * Analog sticks and triggers also have deadzone and sensitivity setters:
+	* setTriggerSensitvity(float)
+	* setLeftAnalogStickSensitivity(float)
+	* setRightAnalogStickSensitivity(float)
+	* setNunchukAnalogStickSensitivity(float)
+	* setLeftAnalogStickDeadzone(Vector3)
+	* setRightAnalogStickDeadzone(Vector3)
+	* setNunchukAnalogStickDeadzone(Vector3)
+ * Motion sensing controllers also have:
+	* float getSixaxisPitch()
+	* float getSixaxisRoll()
+	* Vector3 getWiimoteAcceleration()
+	* Vector3 getWiiMotionPlusAcceleration()
+	
 === Creating a Mocap Object ===
 
 1. Attach reflective markers to the object you want to track. The markers should be positioned in a way that it has a unique appearence regardless of orientation.
@@ -75,12 +125,60 @@ See the above for creating rigid bodies and adding them to the rigid body list.
  <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnityMyMocapScript.png"/></p><p align="middle"></p>
  
 4. You can call functions like getPosition() and getOrientation() to get the mocap data as a Vector3. You can use the transform function shown in MocapExampleScript.cs.
+ * You can also use getRawPosition() and getRawOrientation() to get Vector3 data directly from the tracker. These may not use the same coordinate system/origin as Unity.
 
 5. Click on the gameobject you attached MyMocapScript to and check the inspector view. Set the variable My ID to the ID of the rigid body you want to track.
 
   <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnityMocapScriptID.png"/></p><p align="middle"></p>
   
-=== Adding a Controller Object ===
+=== Using the Stereoscopic Script with Head Tracking ===
+
+To integrate stereo into your Unity project you will need the following:
+ * OmegaLibUnityStereoscopic.unitypackage
+ * InputServiceScript.cs
+ * MocapScript.cs (Included in OmegaLibUnityStereoscopic.unitypackage)
+ * Unity Pro (to preview stereo output)
+
+OmegaLibUnityStereoscopic.unitypackage can be found on the svn under 'trunk/tutorials/tutorial8/Assets/Packages'
+
+As of 9/9/11 the head tracked stereoscopic script will only work in Unity 3.1.0.
+ * You can use the stereo script in newer versions of Unity, but the head-tracked perspective may be incorrect.
+ * Windows: http://download.unity3d.com/download_unity/UnitySetup-3.1.0.exe
+ * Mac: http://download.unity3d.com/download_unity/unity-3.1.0.dmg
+ * Other versions are available simply by changing the version
  
- WIP
+The origin of the stereo camera is at the center of the screen, 1.5 Unity units (meters) above the floor. So when using this script, if the player is head-tracked and is standing on the floor, the floor should be translated by -1.5 in the Y direction.
  
+First we'll look at using a pre-made camera package. Afterwards we'll look at manually adding the stereo script to you existing main camera.
+
+==== Using the Pre-Made Package ====
+
+1. Setup the InputService as described above.
+
+2. Import the OmegaLibUnityStereoscopic package
+ * Right-click in the Project tab and select 'Import Package'.
+ * Click Import
+
+3. Drag the HeadTrackedStereo prefab object into your scene
+
+4. HeadTrackedStereo includes a main camera so disable/remove your main camera if you already have one.
+
+5. The pre-made package comes with three cubes, the parent of which is 'Cube On' which represents a cube on the projection plane directly in front of the camera.
+
+6. Your stereo view is now setup. Remember that you need Unity pro in order to preview this. Also the stereo perspective is calculated for the 2x2 stereo display in the classroom so the perspective may be off on your local machine.
+
+==== Manually Adding Stereo to the Main Camera ====
+
+1. Import the OmegaLibUnityStereoscopic package
+ * Right-click in the Project tab and select 'Import Package'.
+ * Click Import
+ 
+2. Create a Mocap Object as described above. This will represent the player's head position.
+
+3. Drag 'Scripts/InterlacedStereoScript.cs' on to your main camera.
+
+4. Notice two public variables on your camera:
+ * Eye Position - Set this to the mocap object we created in step 2.
+ * Stereo Material - Use the meterial under 'Materials/stereo3DMat'. Make sure this material's shader is set to 'Stereo 3D View Material'.
+ 
+5. Your camera is now set for stereovision. Remember that you need Unity pro in order to preview this. Also the stereo perspective is calculated for the 2x2 stereo display in the classroom so the perspective may be off on your local machine.
