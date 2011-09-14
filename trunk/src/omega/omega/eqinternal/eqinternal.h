@@ -185,6 +185,10 @@ public:
 	const FrameData& getFrameData();
 
 private:
+	void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);
+	uint processMouseButtons(uint btns); 
+
+private:
 	FrameData myFrameData;
 };
 
@@ -267,16 +271,23 @@ public:
 	ChannelImpl( eq::Window* parent );
 	virtual ~ChannelImpl();
 
+	ViewImpl* getViewImpl();
+	omega::Vector2i windowToCanvas(const omega::Vector2i& point);
+
 protected:
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
 	virtual void makeCurrent();
 	virtual void frameDraw( const uint128_t& spin );
 	virtual void frameViewStart( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
-	//virtual void drawStatistics();
+	virtual bool configInit(const uint128_t& initID);
 
 private:
 	eq::Window* myWindow;
+	Lock myLock;
+	ViewImpl* myView;
+	Vector2i myChannelIndex;
+	Vector2i myChannelPixelOffset;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

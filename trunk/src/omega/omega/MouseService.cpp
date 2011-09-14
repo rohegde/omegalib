@@ -25,6 +25,7 @@
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 #include "omega/MouseService.h"
+#include "omega/StringUtils.h"
 
 #ifdef OMEGA_USE_DISPLAY_GLUT
 #include "GL/freeglut.h"
@@ -49,6 +50,11 @@ void MouseService::mouseWheelCallback(int btn, int wheel, int x, int y)
 {
 	if(mysInstance)
 	{
+		if(mysInstance->isDebugEnabled())
+		{
+			ofmsg("MOUSE WHEEL x=%1%  y=%2%  btn=%3%  wheel=%4%", %x %y %btn %wheel);
+		}
+
 		mysInstance->lockEvents();
 
 		Event* evt = mysInstance->writeHead();
@@ -69,6 +75,11 @@ void MouseService::mouseMotionCallback(int x, int y)
 
 	if(mysInstance)
 	{
+		if(mysInstance->isDebugEnabled())
+		{
+			ofmsg("MOUSE MOVE x=%1%  y=%2%", %x %y);
+		}
+
 		mysInstance->lockEvents();
 
 		x = x * screenX / serverX + screenOffsetX;
@@ -90,6 +101,11 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 
 	if(mysInstance)
 	{
+		if(mysInstance->isDebugEnabled())
+		{
+			ofmsg("MOUSE BUTTON x=%1%  y=%2%  btn=%3%  state=%4%", %x %y %button %state);
+		}
+
 		mysInstance->lockEvents();
 
 		x = x * screenX / serverX + screenOffsetX;

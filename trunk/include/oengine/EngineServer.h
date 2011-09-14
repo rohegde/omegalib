@@ -31,6 +31,7 @@
 #include "EngineClient.h"
 #include "SceneNode.h"
 #include "Renderable.h"
+#include "Actor.h"
 //#include "ui/Container.h"
 #include "omega/Application.h"
 
@@ -63,6 +64,9 @@ namespace oengine {
 		SceneNode* getScene(int id);
 		//ui::Container* getUi(int id);
 
+		void addActor(Actor* actor);
+		void removeActor(Actor* actor);
+
 		virtual void initialize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
@@ -74,6 +78,8 @@ namespace oengine {
 
 		SceneNode* myScene[MaxScenes];
 		//ui::Container* myUi[MaxUis];
+
+		List<Actor*> myActors;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

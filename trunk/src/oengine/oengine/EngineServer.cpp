@@ -70,6 +70,18 @@ void EngineServer::addClient(EngineClient* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::addActor(Actor* actor)
+{
+	myActors.push_back(actor);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::removeActor(Actor* actor)
+{
+	myActors.remove(actor);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::initialize()
 {
 	for(int i = 0; i < MaxScenes; i++)
@@ -109,10 +121,10 @@ SceneNode* EngineServer::getScene(int id)
 void EngineServer::update(const UpdateContext& context)
 {
 	// Update actors.
-	//foreach(Actor* a, myActors)
-	//{
-	//	a->update(context);
-	//}
+	foreach(Actor* a, myActors)
+	{
+		a->update(context);
+	}
 
 	// Update scene.
 	for(int i = 0; i < MaxScenes; i++)
@@ -124,10 +136,9 @@ void EngineServer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::handleEvent(const Event& evt)
 {
-/*	myUiManager->handleEvent(evt);
-	if(!evt.isProcessed())
+	foreach(Actor* a, myActors)
 	{
-		return mySceneManager->handleEvent(evt);
-	}*/
+		a->handleEvent(evt);
+	}
 }
 
