@@ -127,8 +127,7 @@ void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i
 
 	outPosition = sch->windowToCanvas(Vector2i(x, y));
 
-	ViewImpl* vi = sch->getViewImpl();
-	const eq::Viewport& vp = vi->getViewport();
+	const eq::PixelViewport& pvp = sch->getPixelViewport();
 
 	AffineTransform3 modelview;
 	Transform3 projection;
@@ -136,6 +135,7 @@ void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i
 
 	memcpy(modelview.data(), sch->getHeadTransform().begin(), 16 * sizeof(float));
 	memcpy(projection.data(), sch->getFrustum().compute_matrix().begin(), 16 * sizeof(float));
+	viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
 
 	ray = Math::unproject(Vector2f(x, y), modelview, projection, viewport, 1.0);
 }
@@ -172,6 +172,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 				event->data.pointerMotion.y,
 				pos, ray);
 			MouseService::mouseMotionCallback(pos[0], pos[1]);
+			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
@@ -185,6 +186,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 				pos, ray);
 			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
 			MouseService::mouseButtonCallback(buttons, 1, pos[0], pos[1]);
+			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
@@ -198,6 +200,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 				pos, ray);
 			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
 			MouseService::mouseButtonCallback(buttons, 0, x, y);
+			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_WHEEL:

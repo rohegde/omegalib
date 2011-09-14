@@ -38,7 +38,9 @@ namespace oengine {
 		DefaultMouseInteractor() {}
 
 		virtual void handleEvent(const Event& evt);
-		virtual void preDraw(const DrawContext& context);
+
+	private:
+		void updateNode();
 
 	private:
 		Vector3f myHandlePosition;
@@ -49,6 +51,7 @@ namespace oengine {
 		// pointer event data.
 		bool myPointerEventReceived;
 		Vector2f myPointerPosition;
+		Ray myPointerRay;
 		Event::Type myPointerEventType;
 		int myPointerEventData;
 		bool myPointerButton1Pressed;

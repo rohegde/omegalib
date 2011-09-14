@@ -90,6 +90,10 @@ void MouseService::mouseMotionCallback(int x, int y)
 		evt->setPosition(x, y);
 		evt->setFlags(sButtonFlags);
 
+		evt->setExtraDataType(Event::ExtraDataVector3Array);
+		evt->setExtraDataVector3(0, mysInstance->myPointerRay.getOrigin());
+		evt->setExtraDataVector3(1, mysInstance->myPointerRay.getDirection());
+
 		mysInstance->unlockEvents();
 	}
 }
@@ -144,7 +148,26 @@ void MouseService::mouseButtonCallback(int button, int state, int x, int y)
 		evt->setPosition(x, y);
 		evt->setFlags(sButtonFlags);
 
+		evt->setExtraDataType(Event::ExtraDataVector3Array);
+		evt->setExtraDataVector3(0, mysInstance->myPointerRay.getOrigin());
+		evt->setExtraDataVector3(1, mysInstance->myPointerRay.getDirection());
+
 		mysInstance->unlockEvents();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MouseService::MouseService()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void MouseService::setPointerRay(const Ray& ray)
+{
+	myPointerRay = ray;
+	if(isDebugEnabled())
+	{
+		ofmsg("MOUSE RAY  pos=%1%   dir=%2%", %ray.getOrigin() %ray.getDirection());
 	}
 }
 
