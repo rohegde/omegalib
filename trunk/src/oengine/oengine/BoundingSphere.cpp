@@ -24,10 +24,6 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/StringUtils.h"
-#include "omega/glheaders.h"
-
-#include "oengine/SceneNode.h"
 #include "oengine/BoundingSphere.h"
 #include "oengine/Renderer.h"
 
@@ -35,11 +31,18 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BoundingSphere::render(SceneNode* node, RenderState* state)
+Renderable* BoundingSphere::createRenderable()
 {
+	return new BoundingSphereRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void BoundingSphereRenderable::draw(RenderState* state)
+{
+	SceneNode* node = getSceneNode();
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
-		if(myVisible || (myDrawOnSelected && node->isSelected()))
+		if(myBoundingSphere->myVisible || (myBoundingSphere->myDrawOnSelected && node->isSelected()))
 		{
 			float radius = node->getBoundingSphere().getRadius();
 			Vector3f center = node->getBoundingSphere().getCenter();
@@ -47,9 +50,9 @@ void BoundingSphere::render(SceneNode* node, RenderState* state)
 			AffineTransform3 xform;
 			xform.fromPositionOrientationScale(center, node->getOrientation(), Vector3f(radius, radius, radius));
 			
-			state->renderer->pushTransform(xform);
-			state->renderer->drawWireSphere(myColor, mySegments, mySlices);
-			state->renderer->popTransform();
+			getRenderer()->pushTransform(xform);
+			getRenderer()->drawWireSphere(myBoundingSphere->myColor, myBoundingSphere->mySegments, myBoundingSphere->mySlices);
+			getRenderer()->popTransform();
 		}
 	}
 }
