@@ -44,28 +44,32 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		{
 			myPointerEventType = evt.getType();
 		}
-		if(evt.getExtraDataLength() != 0) myPointerEventData = evt.getExtraDataInt(0);
 		if(evt.isFlagSet(Event::Left)) myPointerButton1Pressed = true;
 		if(evt.isFlagSet(Event::Right)) myPointerButton2Pressed = true;
 		evt.setProcessed();
+
+		if(evt.getExtraDataLength() == 2)
+		{
+			myPointerRay.setOrigin(evt.getExtraDataVector3(0));
+			myPointerRay.setDirection(evt.getExtraDataVector3(1));
+		}
+		if(evt.getType() == Event::Zoom) myPointerEventData = evt.getExtraDataInt(0);
+
+		updateNode();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultMouseInteractor::preDraw(const DrawContext& context)
+void DefaultMouseInteractor::updateNode()
 {
 	// Exit immediately if we received no pointer event or if there is no node attached to this
 	// interactor
 	if(!myPointerEventReceived || myNode == NULL) return;
 
-	// Select objects (use a positive z layer since objects in this program usually lie on the projection plane)
-	float z = 1.0f;
-	Ray ray = Math::unproject(myPointerPosition, context.modelview, context.projection, context.viewport, z);
-
 	if(myPointerEventType == Event::Down)
 	{
 		Vector3f handlePos;
-		if(myNode->hit(ray, &handlePos, SceneNode::HitBoundingSphere))
+		if(myNode->hit(myPointerRay, &handlePos, SceneNode::HitBoundingSphere))
 		{
 			myStartBSphere = myNode->getBoundingSphere();
 			myStartOrientation = myNode->getOrientation();
@@ -86,8 +90,8 @@ void DefaultMouseInteractor::preDraw(const DrawContext& context)
 		{
 			if(myPointerButton1Pressed)
 			{
-				Vector3f origin = ray.getOrigin();
-				Vector3f direction = ray.getDirection();
+				Vector3f origin = myPointerRay.getOrigin();
+				Vector3f direction = myPointerRay.getDirection();
 				// Interstect the ray with the Z plane where the handle lies, to get
 				// the new handle position.
 				float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
@@ -102,10 +106,10 @@ void DefaultMouseInteractor::preDraw(const DrawContext& context)
 			{
 				// Intersect the ray with the bounding sphere. 
 				// If the point is outside the bounding sphere, perform no rotation.
-				std::pair<bool, float> p = ray.intersects(myStartBSphere);
+				std::pair<bool, float> p = myPointerRay.intersects(myStartBSphere);
 				if(p.first)
 				{
-					Vector3f pt = ray.getPoint(p.second);
+					Vector3f pt = myPointerRay.getPoint(p.second);
 					pt -= myStartBSphere.getCenter();
 					Quaternion rot = Math::buildRotation(myHandlePosition, pt , Vector3f::Zero() );
 					myNode->setOrientation(rot * myStartOrientation);

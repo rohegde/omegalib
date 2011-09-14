@@ -38,8 +38,11 @@ class MouseService: public Service
 public:
 	// Allocator function
 	static MouseService* New() { return new MouseService(); }
+	static MouseService* instance() { return mysInstance; }
 
 public:
+	MouseService();
+
 	static void mouseMotionCallback(int x, int y);
 	static void mouseButtonCallback(int btn, int k, int x, int y);
 	static void mouseWheelCallback(int btn, int wheel, int x, int y);
@@ -48,9 +51,13 @@ public:
 	virtual void initialize();
 	virtual void dispose();
 
+	void setPointerRay(const Ray& ray);
+
 private:
 	static MouseService* mysInstance;
 	static int screenX, screenY, serverX, serverY, screenOffsetX, screenOffsetY;
+
+	Ray myPointerRay;
 };
 
 }; // namespace omega
