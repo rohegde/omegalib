@@ -268,11 +268,14 @@ private:
 class ChannelImpl: public eq::Channel
 {
 public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+public:
 	ChannelImpl( eq::Window* parent );
 	virtual ~ChannelImpl();
 
 	ViewImpl* getViewImpl();
 	omega::Vector2i windowToCanvas(const omega::Vector2i& point);
+	const omega::DrawContext& getLastDrawContext();
 
 protected:
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
@@ -286,6 +289,7 @@ private:
 	eq::Window* myWindow;
 	Lock myLock;
 	ViewImpl* myView;
+	DrawContext myDC;
 	Vector2i myChannelIndex;
 	Vector2i myChannelPixelOffset;
 };

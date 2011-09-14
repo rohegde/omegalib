@@ -84,6 +84,7 @@ public:
 	Layer::Enum getLayer(const char* viewName);
 
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
+	bool isDebugMouseEnabled() { return myDebugMouse; }
 
 private:
 	void initLayers();
@@ -102,6 +103,9 @@ private:
 
 	// Observers.
 	std::vector<Observer*> myObservers;
+
+	// Debug
+	bool myDebugMouse;
 };
 
 }; // namespace omega
