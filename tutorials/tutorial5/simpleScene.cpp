@@ -36,10 +36,12 @@ class SimpleScene: public EngineServer
 public:
 	SimpleScene(Application* app): EngineServer(app) {}
 	virtual void initialize();
-	virtual void update(const UpdateContext& context);
 
 private:
-	SceneNode* myCubeNode;
+	SceneNode* mySceneNode;
+	PlyDataReader* myMeshData;
+	Mesh* myMesh;
+	DefaultMouseInteractor* myMouseInteractor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,26 +51,21 @@ void SimpleScene::initialize()
 
 	SceneNode* scene = getScene(0);
 
-	myCubeNode = new SceneNode(this);
-	//Box* cube = new Box();
+	mySceneNode = new SceneNode(this);
+	myMeshData = new PlyDataReader();
+	myMeshData->readPlyFile("meshes/walker.ply");
+	myMeshData->scale(0.8f);
 
-	PlyDataReader* meshData = new PlyDataReader();
-	meshData->readPlyFile("meshes/walker.ply");
-	meshData->scale(0.8f);
-
-	Mesh* mesh = new Mesh();
+	myMesh = new Mesh();
 	
-	scene->addChild(myCubeNode);
-	myCubeNode->addObject(mesh);
+	scene->addChild(mySceneNode);
+	mySceneNode->addObject(myMesh);
 
-	mesh->setData(meshData);
-}
+	myMesh->setData(myMeshData);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SimpleScene::update(const UpdateContext& context)
-{
-	myCubeNode->roll(0.1f * context.dt);
-	myCubeNode->yaw(0.2f * context.dt);
+	myMouseInteractor = new DefaultMouseInteractor();
+	myMouseInteractor->setSceneNode(mySceneNode);
+	addActor(myMouseInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

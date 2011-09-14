@@ -42,6 +42,12 @@ void Service::doSetup(Setting& settings)
 		myName = settings.getName();
 	}
 
+	// set the debug flag.
+	if(settings.exists("debug"))
+	{
+		myDebug = (bool)settings["debug"];
+	}
+
 	// call service specific setup method
 	setup(settings);
 }
