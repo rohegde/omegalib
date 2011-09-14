@@ -46,7 +46,7 @@ set( srcs
 		oengine/LightingPass.cpp
 		oengine/RenderToTexture.cpp
 		oengine/Camera.cpp
-#		oengine/BoundingSphere.cpp
+		oengine/BoundingSphere.cpp
 		oengine/DefaultMouseInteractor.cpp
 		oengine/DefaultTwoHandsInteractor.cpp
 		oengine/Mesh.cpp
@@ -88,7 +88,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Actor.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/BoundingSphere.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/BoundingSphere.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultMouseInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h
