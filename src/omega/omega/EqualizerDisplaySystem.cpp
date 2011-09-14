@@ -44,7 +44,8 @@ EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL),
 	myConfig(NULL),
 	myNodeFactory(NULL),
-	mySetting(NULL)
+	mySetting(NULL),
+	myDebugMouse(false)
 {
 }
 
@@ -57,6 +58,7 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
 	setting.lookupValue("config", myDisplayConfig);
+	setting.lookupValue("debugMouse", myDebugMouse);
 	mySetting = &setting;
 }
 

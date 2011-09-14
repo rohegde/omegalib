@@ -126,18 +126,20 @@ void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i
 	}
 
 	outPosition = sch->windowToCanvas(Vector2i(x, y));
+	const DrawContext& dc = sch->getLastDrawContext();
 
-	const eq::PixelViewport& pvp = sch->getPixelViewport();
+	EqualizerDisplaySystem* eds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	if(eds->isDebugMouseEnabled())
+	{
+		ofmsg("MOUSE  Channel=%1%  ChannelVP=%2%,%3%,%4%,%5%  ChannelPos=%6%,%7%  GlobalPos=%8%", 
+			%sch->getName() 
+			%dc.viewport.x() %dc.viewport.y() %dc.viewport.width() %dc.viewport.height()
+			%x %y
+			%outPosition
+			);
+	}
 
-	AffineTransform3 modelview;
-	Transform3 projection;
-	Rect viewport;
-
-	memcpy(modelview.data(), sch->getHeadTransform().begin(), 16 * sizeof(float));
-	memcpy(projection.data(), sch->getFrustum().compute_matrix().begin(), 16 * sizeof(float));
-	viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
-
-	ray = Math::unproject(Vector2f(x, y), modelview, projection, viewport, 1.0);
+	ray = Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport, 1.0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

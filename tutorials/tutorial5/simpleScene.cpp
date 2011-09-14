@@ -49,12 +49,20 @@ void SimpleScene::initialize()
 {
 	EngineServer::initialize();
 
+	// Read a mesh filename from the config file and load it.
+	Config* cfg = getSystemManager()->getAppConfig();
+	if(cfg->exists("config"))
+	{
+		Setting& sCfg = cfg->lookup("config");
+
+		myMeshData = new PlyDataReader();
+		myMeshData->readPlyFile(sCfg["mesh"]);
+		myMeshData->scale(0.8f);
+	}
+
 	SceneNode* scene = getScene(0);
 
 	mySceneNode = new SceneNode(this);
-	myMeshData = new PlyDataReader();
-	myMeshData->readPlyFile("meshes/walker.ply");
-	myMeshData->scale(0.8f);
 
 	myMesh = new Mesh();
 	
@@ -73,14 +81,10 @@ void SimpleScene::initialize()
 int main(int argc, char** argv)
 {
 	EngineApplication<SimpleScene> app;
-
-	// Read config file name from command line or use default one.
-	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 
-	// So, we are going to load directly a system configuration file.
-	const char* cfgName = "system/simple-480p.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "simpleScene.log", new FilesystemDataSource(OMEGA_DATA_PATH));
-	
+	omain(
+		app, 
+		"../tutorials/tutorial5/simpleScene.cfg", 
+		"simpleScene.log", 
+		new FilesystemDataSource(OMEGA_DATA_PATH));
 	return 0;
 }
