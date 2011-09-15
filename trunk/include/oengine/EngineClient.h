@@ -63,6 +63,18 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! a convenience application class to create oengine applications
+	template<typename T> 
+	class OENGINE_API EngineApplication: public Application
+	{
+	public:
+		virtual ApplicationClient* createClient(ApplicationServer* server) 
+		{ return new EngineClient(server); }
+		virtual ApplicationServer* createServer() 
+		{ return new T(this); }
+	};
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Renderer* EngineClient::getRenderer()
 	{ return myRenderer; }
 
