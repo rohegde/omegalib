@@ -61,8 +61,8 @@ void RenderableFactory::initialize(EngineServer* srv)
 		Renderable* r = createRenderable();
 		r->setClient(client);
 		myRenderables.push_back(r);
-		client->queueRenderableCommand(
-			RenderableCommand(r, RenderableCommand::Initialize));
+		RenderableCommand rc(r, RenderableCommand::Initialize);
+		client->queueRenderableCommand(rc);
 	}
 	myInitialized = true;
 }
@@ -72,8 +72,8 @@ void RenderableFactory::dispose()
 {
 	foreach(Renderable* r, myRenderables)
 	{
-		r->getClient()->queueRenderableCommand(
-			RenderableCommand(r, RenderableCommand::Dispose));
+		RenderableCommand rc(r, RenderableCommand::Dispose);
+		r->getClient()->queueRenderableCommand(rc);
 	}
 	myRenderables.empty();
 }
@@ -83,8 +83,8 @@ void RenderableFactory::refresh()
 {
 	foreach(Renderable* r, myRenderables)
 	{
-		r->getClient()->queueRenderableCommand(
-			RenderableCommand(r, RenderableCommand::Refresh));
+		RenderableCommand rc(r, RenderableCommand::Refresh);
+		r->getClient()->queueRenderableCommand(rc);
 	}
 }
 

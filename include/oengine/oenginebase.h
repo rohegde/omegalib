@@ -30,6 +30,7 @@
 #include "omega/osystem.h"
 #include "omega/Application.h"
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef WIN32
 	#ifndef OMEGA_STATIC
@@ -46,17 +47,5 @@
 #endif
 
 using namespace omega;
-
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! a convenience application class to create oengine applications
-	template<typename T> 
-	class EngineApplication: public Application
-	{
-	public:
-		virtual ApplicationClient* createClient(ApplicationServer* server) { return new EngineClient(server); }
-		virtual ApplicationServer* createServer() { return new T(this); }
-	};
-};
 
 #endif
