@@ -148,7 +148,6 @@ if(OMEGA_BUILD_ENGINE)
 		add_subdirectory(apps/multipleKinectDemo)
 		add_subdirectory(apps/meshviewer)
 		add_subdirectory(apps/kinectdemo)
-		add_subdirectory(apps/nightfield)
 	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_ENGINE)
 

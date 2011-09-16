@@ -31,38 +31,60 @@
 
 namespace oengine { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API DefaultButton: public Button
+	class OENGINE_API DefaultButtonRenderable: public WidgetRenderable
 	{
 	public:
-		DefaultButton(UiManager* mng): Button(mng) {}
-
+		DefaultButtonRenderable(Button* owner): WidgetRenderable(owner), myOwner(owner) {}
+		virtual ~DefaultButtonRenderable() {}
 	protected:
-		void renderContent();
-
+		void drawContent();
 	private:
+		Button* myOwner;
 		float myAnim;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API DefaultSlider: public Slider
+	class OENGINE_API DefaultSliderRenderable: public WidgetRenderable
 	{
 	public:
-		DefaultSlider(UiManager* mng): Slider(mng) {}
+		DefaultSliderRenderable(Slider* owner): WidgetRenderable(owner), myOwner(owner) {}
+		virtual ~DefaultSliderRenderable() {}
 	protected:
-		void renderContent();
+		void drawContent();
 	private:
+		Slider* myOwner;
 		float myAnim;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class DefaultButton: public Button
+	{
+	friend class DefaultButtonRenderable;
+	public:
+		DefaultButton(EngineServer* srv): Button(srv) {}
+		virtual ~DefaultButton() {}
+		virtual Renderable* createRenderable()  { return new DefaultButtonRenderable(this); }
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class DefaultSlider: public Slider
+	{
+	friend class DefaultSliderRenderable;
+	public:
+		DefaultSlider(EngineServer* srv): Slider(srv) {}
+		virtual ~DefaultSlider() {}
+		virtual Renderable* createRenderable() { return new DefaultSliderRenderable(this); }
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class DefaultWidgetFactory: public WidgetFactory
 	{
 	public:
-		DefaultWidgetFactory(UiManager* mng): WidgetFactory(mng) {}
+		DefaultWidgetFactory(EngineServer* srv): WidgetFactory(srv) {}
 
 		virtual Button* createButton(const String& name, Container* container)
 		{
-			Button* button = new DefaultButton(getManager());
+			Button* button = new DefaultButton(getServer());
 			button->setName(name);
 			button->getLabel()->setText(name);
 			container->addChild(button);
@@ -71,7 +93,7 @@ namespace oengine { namespace ui {
 
 		virtual Slider* createSlider(const String& name, Container* container)
 		{
-			Slider* slider = new DefaultSlider(getManager());
+			Slider* slider = new DefaultSlider(getServer());
 			container->addChild(slider);
 			return slider;
 		}

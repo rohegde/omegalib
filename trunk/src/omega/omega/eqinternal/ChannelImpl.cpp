@@ -110,17 +110,11 @@ void ChannelImpl::makeCurrent()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 {
+	eq::Channel::frameDraw( spin );
+
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	ApplicationClient* client = pipe->getClient();
-
-	//String chName = this->getName();
-	//ofmsg("%1%", %chName);
-
-	//makeCurrent();
-
-	// setup OpenGL State
-	eq::Channel::frameDraw( spin );
 
 	setupDrawContext(&myDC, spin);
 
@@ -132,59 +126,6 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 void ChannelImpl::frameViewStart( const co::base::uint128_t& spin )
 {
 	eq::Channel::frameViewStart( spin );
-
-	//ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-	//PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-	//FrameData& fd = pipe->getFrameData();
-	//ApplicationClient* client = pipe->getClient();
-
-	//myView = view;
-
-	//setupDrawContext(&myDC, spin);
-	//myDC.layer = view->getLayer() & 0x0c;
-
-	//// Dispatch received events events to application client.
-	//int av = fd.getNumEvents();
-	//if(av != 0)
-	//{
-	//	for( int evtNum = 0; evtNum < av; evtNum++)
-	//	{
-	//		Event& evt = fd.getEvent(evtNum);
-	//		// If event has not been processed during update, handle it now.
-	//		if(!evt.isProcessed())
-	//		{
-	//			// Pointer type events get special treatment: they are delivered
-	//			// only to channels whose pixel viewport contains the event source position.
-	//			// Also, the event poistion is converted from global pixel coordinates to
-	//			// window coordinates.
-	//			if(evt.getServiceType() == Service::Pointer)
-	//			{
-	//				int vx1 = context.globalViewport.x() + context.viewport.x();
-	//				int vy1 = context.globalViewport.y() + context.viewport.y();
-	//				int vx2 = vx1 + context.viewport.width();
-	//				int vy2 = vy1 + context.viewport.height();
-	//				//ofmsg("pos %1% (%2%-%3% %4%-%5%)", %evt.position %vx1 %vx2 %vy1 %vy2);
-
-	//				Vector3f position = evt.getPosition();
-	//				if(position[0] > vx1 &&
-	//					position[0] < vx2 &&
-	//					position[1] > vy1 &&
-	//					position[1] < vy2)
-	//				{
-	//					position[0] -= context.globalViewport.x();
-	//					position[1] -= context.globalViewport.y();
-	//					//ofmsg("pos %1%", %position);
-	//					evt.setPosition(position);
-	//					client->handleEvent(evt);
-	//				}
-	//			}
-	//			else
-	//			{
-	//				client->handleEvent(evt);
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

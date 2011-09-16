@@ -31,8 +31,8 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::AbstractButton(UiManager* mng):
-	Widget(mng),
+AbstractButton::AbstractButton(EngineServer* server):
+	Widget(server),
 	myCheckable(false),
 	myChecked(false),
 	myPressed(false)
@@ -49,12 +49,13 @@ AbstractButton::~AbstractButton()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void AbstractButton::update(const omega::UpdateContext& context) 
 {
+	Widget::update(context);
 	if(myPressedStateChanged)
 	{
 		if(myPressed)
 		{
 			Event evt;
-			evt.reset(Event::Click, Service::UI, getId());
+			evt.reset(Event::Click, Service::Ui, getId());
 
 			dispatchUIEvent(evt);
 
@@ -63,7 +64,7 @@ void AbstractButton::update(const omega::UpdateContext& context)
 			{
 				myChecked = !myChecked;
 				Event evt;
-				evt.reset(Event::Toggle, Service::UI, getId());
+				evt.reset(Event::Toggle, Service::Ui, getId());
 				dispatchUIEvent(evt);
 			}
 		}

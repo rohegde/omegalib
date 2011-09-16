@@ -117,7 +117,6 @@ if(OMEGA_USE_DISPLAY)
 			omega/GpuProgram.cpp
 			omega/RenderTarget.cpp
 			omega/Texture.cpp
-			omega/TextureManager.cpp
  		    omega/ObserverUpdateService.cpp
 			)
 	set( headers ${headers}
@@ -128,7 +127,6 @@ if(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
 			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-			${OmegaLib_SOURCE_DIR}/include/omega/TextureManager.h	
 	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
 	
 	# Equalizer Display Module

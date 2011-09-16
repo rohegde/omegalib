@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/ui/Button.h"
-#include "oengine/ui/DefaultSkin.h"
+//#include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
 
 using namespace omega;
@@ -33,9 +33,9 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Button::Button(UiManager* mng):
-	AbstractButton(mng),
-	myLabel(mng)
+Button::Button(EngineServer* srv):
+	AbstractButton(srv),
+	myLabel(srv)
 {
 	//addChild(&myLabel);
 	//myLabel.setText(name);
@@ -61,6 +61,7 @@ void Button::autosize()
 void Button::update(const omega::UpdateContext& context)
 {
 	AbstractButton::update(context);
+	myLabel.update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,8 +87,3 @@ void Button::handleEvent(const Event& evt)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Button::renderContent()
-{
-	AbstractButton::renderContent();
-}

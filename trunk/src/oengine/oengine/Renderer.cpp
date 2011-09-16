@@ -40,7 +40,8 @@ using namespace oengine;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderer::Renderer():
 	myTargetTexture(NULL),
-	myDrawing(false)
+	myDrawing(false),
+	myDefaultFont(NULL)
 {
 }
 

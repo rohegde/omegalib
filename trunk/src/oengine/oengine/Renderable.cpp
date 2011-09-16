@@ -98,3 +98,8 @@ Renderable* RenderableFactory::getRenderable(EngineClient* client)
 	return NULL;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* RenderableFactory::getFirstRenderable()
+{
+	return myRenderables.front();
+}

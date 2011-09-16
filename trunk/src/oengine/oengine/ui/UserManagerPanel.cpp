@@ -24,9 +24,9 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "oengine/EngineServer.h"
 #include "oengine/ui/UserManagerPanel.h"
 #include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UiManager.h"
 
 #ifdef OMEGA_USE_OPENNI
 #include "omega/OpenNIService.h"
@@ -43,7 +43,7 @@ void UserManagerPanel::initialize(Container* owner, const String& openNIServiceN
 	myObserverUpdateService =  sm->findService<ObserverUpdateService>(observerUpdateServiceName);
 
 	owner->addChild(this);
-	WidgetFactory* wf = getManager()->getWidgetFactory();
+	WidgetFactory* wf = getServer()->getWidgetFactory();
 
 #ifdef OMEGA_USE_OPENNI
 	myOpenNIService = sm->findService<OpenNIService>(openNIServiceName);
@@ -60,15 +60,16 @@ void UserManagerPanel::update(const UpdateContext& context)
 #ifdef OMEGA_USE_OPENNI
 	OpenNIService* svc = (OpenNIService*)myOpenNIService;
 
-	if( myDepthTexture == NULL ) 
+	if( myDepthImageData == NULL ) 
 	{
-		myDepthTexture = new Texture();
-		myDepthTexture->initialize((byte*)svc->getDepthImageData(), svc->getImageDataWidth(), svc->getImageDataHeight());
-		myDepthImage->setTexture(myDepthTexture);
-	}
+		myDepthImageData = new ImageData();
+		myDepthImageData->width = svc->getImageDataWidth();
+		myDepthImageData->height = svc->getImageDataHeight();
+		myDepthImageData->data = (byte*)svc->getDepthImageData();
 
-	myDepthTexture->setDirty();
-	myDepthTexture->refresh();
+		myDepthImage->setData(myDepthImageData);
+	}
+	myDepthImage->refresh();
 #endif
 }
 

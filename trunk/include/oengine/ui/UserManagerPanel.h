@@ -38,7 +38,7 @@ namespace oengine { namespace ui {
 	class OENGINE_API UserManagerPanel: public Container
 	{
 	public:
-		UserManagerPanel(UiManager* mng): Container(mng), myDepthTexture(NULL), myDepthImage(NULL) {}
+		UserManagerPanel(EngineServer* srv): Container(srv), myDepthImageData(NULL), myDepthImage(NULL) {}
 
 		void initialize(Container* owner, const String& openNIServiceName, const String& observerUpdateServiceName);
 	
@@ -50,7 +50,7 @@ namespace oengine { namespace ui {
 		ObserverUpdateService* myObserverUpdateService;
 
 		Image* myDepthImage;
-		Texture* myDepthTexture;
+		ImageData* myDepthImageData;
 	};
 };};
 #endif

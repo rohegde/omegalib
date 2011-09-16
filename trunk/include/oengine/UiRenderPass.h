@@ -24,40 +24,19 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/TextureManager.h"
-#include "omega/Texture.h"
+#ifndef __UI_RENDER_PASS_H__
+#define __UI_RENDER_PASS_H__
 
-using namespace omega;
+#include "oenginebase.h"
+#include "oengine/RenderPass.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-TextureManager::TextureManager()
-{
-}
+namespace oengine {
+	class OENGINE_API UiRenderPass: public RenderPass
+	{
+	OMEGA_DECLARE_TYPE(UiRenderPass)
+	public:
+		virtual void render(EngineClient* client, const DrawContext& context);
+	};
+}; // namespace oengine
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-TextureManager::~TextureManager()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* TextureManager::createTexture(String textureName, int width, int height, byte* data)
-{
-	Texture* tx = new Texture();
-	tx->initialize(data, width, height);
-
-	// @todo: Check for already existing textures with same name & notify + deallocate.
-
-	myTextures[textureName] = tx;
-	return tx;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* TextureManager::getTexture(omega::String fontName)
-{
-	return myTextures[fontName];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TextureManager::cleanup()
-{
-}
+#endif

@@ -28,39 +28,37 @@
 #define __RENDER_TO_TEXTURE_H__
 
 #include "oenginebase.h"
-#include "omega/TextureManager.h"
 #include "omega/RenderTarget.h"
 
 namespace oengine {
-	class SceneManager;
 	class Camera;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API RenderToTexture
-	{
-	public:
-		RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height);
-		~RenderToTexture();
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//class OENGINE_API RenderToTexture
+	//{
+	//public:
+	//	RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height);
+	//	~RenderToTexture();
 
-		void render();
-		
-		Camera* getCamera();
-		Texture* getTexture();
+	//	void render();
+	//	
+	//	Camera* getCamera();
+	//	Texture* getTexture();
 
-	private:
-		RenderTarget* myRenderTarget;
-		SceneManager* myScene;
-		Camera* myCamera;
-		Texture* myTexture;
-	};
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Camera* RenderToTexture::getCamera() 
-	{ return myCamera; }
+	//private:
+	//	RenderTarget* myRenderTarget;
+	//	SceneManager* myScene;
+	//	Camera* myCamera;
+	//	Texture* myTexture;
+	//};
+	//
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline Camera* RenderToTexture::getCamera() 
+	//{ return myCamera; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Texture* RenderToTexture::getTexture() 
-	{ return myTexture; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline Texture* RenderToTexture::getTexture() 
+	//{ return myTexture; }
 }; // namespace oengine
 
 #endif

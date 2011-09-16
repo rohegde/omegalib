@@ -29,6 +29,7 @@
 #include "omega/RenderTarget.h"
 #include "omega/StringUtils.h"
 #include "omega/DataManager.h"
+#include "omega/Texture.h"
 
 #include "omega/glheaders.h"
 
@@ -310,6 +311,24 @@ void GpuManager::printShaderLog(GLuint shader)
 		omsg(infoLog);
         free(infoLog);
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* GpuManager::createTexture(String textureName, int width, int height, byte* data)
+{
+	Texture* tx = new Texture();
+	tx->initialize(data, width, height);
+
+	// @todo: Check for already existing textures with same name & notify + deallocate.
+
+	myTextures[textureName] = tx;
+	return tx;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* GpuManager::getTexture(const String& textureName)
+{
+	return myTextures[textureName];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
