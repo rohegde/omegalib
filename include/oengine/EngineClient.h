@@ -65,7 +65,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! a convenience application class to create oengine applications
 	template<typename T> 
-	class OENGINE_API EngineApplication: public Application
+	class EngineApplication: public Application
 	{
 	public:
 		virtual ApplicationClient* createClient(ApplicationServer* server) 

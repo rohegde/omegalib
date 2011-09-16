@@ -34,8 +34,10 @@ namespace oengine { namespace ui {
 	class OENGINE_API AbstractButton: public Widget
 	{
 	public:
-		AbstractButton(UiManager* mng);
+		AbstractButton(EngineServer* srv);
 		virtual ~AbstractButton();
+
+		virtual void update(const omega::UpdateContext& context);
 
 		bool isCheckable() { return myCheckable; }
 		void setCheckable(bool value) { myCheckable = value; }
@@ -43,8 +45,7 @@ namespace oengine { namespace ui {
 		bool isChecked() { return myChecked; }
 		void setChecked(bool value) { myChecked = value; }
 
-	protected:
-		virtual void update(const omega::UpdateContext& context);
+		bool isPressed() { return myPressed; }
 
 	protected:
 		bool myCheckable;

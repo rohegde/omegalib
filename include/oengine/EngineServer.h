@@ -32,7 +32,9 @@
 #include "SceneNode.h"
 #include "Renderable.h"
 #include "Actor.h"
-//#include "ui/Container.h"
+#include "Font.h"
+#include "ui/Container.h"
+#include "ui/WidgetFactory.h"
 #include "omega/Application.h"
 
 namespace oengine {
@@ -52,17 +54,27 @@ namespace oengine {
 	public:
 		EngineServer(Application* app);
 
+		ServiceManager* getServiceManager();
+
 		void addClient(EngineClient* client);
 		EngineClientList& getClients();
 
-		//!{ Render pass management
+		//! Render pass management
+		//@{
 		template<typename T> void registerRenderPassClass();
 		void addRenderPass(String renderPass, bool addToFront = false);
 		void removeRenderPass(String renderPass);
-		//!}
+		//@}
+
+		//! Font management
+		//@{
+		void setDefaultFont(const FontInfo& font);
+		const FontInfo& getDefaultFont();
+		//@}
 
 		SceneNode* getScene(int id);
-		//ui::Container* getUi(int id);
+		ui::Container* getUi(int id);
+		ui::WidgetFactory* getWidgetFactory();
 
 		void addActor(Actor* actor);
 		void removeActor(Actor* actor);
@@ -77,10 +89,18 @@ namespace oengine {
 		Dictionary<String, RenderPassFactory> myRenderPassFactories;
 
 		SceneNode* myScene[MaxScenes];
-		//ui::Container* myUi[MaxUis];
+		ui::Container* myUi[MaxUis];
 
 		List<Actor*> myActors;
+
+		// Resources
+		FontInfo myDefaultFont;
+		ui::WidgetFactory* myWidgetFactory;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ServiceManager* EngineServer::getServiceManager()
+	{ return SystemManager::instance()->getServiceManager(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	template<typename T> 
@@ -92,6 +112,19 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline EngineClientList& EngineServer::getClients()
 	{ return myClients; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void EngineServer::setDefaultFont(const FontInfo& font)
+	{ myDefaultFont = font;	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const FontInfo& EngineServer::getDefaultFont()
+	{ return myDefaultFont; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ui::WidgetFactory* EngineServer::getWidgetFactory()
+	{ return myWidgetFactory; }
+		
 }; // namespace oengine
 
 #endif

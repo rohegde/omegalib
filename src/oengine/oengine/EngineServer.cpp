@@ -28,17 +28,44 @@
 #include "oengine/LightingPass.h"
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/DefaultRenderPass.h"
+#include "oengine/UiRenderPass.h"
+#include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace oengine;
-//using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineServer::EngineServer(Application* app):
-	ApplicationServer(app)
+	ApplicationServer(app),
+	myWidgetFactory(NULL)
 {
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::initialize()
+{
+	myWidgetFactory = new ui::DefaultWidgetFactory(this);
+
+	for(int i = 0; i < MaxScenes; i++)
+	{
+		myScene[i] = new SceneNode(this, "root");
+	}
+	for(int i = 0; i < MaxUis; i++)
+	{
+		myUi[i] = new ui::Container(this);
+	}
+
+	// Setup default render chain.
+	registerRenderPassClass<LightingPass>();
+	registerRenderPassClass<OverlayRenderPass>();
+	registerRenderPassClass<DefaultRenderPass>();
+	registerRenderPassClass<UiRenderPass>();
+
+	addRenderPass("LightingPass");
+	addRenderPass("DefaultRenderPass");
+	addRenderPass("OverlayRenderPass");
+	addRenderPass("UiRenderPass");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,28 +108,6 @@ void EngineServer::removeActor(Actor* actor)
 	myActors.remove(actor);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::initialize()
-{
-	for(int i = 0; i < MaxScenes; i++)
-	{
-		myScene[i] = new SceneNode(this, "root");
-	}
-	for(int i = 0; i < MaxUis; i++)
-	{
-		//myUi[i] = new Container(this);
-	}
-
-	// Setup default render chain.
-	registerRenderPassClass<LightingPass>();
-	registerRenderPassClass<OverlayRenderPass>();
-	registerRenderPassClass<DefaultRenderPass>();
-
-	addRenderPass("LightingPass");
-	addRenderPass("DefaultRenderPass");
-	addRenderPass("OverlayRenderPass");
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* EngineServer::getScene(int id)
 {
@@ -111,11 +116,11 @@ SceneNode* EngineServer::getScene(int id)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-//Container* EngineServer::getUi(int id)
-//{
-//	oassert(id >= 0 && id < EngineServer::MaxUis);
-//	return myUi[id];
-//}
+ui::Container* EngineServer::getUi(int id)
+{
+	oassert(id >= 0 && id < EngineServer::MaxUis);
+	return myUi[id];
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::update(const UpdateContext& context)
@@ -125,11 +130,15 @@ void EngineServer::update(const UpdateContext& context)
 	{
 		a->update(context);
 	}
-
 	// Update scene.
 	for(int i = 0; i < MaxScenes; i++)
 	{
 		myScene[i]->update(false, false);
+	}
+	// Update ui.
+	for(int i = 0; i < MaxUis; i++)
+	{
+		myUi[i]->update(context);
 	}
 }
 
@@ -139,6 +148,10 @@ void EngineServer::handleEvent(const Event& evt)
 	foreach(Actor* a, myActors)
 	{
 		a->handleEvent(evt);
+	}
+	for(int i = 0; i < MaxUis; i++)
+	{
+		myUi[i]->handleEvent(evt);
 	}
 }
 

@@ -34,6 +34,19 @@ class FTFont;
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct FontInfo
+	{
+		FontInfo():
+			name(""), filename(""), size(0) {} 
+		FontInfo(String theName, String theFilename, int theSize):
+			name(theName), filename(theFilename), size(theSize) {} 
+
+		String name;
+		String filename;
+		int size;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Font
 	{
 	public:

@@ -86,12 +86,15 @@ namespace oengine {
 		//@{
 		Font* createFont(omega::String fontName, omega::String filename, int size);
 		Font* getFont(omega::String fontName);
+		Font* getDefaultFont();
+		void setDefaultFont(Font* value);
 		//@}
 
 	private:
 		bool myDrawing;
 		Texture* myTargetTexture;
 		Dictionary<String, Font*> myFonts;
+		Font* myDefaultFont;
 		Lock myLock;
 	};
 
@@ -106,6 +109,14 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Texture* Renderer::getTargetTexture()
 	{ return myTargetTexture; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Font* Renderer::getDefaultFont()
+	{ return myDefaultFont; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Renderer::setDefaultFont(Font* value)
+	{ myDefaultFont = value; }
 }; // namespace oengine
 
 #endif

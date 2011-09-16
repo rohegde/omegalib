@@ -24,36 +24,54 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TEXTURE_MANAGER_H__
-#define __TEXTURE_MANAGER_H__
+#include "oengine/UiRenderPass.h"
+#include "oengine/EngineClient.h"
+#include "oengine/EngineServer.h"
+#include "oengine/Renderer.h"
+#include "oengine/SceneNode.h"
+#include "oengine/ui/Container.h"
+#include "omega/StringUtils.h"
 
-#include "osystem.h"
+using namespace omega;
+using namespace oengine;
 
-namespace omega
+OMEGA_DEFINE_TYPE(UiRenderPass, RenderPass)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiRenderPass::render(EngineClient* client, const DrawContext& context)
 {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Texture;
+	RenderState state;
+	state.pass = this;
+	state.flags = RenderPass::RenderOverlay;
+	state.client = client;
+	state.context = &context;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! A dictionary containing <String, Texture*> pairs.
-	typedef Dictionary<String, Texture*> TextureDictionary;
+	client->getRenderer()->beginDraw2D(context);
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
-	class OMEGA_API TextureManager
+	ui::Container* ui = client->getServer()->getUi(0);
+	const Rect& vp = context.viewport;
+
+	// Update the root container size if necessary.
+	if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||
+		ui->getSize().cwiseNotEqual(vp.max.cast<float>()).all())
 	{
-	public:
-		TextureManager();
-		~TextureManager();
+		ui->setPosition(vp.min.cast<float>());
+		ui->setSize(Vector2f(vp.width(), vp.height()));
+		ofmsg("ui viewport update: position = %1% size = %2% %3%",
+			%vp.min %vp.width() %vp.height());
+	}
 
-		void cleanup();
+	// Make sure all widget sizes are up to date (and perform autosize where necessary).
+	ui->updateSize();
 
-		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
-		Texture* getTexture(String fontName);
+	// Layout ui.
+	ui->layout();
 
-	private:
-		TextureDictionary myTextures;
-	};
-}; // namespace omega
+	Renderable* uiRenderable = ui->getRenderable(client);
+	if(uiRenderable != NULL)
+	{
+		uiRenderable->draw(&state);
+	}
 
-#endif
+	client->getRenderer()->endDraw();
+}

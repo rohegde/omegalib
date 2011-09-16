@@ -35,10 +35,11 @@ namespace oengine { namespace ui {
 	class OENGINE_API Button: public AbstractButton
 	{
 	public:
-		Button(UiManager* mng);
+		Button(EngineServer* srv);
 		virtual ~Button();
 
 		virtual void handleEvent(const omega::Event& evt);
+		virtual void update(const omega::UpdateContext& context);
 
 		omega::String getText() { return myLabel.getText(); }
 		void setText(omega::String value) { myLabel.setText(value); }
@@ -49,10 +50,6 @@ namespace oengine { namespace ui {
 
 		Color getColor();
 		void setColor(Color value);
-
-	protected:
-			virtual void update(const omega::UpdateContext& context);
-			virtual void renderContent();
 
 	protected:
 		Label myLabel;
@@ -70,5 +67,6 @@ namespace oengine { namespace ui {
 	{
 		myColor = value;
 	}
+
 };};
 #endif

@@ -71,16 +71,3 @@ bool ImageUtils::loadImage(const String& filename, ImageData* data)
 
 	return true;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture* ImageUtils::createTexture(TextureManager* mng, const String& name, const String& filename)
-{
-	ImageData id;
-	if(loadImage(filename, &id))
-	{
-		Texture* tex = mng->createTexture(name, id.width, id.height, id.data);
-		odelete(id.data);
-		return tex;
-	}
-	return NULL;
-}

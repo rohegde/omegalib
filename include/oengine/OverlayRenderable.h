@@ -33,7 +33,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API OverlayRenderable: public Renderable
 	{
-	OMEGA_DECLARE_ABSTRACT_TYPE(OverlayRenderable)
 	};
 }; // namespace oengine
 

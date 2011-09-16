@@ -122,14 +122,14 @@ void MeshViewer::initialize()
 	Config* cfg = getSystemManager()->getAppConfig();
 
 	// Setup the system font.
-	//if(cfg->exists("config/defaultFont"))
-	//{
-	//	Setting& fontSetting = cfg->lookup("config/defaultFont");
-	//	getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
-	//}
+	if(cfg->exists("config/defaultFont"))
+	{
+		Setting& fontSetting = cfg->lookup("config/defaultFont");
+		setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
+	}
 
 	// Create and initialize meshviewer UI
-	//initUI();
+	initUi();
 
 	//getSceneManager()->setAmbientLightColor(Color::Black);
 
@@ -190,6 +190,46 @@ void MeshViewer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewer::initUi()
+{
+	WidgetFactory* wf = getWidgetFactory();
+
+	Container* root = getUi(0);
+	root->setUIEventHandler(this);
+	root->setLayout(Container::LayoutVertical);
+
+	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
+
+	// Setup ui layout using from config file sections.
+	Config* cfg = SystemManager::instance()->getAppConfig();
+	if(cfg->exists("config/ui/entityButtons"))
+	{
+		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
+	}
+	if(cfg->exists("config/ui/root"))
+	{
+		root->load(cfg->lookup("config/ui/root"));
+	}
+
+	// Add buttons for each entity
+	for(int i = 0; i < myEntityLibrary.size(); i++)
+	{
+		EntityData* ed = myEntityLibrary[i];
+		Button* btn = wf->createButton(ed->name, entityButtons);
+		myEntityButtons.push_back(btn);
+	}
+
+	// If openNI service is available, add User manager panel to the secondary ui
+	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
+	{
+		root = getUi(1);
+		root->setLayout(Container::LayoutVertical);
+		UserManagerPanel* ump = new UserManagerPanel(this);
+		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::createEntity(EntityData* ed)
 {
 	Entity* e = new Entity(ed, this);
@@ -204,61 +244,14 @@ void MeshViewer::destroyEntity(Entity* e)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::initUi()
-{
-	//UiManager* ui = getUiManager();
-	//ui->setUIEventHandler(this);
-
-	////! Load and set default font.
-	//FontManager* fm = getFontManager();
-	//Font* defaultFont = fm->getFont("default");
-	//ui->setDefaultFont(defaultFont);
-
-	//WidgetFactory* wf = ui->getWidgetFactory();
-	//Container* root = ui->getRootContainer(0);
-	//root->setLayout(Container::LayoutVertical);
-
-	//Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-
-	//// Setup ui layout using from config file sections.
-	//Config* cfg = SystemManager::instance()->getAppConfig();
-	//if(cfg->exists("config/ui/entityButtons"))
-	//{
-	//	entityButtons->load(cfg->lookup("config/ui/entityButtons"));
-	//}
-	//if(cfg->exists("config/ui/root"))
-	//{
-	//	root->load(cfg->lookup("config/ui/root"));
-	//}
-
-	//// Add buttons for each entity
-	//for(int i = 0; i < myEntities.size(); i++)
-	//{
-	//	Entity* e = myEntities[i];
-	//	Button* btn = wf->createButton(e->getData()->name, entityButtons);
-	//	myEntityButtons.push_back(btn);
-	//}
-
-	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
-	//if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
-	//{
-	//	root = ui->getRootContainer(1);
-	//	root->setLayout(Container::LayoutVertical);
-	//	UserManagerPanel* ump = new UserManagerPanel(ui);
-	//	ump->initialize(root, "OpenNIService", "ObserverUpdateService");
-	//}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
-	//if(evt.getServiceType() == Service::UI) 
-	//{
-	//	handleUIEvent(evt);
-	//}
- //   else
-	if( evt.getServiceType() == Service::Keyboard )
+	if(evt.getServiceType() == Service::Ui) 
+	{
+		handleUiEvent(evt);
+	}
+	else if( evt.getServiceType() == Service::Keyboard )
     {
         if((char)evt.getSourceId() == 'q') exit(0);
         if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
@@ -283,69 +276,39 @@ void MeshViewer::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//void MeshViewerClient::handleUIEvent(const Event& evt)
-//{
-//	for(int i = 0; i < myEntities.size(); i++)
-//	{
-//		if(myEntityButtons[i]->getId() == evt.getSourceId())
-//		{
-//			setVisibleEntity(i);
-//			return;
-//		}
-//	}
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//void MeshViewerClient::setVisibleEntity(int entityId)
-//{
-//	if(myVisibleEntity != NULL)
-//	{
-//		myVisibleEntity->setVisible(false);
-//		myVisibleEntity = NULL;
-//	}
-//
-//	Entity* e = myEntities[entityId];
-//	myVisibleEntity = e;
-//
-//	if(e->getMesh() != NULL)
-//	{
-//		myVisibleEntity->resetTransform();
-//		myVisibleEntity->setVisible(true);
-//
-//		// Tell the interactor what is the currently active scene node
-//		myCurrentInteractor->setSceneNode(e->getSceneNode());
-//	}
-//
-//	//if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
-//	//{
-//	//	setTextureBackgroundEnabled( true );
-//	//	setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
-//	//	setTextureBackground( DrawContext::EyeRight , e->getRightImage());
-//	//}
-//	//else
-//	//{
-//	//	setTextureBackgroundEnabled( false );
-//	//}
-//}
+void MeshViewer::handleUiEvent(const Event& evt)
+{
+	for(int i = 0; i < myEntities.size(); i++)
+	{
+		if(myEntityButtons[i]->getId() == evt.getSourceId())
+		{
+			EntityData* ed = myEntityLibrary[i];
+			createEntity(ed);
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::update(const UpdateContext& context)
 {
 	EngineServer::update( context );
 
-	//SceneNode* daSceneNode = myVisibleEntity->getSceneNode();
-	//if ( autoRotate )
-	//{
-	//	daSceneNode->yaw( 0.01 );
-	//}
-	//
-	//if( deltaScale != 0 )
-	//{
-	//	// if it is negative 
-	//	Vector3f curScale = daSceneNode->getScale( );
-	//	daSceneNode->setScale( curScale + curScale * deltaScale );	
-	//	deltaScale = 0.0;
-	//}
+	SceneNode* daSceneNode = myInteractor->getSceneNode();
+	if(daSceneNode != NULL)
+	{
+		if ( autoRotate )
+		{
+			daSceneNode->yaw( 0.01 );
+		}
+	
+		if( deltaScale != 0 )
+		{
+			// if it is negative 
+			Vector3f curScale = daSceneNode->getScale( );
+			daSceneNode->setScale( curScale + curScale * deltaScale );	
+			deltaScale = 0.0;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

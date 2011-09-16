@@ -28,7 +28,6 @@
 #include "oengine/EngineServer.h"
 
 #include "omega/GpuManager.h"
-#include "omega/TextureManager.h"
 #include "omega/Texture.h"
 #include "omega/glheaders.h"
 #include "omega/StringUtils.h"
@@ -72,6 +71,12 @@ void EngineClient::removeRenderPass(RenderPass* pass)
 void EngineClient::initialize()
 {
 	ofmsg("EngineClient::Initialize: id = %1%", %getId());
+	const FontInfo& fi = myServer->getDefaultFont();
+	if(fi.size != 0)
+	{
+		Font* fnt = myRenderer->createFont(fi.name, fi.filename, fi.size);
+		myRenderer->setDefaultFont(fnt);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

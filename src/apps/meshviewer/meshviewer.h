@@ -32,6 +32,7 @@
 
 using namespace omega;
 using namespace oengine;
+using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class EntityData
@@ -79,6 +80,7 @@ public:
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);
+	virtual void handleUiEvent(const Event& evt);
 	virtual void update(const UpdateContext& context);
 
 private:
@@ -97,7 +99,7 @@ private:
 	//ReferenceBox* myReferenceBox;
 
 	// UI
-	//Vector<Button*> myEntityButtons;
+	Vector<Button*> myEntityButtons;
 
 	// Interactors.
 	Actor* myInteractor;

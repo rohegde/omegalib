@@ -26,9 +26,9 @@
  *************************************************************************************************/
 #include "oengine/ui/Widget.h"
 #include "oengine/ui/Container.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/UiManager.h"
+//#include "oengine/ui/DefaultSkin.h"
 #include "oengine/Renderer.h"
+#include "omega/StringUtils.h"
 
 #include "omega/glheaders.h"
 
@@ -41,8 +41,9 @@ using namespace oengine::ui;
 NameGenerator Widget::mysNameGenerator("Widget_");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Widget::Widget(UiManager* mng):
-	myManager(mng),
+Widget::Widget(EngineServer* server):
+	myInitialized(false),
+	myServer(server),
 	myEventHandler(NULL),
 	myContainer(NULL),
 	myVisible(true),
@@ -57,25 +58,31 @@ Widget::Widget(UiManager* mng):
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();
-	myManager->registerWidget(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::~Widget()
 {
-	myManager->unregisterWidget(this);
+	if(myInitialized)
+	{
+		dispose();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Widget::update(const omega::UpdateContext& context) 
+{
+	if(!myInitialized)
+	{
+		ofmsg("Initializing Widget: %1%", %getName());
+		initialize(myServer);
+		myInitialized = true;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::handleEvent(const Event& evt) 
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderer* Widget::getRenderer()
-{
-	oassert(myManager != NULL);
-	return myManager->getDefaultPainter();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,48 +95,8 @@ void Widget::clearSizeConstaints()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::setContainer(Container* value) 
 { 
-	oassert(value && value->getManager() == myManager);
+	//oassert(value && value->getManager() == myManager);
 	myContainer = value; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::preDraw()
-{
-	glPushMatrix();
-
-	// Setup transformation.
-	Vector2f center = myPosition + (mySize / 2);
-	Vector2f mcenter = -center;
-
-	glTranslatef(center[0], center[1], 0.0f);
-	glRotatef(myRotation, 0, 0, 1);
-	glTranslatef(mcenter[0], mcenter[1], 0.0f);
-
-	glTranslatef((float)myPosition[0], (float)myPosition[1], 0);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::postDraw()
-{
-	// reset transform.
-	glPopMatrix();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::draw()
-{
-	preDraw();
-	renderContent();
-	postDraw();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Widget::renderContent()
-{
-	if(myDebugModeEnabled)
-	{
-		getRenderer()->drawRectOutline(Vector2f::Zero(), mySize, myDebugModeColor);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +153,7 @@ void Widget::dispatchUIEvent(const Event& evt)
 {
 	if(myEventHandler != NULL) myEventHandler->handleEvent(evt);
 	else if(myContainer != NULL) myContainer->dispatchUIEvent(evt);
-	else myManager->dispatchUIEvent(evt);
+	//else myManager->dispatchUIEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,3 +200,48 @@ int Widget::getId()
 	return myId;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* Widget::createRenderable()
+{
+	return new WidgetRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WidgetRenderable::preDraw()
+{
+	glPushMatrix();
+
+	// Setup transformation.
+	Vector2f center = myOwner->myPosition + (myOwner->mySize / 2);
+	Vector2f mcenter = -center;
+
+	glTranslatef(center[0], center[1], 0.0f);
+	glRotatef(myOwner->myRotation, 0, 0, 1);
+	glTranslatef(mcenter[0], mcenter[1], 0.0f);
+
+	glTranslatef((float)myOwner->myPosition[0], (float)myOwner->myPosition[1], 0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WidgetRenderable::postDraw()
+{
+	// reset transform.
+	glPopMatrix();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WidgetRenderable::draw(RenderState* state)
+{
+	preDraw();
+	drawContent();
+	postDraw();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void WidgetRenderable::drawContent()
+{
+	if(myOwner->myDebugModeEnabled)
+	{
+		getRenderer()->drawRectOutline(Vector2f::Zero(), myOwner->mySize, myOwner->myDebugModeColor);
+	}
+}

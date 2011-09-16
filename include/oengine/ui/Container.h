@@ -33,17 +33,22 @@ namespace oengine { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Container: public Widget
 	{
-	friend class UiManager;
+	friend class UiRenderPass;
+	friend class EngineServer;
+	friend class ContainerRenderable;
 	public:
 		enum Layout {LayoutFree, LayoutHorizontal, LayoutVertical, LayoutGridHorizontal, LayoutGridVertical};
 		enum HorizontalAlign { AlignRight, AlignLeft, AlignCenter};
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Container(UiManager* mng);
+		Container(EngineServer* server);
 		virtual ~Container();
 
+		virtual Renderable* createRenderable();
+
 		virtual void handleEvent(const omega::Event& evt);
+		virtual void update(const omega::UpdateContext& context);
 
 		void load(Setting& setting);
 
@@ -79,11 +84,9 @@ namespace oengine { namespace ui {
 		void setGridColumns(int value);
 		//@}
 
-		virtual void draw();
 		virtual void updateSize();
 
 	protected:
-		virtual void update(const omega::UpdateContext& context);
 		virtual void layout();
 
 	private:
@@ -103,6 +106,17 @@ namespace oengine { namespace ui {
 		int myGridColumns;
 		HorizontalAlign myHorizontalAlign;
 		VerticalAlign myVerticalAlign;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API ContainerRenderable: public WidgetRenderable
+	{
+	public:
+		ContainerRenderable(Container* owner): WidgetRenderable(owner), myOwner(owner) {}
+		virtual void draw(RenderState* state);
+
+	private:
+		Container* myOwner;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

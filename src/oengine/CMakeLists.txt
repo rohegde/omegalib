@@ -61,17 +61,18 @@ set( srcs
 		oengine/plyfile.cpp
 		oengine/ReferenceBox.cpp
 		oengine/Renderable.cpp
+		oengine/UiRenderPass.cpp
 		
 		# omega::ui
-#		oengine/ui/AbstractButton.cpp
-#		oengine/ui/Button.cpp
-#		oengine/ui/Container.cpp
-#		oengine/ui/Image.cpp
-#		oengine/ui/Label.cpp
-#		oengine/ui/DefaultSkin.cpp
-#		oengine/ui/Slider.cpp
-#		oengine/ui/Widget.cpp
-#		oengine/ui/UserManagerPanel.cpp
+		oengine/ui/AbstractButton.cpp
+		oengine/ui/Button.cpp
+		oengine/ui/Container.cpp
+		oengine/ui/Image.cpp
+		oengine/ui/Label.cpp
+		oengine/ui/DefaultSkin.cpp
+		oengine/ui/Slider.cpp
+		oengine/ui/Widget.cpp
+		oengine/ui/UserManagerPanel.cpp
         )
 		
 ###################################################################################################
@@ -115,18 +116,19 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/UiRenderPass.h
 		
 		# omega::ui
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/AbstractButton.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Button.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Container.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Image.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Label.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/DefaultSkin.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Slider.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Widget.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
-#		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/AbstractButton.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Button.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Container.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Image.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Label.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/DefaultSkin.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Slider.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Widget.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h
         ) 
 
 ###################################################################################################

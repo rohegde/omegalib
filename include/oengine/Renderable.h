@@ -84,6 +84,8 @@ namespace oengine {
 		void refresh();
 		bool isInitialized();
 		Renderable* getRenderable(EngineClient* client);
+		Renderable* getFirstRenderable();
+		EngineServer* getServer();
 
 	private:
 		bool myInitialized;
@@ -102,6 +104,11 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool RenderableFactory::isInitialized()
 	{ return myInitialized; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline EngineServer* RenderableFactory::getServer()
+	{ return myServer; }
+
 }; // namespace oengine
 
 #endif
