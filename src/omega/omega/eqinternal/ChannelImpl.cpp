@@ -176,8 +176,8 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 
 	setupDrawContext(&myDC, spin);
 
-	myDC.layer = view->getLayer() & 0x03;
-	client->draw(myDC);
+	//myDC.layer = view->getLayer() & 0x03;
+	//client->draw(myDC);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,9 +196,9 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
 	ApplicationClient* client = pipe->getClient();
 
 	setupDrawContext(&myDC, spin);
-	myDC.layer = view->getLayer() & 0x0c;
+	myDC.layer = view->getLayer();// & 0x0c;
 
-	if(myDC.layer != 0)
+	//if(myDC.layer != 0)
 	{
 		client->draw(myDC);
 	}
