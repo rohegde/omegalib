@@ -176,8 +176,8 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 
 	setupDrawContext(&myDC, spin);
 
-	//myDC.layer = view->getLayer() & 0x03;
-	//client->draw(myDC);
+	myDC.layer = view->getLayer() & 0x03;
+	client->draw(myDC);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
 
 	//if(myDC.layer != 0)
 	{
-		client->draw(myDC);
+	//	client->draw(myDC);
 	}
 	if(view->isDrawStatisticsEnabled())
 	{
