@@ -282,8 +282,9 @@ void MeshViewer::handleUiEvent(const Event& evt)
 	{
 		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
-			EntityData* ed = myEntityLibrary[i];
-			createEntity(ed);
+			ofmsg("Clicked button %1%", %myEntityButtons[i]->getName());
+			//EntityData* ed = myEntityLibrary[i];
+			//createEntity(ed);
 		}
 	}
 }
