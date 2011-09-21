@@ -78,6 +78,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Contains information about the context in which an update operation is taking place
 	struct UpdateContext
 	{
 		uint64 frameNum;
@@ -86,6 +87,23 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Contains information about a drawing channel.
+	struct ChannelInfo
+	{
+		//! The index of this channel inside the view.
+		Vector2i index;
+		//! The width and height in pixels of the channel
+		Vector2i size;
+		//! The pixel offset of the channel inside the view
+		Vector2i offset;
+		//! The total size of the canvas in pixels
+		Vector2i canvasSize;
+		//! The number of horizontal and vertical channels composing the canvas.
+		Vector2i canvasChannels;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Contains information about the context in which a drawing operation is taking place
 	struct DrawContext
 	{
 		enum Eye { EyeLeft , EyeRight, EyeCyclop };
@@ -95,10 +113,10 @@ namespace omega
 		Transform3 projection;
 		//! The pixel viewport coordinates of this context with respect to the owner window of the context.
 		Rect viewport;
-		//! The pixel viewport coordinates of this context with respect to the global canvas managed by the display system.
-		Rect globalViewport;
-		//IGLContextManager* glContext;
+		//! The eye being rendered for this context.
 		Eye eye;
+		//! Information about the drawing channel associated with this context.
+		ChannelInfo* channel;
 
 		bool isSceneActive(int id) const;
 		bool isOverlayActive(int id) const;

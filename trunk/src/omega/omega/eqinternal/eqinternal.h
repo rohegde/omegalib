@@ -278,6 +278,7 @@ public:
 	const omega::DrawContext& getLastDrawContext();
 
 protected:
+	void initialize();
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
 	virtual void makeCurrent();
 	virtual void frameDraw( const uint128_t& spin );
@@ -286,12 +287,16 @@ protected:
 	virtual bool configInit(const uint128_t& initID);
 
 private:
+	static Dictionary<String, Vector2i> myCanvasChannels;
+	static Dictionary<String, Vector2i> myCanvasSize;
+
+private:
+	bool myInitialized;
 	eq::Window* myWindow;
 	Lock myLock;
 	ViewImpl* myView;
+	ChannelInfo myChannelInfo;
 	DrawContext myDC;
-	Vector2i myChannelIndex;
-	Vector2i myChannelPixelOffset;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

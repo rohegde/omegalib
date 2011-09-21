@@ -32,6 +32,7 @@
 #include "oengine/OverlayRenderable.h"
 
 namespace oengine { namespace ui {
+	class Container;
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Widget: public RenderableFactory, IEventListener
 	{
@@ -130,13 +131,13 @@ namespace oengine { namespace ui {
 
 		//! Returns the unique Widget id.
 		int getId();
+		virtual void layout();
 
 	protected:
 		//! internal layout management
 		//@{
 		void requestLayoutRefresh();
 		bool needLayoutRefresh();
-		virtual void layout();
 		void setActualSize(int value, Orientation orientation, bool force = false);
 		//@}
 

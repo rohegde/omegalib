@@ -28,12 +28,12 @@
 #define __CONTAINER_H__
 
 #include "oengine/ui/Widget.h"
+#include "oengine/UiRenderPass.h"
 
 namespace oengine { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Container: public Widget
 	{
-	friend class UiRenderPass;
 	friend class EngineServer;
 	friend class ContainerRenderable;
 	public:
@@ -85,8 +85,6 @@ namespace oengine { namespace ui {
 		//@}
 
 		virtual void updateSize();
-
-	protected:
 		virtual void layout();
 
 	private:

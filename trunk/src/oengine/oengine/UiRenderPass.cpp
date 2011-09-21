@@ -31,6 +31,7 @@
 #include "oengine/SceneNode.h"
 #include "oengine/ui/Container.h"
 #include "omega/StringUtils.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace oengine;
@@ -72,6 +73,16 @@ void UiRenderPass::render(EngineClient* client, const DrawContext& context)
 	{
 		uiRenderable->draw(&state);
 	}
+
+	glColor3f(1, 1, 0);
+	glBegin(GL_LINES);
+	glVertex3f(400, 400, 0);
+	glVertex3f(200, 200, 0);
+	glVertex3f(100, 100, 0);
+	glVertex3f(600, 100, 0);
+	glVertex3f(100, 100, 0);
+	glVertex3f(600, 600, 0);
+	glEnd();
 
 	client->getRenderer()->endDraw();
 }
