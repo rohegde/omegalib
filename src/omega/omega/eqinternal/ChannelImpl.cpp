@@ -86,7 +86,7 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 	if(canvasChanged)
 	{
 		myCanvasSize["default"].x() = myCanvasChannels["default"].x() * w;
-		myCanvasSize["default"].y() = myCanvasChannels["default"].y() * w;
+		myCanvasSize["default"].y() = myCanvasChannels["default"].y() * h;
 	}
 	myLock.unlock();
 
