@@ -33,6 +33,8 @@ using namespace std;
 
 using namespace eq;
 
+// horrible hack.
+bool initStaticVars = false;
 Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasChannels;
 Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasSize;
 
@@ -40,6 +42,14 @@ Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasSize;
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
 	:eq::Channel( parent ), myWindow(parent), myInitialized(false)
 {
+	myLock.lock();
+	if(!initStaticVars)
+	{
+		myCanvasChannels["default"] = Vector2i(0, 0);
+		myCanvasSize["default"] = Vector2i(0, 0);
+		initStaticVars = true;
+	}
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
