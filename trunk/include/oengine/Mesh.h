@@ -39,6 +39,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Mesh: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(Mesh)
 	public:
 		Mesh();
 		~Mesh();
@@ -57,10 +58,12 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API MeshRenderable: public SceneRenderable
 	{
+	OMEGA_DECLARE_TYPE(MeshRenderable)
 	public:
 		MeshRenderable(Mesh* mesh);
 		~MeshRenderable();
-		void initialize();
+		virtual void initialize();
+		virtual void dispose();
 		void draw(RenderState* state);
 		void refresh();
 

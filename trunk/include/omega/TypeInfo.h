@@ -31,12 +31,9 @@
 
 #define OMEGA_DECLARE_TYPE(tname) \
 	public:  static const omega::TypeInfo* Type; \
-	static tname* createInstance() { return new tname(); }
+	public:  virtual const omega::TypeInfo* getType() { return tname::Type; }
 
-#define OMEGA_DECLARE_ABSTRACT_TYPE(tname) \
-	public:  static const omega::TypeInfo* Type;
-
-#define OMEGA_DEFINE_TYPE(tname, tbase) const omega::TypeInfo* tname::Type = onew(omega::TypeInfo(#tname, tbase::Type));
+#define OMEGA_DEFINE_TYPE(tname, tbase) const omega::TypeInfo* tname::Type = new omega::TypeInfo(#tname, tbase::Type);
 
 namespace omega
 {
@@ -62,9 +59,10 @@ namespace omega
 	//! omegalib.
 	class OMEGA_API OmegaObject
 	{
+	OMEGA_DECLARE_TYPE(OmegaObject)
 	public:  
 		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-		static const omega::TypeInfo* Type; 
+		virtual String toString() { return getType()->getName(); }
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

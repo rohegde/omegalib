@@ -45,6 +45,20 @@ Entity::Entity(EntityData* data, EngineServer* server):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity::~Entity()
+{
+	myServer->getScene(0)->removeChild(mySceneNode);
+	delete mySceneNode;
+	mySceneNode = NULL;
+
+	delete mySelectionSphere;
+	mySelectionSphere = NULL;
+
+	delete myMesh;
+	myMesh = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::setVisible(bool value)
 {
 	myVisible = value;
@@ -236,11 +250,15 @@ void MeshViewer::createEntity(EntityData* ed)
 	//e->getMesh()->setEffect(myColorIdEffect);
 	myEntities.push_back(e);
 	myInteractor->setSceneNode(e->getSceneNode());
+	mySelectedEntity = e;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::destroyEntity(Entity* e)
 {
+	myEntities.remove(e);
+	delete e;
+	myInteractor->setSceneNode(NULL);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,6 +272,13 @@ void MeshViewer::handleEvent(const Event& evt)
 	else if( evt.getServiceType() == Service::Keyboard )
     {
         if((char)evt.getSourceId() == 'q') exit(0);
+        if((char)evt.getSourceId() == 'd' && evt.getType() == Event::Down) 
+        {
+			if(mySelectedEntity != NULL)
+			{
+				destroyEntity(mySelectedEntity);
+			}
+        }
         if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
         {
             myShowUI = !myShowUI;
@@ -278,13 +303,12 @@ void MeshViewer::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleUiEvent(const Event& evt)
 {
-	for(int i = 0; i < myEntities.size(); i++)
+	for(int i = 0; i < myEntityButtons.size(); i++)
 	{
 		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
-			ofmsg("Clicked button %1%", %myEntityButtons[i]->getName());
-			//EntityData* ed = myEntityLibrary[i];
-			//createEntity(ed);
+			EntityData* ed = myEntityLibrary[i];
+			createEntity(ed);
 		}
 	}
 }

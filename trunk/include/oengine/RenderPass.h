@@ -36,7 +36,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API RenderPass: public OmegaObject
 	{
-	OMEGA_DECLARE_ABSTRACT_TYPE(RenderPass)
+	OMEGA_DECLARE_TYPE(RenderPass)
 	public:
 		enum RenderFlags { 
 			RenderOpaque = 1 << 1, 

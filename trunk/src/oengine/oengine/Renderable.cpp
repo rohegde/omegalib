@@ -28,10 +28,13 @@
 #include "oengine/EngineClient.h"
 #include "oengine/EngineServer.h"
 
+#include "omega/StringUtils.h"
+
 using namespace omega;
 using namespace oengine;
 
 OMEGA_DEFINE_TYPE(Renderable, OmegaObject)
+OMEGA_DEFINE_TYPE(RenderableFactory, OmegaObject)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable::Renderable():
@@ -53,29 +56,48 @@ RenderableFactory::RenderableFactory():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderableFactory::~RenderableFactory()
+{
+	dispose();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderableFactory::initialize(EngineServer* srv)
 {
-	myServer = srv;
-	foreach(EngineClient* client, srv->getClients())
+	if(!myInitialized)
 	{
-		Renderable* r = createRenderable();
-		r->setClient(client);
-		myRenderables.push_back(r);
-		RenderableCommand rc(r, RenderableCommand::Initialize);
-		client->queueRenderableCommand(rc);
+		ofmsg("Initializing renderable factory: %1%", %toString());
+		myServer = srv;
+		foreach(EngineClient* client, srv->getClients())
+		{
+			Renderable* r = createRenderable();
+			r->setClient(client);
+			myRenderables.push_back(r);
+			RenderableCommand rc(r, RenderableCommand::Initialize);
+			client->queueRenderableCommand(rc);
+		}
+		myInitialized = true;
 	}
-	myInitialized = true;
+	else
+	{
+		owarn("RenderableFactory::initialize - renderable already initialized");
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderableFactory::dispose()
 {
-	foreach(Renderable* r, myRenderables)
+	if(myInitialized)
 	{
-		RenderableCommand rc(r, RenderableCommand::Dispose);
-		r->getClient()->queueRenderableCommand(rc);
+		ofmsg("Disposing renderable factory: %1%", %toString());
+		foreach(Renderable* r, myRenderables)
+		{
+			RenderableCommand rc(r, RenderableCommand::Dispose);
+			r->getClient()->queueRenderableCommand(rc);
+		}
+		myRenderables.empty();
+		myInitialized = false;
 	}
-	myRenderables.empty();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

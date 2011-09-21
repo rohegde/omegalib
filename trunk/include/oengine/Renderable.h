@@ -36,7 +36,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Renderable: public OmegaObject
 	{
-	OMEGA_DECLARE_ABSTRACT_TYPE(Renderable)
+	OMEGA_DECLARE_TYPE(Renderable)
 	public:
 		Renderable();
 
@@ -66,7 +66,7 @@ namespace oengine {
 			switch(command)
 			{
 			case Initialize: renderable->initialize(); break;
-			case Dispose: renderable->initialize(); break;
+			case Dispose: renderable->dispose(); break;
 			case Refresh: renderable->refresh(); break;
 			}
 		}
@@ -74,10 +74,12 @@ namespace oengine {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Base class for objects that can create renderables.
-	class OENGINE_API RenderableFactory
+	class OENGINE_API RenderableFactory: public OmegaObject
 	{
+	OMEGA_DECLARE_TYPE(RenderableFactory)
 	public:
 		RenderableFactory();
+		virtual ~RenderableFactory();
 		virtual Renderable* createRenderable() = 0;
 		void initialize(EngineServer* srv);
 		void dispose();

@@ -30,6 +30,8 @@
 using namespace omega;
 using namespace oengine;
 
+OMEGA_DEFINE_TYPE(SceneObject, RenderableFactory)
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneObject::SceneObject()
 {
