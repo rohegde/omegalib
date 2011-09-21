@@ -34,6 +34,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Box: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(Box)
 	public:
 		Box();
 		virtual Renderable* createRenderable();
@@ -44,6 +45,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class BoxRenderable: public SceneRenderable
 	{
+	OMEGA_DECLARE_TYPE(BoxRenderable)
 	public:
 		BoxRenderable(Box* box);
 		virtual ~BoxRenderable();

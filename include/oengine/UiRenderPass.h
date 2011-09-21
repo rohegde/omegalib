@@ -35,6 +35,7 @@ namespace oengine {
 	{
 	OMEGA_DECLARE_TYPE(UiRenderPass)
 	public:
+		static RenderPass* createInstance() { return new UiRenderPass(); }
 		virtual void render(EngineClient* client, const DrawContext& context);
 	};
 }; // namespace oengine

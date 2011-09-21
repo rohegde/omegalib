@@ -37,6 +37,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API SceneObject: public RenderableFactory
 	{
+	OMEGA_DECLARE_TYPE(SceneObject)
 	public:
 		SceneObject();
 

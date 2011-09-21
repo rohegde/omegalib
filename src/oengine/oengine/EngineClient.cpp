@@ -27,6 +27,7 @@
 #include "oengine/EngineClient.h"
 #include "oengine/EngineServer.h"
 
+#include "omega/DisplaySystem.h"
 #include "omega/GpuManager.h"
 #include "omega/Texture.h"
 #include "omega/glheaders.h"
@@ -92,6 +93,11 @@ void EngineClient::draw(const DrawContext& context)
 	while(!myRenderableCommands.empty())
 	{
 		myRenderableCommands.front().execute();
+		if(myRenderableCommands.front().command == RenderableCommand::Dispose)
+		{
+			ofmsg("Client %1% deleting renderable", %getId());
+			delete myRenderableCommands.front().renderable;
+		}
 		myRenderableCommands.pop();
 	}
 

@@ -34,6 +34,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API SceneRenderable: public Renderable
 	{
+	OMEGA_DECLARE_TYPE(SceneRenderable)
 	public:
 		SceneRenderable();
 		virtual ~SceneRenderable();

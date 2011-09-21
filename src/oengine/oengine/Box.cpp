@@ -30,6 +30,9 @@
 using namespace omega;
 using namespace oengine;
 
+OMEGA_DEFINE_TYPE(Box, SceneObject);
+OMEGA_DEFINE_TYPE(BoxRenderable, SceneRenderable);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Box::Box()
 {

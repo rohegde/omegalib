@@ -34,6 +34,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API BoundingSphere: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(BoundingSphere)
 	friend class BoundingSphereRenderable;
 	public:
 		BoundingSphere(): 
@@ -71,6 +72,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API BoundingSphereRenderable: public SceneRenderable
 	{
+	OMEGA_DECLARE_TYPE(BoundingSphereRenderable)
 	public:
 		BoundingSphereRenderable(BoundingSphere* boundingSphere): 
 		  myBoundingSphere(boundingSphere)

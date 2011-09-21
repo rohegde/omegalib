@@ -104,6 +104,8 @@ private:
 	// Interactors.
 	Actor* myInteractor;
 
+	Entity* mySelectedEntity;
+
 	//Effect* myColorIdEffect;
     
     bool myShowUI;
