@@ -37,6 +37,8 @@
 using namespace omega;
 using namespace oengine;
 
+Lock fontLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderer::Renderer():
 	myTargetTexture(NULL),
@@ -72,13 +74,18 @@ void Renderer::beginDraw2D(const DrawContext& context)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef(0.0, context.viewport.height() - 1, 0.0);
-    glScalef(1.0, -1.0, 1.0);
+    //glTranslatef(0, context.globalViewport.height() + context.globalViewport.y() - 1, 0.0);
+    //glScalef(1.0, -1.0, 1.0);
+
+	int left = context.channel->offset[0];
+	int right = left + context.channel->size[0];
+	int top = context.channel->offset[1];
+	int bottom = top + context.channel->size[1];
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, context.viewport.width(), 0, context.viewport.height(), -1, 1);
+    glOrtho(left, right, bottom, top, -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -206,6 +213,7 @@ void Renderer::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
 { 
+	fontLock.lock();
 	Vector2f rect = font->computeSize(text);
 	float x, y;
 
@@ -218,6 +226,7 @@ void Renderer::drawText(const String& text, Font* font, const Vector2f& position
 	else y = -position[1] - rect[1] / 2;
 
 	font->render(text, x, y); 
+	fontLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,6 +356,7 @@ void Renderer::drawIndexedPrimitives(VertexBuffer* vertices, uint* indices, uint
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Font* Renderer::createFont(omega::String fontName, omega::String filename, int size)
 {
+	fontLock.lock();
 	if(getFont(fontName))
 	{
 		ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
@@ -358,11 +368,8 @@ Font* Renderer::createFont(omega::String fontName, omega::String filename, int s
 	oassert(!info.isNull());
 	oassert(info.local);
 
-	myLock.lock();
 
 	FTFont* fontImpl = new FTTextureFont(info.path.c_str());
-
-	myLock.unlock();
 
 	//delete data;
 
@@ -370,6 +377,7 @@ Font* Renderer::createFont(omega::String fontName, omega::String filename, int s
 	{
 		ofwarn("Font %1% failed to open", %filename);
 		delete fontImpl;
+		return NULL;
 	}
 
 	if(!fontImpl->FaceSize(size))
@@ -381,6 +389,7 @@ Font* Renderer::createFont(omega::String fontName, omega::String filename, int s
 	Font* font = new Font(fontImpl);
 
 	myFonts[fontName] = font;
+	fontLock.unlock();
 	return font;
 }
 

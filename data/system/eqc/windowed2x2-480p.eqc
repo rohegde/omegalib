@@ -12,7 +12,10 @@ server
     {
         appNode											
         {
-            
+			attributes
+			{
+				thread_model LOCAL_SYNC
+			}
             pipe
             {
                 window

@@ -33,9 +33,12 @@ using namespace std;
 
 using namespace eq;
 
+Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasChannels;
+Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasSize;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
-	:eq::Channel( parent ), myWindow(parent) 
+	:eq::Channel( parent ), myWindow(parent), myInitialized(false)
 {
 }
 
@@ -56,12 +59,51 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 
 	String name = getName();
 	vector<String> args = StringUtils::split(name, "x,");
-	myChannelIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+	int ix = myChannelInfo.index[0];
+	int iy = myChannelInfo.index[1];
+
 	int w = getPixelViewport().w;
 	int h = getPixelViewport().h;
 
-	myChannelPixelOffset = Vector2i(myChannelIndex[0] * w, myChannelIndex[1] * h);
+	myChannelInfo.offset = Vector2i(ix * w, iy * h);
+	myChannelInfo.size = Vector2i(w, h);
+
+	myLock.lock();
+	// Refresh the number of channels in this view.
+	bool canvasChanged = false;
+	if(myCanvasChannels["default"].x() <= ix) 
+	{
+		myCanvasChannels["default"].x() = ix + 1;
+		canvasChanged = true;
+	}
+	if(myCanvasChannels["default"].y() <= iy) 
+	{
+		myCanvasChannels["default"].y() = iy + 1;
+		canvasChanged = true;
+	}
+	// If the number of channels in this view has been updated, refresh the view pixel size.
+	if(canvasChanged)
+	{
+		myCanvasSize["default"].x() = myCanvasChannels["default"].x() * w;
+		myCanvasSize["default"].y() = myCanvasChannels["default"].y() * w;
+	}
+	myLock.unlock();
+
 	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ChannelImpl::initialize()
+{
+	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	ofmsg("Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
+		%pipe->getClient()->getId()
+		%myCanvasChannels["default"].x() %myCanvasChannels["default"].y()
+		%myCanvasSize["default"].x() %myCanvasSize["default"].y());
+
+	myChannelInfo.canvasChannels = myCanvasChannels["default"];
+	myChannelInfo.canvasSize = myCanvasSize["default"];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,13 +117,13 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	eq::PixelViewport pvp = getPixelViewport();
 	eq::PixelViewport gpvp = getWindow()->getPixelViewport();
 
+	context->channel = &myChannelInfo;
+
 	// setup the context viewport.
 	// (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
 	context->frameNum = spin.low();
-	//context.glContext = this;
 
 	context->viewport = Rect(pvp.x, pvp.y, pvp.w, pvp.h);
-	context->globalViewport = Rect(gpvp.x, gpvp.y, gpvp.w, gpvp.h);
 		
 	switch( getEye() )
 	{
@@ -110,6 +152,12 @@ void ChannelImpl::makeCurrent()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 {
+	if(!myInitialized) 
+	{
+		initialize();
+		myInitialized = true;
+	}
+
 	eq::Channel::frameDraw( spin );
 
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
@@ -168,7 +216,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)
 {
-	return point + myChannelPixelOffset;
+	return point + myChannelInfo.offset;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
