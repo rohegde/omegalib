@@ -24,116 +24,104 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ENGINE_SERVER_H__
-#define __ENGINE_SERVER_H__
+#ifndef __BOUNDING_SPHERE_DRAWABLE_H__
+#define __BOUNDING_SPHERE_DRAWABLE_H__
 
-#include "oenginebase.h"
-#include "EngineClient.h"
-#include "SceneNode.h"
-#include "Renderable.h"
-#include "SceneQuery.h"
-#include "Actor.h"
-#include "Font.h"
-#include "ui/Container.h"
-#include "ui/WidgetFactory.h"
-#include "omega/Application.h"
+#include "SceneObject.h"
+#include "SceneRenderable.h"
 
 namespace oengine {
-
-	typedef List<EngineClient*> EngineClientList;
-		
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API EngineServer: public ApplicationServer
+	class OENGINE_API BoundingSphere: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(BoundingSphere)
+	friend class BoundingSphereRenderable;
 	public:
-		typedef RenderPass* (*RenderPassFactory)();
+		BoundingSphere(): 
+		  myDrawOnSelected(false), 
+ 		  myVisible(true),
+		  mySlices(5),
+		  mySegments(32),
+		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
 
-	public:
-		static const int MaxScenes = 3;
-		static const int MaxUis = 3;
+		virtual Renderable* createRenderable();
 
-	public:
-		EngineServer(Application* app);
+		void setDrawOnSelected(bool value);
+		bool getDrawOnSelected();
 
-		ServiceManager* getServiceManager();
+		void setVisible(bool value);
+		bool getVisible();
 
-		void addClient(EngineClient* client);
-		EngineClientList& getClients();
+		Color getColor();
+		void setColor(const Color& value);
 
-		//! Render pass management
-		//@{
-		template<typename T> void registerRenderPassClass();
-		void addRenderPass(String renderPass, bool addToFront = false);
-		void removeRenderPass(String renderPass);
-		//@}
+		int getSegments();
+		void setSegments(int value);
 
-		//! Font management
-		//@{
-		void setDefaultFont(const FontInfo& font);
-		const FontInfo& getDefaultFont();
-		//@}
-
-		//! Scene query
-		//@{
-		const SceneQueryResultList& querySceneRay(int sceneId, const Ray& ray, uint flags = 0);
-		//@}
-
-		SceneNode* getScene(int id);
-		ui::Container* getUi(int id);
-		ui::WidgetFactory* getWidgetFactory();
-
-		void addActor(Actor* actor);
-		void removeActor(Actor* actor);
-
-		virtual void initialize();
-		virtual void handleEvent(const Event& evt);
-		virtual void update(const UpdateContext& context);
+		int getSlices();
+		void setSlices(int value);
 
 	private:
-		List<EngineClient*> myClients;
-
-		Dictionary<String, RenderPassFactory> myRenderPassFactories;
-
-		SceneNode* myScene[MaxScenes];
-		ui::Container* myUi[MaxUis];
-
-		List<Actor*> myActors;
-
-		// Resources
-		FontInfo myDefaultFont;
-		ui::WidgetFactory* myWidgetFactory;
-
-		// Scene querying
-		RaySceneQuery myRaySceneQuery;
+		bool myVisible;
+		bool myDrawOnSelected;
+		Color myColor;
+		int mySegments;
+		int mySlices;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ServiceManager* EngineServer::getServiceManager()
-	{ return SystemManager::instance()->getServiceManager(); }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	template<typename T> 
-	inline void EngineServer::registerRenderPassClass()
+	class OENGINE_API BoundingSphereRenderable: public SceneRenderable
 	{
-		myRenderPassFactories[T::Type->getName()] = (RenderPassFactory)T::createInstance;
-	}
+	OMEGA_DECLARE_TYPE(BoundingSphereRenderable)
+	public:
+		BoundingSphereRenderable(BoundingSphere* boundingSphere): 
+		  myBoundingSphere(boundingSphere)
+		{}
+		void draw(RenderState* state);
+
+	private:
+		BoundingSphere* myBoundingSphere;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClientList& EngineServer::getClients()
-	{ return myClients; }
+	inline void BoundingSphere::setDrawOnSelected(bool value)
+	{ myDrawOnSelected = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void EngineServer::setDefaultFont(const FontInfo& font)
-	{ myDefaultFont = font;	}
+	inline bool BoundingSphere::getDrawOnSelected()
+	{ return myDrawOnSelected; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const FontInfo& EngineServer::getDefaultFont()
-	{ return myDefaultFont; }
+	inline void BoundingSphere::setVisible(bool value)
+	{ myVisible = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ui::WidgetFactory* EngineServer::getWidgetFactory()
-	{ return myWidgetFactory; }
-		
+	inline bool BoundingSphere::getVisible()
+	{ return myVisible; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color BoundingSphere::getColor()
+	{ return myColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphere::setColor(const Color& value)
+	{ myColor = value;}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int BoundingSphere::getSegments()
+	{ return mySegments; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphere::setSegments(int value)
+	{ mySegments = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int BoundingSphere::getSlices()
+	{ return mySlices;}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphere::setSlices(int value)
+	{ mySlices = value; }
 }; // namespace oengine
 
 #endif

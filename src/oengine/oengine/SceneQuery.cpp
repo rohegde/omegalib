@@ -23,6 +23,7 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "oengine/SceneQuery.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace oengine;
@@ -40,7 +41,7 @@ const SceneQueryResultList& RaySceneQuery::execute(uint flags)
 
 	queryNode(myScene, myResults, queryOne);
 
-	if((flags & SceneQuery::QuerySort) == SceneQuery::QuerySort)
+	if(((flags & SceneQuery::QuerySort) == SceneQuery::QuerySort) && myResults.size() > 1)
 	{
 		myResults.sort(SceneQueryResultDistanceCompare);
 	}
@@ -53,13 +54,12 @@ void RaySceneQuery::queryNode(SceneNode* node, SceneQueryResultList& list, bool 
 	bool selected = false;
 	if(node->isSelectable())
 	{
-		const AlignedBox3& bbox = node->getBoundingBox();
-		//printf("Bounding box min: %f %f %f max: %f %f %f\n", 
-		//	bbox.getMinimum()[0], bbox.getMinimum()[1], bbox.getMinimum()[2],
-		//	bbox.getMaximum()[0], bbox.getMaximum()[1], bbox.getMaximum()[2]);
-		std::pair<bool, float> resPair = myRay.intersects(bbox);
+		const Sphere& s = node->getBoundingSphere();
+		//ofmsg("Bsphere for node %1% is   center: %2%   radius: %3%", %node->getName() %s.getCenter() %s.getRadius());
+		std::pair<bool, float> resPair = myRay.intersects(s);
 		if(resPair.first)
 		{
+			//omsg("INTERSECT");
 			SceneQueryResult res;
 			res.node = node;
 			res.distance = resPair.second;

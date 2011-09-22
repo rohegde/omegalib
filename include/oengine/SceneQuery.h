@@ -56,9 +56,10 @@ namespace oengine {
 		enum QueryFlags {QuerySort = 1 << 1, QueryFirst = 1 << 2};
 
 	public:
-		SceneQuery(SceneNode* scene): myScene(scene) {}
+		SceneQuery(): myScene(NULL) {}
 
-		SceneNode* getScene() { return myScene; }
+		SceneNode* getSceneNode() { return myScene; }
+		void setSceneNode(SceneNode* value) { myScene = value; }
 
 		virtual const SceneQueryResultList& execute(uint flags = 0) = 0;
 
@@ -73,9 +74,9 @@ namespace oengine {
 	class OENGINE_API RaySceneQuery: public SceneQuery
 	{
 	public:
-		RaySceneQuery(SceneNode* scene): SceneQuery(scene) {}
+		RaySceneQuery() {}
 
-		void setRay(Ray& ray) { myRay = ray; }
+		void setRay(const Ray& ray) { myRay = ray; }
 		const Ray& getRay() { return myRay; }
 
 		virtual const SceneQueryResultList& execute(uint flags = 0);

@@ -38,6 +38,7 @@ Entity::Entity(EntityData* data, EngineServer* server):
 	mySelectionSphere->setVisible(false);
 
 	mySceneNode = new SceneNode(server);
+	mySceneNode->setSelectable(true);
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
 	mySceneNode->addObject(mySelectionSphere);
@@ -265,6 +266,16 @@ void MeshViewer::destroyEntity(Entity* e)
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
+	if(evt.getServiceType() == Service::Pointer) 
+	{
+		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
+		{
+			Ray ray;
+			ray.setOrigin(evt.getExtraDataVector3(0));
+			ray.setDirection(evt.getExtraDataVector3(1));
+			updateSelection(ray);
+		}
+	}
 	if(evt.getServiceType() == Service::Ui) 
 	{
 		handleUiEvent(evt);
@@ -314,6 +325,51 @@ void MeshViewer::handleUiEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity* MeshViewer::findEntity(SceneNode* node)
+{
+	foreach(Entity* e, myEntities)
+	{
+		if(e->getSceneNode() == node) return e;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewer::updateSelection(const Ray& ray)
+{
+	const SceneQueryResultList& sqrl = querySceneRay(0, ray);
+	if(sqrl.size() != 0)
+	{
+		// The ray intersected with something.
+		SceneNode* sn = sqrl.front().node;
+		ofmsg("sn %1%", %sn->getName());
+		Entity* e = findEntity(sn);
+		ofmsg("entity %1%", %e->getData()->name);
+
+		if(mySelectedEntity != e)
+		{
+			if(mySelectedEntity != NULL)
+			{
+				mySelectedEntity->getSceneNode()->setSelected(false);
+			}
+			// The selected entity changed.
+			myInteractor->setSceneNode(sn);
+			sn->setSelected(true);
+			mySelectedEntity = e;
+		}
+	}
+	else
+	{
+		if(mySelectedEntity != NULL)
+		{
+			mySelectedEntity->getSceneNode()->setSelected(false);
+			mySelectedEntity = NULL;
+			myInteractor->setSceneNode(NULL);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::update(const UpdateContext& context)
 {
 	EngineServer::update( context );
@@ -323,7 +379,7 @@ void MeshViewer::update(const UpdateContext& context)
 	{
 		if ( autoRotate )
 		{
-			daSceneNode->yaw( 0.01 );
+			daSceneNode->yaw( 0.01f );
 		}
 	
 		if( deltaScale != 0 )
