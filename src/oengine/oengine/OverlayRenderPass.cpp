@@ -25,23 +25,27 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/OverlayRenderPass.h"
-#include "oengine/SceneManager.h"
+#include "oengine/EngineClient.h"
+#include "oengine/EngineServer.h"
 #include "oengine/Renderer.h"
-#include "omega/glheaders.h"
+#include "oengine/SceneNode.h"
 
 using namespace omega;
 using namespace oengine;
 
+OMEGA_DEFINE_TYPE(OverlayRenderPass, RenderPass)
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OverlayRenderPass::render(SceneManager* mng, const DrawContext& context)
+void OverlayRenderPass::render(EngineClient* client, const DrawContext& context)
 {
 	RenderState state;
 	state.pass = this;
 	state.flags = RenderPass::RenderOverlay;
-	state.renderer = mng->getRenderer();
+	state.client = client;
 	state.context = &context;
 
-	state.renderer->beginDraw2D(context);
-	mng->getRootNode()->draw(&state);
-	state.renderer->endDraw();
+	client->getRenderer()->beginDraw2D(context);
+	SceneNode* node = client->getServer()->getScene(0);
+	node->draw(&state);
+	client->getRenderer()->endDraw();
 }

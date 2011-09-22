@@ -31,8 +31,8 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Container::Container(UiManager* mng):
-		Widget(mng),
+Container::Container(EngineServer* server):
+		Widget(server),
 		myPadding(5),
 		myMargin(5),
 		myHorizontalAlign(AlignCenter),
@@ -163,23 +163,6 @@ Widget* Container::getChildByIndex(int index)
 		i++;
 	}
 	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Container::draw()
-{
-	preDraw();
-
-    // draw myself.
-	renderContent();
-
-	// draw children.
-	foreach(Widget* w, myChildren)
-	{
-		w->draw();
-	}
-
-	postDraw();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -384,6 +367,7 @@ void Container::layout()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::update(const omega::UpdateContext& context)
 {
+	Widget::update(context);
 	foreach(Widget* w, myChildren)
 	{
 		w->update(context);
@@ -402,3 +386,31 @@ void Container::handleEvent(const Event& evt)
 		w->handleEvent(evt);
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* Container::createRenderable()
+{
+	return new ContainerRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ContainerRenderable::draw(RenderState* state)
+{
+	preDraw();
+
+    // draw myself.
+	drawContent();
+
+	// draw children.
+	foreach(Widget* w, myOwner->myChildren)
+	{
+		Renderable* childRenderable = w->getRenderable(getClient()); 
+		if(childRenderable != NULL) 
+		{
+			childRenderable->draw(state);
+		}
+	}
+
+	postDraw();
+}
+

@@ -29,10 +29,11 @@
 
 #include "osystem.h"
 
-#define OMEGA_DECLARE_TYPE(tname) public:  static const omega::TypeInfo* Type;
+#define OMEGA_DECLARE_TYPE(tname) \
+	public:  static const omega::TypeInfo* Type; \
+	public:  virtual const omega::TypeInfo* getType() { return tname::Type; }
 
-#define OMEGA_DEFINE_TYPE(tname, tbase) const omega::TypeInfo* tname::Type = onew(omega::TypeInfo(#tname, tbase::Type));
-#define OMEGA_DEFINE_TYPE_NOBASE(tname) const omega::TypeInfo* tname::Type = onew(omega::TypeInfo(#tname, NULL));
+#define OMEGA_DEFINE_TYPE(tname, tbase) const omega::TypeInfo* tname::Type = new omega::TypeInfo(#tname, tbase::Type);
 
 namespace omega
 {
@@ -51,6 +52,17 @@ namespace omega
 	private:
 		String myName;
 		const TypeInfo* myBaseType;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Base class for all omegalib high level objects.
+	//! omegalib.
+	class OMEGA_API OmegaObject
+	{
+	OMEGA_DECLARE_TYPE(OmegaObject)
+	public:  
+		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+		virtual String toString() { return getType()->getName(); }
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

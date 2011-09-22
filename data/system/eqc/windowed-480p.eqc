@@ -12,13 +12,16 @@ server
     {
         appNode											
         {
-            
+			attributes
+			{
+				thread_model LOCAL_SYNC
+			}
             pipe									#Bottom Window
             {
                 window
                 {
                     viewport [ 50 50 854 480 ]
-                    channel { name "channel1"  }
+                    channel { name "0,0"  }
                 }
             }
         }
@@ -49,7 +52,7 @@ server
 					bottom_right [  .7 -.4 0 ]
 					top_left     [ -.7 .4 0 ]
 			}
-            segment { channel "channel1" }
+            segment { channel "0,0" }
         }
 
         # wall compound - need swap barrier

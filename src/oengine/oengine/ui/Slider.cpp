@@ -32,8 +32,8 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Slider::Slider(UiManager* mng):
-	Widget(mng),
+Slider::Slider(EngineServer* srv):
+	Widget(srv),
 	myTicks(100),
 	myValue(0),
 	myDeferUpdate(false),
@@ -64,7 +64,7 @@ void Slider::handleEvent(const Event& evt)
 		if(myValueChanged)
 		{
 			Event e;
-			e.reset(Event::ChangeValue, Service::UI, getId());
+			e.reset(Event::ChangeValue, Service::Ui, getId());
 			dispatchUIEvent(e);
 		}
 	}
@@ -92,7 +92,7 @@ void Slider::handleEvent(const Event& evt)
 				if(!myDeferUpdate)
 				{
 					Event e;
-					e.reset(Event::ChangeValue, Service::UI, getId());
+					e.reset(Event::ChangeValue, Service::Ui, getId());
 					dispatchUIEvent(evt);
 				}
 				else
@@ -108,6 +108,7 @@ void Slider::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Slider::update(const omega::UpdateContext& context) 
 {
+	Widget::update(context);
 	//float slSize = mySize[0] / (float(myMaxValue - myMinValue));
 	//mySliderSize = slSize > 20 ? slSize : 20;
 };

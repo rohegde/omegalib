@@ -27,25 +27,48 @@
 #ifndef __IMAGE_H__
 #define __IMAGE_H__
 
-#include "omega/TextureManager.h"
+#include "oengine/ImageUtils.h"
 #include "oengine/ui/Widget.h"
 
 namespace oengine { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Image: public Widget
 	{
+	friend class ImageRenderable;
 	public:
-		Image(UiManager* mng);
+		Image(EngineServer* srv);
 		virtual ~Image();
 
-		Texture* getTexture() { return myTexture; }
-		void setTexture(Texture* value) { myTexture = value; }
+		Renderable* createRenderable();
+
+		ImageData* getData();
+		void setData(ImageData* value);
 
 	protected:
-		virtual void renderContent();
-
-	protected:
-		omega::Texture* myTexture;
+		ImageData* myData;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API ImageRenderable: public WidgetRenderable
+	{
+	public:
+		ImageRenderable(Image* owner): WidgetRenderable(owner), myOwner(owner), myTexture(NULL) {}
+		virtual void refresh();
+
+	protected:
+		virtual void drawContent();
+
+	private:
+		Image* myOwner;
+		Texture* myTexture;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ImageData* Image::getData() 
+	{ return myData; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Image::setData(ImageData* value) 
+	{ myData = value; refresh(); }
 }; }; // namespace oengine
 #endif

@@ -33,26 +33,26 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultButton::renderContent()
+void DefaultButtonRenderable::drawContent()
 {
-	Button::renderContent();
+	WidgetRenderable::drawContent();
 
 	Renderer* painter = getRenderer();
 
-	painter->drawRect(Vector2f::Zero(), getSize(), myColor);
-	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color::White);
+	painter->drawRect(Vector2f::Zero(), myOwner->getSize(), myOwner->getColor());
+	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
 
-	Vector2f size = getSize();
+	Vector2f size = myOwner->getSize();
 
 	// If button is checkable, draw check box.
-	if(isCheckable())
+	if(myOwner->isCheckable())
 	{
 		size[0] -= 18;
 		Vector2f checkBoxSize = Vector2f(14, 14);
 		Vector2f checkBoxPosition = Vector2f(size[0], 4);
 		painter->drawRectOutline(checkBoxPosition, checkBoxSize, Color::White);
 
-		if(isChecked())
+		if(myOwner->isChecked())
 		{
 			checkBoxSize -= Vector2f(5, 5);
 			checkBoxPosition += Vector2f(2, 2);
@@ -60,12 +60,17 @@ void DefaultButton::renderContent()
 		}
 	}
 
-	myLabel.setPosition(Vector2f::Zero());
-	myLabel.setSize(size);
-	myLabel.draw();
+	myOwner->getLabel()->setPosition(Vector2f::Zero());
+	myOwner->getLabel()->setSize(size);
+
+	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());
+	if(lr)
+	{
+		lr->drawContent();
+	}
 
 	myAnim *= 0.8f;
-	if(myPressed) myAnim = 1.0f;
+	if(myOwner->isPressed()) myAnim = 1.0f;
 
 	//GfxUtils::drawVGradient(myPosition, mySize, Color(80, 80, 100, 100 + myAnim * 100), Color(80, 80, 100, 100 + myAnim * 100));
 
@@ -74,16 +79,16 @@ void DefaultButton::renderContent()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultSlider::renderContent()
+void DefaultSliderRenderable::drawContent()
 {
-	Widget::renderContent();
+	WidgetRenderable::drawContent();
 
 	Renderer* painter = getRenderer();
 
-	Vector2f sliderPos = getSliderPosition();
-	Vector2f sliderSize = getSliderSize();
+	Vector2f sliderPos = myOwner->getSliderPosition();
+	Vector2f sliderSize = myOwner->getSliderSize();
 
-	painter->drawRectOutline(Vector2f::Zero(), getSize(), Color::White);
+	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
 	painter->drawRect(sliderPos, sliderSize, Color::Gray);
 	painter->drawRectOutline(sliderPos, sliderSize, Color::White);
 }

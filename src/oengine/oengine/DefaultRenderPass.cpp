@@ -25,32 +25,36 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/DefaultRenderPass.h"
-#include "oengine/SceneManager.h"
+#include "oengine/EngineClient.h"
+#include "oengine/EngineServer.h"
 #include "oengine/Renderer.h"
-#include "omega/glheaders.h"
+#include "oengine/SceneNode.h"
 
 using namespace omega;
 using namespace oengine;
 
+OMEGA_DEFINE_TYPE(DefaultRenderPass, RenderPass);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultRenderPass::render(SceneManager* mng, const DrawContext& context)
+void DefaultRenderPass::render(EngineClient* client, const DrawContext& context)
 {
 	RenderState state;
 	state.pass = this;
 	state.flags = RenderPass::RenderOpaque;
-	state.renderer = mng->getRenderer();
+	state.client = client;
 	state.context = &context;
 
-	state.renderer->beginDraw3D(context);
+	client->getRenderer()->beginDraw3D(context);
 
 	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
 	// stored inside the scene nodes. So, create a new, clean transform on the stack.
 	//glPushMatrix();
 	//glLoadMatrixf(mng->getViewTransform().data());
 
-	mng->getRootNode()->draw(&state);
+	SceneNode* node = client->getServer()->getScene(0);
+	node->draw(&state);
 
 	//glPopMatrix();
 
-	state.renderer->endDraw();
+	client->getRenderer()->endDraw();
 }

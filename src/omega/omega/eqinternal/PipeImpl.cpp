@@ -33,7 +33,14 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
 	eq::Pipe(parent), myClient(NULL), myInitialized(false) 
-{}
+{
+	NodeImpl* ni = (NodeImpl*)parent;
+	Application* app = SystemManager::instance()->getApplication();
+	if(app)
+	{
+		myClient = app->createClient(ni->getApplicationServer());
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ApplicationClient* PipeImpl::getClient() 
@@ -62,13 +69,11 @@ bool PipeImpl::configInit( const uint128_t& initID )
 	NodeImpl* node = static_cast<NodeImpl*>( getNode( ));
 
 
-	// Create and initialize an application client.
-	Application* app = SystemManager::instance()->getApplication();
-	if(app)
+	// Initialize an application client.
+	if(myClient)
 	{
-		myClient = app->createClient(node->getApplicationServer());
 		const eq::fabric::PixelViewport pw = getPixelViewport();
-		myClient->setup();
+		//myClient->setup();
 	}
 	return result;
 }

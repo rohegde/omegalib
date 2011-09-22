@@ -28,11 +28,15 @@
 #define __SCENENODE_H__
 
 #include "oenginebase.h"
-#include "oengine/Renderable.h"
 #include "oengine/Node.h"
+#include "omega/Color.h"
 
 namespace oengine {
-	class SceneManager;
+	class EngineServer;
+	class Renderable;
+	class SceneObject;
+	class SceneNode;
+	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class SceneNodeListener
@@ -51,8 +55,8 @@ namespace oengine {
 		enum HitType { HitBoundingSphere };
 
 	public:
-		SceneNode(SceneManager* scene):
-			myScene(scene),
+		SceneNode(EngineServer* server):
+			myServer(server),
 			myListener(NULL),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
@@ -62,9 +66,9 @@ namespace oengine {
 			mySelected(false)
 			{}
 
-		SceneNode(SceneManager* scene, const String& name):
+		SceneNode(EngineServer* server, const String& name):
 			Node(name),
-			myScene(scene),
+			myServer(server),
 			myListener(NULL),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
@@ -74,13 +78,13 @@ namespace oengine {
 			mySelected(false)
 			{}
 
-		SceneManager* getScene();
+		EngineServer* getServer();
 
-		// Drawables
+		// Object
 		//@{
-		void addRenderable(Renderable* child);
-		int getNumRenderables();
-		void clearRenderables();
+		void addObject(SceneObject* o);
+		int getNumObjects();
+		void removeObject(SceneObject* o);
 		//@}
 
 		// Options
@@ -120,11 +124,11 @@ namespace oengine {
 		void drawBoundingBox();
 
 	private:
-		SceneManager* myScene;
+		EngineServer* myServer;
 
 		SceneNodeListener* myListener;
 
-		Vector<Renderable*> myRenderables;
+		List<SceneObject*> myObjects;
 
 		bool mySelectable;
 		bool mySelected;
@@ -164,8 +168,8 @@ namespace oengine {
 	{ myBoundingBoxColor = color; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* SceneNode::getScene()
-	{ return myScene; }
+	inline EngineServer* SceneNode::getServer()
+	{ return myServer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool SceneNode::isSelectable() 

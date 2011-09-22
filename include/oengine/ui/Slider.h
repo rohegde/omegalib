@@ -35,7 +35,7 @@ namespace oengine { namespace ui {
 	class Slider: public Widget
 	{
 	public:
-		Slider(UiManager* mng);
+		Slider(EngineServer* srv);
 		virtual ~Slider();
 
 		virtual void handleEvent(const omega::Event& evt);

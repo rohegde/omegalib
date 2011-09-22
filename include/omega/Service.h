@@ -41,18 +41,21 @@ namespace omega
 	{
 	friend class ServiceManager;
 	public:
-		enum ServiceType { Pointer, Mocap, Keyboard, Controller, UI, Generic }; 
+		enum ServiceType { Pointer, Mocap, Keyboard, Controller, Ui, Generic }; 
 		enum ServicePollPriority { PollFirst, PollNormal, PollLast }; 
 
 	public:
 		// Class constructor
-		Service(): myManager(NULL), myPriority(PollNormal) {}
+		Service(): myManager(NULL), myPriority(PollNormal), myDebug(false) {}
 
 	   // Class destructor
 		virtual ~Service() {}
 
 		ServiceManager* getManager();
 		String getName();
+
+		//! Returns true if debug mode is enabled for this service.
+		bool isDebugEnabled();
 
 		ServicePollPriority getPollPriority();
 		void setPollPriority(ServicePollPriority value);
@@ -80,6 +83,7 @@ namespace omega
 		ServiceManager* myManager;
 		String myName;
 		ServicePollPriority myPriority;
+		bool myDebug;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,6 +101,10 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Service::setPollPriority(Service::ServicePollPriority value)
 	{ myPriority = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Service::isDebugEnabled()
+	{ return myDebug; }
 }; // namespace omega
 
 #endif

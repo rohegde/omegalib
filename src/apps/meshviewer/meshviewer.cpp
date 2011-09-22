@@ -25,31 +25,37 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "meshviewer.h"
-//#include "omega/ImageUtils.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(EntityData* data, EngineClient* client):
+Entity::Entity(EntityData* data, EngineServer* server):
 	myData(data),
-	myClient(client),
+	myServer(server),
 	myVisible(false)
 {
-	myMesh = client->getMeshManager()->addMesh(data->name, data->meshData);
-	SceneManager* sm = client->getSceneManager();
+	myMesh = new Mesh();
+	mySelectionSphere = new BoundingSphere();
+	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setVisible(false);
 
-	if(myMesh != NULL)
-	{
-		mySelectionSphere = onew(BoundingSphere)();
-		mySelectionSphere->setVisible(false);
-		mySelectionSphere->setDrawOnSelected(true);
+	mySceneNode = new SceneNode(server);
+	server->getScene(0)->addChild(mySceneNode);
+	mySceneNode->addObject(myMesh);
+	mySceneNode->addObject(mySelectionSphere);
+	myMesh->setData(myData->meshData);
+}
 
-		mySceneNode = onew(SceneNode)(sm);
-		mySceneNode->addRenderable(myMesh);
-		mySceneNode->addRenderable(mySelectionSphere);
-		mySceneNode->setPosition(Vector3f::Zero());
-		mySceneNode->setSelectable(true);
-		mySceneNode->setVisible(false);
-		sm->getRootNode()->addChild(mySceneNode);
-	}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity::~Entity()
+{
+	myServer->getScene(0)->removeChild(mySceneNode);
+	delete mySceneNode;
+	mySceneNode = NULL;
+
+	delete mySelectionSphere;
+	mySelectionSphere = NULL;
+
+	delete myMesh;
+	myMesh = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,11 +77,9 @@ void Entity::resetTransform()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerServer::initialize()
+void MeshViewer::loadEntityLibrary()
 {
-	ApplicationServer::initialize();
-
-	Config* cfg = getSystemManager()->getAppConfig();
+	Config* cfg = SystemManager::instance()->getAppConfig();
 	if(cfg->exists("config/entities"))
 	{
 		Setting& entities = cfg->lookup("config/entities");
@@ -99,7 +103,7 @@ void MeshViewerServer::initialize()
 				ed->meshData = reader;
 			}
 
-			myEntities[ed->name] = ed;
+			myEntityLibrary.push_back(ed);
 
 			//Texture* leftImage = NULL;
 			//Texture* rightImage = NULL;
@@ -119,25 +123,15 @@ void MeshViewerServer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerServer::createEntities(MeshViewerClient* client)
+void MeshViewer::initialize()
 {
-	foreach(EntityDictionary::Item i, myEntities)
-	{
-		client->addEntity(i.getValue());
-	}
-}
+	EngineServer::initialize();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::initialize()
-{
-	EngineClient::initialize();
+	//myColorIdEffect = new Effect(getEffectManager());
+	//myColorIdEffect->setDiffuseColor(Color::getColorByIndex(getId()));
+	//myColorIdEffect->setForcedDiffuseColor(true);
 
-	myColorIdEffect = new Effect(getEffectManager());
-	myColorIdEffect->setDiffuseColor(Color::getColorByIndex(getId()));
-	myColorIdEffect->setForcedDiffuseColor(true);
-
-	MeshViewerServer* srv = (MeshViewerServer*)getServer();
-	srv->createEntities(this);
+	loadEntityLibrary();
 
 	Config* cfg = getSystemManager()->getAppConfig();
 
@@ -145,89 +139,77 @@ void MeshViewerClient::initialize()
 	if(cfg->exists("config/defaultFont"))
 	{
 		Setting& fontSetting = cfg->lookup("config/defaultFont");
-		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
+		setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
 	}
 
 	// Create and initialize meshviewer UI
-	initUI();
+	initUi();
 
-	getSceneManager()->setAmbientLightColor(Color::Black);
+	//getSceneManager()->setAmbientLightColor(Color::Black);
 
-	Light* light = getSceneManager()->getLight(0);
-	light->setEnabled(true);
-	light->setColor(Color(0.5f, 0.5f, 0.5f));
-	light->setPosition(Vector3f(0, 3, 3));
+	//Light* light = getSceneManager()->getLight(0);
+	//light->setEnabled(true);
+	//light->setColor(Color(0.5f, 0.5f, 0.5f));
+	//light->setPosition(Vector3f(0, 3, 3));
 
-	light = getSceneManager()->getLight(1);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(-3, 0, 0));
+	//light = getSceneManager()->getLight(1);
+	//light->setEnabled(true);
+	//light->setColor(Color(0.3f, 0.35f, 0.3f));
+	//light->setPosition(Vector3f(-3, 0, 0));
 
-	light = getSceneManager()->getLight(2);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(3, 0, 0));
+	//light = getSceneManager()->getLight(2);
+	//light->setEnabled(true);
+	//light->setColor(Color(0.3f, 0.35f, 0.3f));
+	//light->setPosition(Vector3f(3, 0, 0));
 
-	light = getSceneManager()->getLight(3);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.3f, 0.35f));
-	light->setPosition(Vector3f(0, -3, 0));
+	//light = getSceneManager()->getLight(3);
+	//light->setEnabled(true);
+	//light->setColor(Color(0.3f, 0.3f, 0.35f));
+	//light->setPosition(Vector3f(0, -3, 0));
 
-	light = getSceneManager()->getLight(4);
-	light->setEnabled(true);
-	light->setColor(Color(0.35f, 0.3f, 0.3f));
-	light->setPosition(Vector3f(0, 0, -3));
+	//light = getSceneManager()->getLight(4);
+	//light->setEnabled(true);
+	//light->setColor(Color(0.35f, 0.3f, 0.3f));
+	//light->setPosition(Vector3f(0, 0, -3));
 
 	// Create a reference box around the scene.
-	if(cfg->exists("config/referenceBox"))
-	{
-		myReferenceBox = new ReferenceBox();
-		getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
-		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
-	}
+	//if(cfg->exists("config/referenceBox"))
+	//{
+	//	myReferenceBox = new ReferenceBox();
+	//	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
+	//	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+	//}
 
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
 	{
 		DefaultMouseInteractor* interactor = onew(DefaultMouseInteractor)();
-		myCurrentInteractor = interactor;
+		myInteractor = interactor;
 	}
 	else
 	{
 		DefaultTwoHandsInteractor* interactor = onew(DefaultTwoHandsInteractor)();
 		interactor->initialize("ObserverUpdateService");
-		myCurrentInteractor = interactor;
+		myInteractor = interactor;
 	}
-	getSceneManager()->addActor(myCurrentInteractor);
+	
+	addActor(myInteractor);
     
     myShowUI = true;
     autoRotate = true;
-	setVisibleEntity(0);
 	deltaScale = 0;
+
+	createEntity(myEntityLibrary[0]);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::addEntity(EntityData* ed)
+void MeshViewer::initUi()
 {
-	Entity* e = new Entity(ed, this);
-	//e->getMesh()->setEffect(myColorIdEffect);
-	myEntities.push_back(e);
-}
+	WidgetFactory* wf = getWidgetFactory();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::initUI()
-{
-	UiManager* ui = getUiManager();
-	ui->setUIEventHandler(this);
-
-	//! Load and set default font.
-	FontManager* fm = getFontManager();
-	Font* defaultFont = fm->getFont("default");
-	ui->setDefaultFont(defaultFont);
-
-	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer(0);
+	Container* root = getUi(0);
+	root->setUIEventHandler(this);
 	root->setLayout(Container::LayoutVertical);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
@@ -244,46 +226,59 @@ void MeshViewerClient::initUI()
 	}
 
 	// Add buttons for each entity
-	for(int i = 0; i < myEntities.size(); i++)
+	for(int i = 0; i < myEntityLibrary.size(); i++)
 	{
-		Entity* e = myEntities[i];
-		Button* btn = wf->createButton(e->getData()->name, entityButtons);
+		EntityData* ed = myEntityLibrary[i];
+		Button* btn = wf->createButton(ed->name, entityButtons);
 		myEntityButtons.push_back(btn);
 	}
 
-	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
+	// If openNI service is available, add User manager panel to the secondary ui
 	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
 	{
-		root = ui->getRootContainer(1);
+		root = getUi(1);
 		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel(ui);
+		UserManagerPanel* ump = new UserManagerPanel(this);
 		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::draw( const DrawContext& context)
+void MeshViewer::createEntity(EntityData* ed)
 {
-    DrawContext copyContext = context;
-    if( !myShowUI )copyContext.layer = Layer::Scene0;
-    
-	// Color using the client id.
-	glColor3fv(Color::getColorByIndex(getId()).data());
-
-
-    EngineClient::draw( copyContext );
+	Entity* e = new Entity(ed, this);
+	//e->getMesh()->setEffect(myColorIdEffect);
+	myEntities.push_back(e);
+	myInteractor->setSceneNode(e->getSceneNode());
+	mySelectedEntity = e;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::handleEvent(const Event& evt)
+void MeshViewer::destroyEntity(Entity* e)
 {
-	if(evt.getServiceType() == Service::UI) 
+	myEntities.remove(e);
+	delete e;
+	myInteractor->setSceneNode(NULL);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewer::handleEvent(const Event& evt)
+{
+    EngineServer::handleEvent(evt);
+	if(evt.getServiceType() == Service::Ui) 
 	{
-		handleUIEvent(evt);
+		handleUiEvent(evt);
 	}
-    else if( evt.getServiceType() == Service::Keyboard )
+	else if( evt.getServiceType() == Service::Keyboard )
     {
         if((char)evt.getSourceId() == 'q') exit(0);
+        if((char)evt.getSourceId() == 'd' && evt.getType() == Event::Down) 
+        {
+			if(mySelectedEntity != NULL)
+			{
+				destroyEntity(mySelectedEntity);
+			}
+        }
         if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
         {
             myShowUI = !myShowUI;
@@ -295,90 +290,57 @@ void MeshViewerClient::handleEvent(const Event& evt)
         //up
         if((char)evt.getSourceId() == 'z' && evt.getType() == Event::Down) 
         {
-			deltaScale = 0.1;
+			deltaScale = 0.1f;
         }
         
         if((char)evt.getSourceId() == 'x' && evt.getType() == Event::Down)  
         {
-            deltaScale = -0.1;
+            deltaScale = -0.1f;
         }
     }
-    EngineClient::handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::handleUIEvent(const Event& evt)
+void MeshViewer::handleUiEvent(const Event& evt)
 {
-	for(int i = 0; i < myEntities.size(); i++)
+	for(int i = 0; i < myEntityButtons.size(); i++)
 	{
 		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
-			setVisibleEntity(i);
-			return;
+			EntityData* ed = myEntityLibrary[i];
+			createEntity(ed);
 		}
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::setVisibleEntity(int entityId)
+void MeshViewer::update(const UpdateContext& context)
 {
-	if(myVisibleEntity != NULL)
+	EngineServer::update( context );
+
+	SceneNode* daSceneNode = myInteractor->getSceneNode();
+	if(daSceneNode != NULL)
 	{
-		myVisibleEntity->setVisible(false);
-		myVisibleEntity = NULL;
-	}
-
-	Entity* e = myEntities[entityId];
-	myVisibleEntity = e;
-
-	if(e->getMesh() != NULL)
-	{
-		myVisibleEntity->resetTransform();
-		myVisibleEntity->setVisible(true);
-
-		// Tell the interactor what is the currently active scene node
-		myCurrentInteractor->setSceneNode(e->getSceneNode());
-	}
-
-	//if(e->getLeftImage() != NULL && e->getRightImage() != NULL)
-	//{
-	//	setTextureBackgroundEnabled( true );
-	//	setTextureBackground( DrawContext::EyeLeft , e->getLeftImage());
-	//	setTextureBackground( DrawContext::EyeRight , e->getRightImage());
-	//}
-	//else
-	//{
-	//	setTextureBackgroundEnabled( false );
-	//}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewerClient::update(const UpdateContext& context)
-{
-	SceneNode* daSceneNode = myVisibleEntity->getSceneNode();
-	if ( autoRotate )
-	{
-		daSceneNode->yaw( 0.01 );
-	}
+		if ( autoRotate )
+		{
+			daSceneNode->yaw( 0.01 );
+		}
 	
-	if( deltaScale != 0 )
-	{
-		// if it is negative 
-		
-		Vector3f curScale = daSceneNode->getScale( );
-		daSceneNode->setScale( curScale + curScale * deltaScale );	
-		deltaScale = 0.0;
+		if( deltaScale != 0 )
+		{
+			// if it is negative 
+			Vector3f curScale = daSceneNode->getScale( );
+			daSceneNode->setScale( curScale + curScale * deltaScale );	
+			deltaScale = 0.0;
+		}
 	}
-		
-	return EngineClient::update( context );
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	MeshViewerApplication app;
+	EngineApplication<MeshViewer> app;
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";

@@ -33,7 +33,10 @@
 namespace oengine {
 	class OENGINE_API LightingPass: public RenderPass
 	{
-		virtual void render(SceneManager* mng, const DrawContext& context);
+	OMEGA_DECLARE_TYPE(LightingPass)
+	public:
+		static RenderPass* createInstance() { return new LightingPass(); }
+		virtual void render(EngineClient* client, const DrawContext& context);
 	};
 }; // namespace oengine
 

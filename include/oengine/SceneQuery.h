@@ -26,7 +26,6 @@
 #define __SCENE_QUERY_H__
 
 #include "oenginebase.h"
-#include "oengine/SceneManager.h"
 #include "oengine/SceneNode.h"
 
 namespace oengine {
@@ -57,9 +56,9 @@ namespace oengine {
 		enum QueryFlags {QuerySort = 1 << 1, QueryFirst = 1 << 2};
 
 	public:
-		SceneQuery(SceneManager* scene): myScene(scene) {}
+		SceneQuery(SceneNode* scene): myScene(scene) {}
 
-		SceneManager* getScene() { return myScene; }
+		SceneNode* getScene() { return myScene; }
 
 		virtual const SceneQueryResultList& execute(uint flags = 0) = 0;
 
@@ -67,14 +66,14 @@ namespace oengine {
 
 	protected:
 		SceneQueryResultList myResults;
-		SceneManager* myScene;
+		SceneNode* myScene;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API RaySceneQuery: public SceneQuery
 	{
 	public:
-		RaySceneQuery(SceneManager* scene): SceneQuery(scene) {}
+		RaySceneQuery(SceneNode* scene): SceneQuery(scene) {}
 
 		void setRay(Ray& ray) { myRay = ray; }
 		const Ray& getRay() { return myRay; }

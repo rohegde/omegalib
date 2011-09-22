@@ -50,9 +50,8 @@ public:
 class Entity: public DynamicObject
 {
 public:
-	Entity(EntityData* data, EngineClient* client);
-
-	EntityData* getData() { return myData; }
+	Entity(EntityData* data, EngineServer* server);
+	~Entity();
 
 	void resetTransform();
 	bool isVisible() { return myVisible; }
@@ -61,86 +60,57 @@ public:
 	SceneNode* getSceneNode() { return mySceneNode; }
 
 	Mesh* getMesh() { return myMesh; }
-	Texture* getRightImage() { return myRightImage; }
-	Texture* getLeftImage() { return myLeftImage; }
 
 private:
+	EngineServer* myServer;
 	EntityData* myData;
-	EngineClient* myClient;
 
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
+
 	BoundingSphere* mySelectionSphere;
-	Texture* myLeftImage;
-	Texture* myRightImage;
 	bool myVisible;
 };
 
-class MeshViewerClient;
-	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerServer: public ApplicationServer
+class MeshViewer: public EngineServer
 {
 public:
-	typedef Dictionary<String, EntityData*> EntityDictionary;
-public:
-	MeshViewerServer(Application* app): ApplicationServer(app) {}
+	MeshViewer(Application* app): EngineServer(app) {}
 
 	virtual void initialize();
-	void createEntities(MeshViewerClient* client);
-
-private:
-	EntityDictionary myEntities;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerClient: public EngineClient
-{
-public:
-	MeshViewerClient(ApplicationServer* server): 
-	  EngineClient(server), 
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-
-	void addEntity(EntityData* ed);
-
 	virtual void handleEvent(const Event& evt);
-    void draw( const DrawContext& context);
-
-	void handleUIEvent(const Event& evt);
-	void setVisibleEntity(int entityId);
-	void update(const UpdateContext& context);
+	virtual void handleUiEvent(const Event& evt);
+	virtual void update(const UpdateContext& context);
 
 private:
+	void loadEntityLibrary();
+	void initUi();
+	void createEntity(EntityData* ed);
+	void destroyEntity(Entity* e);
+
+private:
+	Vector<EntityData*> myEntityLibrary;
+
 	// Entities
-	Vector<Entity*> myEntities;
-	Entity* myVisibleEntity;
+	List<Entity*> myEntities;
 
 	// Scene
-	ReferenceBox* myReferenceBox;
+	//ReferenceBox* myReferenceBox;
 
 	// UI
 	Vector<Button*> myEntityButtons;
 
 	// Interactors.
-	Actor* myCurrentInteractor;
+	Actor* myInteractor;
 
-	Effect* myColorIdEffect;
+	Entity* mySelectedEntity;
+
+	//Effect* myColorIdEffect;
     
     bool myShowUI;
    	bool autoRotate;
    	float deltaScale;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewerApplication: public Application
-{
-public:
-	virtual ApplicationServer* createServer() { return new MeshViewerServer(this); }
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MeshViewerClient(server); }
 };
 
 #endif

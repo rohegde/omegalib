@@ -7,7 +7,7 @@ server
         {
 			attributes
 			{
-				thread_model ASYNC
+				thread_model DRAW_SYNC
 			}
             pipe
             {
@@ -16,7 +16,6 @@ server
                 window
                 {
                     name     "win0x0"
-                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch0x0"  
@@ -35,7 +34,6 @@ server
                 window
                 {
                     name     "win1x0"
-                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch1x0"  
@@ -54,7 +52,6 @@ server
                 window
                 {
                     name     "win0x1"
-                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch0x1"  
@@ -73,7 +70,6 @@ server
                 window
                 {
                     name     "win1x1"
-                    viewport [ 0 0 2732 768 ]
                     channel 
                     { 
 						name "ch1x1"  
@@ -116,45 +112,41 @@ server
 
             segment
             {
-                viewport [ 0 0 0.5 0.5]
-                channel "ch0x1"
-            }
-            segment
-            {
-                viewport [ 0.5 0 0.5 0.5]
-                channel "ch1x1"
-            }
-            segment
-            {
                 viewport [ 0 0.5 0.5 0.5]
                 channel "ch0x0"
+            }
+            segment
+            {
+                viewport [ 0 0 0.5 0.5]
+                channel "ch0x1"
             }
             segment
             {
                 viewport [ 0.5 0.5 0.5 0.5]
                 channel "ch1x0"
             }
+            segment
+            {
+                viewport [ 0.5 0 0.5 0.5]
+                channel "ch1x1"
+            }
         }
 
 		compound
 		{
 			channel ( segment 0 layout "layout" view 0 )
-			DFR_equalizer { framerate 60 }
 		}
 		compound
 		{
 			channel ( segment 1 layout "layout" view 0 )
-			DFR_equalizer { framerate 60 }
 		}
 		compound
 		{
 			channel ( segment 2 layout "layout" view 0 )
-			DFR_equalizer { framerate 60 }
 		}
 		compound
 		{
 			channel ( segment 3 layout "layout" view 0 )
-			DFR_equalizer { framerate 60 }
 		}
     }
 }

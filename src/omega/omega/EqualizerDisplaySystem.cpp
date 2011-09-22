@@ -44,7 +44,8 @@ EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL),
 	myConfig(NULL),
 	myNodeFactory(NULL),
-	mySetting(NULL)
+	mySetting(NULL),
+	myDebugMouse(false)
 {
 }
 
@@ -57,12 +58,15 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
 	setting.lookupValue("config", myDisplayConfig);
+	setting.lookupValue("debugMouse", myDebugMouse);
 	mySetting = &setting;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
+	Log::level = LOG_WARN;
+
 	mySys = sys;
 	const char* appName = mySys->getApplication()->getName();
 
@@ -81,7 +85,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 
 	myNodeFactory = onew(EqualizerNodeFactory)();
 
-	omsg("\n\n--- Equalizer initialization --------------------------------------------------");
+	omsg(":: Equalizer Initialization ::");
 	if( !eq::init( 3, (char**)argv, myNodeFactory ))
 	{
 		oerror("Equalizer init failed");
@@ -89,7 +93,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 
 	bool error  = false;
 	myConfig = static_cast<ConfigImpl*>(eq::getConfig( 3, (char**)argv ));
-	omsg("--- Equalizer initialization [DONE] -------------------------------------------\n\n");
+	omsg(":: Equalizer initialization DONE ::");
 
 	// Create observers.
 	int numObservers = myConfig->getObservers().size();
@@ -157,10 +161,10 @@ void EqualizerDisplaySystem::run()
 	bool error = false;
 	if( myConfig )
 	{
-		omsg("\n\n--- Equalizer display system startup ------------------------------------------");
+		omsg(":: Equalizer display system startup ::");
 		if( myConfig->init( 0 ))
 		{
-			omsg("--- Equalizer display system startup [DONE] -----------------------------------\n\n");
+			omsg(":: Equalizer display system startup DONE ::");
 
 			uint32_t spin = 0;
 			while( myConfig->isRunning( ))

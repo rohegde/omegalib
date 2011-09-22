@@ -50,7 +50,6 @@
 #include "omega/StringUtils.h"
 #include "omega/SystemManager.h"
 #include "omega/Texture.h"
-#include "omega/TextureManager.h"
 #include "omega/TypeInfo.h"
 
 #endif

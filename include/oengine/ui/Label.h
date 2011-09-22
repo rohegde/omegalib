@@ -27,26 +27,28 @@
 #ifndef __LABEL_H__
 #define __LABEL_H__
 
-#include "oengine/FontManager.h"
 #include "oengine/ui/Widget.h"
 
 namespace oengine { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Label: public Widget
 	{
+	friend class LabelRenderable;
 	public:
 		enum HorizontalAlign { AlignRight, AlignLeft, AlignCenter};
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Label(UiManager* mng);
+		Label(EngineServer* server);
 		virtual ~Label();
+
+		virtual Renderable* createRenderable();
 
 		String getText();
 		void setText(const String& value);
 
-		Font* getFont();
-		void setFont(Font* value);
+		String getFont();
+		void setFont(const String& value);
 
 		Color getColor();
 		void setColor(const Color& value);
@@ -67,11 +69,10 @@ namespace oengine { namespace ui {
 
 	protected:
 		unsigned int getFontAlignFlags();
-		virtual void renderContent();
 
 	protected:
 		String myText;
-		Font* myFont;
+		String myFont;
 		Color myColor;
 
 		HorizontalAlign myHorizontalAlign;
@@ -85,6 +86,24 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API LabelRenderable: public WidgetRenderable
+	{
+	friend class Label;
+	public:
+		LabelRenderable(Label* owner): 
+		  WidgetRenderable(owner), 
+			myOwner(owner),
+			myFont(NULL) {}
+
+		virtual void refresh();
+		virtual void drawContent();
+
+	private:
+		Label* myOwner;
+		Font* myFont;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline String Label::getText() 
 	{ return myText; }
 
@@ -93,12 +112,12 @@ namespace oengine { namespace ui {
 	{ myText = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Font* Label::getFont() 
+	inline String Label::getFont() 
 	{ return myFont; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Label::setFont(Font* value)
-	{ myFont = value; }
+	inline void Label::setFont(const String& value)
+	{ myFont = value; refresh(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Color Label::getColor()

@@ -23,8 +23,6 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "oengine/Effect.h"
-#include "oengine/EffectManager.h"
-#include "oengine/Mesh.h"
 #include "omega/GpuManager.h"
 #include "omega/glheaders.h"
 
@@ -32,8 +30,7 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Effect::Effect(EffectManager* mng): 
-	myMng(mng), 
+Effect::Effect(): 
 	myEmissiveColor(0, 0, 0, 1), 
 	mySpecularColor(1, 1, 1, 1), 
 	myAmbientColor(1, 1, 1, 1),
@@ -41,7 +38,7 @@ Effect::Effect(EffectManager* mng):
 	myForcedDiffuseColor(false),
 	myShininess(32) 
 {
-	myProgram = myMng->getGpuManager()->getDefaultProgram();
+	//myProgram = myMng->getGpuManager()->getDefaultProgram();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

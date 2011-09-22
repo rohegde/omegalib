@@ -33,7 +33,10 @@
 namespace oengine {
 	class OENGINE_API OverlayRenderPass: public RenderPass
 	{
-		virtual void render(SceneManager* mng, const DrawContext& context);
+	OMEGA_DECLARE_TYPE(OverlayRenderPass)
+	public:
+		static RenderPass* createInstance() { return new OverlayRenderPass(); }
+		virtual void render(EngineClient* client, const DrawContext& context);
 	};
 }; // namespace oengine
 

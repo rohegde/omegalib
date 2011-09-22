@@ -27,18 +27,15 @@
 #ifndef __BOUNDING_SPHERE_DRAWABLE_H__
 #define __BOUNDING_SPHERE_DRAWABLE_H__
 
-#include "oenginebase.h"
-#include "oengine/Effect.h"
-#include "oengine/RenderPass.h"
-#include "oengine/Renderable.h"
+#include "SceneObject.h"
+#include "SceneRenderable.h"
 
 namespace oengine {
-	// Forward declarations
-	class SceneNode;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphere: public Renderable
+	class OENGINE_API BoundingSphere: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(BoundingSphere)
+	friend class BoundingSphereRenderable;
 	public:
 		BoundingSphere(): 
 		  myDrawOnSelected(false), 
@@ -47,7 +44,7 @@ namespace oengine {
 		  mySegments(32),
 		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
 
-		virtual void render(SceneNode* node, RenderState* state);
+		virtual Renderable* createRenderable();
 
 		void setDrawOnSelected(bool value);
 		bool getDrawOnSelected();
@@ -73,28 +70,34 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setDrawOnSelected(bool value)
+	class OENGINE_API BoundingSphereRenderable: public SceneRenderable
 	{
-		myDrawOnSelected = value;
-	}
+	OMEGA_DECLARE_TYPE(BoundingSphereRenderable)
+	public:
+		BoundingSphereRenderable(BoundingSphere* boundingSphere): 
+		  myBoundingSphere(boundingSphere)
+		{}
+		void draw(RenderState* state);
+
+	private:
+		BoundingSphere* myBoundingSphere;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void BoundingSphere::setDrawOnSelected(bool value)
+	{ myDrawOnSelected = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool BoundingSphere::getDrawOnSelected()
-	{
-		return myDrawOnSelected;
-	}
+	{ return myDrawOnSelected; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void BoundingSphere::setVisible(bool value)
-	{
-		myVisible = value;
-	}
+	{ myVisible = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool BoundingSphere::getVisible()
-	{
-		return myVisible;
-	}
+	{ return myVisible; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Color BoundingSphere::getColor()

@@ -34,9 +34,9 @@ namespace omega { namespace script {
 	class ScriptModule;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ScriptInterpreter
+	class ScriptInterpreter: public OmegaObject
 	{
-		OMEGA_DECLARE_TYPE(ScriptInterpreter);
+	OMEGA_DECLARE_TYPE(ScriptInterpreter);
 	public:
 	  virtual void initialize(const char* programName) = 0;
 	  virtual void addModule(const char* name, ScriptModule* methods) = 0;

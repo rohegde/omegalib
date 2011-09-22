@@ -28,12 +28,12 @@
 #define __IMAGE_UTILS_H__
 
 #include "oenginebase.h"
-#include "omega/TextureManager.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ImageData
 	{
+		String filename;
 		bool monochrome;
 		bool alpha;
 		byte* data;
@@ -42,15 +42,12 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads images and manages OpenGL textures.
+	//! Loads and manages image data.
 	class OENGINE_API ImageUtils
 	{
 	public:
 		//! Load an image from a file.
 		static bool loadImage(const String& filename, ImageData* data);
-
-		//! Utility method to load an image from a file and use it to create a texture.
-		static Texture* createTexture(TextureManager* mng, const String& name, const String& filename);
 
 	private:
 		ImageUtils() {}
