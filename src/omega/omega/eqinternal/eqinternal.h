@@ -280,9 +280,7 @@ public:
 protected:
 	void initialize();
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
-	virtual void makeCurrent();
 	virtual void frameDraw( const uint128_t& spin );
-	virtual void frameViewStart( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
 	virtual bool configInit(const uint128_t& initID);
 

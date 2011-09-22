@@ -153,13 +153,6 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::makeCurrent() 
-{
-	myWindow->makeCurrent(false);
-	glewSetContext(this->glewGetContext());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 {
 	if(!myInitialized) 
@@ -176,14 +169,8 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 
 	setupDrawContext(&myDC, spin);
 
-	myDC.layer = view->getLayer() & 0x03;
+	myDC.layer = view->getLayer();
 	client->draw(myDC);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameViewStart( const co::base::uint128_t& spin )
-{
-	eq::Channel::frameViewStart( spin );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,16 +179,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
 	eq::Channel::frameViewFinish( spin );
 
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-	ApplicationClient* client = pipe->getClient();
 
-	setupDrawContext(&myDC, spin);
-	myDC.layer = view->getLayer();// & 0x0c;
-
-	//if(myDC.layer != 0)
-	{
-	//	client->draw(myDC);
-	}
 	if(view->isDrawStatisticsEnabled())
 	{
 		drawStatistics();
