@@ -155,3 +155,11 @@ void EngineServer::handleEvent(const Event& evt)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const SceneQueryResultList& EngineServer::querySceneRay(int sceneId, const Ray& ray, uint flags)
+{
+	myRaySceneQuery.clearResults();
+	myRaySceneQuery.setSceneNode(myScene[sceneId]);
+	myRaySceneQuery.setRay(ray);
+	return myRaySceneQuery.execute(flags);
+}

@@ -24,96 +24,38 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
-
-#include <omega.h>
-#include <oengine.h>
+#include "oengine/BoundingSphere.h"
+#include "oengine/Renderer.h"
 
 using namespace omega;
 using namespace oengine;
-using namespace oengine::ui;
+
+OMEGA_DEFINE_TYPE(BoundingSphere, SceneObject);
+OMEGA_DEFINE_TYPE(BoundingSphereRenderable, SceneRenderable);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class EntityData
+Renderable* BoundingSphere::createRenderable()
 {
-public:
-	EntityData():
-	  meshData(NULL) {}
-
-	String name;
-	String label;
-	MeshData* meshData;
-};
+	return new BoundingSphereRenderable(this);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+void BoundingSphereRenderable::draw(RenderState* state)
 {
-public:
-	Entity(EntityData* data, EngineServer* server);
-	~Entity();
+	SceneNode* node = getSceneNode();
+	if(state->isFlagSet(RenderPass::RenderOpaque))
+	{
+		if(myBoundingSphere->myVisible || (myBoundingSphere->myDrawOnSelected && node->isSelected()))
+		{
+			float radius = node->getBoundingSphere().getRadius();
+			Vector3f center = node->getBoundingSphere().getCenter();
 
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
-	SceneNode* getSceneNode() { return mySceneNode; }
-	Mesh* getMesh() { return myMesh; }
-	EntityData* getData() { return myData; }
-
-private:
-	EngineServer* myServer;
-	EntityData* myData;
-
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-
-	BoundingSphere* mySelectionSphere;
-	bool myVisible;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewer: public EngineServer
-{
-public:
-	MeshViewer(Application* app): EngineServer(app) {}
-
-	virtual void initialize();
-	virtual void handleEvent(const Event& evt);
-	virtual void handleUiEvent(const Event& evt);
-	virtual void update(const UpdateContext& context);
-
-private:
-	//! Find the entity associated with this scene node
-	Entity* findEntity(SceneNode* node);
-	void updateSelection(const Ray& ray);
-	void loadEntityLibrary();
-	void initUi();
-	void createEntity(EntityData* ed);
-	void destroyEntity(Entity* e);
-
-private:
-	Vector<EntityData*> myEntityLibrary;
-
-	// Entities
-	List<Entity*> myEntities;
-
-	// Scene
-	//ReferenceBox* myReferenceBox;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Interactors.
-	Actor* myInteractor;
-
-	Entity* mySelectedEntity;
-
-	//Effect* myColorIdEffect;
-    
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
-
-#endif
+			AffineTransform3 xform;
+			xform.fromPositionOrientationScale(center, node->getOrientation(), Vector3f(radius, radius, radius));
+			
+			getRenderer()->pushTransform(xform);
+			getRenderer()->drawWireSphere(myBoundingSphere->myColor, myBoundingSphere->mySegments, myBoundingSphere->mySlices);
+			getRenderer()->popTransform();
+		}
+	}
+}
