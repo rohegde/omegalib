@@ -55,6 +55,8 @@ namespace omega
 	typedef Dictionary<String, GeometryShader*> GeometryShaderDictionary;
 	//! A dictionary containing <String, ComputeShader*> pairs.
 	typedef Dictionary<String, ComputeShader*> ComputeShaderDictionary;
+	//! A dictionary containing <String, Texture*> pairs.
+	typedef Dictionary<String, Texture*> TextureDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads images and manages OpenGL textures.
@@ -106,6 +108,12 @@ namespace omega
 		void setFrameBuffer(RenderTarget* fb);
 		//@}
 
+		//! Texture management
+		//@{
+		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
+		Texture* getTexture(const String& textureName);
+		//@}
+
 		CLManager* getCLManager() { return myCLManager; }
 
 	private:
@@ -122,6 +130,7 @@ namespace omega
 		FragmentShaderDictionary myFragmentShaders;
 		GeometryShaderDictionary myGeometryShaders;
 		ComputeShaderDictionary myComputeShaders;
+		TextureDictionary myTextures;
 
 		//! Current frame buffer.
 		RenderTarget* myFrameBuffer;

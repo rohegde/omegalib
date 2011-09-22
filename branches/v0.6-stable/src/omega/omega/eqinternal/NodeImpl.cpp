@@ -33,20 +33,18 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 NodeImpl::NodeImpl( eq::Config* parent ):
 	Node(parent),
-	myServer(NULL)
+	myServer(NULL),
+	myInitialized(NULL)
 {
+	Application* app = SystemManager::instance()->getApplication();
+	myServer = app->createServer();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
-	Application* app = SystemManager::instance()->getApplication();
-
-	myServer = app->createServer();
-	myServer->initialize();
-
 	// Map the frame data object.
-	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig( ));
+	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
 	const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
 	oassert( mapped );
 
@@ -67,14 +65,24 @@ bool NodeImpl::configExit()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
 {
+	// If server has not been initialized yet, do it now.
+	if(myInitialized == false)
+	{
+		myServer->initialize();
+		myInitialized = true;
+	}
+
 	static float lt = 0.0f;
+	static float tt = 0.0f;
 	// Compute dt.
 	float t = (float)((double)clock() / CLOCKS_PER_SEC);
 	if(lt == 0) lt = t;
 	UpdateContext uc;
-	uc.time = t - lt;
-	uc.dt = t - uc.time;
+	uc.dt = t - lt;
+	tt += uc.dt;
+	uc.time = tt;
 	uc.frameNum = frameNumber;
+	lt = t;
 
 	// Syncronize frame data (containing input events and possibly other stuff)
 	myFrameData.sync(frameID);

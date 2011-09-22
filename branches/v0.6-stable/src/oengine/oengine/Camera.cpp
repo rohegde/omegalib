@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "oengine/Camera.h"
-#include "oengine/SceneManager.h"
 #include "omega/glheaders.h"
 
 using namespace omega;

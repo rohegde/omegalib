@@ -31,9 +31,9 @@
 
 namespace omega { namespace script {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ScriptModule
+	class ScriptModule: public OmegaObject
 	{
-		OMEGA_DECLARE_TYPE(ScriptModule);
+	OMEGA_DECLARE_TYPE(ScriptModule);
 	};
 }; }; // namespace omega
 

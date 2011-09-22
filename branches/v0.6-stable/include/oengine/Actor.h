@@ -40,7 +40,7 @@ namespace oengine {
 		Actor(): myNode(NULL)  {}
 
 		void setSceneNode(SceneNode* node);
-		SceneNode* getNode();
+		SceneNode* getSceneNode();
 
 		virtual void update(const UpdateContext& context) {}
 		virtual void preDraw(const DrawContext& context) {}
@@ -55,7 +55,7 @@ namespace oengine {
 	{ myNode = node; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* Actor::getNode()
+	inline SceneNode* Actor::getSceneNode()
 	{ return myNode; }
 }; // namespace oengine
 

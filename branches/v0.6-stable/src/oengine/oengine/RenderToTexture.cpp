@@ -26,9 +26,7 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "omega/Texture.h"
-#include "omega/TextureManager.h"
 #include "oengine/Camera.h"
-#include "oengine/SceneManager.h"
 #include "oengine/RenderToTexture.h"
 
 using namespace omega;
@@ -36,28 +34,28 @@ using namespace oengine;
 
 static NameGenerator sRenderToTextureNameGenerator("RenderToTexture_");
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-RenderToTexture::RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height)
-{
-	myScene = scene;
-	myTexture = txman->createTexture(sRenderToTextureNameGenerator.generate(), width, height);
-	myRenderTarget = new RenderTarget();
-	myRenderTarget->initialize(RenderTarget::TypeTexture);
-	myRenderTarget->setColorTarget(myTexture);
-	myCamera = new Camera(myScene, myRenderTarget);
-	myCamera->setAutoAspect(true);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-RenderToTexture::~RenderToTexture()
-{
-	delete myTexture;
-	delete myRenderTarget;
-	delete myCamera;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderToTexture::render()
-{
-	myCamera->render();
-}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//RenderToTexture::RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height)
+//{
+//	myScene = scene;
+//	myTexture = txman->createTexture(sRenderToTextureNameGenerator.generate(), width, height);
+//	myRenderTarget = new RenderTarget();
+//	myRenderTarget->initialize(RenderTarget::TypeTexture);
+//	myRenderTarget->setColorTarget(myTexture);
+//	myCamera = new Camera(myScene, myRenderTarget);
+//	myCamera->setAutoAspect(true);
+//}
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//RenderToTexture::~RenderToTexture()
+//{
+//	delete myTexture;
+//	delete myRenderTarget;
+//	delete myCamera;
+//}
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//void RenderToTexture::render()
+//{
+//	myCamera->render();
+//}

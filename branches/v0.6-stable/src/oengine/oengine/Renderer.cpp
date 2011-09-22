@@ -25,17 +25,25 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/Renderer.h"
-#include "oengine/FontManager.h"
 #include "omega/Texture.h"
+#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
+#include "omega/Lock.h"
+#include "omega/SystemManager.h"
+#include "omega/DataManager.h"
+
+#include "FTGL/ftgl.h"
 
 using namespace omega;
 using namespace oengine;
 
+Lock fontLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderer::Renderer():
 	myTargetTexture(NULL),
-	myDrawing(false)
+	myDrawing(false),
+	myDefaultFont(NULL)
 {
 }
 
@@ -66,13 +74,18 @@ void Renderer::beginDraw2D(const DrawContext& context)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef(0.0, context.viewport.height() - 1, 0.0);
-    glScalef(1.0, -1.0, 1.0);
+    //glTranslatef(0, context.globalViewport.height() + context.globalViewport.y() - 1, 0.0);
+    //glScalef(1.0, -1.0, 1.0);
+
+	int left = context.channel->offset[0];
+	int right = left + context.channel->size[0];
+	int top = context.channel->offset[1];
+	int bottom = top + context.channel->size[1];
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, context.viewport.width(), 0, context.viewport.height(), -1, 1);
+    glOrtho(left, right, bottom, top, -1, 1);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -200,6 +213,7 @@ void Renderer::drawRectOutline(Vector2f pos, Vector2f size, Color color)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
 { 
+	fontLock.lock();
 	Vector2f rect = font->computeSize(text);
 	float x, y;
 
@@ -212,6 +226,7 @@ void Renderer::drawText(const String& text, Font* font, const Vector2f& position
 	else y = -position[1] - rect[1] / 2;
 
 	font->render(text, x, y); 
+	fontLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -321,4 +336,65 @@ void Renderer::drawWireSphere(const Color& color, int segments, int slices)
 	}
 
 	glPopAttrib();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::drawIndexedPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
+{
+	GLenum mode = GL_POINTS;
+	switch(type)
+	{
+	case DrawPoints: mode = GL_POINTS; break;
+	case DrawTriangles: mode = GL_TRIANGLES; break;
+	}
+
+	vertices->bind();
+	glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
+	vertices->unbind();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Font* Renderer::createFont(omega::String fontName, omega::String filename, int size)
+{
+	fontLock.lock();
+	if(getFont(fontName))
+	{
+		ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
+		return getFont(fontName);
+	}
+
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo info = dm->getInfo(filename);
+	oassert(!info.isNull());
+	oassert(info.local);
+
+
+	FTFont* fontImpl = new FTTextureFont(info.path.c_str());
+
+	//delete data;
+
+	if(fontImpl->Error())
+	{
+		ofwarn("Font %1% failed to open", %filename);
+		delete fontImpl;
+		return NULL;
+	}
+
+	if(!fontImpl->FaceSize(size))
+	{
+		ofwarn("Font %1% failed to set size %2%", %filename %size);
+		delete fontImpl;
+	}
+
+	Font* font = new Font(fontImpl);
+
+	myFonts[fontName] = font;
+	fontLock.unlock();
+	return font;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Font* Renderer::getFont(omega::String fontName)
+{
+	return myFonts[fontName];
 }

@@ -27,105 +27,60 @@
 #ifndef __ENGINE_CLIENT_H__
 #define __ENGINE_CLIENT_H__
 
-#include "oengine/oenginebase.h"
-#include "oengine/SceneManager.h"
-#include "oengine/FontManager.h"
-#include "oengine/MeshManager.h"
-#include "oengine/EffectManager.h"
-#include "oengine/ui/UiManager.h"
-
+#include "oenginebase.h"
+#include "Renderable.h"
 #include "omega/Application.h"
-#include "omega/TextureManager.h"
 
 namespace oengine {
+	class RenderPass;
+	class EngineServer;
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API EngineClient: public ApplicationClient
 	{
 	public:
-		EngineClient(ApplicationServer* server):
-		  ApplicationClient(server),
-		  myGpuManager(NULL),
-		  myTextureManager(NULL),
-		  myFontManager(NULL),
-		  mySceneManager(NULL),
-		  myMeshManager(NULL),
-		  myEffectManager(NULL),
-		  myUiManager(NULL),
-		  myTextureBackgroundEnabled(false),
-		  myLeftBackgroundTexture(NULL),
-		  myRightBackgroundTexture(NULL) {}
+		EngineClient(ApplicationServer* server);
+
+		EngineServer* getServer();
+
+		void addRenderPass(RenderPass* pass, bool addToFront = false);
+		void removeRenderPass(RenderPass* pass);
+
+		void queueRenderableCommand(RenderableCommand& cmd);
 
 		virtual void initialize();
-		virtual void handleEvent(const Event& evt);
-		virtual void update(const UpdateContext& context);
+		//virtual void handleEvent(const Event& evt);
+		//virtual void update(const UpdateContext& context);
 		virtual void draw(const DrawContext& context);
 
-		//! Manager getters.
-		//@{
-		GpuManager* getGpuManager();
-		TextureManager* getTextureManager();
-		SceneManager* getSceneManager();
-		EffectManager* getEffectManager();
-		MeshManager* getMeshManager();
-		ui::UiManager* getUiManager();
-		FontManager* getFontManager();
-		bool isTextureBackgroundEnabled();
-		void setTextureBackgroundEnabled(bool value);
-		void setTextureBackground(DrawContext::Eye eye, Texture* texture);	
-		Texture* getTextureBackground(DrawContext::Eye eye);	
-		//@}
+		Renderer* getRenderer();
 
 	private:
-		void drawBackGrd( const DrawContext& theContext );
-	
-		GpuManager* myGpuManager;
-		TextureManager* myTextureManager;
-		FontManager* myFontManager;
-		SceneManager* mySceneManager;
-		MeshManager* myMeshManager;
-		EffectManager* myEffectManager;
-		ui::UiManager* myUiManager;
-
-		bool myTextureBackgroundEnabled;
-		Texture* myLeftBackgroundTexture;
-		Texture* myRightBackgroundTexture;
+		EngineServer* myServer;
+		Renderer* myRenderer;
+		List<RenderPass*> myRenderPassList;
+		Queue<RenderableCommand> myRenderableCommands;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuManager* EngineClient::getGpuManager()
-	{ return myGpuManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline TextureManager* EngineClient::getTextureManager()
-	{ return myTextureManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* EngineClient::getSceneManager()
-	{ return mySceneManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline MeshManager* EngineClient::getMeshManager()
-	{ return myMeshManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline FontManager* EngineClient::getFontManager()
-	{ return myFontManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EffectManager* EngineClient::getEffectManager()
-	{ return myEffectManager; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ui::UiManager* EngineClient::getUiManager()
-	{ return myUiManager; }
+	//! a convenience application class to create oengine applications
+	template<typename T> 
+	class EngineApplication: public Application
+	{
+	public:
+		virtual ApplicationClient* createClient(ApplicationServer* server) 
+		{ return new EngineClient(server); }
+		virtual ApplicationServer* createServer() 
+		{ return new T(this); }
+	};
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool EngineClient::isTextureBackgroundEnabled()
-	{ return myTextureBackgroundEnabled; }
-		
+	inline Renderer* EngineClient::getRenderer()
+	{ return myRenderer; }
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void EngineClient::setTextureBackgroundEnabled(bool value)
-	{ myTextureBackgroundEnabled = value; }
+	inline EngineServer* EngineClient::getServer()
+	{ return myServer; }
 }; // namespace oengine
 
 #endif

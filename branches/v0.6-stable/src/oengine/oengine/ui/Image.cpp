@@ -24,8 +24,9 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omega/GpuManager.h"
+#include "oengine/EngineClient.h"
 #include "oengine/ui/Image.h"
-#include "oengine/ui/UiManager.h"
 #include "oengine/Renderer.h"
 
 using namespace omega;
@@ -33,9 +34,9 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Image::Image(UiManager* mng):
-	Widget(mng),
-	myTexture(NULL)
+Image::Image(EngineServer* srv):
+	Widget(srv),
+	myData(NULL)
 {
 
 }
@@ -47,12 +48,36 @@ Image::~Image()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Image::renderContent()
+Renderable* Image::createRenderable()
 {
-	Widget::renderContent();
+	return new ImageRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ImageRenderable::refresh()
+{
+	GpuManager* gpu = getClient()->getGpu();
+	if(myOwner->myData != NULL)
+	{
+		myTexture = gpu->getTexture(myOwner->myData->filename);
+		if(myTexture == NULL)
+		{
+			myTexture = gpu->createTexture(
+				myOwner->myData->filename,
+				myOwner->myData->width,
+				myOwner->myData->height,
+				myOwner->myData->data);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ImageRenderable::drawContent()
+{
+	WidgetRenderable::drawContent();
 
 	if(myTexture != NULL)
 	{
-		getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), getSize());
+		getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize());
 	}
 }

@@ -85,7 +85,8 @@ void EqUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent): 
 	eq::Config(parent) 
-{}
+{
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::init(const uint128_t& initID)
@@ -103,6 +104,46 @@ bool ConfigImpl::exit()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+uint ConfigImpl::processMouseButtons(uint btns)
+{
+	uint buttons = 0;
+	if((btns & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
+	if((btns & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
+	if((btns & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
+	return buttons;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray)
+{
+	ChannelImpl* sch = NULL;
+	foreach(eq::Channel* ch, source->getChannels())
+	{
+		if(ch->getPixelViewport().isInside(x, y))
+		{
+			sch = (ChannelImpl*)ch;
+			break;
+		}
+	}
+
+	outPosition = sch->windowToCanvas(Vector2i(x, y));
+	const DrawContext& dc = sch->getLastDrawContext();
+
+	EqualizerDisplaySystem* eds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	if(eds->isDebugMouseEnabled())
+	{
+		ofmsg("MOUSE  Channel=%1%  ChannelVP=%2%,%3%,%4%,%5%  ChannelPos=%6%,%7%  GlobalPos=%8%", 
+			%sch->getName() 
+			%dc.viewport.x() %dc.viewport.y() %dc.viewport.width() %dc.viewport.height()
+			%x %y
+			%outPosition
+			);
+	}
+
+	ray = Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport, 1.0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 {
 	static int x;
@@ -111,7 +152,6 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 	switch( event->data.type )
 	{
 #ifdef OMEGA_USE_KEYBOARD
-            
         case eq::Event::KEY_PRESS:
         {
             KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Down);
@@ -127,52 +167,50 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 #ifdef OMEGA_USE_MOUSE
 	case eq::Event::WINDOW_POINTER_MOTION:
 		{
-			eq::Window* w = this->find<eq::Window>(event->data.originator);
-			const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
-
-			x = event->data.pointerMotion.x + pvp.x;
-			y = event->data.pointerMotion.y + pvp.y;
-			MouseService::mouseMotionCallback(x, y);
+			Vector2i pos;
+			Ray ray;
+			processMousePosition(
+				this->find<eq::Window>(event->data.originator),
+				event->data.pointerMotion.x,
+				event->data.pointerMotion.y,
+				pos, ray);
+			MouseService::mouseMotionCallback(pos[0], pos[1]);
+			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
 		{
-			eq::Window* w = this->find<eq::Window>(event->data.originator);
-			const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
-
-			x = event->data.pointerButtonPress.x + pvp.x;
-			y = event->data.pointerButtonPress.y + pvp.y;
-			uint buttons = 0;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
-			MouseService::mouseButtonCallback(buttons, 1, x, y);
+			Vector2i pos;
+			Ray ray;
+			processMousePosition(
+				this->find<eq::Window>(event->data.originator),
+				event->data.pointerButtonPress.x,
+				event->data.pointerButtonPress.y,
+				pos, ray);
+			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
+			MouseService::mouseButtonCallback(buttons, 1, pos[0], pos[1]);
+			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
 		{
-			eq::Window* w = this->find<eq::Window>(event->data.originator);
-			const eq::fabric::PixelViewport& pvp = w->getPixelViewport();
-
-			x = event->data.pointerButtonPress.x + pvp.x;
-			y = event->data.pointerButtonPress.y + pvp.y;
-			uint buttons = 0;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
+			Vector2i pos;
+			Ray ray;
+			processMousePosition(
+				this->find<eq::Window>(event->data.originator),
+				event->data.pointerButtonPress.x,
+				event->data.pointerButtonPress.y,
+				pos, ray);
+			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
 			MouseService::mouseButtonCallback(buttons, 0, x, y);
+			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_WHEEL:
 		{
-			//x = event->data.pointerWheel.x;
-			//y = event->data.pointerWheel.y;
 			int wheel = event->data.pointerWheel.xAxis;
-			uint buttons = 0;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON1) == eq::PTR_BUTTON1) buttons |= Event::Left;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON2) == eq::PTR_BUTTON2) buttons |= Event::Middle;
-			if((event->data.pointerButtonPress.buttons & eq::PTR_BUTTON3) == eq::PTR_BUTTON3) buttons |= Event::Right;
-			MouseService::mouseWheelCallback(buttons, wheel, x, y);
+			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
+			MouseService::mouseWheelCallback(buttons, wheel, 0, 0);
 			return true;
 		}
 #endif

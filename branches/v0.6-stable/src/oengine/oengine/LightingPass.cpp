@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/SceneManager.h"
+#include "oengine/EngineClient.h"
 #include "oengine/LightingPass.h"
 #include "oengine/Light.h"
 #include "omega/glheaders.h"
@@ -32,39 +32,41 @@
 using namespace omega;
 using namespace oengine;
 
+OMEGA_DEFINE_TYPE(LightingPass, RenderPass);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void LightingPass::render(SceneManager* mng, const DrawContext& context)
+void LightingPass::render(EngineClient* client, const DrawContext& context)
 {
-	glPushMatrix();
-	//glLoadMatrixf(mng->getViewTransform().data());
-	glLoadIdentity();
-    glEnable(GL_NORMALIZE);
-	glEnable(GL_LIGHTING);
+	//glPushMatrix();
+	////glLoadMatrixf(mng->getViewTransform().data());
+	//glLoadIdentity();
+ //   glEnable(GL_NORMALIZE);
+	//glEnable(GL_LIGHTING);
 
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, mng->getAmbientLightColor().data());
+	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, client->getAmbientLightColor().data());
 
-	GLenum lightId = GL_LIGHT0;
-	for(int i = 0; i < SceneManager::MaxLights; i++)
-	{
-		Light* light = mng->getLight(i);
-		if(light->isEnabled())
-		{
-			glEnable(lightId);
+	//GLenum lightId = GL_LIGHT0;
+	//for(int i = 0; i < SceneManager::MaxLights; i++)
+	//{
+	//	Light* light = client->getLight(i);
+	//	if(light->isEnabled())
+	//	{
+	//		glEnable(lightId);
 
-			glLightfv(lightId, GL_DIFFUSE, light->getColor().data());
-			glLightfv(lightId, GL_SPECULAR, light->getColor().data());
+	//		glLightfv(lightId, GL_DIFFUSE, light->getColor().data());
+	//		glLightfv(lightId, GL_SPECULAR, light->getColor().data());
 
-			// Set position
-			const Vector3f& pos = light->getPosition();
-			float fv[] = {pos[0], pos[1], pos[2], 0.0f };
-			glLightfv(lightId, GL_POSITION, fv);
+	//		// Set position
+	//		const Vector3f& pos = light->getPosition();
+	//		float fv[] = {pos[0], pos[1], pos[2], 0.0f };
+	//		glLightfv(lightId, GL_POSITION, fv);
 
-			lightId++;
-		}
-	}
+	//		lightId++;
+	//	}
+	//}
 
-    glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-    glEnable( GL_COLOR_MATERIAL );
+ //   glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+ //   glEnable( GL_COLOR_MATERIAL );
 
-	glPopMatrix();
+	//glPopMatrix();
 }

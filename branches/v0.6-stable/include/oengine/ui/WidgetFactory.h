@@ -37,25 +37,20 @@ namespace oengine { namespace ui
 	class WidgetFactory
 	{
 	public:
-		WidgetFactory(UiManager* mng): myManager(mng) {}
+		WidgetFactory(EngineServer* server): myServer(server) {}
 
-		UiManager* getManager() { return myManager; }
+		EngineServer* getServer() { return myServer; }
 
 		virtual Widget* createWidget(const String& name, Container* container)
 		{
-			Widget* widget = onew(Widget)(myManager);
+			Widget* widget = new Widget(myServer);
 			widget->setName(name);
 			container->addChild(widget);
 			return widget;
 		}
 
-		virtual Button* createButton(const String& name, Container* container)
-		{
-			Button* button = onew(Button)(myManager);
-			button->setName(name);
-			container->addChild(button);
-			return button;
-		}
+		virtual Button* createButton(const String& name, Container* container) = 0;
+		virtual Slider* createSlider(const String& name, Container* container) = 0;
 
 		virtual Button* createCheckButton(const String& name, Container* container)
 		{
@@ -65,24 +60,17 @@ namespace oengine { namespace ui
 			return button;
 		}
 
-		virtual Slider* createSlider(const String& name, Container* container)
-		{
-			Slider* slider = onew(Slider)(myManager);
-			slider->setName(name);
-			container->addChild(slider);
-			return slider;
-		}
 
 		virtual Image* createImage(const String& name, Container* container)
 		{
-			Image* image = onew(Image)(myManager);
+			Image* image = new Image(myServer);
 			container->addChild(image);
 			return image;
 		}
 
 		virtual Label* createLabel(const String& name, Container* container, const String& text = "")
 		{
-			Label* lbl = onew(Label)(myManager);
+			Label* lbl = new Label(myServer);
 			lbl->setName(name);
 			if(text.size()  == 0) lbl->setText(name);
 			else lbl->setText(text);
@@ -93,7 +81,7 @@ namespace oengine { namespace ui
 		virtual Container* createContainer(String name, Container* container, 
 			Container::Layout layout = Container::LayoutHorizontal)
 		{
-			Container* c = onew(Container)(myManager);
+			Container* c = new Container(myServer);
 			c->setName(name);
 			c->setLayout(layout);
 			container->addChild(c);
@@ -101,7 +89,7 @@ namespace oengine { namespace ui
 		}
 
 	private:
-		UiManager* myManager;
+		EngineServer* myServer;
 	};
 }; // namespace ui
 }; // namespace omega

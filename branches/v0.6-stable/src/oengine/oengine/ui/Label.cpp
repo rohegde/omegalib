@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/ui/Label.h"
-#include "oengine/ui/UiManager.h"
 #include "oengine/Renderer.h"
 #include "omega/glheaders.h"
 
@@ -34,9 +33,8 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Label::Label(UiManager* mng):
-	Widget(mng),
-	myFont(NULL),
+Label::Label(EngineServer* srv):
+	Widget(srv),
 	myColor(255, 255, 255),
 	myVerticalAlign(AlignMiddle),
 	myHorizontalAlign(AlignCenter),
@@ -55,11 +53,15 @@ Label::~Label()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Label::autosize()
 {
-	// If not font has been set, use default ui font.
-	if(!myFont) myFont = getManager()->getDefaultFont();
-	if(myFont)
+	// Kindof hack. To compute the label size we need a Font pointer. Fonts are stored inside LabelRenderable
+	// objects. Since we expect all those objects to share the same properties, just get the first one
+	// and use its font to compute the label size.
+	LabelRenderable* lr = (LabelRenderable*)getFirstRenderable();
+	Font* font = lr->myFont;
+
+	if(font != NULL)
 	{
-		Vector2f size = myFont->computeSize(myText);
+		Vector2f size = font->computeSize(myText);
 		size += Vector2f(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
 		setSize(size);
 	}
@@ -85,26 +87,38 @@ unsigned int Label::getFontAlignFlags()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Label::renderContent()
+Renderable* Label::createRenderable()
 {
-	Widget::renderContent();
+	return new LabelRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void LabelRenderable::refresh()
+{
+	myFont = getRenderer()->getFont(myOwner->getFont());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void LabelRenderable::drawContent()
+{
+	WidgetRenderable::drawContent();
 
 	// If not font has been set, use default ui font.
-	if(!myFont) myFont = getManager()->getDefaultFont();
+	if(!myFont) myFont = getRenderer()->getDefaultFont();
 
 	if(myFont)
 	{
-		unsigned int alignFlags = getFontAlignFlags();
+		unsigned int alignFlags = myOwner->getFontAlignFlags();
 		Vector2f textPos = Vector2f::Zero();
 
-		if(alignFlags & Font::HARight) textPos[0] += (float)getWidth() - 1;
-		else if(alignFlags & Font::HACenter) textPos[0] += (float)getWidth() / 2 - 1;
+		if(alignFlags & Font::HARight) textPos[0] += (float)myOwner->getWidth() - 1;
+		else if(alignFlags & Font::HACenter) textPos[0] += (float)myOwner->getWidth() / 2 - 1;
 
-		if(alignFlags & Font::VABottom) textPos[1] += (float)getHeight() - 1;
-		else if(alignFlags & Font::VAMiddle) textPos[1] += (float)getHeight() / 2 - 1;
+		if(alignFlags & Font::VABottom) textPos[1] += (float)myOwner->getHeight() - 1;
+		else if(alignFlags & Font::VAMiddle) textPos[1] += (float)myOwner->getHeight() / 2 - 1;
 
-		glColor4fv(myColor.data());
+		glColor4fv(myOwner->myColor.data());
 
-		getRenderer()->drawText(myText, myFont, textPos, alignFlags);
+		getRenderer()->drawText(myOwner->myText, myFont, textPos, alignFlags);
 	}
 }

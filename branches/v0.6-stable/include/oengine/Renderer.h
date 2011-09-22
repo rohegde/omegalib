@@ -28,10 +28,11 @@
 #define __RENDERER_H__
 
 #include "oenginebase.h"
-#include "oengine/FontManager.h"
+#include "oengine/Font.h"
 #include "omega/Application.h"
 #include "omega/Color.h"
 #include "omega/Texture.h"
+#include "omega/GpuBuffer.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,6 +40,7 @@ namespace oengine {
 	{
 	public:
 		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };
+		enum DrawType { DrawTriangles, DrawLines, DrawPoints };
 
 	public:
 		Renderer();
@@ -77,11 +79,23 @@ namespace oengine {
 		//! 3D Drawing methods
 		//@{
 		void drawWireSphere(const Color& color, int segments, int slices);
+		void drawIndexedPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
+		//@}
+
+		//! Font management
+		//@{
+		Font* createFont(omega::String fontName, omega::String filename, int size);
+		Font* getFont(omega::String fontName);
+		Font* getDefaultFont();
+		void setDefaultFont(Font* value);
 		//@}
 
 	private:
 		bool myDrawing;
 		Texture* myTargetTexture;
+		Dictionary<String, Font*> myFonts;
+		Font* myDefaultFont;
+		Lock myLock;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +109,14 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Texture* Renderer::getTargetTexture()
 	{ return myTargetTexture; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Font* Renderer::getDefaultFont()
+	{ return myDefaultFont; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Renderer::setDefaultFont(Font* value)
+	{ myDefaultFont = value; }
 }; // namespace oengine
 
 #endif

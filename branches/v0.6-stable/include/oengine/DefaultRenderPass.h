@@ -33,7 +33,10 @@
 namespace oengine {
 	class OENGINE_API DefaultRenderPass: public RenderPass
 	{
-		virtual void render(SceneManager* mng, const DrawContext& context);
+	OMEGA_DECLARE_TYPE(DefaultRenderPass)
+	public:
+		static RenderPass* createInstance() { return new DefaultRenderPass(); }
+		virtual void render(EngineClient* client, const DrawContext& context);
 	};
 }; // namespace oengine
 

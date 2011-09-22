@@ -33,12 +33,14 @@ add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DFTGL_LIBRARY_ST
 # Source files
 set( srcs 
 		# omega
-		oengine/FontManager.cpp
+		oengine/Box.cpp
 		oengine/ImageUtils.cpp
 		oengine/EngineClient.cpp
+		oengine/EngineServer.cpp
+		oengine/Font.cpp
+		oengine/OverlayRenderable.cpp
 		oengine/Renderer.cpp
 		oengine/Effect.cpp
-		oengine/EffectManager.cpp
 		oengine/DefaultRenderPass.cpp
 		oengine/OverlayRenderPass.cpp
 		oengine/LightingPass.cpp
@@ -49,15 +51,17 @@ set( srcs
 		oengine/DefaultTwoHandsInteractor.cpp
 		oengine/Mesh.cpp
 		oengine/MeshData.cpp
-		oengine/MeshManager.cpp
 		oengine/Node.cpp
-		oengine/Teapot.cpp
-		oengine/SceneManager.cpp
+		oengine/glteapot.cpp
+		oengine/SceneObject.cpp
 		oengine/SceneQuery.cpp
 		oengine/SceneNode.cpp
+		oengine/SceneRenderable.cpp
 		oengine/PlyDataReader.cpp
 		oengine/plyfile.cpp
 		oengine/ReferenceBox.cpp
+		oengine/Renderable.cpp
+		oengine/UiRenderPass.cpp
 		
 		# omega::ui
 		oengine/ui/AbstractButton.cpp
@@ -67,7 +71,6 @@ set( srcs
 		oengine/ui/Label.cpp
 		oengine/ui/DefaultSkin.cpp
 		oengine/ui/Slider.cpp
-		oengine/ui/UiManager.cpp
 		oengine/ui/Widget.cpp
 		oengine/ui/UserManagerPanel.cpp
         )
@@ -78,9 +81,12 @@ set( headers
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/oengine.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/oenginebase.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/FontManager.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Box.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Font.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ImageUtils.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/EngineClient.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/EngineServer.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/BoundingSphere.h
@@ -89,13 +95,14 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/MeshData.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/MeshManager.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Node.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Effect.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/EffectManager.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Teapot.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneManager.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/glteapot.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneQuery.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
@@ -104,9 +111,12 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/RenderToTexture.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/UiRenderPass.h
 		
 		# omega::ui
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/AbstractButton.h
@@ -116,7 +126,6 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Label.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/DefaultSkin.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Slider.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UiManager.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Widget.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h

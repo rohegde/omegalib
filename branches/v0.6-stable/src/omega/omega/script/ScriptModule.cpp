@@ -28,6 +28,6 @@
 
 using namespace omega::script;
 
-OMEGA_DEFINE_TYPE_NOBASE(ScriptModule);
+OMEGA_DEFINE_TYPE(ScriptModule, OmegaObject);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -185,6 +185,10 @@ public:
 	const FrameData& getFrameData();
 
 private:
+	void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);
+	uint processMouseButtons(uint btns); 
+
+private:
 	FrameData myFrameData;
 };
 
@@ -206,6 +210,7 @@ protected:
     virtual void frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber );
 
 private:
+	bool myInitialized;
 	ApplicationServer* myServer;
 	FrameData myFrameData;
 };
@@ -263,19 +268,33 @@ private:
 class ChannelImpl: public eq::Channel
 {
 public:
+	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+public:
 	ChannelImpl( eq::Window* parent );
 	virtual ~ChannelImpl();
 
+	ViewImpl* getViewImpl();
+	omega::Vector2i windowToCanvas(const omega::Vector2i& point);
+	const omega::DrawContext& getLastDrawContext();
+
 protected:
+	void initialize();
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
-	virtual void makeCurrent();
 	virtual void frameDraw( const uint128_t& spin );
-	virtual void frameViewStart( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
-	//virtual void drawStatistics();
+	virtual bool configInit(const uint128_t& initID);
 
 private:
+	static Dictionary<String, Vector2i> myCanvasChannels;
+	static Dictionary<String, Vector2i> myCanvasSize;
+
+private:
+	bool myInitialized;
 	eq::Window* myWindow;
+	Lock myLock;
+	ViewImpl* myView;
+	ChannelInfo myChannelInfo;
+	DrawContext myDC;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
