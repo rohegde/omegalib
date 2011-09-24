@@ -24,30 +24,75 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SAGE_POINTER_SERVICE_H__
-#define __SAGE_POINTER_SERVICE_H__
+#ifndef __TCP_H__
+#define __TCP_H__
 
 #include "omega/osystem.h"
-#include "omega/ServiceManager.h"
+#include "omega/TypeInfo.h"
+#include "omega/glheaders.h"
+
+#ifdef OMEGA_OS_WIN
+	#define NOMINMAX
+	#define WIN32_LEAN_AND_MEAN
+	#include <windows.h>
+#endif
+#include <asio.hpp>
+
+using asio::ip::tcp;
+
 
 namespace omega {
-	class TcpStringConnection
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class TcpConnection: public OmegaObject
+	{
+	OMEGA_DECLARE_TYPE(TcpConnection)
+	public:
+		TcpConnection(asio::io_service& ioService);
+		tcp::socket& getSocket() { return mySocket; }
+
+		void poll();
+
+		void write(const String& data);
+		String readLine();
+
+		virtual void handleConnected();
+		virtual void handleClosed();
+		virtual void handleError();
+		virtual void handleData();
+		virtual void handleWrite(const asio::error_code& err, size_t size);
+
+	protected:
+
+	protected:
+		tcp::socket mySocket;
+		asio::streambuf myInputBuffer;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Implements a service able to receive pointer updates from the SAGE pointer application
-	class SagePointerService: public Service
+	class TcpServer: public OmegaObject
 	{
+	OMEGA_DECLARE_TYPE(TcpServer)
 	public:
-		//! Allocator function (will be used to register the service inside SystemManager)
-		static SagePointerService* New() { return new SagePointerService(); }
-
-	public:
-		SagePointerService();
-
-		virtual void setup(Setting& settings);
+		TcpServer();
+		~TcpServer();
+		virtual void initialize(int port);
+		virtual void start();
+		virtual void stop();
 		virtual void poll();
+		int getPort() { return myPort; }
 
-	private:
+	protected:
+		virtual TcpConnection* createConnection();
+		virtual void accept();
+		virtual void handleAccept(TcpConnection* newConnection, const asio::error_code& error);
+
+	protected:
+		int myPort;
+		bool myInitialized;
+		bool myRunning;
+		tcp::acceptor* myAcceptor;
+		asio::io_service myIOService;
+		List<TcpConnection*> myClients;
 	};
 }; // namespace omega
 

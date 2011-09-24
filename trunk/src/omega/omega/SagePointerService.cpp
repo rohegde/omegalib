@@ -28,6 +28,8 @@
 #include "omega/SagePointerService.h"
 #include "omega/StringUtils.h"
 
+#include <asio.hpp>
+
 #include <time.h>
 using namespace omega;
 

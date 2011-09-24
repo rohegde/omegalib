@@ -1,4 +1,4 @@
-set(EXTLIB_NAME boost)
+set(EXTLIB_NAME asio)
 set(EXTLIB_TGZ ${CMAKE_SOURCE_DIR}/ext/${EXTLIB_NAME}.tar.gz)
 set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/include/${EXTLIB_NAME})
 
