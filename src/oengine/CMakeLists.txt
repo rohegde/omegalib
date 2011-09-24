@@ -39,6 +39,7 @@ set( srcs
 		oengine/EngineServer.cpp
 		oengine/Font.cpp
 		oengine/OverlayRenderable.cpp
+		oengine/Pointer.cpp
 		oengine/Renderer.cpp
 		oengine/Effect.cpp
 		oengine/DefaultRenderPass.cpp
@@ -101,6 +102,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Pointer.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/glteapot.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneQuery.h

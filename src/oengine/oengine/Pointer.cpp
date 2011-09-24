@@ -24,38 +24,44 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/BoundingSphere.h"
+#include "oengine/Pointer.h"
 #include "oengine/Renderer.h"
+
+#include "omega/glheaders.h"
 
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(BoundingSphere, SceneObject);
-OMEGA_DEFINE_TYPE(BoundingSphereRenderable, SceneRenderable);
+OMEGA_DEFINE_TYPE(Pointer, RenderableFactory);
+OMEGA_DEFINE_TYPE(PointerRenderable, OverlayRenderable);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* BoundingSphere::createRenderable()
+Renderable* Pointer::createRenderable()
 {
-	return new BoundingSphereRenderable(this);
+	return new PointerRenderable(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void BoundingSphereRenderable::draw(RenderState* state)
+void PointerRenderable::draw(RenderState* state)
 {
-	SceneNode* node = getSceneNode();
-	if(state->isFlagSet(RenderPass::RenderOpaque))
+	if(myPointer->myVisible)
 	{
-		if(myBoundingSphere->myVisible || (myBoundingSphere->myDrawOnSelected && node->isSelected()))
-		{
-			float radius = node->getBoundingSphere().getRadius();
-			Vector3f center = node->getBoundingSphere().getCenter();
+		int size = 30;
+		int x = myPointer->myPosition[0];
+		int y = myPointer->myPosition[1];
 
-			AffineTransform3 xform;
-			xform.fromPositionOrientationScale(center, node->getOrientation(), Vector3f(radius, radius, radius));
-			
-			getRenderer()->pushTransform(xform);
-			getRenderer()->drawWireSphere(myBoundingSphere->myColor, myBoundingSphere->mySegments, myBoundingSphere->mySlices);
-			getRenderer()->popTransform();
-		}
+		glColor4fv(myPointer->myColor.data());
+		glBegin(GL_TRIANGLES);
+		glVertex2i(x, y);
+		glVertex2i(x + size, y + size / 2);
+		glVertex2i(x + size / 2, y + size);
+		glEnd();
+
+		glColor4f(1, 1, 1, 1);
+		glBegin(GL_LINE_LOOP);
+		glVertex2i(x, y);
+		glVertex2i(x + size, y + size / 2);
+		glVertex2i(x + size / 2, y + size);
+		glEnd();
 	}
 }
