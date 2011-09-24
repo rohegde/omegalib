@@ -59,16 +59,7 @@ if(OMEGA_USE_PYTHON)
 	add_definitions(-DOMEGA_USE_PYTHON)
 endif(OMEGA_USE_PYTHON)
 
-# uncompress Boost library
-ExternalProject_Add(
-	boost
-	URL ${CMAKE_SOURCE_DIR}/ext/boost.tar.gz
-	SOURCE_DIR ${CMAKE_BINARY_DIR}/include/boost
-	CONFIGURE_COMMAND ""
-	BUILD_COMMAND ""
-	INSTALL_COMMAND ""
-	)
-set_target_properties(boost PROPERTIES FOLDER "3rdparty")
+include(${CMAKE_SOURCE_DIR}/ext/UseBoost.cmake)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 # Equalizer support enabled: uncompress and prepare the external project.
@@ -125,9 +116,6 @@ include_directories(
   ${OmegaLib_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
   )
 
 ###################################################################################################
@@ -149,9 +137,14 @@ endif(OMEGA_USE_DISPLAY)
 
 # Add some libraries used for display support.
 if(OMEGA_BUILD_ENGINE)
-	add_subdirectory(3rdparty/FreeImage)
-	add_subdirectory(3rdparty/freetype)
-	add_subdirectory(3rdparty/ftgl)
+	include(${OmegaLib_SOURCE_DIR}/ext/UseFreeImage.cmake)
+	include(${OmegaLib_SOURCE_DIR}/ext/UseFreeType.cmake)
+	include(${OmegaLib_SOURCE_DIR}/ext/UseFtgl.cmake)
+	include_directories(
+	  ${OmegaLib_BINARY_DIR}/ftgl/src/
+	  ${OmegaLib_BINARY_DIR}/freetype/include/
+	  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
+	)
 	add_subdirectory(oengine)
 	if(OMEGA_BUILD_APPS)
 		add_subdirectory(apps/mocalib)
