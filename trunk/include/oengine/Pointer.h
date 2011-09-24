@@ -24,104 +24,80 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOUNDING_SPHERE_DRAWABLE_H__
-#define __BOUNDING_SPHERE_DRAWABLE_H__
+#ifndef __POINTER_H__
+#define __POINTER_H__
 
-#include "SceneObject.h"
-#include "SceneRenderable.h"
+#include "OverlayRenderable.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphere: public SceneObject
+	class OENGINE_API Pointer: public RenderableFactory
 	{
-	OMEGA_DECLARE_TYPE(BoundingSphere)
-	friend class BoundingSphereRenderable;
+	OMEGA_DECLARE_TYPE(Pointer)
+	friend class PointerRenderable;
 	public:
-		BoundingSphere(): 
-		  myDrawOnSelected(false), 
+		Pointer(): 
  		  myVisible(true),
-		  mySlices(5),
-		  mySegments(32),
-		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
+		  myColor(0.5f, 0.4f, 1.0f, 1.0f) {}
 
 		virtual Renderable* createRenderable();
-
-		void setDrawOnSelected(bool value);
-		bool getDrawOnSelected();
 
 		void setVisible(bool value);
 		bool getVisible();
 
+		void setPosition(const Vector2i& position);
+		void setPosition(int x, int y);
+		Vector2i getPosition();
+
 		Color getColor();
 		void setColor(const Color& value);
-
-		int getSegments();
-		void setSegments(int value);
-
-		int getSlices();
-		void setSlices(int value);
-
 	private:
 		bool myVisible;
-		bool myDrawOnSelected;
 		Color myColor;
-		int mySegments;
-		int mySlices;
+		Vector2i myPosition;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphereRenderable: public SceneRenderable
+	class OENGINE_API PointerRenderable: public OverlayRenderable
 	{
-	OMEGA_DECLARE_TYPE(BoundingSphereRenderable)
+	OMEGA_DECLARE_TYPE(PointerRenderable)
 	public:
-		BoundingSphereRenderable(BoundingSphere* boundingSphere): 
-		  myBoundingSphere(boundingSphere)
+		PointerRenderable(Pointer* pointer): 
+		  myPointer(pointer)
 		{}
 		void draw(RenderState* state);
 
 	private:
-		BoundingSphere* myBoundingSphere;
+		Pointer* myPointer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setDrawOnSelected(bool value)
-	{ myDrawOnSelected = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool BoundingSphere::getDrawOnSelected()
-	{ return myDrawOnSelected; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setVisible(bool value)
+	inline void Pointer::setVisible(bool value)
 	{ myVisible = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool BoundingSphere::getVisible()
+	inline bool Pointer::getVisible()
 	{ return myVisible; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color BoundingSphere::getColor()
+	inline Color Pointer::getColor()
 	{ return myColor; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setColor(const Color& value)
+	inline void Pointer::setColor(const Color& value)
 	{ myColor = value;}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int BoundingSphere::getSegments()
-	{ return mySegments; }
+	inline void Pointer::setPosition(const Vector2i& position)
+	{ myPosition = position; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setSegments(int value)
-	{ mySegments = value; }
+	inline void Pointer::setPosition(int x, int y)
+	{ myPosition = Vector2i(x, y); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int BoundingSphere::getSlices()
-	{ return mySlices;}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setSlices(int value)
-	{ mySlices = value; }
+	inline Vector2i Pointer::getPosition()
+	{ return myPosition; }
 }; // namespace oengine
 
 #endif

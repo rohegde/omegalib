@@ -47,6 +47,7 @@
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/PlyDataReader.h"
 #include "oengine/ply.h"
+#include "oengine/Pointer.h"
 #include "oengine/Renderable.h"
 #include "oengine/ReferenceBox.h"
 #include "oengine/RenderToTexture.h"

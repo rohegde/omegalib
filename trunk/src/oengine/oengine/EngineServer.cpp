@@ -29,6 +29,7 @@
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/DefaultRenderPass.h"
 #include "oengine/UiRenderPass.h"
+#include "oengine/Renderable.h"
 #include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
 
@@ -109,6 +110,23 @@ void EngineServer::removeActor(Actor* actor)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+Pointer* EngineServer::createPointer()
+{
+	Pointer* p = new Pointer();
+	p->initialize(this);
+	myPointers.push_back(p);
+	return p;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::destroyPointer(Pointer* p)
+{
+	myPointers.remove(p);
+	p->dispose();
+	delete p;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* EngineServer::getScene(int id)
 {
 	oassert(id >= 0 && id < EngineServer::MaxScenes);
@@ -162,4 +180,17 @@ const SceneQueryResultList& EngineServer::querySceneRay(int sceneId, const Ray& 
 	myRaySceneQuery.setSceneNode(myScene[sceneId]);
 	myRaySceneQuery.setRay(ray);
 	return myRaySceneQuery.execute(flags);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::drawPointers(EngineClient* client, RenderState* state)
+{
+	foreach(Pointer* p, myPointers)
+	{
+		if(p->getVisible())
+		{
+			Renderable* r = p->getRenderable(client);
+			r->draw(state);
+		}
+	}
 }

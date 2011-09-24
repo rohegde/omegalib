@@ -59,9 +59,19 @@ if(OMEGA_USE_PYTHON)
 	add_definitions(-DOMEGA_USE_PYTHON)
 endif(OMEGA_USE_PYTHON)
 
+# uncompress Boost library
+ExternalProject_Add(
+	boost
+	URL ${CMAKE_SOURCE_DIR}/ext/boost.tar.gz
+	SOURCE_DIR ${CMAKE_BINARY_DIR}/include/boost
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+	)
+set_target_properties(boost PROPERTIES FOLDER "3rdparty")
+
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 # Equalizer support enabled: uncompress and prepare the external project.
-# PUT ALL OF THIS IN EXTERNAL SCRIPT
 	ExternalProject_Add(
 		equalizer
 		URL ${CMAKE_SOURCE_DIR}/ext/equalizer.tar.gz

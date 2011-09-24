@@ -30,6 +30,7 @@
 #include "oenginebase.h"
 #include "EngineClient.h"
 #include "SceneNode.h"
+#include "Pointer.h"
 #include "Renderable.h"
 #include "SceneQuery.h"
 #include "Actor.h"
@@ -45,6 +46,7 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API EngineServer: public ApplicationServer
 	{
+	friend class EngineClient;
 	public:
 		typedef RenderPass* (*RenderPassFactory)();
 
@@ -85,9 +87,19 @@ namespace oengine {
 		void addActor(Actor* actor);
 		void removeActor(Actor* actor);
 
+		//! Pointer Management
+		//@{
+		Pointer* createPointer();
+		void destroyPointer(Pointer* p);
+		//@}
+
 		virtual void initialize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
+
+	private:
+		//! Draw pointer objects inside a specific client context.
+		void drawPointers(EngineClient* client, RenderState* state);
 
 	private:
 		List<EngineClient*> myClients;
@@ -96,6 +108,7 @@ namespace oengine {
 
 		SceneNode* myScene[MaxScenes];
 		ui::Container* myUi[MaxUis];
+		List<Pointer*> myPointers;
 
 		List<Actor*> myActors;
 

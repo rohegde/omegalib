@@ -51,6 +51,7 @@ SET( srcs
 		omega/DataManager.cpp
 		omega/FileDataStream.cpp
 		omega/FilesystemDataSource.cpp
+		omega/SagePointerService.cpp
 		omega/TypeInfo.cpp
 		
 		#omega::script
@@ -78,6 +79,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/TypeInfo.h
 
 		# eigenwrap

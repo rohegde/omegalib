@@ -181,6 +181,8 @@ void MeshViewer::initialize()
 	//	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 	//}
 
+	myPointer = createPointer();
+
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
@@ -268,6 +270,8 @@ void MeshViewer::handleEvent(const Event& evt)
     EngineServer::handleEvent(evt);
 	if(evt.getServiceType() == Service::Pointer) 
 	{
+		myPointer->setPosition(evt.getPosition(0), evt.getPosition(1));
+
 		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
 		{
 			Ray ray;
