@@ -60,6 +60,7 @@ if(OMEGA_USE_PYTHON)
 endif(OMEGA_USE_PYTHON)
 
 include(${CMAKE_SOURCE_DIR}/ext/UseBoost.cmake)
+include(${CMAKE_SOURCE_DIR}/ext/UseAsio.cmake)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 # Equalizer support enabled: uncompress and prepare the external project.
