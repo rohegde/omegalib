@@ -33,6 +33,8 @@
 
 #ifdef OMEGA_OS_WIN
 	#define NOMINMAX
+	#define BOOST_DATE_TIME_NO_LIB
+	#define BOOST_REGEX_NO_LIB
 	#define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
 #endif
@@ -50,20 +52,30 @@ namespace omega {
 		TcpConnection(asio::io_service& ioService);
 		tcp::socket& getSocket() { return mySocket; }
 
-		void poll();
+		bool poll();
+		void close();
 
+		bool isOpen() { return myOpen; }
+
+		//! Data IO
+		//@{
 		void write(const String& data);
 		String readLine();
+		//@}
 
+		//! Connection event management
+		//@{
 		virtual void handleConnected();
 		virtual void handleClosed();
 		virtual void handleError();
 		virtual void handleData();
 		virtual void handleWrite(const asio::error_code& err, size_t size);
+		//@}
 
 	protected:
 
 	protected:
+		bool myOpen;
 		tcp::socket mySocket;
 		asio::streambuf myInputBuffer;
 	};

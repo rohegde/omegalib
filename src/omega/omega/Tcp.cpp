@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Tcp.h"
+#include "omega/StringUtils.h"
 
 #include <boost/bind.hpp>
 
@@ -74,10 +75,18 @@ void TcpServer::poll()
 {
 	if(myRunning)
 	{
+		Queue<TcpConnection*> closedConnections;
+
 		myIOService.poll();
 		foreach(TcpConnection* c, myClients)
 		{
-			c->poll();
+			if(!c->poll()) closedConnections.push(c);
+		}
+
+		while(closedConnections.size() != 0)
+		{
+			myClients.remove(closedConnections.front());
+			closedConnections.pop();
 		}
 	}
 }
@@ -109,15 +118,40 @@ TcpConnection* TcpServer::createConnection()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TcpConnection::TcpConnection(asio::io_service& ioService):
-	mySocket(ioService)
+	mySocket(ioService),
+	myOpen(false)
 {}
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TcpConnection::poll()
+bool TcpConnection::poll()
 {
-	if(mySocket.available() != 0)
+	if(mySocket.is_open() != myOpen)
+	{
+		if(!mySocket.is_open())
+		{
+			handleClosed();
+			return false;
+		} 
+		else 
+		{
+			handleConnected();
+		}
+	}
+	myOpen = mySocket.is_open();
+
+	if(mySocket.is_open() && mySocket.available() != 0)
 	{
 		handleData();
+	}
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TcpConnection::close()
+{
+	if(myOpen)
+	{
+		mySocket.close();
 	}
 }
 
@@ -141,6 +175,7 @@ String TcpConnection::readLine()
 	{
 		char* buf = new char[size];
 		myInputBuffer.sgetn(buf, size);
+		buf[size] = '\0';
 		String str(buf);
 		return str;
 	}

@@ -86,6 +86,11 @@ public:
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 	bool isDebugMouseEnabled() { return myDebugMouse; }
 
+	// (WORK IN PROGRESS) Returns the size of the specified canvas.
+	Vector2i getCanvasSize(const String& canvasName);
+	// (WORK IN PROGRESS) Returns a view ray given a pointer position in pixel coordinates and a canvas name
+	virtual Ray getViewRay(Vector2i position, const String& canvasName);
+
 private:
 	void initLayers();
 	void initObservers();

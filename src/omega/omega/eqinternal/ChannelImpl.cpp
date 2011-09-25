@@ -35,8 +35,11 @@ using namespace eq;
 
 // horrible hack.
 bool initStaticVars = false;
-Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasChannels;
-Dictionary<String, omega::Vector2i> ChannelImpl::myCanvasSize;
+Dictionary<String, omega::Vector2i> sCanvasChannels;
+Dictionary<String, omega::Vector2i> sCanvasSize;
+
+// TODO: modify to make it work with multiple channels.
+ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
@@ -45,8 +48,8 @@ ChannelImpl::ChannelImpl( eq::Window* parent )
 	myLock.lock();
 	if(!initStaticVars)
 	{
-		myCanvasChannels["default"] = Vector2i(0, 0);
-		myCanvasSize["default"] = Vector2i(0, 0);
+		sCanvasChannels["default"] = Vector2i(0, 0);
+		sCanvasSize["default"] = Vector2i(0, 0);
 		initStaticVars = true;
 	}
 	myLock.unlock();
@@ -82,21 +85,22 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 	myLock.lock();
 	// Refresh the number of channels in this view.
 	bool canvasChanged = false;
-	if(myCanvasChannels["default"].x() <= ix) 
+	if(sCanvasChannels["default"].x() <= ix) 
 	{
-		myCanvasChannels["default"].x() = ix + 1;
+		sCanvasChannels["default"].x() = ix + 1;
 		canvasChanged = true;
 	}
-	if(myCanvasChannels["default"].y() <= iy) 
+	if(sCanvasChannels["default"].y() <= iy) 
 	{
-		myCanvasChannels["default"].y() = iy + 1;
+		sCanvasChannels["default"].y() = iy + 1;
 		canvasChanged = true;
 	}
+	sCanvasChannelPointers[ix][iy] = this;
 	// If the number of channels in this view has been updated, refresh the view pixel size.
 	if(canvasChanged)
 	{
-		myCanvasSize["default"].x() = myCanvasChannels["default"].x() * w;
-		myCanvasSize["default"].y() = myCanvasChannels["default"].y() * h;
+		sCanvasSize["default"].x() = sCanvasChannels["default"].x() * w;
+		sCanvasSize["default"].y() = sCanvasChannels["default"].y() * h;
 	}
 	myLock.unlock();
 
@@ -109,11 +113,11 @@ void ChannelImpl::initialize()
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	ofmsg("Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
 		%pipe->getClient()->getId()
-		%myCanvasChannels["default"].x() %myCanvasChannels["default"].y()
-		%myCanvasSize["default"].x() %myCanvasSize["default"].y());
+		%sCanvasChannels["default"].x() %sCanvasChannels["default"].y()
+		%sCanvasSize["default"].x() %sCanvasSize["default"].y());
 
-	myChannelInfo.canvasChannels = myCanvasChannels["default"];
-	myChannelInfo.canvasSize = myCanvasSize["default"];
+	myChannelInfo.canvasChannels = sCanvasChannels["default"];
+	myChannelInfo.canvasSize = sCanvasSize["default"];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
