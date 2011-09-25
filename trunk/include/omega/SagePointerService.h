@@ -31,23 +31,26 @@
 #include "omega/ServiceManager.h"
 
 namespace omega {
-	class TcpStringConnection
+	class SagePointerServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements a service able to receive pointer updates from the SAGE pointer application
 	class SagePointerService: public Service
 	{
+	friend class SagePointerConnection;
 	public:
 		//! Allocator function (will be used to register the service inside SystemManager)
 		static SagePointerService* New() { return new SagePointerService(); }
 
 	public:
 		SagePointerService();
+		~SagePointerService();
 
 		virtual void setup(Setting& settings);
 		virtual void poll();
 
 	private:
+		SagePointerServer* myServer;
 	};
 }; // namespace omega
 

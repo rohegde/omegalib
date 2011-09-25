@@ -25,32 +25,162 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 #include "omega/SagePointerService.h"
 #include "omega/StringUtils.h"
+#include "omega/Color.h"
+#include "omega/Tcp.h"
 
-#include <asio.hpp>
-
-#include <time.h>
 using namespace omega;
 
-#ifdef WIN32
-#include <ws2tcpip.h>
-#include <winsock2.h>
-#define itoa _itoa
-#endif
+namespace omega {
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class SagePointerConnection: public TcpConnection
+{
+public:
+	SagePointerConnection(asio::io_service& ioService, int id, SagePointerService* service): 
+		TcpConnection(ioService),
+			myId(id), myService(service),
+			myButtonFlags(0)
+	{	}
 
+	virtual void handleData()
+	{
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+
+
+		String data = readLine();
+		std::vector<String> args = StringUtils::split(data, " ");
+		//ofmsg("Connection data received: %1%", %data);
+		int cmd = atoi(args[2].c_str());
+		switch(cmd)
+		{
+		case 1:
+			handleMoveMessage(atof(args[3].c_str()), atof(args[4].c_str()));
+			break;
+		case 2:
+			handleButtonMessage(atoi(args[4].c_str()), atof(args[3].c_str()));
+			break;
+		case 3:
+			omsg("WHEEL");
+			break;
+		case 4:
+			omsg("INFO");
+			break;
+		}
+	}
+
+	virtual void handleClosed()
+	{
+		ofmsg("Connection closed (id=%1%)", %myId);
+	}
+
+	void handleButtonMessage(int pressed, int btn)
+	{
+        myService->lockEvents();
+		Event* evt = myService->writeHead();
+		evt->reset(pressed == 1 ? Event::Down : Event::Up, Service::Pointer, myId);
+		evt->setPosition(myPosition[0], myPosition[1]);
+
+			if(pressed == 1)
+			{
+				if(btn == 1) myButtonFlags |= Event::Left;
+				if(btn == 2) myButtonFlags |= Event::Right;
+				if(btn == 3) myButtonFlags |= Event::Middle;
+			}
+			else
+			{
+				if(btn == 1) myButtonFlags &= ~Event::Left;
+				if(btn == 2) myButtonFlags &= ~Event::Right;
+				if(btn == 3) myButtonFlags &= ~Event::Middle;
+			}
+
+			evt->setFlags(myButtonFlags);
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Ray ray = ds->getViewRay(myPosition, "default");
+		evt->setExtraDataType(Event::ExtraDataVector3Array);
+		evt->setExtraDataVector3(0, ray.getOrigin());
+		evt->setExtraDataVector3(1, ray.getDirection());
+		myService->unlockEvents();
+	}
+
+	void handleMoveMessage(float x, float y)
+	{
+		// horrible.
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Vector2i canvasSize = ds->getCanvasSize("default");
+
+		myPosition[0] = x * canvasSize[0];
+		myPosition[1] = (1 - y) * canvasSize[1];
+
+        myService->lockEvents();
+		Event* evt = myService->writeHead();
+		evt->reset(Event::Move, Service::Pointer, myId);
+		evt->setPosition(myPosition[0], myPosition[1]);
+			evt->setFlags(myButtonFlags);
+
+		Ray ray = ds->getViewRay(myPosition, "default");
+		evt->setExtraDataType(Event::ExtraDataVector3Array);
+		evt->setExtraDataVector3(0, ray.getOrigin());
+		evt->setExtraDataVector3(1, ray.getDirection());
+
+		myService->unlockEvents();
+	}
+
+private:
+	SagePointerService* myService;
+	int myId;
+	uint myButtonFlags;
+	Color myColor;
+	String myName;
+	Vector2i myPosition;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class SagePointerServer: public TcpServer
+{
+public:
+	SagePointerServer(SagePointerService* service):
+		myPointerCounter(0),
+		myService(service)
+		{}
+
+	virtual TcpConnection* createConnection()
+	{
+		ofmsg("New sage pointer connection (id=%1%)", %myPointerCounter);
+		SagePointerConnection* conn = new SagePointerConnection(myIOService, myPointerCounter++, myService);
+	    myClients.push_back(conn);
+	    return conn;
+	}
+
+private:
+	int myPointerCounter;
+	SagePointerService* myService;
+};
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SagePointerService::SagePointerService()
 {
+	myServer = new SagePointerServer(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SagePointerService::~SagePointerService()
+{
+	delete myServer;
+	myServer = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SagePointerService::setup(Setting& settings)
 {
+	myServer->initialize(20005);
+	myServer->start();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SagePointerService::poll() 
 {
+	myServer->poll();
 }
