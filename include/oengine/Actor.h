@@ -43,7 +43,6 @@ namespace oengine {
 		SceneNode* getSceneNode();
 
 		virtual void update(const UpdateContext& context) {}
-		virtual void preDraw(const DrawContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 
 	protected:

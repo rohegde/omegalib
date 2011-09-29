@@ -35,8 +35,8 @@ using namespace eq;
 
 // horrible hack.
 bool initStaticVars = false;
-Dictionary<String, omega::Vector2i> sCanvasChannels;
-Dictionary<String, omega::Vector2i> sCanvasSize;
+omega::Vector2i sCanvasChannels;
+omega::Vector2i sCanvasSize;
 
 // TODO: modify to make it work with multiple channels.
 ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
@@ -48,8 +48,8 @@ ChannelImpl::ChannelImpl( eq::Window* parent )
 	myLock.lock();
 	if(!initStaticVars)
 	{
-		sCanvasChannels["default"] = Vector2i(0, 0);
-		sCanvasSize["default"] = Vector2i(0, 0);
+		sCanvasChannels = Vector2i(0, 0);
+		sCanvasSize = Vector2i(0, 0);
 		initStaticVars = true;
 	}
 	myLock.unlock();
@@ -85,22 +85,22 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 	myLock.lock();
 	// Refresh the number of channels in this view.
 	bool canvasChanged = false;
-	if(sCanvasChannels["default"].x() <= ix) 
+	if(sCanvasChannels.x() <= ix) 
 	{
-		sCanvasChannels["default"].x() = ix + 1;
+		sCanvasChannels.x() = ix + 1;
 		canvasChanged = true;
 	}
-	if(sCanvasChannels["default"].y() <= iy) 
+	if(sCanvasChannels.y() <= iy) 
 	{
-		sCanvasChannels["default"].y() = iy + 1;
+		sCanvasChannels.y() = iy + 1;
 		canvasChanged = true;
 	}
 	sCanvasChannelPointers[ix][iy] = this;
 	// If the number of channels in this view has been updated, refresh the view pixel size.
 	if(canvasChanged)
 	{
-		sCanvasSize["default"].x() = sCanvasChannels["default"].x() * w;
-		sCanvasSize["default"].y() = sCanvasChannels["default"].y() * h;
+		sCanvasSize.x() = sCanvasChannels.x() * w;
+		sCanvasSize.y() = sCanvasChannels.y() * h;
 	}
 	myLock.unlock();
 
@@ -113,11 +113,11 @@ void ChannelImpl::initialize()
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	ofmsg("Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
 		%pipe->getClient()->getId()
-		%sCanvasChannels["default"].x() %sCanvasChannels["default"].y()
-		%sCanvasSize["default"].x() %sCanvasSize["default"].y());
+		%sCanvasChannels.x() %sCanvasChannels.y()
+		%sCanvasSize.x() %sCanvasSize.y());
 
-	myChannelInfo.canvasChannels = sCanvasChannels["default"];
-	myChannelInfo.canvasSize = sCanvasSize["default"];
+	myChannelInfo.canvasChannels = sCanvasChannels;
+	myChannelInfo.canvasSize = sCanvasSize;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

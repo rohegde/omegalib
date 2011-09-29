@@ -435,6 +435,7 @@ namespace omega
 		oassert(myExtraDataType == ExtraDataString);
 		strcpy((char*)myExtraData, value.c_str());
 		myExtraDataLength = value.size();
+		myExtraData[myExtraDataLength] = '\0';
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

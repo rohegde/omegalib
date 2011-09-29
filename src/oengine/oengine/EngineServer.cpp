@@ -39,7 +39,8 @@ using namespace oengine;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineServer::EngineServer(Application* app):
 	ApplicationServer(app),
-	myWidgetFactory(NULL)
+	myWidgetFactory(NULL),
+	myActivePointerTimeout(2.0f)
 {
 }
 
@@ -143,6 +144,21 @@ ui::Container* EngineServer::getUi(int id)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::update(const UpdateContext& context)
 {
+	// Update pointers
+	for(int i = 0; i < MaxActivePointers; i++)
+	{
+		if(myActivePointers[i].first != NULL)
+		{
+			myActivePointers[i].second -= context.dt;
+			if(myActivePointers[i].second <= 0)
+			{
+				ofmsg("Destroying pointer %1%", %i);
+				destroyPointer(myActivePointers[i].first);
+				myActivePointers[i].first = 0;
+			}
+		}
+	}
+
 	// Update actors.
 	foreach(Actor* a, myActors)
 	{
@@ -163,6 +179,28 @@ void EngineServer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::handleEvent(const Event& evt)
 {
+	// Update pointers.
+	if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+	{
+		int pointerId = evt.getSourceId() - 1;
+		if(myActivePointers[pointerId].first == NULL)
+		{
+			ofmsg("Creating pointer %1%", %pointerId);
+			myActivePointers[pointerId].first = createPointer();
+		}
+		myActivePointers[pointerId].second = myActivePointerTimeout;
+		if(evt.getType() == Event::Update)
+		{
+			myActivePointers[pointerId].first->setText(evt.getExtraDataString());
+			myActivePointers[pointerId].first->setColor(
+				Color(evt.getPosition()[0], evt.getPosition()[1], evt.getPosition()[2]));
+		}
+		else
+		{
+			myActivePointers[pointerId].first->setPosition(evt.getPosition().x(), evt.getPosition().y());
+		}
+	}
+
 	foreach(Actor* a, myActors)
 	{
 		a->handleEvent(evt);

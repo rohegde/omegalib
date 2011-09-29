@@ -51,6 +51,7 @@ public:
 
 		String data = readLine();
 		std::vector<String> args = StringUtils::split(data, " ");
+		std::vector<String> idArgs = StringUtils::split(args[0], ":");
 		//ofmsg("Connection data received: %1%", %data);
 		int cmd = atoi(args[2].c_str());
 		switch(cmd)
@@ -65,7 +66,7 @@ public:
 			omsg("WHEEL");
 			break;
 		case 4:
-			omsg("INFO");
+			handleInfoMessage(idArgs.size() == 2 ? idArgs[1] : idArgs[0], atoi(args[3].c_str()), atoi(args[4].c_str()), atoi(args[5].c_str()));
 			break;
 		}
 	}
@@ -97,7 +98,7 @@ public:
 
 			evt->setFlags(myButtonFlags);
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-		Ray ray = ds->getViewRay(myPosition, "default");
+		Ray ray = ds->getViewRay(myPosition);
 		evt->setExtraDataType(Event::ExtraDataVector3Array);
 		evt->setExtraDataVector3(0, ray.getOrigin());
 		evt->setExtraDataVector3(1, ray.getDirection());
@@ -108,7 +109,7 @@ public:
 	{
 		// horrible.
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-		Vector2i canvasSize = ds->getCanvasSize("default");
+		Vector2i canvasSize = ds->getCanvasSize();
 
 		myPosition[0] = x * canvasSize[0];
 		myPosition[1] = (1 - y) * canvasSize[1];
@@ -119,11 +120,22 @@ public:
 		evt->setPosition(myPosition[0], myPosition[1]);
 			evt->setFlags(myButtonFlags);
 
-		Ray ray = ds->getViewRay(myPosition, "default");
+		Ray ray = ds->getViewRay(myPosition);
 		evt->setExtraDataType(Event::ExtraDataVector3Array);
 		evt->setExtraDataVector3(0, ray.getOrigin());
 		evt->setExtraDataVector3(1, ray.getDirection());
 
+		myService->unlockEvents();
+	}
+
+	void handleInfoMessage(const String& name, int r, int g, int b)
+	{
+        myService->lockEvents();
+		Event* evt = myService->writeHead();
+		evt->reset(Event::Update, Service::Pointer, myId);
+		evt->setPosition((float)r/255, (float)g/255, (float)b/255);
+		evt->setExtraDataType(Event::ExtraDataString);
+		evt->setExtraDataString(name);
 		myService->unlockEvents();
 	}
 
@@ -148,7 +160,7 @@ public:
 	virtual TcpConnection* createConnection()
 	{
 		ofmsg("New sage pointer connection (id=%1%)", %myPointerCounter);
-		SagePointerConnection* conn = new SagePointerConnection(myIOService, myPointerCounter++, myService);
+		SagePointerConnection* conn = new SagePointerConnection(myIOService, ++myPointerCounter, myService);
 	    myClients.push_back(conn);
 	    return conn;
 	}

@@ -79,17 +79,19 @@ public:
 
 	Observer* getObserver(int observerId);
 
-	// Layer and view management.
+	//! Layer and view management.
+	//@{
 	void setLayer(const char* viewName, Layer::Enum layer);
 	Layer::Enum getLayer(const char* viewName);
+	//}@
 
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 	bool isDebugMouseEnabled() { return myDebugMouse; }
 
-	// (WORK IN PROGRESS) Returns the size of the specified canvas.
-	Vector2i getCanvasSize(const String& canvasName);
-	// (WORK IN PROGRESS) Returns a view ray given a pointer position in pixel coordinates and a canvas name
-	virtual Ray getViewRay(Vector2i position, const String& canvasName);
+	//! Returns the size of the display canvas.
+	virtual Vector2i getCanvasSize();
+	//! Returns a view ray given a pointer position in pixel coordinates
+	virtual Ray getViewRay(Vector2i position);
 
 private:
 	void initLayers();

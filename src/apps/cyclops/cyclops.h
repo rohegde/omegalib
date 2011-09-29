@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
+#ifndef __CYCLOPS_H__
+#define __CYCLOPS_H__
 
 #include <omega.h>
 #include <oengine.h>
@@ -73,10 +73,10 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewer: public EngineServer
+class Cyclops: public EngineServer
 {
 public:
-	MeshViewer(Application* app): EngineServer(app) {}
+	Cyclops(Application* app): EngineServer(app) {}
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);
@@ -93,6 +93,8 @@ private:
 	void destroyEntity(Entity* e);
 
 private:
+	Pointer* myPointer;
+
 	Vector<EntityData*> myEntityLibrary;
 
 	// Entities
