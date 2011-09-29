@@ -93,6 +93,8 @@ private:
 	void destroyEntity(Entity* e);
 
 private:
+	Pointer* myPointer;
+
 	Vector<EntityData*> myEntityLibrary;
 
 	// Entities

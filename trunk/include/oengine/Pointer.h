@@ -38,7 +38,8 @@ namespace oengine {
 	public:
 		Pointer(): 
  		  myVisible(true),
-		  myColor(0.5f, 0.4f, 1.0f, 1.0f) {}
+		  myColor(0.5f, 0.4f, 1.0f, 1.0f),
+		  myText("Pointer") {}
 
 		virtual Renderable* createRenderable();
 
@@ -51,10 +52,15 @@ namespace oengine {
 
 		Color getColor();
 		void setColor(const Color& value);
+
+		String getText();
+		void setText(const String& value);
+
 	private:
 		bool myVisible;
 		Color myColor;
 		Vector2i myPosition;
+		String myText;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +104,14 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Vector2i Pointer::getPosition()
 	{ return myPosition; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline String Pointer::getText()
+	{ return myText; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setText(const String& value)
+	{ myText = value; }
 }; // namespace oengine
 
 #endif

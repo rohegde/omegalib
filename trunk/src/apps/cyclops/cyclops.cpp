@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "meshviewer.h"
+#include "cyclops.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(EntityData* data, EngineServer* server):
@@ -78,7 +78,7 @@ void Entity::resetTransform()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::loadEntityLibrary()
+void Cyclops::loadEntityLibrary()
 {
 	Config* cfg = SystemManager::instance()->getAppConfig();
 	if(cfg->exists("config/entities"))
@@ -124,7 +124,7 @@ void MeshViewer::loadEntityLibrary()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::initialize()
+void Cyclops::initialize()
 {
 	EngineServer::initialize();
 
@@ -181,6 +181,8 @@ void MeshViewer::initialize()
 	//	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 	//}
 
+	myPointer = createPointer();
+
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
@@ -205,7 +207,7 @@ void MeshViewer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::initUi()
+void Cyclops::initUi()
 {
 	WidgetFactory* wf = getWidgetFactory();
 
@@ -245,7 +247,7 @@ void MeshViewer::initUi()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::createEntity(EntityData* ed)
+void Cyclops::createEntity(EntityData* ed)
 {
 	Entity* e = new Entity(ed, this);
 	//e->getMesh()->setEffect(myColorIdEffect);
@@ -255,7 +257,7 @@ void MeshViewer::createEntity(EntityData* ed)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::destroyEntity(Entity* e)
+void Cyclops::destroyEntity(Entity* e)
 {
 	myEntities.remove(e);
 	delete e;
@@ -263,11 +265,13 @@ void MeshViewer::destroyEntity(Entity* e)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::handleEvent(const Event& evt)
+void Cyclops::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
 	if(evt.getServiceType() == Service::Pointer) 
 	{
+		myPointer->setPosition(evt.getPosition(0), evt.getPosition(1));
+
 		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
 		{
 			Ray ray;
@@ -312,7 +316,7 @@ void MeshViewer::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::handleUiEvent(const Event& evt)
+void Cyclops::handleUiEvent(const Event& evt)
 {
 	for(int i = 0; i < myEntityButtons.size(); i++)
 	{
@@ -325,7 +329,7 @@ void MeshViewer::handleUiEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity* MeshViewer::findEntity(SceneNode* node)
+Entity* Cyclops::findEntity(SceneNode* node)
 {
 	foreach(Entity* e, myEntities)
 	{
@@ -335,7 +339,7 @@ Entity* MeshViewer::findEntity(SceneNode* node)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::updateSelection(const Ray& ray)
+void Cyclops::updateSelection(const Ray& ray)
 {
 	const SceneQueryResultList& sqrl = querySceneRay(0, ray);
 	if(sqrl.size() != 0)
@@ -370,7 +374,7 @@ void MeshViewer::updateSelection(const Ray& ray)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::update(const UpdateContext& context)
+void Cyclops::update(const UpdateContext& context)
 {
 	EngineServer::update( context );
 
@@ -396,7 +400,7 @@ void MeshViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<MeshViewer> app;
+	EngineApplication<Cyclops> app;
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";

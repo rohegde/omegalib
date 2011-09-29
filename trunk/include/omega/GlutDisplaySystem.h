@@ -61,7 +61,9 @@ namespace omega
 		ApplicationServer* getApplicationServer() { return myAppServer; }
 		ApplicationClient* getApplicationClient() { return myAppClient; }
 
-		Vector2i getCanvasSize(const String& canvasName) { return myResolution; }
+		virtual Vector2i getCanvasSize() { return myResolution; }
+		virtual Ray getViewRay(Vector2i position) { return Ray(); }
+
 	private:
 		void initLayers();
 		void initObservers();

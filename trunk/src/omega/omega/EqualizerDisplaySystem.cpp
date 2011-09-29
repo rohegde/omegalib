@@ -39,8 +39,8 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-extern Dictionary<String, omega::Vector2i> sCanvasSize;
-extern Dictionary<String, omega::Vector2i> sCanvasChannels;
+extern omega::Vector2i sCanvasSize;
+extern omega::Vector2i sCanvasChannels;
 extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,16 +244,16 @@ Observer* EqualizerDisplaySystem::getObserver(int observerId)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Vector2i EqualizerDisplaySystem::getCanvasSize(const String& canvasName)
+Vector2i EqualizerDisplaySystem::getCanvasSize()
 {
-	return sCanvasSize[canvasName];
+	return sCanvasSize;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Ray EqualizerDisplaySystem::getViewRay(Vector2i position, const String& canvasName)
+Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 {
-	int channelWidth = (sCanvasSize["default"][0] / sCanvasChannels["default"][0]);
-	int channelHeight = (sCanvasSize["default"][1] / sCanvasChannels["default"][1]);
+	int channelWidth = (sCanvasSize[0] / sCanvasChannels[0]);
+	int channelHeight = (sCanvasSize[1] / sCanvasChannels[1]);
 
 	int channelX = position[0] / channelWidth;
 	int channelY = position[1] / channelHeight;

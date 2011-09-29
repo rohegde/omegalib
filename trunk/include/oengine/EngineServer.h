@@ -53,6 +53,7 @@ namespace oengine {
 	public:
 		static const int MaxScenes = 3;
 		static const int MaxUis = 3;
+		static const int MaxActivePointers = 128;
 
 	public:
 		EngineServer(Application* app);
@@ -109,6 +110,8 @@ namespace oengine {
 		SceneNode* myScene[MaxScenes];
 		ui::Container* myUi[MaxUis];
 		List<Pointer*> myPointers;
+		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
+		float myActivePointerTimeout;
 
 		List<Actor*> myActors;
 

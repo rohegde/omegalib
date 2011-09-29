@@ -63,5 +63,8 @@ void PointerRenderable::draw(RenderState* state)
 		glVertex2i(x + size, y + size / 2);
 		glVertex2i(x + size / 2, y + size);
 		glEnd();
+
+		Font* fnt = getRenderer()->getDefaultFont();
+		getRenderer()->drawText(myPointer->myText, fnt, Vector2f(x + size, y + size), Font::HALeft | Font::VABottom);
 	}
 }

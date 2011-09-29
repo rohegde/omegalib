@@ -80,6 +80,10 @@ void EqUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 		is >> evt.myExtraDataValidMask;
 		is.read(evt.myExtraData, evt.getExtraDataSize());
 	}
+	if(evt.myExtraDataType == Event::ExtraDataString)
+	{
+		evt.myExtraData[evt.myExtraDataLength] = '\0';
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

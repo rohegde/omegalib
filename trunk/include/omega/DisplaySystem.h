@@ -64,8 +64,10 @@ public:
 
 	virtual DisplaySystemType getId() { return Invalid; }
 
-	virtual Vector2i getCanvasSize(const String& canvasName) { return Vector2i(0, 0); }
-	virtual Ray getViewRay(Vector2i position, const String& canvasName) { return Ray(); }
+	//! Returns the size of the display canvas.
+	virtual Vector2i getCanvasSize() = 0;
+	//! Returns a view ray given a pointer position in pixel coordinates
+	virtual Ray getViewRay(Vector2i position) = 0;
 
 protected:
 	DisplaySystem() {}
