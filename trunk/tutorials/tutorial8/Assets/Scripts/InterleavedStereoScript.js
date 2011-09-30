@@ -48,6 +48,7 @@
 @script AddComponentMenu ("stereoskopix/stereoskopix3D")
 
 var eyePosition : Transform;
+var focusPosition: Transform;
 
 private var leftCamRT;	   
 private var rightCamRT;
@@ -107,7 +108,7 @@ function LateUpdate() {
 }
 
 function UpdateView() {
-	transform.position = eyePosition.transform.position;
+	//transform.position = eyePosition.transform.position;
 	leftCam.camera.projectionMatrix = projectionMatrix(true);
 	rightCam.camera.projectionMatrix = projectionMatrix(false);
 
@@ -154,20 +155,20 @@ private function DrawQuad(cam) {
 function projectionMatrix(isLeftCam : boolean) : Matrix4x4 
 {
 	//full screen hack
-	var Scr_LL_wc : Vector3 = Vector3( -0.965 , -.552 , 0) ;   //Lower Left Corner 
-    var Scr_LR_wc : Vector3 = Vector3(  0.973 , -.552 , 0);   //Lower Right Corner 
-    var Scr_UL_wc : Vector3 = Vector3( -0.965 ,  .539 , 0);   //Upper Left Corner 
+	var Scr_LL_wc : Vector3 = Vector3( -0.965 , -.552 , 0 ) + focusPosition.localPosition;   //Lower Left Corner 
+    var Scr_LR_wc : Vector3 = Vector3( 0.973 , -.552 , 0 ) + focusPosition.localPosition;   //Lower Right Corner 
+    var Scr_UL_wc : Vector3 = Vector3( -0.965 , .539 , 0 ) + focusPosition.localPosition;   //Upper Left Corner 
 
     //Coord of the eye
     var eye : Vector3;
 	if( isLeftCam )
 	{
-		eye  = Vector3( eyePosition.position.x - 0.03175 , -eyePosition.position.y, eyePosition.position.z);
+		eye  = Vector3( eyePosition.localPosition.x - 0.03175 , -eyePosition.localPosition.y, eyePosition.localPosition.z);
 		//eye  = Vector3( -0.03175 , 0, -.9);	
 	}
 	else 
 	{	
-		eye  = Vector3( eyePosition.position.x + 0.03175 , -eyePosition.position.y, eyePosition.position.z);
+		eye  = Vector3( eyePosition.localPosition.x + 0.03175 , -eyePosition.localPosition.y, eyePosition.localPosition.z);
 		//eye  = Vector3( 0.03175 , 0, -.9);	
 	}
 	

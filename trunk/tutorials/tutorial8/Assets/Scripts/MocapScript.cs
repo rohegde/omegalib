@@ -26,7 +26,7 @@ public class MocapScript : MonoBehaviour {
 		// Reserved for derived classes
 		
 		// Basic drag-and-drop for tracked objects
-		if( Vector3.Distance( getPosition(), gameObject.transform.position) > 0.04 )
+		if( Vector3.Distance( getPosition(), gameObject.transform.localPosition) > 0.04 )
 		{
 			moving = true;
 			idleTime = 0;
@@ -38,7 +38,7 @@ public class MocapScript : MonoBehaviour {
 		}
 	
 		if( moving || !stopJitter ){
-			gameObject.transform.position = Vector3.Lerp( gameObject.transform.position, getPosition(), Time.deltaTime * 6 );
+			gameObject.transform.localPosition = Vector3.Lerp( gameObject.transform.localPosition, getPosition(), Time.deltaTime * 6 );
 		} else {
 		}
 	}
@@ -59,7 +59,7 @@ public class MocapScript : MonoBehaviour {
 			rawMocapOrientation = new Quaternion( xR, yR, zR, wR );
 			
 			mocapPosition = new Vector3( x, y, -z );
-			mocapOrientation = new Quaternion( xR, yR, zR, -wR );
+			mocapOrientation = new Quaternion( xR, yR, zR, wR );
 		}
 	}
 	
