@@ -141,6 +141,7 @@ public:
 		evt->setPosition((float)r/255, (float)g/255, (float)b/255);
 		evt->setExtraDataType(Event::ExtraDataString);
 		evt->setExtraDataString(name);
+		myName = name;
 		myService->unlockEvents();
 	}
 
