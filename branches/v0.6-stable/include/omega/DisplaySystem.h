@@ -64,6 +64,11 @@ public:
 
 	virtual DisplaySystemType getId() { return Invalid; }
 
+	//! Returns the size of the display canvas.
+	virtual Vector2i getCanvasSize() = 0;
+	//! Returns a view ray given a pointer position in pixel coordinates
+	virtual Ray getViewRay(Vector2i position) = 0;
+
 protected:
 	DisplaySystem() {}
 };

@@ -30,7 +30,9 @@
 #include "oenginebase.h"
 #include "EngineClient.h"
 #include "SceneNode.h"
+#include "Pointer.h"
 #include "Renderable.h"
+#include "SceneQuery.h"
 #include "Actor.h"
 #include "Font.h"
 #include "ui/Container.h"
@@ -44,12 +46,14 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API EngineServer: public ApplicationServer
 	{
+	friend class EngineClient;
 	public:
 		typedef RenderPass* (*RenderPassFactory)();
 
 	public:
 		static const int MaxScenes = 3;
 		static const int MaxUis = 3;
+		static const int MaxActivePointers = 128;
 
 	public:
 		EngineServer(Application* app);
@@ -72,6 +76,11 @@ namespace oengine {
 		const FontInfo& getDefaultFont();
 		//@}
 
+		//! Scene query
+		//@{
+		const SceneQueryResultList& querySceneRay(int sceneId, const Ray& ray, uint flags = 0);
+		//@}
+
 		SceneNode* getScene(int id);
 		ui::Container* getUi(int id);
 		ui::WidgetFactory* getWidgetFactory();
@@ -79,9 +88,19 @@ namespace oengine {
 		void addActor(Actor* actor);
 		void removeActor(Actor* actor);
 
+		//! Pointer Management
+		//@{
+		Pointer* createPointer();
+		void destroyPointer(Pointer* p);
+		//@}
+
 		virtual void initialize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
+
+	private:
+		//! Draw pointer objects inside a specific client context.
+		void drawPointers(EngineClient* client, RenderState* state);
 
 	private:
 		List<EngineClient*> myClients;
@@ -90,12 +109,18 @@ namespace oengine {
 
 		SceneNode* myScene[MaxScenes];
 		ui::Container* myUi[MaxUis];
+		List<Pointer*> myPointers;
+		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
+		float myActivePointerTimeout;
 
 		List<Actor*> myActors;
 
 		// Resources
 		FontInfo myDefaultFont;
 		ui::WidgetFactory* myWidgetFactory;
+
+		// Scene querying
+		RaySceneQuery myRaySceneQuery;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

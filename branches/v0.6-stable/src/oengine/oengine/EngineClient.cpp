@@ -103,21 +103,21 @@ void EngineClient::draw(const DrawContext& context)
 
 	getGpu()->beginDraw();
 
-	// Call predraw method on actors.
-	// FIX ME.
-	//foreach(Actor* a, myActors)
-	//{
-	//	a->preDraw(context);
-	//}
-
-	// Update transform hierarchy
-	//myRoot->update(false, false);
-
 	// Execute all render passes in order.
 	foreach(RenderPass* pass, myRenderPassList)
 	{
 		pass->render(this, context);
 	}
+
+	// Draw the pointers
+	RenderState state;
+	state.pass = NULL;
+	state.flags = RenderPass::RenderOverlay;
+	state.client = this;
+	state.context = &context;
+	getRenderer()->beginDraw2D(context);
+	myServer->drawPointers(this, &state);
+	getRenderer()->endDraw();
 
 	getGpu()->endDraw();
 }
