@@ -393,97 +393,100 @@ void PQService:: OnTouchGesture(const TouchGesture & tg)
 	//bool validEvent = false;
 	switch(tg.type)
 	{
-		case TG_DOWN:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::Down, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y );
-			}
-			break;
+		// BROKEN FOR NOW IF YOU UNCOMMENT FIX
+		//case TG_DOWN:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::Down, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y );
+		//	}
+		//	break;
 
-		case TG_MOVE:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::Move, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch move at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_UP:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::Up, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_CLICK:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::Click, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_DB_CLICK:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::DoubleClick, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch db click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_MOVE_RIGHT:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::MoveRight, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch move right at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_MOVE_UP:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::MoveUp, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch move up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_MOVE_LEFT:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::MoveLeft, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch move left at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
-		case TG_MOVE_DOWN:
-			evt = mysInstance->writeHead();
-			evt->reset(Event::MoveDown, Service::Pointer, -1);
-			x = tg.params[0] * screenX / serverX + screenOffsetX;
-			y = tg.params[1] * screenY / serverY + screenOffsetY;
-			evt->setPosition(x, y);
-			if( debugText ){
-				printf(" Touch move down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
-			}
-			break;
+		//case TG_MOVE:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::Move, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch move at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+		//case TG_UP:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::Up, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+		//case TG_CLICK:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::Click, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+		//case TG_DB_CLICK:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::DoubleClick, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch db click at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+
+		// BROKEN FOR NOW IF YOU UNCOMMENT FIX
+		//case TG_MOVE_RIGHT:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::MoveRight, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch move right at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+		//case TG_MOVE_UP:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::MoveUp, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch move up at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+		//case TG_MOVE_LEFT:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::MoveLeft, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch move left at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
+		//case TG_MOVE_DOWN:
+		//	evt = mysInstance->writeHead();
+		//	evt->reset(Event::MoveDown, Service::Pointer, -1);
+		//	x = tg.params[0] * screenX / serverX + screenOffsetX;
+		//	y = tg.params[1] * screenY / serverY + screenOffsetY;
+		//	evt->setPosition(x, y);
+		//	if( debugText ){
+		//		printf(" Touch move down at %f,%f (%f, %f)\n", tg.params[0], tg.params[1], x, y);
+		//	}
+		//	break;
 		case TG_SPLIT_START:
 		{
 			evt = mysInstance->writeHead();
@@ -682,11 +685,11 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 				touchlist[touch.ID] = touch;
 				break;
 			case TP_MOVE:
-				evt->reset(Event::Move, Service::Pointer, nextID);
+				evt->reset(Event::Move, Service::Pointer, touch.ID);
 				touchlist[touch.ID] = touch;
 				break;
 			case TP_UP:
-				evt->reset(Event::Up, Service::Pointer, nextID);
+				evt->reset(Event::Up, Service::Pointer, touch.ID);
 				touchlist.erase( touch.ID );
 				break;
 		}		
@@ -707,7 +710,7 @@ void PQService:: OnTouchPoint(const TouchPoint & tp)
 		}
 
 		//printf(" Server %d,%d Screen %d, %d\n", serverX, serverY, screenX, screenY );
-		//printf("      at %d,%d (%f, %f)\n", tp.x, tp.y, evt->position[0], evt->position[1] );
+		//printf("      at %d,%d\n", tp.x, tp.y);
 		mysInstance->unlockEvents();
 	}
 }
