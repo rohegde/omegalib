@@ -125,6 +125,11 @@ public:
 		evt->setExtraDataVector3(0, ray.getOrigin());
 		evt->setExtraDataVector3(1, ray.getDirection());
 
+		if(myService->isDebugEnabled())
+		{
+		   ofmsg("Sage pointer %1% position: %2% %3%", %myName %myPosition[0] %myPosition[1]);
+		}
+
 		myService->unlockEvents();
 	}
 
