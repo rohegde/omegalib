@@ -183,9 +183,9 @@ if(OMEGA_BUILD_VTK_LIB)
 	include(${VTK_USE_FILE})
 	
 	add_subdirectory(ovtk)
-	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/vtkviewer)
-	endif(OMEGA_BUILD_APPS)
+	#if(OMEGA_BUILD_APPS)
+		#add_subdirectory(apps/vtkviewer)
+	#endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_VTK_LIB)
 
 # Open Scene Graph configuration, libraries and applications
