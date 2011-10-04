@@ -22,6 +22,10 @@ server
                 {
                     viewport [ 50 50 854 480 ]
                     channel { name "0,0"  }
+					attributes
+					{
+						hint_fullscreen OFF
+					}
                 }
             }
         }

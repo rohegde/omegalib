@@ -29,6 +29,7 @@
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/DefaultRenderPass.h"
 #include "oengine/UiRenderPass.h"
+#include "oengine/Renderable.h"
 #include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
 
@@ -38,7 +39,8 @@ using namespace oengine;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineServer::EngineServer(Application* app):
 	ApplicationServer(app),
-	myWidgetFactory(NULL)
+	myWidgetFactory(NULL),
+	myActivePointerTimeout(2.0f)
 {
 }
 
@@ -109,6 +111,23 @@ void EngineServer::removeActor(Actor* actor)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+Pointer* EngineServer::createPointer()
+{
+	Pointer* p = new Pointer();
+	p->initialize(this);
+	myPointers.push_back(p);
+	return p;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::destroyPointer(Pointer* p)
+{
+	myPointers.remove(p);
+	p->dispose();
+	delete p;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* EngineServer::getScene(int id)
 {
 	oassert(id >= 0 && id < EngineServer::MaxScenes);
@@ -125,6 +144,21 @@ ui::Container* EngineServer::getUi(int id)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::update(const UpdateContext& context)
 {
+	// Update pointers
+	for(int i = 0; i < MaxActivePointers; i++)
+	{
+		if(myActivePointers[i].first != NULL)
+		{
+			myActivePointers[i].second -= context.dt;
+			if(myActivePointers[i].second <= 0)
+			{
+				ofmsg("Destroying pointer %1%", %i);
+				destroyPointer(myActivePointers[i].first);
+				myActivePointers[i].first = 0;
+			}
+		}
+	}
+
 	// Update actors.
 	foreach(Actor* a, myActors)
 	{
@@ -145,6 +179,28 @@ void EngineServer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::handleEvent(const Event& evt)
 {
+	// Update pointers.
+	if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+	{
+		int pointerId = evt.getSourceId() - 1;
+		if(myActivePointers[pointerId].first == NULL)
+		{
+			ofmsg("Creating pointer %1%", %pointerId);
+			myActivePointers[pointerId].first = createPointer();
+		}
+		myActivePointers[pointerId].second = myActivePointerTimeout;
+		if(evt.getType() == Event::Update)
+		{
+			myActivePointers[pointerId].first->setText(evt.getExtraDataString());
+			myActivePointers[pointerId].first->setColor(
+				Color(evt.getPosition()[0], evt.getPosition()[1], evt.getPosition()[2]));
+		}
+		else
+		{
+			myActivePointers[pointerId].first->setPosition(evt.getPosition().x(), evt.getPosition().y());
+		}
+	}
+
 	foreach(Actor* a, myActors)
 	{
 		a->handleEvent(evt);
@@ -155,3 +211,24 @@ void EngineServer::handleEvent(const Event& evt)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const SceneQueryResultList& EngineServer::querySceneRay(int sceneId, const Ray& ray, uint flags)
+{
+	myRaySceneQuery.clearResults();
+	myRaySceneQuery.setSceneNode(myScene[sceneId]);
+	myRaySceneQuery.setRay(ray);
+	return myRaySceneQuery.execute(flags);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::drawPointers(EngineClient* client, RenderState* state)
+{
+	foreach(Pointer* p, myPointers)
+	{
+		if(p->getVisible())
+		{
+			Renderable* r = p->getRenderable(client);
+			r->draw(state);
+		}
+	}
+}

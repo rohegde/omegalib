@@ -39,6 +39,10 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+extern omega::Vector2i sCanvasSize;
+extern omega::Vector2i sCanvasChannels;
+extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EqualizerDisplaySystem::EqualizerDisplaySystem():
 	mySys(NULL),
@@ -239,3 +243,27 @@ Observer* EqualizerDisplaySystem::getObserver(int observerId)
 	return myObservers[observerId];
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Vector2i EqualizerDisplaySystem::getCanvasSize()
+{
+	return sCanvasSize;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
+{
+	int channelWidth = (sCanvasSize[0] / sCanvasChannels[0]);
+	int channelHeight = (sCanvasSize[1] / sCanvasChannels[1]);
+
+	int channelX = position[0] / channelWidth;
+	int channelY = position[1] / channelHeight;
+	ChannelImpl* ch = sCanvasChannelPointers[channelX][channelY];
+	if(ch != NULL)
+	{
+		const DrawContext& dc = ch->getLastDrawContext();
+		int x = position[0] % channelWidth;
+		int y = position[1] % channelHeight;
+		return Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport, 1.0);
+	}
+	return Ray();
+}

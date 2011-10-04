@@ -58,8 +58,8 @@ public:
 	void setVisible(bool value);
 
 	SceneNode* getSceneNode() { return mySceneNode; }
-
 	Mesh* getMesh() { return myMesh; }
+	EntityData* getData() { return myData; }
 
 private:
 	EngineServer* myServer;
@@ -84,6 +84,9 @@ public:
 	virtual void update(const UpdateContext& context);
 
 private:
+	//! Find the entity associated with this scene node
+	Entity* findEntity(SceneNode* node);
+	void updateSelection(const Ray& ray);
 	void loadEntityLibrary();
 	void initUi();
 	void createEntity(EntityData* ed);

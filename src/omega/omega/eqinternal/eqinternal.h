@@ -173,6 +173,7 @@ class ConfigImpl: public eq::Config
 {
 public:
 	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+	static const int MaxCanvasChannels = 128;
 public:
 	ConfigImpl( co::base::RefPtr< eq::Server > parent);
 	virtual bool init(const uint128_t& initID);
@@ -283,10 +284,6 @@ protected:
 	virtual void frameDraw( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
 	virtual bool configInit(const uint128_t& initID);
-
-private:
-	static Dictionary<String, Vector2i> myCanvasChannels;
-	static Dictionary<String, Vector2i> myCanvasSize;
 
 private:
 	bool myInitialized;

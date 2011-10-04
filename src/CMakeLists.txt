@@ -59,9 +59,11 @@ if(OMEGA_USE_PYTHON)
 	add_definitions(-DOMEGA_USE_PYTHON)
 endif(OMEGA_USE_PYTHON)
 
+include(${CMAKE_SOURCE_DIR}/ext/UseBoost.cmake)
+include(${CMAKE_SOURCE_DIR}/ext/UseAsio.cmake)
+
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 # Equalizer support enabled: uncompress and prepare the external project.
-# PUT ALL OF THIS IN EXTERNAL SCRIPT
 	ExternalProject_Add(
 		equalizer
 		URL ${CMAKE_SOURCE_DIR}/ext/equalizer.tar.gz
@@ -115,9 +117,6 @@ include_directories(
   ${OmegaLib_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/ftgl/src/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/freetype/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/FreeImage/Source/
   )
 
 ###################################################################################################
@@ -139,14 +138,20 @@ endif(OMEGA_USE_DISPLAY)
 
 # Add some libraries used for display support.
 if(OMEGA_BUILD_ENGINE)
-	add_subdirectory(3rdparty/FreeImage)
-	add_subdirectory(3rdparty/freetype)
-	add_subdirectory(3rdparty/ftgl)
+	include(${OmegaLib_SOURCE_DIR}/ext/UseFreeImage.cmake)
+	include(${OmegaLib_SOURCE_DIR}/ext/UseFreeType.cmake)
+	include(${OmegaLib_SOURCE_DIR}/ext/UseFtgl.cmake)
+	include_directories(
+	  ${OmegaLib_BINARY_DIR}/ftgl/src/
+	  ${OmegaLib_BINARY_DIR}/freetype/include/
+	  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
+	)
 	add_subdirectory(oengine)
 	if(OMEGA_BUILD_APPS)
 		add_subdirectory(apps/mocalib)
 		add_subdirectory(apps/multipleKinectDemo)
 		add_subdirectory(apps/meshviewer)
+		add_subdirectory(apps/cyclops)
 		add_subdirectory(apps/kinectdemo)
 	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_ENGINE)
