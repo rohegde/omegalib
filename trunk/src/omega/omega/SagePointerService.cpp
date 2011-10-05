@@ -79,15 +79,14 @@ public:
 		case 3:
 			{
 				omsg("WHEEL");
+		        // Read until the end of the command
+		        readString(myBuffer, BufferSize, '\n');
 				break;
 			}
 		case 4:
 			handleInfoMessage();
 			break;
 		}
-
-		// Read until the end of the command
-		readString(myBuffer, BufferSize, '\n');
 	}
 
 	virtual void handleClosed()
@@ -102,7 +101,7 @@ public:
 		int btn = atoi(myBuffer);
 
 		// Read pressed
-		readString(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, '\n');
 		int pressed = atoi(myBuffer);
 
         myService->lockEvents();
@@ -139,7 +138,7 @@ public:
 		float x = atof(myBuffer);
 
 		// Read y
-		readString(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, '\n');
 		float y = atof(myBuffer);
 
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -178,7 +177,7 @@ public:
 		int g = atoi(myBuffer);
 
 		// Read b
-		readString(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, '\n');
 		int b = atoi(myBuffer);
 
         myService->lockEvents();
