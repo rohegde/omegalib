@@ -258,14 +258,13 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 	int channelX = position[0] / channelWidth;
 	int channelY = position[1] / channelHeight;
 
-	ofmsg("Channel X,Y: %1% %2%", %channelX %channelY);
-
 	ChannelImpl* ch = sCanvasChannelPointers[channelX][channelY];
 	if(ch != NULL)
 	{
 		const DrawContext& dc = ch->getLastDrawContext();
 		int x = position[0] % channelWidth;
 		int y = position[1] % channelHeight;
+	ofmsg("Channel X,Y: %1% %2%", %x %y);
 		return Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport, 1.0);
 	}
 	return Ray();
