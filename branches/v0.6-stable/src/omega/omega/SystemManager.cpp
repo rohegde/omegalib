@@ -31,12 +31,12 @@
 #include "omega/StringUtils.h"
 
 #include "omega/HeartbeatService.h"
-#include "omega/SagePointerService.h"
 
 // Display system
 #ifdef OMEGA_USE_DISPLAY
 	#include "omega/DisplaySystem.h"
 	#include "omega/ObserverUpdateService.h"
+	#include "omega/SagePointerService.h"
 #endif
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
@@ -152,7 +152,6 @@ void SystemManager::setupServiceManager()
 
 	// register standard input services.
 	myServiceManager->registerService("HeartbeatService", (ServiceAllocator)HeartbeatService::New);
-	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
 
 #ifdef OMEGA_USE_DIRECTINPUT
 	myServiceManager->registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);
@@ -184,6 +183,7 @@ void SystemManager::setupServiceManager()
 
 #ifdef OMEGA_USE_DISPLAY
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
+	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
 #endif
 
 	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
