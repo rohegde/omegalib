@@ -48,27 +48,46 @@ public:
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
+		// Read ip address
+		readString(myBuffer, BufferSize, ':');
 
-		String data = readLine();
-		std::vector<String> args = StringUtils::split(data, " ");
-		std::vector<String> idArgs = StringUtils::split(args[0], ":");
-		//ofmsg("Connection data received: %1%", %data);
-		int cmd = atoi(args[2].c_str());
+		// Read user name
+		if(readString(myBuffer, BufferSize, ' ') > 0)
+		{
+			myName = myBuffer;
+		}
+		
+		// Read device name
+		readString(myBuffer, BufferSize, ' ');
+
+		// Read command
+		readString(myBuffer, BufferSize, ' ');
+		int cmd = atoi(myBuffer);
+
 		switch(cmd)
 		{
 		case 1:
-			handleMoveMessage(atof(args[3].c_str()), atof(args[4].c_str()));
-			break;
+			{
+				handleMoveMessage();
+				break;
+			}
 		case 2:
-			handleButtonMessage(atoi(args[4].c_str()), atof(args[3].c_str()));
-			break;
+			{
+				handleButtonMessage();
+				break;
+			}
 		case 3:
-			omsg("WHEEL");
-			break;
+			{
+				omsg("WHEEL");
+				break;
+			}
 		case 4:
-			handleInfoMessage(idArgs.size() == 2 ? idArgs[1] : idArgs[0], atoi(args[3].c_str()), atoi(args[4].c_str()), atoi(args[5].c_str()));
+			handleInfoMessage();
 			break;
 		}
+
+		// Read until the end of the command
+		readString(myBuffer, BufferSize, '\n');
 	}
 
 	virtual void handleClosed()
@@ -76,27 +95,35 @@ public:
 		ofmsg("Connection closed (id=%1%)", %myId);
 	}
 
-	void handleButtonMessage(int pressed, int btn)
+	void handleButtonMessage()
 	{
+		// Read button
+		readString(myBuffer, BufferSize, ' ');
+		int btn = atoi(myBuffer);
+
+		// Read pressed
+		readString(myBuffer, BufferSize, ' ');
+		int pressed = atoi(myBuffer);
+
         myService->lockEvents();
 		Event* evt = myService->writeHead();
 		evt->reset(pressed == 1 ? Event::Down : Event::Up, Service::Pointer, myId);
 		evt->setPosition(myPosition[0], myPosition[1]);
 
-			if(pressed == 1)
-			{
-				if(btn == 1) myButtonFlags |= Event::Left;
-				if(btn == 2) myButtonFlags |= Event::Right;
-				if(btn == 3) myButtonFlags |= Event::Middle;
-			}
-			else
-			{
-				if(btn == 1) myButtonFlags &= ~Event::Left;
-				if(btn == 2) myButtonFlags &= ~Event::Right;
-				if(btn == 3) myButtonFlags &= ~Event::Middle;
-			}
+		if(pressed == 1)
+		{
+			if(btn == 1) myButtonFlags |= Event::Left;
+			if(btn == 2) myButtonFlags |= Event::Right;
+			if(btn == 3) myButtonFlags |= Event::Middle;
+		}
+		else
+		{
+			if(btn == 1) myButtonFlags &= ~Event::Left;
+			if(btn == 2) myButtonFlags &= ~Event::Right;
+			if(btn == 3) myButtonFlags &= ~Event::Middle;
+		}
 
-			evt->setFlags(myButtonFlags);
+		evt->setFlags(myButtonFlags);
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		Ray ray = ds->getViewRay(myPosition);
 		evt->setExtraDataType(Event::ExtraDataVector3Array);
@@ -105,9 +132,16 @@ public:
 		myService->unlockEvents();
 	}
 
-	void handleMoveMessage(float x, float y)
+	void handleMoveMessage()
 	{
-		// horrible.
+		// Read x
+		readString(myBuffer, BufferSize, ' ');
+		float x = atof(myBuffer);
+
+		// Read y
+		readString(myBuffer, BufferSize, ' ');
+		float y = atof(myBuffer);
+
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		Vector2i canvasSize = ds->getCanvasSize();
 
@@ -118,7 +152,7 @@ public:
 		Event* evt = myService->writeHead();
 		evt->reset(Event::Move, Service::Pointer, myId);
 		evt->setPosition(myPosition[0], myPosition[1]);
-			evt->setFlags(myButtonFlags);
+		evt->setFlags(myButtonFlags);
 
 		Ray ray = ds->getViewRay(myPosition);
 		evt->setExtraDataType(Event::ExtraDataVector3Array);
@@ -133,23 +167,36 @@ public:
 		myService->unlockEvents();
 	}
 
-	void handleInfoMessage(const String& name, int r, int g, int b)
+	void handleInfoMessage()
 	{
+		// Read r
+		readString(myBuffer, BufferSize, ' ');
+		int r = atoi(myBuffer);
+
+		// Read g
+		readString(myBuffer, BufferSize, ' ');
+		int g = atoi(myBuffer);
+
+		// Read b
+		readString(myBuffer, BufferSize, ' ');
+		int b = atoi(myBuffer);
+
         myService->lockEvents();
 		Event* evt = myService->writeHead();
 		evt->reset(Event::Update, Service::Pointer, myId);
 		evt->setPosition((float)r/255, (float)g/255, (float)b/255);
 		evt->setExtraDataType(Event::ExtraDataString);
-		evt->setExtraDataString(name);
-		myName = name;
+		evt->setExtraDataString(myName);
 		myService->unlockEvents();
 	}
 
 private:
+	static const int BufferSize = 1024;
+	char myBuffer[BufferSize];
+
 	SagePointerService* myService;
 	int myId;
 	uint myButtonFlags;
-	Color myColor;
 	String myName;
 	Vector2i myPosition;
 };

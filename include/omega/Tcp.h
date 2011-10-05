@@ -61,6 +61,8 @@ namespace omega {
 		//@{
 		void write(const String& data);
 		String readLine();
+		//! Synchronously read character data until the specified delimiter is found or the buffer fills up.
+		size_t readString(char* buffer, size_t size, char delimiter = '\0');
 		//@}
 
 		//! Connection event management
