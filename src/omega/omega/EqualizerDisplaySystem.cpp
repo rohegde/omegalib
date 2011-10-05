@@ -257,6 +257,9 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 
 	int channelX = position[0] / channelWidth;
 	int channelY = position[1] / channelHeight;
+
+	ofmsg("Channel X,Y: %1% %2%", %channelX %channelY);
+
 	ChannelImpl* ch = sCanvasChannelPointers[channelX][channelY];
 	if(ch != NULL)
 	{
