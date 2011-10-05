@@ -160,7 +160,10 @@ public:
 
 		if(myService->isDebugEnabled())
 		{
-		   ofmsg("Sage pointer %1% position: %2% %3%", %myName %myPosition[0] %myPosition[1]);
+			ofmsg("Sage pointer %1% position: %2% %3% ray origin %4% direction %5%", 
+				%myName 
+				%myPosition[0] %myPosition[1] 
+			    %ray.getOrigin() %ray.getDirection());
 		}
 
 		myService->unlockEvents();
