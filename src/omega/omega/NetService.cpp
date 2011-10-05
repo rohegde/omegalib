@@ -435,19 +435,15 @@ void NetService::parseDGram(int result)
 			case(Service::Pointer): // Touch (points only not gestures)
 				evt = mysInstance->writeHead();
 				
-				evt->setPosition(params[2] * (float)screenX, params[3] * (float)screenY);
-
-				evt->setExtraDataType(Event::ExtraDataFloatArray);
-				evt->setExtraDataFloat(0, params[4] * (float)screenX);
-				evt->setExtraDataFloat(1, params[5] * (float)screenY);
-
 				NetTouches touch;
 				touch.ID = (int)(params[1]);
 				touch.xPos = params[2];
 				touch.yPos = params[3];
 				touch.xWidth = params[4];
 				touch.yWidth = params[5];
-
+				params[6] = evt->getTimestamp();
+				touch.timestamp = params[6];
+				
 				//printf("New Time set %d \n", curTime );
 				///printf("New Time param %d \n", (int)params[6] );
 				if( (int)(params[0]) == Event::Down && touchlist.count(touch.ID) == 0 ){
@@ -468,8 +464,12 @@ void NetService::parseDGram(int result)
 					printf("NetService: Touch ID %d - UP\n", touch.ID);
 				}
 				
-				params[6] = evt->getTimestamp();
-				touch.timestamp = params[6];
+				evt->setPosition(params[2] * (float)screenX, params[3] * (float)screenY);
+
+				evt->setExtraDataType(Event::ExtraDataFloatArray);
+				evt->setExtraDataFloat(0, params[4] * (float)screenX);
+				evt->setExtraDataFloat(1, params[5] * (float)screenY);
+
 
 				break;
 			default:
