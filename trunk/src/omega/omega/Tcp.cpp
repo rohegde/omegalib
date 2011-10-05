@@ -167,6 +167,21 @@ void TcpConnection::write(const String& data)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+size_t TcpConnection::readString(char* buffer, size_t size, char delimiter)
+{
+		asio::error_code error;
+		size_t bufsize = asio::read_until(mySocket, myInputBuffer, delimiter, error);
+		if(!error)
+		{
+			if(bufsize > size - 1) bufsize = size;
+			myInputBuffer.sgetn(buffer, bufsize);
+			buffer[bufsize] = '\0';
+			return bufsize;
+		}
+		return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 String TcpConnection::readLine()
 {
 	asio::error_code error;
@@ -177,6 +192,7 @@ String TcpConnection::readLine()
 		myInputBuffer.sgetn(buf, size);
 		buf[size] = '\0';
 		String str(buf);
+		delete buf;
 		return str;
 	}
 	return "";
