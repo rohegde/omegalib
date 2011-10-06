@@ -1,5 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classstd_1_1pair.html" title="pair" alt="" coords="5,32,48,61"/>
-<area shape="rect" id="node3" href="$classomega_1_1_key_value.html" title="omega::KeyValue\&lt; K, T \&gt;" alt="" coords="111,5,284,35"/>
-<area shape="rect" id="node5" href="$classomega_1_1scene_1_1_child_node.html" title="omega::scene::ChildNode\&lt; T \&gt;" alt="" coords="96,59,299,88"/>
+<area shape="rect" id="node1" href="$classeq_1_1_pipe.html" title="Pipe" alt="" coords="5,5,53,35"/>
+<area shape="rect" id="node3" href="$classomega_1_1_pipe_impl.html" title="omega::PipeImpl" alt="" coords="103,5,220,35"/>
 </map>

@@ -1,4 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classeq_1_1_config.html" title="Config" alt="" coords="5,5,64,35"/>
-<area shape="rect" id="node3" href="$classomega_1_1_config_impl.html" title="omega::ConfigImpl" alt="" coords="113,5,241,35"/>
+<area shape="rect" id="node1" href="$classeq_1_1_channel.html" title="Channel" alt="" coords="5,5,75,35"/>
+<area shape="rect" id="node3" href="$classomega_1_1_channel_impl.html" title="omega::ChannelImpl" alt="" coords="124,5,263,35"/>
 </map>

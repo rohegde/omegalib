@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$classomega_1_1script_1_1_python_interpreter.html" title="omega::script::PythonInterpreter" alt="" coords="5,83,213,112"/>
+<area shape="rect" id="node5" href="$classomega_1_1script_1_1_python_interpreter.html" title="omega::script::PythonInterpreter" alt="" coords="5,160,213,189"/>
+<area shape="rect" id="node2" href="$classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="35,5,184,35"/>
 </map>

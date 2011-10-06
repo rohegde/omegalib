@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$structscan__context.html" title="scan_context" alt="" coords="7,5,105,35"/>
+<area shape="rect" id="node1" href="$class_render_pass.html" title="RenderPass" alt="" coords="5,32,99,61"/>
+<area shape="rect" id="node3" href="$classoosg_1_1_osg_render_pass.html" title="oosg::OsgRenderPass" alt="" coords="148,5,300,35"/>
+<area shape="rect" id="node5" href="$classovtk_1_1_vtk_render_pass.html" title="ovtk::VtkRenderPass" alt="" coords="152,59,296,88"/>
 </map>

@@ -1,17 +1,16 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$classomega_1_1_application_client.html" title="omega::ApplicationClient" alt="" coords="215,5,380,35"/>
-<area shape="rect" id="node7" href="$classomega_1_1_application_server.html" title="omega::ApplicationServer" alt="" coords="213,59,381,88"/>
-<area shape="rect" id="node9" href="$classomega_1_1scene_1_1_actor.html" title="omega::scene::Actor" alt="" coords="227,112,368,141"/>
-<area shape="rect" id="node15" href="$classomega_1_1ui_1_1_u_i_manager.html" title="omega::ui::UIManager" alt="" coords="223,165,372,195"/>
-<area shape="rect" id="node17" href="$classomega_1_1ui_1_1_widget.html" title="omega::ui::Widget" alt="" coords="233,245,361,275"/>
-<area shape="rect" id="node31" href="$classovtk_1_1_python_u_i_event_handler.html" title="ovtk::PythonUIEventHandler" alt="" coords="207,299,388,328"/>
-<area shape="rect" id="node5" href="$classomega_1_1_engine_client.html" title="omega::EngineClient" alt="" coords="500,5,641,35"/>
-<area shape="rect" id="node11" href="$classomega_1_1scene_1_1_default_mouse_interactor.html" title="omega::scene::DefaultMouseInteractor" alt="" coords="448,59,693,88"/>
-<area shape="rect" id="node13" href="$classomega_1_1scene_1_1_default_two_hands_interactor.html" title="omega::scene::DefaultTwoHandsInteractor" alt="" coords="437,112,704,141"/>
-<area shape="rect" id="node19" href="$classomega_1_1ui_1_1_abstract_button.html" title="omega::ui::AbstractButton" alt="" coords="484,165,657,195"/>
-<area shape="rect" id="node21" href="$classomega_1_1ui_1_1_container.html" title="omega::ui::Container" alt="" coords="500,219,641,248"/>
-<area shape="rect" id="node23" href="$classomega_1_1ui_1_1_image.html" title="omega::ui::Image" alt="" coords="509,272,632,301"/>
-<area shape="rect" id="node25" href="$classomega_1_1ui_1_1_label.html" title="omega::ui::Label" alt="" coords="512,325,629,355"/>
-<area shape="rect" id="node27" href="$classomega_1_1ui_1_1_slider.html" title="omega::ui::Slider" alt="" coords="511,379,631,408"/>
-<area shape="rect" id="node29" href="$classoqt_1_1_qt_widget.html" title="oqt::QtWidget" alt="" coords="520,432,621,461"/>
+<area shape="rect" id="node3" href="$classoengine_1_1_actor.html" title="oengine::Actor" alt="" coords="244,59,351,88"/>
+<area shape="rect" id="node9" href="$classoengine_1_1ui_1_1_widget.html" title="oengine::ui::Widget" alt="" coords="231,245,364,275"/>
+<area shape="rect" id="node21" href="$classomega_1_1_application_client.html" title="omega::ApplicationClient" alt="" coords="215,339,380,368"/>
+<area shape="rect" id="node25" href="$classomega_1_1_application_server.html" title="omega::ApplicationServer" alt="" coords="213,392,381,421"/>
+<area shape="rect" id="node29" href="$classovtk_1_1_python_u_i_event_handler.html" title="ovtk::PythonUIEventHandler" alt="" coords="207,445,388,475"/>
+<area shape="rect" id="node5" href="$classoengine_1_1_default_mouse_interactor.html" title="oengine::DefaultMouseInteractor" alt="" coords="448,5,656,35"/>
+<area shape="rect" id="node7" href="$classoengine_1_1_default_two_hands_interactor.html" title="oengine::DefaultTwoHandsInteractor" alt="" coords="437,59,667,88"/>
+<area shape="rect" id="node11" href="$classoengine_1_1ui_1_1_abstract_button.html" title="oengine::ui::AbstractButton" alt="" coords="463,112,641,141"/>
+<area shape="rect" id="node13" href="$classoengine_1_1ui_1_1_container.html" title="oengine::ui::Container" alt="" coords="479,165,625,195"/>
+<area shape="rect" id="node15" href="$classoengine_1_1ui_1_1_image.html" title="oengine::ui::Image" alt="" coords="488,219,616,248"/>
+<area shape="rect" id="node17" href="$classoengine_1_1ui_1_1_label.html" title="oengine::ui::Label" alt="" coords="491,272,613,301"/>
+<area shape="rect" id="node19" href="$classoengine_1_1ui_1_1_slider.html" title="oengine::ui::Slider" alt="" coords="489,325,615,355"/>
+<area shape="rect" id="node23" href="$classoengine_1_1_engine_client.html" title="oengine::EngineClient" alt="" coords="479,379,625,408"/>
+<area shape="rect" id="node27" href="$classoengine_1_1_engine_server.html" title="oengine::EngineServer" alt="" coords="477,432,627,461"/>
 </map>

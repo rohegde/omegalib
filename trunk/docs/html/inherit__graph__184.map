@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classvtk_python_util.html" title="vtkPythonUtil" alt="" coords="5,5,104,35"/>
+<area shape="rect" id="node1" href="$classvtk_open_g_l_render_window.html" title="vtkOpenGLRenderWindow" alt="" coords="5,5,179,35"/>
+<area shape="rect" id="node3" href="$classvtk_generic_open_g_l_render_window.html" title="vtkGenericOpenGLRenderWindow" alt="" coords="227,5,445,35"/>
 </map>

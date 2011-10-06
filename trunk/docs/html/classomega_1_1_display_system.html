@@ -67,6 +67,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_observer.html">Observer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a79953f5a1bed4eeceafaca27898eac0d">getObserver</a> (int observerId)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a798b03242fdf7a19b74d1d021595d2f8">cleanup</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268">DisplaySystemType</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#ae57a7b1221fbfa57a71e5ec9fd5b895e">getId</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a9381fc4e6e08ac322b45f632ea2fb938">getCanvasSize</a> ()=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the size of the display canvas.  <a href="#a9381fc4e6e08ac322b45f632ea2fb938"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">getViewRay</a> (<a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> position)=0</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a pointer position in pixel coordinates.  <a href="#a24a713b287d7efb437318abb073dc931"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a0c88959c2f31470c906cd0c38cebd9d1">DisplaySystem</a> ()</td></tr>
@@ -150,6 +154,27 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9381fc4e6e08ac322b45f632ea2fb938"></a><!-- doxytag: member="omega::DisplaySystem::getCanvasSize" ref="a9381fc4e6e08ac322b45f632ea2fb938" args="()=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> omega::DisplaySystem::getCanvasSize </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the size of the display canvas. </p>
+
+<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#af2f46949362744a5ed74da703ea85c2f">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a2a86e0de2a9eb0cd533b9ec1f8183e2b">omega::GlutDisplaySystem</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae57a7b1221fbfa57a71e5ec9fd5b895e"></a><!-- doxytag: member="omega::DisplaySystem::getId" ref="ae57a7b1221fbfa57a71e5ec9fd5b895e" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -206,6 +231,28 @@ Protected Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#aef5cdd66cebeb7b7e0c09a9142876b52">omega::EqualizerDisplaySystem</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a24a713b287d7efb437318abb073dc931"></a><!-- doxytag: member="omega::DisplaySystem::getViewRay" ref="a24a713b287d7efb437318abb073dc931" args="(Vector2i position)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> omega::DisplaySystem::getViewRay </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a>&nbsp;</td>
+          <td class="paramname"> <em>position</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a view ray given a pointer position in pixel coordinates. </p>
+
+<p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a768c9030da2fc8bbfff4a4ffeaf670c8">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a4cf384e057e6764bfdcdd7cd4687719a">omega::GlutDisplaySystem</a>.</p>
 
 </div>
 </div>

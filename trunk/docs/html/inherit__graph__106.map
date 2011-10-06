@@ -1,6 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomega_1_1mvc_1_1_i_model_listener.html" title="omega::mvc::IModelListener" alt="" coords="5,32,189,61"/>
-<area shape="rect" id="node3" href="$classomega_1_1mvc_1_1_view.html" title="omega::mvc::View" alt="" coords="255,5,383,35"/>
-<area shape="rect" id="node5" href="$classomega_1_1mvc_1_1_view_client.html" title="omega::mvc::ViewClient" alt="" coords="239,59,399,88"/>
-<area shape="rect" id="node7" href="$classovtk_1_1_vtk_view_client.html" title="ovtk::VtkViewClient" alt="" coords="449,59,583,88"/>
+<area shape="rect" id="node1" href="$classomega_1_1_eq_utils.html" title="omega::EqUtils" alt="" coords="7,5,116,35"/>
 </map>

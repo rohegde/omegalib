@@ -45,7 +45,7 @@ Inheritance diagram for omega::ApplicationClient:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1_application_client__inherit__graph.png" border="0" usemap="#omega_1_1_application_client_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_application_client_inherit__map" id="omega_1_1_application_client_inherit__map">
-<area shape="rect" id="node7" href="classomega_1_1_engine_client.html" title="omega::EngineClient" alt="" coords="101,160,243,189"/><area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node4" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="187,5,336,35"/></map>
+<area shape="rect" id="node7" href="classoengine_1_1_engine_client.html" title="oengine::EngineClient" alt="" coords="99,160,245,189"/><area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node4" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="187,5,336,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_application_client-members.html">List of all members.</a></p>
@@ -54,7 +54,8 @@ Inheritance diagram for omega::ApplicationClient:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#aca9935db8e071d2241a1f851c846cb7f">ApplicationClient</a> (<a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *app)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#a349dc4fb5f10a5cb6471431a67b0af67">~ApplicationClient</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#a6842353518c259ac64b3db4b1d93c810">setup</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#aa00763f11cc559bbe262afeca44026b5">getId</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a numeric identifier for this client (relative to server).  <a href="#aa00763f11cc559bbe262afeca44026b5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#a2f62035be1a5bf0d14ca2e963632cc81">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#a8a49f10e85a86f1d39348589bfacdbfc">finalize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#acad74c2c10b487b6c4113e5ce5845daa">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
@@ -71,6 +72,7 @@ Protected Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#a35bef87f9a21967ae673b0e6e3b9d81f">DisplaySystem</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_client.html#a6397e7ea847021a9411d20795317abbc">ApplicationServer</a></td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aca9935db8e071d2241a1f851c846cb7f"></a><!-- doxytag: member="omega::ApplicationClient::ApplicationClient" ref="aca9935db8e071d2241a1f851c846cb7f" args="(ApplicationServer *app)" -->
@@ -125,7 +127,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_engine_client.html#a58c538dd4fa24a3feadcc1f7f081b2b9">omega::EngineClient</a>.</p>
+<p>Reimplemented in <a class="el" href="classoengine_1_1_engine_client.html#a58c538dd4fa24a3feadcc1f7f081b2b9">oengine::EngineClient</a>.</p>
 
 </div>
 </div>
@@ -180,6 +182,25 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa00763f11cc559bbe262afeca44026b5"></a><!-- doxytag: member="omega::ApplicationClient::getId" ref="aa00763f11cc559bbe262afeca44026b5" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> omega::ApplicationClient::getId </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a numeric identifier for this client (relative to server). </p>
+
+</div>
+</div>
 <a class="anchor" id="ae13973d813ad10df88f63fc6d383b1f3"></a><!-- doxytag: member="omega::ApplicationClient::getServer" ref="ae13973d813ad10df88f63fc6d383b1f3" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -194,6 +215,8 @@ Friends</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classoengine_1_1_engine_client.html#a28ca2f9f36b8211774008ac86c7308e1">oengine::EngineClient</a>.</p>
 
 </div>
 </div>
@@ -249,8 +272,6 @@ Friends</h2></td></tr>
 
 <p>Implements <a class="el" href="classomega_1_1_i_event_listener.html#a474e903543d96a7ba007eb57d9f0ce7b">omega::IEventListener</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_engine_client.html#aa2fcb16c2e7407eed1556c9f1ed63e24">omega::EngineClient</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a2f62035be1a5bf0d14ca2e963632cc81"></a><!-- doxytag: member="omega::ApplicationClient::initialize" ref="a2f62035be1a5bf0d14ca2e963632cc81" args="()" -->
@@ -268,7 +289,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_engine_client.html#a300519eea2704b096db711dcaf4e825c">omega::EngineClient</a>.</p>
+<p>Reimplemented in <a class="el" href="classoengine_1_1_engine_client.html#a300519eea2704b096db711dcaf4e825c">oengine::EngineClient</a>.</p>
 
 </div>
 </div>
@@ -282,23 +303,6 @@ Friends</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a6842353518c259ac64b3db4b1d93c810"></a><!-- doxytag: member="omega::ApplicationClient::setup" ref="a6842353518c259ac64b3db4b1d93c810" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void omega::ApplicationClient::setup </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -322,11 +326,22 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_engine_client.html#a2e418ce80622ba9115ca23b9a2fa1d9b">omega::EngineClient</a>.</p>
-
 </div>
 </div>
 <hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a6397e7ea847021a9411d20795317abbc"></a><!-- doxytag: member="omega::ApplicationClient::ApplicationServer" ref="a6397e7ea847021a9411d20795317abbc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a><code> [friend]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a35bef87f9a21967ae673b0e6e3b9d81f"></a><!-- doxytag: member="omega::ApplicationClient::DisplaySystem" ref="a35bef87f9a21967ae673b0e6e3b9d81f" args="" -->
 <div class="memitem">
 <div class="memproto">

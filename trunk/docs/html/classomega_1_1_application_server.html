@@ -33,7 +33,8 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>omega::ApplicationServer Class Reference</h1>  </div>
 </div>
@@ -43,7 +44,7 @@ Inheritance diagram for omega::ApplicationServer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1_application_server__inherit__graph.png" border="0" usemap="#omega_1_1_application_server_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_application_server_inherit__map" id="omega_1_1_application_server_inherit__map">
-<area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node4" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="187,5,336,35"/></map>
+<area shape="rect" id="node7" href="classoengine_1_1_engine_server.html" title="oengine::EngineServer" alt="" coords="97,160,247,189"/><area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/><area shape="rect" id="node4" href="classomega_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="187,5,336,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_application_server-members.html">List of all members.</a></p>
@@ -58,6 +59,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_server.html#a8f43dac30ff4f664f394e52875d84ed4">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_server.html#a12efb7dab93abae794122a83bc710b69">getSystemManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_application.html">Application</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_server.html#aed84476ee1b4a6b404cc2d1223fe6ec0">getApplication</a> ()</td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application_server.html#a76203b6958b7c942941fef6533975c9d">ApplicationClient</a></td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2286d18973c95ba8b4b73895b5e52172"></a><!-- doxytag: member="omega::ApplicationServer::ApplicationServer" ref="a2286d18973c95ba8b4b73895b5e52172" args="(Application *app)" -->
@@ -165,6 +169,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classomega_1_1_i_event_listener.html#a474e903543d96a7ba007eb57d9f0ce7b">omega::IEventListener</a>.</p>
 
+<p>Reimplemented in <a class="el" href="classoengine_1_1_engine_server.html#afc44110254b58f92c3f63713336fa23d">oengine::EngineServer</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a9c510c610f7883eb920faad7d7cda5c7"></a><!-- doxytag: member="omega::ApplicationServer::initialize" ref="a9c510c610f7883eb920faad7d7cda5c7" args="()" -->
@@ -182,6 +188,8 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Reimplemented in <a class="el" href="classoengine_1_1_engine_server.html#a12cc9cf6a469bac2ee7102b0a0529fdd">oengine::EngineServer</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ae4a89e32bfbaf28e8eb4178e18fe0cdf"></a><!-- doxytag: member="omega::ApplicationServer::update" ref="ae4a89e32bfbaf28e8eb4178e18fe0cdf" args="(const UpdateContext &amp;context)" -->
@@ -195,6 +203,22 @@ Public Member Functions</h2></td></tr>
           <td class="paramname"> <em>context</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classoengine_1_1_engine_server.html#aba249a4785742ca008faae9d7883b5b8">oengine::EngineServer</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a76203b6958b7c942941fef6533975c9d"></a><!-- doxytag: member="omega::ApplicationServer::ApplicationClient" ref="a76203b6958b7c942941fef6533975c9d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classomega_1_1_application_client.html">ApplicationClient</a><code> [friend]</code></td>
         </tr>
       </table>
 </div>
