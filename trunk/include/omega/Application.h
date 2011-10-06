@@ -97,9 +97,9 @@ namespace omega
 		//! The pixel offset of the channel inside the view
 		Vector2i offset;
 		//! The total size of the canvas in pixels
-		Vector2i canvasSize;
+		Vector2i* canvasSize;
 		//! The number of horizontal and vertical channels composing the canvas.
-		Vector2i canvasChannels;
+		Vector2i* canvasChannels;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
