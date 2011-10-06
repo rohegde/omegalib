@@ -66,6 +66,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268">DisplaySystemType</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_glut_display_system.html#a115ff754001e9232cff440f946be9c70">getId</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_glut_display_system.html#a3f0db30c224f7254052493367cb9184f">getApplicationServer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_application_client.html">ApplicationClient</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_glut_display_system.html#a55bef63f5fab8be565675d45ea726253">getApplicationClient</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_glut_display_system.html#a2a86e0de2a9eb0cd533b9ec1f8183e2b">getCanvasSize</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the size of the display canvas.  <a href="#a2a86e0de2a9eb0cd533b9ec1f8183e2b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_glut_display_system.html#a4cf384e057e6764bfdcdd7cd4687719a">getViewRay</a> (<a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> position)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a pointer position in pixel coordinates.  <a href="#a4cf384e057e6764bfdcdd7cd4687719a"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Implements a display system based on GLUT, offering a single render window and mouse input support. </p>
@@ -159,6 +163,27 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a2a86e0de2a9eb0cd533b9ec1f8183e2b"></a><!-- doxytag: member="omega::GlutDisplaySystem::getCanvasSize" ref="a2a86e0de2a9eb0cd533b9ec1f8183e2b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> omega::GlutDisplaySystem::getCanvasSize </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the size of the display canvas. </p>
+
+<p>Implements <a class="el" href="classomega_1_1_display_system.html#a9381fc4e6e08ac322b45f632ea2fb938">omega::DisplaySystem</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a115ff754001e9232cff440f946be9c70"></a><!-- doxytag: member="omega::GlutDisplaySystem::getId" ref="a115ff754001e9232cff440f946be9c70" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -212,6 +237,28 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4cf384e057e6764bfdcdd7cd4687719a"></a><!-- doxytag: member="omega::GlutDisplaySystem::getViewRay" ref="a4cf384e057e6764bfdcdd7cd4687719a" args="(Vector2i position)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> omega::GlutDisplaySystem::getViewRay </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a>&nbsp;</td>
+          <td class="paramname"> <em>position</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a view ray given a pointer position in pixel coordinates. </p>
+
+<p>Implements <a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">omega::DisplaySystem</a>.</p>
 
 </div>
 </div>

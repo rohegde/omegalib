@@ -38,12 +38,12 @@
 <h1>ovtk::VtkRenderable Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="ovtk::VtkRenderable" --><!-- doxytag: inherits="omega::scene::Renderable" --><div class="dynheader">
+<!-- doxytag: class="ovtk::VtkRenderable" --><!-- doxytag: inherits="Renderable" --><div class="dynheader">
 Inheritance diagram for ovtk::VtkRenderable:</div>
 <div class="dyncontent">
 <div class="center"><img src="classovtk_1_1_vtk_renderable__inherit__graph.png" border="0" usemap="#ovtk_1_1_vtk_renderable_inherit__map" alt="Inheritance graph"/></div>
 <map name="ovtk_1_1_vtk_renderable_inherit__map" id="ovtk_1_1_vtk_renderable_inherit__map">
-<area shape="rect" id="node2" href="classomega_1_1scene_1_1_renderable.html" title="omega::scene::Renderable" alt="" coords="5,5,181,35"/></map>
+<area shape="rect" id="node2" href="class_renderable.html" title="Renderable" alt="" coords="32,5,117,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classovtk_1_1_vtk_renderable-members.html">List of all members.</a></p>
@@ -51,7 +51,7 @@ Inheritance diagram for ovtk::VtkRenderable:</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classovtk_1_1_vtk_renderable.html#a336ec5b04d2c9ce05862739bf2732c86">VtkRenderable</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classovtk_1_1_vtk_renderable.html#a0d2ae059c92159bc1529e64a8273960c">render</a> (<a class="el" href="classomega_1_1scene_1_1_scene_node.html">SceneNode</a> *node, <a class="el" href="structomega_1_1scene_1_1_render_state.html">RenderState</a> *state)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classovtk_1_1_vtk_renderable.html#a0d2ae059c92159bc1529e64a8273960c">render</a> (SceneNode *node, RenderState *state)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classovtk_1_1_vtk_renderable.html#ae080810f87b289bfce71a0e1c4ac563c">getBoundingBox</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classovtk_1_1_vtk_renderable.html#a929f16a05476dd664d3146ec2eccb622">hasBoundingBox</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classovtk_1_1_vtk_renderable.html#a3448475c4f80a539670c1a9834410497">setActor</a> (vtkProp3D *value)</td></tr>
@@ -108,8 +108,6 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_renderable.html#a15b834166d839a4aea9f8cfcfcd14dfb">omega::scene::Renderable</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a929f16a05476dd664d3146ec2eccb622"></a><!-- doxytag: member="ovtk::VtkRenderable::hasBoundingBox" ref="a929f16a05476dd664d3146ec2eccb622" args="()" -->
@@ -127,8 +125,6 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_1_1scene_1_1_renderable.html#a39e7d992393be629b76b92c3972be87e">omega::scene::Renderable</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a0d2ae059c92159bc1529e64a8273960c"></a><!-- doxytag: member="ovtk::VtkRenderable::render" ref="a0d2ae059c92159bc1529e64a8273960c" args="(SceneNode *node, RenderState *state)" -->
@@ -138,13 +134,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void VtkRenderable::render </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1scene_1_1_scene_node.html">SceneNode</a> *&nbsp;</td>
+          <td class="paramtype">SceneNode *&nbsp;</td>
           <td class="paramname"> <em>node</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structomega_1_1scene_1_1_render_state.html">RenderState</a> *&nbsp;</td>
+          <td class="paramtype">RenderState *&nbsp;</td>
           <td class="paramname"> <em>state</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -155,8 +151,6 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-<p>Implements <a class="el" href="classomega_1_1scene_1_1_renderable.html#ae505e2c7b763d9eeed533aba2e43a26f">omega::scene::Renderable</a>.</p>
 
 </div>
 </div>

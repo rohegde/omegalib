@@ -34,12 +34,16 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <h1>omega::DrawContext Struct Reference</h1>  </div>
 </div>
 <div class="contents">
 <!-- doxytag: class="omega::DrawContext" -->
+<p>Contains information about the context in which a drawing operation is taking place.  
+<a href="#_details">More...</a></p>
+
 <p><a href="structomega_1_1_draw_context-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
@@ -48,6 +52,10 @@ Public Types</h2></td></tr>
 <a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0ad7f12345276b72473a8b62aa585ad298">EyeRight</a>, 
 <a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0a3d1d5c0c1add136d7a5175a52cd9a450">EyeCyclop</a>
  }</td></tr>
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a2e8fa06575740588e870b3ea5d41729e">isSceneActive</a> (int id) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#abfd56cdedc9fa111a97a8a2dac6b3576">isOverlayActive</a> (int id) const </td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#a05fe52b7a4dc035bd7dafe16dbac7829">uint64</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#ad57d82276bb5c10a8a69016eefdd8e00">frameNum</a></td></tr>
@@ -56,10 +64,13 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1transform.html">Transform3</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db">projection</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">viewport</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The pixel viewport coordinates of this context with respect to the owner window of the context.  <a href="#aa52c0e14a78effc78e23dc203fe1239b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a15e97c3411c46bbcaf146f8636226d4f">globalViewport</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The pixel viewport coordinates of this context with respect to the global canvas managed by the display system.  <a href="#a15e97c3411c46bbcaf146f8636226d4f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">Eye</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a3e9781dcb951970883cfbe9d10a92a85">eye</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The eye being rendered for this context.  <a href="#a3e9781dcb951970883cfbe9d10a92a85"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_channel_info.html">ChannelInfo</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a0652c8fee16c6a1568972f782f7e2766">channel</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Information about the drawing channel associated with this context.  <a href="#a0652c8fee16c6a1568972f782f7e2766"></a><br/></td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p>Contains information about the context in which a drawing operation is taking place. </p>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="a4a9e2dc4852222ea6542927a9d0264e0"></a><!-- doxytag: member="omega::DrawContext::Eye" ref="a4a9e2dc4852222ea6542927a9d0264e0" args="" -->
 <div class="memitem">
@@ -84,7 +95,59 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="abfd56cdedc9fa111a97a8a2dac6b3576"></a><!-- doxytag: member="omega::DrawContext::isOverlayActive" ref="abfd56cdedc9fa111a97a8a2dac6b3576" args="(int id) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::DrawContext::isOverlayActive </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>id</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2e8fa06575740588e870b3ea5d41729e"></a><!-- doxytag: member="omega::DrawContext::isSceneActive" ref="a2e8fa06575740588e870b3ea5d41729e" args="(int id) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::DrawContext::isSceneActive </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>id</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a0652c8fee16c6a1568972f782f7e2766"></a><!-- doxytag: member="omega::DrawContext::channel" ref="a0652c8fee16c6a1568972f782f7e2766" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structomega_1_1_channel_info.html">ChannelInfo</a>* <a class="el" href="structomega_1_1_draw_context.html#a0652c8fee16c6a1568972f782f7e2766">omega::DrawContext::channel</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Information about the drawing channel associated with this context. </p>
+
+</div>
+</div>
 <a class="anchor" id="a3e9781dcb951970883cfbe9d10a92a85"></a><!-- doxytag: member="omega::DrawContext::eye" ref="a3e9781dcb951970883cfbe9d10a92a85" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -95,6 +158,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>The eye being rendered for this context. </p>
 
 </div>
 </div>
@@ -108,21 +173,6 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a15e97c3411c46bbcaf146f8636226d4f"></a><!-- doxytag: member="omega::DrawContext::globalViewport" ref="a15e97c3411c46bbcaf146f8636226d4f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a> <a class="el" href="structomega_1_1_draw_context.html#a15e97c3411c46bbcaf146f8636226d4f">omega::DrawContext::globalViewport</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The pixel viewport coordinates of this context with respect to the global canvas managed by the display system. </p>
 
 </div>
 </div>

@@ -1,4 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomega_1_1scene_1_1_mesh_data.html" title="Used to store mesh data loaded from a file in a common format, before transfering it to vertex and in..." alt="" coords="5,5,176,35"/>
-<area shape="rect" id="node3" href="$classomega_1_1scene_1_1_ply_data_reader.html" title="omega::scene::PlyDataReader" alt="" coords="225,5,423,35"/>
+<area shape="rect" id="node3" href="$classomega_1_1math_1_1matrix.html" title="omega::math::matrix\&lt; M, N, T \&gt;" alt="" coords="113,5,321,35"/>
+<area shape="rect" id="node5" href="$classomega_1_1math_1_1vector.html" title="omega::math::vector\&lt; M, T \&gt;" alt="" coords="123,59,312,88"/>
 </map>

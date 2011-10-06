@@ -53,13 +53,16 @@ Inheritance diagram for omega::ChannelImpl:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a2e1c555556b37b2b751b5299e82e7d21">ChannelImpl</a> (eq::Window *parent)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a657a18d522e722bfb131a0bbe6c50ea6">~ChannelImpl</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_view_impl.html">ViewImpl</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a5829b1b82442a3b9d21cdeffd2d7f249">getViewImpl</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1vector.html">omega::Vector2i</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a3dd29e6d8b5ed1b48e1db0738d3d666c">windowToCanvas</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">omega::Vector2i</a> &amp;point)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a4481e44deabe97e60d6ddf4b43d2e5a8">getLastDrawContext</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a9b86bac27fcdefc6c0d50839f868f3f7">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a412b9e10e109f7ed52640e40b8d4bbe1">setupDrawContext</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> *context, const uint128_t &amp;spin)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a647b659a901de007edc630f6de0ba913">makeCurrent</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a88150fc9def3c4b1246ccf6fdb5f334f">frameDraw</a> (const uint128_t &amp;spin)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a0d7e43c89d567846ddbf392e765f95ad">frameViewStart</a> (const uint128_t &amp;spin)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a6fef1867b333b814afa8fd5be65f8dff">frameViewFinish</a> (const uint128_t &amp;spin)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#aa5b0595e5425cccd45cbf86ae9c7bc60">configInit</a> (const uint128_t &amp;initID)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p><b>For internal use only.</b></p>
@@ -100,6 +103,24 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="aa5b0595e5425cccd45cbf86ae9c7bc60"></a><!-- doxytag: member="omega::ChannelImpl::configInit" ref="aa5b0595e5425cccd45cbf86ae9c7bc60" args="(const uint128_t &amp;initID)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool omega::ChannelImpl::configInit </td>
+          <td>(</td>
+          <td class="paramtype">const uint128_t &amp;&nbsp;</td>
+          <td class="paramname"> <em>initID</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a88150fc9def3c4b1246ccf6fdb5f334f"></a><!-- doxytag: member="omega::ChannelImpl::frameDraw" ref="a88150fc9def3c4b1246ccf6fdb5f334f" args="(const uint128_t &amp;spin)" -->
 <div class="memitem">
 <div class="memproto">
@@ -136,17 +157,16 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0d7e43c89d567846ddbf392e765f95ad"></a><!-- doxytag: member="omega::ChannelImpl::frameViewStart" ref="a0d7e43c89d567846ddbf392e765f95ad" args="(const uint128_t &amp;spin)" -->
+<a class="anchor" id="a4481e44deabe97e60d6ddf4b43d2e5a8"></a><!-- doxytag: member="omega::ChannelImpl::getLastDrawContext" ref="a4481e44deabe97e60d6ddf4b43d2e5a8" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void omega::ChannelImpl::frameViewStart </td>
+          <td class="memname">const <a class="el" href="structomega_1_1_draw_context.html">omega::DrawContext</a> &amp; ChannelImpl::getLastDrawContext </td>
           <td>(</td>
-          <td class="paramtype">const uint128_t &amp;&nbsp;</td>
-          <td class="paramname"> <em>spin</em></td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected, virtual]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -154,16 +174,33 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a647b659a901de007edc630f6de0ba913"></a><!-- doxytag: member="omega::ChannelImpl::makeCurrent" ref="a647b659a901de007edc630f6de0ba913" args="()" -->
+<a class="anchor" id="a5829b1b82442a3b9d21cdeffd2d7f249"></a><!-- doxytag: member="omega::ChannelImpl::getViewImpl" ref="a5829b1b82442a3b9d21cdeffd2d7f249" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ChannelImpl::makeCurrent </td>
+          <td class="memname"><a class="el" href="classomega_1_1_view_impl.html">ViewImpl</a> * ChannelImpl::getViewImpl </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [protected, virtual]</code></td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9b86bac27fcdefc6c0d50839f868f3f7"></a><!-- doxytag: member="omega::ChannelImpl::initialize" ref="a9b86bac27fcdefc6c0d50839f868f3f7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ChannelImpl::initialize </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
         </tr>
       </table>
 </div>
@@ -191,6 +228,24 @@ Protected Member Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3dd29e6d8b5ed1b48e1db0738d3d666c"></a><!-- doxytag: member="omega::ChannelImpl::windowToCanvas" ref="a3dd29e6d8b5ed1b48e1db0738d3d666c" args="(const omega::Vector2i &amp;point)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1math_1_1vector.html">omega::Vector2i</a> ChannelImpl::windowToCanvas </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1vector.html">omega::Vector2i</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>point</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
         </tr>
       </table>
 </div>
