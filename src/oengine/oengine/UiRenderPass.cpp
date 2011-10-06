@@ -50,7 +50,7 @@ void UiRenderPass::render(EngineClient* client, const DrawContext& context)
 	client->getRenderer()->beginDraw2D(context);
 
 	ui::Container* ui = client->getServer()->getUi(0);
-	const Rect& vp = Rect(0, 0, context.channel->canvasSize[0], context.channel->canvasSize[1]);
+	const Rect& vp = Rect(0, 0, context.channel->canvasSize->x(), context.channel->canvasSize->y());
 
 	// Update the root container size if necessary.
 	if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||
