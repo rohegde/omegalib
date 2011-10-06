@@ -26,6 +26,7 @@
 ###################################################################################################
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 include(ExternalProject)
+include(OmegaAddTutorial)
 
 ###################################################################################################
 # Options
@@ -35,6 +36,8 @@ if(OMEGA_BUILD_STATIC)
 endif(OMEGA_BUILD_STATIC)
 
 set(OMEGA_BUILD_APPS false CACHE BOOL "Enable building of omegalib applications. When disabled, only libraries will be built.")
+
+set(OMEGA_BUILD_TUTORIALS false CACHE BOOL "Enable building of omegalib tutorials.")
 
 set(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
 if(OMEGA_USE_DISPLAY)
@@ -48,7 +51,6 @@ if(OMEGA_USE_DISPLAY)
 endif(OMEGA_USE_DISPLAY)
 
 set(OMEGA_USE_PYTHON false CACHE BOOL "Enable python scripting support.")
-
 if(OMEGA_USE_PYTHON)
 	find_package(PythonLibs)
 	if(PYTHONLIBS_FOUND)
@@ -129,11 +131,30 @@ if(WIN32)
 	include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
 endif(WIN32)
 
+# Add the core omega project
+add_subdirectory(omega)
+
+if(OMEGA_BUILD_APPS)
+	add_subdirectory(apps/eventlogger)
+	# oinputserver currently works only on Windows (uses WINSOCK)
+	if(WIN32)
+		add_subdirectory(apps/oinputserver)
+	endif(WIN32)
+endif(OMEGA_BUILD_APPS)
+
+if(OMEGA_BUILD_TUTORIALS)
+	omega_add_tutorial(tutorial2)
+	omega_add_tutorial(tutorial3)
+endif(OMEGA_BUILD_TUTORIALS)
+
 if(OMEGA_USE_DISPLAY)
 	add_subdirectory(3rdparty/glew)
 	if(OMEGA_BUILD_APPS)
 		add_subdirectory(apps/ohello)
 	endif(OMEGA_BUILD_APPS)
+	if(OMEGA_BUILD_TUTORIALS)
+		omega_add_tutorial(tutorial4)
+	endif(OMEGA_BUILD_TUTORIALS)
 endif(OMEGA_USE_DISPLAY)
 
 # Add some libraries used for display support.
@@ -154,6 +175,9 @@ if(OMEGA_BUILD_ENGINE)
 		add_subdirectory(apps/cyclops)
 		add_subdirectory(apps/kinectdemo)
 	endif(OMEGA_BUILD_APPS)
+	if(OMEGA_BUILD_TUTORIALS)
+		omega_add_tutorial(tutorial5)
+	endif(OMEGA_BUILD_TUTORIALS)
 endif(OMEGA_BUILD_ENGINE)
 
 # OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
@@ -162,17 +186,6 @@ if(OMEGA_USE_DISPLAY_GLUT)
 	    add_subdirectory(3rdparty/freeglut)
     endif(NOT APPLE)
 endif(OMEGA_USE_DISPLAY_GLUT)
-
-# Add the core omega project
-add_subdirectory(omega)
-
-if(OMEGA_BUILD_APPS)
-	add_subdirectory(apps/eventlogger)
-	# oinputserver currently works only on Windows (uses WINSOCK)
-	if(WIN32)
-		add_subdirectory(apps/oinputserver)
-	endif(WIN32)
-endif(OMEGA_BUILD_APPS)
 
 # vtk configuration, libraries and applications
 if(OMEGA_BUILD_VTK_LIB)
