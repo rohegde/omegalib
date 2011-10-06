@@ -41,18 +41,21 @@ omega::Vector2i sCanvasSize;
 // TODO: modify to make it work with multiple channels.
 ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
+
+omega::Lock sLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
 	:eq::Channel( parent ), myWindow(parent), myInitialized(false)
 {
-	myLock.lock();
+	sLock.lock();
 	if(!initStaticVars)
 	{
 		sCanvasChannels = Vector2i(0, 0);
 		sCanvasSize = Vector2i(0, 0);
 		initStaticVars = true;
 	}
-	myLock.unlock();
+	sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +73,16 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 {
 	eq::Channel::configInit(initID);
 
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ChannelImpl::initialize()
+{
+	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	String name = getName();
+	if(name[0] != '@')
+	{
 	vector<String> args = StringUtils::split(name, "x,");
 	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 	int ix = myChannelInfo.index[0];
@@ -78,11 +90,13 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 
 	int w = getPixelViewport().w;
 	int h = getPixelViewport().h;
+	
+	ofmsg("Channel %1% size: %2% %3%", %name %w %h);
 
 	myChannelInfo.offset = Vector2i(ix * w, iy * h);
 	myChannelInfo.size = Vector2i(w, h);
 
-	myLock.lock();
+	sLock.lock();
 	// Refresh the number of channels in this view.
 	bool canvasChanged = false;
 	if(sCanvasChannels.x() <= ix) 
@@ -95,29 +109,22 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 		sCanvasChannels.y() = iy + 1;
 		canvasChanged = true;
 	}
-	sCanvasChannelPointers[ix][iy] = this;
 	// If the number of channels in this view has been updated, refresh the view pixel size.
+  	sCanvasChannelPointers[ix][iy] = this;
 	if(canvasChanged)
 	{
 		sCanvasSize.x() = sCanvasChannels.x() * w;
 		sCanvasSize.y() = sCanvasChannels.y() * h;
 	}
-	myLock.unlock();
-
-	return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::initialize()
-{
-	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	sLock.unlock();
+	}
 	ofmsg("Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
 		%pipe->getClient()->getId()
 		%sCanvasChannels.x() %sCanvasChannels.y()
 		%sCanvasSize.x() %sCanvasSize.y());
 
-	myChannelInfo.canvasChannels = sCanvasChannels;
-	myChannelInfo.canvasSize = sCanvasSize;
+	myChannelInfo.canvasChannels = &sCanvasChannels;
+	myChannelInfo.canvasSize = &sCanvasSize;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,7 +171,8 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 		initialize();
 		myInitialized = true;
 	}
-
+	else
+	{
 	eq::Channel::frameDraw( spin );
 
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
@@ -175,6 +183,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 
 	myDC.layer = view->getLayer();
 	client->draw(myDC);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,5 +223,6 @@ omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const omega::DrawContext& ChannelImpl::getLastDrawContext()
 {
+	ofmsg("DC viewport: %1% %2%", %myDC.viewport.max %myDC.viewport.min);
 	return myDC;
 }
