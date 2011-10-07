@@ -139,7 +139,7 @@ bool TcpConnection::poll()
 	}
 	myOpen = mySocket.is_open();
 
-	if(mySocket.is_open() && mySocket.available() != 0)
+	while(mySocket.is_open() && mySocket.available() != 0)
 	{
 		handleData();
 	}
