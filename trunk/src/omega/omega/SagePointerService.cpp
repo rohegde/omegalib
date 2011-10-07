@@ -78,9 +78,7 @@ public:
 			}
 		case 3:
 			{
-				omsg("WHEEL");
-		        // Read until the end of the command
-		        readString(myBuffer, BufferSize, '\n');
+				handleWheelMessage();
 				break;
 			}
 		case 4:
@@ -92,6 +90,20 @@ public:
 	virtual void handleClosed()
 	{
 		ofmsg("Connection closed (id=%1%)", %myId);
+	}
+
+	void handleWheelMessage()
+	{
+		// Read wheel
+		readString(myBuffer, BufferSize, '\n');
+		int wheel = atoi(myBuffer);
+
+        myService->lockEvents();
+		Event* evt = myService->writeHead();
+		evt->reset(Event::Zoom, Service::Pointer, myId);
+		evt->setExtraDataType(Event::ExtraDataIntArray);
+		evt->setExtraDataInt(0, wheel);
+		myService->unlockEvents();
 	}
 
 	void handleButtonMessage()

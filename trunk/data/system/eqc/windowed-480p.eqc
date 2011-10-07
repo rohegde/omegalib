@@ -20,8 +20,9 @@ server
             {
                 window
                 {
+				    name "0x0"
                     viewport [ 50 50 854 480 ]
-                    channel { name "0,0"  }
+                    channel { name "0x0"  }
 					attributes
 					{
 						hint_fullscreen OFF
@@ -56,7 +57,7 @@ server
 					bottom_right [  .7 -.4 0 ]
 					top_left     [ -.7 .4 0 ]
 			}
-            segment { channel "0,0" }
+            segment { channel "0x0" }
         }
 
         # wall compound - need swap barrier

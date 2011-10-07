@@ -38,23 +38,17 @@ OMEGA_DEFINE_TYPE(DefaultRenderPass, RenderPass);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultRenderPass::render(EngineClient* client, const DrawContext& context)
 {
-	RenderState state;
-	state.pass = this;
-	state.flags = RenderPass::RenderOpaque;
-	state.client = client;
-	state.context = &context;
+	if(context.task == DrawContext::SceneDrawTask)
+	{
+		RenderState state;
+		state.pass = this;
+		state.flags = RenderPass::RenderOpaque;
+		state.client = client;
+		state.context = &context;
 
-	client->getRenderer()->beginDraw3D(context);
-
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	//glPushMatrix();
-	//glLoadMatrixf(mng->getViewTransform().data());
-
-	SceneNode* node = client->getServer()->getScene(0);
-	node->draw(&state);
-
-	//glPopMatrix();
-
-	client->getRenderer()->endDraw();
+		client->getRenderer()->beginDraw3D(context);
+		SceneNode* node = client->getServer()->getScene(0);
+		node->draw(&state);
+		client->getRenderer()->endDraw();
+	}
 }

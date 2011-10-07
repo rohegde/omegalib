@@ -81,15 +81,21 @@ void ChannelImpl::initialize()
 {
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	String name = getName();
-	if(name[0] != '@')
+	bool interlaced = false;
+
+	if(name[0] == 'i')
 	{
+		//interlaced = true;
+		name = name.substr(1);
+	}
+
 	vector<String> args = StringUtils::split(name, "x,");
 	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 	int ix = myChannelInfo.index[0];
 	int iy = myChannelInfo.index[1];
 
 	int w = getPixelViewport().w;
-	int h = getPixelViewport().h;
+	int h = getPixelViewport().h * (interlaced ? 2 : 1);
 	
 	ofmsg("Channel %1% size: %2% %3%", %name %w %h);
 
@@ -116,8 +122,7 @@ void ChannelImpl::initialize()
 		sCanvasSize.x() = sCanvasChannels.x() * w;
 		sCanvasSize.y() = sCanvasChannels.y() * h;
 	}
-	sLock.unlock();
-	}
+
 	ofmsg("Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
 		%pipe->getClient()->getId()
 		%sCanvasChannels.x() %sCanvasChannels.y()
@@ -125,6 +130,8 @@ void ChannelImpl::initialize()
 
 	myChannelInfo.canvasChannels = &sCanvasChannels;
 	myChannelInfo.canvasSize = &sCanvasSize;
+
+	sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,8 +171,33 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
+void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
+	eq::Channel::frameDraw( frameID );
+	//if(!myInitialized) 
+	//{
+	//	//initialize();
+	//	myInitialized = true;
+	//}
+	//else
+	{
+		//ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
+		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+		ApplicationClient* client = pipe->getClient();
+
+		setupDrawContext(&myDC, frameID);
+
+		myDC.layer = view->getLayer();
+		myDC.task = DrawContext::SceneDrawTask;
+		client->draw(myDC);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
+{
+	eq::Channel::frameViewFinish( frameID );
 	if(!myInitialized) 
 	{
 		initialize();
@@ -173,46 +205,34 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& spin )
 	}
 	else
 	{
-	eq::Channel::frameDraw( spin );
+		setupDrawContext(&myDC, frameID);
 
-	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-	ApplicationClient* client = pipe->getClient();
+		myDC.layer = getLayers();
+		myDC.task = DrawContext::OverlayDrawTask;
+		getClient()->draw(myDC);
 
-	setupDrawContext(&myDC, spin);
+		if(isDrawStatisticsEnabled())
+		{
+			drawStatistics();
+		}
+		else if(isDrawFpsEnabled())
+		{
+			EQ_GL_CALL( applyBuffer( ));
+			EQ_GL_CALL( applyViewport( ));
+			EQ_GL_CALL( setupAssemblyState( ));
+			glMatrixMode( GL_PROJECTION );
+			glLoadIdentity();
+			applyScreenFrustum();
 
-	myDC.layer = view->getLayer();
-	client->draw(myDC);
+			glMatrixMode( GL_MODELVIEW );
+			glDisable( GL_LIGHTING );
+
+			getWindow()->drawFPS();
+			EQ_GL_CALL( resetAssemblyState( ));
+		}
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameViewFinish( const co::base::uint128_t& spin )
-{
-	eq::Channel::frameViewFinish( spin );
-
-	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-
-	if(view->isDrawStatisticsEnabled())
-	{
-		drawStatistics();
-	}
-	else if(view->isDrawFpsEnabled())
-	{
-		EQ_GL_CALL( applyBuffer( ));
-		EQ_GL_CALL( applyViewport( ));
-		EQ_GL_CALL( setupAssemblyState( ));
-		glMatrixMode( GL_PROJECTION );
-		glLoadIdentity();
-		applyScreenFrustum();
-
-		glMatrixMode( GL_MODELVIEW );
-		glDisable( GL_LIGHTING );
-
-		getWindow()->drawFPS();
-		EQ_GL_CALL( resetAssemblyState( ));
-	}
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)
@@ -223,6 +243,34 @@ omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const omega::DrawContext& ChannelImpl::getLastDrawContext()
 {
-	ofmsg("DC viewport: %1% %2%", %myDC.viewport.max %myDC.viewport.min);
+	//ofmsg("DC viewport: %1% %2%", %myDC.viewport.max %myDC.viewport.min);
 	return myDC;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+omega::ApplicationClient* ChannelImpl::getClient()
+{
+	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	return pipe->getClient();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+unsigned int ChannelImpl::getLayers()
+{
+	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+	return view->getLayer();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool ChannelImpl::isDrawStatisticsEnabled()
+{
+	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+	return view->isDrawStatisticsEnabled();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool ChannelImpl::isDrawFpsEnabled()
+{
+	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+	return view->isDrawFpsEnabled();
 }

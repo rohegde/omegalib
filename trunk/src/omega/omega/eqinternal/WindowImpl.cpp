@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "omega/GpuManager.h"
+#include "omega/StringUtils.h"
 
 #include "eqinternal.h"
 
@@ -35,7 +36,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-	eq::Window(parent), myFrameBuffer(NULL) 
+	eq::Window(parent), myFrameBuffer(NULL), myInitialized(false)
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,8 +61,21 @@ bool WindowImpl::configInitGL(const uint128_t& initID)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void WindowImpl::initialize()
+{
+	String name = getName();
+	vector<String> args = StringUtils::split(name, "x,");
+	myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void WindowImpl::frameStart(const uint128_t &frameID, const uint32_t frameNumber) 
 {
+	if(!myInitialized)
+	{
+		initialize();
+		myInitialized = true;
+	}
 	// Set the frame buffer for the client gpu to this window frame buffer.
 	myGpu->setFrameBuffer(myFrameBuffer);
 }

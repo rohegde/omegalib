@@ -90,8 +90,10 @@ public:
 
 	//! Returns the size of the display canvas.
 	virtual Vector2i getCanvasSize();
-	//! Returns a view ray given a pointer position in pixel coordinates
+	//! Returns a view ray given a global (canvas) pointer position in pixel coordinates
 	virtual Ray getViewRay(Vector2i position);
+	//! Returns a view ray given a loal pointer positon and a channel index.
+	Ray	getViewRay(Vector2i position, int channelX, int channelY);
 
 private:
 	void initLayers();

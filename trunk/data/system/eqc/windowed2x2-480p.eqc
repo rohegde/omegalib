@@ -20,36 +20,36 @@ server
             {
                 window
                 {
-                    name     "win0x1"
+                    name     "0x1"
                     viewport [ 50 290 427 240 ]
-                    channel { name "0,1"  }
+                    channel { name "0x1"  }
                 }
 			}
             pipe
             {
                 window
                 {
-                    name     "win1x1"
+                    name     "1x1"
                     viewport [ 477 290 427 240 ]
-                    channel { name "1,1"  }
+                    channel { name "1x1"  }
                 }
             }
             pipe
             {
                 window
                 {
-                    name     "win0x0"
+                    name     "0x0"
                     viewport [ 50 50 427 240 ]
-                    channel { name "0,0"  }
+                    channel { name "0x0"  }
                 }
 			}
             pipe
             {
                 window
                 {
-                    name     "win1x0"
+                    name     "1x0"
                     viewport [ 477 50 427 240 ]
-                    channel { name "1,0"  }
+                    channel { name "1x0"  }
                 }
             }
         }
@@ -83,22 +83,22 @@ server
             segment
             {
                 viewport [ 0 0.5 0.5 0.5 ]
-                channel "0,0"
+                channel "0x0"
             }
             segment
             {
                 viewport [ 0.5 0.5 0.5 0.5 ]
-                channel "1,0"
+                channel "1x0"
             }
             segment
             {
                 viewport [ 0 0 0.5 0.5 ]
-                channel "0,1"
+                channel "0x1"
             }
             segment
             {
                 viewport [ 0.5 0 0.5 0.5 ]
-                channel "1,1"
+                channel "1x1"
             }
         }
 
