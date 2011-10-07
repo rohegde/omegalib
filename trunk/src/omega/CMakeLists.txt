@@ -51,7 +51,6 @@ SET( srcs
 		omega/DataManager.cpp
 		omega/FileDataStream.cpp
 		omega/FilesystemDataSource.cpp
-		omega/SagePointerService.cpp
 		omega/Tcp.cpp
 		omega/TypeInfo.cpp
 		
@@ -80,7 +79,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Tcp.h
 		${OmegaLib_SOURCE_DIR}/include/omega/TypeInfo.h
 
@@ -120,6 +118,7 @@ if(OMEGA_USE_DISPLAY)
 			omega/GpuManager.cpp
 			omega/GpuProgram.cpp
 			omega/RenderTarget.cpp
+			omega/SagePointerService.cpp
 			omega/Texture.cpp
  		    omega/ObserverUpdateService.cpp
 			)
@@ -130,6 +129,7 @@ if(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
 			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
+			${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
 			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
 	
