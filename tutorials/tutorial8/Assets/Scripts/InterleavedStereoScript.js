@@ -47,6 +47,7 @@
 @script RequireComponent (Camera)
 @script AddComponentMenu ("stereoskopix/stereoskopix3D")
 
+var enableStereo : boolean = true;
 var eyePosition : Transform;
 var focusPosition: Transform;
 
@@ -87,7 +88,6 @@ function Start () {
 	stereoMaterial.SetTexture ("_RightTex", rightCamRT);
 	
 	SetWeave(0);
-	//UpdateView();
 
 	leftCam.transform.parent = transform;
 	rightCam.transform.parent = transform;
@@ -108,10 +108,8 @@ function LateUpdate() {
 }
 
 function UpdateView() {
-	//transform.position = eyePosition.transform.position;
 	leftCam.camera.projectionMatrix = projectionMatrix(true);
 	rightCam.camera.projectionMatrix = projectionMatrix(false);
-
 }
 
 function OnRenderImage (source:RenderTexture, destination:RenderTexture) 
@@ -138,7 +136,7 @@ function DoWindow (windowID : int)
 	if (!xy) 
 	{
 		stereoMaterial.SetFloat("_Weave_X", 1);
-		stereoMaterial.SetFloat("_Weave_Y", Screen.height);
+		stereoMaterial.SetFloat("_Weave_Y", Screen.height + 1);
 	}
 }
 
@@ -154,21 +152,37 @@ private function DrawQuad(cam) {
 
 function projectionMatrix(isLeftCam : boolean) : Matrix4x4 
 {
-	//full screen hack
-	var Scr_LL_wc : Vector3 = Vector3( -0.965 , -.552 , 0 ) + focusPosition.localPosition;   //Lower Left Corner 
-    var Scr_LR_wc : Vector3 = Vector3( 0.973 , -.552 , 0 ) + focusPosition.localPosition;   //Lower Right Corner 
-    var Scr_UL_wc : Vector3 = Vector3( -0.965 , .539 , 0 ) + focusPosition.localPosition;   //Upper Left Corner 
+	// 2732x1536 (Windowed) - Does not fill screen
+	var windowUpperOffset : float = 0.539;
+	var windowLowerOffset : float = -0.552;
+	var windowLeftOffset : float = -0.965;
+	var wndowRightOffset : float =  0.973;
+	
+	// 2731x1525 (Windowed) - Nearly fills screen
+	windowUpperOffset = 0.539;
+	windowLowerOffset = -0.552;
+	windowLeftOffsett = -1.17;
+	wndowRightOffset =  1.17;
+	
+	var Scr_LL_wc : Vector3 = Vector3( windowLeftOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Left Corner 
+    var Scr_LR_wc : Vector3 = Vector3( wndowRightOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Right Corner 
+    var Scr_UL_wc : Vector3 = Vector3( windowLeftOffset , windowUpperOffset , 0 ) + focusPosition.localPosition;   //Upper Left Corner 
 
     //Coord of the eye
     var eye : Vector3;
+	var eyeOffset : float = 0.03175;
+	
+	if( !enableStereo )
+		eyeOffset = 0;
+	
 	if( isLeftCam )
 	{
-		eye  = Vector3( eyePosition.localPosition.x - 0.03175 , -eyePosition.localPosition.y, eyePosition.localPosition.z);
+		eye  = Vector3( eyePosition.localPosition.x - eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
 		//eye  = Vector3( -0.03175 , 0, -.9);	
 	}
 	else 
 	{	
-		eye  = Vector3( eyePosition.localPosition.x + 0.03175 , -eyePosition.localPosition.y, eyePosition.localPosition.z);
+		eye  = Vector3( eyePosition.localPosition.x + eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
 		//eye  = Vector3( 0.03175 , 0, -.9);	
 	}
 	
