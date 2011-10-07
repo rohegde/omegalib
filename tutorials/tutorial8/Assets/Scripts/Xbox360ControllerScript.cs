@@ -31,7 +31,7 @@ public class Xbox360ControllerScript : OmegaControllerScript {
 		
 		// Testing
 		transform.Translate(leftAnalog.x, 0, -leftAnalog.y);
-		transform.Rotate(-rightAnalog.y, 0, -rightAnalog.x);
+		transform.Rotate(0,rightAnalog.x, 0);
 		
 		transform.Translate(0, -getTrigger(), 0);
 		
