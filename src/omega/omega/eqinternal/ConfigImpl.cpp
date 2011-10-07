@@ -36,6 +36,10 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+extern omega::Vector2i sCanvasSize;
+extern omega::Vector2i sCanvasChannels;
+extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void EqUtils::serializeEvent(Event& evt, co::DataOStream& os)
 {
@@ -120,31 +124,30 @@ uint ConfigImpl::processMouseButtons(uint btns)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray)
 {
-	ChannelImpl* sch = NULL;
-	foreach(eq::Channel* ch, source->getChannels())
+	WindowImpl* wi = (WindowImpl*)source;
+	int channelX = wi->getIndex()[0];
+	int channelY = wi->getIndex()[1];
+	ChannelImpl* sch = sCanvasChannelPointers[channelX][channelY];
+
+	if(sch != NULL)
 	{
-		if(ch->getPixelViewport().isInside(x, y))
+		Vector2i mousePosition(x, y);
+
+		outPosition = sch->windowToCanvas(mousePosition);
+		EqualizerDisplaySystem* eds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+		if(eds->isDebugMouseEnabled())
 		{
-			sch = (ChannelImpl*)ch;
-			break;
+			const DrawContext& dc = sch->getLastDrawContext();
+			ofmsg("MOUSE  Channel=%1%  ChannelVP=%2%,%3%,%4%,%5%  ChannelPos=%6%,%7%  GlobalPos=%8%", 
+				%sch->getName() 
+				%dc.viewport.x() %dc.viewport.y() %dc.viewport.width() %dc.viewport.height()
+				%x %y
+				%outPosition
+				);
 		}
+
+		ray = eds->getViewRay(mousePosition, channelX, channelY);
 	}
-
-	outPosition = sch->windowToCanvas(Vector2i(x, y));
-	const DrawContext& dc = sch->getLastDrawContext();
-
-	EqualizerDisplaySystem* eds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-	if(eds->isDebugMouseEnabled())
-	{
-		ofmsg("MOUSE  Channel=%1%  ChannelVP=%2%,%3%,%4%,%5%  ChannelPos=%6%,%7%  GlobalPos=%8%", 
-			%sch->getName() 
-			%dc.viewport.x() %dc.viewport.y() %dc.viewport.width() %dc.viewport.height()
-			%x %y
-			%outPosition
-			);
-	}
-
-	ray = Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport, 1.0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

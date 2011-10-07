@@ -41,38 +41,41 @@ OMEGA_DEFINE_TYPE(UiRenderPass, RenderPass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiRenderPass::render(EngineClient* client, const DrawContext& context)
 {
-	RenderState state;
-	state.pass = this;
-	state.flags = RenderPass::RenderOverlay;
-	state.client = client;
-	state.context = &context;
-
-	client->getRenderer()->beginDraw2D(context);
-
-	ui::Container* ui = client->getServer()->getUi(0);
-	const Rect& vp = Rect(0, 0, context.channel->canvasSize->x(), context.channel->canvasSize->y());
-
-	// Update the root container size if necessary.
-	if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||
-		ui->getSize().cwiseNotEqual(vp.max.cast<float>()).all())
+	if(context.task == DrawContext::OverlayDrawTask)
 	{
-		ui->setPosition(vp.min.cast<float>());
-		ui->setSize(Vector2f(vp.width(), vp.height()));
-		ofmsg("ui viewport update: position = %1% size = %2% %3%",
-			%vp.min %vp.width() %vp.height());
+		RenderState state;
+		state.pass = this;
+		state.flags = RenderPass::RenderOverlay;
+		state.client = client;
+		state.context = &context;
+
+		client->getRenderer()->beginDraw2D(context);
+
+		ui::Container* ui = client->getServer()->getUi(0);
+		const Rect& vp = Rect(0, 0, context.channel->canvasSize->x(), context.channel->canvasSize->y());
+
+		// Update the root container size if necessary.
+		if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||
+			ui->getSize().cwiseNotEqual(vp.max.cast<float>()).all())
+		{
+			ui->setPosition(vp.min.cast<float>());
+			ui->setSize(Vector2f(vp.width(), vp.height()));
+			ofmsg("ui viewport update: position = %1% size = %2% %3%",
+				%vp.min %vp.width() %vp.height());
+		}
+
+		// Make sure all widget sizes are up to date (and perform autosize where necessary).
+		ui->updateSize();
+
+		// Layout ui.
+		ui->layout();
+
+		Renderable* uiRenderable = ui->getRenderable(client);
+		if(uiRenderable != NULL)
+		{
+			uiRenderable->draw(&state);
+		}
+
+		client->getRenderer()->endDraw();
 	}
-
-	// Make sure all widget sizes are up to date (and perform autosize where necessary).
-	ui->updateSize();
-
-	// Layout ui.
-	ui->layout();
-
-	Renderable* uiRenderable = ui->getRenderable(client);
-	if(uiRenderable != NULL)
-	{
-		uiRenderable->draw(&state);
-	}
-
-	client->getRenderer()->endDraw();
 }

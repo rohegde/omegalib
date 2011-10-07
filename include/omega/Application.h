@@ -107,28 +107,31 @@ namespace omega
 	struct DrawContext
 	{
 		enum Eye { EyeLeft , EyeRight, EyeCyclop };
+		enum Task { SceneDrawTask, OverlayDrawTask };
 		uint64 frameNum;
-		unsigned int layer;
+		unsigned int layer; // turn to content ID.
 		AffineTransform3 modelview;
 		Transform3 projection;
 		//! The pixel viewport coordinates of this context with respect to the owner window of the context.
 		Rect viewport;
 		//! The eye being rendered for this context.
 		Eye eye;
+		//! The current draw task.
+		Task task;
 		//! Information about the drawing channel associated with this context.
 		ChannelInfo* channel;
 
-		bool isSceneActive(int id) const;
-		bool isOverlayActive(int id) const;
+		//bool isSceneActive(int id) const;
+		//bool isOverlayActive(int id) const;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool DrawContext::isSceneActive(int id) const
-	{ return (((layer & 0x03) - 1) == id); }
+	//inline bool DrawContext::isSceneActive(int id) const
+	//{ return (((layer & 0x03) - 1) == id); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool DrawContext::isOverlayActive(int id) const
-	{ return (((layer >> 2) & 0x03) == id); }
+	//inline bool DrawContext::isOverlayActive(int id) const
+	//{ return (((layer >> 2) & 0x03) == id); }
 
 	class ApplicationServer;
 

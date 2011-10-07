@@ -75,7 +75,7 @@ void Renderer::beginDraw2D(const DrawContext& context)
     glPushMatrix();
     glLoadIdentity();
     //glTranslatef(0, context.globalViewport.height() + context.globalViewport.y() - 1, 0.0);
-    //glScalef(1.0, -1.0, 1.0);
+    //glScalef(1.0, 0.5, 1.0);
 
 	int left = context.channel->offset[0];
 	int right = left + context.channel->size[0];

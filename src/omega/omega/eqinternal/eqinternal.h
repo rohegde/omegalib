@@ -254,14 +254,18 @@ class WindowImpl: public eq::Window
 public:
 	WindowImpl(eq::Pipe* parent);
 	virtual ~WindowImpl();
+	const Vector2i& getIndex() { return myIndex; }
 
 protected:
 	virtual bool configInitGL(const uint128_t& initID);
 	virtual void frameStart	(const uint128_t &frameID, const uint32_t frameNumber);
+	void initialize();
 
 private:
 	RenderTarget* myFrameBuffer;
 	GpuManager* myGpu;
+	Vector2i myIndex;
+	bool myInitialized;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +288,10 @@ protected:
 	virtual void frameDraw( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
 	virtual bool configInit(const uint128_t& initID);
+	omega::ApplicationClient* getClient();
+	unsigned int getLayers();
+	bool isDrawStatisticsEnabled();
+	bool isDrawFpsEnabled();
 
 private:
 	bool myInitialized;
@@ -292,6 +300,7 @@ private:
 	ViewImpl* myView;
 	ChannelInfo myChannelInfo;
 	DrawContext myDC;
+	uint128_t myLastFrame;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
