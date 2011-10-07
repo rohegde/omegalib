@@ -16,6 +16,6 @@ public class MocapExampleScript : MocapScript {
 		
 		// Set object's orientation to the tracked object's orientation
 		// TODO: 9-9-2011: Not working correctly - probably not converted to Unity's coordinate system properly.
-		//gameObject.transform.rotation = getRawOrientation();
+		//gameObject.transform.rotation = getOrientation();
 	}
 }

@@ -57,7 +57,8 @@ public class WiimoteControllerScript : OmegaControllerScript {
 		}
 		
 		// Testing
-		transform.Translate(analogStick.x, 0, analogStick.y);
+		transform.Translate(0, 0, analogStick.y * Time.deltaTime);
+		transform.Rotate(0, analogStick.x * Time.deltaTime * 50, 0);
 		
 		A = getButton( Button.A );
 		B = getButton( Button.B );
