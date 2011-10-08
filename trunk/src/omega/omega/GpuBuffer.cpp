@@ -332,6 +332,11 @@ void VertexBuffer::bind(GpuProgram* prog, int index, GpuProgram::Stage stage)
 			    glEnableClientState(GL_NORMAL_ARRAY);
 				glNormalPointer(glType, getElementSize(), (GLvoid*)attrib->offset);
 			}
+			else if(attrib->target == VertexAttribute::TargetTexture0)
+			{
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glTexCoordPointer(attrib->components, glType, getElementSize(), (GLvoid*)attrib->offset);
+			}
 		}
 	}
 	else

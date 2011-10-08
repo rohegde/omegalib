@@ -88,7 +88,7 @@ void SimpleGLClient::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SimpleGLClient::draw(const DrawContext& context)
 {
-	if(context.isSceneActive(0))
+	if(context.task == DrawContext::SceneDrawTask)
 	{
 		// Enable depth testing and lighting.
 		glEnable(GL_DEPTH_TEST);
