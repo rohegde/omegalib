@@ -40,7 +40,7 @@ namespace oengine {
 	{
 	public:
 		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };
-		enum DrawType { DrawTriangles, DrawLines, DrawPoints };
+		enum DrawType { DrawTriangles, DrawLines, DrawPoints, DrawTriangleStrip };
 
 	public:
 		Renderer();
@@ -79,7 +79,7 @@ namespace oengine {
 		//! 3D Drawing methods
 		//@{
 		void drawWireSphere(const Color& color, int segments, int slices);
-		void drawIndexedPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
+		void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
 		//@}
 
 		//! Font management
