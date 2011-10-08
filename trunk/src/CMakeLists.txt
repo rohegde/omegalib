@@ -177,6 +177,7 @@ if(OMEGA_BUILD_ENGINE)
 	endif(OMEGA_BUILD_APPS)
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(tutorial5)
+		omega_add_tutorial(tutorial6)
 	endif(OMEGA_BUILD_TUTORIALS)
 endif(OMEGA_BUILD_ENGINE)
 

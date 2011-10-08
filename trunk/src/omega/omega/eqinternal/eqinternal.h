@@ -255,6 +255,7 @@ public:
 	WindowImpl(eq::Pipe* parent);
 	virtual ~WindowImpl();
 	const Vector2i& getIndex() { return myIndex; }
+	bool isInitialized() { return myInitialized; }
 
 protected:
 	virtual bool configInitGL(const uint128_t& initID);

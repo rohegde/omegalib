@@ -339,17 +339,25 @@ void Renderer::drawWireSphere(const Color& color, int segments, int slices)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawIndexedPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
+void Renderer::drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
 {
 	GLenum mode = GL_POINTS;
 	switch(type)
 	{
 	case DrawPoints: mode = GL_POINTS; break;
 	case DrawTriangles: mode = GL_TRIANGLES; break;
+	case DrawTriangleStrip: mode = GL_TRIANGLE_STRIP; break;
 	}
 
 	vertices->bind();
-	glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
+	if(indices != NULL)
+	{
+		glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
+	}
+	else
+	{
+		glDrawArrays(mode, 0, size);
+	}
 	vertices->unbind();
 }
 

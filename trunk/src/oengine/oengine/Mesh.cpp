@@ -222,7 +222,7 @@ void MeshRenderable::draw(RenderState* state)
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
 		pushNodeTransform();
-		getRenderer()->drawIndexedPrimitives(
+		getRenderer()->drawPrimitives(
 			myVertexBuffer,
 			myIndexData,
 			myMesh->getData()->getNumTriangles() * 3,
