@@ -12,6 +12,7 @@
      * [Tutorial3]
      * [Tutorial4]
      * [Tutorial5]
+     * [Tutorial6]
      * [Tutorial8]
  * Internal docs
    * [PackagingChecklist Packaging checklist]
