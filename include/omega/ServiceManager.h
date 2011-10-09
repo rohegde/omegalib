@@ -86,6 +86,7 @@ namespace omega
 		void clearEvents();
 		void lockEvents();
 		void unlockEvents();
+		Event* writeHead();
 
 	public:
 		// The maximum number of events stored in the event buffer.
@@ -94,7 +95,6 @@ namespace omega
 	private:
 		int incrementBufferIndex(int index);
 		int decrementBufferIndex(int index);
-		Event* writeHead();
 		Event* readHead();
 		Event* readTail();
 

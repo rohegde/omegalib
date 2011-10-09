@@ -435,41 +435,52 @@ void NetService::parseDGram(int result)
 			case(Service::Pointer): // Touch (points only not gestures)
 				evt = mysInstance->writeHead();
 				
-				NetTouches touch;
-				touch.ID = (int)(params[1]);
-				touch.xPos = params[2];
-				touch.yPos = params[3];
-				touch.xWidth = params[4];
-				touch.yWidth = params[5];
-				params[6] = evt->getTimestamp();
-				touch.timestamp = params[6];
-				
-				//printf("New Time set %d \n", curTime );
-				///printf("New Time param %d \n", (int)params[6] );
-				if( (int)(params[0]) == Event::Down && touchlist.count(touch.ID) == 0 ){
-					evt->reset(Event::Down, Service::Pointer, touch.ID);
-					touchlist[touch.ID] = touch;
-					//pair<map<int,float*>::iterator,bool> ret
-					//ret = touchlist.insert (pair<int,float*>(params[1],params) );
-					printf("NetService: Touch ID %d - DOWN\n", touch.ID);
-				}
-				else if( (int)(params[0]) == Event::Move ){
-					evt->reset(Event::Move, Service::Pointer, touch.ID);
-					touchlist[touch.ID] = touch;
-					printf("NetService: Touch ID %d - MOVE\n", touch.ID);
-				}
-				else if( (int)(params[0]) == Event::Up ){
-					evt->reset(Event::Up, Service::Pointer, touch.ID);
-					touchlist.erase( touch.ID );
-					printf("NetService: Touch ID %d - UP\n", touch.ID);
-				}
-				
-				evt->setPosition(params[2] * (float)screenX, params[3] * (float)screenY);
+				if( (int)(params[1]) == -1){// handle Dynallax specific mouse events
+					if( (int)(params[0]) == Event::Down)
+						evt->reset( Event::Down, Service::Pointer, 0, -1);
+					if( (int)(params[0]) == Event::Up)
+						evt->reset( Event::Up, Service::Pointer, 0, -1);
+					if( (int)(params[0]) == Event::Move)
+						evt->reset( Event::Move, Service::Pointer, 0, -1);
+					evt->setPosition( params[3], params[4]);
+					evt->setFlags( (unsigned int)(params[5]));
+				}else {// handle all other pointer events
+					
+					NetTouches touch;
+					touch.ID = (int)(params[2]);
+					touch.xPos = params[3];
+					touch.yPos = params[4];
+					touch.xWidth = params[5];
+					touch.yWidth = params[6];
+					params[6] = evt->getTimestamp();
+					touch.timestamp = params[7];
+					
+					//printf("New Time set %d \n", curTime );
+					///printf("New Time param %d \n", (int)params[6] );
+					if( (int)(params[0]) == Event::Down && touchlist.count(touch.ID) == 0 ){
+						evt->reset(Event::Down, Service::Pointer, touch.ID);
+						touchlist[touch.ID] = touch;
+						//pair<map<int,float*>::iterator,bool> ret
+						//ret = touchlist.insert (pair<int,float*>(params[1],params) );
+						printf("NetService: Touch ID %d - DOWN\n", touch.ID);
+					}
+					else if( (int)(params[0]) == Event::Move ){
+						evt->reset(Event::Move, Service::Pointer, touch.ID);
+						touchlist[touch.ID] = touch;
+						printf("NetService: Touch ID %d - MOVE\n", touch.ID);
+					}
+					else if( (int)(params[0]) == Event::Up ){
+						evt->reset(Event::Up, Service::Pointer, touch.ID);
+						touchlist.erase( touch.ID );
+						printf("NetService: Touch ID %d - UP\n", touch.ID);
+					}
+					
+					evt->setPosition(params[3] * (float)screenX, params[4] * (float)screenY);
 
-				evt->setExtraDataType(Event::ExtraDataFloatArray);
-				evt->setExtraDataFloat(0, params[4] * (float)screenX);
-				evt->setExtraDataFloat(1, params[5] * (float)screenY);
-
+					evt->setExtraDataType(Event::ExtraDataFloatArray);
+					evt->setExtraDataFloat(0, params[5] * (float)screenX);
+					evt->setExtraDataFloat(1, params[6] * (float)screenY);
+				}
 
 				break;
 			default:
