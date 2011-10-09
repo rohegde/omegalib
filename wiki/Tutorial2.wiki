@@ -2,4 +2,8 @@
 #sidebar Sidebar
 This tutorial will explain how to integrate omegalib inside your own project and get events from it.
 
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/tutorial2.png" width="300"/></p><p align="middle">
+_^A screenshot from localHeartbeat.^_
+</p>
+
 To simplify thing, we will assume your project uses CMake as a build system as well. 

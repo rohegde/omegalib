@@ -1,1 +1,6 @@
-= Tutorial 5 - Graphics Intro Part 2: The omega engine =
+#summary Graphics Intro Part 2: The omega engine
+#sidebar Sidebar
+
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/tutorial2.png" width="300"/></p><p align="middle">
+_^A screenshot from simpleScene.^_
+</p>

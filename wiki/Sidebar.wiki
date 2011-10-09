@@ -1,6 +1,7 @@
  * General
    * [Concept introduction and design]
-   * [OmegaProgress omegalib history]
+   * [ReleaseNotes Release Notes]
+     * [OmegaProgress omegalib pre 1.0 history]
  * Help & Reference
    * [HowTos How-tos & FAQ]
    * [BuildSystemReference CMake reference]

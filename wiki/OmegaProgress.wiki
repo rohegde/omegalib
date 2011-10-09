@@ -1,6 +1,11 @@
 #summary This page is a pseudo blog of what progress is being made on OmegaLib.
 #sidebar Sidebar
 
+= omegalib v1.0 & Future versions =
+See [ReleaseNotes]
+
+------------------------------------------------------------------------
+
 = omegalib v0.6 (*current developement version*) =
 == Summary ==
 The main features of omegalib 0.6 will be a complete integration with third party libraries like Vtk and OSG, finishing the work started in omegalib 0.5 It will also support communication and interaction with tablet devices like the iPad. This version will also improve support
