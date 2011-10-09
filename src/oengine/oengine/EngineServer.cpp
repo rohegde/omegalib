@@ -59,7 +59,7 @@ void EngineServer::initialize()
 	}
 
 	// Setup default render chain.
-	//registerRenderPassClass<LightingPass>();
+	registerRenderPassClass<LightingPass>();
 	//registerRenderPassClass<OverlayRenderPass>();
 	registerRenderPassClass<DefaultRenderPass>();
 	registerRenderPassClass<UiRenderPass>();

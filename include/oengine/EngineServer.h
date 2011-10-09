@@ -35,6 +35,7 @@
 #include "SceneQuery.h"
 #include "Actor.h"
 #include "Font.h"
+#include "Light.h"
 #include "ui/Container.h"
 #include "ui/WidgetFactory.h"
 #include "omega/Application.h"
@@ -54,6 +55,7 @@ namespace oengine {
 		static const int MaxScenes = 3;
 		static const int MaxUis = 3;
 		static const int MaxActivePointers = 128;
+		static const int MaxLights = 16;
 
 	public:
 		EngineServer(Application* app);
@@ -94,6 +96,13 @@ namespace oengine {
 		void destroyPointer(Pointer* p);
 		//@}
 
+		//! Lights
+		//@{
+		Light* getLight(int index);
+		Color& getAmbientLightColor();
+		void setAmbientLightColor(Color& value);
+		//@}
+
 		virtual void initialize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
@@ -109,6 +118,9 @@ namespace oengine {
 
 		SceneNode* myScene[MaxScenes];
 		ui::Container* myUi[MaxUis];
+		Light myLights[MaxLights];
+		Color myAmbientColor;
+
 		List<Pointer*> myPointers;
 		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
 		float myActivePointerTimeout;
@@ -150,6 +162,17 @@ namespace oengine {
 	inline ui::WidgetFactory* EngineServer::getWidgetFactory()
 	{ return myWidgetFactory; }
 		
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light* EngineServer::getLight(int index)
+	{ return &myLights[index]; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color& EngineServer::getAmbientLightColor()
+	{ return myAmbientColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void EngineServer::setAmbientLightColor(Color& value)
+	{ myAmbientColor = value; }
 }; // namespace oengine
 
 #endif

@@ -58,6 +58,7 @@ set( srcs
 		oengine/SceneQuery.cpp
 		oengine/SceneNode.cpp
 		oengine/SceneRenderable.cpp
+		#oengine/ParticleSystem.cpp
 		oengine/PlyDataReader.cpp
 		oengine/plyfile.cpp
 		oengine/ReferenceBox.cpp
@@ -107,6 +108,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneQuery.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneNode.h
+		#${OmegaLib_SOURCE_DIR}/include/oengine/ParticleSystem.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ply.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ReferenceBox.h
