@@ -93,75 +93,80 @@ public:
 		switch(evt.getServiceType())
 		{
 		case Service::Pointer:
-			//printf(" Touch type %d \n", evt.getType()); 
-			//printf("               at %f %f \n", x, y ); 
+		//printf(" Touch type %d \n", evt.getType()); 
+		//printf("               at %f %f \n", x, y ); 
 
-			// Converts gesture type to char, appends to eventPacket
-			sprintf(floatChar,"%d",evt.getType());
-			strcat( eventPacket, floatChar );
+		// Converts gesture type to char, appends to eventPacket
+		sprintf(floatChar,"%d",evt.getType());
+		strcat( eventPacket, floatChar );
+		strcat( eventPacket, "," ); // Spacer
+
+		// Converts id to char, appends to eventPacket
+		sprintf(floatChar,"%d",evt.getServiceId());
+		strcat( eventPacket, floatChar );
+		strcat( eventPacket, "," ); // Spacer
+
+		// Converts id to char, appends to eventPacket
+		sprintf(floatChar,"%d",evt.getSourceId());
+		strcat( eventPacket, floatChar );
+		strcat( eventPacket, "," ); // Spacer
+
+		// Converts x to char, appends to eventPacket
+		sprintf(floatChar,"%f",evt.getPosition(0));
+		strcat( eventPacket, floatChar );
+		strcat( eventPacket, "," ); // Spacer
+
+		// Converts y to char, appends to eventPacket
+		sprintf(floatChar,"%f",evt.getPosition(1));
+		strcat( eventPacket, floatChar );
+
+		if( evt.getExtraDataLength() == 2){ // TouchPoint down/up/move
+			// Converts xWidth to char, appends to eventPacket
 			strcat( eventPacket, "," ); // Spacer
-
-			// Converts id to char, appends to eventPacket
-			sprintf(floatChar,"%d",evt.getSourceId());
+			sprintf(floatChar,"%f", evt.getExtraDataFloat(0) );
 			strcat( eventPacket, floatChar );
+			
+			// Converts yWidth to char, appends to eventPacket
 			strcat( eventPacket, "," ); // Spacer
-
-			// Converts x to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.getPosition(0));
+			sprintf(floatChar,"%f", evt.getExtraDataFloat(1) );
 			strcat( eventPacket, floatChar );
+		} else if( evt.getExtraDataLength() >= 4) { // Touch Gestures
+			// Converts value to char, appends to eventPacket
 			strcat( eventPacket, "," ); // Spacer
-
-			// Converts y to char, appends to eventPacket
-			sprintf(floatChar,"%f",evt.getPosition(1));
+			sprintf(floatChar,"%f", evt.getExtraDataFloat(0) );
+			strcat( eventPacket, floatChar );
+			
+			// Converts value to char, appends to eventPacket
+			strcat( eventPacket, "," ); // Spacer
+			sprintf(floatChar,"%f", evt.getExtraDataFloat(1) );
 			strcat( eventPacket, floatChar );
 
-			if( evt.getExtraDataLength() == 2){ // TouchPoint down/up/move
-				// Converts xWidth to char, appends to eventPacket
+			// Converts value to char, appends to eventPacket
+			strcat( eventPacket, "," ); // Spacer
+			sprintf(floatChar,"%f", evt.getExtraDataFloat(2) );
+			strcat( eventPacket, floatChar );
+
+			// Converts value to char, appends to eventPacket
+			strcat( eventPacket, "," ); // Spacer
+			sprintf(floatChar,"%f", evt.getExtraDataFloat(3) );
+			strcat( eventPacket, floatChar );
+
+			if( evt.getType() == Event::Rotate ){
+				// Converts rotation to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.getExtraDataFloat(0) );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(4) );
 				strcat( eventPacket, floatChar );
-				
-				// Converts yWidth to char, appends to eventPacket
+			} else if( evt.getType() == Event::Split ){
+				// Converts values to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.getExtraDataFloat(1) );
-				strcat( eventPacket, floatChar );
-			} else { // Touch Gestures
-				// Converts value to char, appends to eventPacket
-				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.getExtraDataFloat(0) );
-				strcat( eventPacket, floatChar );
-				
-				// Converts value to char, appends to eventPacket
-				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.getExtraDataFloat(1) );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(4) ); // Delta distance
 				strcat( eventPacket, floatChar );
 
-				// Converts value to char, appends to eventPacket
 				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.getExtraDataFloat(2) );
+				sprintf(floatChar,"%f", evt.getExtraDataFloat(5) ); // Delta ratio
 				strcat( eventPacket, floatChar );
-
-				// Converts value to char, appends to eventPacket
-				strcat( eventPacket, "," ); // Spacer
-				sprintf(floatChar,"%f", evt.getExtraDataFloat(3) );
-				strcat( eventPacket, floatChar );
-
-				if( evt.getType() == Event::Rotate ){
-					// Converts rotation to char, appends to eventPacket
-					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.getExtraDataFloat(4) );
-					strcat( eventPacket, floatChar );
-				} else if( evt.getType() == Event::Split ){
-					// Converts values to char, appends to eventPacket
-					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.getExtraDataFloat(4) ); // Delta distance
-					strcat( eventPacket, floatChar );
-
-					strcat( eventPacket, "," ); // Spacer
-					sprintf(floatChar,"%f", evt.getExtraDataFloat(5) ); // Delta ratio
-					strcat( eventPacket, floatChar );
-				}
 			}
+		}
 
 			strcat( eventPacket, " " ); // Spacer
 
