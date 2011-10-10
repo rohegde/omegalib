@@ -150,12 +150,6 @@ void MeshRenderable::refresh()
 	colorAttrib.target = VertexAttribute::TargetPrimaryColor;
 
 	MeshData* meshData = myMesh->getData();
-	if(meshData == NULL)
-	{
-		owarn("MeshRenderable::refresh: mesh data = NULL.");
-		return;
-	}
-
 	int numVertices = meshData->getNumVertices();
 	int dataSize = numVertices * 3 * sizeof(float);
 	int elementSize = 3 * sizeof(float);
@@ -228,14 +222,11 @@ void MeshRenderable::draw(RenderState* state)
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
 		pushNodeTransform();
-		if(myMesh->getData() != NULL)
-		{
-			getRenderer()->drawPrimitives(
-				myVertexBuffer,
-				NULL,
-				myMesh->getData()->getNumVertices(),
-				Renderer::DrawPoints);
-		}
+		getRenderer()->drawIndexedPrimitives(
+			myVertexBuffer,
+			myIndexData,
+			myMesh->getData()->getNumTriangles() * 3,
+			Renderer::DrawTriangles);
 		popNodeTransform();
 	}
 }

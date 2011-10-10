@@ -49,11 +49,11 @@ namespace oengine {
 
         bool readPlyFile( const std::string& file );
         void sort( const uint start, const uint length, const Axis axis );
-        void scale( const float baseSize = 2.0f );
-        void calculateNormals( const bool vertexNormals = true );
-        void calculateBoundingBox();
-        const AlignedBox3& getBoundingBox() const { return _boundingBox; }
-        Axis getLongestAxis( const size_t start, const size_t elements ) const;
+        //void scale( const float baseSize = 2.0f );
+        //void calculateNormals( const bool vertexNormals = true );
+        //void calculateBoundingBox();
+        //const AlignedBox3& getBoundingBox() const { return _boundingBox; }
+        //Axis getLongestAxis( const size_t start, const size_t elements ) const;
 
         void useInvertedFaces() { _invertFaces = true; }
 
@@ -62,7 +62,6 @@ namespace oengine {
                            const bool readColors );
         void readTriangles( PlyFile* file, const int nFaces );
 
-        AlignedBox3 _boundingBox;
         bool        _invertFaces;
     };
 }; // namespace oengine

@@ -37,20 +37,20 @@
 #include "omega/StringUtils.h"
 #include <cstdlib>
 #include <algorithm>
-#include <math.h>
-
-#ifdef OMEGA_OS_LINUX
-#include <float.h>
-#endif
-
-#ifdef OMEGA_OS_OSX
-#include <cfloat>
-#endif
-
-#include "omega/glheaders.h"
-
-#define min(a, b)  ((a)<(b))?(a):(b)
-#define max(a, b)  ((a)>(b))?(a):(b)
+//#include <math.h>
+//
+//#ifdef OMEGA_OS_LINUX
+//#include <float.h>
+//#endif
+//
+//#ifdef OMEGA_OS_OSX
+//#include <cfloat>
+//#endif
+//
+//#include "omega/glheaders.h"
+//
+//#define min(a, b)  ((a)<(b))?(a):(b)
+//#define max(a, b)  ((a)>(b))?(a):(b)
 
 typedef unsigned char uint8_t;
 
@@ -62,7 +62,6 @@ using namespace oengine;
 PlyDataReader::PlyDataReader()
     : _invertFaces( false )
 {
-	_boundingBox.setNull();
 }
 
 
@@ -236,150 +235,6 @@ bool PlyDataReader::readPlyFile( const std::string& filename )
     
     return result;
 }
-
-
-/*  Calculate the face or vertex normals of the current vertex data.  */
-void PlyDataReader::calculateNormals( const bool vertexNormals )
-{
-    int wrongNormals = 0;
-    
-    normals.clear();
-    if( vertexNormals )
-    {
-        normals.reserve( vertices.size() );
-        
-        // initialize all normals to zero
-        for( size_t i = 0; i < vertices.size(); ++i )
-            normals.push_back( Vector3f( 0, 0, 0 ) );
-    }
-    else
-        normals.reserve( triangles.size() );
-    
-    // iterate over all triangles and add their normals to adjacent vertices
-    Vector3f  triangleNormal;
-    uint   i0, i1, i2;
-    for( size_t i = 0; i < triangles.size(); ++i )
-    {
-        i0 = triangles[i](0);
-        i1 = triangles[i](1);
-        i2 = triangles[i](2);
-        triangleNormal = Math::normal(  vertices[i0],
-                                       vertices[i1],
-                                       vertices[i2] );
-        
-        // count emtpy normals in debug mode
-        if( triangleNormal.norm() == 0.0f ) ++wrongNormals;
-         
-        if( vertexNormals )
-        {
-            normals[i0] += triangleNormal; 
-            normals[i1] += triangleNormal; 
-            normals[i2] += triangleNormal;
-        }
-        else
-            normals.push_back( triangleNormal ); 
-    }
-    
-    // normalize all the normals
-    if( vertexNormals )
-        for( size_t i = 0; i < vertices.size(); ++i )
-            normals[i].normalize();
-    
-    if( wrongNormals > 0 ) ofmsg("%1% faces had no valid normal.", %wrongNormals);
-}
-
-
-/*  Calculate the bounding box of the current vertex data.  */
-void PlyDataReader::calculateBoundingBox()
-{
-	_boundingBox.setNull();
-	
-	float m = FLT_MAX;
-	Vector3f vmin = Vector3f(m, m,  m);
-	Vector3f vmax = Vector3f(-m, -m,  -m);
-
-    for( size_t v = 1; v < vertices.size(); ++v )
-	{
-		Vector3f& ve = vertices[v];
-		for(int i = 0; i < 3; i++)
-		{
-			vmin[i] = min(vmin[i], ve[i]);
-			vmax[i] = max(vmax[i], ve[i]);
-		}
-	}
-	_boundingBox.setExtents(vmin, vmax);
-}
-
-
-/* Calculates longest axis for a set of triangles */
-Axis PlyDataReader::getLongestAxis( const size_t start,
-                                 const size_t elements ) const
-{
-    if( start + elements > triangles.size() )
-    {
-		return AxisX;
-    }
-
-    AlignedBox3 bb;
-    bb[0] = vertices[ triangles[start][0] ];
-    bb[1] = vertices[ triangles[start][0] ];
-
-    for( size_t t = start; t < start+elements; ++t )
-        for( size_t v = 0; v < 3; ++v )
-            for( size_t i = 0; i < 3; ++i )
-            {
-				bb[0][i] = min( bb[0][i], vertices[ triangles[t][v] ][i] );
-                bb[1][i] = max( bb[1][i], vertices[ triangles[t][v] ][i] );
-            }
-
-    const GLfloat bbX = bb[1][0] - bb[0][0];
-    const GLfloat bbY = bb[1][1] - bb[0][1];
-    const GLfloat bbZ = bb[1][2] - bb[0][2];
-
-    if( bbX >= bbY && bbX >= bbZ )
-        return AxisY;
-
-    if( bbY >= bbX && bbY >= bbZ )
-        return AxisZ;
-
-    return AxisZ;
-}
-
-
-/*  Scales the data to be within +- baseSize/2 (default 2.0) coordinates.  */
-void PlyDataReader::scale( const float baseSize )
-{
-    // calculate bounding box if not yet done
-	if(_boundingBox.isNull())
-        calculateBoundingBox();
-    
-    // find largest dimension and determine scale factor
-    float factor = 0.0f;
-    for( size_t i = 0; i < 3; ++i )
-        factor = max( factor, _boundingBox[1][i] - _boundingBox[0][i] );
-    factor = baseSize / factor;
-    
-    // determine scale offset
-    Vector3f offset;
-    for( size_t i = 0; i < 3; ++i )
-        offset[i] = ( _boundingBox[0][i] + _boundingBox[1][i] ) * 0.5f;
-    
-    // scale the data
-    for( size_t v = 0; v < vertices.size(); ++v )
-        for( size_t i = 0; i < 3; ++i )
-        {
-            vertices[v][i] -= offset[i];
-            vertices[v][i] *= factor;
-        }
-    
-	Vector3f min, max;
-	min = (_boundingBox[0] - offset) * factor;
-	max = (_boundingBox[1] - offset) * factor;
-
-    // scale the bounding box
-	_boundingBox.setExtents(min, max);
-}
-
 
 /** @cond IGNORE */
 /*  Helper structure to sort Triangles with standard library sort function.  */

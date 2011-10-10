@@ -24,49 +24,69 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OENGINE_H__
-#define __OENGINE_H__
+#ifndef __OSG_ENTITY_H__
+#define __OSG_ENTITY_H__
 
-#include "oengine/oenginebase.h"
-#include "oengine/Actor.h"
-#include "oengine/BoundingSphere.h"
-#include "oengine/Box.h"
-#include "oengine/Camera.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/DefaultTwoHandsInteractor.h"
-#include "oengine/DefaultRenderPass.h"
-#include "oengine/Effect.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/ImageUtils.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
-#include "oengine/Mesh.h"
-#include "oengine/MeshData.h"
-#include "oengine/Node.h"
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/ObjDataReader.h"
-#include "oengine/PlyDataReader.h"
-#include "oengine/ply.h"
-#include "oengine/Pointer.h"
-#include "oengine/Renderable.h"
-#include "oengine/ReferenceBox.h"
-#include "oengine/RenderToTexture.h"
-#include "oengine/RenderPass.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/SceneNode.h"
-#include "oengine/Renderer.h"
-#include "oengine/Teapot.h"
+#include "oosg/oosgbase.h"
+#include "oosg/OsgRenderPass.h"
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
-#include "oengine/ui/Label.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UserManagerPanel.h"
+#include "omega/osystem.h"
+#include "omega/EngineClient.h"
+#include "omega/ui.h"
+#include "omega/scene/BoundingSphere.h"
 
+namespace osg
+{
+	class Node;
+	class FrameStamp;
+	class NodeVisitor;
+}
+
+namespace oosg
+{
+	using namespace omega;
+	using namespace omega::scene;
+	using namespace omega::ui;
+
+	class OsgRenderable;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Stores data relative to one Osg scene hierarchy. OsgScene also supports loading scenes from 
+	//! .osg files. Scenes can be rendered by attaching them to OsgRenderable instances.
+	class OOSG_API OsgEntity
+	{
+	public:
+		OsgEntity();
+		~OsgEntity();
+
+		float getRepresentationSize();
+		void setRepresentationSize(float value);
+
+		void update(const UpdateContext& context);
+		void load(const String& filename);
+		void addToScene(SceneNode* node);
+
+		osg::FrameStamp* getFrameStamp() { return myFrameStamp; }
+		osg::Node* getModel() { return myModel; }
+
+	private:
+		float myRepresentationSize;
+
+		osg::Node* myModel;
+		osg::FrameStamp* myFrameStamp;
+		osg::NodeVisitor* myUpdateVisitor;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline SceneNode* OsgEntity::getSceneNode()
+	//{ return mySceneNode; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float OsgEntity::getRepresentationSize()
+	{ return myRepresentationSize; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void OsgEntity::setRepresentationSize(float value)
+	{ myRepresentationSize = value; }
+};
 #endif
