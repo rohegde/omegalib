@@ -27,25 +27,25 @@
 #ifndef __REFERENCE_BOX_H__
 #define __REFERENCE_BOX_H__
 
-#include "oenginebase.h"
-#include "oengine/Renderable.h"
-#include "oengine/Effect.h"
-#include "oengine/RenderPass.h"
+#include "SceneObject.h"
+#include "SceneRenderable.h"
 
 namespace oengine {
 	// Forward declarations
 	class SceneNode;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ReferenceBox: public Renderable
+	class OENGINE_API ReferenceBox: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(ReferenceBox)
+	friend class ReferenceBoxRenderable;
 	public:
 		enum Side { Left, Right, Top, Bottom, Front, Back, NumSides };
 
 	public:
 		ReferenceBox();
 
-		virtual void render(SceneNode* node, RenderState* state);
+		virtual Renderable* createRenderable();
 
 		Color& getColor(Side side);
 		void setColor(Side side, const Color& color);
@@ -64,9 +64,6 @@ namespace oengine {
 
 		virtual const AlignedBox3* getBoundingBox();
 		virtual bool hasBoundingBox();
-	private:
-		void drawReferencePlane(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color);
-		void drawReferenceGrid(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines);
 
 	private:
 		bool mySideEnabled[NumSides];
@@ -75,6 +72,23 @@ namespace oengine {
 		float myPrimaryLineInterval;
 		Vector3f mySize;
 		AlignedBox3 myBox;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API ReferenceBoxRenderable: public SceneRenderable
+	{
+	OMEGA_DECLARE_TYPE(ReferenceBoxRenderable)
+	public:
+		ReferenceBoxRenderable(ReferenceBox* owner);
+		virtual ~ReferenceBoxRenderable();
+		void draw(RenderState* state);
+	
+	private:
+		void drawReferencePlane(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color);
+		void drawReferenceGrid(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines);
+
+	private:
+		ReferenceBox* myOwner;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
