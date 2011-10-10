@@ -99,7 +99,7 @@ private:
 	List<Entity*> myEntities;
 
 	// Scene
-	//ReferenceBox* myReferenceBox;
+	ReferenceBox* myReferenceBox;
 
 	// UI
 	Vector<Button*> myEntityButtons;

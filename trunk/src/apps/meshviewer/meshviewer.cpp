@@ -174,12 +174,12 @@ void MeshViewer::initialize()
 	//light->setPosition(Vector3f(0, 0, -3));
 
 	// Create a reference box around the scene.
-	//if(cfg->exists("config/referenceBox"))
-	//{
-	//	myReferenceBox = new ReferenceBox();
-	//	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
-	//	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
-	//}
+	if(cfg->exists("config/referenceBox"))
+	{
+		myReferenceBox = new ReferenceBox();
+		getScene(0)->addObject(myReferenceBox);
+		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+	}
 
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
