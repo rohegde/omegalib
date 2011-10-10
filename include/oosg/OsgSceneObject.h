@@ -24,49 +24,47 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OENGINE_H__
-#define __OENGINE_H__
+#ifndef __OSG_RENDERABLE_H__
+#define __OSG_RENDERABLE_H__
 
-#include "oengine/oenginebase.h"
-#include "oengine/Actor.h"
-#include "oengine/BoundingSphere.h"
-#include "oengine/Box.h"
-#include "oengine/Camera.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/DefaultTwoHandsInteractor.h"
-#include "oengine/DefaultRenderPass.h"
-#include "oengine/Effect.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/ImageUtils.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
-#include "oengine/Mesh.h"
-#include "oengine/MeshData.h"
-#include "oengine/Node.h"
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/ObjDataReader.h"
-#include "oengine/PlyDataReader.h"
-#include "oengine/ply.h"
-#include "oengine/Pointer.h"
-#include "oengine/Renderable.h"
-#include "oengine/ReferenceBox.h"
-#include "oengine/RenderToTexture.h"
-#include "oengine/RenderPass.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/SceneNode.h"
-#include "oengine/Renderer.h"
-#include "oengine/Teapot.h"
+#include "oosg/oosgbase.h"
+#include "omega/osystem.h"
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
-#include "oengine/ui/Label.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UserManagerPanel.h"
+#include "omega/scene/SceneNode.h"
+#include "omega/scene/RenderPass.h"
 
+using namespace omega;
+using namespace omega::scene;
+
+namespace osg
+{
+	class MatrixTransform;
+	class Node;
+}
+
+namespace oosg
+{
+	using namespace omega;
+	using namespace omega::scene;
+
+	class OsgEntity;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OOSG_API OsgRenderable: public Renderable
+	{
+	public:
+		OsgRenderable(OsgEntity* entity);
+		~OsgRenderable();
+
+		virtual void render(SceneNode* node, RenderState* state);
+
+		virtual const AlignedBox3* getBoundingBox();
+		virtual bool hasBoundingBox() { return true; }
+
+	private:
+		OsgEntity* myEntity;
+		osg::MatrixTransform* myOsgNode;
+		AlignedBox3 myBBox;
+	};
+};
 #endif

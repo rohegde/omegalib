@@ -24,49 +24,65 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OENGINE_H__
-#define __OENGINE_H__
+#include "oosg/OsgRenderable.h"
+#include "oosg/OsgRenderPass.h"
+#include "oosg/OsgEntity.h"
+#include "omega/StringUtils.h"
 
-#include "oengine/oenginebase.h"
-#include "oengine/Actor.h"
-#include "oengine/BoundingSphere.h"
-#include "oengine/Box.h"
-#include "oengine/Camera.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/DefaultTwoHandsInteractor.h"
-#include "oengine/DefaultRenderPass.h"
-#include "oengine/Effect.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/ImageUtils.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
-#include "oengine/Mesh.h"
-#include "oengine/MeshData.h"
-#include "oengine/Node.h"
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/ObjDataReader.h"
-#include "oengine/PlyDataReader.h"
-#include "oengine/ply.h"
-#include "oengine/Pointer.h"
-#include "oengine/Renderable.h"
-#include "oengine/ReferenceBox.h"
-#include "oengine/RenderToTexture.h"
-#include "oengine/RenderPass.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/SceneNode.h"
-#include "oengine/Renderer.h"
-#include "oengine/Teapot.h"
+#include <osg/Node>
+#include <osg/MatrixTransform>
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
-#include "oengine/ui/Label.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UserManagerPanel.h"
+using namespace oosg;
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+OsgRenderable::OsgRenderable(OsgEntity* entity)
+{
+	myEntity = entity;
+
+    myOsgNode = new osg::MatrixTransform();
+    myOsgNode->addChild( entity->getModel() );
+    myOsgNode->setDataVariance( osg::Object::STATIC );
+
+	const osg::BoundingSphere& bs = entity->getModel()->getBound();
+	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
+	Vector3f radius(bs.radius(), bs.radius(), bs.radius());
+
+	ofmsg("OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+
+	myBBox.setExtents(center - radius, center + radius);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+OsgRenderable::~OsgRenderable()
+{
+	myOsgNode->unref();
+	myOsgNode = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgRenderable::render(SceneNode* node, RenderState* state)
+{
+	// Do stuff only if render pass is a Vtk render pass
+	if(state->isFlagSet(OsgRenderPass::RenderOsg))
+	{
+		const AffineTransform3& xform =  node->getFullTransform();
+		const omega::math::matrix<4, 4>& m = xform.matrix();
+		osg::Matrix oxform;
+		oxform.set(m.data());
+		myOsgNode->setMatrix( oxform );
+
+		// NOTE: we assume this cast works since only VtkRenderPass should set the 
+		// RenderVtk flag on a render state.
+		OsgRenderPass* osgrp = (OsgRenderPass*)state->pass;
+
+		// Render this osg node.
+		osgrp->renderEntity(myOsgNode, myEntity);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const AlignedBox3* OsgRenderable::getBoundingBox()
+{
+	return &myBBox;
+}
+

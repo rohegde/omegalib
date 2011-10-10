@@ -97,11 +97,36 @@ void MeshViewer::loadEntityLibrary()
 			{
 				String meshFilename = String((const char*)entitySetting["mesh"]);
 
-				PlyDataReader* reader = new PlyDataReader();
-				reader->readPlyFile(meshFilename);
-				reader->scale(0.8f);
-
-				ed->meshData = reader;
+				if(StringUtils::endsWith(meshFilename, "ply"))
+				{
+					PlyDataReader* reader = new PlyDataReader();
+					if(!reader->readPlyFile(meshFilename))
+					{
+						ofwarn("Could not load mesh file %1%.", %meshFilename);
+					}
+					else
+					{
+						reader->scale(0.8f);
+						ed->meshData = reader;
+					}
+				}
+				else if(StringUtils::endsWith(meshFilename, "obj"))
+				{
+					ObjDataReader* reader = new ObjDataReader();
+					if(!reader->readFile(meshFilename))
+					{
+						ofwarn("Could not load mesh file %1%.", %meshFilename);
+					}
+					else
+					{
+						reader->scale(0.8f);
+						ed->meshData = reader;
+					}
+				}
+				else
+				{
+					ofwarn("%1%: unsupported file format.", %meshFilename);
+				}
 			}
 
 			myEntityLibrary.push_back(ed);
