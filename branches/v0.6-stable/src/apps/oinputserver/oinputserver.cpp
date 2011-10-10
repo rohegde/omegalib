@@ -252,6 +252,19 @@ public:
 			strcat( eventPacket, floatChar );
 			return true;
 			break;
+		
+		case Service::Keyboard:
+			// Converts key event type to char, appends to eventPacket
+			sprintf(floatChar,"%d",evt.getType());
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+			
+			// Converts key pressed to char, appends to eventPacket
+			sprintf(floatChar,"%d",evt.getSourceId());
+			strcat( eventPacket, floatChar );
+			strcat( eventPacket, "," ); // Spacer
+			return true;
+			break;
 		default: break;
 		}
 		
