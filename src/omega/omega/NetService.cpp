@@ -483,6 +483,11 @@ void NetService::parseDGram(int result)
 				}
 
 				break;
+			
+			case(Service::Keyboard):
+				evt = mysInstance->writeHead();
+				evt->reset(Event::Down, Service::Keyboard, (unsigned int)(params[1]));
+				break;
 			default:
 				printf("NetService: Unsupported input type %d \n", inputType);
 				break;
