@@ -207,18 +207,10 @@ endif(OMEGA_BUILD_VTK_LIB)
 
 # Open Scene Graph configuration, libraries and applications
 if(OMEGA_BUILD_OSG_LIB)
-	find_package(OpenSceneGraph 2.9.8 COMPONENTS osgDB osgUtil)
-	if(OSG_LIBRARY MATCHES "OSG_LIBRARY-NOTFOUND")
-	  message(FATAL_ERROR "OSG not found")	 
-	endif()
-	if(${OPENSCENEGRAPH_VERSION} VERSION_LESS "2.9.8")
-	  message(FATAL_ERROR "Wrong OSG version: ${OPENSCENEGRAPH_VERSION} found, need >= 2.9.8")
-	endif()
-	include_directories(SYSTEM ${OPENSCENEGRAPH_INCLUDE_DIRS})
-	
+	include(${OmegaLib_SOURCE_DIR}/ext/UseOpenSceneGraph.cmake)
 	add_subdirectory(oosg)
 	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/osgviewer)
+		add_subdirectory(apps/osg/osgshape)
 	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_OSG_LIB)
 

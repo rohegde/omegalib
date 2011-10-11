@@ -39,7 +39,7 @@ set( srcs
 		oengine/EngineServer.cpp
 		oengine/Font.cpp
 		oengine/OverlayRenderable.cpp
-		oengine/ObjDataReader.cpp
+		#oengine/ObjDataReader.cpp
 		oengine/Pointer.cpp
 		oengine/Renderer.cpp
 		oengine/Effect.cpp
@@ -65,11 +65,11 @@ set( srcs
 		oengine/ReferenceBox.cpp
 		oengine/Renderable.cpp
 		oengine/UiRenderPass.cpp
-		oengine/obj/obj.cpp
-		oengine/obj/obj.hpp
-		oengine/obj/obj_config.hpp
-		oengine/obj/obj_parser.cpp
-		oengine/obj/obj_parser.hpp
+		#oengine/obj/obj.cpp
+		#oengine/obj/obj.hpp
+		#oengine/obj/obj_config.hpp
+		#oengine/obj/obj_parser.cpp
+		#oengine/obj/obj_parser.hpp
 		
 		# omega::ui
 		oengine/ui/AbstractButton.cpp

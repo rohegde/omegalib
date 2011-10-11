@@ -112,16 +112,16 @@ void MeshViewer::loadEntityLibrary()
 				}
 				else if(StringUtils::endsWith(meshFilename, "obj"))
 				{
-					ObjDataReader* reader = new ObjDataReader();
-					if(!reader->readFile(meshFilename))
-					{
-						ofwarn("Could not load mesh file %1%.", %meshFilename);
-					}
-					else
-					{
-						reader->scale(0.8f);
-						ed->meshData = reader;
-					}
+					// ObjDataReader* reader = new ObjDataReader();
+					// if(!reader->readFile(meshFilename))
+					// {
+						// ofwarn("Could not load mesh file %1%.", %meshFilename);
+					// }
+					// else
+					// {
+						// reader->scale(0.8f);
+						// ed->meshData = reader;
+					// }
 				}
 				else
 				{
