@@ -46,7 +46,7 @@ void LightingPass::render(EngineClient* client, const DrawContext& context)
 
 	EngineServer* es = client->getServer();
 
-	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, es->getAmbientLightColor().data());
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, es->getAmbientLightColor().data());
 
 	GLenum lightId = GL_LIGHT0;
 	for(int i = 0; i < EngineServer::MaxLights; i++)
@@ -65,6 +65,10 @@ void LightingPass::render(EngineClient* client, const DrawContext& context)
 			glLightfv(lightId, GL_POSITION, fv);
 
 			lightId++;
+		}
+		else
+		{
+			glDisable(lightId);
 		}
 	}
 

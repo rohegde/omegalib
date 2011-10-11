@@ -171,32 +171,32 @@ void MeshViewer::initialize()
 	// Create and initialize meshviewer UI
 	initUi();
 
-	//getSceneManager()->setAmbientLightColor(Color::Black);
+	setAmbientLightColor(Color::Black);
 
-	//Light* light = getSceneManager()->getLight(0);
-	//light->setEnabled(true);
-	//light->setColor(Color(0.5f, 0.5f, 0.5f));
-	//light->setPosition(Vector3f(0, 3, 3));
+	Light* light = getLight(0);
+	light->setEnabled(true);
+	light->setColor(Color(0.5f, 0.5f, 0.5f));
+	light->setPosition(Vector3f(0, 3, 3));
 
-	//light = getSceneManager()->getLight(1);
-	//light->setEnabled(true);
-	//light->setColor(Color(0.3f, 0.35f, 0.3f));
-	//light->setPosition(Vector3f(-3, 0, 0));
+	light = getLight(1);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(-3, 0, 0));
 
-	//light = getSceneManager()->getLight(2);
-	//light->setEnabled(true);
-	//light->setColor(Color(0.3f, 0.35f, 0.3f));
-	//light->setPosition(Vector3f(3, 0, 0));
+	light = getLight(2);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(3, 0, 0));
 
-	//light = getSceneManager()->getLight(3);
-	//light->setEnabled(true);
-	//light->setColor(Color(0.3f, 0.3f, 0.35f));
-	//light->setPosition(Vector3f(0, -3, 0));
+	light = getLight(3);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.3f, 0.35f));
+	light->setPosition(Vector3f(0, -3, 0));
 
-	//light = getSceneManager()->getLight(4);
-	//light->setEnabled(true);
-	//light->setColor(Color(0.35f, 0.3f, 0.3f));
-	//light->setPosition(Vector3f(0, 0, -3));
+	light = getLight(4);
+	light->setEnabled(true);
+	light->setColor(Color(0.35f, 0.3f, 0.3f));
+	light->setPosition(Vector3f(0, 0, -3));
 
 	// Create a reference box around the scene.
 	if(cfg->exists("config/referenceBox"))
@@ -367,9 +367,7 @@ void MeshViewer::updateSelection(const Ray& ray)
 	{
 		// The ray intersected with something.
 		SceneNode* sn = sqrl.front().node;
-		ofmsg("sn %1%", %sn->getName());
 		Entity* e = findEntity(sn);
-		ofmsg("entity %1%", %e->getData()->name);
 
 		if(mySelectedEntity != e)
 		{
