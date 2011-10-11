@@ -100,7 +100,7 @@ namespace oengine {
 		//@{
 		Light* getLight(int index);
 		Color& getAmbientLightColor();
-		void setAmbientLightColor(Color& value);
+		void setAmbientLightColor(const Color& value);
 		//@}
 
 		virtual void initialize();
@@ -171,7 +171,7 @@ namespace oengine {
 	{ return myAmbientColor; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void EngineServer::setAmbientLightColor(Color& value)
+	inline void EngineServer::setAmbientLightColor(const Color& value)
 	{ myAmbientColor = value; }
 }; // namespace oengine
 
