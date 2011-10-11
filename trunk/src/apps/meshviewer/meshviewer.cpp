@@ -285,6 +285,7 @@ void MeshViewer::destroyEntity(Entity* e)
 	myEntities.remove(e);
 	delete e;
 	myInteractor->setSceneNode(NULL);
+	if(mySelectedEntity == e) mySelectedEntity = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +294,14 @@ void MeshViewer::handleEvent(const Event& evt)
     EngineServer::handleEvent(evt);
 	if(evt.getServiceType() == Service::Pointer) 
 	{
-		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
+		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
+		{
+			if(mySelectedEntity != NULL)
+			{
+				destroyEntity(mySelectedEntity);
+			}
+		}
+		else if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
 		{
 			Ray ray;
 			ray.setOrigin(evt.getExtraDataVector3(0));
