@@ -232,9 +232,9 @@ void MeshRenderable::draw(RenderState* state)
 		{
 			getRenderer()->drawPrimitives(
 				myVertexBuffer,
-				NULL,
-				myMesh->getData()->getNumVertices(),
-				Renderer::DrawPoints);
+				myIndexData,
+				myMesh->getData()->getNumTriangles() * 3,
+				Renderer::DrawTriangles);
 		}
 		popNodeTransform();
 	}
