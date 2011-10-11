@@ -141,11 +141,10 @@ To integrate stereo into your Unity project you will need the following:
 
 OmegaLibUnityStereoscopic.unitypackage can be found on the svn under 'trunk/tutorials/tutorial8/Assets/Packages'
 
-As of 9/9/11 the head tracked stereoscopic script will only work in Unity 3.1.0.
- * You can use the stereo script in newer versions of Unity, but the head-tracked perspective may be incorrect.
- * Windows: http://download.unity3d.com/download_unity/UnitySetup-3.1.0.exe
- * Mac: http://download.unity3d.com/download_unity/unity-3.1.0.dmg
- * Other versions are available simply by changing the version
+As of 10/10/11 the head tracked stereoscopic script is tested to work in Unity 3.1.0 up to 3.4.1
+ * Windows: http://download.unity3d.com/download_unity/UnitySetup-3.4.1.exe
+ * Mac: http://download.unity3d.com/download_unity/unity-3.4.1.dmg
+ * Other versions are available simply by changing the version number.
  
 The origin of the stereo camera is at the center of the screen, 1.5 Unity units (meters) above the floor. So when using this script, if the player is head-tracked and is standing on the floor, the floor should be translated by -1.5 in the Y direction.
  
@@ -177,8 +176,10 @@ First we'll look at using a pre-made camera package. Afterwards we'll look at ma
 
 3. Drag 'Scripts/InterlacedStereoScript.cs' on to your main camera.
 
-4. Notice two public variables on your camera:
+4. Notice the public variables on your camera:
+ * Enable Stereo - Toggles the stereo perspective on/off. (This will have of effect on the free version of Unity, you will have to disable the script to see the camera view. However this view will have a different perspective than the stereo view so use Unity Pro or test often on the VR system!)
  * Eye Position - Set this to the mocap object we created in step 2.
+ * Focus Position - This is the focal point of the camera. This should always be at the mocap origin with local coordinates at 0,0,0. Check the HeadTrackedStereo prefab to see the proper relationship between the Eye Position, Main Camera, and Focus Position.
  * Stereo Material - Use the meterial under 'Materials/stereo3DMat'. Make sure this material's shader is set to 'Stereo 3D View Material'.
  
 5. Your camera is now set for stereovision. Remember that you need Unity pro in order to preview this. Also the stereo perspective is calculated for the 2x2 stereo display in the classroom so the perspective may be off on your local machine.
