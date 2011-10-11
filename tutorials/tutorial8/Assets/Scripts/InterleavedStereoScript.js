@@ -1,51 +1,4 @@
-/*
-.-------------------------------------------------------------------
-|  Unity Stereoskopix 3D v026
-|-------------------------------------------------------------------
-|  This all started when TheLorax began this thread:
-|  http://forum.unity3d.com/threads/11775 
-|-------------------------------------------------------------------
-|  There were numerous contributions to the thread from 
-|  aNTeNNa trEE, InfiniteAlec, Jonathan Czeck, monark and others.
-|-------------------------------------------------------------------
-|  checco77 of Esimple Studios wrapped the whole thing up
-|  in a script & packaged it with a shader, materials, etc. 
-|  http://forum.unity3d.com/threads/60961 
-|  Esimple included a copyright & license:
-|  Copyright (c) 2010, Esimple Studios All Rights Reserved.
-|  License: Distributed under the GNU GENERAL PUBLIC LICENSE (GPL) 
-| ------------------------------------------------------------------
-|  I tweaked everything, added options for Side-by-Side, Over-Under,
-|  Swap Left/Right, etc, along with a GUI interface: 
-|  http://forum.unity3d.com/threads/63874 
-|-------------------------------------------------------------------
-|  Wolfram then pointed me to shaders for interlaced/checkerboard display.
-|-------------------------------------------------------------------
-|  In this version (v026), I added Wolfram's additional display modes,
-|  moved Esimple's anaglyph options into the script (so that only one
-|  material is needed), and reorganized the GUI.
-|-------------------------------------------------------------------
-|  The package consists of
-|  1) this script ('stereoskopix3D.js')
-|  2) a shader ('stereo3DViewMethods.shader') 
-|  3) a material ('stereo3DMat')
-|  4) a demo scene ('demoScene3D.scene') - WASD or arrow keys travel, 
-|     L button grab objects, L button lookaround when GUI hidden.
-|-------------------------------------------------------------------
-|  Instructions: (NOTE: REQUIRES UNITY PRO) 
-|  1. Drag this script onto your camera.
-|  2. Drag 'stereoMat' into the 'Stereo Materials' field.
-|  3. Hit 'Play'. 
-|  4. Adjust parameters with the GUI controls, press the Z key to toggle.
-|  5. To save settings from the GUI, copy them down, hit 'Stop',
-|     and enter the new settings in the camera inspector.
-'-------------------------------------------------------------------
-|  Perry Hoberman <hoberman (at) bway.net
-|-------------------------------------------------------------------
-*/
-
 @script RequireComponent (Camera)
-@script AddComponentMenu ("stereoskopix/stereoskopix3D")
 
 var enableStereo : boolean = true;
 var eyePosition : Transform;
@@ -65,7 +18,7 @@ function Start () {
 		this.enabled = false;
 		return;
 	}
-	
+
 	//init lt and rt camera properties
 	leftCam = new GameObject ("leftCam", Camera);
 	rightCam = new GameObject ("rightCam", Camera);
@@ -108,6 +61,7 @@ function LateUpdate() {
 }
 
 function UpdateView() {
+	transform.localPosition = new Vector3( 0, 0, 0 );
 	leftCam.camera.projectionMatrix = projectionMatrix(true);
 	rightCam.camera.projectionMatrix = projectionMatrix(false);
 }
@@ -158,12 +112,18 @@ function projectionMatrix(isLeftCam : boolean) : Matrix4x4
 	var windowLeftOffset : float = -0.965;
 	var wndowRightOffset : float =  0.973;
 	
-	// 2731x1525 (Windowed) - Nearly fills screen
-	windowUpperOffset = 0.539;
-	windowLowerOffset = -0.552;
-	windowLeftOffsett = -1.17;
-	wndowRightOffset =  1.17;
+	var manualOffsetR : float = -0.34;
+	var manualOffsetU : float = 0.09;
 	
+	var manualOffsetH : float = 0.17;
+	var manualOffsetV : float = -0.05;
+	
+	// 2731x1525 (Windowed) - Nearly fills screen
+	windowUpperOffset = 0.539 + manualOffsetU + manualOffsetV;
+	windowLowerOffset = -0.552 + manualOffsetV;
+	windowLeftOffset = -1.16 + manualOffsetH;
+	wndowRightOffset =  1.17 + manualOffsetR + manualOffsetH;
+
 	var Scr_LL_wc : Vector3 = Vector3( windowLeftOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Left Corner 
     var Scr_LR_wc : Vector3 = Vector3( wndowRightOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Right Corner 
     var Scr_UL_wc : Vector3 = Vector3( windowLeftOffset , windowUpperOffset , 0 ) + focusPosition.localPosition;   //Upper Left Corner 
@@ -177,12 +137,18 @@ function projectionMatrix(isLeftCam : boolean) : Matrix4x4
 	
 	if( isLeftCam )
 	{
-		eye  = Vector3( eyePosition.localPosition.x - eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
+		if( Application.unityVersion.Contains("3.1.0") ) // Flips eye y translation for older versions of Unity
+			eye  = Vector3( eyePosition.localPosition.x - eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
+		else // Tested for versions 3.3.0 and 3.4.0
+			eye  = Vector3( eyePosition.localPosition.x - eyeOffset , eyePosition.localPosition.y, eyePosition.localPosition.z);
 		//eye  = Vector3( -0.03175 , 0, -.9);	
 	}
 	else 
 	{	
-		eye  = Vector3( eyePosition.localPosition.x + eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
+		if( Application.unityVersion.Contains("3.1.0") ) // Flips eye y translation for older versions of Unity
+			eye  = Vector3( eyePosition.localPosition.x + eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
+		else // Tested for versions 3.3.0 and 3.4.0
+			eye  = Vector3( eyePosition.localPosition.x + eyeOffset , eyePosition.localPosition.y, eyePosition.localPosition.z);
 		//eye  = Vector3( 0.03175 , 0, -.9);	
 	}
 	
