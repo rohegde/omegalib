@@ -210,18 +210,21 @@ void MeshViewer::initialize()
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
 	{
-		DefaultMouseInteractor* interactor = onew(DefaultMouseInteractor)();
+		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
 		myInteractor = interactor;
 	}
 	else
 	{
-		DefaultTwoHandsInteractor* interactor = onew(DefaultTwoHandsInteractor)();
+		DefaultTwoHandsInteractor* interactor =  new DefaultTwoHandsInteractor();
 		interactor->initialize("ObserverUpdateService");
 		myInteractor = interactor;
 	}
 	
 	addActor(myInteractor);
     
+	myNavigationInteractor =  new NavigationInteractor();
+	addActor(myNavigationInteractor);
+
     myShowUI = true;
     autoRotate = true;
 	deltaScale = 0;
@@ -276,6 +279,7 @@ void MeshViewer::createEntity(EntityData* ed)
 	//e->getMesh()->setEffect(myColorIdEffect);
 	myEntities.push_back(e);
 	myInteractor->setSceneNode(e->getSceneNode());
+	myNavigationInteractor->setSceneNode(e->getSceneNode());
 	mySelectedEntity = e;
 }
 
@@ -285,6 +289,7 @@ void MeshViewer::destroyEntity(Entity* e)
 	myEntities.remove(e);
 	delete e;
 	myInteractor->setSceneNode(NULL);
+	myNavigationInteractor->setSceneNode(NULL);
 	if(mySelectedEntity == e) mySelectedEntity = NULL;
 }
 
@@ -316,7 +321,7 @@ void MeshViewer::handleEvent(const Event& evt)
 	else if( evt.getServiceType() == Service::Keyboard )
     {
         if((char)evt.getSourceId() == 'q') exit(0);
-        if((char)evt.getSourceId() == 'd' && evt.getType() == Event::Down) 
+        if((char)evt.getSourceId() == 'e' && evt.getType() == Event::Down) 
         {
 			if(mySelectedEntity != NULL)
 			{
@@ -385,6 +390,7 @@ void MeshViewer::updateSelection(const Ray& ray)
 			}
 			// The selected entity changed.
 			myInteractor->setSceneNode(sn);
+			myNavigationInteractor->setSceneNode(sn);
 			sn->setSelected(true);
 			mySelectedEntity = e;
 		}
@@ -396,6 +402,7 @@ void MeshViewer::updateSelection(const Ray& ray)
 			mySelectedEntity->getSceneNode()->setSelected(false);
 			mySelectedEntity = NULL;
 			myInteractor->setSceneNode(NULL);
+			myNavigationInteractor->setSceneNode(NULL);
 		}
 	}
 }

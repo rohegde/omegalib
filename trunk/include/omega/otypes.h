@@ -34,6 +34,7 @@
 #include <list>
 #include <vector>
 #include <queue>
+#include <time.h>
 
 // boost includes
 #include <boost/foreach.hpp>
@@ -188,6 +189,44 @@ namespace omega
 	{
 		Horizontal = 0, 
 		Vertical = 1
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class Stopwatch
+	{
+	public:
+		Stopwatch():
+		  myIsRunning(false), myLt(0), mySt(0) {}
+
+		void start()
+		{
+			mySt = (float)((double)clock() / CLOCKS_PER_SEC);
+			myLt = mySt;
+			myIsRunning = true;
+		}
+		void stop()
+		{
+			myIsRunning = false;
+		}
+		bool isRunning()
+		{
+		}
+		float getElapsedTime()
+		{
+			float t = (float)((double)clock() / CLOCKS_PER_SEC);
+			return t - myLt;
+		}
+		float getDt()
+		{
+			float t = (float)((double)clock() / CLOCKS_PER_SEC);
+			float dt = myLt - t;
+			myLt = t;
+			return dt;
+		}
+	private:
+		bool myIsRunning;
+		float mySt;
+		float myLt;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

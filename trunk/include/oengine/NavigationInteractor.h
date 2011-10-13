@@ -24,50 +24,36 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OENGINE_H__
-#define __OENGINE_H__
+#ifndef __NAVIGATION_INTERACTOR_H__
+#define __NAVIGATION_INTERACTOR_H__
 
-#include "oengine/oenginebase.h"
+#include "oenginebase.h"
 #include "oengine/Actor.h"
-#include "oengine/BoundingSphere.h"
-#include "oengine/Box.h"
-#include "oengine/Camera.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/DefaultTwoHandsInteractor.h"
-#include "oengine/DefaultRenderPass.h"
-#include "oengine/Effect.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/ImageUtils.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
-#include "oengine/Mesh.h"
-#include "oengine/MeshData.h"
-#include "oengine/Node.h"
-#include "oengine/NavigationInteractor.h"
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/ObjDataReader.h"
-#include "oengine/PlyDataReader.h"
-#include "oengine/ply.h"
-#include "oengine/Pointer.h"
-#include "oengine/Renderable.h"
-#include "oengine/ReferenceBox.h"
-#include "oengine/RenderToTexture.h"
-#include "oengine/RenderPass.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/SceneNode.h"
-#include "oengine/Renderer.h"
-#include "oengine/Teapot.h"
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
-#include "oengine/ui/Label.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UserManagerPanel.h"
+namespace oengine
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API NavigationInteractor: public Actor
+	{
+	public:
+
+	public:
+		NavigationInteractor();
+
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
+
+	private:
+		float mySpeed;
+		//Vector3f myPosition;
+		Vector3f myVelocity;
+		Quaternion myOrientation;
+		bool myMoveLeft;
+		bool myMoveRight;
+		bool myMoveUp;
+		bool myMoveDown;
+		bool myDebug;
+	};
+}; // namespace omega
 
 #endif

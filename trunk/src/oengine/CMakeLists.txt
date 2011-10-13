@@ -54,6 +54,7 @@ set( srcs
 		oengine/Mesh.cpp
 		oengine/MeshData.cpp
 		oengine/Node.cpp
+		oengine/NavigationInteractor.cpp
 		oengine/glteapot.cpp
 		oengine/SceneObject.cpp
 		oengine/SceneQuery.cpp
@@ -105,6 +106,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/MeshData.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Node.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/NavigationInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Effect.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
