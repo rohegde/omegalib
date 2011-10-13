@@ -444,7 +444,7 @@ void CLManager::initialize()
 
 
 	// Create an OpenCL context
-    myCLContext = clCreateContextFromType(cprops, CL_DEVICE_TYPE_DEFAULT, NULL, NULL, &status);
+    myCLContext = clCreateContextFromType(cprops, CL_DEVICE_TYPE_GPU, NULL, NULL, &status);
     if(!clSuccessOrDie(status)) return;
 
     // First, get the size of device list data
