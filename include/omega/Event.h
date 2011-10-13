@@ -198,6 +198,11 @@ namespace omega
 		void setFlags(uint flags);
 		void clearFlags();
 
+		//! Utility method to check is the event is a key down event.
+		bool isKeyDown(char key) const;
+		//! Utility method to check is the event is a key up event.
+		bool isKeyUp(char key) const;
+
 		//! Point set
 		void setExtraDataType(ExtraDataType type);
 		ExtraDataType getExtraDataType() const;
@@ -349,6 +354,18 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::clearFlags()
 	{ myFlags = 0; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Event::isKeyDown(char key) const
+	{
+		return ((char)mySourceId == key && myType == Event::Down);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Event::isKeyUp(char key) const
+	{
+		return ((char)mySourceId == key && myType == Event::Up);
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Event::setExtraDataType(Event::ExtraDataType type)
