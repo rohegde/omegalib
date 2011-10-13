@@ -384,6 +384,7 @@ void CLManager::initialize()
 
 	if(myGpu->isGLEnabled())
 	{
+#ifdef OMEGA_OS_WIN
 		// The properties specify an OpenGL / OpenCL shared context
 		cl_context_properties glcps[] = 
 		{ 
@@ -394,11 +395,22 @@ void CLManager::initialize()
 			(cl_context_properties)wglGetCurrentDC(),
 			0
 		};
+#else
+		// The properties specify an OpenGL / OpenCL shared context
+		cl_context_properties glcps[] = {
+				CL_GL_CONTEXT_KHR,
+				(cl_context_properties)glXGetCurrentContext(),
+				CL_GLX_DISPLAY_KHR,
+				(cl_context_properties)glXGetCurrentDisplay(),
+				CL_CONTEXT_PLATFORM,
+				(cl_context_properties)(platform)(),
+				0
+			};
+#endif
 		cps = glcps;
 	}
 	else
 	{
-		// The properties specify an OpenGL / OpenCL shared context
 		cl_context_properties noglcps[] = 
 		{ 
 			CL_CONTEXT_PLATFORM, (cl_context_properties)platform, 
