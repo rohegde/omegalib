@@ -241,6 +241,17 @@ public:
 			}
 			return true;
 			break;
+		case Service::Brain:
+			// Converts id to char, appends to eventPacket
+			sprintf(floatChar,"%d",evt.getSourceId());
+			strcat( eventPacket, floatChar );
+			for( int i = 0; i < 13; i++ ){
+				strcat( eventPacket, "," ); // Spacer
+				sprintf(floatChar,"%d", (int)evt.getExtraDataFloat(i));
+				strcat( eventPacket, floatChar );
+			}
+			return true;
+			break;
 		case Service::Generic:
 			// Converts id to char, appends to eventPacket
 			sprintf(floatChar,"%d",evt.getSourceId());
@@ -549,11 +560,11 @@ void main(int argc, char** argv)
 
 	app.startConnection();
 	
-	float delay = 0.01f; // Seconds to delay sending events (<= 0 disables delay)
+	float delay = -0.01f; // Seconds to delay sending events (<= 0 disables delay)
 	bool testStream = false;
 	char* testPacket;
 
-	bool printOutput = false;
+	bool printOutput = true;
 
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){

@@ -279,6 +279,20 @@ if(WIN32)
 	endif(OMEGA_USE_VRPN)
 endif(WIN32)
 
+# ThinkGear module support
+if(WIN32)
+	set(OMEGA_USE_THINKGEAR true CACHE BOOL "Enable/disable ThinkGear support")
+	if(OMEGA_USE_THINKGEAR)
+		set( srcs	 ${srcs} omega/ThinkGearService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/ThinkGearService.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/thinkgear.h
+			)
+		#add_definitions( -OMEGA_USE_THINKGEAR)
+		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/ThinkGearService.h
+			)
+	endif(OMEGA_USE_THINKGEAR)
+endif(WIN32)
+
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
@@ -376,6 +390,15 @@ if(OMEGA_USE_VRPN)
 		target_link_libraries( omega ${EXT_LIB_DIR}/vrpn.lib)
 	endif(WIN32)
 endif(OMEGA_USE_VRPN)
+
+if(OMEGA_USE_THINKGEAR)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/thinkgear.lib)
+		# Copy the PQLabs dll into the destination bin directory
+		configure_file(${EXT_LIB_DIR}/thinkgear.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} COPYONLY)
+		configure_file(${EXT_LIB_DIR}/thinkgear.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}COPYONLY)
+	endif(WIN32)
+endif(OMEGA_USE_THINKGEAR)
 
 ###################################################################################################
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)

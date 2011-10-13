@@ -41,7 +41,7 @@ namespace omega
 	{
 	friend class ServiceManager;
 	public:
-		enum ServiceType { Pointer, Mocap, Keyboard, Controller, Ui, Generic }; 
+		enum ServiceType { Pointer, Mocap, Keyboard, Controller, Ui, Generic, Brain }; 
 		enum ServicePollPriority { PollFirst, PollNormal, PollLast }; 
 
 	public:
