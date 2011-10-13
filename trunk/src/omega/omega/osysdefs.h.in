@@ -58,7 +58,7 @@
 #cmakedefine OMEGA_USE_PQLABS
 #cmakedefine OMEGA_USE_DIRECTINPUT
 #cmakedefine OMEGA_USE_VRPN
-
+#cmakedefine OMEGA_USE_THINKGEAR
 
 
 #define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"

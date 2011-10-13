@@ -74,6 +74,9 @@
 #ifdef OMEGA_USE_VRPN
 	#include "omega/VRPNService.h"
 #endif
+#ifdef OMEGA_USE_THINKGEAR
+	#include "omega/ThinkGearService.h"
+#endif
 
 using namespace omega;
 
@@ -173,6 +176,9 @@ void SystemManager::setupServiceManager()
 #endif
 #ifdef OMEGA_USE_VRPN
 	myServiceManager->registerService("VRPNService", (ServiceAllocator)VRPNService::New);
+#endif
+#ifdef OMEGA_USE_VRPN
+	myServiceManager->registerService("ThinkGearService", (ServiceAllocator)ThinkGearService::New);
 #endif
 #ifdef OMEGA_USE_OPTITRACK
 	myServiceManager->registerService("OptiTrackService", (ServiceAllocator)OptiTrackService::New);
