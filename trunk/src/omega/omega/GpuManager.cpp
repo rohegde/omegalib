@@ -33,6 +33,11 @@
 
 #include "omega/glheaders.h"
 
+#ifdef OMEGA_OS_LINUX
+#include  <GL/glx.h>
+#endif
+
+
 using namespace omega;
 
 #define HANDLE_STATUS(id) case id: { oerror(#id); break; }

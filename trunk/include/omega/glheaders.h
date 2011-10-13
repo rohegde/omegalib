@@ -48,10 +48,6 @@
 #include <GL/glu.h>
 #endif
 
-#ifdef OMEGA_OS_LINUX
-#include  <GL/glx.h>
-#endif
-
 #ifdef OMEGA_USE_OPENCL
 #include "CL/cl.h"
 #include "CL/cl_gl.h"
