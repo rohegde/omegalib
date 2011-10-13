@@ -28,7 +28,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
-	numAgents(3000),
+	numAgents(1000),
 	totGroups(2),
 	areaMin(Vector3f(-0.4, 0.7, -1.4)),
 	areaMax(Vector3f(0.8, 1.9, -2.6)),
@@ -49,23 +49,31 @@ Settings::Settings():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NightfieldClient::initialize()
 {
+	getGpu()->setInitFlags(GpuManager::InitCL | GpuManager::InitGL);
+	ApplicationClient::initialize();
+
 	myCurrentPreset = mySettings.presets[0];
 
-	myFontMng = new FontManager();
+	//myFontMng = new FontManager();
 
-	myTexMng = new TextureManager();
-	myGlowTexture = ImageUtils::createTexture(myTexMng, "glow", "images/glow2.png");
+	ImageData img;
+	if(ImageUtils::loadImage("images/glow2.png", &img))
+	{
+		myGlowTexture = getGpu()->createTexture(
+		img.filename,
+		img.width,
+		img.height,
+		img.data);
+	}
+
 
 	myAgentBuffer = NULL;
-
-	myGpu = new GpuManager();
-	myGpu->initialize(GpuManager::InitCL | GpuManager::InitGL);
 
 	Vector<String> shaderNames;
 	shaderNames.push_back("behavior");
 	shaderNames.push_back("update");
-	myGpu->loadComputeShaders("shaders/agentsim.cl", shaderNames);
-	myGpu->loadFragmentShader("smoke", "shaders/smoke.frag");
+	getGpu()->loadComputeShaders("shaders/agentsim.cl", shaderNames);
+	getGpu()->loadFragmentShader("smoke", "shaders/smoke.frag");
 
 	// Setup the agent buffer.
 	Agent* agentData = new Agent[mySettings.numAgents];
@@ -91,7 +99,7 @@ void NightfieldClient::initialize()
 	// Create the gpu buffers and constants.
 	int bufSize = mySettings.numAgents * sizeof(Agent);
 
-	myAgentBuffer = new VertexBuffer(myGpu);
+	myAgentBuffer = new VertexBuffer(getGpu());
 	myAgentBuffer->addAttribute(VertexAttribute(VertexAttribute::TargetPosition, VertexAttribute::TypeFloat, 0, 3));
 	myAgentBuffer->initialize(bufSize, sizeof(Agent), agentData);
 
@@ -108,7 +116,7 @@ void NightfieldClient::initialize()
 	myTotGroups->setIntValue(mySettings.totGroups);
 
 	// Create a native OpenCL buffer storing interactor information.
-	myInteractorBuffer = new GpuBuffer(myGpu);
+	myInteractorBuffer = new GpuBuffer(getGpu());
 	myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL, GpuBuffer::BufferFlagsCLNative);
 
 	myNumInteractors = new GpuConstant();
@@ -126,8 +134,8 @@ void NightfieldClient::initialize()
 	myFriction = new GpuConstant();
 
 	// Setup data and parameters for the agent behavior program
-	myAgentBehavior = new GpuProgram(myGpu);
-	myAgentBehavior->setComputeShader(myGpu->getComputeShader("behavior"));
+	myAgentBehavior = new GpuProgram(getGpu());
+	myAgentBehavior->setComputeShader(getGpu()->getComputeShader("behavior"));
 	myAgentBehaviorParams.setParam(0, myAgentBuffer);
 	myAgentBehaviorParams.setParam(1, myDt);
 	myAgentBehaviorParams.setParam(2, myCenter);
@@ -144,8 +152,8 @@ void NightfieldClient::initialize()
 	myAgentBehaviorOptions.globalThreads[0] = mySettings.numAgents / mySettings.totGroups;
 
 	// Setup data and parameters for the agent update program
-	myAgentUpdate = new GpuProgram(myGpu);
-	myAgentUpdate->setComputeShader(myGpu->getComputeShader("update"));
+	myAgentUpdate = new GpuProgram(getGpu());
+	myAgentUpdate->setComputeShader(getGpu()->getComputeShader("update"));
 	myAgentUpdateParams.setParam(0, myAgentBuffer);
 	myAgentUpdateParams.setParam(1, myDt);
 	myAgentUpdateOptions.dimensions = 1;
@@ -153,7 +161,7 @@ void NightfieldClient::initialize()
 	myAgentUpdateOptions.globalThreads[0] = mySettings.numAgents;
 
 	// Setup data and parameters for the agent render program
-	myAgentRenderer = new GpuProgram(myGpu);
+	myAgentRenderer = new GpuProgram(getGpu());
 	//myAgentRenderer->setFragmentShader(myGpu->getFragmentShader("smoke"));
 	myAgentRenderParams.setParam(0, myAgentBuffer);
 	//myAgentRenderer->setInput(1, myLightPos);
@@ -231,8 +239,8 @@ void NightfieldClient::draw(const DrawContext& context)
 		const float fogCol[] = { 0.6f, 0.6f, 0.8f, 0.0f };
 		glFogfv( GL_FOG_COLOR, fogCol );
 		glFogi(GL_FOG_MODE, GL_LINEAR);
-		glFogf(GL_FOG_START, 1);
-		glFogf(GL_FOG_END, 3);
+		glFogf(GL_FOG_START, 0);
+		glFogf(GL_FOG_END, 2);
 	}
 	//else
 	{
@@ -284,7 +292,7 @@ int main(int argc, char** argv)
 	const char* cfgName = "nightfield.cfg";
 	if(argc == 2) cfgName = argv[1];
 
-	omain(app, cfgName, "nightfield.log", new FilesystemDataSource("./../../data/"));
+	omain(app, cfgName, "nightfield.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 
 	return 0;
 }

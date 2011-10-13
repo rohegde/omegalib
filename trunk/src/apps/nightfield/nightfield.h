@@ -28,9 +28,10 @@
 #define __NIGHTFIELD_H__
 
 #include "omega.h"
-#include "outils.h"
+#include "oengine.h"
 
 using namespace omega;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Preset
@@ -85,7 +86,7 @@ public:
 	static const int MaxInteractors = 32;
 
 public:
-	NightfieldClient(Application* app): ApplicationClient(app) {}
+	NightfieldClient(ApplicationServer* server): ApplicationClient(server) {}
 
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
@@ -100,7 +101,6 @@ private:
 	// Current simulation preset;
 	Preset myCurrentPreset;
 
-	GpuManager* myGpu;
 	GpuProgram* myAgentBehavior;
 	GpuProgram* myAgentUpdate;
 	GpuProgram* myAgentRenderer;
@@ -130,12 +130,10 @@ private:
 	// Interactors.
 	InteractorRay myInteractorData[MaxInteractors];
 
-	// Textures
-	TextureManager* myTexMng;
 	Texture* myGlowTexture;
 
 	// User interface stuff.
-	FontManager* myFontMng;
+	//FontManager* myFontMng;
 	//NightfieldUI* myUI;
 };
 
@@ -143,7 +141,7 @@ private:
 class NightfieldApplication: public Application
 {
 public:
-	virtual ApplicationClient* createClient() { return new NightfieldClient(this); }
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new NightfieldClient(server); }
 };
 
 #endif

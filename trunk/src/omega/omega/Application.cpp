@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Application.h"
+#include "omega/Lock.h"
 
 #ifdef OMEGA_USE_DISPLAY
 #include "omega/GpuManager.h"
@@ -70,7 +71,7 @@ ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server
 {
 	myServer->addClient(this);
 #ifdef OMEGA_USE_DISPLAY
-	myGpu = onew(GpuManager)();
+	myGpu = new GpuManager();
 #else
 	myGpu = NULL;
 #endif
@@ -84,10 +85,13 @@ ApplicationClient::~ApplicationClient()
 #endif
 }
 
+Lock l;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ApplicationClient::initialize() 
 {
 #ifdef OMEGA_USE_DISPLAY
+	l.lock();
 	myGpu->initialize();
+	l.unlock();
 #endif
 }
