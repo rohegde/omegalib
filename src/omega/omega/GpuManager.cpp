@@ -377,7 +377,7 @@ void CLManager::initialize()
                         NULL);
 			if(!clSuccessOrDie(status)) return;
             platform = platforms[i];
-			ofmsg("OPENCL Platform %1%: ", %i %pbuff);
+			ofmsg("OPENCL Platform %1%: %2%", %i %pbuff);
 		}
 
         for(unsigned int i=0; i < numPlatforms; ++i)
