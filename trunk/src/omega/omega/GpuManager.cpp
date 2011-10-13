@@ -364,6 +364,22 @@ void CLManager::initialize()
         cl_platform_id* platforms = (cl_platform_id *)malloc(numPlatforms*sizeof(cl_platform_id));
         status = clGetPlatformIDs(numPlatforms, platforms, NULL);
         if(!clSuccessOrDie(status)) return;
+
+		ofmsg("OPENCL Found %1% platforms", %numPlatforms);
+        for(unsigned int i=0; i < numPlatforms; ++i)
+        {
+            char pbuff[100];
+            status = clGetPlatformInfo(
+                        platforms[i],
+                        CL_PLATFORM_VENDOR,
+                        sizeof(pbuff),
+                        pbuff,
+                        NULL);
+			if(!clSuccessOrDie(status)) return;
+            platform = platforms[i];
+			ofmsg("OPENCL Platform %1%: ", %i %pbuff);
+		}
+
         for(unsigned int i=0; i < numPlatforms; ++i)
         {
             char pbuff[100];
