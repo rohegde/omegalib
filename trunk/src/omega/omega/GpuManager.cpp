@@ -403,7 +403,7 @@ void CLManager::initialize()
 				CL_GLX_DISPLAY_KHR,
 				(cl_context_properties)glXGetCurrentDisplay(),
 				CL_CONTEXT_PLATFORM,
-				(cl_context_properties)(platform)(),
+				(cl_context_properties)platform,
 				0
 			};
 #endif
