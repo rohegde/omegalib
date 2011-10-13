@@ -102,6 +102,10 @@ private:
 	// Application settings.
 	Settings mySettings;
 
+	// Gpu used for computing
+	GpuManager* myComputeGpu;
+	VertexBuffer* myAgentComputeBuffer;
+
 	// Current simulation preset;
 	Preset myCurrentPreset;
 

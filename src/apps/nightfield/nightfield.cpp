@@ -26,11 +26,11 @@
  *************************************************************************************************/
 #include "nightfield.h"
 
-bool sUseOpenCL = false;
+bool sUseOpenCL = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
-	numAgents(100),
+	numAgents(2000),
 	totGroups(2),
 	areaMin(Vector3f(-0.4, 0.7, -1.4)),
 	areaMax(Vector3f(0.8, 1.9, -2.6)),
@@ -119,13 +119,6 @@ void NightfieldClient::initializeGL()
 	myTotGroups = new GpuConstant();
 	myTotGroups->setIntValue(mySettings.totGroups);
 
-	// Create a native OpenCL buffer storing interactor information.
-	//myInteractorBuffer = new GpuBuffer(getGpu());
-	//myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL, GpuBuffer::BufferFlagsCLNative);
-
-	//myNumInteractors = new GpuConstant();
-	//myNumInteractors->setIntValue(0);
-
 	myLightPos = new GpuConstant();
 	myLightPos->setName("lightpos");
 	myLightPos->setFloatValue(1.0f, 1.0f);
@@ -146,10 +139,18 @@ void NightfieldClient::initializeGL()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NightfieldClient::initializeCL()
 {
+	myComputeGpu = new GpuManager();
+	myComputeGpu->setInitFlags(GpuManager::InitCL);
+	myComputeGpu->initialize();
+
+	myAgentComputeBuffer = new VertexBuffer(myComputeGpu);
+	int bufSize = mySettings.numAgents * sizeof(Agent);
+	myAgentComputeBuffer->initialize(bufSize, sizeof(Agent), myAgents);
+
 	Vector<String> shaderNames;
 	shaderNames.push_back("behavior");
 	shaderNames.push_back("update");
-	getGpu()->loadComputeShaders("shaders/agentsim.cl", shaderNames);
+	myComputeGpu->loadComputeShaders("shaders/agentsim.cl", shaderNames);
 
 	myCenter = new GpuConstant();
 	myCenter->setFloatValue(mySettings.center[0], mySettings.center[1], mySettings.center[2], 0);
@@ -158,10 +159,17 @@ void NightfieldClient::initializeCL()
 	myCoordinationDist = new GpuConstant();
 	myFriction = new GpuConstant();
 
+	// Create a native OpenCL buffer storing interactor information.
+	myInteractorBuffer = new GpuBuffer(myComputeGpu);
+	myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL);
+
+	myNumInteractors = new GpuConstant();
+	myNumInteractors->setIntValue(0);
+
 	// Setup data and parameters for the agent behavior program
-	myAgentBehavior = new GpuProgram(getGpu());
-	myAgentBehavior->setComputeShader(getGpu()->getComputeShader("behavior"));
-	myAgentBehaviorParams.setParam(0, myAgentBuffer);
+	myAgentBehavior = new GpuProgram(myComputeGpu);
+	myAgentBehavior->setComputeShader(myComputeGpu->getComputeShader("behavior"));
+	myAgentBehaviorParams.setParam(0, myAgentComputeBuffer);
 	myAgentBehaviorParams.setParam(1, myDt);
 	myAgentBehaviorParams.setParam(2, myCenter);
 	myAgentBehaviorParams.setParam(3, myNumAgents);
@@ -177,9 +185,9 @@ void NightfieldClient::initializeCL()
 	myAgentBehaviorOptions.globalThreads[0] = mySettings.numAgents / mySettings.totGroups;
 
 	// Setup data and parameters for the agent update program
-	myAgentUpdate = new GpuProgram(getGpu());
-	myAgentUpdate->setComputeShader(getGpu()->getComputeShader("update"));
-	myAgentUpdateParams.setParam(0, myAgentBuffer);
+	myAgentUpdate = new GpuProgram(myComputeGpu);
+	myAgentUpdate->setComputeShader(myComputeGpu->getComputeShader("update"));
+	myAgentUpdateParams.setParam(0, myAgentComputeBuffer);
 	myAgentUpdateParams.setParam(1, myDt);
 	myAgentUpdateOptions.dimensions = 1;
 	myAgentUpdateOptions.localThreads[0] = 100;
@@ -252,17 +260,11 @@ void NightfieldClient::updateAgentsCPU(const UpdateContext& context)
 	// Update position
 	for(int i = 0; i < mySettings.numAgents; i++)
 	{
-		//if(i == 0)
-		//{
-		//	ofmsg("Agent 0: %1% %2% %3%      %4% %5% %6%", 
-		//		%myAgents[i].x %myAgents[i].y %myAgents[i].z
-		//		%myAgents[i].vx %myAgents[i].vy %myAgents[i].vz);
-		//}
 		myAgents[i].x += myAgents[i].vx * context.dt * scale;
 		myAgents[i].y += myAgents[i].vy * context.dt * scale;
 		myAgents[i].z += myAgents[i].vz * context.dt* scale;
 	}
-	myAgentBuffer->setData(myAgents);
+	myAgentBuffer->write(myAgents, 0, mySettings.numAgents * sizeof(Agent));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,7 +298,7 @@ void NightfieldClient::updateAgentsGPU(const UpdateContext& context)
 	myNumInteractors->setIntValue(0);
 	//myInteractorBuffer->setData(myInteractorData);
 
-	myNumInteractors->setIntValue(0);
+	//myNumInteractors->setIntValue(0);
 	//myNumTouches = 0;
 
 	myDt->setFloatValue(0.01);
@@ -313,6 +315,10 @@ void NightfieldClient::updateAgentsGPU(const UpdateContext& context)
 
 	myAgentBehavior->runComputeStage(myAgentBehaviorOptions, &myAgentBehaviorParams);
 	myAgentUpdate->runComputeStage(myAgentUpdateOptions, &myAgentUpdateParams);
+	
+	// Read back data from the compute buffer.
+	myAgentComputeBuffer->read(myAgents, 0, mySettings.numAgents * sizeof(Agent));
+	myAgentBuffer->write(myAgents, 0, mySettings.numAgents * sizeof(Agent));
 
 	//myLastMouseX = myMouseX;
 	//myLastMouseY = myMouseY;

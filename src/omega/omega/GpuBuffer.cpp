@@ -102,19 +102,31 @@ void GpuBuffer::initialize(int size, int elementSize, void* data, unsigned int f
 	myElementSize = elementSize;
 	myLength = mySize / myElementSize;
 
+	// If the Gpu managing this buffer is initialized as a CL gpu only, force the CL native flag for this buffer.
+	if(myGpu->isCLEnabled() && !myGpu->isGLEnabled())
+	{
+		myBufferFlags |= BufferFlagsCLNative;
+	}
+
 	if(myBufferFlags & BufferFlagsCLNative)
 	{
 #ifdef OMEGA_USE_OPENCL
 		// This buffer is an OpenCL native buffer, create it through the OpenCL API
 		cl_int status;
-		myCLBuffer = clCreateBuffer(myGpu->getCLManager()->getContext(), CL_MEM_READ_WRITE, mySize, data, &status);
+		cl_mem_flags mflags = CL_MEM_READ_WRITE;
+		if(data != NULL)
+		{
+			mflags |= CL_MEM_COPY_HOST_PTR;
+		}
+		myCLBuffer = clCreateBuffer(myGpu->getCLManager()->getContext(), mflags, mySize, data, &status);
 		if(!clSuccessOrDie(status)) return;
 #endif
 	}
 	else
 	{
 		glGenBuffers(1, &myGLBuffer);
-		setData(data);
+		glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
+		glBufferData(GL_ARRAY_BUFFER, mySize, data, GL_DYNAMIC_DRAW);
 	}
 }
 
@@ -151,7 +163,7 @@ void GpuBuffer::unacquireGLBuffer()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuBuffer::setData(void* data)
+void GpuBuffer::write(void* data, int offset, int length)
 {
 	if(myBufferFlags & BufferFlagsCLNative)
 	{
@@ -161,7 +173,7 @@ void GpuBuffer::setData(void* data)
 		cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
 		cl_mem clbuf = getCLBuffer();
 
-		status = clEnqueueWriteBuffer(clqueue, myCLBuffer, true, 0, mySize, data, 0, NULL, NULL);
+		status = clEnqueueWriteBuffer(clqueue, myCLBuffer, CL_TRUE, offset, length, data, 0, NULL, NULL);
 		if(!clSuccessOrDie(status)) return;
 #endif
 	}
@@ -174,7 +186,7 @@ void GpuBuffer::setData(void* data)
 		if(true)//if(wglGetCurrentContext()) << WRONG
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, myGLBuffer);
-			glBufferData(GL_ARRAY_BUFFER, mySize, data, GL_DYNAMIC_DRAW);
+			glBufferSubData(GL_ARRAY_BUFFER, offset, length, data);
 		}
 		else
 		{
@@ -191,6 +203,24 @@ void GpuBuffer::setData(void* data)
 #endif
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void GpuBuffer::read(void* data, int offset, int length)
+{
+#ifdef OMEGA_USE_OPENCL
+	// Acquire non CL native buffers.
+	if(!isCLNative()) acquireGLBuffer();
+
+	cl_int status;
+	cl_command_queue clqueue = myGpu->getCLManager()->getCommandQueue();
+
+	status = clEnqueueReadBuffer(clqueue, myCLBuffer, CL_TRUE, offset, length, data, 0, NULL, NULL);
+	if(!clSuccessOrDie(status)) return;
+
+	// Unacquire non CL native buffers.
+	if(!isCLNative()) unacquireGLBuffer();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

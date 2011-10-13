@@ -194,7 +194,8 @@ namespace omega
 		bool isCLNative() { return myBufferFlags & BufferFlagsCLNative; } 
 
 		//! Sets the gpu buffer data
-		void setData(void* data);
+		void write(void* data, int offset, int length);
+		void read(void* data, int offset,  int length);
 
 		GLuint getGLBuffer() { return myGLBuffer; }
 		cl_mem getCLBuffer();
