@@ -76,8 +76,9 @@ namespace omega
 
 		//! Initialization
 		//@{
+		void setInitFlags(unsigned int initFlags) { myInitFlags = initFlags; }
 		bool isInitialized() { return myInitialized; }
-		void initialize(unsigned int initFlags = InitGL);
+		void initialize();
 		//@}
 
 		//! Gpu configuration

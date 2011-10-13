@@ -168,14 +168,12 @@ GpuManager::~GpuManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::initialize(unsigned int initFlags)
+void GpuManager::initialize()
 {
-	myInitFlags = initFlags;
-
 #ifdef OMEGA_USE_OPENCL
 	if(isCLEnabled())
 	{
-		myCLManager = onew(CLManager)(this);
+		myCLManager =  new CLManager(this);
 		myCLManager->initialize();
 	}
 #endif
@@ -243,10 +241,8 @@ void GpuManager::loadComputeShaders(const String& filename, const Vector<String>
 
     if(!clSuccessOrDie(status)) return;
 
-	ConstVectorIterator<Vector<String> > it(shaderNames);
-	while(it.hasMoreElements())
+	foreach(String shaderName, shaderNames)
 	{
-		String shaderName = it.getNext();
 		ComputeShader* sh = new ComputeShader(program, shaderName, shaderName);
 		myComputeShaders[shaderName] = sh;
 		ofmsg("Compute shader created: %1%", %shaderName);

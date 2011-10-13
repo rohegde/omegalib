@@ -119,6 +119,8 @@ include_directories(
   ${OmegaLib_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
+#hack
+  ${OmegaLib_SOURCE_DIR}/ext/windows/include
   )
 
 ###################################################################################################
@@ -176,7 +178,7 @@ if(OMEGA_BUILD_ENGINE)
 			add_subdirectory(apps/mocalib)
 			add_subdirectory(apps/multipleKinectDemo)
 		endif(OMEGA_USE_OPENNI)
-		#add_subdirectory(apps/nightfield)
+	add_subdirectory(apps/nightfield)
 	endif(OMEGA_BUILD_APPS)
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(tutorial5)
