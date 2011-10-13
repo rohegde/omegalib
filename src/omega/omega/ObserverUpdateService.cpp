@@ -32,6 +32,9 @@
 
 using namespace omega;
 
+// Define to enable a simple version of the service with no update threshold and separate orientation support.
+#define OMEGA_SIMPLE_OBSERVER_UPDATE
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ObserverUpdateService::ObserverUpdateService():
 	myObserver(NULL),
@@ -127,6 +130,10 @@ void ObserverUpdateService::poll()
 			if(evt->getSourceId() == mySourceId)
 			{
 				Vector3f pos = evt->getPosition();
+#ifdef OMEGA_SIMPLE_OBSERVER_UPDATE
+				myObserver->update(pos, evt->getOrientation());
+
+#else
 				if(!myUseHeadPointId || !evt->isExtraDataNull(Head))
 				{
 					if(myUseHeadPointId) pos = evt->getExtraDataVector3(Head);
@@ -161,6 +168,7 @@ void ObserverUpdateService::poll()
 					//ofmsg("mvth: %1%", %myCurrentMovementThreshold);
 					myObserver->update(myLastPosition, q);
 				}
+#endif
 			}
 			else if(myEnableOrientationSource && evt->getSourceId() == myOrientationSourceId)
 			{
