@@ -89,8 +89,12 @@ public:
 	NightfieldClient(ApplicationServer* server): ApplicationClient(server) {}
 
 	virtual void initialize();
+	void initializeCL();
+	void initializeGL();
 	virtual void update(const UpdateContext& context);
 	virtual void draw(const DrawContext& context);
+	void updateAgentsCPU(const UpdateContext& context);
+	void updateAgentsGPU(const UpdateContext& context);
 	//virtual bool handleEvent(const Event& evt, DrawContext& context);
 	//virtual bool handleEvent(const Event& evt, UpdateContext& context);
 
@@ -104,6 +108,9 @@ private:
 	GpuProgram* myAgentBehavior;
 	GpuProgram* myAgentUpdate;
 	GpuProgram* myAgentRenderer;
+
+	// Agent CPU buffer
+	Agent* myAgents;
 
 	// Gpu data
 	VertexBuffer* myAgentBuffer;

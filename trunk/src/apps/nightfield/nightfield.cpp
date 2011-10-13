@@ -26,9 +26,11 @@
  *************************************************************************************************/
 #include "nightfield.h"
 
+bool sUseOpenCL = false;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
-	numAgents(1000),
+	numAgents(100),
 	totGroups(2),
 	areaMin(Vector3f(-0.4, 0.7, -1.4)),
 	areaMax(Vector3f(0.8, 1.9, -2.6)),
@@ -49,7 +51,7 @@ Settings::Settings():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NightfieldClient::initialize()
 {
-	getGpu()->setInitFlags(GpuManager::InitCL | GpuManager::InitGL);
+	getGpu()->setInitFlags(GpuManager::InitGL);
 	ApplicationClient::initialize();
 
 	myCurrentPreset = mySettings.presets[0];
@@ -69,14 +71,10 @@ void NightfieldClient::initialize()
 
 	myAgentBuffer = NULL;
 
-	Vector<String> shaderNames;
-	shaderNames.push_back("behavior");
-	shaderNames.push_back("update");
-	getGpu()->loadComputeShaders("shaders/agentsim.cl", shaderNames);
 	getGpu()->loadFragmentShader("smoke", "shaders/smoke.frag");
 
 	// Setup the agent buffer.
-	Agent* agentData = new Agent[mySettings.numAgents];
+	myAgents = new Agent[mySettings.numAgents];
 
 	float minx = mySettings.areaMin[0];
 	float miny = mySettings.areaMin[1];
@@ -88,22 +86,28 @@ void NightfieldClient::initialize()
 
 	for(int i = 0; i < mySettings.numAgents; i++)
 	{
-		agentData[i].x = minx + Math::rangeRandom(0, 1) * dx;
-		agentData[i].y = miny + Math::rangeRandom(0, 1) * dy;
-		agentData[i].z = minz + Math::rangeRandom(0, 1) * dz;
-		agentData[i].vx = 0;
-		agentData[i].vy = 0;
-		agentData[i].vz = 0;
+		myAgents[i].x = minx + Math::rangeRandom(0, 1) * dx;
+		myAgents[i].y = miny + Math::rangeRandom(0, 1) * dy;
+		myAgents[i].z = minz + Math::rangeRandom(0, 1) * dz;
+		myAgents[i].vx = 0;
+		myAgents[i].vy = 0;
+		myAgents[i].vz = 0;
 	}
 
+	initializeGL();
+
+	if(sUseOpenCL) initializeCL();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NightfieldClient::initializeGL()
+{
 	// Create the gpu buffers and constants.
 	int bufSize = mySettings.numAgents * sizeof(Agent);
 
 	myAgentBuffer = new VertexBuffer(getGpu());
 	myAgentBuffer->addAttribute(VertexAttribute(VertexAttribute::TargetPosition, VertexAttribute::TypeFloat, 0, 3));
-	myAgentBuffer->initialize(bufSize, sizeof(Agent), agentData);
-
-	delete[] agentData;
+	myAgentBuffer->initialize(bufSize, sizeof(Agent), myAgents);
 
 	myDt = new GpuConstant();
 
@@ -116,18 +120,39 @@ void NightfieldClient::initialize()
 	myTotGroups->setIntValue(mySettings.totGroups);
 
 	// Create a native OpenCL buffer storing interactor information.
-	myInteractorBuffer = new GpuBuffer(getGpu());
-	myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL, GpuBuffer::BufferFlagsCLNative);
+	//myInteractorBuffer = new GpuBuffer(getGpu());
+	//myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL, GpuBuffer::BufferFlagsCLNative);
 
-	myNumInteractors = new GpuConstant();
-	myNumInteractors->setIntValue(0);
-
-	myCenter = new GpuConstant();
-	myCenter->setFloatValue(mySettings.center[0], mySettings.center[1], mySettings.center[2], 0);
+	//myNumInteractors = new GpuConstant();
+	//myNumInteractors->setIntValue(0);
 
 	myLightPos = new GpuConstant();
 	myLightPos->setName("lightpos");
 	myLightPos->setFloatValue(1.0f, 1.0f);
+
+	// Setup data and parameters for the agent render program
+	myAgentRenderer = new GpuProgram(getGpu());
+	//myAgentRenderer->setFragmentShader(myGpu->getFragmentShader("smoke"));
+	myAgentRenderParams.setParam(0, myAgentBuffer);
+	//myAgentRenderer->setInput(1, myLightPos);
+	//myAgentRenderer->setNumRenderItems(mySettings.numAgents);
+	myAgentRenderer->initialize();
+	myAgentRenderOptions.items = mySettings.numAgents;
+	myAgentRenderOptions.primType = RenderStageOptions::PrimPoints;
+
+	//myNumTouches = 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NightfieldClient::initializeCL()
+{
+	Vector<String> shaderNames;
+	shaderNames.push_back("behavior");
+	shaderNames.push_back("update");
+	getGpu()->loadComputeShaders("shaders/agentsim.cl", shaderNames);
+
+	myCenter = new GpuConstant();
+	myCenter->setFloatValue(mySettings.center[0], mySettings.center[1], mySettings.center[2], 0);
 
 	myAvoidanceDist = new GpuConstant();
 	myCoordinationDist = new GpuConstant();
@@ -159,22 +184,89 @@ void NightfieldClient::initialize()
 	myAgentUpdateOptions.dimensions = 1;
 	myAgentUpdateOptions.localThreads[0] = 100;
 	myAgentUpdateOptions.globalThreads[0] = mySettings.numAgents;
-
-	// Setup data and parameters for the agent render program
-	myAgentRenderer = new GpuProgram(getGpu());
-	//myAgentRenderer->setFragmentShader(myGpu->getFragmentShader("smoke"));
-	myAgentRenderParams.setParam(0, myAgentBuffer);
-	//myAgentRenderer->setInput(1, myLightPos);
-	//myAgentRenderer->setNumRenderItems(mySettings.numAgents);
-	myAgentRenderer->initialize();
-	myAgentRenderOptions.items = mySettings.numAgents;
-	myAgentRenderOptions.primType = RenderStageOptions::PrimPoints;
-
-	//myNumTouches = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NightfieldClient::update(const UpdateContext& context)
+{
+	if(sUseOpenCL)
+	{
+		updateAgentsGPU(context);
+	}
+	else
+	{
+		updateAgentsCPU(context);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NightfieldClient::updateAgentsCPU(const UpdateContext& context)
+{
+	float scale = 0.001f;
+	Vector3f center = Vector3f::Zero();
+	// Compute behavior
+	for(int i = 0; i < mySettings.numAgents; i++)
+	{
+		// Compute attraction vector.
+		Vector3f pos(myAgents[i].x, myAgents[i].y, myAgents[i].z);
+		Vector3f vel(myAgents[i].vx, myAgents[i].vy, myAgents[i].vz);
+
+		Vector3f attractDir =  center - pos;
+		attractDir.normalize();
+	
+		// Compute avoidance vector.
+		Vector3f avoidDir(0, 0, 0);
+		Vector3f coordDir(0, 0, 0);
+		for(int j = 0; j < mySettings.numAgents; j++)
+		{
+			if(j != i)
+			{
+				Vector3f pos2(myAgents[j].x, myAgents[j].y, myAgents[j].z);
+				Vector3f dv = pos2 - pos;
+				float l = dv.norm();
+				if(l < myCurrentPreset.avoidanceDist)
+				{
+					dv.normalize();
+					avoidDir -= dv;
+				}
+				if(l < myCurrentPreset.coordinationDist)
+				{
+					coordDir += vel;
+				}
+			}
+		}
+	
+		if(coordDir.norm() > 0) coordDir.normalize();
+		Vector3f dir = attractDir + avoidDir + coordDir;
+		dir.normalize();
+	
+		int friction = myCurrentPreset.friction / (context.dt * scale);
+		vel = (vel * friction + dir) / (friction + 1);
+		//vel = dir;
+		if(vel.norm() > 0) vel.normalize();
+
+		myAgents[i].vx = vel[0];
+		myAgents[i].vy = vel[1];
+		myAgents[i].vz = vel[2];
+	}
+	// Update position
+	for(int i = 0; i < mySettings.numAgents; i++)
+	{
+		//if(i == 0)
+		//{
+		//	ofmsg("Agent 0: %1% %2% %3%      %4% %5% %6%", 
+		//		%myAgents[i].x %myAgents[i].y %myAgents[i].z
+		//		%myAgents[i].vx %myAgents[i].vy %myAgents[i].vz);
+		//}
+		myAgents[i].x += myAgents[i].vx * context.dt * scale;
+		myAgents[i].y += myAgents[i].vy * context.dt * scale;
+		myAgents[i].z += myAgents[i].vz * context.dt* scale;
+	}
+	myAgentBuffer->setData(myAgents);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void NightfieldClient::updateAgentsGPU(const UpdateContext& context)
 {
 	//myUI->update(context);
 
