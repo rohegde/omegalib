@@ -27,132 +27,26 @@
 #ifndef __NIGHTFIELD_H__
 #define __NIGHTFIELD_H__
 
-#include "omega.h"
-#include "oengine.h"
+#include <omega.h>
+#include <oengine.h>
+#include "Flock.h"
 
 using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-struct Preset
-{
-	float avoidanceDist;
-	float friction;
-	float coordinationDist;
-	bool useFog;
-	bool useAdditiveAlpha;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-struct Settings
-{
-	Settings();
-
-	float minAvoidanceDist;
-	float maxAvoidanceDist;
-	float minCoordinationDist;
-	float maxCoordinationDist;
-	float minFriction;
-	float maxFriction;
-	int totGroups;
-	int numAgents;
-	Vector3f areaMin;
-	Vector3f areaMax;
-	Vector3f center;
-
-	std::vector<Preset> presets;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-struct Agent
-{
-	float x, y, z; // Position
-	float vx, vy, vz; // Velocity
-	float s1, s2; // State values
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-struct InteractorRay
-{
-	float x, y, z; // Ray origin
-	float dx, dy, dz; // Ray direction
-	float s1, s2; // Additional values for alignment, I can use them to store additional properties about the ray.
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class NightfieldClient: public ApplicationClient
+class Nightfield: public EngineServer
 {
 public:
-	static const int MaxInteractors = 32;
-
-public:
-	NightfieldClient(ApplicationServer* server): ApplicationClient(server) {}
-
+	Nightfield(Application* app): EngineServer(app) {}
 	virtual void initialize();
-	void initializeCL();
-	void initializeGL();
-	virtual void update(const UpdateContext& context);
-	virtual void draw(const DrawContext& context);
-	void updateAgentsCPU(const UpdateContext& context);
-	void updateAgentsGPU(const UpdateContext& context);
-	//virtual bool handleEvent(const Event& evt, DrawContext& context);
-	//virtual bool handleEvent(const Event& evt, UpdateContext& context);
+	void update(const UpdateContext& context);
 
 private:
-	// Application settings.
-	Settings mySettings;
-
-	// Gpu used for computing
-	GpuManager* myComputeGpu;
-	VertexBuffer* myAgentComputeBuffer;
-
-	// Current simulation preset;
-	Preset myCurrentPreset;
-
-	GpuProgram* myAgentBehavior;
-	GpuProgram* myAgentUpdate;
-	GpuProgram* myAgentRenderer;
-
-	// Agent CPU buffer
-	Agent* myAgents;
-
-	// Gpu data
-	VertexBuffer* myAgentBuffer;
-	GpuConstant* myDt;
-	GpuConstant* myNumAgents;
-	GpuConstant* myGroupId;
-	GpuConstant* myTotGroups;
-	GpuConstant* myCenter;
-	GpuBuffer* myInteractorBuffer;
-	GpuConstant* myNumInteractors;
-	GpuConstant* myLightPos;
-	// Gpu simulation constants
-	GpuConstant* myAvoidanceDist;
-	GpuConstant* myCoordinationDist;
-	GpuConstant* myFriction;
-	
-	GpuProgramParams myAgentUpdateParams;
-	GpuProgramParams myAgentBehaviorParams;
-	GpuProgramParams myAgentRenderParams;
-	ComputeStageOptions myAgentUpdateOptions;
-	ComputeStageOptions myAgentBehaviorOptions;
-	RenderStageOptions myAgentRenderOptions;
-
-	// Interactors.
-	InteractorRay myInteractorData[MaxInteractors];
-
-	Texture* myGlowTexture;
-
-	// User interface stuff.
-	//FontManager* myFontMng;
-	//NightfieldUI* myUI;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class NightfieldApplication: public Application
-{
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new NightfieldClient(server); }
+	SceneNode* mySceneNode;
+	Flock* myFlock;
+	//BoundingSphere* mySelectionSphere;
+	//DefaultMouseInteractor* myMouseInteractor;
 };
 
 #endif
