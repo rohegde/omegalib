@@ -41,12 +41,12 @@ ReferenceBox::ReferenceBox()
 
 	//myPrimaryLineColor = Color(0.8, 0.8, 1, 1);
 
-	mySideColor[Back]   =  Color(0.3f, 0.2f, 0.2f, 0.2f);
-	mySideColor[Front]  =  Color(0.3f, 0.2f, 0.2f, 0.2f);
-	mySideColor[Left]   =  Color(0.2f, 0.3f, 0.2f, 0.2f);
-	mySideColor[Right]  =  Color(0.2f, 0.3f, 0.2f, 0.2f);
-	mySideColor[Bottom] =  Color(0.2f, 0.2f, 0.3f, 1.0f);
-	mySideColor[Top]    =  Color(0.2f, 0.2f, 0.3f, 1.0f);
+	mySideColor[Back]   =  Color(0.2f, 0.1f, 0.1f, 0.1f);
+	mySideColor[Front]  =  Color(0.2f, 0.1f, 0.1f, 0.1f);
+	mySideColor[Left]   =  Color(0.1f, 0.2f, 0.1f, 0.1f);
+	mySideColor[Right]  =  Color(0.1f, 0.2f, 0.1f, 0.1f);
+	mySideColor[Bottom] =  Color(0.1f, 0.1f, 0.2f, 1.0f);
+	mySideColor[Top]    =  Color(0.1f, 0.1f, 0.2f, 1.0f);
 
 	for(int i = 0; i < NumSides; i++) mySideEnabled[i] = true;
 }

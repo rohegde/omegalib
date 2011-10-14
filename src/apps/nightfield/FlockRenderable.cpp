@@ -37,18 +37,14 @@ void FlockRenderable::initialize()
 
 	GpuManager* gpu = getClient()->getGpu();
 
-	ImageData img;
-	if(ImageUtils::loadImage("images/glow2.png", &img))
-	{
-		ImageData& img = myOwner->getAgentImage();
-		myAgentTexture = gpu->createTexture(
-			img.filename,
-			img.width,
-			img.height,
-			img.data);
-	}
+	ImageData& img = myOwner->getAgentImage();
+	myAgentTexture = gpu->createTexture(
+		img.filename,
+		img.width,
+		img.height,
+		img.data);
 
-	gpu->loadFragmentShader("smoke", "shaders/smoke.frag");
+	//gpu->loadFragmentShader("smoke", "shaders/smoke.frag");
 
 	// Create the gpu buffers and constants.
 	int bufSize = myOwner->getSettings().numAgents * sizeof(Agent);
@@ -87,8 +83,9 @@ void FlockRenderable::refresh()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void FlockRenderable::draw(RenderState* state)
+void FlockRenderable::drawPoints(RenderState* state)
 {
+	pushNodeTransform();
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
 		// We don't use lighting for this application.
@@ -143,4 +140,53 @@ void FlockRenderable::draw(RenderState* state)
 		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 	}
+	popNodeTransform();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void FlockRenderable::draw(RenderState* state)
+{
+	pushNodeTransform();
+	if(state->isFlagSet(RenderPass::RenderOpaque))
+	{
+		// We don't use lighting for this application.
+		glDisable(GL_LIGHTING);
+		glEnable(GL_FOG);
+
+		//if(myCurrentPreset.useFog)
+		{
+			//glDisable(GL_FOG);
+			const float fogCol[] = { 0.6f, 0.6f, 0.8f, 0.0f };
+			glFogfv( GL_FOG_COLOR, fogCol );
+			glFogi(GL_FOG_MODE, GL_LINEAR);
+			glFogf(GL_FOG_START, 0);
+			glFogf(GL_FOG_END, 2);
+		}
+		//else
+		{
+			glEnable(GL_FOG);
+		}
+
+		glColor3f(1.0, 1.0, 1.0);
+
+		glEnable(GL_BLEND);
+		
+		int numAgents = myOwner->getSettings().numAgents;
+		Agent* agents = myOwner->getAgents();
+		glBegin(GL_LINES);
+		glLineWidth(4.0f);
+		for(int i = 0; i < numAgents; i++)
+		{
+			float s = 0.01f;
+			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+			glVertex3f(agents[i].x, agents[i].y, agents[i].z);
+			glVertex3f(agents[i].x - agents[i].vx * s, agents[i].y - agents[i].vy * s, agents[i].z - agents[i].vz * s);
+		}
+		glEnd();
+
+		glDisable(GL_BLEND);
+	}
+	popNodeTransform();
+	
+	drawPoints(state);
 }

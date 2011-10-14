@@ -28,7 +28,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
-	numAgents(2000),
+	numAgents(5000),
 	totGroups(2),
 	areaMin(Vector3f(-0.4, 0.7, -1.4)),
 	areaMax(Vector3f(0.8, 1.9, -2.6)),
@@ -57,18 +57,21 @@ void Nightfield::initialize()
 
 	myFlock = new Flock();
 	
-	//mySelectionSphere = new BoundingSphere();
-	//mySelectionSphere->setDrawOnSelected(true);
-	//mySelectionSphere->setVisible(false);
+	mySelectionSphere = new BoundingSphere();
+	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setVisible(false);
 
 	scene->addChild(mySceneNode);
 	mySceneNode->addObject(myFlock);
 	myFlock->initialize();
-	//mySceneNode->addObject(mySelectionSphere);
+	mySceneNode->addObject(mySelectionSphere);
 
-	//myMouseInteractor = new DefaultMouseInteractor();
-	//myMouseInteractor->setSceneNode(mySceneNode);
-	//addActor(myMouseInteractor);
+	myMouseInteractor = new DefaultMouseInteractor();
+	myMouseInteractor->setSceneNode(mySceneNode);
+	addActor(myMouseInteractor);
+	myNavigationInteractor = new NavigationInteractor();
+	myNavigationInteractor->setSceneNode(mySceneNode);
+	addActor(myNavigationInteractor);
 
 	//Config* cfg = getSystemManager()->getAppConfig();
 	//if(cfg->exists("config"))
