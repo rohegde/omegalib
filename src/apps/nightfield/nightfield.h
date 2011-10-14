@@ -43,6 +43,9 @@ public:
 	void update(const UpdateContext& context);
 
 private:
+	Settings mySettings;
+
+	ReferenceBox* myReferenceBox;
 	SceneNode* mySceneNode;
 	Flock* myFlock;
 	BoundingSphere* mySelectionSphere;

@@ -17,8 +17,6 @@ __kernel void behavior(
 	__private float dt,
 	__private float4 center, 
 	__private int numAgents, 
-	__private int totGroups, 
-	__private int groupId, 
 	__private int numInteractors,
 	__constant struct InteractorRay* interactor,
 	
@@ -30,8 +28,6 @@ __kernel void behavior(
 {
     uint i = get_global_id(0);
 	
-	i = i * totGroups + groupId;
-
 	// Compute attraction vector.
 	float4 pos = (float4)(agent[i].x, agent[i].y, agent[i].z, 0);
 	

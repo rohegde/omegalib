@@ -39,14 +39,20 @@ struct Preset
 	float avoidanceDist;
 	float friction;
 	float coordinationDist;
-	bool useFog;
 	bool useAdditiveAlpha;
+	String flockImage;
+	bool useFog;
+	bool drawSpeedVectors;
+	float speedVectorScale;
+	Color speedVectorColor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Settings
 {
 	Settings();
+	void load(const Setting& s);
+	void loadPreset(Preset* p, const Setting& s);
 
 	float minAvoidanceDist;
 	float maxAvoidanceDist;
@@ -54,13 +60,12 @@ struct Settings
 	float maxCoordinationDist;
 	float minFriction;
 	float maxFriction;
-	int totGroups;
 	int numAgents;
 	Vector3f areaMin;
 	Vector3f areaMax;
 	Vector3f center;
 
-	std::vector<Preset> presets;
+	Vector<Preset*> presets;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +77,7 @@ struct Agent
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-struct InteractorRay
+struct FlockAffector
 {
 	float x, y, z; // Ray origin
 	float dx, dy, dz; // Ray direction
@@ -84,11 +89,12 @@ class Flock: public SceneObject
 {
 public:
 OMEGA_DECLARE_TYPE(Flock)
-static const int MaxInteractors = 32;
+static const int MaxAffectors = 32;
 
 public:
 	Flock() {}
 	virtual Renderable* createRenderable();
+	void setup(Settings* settings);
 
 	void initialize();
 	void initializeCL();
@@ -100,15 +106,15 @@ public:
 	bool hasBoundingBox();
 
 	ImageData& getAgentImage() { return myAgentImage; }
-	Settings& getSettings() { return mySettings; }
-	Preset& getCurrentPreset() { return myCurrentPreset; }
+	Settings* getSettings() { return mySettings; }
+	Preset* getCurrentPreset() { return myCurrentPreset; }
 
 	Agent* getAgents() { return myAgents; }
 
 private:
 	// Application settings.
-	Settings mySettings;
-	Preset myCurrentPreset;
+	Settings* mySettings;
+	Preset* myCurrentPreset;
 
 	AlignedBox3 myBoundingBox;
 
@@ -129,8 +135,6 @@ private:
 	// Gpu data
 	GpuConstant* myDt;
 	GpuConstant* myNumAgents;
-	GpuConstant* myGroupId;
-	GpuConstant* myTotGroups;
 	GpuConstant* myCenter;
 	GpuBuffer* myInteractorBuffer;
 	GpuConstant* myNumInteractors;
@@ -145,7 +149,7 @@ private:
 	ComputeStageOptions myAgentBehaviorOptions;
 
 	// Interactors.
-	InteractorRay myInteractorData[MaxInteractors];
+	FlockAffector myAffectorData[MaxAffectors];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

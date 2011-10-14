@@ -44,10 +44,10 @@ void FlockRenderable::initialize()
 		img.height,
 		img.data);
 
-	//gpu->loadFragmentShader("smoke", "shaders/smoke.frag");
+	gpu->loadFragmentShader("smoke", "shaders/smoke.frag");
 
 	// Create the gpu buffers and constants.
-	int bufSize = myOwner->getSettings().numAgents * sizeof(Agent);
+	int bufSize = myOwner->getSettings()->numAgents * sizeof(Agent);
 
 	myAgentBuffer = new VertexBuffer(gpu);
 	myAgentBuffer->addAttribute(VertexAttribute(VertexAttribute::TargetPosition, VertexAttribute::TypeFloat, 0, 3));
@@ -59,12 +59,12 @@ void FlockRenderable::initialize()
 
 	// Setup data and parameters for the agent render program
 	myAgentRenderer = new GpuProgram(gpu);
-	//myAgentRenderer->setFragmentShader(myGpu->getFragmentShader("smoke"));
+	//myAgentRenderer->setFragmentShader(gpu->getFragmentShader("smoke"));
 	myAgentRenderParams.setParam(0, myAgentBuffer);
 	//myAgentRenderer->setInput(1, myLightPos);
 	//myAgentRenderer->setNumRenderItems(mySettings.numAgents);
 	myAgentRenderer->initialize();
-	myAgentRenderOptions.items = myOwner->getSettings().numAgents;
+	myAgentRenderOptions.items = myOwner->getSettings()->numAgents;
 	myAgentRenderOptions.primType = RenderStageOptions::PrimPoints;
 
 	//myNumTouches = 0;
@@ -78,7 +78,7 @@ void FlockRenderable::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::refresh()
 {
-	int dataSize = myOwner->getSettings().numAgents * sizeof(Agent);
+	int dataSize = myOwner->getSettings()->numAgents * sizeof(Agent);
 	myAgentBuffer->write(myOwner->getAgents(), 0, dataSize);
 }
 
@@ -90,23 +90,27 @@ void FlockRenderable::drawPoints(RenderState* state)
 	{
 		// We don't use lighting for this application.
 		glDisable(GL_LIGHTING);
-		glEnable(GL_FOG);
 
-		//if(myCurrentPreset.useFog)
-		{
-			//glDisable(GL_FOG);
-			const float fogCol[] = { 0.6f, 0.6f, 0.8f, 0.0f };
-			glFogfv( GL_FOG_COLOR, fogCol );
-			glFogi(GL_FOG_MODE, GL_LINEAR);
-			glFogf(GL_FOG_START, 0);
-			glFogf(GL_FOG_END, 2);
-		}
-		//else
+		if(myOwner->getCurrentPreset()->useFog)
 		{
 			glEnable(GL_FOG);
+			//const float fogCol[] = { 0.6f, 0.6f, 0.8f, 0.0f };
+			//glFogfv( GL_FOG_COLOR, fogCol );
+			//glFogi(GL_FOG_MODE, GL_LINEAR);
+			//glFogf(GL_FOG_START, 0);
+			//glFogf(GL_FOG_END, 2);
+			const float fogCol[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+			glFogfv( GL_FOG_COLOR, fogCol );
+			glFogi(GL_FOG_MODE, GL_LINEAR);
+			glFogf(GL_FOG_START, 2);
+			glFogf(GL_FOG_END, 8);
+		}
+		else
+		{
+			glDisable(GL_FOG);
 		}
 
-		glColor3f(1.0, 1.0, 1.0);
+		glColor4f(1.0, 1.0, 1.0, 1.0);
 
 		//glTranslatef(mySettings.center[0], mySettings.center[1], mySettings.center[2]);
 		//glRotatef(myRotateX / 3, 0, 1, 0);
@@ -114,12 +118,12 @@ void FlockRenderable::drawPoints(RenderState* state)
 		//glTranslatef(-mySettings.center[0], -mySettings.center[1], -mySettings.center[2]);
 
 		//GfxUtils::beginOverlayMode(context);
-		//glDisable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		//glDisable(GL_TEXTURE_2D);
 
 		//GfxUtils::drawVGradient(Vector2i(0, context.viewportHeight - 100), Vector2i(context.viewportWidth, 100), Color(0, 0, 0), Color(50, 50, 60), 0.3);
-		glDisable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 		//glDisable(GL_LIGHTING);
 		//GfxUtils::endOverlayMode();
 
@@ -129,7 +133,10 @@ void FlockRenderable::drawPoints(RenderState* state)
 		glBindTexture(GL_TEXTURE_2D, myAgentTexture->getGLTexture());
 		glTexEnvi(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		if(myOwner->getCurrentPreset()->useAdditiveAlpha)
+		{
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		}
 
 		//int ps = context.viewportHeight < context.viewportWidth ? context.viewportHeight / 8 : context.viewportWidth / 8;
 		int ps = 32;
@@ -151,36 +158,22 @@ void FlockRenderable::draw(RenderState* state)
 	{
 		// We don't use lighting for this application.
 		glDisable(GL_LIGHTING);
-		glEnable(GL_FOG);
-
-		//if(myCurrentPreset.useFog)
-		{
-			//glDisable(GL_FOG);
-			const float fogCol[] = { 0.6f, 0.6f, 0.8f, 0.0f };
-			glFogfv( GL_FOG_COLOR, fogCol );
-			glFogi(GL_FOG_MODE, GL_LINEAR);
-			glFogf(GL_FOG_START, 0);
-			glFogf(GL_FOG_END, 2);
-		}
-		//else
-		{
-			glEnable(GL_FOG);
-		}
-
-		glColor3f(1.0, 1.0, 1.0);
 
 		glEnable(GL_BLEND);
+
+		Color& c = myOwner->getCurrentPreset()->speedVectorColor;
+		glColor4fv(c.data());
+		float s = myOwner->getCurrentPreset()->speedVectorScale;
 		
-		int numAgents = myOwner->getSettings().numAgents;
+		int numAgents = myOwner->getSettings()->numAgents;
 		Agent* agents = myOwner->getAgents();
 		glBegin(GL_LINES);
-		glLineWidth(4.0f);
 		for(int i = 0; i < numAgents; i++)
 		{
-			float s = 0.01f;
-			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			glVertex3f(agents[i].x, agents[i].y, agents[i].z);
-			glVertex3f(agents[i].x - agents[i].vx * s, agents[i].y - agents[i].vy * s, agents[i].z - agents[i].vz * s);
+			glVertex3f(agents[i].x + agents[i].vx * s, agents[i].y + agents[i].vy * s, agents[i].z + agents[i].vz * s);
+
+			glScalef(s, s, s);
 		}
 		glEnd();
 
