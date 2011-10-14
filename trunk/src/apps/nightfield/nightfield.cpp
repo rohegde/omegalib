@@ -55,7 +55,7 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 	p->friction = s["friction"];
 	p->avoidanceDist = s["avoidanceDist"];
 	p->coordinationDist = s["coordinationDist"];
-	p->flockImage = (String)s["flockImage"];
+	p->flockImage = String((const char*)s["flockImage"]);
 	p->useAdditiveAlpha = s["useAddictiveAlpha"];
 	p->drawSpeedVectors = s["drawSpeedVectors"];
 
