@@ -37,27 +37,33 @@ Renderable* Flock::createRenderable()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Flock::setup(Settings* settings)
+{
+	mySettings = settings;
+	myCurrentPreset = mySettings->presets[0];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Flock::initialize()
 {
-	myCurrentPreset = mySettings.presets[0];
 
-	if(ImageUtils::loadImage("images/glow2.png", &myAgentImage))
+	if(ImageUtils::loadImage(myCurrentPreset->flockImage, &myAgentImage))
 	{
 		// Initialize with standard image.
 	}
 
 	// Setup the agent buffer.
-	myAgents = new Agent[mySettings.numAgents];
+	myAgents = new Agent[mySettings->numAgents];
 
-	float minx = mySettings.areaMin[0];
-	float miny = mySettings.areaMin[1];
-	float minz = mySettings.areaMin[2];
+	float minx = mySettings->areaMin[0];
+	float miny = mySettings->areaMin[1];
+	float minz = mySettings->areaMin[2];
 
-	float dx = mySettings.areaMax[0] - mySettings.areaMin[0];
-	float dy = mySettings.areaMax[1] - mySettings.areaMin[1];
-	float dz = mySettings.areaMax[2] - mySettings.areaMin[2];
+	float dx = mySettings->areaMax[0] - mySettings->areaMin[0];
+	float dy = mySettings->areaMax[1] - mySettings->areaMin[1];
+	float dz = mySettings->areaMax[2] - mySettings->areaMin[2];
 
-	for(int i = 0; i < mySettings.numAgents; i++)
+	for(int i = 0; i < mySettings->numAgents; i++)
 	{
 		myAgents[i].x = minx + Math::rangeRandom(0, 1) * dx;
 		myAgents[i].y = miny + Math::rangeRandom(0, 1) * dy;
@@ -79,7 +85,7 @@ void Flock::initializeCL()
 	myComputeGpu->initialize();
 
 	myAgentComputeBuffer = new VertexBuffer(myComputeGpu);
-	int bufSize = mySettings.numAgents * sizeof(Agent);
+	int bufSize = mySettings->numAgents * sizeof(Agent);
 	myAgentComputeBuffer->initialize(bufSize, sizeof(Agent), myAgents);
 
 	Vector<String> shaderNames;
@@ -88,27 +94,22 @@ void Flock::initializeCL()
 	myComputeGpu->loadComputeShaders("shaders/agentsim.cl", shaderNames);
 
 	myCenter = new GpuConstant();
-	myCenter->setFloatValue(mySettings.center[0], mySettings.center[1], mySettings.center[2], 0);
+	myCenter->setFloatValue(mySettings->center[0], mySettings->center[1], mySettings->center[2], 0);
 
 	myDt = new GpuConstant();
 	myAvoidanceDist = new GpuConstant();
 	myCoordinationDist = new GpuConstant();
 	myFriction = new GpuConstant();
 
-	myGroupId = new GpuConstant();
-
-	myTotGroups = new GpuConstant();
-	myTotGroups->setIntValue(mySettings.totGroups);
-
 	// Create a native OpenCL buffer storing interactor information.
 	myInteractorBuffer = new GpuBuffer(myComputeGpu);
-	myInteractorBuffer->initialize(MaxInteractors * sizeof(InteractorRay), sizeof(InteractorRay), NULL);
+	myInteractorBuffer->initialize(MaxAffectors * sizeof(FlockAffector), sizeof(FlockAffector), NULL);
 
 	myNumInteractors = new GpuConstant();
 	myNumInteractors->setIntValue(0);
 
 	myNumAgents = new GpuConstant();
-	myNumAgents->setIntValue(mySettings.numAgents);
+	myNumAgents->setIntValue(mySettings->numAgents);
 
 	// Setup data and parameters for the agent behavior program
 	myAgentBehavior = new GpuProgram(myComputeGpu);
@@ -117,16 +118,14 @@ void Flock::initializeCL()
 	myAgentBehaviorParams.setParam(1, myDt);
 	myAgentBehaviorParams.setParam(2, myCenter);
 	myAgentBehaviorParams.setParam(3, myNumAgents);
-	myAgentBehaviorParams.setParam(4, myTotGroups);
-	myAgentBehaviorParams.setParam(5, myGroupId);
-	myAgentBehaviorParams.setParam(6, myNumInteractors);
-	myAgentBehaviorParams.setParam(7, myInteractorBuffer);
-	myAgentBehaviorParams.setParam(8, myAvoidanceDist);
-	myAgentBehaviorParams.setParam(9, myCoordinationDist);
-	myAgentBehaviorParams.setParam(10, myFriction);
+	myAgentBehaviorParams.setParam(4, myNumInteractors);
+	myAgentBehaviorParams.setParam(5, myInteractorBuffer);
+	myAgentBehaviorParams.setParam(6, myAvoidanceDist);
+	myAgentBehaviorParams.setParam(7, myCoordinationDist);
+	myAgentBehaviorParams.setParam(8, myFriction);
 	myAgentBehaviorOptions.dimensions = 1;
 	myAgentBehaviorOptions.localThreads[0] = 100;
-	myAgentBehaviorOptions.globalThreads[0] = mySettings.numAgents / mySettings.totGroups;
+	myAgentBehaviorOptions.globalThreads[0] = mySettings->numAgents;
 
 	// Setup data and parameters for the agent update program
 	myAgentUpdate = new GpuProgram(myComputeGpu);
@@ -135,7 +134,7 @@ void Flock::initializeCL()
 	myAgentUpdateParams.setParam(1, myDt);
 	myAgentUpdateOptions.dimensions = 1;
 	myAgentUpdateOptions.localThreads[0] = 100;
-	myAgentUpdateOptions.globalThreads[0] = mySettings.numAgents;
+	myAgentUpdateOptions.globalThreads[0] = mySettings->numAgents;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,7 +158,7 @@ void Flock::updateAgentsCPU(const UpdateContext& context)
 	float scale = 0.001f;
 	Vector3f center = Vector3f::Zero();
 	// Compute behavior
-	for(int i = 0; i < mySettings.numAgents; i++)
+	for(int i = 0; i < mySettings->numAgents; i++)
 	{
 		// Compute attraction vector.
 		Vector3f pos(myAgents[i].x, myAgents[i].y, myAgents[i].z);
@@ -171,19 +170,19 @@ void Flock::updateAgentsCPU(const UpdateContext& context)
 		// Compute avoidance vector.
 		Vector3f avoidDir(0, 0, 0);
 		Vector3f coordDir(0, 0, 0);
-		for(int j = 0; j < mySettings.numAgents; j++)
+		for(int j = 0; j < mySettings->numAgents; j++)
 		{
 			if(j != i)
 			{
 				Vector3f pos2(myAgents[j].x, myAgents[j].y, myAgents[j].z);
 				Vector3f dv = pos2 - pos;
 				float l = dv.norm();
-				if(l < myCurrentPreset.avoidanceDist)
+				if(l < myCurrentPreset->avoidanceDist)
 				{
 					dv.normalize();
 					avoidDir -= dv;
 				}
-				if(l < myCurrentPreset.coordinationDist)
+				if(l < myCurrentPreset->coordinationDist)
 				{
 					coordDir += vel;
 				}
@@ -194,7 +193,7 @@ void Flock::updateAgentsCPU(const UpdateContext& context)
 		Vector3f dir = attractDir + avoidDir + coordDir;
 		dir.normalize();
 	
-		int friction = myCurrentPreset.friction / (context.dt * scale);
+		int friction = myCurrentPreset->friction / (context.dt * scale);
 		vel = (vel * friction + dir) / (friction + 1);
 		//vel = dir;
 		if(vel.norm() > 0) vel.normalize();
@@ -204,7 +203,7 @@ void Flock::updateAgentsCPU(const UpdateContext& context)
 		myAgents[i].vz = vel[2];
 	}
 	// Update position
-	for(int i = 0; i < mySettings.numAgents; i++)
+	for(int i = 0; i < mySettings->numAgents; i++)
 	{
 		myAgents[i].x += myAgents[i].vx * context.dt * scale;
 		myAgents[i].y += myAgents[i].vy * context.dt * scale;
@@ -248,20 +247,15 @@ void Flock::updateAgentsGPU(const UpdateContext& context)
 
 	myDt->setFloatValue(0.01);
 
-	static int groupId = 0;
-	myGroupId->setIntValue(groupId);
-	groupId++;
-	if(groupId == mySettings.totGroups) groupId = 0;
-
 	// Set simulation parameters.
-	myCoordinationDist->setFloatValue(myCurrentPreset.coordinationDist);
-	myAvoidanceDist->setFloatValue(myCurrentPreset.avoidanceDist);
-	myFriction->setFloatValue(myCurrentPreset.friction);
+	myCoordinationDist->setFloatValue(myCurrentPreset->coordinationDist);
+	myAvoidanceDist->setFloatValue(myCurrentPreset->avoidanceDist);
+	myFriction->setFloatValue(myCurrentPreset->friction);
 
 	myAgentBehavior->runComputeStage(myAgentBehaviorOptions, &myAgentBehaviorParams);
 	myAgentUpdate->runComputeStage(myAgentUpdateOptions, &myAgentUpdateParams);
 	
 	// Read back data from the compute buffer.
-	myAgentComputeBuffer->read(myAgents, 0, mySettings.numAgents * sizeof(Agent));
+	myAgentComputeBuffer->read(myAgents, 0, mySettings->numAgents * sizeof(Agent));
 }
 

@@ -28,28 +28,56 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
-	numAgents(5000),
-	totGroups(2),
-	areaMin(Vector3f(-0.4, 0.7, -1.4)),
-	areaMax(Vector3f(0.8, 1.9, -2.6)),
+	numAgents(2000),
+	areaMin(Vector3f(-0.4f, 0.7f, -1.4f)),
+	areaMax(Vector3f(0.8f, 1.9f, -2.6f)),
 	center(0.0f, 0.0f, 0.0),
 
 	minAvoidanceDist(0), maxAvoidanceDist(1),
 	minCoordinationDist(0), maxCoordinationDist(1),
 	minFriction(0), maxFriction(1)
 {
-	Preset p;
-	p.friction = 0.1f;
-	p.avoidanceDist = 0.03f;
-	p.coordinationDist = 0.15f;
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Settings::load(const Setting& s)
+{
+	const Setting& sPreset = s["preset"];
+
+	Preset* p = new Preset();
+	loadPreset(p, sPreset);
 	presets.push_back(p);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Settings::loadPreset(Preset* p, const Setting& s)
+{
+	p->friction = s["friction"];
+	p->avoidanceDist = s["avoidanceDist"];
+	p->coordinationDist = s["coordinationDist"];
+	p->flockImage = (String)s["flockImage"];
+	p->useAdditiveAlpha = s["useAddictiveAlpha"];
+	p->drawSpeedVectors = s["drawSpeedVectors"];
+
+	p->speedVectorScale = s["speedVectorScale"];
+
+	p->useFog = s["useFog"];
+
+	Setting& sc = s["speedVectorColor"];
+	p->speedVectorColor = Color(sc[0], sc[1], sc[2], sc[3]);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::initialize()
 {
 	EngineServer::initialize();
+
+	Config* cfg = getSystemManager()->getAppConfig();
+	if(cfg->exists("config"))
+	{
+		Setting& sCfg = cfg->lookup("config");
+		mySettings.load(sCfg);
+	}
 
 	SceneNode* scene = getScene(0);
 
@@ -63,6 +91,7 @@ void Nightfield::initialize()
 
 	scene->addChild(mySceneNode);
 	mySceneNode->addObject(myFlock);
+	myFlock->setup(&mySettings);
 	myFlock->initialize();
 	mySceneNode->addObject(mySelectionSphere);
 
@@ -73,17 +102,14 @@ void Nightfield::initialize()
 	myNavigationInteractor->setSceneNode(mySceneNode);
 	addActor(myNavigationInteractor);
 
-	//Config* cfg = getSystemManager()->getAppConfig();
-	//if(cfg->exists("config"))
-	//{
-	//	Setting& sCfg = cfg->lookup("config");
-	//	String imageName = sCfg["imageName"];
-	//	// Load the image to be used for texturing the quad
-	//	if(ImageUtils::loadImage(imageName, &myImageData))
-	//	{
-	//		myTexturedQuad->setImage(&myImageData);
-	//	}
-	//}
+	// Create a reference box around the scene.
+	if(cfg->exists("config/referenceBox"))
+	{
+		myReferenceBox = new ReferenceBox();
+		scene->addObject(myReferenceBox);
+		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+		myReferenceBox->setColor(ReferenceBox::Back, Color(0.8f, 0.8f, 0.8f));
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
