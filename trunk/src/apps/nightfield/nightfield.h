@@ -45,8 +45,9 @@ public:
 private:
 	SceneNode* mySceneNode;
 	Flock* myFlock;
-	//BoundingSphere* mySelectionSphere;
-	//DefaultMouseInteractor* myMouseInteractor;
+	BoundingSphere* mySelectionSphere;
+	DefaultMouseInteractor* myMouseInteractor;
+	NavigationInteractor* myNavigationInteractor;
 };
 
 #endif

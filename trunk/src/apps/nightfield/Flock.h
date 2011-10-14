@@ -159,6 +159,7 @@ public:
 	virtual void dispose();
 	virtual void refresh();
 	virtual void draw(RenderState* state);
+	virtual void drawPoints(RenderState* state);
 
 private:
 	Flock* myOwner;
