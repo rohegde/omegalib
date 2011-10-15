@@ -79,9 +79,9 @@ struct Agent
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct FlockAffector
 {
-	float x, y, z; // Ray origin
-	float dx, dy, dz; // Ray direction
-	float s1, s2; // Additional values for alignment, I can use them to store additional properties about the ray.
+	float x, y, z; // origin
+	float rx, ry, rz; // Radii (for now we assume as sphere, so only rx is used)
+	float f1, f2; // Affector parameters;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +108,10 @@ public:
 	ImageData& getAgentImage() { return myAgentImage; }
 	Settings* getSettings() { return mySettings; }
 	Preset* getCurrentPreset() { return myCurrentPreset; }
+
+	FlockAffector* getAffector(int index) { return &myAffectorData[index]; }
+	void setActiveAffectors(int value) { myActiveAffectors = value; }
+	int getActiveAffectors() { return myActiveAffectors; }
 
 	Agent* getAgents() { return myAgents; }
 
@@ -149,6 +153,7 @@ private:
 	ComputeStageOptions myAgentBehaviorOptions;
 
 	// Interactors.
+	int myActiveAffectors;
 	FlockAffector myAffectorData[MaxAffectors];
 };
 

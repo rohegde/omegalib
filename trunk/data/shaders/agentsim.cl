@@ -5,11 +5,11 @@ struct Agent
 	float s1, s2;
 };
 
-struct InteractorRay
+struct FlockAffector
 {
 	float x, y, z;
-	float dx, dy, dz;
-	float s1, s2;
+	float rx, ry, rz;
+	float f1, f2;
 };
 
 __kernel void behavior(
@@ -17,8 +17,8 @@ __kernel void behavior(
 	__private float dt,
 	__private float4 center, 
 	__private int numAgents, 
-	__private int numInteractors,
-	__constant struct InteractorRay* interactor,
+	__private int numAffectors,
+	__constant struct FlockAffector* affector,
 	
 	// Simulation customization parameters
 	__private float avoidanceDist, 
@@ -59,10 +59,10 @@ __kernel void behavior(
 	vel = (vel * friction + dir) / (friction + 1);
 	vel = normalize(vel);
 	
-	for(int j = 0; j < numInteractors; j++)
+	for(int j = 0; j < numAffectors; j++)
 	{
-		float4 iorig = (float4)(interactor[j].x, interactor[j].y, interactor[j].z, 0);
-		float4 idir = (float4)(interactor[j].dx, interactor[j].dy, interactor[j].dz, 0);
+		float4 iorig = (float4)(affector[j].x, affector[j].y, affector[j].z, 0);
+		float4 idir = (float4)(affector[j].rx, affector[j].ry, affector[j].rz, 0);
 		float t0num = dot(idir, (pos - iorig));
 		float t0den = dot(idir, idir);
 		float t0 = t0num / t0den;
@@ -70,7 +70,7 @@ __kernel void behavior(
 		float idist = length(ptol);
 		if(idist < 0.2f)
 		{
-			vel += (ptol / idist) * interactor[j].s1;
+			vel += (ptol / idist) * affector[j].f1;
 		}
 	}
 	
