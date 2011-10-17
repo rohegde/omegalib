@@ -18,13 +18,21 @@ Number of parameters depend on the service type. Note the trailing space at the 
 
 = Service Types =
 
-Each service type is defined by an enumeration. The types currently used by oinputserver are listed below. A full list can be found in Service.h.
+Each service type is defined as follows:
 
 0: Pointer
 
 1: Mocap
 
+2: Keyboard
+
 3: Controller
+
+4: Ui
+
+5: Generic
+
+The current enumeration is found in include/omega/Service.h
 
 ------------------------------------------------------------
 
