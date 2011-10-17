@@ -95,17 +95,20 @@ void BoxRenderable::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void BoxRenderable::draw(RenderState* state)
 {
-	pushNodeTransform();
-	for (int i = 0; i < 6; i++) 
+	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
-		glBegin(GL_QUADS);
-		glColor3fv(myFaceColors[i].data());
-		glNormal3fv(myNormals[i].data());
-		glVertex3fv(myVertices[myFaces[i][0]].data());
-		glVertex3fv(myVertices[myFaces[i][1]].data());
-		glVertex3fv(myVertices[myFaces[i][2]].data());
-		glVertex3fv(myVertices[myFaces[i][3]].data());
-		glEnd();
+		pushNodeTransform();
+		for (int i = 0; i < 6; i++) 
+		{
+			glBegin(GL_QUADS);
+			glColor3fv(myFaceColors[i].data());
+			glNormal3fv(myNormals[i].data());
+			glVertex3fv(myVertices[myFaces[i][0]].data());
+			glVertex3fv(myVertices[myFaces[i][1]].data());
+			glVertex3fv(myVertices[myFaces[i][2]].data());
+			glVertex3fv(myVertices[myFaces[i][3]].data());
+			glEnd();
+		}
+		popNodeTransform();
 	}
-	popNodeTransform();
 }

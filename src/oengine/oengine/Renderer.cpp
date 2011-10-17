@@ -64,6 +64,7 @@ void Renderer::beginDraw3D(const DrawContext& context)
 
 	glPushAttrib(GL_ENABLE_BIT);
 	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
 
 	myDrawing = true;
 }
