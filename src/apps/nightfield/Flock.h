@@ -48,6 +48,7 @@ struct Preset
 	String fragmentShader;
 	bool hasFragmentShader;
 	float pointSize;
+	int trailSize;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,6 +172,7 @@ public:
 	virtual void dispose();
 	virtual void refresh();
 	virtual void draw(RenderState* state);
+	virtual void drawTrails(RenderState* state);
 	virtual void drawPoints(RenderState* state);
 
 private:
@@ -186,6 +188,10 @@ private:
 	RenderStageOptions myAgentRenderOptions;
 
 	Texture* myAgentTexture;
+
+	// Trail data.
+	float* myTrailData;
+	int myTrailDataSize;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

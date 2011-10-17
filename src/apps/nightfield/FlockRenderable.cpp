@@ -73,18 +73,46 @@ void FlockRenderable::initialize()
 	myAgentRenderOptions.primType = RenderStageOptions::PrimPoints;
 
 	//myNumTouches = 0;
+
+	// Allocate trail data.
+	myTrailDataSize = 3 * myOwner->getSettings()->numAgents * myOwner->getCurrentPreset()->trailSize;
+	myTrailData = new float[myTrailDataSize];
+	//memset(myTrailData, 0, myTrailDataSize * sizeof(float));
+	//for(int i = 0; i < myOwner->getSettings()->numAgents; i++)
+	//{
+	//	int offset = i * trailSize * 3;
+	//	myTrailData[offset] = agents[i].x;
+	//	myTrailData[offset + 1] = agents[i].y;
+	//	myTrailData[offset + 2] = agents[i].z;
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::dispose()
 {
+	delete myTrailData;
+	myTrailData = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::refresh()
 {
+	Agent* agents = myOwner->getAgents();	
 	int dataSize = myOwner->getSettings()->numAgents * sizeof(Agent);
 	myAgentBuffer->write(myOwner->getAgents(), 0, dataSize);
+
+	// Refresh trail data.
+	// Shift trail data buffer forward to make space for a new (x,y,z) triplet of floats.
+	memcpy(myTrailData, (void*)&myTrailData[3], (myTrailDataSize - 1) * sizeof(float));
+	int numAgents = myOwner->getSettings()->numAgents;
+	int trailSize = myOwner->getCurrentPreset()->trailSize;
+	for(int i = 0; i < numAgents; i++)
+	{
+		int offset = (i * trailSize + (trailSize - 1)) * 3;
+		myTrailData[offset] = agents[i].x;
+		myTrailData[offset + 1] = agents[i].y;
+		myTrailData[offset + 2] = agents[i].z;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +213,49 @@ void FlockRenderable::draw(RenderState* state)
 			glDisable(GL_BLEND);
 		}
 	}
+
+	drawTrails(state);
 	
 	drawPoints(state);
 	popNodeTransform();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void FlockRenderable::drawTrails(RenderState* state)
+{
+	if(state->isFlagSet(RenderPass::RenderTransparent))
+	{
+		glDisable(GL_LIGHTING);
+		glEnable(GL_BLEND);
+		glDepthMask(GL_FALSE);
+
+		Color& c = myOwner->getCurrentPreset()->speedVectorColor;
+		glColor4fv(c.data());
+		float s = myOwner->getCurrentPreset()->speedVectorScale;
+		
+		int numAgents = myOwner->getSettings()->numAgents;
+		Agent* agents = myOwner->getAgents();
+		int trailSize = myOwner->getCurrentPreset()->trailSize;
+
+		// compute alpha step.
+		float as = 1.0f / trailSize;
+
+		for(int i = 0; i < numAgents; i++)
+		{
+			glBegin(GL_LINE_STRIP);
+			float alpha = 0.0f;
+			int offset = i * trailSize * 3;
+			for(int j = 0; j < trailSize; j++)
+			{
+				glColor4f(c[0], c[1], c[2], alpha);
+				glVertex3f(myTrailData[offset], myTrailData[offset + 1], myTrailData[offset + 2]);
+				offset += 3;
+				alpha += as;
+			}
+			glEnd();
+		}
+
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+	}
 }

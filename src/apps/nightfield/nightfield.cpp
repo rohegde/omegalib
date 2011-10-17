@@ -77,6 +77,15 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 		p->pointSize = 32;
 	}
 
+	if(s.exists("trailSize"))
+	{
+		p->trailSize = s["trailSize"];
+	}
+	else
+	{
+		p->trailSize = 16;
+	}
+
 	p->speedVectorScale = s["speedVectorScale"];
 
 	p->useFog = s["useFog"];
