@@ -35,12 +35,41 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+class AffectorEntity: public DynamicObject
+{
+public:
+	AffectorEntity(SceneObject* obj, EngineServer* server);
+	~AffectorEntity();
+
+	void resetTransform();
+	bool isVisible() { return myVisible; }
+	void setVisible(bool value);
+
+	SceneNode* getSceneNode() { return mySceneNode; }
+	SceneObject* getObject() { return myObject; }
+
+	void updateFlockAffector(FlockAffector* af);
+
+private:
+	EngineServer* myServer;
+
+	SceneNode* mySceneNode;
+	SceneObject* myObject;
+
+	BoundingSphere* mySelectionSphere;
+	bool myVisible;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 class Nightfield: public EngineServer
 {
 public:
 	Nightfield(Application* app): EngineServer(app) {}
 	virtual void initialize();
 	void update(const UpdateContext& context);
+	void handleEvent(const Event& evt);
+	AffectorEntity* findEntity(SceneNode* node);
+	void updateSelection(const Ray& ray);
 
 private:
 	Settings mySettings;
@@ -51,6 +80,9 @@ private:
 	BoundingSphere* mySelectionSphere;
 	DefaultMouseInteractor* myMouseInteractor;
 	NavigationInteractor* myNavigationInteractor;
+
+	AffectorEntity* mySelectedEntity;
+	List<AffectorEntity*> myEntities;
 };
 
 #endif

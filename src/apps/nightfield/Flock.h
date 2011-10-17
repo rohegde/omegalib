@@ -152,7 +152,7 @@ private:
 	ComputeStageOptions myAgentUpdateOptions;
 	ComputeStageOptions myAgentBehaviorOptions;
 
-	// Interactors.
+	// Affectors.
 	int myActiveAffectors;
 	FlockAffector myAffectorData[MaxAffectors];
 };

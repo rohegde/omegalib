@@ -58,7 +58,8 @@ __kernel void behavior(
 	float4 vel = (float4)(agent[i].vx, agent[i].vy, agent[i].vz, 0);
 	vel = (vel * friction + dir) / (friction + 1);
 	vel = normalize(vel);
-	
+
+/*	
 	for(int j = 0; j < numAffectors; j++)
 	{
 		float4 iorig = (float4)(affector[j].x, affector[j].y, affector[j].z, 0);
@@ -69,6 +70,17 @@ __kernel void behavior(
 		float4 ptol = pos - (iorig + t0 * idir);
 		float idist = length(ptol);
 		if(idist < 0.2f)
+		{
+			vel += (ptol / idist) * affector[j].f1;
+		}
+	}
+*/
+	for(int j = 0; j < numAffectors; j++)
+	{
+		float4 iorig = (float4)(affector[j].x, affector[j].y, affector[j].z, 0);
+		float4 ptol = pos - iorig;
+		float idist = length(ptol);
+		if(idist < affector[j].rx)
 		{
 			vel += (ptol / idist) * affector[j].f1;
 		}

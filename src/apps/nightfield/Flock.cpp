@@ -153,6 +153,30 @@ void Flock::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Flock::updateAgentsGPU(const UpdateContext& context)
+{
+	myNumInteractors->setIntValue(myActiveAffectors);
+	myInteractorBuffer->write(myAffectorData, 0, MaxAffectors * sizeof(FlockAffector));
+
+	myDt->setFloatValue(0.01);
+
+	// Set simulation parameters.
+	myCoordinationDist->setFloatValue(myCurrentPreset->coordinationDist);
+	myAvoidanceDist->setFloatValue(myCurrentPreset->avoidanceDist);
+	myFriction->setFloatValue(myCurrentPreset->friction);
+
+	myCenter->setFloatValue(mySettings->center[0], mySettings->center[1], mySettings->center[2], 0);
+
+	myAgentBehavior->runComputeStage(myAgentBehaviorOptions, &myAgentBehaviorParams);
+	myAgentUpdate->runComputeStage(myAgentUpdateOptions, &myAgentUpdateParams);
+	
+	// Read back data from the compute buffer.
+	myAgentComputeBuffer->read(myAgents, 0, mySettings->numAgents * sizeof(Agent));
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////// 
+// Fallback code to simulate the flock on the cpu.
 void Flock::updateAgentsCPU(const UpdateContext& context)
 {
 	float scale = 0.001f;
@@ -211,51 +235,4 @@ void Flock::updateAgentsCPU(const UpdateContext& context)
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Flock::updateAgentsGPU(const UpdateContext& context)
-{
-	//myUI->update(context);
-
-	//if(myRotate)
-	//{
-	//	myRotateX += (myMouseX - myLastMouseX);
-	//	myRotateY += (myMouseY - myLastMouseY);
-	//	//myLightPos->setFloatValue(myMouseX / context.viewportWidth, myMouseY / context.viewportHeight);
-	//}
-
-	//for(int j = 0; j < myNumTouches; j++)
-	//{
-	//	Vector3f mouseRayOrigin;
-	//	Vector3f mouseRayDirection;
-	//	GfxUtils::getViewRay(myTouchX[j], myTouchY[j], &mouseRayOrigin, &mouseRayDirection);
-
-	//	myInteractorData[j].x = mouseRayOrigin[0];
-	//	myInteractorData[j].y = mouseRayOrigin[1];
-	//	myInteractorData[j].z = mouseRayOrigin[2];
-	//	myInteractorData[j].dx = mouseRayDirection[0];
-	//	myInteractorData[j].dy = mouseRayDirection[1];
-	//	myInteractorData[j].dz = mouseRayDirection[2];
-	//}
-	//myNumInteractors->setIntValue(myNumTouches);
-	//myInteractorBuffer->setData(myInteractorData);
-
-	myNumInteractors->setIntValue(0);
-	//myInteractorBuffer->setData(myInteractorData);
-
-	//myNumInteractors->setIntValue(0);
-	//myNumTouches = 0;
-
-	myDt->setFloatValue(0.01);
-
-	// Set simulation parameters.
-	myCoordinationDist->setFloatValue(myCurrentPreset->coordinationDist);
-	myAvoidanceDist->setFloatValue(myCurrentPreset->avoidanceDist);
-	myFriction->setFloatValue(myCurrentPreset->friction);
-
-	myAgentBehavior->runComputeStage(myAgentBehaviorOptions, &myAgentBehaviorParams);
-	myAgentUpdate->runComputeStage(myAgentUpdateOptions, &myAgentUpdateParams);
-	
-	// Read back data from the compute buffer.
-	myAgentComputeBuffer->read(myAgents, 0, mySettings->numAgents * sizeof(Agent));
-}
 
