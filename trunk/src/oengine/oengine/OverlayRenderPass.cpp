@@ -38,14 +38,17 @@ OMEGA_DEFINE_TYPE(OverlayRenderPass, RenderPass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OverlayRenderPass::render(EngineClient* client, const DrawContext& context)
 {
-	RenderState state;
-	state.pass = this;
-	state.flags = RenderPass::RenderOverlay;
-	state.client = client;
-	state.context = &context;
+	if(context.task == DrawContext::SceneDrawTask)
+	{
+		RenderState state;
+		state.pass = this;
+		state.flags = RenderPass::RenderOverlay;
+		state.client = client;
+		state.context = &context;
 
-	client->getRenderer()->beginDraw2D(context);
-	SceneNode* node = client->getServer()->getScene(0);
-	node->draw(&state);
-	client->getRenderer()->endDraw();
+		client->getRenderer()->beginDraw2D(context);
+		SceneNode* node = client->getServer()->getScene(0);
+		node->draw(&state);
+		client->getRenderer()->endDraw();
+	}
 }

@@ -67,9 +67,70 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 	p->speedVectorColor = Color(sc[0], sc[1], sc[2], sc[3]);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
+	myObject(object),
+	myServer(server),
+	myVisible(false)
+{
+	mySelectionSphere = new BoundingSphere();
+	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setVisible(false);
+
+	mySceneNode = new SceneNode(server);
+	mySceneNode->setSelectable(true);
+	server->getScene(0)->addChild(mySceneNode);
+	mySceneNode->addObject(myObject);
+	mySceneNode->addObject(mySelectionSphere);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+AffectorEntity::~AffectorEntity()
+{
+	myServer->getScene(0)->removeChild(mySceneNode);
+	delete mySceneNode;
+	mySceneNode = NULL;
+
+	delete mySelectionSphere;
+	mySelectionSphere = NULL;
+
+	myObject = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::setVisible(bool value)
+{
+	myVisible = value;
+	if(myObject != NULL)
+	{
+		mySceneNode->setVisible(value);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::resetTransform()
+{
+	mySceneNode->setPosition(0, 0, -0.5f);
+	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
+	mySceneNode->resetOrientation();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::updateFlockAffector(FlockAffector* af)
+{
+	const Sphere& bs = mySceneNode->getBoundingSphere();
+	af->x = mySceneNode->getPosition().x();
+	af->y = mySceneNode->getPosition().y();
+	af->z = mySceneNode->getPosition().z();
+	af->rx = bs.getRadius() * 0.2f;
+	af->f1 = 1.0f;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::initialize()
 {
+	mySelectedEntity = NULL;
+
 	EngineServer::initialize();
 
 	Config* cfg = getSystemManager()->getAppConfig();
@@ -96,10 +157,8 @@ void Nightfield::initialize()
 	mySceneNode->addObject(mySelectionSphere);
 
 	myMouseInteractor = new DefaultMouseInteractor();
-	myMouseInteractor->setSceneNode(mySceneNode);
 	addActor(myMouseInteractor);
 	myNavigationInteractor = new NavigationInteractor();
-	myNavigationInteractor->setSceneNode(mySceneNode);
 	addActor(myNavigationInteractor);
 
 	// Create a reference box around the scene.
@@ -110,12 +169,95 @@ void Nightfield::initialize()
 		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 		myReferenceBox->setColor(ReferenceBox::Back, Color(0.8f, 0.8f, 0.8f));
 	}
+
+	// Create affector entity.
+	PlyDataReader* sphere = new PlyDataReader();
+	sphere->readPlyFile("meshes/sphere.ply");
+	sphere->scale(0.2f);
+	Mesh* m = new Mesh();
+
+	AffectorEntity* ae = new AffectorEntity(m, this);
+	m->setData(sphere);
+	myEntities.push_back(ae);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::update(const UpdateContext& context)
 {
+	int i = 0;
+	foreach(AffectorEntity* ae, myEntities)
+	{
+		FlockAffector* fa = myFlock->getAffector(i);
+		ae->updateFlockAffector(fa);
+		i++;
+	}
+	//myFlock->setActiveAffectors(i);
 	myFlock->update(context);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Nightfield::handleEvent(const Event& evt)
+{
+	EngineServer::handleEvent(evt);
+	if(evt.getServiceType() == Service::Pointer)
+	{
+		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Left) && evt.getExtraDataLength() == 2)
+		{
+			Ray ray;
+			ray.setOrigin(evt.getExtraDataVector3(0));
+			ray.setDirection(evt.getExtraDataVector3(1));
+			updateSelection(ray);
+		}
+		else if(evt.getType() == Event::Down && evt.isFlagSet(Event::Right))
+		{
+			myFlock->getSettings()->center = evt.getExtraDataVector3(0);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+AffectorEntity* Nightfield::findEntity(SceneNode* node)
+{
+	foreach(AffectorEntity* e, myEntities)
+	{
+		if(e->getSceneNode() == node) return e;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Nightfield::updateSelection(const Ray& ray)
+{
+	const SceneQueryResultList& sqrl = querySceneRay(0, ray);
+	if(sqrl.size() != 0)
+	{
+		// The ray intersected with something.
+		SceneNode* sn = sqrl.front().node;
+		AffectorEntity* e = findEntity(sn);
+
+		if(mySelectedEntity != e)
+		{
+			if(mySelectedEntity != NULL)
+			{
+				mySelectedEntity->getSceneNode()->setSelected(false);
+			}
+			// The selected entity changed.
+			myMouseInteractor->setSceneNode(sn);
+			myNavigationInteractor->setSceneNode(sn);
+			sn->setSelected(true);
+			mySelectedEntity = e;
+		}
+	}
+	else
+	{
+		if(mySelectedEntity != NULL)
+		{
+			mySelectedEntity->getSceneNode()->setSelected(false);
+			mySelectedEntity = NULL;
+			myMouseInteractor->setSceneNode(NULL);
+			myNavigationInteractor->setSceneNode(NULL);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
