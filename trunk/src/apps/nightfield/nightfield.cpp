@@ -31,7 +31,7 @@ Settings::Settings():
 	numAgents(2000),
 	areaMin(Vector3f(-0.4f, 0.7f, -1.4f)),
 	areaMax(Vector3f(0.8f, 1.9f, -2.6f)),
-	center(0.0f, 0.0f, 0.0),
+	center(0.0f, 0.0f, 0.0f),
 
 	minAvoidanceDist(0), maxAvoidanceDist(1),
 	minCoordinationDist(0), maxCoordinationDist(1),
@@ -56,12 +56,31 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 	p->avoidanceDist = s["avoidanceDist"];
 	p->coordinationDist = s["coordinationDist"];
 	p->flockImage = String((const char*)s["flockImage"]);
+	if(s.exists("fragmentShader"))
+	{
+		p->fragmentShader = String((const char*)s["fragmentShader"]);
+		p->hasFragmentShader = true;
+	}
+	else
+	{
+		p->hasFragmentShader = false;
+	}
 	p->useAdditiveAlpha = s["useAddictiveAlpha"];
 	p->drawSpeedVectors = s["drawSpeedVectors"];
+
+	if(s.exists("pointSize"))
+	{
+		p->pointSize = s["pointSize"];
+	}
+	else
+	{
+		p->pointSize = 32;
+	}
 
 	p->speedVectorScale = s["speedVectorScale"];
 
 	p->useFog = s["useFog"];
+
 
 	Setting& sc = s["speedVectorColor"];
 	p->speedVectorColor = Color(sc[0], sc[1], sc[2], sc[3]);
@@ -110,7 +129,7 @@ void AffectorEntity::setVisible(bool value)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void AffectorEntity::resetTransform()
 {
-	mySceneNode->setPosition(0, 0, -0.5f);
+	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
 	mySceneNode->resetOrientation();
 }
@@ -119,11 +138,11 @@ void AffectorEntity::resetTransform()
 void AffectorEntity::updateFlockAffector(FlockAffector* af)
 {
 	const Sphere& bs = mySceneNode->getBoundingSphere();
-	af->x = mySceneNode->getPosition().x();
-	af->y = mySceneNode->getPosition().y();
-	af->z = mySceneNode->getPosition().z();
-	af->rx = bs.getRadius() * 0.2f;
-	af->f1 = 1.0f;
+	af->x = bs.getCenter().x();
+	af->y = bs.getCenter().y();
+	af->z = bs.getCenter().z();
+	af->rx = bs.getRadius();
+	af->f1 = 2.0f;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,14 +195,28 @@ void Nightfield::initialize()
 	sphere->scale(0.2f);
 	Mesh* m = new Mesh();
 
+	// Sphere 1
 	AffectorEntity* ae = new AffectorEntity(m, this);
 	m->setData(sphere);
 	myEntities.push_back(ae);
+
+	// Sphere 2
+	ae = new AffectorEntity(m, this);
+	m->setData(sphere);
+	myEntities.push_back(ae);
+
+	setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
+
+	Light* light = getLight(0);
+	light->setEnabled(true);
+	light->setColor(Color(0.6f, 0.6f, 0.5f));
+	light->setPosition(Vector3f(0, 3, 3));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::update(const UpdateContext& context)
 {
+	EngineServer::update(context);
 	int i = 0;
 	foreach(AffectorEntity* ae, myEntities)
 	{
@@ -191,7 +224,7 @@ void Nightfield::update(const UpdateContext& context)
 		ae->updateFlockAffector(fa);
 		i++;
 	}
-	//myFlock->setActiveAffectors(i);
+	myFlock->setActiveAffectors(i);
 	myFlock->update(context);
 }
 
@@ -210,7 +243,10 @@ void Nightfield::handleEvent(const Event& evt)
 		}
 		else if(evt.getType() == Event::Down && evt.isFlagSet(Event::Right))
 		{
-			myFlock->getSettings()->center = evt.getExtraDataVector3(0);
+			Ray r(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1));
+			std::pair<bool, float> pt = r.intersects(Plane(Vector3f(0, 0, 1), 0));
+			Vector3f newCenter = r.getPoint(pt.second);
+			myFlock->getSettings()->center = newCenter;
 		}
 	}
 }

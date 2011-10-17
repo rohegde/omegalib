@@ -65,6 +65,7 @@ set( srcs
 		oengine/plyfile.cpp
 		oengine/ReferenceBox.cpp
 		oengine/Renderable.cpp
+		oengine/TransparentRenderPass.cpp
 		oengine/UiRenderPass.cpp
 		#oengine/obj/obj.cpp
 		#oengine/obj/obj.hpp
@@ -124,6 +125,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/RenderToTexture.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/TransparentRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h

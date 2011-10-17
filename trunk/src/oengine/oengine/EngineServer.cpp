@@ -28,6 +28,7 @@
 #include "oengine/LightingPass.h"
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/DefaultRenderPass.h"
+#include "oengine/TransparentRenderPass.h"
 #include "oengine/UiRenderPass.h"
 #include "oengine/Renderable.h"
 #include "oengine/ui/DefaultSkin.h"
@@ -60,12 +61,14 @@ void EngineServer::initialize()
 
 	// Setup default render chain.
 	registerRenderPassClass<LightingPass>();
-	//registerRenderPassClass<OverlayRenderPass>();
 	registerRenderPassClass<DefaultRenderPass>();
+	registerRenderPassClass<TransparentRenderPass>();
+	registerRenderPassClass<OverlayRenderPass>();
 	registerRenderPassClass<UiRenderPass>();
 
 	addRenderPass("LightingPass");
 	addRenderPass("DefaultRenderPass");
+	addRenderPass("TransparentRenderPass");
 	addRenderPass("OverlayRenderPass");
 	addRenderPass("UiRenderPass");
 }

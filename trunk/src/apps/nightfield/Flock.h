@@ -45,6 +45,9 @@ struct Preset
 	bool drawSpeedVectors;
 	float speedVectorScale;
 	Color speedVectorColor;
+	String fragmentShader;
+	bool hasFragmentShader;
+	float pointSize;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

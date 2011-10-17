@@ -44,7 +44,6 @@ void FlockRenderable::initialize()
 		img.height,
 		img.data);
 
-	gpu->loadFragmentShader("smoke", "shaders/smoke.frag");
 
 	// Create the gpu buffers and constants.
 	int bufSize = myOwner->getSettings()->numAgents * sizeof(Agent);
@@ -55,12 +54,18 @@ void FlockRenderable::initialize()
 
 	myLightPos = new GpuConstant();
 	myLightPos->setName("lightpos");
-	myLightPos->setFloatValue(1.0f, 1.0f);
+	myLightPos->setFloatValue(0.0f, 1.0f);
 
 	// Setup data and parameters for the agent render program
 	myAgentRenderer = new GpuProgram(gpu);
-	//myAgentRenderer->setFragmentShader(gpu->getFragmentShader("smoke"));
 	myAgentRenderParams.setParam(0, myAgentBuffer);
+	if(myOwner->getCurrentPreset()->hasFragmentShader)
+	{
+		String shaderName = myOwner->getCurrentPreset()->fragmentShader;
+		gpu->loadFragmentShader(shaderName, shaderName);
+		myAgentRenderer->setFragmentShader(gpu->getFragmentShader(shaderName));
+	}
+
 	//myAgentRenderer->setInput(1, myLightPos);
 	//myAgentRenderer->setNumRenderItems(mySettings.numAgents);
 	myAgentRenderer->initialize();
@@ -85,10 +90,8 @@ void FlockRenderable::refresh()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::drawPoints(RenderState* state)
 {
-	pushNodeTransform();
-	if(state->isFlagSet(RenderPass::RenderOpaque))
+	if(state->isFlagSet(RenderPass::RenderTransparent))
 	{
-		// We don't use lighting for this application.
 		glDisable(GL_LIGHTING);
 
 		if(myOwner->getCurrentPreset()->useFog)
@@ -118,7 +121,8 @@ void FlockRenderable::drawPoints(RenderState* state)
 		//glTranslatef(-mySettings.center[0], -mySettings.center[1], -mySettings.center[2]);
 
 		//GfxUtils::beginOverlayMode(context);
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
+		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		//glDisable(GL_TEXTURE_2D);
 
@@ -139,47 +143,49 @@ void FlockRenderable::drawPoints(RenderState* state)
 		}
 
 		//int ps = context.viewportHeight < context.viewportWidth ? context.viewportHeight / 8 : context.viewportWidth / 8;
-		int ps = 32;
+		int ps = myOwner->getCurrentPreset()->pointSize;
 		glPointSize(ps);
 
 		myAgentRenderer->runRenderStage(myAgentRenderOptions, &myAgentRenderParams);
 
 		glDisable(GL_BLEND);
-		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
 	}
-	popNodeTransform();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::draw(RenderState* state)
 {
 	pushNodeTransform();
-	if(state->isFlagSet(RenderPass::RenderOpaque))
+
+	if(myOwner->getCurrentPreset()->drawSpeedVectors)
 	{
-		// We don't use lighting for this application.
-		glDisable(GL_LIGHTING);
-
-		glEnable(GL_BLEND);
-
-		Color& c = myOwner->getCurrentPreset()->speedVectorColor;
-		glColor4fv(c.data());
-		float s = myOwner->getCurrentPreset()->speedVectorScale;
-		
-		int numAgents = myOwner->getSettings()->numAgents;
-		Agent* agents = myOwner->getAgents();
-		glBegin(GL_LINES);
-		for(int i = 0; i < numAgents; i++)
+		if(state->isFlagSet(RenderPass::RenderTransparent))
 		{
-			glVertex3f(agents[i].x, agents[i].y, agents[i].z);
-			glVertex3f(agents[i].x + agents[i].vx * s, agents[i].y + agents[i].vy * s, agents[i].z + agents[i].vz * s);
+			glDisable(GL_LIGHTING);
 
-			glScalef(s, s, s);
+			glEnable(GL_BLEND);
+
+			Color& c = myOwner->getCurrentPreset()->speedVectorColor;
+			glColor4fv(c.data());
+			float s = myOwner->getCurrentPreset()->speedVectorScale;
+		
+			int numAgents = myOwner->getSettings()->numAgents;
+			Agent* agents = myOwner->getAgents();
+			glBegin(GL_LINES);
+			for(int i = 0; i < numAgents; i++)
+			{
+				glVertex3f(agents[i].x, agents[i].y, agents[i].z);
+				glVertex3f(agents[i].x + agents[i].vx * s, agents[i].y + agents[i].vy * s, agents[i].z + agents[i].vz * s);
+
+				glScalef(s, s, s);
+			}
+			glEnd();
+
+			glDisable(GL_BLEND);
 		}
-		glEnd();
-
-		glDisable(GL_BLEND);
 	}
-	popNodeTransform();
 	
 	drawPoints(state);
+	popNodeTransform();
 }
