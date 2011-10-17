@@ -3,8 +3,16 @@
 
 = Introduction =
 
-Datagram Structure:
-'{Service Type}:{Event Type},{Source ID},{Param1},...,{ParamN} '
+== Connecting ==
+ * Open a tcp connection on port 27000 to the computer running oinputserver.
+ * Send a string specifiying the port you'd like to receive data on. For example:  "data_on,27001" You can replace 27001 with the port number of your choice.
+ * Close the tcp connection
+ * Open a udp connection to the port you previously specified (27001 in this example)
+ * Start listening for packets and parse them as they arrive
+
+
+== Datagram Structure ==
+Datagrams are a string of the following format: '{Service Type}:{Event Type},{Source ID},{Param1},...,{ParamN} '
 
 Number of parameters depend on the service type. Note the trailing space at the end of the datagram. Source ID is a unique identifier for that touch, rigid body, controller, etc. Service and event types are described below.
 
