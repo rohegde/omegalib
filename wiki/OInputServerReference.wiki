@@ -181,7 +181,7 @@ The button fields (C,Z) will either be 0 (not pressed) or 1 (pressed).
 
 = Event ID Types =
 
-Each event type is defined by an enumeration. (See Event.h)
+Each event type is defined by an enumeration. (See include/omega/Event.h)
 
 0: Select
 
