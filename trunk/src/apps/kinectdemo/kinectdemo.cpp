@@ -1,75 +1,125 @@
-#include "kinectdemo.h"
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Victor Mateevitsi		mvictoras@gmail.com
+ *	Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
+#include <omega.h>
+#include "omega/OpenNIService.h"
 
-void KinectDemoClient::draw(const DrawContext& context)
+using namespace omega;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class MultipleKinectDemoClient: public ApplicationClient
 {
+public:
+	MultipleKinectDemoClient(ApplicationServer* server): ApplicationClient(server) {}
+	virtual void initialize();
+	virtual bool handleEvent(const Event& evt, UpdateContext& context);
+	virtual void draw(const DrawContext& context);
+	void processData();
+private:
 
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	Vector3f myCurrentMocapReadingR;
+	Vector3f myCurrentMocapReadingL;
 
-	// Setup the OpenGL viewpoint
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
+	bool myUseTrackable;
+	int myTrackableId;
+};
 
-	GLuint texID = 0;
-	glGenTextures(1,&texID);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class MultipleKinectDemoApplication: public Application
+{
+public:
+	virtual ApplicationClient* createClient(ApplicationServer* server) { return new MultipleKinectDemoClient(server); }
+};
 
-	glBindTexture(GL_TEXTURE_2D,texID);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MultipleKinectDemoClient::initialize()
+{
+	myUseTrackable = false;
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	Config* cfg = getSystemManager()->getAppConfig();
 
-	//xn::DepthMetaData depthMD;
+}
 
-	SystemManager::instance()->getServiceManager()->poll();
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MultipleKinectDemoClient::processData()
+{
+}
 
-	int numberOfEvents = SystemManager::instance()->getServiceManager()->getAvailableEvents();
-
-	omega::Event ptrEvents[OMEGA_MAX_EVENTS];
-
-	if( numberOfEvents > 0 ) {
-		SystemManager::instance()->getServiceManager()->getEvents(ptrEvents, omega::ServiceManager::MaxEvents);
-
-		for ( int i = 0; i < numberOfEvents; i++ ) {
-
-				// Select only the openni events
-			if( ptrEvents[i].getServiceType() == omega::Service::Mocap ) {
-				Vector3f pos = ptrEvents[i].getPosition() * 0.001;
-				
-				ofmsg("Position: %1%", %pos);
-
-				glBindTexture(GL_TEXTURE_2D, texID);
-				//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, ptrEvents[i].userData);
-
-				// Display the OpenGL texture map
-				glColor4f(0.75,0.75,0.75,1);
-
-				glEnable(GL_TEXTURE_2D);
-				GLfloat verts[8] = {	640, 0,
-					640, 480,
-					0, 480,
-					0, 0
-				};
-				glVertexPointer(2, GL_FLOAT, 0, verts);
-				glDrawArrays(GL_TRIANGLE_FAN, 0, 4);	
-				glDisable(GL_TEXTURE_2D);
-			}
-		}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool MultipleKinectDemoClient::handleEvent(const Event& evt, UpdateContext& context)
+{
+	switch(evt.getServiceType())
+	{
+	case Service::Mocap:
+		myCurrentMocapReadingL = evt.getExtraDataVector3(OMEGA_SKEL_LEFT_HAND);
+		myCurrentMocapReadingR = evt.getExtraDataVector3(OMEGA_SKEL_RIGHT_HAND);
+		
+		return true;
 	}
 
-
-
-
-	//glDisable(GL_TEXTURE_2D);
+	return false;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MultipleKinectDemoClient::draw(const DrawContext& context)
+{
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+
+	glPointSize(32);
+		glColor3f(0.3f, 1.0f, 0.3f);
+	glBegin(GL_POINTS);
+	glVertex3f(
+		myCurrentMocapReadingR.x(),
+		myCurrentMocapReadingR.y(),
+		0.0f);
+	glEnd();
+
+	glColor3f(1.0f, 0.3f, 0.3f);
+	glBegin(GL_POINTS);
+	glVertex3f(
+		myCurrentMocapReadingL.x(),
+		myCurrentMocapReadingL.y(),
+		0.0f);
+	glEnd();
+	
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Application entry point
 int main(int argc, char** argv)
 {
-	KinectDemoApplication app;
-	const char* cfgName = "kinect.cfg";
+	MultipleKinectDemoApplication app;
 
-	omain(app, cfgName, "kinect.log", new FilesystemDataSource(OMEGA_DATA_PATH));
+	// Read config file name from command line or use default one.
+	const char* cfgName = "multipleKinectDemo.cfg";
+	if(argc == 2) cfgName = argv[1];
 
+	omain(app, cfgName, "multipleKinectDemo.log", new FilesystemDataSource(OMEGA_DATA_PATH));
+	
 	return 0;
 }
-
-
