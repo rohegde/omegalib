@@ -29,6 +29,10 @@
 #include "omega/StringUtils.h"
 #include "omega/Tcp.h"
 
+#ifdef OMEGA_USE_DISPLAY
+#include "omega/DisplaySystem.h"
+#endif
+
 using namespace omega;
 
 namespace omega {
@@ -38,11 +42,60 @@ class TabletConnection: public TcpConnection
 public:
 	TabletConnection(asio::io_service& ioService, int id, TabletService* service): 
 		TcpConnection(ioService),
-			myId(id)
+			myId(id), myService(service)
 	{	}
 
 	virtual void handleData()
 	{
+		// Read length.
+		readString(myBuffer, BufferSize, ':');
+		int length = atoi(myBuffer);
+
+		// Read service id.
+		readString(myBuffer, BufferSize, ':');
+		int serviceId = atoi(myBuffer);
+
+		// Read event type.
+		readString(myBuffer, BufferSize, ':');
+		int eventType = atoi(myBuffer);
+
+		if(eventType == 4)
+		{
+			// Read x.
+			readString(myBuffer, BufferSize, ':');
+			float x = atof(myBuffer);
+
+			// Read y.
+			readString(myBuffer, BufferSize, '|');
+			float y = atof(myBuffer);
+
+#ifdef OMEGA_USE_DISPLAY
+			DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+			Vector2i canvasSize = ds->getCanvasSize();
+
+			myTouchPosition[0] = x * canvasSize[0];
+			myTouchPosition[1] = (1 - y) * canvasSize[1];
+
+			myService->lockEvents();
+			Event* evt = myService->writeHead();
+			evt->reset(Event::Move, Service::Pointer, myId);
+			evt->setPosition(myTouchPosition[0], myTouchPosition[1]);
+			evt->setFlags(0);
+
+			Ray ray = ds->getViewRay(myTouchPosition);
+			evt->setExtraDataType(Event::ExtraDataVector3Array);
+			evt->setExtraDataVector3(0, ray.getOrigin());
+			evt->setExtraDataVector3(1, ray.getDirection());
+
+			myService->unlockEvents();
+#endif
+		}
+		else
+		{
+			// Read until the end of the message
+			readString(myBuffer, BufferSize, '|');
+		}
+
 	}
 
 	virtual void handleClosed()
@@ -50,14 +103,13 @@ public:
 		ofmsg("Connection closed (id=%1%)", %myId);
 	}
 
-
-
 private:
 	static const int BufferSize = 1024;
 	char myBuffer[BufferSize];
 
 	TabletService* myService;
 	int myId;
+	Vector2i myTouchPosition;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
