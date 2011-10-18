@@ -31,6 +31,7 @@
 #include "omega/StringUtils.h"
 
 #include "omega/HeartbeatService.h"
+#include "omega/TabletService.h"
 
 // Display system
 #ifdef OMEGA_USE_DISPLAY
@@ -155,6 +156,7 @@ void SystemManager::setupServiceManager()
 
 	// register standard input services.
 	myServiceManager->registerService("HeartbeatService", (ServiceAllocator)HeartbeatService::New);
+	myServiceManager->registerService("TabletService", (ServiceAllocator)TabletService::New);
 
 #ifdef OMEGA_USE_DIRECTINPUT
 	myServiceManager->registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);

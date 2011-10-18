@@ -51,6 +51,7 @@ SET( srcs
 		omega/DataManager.cpp
 		omega/FileDataStream.cpp
 		omega/FilesystemDataSource.cpp
+		omega/TabletService.cpp
 		omega/Tcp.cpp
 		omega/TypeInfo.cpp
 		
@@ -79,6 +80,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
         ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/TabletService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Tcp.h
 		${OmegaLib_SOURCE_DIR}/include/omega/TypeInfo.h
 
