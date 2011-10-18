@@ -1,0 +1,69 @@
+#Equalizer 1.0 ascii
+
+global
+{
+    EQ_CONFIG_FATTR_EYE_BASE        1.025
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+
+server
+{
+    config
+    {
+        appNode											
+        {
+			attributes
+			{
+				thread_model LOCAL_SYNC
+			}
+            pipe									#Bottom Window
+            {
+                window
+                {
+				    name "0x0"
+                    viewport [ 0 0 1280 720 ]
+                    channel { name "0x0"  }
+					attributes
+					{
+						hint_fullscreen ON
+					}
+                }
+            }
+        }
+
+		observer 
+		{ 
+			name "observer0" 
+		}
+
+        # Layouts - one for each demo mode
+        layout
+        {
+            view
+            {
+                name "main"
+                observer "observer0"
+                viewport [ 0 0 1 1 ]
+            }
+        }
+
+        # Canvas using all layouts
+        canvas
+        {
+            layout 0
+			wall
+			{
+					bottom_left  [ -.7 -.4 0 ]
+					bottom_right [  .7 -.4 0 ]
+					top_left     [ -.7 .4 0 ]
+			}
+            segment { channel "0x0" }
+        }
+
+        # wall compound - need swap barrier
+        compound
+        {
+			channel ( segment 0 layout 0 view 0 )
+        }
+    }
+}
