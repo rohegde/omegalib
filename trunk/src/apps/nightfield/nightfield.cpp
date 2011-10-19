@@ -99,7 +99,8 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	myObject(object),
 	myServer(server),
-	myVisible(false)
+	myVisible(false),
+	myEnabled(true)
 {
 	mySelectionSphere = new BoundingSphere();
 	mySelectionSphere->setDrawOnSelected(true);
@@ -123,6 +124,20 @@ AffectorEntity::~AffectorEntity()
 	mySelectionSphere = NULL;
 
 	myObject = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::setup(const Setting& setting)
+{
+	if(setting.exists("isAffector"))
+	{
+		myEnabled = setting["isAffector"];
+	}
+	if(setting.exists("position"))
+	{
+		const Setting& sPos = setting["position"];
+		mySceneNode->setPosition(sPos[0], sPos[1], sPos[2]);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,22 +213,43 @@ void Nightfield::initialize()
 		myReferenceBox->setColor(ReferenceBox::Back, Color(0.8f, 0.8f, 0.8f));
 	}
 
-	// Create affector entity.
-	PlyDataReader* sphere = new PlyDataReader();
-	sphere->readPlyFile("meshes/sphere.ply");
-	sphere->scale(0.2f);
-	Mesh* m = new Mesh();
+	if(cfg->exists("config/entities"))
+	{
+		Setting& entities = cfg->lookup("config/entities");
+		for(int i = 0; i < entities.getLength(); i++)
+		{
+			Setting& entitySetting = entities[i];
 
-	// Sphere 1
-	AffectorEntity* ae = new AffectorEntity(m, this);
-	m->setData(sphere);
-	myEntities.push_back(ae);
+			if(entitySetting.exists("mesh"))
+			{
+				Mesh* m = new Mesh();
+				m->setEffect(new Effect());
+				m->getEffect()->setColor(Color(0.4, 0.4, 0.5)); 
+				m->getEffect()->setShininess(4.0);
+				String meshFilename = String((const char*)entitySetting["mesh"]);
 
-	// Sphere 2
-	ae = new AffectorEntity(m, this);
-	m->setData(sphere);
-	myEntities.push_back(ae);
-
+				if(StringUtils::endsWith(meshFilename, "ply"))
+				{
+					PlyDataReader* reader = new PlyDataReader();
+					if(!reader->readPlyFile(meshFilename))
+					{
+						ofwarn("Could not load mesh file %1%.", %meshFilename);
+					}
+					else
+					{
+						if(entitySetting.exists("scale"))
+						{
+							reader->scale(entitySetting["scale"]);
+						}
+						AffectorEntity* af = new AffectorEntity(m, this);
+						af->setup(entitySetting);
+						myEntities.push_back(af);
+						m->setData(reader);
+					}
+				}
+			}
+		}
+	}
 	setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
 
 	Light* light = getLight(0);
@@ -229,9 +265,12 @@ void Nightfield::update(const UpdateContext& context)
 	int i = 0;
 	foreach(AffectorEntity* ae, myEntities)
 	{
-		FlockAffector* fa = myFlock->getAffector(i);
-		ae->updateFlockAffector(fa);
-		i++;
+		if(ae->isEnabled())
+		{
+			FlockAffector* fa = myFlock->getAffector(i);
+			ae->updateFlockAffector(fa);
+			i++;
+		}
 	}
 	myFlock->setActiveAffectors(i);
 	myFlock->update(context);
