@@ -24,17 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OSG_RENDERABLE_H__
-#define __OSG_RENDERABLE_H__
+#ifndef __OSG_SCENE_OBJECT_H__
+#define __OSG_SCENE_OBJECT_H__
 
 #include "oosg/oosgbase.h"
-#include "omega/osystem.h"
-
-#include "omega/scene/SceneNode.h"
-#include "omega/scene/RenderPass.h"
-
-using namespace omega;
-using namespace omega::scene;
+#include "oengine/SceneObject.h"
 
 namespace osg
 {
@@ -45,25 +39,23 @@ namespace osg
 namespace oosg
 {
 	using namespace omega;
-	using namespace omega::scene;
-
-	class OsgEntity;
+	using namespace oengine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgRenderable: public Renderable
+	class OOSG_API OsgSceneObject: public SceneObject
 	{
 	public:
-		OsgRenderable(OsgEntity* entity);
-		~OsgRenderable();
+		OsgSceneObject(osg::Node* node);
+		~OsgSceneObject();
 
-		virtual void render(SceneNode* node, RenderState* state);
+		virtual void update(SceneNode* owner);
 
 		virtual const AlignedBox3* getBoundingBox();
 		virtual bool hasBoundingBox() { return true; }
 
 	private:
-		OsgEntity* myEntity;
-		osg::MatrixTransform* myOsgNode;
+		osg::Node* myNode;
+		osg::MatrixTransform* myTransform;
 		AlignedBox3 myBBox;
 	};
 };

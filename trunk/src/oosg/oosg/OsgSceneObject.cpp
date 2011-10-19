@@ -24,9 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oosg/OsgRenderable.h"
-#include "oosg/OsgRenderPass.h"
-#include "oosg/OsgEntity.h"
+#include "oosg/OsgSceneObject.h"
 #include "omega/StringUtils.h"
 
 #include <osg/Node>
@@ -35,15 +33,13 @@
 using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgRenderable::OsgRenderable(OsgEntity* entity)
+OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node)
 {
-	myEntity = entity;
+    myTransform = new osg::MatrixTransform();
+    myTransform->addChild( node );
+    myTransform->setDataVariance( osg::Object::STATIC );
 
-    myOsgNode = new osg::MatrixTransform();
-    myOsgNode->addChild( entity->getModel() );
-    myOsgNode->setDataVariance( osg::Object::STATIC );
-
-	const osg::BoundingSphere& bs = entity->getModel()->getBound();
+	const osg::BoundingSphere& bs = myNode->getBound();
 	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
 	Vector3f radius(bs.radius(), bs.radius(), bs.radius());
 
@@ -53,35 +49,24 @@ OsgRenderable::OsgRenderable(OsgEntity* entity)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgRenderable::~OsgRenderable()
+OsgSceneObject::~OsgSceneObject()
 {
-	myOsgNode->unref();
-	myOsgNode = NULL;
+	myTransform->unref();
+	myTransform = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgRenderable::render(SceneNode* node, RenderState* state)
+void OsgSceneObject::update(SceneNode* node)
 {
-	// Do stuff only if render pass is a Vtk render pass
-	if(state->isFlagSet(OsgRenderPass::RenderOsg))
-	{
-		const AffineTransform3& xform =  node->getFullTransform();
-		const omega::math::matrix<4, 4>& m = xform.matrix();
-		osg::Matrix oxform;
-		oxform.set(m.data());
-		myOsgNode->setMatrix( oxform );
-
-		// NOTE: we assume this cast works since only VtkRenderPass should set the 
-		// RenderVtk flag on a render state.
-		OsgRenderPass* osgrp = (OsgRenderPass*)state->pass;
-
-		// Render this osg node.
-		osgrp->renderEntity(myOsgNode, myEntity);
-	}
-}
+	const AffineTransform3& xform =  node->getFullTransform();
+	const omega::math::matrix<4, 4>& m = xform.matrix();
+	osg::Matrix oxform;
+	oxform.set(m.data());
+	myTransform->setMatrix( oxform );
+ }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const AlignedBox3* OsgRenderable::getBoundingBox()
+const AlignedBox3* OsgSceneObject::getBoundingBox()
 {
 	return &myBBox;
 }

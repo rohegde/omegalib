@@ -24,16 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OSG_ENTITY_H__
-#define __OSG_ENTITY_H__
+#ifndef __OSG_MODULE_H__
+#define __OSG_MODULE_H__
 
 #include "oosg/oosgbase.h"
-#include "oosg/OsgRenderPass.h"
-
-#include "omega/osystem.h"
-#include "omega/EngineClient.h"
-#include "omega/ui.h"
-#include "omega/scene/BoundingSphere.h"
+#include "oengine/EngineServer.h"
 
 namespace osg
 {
@@ -45,48 +40,42 @@ namespace osg
 namespace oosg
 {
 	using namespace omega;
-	using namespace omega::scene;
-	using namespace omega::ui;
-
-	class OsgRenderable;
+	using namespace oengine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	//! Stores data relative to one Osg scene hierarchy. OsgScene also supports loading scenes from 
-	//! .osg files. Scenes can be rendered by attaching them to OsgRenderable instances.
-	class OOSG_API OsgEntity
+	class OOSG_API OsgModule
 	{
 	public:
-		OsgEntity();
-		~OsgEntity();
+		OsgModule();
+		~OsgModule();
 
 		float getRepresentationSize();
 		void setRepresentationSize(float value);
 
+		void initialize(EngineServer* server);
 		void update(const UpdateContext& context);
-		void load(const String& filename);
-		void addToScene(SceneNode* node);
+		//void loadScene(const String& filename);
+		//void addToScene(SceneNode* node);
 
 		osg::FrameStamp* getFrameStamp() { return myFrameStamp; }
-		osg::Node* getModel() { return myModel; }
+		osg::Node* getRootNode() { return myRootNode; }
+		void setRootNode(osg::Node* value) { myRootNode = value; }
 
 	private:
+		EngineServer* myServer;
 		float myRepresentationSize;
 
-		osg::Node* myModel;
+		osg::Node* myRootNode;
 		osg::FrameStamp* myFrameStamp;
 		osg::NodeVisitor* myUpdateVisitor;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline SceneNode* OsgEntity::getSceneNode()
-	//{ return mySceneNode; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline float OsgEntity::getRepresentationSize()
+	inline float OsgModule::getRepresentationSize()
 	{ return myRepresentationSize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void OsgEntity::setRepresentationSize(float value)
+	inline void OsgModule::setRepresentationSize(float value)
 	{ myRepresentationSize = value; }
 };
 #endif

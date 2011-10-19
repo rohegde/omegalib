@@ -43,7 +43,7 @@ namespace oengine {
 
 		EngineServer* getServer();
 
-		void addRenderPass(RenderPass* pass, bool addToFront = false);
+		void addRenderPass(RenderPass* pass, bool addToFront);
 		void removeRenderPass(RenderPass* pass);
 
 		void queueRenderableCommand(RenderableCommand& cmd);

@@ -22,36 +22,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __OMEGA__
-#define __OMEGA__
+#ifndef __OOSG__
+#define __OOSG__
 
-#include "osysdefs.h"
-#ifdef OMEGA_USE_DISPLAY
-#ifndef OMEGA_NO_GL_HEADERS
-	#include "omega/glheaders.h"
-#endif
-#endif
-#include "omega/Application.h"
-#include "omega/Color.h"
-#include "omega/Config.h"
-#include "omega/DataManager.h"
-#include "omega/DisplaySystem.h"
-#include "omega/Event.h"
-#include "omega/FileDataStream.h"
-#include "omega/FilesystemDataSource.h"
-#include "omega/GpuBuffer.h"
-#include "omega/GpuManager.h"
-#include "omega/GpuProgram.h"
-#include "omega/IEventListener.h"
-#include "omega/Lock.h"
-#include "omega/Observer.h"
-#include "omega/RenderTarget.h"
-#include "omega/RenderTarget.h"
-#include "omega/Service.h"
-#include "omega/ServiceManager.h"
-#include "omega/StringUtils.h"
-#include "omega/SystemManager.h"
-#include "omega/Texture.h"
-#include "omega/TypeInfo.h"
-
+#include "oosg/oosgbase.h"
+#include "oosg/OsgModule.h"
+#include "oosg/OsgSceneObject.h"
+#include "oosg/OsgRenderPass.h"
 #endif
