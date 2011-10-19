@@ -45,10 +45,14 @@ public:
 	bool isVisible() { return myVisible; }
 	void setVisible(bool value);
 
+	void setup(const Setting& setting);
+
 	SceneNode* getSceneNode() { return mySceneNode; }
 	SceneObject* getObject() { return myObject; }
 
 	void updateFlockAffector(FlockAffector* af);
+	void setEnabled(bool value) { myEnabled = value; }
+	bool isEnabled() { return myEnabled; }
 
 private:
 	EngineServer* myServer;
@@ -58,6 +62,7 @@ private:
 
 	BoundingSphere* mySelectionSphere;
 	bool myVisible;
+	bool myEnabled;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
