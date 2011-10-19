@@ -32,6 +32,8 @@ ThinkGearService* ThinkGearService::mysInstance = NULL;
 int ThinkGearService::driverVersion = 0;
 int ThinkGearService::connectionID = 0;
 const char* ThinkGearService::comPortName = "\\\\.\\COM10";
+bool ThinkGearService::enableStreamLogging = false;
+bool ThinkGearService::enableDataLogging = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ThinkGearService::setup(Setting& settings)
@@ -45,6 +47,14 @@ void ThinkGearService::setup(Setting& settings)
 	if(settings.exists("updateInterval"))
 	{
 		myUpdateInterval = settings["updateInterval"];
+	}
+
+	if( settings.exists("enableStreamLog") ){
+		enableStreamLogging = settings["enableStreamLog"];
+	}
+
+	if( settings.exists("enableDataLog") ){
+		enableDataLogging = settings["enableDataLog"];
 	}
 }
 
@@ -66,28 +76,40 @@ void ThinkGearService::initialize()
 	}
 	
 	int errorCode = 0;
-	errorCode = TG_SetStreamLog( connectionID, "streamLog.txt" );
-    if( errorCode < 0 ) {
-        printf("ThinkGearService: Failed to set stream log. Error code: %d \n", errorCode);
-		return;
-    }
-
-	errorCode = TG_SetDataLog( connectionID, "dataLog.txt" );
-    if( errorCode < 0 ) {
-        printf("ThinkGearService: Failed to set data log. Error code: %d \n", errorCode);
-		return;
-    }
+	if( enableStreamLogging ){
+		errorCode = TG_SetStreamLog( connectionID, "streamLog.txt" );
+		if( errorCode < 0 ) {
+			printf("ThinkGearService: Failed to set stream log. Error code: %d \n", errorCode);
+			return;
+		}
+	}
+	
+	if( enableDataLogging ){
+		errorCode = TG_SetDataLog( connectionID, "dataLog.txt" );
+		if( errorCode < 0 ) {
+			printf("ThinkGearService: Failed to set data log. Error code: %d \n", errorCode);
+			return;
+		}
+	}
 
     errorCode = TG_Connect( connectionID, 
                           comPortName, 
                           TG_BAUD_9600, 
                           TG_STREAM_PACKETS );
+
     if( errorCode < 0 ) {
         printf("ThinkGearService: Failed to connect on '%s'. Error code: %d \n", comPortName, errorCode);
 		return;
 	} else {
 		printf("ThinkGearService: Connected on com port '%s'.\n", comPortName);
 		printf("ThinkGearService: Connecting to device (~10 seconds)... \n");
+	}
+
+	
+	errorCode = TG_EnableBlinkDetection( connectionID, true );
+	if( errorCode < 0 ) {
+        printf("ThinkGearService: Failed enable blink detection. Error code: %d \n", errorCode);
+		return;
 	}
 }
 
@@ -162,18 +184,18 @@ void ThinkGearService::generateEvent( int myConnectionID )
 	Event* evt = mysInstance->writeHead();
 	evt->reset(Event::Update, Service::Brain, myConnectionID);
 	evt->setExtraDataType(Event::ExtraDataFloatArray);
-	evt->setExtraDataFloat(0, battery);
-	evt->setExtraDataFloat(1, signal);
-	evt->setExtraDataFloat(2, attention);
-	evt->setExtraDataFloat(3, meditation);
-	evt->setExtraDataFloat(4, delta);
-	evt->setExtraDataFloat(5, theta);
-	evt->setExtraDataFloat(6, alpha1);
-	evt->setExtraDataFloat(7, alpha2);
-	evt->setExtraDataFloat(8, beta1);
-	evt->setExtraDataFloat(9, beta2);
-	evt->setExtraDataFloat(10, gamma1);
-	evt->setExtraDataFloat(11, gamma2);
-	evt->setExtraDataFloat(12, blinkStrength);
+	//evt->setExtraDataFloat(0, battery); // Battery seems to always report 0 on the MindWave
+	evt->setExtraDataFloat(0, signal);
+	evt->setExtraDataFloat(1, attention);
+	evt->setExtraDataFloat(2, meditation);
+	evt->setExtraDataFloat(3, delta);
+	evt->setExtraDataFloat(4, theta);
+	evt->setExtraDataFloat(5, alpha1);
+	evt->setExtraDataFloat(6, alpha2);
+	evt->setExtraDataFloat(7, beta1);
+	evt->setExtraDataFloat(8, beta2);
+	evt->setExtraDataFloat(9, gamma1);
+	evt->setExtraDataFloat(10, gamma2);
+	evt->setExtraDataFloat(11, blinkStrength);
 	mysInstance->unlockEvents();
 }

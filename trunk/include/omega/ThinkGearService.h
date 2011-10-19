@@ -68,6 +68,9 @@ private:
 	static const char *comPortName;
 	static int connectionID;
 
+	static bool enableStreamLogging;
+	static bool enableDataLogging;
+
 };
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
