@@ -184,6 +184,11 @@ void EngineServer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::handleEvent(const Event& evt)
 {
+	if( evt.getServiceType() == Service::Keyboard )
+    {
+        if(evt.getSourceId() == 256) exit(0);
+	}
+
 	// Update pointers.
 	if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
 	{
