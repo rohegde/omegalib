@@ -245,7 +245,7 @@ public:
 			// Converts id to char, appends to eventPacket
 			sprintf(floatChar,"%d",evt.getSourceId());
 			strcat( eventPacket, floatChar );
-			for( int i = 0; i < 13; i++ ){
+			for( int i = 0; i < 12; i++ ){
 				strcat( eventPacket, "," ); // Spacer
 				sprintf(floatChar,"%d", (int)evt.getExtraDataFloat(i));
 				strcat( eventPacket, floatChar );
