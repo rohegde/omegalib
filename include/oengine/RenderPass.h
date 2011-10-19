@@ -45,7 +45,18 @@ namespace oengine {
 			RenderCustom = 1 << 8 };
 
 	public:
+		RenderPass(): myInitialized(false) {}
+		virtual void initialize() { myInitialized = true; }
 		virtual void render(EngineClient* client, const DrawContext& context) = 0;
+
+		void setUserData(void* value) { myUserData = value; }
+		void* getUserData() { return myUserData; }
+
+		bool isInitialized() { return myInitialized; }
+
+	private: 
+		bool myInitialized;
+		void* myUserData;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

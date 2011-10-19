@@ -24,11 +24,12 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oosg/OsgRenderPass.h"
 #include "oosg/SceneView.h"
-#include "oosg/OsgEntity.h"
+#include "oosg/OsgRenderPass.h"
 
 using namespace oosg;
+
+OMEGA_DEFINE_TYPE(OsgRenderPass, RenderPass);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
@@ -46,7 +47,6 @@ inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgRenderPass::OsgRenderPass()
 {
-	mySceneView = new SceneView;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,8 +57,12 @@ OsgRenderPass::~OsgRenderPass()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgRenderPass::initialize()
+void OsgRenderPass::initialize() 
 {
+	RenderPass::initialize();
+
+	myModule = (OsgModule*)getUserData();
+	mySceneView = new SceneView();
     mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
 	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 0.0));
     mySceneView->init();
@@ -66,25 +70,16 @@ void OsgRenderPass::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgRenderPass::render(SceneManager* mng, const DrawContext& context)
+void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 {
-	RenderState state;
-	state.pass = this;
-	state.flags = OsgRenderPass::RenderOsg;
-	state.renderer = mng->getRenderer();
-
 	mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 	mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
 	mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
 
-	mng->getRootNode()->draw(&state);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgRenderPass::renderEntity(osg::Node* node, OsgEntity* e)
-{
-    mySceneView->setSceneData(node);
-	mySceneView->setFrameStamp(e->getFrameStamp());
+	osg::Node* root = myModule->getRootNode();
+	mySceneView->setSceneData(root);
+	mySceneView->setFrameStamp(myModule->getFrameStamp());
+	mySceneView->setActiveUniforms(0);
     mySceneView->cull();
     mySceneView->draw();
 }

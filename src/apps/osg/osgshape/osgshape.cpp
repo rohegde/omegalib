@@ -31,41 +31,27 @@
 #include <osg/Material>
 #include <osg/Texture2D>
 #include <osgUtil/ShaderGen>
-
 #include <osgViewer/Viewer>
-
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>
-
 #include <osg/Math>
 
 // for the grid data..
 #include "terrain_coords.h"
 
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <oengine.h>
+#include <oosg.h>
+
 osg::Geode* createShapes()
 {
     osg::Geode* geode = new osg::Geode();
 
-    
-    // ---------------------------------------
-    // Set up a StateSet to texture the objects
-    // ---------------------------------------
     osg::StateSet* stateset = new osg::StateSet();
-
-    //osg::Image* image = osgDB::readImageFile( "Images/lz.rgb" );
-    //if (image)
-    //{
-    //    osg::Texture2D* texture = new osg::Texture2D;
-    //    texture->setImage(image);
-    //    texture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR);
-    //    stateset->setTextureAttributeAndModes(0,texture, osg::StateAttribute::ON);
-    //}
-    
     stateset->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-    
     geode->setStateSet( stateset );
 
-    
     float radius = 0.8f;
     float height = 1.0f;
     
@@ -118,13 +104,55 @@ osg::Geode* createShapes()
     return geode;
 }
 
-int main(int, char **)
+using namespace omega;
+using namespace oengine;
+using namespace oosg;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class OsgShape: public EngineServer
 {
-    // construct the viewer.
-    osgViewer::Viewer viewer;
+public:
+	OsgShape(Application* app): EngineServer(app) {}
+	virtual void initialize();
+	virtual void update(const UpdateContext& context);
 
-    // add model to viewer.
-    viewer.setSceneData( createShapes() );
+private:
+	OsgModule* myOsg;
+	SceneNode* mySceneNode;
+	DefaultMouseInteractor* myMouseInteractor;
+};
 
-    return viewer.run();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgShape::initialize()
+{
+	EngineServer::initialize();
+
+	myOsg = new OsgModule();
+	myOsg->initialize(this);
+
+	myOsg->setRootNode(createShapes());
+
+	//myMouseInteractor = new DefaultMouseInteractor();
+	//myMouseInteractor->setSceneNode(mySceneNode);
+	//addActor(myMouseInteractor);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgShape::update(const UpdateContext& context)
+{
+	EngineServer::update(context);
+	myOsg->update(context);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Application entry point
+int main(int argc, char** argv)
+{
+	EngineApplication<OsgShape> app;
+	omain(
+		app, 
+		"system/desktop.cfg", 
+		"osgshape.log", 
+		new FilesystemDataSource(OMEGA_DATA_PATH));
+	return 0;
 }

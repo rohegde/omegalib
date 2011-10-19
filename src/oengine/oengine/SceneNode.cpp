@@ -138,6 +138,7 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 
 	foreach(SceneObject* d, myObjects)
 	{
+		d->update(this);
 		if(d->hasBoundingBox())
 		{
 			const AlignedBox3& bbox = *(d->getBoundingBox());

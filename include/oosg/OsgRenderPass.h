@@ -27,10 +27,11 @@
 #ifndef __OSG_RENDER_PASS_H__
 #define __OSG_RENDER_PASS_H__
 
+#include "oengine/RenderPass.h"
+
 #include "oosg/oosgbase.h"
-#include "omega/osystem.h"
-#include "omega/scene/RenderPass.h"
-#include "omega/scene/SceneManager.h"
+#include "oosg/OsgModule.h"
+
 
 class SceneView;
 
@@ -42,29 +43,24 @@ namespace osg
 namespace oosg
 {
 	using namespace omega;
-	using namespace omega::scene;
-
-	class OsgEntity;
+	using namespace oengine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OOSG_API OsgRenderPass: public RenderPass
 	{
-	friend class OsgRenderable;
+	OMEGA_DECLARE_TYPE(OsgRenderPass);
 	public:
-		enum RenderFlags { RenderOsg = RenderPass::RenderCustom << 2 };
-
+		static RenderPass* createInstance() { return new OsgRenderPass(); }
 	public:
 		OsgRenderPass();
 		~OsgRenderPass();
 
-		void initialize();
-		virtual void render(SceneManager* mng, const DrawContext& context);
+		virtual void initialize();
+		virtual void render(EngineClient* client, const DrawContext& context);
 
 	private:
-		void renderEntity(osg::Node* node, OsgEntity* entity);
-
-	private:
-		 SceneView* mySceneView;
+		OsgModule* myModule;
+		SceneView* mySceneView;
 	};
 };
 #endif

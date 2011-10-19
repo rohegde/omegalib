@@ -68,7 +68,7 @@ namespace oengine {
 		//! Render pass management
 		//@{
 		template<typename T> void registerRenderPassClass();
-		void addRenderPass(String renderPass, bool addToFront = false);
+		void addRenderPass(String renderPass, void* userData = NULL, bool addToFront = false);
 		void removeRenderPass(String renderPass);
 		//@}
 

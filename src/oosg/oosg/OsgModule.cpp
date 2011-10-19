@@ -24,10 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/StringUtils.h"
-#include "omega/DataManager.h"
-#include "oosg/OsgEntity.h"
-#include "oosg/OsgRenderable.h"
+#include "oosg/OsgModule.h"
+#include "oosg/OsgRenderPass.h"
 
 #include <osgUtil/Optimizer>
 #include <osgUtil/UpdateVisitor>
@@ -38,21 +36,22 @@
 using namespace oosg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgEntity::OsgEntity():
+OsgModule::OsgModule():
 	myRepresentationSize(0.4)
 {
+	myRootNode = NULL;
     myFrameStamp = new osg::FrameStamp;
     myUpdateVisitor = new osgUtil::UpdateVisitor;
     myUpdateVisitor->setFrameStamp( myFrameStamp );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgEntity::~OsgEntity()
+OsgModule::~OsgModule()
 {
-	if(myModel != NULL)
+	if(myRootNode != NULL)
 	{
-		myModel->unref();
-		myModel = NULL;
+		myRootNode->unref();
+		myRootNode = NULL;
 	}
     myFrameStamp->unref();
 	myFrameStamp = NULL;
@@ -61,52 +60,60 @@ OsgEntity::~OsgEntity()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgEntity::load(const String& filename)
-{
-	myModel = NULL;
-	DataManager* dm = SystemManager::instance()->getDataManager();
-	DataInfo cfgInfo = dm->getInfo(filename);
-	if(!cfgInfo.isNull())
-	{
-		myModel = osgDB::readNodeFile(cfgInfo.path);
-		if ( myModel == NULL) 
-		{
-			oferror("Failed to load model: %1%", %filename);
-		}
+//void OsgModule::load(const String& filename)
+//{
+//	myModel = NULL;
+//	DataManager* dm = SystemManager::instance()->getDataManager();
+//	DataInfo cfgInfo = dm->getInfo(filename);
+//	if(!cfgInfo.isNull())
+//	{
+//		myModel = osgDB::readNodeFile(cfgInfo.path);
+//		if ( myModel == NULL) 
+//		{
+//			oferror("Failed to load model: %1%", %filename);
+//		}
+//
+//		//Optimize scenegraph
+//		osgUtil::Optimizer optOSGFile;
+//		optOSGFile.optimize(myModel);
+//	}
+//	else
+//	{
+//		oferror("File not found: %1%", %filename);
+//	}
+//}
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//void OsgEntity::addToScene(SceneNode* node)
+//{
+//	oassert(node);
+//
+//	OsgRenderable* renderable;
+//	BoundingSphere* bsphere = onew(BoundingSphere)();
+//	bsphere->setVisible(false);
+//	bsphere->setDrawOnSelected(true);
+//	node->addRenderable(bsphere);
+//
+//	renderable = onew(OsgRenderable)(this);
+//	node->addRenderable(renderable);
+//
+//	node->update(true, false);
+//	const Sphere& bs = node->getBoundingSphere();
+//
+//	float scale = myRepresentationSize / bs.getRadius();
+//	node->scale(scale, scale, scale);
+//}
 
-		//Optimize scenegraph
-		osgUtil::Optimizer optOSGFile;
-		optOSGFile.optimize(myModel);
-	}
-	else
-	{
-		oferror("File not found: %1%", %filename);
-	}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgModule::initialize(EngineServer* server)
+{
+	myServer = server;
+	myServer->registerRenderPassClass<OsgRenderPass>();
+	myServer->addRenderPass("OsgRenderPass", this, true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgEntity::addToScene(SceneNode* node)
-{
-	oassert(node);
-
-	OsgRenderable* renderable;
-	BoundingSphere* bsphere = onew(BoundingSphere)();
-	bsphere->setVisible(false);
-	bsphere->setDrawOnSelected(true);
-	node->addRenderable(bsphere);
-
-	renderable = onew(OsgRenderable)(this);
-	node->addRenderable(renderable);
-
-	node->update(true, false);
-	const Sphere& bs = node->getBoundingSphere();
-
-	float scale = myRepresentationSize / bs.getRadius();
-	node->scale(scale, scale, scale);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgEntity::update(const UpdateContext& context)
+void OsgModule::update(const UpdateContext& context)
 {
 	myFrameStamp->setFrameNumber(context.frameNum);
     myFrameStamp->setReferenceTime(context.time);
@@ -115,7 +122,6 @@ void OsgEntity::update(const UpdateContext& context)
 	myUpdateVisitor->reset();
 	myUpdateVisitor->setFrameStamp(myFrameStamp);
 	myUpdateVisitor->setTraversalNumber(context.frameNum);
-    myModel->accept(*myUpdateVisitor);
-    //myModel->getBound();
+    myRootNode->accept(*myUpdateVisitor);
 }
 

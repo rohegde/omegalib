@@ -72,6 +72,8 @@ void EngineClient::removeRenderPass(RenderPass* pass)
 void EngineClient::initialize()
 {
 	ofmsg("EngineClient::Initialize: id = %1%", %getId());
+
+	// Create the default font.
 	const FontInfo& fi = myServer->getDefaultFont();
 	if(fi.size != 0)
 	{
@@ -89,7 +91,13 @@ void EngineClient::queueRenderableCommand(RenderableCommand& cmd)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::draw(const DrawContext& context)
 {
-	// First of all execute renderable commands.
+	// First of all make sure all render passes are initialized.
+	foreach(RenderPass* rp, myRenderPassList)
+	{
+		if(!rp->isInitialized()) rp->initialize();
+	}
+
+	// Execute renderable commands.
 	while(!myRenderableCommands.empty())
 	{
 		myRenderableCommands.front().execute();

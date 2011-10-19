@@ -32,9 +32,9 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOOSG_EXPORTING)
 ###################################################################################################
 # Source files
 SET( srcs 
-		oosg/OsgEntity.cpp
+		oosg/OsgModule.cpp
 		oosg/OsgRenderPass.cpp
-		oosg/OsgRenderable.cpp
+		oosg/OsgSceneObject.cpp
 		oosg/SceneView.cpp
         )
 		
@@ -43,9 +43,9 @@ SET( srcs
 SET( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/oosg/oosgbase.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/OsgEntity.h
+		${OmegaLib_SOURCE_DIR}/include/oosg/OsgModule.h
 		${OmegaLib_SOURCE_DIR}/include/oosg/OsgRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/OsgRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oosg/OsgSceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/oosg/SceneView.h
         ) 
         
@@ -63,6 +63,4 @@ ENDIF(OMEGA_BUILD_STATIC)
 ###################################################################################################
 # Setup link info.
 TARGET_LINK_LIBRARIES( oosg 
-	omega 
-	outils
-	${OPENSCENEGRAPH_LIBRARIES})
+	omega oengine ${OSG_LIBS})

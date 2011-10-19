@@ -74,14 +74,16 @@ void EngineServer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::addRenderPass(String renderPass, bool addToFront)
+void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFront)
 {
 	RenderPassFactory rpNew = myRenderPassFactories[renderPass];
 	if(rpNew != NULL)
 	{
 		foreach(EngineClient* client, myClients)
 		{
-			client->addRenderPass(rpNew(), addToFront);
+			RenderPass* rp = rpNew();
+			rp->setUserData(userData);
+			client->addRenderPass(rp, addToFront);
 		}
 	}
 }
