@@ -158,7 +158,7 @@ void Flock::updateAgentsGPU(const UpdateContext& context)
 	myNumInteractors->setIntValue(myActiveAffectors);
 	myInteractorBuffer->write(myAffectorData, 0, MaxAffectors * sizeof(FlockAffector));
 
-	myDt->setFloatValue(0.01);
+	myDt->setFloatValue(0.01f);
 
 	// Set simulation parameters.
 	myCoordinationDist->setFloatValue(myCurrentPreset->coordinationDist);

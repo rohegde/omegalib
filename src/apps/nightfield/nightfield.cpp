@@ -118,9 +118,10 @@ AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	Effect* wirefx = new Effect();
 	wirefx->setDrawMode(Effect::DrawWireframe);
 	wirefx->setLightingEnabled(false);
-	wirefx->setColor(Color(1,1,1,0.2));
+	wirefx->setColor(Color(1,1,1,0.03f));
 	wirefx->setForcedDiffuseColor(true);
 	wirefx->setBlendMode(Effect::BlendAdditive);
+	wirefx->setDepthTestMode(Effect::DepthTestDisabled);
 
 	Effect* basefx = new Effect();
 	basefx->setDrawMode(Effect::DrawSmooth);

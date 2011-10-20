@@ -52,6 +52,7 @@ namespace oengine {
 	public:
 		enum DrawMode { DrawPoints, DrawWireframe, DrawFlat, DrawSmooth };
 		enum BlendMode { BlendDisabled, BlendNormal, BlendAdditive };
+		enum DepthTestMode { DepthTestDefault, DepthTestEnabled, DepthTestDisabled };
 
 	public:
 		Effect();
@@ -117,6 +118,9 @@ namespace oengine {
 		bool isLightingEnabled() { return myLightingEnabled; }
 		void setLightingEnabled(bool value) { myLightingEnabled = value; }
 
+		DepthTestMode getDepthTestMode() { return myDepthTestMode; }
+		void setDepthTestMode(DepthTestMode value) { myDepthTestMode = value; }
+
 	private:
 		GpuProgram* myProgram;
 		GpuProgramParams myParams;
@@ -135,6 +139,7 @@ namespace oengine {
 		BlendMode myBlendMode;
 
 		bool myLightingEnabled;
+		DepthTestMode myDepthTestMode;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
