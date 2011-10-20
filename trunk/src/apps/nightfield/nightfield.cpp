@@ -160,6 +160,13 @@ void AffectorEntity::setup(const Setting& setting)
 		const Setting& sPos = setting["position"];
 		mySceneNode->setPosition(sPos[0], sPos[1], sPos[2]);
 	}
+	myInteractive = false;
+	if(setting.exists("interactive"))
+	{
+		myInteractive = setting["interactive"];
+	}
+
+	if(!myInteractive) mySceneNode->setSelectable(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
