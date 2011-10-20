@@ -40,7 +40,8 @@ Effect::Effect():
 	myForcedDiffuseColor(false),
 	myShininess(32),
 	myBlendMode(BlendDisabled),
-	myDrawMode(DrawSmooth)
+	myDrawMode(DrawSmooth),
+	myDepthTestMode(DepthTestDefault)
 {
 	//myProgram = myMng->getGpuManager()->getDefaultProgram();
 }
@@ -48,6 +49,9 @@ Effect::Effect():
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Effect::activate()
 {
+	// Push all state attributes. In the future this may be optimized.
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+
 	myParams.bind(myProgram, GpuProgram::RenderStage);
 	glEnable(GL_COLOR_MATERIAL);
 	if(myForcedDiffuseColor)
@@ -103,12 +107,25 @@ void Effect::activate()
 	{
 		glDisable(GL_LIGHTING);
 	}
+
+	if(myDepthTestMode != DepthTestDefault)
+	{
+		if(myDepthTestMode == DepthTestEnabled)
+		{
+			glEnable(GL_DEPTH_TEST);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Effect::deactivate()
 {
 	myParams.unbind(myProgram, GpuProgram::RenderStage);
+	glPopAttrib();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
