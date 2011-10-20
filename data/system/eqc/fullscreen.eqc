@@ -26,6 +26,7 @@ server
 					attributes
 					{
 						hint_fullscreen ON
+						hint_decoration OFF
 					}
                 }
             }
