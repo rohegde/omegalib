@@ -51,9 +51,6 @@ namespace oengine {
 		const AlignedBox3* getBoundingBox();
 		bool hasBoundingBox();
 
-		void setEffect(Effect* value) { myEffect = value; }
-		Effect* getEffect() { return myEffect; }
-
 	private:
 		MeshData* myData;
 		Effect* myEffect;

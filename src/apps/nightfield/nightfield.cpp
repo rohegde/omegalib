@@ -111,6 +111,27 @@ AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myObject);
 	mySceneNode->addObject(mySelectionSphere);
+
+	MultipassEffect* mpfx = new MultipassEffect();
+	mySceneNode->setEffect(mpfx);
+
+	Effect* wirefx = new Effect();
+	wirefx->setDrawMode(Effect::DrawWireframe);
+	wirefx->setLightingEnabled(false);
+	wirefx->setColor(Color(1,1,1,0.2));
+	wirefx->setForcedDiffuseColor(true);
+	wirefx->setBlendMode(Effect::BlendAdditive);
+
+	Effect* basefx = new Effect();
+	basefx->setDrawMode(Effect::DrawSmooth);
+	basefx->setLightingEnabled(true);
+	basefx->setColor(Color(0.5f, 0.5f, 0.7f, 0.5f));
+	basefx->setShininess(16.0f);
+	basefx->setBlendMode(Effect::BlendAdditive);
+	basefx->setForcedDiffuseColor(true);
+
+	mpfx->addEffect(basefx);
+	mpfx->addEffect(wirefx);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -223,9 +244,7 @@ void Nightfield::initialize()
 			if(entitySetting.exists("mesh"))
 			{
 				Mesh* m = new Mesh();
-				m->setEffect(new Effect());
-				m->getEffect()->setColor(Color(0.4, 0.4, 0.5)); 
-				m->getEffect()->setShininess(4.0);
+
 				String meshFilename = String((const char*)entitySetting["mesh"]);
 
 				if(StringUtils::endsWith(meshFilename, "ply"))
@@ -254,7 +273,7 @@ void Nightfield::initialize()
 
 	Light* light = getLight(0);
 	light->setEnabled(true);
-	light->setColor(Color(0.6f, 0.6f, 0.5f));
+	light->setColor(Color(0.6f, 0.6f, 0.6f));
 	light->setPosition(Vector3f(0, 3, 3));
 }
 

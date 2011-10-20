@@ -36,8 +36,7 @@ OMEGA_DEFINE_TYPE(MeshRenderable, SceneRenderable)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Mesh::Mesh(): 
-	myData(NULL),
-	myEffect(NULL)
+	myData(NULL)
 {
 }
 
@@ -231,14 +230,11 @@ void MeshRenderable::draw(RenderState* state)
 		pushNodeTransform();
 		if(myMesh->getData() != NULL)
 		{
-			Effect* e = myMesh->getEffect();
-			if(e != NULL) e->activate();
 			getRenderer()->drawPrimitives(
 				myVertexBuffer,
 				myIndexData,
 				myMesh->getData()->getNumTriangles() * 3,
 				Renderer::DrawTriangles);
-			if(e != NULL) e->deactivate();
 		}
 		popNodeTransform();
 	}

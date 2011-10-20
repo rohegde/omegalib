@@ -28,6 +28,7 @@
 #define __SCENENODE_H__
 
 #include "oenginebase.h"
+#include "oengine/Effect.h"
 #include "oengine/Node.h"
 #include "omega/Color.h"
 
@@ -63,7 +64,8 @@ namespace oengine {
 			mySelectable(false),
 			myChanged(false),
 			myVisible(true),
-			mySelected(false)
+			mySelected(false),
+			myEffect(NULL)
 			{}
 
 		SceneNode(EngineServer* server, const String& name):
@@ -75,7 +77,8 @@ namespace oengine {
 			mySelectable(false),
 			myChanged(false),
 			myVisible(true),
-			mySelected(false)
+			mySelected(false),
+			myEffect(NULL)
 			{}
 
 		EngineServer* getServer();
@@ -120,6 +123,9 @@ namespace oengine {
 
 		void draw(RenderState* state);
 
+		void setEffect(BaseEffect* value) { myEffect = value; }
+		BaseEffect* getEffect() { return myEffect; }
+
 	private:
 		void drawBoundingBox();
 
@@ -137,6 +143,7 @@ namespace oengine {
 		bool myChanged;
 		AlignedBox3 myBBox;
 		Sphere myBSphere;
+		BaseEffect* myEffect;
 
 		// Bounding box stuff.
 		bool myBoundingBoxVisible;

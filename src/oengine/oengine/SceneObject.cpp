@@ -24,6 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "oengine/SceneNode.h"
 #include "oengine/SceneObject.h"
 #include "oengine/EngineServer.h"
 
@@ -42,6 +43,16 @@ void SceneObject::draw(SceneNode* node, RenderState* state)
 { 
 	SceneRenderable* sr = (SceneRenderable*)getRenderable(state->client);
 	sr->setSceneNode(node);
-	sr->draw(state);
+	// If scene node has an effect use it to draw this renderable. 
+	// Otherwise, draw renderable directly
+	BaseEffect* e = node->getEffect();
+	if(e != NULL)
+	{
+		e->draw(sr, state);
+	}
+	else
+	{
+		sr->draw(state);
+	}
 }
 

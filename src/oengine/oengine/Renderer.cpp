@@ -43,7 +43,8 @@ Lock fontLock;
 Renderer::Renderer():
 	myTargetTexture(NULL),
 	myDrawing(false),
-	myDefaultFont(NULL)
+	myDefaultFont(NULL),
+	myForceDiffuseColor(false)
 {
 }
 
@@ -348,9 +349,18 @@ void Renderer::drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, 
 	case DrawPoints: mode = GL_POINTS; break;
 	case DrawTriangles: mode = GL_TRIANGLES; break;
 	case DrawTriangleStrip: mode = GL_TRIANGLE_STRIP; break;
+	case DrawLines: mode = GL_LINES; break;
 	}
 
 	vertices->bind();
+
+	// HACK: vertex buffer may reset the color array flag, so make sure we override it
+	// if forced diffuse color is enabled.
+	if(myForceDiffuseColor)
+	{
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	}
 	if(indices != NULL)
 	{
 		glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
