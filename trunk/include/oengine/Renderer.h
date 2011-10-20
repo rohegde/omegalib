@@ -90,12 +90,17 @@ namespace oengine {
 		void setDefaultFont(Font* value);
 		//@}
 
+		// Hack
+		void setForceDiffuseColor(bool value) { myForceDiffuseColor = value; }
+
 	private:
 		bool myDrawing;
 		Texture* myTargetTexture;
 		Dictionary<String, Font*> myFonts;
 		Font* myDefaultFont;
 		Lock myLock;
+
+		bool myForceDiffuseColor;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

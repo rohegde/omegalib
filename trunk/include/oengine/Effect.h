@@ -22,26 +22,45 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __MATERIAL_H__
-#define __MATERIAL_H__
+#ifndef __EFFECT_H__
+#define __EFFECT_H__
 
 #include "oenginebase.h"
 #include "omega/GpuProgram.h"
 #include "omega/Color.h"
 
 namespace oengine {
+
+	class SceneRenderable;
+	struct RenderState;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API BaseEffect
+	{
+	public:
+		virtual void load(const Setting& setting) {}
+		virtual void save(Setting& setting) {}
+		virtual void activate() {}
+		virtual void deactivate() {}
+		virtual void draw(SceneRenderable* sr, RenderState* state) = 0;
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OENGINE_API Effect
+	class OENGINE_API Effect: public BaseEffect
 	{
+	public:
+		enum DrawMode { DrawPoints, DrawWireframe, DrawFlat, DrawSmooth };
+		enum BlendMode { BlendDisabled, BlendNormal, BlendAdditive };
+
 	public:
 		Effect();
 
 		void setProgram(GpuProgram* program) { myProgram = program; }
 		GpuProgram* getProgram() { return myProgram; }
 		
-		void activate();
-		void deactivate();
+		virtual void activate();
+		virtual void deactivate();
 
 		GpuProgramParams& getParams() { return myParams; }
 
@@ -71,6 +90,33 @@ namespace oengine {
 		void setForcedDiffuseColor(bool value) { myForcedDiffuseColor = value; }
 		bool getForcedDiffuseColor() { return myForcedDiffuseColor; }
 
+		void draw(SceneRenderable* sr, RenderState* state);
+
+		//! Point size
+		//@{
+		bool hasPointSize() { return myHasPointSize; }
+		float getPointSize() { return myPointSize; }
+		void setPointSize(float value) { myPointSize = value; myHasPointSize = true; }
+		void unsetPointSize() { myHasPointSize = false; }
+		//@}
+
+		//! Draw mode
+		//@{
+		bool hasDrawMode() { return myHasDrawMode; }
+		DrawMode getDrawMode() { return myDrawMode; }
+		void setDrawMode(DrawMode value) { myDrawMode = value; myHasDrawMode = true; }
+		void unsetDrawMode() { myHasDrawMode = false; }
+		//@}
+
+		//! Bend mode
+		//@{
+		void setBlendMode(BlendMode value) { myBlendMode = value; }
+		BlendMode getBlendMode() { return myBlendMode; }
+		//@}
+
+		bool isLightingEnabled() { return myLightingEnabled; }
+		void setLightingEnabled(bool value) { myLightingEnabled = value; }
+
 	private:
 		GpuProgram* myProgram;
 		GpuProgramParams myParams;
@@ -80,6 +126,32 @@ namespace oengine {
 		Color myAmbientColor;
 		Color myEmissiveColor;
 		float myShininess;
+		bool myHasPointSize;
+		float myPointSize;
+
+		bool myHasDrawMode;
+		DrawMode myDrawMode; 
+
+		BlendMode myBlendMode;
+
+		bool myLightingEnabled;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API MultipassEffect: public BaseEffect
+	{
+	public:
+		void draw(SceneRenderable* sr, RenderState* state);
+		void addEffect(Effect* e) 
+		{
+			myEffects.push_back(e);
+		}
+		void removeEffect(Effect* e) 
+		{
+			myEffects.remove(e);
+		}
+	private:
+		List<Effect*> myEffects;
 	};
 }; // namespace oengine
 

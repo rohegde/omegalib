@@ -23,6 +23,8 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "oengine/Effect.h"
+#include "oengine/SceneRenderable.h"
+#include "oengine/EngineClient.h"
 #include "omega/GpuManager.h"
 #include "omega/glheaders.h"
 
@@ -36,7 +38,9 @@ Effect::Effect():
 	myAmbientColor(1, 1, 1, 1),
 	myDiffuseColor(1, 1, 1, 1),
 	myForcedDiffuseColor(false),
-	myShininess(32) 
+	myShininess(32),
+	myBlendMode(BlendDisabled),
+	myDrawMode(DrawSmooth)
 {
 	//myProgram = myMng->getGpuManager()->getDefaultProgram();
 }
@@ -56,6 +60,49 @@ void Effect::activate()
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mySpecularColor.data());
 	glMaterialfv(GL_FRONT, GL_EMISSION, myEmissiveColor.data());
 	glMaterialf(GL_FRONT, GL_SHININESS, myShininess);
+	// fix me
+	glColor4fv(myDiffuseColor.data());
+
+	if(myHasPointSize)
+	{
+		glPointSize(myPointSize);
+	}
+	if(myHasDrawMode)
+	{
+		uint drawMode;
+		switch(myDrawMode)
+		{
+		case Effect::DrawFlat: 
+		case Effect::DrawSmooth:
+			drawMode = GL_FILL; break;
+		case Effect::DrawWireframe:
+			drawMode = GL_LINE; break;
+		case Effect::DrawPoints:
+			drawMode = GL_POINT; break;
+		}
+		glPolygonMode(GL_FRONT_AND_BACK, drawMode);
+	}
+
+	switch(myBlendMode)
+	{
+	case BlendDisabled:
+		glDisable(GL_BLEND);
+	case BlendNormal:
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	case BlendAdditive:
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	}
+
+	if(myLightingEnabled) 
+	{
+		glEnable(GL_LIGHTING);
+	}
+	else
+	{
+		glDisable(GL_LIGHTING);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,3 +111,23 @@ void Effect::deactivate()
 	myParams.unbind(myProgram, GpuProgram::RenderStage);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Effect::draw(SceneRenderable* sr, RenderState* state)
+{ 
+	activate();
+	// HACK: Forward forced diffuse color flag
+	state->client->getRenderer()->setForceDiffuseColor(myForcedDiffuseColor);
+	sr->draw(state);
+	deactivate();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MultipassEffect::draw(SceneRenderable* sr, RenderState* state)
+{
+	foreach(Effect* e, myEffects)
+	{
+		e->activate();
+		e->draw(sr, state);
+		e->deactivate();
+	}
+}
