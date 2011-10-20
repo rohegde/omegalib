@@ -54,6 +54,8 @@ public:
 	void setEnabled(bool value) { myEnabled = value; }
 	bool isEnabled() { return myEnabled; }
 
+	bool isInteractive() { return myInteractive; }
+
 private:
 	EngineServer* myServer;
 
@@ -63,6 +65,7 @@ private:
 	BoundingSphere* mySelectionSphere;
 	bool myVisible;
 	bool myEnabled;
+	bool myInteractive;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
