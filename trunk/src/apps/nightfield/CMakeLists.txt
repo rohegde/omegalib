@@ -33,15 +33,15 @@ ADD_DEFINITIONS( )
 # Source files
 SET( SRCS 
         nightfield.cpp
-		Flock.cpp
-		FlockRenderable.cpp
+		../common/Flock.cpp
+		../common/FlockRenderable.cpp
         )
     
 ####################################################################################################
 # Headers
 SET( HEADERS 
 		nightfield.h
-		Flock.h
+		../common/Flock.h
         ) 
         
 ###################################################################################################

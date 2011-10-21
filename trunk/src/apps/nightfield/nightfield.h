@@ -29,7 +29,7 @@
 
 #include <omega.h>
 #include <oengine.h>
-#include "Flock.h"
+#include "../common/Flock.h"
 
 using namespace omega;
 using namespace oengine;
