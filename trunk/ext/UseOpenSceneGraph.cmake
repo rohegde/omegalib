@@ -7,6 +7,9 @@ endif(OMEGA_OS_WIN)
 set(EXTLIB_TGZ ${CMAKE_SOURCE_DIR}/ext/${EXTLIB_NAME}.tar.gz)
 set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
 
+# Uncomment this line to make omegalib use an external openscenegraph binary build
+set(EXTLIB_DIR D:/Workspace/3rdparty/OpenSceneGraph-3.0.1-VS10.0.30319-x86-debug-12741)
+
 if(NOT EXISTS ${EXTLIB_DIR})
   message(STATUS "Extracting OpenSceneGraph...")
   execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf
