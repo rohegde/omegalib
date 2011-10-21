@@ -79,7 +79,7 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 	osg::Node* root = myModule->getRootNode();
 	mySceneView->setSceneData(root);
 	mySceneView->setFrameStamp(myModule->getFrameStamp());
-	mySceneView->setActiveUniforms(0);
+	//mySceneView->setActiveUniforms(0);
     mySceneView->cull();
     mySceneView->draw();
 }

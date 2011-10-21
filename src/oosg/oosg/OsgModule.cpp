@@ -122,6 +122,9 @@ void OsgModule::update(const UpdateContext& context)
 	myUpdateVisitor->reset();
 	myUpdateVisitor->setFrameStamp(myFrameStamp);
 	myUpdateVisitor->setTraversalNumber(context.frameNum);
-    myRootNode->accept(*myUpdateVisitor);
+	if(myRootNode != NULL)
+	{
+		myRootNode->accept(*myUpdateVisitor);
+	}
 }
 
