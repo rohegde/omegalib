@@ -38,6 +38,7 @@ namespace omega
 	class SystemManager;
 	class ServiceManager;
 	class DisplaySystem;
+	class RenderTarget;
 	class Application;
 	class ChannelImpl;
 	class GpuManager;
@@ -120,6 +121,7 @@ namespace omega
 		Task task;
 		//! Information about the drawing channel associated with this context.
 		ChannelInfo* channel;
+		RenderTarget* drawBuffer;
 
 		//bool isSceneActive(int id) const;
 		//bool isOverlayActive(int id) const;

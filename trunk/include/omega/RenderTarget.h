@@ -64,6 +64,7 @@ namespace omega
 		void beginDraw();
 		void endDraw();
 		GLuint getGLId();
+		void setGLId(GLuint value);
 		//@}
 
 	private:
@@ -98,6 +99,13 @@ namespace omega
 	{
 		oassert(myInitialized);
 		return myId; 
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void RenderTarget::setGLId(GLuint id) 
+	{
+		oassert(myInitialized);
+		myId = id; 
 	}
 }; // namespace omega
 

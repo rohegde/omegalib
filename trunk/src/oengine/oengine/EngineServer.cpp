@@ -81,7 +81,7 @@ void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFr
 	{
 		foreach(EngineClient* client, myClients)
 		{
-			RenderPass* rp = rpNew();
+			RenderPass* rp = rpNew(client);
 			rp->setUserData(userData);
 			client->addRenderPass(rp, addToFront);
 		}

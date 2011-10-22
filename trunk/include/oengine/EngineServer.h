@@ -49,7 +49,7 @@ namespace oengine {
 	{
 	friend class EngineClient;
 	public:
-		typedef RenderPass* (*RenderPassFactory)();
+		typedef RenderPass* (*RenderPassFactory)(EngineClient*);
 
 	public:
 		static const int MaxScenes = 3;

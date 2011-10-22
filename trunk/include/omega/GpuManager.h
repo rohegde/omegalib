@@ -29,7 +29,6 @@
 
 #include "osystem.h"
 #include "omega/GpuProgram.h"
-#include "omega/RenderTarget.h"
 
 // HACK: To be removed (see GpuManager::TextureUnit)
 #define GL_TEXTURE0 0x84C0
@@ -45,6 +44,7 @@
 namespace omega
 {
 	class CLManager;
+	class Texture;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! A dictionary containing <String, VertexShader*> pairs.
@@ -99,14 +99,14 @@ namespace omega
 		FragmentShader* getFragmentShader(const String& name);
 		GeometryShader* getGeometryShader(const String& name);
 		ComputeShader* getComputeShader(const String& name);
-		void beginDraw();
-		void endDraw();
+		//void beginDraw();
+		//void endDraw();
 
 		//! Data
 		//@{
 		GpuProgram* getDefaultProgram();
-		RenderTarget* getFrameBuffer();
-		void setFrameBuffer(RenderTarget* fb);
+		//RenderTarget* getFrameBuffer();
+		//void setFrameBuffer(RenderTarget* fb);
 		//@}
 
 		//! Texture management
@@ -134,7 +134,7 @@ namespace omega
 		TextureDictionary myTextures;
 
 		//! Current frame buffer.
-		RenderTarget* myFrameBuffer;
+		//RenderTarget* myFrameBuffer;
 
 		// Default gpu program
 		GpuProgram* myDefaultProgram;
@@ -146,13 +146,13 @@ namespace omega
 	inline GpuProgram* GpuManager::getDefaultProgram()
 	{ return myDefaultProgram; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline RenderTarget* GpuManager::getFrameBuffer()
-	{ return myFrameBuffer; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline RenderTarget* GpuManager::getFrameBuffer()
+	//{ return myFrameBuffer; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void GpuManager::setFrameBuffer(RenderTarget* fb)
-	{ myFrameBuffer = fb; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline void GpuManager::setFrameBuffer(RenderTarget* fb)
+	//{ myFrameBuffer = fb; }
 }; // namespace omega
 
 #endif

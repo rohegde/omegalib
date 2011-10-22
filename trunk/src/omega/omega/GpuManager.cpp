@@ -161,7 +161,6 @@ String readTextFile(const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager():
 	myInitialized(false),
-	myFrameBuffer(NULL),
 	myCLManager(NULL)
 {
 	myDefaultProgram = new GpuProgram(this);
@@ -330,18 +329,6 @@ Texture* GpuManager::createTexture(String textureName, int width, int height, by
 Texture* GpuManager::getTexture(const String& textureName)
 {
 	return myTextures[textureName];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::beginDraw()
-{
-	myFrameBuffer->beginDraw();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void GpuManager::endDraw()
-{
-	myFrameBuffer->endDraw();
 }
 
 #ifdef OMEGA_USE_OPENCL

@@ -50,7 +50,8 @@ namespace oosg
 	{
 	OMEGA_DECLARE_TYPE(OsgRenderPass);
 	public:
-		static RenderPass* createInstance() { return new OsgRenderPass(); }
+		OsgRenderPass(EngineClient* client): RenderPass(client) {}
+		static RenderPass* createInstance(EngineClient* client) { return new OsgRenderPass(client); }
 	public:
 		OsgRenderPass();
 		~OsgRenderPass();
