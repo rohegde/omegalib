@@ -68,4 +68,39 @@ if(OMEGA_OS_WIN)
 	file(COPY ${EXTLIB_DIR}/bin/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} PATTERN "*.dll")
 	file(COPY ${EXTLIB_DIR}/bin/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} PATTERN "*.dll")
 elseif(OMEGA_OS_LINUX)
+	set(OSG_LIBS 
+		optimized ${EXTLIB_DIR}/lib/release/libosg.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgAnimation.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgDB.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgFX.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgGA.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgManipulator.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgParticle.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgPresentation.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgShadow.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgSim.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgTerrain.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgText.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgUtil.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgVolume.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgViewer.so
+		optimized ${EXTLIB_DIR}/lib/release/libosgWidget.so
+		
+		
+		debug ${EXTLIB_DIR}/lib/debug/libosgd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgAnimationd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgDBd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgFXd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgGAd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgManipulatord.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgParticled.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgPresentationd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgShadowd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgSimd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgTerraind.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgTextd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgUtild.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgVolumed.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgViewerd.so
+		debug ${EXTLIB_DIR}/lib/debug/libosgWidgetd.so)
 endif(OMEGA_OS_WIN)
