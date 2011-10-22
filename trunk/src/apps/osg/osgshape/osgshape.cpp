@@ -149,9 +149,11 @@ void OsgShape::update(const UpdateContext& context)
 int main(int argc, char** argv)
 {
 	EngineApplication<OsgShape> app;
+	const char* cfgName = "system/desktop.cfg";
+	if(argc == 2) cfgName = argv[1];
 	omain(
 		app, 
-		"system/desktop.cfg", 
+		cfgName, 
 		"osgshape.log", 
 		new FilesystemDataSource(OMEGA_DATA_PATH));
 	return 0;
