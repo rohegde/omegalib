@@ -130,7 +130,7 @@ void OsgShape::initialize()
 	myOsg = new OsgModule();
 	myOsg->initialize(this);
 
-	//myOsg->setRootNode(createShapes());
+	myOsg->setRootNode(createShapes());
 
 	//myMouseInteractor = new DefaultMouseInteractor();
 	//myMouseInteractor->setSceneNode(mySceneNode);

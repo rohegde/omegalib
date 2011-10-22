@@ -179,7 +179,7 @@ void SystemManager::setupServiceManager()
 #ifdef OMEGA_USE_VRPN
 	myServiceManager->registerService("VRPNService", (ServiceAllocator)VRPNService::New);
 #endif
-#ifdef OMEGA_USE_VRPN
+#ifdef OMEGA_USE_THINKGEAR
 	myServiceManager->registerService("ThinkGearService", (ServiceAllocator)ThinkGearService::New);
 #endif
 #ifdef OMEGA_USE_OPTITRACK
