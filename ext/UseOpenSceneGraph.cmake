@@ -1,14 +1,23 @@
 if(OMEGA_OS_WIN)
 	set(EXTLIB_NAME OpenSceneGraph-3.0.1-VS10-x86)
 elseif(OMEGA_OS_LINUX)
-	set(EXTLIB_NAME OpenSceneGraph-3.0.0-linux)
+	if(OMEGA_ARCH_32)
+		set(EXTLIB_NAME OpenSceneGraph-3.0.1-linux-x86)
+	else(OMEGA_ARCH_32)
+		set(EXTLIB_NAME OpenSceneGraph-3.0.1-Linux-x64)
+	endif(OMEGA_ARCH_32)
 endif(OMEGA_OS_WIN)
 
-set(EXTLIB_TGZ ${CMAKE_SOURCE_DIR}/ext/${EXTLIB_NAME}.tar.gz)
+set(EXTLIB_TGZ ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
 set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
 
 # Uncomment this line to make omegalib use an external openscenegraph binary build
 # set(EXTLIB_DIR D:/Workspace/3rdparty/OpenSceneGraph-3.0.1-VS10.0.30319-x86-debug-12741)
+
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
+  message(STATUS "Downloading OpenSceneGraph binary archive...")
+  file(DOWNLOAD http://omegalib.googlecode.com/files/${EXTLIB_NAME}.tar.gz ${EXTLIB_TGZ} SHOW_PROGRESS)
+endif(NOT EXISTS ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
 
 if(NOT EXISTS ${EXTLIB_DIR})
   message(STATUS "Extracting OpenSceneGraph...")
