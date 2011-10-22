@@ -28,6 +28,7 @@
 #define __RENDER_PASS_H__
 
 #include "oenginebase.h"
+#include "omega/Application.h"
 #include "Renderer.h"
 
 namespace oengine {
@@ -45,7 +46,7 @@ namespace oengine {
 			RenderCustom = 1 << 8 };
 
 	public:
-		RenderPass(): myInitialized(false) {}
+		RenderPass(EngineClient* client): myInitialized(false), myClient(client) {}
 		virtual void initialize() { myInitialized = true; }
 		virtual void render(EngineClient* client, const DrawContext& context) = 0;
 
@@ -54,9 +55,12 @@ namespace oengine {
 
 		bool isInitialized() { return myInitialized; }
 
+		EngineClient* getClient() { return myClient; }
+
 	private: 
 		bool myInitialized;
 		void* myUserData;
+		EngineClient* myClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

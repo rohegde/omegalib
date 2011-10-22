@@ -81,7 +81,8 @@ ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server
 ApplicationClient::~ApplicationClient() 
 {
 #ifdef OMEGA_USE_DISPLAY
-	odelete(myGpu);
+	delete myGpu;
+	myGpu = NULL;
 #endif
 }
 

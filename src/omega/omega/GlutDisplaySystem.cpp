@@ -84,6 +84,8 @@ void displayCallback(void)
 	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.data() );
 	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.data() );
 
+	dc.drawBuffer = ds->getFrameBuffer();
+
 	// Process events.
 	ServiceManager* im = SystemManager::instance()->getServiceManager();
 	int av = im->getAvailableEvents();
@@ -205,7 +207,6 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 		myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
 		//myAppClient->setup();
 		myAppClient->initialize();
-		myAppClient->getGpu()->setFrameBuffer(myFrameBuffer);
 	}
 }
 

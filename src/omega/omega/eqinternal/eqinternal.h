@@ -30,6 +30,7 @@
 //#include "omega/osystem.h"
 #include "omega/Application.h"
 #include "omega/ServiceManager.h"
+#include "omega/RenderTarget.h"
 #include "omega/Event.h"
 
 // Equalizer includes
@@ -302,6 +303,7 @@ private:
 	ChannelInfo myChannelInfo;
 	DrawContext myDC;
 	uint128_t myLastFrame;
+	RenderTarget myDrawBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

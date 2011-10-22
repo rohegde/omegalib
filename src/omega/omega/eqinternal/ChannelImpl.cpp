@@ -56,6 +56,7 @@ ChannelImpl::ChannelImpl( eq::Window* parent )
 		initStaticVars = true;
 	}
 	sLock.unlock();
+	myDrawBuffer.initialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,6 +169,10 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
 	memcpy(context->modelview.data(), getHeadTransform().begin(), 16 * sizeof(float));
 	memcpy(context->projection.data(), getFrustum().compute_matrix().begin(), 16 * sizeof(float));
+
+	// Setup draw context
+	myDrawBuffer.setGLId(getDrawBuffer());
+	context->drawBuffer = &myDrawBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

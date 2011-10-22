@@ -77,5 +77,5 @@ void WindowImpl::frameStart(const uint128_t &frameID, const uint32_t frameNumber
 		myInitialized = true;
 	}
 	// Set the frame buffer for the client gpu to this window frame buffer.
-	myGpu->setFrameBuffer(myFrameBuffer);
+	//myGpu->setFrameBuffer(myFrameBuffer);
 }

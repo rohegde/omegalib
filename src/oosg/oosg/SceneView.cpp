@@ -465,8 +465,6 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
         std::copy(_collectOccludersVisitor->getCollectedOccluderSet().begin(),_collectOccludersVisitor->getCollectedOccluderSet().end(), std::back_insert_iterator<CullStack::OccluderList>(cullVisitor->getOccluderList()));
     }
     
-
-
     cullVisitor->reset();
 
     cullVisitor->setFrameStamp(_frameStamp.get());
@@ -505,26 +503,9 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     renderStage->setCamera(_camera.get());
 #endif
 
-    #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-        switch(_lightingMode)
-        {
-        case(HEADLIGHT):
-            if (_light.valid()) renderStage->addPositionedAttribute(NULL,_light.get());
-            else osg::notify(osg::WARN)<<"Warning: no osg::Light attached to ogUtil::SceneView to provide head light.*/"<<std::endl;
-            break;
-        case(SKY_LIGHT):
-            if (_light.valid()) renderStage->addPositionedAttribute(mv.get(),_light.get());
-            else osg::notify(osg::WARN)<<"Warning: no osg::Light attached to ogUtil::SceneView to provide sky light.*/"<<std::endl;
-            break;
-        default:
-            break;
-        }            
-    #endif
-    
     if (_globalStateSet.valid()) cullVisitor->pushStateSet(_globalStateSet.get());
     if (_secondaryStateSet.valid()) cullVisitor->pushStateSet(_secondaryStateSet.get());
     if (_localStateSet.valid()) cullVisitor->pushStateSet(_localStateSet.get());
-
 
     cullVisitor->pushViewport(viewport);
     cullVisitor->pushProjectionMatrix(proj.get());
@@ -665,59 +646,17 @@ void SceneView::draw()
 
 }
 
-/** Calculate, via glUnProject, the object coordinates of a window point.
-    Note, current implementation requires that SceneView::draw() has been previously called
-    for projectWindowIntoObject to produce valid values.  As per OpenGL
-    windows coordinates are calculated relative to the bottom left of the window.*/
-bool SceneView::projectWindowIntoObject(const osg::Vec3& window,osg::Vec3& object) const
-{
-    osg::Matrix inverseMVPW;
-    inverseMVPW.invert(computeMVPW());
-    
-    object = window*inverseMVPW;
-    
-    return true;
-}
-
-
-/** Calculate, via glUnProject, the object coordinates of a window x,y
-    when projected onto the near and far planes.
-    Note, current implementation requires that SceneView::draw() has been previously called
-    for projectWindowIntoObject to produce valid values.  As per OpenGL
-    windows coordinates are calculated relative to the bottom left of the window.*/
-bool SceneView::projectWindowXYIntoObject(int x,int y,osg::Vec3& near_point,osg::Vec3& far_point) const
-{
-    osg::Matrix inverseMVPW;
-    inverseMVPW.invert(computeMVPW());
-    
-    near_point = osg::Vec3(x,y,0.0f)*inverseMVPW;
-    far_point = osg::Vec3(x,y,1.0f)*inverseMVPW;
-        
-    return true;
-}
-
-
-/** Calculate, via glProject, the object coordinates of a window.
-    Note, current implementation requires that SceneView::draw() has been previously called
-    for projectWindowIntoObject to produce valid values.  As per OpenGL
-    windows coordinates are calculated relative to the bottom left of the window.*/
-bool SceneView::projectObjectIntoWindow(const osg::Vec3& object,osg::Vec3& window) const
-{
-    window = object*computeMVPW();
-    return true;
-}
-
-const osg::Matrix SceneView::computeMVPW() const
-{
-    osg::Matrix matrix( getViewMatrix() * getProjectionMatrix());
-        
-    if (getViewport())
-        matrix.postMult(getViewport()->computeWindowMatrix());
-    else
-        osg::notify(osg::WARN)<<"osg::Matrix SceneView::computeMVPW() - error no viewport attached to SceneView, coords will be computed inccorectly."<<std::endl;
-
-    return matrix;
-}
+//const osg::Matrix SceneView::computeMVPW() const
+//{
+//    osg::Matrix matrix( getViewMatrix() * getProjectionMatrix());
+//        
+//    if (getViewport())
+//        matrix.postMult(getViewport()->computeWindowMatrix());
+//    else
+//        osg::notify(osg::WARN)<<"osg::Matrix SceneView::computeMVPW() - error no viewport attached to SceneView, coords will be computed inccorectly."<<std::endl;
+//
+//    return matrix;
+//}
 
 void SceneView::clearArea(int x,int y,int width,int height,const osg::Vec4& color)
 {
@@ -731,72 +670,6 @@ void SceneView::clearArea(int x,int y,int width,int height,const osg::Vec4& colo
     glClearColor( color[0], color[1], color[2], color[3]);
     glClear( GL_COLOR_BUFFER_BIT);
     glDisable( GL_SCISSOR_TEST );
-}
-
-void SceneView::setProjectionMatrixAsOrtho(double left, double right,
-                                           double bottom, double top,
-                                           double zNear, double zFar)
-{
-    setProjectionMatrix(osg::Matrixd::ortho(left, right,
-                                           bottom, top,
-                                           zNear, zFar));
-}                                           
-
-void SceneView::setProjectionMatrixAsOrtho2D(double left, double right,
-                                             double bottom, double top)
-{
-    setProjectionMatrix(osg::Matrixd::ortho2D(left, right,
-                                             bottom, top));
-}
-
-void SceneView::setProjectionMatrixAsFrustum(double left, double right,
-                                             double bottom, double top,
-                                             double zNear, double zFar)
-{
-    setProjectionMatrix(osg::Matrixd::frustum(left, right,
-                                             bottom, top,
-                                             zNear, zFar));
-}
-
-void SceneView::setProjectionMatrixAsPerspective(double fovy,double aspectRatio,
-                                                 double zNear, double zFar)
-{
-    setProjectionMatrix(osg::Matrixd::perspective(fovy,aspectRatio,
-                                                 zNear, zFar));
-}                                      
-
-bool SceneView::getProjectionMatrixAsOrtho(double& left, double& right,
-                                           double& bottom, double& top,
-                                           double& zNear, double& zFar) const
-{
-    return getProjectionMatrix().getOrtho(left, right,
-                                       bottom, top,
-                                       zNear, zFar);
-}
-
-bool SceneView::getProjectionMatrixAsFrustum(double& left, double& right,
-                                             double& bottom, double& top,
-                                             double& zNear, double& zFar) const
-{
-    return getProjectionMatrix().getFrustum(left, right,
-                                         bottom, top,
-                                         zNear, zFar);
-}                                  
-
-bool SceneView::getProjectionMatrixAsPerspective(double& fovy,double& aspectRatio,
-                                                 double& zNear, double& zFar) const
-{
-    return getProjectionMatrix().getPerspective(fovy, aspectRatio, zNear, zFar);
-}                                                 
-
-void SceneView::setViewMatrixAsLookAt(const osg::Vec3& eye,const osg::Vec3& center,const osg::Vec3& up)
-{
-    setViewMatrix(osg::Matrixd::lookAt(eye,center,up));
-}
-
-void SceneView::getViewMatrixAsLookAt(osg::Vec3& eye,osg::Vec3& center,osg::Vec3& up,float lookDistance) const
-{
-    getViewMatrix().getLookAt(eye,center,up,lookDistance);
 }
 
 bool SceneView::getStats(osgUtil::Statistics& stats)

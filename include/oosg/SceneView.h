@@ -188,27 +188,6 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Set the projection matrix. Can be thought of as setting the lens of a camera. */
         inline void setProjectionMatrix(const osg::Matrixf& matrix) { _camera->setProjectionMatrix(matrix); }
 
-        /** Set the projection matrix. Can be thought of as setting the lens of a camera. */
-        inline void setProjectionMatrix(const osg::Matrixd& matrix) { _camera->setProjectionMatrix(matrix); }
-
-        /** Set to an orthographic projection. See OpenGL glOrtho for documentation further details.*/
-        void setProjectionMatrixAsOrtho(double left, double right,
-                                        double bottom, double top,
-                                        double zNear, double zFar);
-
-        /** Set to a 2D orthographic projection. See OpenGL glOrtho2D documentation for further details.*/
-        void setProjectionMatrixAsOrtho2D(double left, double right,
-                                          double bottom, double top);
-
-        /** Set to a perspective projection. See OpenGL glFrustum documentation for further details.*/
-        void setProjectionMatrixAsFrustum(double left, double right,
-                                          double bottom, double top,
-                                          double zNear, double zFar);
-
-        /** Create a symmetrical perspective projection, See OpenGL gluPerspective documentation for further details.
-          * Aspect ratio is defined as width/height.*/
-        void setProjectionMatrixAsPerspective(double fovy,double aspectRatio,
-                                              double zNear, double zFar);
 
         /** Get the projection matrix.*/
         osg::Matrixd& getProjectionMatrix() { return _camera->getProjectionMatrix(); }
@@ -216,36 +195,9 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Get the const projection matrix.*/
         const osg::Matrixd& getProjectionMatrix() const { return _camera->getProjectionMatrix(); }
 
-        /** Get the orthographic settings of the orthographic projection matrix. 
-          * Returns false if matrix is not an orthographic matrix, where parameter values are undefined.*/
-        bool getProjectionMatrixAsOrtho(double& left, double& right,
-                                        double& bottom, double& top,
-                                        double& zNear, double& zFar) const;
-
-        /** Get the frustum setting of a perspective projection matrix.
-          * Returns false if matrix is not a perspective matrix, where parameter values are undefined.*/
-        bool getProjectionMatrixAsFrustum(double& left, double& right,
-                                          double& bottom, double& top,
-                                          double& zNear, double& zFar) const;
-
-        /** Get the frustum setting of a symmetric perspective projection matrix.
-          * Returns false if matrix is not a perspective matrix, where parameter values are undefined. 
-          * Note, if matrix is not a symmetric perspective matrix then the shear will be lost.
-          * Asymmetric matrices occur when stereo, power walls, caves and reality center display are used.
-          * In these configurations one should use the 'getProjectionMatrixAsFrustum' method instead.*/
-        bool getProjectionMatrixAsPerspective(double& fovy,double& aspectRatio,
-                                              double& zNear, double& zFar) const;
-
-
         /** Set the view matrix. Can be thought of as setting the position of the world relative to the camera in camera coordinates. */
         inline void setViewMatrix(const osg::Matrixf& matrix) { _camera->setViewMatrix(matrix); }
         
-        /** Set the view matrix. Can be thought of as setting the position of the world relative to the camera in camera coordinates. */
-        inline void setViewMatrix(const osg::Matrixd& matrix) { _camera->setViewMatrix(matrix); }
-
-        /** Set to the position and orientation of view matrix, using the same convention as gluLookAt. */
-        void setViewMatrixAsLookAt(const osg::Vec3& eye,const osg::Vec3& center,const osg::Vec3& up);
-
         /** Get the view matrix. */
         osg::Matrixd& getViewMatrix() { return _camera->getViewMatrix(); }
 
@@ -256,17 +208,13 @@ class SceneView : public osg::Object, public osg::CullSettings
         void getViewMatrixAsLookAt(osg::Vec3& eye,osg::Vec3& center,osg::Vec3& up,float lookDistance=1.0f) const;
 
 
-
-        
         void setInitVisitor(osg::NodeVisitor* av) { _initVisitor = av; }
         osg::NodeVisitor* getInitVisitor() { return _initVisitor.get(); }
         const osg::NodeVisitor* getInitVisitor() const { return _initVisitor.get(); }
 
-
         void setUpdateVisitor(osg::NodeVisitor* av) { _updateVisitor = av; }
         osg::NodeVisitor* getUpdateVisitor() { return _updateVisitor.get(); }
         const osg::NodeVisitor* getUpdateVisitor() const { return _updateVisitor.get(); }
-
 
         void setCullVisitor(osgUtil::CullVisitor* cv) { _cullVisitor = cv; }
         osgUtil::CullVisitor* getCullVisitor() { return _cullVisitor.get(); }
@@ -304,33 +252,6 @@ class SceneView : public osg::Object, public osg::CullSettings
         
         /** Get whether the draw method should call renderer->prioritizeTexture.*/
         bool getPrioritizeTextures() const { return _prioritizeTextures; }
-
-        /** Calculate the object coordinates of a point in window coordinates.
-            Note, current implementation requires that SceneView::draw() has been previously called
-            for projectWindowIntoObject to produce valid values.  Consistent with OpenGL
-            windows coordinates are calculated relative to the bottom left of the window.
-            Returns true on successful projection.
-        */
-        bool projectWindowIntoObject(const osg::Vec3& window,osg::Vec3& object) const;
-
-        /** Calculate the object coordinates of a window x,y when projected onto the near and far planes.
-            Note, current implementation requires that SceneView::draw() has been previously called
-            for projectWindowIntoObject to produce valid values.  Consistent with OpenGL
-            windows coordinates are calculated relative to the bottom left of the window.
-            Returns true on successful projection.
-        */
-        bool projectWindowXYIntoObject(int x,int y,osg::Vec3& near_point,osg::Vec3& far_point) const;
-
-        /** Calculate the window coordinates of a point in object coordinates.
-            Note, current implementation requires that SceneView::draw() has been previously called
-            for projectWindowIntoObject to produce valid values.  Consistent with OpenGL
-            windows coordinates are calculated relative to the bottom left of the window,
-            whereas window API's normally have the top left as the origin,
-            so you may need to pass in (mouseX,window_height-mouseY,...).
-            Returns true on successful projection.
-        */
-        bool projectObjectIntoWindow(const osg::Vec3& object,osg::Vec3& window) const;
-
 
         /** Set the frame stamp for the current frame.*/
         inline void setFrameStamp(osg::FrameStamp* fs) { _frameStamp = fs; }
@@ -385,8 +306,6 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Do cull traversal of attached scene graph using Cull NodeVisitor. Return true if computeNearFar has been done during the cull traversal.*/
         virtual bool cullStage(const osg::Matrixd& projection,const osg::Matrixd& modelview,osgUtil::CullVisitor* cullVisitor, osgUtil::StateGraph* rendergraph, osgUtil::RenderStage* renderStage, osg::Viewport *viewport);
         
-        const osg::Matrix computeMVPW() const;
-
         void clearArea(int x,int y,int width,int height,const osg::Vec4& color);
 
         osg::ref_ptr<osg::StateSet>                 _localStateSet;

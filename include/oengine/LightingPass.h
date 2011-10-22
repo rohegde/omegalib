@@ -35,7 +35,8 @@ namespace oengine {
 	{
 	OMEGA_DECLARE_TYPE(LightingPass)
 	public:
-		static RenderPass* createInstance() { return new LightingPass(); }
+		LightingPass(EngineClient* client): RenderPass(client) {}
+		static RenderPass* createInstance(EngineClient* client) { return new LightingPass(client); }
 		virtual void render(EngineClient* client, const DrawContext& context);
 	};
 }; // namespace oengine

@@ -36,7 +36,6 @@
 
 using namespace omega;
 using namespace oengine;
-//using namespace oengine::ui;
 
 OMEGA_DEFINE_TYPE(RenderPass, OmegaObject)
 
@@ -109,7 +108,7 @@ void EngineClient::draw(const DrawContext& context)
 		myRenderableCommands.pop();
 	}
 
-	getGpu()->beginDraw();
+	//getGpu()->beginDraw();
 
 	// Execute all render passes in order.
 	foreach(RenderPass* pass, myRenderPassList)
@@ -127,5 +126,5 @@ void EngineClient::draw(const DrawContext& context)
 	myServer->drawPointers(this, &state);
 	getRenderer()->endDraw();
 
-	getGpu()->endDraw();
+	//getGpu()->endDraw();
 }

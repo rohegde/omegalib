@@ -24,12 +24,16 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omega/RenderTarget.h"
 #include "oosg/SceneView.h"
 #include "oosg/OsgRenderPass.h"
 
 using namespace oosg;
 
 OMEGA_DEFINE_TYPE(OsgRenderPass, RenderPass);
+
+Lock sInitLock;
+Lock sDrawLock;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
@@ -45,11 +49,6 @@ inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgRenderPass::OsgRenderPass()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgRenderPass::~OsgRenderPass()
 {
 	mySceneView->unref();
@@ -59,6 +58,8 @@ OsgRenderPass::~OsgRenderPass()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgRenderPass::initialize() 
 {
+	sInitLock.lock();
+
 	RenderPass::initialize();
 
 	myModule = (OsgModule*)getUserData();
@@ -66,20 +67,29 @@ void OsgRenderPass::initialize()
     mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
 	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 0.0));
     mySceneView->init();
-    mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)());
+	mySceneView->getState()->setContextID(getClient()->getId());
+    mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)(255, 255, 255, true));
+
+	sInitLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 {
-	mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
-	mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
-	mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
+	if(context.task == DrawContext::SceneDrawTask)
+	{
+		sDrawLock.lock();
+		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
+		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
+		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
+		mySceneView->setDrawBufferValue(context.drawBuffer->getGLId());
 
-	osg::Node* root = myModule->getRootNode();
-	mySceneView->setSceneData(root);
-	mySceneView->setFrameStamp(myModule->getFrameStamp());
-	//mySceneView->setActiveUniforms(0);
-    mySceneView->cull();
-    mySceneView->draw();
+		osg::Node* root = myModule->getRootNode();
+		mySceneView->setSceneData(root);
+		mySceneView->setFrameStamp(myModule->getFrameStamp());
+
+		mySceneView->cull();
+		mySceneView->draw();
+		sDrawLock.unlock();
+	}
 }

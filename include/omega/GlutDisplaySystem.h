@@ -64,6 +64,8 @@ namespace omega
 		virtual Vector2i getCanvasSize() { return myResolution; }
 		virtual Ray getViewRay(Vector2i position) { return Ray(); }
 
+		RenderTarget* getFrameBuffer() { return myFrameBuffer; }
+
 	private:
 		void initLayers();
 		void initObservers();
