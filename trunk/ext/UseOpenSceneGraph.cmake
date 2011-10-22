@@ -21,7 +21,7 @@ endif(NOT EXISTS ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
 
 if(NOT EXISTS ${EXTLIB_DIR})
   message(STATUS "Extracting OpenSceneGraph...")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf
+  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzfh
     ${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif(NOT EXISTS ${EXTLIB_DIR})
 
@@ -103,4 +103,12 @@ elseif(OMEGA_OS_LINUX)
 		debug ${EXTLIB_DIR}/lib/debug/libosgVolumed.so
 		debug ${EXTLIB_DIR}/lib/debug/libosgViewerd.so
 		debug ${EXTLIB_DIR}/lib/debug/libosgWidgetd.so)
+
+	if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+		file(COPY ${EXTLIB_DIR}/lib/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+		file(COPY ${EXTLIB_DIR}/lib/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+	else(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+		file(COPY ${EXTLIB_DIR}/lib/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+		file(COPY ${EXTLIB_DIR}/lib/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+	endif(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif(OMEGA_OS_WIN)

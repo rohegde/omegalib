@@ -209,7 +209,6 @@ endif(OMEGA_BUILD_VTK_LIB)
 # Open Scene Graph configuration, libraries and applications
 if(OMEGA_BUILD_OSG_LIB)
 	include(${OmegaLib_SOURCE_DIR}/ext/UseOpenSceneGraph.cmake)
-	message("Including dir ${OSG_INCLUDES}")
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(oosg)
 	if(OMEGA_BUILD_APPS)
