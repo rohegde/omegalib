@@ -4,7 +4,7 @@ elseif(OMEGA_OS_LINUX)
 	if(OMEGA_ARCH_32)
 		set(EXTLIB_NAME OpenSceneGraph-3.0.1-linux-x86)
 	else(OMEGA_ARCH_32)
-		set(EXTLIB_NAME OpenSceneGraph-3.0.1-Linux-x64)
+		set(EXTLIB_NAME OpenSceneGraph-3.0.1-linux-x64)
 	endif(OMEGA_ARCH_32)
 endif(OMEGA_OS_WIN)
 
@@ -25,7 +25,7 @@ if(NOT EXISTS ${EXTLIB_DIR})
     ${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif(NOT EXISTS ${EXTLIB_DIR})
 
-include_directories(${EXTLIB_DIR}/include)
+set(OSG_INCLUDES ${EXTLIB_DIR}/include)
 
 if(OMEGA_OS_WIN)
 	set(OSG_LIBS 

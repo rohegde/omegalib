@@ -50,17 +50,17 @@ SET( headers
         ) 
         
 ###################################################################################################
-SOURCE_GROUP(oosg REGULAR_EXPRESSION oosg/)		
+source_group(oosg REGULAR_EXPRESSION oosg/)		
 
 ###################################################################################################
 # Setup compile info
-IF(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( oosg ${srcs} ${headers})
-ELSE(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( oosg SHARED ${srcs} ${headers})
-ENDIF(OMEGA_BUILD_STATIC)
+if(OMEGA_BUILD_STATIC)
+	add_library( oosg ${srcs} ${headers})
+else(OMEGA_BUILD_STATIC)
+	add_library( oosg SHARED ${srcs} ${headers})
+endif(OMEGA_BUILD_STATIC)
 
 ###################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( oosg 
+target_link_libraries( oosg 
 	omega oengine ${OSG_LIBS})
