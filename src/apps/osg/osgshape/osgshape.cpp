@@ -52,22 +52,22 @@ osg::Geode* createShapes()
     stateset->setMode(GL_LIGHTING, osg::StateAttribute::ON);
     geode->setStateSet( stateset );
 
-    float radius = 0.8f;
-    float height = 1.0f;
+    float radius = 0.08f;
+    float height = 0.1f;
     
     osg::TessellationHints* hints = new osg::TessellationHints;
     hints->setDetailRatio(0.5f);
     
     geode->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),radius),hints));
-    geode->addDrawable(new osg::ShapeDrawable(new osg::Box(osg::Vec3(2.0f,0.0f,0.0f),2*radius),hints));
-    geode->addDrawable(new osg::ShapeDrawable(new osg::Cone(osg::Vec3(4.0f,0.0f,0.0f),radius,height),hints));
-    geode->addDrawable(new osg::ShapeDrawable(new osg::Cylinder(osg::Vec3(6.0f,0.0f,0.0f),radius,height),hints));
-    geode->addDrawable(new osg::ShapeDrawable(new osg::Capsule(osg::Vec3(8.0f,0.0f,0.0f),radius,height),hints));
+    geode->addDrawable(new osg::ShapeDrawable(new osg::Box(osg::Vec3(0.2f,0.0f,0.0f),2*radius),hints));
+    geode->addDrawable(new osg::ShapeDrawable(new osg::Cone(osg::Vec3(0.4f,0.0f,0.0f),radius,height),hints));
+    geode->addDrawable(new osg::ShapeDrawable(new osg::Cylinder(osg::Vec3(0.6f,0.0f,0.0f),radius,height),hints));
+    geode->addDrawable(new osg::ShapeDrawable(new osg::Capsule(osg::Vec3(0.8f,0.0f,0.0f),radius,height),hints));
 
     osg::HeightField* grid = new osg::HeightField;
     grid->allocate(38,39);
-    grid->setXInterval(0.28f);
-    grid->setYInterval(0.28f);
+    grid->setXInterval(0.028f);
+    grid->setYInterval(0.028f);
     
     for(unsigned int r=0;r<39;++r)
     {
@@ -80,10 +80,10 @@ osg::Geode* createShapes()
     
     osg::ConvexHull* mesh = new osg::ConvexHull;
     osg::Vec3Array* vertices = new osg::Vec3Array(4);
-    (*vertices)[0].set(9.0+0.0f,-1.0f+2.0f,-1.0f+0.0f);
-    (*vertices)[1].set(9.0+1.0f,-1.0f+0.0f,-1.0f+0.0f);
-    (*vertices)[2].set(9.0+2.0f,-1.0f+2.0f,-1.0f+0.0f);
-    (*vertices)[3].set(9.0+1.0f,-1.0f+1.0f,-1.0f+2.0f);
+    (*vertices)[0].set(0.9+0.0f,-0.1f+0.2f,-0.1f+0.0f);
+    (*vertices)[1].set(0.9+0.1f,-0.1f+0.0f,-0.1f+0.0f);
+    (*vertices)[2].set(0.9+0.2f,-0.1f+0.2f,-0.1f+0.0f);
+    (*vertices)[3].set(0.9+0.1f,-0.1f+0.2f,-0.1f+0.2f);
     osg::UByteArray* indices = new osg::UByteArray(12);
     (*indices)[0]=0;
     (*indices)[1]=2;
