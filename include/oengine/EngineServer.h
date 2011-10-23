@@ -34,6 +34,7 @@
 #include "Renderable.h"
 #include "SceneQuery.h"
 #include "Actor.h"
+#include "Camera.h"
 #include "Font.h"
 #include "Light.h"
 #include "ui/Container.h"
@@ -103,6 +104,8 @@ namespace oengine {
 		void setAmbientLightColor(const Color& value);
 		//@}
 
+		Camera* getDefaultCamera();
+
 		virtual void initialize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
@@ -120,6 +123,9 @@ namespace oengine {
 		ui::Container* myUi[MaxUis];
 		Light myLights[MaxLights];
 		Color myAmbientColor;
+
+		// The default camera.
+		Camera* myDefaultCamera;
 
 		List<Pointer*> myPointers;
 		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
@@ -173,6 +179,10 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void EngineServer::setAmbientLightColor(const Color& value)
 	{ myAmbientColor = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Camera* EngineServer::getDefaultCamera()
+	{ return myDefaultCamera; }
 }; // namespace oengine
 
 #endif

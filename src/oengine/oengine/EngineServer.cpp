@@ -31,8 +31,10 @@
 #include "oengine/TransparentRenderPass.h"
 #include "oengine/UiRenderPass.h"
 #include "oengine/Renderable.h"
+#include "oengine/NavigationInteractor.h"
 #include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
+#include "omega/Config.h"
 
 using namespace omega;
 using namespace oengine;
@@ -41,13 +43,16 @@ using namespace oengine;
 EngineServer::EngineServer(Application* app):
 	ApplicationServer(app),
 	myWidgetFactory(NULL),
-	myActivePointerTimeout(2.0f)
+	myActivePointerTimeout(2.0f),
+	myDefaultCamera(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::initialize()
 {
+	Config* cfg = getSystemManager()->getAppConfig();
+
 	myWidgetFactory = new ui::DefaultWidgetFactory(this);
 
 	for(int i = 0; i < MaxScenes; i++)
@@ -58,6 +63,18 @@ void EngineServer::initialize()
 	{
 		myUi[i] = new ui::Container(this);
 	}
+
+	myDefaultCamera = new Camera();
+	if(cfg->getBoolValue("config/enableCameraNavigation", false))
+	{
+		SceneNode* camNode = new SceneNode(this);
+		myScene[0]->addChild(camNode);
+		myDefaultCamera->setTargetNode(camNode);
+		NavigationInteractor* ni = new NavigationInteractor();
+		ni->setSceneNode(camNode);
+		addActor(ni);
+	}
+
 
 	// Setup default render chain.
 	registerRenderPassClass<LightingPass>();
@@ -169,6 +186,10 @@ void EngineServer::update(const UpdateContext& context)
 	{
 		a->update(context);
 	}
+
+	// Update cameras.
+	myDefaultCamera->update(context);
+
 	// Update scene.
 	for(int i = 0; i < MaxScenes; i++)
 	{

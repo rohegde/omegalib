@@ -33,7 +33,6 @@ using namespace oosg;
 OMEGA_DEFINE_TYPE(OsgRenderPass, RenderPass);
 
 Lock sInitLock;
-Lock sDrawLock;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
@@ -68,7 +67,7 @@ void OsgRenderPass::initialize()
 	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 0.0));
     mySceneView->init();
 	mySceneView->getState()->setContextID(getClient()->getId());
-    mySceneView->getRenderStage()->setColorMask(onew(osg::ColorMask)(255, 255, 255, true));
+    mySceneView->getRenderStage()->setColorMask(new osg::ColorMask(255, 255, 255, true));
 
 	sInitLock.unlock();
 }
@@ -78,7 +77,6 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
-		sDrawLock.lock();
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
 		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
@@ -90,6 +88,5 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 
 		mySceneView->cull();
 		mySceneView->draw();
-		sDrawLock.unlock();
 	}
 }

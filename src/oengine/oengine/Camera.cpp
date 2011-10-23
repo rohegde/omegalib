@@ -32,10 +32,9 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera::Camera(SceneManager* scene, RenderTarget* target):
-	myScene(scene),
-	myRenderTarget(target),
-	myAutoAspect(false)
+Camera::Camera():
+	myAutoAspect(false),
+	myTargetNode(NULL)
 {
 	updateView(Vector3f::Zero(), Quaternion::Identity());
 	updateProjection(60 * Math::DegToRad, 1, 0.01f, 100);
@@ -60,36 +59,17 @@ void Camera::updateProjection(float fov, float aspect, float nearZ, float farZ)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::render()
+void Camera::update(const UpdateContext& context)
 {
-	oassert(myScene != NULL);
-	oassert(myRenderTarget != NULL);
+	//if(myAutoAspect)
+	//{
+	//	Rect viewport = Rect(0, 0, myRenderTarget->getWidth(), myRenderTarget->getHeight());
+	//	float aspect = (float)viewport.width() / viewport.height();
+	//	updateProjection(myFov, aspect, myNearZ, myFarZ);
+	//}
 
-	Rect viewport = Rect(0, 0, myRenderTarget->getWidth(), myRenderTarget->getHeight());
-
-	if(myAutoAspect)
+	if(myTargetNode != NULL)
 	{
-		float aspect = (float)viewport.width() / viewport.height();
-		updateProjection(myFov, aspect, myNearZ, myFarZ);
+		updateView(myTargetNode->getPosition(), myTargetNode->getOrientation());
 	}
-
-	//glMatrixMode(GL_PROJECTION);
-	//glPushMatrix();
-	//glLoadMatrixf(myProjection.data());
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadMatrixf(myView.data());
-
-
-	myRenderTarget->beginDraw();
-	oerror("Reimplement, needs DrawContext");
-	//myScene->draw(viewport);
-	myRenderTarget->endDraw();
-
-	//glMatrixMode(GL_PROJECTION);
-	//glPopMatrix();
-
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
 }
