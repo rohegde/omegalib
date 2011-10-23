@@ -49,8 +49,6 @@ namespace oengine {
 		void queueRenderableCommand(RenderableCommand& cmd);
 
 		virtual void initialize();
-		//virtual void handleEvent(const Event& evt);
-		//virtual void update(const UpdateContext& context);
 		virtual void draw(const DrawContext& context);
 
 		Renderer* getRenderer();

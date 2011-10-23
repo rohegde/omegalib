@@ -28,16 +28,15 @@
 #define __CAMERA_H__
 
 #include "oenginebase.h"
+#include "oengine/SceneNode.h"
 #include "omega/RenderTarget.h"
 
 namespace oengine {
-	class SceneManager;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Camera
 	{
 	public:
-		Camera(SceneManager* scene, RenderTarget* target);
+		Camera();
 
 		const AffineTransform3& getViewTransform();
 		const AffineTransform3& getProjectionTransform();
@@ -47,17 +46,17 @@ namespace oengine {
 		void updateView(const Vector3f& position, const Quaternion& orientation);
 		void updateProjection(float fov, float aspect, float nearZ, float farZ);
 
-		RenderTarget* getRenderTarget();
-		SceneManager* getScene();
-
 		bool getAutoAspect();
 		void setAutoAspect(bool value);
-		void render();
+
+		void setTargetNode(SceneNode* n) { myTargetNode = n; }
+		SceneNode* getTargetNode() { return myTargetNode; }
+
+		void update(const UpdateContext& context);
+
+		//virtual void draw(const DrawContext& context);
 
 	private:
-		RenderTarget* myRenderTarget;
-		SceneManager* myScene;
-
 		//! Current view transform
 		AffineTransform3 myView;
 		AffineTransform3 myProjection;
@@ -72,6 +71,8 @@ namespace oengine {
 		float myNearZ;
 		float myFarZ;
 		bool myAutoAspect;
+
+		SceneNode* myTargetNode;
 	};
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,14 +90,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setViewTransform(const AffineTransform3& value)
 	{ myView = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline RenderTarget* Camera::getRenderTarget()
-	{ return myRenderTarget; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* Camera::getScene()
-	{ return myScene; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool Camera::getAutoAspect()

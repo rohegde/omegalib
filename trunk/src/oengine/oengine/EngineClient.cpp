@@ -110,6 +110,8 @@ void EngineClient::draw(const DrawContext& context)
 
 	//getGpu()->beginDraw();
 
+	Camera* cam = getServer()->getDefaultCamera();
+
 	// Execute all render passes in order.
 	foreach(RenderPass* pass, myRenderPassList)
 	{

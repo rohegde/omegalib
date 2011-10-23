@@ -35,6 +35,9 @@ namespace omega
 class OMEGA_API Config
 {
 public:
+	static String getTypeName(Setting::Type type);
+
+public:
 	Config(const String& filename);
 	~Config() {}
 
@@ -47,6 +50,8 @@ public:
 	Setting& getRootSetting();
 	bool exists(const String& path);
 	Setting& lookup(const String& path);
+
+	bool getBoolValue(const String& name, bool defaultValue = false);
 
 private:
 	bool myIsLoaded;

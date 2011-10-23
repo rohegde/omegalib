@@ -32,6 +32,24 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+String Config::getTypeName(Setting::Type type)
+{
+	switch(type)
+	{
+	case Setting::TypeArray: return "array";
+	case Setting::TypeBoolean: return "bool";
+	case Setting::TypeFloat: return "float";
+	case Setting::TypeGroup: return "group";
+	case Setting::TypeInt: return "int";
+	case Setting::TypeInt64: return "int64";
+	case Setting::TypeList: return "list";
+	case Setting::TypeNone: return "null";
+	case Setting::TypeString: return "string";
+	}
+	return "UNKNOWN";
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Config::Config(const String& filename): 
 	myCfgFile(NULL), 
 	myCfgFilename(filename),
@@ -113,5 +131,18 @@ bool Config::exists(const String& path)
 Setting& Config::lookup(const String& path)
 {
 	return myCfgFile->lookup(path);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Config::getBoolValue(const String& name, bool defaultValue)
+{
+	if(!exists(name)) return defaultValue;
+	Setting& s = lookup(name);
+	if(s.getType() != Setting::TypeBoolean)
+	{
+		ofwarn("%1%: wrong setting type. Expected 'bool', found '%2%'", %name %getTypeName(s.getType()));
+		return defaultValue;
+	}
+	return (bool)s;
 }
 
