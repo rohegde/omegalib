@@ -77,13 +77,20 @@ public:
 
 	enum ControllerType { Xbox360, PS3, Wiimote, Wii_Nunchuck };
 public:
+	void setup(Setting& settings);
 	OMEGA_API virtual void initialize();
 	virtual void poll();
 	OMEGA_API virtual void dispose();
 	void checkForNewControllers();
 
+	//! Sets the data update interval, in seconds. This is the interval at which this service will generate events
+	//! If set to zero, the service will generate events as fast as possible.
+	void setUpdateInterval(float value);
+	//! @see setUpdateInterval
+	float getUpdateInterval();
 private:
 	static DirectXInputService* mysInstance;
+	float myUpdateInterval;
 
 	wiimote remote;
 	

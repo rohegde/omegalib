@@ -128,6 +128,7 @@ void ThinkGearService::poll()
 		if( errorCode == 1 ) {
 			generateEvent( connectionID );
 		}
+		lastt = curt;
 	}
 }
 
