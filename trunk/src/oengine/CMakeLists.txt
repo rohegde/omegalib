@@ -34,6 +34,7 @@ add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DFTGL_LIBRARY_ST
 set( srcs 
 		# omega
 		oengine/Box.cpp
+		oengine/Console.cpp
 		oengine/ImageUtils.cpp
 		oengine/EngineClient.cpp
 		oengine/EngineServer.cpp
@@ -92,6 +93,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/oenginebase.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Box.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Console.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Font.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ObjDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ImageUtils.h

@@ -289,6 +289,7 @@ protected:
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
 	virtual void frameDraw( const uint128_t& spin );
 	virtual void frameViewFinish( const uint128_t& spin );
+	virtual void frameViewStart( const uint128_t& spin );
 	virtual bool configInit(const uint128_t& initID);
 	omega::ApplicationClient* getClient();
 	unsigned int getLayers();

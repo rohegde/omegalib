@@ -82,11 +82,20 @@ namespace omega
 { 
 	class DataSource;
 
+	class ILogListener
+	{
+	public:
+		virtual void addLine(const String& line) = 0;
+	};
+
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Function definitions.
 	OMEGA_API GLEWContext* glewGetContext();
 	OMEGA_API void glewSetContext(const GLEWContext* context);
 
+	OMEGA_API void ologaddlistener(ILogListener* listener);
+	OMEGA_API void ologremlistener(ILogListener* listener);
 	OMEGA_API void ologopen(const char* filename);
 	OMEGA_API void ologclose();
 	OMEGA_API void omsg(const String& str);

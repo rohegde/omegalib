@@ -176,6 +176,17 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
+{
+	eq::Channel::frameViewStart( frameID );
+	if(!myInitialized) 
+	{
+		initialize();
+		myInitialized = true;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameDraw( frameID );
@@ -203,12 +214,12 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
-	if(!myInitialized) 
-	{
-		initialize();
-		myInitialized = true;
-	}
-	else
+	//if(!myInitialized) 
+	//{
+	//	initialize();
+	//	myInitialized = true;
+	//}
+	//else
 	{
 		setupDrawContext(&myDC, frameID);
 

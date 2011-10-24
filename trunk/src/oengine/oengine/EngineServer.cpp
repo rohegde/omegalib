@@ -44,7 +44,8 @@ EngineServer::EngineServer(Application* app):
 	ApplicationServer(app),
 	myWidgetFactory(NULL),
 	myActivePointerTimeout(2.0f),
-	myDefaultCamera(NULL)
+	myDefaultCamera(NULL),
+	myConsoleEnabled(false)
 {
 }
 
@@ -73,6 +74,22 @@ void EngineServer::initialize()
 		NavigationInteractor* ni = new NavigationInteractor();
 		ni->setSceneNode(camNode);
 		addActor(ni);
+	}
+
+	// Create console.
+	myConsole = new Console();
+	myConsole->initialize(this);
+	ologaddlistener(myConsole);
+
+	// Setup the console default font
+	if(cfg->exists("config/console/font"))
+	{
+		Setting& fontSetting = cfg->lookup("config/console/font");
+		myConsole->setFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
+	}
+	else
+	{
+		myConsole->setFont(FontInfo("console", "fonts/arial.ttf", 12));
 	}
 
 
@@ -208,6 +225,10 @@ void EngineServer::handleEvent(const Event& evt)
 	if( evt.getServiceType() == Service::Keyboard )
     {
         if(evt.getSourceId() == 256) exit(0);
+		if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
+		{
+			myConsoleEnabled = !myConsoleEnabled;
+		}
 	}
 
 	// Update pointers.
