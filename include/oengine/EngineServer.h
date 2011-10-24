@@ -37,6 +37,7 @@
 #include "Camera.h"
 #include "Font.h"
 #include "Light.h"
+#include "Console.h"
 #include "ui/Container.h"
 #include "ui/WidgetFactory.h"
 #include "omega/Application.h"
@@ -91,6 +92,14 @@ namespace oengine {
 		void addActor(Actor* actor);
 		void removeActor(Actor* actor);
 
+		//! Console management
+		//@{
+		Console* getConsole();
+		bool isConsoleEnabled();
+		void setConsoleEnabled(bool value);
+		//@}
+
+
 		//! Pointer Management
 		//@{
 		Pointer* createPointer();
@@ -127,6 +136,7 @@ namespace oengine {
 		// The default camera.
 		Camera* myDefaultCamera;
 
+		// Pointers
 		List<Pointer*> myPointers;
 		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
 		float myActivePointerTimeout;
@@ -139,6 +149,10 @@ namespace oengine {
 
 		// Scene querying
 		RaySceneQuery myRaySceneQuery;
+
+		// Console
+		Console* myConsole;
+		bool myConsoleEnabled;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,6 +197,18 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Camera* EngineServer::getDefaultCamera()
 	{ return myDefaultCamera; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Console* EngineServer::getConsole()
+	{ return myConsole;	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool EngineServer::isConsoleEnabled()
+	{ return myConsoleEnabled; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void EngineServer::setConsoleEnabled(bool value)
+	{ myConsoleEnabled = value; }
 }; // namespace oengine
 
 #endif

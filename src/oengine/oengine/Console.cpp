@@ -24,116 +24,65 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-
-#include "omega/DisplaySystem.h"
-#include "omega/GpuManager.h"
-#include "omega/Texture.h"
+#include "oengine/Console.h"
+#include "oengine/Font.h"
 #include "omega/glheaders.h"
-#include "omega/StringUtils.h"
-
 
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(RenderPass, OmegaObject)
+OMEGA_DEFINE_TYPE(Console, RenderableFactory);
+OMEGA_DEFINE_TYPE(ConsoleRenderable, OverlayRenderable);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EngineClient::EngineClient(ApplicationServer* server):
-	ApplicationClient(server)
+Console::Console():
+	myLines(8),
+	myBackgroundColor(Color(0, 0, 0, 0.6f))
 {
-	myRenderer = new Renderer();
-	myServer = (EngineServer*)server;
-	myServer->addClient(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::addRenderPass(RenderPass* pass, bool addToFront)
+void Console::addLine(const String& line)
 {
-	if(addToFront)
+	myLineBuffer.push_back(line);
+	while(myLineBuffer.size() > myLines)
 	{
-		myRenderPassList.push_front(pass);
-	}
-	else
-	{
-		myRenderPassList.push_back(pass);
+		myLineBuffer.pop_front();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::removeRenderPass(RenderPass* pass)
+Renderable* Console::createRenderable()
 {
-	myRenderPassList.remove(pass);
+	return new ConsoleRenderable(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::initialize()
+void ConsoleRenderable::draw(RenderState* state)
 {
-	ofmsg("EngineClient::Initialize: id = %1%", %getId());
+	// We assume the transforms and viewport have already been set correctly.
 
-	// Create the default font.
-	const FontInfo& fi = myServer->getDefaultFont();
-	if(fi.size != 0)
+	FontInfo& fi = myOwner->myFont;
+	if(myFont == NULL)
 	{
-		Font* fnt = myRenderer->createFont(fi.name, fi.filename, fi.size);
-		myRenderer->setDefaultFont(fnt);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::queueRenderableCommand(RenderableCommand& cmd)
-{
-	myRenderableCommands.push(cmd);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineClient::draw(const DrawContext& context)
-{
-	// First of all make sure all render passes are initialized.
-	foreach(RenderPass* rp, myRenderPassList)
-	{
-		if(!rp->isInitialized()) rp->initialize();
+		myFont = getRenderer()->createFont(fi.name, fi.filename, fi.size);
 	}
 
-	// Execute renderable commands.
-	while(!myRenderableCommands.empty())
+	Font* fnt = getRenderer()->getDefaultFont();
+	float x = 0; 
+	float y = 0;
+	float lineHeight = fi.size + 2;
+	float lineWidth = state->context->channel->canvasSize->x(); 
+
+	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * myOwner->myLines), myOwner->myBackgroundColor);
+
+	if(fnt != NULL)
 	{
-		myRenderableCommands.front().execute();
-		if(myRenderableCommands.front().command == RenderableCommand::Dispose)
+		foreach(String& s, myOwner->myLineBuffer)
 		{
-			ofmsg("Client %1% deleting renderable", %getId());
-			delete myRenderableCommands.front().renderable;
+			glColor4f(1, 1, 1, 1);
+			getRenderer()->drawText(s, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+			y += lineHeight;
 		}
-		myRenderableCommands.pop();
 	}
-
-	//getGpu()->beginDraw();
-
-	Camera* cam = getServer()->getDefaultCamera();
-
-	// Execute all render passes in order.
-	foreach(RenderPass* pass, myRenderPassList)
-	{
-		pass->render(this, context);
-	}
-
-	// Draw the pointers and console
-	RenderState state;
-	state.pass = NULL;
-	state.flags = RenderPass::RenderOverlay;
-	state.client = this;
-	state.context = &context;
-
-	getRenderer()->beginDraw2D(context);
-	
-	if(myServer->isConsoleEnabled())
-	{
-		myServer->getConsole()->getRenderable(this)->draw(&state);
-	}
-	myServer->drawPointers(this, &state);
-	
-	getRenderer()->endDraw();
-
-	//getGpu()->endDraw();
 }

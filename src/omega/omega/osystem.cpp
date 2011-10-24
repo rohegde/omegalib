@@ -34,19 +34,32 @@ namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	FILE* sLogFile = NULL;
+	List<ILogListener*> sLogListeners;
 
 	GLEWContext* sGlewContext;
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	GLEWContext* glewGetContext()
 	{
 		return sGlewContext;
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	void glewSetContext(const GLEWContext* context)
 	{
 		sGlewContext = (GLEWContext*)context;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologaddlistener(ILogListener* listener)
+	{
+		sLogListeners.push_back(listener);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologremlistener(ILogListener* listener)
+	{
+		sLogListeners.remove(listener);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,6 +89,7 @@ namespace omega
 			fprintf(sLogFile, "%s\n", str.c_str());
 			fflush(sLogFile);
 		}
+		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +101,7 @@ namespace omega
 			fprintf(sLogFile, "WARNING: %s\n", str.c_str());
 			fflush(sLogFile);
 		}
+		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +113,7 @@ namespace omega
 			fprintf(sLogFile, "ERROR: %s\n", str.c_str());
 			fflush(sLogFile);
 		}
+		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,13 +147,13 @@ namespace omega
 		// Add a default filesystem data source using current work dir.
 		dm->addSource(new FilesystemDataSource("./"));
 
-		// Set the default data source for omega binary distributions.
-		// This is a bit of a hack but it works fine for now.
-#ifdef OMEGA_TOOL_GCC
-		dm->addSource(new FilesystemDataSource("./../data/"));
-#else
-		dm->addSource(new FilesystemDataSource("./../../data"));
-#endif
+//		// Set the default data source for omega binary distributions.
+//		// This is a bit of a hack but it works fine for now.
+//#ifdef OMEGA_TOOL_GCC
+//		dm->addSource(new FilesystemDataSource("./../data/"));
+//#else
+//		dm->addSource(new FilesystemDataSource("./../../data"));
+//#endif
 
 		// Add optional data source.
 		if(dataSource != NULL)

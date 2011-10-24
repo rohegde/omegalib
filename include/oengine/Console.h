@@ -24,80 +24,54 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CAMERA_H__
-#define __CAMERA_H__
+#ifndef __CONSOLE_H__
+#define __CONSOLE_H__
 
-#include "oenginebase.h"
-#include "oengine/SceneNode.h"
-#include "omega/RenderTarget.h"
+#include "OverlayRenderable.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Camera: public DynamicObject
+	class Console: public RenderableFactory, public ILogListener
 	{
+	OMEGA_DECLARE_TYPE(Console)
+	friend class ConsoleRenderable;
 	public:
-		Camera();
+		Console();
 
-		const AffineTransform3& getViewTransform();
-		const AffineTransform3& getProjectionTransform();
-		void setProjectionTransform(const AffineTransform3& value);
-		void setViewTransform(const AffineTransform3& value);
+		virtual Renderable* createRenderable();
 
-		void updateView(const Vector3f& position, const Quaternion& orientation);
-		void updateProjection(float fov, float aspect, float nearZ, float farZ);
+		void setFont(const FontInfo& font);
 
-		bool getAutoAspect();
-		void setAutoAspect(bool value);
+		//! Draw the console. Assume the 
+		void draw(const DrawContext& context);
 
-		void setTargetNode(SceneNode* n) { myTargetNode = n; }
-		SceneNode* getTargetNode() { return myTargetNode; }
-
-		void update(const UpdateContext& context);
-
-		//virtual void draw(const DrawContext& context);
+		virtual void addLine(const String& line);
 
 	private:
-		//! Current view transform
-		AffineTransform3 myView;
-		AffineTransform3 myProjection;
+		int myLines;
+		Color myBackgroundColor;
+		FontInfo myFont;
 
-		//! Observer current position.
-		Vector3f myPosition;
-		//! Observer current rotation.
-		Quaternion myOrientation;
-		//! Field of view (in radians)
-		float myFov;
-		float myAspect;
-		float myNearZ;
-		float myFarZ;
-		bool myAutoAspect;
-
-		SceneNode* myTargetNode;
+		List<String> myLineBuffer;
 	};
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& Camera::getViewTransform() 
-	{ return myView; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& Camera::getProjectionTransform()
-	{ return myProjection; }
+	class OENGINE_API ConsoleRenderable: public OverlayRenderable
+	{
+	OMEGA_DECLARE_TYPE(ConsoleRenderable)
+	public:
+		ConsoleRenderable(Console* owner): 
+		  myOwner(owner), myFont(NULL)
+		{}
+		void draw(RenderState* state);
+
+	private:
+		Console* myOwner;
+		Font* myFont;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setProjectionTransform(const AffineTransform3& value)
-	{ myProjection = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setViewTransform(const AffineTransform3& value)
-	{ myView = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Camera::getAutoAspect()
-	{ return myAutoAspect; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setAutoAspect(bool value)
-	{ myAutoAspect = value; }
-}; // namespace oengine
-
+	inline void Console::setFont(const FontInfo& font)
+	{ myFont = font; }
+};
 #endif
