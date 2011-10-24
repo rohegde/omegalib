@@ -190,62 +190,46 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameDraw( frameID );
-	//if(!myInitialized) 
-	//{
-	//	//initialize();
-	//	myInitialized = true;
-	//}
-	//else
-	{
-		//ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
-		ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-		PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-		ApplicationClient* client = pipe->getClient();
+	//ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
+	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
+	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	ApplicationClient* client = pipe->getClient();
 
-		setupDrawContext(&myDC, frameID);
+	setupDrawContext(&myDC, frameID);
 
-		myDC.layer = view->getLayer();
-		myDC.task = DrawContext::SceneDrawTask;
-		client->draw(myDC);
-	}
+	myDC.layer = view->getLayer();
+	myDC.task = DrawContext::SceneDrawTask;
+	client->draw(myDC);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
-	//if(!myInitialized) 
-	//{
-	//	initialize();
-	//	myInitialized = true;
-	//}
-	//else
+	setupDrawContext(&myDC, frameID);
+
+	myDC.layer = getLayers();
+	myDC.task = DrawContext::OverlayDrawTask;
+	getClient()->draw(myDC);
+
+	if(isDrawStatisticsEnabled())
 	{
-		setupDrawContext(&myDC, frameID);
+		drawStatistics();
+	}
+	else if(isDrawFpsEnabled())
+	{
+		EQ_GL_CALL( applyBuffer( ));
+		EQ_GL_CALL( applyViewport( ));
+		EQ_GL_CALL( setupAssemblyState( ));
+		glMatrixMode( GL_PROJECTION );
+		glLoadIdentity();
+		applyScreenFrustum();
 
-		myDC.layer = getLayers();
-		myDC.task = DrawContext::OverlayDrawTask;
-		getClient()->draw(myDC);
+		glMatrixMode( GL_MODELVIEW );
+		glDisable( GL_LIGHTING );
 
-		if(isDrawStatisticsEnabled())
-		{
-			drawStatistics();
-		}
-		else if(isDrawFpsEnabled())
-		{
-			EQ_GL_CALL( applyBuffer( ));
-			EQ_GL_CALL( applyViewport( ));
-			EQ_GL_CALL( setupAssemblyState( ));
-			glMatrixMode( GL_PROJECTION );
-			glLoadIdentity();
-			applyScreenFrustum();
-
-			glMatrixMode( GL_MODELVIEW );
-			glDisable( GL_LIGHTING );
-
-			getWindow()->drawFPS();
-			EQ_GL_CALL( resetAssemblyState( ));
-		}
+		getWindow()->drawFPS();
+		EQ_GL_CALL( resetAssemblyState( ));
 	}
 }
 
