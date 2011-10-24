@@ -1,8 +1,8 @@
 //
-//  CustomUIArea.h
-//  OmegaViewer
+//  TCPClient.h
+//  Porthole
 //
-//  Created by Dennis Chau on 10/17/11.
+//  Created by Dennis Chau on 10/23/11.
 //  Copyright (c) 2011 Univeristy of Illinois at Chicago. All rights reserved.
 //
 

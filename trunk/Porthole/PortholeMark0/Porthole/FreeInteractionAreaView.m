@@ -27,6 +27,18 @@
     [markerView release];
     [super dealloc];
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+-(void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];       
+    if( touchAble )[self.markerView setFrame:frame];
+}
+//----------------------------------------------------------------------------------------------------
+
+
 #
 #
 #pragma mark View Setup

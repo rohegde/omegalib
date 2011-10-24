@@ -101,10 +101,10 @@
 
 -(CGRect) localCoordCenterWith: (CGFloat)width and:(CGFloat)height
 {
-    CGFloat halfW = self.bounds.size.width * 0.5;
-    CGFloat halfH = self.bounds.size.height * 0.5;    
-    CGFloat xOffset = self.bounds.origin.x + halfW - width * 0.5;
-    CGFloat yOffset = self.bounds.origin.y + halfH - height * 0.5;
+    CGFloat halfW = self.frame.size.width * 0.5;
+    CGFloat halfH = self.frame.size.height * 0.5;    
+    CGFloat xOffset = self.frame.origin.x + halfW - width * 0.5;
+    CGFloat yOffset = self.frame.origin.y + halfH - height * 0.5;
     return CGRectMake(xOffset, yOffset, width, height);    
 }
 
@@ -113,8 +113,8 @@
     CGFloat curX = current.x;
     CGFloat curY = current.y;    
 
-    CGFloat myW = self.bounds.size.width;
-    CGFloat myH = self.bounds.size.height;    
+    CGFloat myW = self.frame.size.width;
+    CGFloat myH = self.frame.size.height;    
 
     return CGPointMake(curX/myW, curY/myH);
 }
@@ -124,8 +124,8 @@
 {
     CGFloat curW = current.size.width;
     CGFloat curH = current.size.height;    
-    CGFloat xOffset = self.bounds.origin.x + current.origin.x - curW * 0.5;
-    CGFloat yOffset = self.bounds.origin.y + current.origin.y - curH * 0.5;
+    CGFloat xOffset = self.frame.origin.x + current.origin.x - curW * 0.5;
+    CGFloat yOffset = self.frame.origin.y + current.origin.y - curH * 0.5;
     return CGRectMake(xOffset, yOffset, curW, curH);
 }
 
