@@ -55,13 +55,13 @@ public:
 
 	//! Sets the data update interval, in seconds. This is the interval at which this service will generate events
 	//! If set to zero, the service will generate events as fast as possible.
-	void setUpdateInterval(float value);
+	//void setUpdateInterval(float value);
 	//! @see setUpdateInterval
-	float getUpdateInterval();
+	//float getUpdateInterval();
 
 private:
 	static ThinkGearService* mysInstance;
-	float myUpdateInterval;
+	//float myUpdateInterval;
 
 	static int driverVersion;
 
@@ -74,12 +74,12 @@ private:
 };
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ThinkGearService::setUpdateInterval(float value) 
-	{ myUpdateInterval = value; }
+	//inline void ThinkGearService::setUpdateInterval(float value) 
+	//{ myUpdateInterval = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline float ThinkGearService::getUpdateInterval() 
-	{ return myUpdateInterval; }
+	//inline float ThinkGearService::getUpdateInterval() 
+	//{ return myUpdateInterval; }
 }; // namespace omega
 
 #endif

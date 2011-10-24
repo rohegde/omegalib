@@ -168,6 +168,9 @@ void VRPNService::generateEvent(vrpn_TRACKERCB t, int id)
 	Event* evt = mysInstance->writeHead();
 	evt->reset(Event::Update, Service::Mocap, id);
 	evt->setPosition(t.pos[0], t.pos[1], t.pos[2]);
-	evt->setOrientation(t.quat[0], t.quat[1], t.quat[2], t.quat[3]);
+
+	//double euler[3];
+	//q_to_euler(euler, t.quat);
+	evt->setOrientation(t.quat[3], t.quat[0], t.quat[1], t.quat[2]);
 	mysInstance->unlockEvents();
 }
