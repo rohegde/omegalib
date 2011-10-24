@@ -118,22 +118,25 @@ void EngineClient::draw(const DrawContext& context)
 		pass->render(this, context);
 	}
 
-	// Draw the pointers and console
-	RenderState state;
-	state.pass = NULL;
-	state.flags = RenderPass::RenderOverlay;
-	state.client = this;
-	state.context = &context;
-
-	getRenderer()->beginDraw2D(context);
-	
-	if(myServer->isConsoleEnabled())
+	if(context.task == DrawContext::OverlayDrawTask)
 	{
-		myServer->getConsole()->getRenderable(this)->draw(&state);
-	}
-	myServer->drawPointers(this, &state);
+		// Draw the pointers and console
+		RenderState state;
+		state.pass = NULL;
+		state.flags = RenderPass::RenderOverlay;
+		state.client = this;
+		state.context = &context;
+
+		getRenderer()->beginDraw2D(context);
 	
-	getRenderer()->endDraw();
+		if(myServer->isConsoleEnabled())
+		{
+			myServer->getConsole()->getRenderable(this)->draw(&state);
+		}
+		myServer->drawPointers(this, &state);
+	
+		getRenderer()->endDraw();
+	}
 
 	//getGpu()->endDraw();
 }

@@ -68,7 +68,6 @@ void ConsoleRenderable::draw(RenderState* state)
 		myFont = getRenderer()->createFont(fi.name, fi.filename, fi.size);
 	}
 
-	Font* fnt = getRenderer()->getDefaultFont();
 	float x = 0; 
 	float y = 0;
 	float lineHeight = fi.size + 2;
@@ -76,7 +75,7 @@ void ConsoleRenderable::draw(RenderState* state)
 
 	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * myOwner->myLines), myOwner->myBackgroundColor);
 
-	if(fnt != NULL)
+	if(myFont != NULL)
 	{
 		foreach(String& s, myOwner->myLineBuffer)
 		{
