@@ -43,11 +43,11 @@ void ThinkGearService::setup(Setting& settings)
 		comPortName =  (const char*)settings["comPortName"];
 	}
 	
-	myUpdateInterval = 0.0f;
-	if(settings.exists("updateInterval"))
-	{
-		myUpdateInterval = settings["updateInterval"];
-	}
+	//myUpdateInterval = 0.0f;
+	//if(settings.exists("updateInterval"))
+	//{
+	//	myUpdateInterval = settings["updateInterval"];
+	//}
 
 	if( settings.exists("enableStreamLog") ){
 		enableStreamLogging = settings["enableStreamLog"];
@@ -116,19 +116,13 @@ void ThinkGearService::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ThinkGearService::poll() 
 {
-	static float lastt;
-	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
-	if(curt - lastt > myUpdateInterval)
-	{
-		int errorCode = 0;
-		int packetsToRead = 1; // Set the number of packets to read. -1 will attempt to read all available packets.
-		errorCode = TG_ReadPackets( connectionID, packetsToRead );
+	int errorCode = 0;
+	int packetsToRead = 1; // Set the number of packets to read. -1 will attempt to read all available packets.
+	errorCode = TG_ReadPackets( connectionID, packetsToRead );
 
-		/* If TG_ReadPackets() was able to read a complete Packet of data... */
-		if( errorCode == 1 ) {
-			generateEvent( connectionID );
-		}
-		lastt = curt;
+	/* If TG_ReadPackets() was able to read a complete Packet of data... */
+	if( errorCode == 1 ) {
+		generateEvent( connectionID );
 	}
 }
 

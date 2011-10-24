@@ -61,7 +61,7 @@ extern "C" {
 # ifdef __MINGW32__
 #  include <ddk/hidsdi.h>// from WinDDK
 # else
-#  include <hidsdi.h>
+#  include <ddk/hidsdi.h>
 # endif
 }
 #include <sys/types.h>	// for _stat
