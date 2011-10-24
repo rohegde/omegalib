@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "FreeInteractionAreaView.h"
 #import "CustomUIArea.h"
-#import "TCPClient.h"
+#import "TCPClientOmega.h"
 
-#define DEFAULT_SERVER_ON   NO;
+#define DEFAULT_SERVER_ON   YES;
 #define DEFAULT_DVC_DEBUG   YES;
 #define DEFAULT_DEBUG_TOUCH YES;
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate>
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate>
 {
     BOOL debugMode;
     
@@ -27,7 +27,7 @@
     float FIAHeight;
     float CUAHeight;
     
-    TCPClient* connection;
+    TCPClientOmega* connection;
 }
 
 @property (assign , nonatomic) BOOL debugMode;
@@ -37,7 +37,7 @@
 @property ( strong , nonatomic ) FreeInteractionAreaView *FIA;
 @property ( strong , nonatomic ) CustomUIArea *CUA;
 
-@property ( strong , nonatomic ) TCPClient *connection;
+@property ( strong , nonatomic ) TCPClientOmega *connection;
 
 -(void) setupGestureSupport;
 

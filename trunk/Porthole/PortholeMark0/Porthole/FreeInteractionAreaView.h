@@ -13,6 +13,13 @@
 
 typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 
+@class FreeInteractionAreaView;
+
+@protocol FreeInteractionAreaViewDelegate
+- (void)sendMsg:(NSString*)msg from:(FreeInteractionAreaView *)requestor;
+@end
+
+
 @interface FreeInteractionAreaView : UIArea <PulseCircleViewDelegate>
 {
     UIImageView *overlayView;   
@@ -21,10 +28,15 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     CGFloat lastScale;
     
     PulseCircleView *markerView;
+
+    id <FreeInteractionAreaViewDelegate> delegate;
+
 }
 
 @property (strong) PulseCircleView *markerView;
 @property (assign) CGFloat lastScale;
+
+@property (assign) id <FreeInteractionAreaViewDelegate> delegate;
 
 -(void) makeLabelWithString:(NSString*)msg;
 
