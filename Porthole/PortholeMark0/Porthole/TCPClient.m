@@ -18,7 +18,6 @@
     if (self) 
     {
         debugClient = DEFAUL_DEBUG_CLIENT;
-        [self setupTCPConnection];
     }
     return self;
 }
@@ -69,7 +68,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
--(void) setupTCPConnection
+-(void) setupTCPConnectionTo:(NSString*)IP at:(NSString*)PORT
 {
     if( debugClient ) NSLog(@"TCPClient : client connection est.");    
 
@@ -85,7 +84,10 @@
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     
-    if ((rv = getaddrinfo(IP_ADDRESS, PORT, &hints, &servinfo)) != 0) 
+    
+    const char *ipAddress = [IP UTF8String];  
+    const char *port = [PORT UTF8String];      
+    if ((rv = getaddrinfo(ipAddress, port, &hints, &servinfo)) != 0) 
     {
         NSString *error = [NSString stringWithFormat:@"getaddrinfo: %s\n", gai_strerror(rv)];
         [self generateErrorAlert:error];
@@ -150,173 +152,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
--(void) handleGUIElementsFor:(int)GUIType in:(NSArray*)pieces
-{
-    //Get all the other pieces
-    int numOfElements = pieces.count - 2;   // 1 for the count and 1 for the end marker
-    
-    for( int iPiece = 1 ; iPiece < numOfElements ; iPiece++)
-    {
-        if( GUIType == CUA_SLIDER ) //group the source_id, label, min , max
-        {
-            NSString* id = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* label = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* min = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* max = [pieces objectAtIndex:iPiece];  
-            iPiece++;
-            if(debugClient) NSLog(@"\t\t id:%@ label:%@ min:%@ max:%@" , id , label , min , max );
-            
-        }
-        else    //group the source_id and label
-        {
-            NSString* id = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* label = [pieces objectAtIndex:iPiece];
-            
-            if(debugClient) NSLog(@"\t\t id:%@ label:%@" , id , label);
-        }
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(void) determineGUISpec:(NSString*) GUISpec
-{
-    int msgLength;
-    
-    if(debugClient) NSLog( @"GUISpec : %@ \n" , GUISpec );
-    
-    NSString* spacer = [NSString stringWithUTF8String:":"];
-    NSString* seperator = [NSString stringWithUTF8String:"|"];
-    
-    //Get the sections of the GUISpec and put them in sections NSArray
-    NSArray *pieces;
-    NSArray *sections = [ GUISpec componentsSeparatedByString:seperator ];
-    for ( int iSection = 0 ; iSection < 4 ; iSection++ )
-    {
-        NSString* curSection = [sections objectAtIndex:iSection];
-        
-        switch (iSection)
-        {
-            case 0: 
-                msgLength = [curSection intValue];
-                if(debugClient) NSLog(@"\t Msg Length : %i" , msgLength);
-                break;
-            default:
-                //Grab all the pieces out of the section
-                pieces = [ curSection componentsSeparatedByString:spacer];
-                
-                //First piece always tells you the number of elements
-                if(debugClient) NSLog(@"\t Section : %i - has %@ elements" , iSection , [pieces objectAtIndex:0] );
-                
-                CUATypes GUIType;
-                switch (iSection)
-                {
-                    case 1:GUIType = CUA_BUTTON;break;
-                    case 2:GUIType = CUA_SLIDER;break;
-                    case 3:GUIType = CUA_TOGGLE;break;                    
-                }
-                
-                [self handleGUIElementsFor:GUIType in:pieces];
-                break;                
-        }
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(BOOL) sendEventService:(int)service event:(int)event param:(NSArray*)eventParam
-{
-    if( myState == CLINET_GUIRECVED )
-    {
-        NSNumber *serviceN = [NSNumber numberWithInt:service];
-        NSNumber *eventN = [NSNumber numberWithInt:event];        
-        
-        NSArray *eventData = [NSArray arrayWithObjects:serviceN, eventN, nil];
-    
-        NSString *eventMsg = [self genEventMsgWith:eventData param:eventParam];
-        const char *eventMsgCstr = [eventMsg UTF8String];        
-        if( send(connectionSocket , eventMsgCstr , eventMsg.length , 0) == -1 )perror( "send" );
-    }
-    return YES;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val
-{
-    if( myState == CLINET_GUIRECVED )
-    {
-        NSNumber *serviceN = [NSNumber numberWithInt:service];
-        NSNumber *eventN = [NSNumber numberWithInt:event];        
-        NSNumber *srcIdN = [NSNumber numberWithInt:srcId];
-        NSNumber *valN = [NSNumber numberWithFloat:val];        
-
-        NSArray *eventData = [NSArray arrayWithObjects:serviceN , eventN , nil ];        
-        NSArray *eventParam= [NSArray arrayWithObjects:srcIdN, valN , nil ];        
-        NSString *eventMsg = [self genEventMsgWith:eventData param:eventParam];
-        
-        const char *eventMsgCstr = [eventMsg UTF8String];        
-        if( send(connectionSocket , eventMsgCstr , eventMsg.length , 0) == -1 )perror( "send" );
-    }
-    return YES;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(NSString*) genEventMsgWith:(NSArray*)data param:(NSArray*)info
-{
-    NSString * spacer = [NSString stringWithUTF8String:":"];
-    NSString * seperator = [NSString stringWithUTF8String:"|"];
-
-    NSString *eventMsg = @"";
-
-    //put in the data
-    for( int iData = 0 ; iData < data.count ; iData++)
-    {
-        NSNumber *curData = [ data objectAtIndex: iData ];
-        NSString *curDataString = [curData stringValue];
-        
-        eventMsg = [eventMsg stringByAppendingString:curDataString];
-        eventMsg = [eventMsg stringByAppendingString:spacer];
-    }
-    
-    //put in the parameters
-    for( int iInfo = 0 ; iInfo < info.count ; iInfo++)
-    {
-        NSNumber *curInfo = [ info objectAtIndex: iInfo ];
-        NSString *curInfoString = [curInfo stringValue];
-        
-        eventMsg = [eventMsg stringByAppendingString:curInfoString];
-        eventMsg = [eventMsg stringByAppendingString:spacer];
-    }
-    eventMsg = [eventMsg stringByAppendingString:seperator];
-    
-    int eventMsgLen = eventMsg.length;
-    NSString *eventLenS = [ NSString stringWithFormat:@"%d" , eventMsgLen];
-    eventMsgLen = eventMsgLen + eventLenS.length;
-    eventLenS = [ NSString stringWithFormat:@"%d" , eventMsgLen];
-
-    eventLenS = [eventLenS stringByAppendingString:spacer];
-    eventLenS = [eventLenS stringByAppendingString:eventMsg];
-    
-    return eventLenS;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
 -(void) sendToServer:(NSString*) msg 
 {
-    if( debugClient ) NSLog( @"%@" , msg );
+    const char *msgCstr = [msg UTF8String];        
+    if( send(connectionSocket , msgCstr , msg.length , 0) == -1 )perror( "send" );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

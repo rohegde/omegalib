@@ -28,7 +28,7 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClient*)tcpClient
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClientOmega*)tcpClient
 {
     self = [super initWithFrame:frame name:theName bounds:theBounds withTouch:touch withMultiTouch:mTouch connection:tcpClient ];
     if (self) 

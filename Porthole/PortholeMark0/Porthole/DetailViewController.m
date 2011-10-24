@@ -43,6 +43,18 @@
 #pragma mark - Managing the detail item
 #
 #
+- (void)sendMsg:(NSString*)msg from:(FreeInteractionAreaView *)requestor
+{
+	if (requestor == self.FIA) {
+        NSLog(@"This is the msg: %@" , msg );
+	}
+}
+
+#
+#
+#pragma mark - Managing the detail item
+#
+#
 
 - (void)setDetailItem:(id)newDetailItem
 {
@@ -76,8 +88,10 @@
     CGRect FIABounds = CGRectMake( 0 , curHeight , screenW , screenH * FIAHeight );
     FIA = [ [FreeInteractionAreaView alloc] initWithFrame:FIABounds name:@"FIA" bounds:FIABounds withTouch:YES withMultiTouch:YES connection:self.connection];
     [FIA setDebugTouch:debugTouch];
-    curHeight = curHeight + screenH * FIAHeight;
     [FIA setBackgroundColor:[UIColor grayColor]];
+    FIA.delegate = self;
+    curHeight = curHeight + screenH * FIAHeight;
+
     
     CGRect CUABounds = CGRectMake( 0 , curHeight, screenW, screenH * CUAHeight );
     CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" bounds:CUABounds withTouch:YES withMultiTouch:NO connection:self.connection];
@@ -281,7 +295,7 @@
 //
 -(void) setupConnectionToServer
 {
-    TCPClient *newConnect = [ [TCPClient alloc] initWithFrame:[[UIScreen mainScreen] bounds ]];
+    TCPClientOmega *newConnect = [ [TCPClientOmega alloc] initWithFrame:[[UIScreen mainScreen] bounds ]];
     self.connection = newConnect;
     [newConnect release];
 }

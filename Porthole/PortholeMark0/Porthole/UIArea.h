@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TCPClient.h"
+#import "TCPClientOmega.h"
 
 @interface UIArea : UIView
 {
@@ -19,7 +19,7 @@
     BOOL debugTouch;
     
     BOOL connected;
-    TCPClient *clientConnection;
+    TCPClientOmega *clientConnection;
 }
 
 @property (strong) NSString* myName;
@@ -30,11 +30,11 @@
 @property (assign) BOOL debugTouch;
 
 @property (assign) BOOL connected;
-@property (strong) TCPClient *clientConnection;
+@property (strong) TCPClientOmega *clientConnection;
 
 
 
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClient*)tcpClient;
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClientOmega*)tcpClient;
 -(BOOL) within: (int)xLoc and:(int)yLoc;
 -(void) clearMarkerLoc;
 -(void) markerLocAddOne:(CGPoint) marker;

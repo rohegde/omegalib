@@ -274,9 +274,9 @@
 		2BF7FBC71455F36900942695 /* TCPClientOmega */ = {
 			isa = PBXGroup;
 			children = (
-				2BF7FBB31455DA3400942695 /* OmegaProtocol.h */,
 				2BF7FBC41455F36600942695 /* TCPClientOmega.h */,
 				2BF7FBC51455F36600942695 /* TCPClientOmega.m */,
+				2BF7FBB31455DA3400942695 /* OmegaProtocol.h */,
 			);
 			name = TCPClientOmega;
 			sourceTree = "<group>";
