@@ -124,7 +124,7 @@ public class Touches{
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class InputServiceScript : MonoBehaviour {
-	enum ServiceType { Pointer, Mocap, Keyboard, Controller }; 
+	enum ServiceType { Pointer, Mocap, Keyboard, Controller, UI, Generic, NeuroSky }; 
 	
     private static UdpClient udpClient;
     private static Thread listenerThread;
@@ -335,7 +335,7 @@ public class InputServiceScript : MonoBehaviour {
 				foreach (GameObject eventObj in eventObjects) {
 					eventObj.BroadcastMessage("UpdateControllerData",words,SendMessageOptions.DontRequireReceiver);
 				}
-			}  else if( inputType == (int)ServiceType.Mocap ){
+			} else if( inputType == (int)ServiceType.Mocap ){
 				//Debug.Log("Mocap: " + dGram);
 
 				GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
@@ -344,6 +344,13 @@ public class InputServiceScript : MonoBehaviour {
 				}
 				//GameObject.FindGameObjectWithTag("OmegaListener").GetComponent<MocapScript>().UpdateMocapPosition(ID,xPos,yPos,zPos);
 				//ProcessMocapEvent(xPos,yPos,zPos);
+			} else if( inputType == (int)ServiceType.NeuroSky ){
+				//Debug.Log("NeuroSky: " + dGram);
+
+				GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
+				foreach (GameObject touchObj in touchObjects) {
+					touchObj.BroadcastMessage("UpdateNeuroSky",words,SendMessageOptions.DontRequireReceiver);
+				}
 			}
         }
 		else
