@@ -285,6 +285,16 @@ void on_state_change (wiimote			  &remote,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void DirectXInputService::setup(Setting& settings)
+{
+	myUpdateInterval = 0.00f;
+	if(settings.exists("updateInterval"))
+	{
+		myUpdateInterval = settings["updateInterval"];
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DirectXInputService::initialize() 
 {
 	printf("DirectXInputService: Initialize\n");
@@ -321,8 +331,8 @@ void DirectXInputService::initialize()
 		printf("DirectXInputService: Wiimote Connected.\n");
 		nConnectedWiimotes++;
 
-		// Set all LEDs on
-		remote.SetLEDs(0x0f);
+		// Set all LEDs
+		remote.SetLEDs(0x01);
 	}
 
 	if( nControllers == 0 ){
@@ -381,8 +391,14 @@ void DirectXInputService::checkForNewControllers()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DirectXInputService::poll() 
 {
+	static float lastt;
+	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
+	if(curt - lastt <= myUpdateInterval)
+	{
+		return;
+	}
+	lastt = curt;
 	//printf("DirectXInputService: Poll.\n");
-
 	if( nConnectedWiimotes > 0 ){
 		// Update the Wiimote state (this is essential for polling data)
 		remote.RefreshState();
@@ -463,9 +479,9 @@ void DirectXInputService::poll()
 		}
 
 		if( remote.Button.Home() ){
-			//remote.Disconnect();
-			//nConnectedWiimotes--;
-			//nControllers--;
+			remote.Disconnect();
+			nConnectedWiimotes--;
+			nControllers--;
 		}
 	}
 

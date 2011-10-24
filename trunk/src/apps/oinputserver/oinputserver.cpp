@@ -404,7 +404,7 @@ SOCKET OInputServer::startListening(){
 	} else {
 		// Gets the clientInfo and extracts the IP address
 		clientAddress = inet_ntoa(clientInfo.sin_addr);
-		printf("NetService: Client '%s' Accepted.\n", clientAddress);
+		printf("OInputServer: Client '%s' Accepted.\n", clientAddress);
 	}
 	
 	// Wait for client handshake
@@ -413,10 +413,10 @@ SOCKET OInputServer::startListening(){
 	// sent, resulting in the 'recv failed' error that is commented out.
 	bool gotData = false;
 	float timer = 0.0f;
-	float timeout = 5.0f; // seconds
+	float timeout = 500.0f; // milliseconds
 	time_t startTime = time (NULL);
 
-	printf("NetService: Waiting for client handshake\n");
+	printf("OInputServer: Waiting for client handshake\n");
 	do {
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
@@ -445,18 +445,18 @@ SOCKET OInputServer::startListening(){
 			if( handshake.find(inMessage) ){
 				// Get data port number
 				dataPort = atoi(portCStr);
-				printf("NetService: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
+				printf("OInputServer: '%s' requests data to be sent on port '%d'\n", clientAddress, dataPort);
 				createClient( clientAddress, dataPort );
 			}
 			gotData = true;
 			delete inMessage;
 			delete portCStr;
 		} else if (iResult == 0)
-			printf("NetService: Connection closing...\n");
+			printf("OInputServer: Connection closing...\n");
 		else {
 			timer = time (NULL);
 			if( timer > startTime + timeout ){
-				printf("NetService: Handshake timed out\n");
+				printf("OInputServer: Handshake timed out\n");
 				break;
 			}
 			//printf("Service: recv failed: %d\n", WSAGetLastError());
@@ -564,7 +564,7 @@ void main(int argc, char** argv)
 	bool testStream = false;
 	char* testPacket;
 
-	bool printOutput = true;
+	bool printOutput = false;
 
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){
