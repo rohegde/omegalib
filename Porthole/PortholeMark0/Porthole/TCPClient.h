@@ -32,20 +32,20 @@
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 
-typedef enum { CLINET_INIT , CLINET_CONNECTED , CLINET_GUIRECVED } OVClientState;
+typedef enum { CLINET_INIT , CLINET_CONNECTED , CLINET_GUIRECVED } TCPClientState;
 typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
 
 @class TCPClient;
  
 @interface TCPClient : UIView
 {
-    OVClientState myState;
+    TCPClientState myState;
     int connectionSocket;
     BOOL debugClient;
     
 }
 
-@property ( assign ) OVClientState myState;
+@property ( assign ) TCPClientState myState;
 
 -(void) closeSocketToServer;
 
