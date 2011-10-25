@@ -25,30 +25,29 @@
 @synthesize CUA;
 @synthesize connection;
 
-- (void)dealloc
-{
-    [_detailItem release];
-    [_detailDescriptionLabel release];
-    [_masterPopoverController release];
-    
-    [ FIA release ];
-    [ CUA release ];
-    [ connection release];
-    
-    [super dealloc];
-}
 
 #
 #
 #pragma mark - Managing the detail item
 #
 #
-- (void)sendMsg:(NSString*)msg from:(FreeInteractionAreaView *)requestor
+
+- (void) sendMsgAsService:(int)serviceType event:(int)eventType param:(NSArray*)eventParam from:(FreeInteractionAreaView *)requestor
 {
-	if (requestor == self.FIA) {
-        NSLog(@"This is the msg: %@" , msg );
-	}
+	if (requestor == self.FIA) 
+    {
+        //If the app is suppose to connect to a server, send the TCP Msg 
+        if( connectServer )[self.connection sendEventService:serviceType event:eventType param:eventParam];
+	}    
 }
+- (void) sendMsgAsService:(int)service event:(int)event sid:(int)srcId value:(float)val from:(FreeInteractionAreaView *)requestor
+{
+	if (requestor == self.FIA) 
+    {
+        //If the app is suppose to connect to a server, send the TCP Msg 
+        if( connectServer )[self.connection sendEventService:service event:event sid:srcId value:val];        
+	}    
+}    
 
 #
 #
@@ -86,7 +85,7 @@
     float curHeight = 0;
     
     CGRect FIABounds = CGRectMake( 0 , curHeight , screenW , screenH * FIAHeight );
-    FIA = [ [FreeInteractionAreaView alloc] initWithFrame:FIABounds name:@"FIA" bounds:FIABounds withTouch:YES withMultiTouch:YES connection:self.connection];
+    FIA = [ [FreeInteractionAreaView alloc] initWithFrame:FIABounds name:@"FIA" bounds:FIABounds withTouch:YES withMultiTouch:YES];
     [FIA setDebugTouch:debugTouch];
     [FIA setBackgroundColor:[UIColor grayColor]];
     FIA.delegate = self;
@@ -94,7 +93,7 @@
 
     
     CGRect CUABounds = CGRectMake( 0 , curHeight, screenW, screenH * CUAHeight );
-    CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" bounds:CUABounds withTouch:YES withMultiTouch:NO connection:self.connection];
+    CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" bounds:CUABounds withTouch:YES withMultiTouch:NO];
     curHeight = curHeight + screenH * CUAHeight;
     [CUA setBackgroundColor:[UIColor purpleColor]];
     
@@ -297,7 +296,6 @@
 {
     TCPClientOmega *newConnect = [ [TCPClientOmega alloc] initWithFrame:[[UIScreen mainScreen] bounds ]];
     self.connection = newConnect;
-    [newConnect release];
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,7 +314,6 @@
      */
     recognizer = [ [UIPinchGestureRecognizer alloc ] initWithTarget:self.FIA action:@selector(handlePinch:) ];
     [self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
     /*
      Create a rotation gesture recognizer.
@@ -324,7 +321,6 @@
      */
 	recognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self.FIA  action:@selector(handleRotation:)];
 	[self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
     /*
      Create a pan gesture recognizer.
@@ -334,7 +330,6 @@
     [ (UIPanGestureRecognizer*) recognizer setMinimumNumberOfTouches:3];
     [ (UIPanGestureRecognizer*) recognizer setMaximumNumberOfTouches:3];
 	[self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
     // -----------------------------
     // One finger, two taps
@@ -343,7 +338,6 @@
     [(UITapGestureRecognizer*) recognizer setNumberOfTapsRequired:2];
     [(UITapGestureRecognizer*) recognizer setNumberOfTouchesRequired:1];
     [self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
 	// -----------------------------
 	// Swipe down
@@ -352,7 +346,6 @@
     [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionDown];
     [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
     [self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
     // -----------------------------
     // Swipe up
@@ -361,7 +354,6 @@
     [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
     [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
     [self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
 	// -----------------------------
 	// Swipe left
@@ -370,7 +362,6 @@
     [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
     [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
     [self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
     // -----------------------------
 	// Swipe right
@@ -379,7 +370,6 @@
     [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
     [self.FIA addGestureRecognizer:recognizer];
-    [recognizer release];
     
 }
 //----------------------------------------------------------------------------------------------------

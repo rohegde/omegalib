@@ -16,10 +16,6 @@
 @synthesize _innerCircleRect;
 @synthesize _outerCircleRect;
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 
 

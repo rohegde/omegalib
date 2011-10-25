@@ -10,13 +10,15 @@
 #import "UIArea.h"
 #import "UIImage+Resize.h"
 #import "PulseCircleView.h"
+#import "OmegaProtocol.h"
 
 typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 
 @class FreeInteractionAreaView;
 
 @protocol FreeInteractionAreaViewDelegate
-- (void)sendMsg:(NSString*)msg from:(FreeInteractionAreaView *)requestor;
+- (void) sendMsgAsService:(int)serviceType event:(int)eventType param:(NSArray*)eventParam from:(FreeInteractionAreaView *)requestor;
+- (void) sendMsgAsService:(int)service event:(int)event sid:(int)srcId value:(float)val from:(FreeInteractionAreaView *)requestor;
 @end
 
 
@@ -29,14 +31,14 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     
     PulseCircleView *markerView;
 
-    id <FreeInteractionAreaViewDelegate> delegate;
+    id <FreeInteractionAreaViewDelegate> __unsafe_unretained delegate;
 
 }
 
 @property (strong) PulseCircleView *markerView;
 @property (assign) CGFloat lastScale;
 
-@property (assign) id <FreeInteractionAreaViewDelegate> delegate;
+@property (unsafe_unretained) id <FreeInteractionAreaViewDelegate> delegate;
 
 -(void) makeLabelWithString:(NSString*)msg;
 

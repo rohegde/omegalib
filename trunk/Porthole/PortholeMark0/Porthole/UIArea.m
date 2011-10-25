@@ -17,20 +17,13 @@
 @synthesize multiTouchAble;
 @synthesize debugTouch;
 
-@synthesize connected;
-@synthesize clientConnection;
+//@synthesize connected;
+//@synthesize clientConnection;
 
-- (void)dealloc
-{
-    [myName release];
-    [markerLoc release];
-    [clientConnection release];
-    [super dealloc];
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClientOmega*)tcpClient
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
 {
     self = [super initWithFrame:frame];
     if (self) 
@@ -41,18 +34,6 @@
         [self setTouchAble:touch];
         [self setMultiTouchAble:mTouch];
         [self clearMarkerLoc];
-        
-        if( tcpClient != nil)
-        {
-            [self setClientConnection:tcpClient];
-            connected = YES;             
-        }
-        else
-        {
-            [self setClientConnection:nil];
-            connected = NO;             
-            
-        }
     }
     
     return self;
