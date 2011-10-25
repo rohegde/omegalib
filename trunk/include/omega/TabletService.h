@@ -50,6 +50,7 @@ namespace omega {
 
 	private:
 		TabletServer* myServer;
+        void genSimpleEvent( Event::Type evtType , Service::ServiceType servType , float x , float y);
 	};
 }; // namespace omega
 
