@@ -21,13 +21,6 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (void)dealloc
-{
-    [overlayView release];
-    [myLabel release];
-    [markerView release];
-    [super dealloc];
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -47,9 +40,9 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClientOmega*)tcpClient
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
 {
-    self = [super initWithFrame:frame name:theName bounds:theBounds withTouch:touch withMultiTouch:mTouch connection:tcpClient ];
+    self = [super initWithFrame:frame name:theName bounds:theBounds withTouch:touch withMultiTouch:mTouch];
     if (self) 
     {
         // Initialization code
@@ -57,10 +50,7 @@
         
         UIView *background = [[UIView alloc] initWithFrame:theBounds];
         [self addSubview:background];     
-        [background release];
         
-        self.clientConnection = tcpClient;
-
         [self setupLabel];
         [self setupOverlay];
 
@@ -95,7 +85,6 @@
     label.backgroundColor = [UIColor clearColor];
     [self addSubview:label];
     myLabel = label; 
-    [label release];
 
 }
 
@@ -129,7 +118,6 @@
     
     [self.markerView setNeedsDisplay];
     [self addSubview:markerView];     
-    [newMarker release];
     
 }
 
@@ -264,8 +252,8 @@
          NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
          
          //Send TCP msg 
-         if( self.clientConnection != nil)[self.clientConnection sendEventService:Pointer event:Down param:param];   
-         
+         [self.delegate sendMsgAsService:Pointer event:Down param:param from:self];
+
          if( myState == INIT ) myState = CONNECTED;
          else if( myState == CONNECTED ) myState = NEW_MODEL;
          else if( myState == NEW_MODEL ) myState = SAME_MODEL;
@@ -315,8 +303,7 @@
          NSArray *param = [NSArray arrayWithObjects:localX , localY , nil];             
 
          //Send TCP msg 
-         if( self.clientConnection != nil)[self.clientConnection sendEventService:Pointer event:Move param:param];   
-         
+         [self.delegate sendMsgAsService:Pointer event:Move param:param from:self];
      }  
      [self setNeedsDisplay];
  }
@@ -357,7 +344,7 @@
         NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
 
         //Send TCP msg
-        if( self.clientConnection != nil)[self.clientConnection sendEventService:Pointer event:Up param:param];   
+        [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
 
         //Clear the touches in the markLoc array
         [self wipeMarkers];
@@ -434,8 +421,7 @@
     NSArray *param = [NSArray arrayWithArray:paramMutable];
 
     //Send TCP msg
-    if( self.clientConnection != nil)[self.clientConnection sendEventService:Pointer event:Zoom param:param];   
-    [self.delegate sendMsg:@"test" from:self];
+    [self.delegate sendMsgAsService:Pointer event:Zoom param:param from:self];
     
     [self setNeedsDisplay];
     

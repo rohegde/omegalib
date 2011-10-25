@@ -17,10 +17,6 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (void)dealloc
-{
-    [myLabel release];
-}
 #
 #
 #pragma mark View Setup
@@ -28,9 +24,9 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch connection:(TCPClientOmega*)tcpClient
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
 {
-    self = [super initWithFrame:frame name:theName bounds:theBounds withTouch:touch withMultiTouch:mTouch connection:tcpClient ];
+    self = [super initWithFrame:frame name:theName bounds:theBounds withTouch:touch withMultiTouch:mTouch];
     if (self) 
     {
         // Initialization code
@@ -38,9 +34,6 @@
         
         UIView *background = [[UIView alloc] initWithFrame:theBounds];
         [self addSubview:background];     
-        [background release];
-        
-        self.clientConnection = tcpClient;
         
         [self setupLabel];
     }
@@ -66,7 +59,6 @@
     label.backgroundColor = [UIColor clearColor];
     [self addSubview:label];
     myLabel = label; 
-    [label release];
     
 }
 
