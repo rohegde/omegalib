@@ -128,6 +128,7 @@ namespace oengine {
 
 	private:
 		void drawBoundingBox();
+		void updateBoundingBox();
 
 	private:
 		EngineServer* myServer;

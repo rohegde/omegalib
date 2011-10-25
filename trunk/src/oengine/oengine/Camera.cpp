@@ -42,6 +42,7 @@ Camera::Camera():
 	myNavigationPitchMultiplier(0.002f),
 	myNavigationMoveFlags(0),
 	myPosition(Vector3f::Zero()),
+	myScale(1.0),
 	myOrientation(Quaternion::Identity())
 {
 	myYaw = 0;
@@ -61,10 +62,14 @@ void Camera::handleEvent(const Event& evt)
 			if(evt.isKeyUp('d')) myNavigationMoveFlags &= ~MoveRight; 
 			if(evt.isKeyDown('a')) myNavigationMoveFlags |= MoveLeft;
 			if(evt.isKeyUp('a')) myNavigationMoveFlags &= ~MoveLeft;
-			if(evt.isKeyDown('w')) myNavigationMoveFlags |= MoveUp;
-			if(evt.isKeyUp('w')) myNavigationMoveFlags &= !MoveUp;
-			if(evt.isKeyDown('s')) myNavigationMoveFlags |= MoveDown;
-			if(evt.isKeyUp('s')) myNavigationMoveFlags &= ~MoveDown;
+			if(evt.isKeyDown('w')) myNavigationMoveFlags |= MoveForward;
+			if(evt.isKeyUp('w')) myNavigationMoveFlags &= !MoveForward;
+			if(evt.isKeyDown('s')) myNavigationMoveFlags |= MoveBackward;
+			if(evt.isKeyUp('s')) myNavigationMoveFlags &= ~MoveBackward;
+			if(evt.isKeyDown('r')) myNavigationMoveFlags |= MoveUp;
+			if(evt.isKeyUp('r')) myNavigationMoveFlags &= ~MoveUp;
+			if(evt.isKeyDown('f')) myNavigationMoveFlags |= MoveDown;
+			if(evt.isKeyUp('f')) myNavigationMoveFlags &= ~MoveDown;
 			if(evt.isKeyDown('q')) myRotating = !myRotating;
 		}
 		else if(evt.getServiceType() == Service::Pointer)
@@ -96,13 +101,15 @@ void Camera::update(const UpdateContext& context)
 		// Update the observer position offset using current speed, orientation and dt.
 		if(myNavigationMoveFlags & MoveRight) speed += Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
 		if(myNavigationMoveFlags & MoveLeft) speed += Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
-		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, 0, myNavigationSpeed);
-		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, 0, -myNavigationSpeed);
+		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, myNavigationSpeed, 0);
+		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, -myNavigationSpeed, 0);
+		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, myNavigationSpeed);
+		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, -myNavigationSpeed);
 
 		myOrientation =  AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(Math::Pi, Vector3f::UnitZ());
 
 		Vector3f ns = myOrientation * speed;
-		ofmsg("|Camera speed vector: %1%", %ns);
+		//ofmsg("|Camera speed vector: %1%", %ns);
 
 		myPosition += ns * context.dt ;
 

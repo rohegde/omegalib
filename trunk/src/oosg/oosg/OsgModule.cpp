@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "oosg/OsgModule.h"
 #include "oosg/OsgRenderPass.h"
+#include "oosg/OsgSceneObject.h"
 
 #include <osgUtil/Optimizer>
 #include <osgUtil/UpdateVisitor>
@@ -40,6 +41,7 @@ OsgModule::OsgModule():
 	myRepresentationSize(0.4)
 {
 	myRootNode = NULL;
+	myRootSceneObject = NULL;
     myFrameStamp = new osg::FrameStamp;
     myUpdateVisitor = new osgUtil::UpdateVisitor;
     myUpdateVisitor->setFrameStamp( myFrameStamp );
@@ -60,56 +62,19 @@ OsgModule::~OsgModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//void OsgModule::load(const String& filename)
-//{
-//	myModel = NULL;
-//	DataManager* dm = SystemManager::instance()->getDataManager();
-//	DataInfo cfgInfo = dm->getInfo(filename);
-//	if(!cfgInfo.isNull())
-//	{
-//		myModel = osgDB::readNodeFile(cfgInfo.path);
-//		if ( myModel == NULL) 
-//		{
-//			oferror("Failed to load model: %1%", %filename);
-//		}
-//
-//		//Optimize scenegraph
-//		osgUtil::Optimizer optOSGFile;
-//		optOSGFile.optimize(myModel);
-//	}
-//	else
-//	{
-//		oferror("File not found: %1%", %filename);
-//	}
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//void OsgEntity::addToScene(SceneNode* node)
-//{
-//	oassert(node);
-//
-//	OsgRenderable* renderable;
-//	BoundingSphere* bsphere = onew(BoundingSphere)();
-//	bsphere->setVisible(false);
-//	bsphere->setDrawOnSelected(true);
-//	node->addRenderable(bsphere);
-//
-//	renderable = onew(OsgRenderable)(this);
-//	node->addRenderable(renderable);
-//
-//	node->update(true, false);
-//	const Sphere& bs = node->getBoundingSphere();
-//
-//	float scale = myRepresentationSize / bs.getRadius();
-//	node->scale(scale, scale, scale);
-//}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgModule::initialize(EngineServer* server)
 {
 	myServer = server;
 	myServer->registerRenderPassClass<OsgRenderPass>();
 	myServer->addRenderPass("OsgRenderPass", this, true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgModule::setRootNode(osg::Node* value) 
+{ 
+	myRootNode = value; 
+	myRootSceneObject = new OsgSceneObject(myRootNode);
+	myServer->getScene(0)->addObject(myRootSceneObject);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

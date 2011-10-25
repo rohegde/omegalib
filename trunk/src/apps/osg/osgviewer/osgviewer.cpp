@@ -24,66 +24,90 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OSGVIEWER_H__
-#define __OSGVIEWER_H__
+#include <osgUtil/Optimizer>
+#include <osgDB/ReadFile>
 
-#include "omega.h"
-#include "omega/scene.h"
-
-#include "oosg/OsgEntity.h"
-#include "oosg/OsgRenderPass.h"
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <oengine.h>
+#include <oosg.h>
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
+using namespace oengine;
 using namespace oosg;
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewerServer: public ApplicationServer
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class OsgViewer: public EngineServer
 {
 public:
-	OsgViewerServer(Application* app): ApplicationServer(app) {}
-	virtual ~OsgViewerServer() {}
-
+	OsgViewer(Application* app): EngineServer(app) {}
 	virtual void initialize();
-	virtual void finalize();
 	virtual void update(const UpdateContext& context);
-	virtual void handleEvent(const Event& evt);
-
-	OsgEntity* getEntity() { return myEntity; }
 
 private:
-	OsgEntity* myEntity;
+	OsgModule* myOsg;
+	SceneNode* mySceneNode;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewerClient: public EngineClient
+void OsgViewer::initialize()
 {
-public:
-	OsgViewerClient(ApplicationServer* server): 
-	  EngineClient(server),
-	  myServer((OsgViewerServer*)server) {}
+	EngineServer::initialize();
+	Config* cfg = getSystemManager()->getAppConfig();
 
-	virtual void initialize();
-	virtual void finalize();
+	myOsg = new OsgModule();
+	myOsg->initialize(this);
 
-	virtual void handleEvent(const Event& evt);
-    void draw( const DrawContext& context);
-	void update(const UpdateContext& context);
+	// Load osg object
+	if(cfg->exists("config/scene"))
+	{
+		Setting& sscene = cfg->lookup("config/scene");
+		String filename = String((const char*)sscene["filename"]);
 
-private:
-	OsgRenderPass* myRenderPass;
-	OsgViewerServer* myServer;
-	SceneNode* myEntityNode;
-	Actor* myCurrentInteractor;
-};
+		DataManager* dm = SystemManager::instance()->getDataManager();
+		DataInfo cfgInfo = dm->getInfo(filename);
+		if(!cfgInfo.isNull())
+		{
+			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
+			if (node == NULL) 
+			{
+				ofwarn("!Failed to load model: %1%", %filename);
+			}
+			else
+			{
+				//Optimize scenegraph
+				osgUtil::Optimizer optOSGFile;
+				optOSGFile.optimize(node);
+
+				myOsg->setRootNode(node);
+				getDefaultCamera()->focusOn(getScene(0), 0.2f);
+			}
+		}
+		else
+		{
+			ofwarn("!File not found: %1%", %filename);
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewerApplication: public Application
+void OsgViewer::update(const UpdateContext& context) 
 {
-public:
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new OsgViewerClient(server); }
-	virtual ApplicationServer* createServer() { return new OsgViewerServer(this); }
-};
+	EngineServer::update(context);
+	myOsg->update(context);
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Application entry point
+int main(int argc, char** argv)
+{
+	EngineApplication<OsgViewer> app;
+
+	// Read config file name from command line or use default one.
+	const char* cfgName = "osgviewer.cfg";
+	if(argc == 2) cfgName = argv[1];
+
+	omain(app, cfgName, "osgviewer.log", new FilesystemDataSource(OMEGA_DATA_PATH));
+
+	return 0;
+}

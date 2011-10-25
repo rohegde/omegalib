@@ -42,6 +42,8 @@ namespace oosg
 	using namespace omega;
 	using namespace oengine;
 
+	class OsgSceneObject;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OOSG_API OsgModule
 	{
@@ -59,12 +61,13 @@ namespace oosg
 
 		osg::FrameStamp* getFrameStamp() { return myFrameStamp; }
 		osg::Node* getRootNode() { return myRootNode; }
-		void setRootNode(osg::Node* value) { myRootNode = value; }
+		void setRootNode(osg::Node* value);
 
 	private:
 		EngineServer* myServer;
 		float myRepresentationSize;
 
+		OsgSceneObject* myRootSceneObject;
 		osg::Node* myRootNode;
 		osg::FrameStamp* myFrameStamp;
 		osg::NodeVisitor* myUpdateVisitor;

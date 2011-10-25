@@ -119,7 +119,6 @@ public:
 private:
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
-	DefaultMouseInteractor* myMouseInteractor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,9 +131,7 @@ void OsgShape::initialize()
 
 	myOsg->setRootNode(createShapes());
 
-	//myMouseInteractor = new DefaultMouseInteractor();
-	//myMouseInteractor->setSceneNode(mySceneNode);
-	//addActor(myMouseInteractor);
+	getDefaultCamera()->focusOn(getScene(0), 0.2f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,10 +148,6 @@ int main(int argc, char** argv)
 	EngineApplication<OsgShape> app;
 	const char* cfgName = "system/desktop.cfg";
 	if(argc == 2) cfgName = argv[1];
-	omain(
-		app, 
-		cfgName, 
-		"osgshape.log", 
-		new FilesystemDataSource(OMEGA_DATA_PATH));
+	omain(app, cfgName, "osgshape.log", new FilesystemDataSource(OMEGA_DATA_PATH));
 	return 0;
 }

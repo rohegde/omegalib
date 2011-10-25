@@ -81,7 +81,8 @@ bool SceneNode::isSelected()
 void SceneNode::addObject(SceneObject* o) 
 { 
 	myObjects.push_back(o); 
-	needUpdate();
+	//needUpdate();
+	updateBoundingBox();
 	// If the object has not been initialized yet, do it now.
 	if(!o->isInitialized()) o->initialize(myServer);
 }
@@ -96,7 +97,8 @@ int SceneNode::getNumObjects()
 void SceneNode::removeObject(SceneObject* o) 
 {
 	myObjects.remove(o);
-	needUpdate();
+	updateBoundingBox();
+	//needUpdate();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +135,12 @@ void SceneNode::update(bool updateChildren, bool parentHasChanged)
 
 	Node::update(updateChildren, parentHasChanged);
 
+	updateBoundingBox();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneNode::updateBoundingBox()
+{
 	// Reset bounding box.
 	myBBox.setNull();
 

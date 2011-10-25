@@ -43,7 +43,7 @@ OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node)
 	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
 	Vector3f radius(bs.radius(), bs.radius(), bs.radius());
 
-	ofmsg("OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+	ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
 
 	myBBox.setExtents(center - radius, center + radius);
 }

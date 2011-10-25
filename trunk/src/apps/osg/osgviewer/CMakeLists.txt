@@ -33,15 +33,10 @@ set(SRCS
 		osgviewer.cpp)
     
 ###################################################################################################
-# Headers
-set(HEADERS 
-		osgviewer.h) 
-        
-###################################################################################################
 # Setup compile info
-add_executable(osgviewer ${SRCS} ${HEADERS})
+add_executable(osgviewer ${SRCS})
 set_target_properties(osgviewer PROPERTIES FOLDER apps)
 target_link_libraries(osgviewer
 	omega 
-	outils
+	oengine
     oosg)
