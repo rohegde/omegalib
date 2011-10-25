@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "oengine/Console.h"
 #include "oengine/Font.h"
+#include "omega/SystemManager.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -39,15 +40,29 @@ Console::Console():
 	myLines(8),
 	myBackgroundColor(Color(0, 0, 0, 0.6f))
 {
+	myConsoleColors['!'] = Color(0.8f, 0.8f, 0.1f);
+	myConsoleColors['*'] = Color(1.0f, 0.2f, 0.1f);
+	myConsoleColors['^'] = Color(0.8f, 0.8f, 0.8f);
+	myConsoleColors['?'] = Color(0.2f, 1.0f, 0.2f);
+	myConsoleColors['@'] = Color(0.3f, 0.3f, 1.0f);
+
+	myHeadline = SystemManager::instance()->getApplication()->getName();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Console::addLine(const String& line)
 {
-	myLineBuffer.push_back(line);
-	while(myLineBuffer.size() > myLines)
+	if(line[0] == '@')
 	{
-		myLineBuffer.pop_front();
+		myHeadline = line.substr(1);
+	}
+	else
+	{
+		myLineBuffer.push_back(line);
+		while(myLineBuffer.size() > myLines)
+		{
+			myLineBuffer.pop_front();
+		}
 	}
 }
 
@@ -70,17 +85,30 @@ void ConsoleRenderable::draw(RenderState* state)
 
 	float x = 0; 
 	float y = 0;
-	float lineHeight = fi.size + 2;
+	float lineHeight = fi.size + 4;
 	float lineWidth = state->context->channel->canvasSize->x(); 
 
-	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * myOwner->myLines), myOwner->myBackgroundColor);
+	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * (myOwner->myLines + 1)), myOwner->myBackgroundColor);
 
 	if(myFont != NULL)
 	{
+		getRenderer()->drawRectOutline(Vector2f(-1, 0), Vector2f(lineWidth + 2, lineHeight - 2), Color::Gray);
+		glColor4f(0.3f, 1.0f, 0.3f, 1);
+		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+		y += lineHeight;
+
 		foreach(String& s, myOwner->myLineBuffer)
 		{
-			glColor4f(1, 1, 1, 1);
-			getRenderer()->drawText(s, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+			if(myOwner->myConsoleColors.find(s[0]) != myOwner->myConsoleColors.end())
+			{
+				glColor4fv(myOwner->myConsoleColors[s[0]].data());
+				getRenderer()->drawText(s.substr(1), myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+			}
+			else
+			{
+				glColor4f(1, 1, 1, 1);
+				getRenderer()->drawText(s, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+			}
 			y += lineHeight;
 		}
 	}

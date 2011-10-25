@@ -106,7 +106,6 @@ private:
 
 	// Interactors.
 	Actor* myInteractor;
-	NavigationInteractor* myNavigationInteractor;
 
 	Entity* mySelectedEntity;
 

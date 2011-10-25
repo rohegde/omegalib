@@ -230,8 +230,6 @@ void Nightfield::initialize()
 
 	myMouseInteractor = new DefaultMouseInteractor();
 	addActor(myMouseInteractor);
-	myNavigationInteractor = new NavigationInteractor();
-	addActor(myNavigationInteractor);
 
 	// Create a reference box around the scene.
 	if(cfg->exists("config/referenceBox"))
@@ -354,7 +352,6 @@ void Nightfield::updateSelection(const Ray& ray)
 			}
 			// The selected entity changed.
 			myMouseInteractor->setSceneNode(sn);
-			myNavigationInteractor->setSceneNode(sn);
 			sn->setSelected(true);
 			mySelectedEntity = e;
 		}
@@ -366,7 +363,6 @@ void Nightfield::updateSelection(const Ray& ray)
 			mySelectedEntity->getSceneNode()->setSelected(false);
 			mySelectedEntity = NULL;
 			myMouseInteractor->setSceneNode(NULL);
-			myNavigationInteractor->setSceneNode(NULL);
 		}
 	}
 }

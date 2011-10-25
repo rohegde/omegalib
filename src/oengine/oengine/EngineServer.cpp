@@ -31,10 +31,12 @@
 #include "oengine/TransparentRenderPass.h"
 #include "oengine/UiRenderPass.h"
 #include "oengine/Renderable.h"
-#include "oengine/NavigationInteractor.h"
 #include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
+#include "omega/Observer.h"
 #include "omega/Config.h"
+#include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 
 using namespace omega;
 using namespace oengine;
@@ -68,12 +70,7 @@ void EngineServer::initialize()
 	myDefaultCamera = new Camera();
 	if(cfg->getBoolValue("config/enableCameraNavigation", false))
 	{
-		SceneNode* camNode = new SceneNode(this);
-		myScene[0]->addChild(camNode);
-		myDefaultCamera->setTargetNode(camNode);
-		NavigationInteractor* ni = new NavigationInteractor();
-		ni->setSceneNode(camNode);
-		addActor(ni);
+		myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
 	}
 
 	// Create console.
@@ -204,8 +201,10 @@ void EngineServer::update(const UpdateContext& context)
 		a->update(context);
 	}
 
-	// Update cameras.
+	// Update the default camera and use it to update the default omegalib observer.
 	myDefaultCamera->update(context);
+	Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
+	obs->updateView(myDefaultCamera->getPosition(), myDefaultCamera->getOrientation());
 
 	// Update scene.
 	for(int i = 0; i < MaxScenes; i++)
@@ -222,9 +221,12 @@ void EngineServer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::handleEvent(const Event& evt)
 {
+	myDefaultCamera->handleEvent(evt);
 	if( evt.getServiceType() == Service::Keyboard )
     {
+		// Esc = force exit
         if(evt.getSourceId() == 256) exit(0);
+		// Tab = toggle on-screen console.
 		if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
 		{
 			myConsoleEnabled = !myConsoleEnabled;

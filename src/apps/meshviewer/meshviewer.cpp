@@ -130,20 +130,6 @@ void MeshViewer::loadEntityLibrary()
 			}
 
 			myEntityLibrary.push_back(ed);
-
-			//Texture* leftImage = NULL;
-			//Texture* rightImage = NULL;
-			//if(entitySetting.exists("leftImage") && entitySetting.exists("rightImage"))
-			//{
-			//	String leftImageFilename = entitySetting["leftImage"];
-			//	String rightImageFilename = entitySetting["rightImage"];
-
-			//	leftImage = ImageUtils::createTexture(getTextureManager(), name, leftImageFilename);
-			//	rightImage = ImageUtils::createTexture(getTextureManager(), name, rightImageFilename);
-			//}
-
-			//Entity* e = new Entity(label, getSceneManager(), mesh, leftImage, rightImage);
-			//myEntities.push_back(e);
 		}
 	}
 }
@@ -221,9 +207,6 @@ void MeshViewer::initialize()
 	}
 	
 	addActor(myInteractor);
-    
-	myNavigationInteractor =  new NavigationInteractor();
-	addActor(myNavigationInteractor);
 
     myShowUI = true;
     autoRotate = true;
@@ -279,7 +262,6 @@ void MeshViewer::createEntity(EntityData* ed)
 	//e->getMesh()->setEffect(myColorIdEffect);
 	myEntities.push_back(e);
 	myInteractor->setSceneNode(e->getSceneNode());
-	myNavigationInteractor->setSceneNode(e->getSceneNode());
 	mySelectedEntity = e;
 }
 
@@ -289,7 +271,6 @@ void MeshViewer::destroyEntity(Entity* e)
 	myEntities.remove(e);
 	delete e;
 	myInteractor->setSceneNode(NULL);
-	myNavigationInteractor->setSceneNode(NULL);
 	if(mySelectedEntity == e) mySelectedEntity = NULL;
 }
 
@@ -320,7 +301,6 @@ void MeshViewer::handleEvent(const Event& evt)
 	}
 	else if( evt.getServiceType() == Service::Keyboard )
     {
-        if((char)evt.getSourceId() == 'q') exit(0);
         if((char)evt.getSourceId() == 'e' && evt.getType() == Event::Down) 
         {
 			if(mySelectedEntity != NULL)
@@ -337,15 +317,15 @@ void MeshViewer::handleEvent(const Event& evt)
             autoRotate = !autoRotate;
         }
         //up
-        if((char)evt.getSourceId() == 'z' && evt.getType() == Event::Down) 
-        {
-			deltaScale = 0.1f;
-        }
-        
-        if((char)evt.getSourceId() == 'x' && evt.getType() == Event::Down)  
-        {
-            deltaScale = -0.1f;
-        }
+   //     if((char)evt.getSourceId() == 'z' && evt.getType() == Event::Down) 
+   //     {
+			//deltaScale = 0.1f;
+   //     }
+   //     
+   //     if((char)evt.getSourceId() == 'x' && evt.getType() == Event::Down)  
+   //     {
+   //         deltaScale = -0.1f;
+   //     }
     }
 }
 
@@ -390,7 +370,6 @@ void MeshViewer::updateSelection(const Ray& ray)
 			}
 			// The selected entity changed.
 			myInteractor->setSceneNode(sn);
-			myNavigationInteractor->setSceneNode(sn);
 			sn->setSelected(true);
 			mySelectedEntity = e;
 		}
@@ -402,7 +381,6 @@ void MeshViewer::updateSelection(const Ray& ray)
 			mySelectedEntity->getSceneNode()->setSelected(false);
 			mySelectedEntity = NULL;
 			myInteractor->setSceneNode(NULL);
-			myNavigationInteractor->setSceneNode(NULL);
 		}
 	}
 }

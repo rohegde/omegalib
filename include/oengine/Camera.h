@@ -36,60 +36,97 @@ namespace oengine {
 	class OENGINE_API Camera: public DynamicObject
 	{
 	public:
+		enum NavigationMode { NavDisabled, NavFollow, NavFreeFly };
+		enum MoveFlags { 
+			MoveLeft = 1 << 1,
+			MoveRight = 1 << 2,
+			MoveUp = 1 << 3,
+			MoveDown = 1 << 4};
+	public:
 		Camera();
 
-		const AffineTransform3& getViewTransform();
-		const AffineTransform3& getProjectionTransform();
-		void setProjectionTransform(const AffineTransform3& value);
-		void setViewTransform(const AffineTransform3& value);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
 
-		void updateView(const Vector3f& position, const Quaternion& orientation);
-		void updateProjection(float fov, float aspect, float nearZ, float farZ);
+		const Vector3f& getPosition() { return myPosition; }
+		const Quaternion& getOrientation() { return myOrientation; }
+
+		void setPosition(const Vector3f& value) { myPosition = value; }
+		void getOrientation(const Quaternion& value) { myOrientation = value; }
+
+		//const AffineTransform3& getViewTransform();
+		//const AffineTransform3& getProjectionTransform();
+		//void setProjectionTransform(const AffineTransform3& value);
+		//void setViewTransform(const AffineTransform3& value);
+
+		//void updateView(const Vector3f& position, const Quaternion& orientation);
+		//void updateProjection(float fov, float aspect, float nearZ, float farZ);
 
 		bool getAutoAspect();
 		void setAutoAspect(bool value);
 
+		//! Navigation management
+		//@{
+		void setNavigationMode(NavigationMode value) { myNavigationMode = value; }
+		NavigationMode getNavigationMode() { return myNavigationMode; }
+		//! Set the target node that will be used when in NavFollow navigation mode.
 		void setTargetNode(SceneNode* n) { myTargetNode = n; }
 		SceneNode* getTargetNode() { return myTargetNode; }
+		//@}
 
-		void update(const UpdateContext& context);
+		//! Scale
+		float getScale() { return myScale; }
+		void setScale(float value) { myScale = value; }
 
-		//virtual void draw(const DrawContext& context);
+
+		void focusOn(SceneNode* node);
 
 	private:
+		NavigationMode myNavigationMode;
+		SceneNode* myTargetNode;
+
+		float myNavigationSpeed;
+		float myNavigationStrafeMultiplier;
+		float myNavigationYawMultiplier;
+		float myNavigationPitchMultiplier;
+		uint myNavigationMoveFlags;
+		float myYaw;
+		float myPitch;
+		Vector3f myLastPointerPosition;
+		bool myRotating;
+
 		//! Current view transform
-		AffineTransform3 myView;
-		AffineTransform3 myProjection;
+		//AffineTransform3 myView;
+		//AffineTransform3 myProjection;
 
 		//! Observer current position.
 		Vector3f myPosition;
 		//! Observer current rotation.
 		Quaternion myOrientation;
+		float myScale;
 		//! Field of view (in radians)
 		float myFov;
 		float myAspect;
 		float myNearZ;
 		float myFarZ;
 		bool myAutoAspect;
-
-		SceneNode* myTargetNode;
 	};
 	
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& Camera::getViewTransform() 
-	{ return myView; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline const AffineTransform3& Camera::getViewTransform() 
+	//{ return myView; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& Camera::getProjectionTransform()
-	{ return myProjection; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline const AffineTransform3& Camera::getProjectionTransform()
+	//{ return myProjection; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setProjectionTransform(const AffineTransform3& value)
-	{ myProjection = value; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline void Camera::setProjectionTransform(const AffineTransform3& value)
+	//{ myProjection = value; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setViewTransform(const AffineTransform3& value)
-	{ myView = value; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline void Camera::setViewTransform(const AffineTransform3& value)
+	//{ myView = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool Camera::getAutoAspect()
