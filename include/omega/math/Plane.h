@@ -199,12 +199,12 @@ namespace omega { namespace math {
 		float fDistance = getDistance(rkPoint);
 
 		if ( fDistance < 0.0 )
-			return Plane<T>::NEGATIVE_SIDE;
+			return NEGATIVE_SIDE;
 
 		if ( fDistance > 0.0 )
-			return Plane<T>::POSITIVE_SIDE;
+			return POSITIVE_SIDE;
 
-		return Plane<T>::NO_SIDE;
+		return NO_SIDE;
 	}
 
 
@@ -231,12 +231,12 @@ namespace omega { namespace math {
         float maxAbsDist = abs(normal.dot(halfSize));
 
         if (dist < -maxAbsDist)
-            return Plane<T>::NEGATIVE_SIDE;
+            return NEGATIVE_SIDE;
 
         if (dist > +maxAbsDist)
-            return Plane<T>::POSITIVE_SIDE;
+            return POSITIVE_SIDE;
 
-        return Plane<T>::BOTH_SIDE;
+        return BOTH_SIDE;
     }
 	//-----------------------------------------------------------------------
 	template<typename T> inline

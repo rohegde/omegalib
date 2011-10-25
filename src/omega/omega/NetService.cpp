@@ -386,7 +386,7 @@ void NetService::parseDGram(int result)
 	//    s, sizeof s));
 	//printf("listener: packet is %d bytes long\n", numbytes);
 	recvbuf[numbytes] = '\0';
-	//printf("listener: packet contains \"%s\"\n", recvbuf);
+	printf("listener: packet contains \"%s\"\n", recvbuf);
 	result = numbytes;
 #endif
 	if( result > 0 ){

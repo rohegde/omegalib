@@ -154,6 +154,7 @@
 //
 -(void) sendToServer:(NSString*) msg 
 {
+    if(debugClient) NSLog(@"\t\tTCPSending : %@ " , msg);
     const char *msgCstr = [msg UTF8String];        
     if( send(connectionSocket , msgCstr , msg.length , 0) == -1 )perror( "send" );
 }
