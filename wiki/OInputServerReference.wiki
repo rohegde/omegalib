@@ -127,9 +127,9 @@ A two finger rotation gesture. One finger (anchor) is stationary while the other
 
 == Mocap Datagram ==
 
-'1:{Source ID},{X Position},{Y Position},{Z Position},{X Rotation},{Y Rotation},{Z Rotation} '
+'1:{Source ID},{X Position},{Y Position},{Z Position},{X},{Y},{Z},{W} '
 
-The position origin is dependent on the origin of the tracking system that is used. Rotation is in quaternions.
+The position origin is dependent on the origin of the tracking system that is used. X, Y, Z, W is a quaternion that gives the orientation of the object.
 
 == Controller Datagram ==
 
