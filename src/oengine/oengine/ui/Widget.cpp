@@ -74,7 +74,7 @@ void Widget::update(const omega::UpdateContext& context)
 {
 	if(!myInitialized)
 	{
-		ofmsg("Initializing Widget: %1%", %getName());
+		//ofmsg("Initializing Widget: %1%", %getName());
 		initialize(myServer);
 		myInitialized = true;
 	}

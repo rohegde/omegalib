@@ -41,7 +41,10 @@ namespace oengine {
 			MoveLeft = 1 << 1,
 			MoveRight = 1 << 2,
 			MoveUp = 1 << 3,
-			MoveDown = 1 << 4};
+			MoveDown = 1 << 4,
+			MoveForward = 1 << 5,
+			MoveBackward = 1 << 6
+			};
 	public:
 		Camera();
 

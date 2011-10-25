@@ -66,15 +66,18 @@ void RenderableFactory::initialize(EngineServer* srv)
 {
 	if(!myInitialized)
 	{
-		ofmsg("Initializing renderable factory: %1%", %toString());
+		//ofmsg("Initializing renderable factory: %1%", %toString());
 		myServer = srv;
 		foreach(EngineClient* client, srv->getClients())
 		{
 			Renderable* r = createRenderable();
-			r->setClient(client);
-			myRenderables.push_back(r);
-			RenderableCommand rc(r, RenderableCommand::Initialize);
-			client->queueRenderableCommand(rc);
+			if(r != NULL)
+			{
+				r->setClient(client);
+				myRenderables.push_back(r);
+				RenderableCommand rc(r, RenderableCommand::Initialize);
+				client->queueRenderableCommand(rc);
+			}
 		}
 		myInitialized = true;
 	}
@@ -89,7 +92,7 @@ void RenderableFactory::dispose()
 {
 	if(myInitialized)
 	{
-		ofmsg("Disposing renderable factory: %1%", %toString());
+		//ofmsg("Disposing renderable factory: %1%", %toString());
 		foreach(Renderable* r, myRenderables)
 		{
 			RenderableCommand rc(r, RenderableCommand::Dispose);

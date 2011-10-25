@@ -43,8 +43,8 @@ Console::Console():
 	myConsoleColors['!'] = Color(0.8f, 0.8f, 0.1f);
 	myConsoleColors['*'] = Color(1.0f, 0.2f, 0.1f);
 	myConsoleColors['^'] = Color(0.8f, 0.8f, 0.8f);
-	myConsoleColors['?'] = Color(0.2f, 1.0f, 0.2f);
-	myConsoleColors['@'] = Color(0.8f, 0.8f, 1.0f);
+	myConsoleColors['&'] = Color(0.2f, 1.0f, 0.2f);
+	myConsoleColors['@'] = Color(0.8f, 0.7f, 1.0f);
 
 	myHeadline = SystemManager::instance()->getApplication()->getName();
 }
@@ -93,7 +93,7 @@ void ConsoleRenderable::draw(RenderState* state)
 	if(myFont != NULL)
 	{
 		getRenderer()->drawRectOutline(Vector2f(-1, 0), Vector2f(lineWidth + 2, lineHeight - 2), Color::Gray);
-		glColor4f(0.3f, 1.0f, 0.3f, 1);
+		glColor4f(1.0f, 0.9f, 0.3f, 1);
 		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
 		y += lineHeight;
 

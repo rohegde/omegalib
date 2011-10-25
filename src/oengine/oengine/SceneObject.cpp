@@ -42,17 +42,20 @@ SceneObject::SceneObject()
 void SceneObject::draw(SceneNode* node, RenderState* state)
 { 
 	SceneRenderable* sr = (SceneRenderable*)getRenderable(state->client);
-	sr->setSceneNode(node);
-	// If scene node has an effect use it to draw this renderable. 
-	// Otherwise, draw renderable directly
-	BaseEffect* e = node->getEffect();
-	if(e != NULL)
+	if(sr != NULL)
 	{
-		e->draw(sr, state);
-	}
-	else
-	{
-		sr->draw(state);
+		sr->setSceneNode(node);
+		// If scene node has an effect use it to draw this renderable. 
+		// Otherwise, draw renderable directly
+		BaseEffect* e = node->getEffect();
+		if(e != NULL)
+		{
+			e->draw(sr, state);
+		}
+		else
+		{
+			sr->draw(state);
+		}
 	}
 }
 

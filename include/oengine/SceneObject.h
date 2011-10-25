@@ -41,6 +41,8 @@ namespace oengine {
 	public:
 		SceneObject();
 
+		virtual Renderable* createRenderable() { return NULL; }
+
 		virtual void update(SceneNode* owner) {}
 
 		//! This method is called by engine client threads to traverse the scene hierarchy during
