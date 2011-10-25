@@ -44,7 +44,6 @@
 #include "oengine/Mesh.h"
 #include "oengine/MeshData.h"
 #include "oengine/Node.h"
-#include "oengine/NavigationInteractor.h"
 #include "oengine/OverlayRenderPass.h"
 #include "oengine/ObjDataReader.h"
 #include "oengine/PlyDataReader.h"

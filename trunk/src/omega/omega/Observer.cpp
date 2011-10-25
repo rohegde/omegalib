@@ -32,8 +32,7 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Observer::Observer()
 {
-	myReferencePosition = Vector3f::Zero();
-	mySensorTransform = AffineTransform3::Identity();
+	myViewPosition = Vector3f::Zero();
 	myViewTransform = AffineTransform3::Identity();
 }
 
@@ -43,9 +42,9 @@ void Observer::load(Setting& setting)
 	if(setting.exists("referencePosition"))
 	{
 		Setting& st = setting["referencePosition"];
-		myReferencePosition.x() = (float)st[0];
-		myReferencePosition.y() = (float)st[1];
-		myReferencePosition.z() = (float)st[2];
+		myViewPosition.x() = (float)st[0];
+		myViewPosition.y() = (float)st[1];
+		myViewPosition.z() = (float)st[2];
 	}
 
 	Vector3f position = Vector3f::Zero();
@@ -57,24 +56,32 @@ void Observer::load(Setting& setting)
 		position.z() = (float)st[2];
 	}
 
-	// Set observer initial position to origin, neutral orientation.
-	update(position, Quaternion::Identity());
+	// Set observer initial position, neutral orientation.
+	updateHead(position, Quaternion::Identity());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::update(const Vector3f& position, const Quaternion& orientation)
+void Observer::updateHead(const Vector3f& position, const Quaternion& orientation)
 {
-	myPosition = position;
-	myOrientation = orientation;
-	myViewTransform = Math::makeViewMatrix(position + myReferencePosition, orientation);
-
-	myViewTransform = myViewTransform * mySensorTransform;
+	myHeadPosition = position;
+	myHeadOrientation = orientation;
+	//myHeadTransform = Math::makeViewMatrix(position, orientation);
 	myHeadTransform = AffineTransform3::Identity();
 
 	myHeadTransform.translate(position);
 	myHeadTransform.rotate(orientation);
-	AffineTransform3 w2e = AffineTransform3::Identity();
-	w2e.translate(myReferencePosition);
-	myHeadTransform = w2e * myHeadTransform;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Observer::updateView(const Vector3f& position, const Quaternion& orientation)
+{
+	myViewPosition = position;
+	myViewOrientation = orientation;
+	//myViewTransform = Math::makeViewMatrix(position, orientation);
+	myViewTransform = AffineTransform3::Identity();
+	myViewTransform.translate(myHeadPosition);
+	myViewTransform.rotate(orientation);
+	myViewTransform.translate(-myHeadPosition);
+	myViewTransform.translate(position);
 }
 

@@ -70,7 +70,7 @@ void EngineClient::removeRenderPass(RenderPass* pass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
-	ofmsg("EngineClient::Initialize: id = %1%", %getId());
+	ofmsg("^EngineClient::Initialize: id = %1%", %getId());
 
 	// Create the default font.
 	const FontInfo& fi = myServer->getDefaultFont();
@@ -102,15 +102,11 @@ void EngineClient::draw(const DrawContext& context)
 		myRenderableCommands.front().execute();
 		if(myRenderableCommands.front().command == RenderableCommand::Dispose)
 		{
-			ofmsg("Client %1% deleting renderable", %getId());
+			//ofmsg("Client %1% deleting renderable", %getId());
 			delete myRenderableCommands.front().renderable;
 		}
 		myRenderableCommands.pop();
 	}
-
-	//getGpu()->beginDraw();
-
-	Camera* cam = getServer()->getDefaultCamera();
 
 	// Execute all render passes in order.
 	foreach(RenderPass* pass, myRenderPassList)

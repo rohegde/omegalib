@@ -87,7 +87,6 @@ private:
 	Flock* myFlock;
 	BoundingSphere* mySelectionSphere;
 	DefaultMouseInteractor* myMouseInteractor;
-	NavigationInteractor* myNavigationInteractor;
 
 	AffectorEntity* mySelectedEntity;
 	List<AffectorEntity*> myEntities;

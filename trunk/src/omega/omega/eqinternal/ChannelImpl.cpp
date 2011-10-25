@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "eqinternal.h"
+#include "omega/DisplaySystem.h"
 #include "omega/StringUtils.h"
 
 using namespace omega;
@@ -82,13 +83,6 @@ void ChannelImpl::initialize()
 {
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	String name = getName();
-	bool interlaced = false;
-
-	if(name[0] == 'i')
-	{
-		//interlaced = true;
-		name = name.substr(1);
-	}
 
 	vector<String> args = StringUtils::split(name, "x,");
 	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
@@ -96,7 +90,7 @@ void ChannelImpl::initialize()
 	int iy = myChannelInfo.index[1];
 
 	int w = getPixelViewport().w;
-	int h = getPixelViewport().h * (interlaced ? 2 : 1);
+	int h = getPixelViewport().h;
 	
 	ofmsg("Channel %1% size: %2% %3%", %name %w %h);
 
@@ -167,8 +161,11 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 			break;
 	}
 
-	memcpy(context->modelview.data(), getHeadTransform().begin(), 16 * sizeof(float));
+	AffineTransform3 mw;
+	memcpy(mw.data(), getHeadTransform().begin(), 16 * sizeof(float));
 	memcpy(context->projection.data(), getFrustum().compute_matrix().begin(), 16 * sizeof(float));
+
+	context->modelview = mw * ds->getObserver(0)->getViewTransform();
 
 	// Setup draw context
 	myDrawBuffer.setGLId(getDrawBuffer());

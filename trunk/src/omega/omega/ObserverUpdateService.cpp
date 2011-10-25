@@ -131,7 +131,7 @@ void ObserverUpdateService::poll()
 			{
 				Vector3f pos = evt->getPosition();
 #ifdef OMEGA_SIMPLE_OBSERVER_UPDATE
-				myObserver->update(pos, evt->getOrientation());
+				myObserver->updateHead(pos, evt->getOrientation());
 
 #else
 				if(!myUseHeadPointId || !evt->isExtraDataNull(Head))

@@ -53,6 +53,8 @@ namespace oengine {
 		FontInfo myFont;
 
 		List<String> myLineBuffer;
+		String myHeadline;
+		Dictionary<char, Color> myConsoleColors;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

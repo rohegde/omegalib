@@ -39,16 +39,17 @@ namespace omega
 	public:
 		Observer();
 
-		void setReferencePosition(const Vector3f& value);
-		Vector3f getReferencePosition();
+		void setViewPosition(const Vector3f& value);
+		Vector3f getViewPosition();
 
-		AffineTransform3 getSensorTransform();
-		void setSensorTransform(const AffineTransform3& value);
+		//AffineTransform3 getSensorTransform();
+		//void setSensorTransform(const AffineTransform3& value);
 
 		AffineTransform3 getViewTransform();
 		const AffineTransform3& getHeadTransform();
 
-		void update(const Vector3f& position, const Quaternion& orientation);
+		void updateHead(const Vector3f& position, const Quaternion& orientation);
+		void updateView(const Vector3f& position, const Quaternion& orientation);
 		void load(Setting& setting);
 
 	private:
@@ -57,33 +58,36 @@ namespace omega
 		AffineTransform3 myHeadTransform;
 
 		//! Observer current position.
-		Vector3f myPosition;
+		Vector3f myHeadPosition;
 		//! Observer current rotation.
-		Quaternion myOrientation;
+		Quaternion myHeadOrientation;
 
 		//! Position of observer reference frame wrt world origin.
-		Vector3f myReferencePosition;
+		Vector3f myViewPosition;
+		Quaternion myViewOrientation;
 
 		//! Transformation from sensor reference frame to observer reference frame.
 		//! Use when sensor is offset and or / rotated from actual eye position.
-		AffineTransform3 mySensorTransform;
+
+		// do we need this.
+		//AffineTransform3 mySensorTransform;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Observer::setReferencePosition(const Vector3f& value) 
-	{ myReferencePosition = value; }
+	inline void Observer::setViewPosition(const Vector3f& value) 
+	{ myViewPosition = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Vector3f Observer::getReferencePosition() 
-	{ return myReferencePosition; }
+	inline Vector3f Observer::getViewPosition() 
+	{ return myViewPosition; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline AffineTransform3 Observer::getSensorTransform()
-	{ return mySensorTransform; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline AffineTransform3 Observer::getSensorTransform()
+	//{ return mySensorTransform; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Observer::setSensorTransform(const AffineTransform3& value) 
-	{ mySensorTransform = value; }
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline void Observer::setSensorTransform(const AffineTransform3& value) 
+	//{ mySensorTransform = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline AffineTransform3 Observer::getViewTransform() 
