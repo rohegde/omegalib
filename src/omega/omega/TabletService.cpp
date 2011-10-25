@@ -136,7 +136,7 @@ public:
          
          myService->lockEvents();
          Event* evt = myService->writeHead();
-         evt->reset(Event::evtType, Service::servType, myId);
+         evt->reset(evtType, servType, myId);
          evt->setPosition(myTouchPosition[0], myTouchPosition[1]);
          evt->setFlags(0);
          
