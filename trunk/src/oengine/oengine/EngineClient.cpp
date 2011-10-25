@@ -70,7 +70,7 @@ void EngineClient::removeRenderPass(RenderPass* pass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
-	ofmsg("^EngineClient::Initialize: id = %1%", %getId());
+	ofmsg("@EngineClient::Initialize: id = %1%", %getId());
 
 	// Create the default font.
 	const FontInfo& fi = myServer->getDefaultFont();

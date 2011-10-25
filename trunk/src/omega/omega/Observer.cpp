@@ -73,7 +73,7 @@ void Observer::updateHead(const Vector3f& position, const Quaternion& orientatio
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::updateView(const Vector3f& position, const Quaternion& orientation)
+void Observer::updateView(const Vector3f& position, const Quaternion& orientation, float scale)
 {
 	myViewPosition = position;
 	myViewOrientation = orientation;
@@ -83,5 +83,5 @@ void Observer::updateView(const Vector3f& position, const Quaternion& orientatio
 	myViewTransform.rotate(orientation);
 	myViewTransform.translate(-myHeadPosition);
 	myViewTransform.translate(position);
+	myViewTransform.scale(scale);
 }
-

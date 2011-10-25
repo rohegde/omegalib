@@ -37,7 +37,7 @@ Camera::Camera():
 	myTargetNode(NULL),
 	myNavigationMode(NavDisabled),
 	myNavigationSpeed(4.0f),
-	myNavigationStrafeMultiplier(0.2f),
+	myNavigationStrafeMultiplier(0.5f),
 	myNavigationYawMultiplier(0.002f),
 	myNavigationPitchMultiplier(0.002f),
 	myNavigationMoveFlags(0),
@@ -94,15 +94,15 @@ void Camera::update(const UpdateContext& context)
 	{
 		Vector3f speed = Vector3f::Zero();
 		// Update the observer position offset using current speed, orientation and dt.
-		if(myNavigationMoveFlags & MoveRight) speed = Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
-		else if(myNavigationMoveFlags & MoveLeft) speed = Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
-		else if(myNavigationMoveFlags & MoveUp) speed = Vector3f(0, 0, myNavigationSpeed);
-		else if(myNavigationMoveFlags & MoveDown) speed = Vector3f(0, 0, -myNavigationSpeed);
+		if(myNavigationMoveFlags & MoveRight) speed += Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
+		if(myNavigationMoveFlags & MoveLeft) speed += Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
+		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, 0, myNavigationSpeed);
+		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, 0, -myNavigationSpeed);
 
 		myOrientation =  AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(Math::Pi, Vector3f::UnitZ());
 
 		Vector3f ns = myOrientation * speed;
-		//ofmsg("@Speed vector: %1%", %ns);
+		ofmsg("|Camera speed vector: %1%", %ns);
 
 		myPosition += ns * context.dt ;
 
@@ -116,8 +116,20 @@ void Camera::update(const UpdateContext& context)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::focusOn(SceneNode* node)
+void Camera::focusOn(SceneNode* node, float scaledSize)
 {
+	const Sphere& bs = node->getBoundingSphere();
+	myOrientation = Quaternion::Identity();
+	myPosition = bs.getCenter();
+	if(scaledSize != 0)
+	{
+		myScale = scaledSize / bs.getRadius();
+	}
+	else
+	{
+		myScale = 1.0f;
+	}
+	ofmsg("|Camera focus changed: position %1%  scale %2%", %myPosition %myScale);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

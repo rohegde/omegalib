@@ -79,7 +79,7 @@ namespace oengine {
 		void setScale(float value) { myScale = value; }
 
 
-		void focusOn(SceneNode* node);
+		void focusOn(SceneNode* node, float scaledSize = 0.0f);
 
 	private:
 		NavigationMode myNavigationMode;
@@ -96,7 +96,7 @@ namespace oengine {
 		bool myRotating;
 
 		//! Current view transform
-		//AffineTransform3 myView;
+		AffineTransform3 myViewTransform;
 		//AffineTransform3 myProjection;
 
 		//! Observer current position.

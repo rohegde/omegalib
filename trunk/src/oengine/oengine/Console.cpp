@@ -44,7 +44,7 @@ Console::Console():
 	myConsoleColors['*'] = Color(1.0f, 0.2f, 0.1f);
 	myConsoleColors['^'] = Color(0.8f, 0.8f, 0.8f);
 	myConsoleColors['?'] = Color(0.2f, 1.0f, 0.2f);
-	myConsoleColors['@'] = Color(0.3f, 0.3f, 1.0f);
+	myConsoleColors['@'] = Color(0.8f, 0.8f, 1.0f);
 
 	myHeadline = SystemManager::instance()->getApplication()->getName();
 }
@@ -52,7 +52,7 @@ Console::Console():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Console::addLine(const String& line)
 {
-	if(line[0] == '@')
+	if(line[0] == '|')
 	{
 		myHeadline = line.substr(1);
 	}
