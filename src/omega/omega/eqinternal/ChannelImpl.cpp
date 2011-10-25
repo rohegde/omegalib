@@ -92,7 +92,7 @@ void ChannelImpl::initialize()
 	int w = getPixelViewport().w;
 	int h = getPixelViewport().h;
 	
-	ofmsg("Channel %1% size: %2% %3%", %name %w %h);
+	ofmsg("@Channel %1% size: %2% %3%", %name %w %h);
 
 	myChannelInfo.offset = Vector2i(ix * w, iy * h);
 	myChannelInfo.size = Vector2i(w, h);
@@ -118,7 +118,7 @@ void ChannelImpl::initialize()
 		sCanvasSize.y() = sCanvasChannels.y() * h;
 	}
 
-	ofmsg("Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
+	ofmsg("@Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
 		%pipe->getClient()->getId()
 		%sCanvasChannels.x() %sCanvasChannels.y()
 		%sCanvasSize.x() %sCanvasSize.y());

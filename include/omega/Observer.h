@@ -49,7 +49,7 @@ namespace omega
 		const AffineTransform3& getHeadTransform();
 
 		void updateHead(const Vector3f& position, const Quaternion& orientation);
-		void updateView(const Vector3f& position, const Quaternion& orientation);
+		void updateView(const Vector3f& position, const Quaternion& orientation, float scale = 1.0f);
 		void load(Setting& setting);
 
 	private:
