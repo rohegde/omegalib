@@ -146,6 +146,15 @@ public:
          evt->setExtraDataVector3(1, ray.getDirection());
          
          myService->unlockEvents();
+
+#else
+        myService->lockEvents();
+        Event* evt = myService->writeHead();
+        evt->reset(evtType, servType, myId);
+        evt->setPosition( x , y );
+        evt->setFlags(0);
+        
+        myService->unlockEvents();
 #endif
     }
 
