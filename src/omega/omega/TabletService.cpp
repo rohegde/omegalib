@@ -91,6 +91,7 @@ public:
 
                 case Event::Up:
                     ltClick = false;
+                    rtClick = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
                     ofmsg("up @ %1% , %2% " , %pt1x %pt1y);
                     break;
@@ -145,10 +146,10 @@ public:
                     //Do nothing for now.
                     //genSimpleEvent( Event::Zoom , Service::Pointer , pt1x , pt1y );
                     //genSimpleEvent( Event::Zoom , Service::Pointer , pt2x , pt2y );
-                    omsg("Zoomed:\n");
-                    ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
-                    ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
-                    ofmsg("\tScale   : %1%" , %param );            
+                    //omsg("Zoomed:\n");
+                    //ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
+                    //ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
+                    //ofmsg("\tScale   : %1%" , %param );            
                     break;
                     
                 default:
