@@ -215,7 +215,7 @@ void MeshViewer::initialize()
 	createEntity(myEntityLibrary[0]);
 
 	Camera* cam = getDefaultCamera();
-	cam->focusOn(getScene(0), 0.2f);
+	//cam->focusOn(getScene(0), 0.2f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

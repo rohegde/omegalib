@@ -33,6 +33,7 @@ using namespace omega;
 Observer::Observer()
 {
 	myViewPosition = Vector3f::Zero();
+	myReferencePosition = Vector3f::Zero();
 	myViewTransform = AffineTransform3::Identity();
 }
 
@@ -42,18 +43,18 @@ void Observer::load(Setting& setting)
 	if(setting.exists("referencePosition"))
 	{
 		Setting& st = setting["referencePosition"];
-		myViewPosition.x() = (float)st[0];
-		myViewPosition.y() = (float)st[1];
-		myViewPosition.z() = (float)st[2];
+		myReferencePosition.x() = (float)st[0];
+		myReferencePosition.y() = (float)st[1];
+		myReferencePosition.z() = (float)st[2];
 	}
 
 	Vector3f position = Vector3f::Zero();
 	if(setting.exists("position"))
 	{
 		Setting& st = setting["position"];
-		position.x() = (float)st[0];
-		position.y() = (float)st[1];
-		position.z() = (float)st[2];
+		myViewPosition.x() = (float)st[0];
+		myViewPosition.y() = (float)st[1];
+		myViewPosition.z() = (float)st[2];
 	}
 
 	// Set observer initial position, neutral orientation.
@@ -70,6 +71,9 @@ void Observer::updateHead(const Vector3f& position, const Quaternion& orientatio
 
 	myHeadTransform.translate(position);
 	myHeadTransform.rotate(orientation);
+	AffineTransform3 w2e = AffineTransform3::Identity();
+	w2e.translate(myReferencePosition);
+	myHeadTransform = w2e * myHeadTransform;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,9 +83,10 @@ void Observer::updateView(const Vector3f& position, const Quaternion& orientatio
 	myViewOrientation = orientation;
 	//myViewTransform = Math::makeViewMatrix(position, orientation);
 	myViewTransform = AffineTransform3::Identity();
-	myViewTransform.translate(myHeadPosition);
+	Vector3f pivot = myHeadPosition + myReferencePosition;
+	myViewTransform.translate(pivot);
 	myViewTransform.rotate(orientation);
-	myViewTransform.translate(-myHeadPosition);
+	myViewTransform.translate(-pivot);
 	myViewTransform.translate(position);
-	myViewTransform.scale(scale);
+	//myViewTransform.scale(scale);
 }

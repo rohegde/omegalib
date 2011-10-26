@@ -226,6 +226,10 @@ void AffectorEntity::update(const UpdateContext& context)
 	{
 		mySceneNode->yaw(myRotationSpeed * context.dt);
 	}
+	if(mySelected)
+	{
+		ofmsg("|Affector position: %1%", %mySceneNode->getPosition());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
