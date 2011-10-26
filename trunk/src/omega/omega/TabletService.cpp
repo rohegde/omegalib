@@ -46,7 +46,6 @@ public:
 	{
         ltClick = false;
         rtClick = false;
-        midClick = false;
         anchor[0] = -1;
         anchor[1] = -1;
 	}
@@ -84,7 +83,7 @@ public:
                     if( ( ltClick == true ) &&  withinAnchor( pt1x , pt1y) )//Left Click is est. and ess. the same pt.
                     {
                         genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
-                        ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
+//                        ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;
                     }
@@ -97,7 +96,7 @@ public:
                     ltClick = false;
                     rtClick = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
-                    ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
+//                    ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
                     break;
                 
                 case Event::Down:
@@ -109,7 +108,7 @@ public:
                     {
                         ltClick = true;                        
                         genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
-                        ofmsg("******DOWN @ %1% , %2% ******" , %pt1x %pt1y);
+//                        ofmsg("******DOWN @ %1% , %2% ******" , %pt1x %pt1y);
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
                         
@@ -117,10 +116,6 @@ public:
                     break;
                     
                 case Event::Select:
-                    midClick = true;
-                    ofmsg("******SELECTED @ %1% , %2% ******" , %pt1x %pt1y);
-                    anchor[0] = pt1x;
-                    anchor[1] = pt1y;                                        
                     break;
 
                 default:
@@ -153,7 +148,7 @@ public:
                 case Event::Rotate: // param = angle
                     if( rtClick == false )  //This is the first rotate call so send a down
                     {
-                        omsg("***** ROTATION START *****");
+//                        omsg("***** ROTATION START *****");
                         rtClick = true;
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
@@ -161,29 +156,24 @@ public:
                     }
                     //The rest can be simple moves with average out the rotation pts
                     genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
-                    omsg("ROTATE:");
-                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
-                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
-                    ofmsg("\tAngle in rad : %1%" , %param );            
+//                    omsg("ROTATE:");
+//                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
+//                    ofmsg("\tAngle in rad : %1%" , %param );            
                     break;
                     
                 case Event::Zoom:   // param = scale
-                    if( midClick ) //If there is a middle click do a zoom
+                    if( rtClick == false )  //This is the first rotate call so send a down
                     {
-//                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
-                    }
-                    else if( rtClick == false )  //This is the first rotate call so send a down
-                    {
-                        omsg("***** ROTATION START *****");
+//                        omsg("***** ROTATION START *****");
                         rtClick = true;
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
-                        genZoomEvent( Service::Pointer , anchor[0] , anchor[1] , param);
-//                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
                     }
                     else //The rest can be simple moves with average out the rotation pts
                     {
-//                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
 //                        omsg("ZOOM:");
 //                        ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
 //                        ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
@@ -214,18 +204,6 @@ public:
         else return false;
     }
     
-    void genZoomEvent( Service::ServiceType servType , float x , float y , float scale)
-    {
-        myService->lockEvents();
-		Event* evt = myService->writeHead();
-		evt->reset(Event::Zoom, servType, myId);
-		evt->setExtraDataType(Event::ExtraDataIntArray);
-		evt->setExtraDataInt(0, scale);
-		myService->unlockEvents();
-
-    }
-
-
     void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
     {
         
@@ -233,7 +211,6 @@ public:
         
         if( ltClick ) myFlag = Event::Left;
         else if( rtClick ) myFlag = Event::Right;
-        else if( midClick) myFlag = Event::Middle;
 
         
 #ifdef OMEGA_USE_DISPLAY
@@ -283,7 +260,6 @@ private:
     Vector2f anchor;
     bool ltClick;
     bool rtClick;
-    bool midClick;
     float scale;
 };
 
