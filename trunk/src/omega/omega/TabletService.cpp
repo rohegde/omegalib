@@ -132,7 +132,7 @@ public:
          Vector2i canvasSize = ds->getCanvasSize();
          
          myTouchPosition[0] = x * canvasSize[0];
-         myTouchPosition[1] = (1 - y) * canvasSize[1];
+         myTouchPosition[1] = y * canvasSize[1];
          
          myService->lockEvents();
          Event* evt = myService->writeHead();
