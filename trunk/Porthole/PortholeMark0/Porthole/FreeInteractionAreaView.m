@@ -283,6 +283,12 @@
      //Grab the touch data
      UITouch *touch = [touches anyObject];
      
+     if( touches.count > 2 )
+     {
+         if( debugTouch) NSLog(@"\tFIA : Touch : Touch moved : too many touches " );      
+         return;
+     }
+     
      if( (touch.phase != UITouchPhaseBegan))
      {
          //Grab the point        
@@ -459,12 +465,27 @@
     //If multi-touch
     if(!multiTouchAble) return;
     
+    //If done pinching reset the last rotation scale send message done
+    if(recognizer.state ==UIGestureRecognizerStateEnded)
+    {
+        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithInt:0] , [NSNumber numberWithInt:0] , nil];
+        [self.delegate sendMsgAsService:Pointer event:RotateEnd param:param from:self];
+        if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended");        
+        lastRotation = 0.0;            //Reset at the end
+        [self wipeMarkers];
+        [self setNeedsDisplay];
+        return;
+    }
+    
     //clear any old marker list
     [self clearMarkerLoc];
     if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation");            
 
     //Grab the x,y info for the two points into a mutableArray 
     int numTouches = recognizer.numberOfTouches;
+    
+    if(numTouches < 2) return;
+    
     NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
     for ( int curPoint = 0 ; curPoint < numTouches ; curPoint++)
     {
@@ -496,17 +517,6 @@
     [self.delegate sendMsgAsService:Pointer event:Rotate param:param from:self];
     
     [self setNeedsDisplay];
-    
-    //If done pinching reset the last pinch scale
-    if(recognizer.state ==UIGestureRecognizerStateEnded)
-    {
-        NSArray *param = [NSArray arrayWithObject:[NSNumber numberWithInt:0]];
-        [self.delegate sendMsgAsService:Pointer event:RotateEnd param:param from:self];
-        if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended");        
-        lastRotation = 0.0;            //Reset at the end
-        [self wipeMarkers];
-    }
-
 }
 //----------------------------------------------------------------------------------------------------
 

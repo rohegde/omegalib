@@ -14,11 +14,11 @@
 #define PORT "3490" // the port client will be connecting to 
 
 //#define IP_ADDRESS "192.168.1.105"    //Home
-//#define IP_ADDRESS "131.193.77.197"   //EVL
+#define IP_ADDRESS "131.193.77.197"   //EVL
 //#define IP_ADDRESS "131.193.77.249"   //EVL LabPad
 //#define IP_ADDRESS "131.193.77.222"   //myPad
 //#define IP_ADDRESS "131.193.77.200"   //Alessandro's Machine
-#define IP_ADDRESS "131.193.78.108"   //Dual2.evl.uic.edu
+//#define IP_ADDRESS "131.193.78.108"   //Dual2.evl.uic.edu
 
 typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
 

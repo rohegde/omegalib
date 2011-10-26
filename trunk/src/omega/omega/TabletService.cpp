@@ -46,6 +46,8 @@ public:
 	{
         ltClick = false;
         rtClick = false;
+        anchor[0] = -1;
+        anchor[1] = -1;
 	}
 
 	virtual void handleData()
@@ -68,7 +70,7 @@ public:
         {
             rtClick = false;
             genSimpleEvent( Event::Up , Service::Pointer , 0.0 , 0.0 );
-            omsg("Rotaton Up");
+//            omsg("-----ROTATION DONE-----");
         }
 
 		else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
@@ -85,23 +87,48 @@ public:
             {
 
                 case Event::Move:
-                
-                    genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
-                    ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
+                    if ( ltClick == true )  //This is not the first touch down
+                    {
+                        float tolerance = .1;
+                        if( withinAnchor( pt1x , pt1y , tolerance) ) //if ess. the same pt.
+                        {
+                            genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
+//                            ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
+                            anchor[0] = pt1x;
+                            anchor[1] = pt1y;
+                        }
+                        else // if not the same point
+                        {
+                            return; //do nothing cause this is a second touch
+                            //may turn into a gesture 
+                        }
+                    }
+                    else                    //This is the first touch down
+                    {
+                        
+                    }
                     break;
-
                 case Event::Up:
                     ltClick = false;
                     rtClick = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
-                    ofmsg("up @ %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
                     break;
             
                 case Event::Down:
-                
-                    ltClick = true;
-                    genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
-                    ofmsg("down @ %1% , %2% " , %pt1x %pt1y);
+                    if ( ltClick == true )  //This is not the first touch down
+                    {
+                        return;//Do nothing.
+                    }
+                    else                    //This is the first touch down
+                    {
+                        ltClick = true;                        
+                        genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
+//                        ofmsg("******DOWN @ %1% , %2% ******" , %pt1x %pt1y);
+                        anchor[0] = pt1x;
+                        anchor[1] = pt1y;                        
+                        
+                    }
                     break;
 
                 default:
@@ -132,30 +159,37 @@ public:
             switch (eventType)
             {
                 case Event::Rotate: // param = angle
-                    //This is the first rotate call so send a down
-                    if( rtClick == false )
+                    if( rtClick == false )  //This is the first rotate call so send a down
                     {
+//                        omsg("***** ROTATION START *****");
                         rtClick = true;
+                        anchor[0] = pt1x;
+                        anchor[1] = pt1y;                        
                         genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
                     }
                     //The rest can be simple moves with average out the rotation pts
-                    genSimpleEvent( Event::Move , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
-                    
-                    //genSimpleEvent( Event::Rotate , Service::Pointer , pt2x , pt2y );
-                    omsg("Rotate:\n");
-                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
-                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
-                    ofmsg("\tAngle in rad : %1%" , %param );            
+                    genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+//                    omsg("ROTATE:");
+//                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
+//                    ofmsg("\tAngle in rad : %1%" , %param );            
                     break;
                     
                 case Event::Zoom:   // param = scale
-                    //Do nothing for now.
-                    //genSimpleEvent( Event::Zoom , Service::Pointer , pt1x , pt1y );
-                    //genSimpleEvent( Event::Zoom , Service::Pointer , pt2x , pt2y );
-                    //omsg("Zoomed:\n");
-                    //ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
-                    //ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
-                    //ofmsg("\tScale   : %1%" , %param );            
+                    if( rtClick == false )  //This is the first rotate call so send a down
+                    {
+                        //                        omsg("***** ROTATION START *****");
+                        rtClick = true;
+                        anchor[0] = pt1x;
+                        anchor[1] = pt1y;                        
+                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                    }
+                    //The rest can be simple moves with average out the rotation pts
+                    genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+//                    omsg("ZOOM:");
+//                    ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
+//                    ofmsg("\tScale   : %1%" , %param );            
                     break;
                     
                 default:
@@ -170,8 +204,14 @@ public:
 			// Read until the end of the message
 			readString(myBuffer, BufferSize, '|');
 		}
-
 	}
+
+    bool withinAnchor( float x , float y , float tolerance )
+    {
+        if( x + tolerance > anchor[0] && x - tolerance < anchor[0] &&  
+           y + tolerance > anchor[1] && y - tolerance < anchor[1]) return true;
+        else return false;
+    }
 
     void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
     {
@@ -225,6 +265,7 @@ private:
 	TabletService* myService;
 	int myId;
 	Vector2i myTouchPosition;
+    Vector2f anchor;
     bool ltClick;
     bool rtClick;
 };
