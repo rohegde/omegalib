@@ -406,9 +406,9 @@ public class InputServiceScript : MonoBehaviour {
 		Ray ray = touch.GetRay();
 		Debug.DrawRay(ray.origin, ray.direction * 10, Color.white);
 		
-		GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("TouchListener");
+		GameObject[] touchObjects = GameObject.FindGameObjectsWithTag("OmegaListener");
 		foreach (GameObject touchObj in touchObjects) {
-			touchObj.BroadcastMessage("OnTouch",touch);
+			touchObj.BroadcastMessage("OnTouch",touch,SendMessageOptions.DontRequireReceiver);
 		}
 		
 		// Send a RayCast from source along ray looking for colliders

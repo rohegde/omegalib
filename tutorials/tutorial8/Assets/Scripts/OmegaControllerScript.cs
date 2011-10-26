@@ -25,6 +25,7 @@ public class OmegaControllerScript : MonoBehaviour {
 	private static int PS3 = 1;
 	private static int WIIMOTE = 2;
 	private static int WII_NUNCHUK = 3;
+	private static int WII_MOTIONPLUS = 4;
 	
 	private Vector3 analogStick0 = new Vector3();
 	public Vector3 analogStick0Deadzone = new Vector3(300,300,300);
@@ -47,6 +48,18 @@ public class OmegaControllerScript : MonoBehaviour {
 	private Vector3 accelerometer0 = new Vector3();
 	private Vector3 accelerometer1 = new Vector3();
 	private Vector3 accelerometer2 = new Vector3();
+	
+	// Wiimote Specific Parameters
+	private int batteryPercent = -1;
+	private int IRMode = -1;
+	private Vector2 IRDot0 = new Vector2();
+	private Vector2 IRDot1 = new Vector2();
+	private Vector2 IRDot2 = new Vector2();
+	private Vector2 IRDot3 = new Vector2();
+	private int IRDot0Valid = 0;
+	private int IRDot1Valid = 0;
+	private int IRDot2Valid = 0;
+	private int IRDot3Valid = 0;
 	
 	void Start () {
 		// Reserved for derived classes
@@ -123,28 +136,29 @@ public class OmegaControllerScript : MonoBehaviour {
 				
 				accelerometer0 = new Vector3( pitch, 0, roll );
 			}
-		}else if( controllerType == WIIMOTE || controllerType == WII_NUNCHUK ){
+		}else if( controllerType == WIIMOTE || controllerType == WII_NUNCHUK || controllerType == WII_MOTIONPLUS ){
 			if( controllerType == WIIMOTE ){
+				batteryPercent = int.Parse(words[3]);
 				
 				// Accelerometer
-				float rawXAccel = int.Parse(words[3]) / 1000.0f;
-				float rawYAccel = int.Parse(words[4]) / 1000.0f;
-				float rawZAccel = int.Parse(words[5]) / 1000.0f;
+				float rawXAccel = int.Parse(words[4]) / 1000.0f;
+				float rawYAccel = int.Parse(words[5]) / 1000.0f;
+				float rawZAccel = int.Parse(words[6]) / 1000.0f;
 				
 				//int extension = int.Parse(words[17]);
 				
 				accelerometer0 = new Vector3( rawXAccel, rawYAccel, rawZAccel );
 				
 				// MotionPlus
-				float rawXAccelPlus = int.Parse(words[20]) / 1000.0f;
-				float rawYAccelPlus = int.Parse(words[21]) / 1000.0f;
-				float rawZAccelPlus = int.Parse(words[22]) / 1000.0f;
+				//float rawXAccelPlus = int.Parse(words[20]) / 1000.0f;
+				//float rawYAccelPlus = int.Parse(words[21]) / 1000.0f;
+				//float rawZAccelPlus = int.Parse(words[22]) / 1000.0f;
 								
-				accelerometer2 = new Vector3( rawXAccelPlus, rawYAccelPlus, rawZAccelPlus );
+				//accelerometer2 = new Vector3( rawXAccelPlus, rawYAccelPlus, rawZAccelPlus );
 				
 				// Buttons
 				for( int i = 0; i < 11; i++ ){
-					buttons[i] = int.Parse(words[6+i]);
+					buttons[i] = int.Parse(words[7+i]);
 					
 					// Set button state
 					if( buttonStates[i] == 0 && buttons[i] == 1 ){
@@ -159,6 +173,23 @@ public class OmegaControllerScript : MonoBehaviour {
 						buttonStates[i] = 0; // Released->Not Pressed
 					}
 				}
+				
+				IRMode = int.Parse(words[18]);
+				IRDot0Valid = int.Parse(words[19]);
+				IRDot0.x = int.Parse(words[20]) / 1000.0f;
+				IRDot0.y = int.Parse(words[21]) / 1000.0f;
+				
+				IRDot1Valid = int.Parse(words[22]);
+				IRDot1.x = int.Parse(words[23]) / 1000.0f;
+				IRDot1.y = int.Parse(words[24]) / 1000.0f;
+				
+				IRDot2Valid = int.Parse(words[25]);
+				IRDot2.x = int.Parse(words[26]) / 1000.0f;
+				IRDot2.y = int.Parse(words[27]) / 1000.0f;
+				
+				IRDot3Valid = int.Parse(words[28]);
+				IRDot3.x = int.Parse(words[29]) / 1000.0f;
+				IRDot3.y = int.Parse(words[30]) / 1000.0f;
 			} else if( controllerType == WII_NUNCHUK ){
 				analogStick0 = ProcessAnalogStick( int.Parse(words[3]), int.Parse(words[4]), analogStick0Deadzone, analogStick0InvertY, analogStick0Sensitivity );
 				
@@ -188,7 +219,14 @@ public class OmegaControllerScript : MonoBehaviour {
 					}
 				}
 			}// Wiimote/Nunchuk
-			
+			 else if( controllerType == WII_MOTIONPLUS ){
+				// MotionPlus
+				float rawXAccelPlus = int.Parse(words[3]) / 1000.0f;
+				float rawYAccelPlus = int.Parse(words[4]) / 1000.0f;
+				float rawZAccelPlus = int.Parse(words[5]) / 1000.0f;
+								
+				accelerometer2 = new Vector3( rawXAccelPlus, rawYAccelPlus, rawZAccelPlus );
+			}// Wiimote/Nunchuk
 		}// controllerType
 	}
 	
@@ -231,7 +269,7 @@ public class OmegaControllerScript : MonoBehaviour {
 	}
 	
 	public bool isWiimote(){
-		if( controllerType == WIIMOTE || controllerType == WII_NUNCHUK )
+		if( controllerType == WIIMOTE || controllerType == WII_NUNCHUK || controllerType == WII_MOTIONPLUS )
 			return true;
 		else
 			return false;
@@ -239,6 +277,13 @@ public class OmegaControllerScript : MonoBehaviour {
 	
 	public bool isWiiNunchuk(){
 		if( controllerType == WII_NUNCHUK )
+			return true;
+		else
+			return false;
+	}
+	
+	public bool isWiiMotionPlus(){
+		if( controllerType == WII_MOTIONPLUS )
 			return true;
 		else
 			return false;
@@ -436,6 +481,11 @@ public class OmegaControllerScript : MonoBehaviour {
 	}
 	
 	// Wii
+	public int getBatteryPercent(){
+		return batteryPercent;
+	}
+	
+	// Wii
 	public Vector3 getNunchukAnalogStick(){
 		return getAnalogStick0();
 	}
@@ -448,5 +498,62 @@ public class OmegaControllerScript : MonoBehaviour {
 	// Wii
 	public Vector3 getWiiMotionPlusAcceleration(){
 		return getAccelerometer1();
+	}
+	
+	// Wii
+	public int getIRMode(){
+		return IRMode;
+	}
+	
+	// Wii
+	public bool isIRDot0Valid(){
+		if( IRDot0Valid == 1 )
+			return true;
+		else
+			return false;
+	}
+	
+	// Wii
+	public Vector2 getIRDot0(){
+		return IRDot0;
+	}
+	
+	// Wii
+	public bool isIRDot1Valid(){
+		if( IRDot1Valid == 1 )
+			return true;
+		else
+			return false;
+	}
+	
+	// Wii
+	public Vector2 getIRDot1(){
+		return IRDot1;
+	}
+	
+	// Wii
+	public bool isIRDot2Valid(){
+		if( IRDot2Valid == 1 )
+			return true;
+		else
+			return false;
+	}
+	
+	// Wii
+	public Vector2 getIRDot2(){
+		return IRDot2;
+	}
+	
+	// Wii
+	public bool isIRDot3Valid(){
+		if( IRDot3Valid == 1 )
+			return true;
+		else
+			return false;
+	}
+	
+	// Wii
+	public Vector2 getIRDot3(){
+		return IRDot3;
 	}
 }
