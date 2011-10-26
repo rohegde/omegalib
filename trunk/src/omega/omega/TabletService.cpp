@@ -44,7 +44,8 @@ public:
 		TcpConnection(ioService),
 			myId(id), myService(service)
 	{
-        clickDown = false;
+        ltClick = false;
+        rtClick = false;
 	}
 
 	virtual void handleData()
@@ -63,7 +64,12 @@ public:
 
         float pt1x , pt1y , pt2x , pt2y;
 
-		if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
+        if ( Event::RotateEnd )
+        {
+            rtClick = false;
+        }
+
+		else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
 		{
 			// Read x.
 			readString(myBuffer, BufferSize, ':');
@@ -73,26 +79,34 @@ public:
 			readString(myBuffer, BufferSize, ':');
 			pt1y = atof(myBuffer);
             
-            switch (eventType) {
+            switch (eventType) 
+            {
+
                 case Event::Move:
+                
                     genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
                     //ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
                     break;
+
                 case Event::Up:
-                    clickDown = false;
+                    
+                    ltClick = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
                     //ofmsg("up @ %1% , %2% " , %pt1x %pt1y);
                     break;
+            
                 case Event::Down:
-                    clickDown = true;
+                
+                    ltClick = true;
                     genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
                     //ofmsg("down @ %1% , %2% " , %pt1x %pt1y);
                     break;
+
                 default:
                     break;
             }
         }
-		else if(eventType == Event::Zoom)
+		else if(eventType == Event::Zoom || eventType == Event::Rotate )
 		{
             // Read point 1 x.
 			readString(myBuffer, BufferSize, ':');
@@ -110,16 +124,39 @@ public:
 			readString(myBuffer, BufferSize, ':');
 			pt2y = atof(myBuffer);
 
-            // Read scale
-			readString(myBuffer, BufferSize, ':');
-			float scale = atof(myBuffer);
+            readString(myBuffer, BufferSize, ':');
+            float param = atof(myBuffer);
 
-            genSimpleEvent( Event::Zoom , Service::Pointer , pt1x , pt1y );
-            genSimpleEvent( Event::Zoom , Service::Pointer , pt2x , pt2y );
-            //omsg("Zoomed:\n");
-            //ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
-            //ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
-            //ofmsg("\tScale   : %1%" , %scale );            
+            switch (eventType)
+            {
+                case Event::Rotate: // param = angle
+                    rtClick = true;
+
+                    //Do nothing for now.
+                    genSimpleEvent( Event::Rotate , Service::Pointer , pt1x , pt1y );
+                    //genSimpleEvent( Event::Zoom , Service::Pointer , pt2x , pt2y );
+                    //omsg("Rotate:\n");
+                    //ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
+                    //ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
+                    //ofmsg("\tAngle in rad : %1%" , %scale );            
+                    break;
+                    
+                case Event::Zoom:   // param = scale
+                    //Do nothing for now.
+                    genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
+                    //genSimpleEvent( Event::Zoom , Service::Pointer , pt2x , pt2y );
+                    //omsg("Zoomed:\n");
+                    //ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
+                    //ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
+                    //ofmsg("\tScale   : %1%" , %scale );            
+                    break;
+                    
+                default:
+                    break;
+            }             
+            
+           
+
         }
 		else
 		{
@@ -134,7 +171,8 @@ public:
         
         Event::Flags myFlag;
         
-        if( clickDown ) myFlag = Event::Left;
+        if( ltClick ) myFlag = Event::Left;
+        if( rtClick ) myFlag = Event::Right;
         
 #ifdef OMEGA_USE_DISPLAY
          DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -180,7 +218,8 @@ private:
 	TabletService* myService;
 	int myId;
 	Vector2i myTouchPosition;
-    bool clickDown;
+    bool ltClick;
+    bool rtClick;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

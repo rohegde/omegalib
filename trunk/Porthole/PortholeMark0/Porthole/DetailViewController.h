@@ -11,7 +11,7 @@
 #import "CustomUIArea.h"
 #import "TCPClientOmega.h"
 
-#define DEFAULT_SERVER_ON   YES;
+#define DEFAULT_SERVER_ON   NO;
 #define DEFAULT_DVC_DEBUG   YES;
 #define DEFAULT_DEBUG_TOUCH YES;
 

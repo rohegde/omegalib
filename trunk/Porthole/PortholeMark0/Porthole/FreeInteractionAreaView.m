@@ -12,6 +12,7 @@
 
 @synthesize markerView;
 @synthesize lastScale;
+@synthesize lastRotation;
 @synthesize delegate;
 
 #
@@ -58,6 +59,7 @@
         if( mTouch )
         {
             lastScale = 1.0;
+            lastRotation = 0.0;
         }
             
         myState = INIT;
@@ -417,6 +419,7 @@
     
     //Add the scale to the NSMutableArray
     [paramMutable addObject:scaleN];        
+
     //Transform the NSMutableArray to NSArray
     NSArray *param = [NSArray arrayWithArray:paramMutable];
 
@@ -452,6 +455,57 @@
 -(void)handleRotation:(UIRotationGestureRecognizer *) recognizer
 {
     [super handleRotation:recognizer];        
+    
+    //If multi-touch
+    if(!multiTouchAble) return;
+    
+    //clear any old marker list
+    [self clearMarkerLoc];
+    
+    //Grab the x,y info for the two points into a mutableArray 
+    int numTouches = recognizer.numberOfTouches;
+    NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
+    for ( int curPoint = 0 ; curPoint < numTouches ; curPoint++)
+    {
+        //Grab the point
+        CGPoint point = [recognizer locationOfTouch:curPoint inView:self]; 
+        //Check within
+        if( ![self within:point.x and:point.y] ) return;
+        [self markerLocAdd:point];
+        //Place localized x and y location into NSArray
+        CGPoint localLoc = [self localLocOf:point];
+        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
+        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
+        [paramMutable addObject:xLoc];
+        [paramMutable addObject:yLoc];        
+        if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);   
+    }
+
+    //Grab the rotation
+    lastRotation = lastRotation + recognizer.rotation; 
+    if( debugTouch ) NSLog(@"\t\tAngle in radians : %.2f " , lastRotation);   
+
+    //Add the scale to the NSMutableArray
+    [paramMutable addObject:[NSNumber numberWithFloat:lastRotation]];        
+
+    //Transform the NSMutableArray to NSArray
+    NSArray *param = [NSArray arrayWithArray:paramMutable];
+    
+    //Send TCP msg
+    [self.delegate sendMsgAsService:Pointer event:Rotate param:param from:self];
+    
+    [self setNeedsDisplay];
+    
+    //If done pinching reset the last pinch scale
+    if(recognizer.state ==UIGestureRecognizerStateEnded)
+    {
+        NSArray *param = [NSArray arrayWithObject:[NSNumber numberWithInt:0]];
+        [self.delegate sendMsgAsService:Pointer event:RotateEnd param:param from:self];
+        if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended");        
+        lastRotation = 0.0;            //Reset at the end
+        [self wipeMarkers];
+    }
+
     if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation");            
 }
 //----------------------------------------------------------------------------------------------------

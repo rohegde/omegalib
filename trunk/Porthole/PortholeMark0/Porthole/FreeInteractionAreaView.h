@@ -28,6 +28,7 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     UILabel *myLabel;
     stateIAV myState;
     CGFloat lastScale;
+    CGFloat lastRotation;
     
     PulseCircleView *markerView;
 
@@ -37,6 +38,7 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 
 @property (strong) PulseCircleView *markerView;
 @property (assign) CGFloat lastScale;
+@property (assign) CGFloat lastRotation;
 
 @property (unsafe_unretained) id <FreeInteractionAreaViewDelegate> delegate;
 
