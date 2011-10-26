@@ -66,8 +66,9 @@ public:
 
         if ( eventType == Event::RotateEnd )
         {
-            omsg( "rotation end" );
             rtClick = false;
+            genSimpleEvent( Event::Up , Service::Pointer , 0.0 , 0.0 );
+            omsg("Rotaton Up");
         }
 
 		else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
@@ -131,10 +132,12 @@ public:
             switch (eventType)
             {
                 case Event::Rotate: // param = angle
+                    
                     rtClick = true;
 
                     //Average out the rotation pts
-                    genSimpleEvent( Event::Rotate , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                    genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                    
                     //genSimpleEvent( Event::Rotate , Service::Pointer , pt2x , pt2y );
                     omsg("Rotate:\n");
                     ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
