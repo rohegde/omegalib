@@ -132,11 +132,14 @@ public:
             switch (eventType)
             {
                 case Event::Rotate: // param = angle
-                    
-                    rtClick = true;
-
-                    //Average out the rotation pts
-                    genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                    //This is the first rotate call so send a down
+                    if( rtClick == false )
+                    {
+                        rtClick = true;
+                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                    }
+                    //The rest can be simple moves with average out the rotation pts
+                    genSimpleEvent( Event::Move , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
                     
                     //genSimpleEvent( Event::Rotate , Service::Pointer , pt2x , pt2y );
                     omsg("Rotate:\n");
