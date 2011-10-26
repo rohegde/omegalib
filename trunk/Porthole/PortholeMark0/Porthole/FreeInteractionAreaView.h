@@ -30,6 +30,7 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     CGFloat lastScale;
     CGFloat lastRotation;
     
+    CGPoint prevPt;
     PulseCircleView *markerView;
     
     id <FreeInteractionAreaViewDelegate> __unsafe_unretained delegate;
@@ -68,3 +69,4 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event; 
 
 @end
+
