@@ -131,7 +131,7 @@ void OsgShape::initialize()
 
 	myOsg->setRootNode(createShapes());
 
-	getDefaultCamera()->focusOn(getScene(0), 0.2f);
+	//getDefaultCamera()->focusOn(getScene(0), 0.2f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
