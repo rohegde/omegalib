@@ -397,7 +397,7 @@ void NetService::parseDGram(int result)
 		// Parse message out of datagram
 		int lastIndex = 0;
 		int inputType = -1;
-		float params[16];
+		float params[32];
 		int currentParam = 0;
 
 		for(int i = 0; i < msgLen; i++ ){

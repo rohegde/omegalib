@@ -75,7 +75,7 @@ public:
 	// Allocator function
 	static DirectXInputService* New() { return new DirectXInputService(); }
 
-	enum ControllerType { Xbox360, PS3, Wiimote, Wii_Nunchuck };
+	enum ControllerType { Xbox360, PS3, Wiimote, Wii_Nunchuck, Wii_MotionPlus };
 public:
 	void setup(Setting& settings);
 	OMEGA_API virtual void initialize();

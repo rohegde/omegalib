@@ -415,30 +415,44 @@ void DirectXInputService::poll()
 
 			evt->setExtraDataType(Event::ExtraDataFloatArray);
 	
-			evt->setExtraDataFloat(0, ControllerType::Wiimote); 
-			evt->setExtraDataFloat(1, remote.Acceleration.X * 1000);
-			evt->setExtraDataFloat(2, remote.Acceleration.Y * 1000);
-			evt->setExtraDataFloat(3, remote.Acceleration.Z * 1000);
+			evt->setExtraDataFloat(0, ControllerType::Wiimote);
+			evt->setExtraDataFloat(1, remote.BatteryPercent);
 
-			evt->setExtraDataFloat(4, remote.Button.A());
-			evt->setExtraDataFloat(5, remote.Button.B());
-			evt->setExtraDataFloat(6, remote.Button.Plus());
-			evt->setExtraDataFloat(7, remote.Button.Home());
-			evt->setExtraDataFloat(8, remote.Button.Minus());
-			evt->setExtraDataFloat(9, remote.Button.One());
-			evt->setExtraDataFloat(10, remote.Button.Two());
-			evt->setExtraDataFloat(11, remote.Button.Up());
-			evt->setExtraDataFloat(12, remote.Button.Down());
-			evt->setExtraDataFloat(13, remote.Button.Left());
-			evt->setExtraDataFloat(14, remote.Button.Right());
+			evt->setExtraDataFloat(2, remote.Acceleration.X * 1000);
+			evt->setExtraDataFloat(3, remote.Acceleration.Y * 1000);
+			evt->setExtraDataFloat(4, remote.Acceleration.Z * 1000);
+
+			evt->setExtraDataFloat(5, remote.Button.A());
+			evt->setExtraDataFloat(6, remote.Button.B());
+			evt->setExtraDataFloat(7, remote.Button.Plus());
+			evt->setExtraDataFloat(8, remote.Button.Home());
+			evt->setExtraDataFloat(9, remote.Button.Minus());
+			evt->setExtraDataFloat(10, remote.Button.One());
+			evt->setExtraDataFloat(11, remote.Button.Two());
+			evt->setExtraDataFloat(12, remote.Button.Up());
+			evt->setExtraDataFloat(13, remote.Button.Down());
+			evt->setExtraDataFloat(14, remote.Button.Left());
+			evt->setExtraDataFloat(15, remote.Button.Right());
 			
-			evt->setExtraDataFloat(15, remote.ExtensionType);
-			evt->setExtraDataFloat(16, 0);
-			evt->setExtraDataFloat(17, 0);
-			evt->setExtraDataFloat(18, remote.MotionPlus.Raw.Yaw);
-			evt->setExtraDataFloat(19, remote.MotionPlus.Raw.Pitch);
-			evt->setExtraDataFloat(20, remote.MotionPlus.Raw.Roll);
-			evt->setExtraDataFloat(21, 0);
+			evt->setExtraDataFloat(16, remote.IR.Mode);
+			evt->setExtraDataFloat(17, remote.IR.Dot[0].bVisible);
+			evt->setExtraDataFloat(18, remote.IR.Dot[0].X * 1000);
+			evt->setExtraDataFloat(19, remote.IR.Dot[0].Y * 1000);
+			evt->setExtraDataFloat(20, remote.IR.Dot[1].bVisible);
+			evt->setExtraDataFloat(21, remote.IR.Dot[1].X * 1000);
+			evt->setExtraDataFloat(22, remote.IR.Dot[1].Y * 1000);
+			evt->setExtraDataFloat(23, remote.IR.Dot[2].bVisible);
+			evt->setExtraDataFloat(24, remote.IR.Dot[2].X * 1000);
+			evt->setExtraDataFloat(25, remote.IR.Dot[2].Y * 1000);
+			evt->setExtraDataFloat(26, remote.IR.Dot[3].bVisible);
+			evt->setExtraDataFloat(27, remote.IR.Dot[3].X * 1000);
+			evt->setExtraDataFloat(28, remote.IR.Dot[3].Y * 1000);
+			
+
+			// Moved to separate controller type 'Wii_MotionPlus'
+			//evt->setExtraDataFloat(28, remote.MotionPlus.Raw.Yaw);
+			//evt->setExtraDataFloat(29, remote.MotionPlus.Raw.Pitch);
+			//evt->setExtraDataFloat(30, remote.MotionPlus.Raw.Roll);
 		}
 		mysInstance->unlockEvents();
 
@@ -460,22 +474,20 @@ void DirectXInputService::poll()
 
 			evt->setExtraDataFloat(6, remote.Nunchuk.C);
 			evt->setExtraDataFloat(7, remote.Nunchuk.Z);
-			evt->setExtraDataFloat(8, 0);
-			evt->setExtraDataFloat(9, 0);
-			evt->setExtraDataFloat(10, 0);
-			evt->setExtraDataFloat(11, 0);
-			evt->setExtraDataFloat(12, 0);
-			evt->setExtraDataFloat(13, 0);
-			evt->setExtraDataFloat(14, 0);
-			
-			evt->setExtraDataFloat(15, 0);
-			evt->setExtraDataFloat(16, 0);
-			evt->setExtraDataFloat(17, 0);
-			evt->setExtraDataFloat(18, 0);
-			evt->setExtraDataFloat(19, 0);
-			evt->setExtraDataFloat(20, 0);
-			evt->setExtraDataFloat(21, 0);
+		}
 
+		if( remote.MotionPlusConnected() ){
+			mysInstance->lockEvents();
+
+			Event* evt = mysInstance->writeHead();
+			evt->reset(Event::Update, Service::Controller, wiimoteID);
+
+			evt->setExtraDataType(Event::ExtraDataFloatArray);
+	
+			evt->setExtraDataFloat(0, ControllerType::Wii_MotionPlus); 
+			evt->setExtraDataFloat(1, remote.MotionPlus.Raw.Yaw);
+			evt->setExtraDataFloat(2, remote.MotionPlus.Raw.Pitch);
+			evt->setExtraDataFloat(3, remote.MotionPlus.Raw.Roll);
 		}
 
 		if( remote.Button.Home() ){

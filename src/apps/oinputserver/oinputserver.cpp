@@ -233,11 +233,14 @@ public:
 			strcat( eventPacket, "," ); // Spacer
 
 			// See DirectXInputService.cpp for parameter details
-			// Analog sticks
-			for( int i = 0; i < 22; i++ ){
+			
+			for( int i = 0; i < evt.getExtraDataLength(); i++ ){
 				sprintf(floatChar,"%d", (int)evt.getExtraDataFloat(i));
 				strcat( eventPacket, floatChar );
-				strcat( eventPacket, "," ); // Spacer
+				if( i < evt.getExtraDataLength() - 1 )
+					strcat( eventPacket, "," ); // Spacer
+				else
+					strcat( eventPacket, " " ); // Spacer
 			}
 			return true;
 			break;
@@ -564,7 +567,7 @@ void main(int argc, char** argv)
 	bool testStream = false;
 	char* testPacket;
 
-	bool printOutput = false;
+	bool printOutput = true;
 
 	printf("OInputServer: Starting to listen for clients... \n");
 	while(true){
