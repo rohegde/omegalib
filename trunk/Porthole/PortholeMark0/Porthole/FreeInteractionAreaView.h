@@ -50,6 +50,8 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 
 -(void)wipeMarkers;
 
+-(void)genTCPMsgWithRecognizer:(UIGestureRecognizer *)recognizer Event:(int)event Param:(CGFloat)param;
+
 -(void)handlePinch:(UIPinchGestureRecognizer *) recognizer;
 -(void)handlePan:(UIPanGestureRecognizer *)recognizer; 
 -(void)handleRotation:(UIRotationGestureRecognizer *)recognizer; 

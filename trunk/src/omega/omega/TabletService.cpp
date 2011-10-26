@@ -46,6 +46,7 @@ public:
 	{
         ltClick = false;
         rtClick = false;
+        midClick = false;
         anchor[0] = -1;
         anchor[1] = -1;
 	}
@@ -66,14 +67,7 @@ public:
 
         float pt1x , pt1y , pt2x , pt2y;
 
-        if ( eventType == Event::RotateEnd )
-        {
-            rtClick = false;
-            genSimpleEvent( Event::Up , Service::Pointer , 0.0 , 0.0 );
-//            omsg("-----ROTATION DONE-----");
-        }
-
-		else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
+        if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down || eventType == Event::Select )
 		{
 			// Read x.
 			readString(myBuffer, BufferSize, ':');
@@ -87,34 +81,25 @@ public:
             {
 
                 case Event::Move:
-                    if ( ltClick == true )  //This is not the first touch down
+                    if( ( ltClick == true ) &&  withinAnchor( pt1x , pt1y) )//Left Click is est. and ess. the same pt.
                     {
-                        float tolerance = .1;
-                        if( withinAnchor( pt1x , pt1y , tolerance) ) //if ess. the same pt.
-                        {
-                            genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
-//                            ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
-                            anchor[0] = pt1x;
-                            anchor[1] = pt1y;
-                        }
-                        else // if not the same point
-                        {
-                            return; //do nothing cause this is a second touch
-                            //may turn into a gesture 
-                        }
+                        genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
+                        ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
+                        anchor[0] = pt1x;
+                        anchor[1] = pt1y;
                     }
-                    else                    //This is the first touch down
-                    {
-                        
-                    }
+                    else return; // if not the same point
+                    //do nothing cause this is a second touch
+                    //may turn into a gesture 
                     break;
+
                 case Event::Up:
                     ltClick = false;
                     rtClick = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
-//                    ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
+                    ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
                     break;
-            
+                
                 case Event::Down:
                     if ( ltClick == true )  //This is not the first touch down
                     {
@@ -124,11 +109,18 @@ public:
                     {
                         ltClick = true;                        
                         genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
-//                        ofmsg("******DOWN @ %1% , %2% ******" , %pt1x %pt1y);
+                        ofmsg("******DOWN @ %1% , %2% ******" , %pt1x %pt1y);
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
                         
                     }
+                    break;
+                    
+                case Event::Select:
+                    midClick = true;
+                    ofmsg("******SELECTED @ %1% , %2% ******" , %pt1x %pt1y);
+                    anchor[0] = pt1x;
+                    anchor[1] = pt1y;                                        
                     break;
 
                 default:
@@ -161,7 +153,7 @@ public:
                 case Event::Rotate: // param = angle
                     if( rtClick == false )  //This is the first rotate call so send a down
                     {
-//                        omsg("***** ROTATION START *****");
+                        omsg("***** ROTATION START *****");
                         rtClick = true;
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
@@ -169,27 +161,33 @@ public:
                     }
                     //The rest can be simple moves with average out the rotation pts
                     genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
-//                    omsg("ROTATE:");
-//                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
-//                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
-//                    ofmsg("\tAngle in rad : %1%" , %param );            
+                    omsg("ROTATE:");
+                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
+                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
+                    ofmsg("\tAngle in rad : %1%" , %param );            
                     break;
                     
                 case Event::Zoom:   // param = scale
-                    if( rtClick == false )  //This is the first rotate call so send a down
+                    if( midClick ) //If there is a middle click do a zoom
                     {
-                        //                        omsg("***** ROTATION START *****");
+                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+                    }
+                    else if( rtClick == false )  //This is the first rotate call so send a down
+                    {
+                        omsg("***** ROTATION START *****");
                         rtClick = true;
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
                         genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
                     }
-                    //The rest can be simple moves with average out the rotation pts
-                    genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
-//                    omsg("ZOOM:");
-//                    ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
-//                    ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
-//                    ofmsg("\tScale   : %1%" , %param );            
+                    else //The rest can be simple moves with average out the rotation pts
+                    {
+                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+//                        omsg("ZOOM:");
+//                        ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
+//                        ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
+//                        ofmsg("\tScale   : %1%" , %param );                                    
+                    }
                     break;
                     
                 default:
@@ -206,8 +204,10 @@ public:
 		}
 	}
 
-    bool withinAnchor( float x , float y , float tolerance )
+    bool withinAnchor( float x , float y )
     {
+        float tolerance = .1;
+
         if( x + tolerance > anchor[0] && x - tolerance < anchor[0] &&  
            y + tolerance > anchor[1] && y - tolerance < anchor[1]) return true;
         else return false;
@@ -219,7 +219,9 @@ public:
         Event::Flags myFlag;
         
         if( ltClick ) myFlag = Event::Left;
-        if( rtClick ) myFlag = Event::Right;
+        else if( rtClick ) myFlag = Event::Right;
+        else if( midClick) myFlag = Event::Middle;
+
         
 #ifdef OMEGA_USE_DISPLAY
          DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -268,6 +270,8 @@ private:
     Vector2f anchor;
     bool ltClick;
     bool rtClick;
+    bool midClick;
+    float scale;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
