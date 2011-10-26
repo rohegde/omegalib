@@ -145,6 +145,8 @@ Controller Type ID:
 
 3: Wii Nunchuck
 
+4: Wii MotionPlus
+
 
 === Xbox 360 Datagram ===
 
@@ -198,26 +200,27 @@ The Roll value range from -1000 to 1000. Where positive is tilting to up toward 
 
 Wiimote integration is provided by WiiYourself! by gl.tter
 
-'3:{Source ID},2,Acceleration X,Acceleration Y,Acceleration Z,A,B,Plus,Home,Minus,One,Two,Up,Down,Left,Right,Extension,0,0,Yaw,Pitch,Roll,0 '
+'3:{Source ID},2,Battery,Acceleration X,Acceleration Y,Acceleration Z,A,B,Plus,Home,Minus,One,Two,Up,Down,Left,Right,IR Mode,IR0 valid,IR0 X, IR0 Y,IR1 valid,IR1 X, IR1 Y,IR2 valid,IR2 X, IR2 Y,IR3 valid,IR3 X, IR3 Y '
+
+Battery is the approximate battery percent ranging from 0 to 100.
 
 Acceleration values are integers where 1000 is the force of gravity. X represents motion to the left and right (right+). Y represents motion forward and back (forward+). Z represents motion up and down (down+). Thus an acceleration value of 0,0,1000 represents a Wiimote on a flat surface with the buttons facing up.
 
 The button fields (A,B,Plus,Home,Minus,One,Two,Up,Down,Left,Right) will either be 0 (not pressed) or 1 (pressed).
 
-Extension represents what is currently plugged into the Wiimote extension slot:
- * 0: Nothing
- * 1: Nunchuk
- * 2: Classic Controller *(Not Currently Supported)*
- * 3: Guitar Hero 3/World Tour Guitar *(Not Currently Supported)*
- * 4: World Tour Drumset *(Not Currently Supported)*
- * 5: Balance Board *(Not Currently Supported)*
- * 6: Wii MotionPlus
+IR Mode - The type of data being sent:
+	* 0 - Off (No IR sources detected)
+	* 1 - Basic (Sending IR dot positions)
+	* 2 - Extended (Basic data + size) *Currently giving basic data only*
+	* 5 - Full (Extented data + blob bounding box) *Not currently supported*
+	
+Each of the IR data is the x,y position of the dot from 0 - 1000. A dot a 0,0 indicates the Wiimote sees an IR dot at the lower left corner of it's field of view - thus the Wiimote pointing to the upper right of the sensor bar. Likewise pointing to the lower left of the sensor bar would have a dot near 1000,1000.
 
-Pitch, Roll, and Yaw represent the acceleration data from the Wii MotionPlus extension.  *Further documentation pending*
+The IR valid fields are either 0 or 1. Each IR point should only be used when the corresponding valid flag is 1.
 
 === Wii Nunchuck Datagram ===
 
-'3:{Source ID},3,Analog X,Analog Y,Acceleration X,Acceleration Y,Acceleration Z,C,Z,0,0,0,0,0,0,0,0,0,0,0,0,0,0 '
+'3:{Source ID},3,Analog X,Analog Y,Acceleration X,Acceleration Y,Acceleration Z,C,Z '
 
 Analog stick values range from -1000 to 1000 where negative is left or up. Thus a value of 1000 would represent an analog stick moved fully to the right or down.
 
@@ -225,7 +228,13 @@ Acceleration values are integers where 1000 is the force of gravity. X represent
 
 The button fields (C,Z) will either be 0 (not pressed) or 1 (pressed).
 
-== NeuroSky ThinkGear Datagram ==
+=== Wii MotionPlus Datagram ===
+
+'3:{Source ID},4,Yaw,Pitch,Roll '
+
+Pitch, Roll, and Yaw represent the acceleration data from the Wii MotionPlus extension.
+
+=== NeuroSky ThinkGear Datagram ===
 
 '6:{Source ID},signal,attention,meditation,delta,lowAlpha,highAlpha,lowBeta,highBeta,lowGamma,highGamma,blink '
 

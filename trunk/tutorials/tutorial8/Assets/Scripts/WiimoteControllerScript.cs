@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class WiimoteControllerScript : OmegaControllerScript {
+	public int battery;
 	public Vector3 analogStick;
 	
 	public Vector3 accelerometerVal0;
@@ -29,6 +30,20 @@ public class WiimoteControllerScript : OmegaControllerScript {
 	public int C = 0;
 	public int Z = 0;
 	
+	public bool IR0_valid = false;
+	public bool IR1_valid = false;
+	public bool IR2_valid = false;
+	public bool IR3_valid = false;
+	
+	public Vector2 IR0;
+	public Vector2 IR1;
+	public Vector2 IR2;
+	public Vector2 IR3;
+	
+	public GameObject IR_DOT0;
+	public GameObject IR_DOT1;
+	public GameObject IR_DOT2;
+	public GameObject IR_DOT3;
 	// Use this for initialization
 	void Start () {
 		analogStick0Deadzone = new Vector3(10,10,10);
@@ -37,6 +52,8 @@ public class WiimoteControllerScript : OmegaControllerScript {
 	
 	// Update is called once per frame
 	void Update () {
+		battery = getBatteryPercent();
+		
 		analogStick = getAnalogStick0();
 		accelerometerVal0 = getAccelerometer0();
 		accelerometerVal1 = getAccelerometer1();
@@ -74,5 +91,38 @@ public class WiimoteControllerScript : OmegaControllerScript {
 		Left = getButton( Button.Left );
 		Right = getButton( Button.Right );
 		
+		IR0_valid = isIRDot0Valid();
+		IR1_valid = isIRDot1Valid();
+		IR2_valid = isIRDot2Valid();
+		IR3_valid = isIRDot3Valid();
+		
+		IR0 = getIRDot0() * 10;
+		IR1 = getIRDot1() * 10;
+		IR2 = getIRDot2() * 10;
+		IR3 = getIRDot3() * 10;
+		
+		if( IR0_valid ){
+			IR_DOT0.transform.position = new Vector3(IR0.x, IR0.y, 0);
+		} else {
+			IR_DOT0.transform.position = new Vector3(0, -10, 0);
+		}
+		
+		if( IR1_valid ){
+			IR_DOT1.transform.position = IR1;
+		} else {
+			IR_DOT1.transform.position = new Vector3(0, -10, 0);
+		}
+		
+		if( IR2_valid ){
+			IR_DOT2.transform.position = IR2;
+		} else {
+			IR_DOT2.transform.position = new Vector3(0, -10, 0);
+		}
+		
+		if( IR3_valid ){
+			IR_DOT3.transform.position = IR3;
+		} else {
+			IR_DOT3.transform.position = new Vector3(0, -10, 0);
+		}
 	}
 }

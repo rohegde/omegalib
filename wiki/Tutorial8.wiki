@@ -14,6 +14,45 @@ Currently Unity supports OmegaLib input through the following scripts:
 
 All of these scripts along with an example Unity project with different scenes for touch, mocap, controller, and stereoscopic examples can be found on the svn under 'trunk/tutorials/tutorial8'.
 
+
+=== Descriptions of the Unity Examples ===
+
+	
+==== OmegaLib Example - Kinect.unity ====
+	* Documentation pending
+
+==== OmegaLib Example - NeuroSky.unity ====
+	* The Cube object contains the NeuroSkyScript.
+	* You can see the incoming data in the inspector as all the available data are public variables.
+	* See the oinputserver protocol reference for a detailed decription of the variables.
+	
+==== OmegaLib Example - Stereoscopic.unity ====
+	* Uses the HeadTrackedStereo prefab to showcase InterlacedStereoScript.js.
+	* Also uses the MocapScript with Tracked Object ID 0 for head tracking.
+	* Demos the use of the HeadTrackedStereo to provide viewer-centered perspective in interlaced stereo vision.
+
+==== OmegaLib Example - Touch.unity ====
+	* Several cubes sitting on a plane will change color if they are touched.
+	* Clicking using the mouse will also send a touch event.
+
+==== OmegaLib Example - Vicon.unity ====
+	* This uses the MocapScript to move three objects around in 3D space.
+	* The camera uses Tracked Object ID 0 and move around with the stereo glasses with markers.
+	* The sphere moves based on Tracked Object ID 1 (Rigid bodies on a black frame labeled 1).
+	* The cube moves based on Tracked Object ID 2 (Rigid bodies on a black frame labeled 2).
+
+==== OmegaLib Example - Wiimote.unity ====
+	* The cube labeled Wiimote uses WiimoteControllerScript.cs.
+	* The cube will rotate based on WiiMotionPlus data (if available).
+	* The cube will also move based on the nunchuk analog stick (if available).
+	* The blue box will display white spheres representing the IR data.
+
+==== OmegaLib Example - Xbox Controller.unity ====
+	* This uses the XBox360ControllerScript to control a cube in the world called 'XCube'.
+	* The left analog stick will move the cube along the X-Z plane along the ground.
+	* The right analog stick will rotate the cube.
+	* The triggers will move the cube up/down along the Y axis.
+	
 === Setting up the Input Service ===
 
 InputServiceScript handles communication with OInputServer as well as streaming the apperperiate data to the other scripts listed above. The other scripts parse and store the data revalent to that input device.
