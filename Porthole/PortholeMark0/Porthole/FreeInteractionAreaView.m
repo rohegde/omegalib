@@ -54,14 +54,14 @@
         
         [self setupLabel];
         [self setupOverlay];
-
+        
         if( touch )[self setupMarkerWith:frame];
         if( mTouch )
         {
             lastScale = 1.0;
             lastRotation = 0.0;
         }
-            
+        
         myState = INIT;
     }
     return self;
@@ -74,7 +74,7 @@
     CGFloat desiredW = self.bounds.size.width;
     CGFloat desiredH = self.bounds.size.height * 0.1;    
     CGRect labelBounds = [ self localCoordCenterWith: desiredW and: desiredH];
-
+    
     
     UILabel *label = [[UILabel alloc] initWithFrame:labelBounds];
     //label.text = self.myName;    
@@ -87,7 +87,7 @@
     label.backgroundColor = [UIColor clearColor];
     [self addSubview:label];
     myLabel = label; 
-
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@
     overlayView.hidden = YES;
     [overlayView setNeedsDisplay];
     [self addSubview:overlayView];     
-
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@
 
 -(void) makeLabelWithString:(NSString*) msg
 {
-  myLabel.text = msg;
+    myLabel.text = msg;
 }
 
 - (void)drawInit
@@ -165,14 +165,14 @@
 {
     /*
      switch (myState) 
-    {
-        case INIT: [self drawInit]; break;
-        case CONNECTED: [self drawConnected]; break;
-        case NEW_MODEL: [self drawNewModel]; break;    
-        case SAME_MODEL: [self drawSameModel]; break;       
-        default: break;
-    }
-    */
+     {
+     case INIT: [self drawInit]; break;
+     case CONNECTED: [self drawConnected]; break;
+     case NEW_MODEL: [self drawNewModel]; break;    
+     case SAME_MODEL: [self drawSameModel]; break;       
+     default: break;
+     }
+     */
     
     if( self.touchAble && markerLoc != nil)
     {
@@ -180,7 +180,7 @@
         [self.markerView setNeedsDisplay];        
     }
     
-
+    
 }
 
 #
@@ -217,107 +217,107 @@
 #
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
- //
- //
- - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
- {
-     [super touchesBegan:touches withEvent:event ];        
+//
+//
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+{
+    [super touchesBegan:touches withEvent:event ];        
+    
+    //If touchable
+    if(!touchAble) return;
+    
+    if( debugTouch) NSLog(@"\tFIA : Touch : A touch has begun");
+    
+    //Grab the touch data
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([touch tapCount] == 2) 
+    {
+        
+    }    
+    else
+    {
+        //Grab the point
+        CGPoint point = [ touch locationInView:self];
+        
+        //Check touch has not moved out of area
+        if( ![self within:point.x and:point.y] ) return;
+        
+        //Populate markLoc - There is only one touch so this should be easy
+        [self markerLocAddOne:point];
+        
+        if( debugTouch) NSLog(@"\tFIA : Touch : Touch Began at : %.2f,%.2f", point.x , point.y );            
+        
+        //Place localized x and y location into NSArray
+        CGPoint localLoc = [self localLocOf:point];
+        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
+        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
+        NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
+        
+        //Send TCP msg 
+        [self.delegate sendMsgAsService:Pointer event:Down param:param from:self];
+        
+        if( myState == INIT ) myState = CONNECTED;
+        else if( myState == CONNECTED ) myState = NEW_MODEL;
+        else if( myState == NEW_MODEL ) myState = SAME_MODEL;
+        else if( myState == SAME_MODEL ) myState = INIT;
+        [self setNeedsDisplay];
+    }
+    [self setNeedsDisplay];
+    
+    
+    
+    
+}
+//----------------------------------------------------------------------------------------------------
 
-     //If touchable
-     if(!touchAble) return;
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event 
+{	
+    [super touchesBegan:touches withEvent:event ];        
+    
+    //If touchable
+    if(!touchAble) return;
+    
+    //Grab the touch data
+    UITouch *touch = [touches anyObject];
+    
+    if( touches.count > 2 )
+    {
+        if( debugTouch) NSLog(@"\tFIA : Touch : Touch moved : too many touches " );      
+        return;
+    }
+    
+    if( (touch.phase != UITouchPhaseBegan))
+    {
+        //Grab the point        
+        CGPoint point = [touch locationInView:self];
+        
+        //Check touch has not moved out of area
+        if( ![self within:point.x and:point.y] ) return;
+        //Populate markLoc array
+        [self markerLocAddOne:point];
+        
+        //Grab previous point data
+        CGPoint prevPoint = [touch previousLocationInView:self];
+        
+        if( debugTouch) NSLog(@"\tFIA : Touch : Touch moved : %.2f , %.2f from: %.2f , %.2f " , point.x , point.y , prevPoint.x , prevPoint.y );      
+        
+        //Place localized x and y location into NSArray
+        CGPoint localPoint = [self localLocOf:prevPoint];
+        NSNumber *localX = [NSNumber numberWithFloat:localPoint.x];
+        NSNumber *localY = [NSNumber numberWithFloat:localPoint.y]; 
+        NSArray *param = [NSArray arrayWithObjects:localX , localY , nil];             
+        
+        //Send TCP msg 
+        [self.delegate sendMsgAsService:Pointer event:Move param:param from:self];
+    }  
+    [self setNeedsDisplay];
+}
+//----------------------------------------------------------------------------------------------------
 
-     if( debugTouch) NSLog(@"\tFIA : Touch : A touch has begun");
- 
-     //Grab the touch data
-     UITouch *touch = [[event allTouches] anyObject];
-     if ([touch tapCount] == 2) 
-     {
- 
-     }    
-     else
-     {
-         //Grab the point
-         CGPoint point = [ touch locationInView:self];
-         
-         //Check touch has not moved out of area
-         if( ![self within:point.x and:point.y] ) return;
 
-         //Populate markLoc - There is only one touch so this should be easy
-         [self markerLocAddOne:point];
-         
-         if( debugTouch) NSLog(@"\tFIA : Touch : Touch Began at : %.2f,%.2f", point.x , point.y );            
-         
-         //Place localized x and y location into NSArray
-         CGPoint localLoc = [self localLocOf:point];
-         NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
-         NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
-         NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
-         
-         //Send TCP msg 
-         [self.delegate sendMsgAsService:Pointer event:Down param:param from:self];
-
-         if( myState == INIT ) myState = CONNECTED;
-         else if( myState == CONNECTED ) myState = NEW_MODEL;
-         else if( myState == NEW_MODEL ) myState = SAME_MODEL;
-         else if( myState == SAME_MODEL ) myState = INIT;
-         [self setNeedsDisplay];
-     }
-     [self setNeedsDisplay];
-
-     
-     
-     
- }
- //----------------------------------------------------------------------------------------------------
- 
- //////////////////////////////////////////////////////////////////////////////////////////////////////
- //
- //
- - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event 
- {	
-     [super touchesBegan:touches withEvent:event ];        
-     
-     //If touchable
-     if(!touchAble) return;
-
-     //Grab the touch data
-     UITouch *touch = [touches anyObject];
-     
-     if( touches.count > 2 )
-     {
-         if( debugTouch) NSLog(@"\tFIA : Touch : Touch moved : too many touches " );      
-         return;
-     }
-     
-     if( (touch.phase != UITouchPhaseBegan))
-     {
-         //Grab the point        
-         CGPoint point = [touch locationInView:self];
-
-         //Check touch has not moved out of area
-         if( ![self within:point.x and:point.y] ) return;
-         //Populate markLoc array
-         [self markerLocAddOne:point];
-         
-         //Grab previous point data
-         CGPoint prevPoint = [touch previousLocationInView:self];
-         
-         if( debugTouch) NSLog(@"\tFIA : Touch : Touch moved : %.2f , %.2f from: %.2f , %.2f " , point.x , point.y , prevPoint.x , prevPoint.y );      
-
-         //Place localized x and y location into NSArray
-         CGPoint localPoint = [self localLocOf:prevPoint];
-         NSNumber *localX = [NSNumber numberWithFloat:localPoint.x];
-         NSNumber *localY = [NSNumber numberWithFloat:localPoint.y]; 
-         NSArray *param = [NSArray arrayWithObjects:localX , localY , nil];             
-
-         //Send TCP msg 
-         [self.delegate sendMsgAsService:Pointer event:Move param:param from:self];
-     }  
-     [self setNeedsDisplay];
- }
- //----------------------------------------------------------------------------------------------------
- 
- 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -327,7 +327,7 @@
     
     //If touchable
     if(!touchAble) return;
-
+    
 	//Grab the touch data
     UITouch *touch = [[event allTouches] anyObject];
     
@@ -342,7 +342,7 @@
         
         //Check within
         if( ![self within:point.x and:point.y] ) return;
-
+        
         if( debugTouch ) NSLog(@"\tFIA : Touch : A single touch has ended");        
         
         //Place localized x and y location into NSArray
@@ -350,19 +350,19 @@
         NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
         NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
         NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
-
+        
         //Send TCP msg
         [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
-
+        
         //Clear the touches in the markLoc array
         [self wipeMarkers];
     }    
     [self setNeedsDisplay];
-
-
+    
+    
 }
 //----------------------------------------------------------------------------------------------------
- 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -370,7 +370,7 @@
 {
     [super touchesBegan:touches withEvent:event ];
     if( debugTouch && multiTouchAble ) NSLog(@"\tFIA : Touch : A touch event has been canceled");        
-
+    
     //Clear the touches in the markLoc array
     [self wipeMarkers];
     
@@ -392,7 +392,7 @@
     
     //clear any old marker list
     [self clearMarkerLoc];
-
+    
     switch (event) 
     {
         case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch"); break;
@@ -404,7 +404,7 @@
         case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap"); break;                        
         default:break;
     }
-
+    
     //Grab the x,y info for the two points into a mutableArray 
     int numTouches = recognizer.numberOfTouches;
     NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
@@ -432,7 +432,7 @@
         case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotate : Angle %.2f " , param);    
         default:break;
     }
-
+    
     //Add the scale to the NSMutableArray
     [paramMutable addObject:paramN];        
     
@@ -469,7 +469,7 @@
     }
     
     [self setNeedsDisplay];
-
+    
 }
 
 
@@ -519,7 +519,7 @@
 -(void)oneFingerTwoTaps:(UITapGestureRecognizer *) recognizer
 {
     [super oneFingerTwoTaps:recognizer];        
-
+    
     [self genTCPMsgWithRecognizer:recognizer Event:Select Param:recognizer.numberOfTapsRequired];
 }
 //----------------------------------------------------------------------------------------------------
@@ -530,7 +530,7 @@
 -(void)swipeUp:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeUp:recognizer];
-
+    
     [self genTCPMsgWithRecognizer:recognizer Event:MoveUp Param:recognizer.direction];
     
 }
@@ -554,7 +554,7 @@
 -(void)swipeRight:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeRight:recognizer];    
-
+    
     [self genTCPMsgWithRecognizer:recognizer Event:MoveRight Param:recognizer.direction];
     
 }

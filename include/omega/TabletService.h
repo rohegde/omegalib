@@ -32,26 +32,26 @@
 
 namespace omega {
 	class TabletServer;
-
+    
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class TabletService: public Service
 	{
-	friend class TabletConnection;
+        friend class TabletConnection;
 	public:
 		//! Allocator function (will be used to register the service inside SystemManager)
 		static TabletService* New() { return new TabletService(); }
-
+        
 	public:
 		TabletService();
 		~TabletService();
-
+        
 		virtual void setup(Setting& settings);
 		virtual void poll();
-
+        
 	private:
 		TabletServer* myServer;
         void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y);
-        bool withinAnchor( float x , float y );
+        bool withinAnchor( float x , float y , float tolerance );
 	};
 }; // namespace omega
 

@@ -31,9 +31,9 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     CGFloat lastRotation;
     
     PulseCircleView *markerView;
-
+    
     id <FreeInteractionAreaViewDelegate> __unsafe_unretained delegate;
-
+    
 }
 
 @property (strong) PulseCircleView *markerView;
