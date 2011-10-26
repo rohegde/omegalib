@@ -86,21 +86,20 @@ public:
                 case Event::Move:
                 
                     genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
-                    ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
                     break;
 
                 case Event::Up:
-                    
                     ltClick = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
-                    ofmsg("up @ %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("up @ %1% , %2% " , %pt1x %pt1y);
                     break;
             
                 case Event::Down:
                 
                     ltClick = true;
                     genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
-                    ofmsg("down @ %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("down @ %1% , %2% " , %pt1x %pt1y);
                     break;
 
                 default:
@@ -133,23 +132,23 @@ public:
                 case Event::Rotate: // param = angle
                     rtClick = true;
 
-                    //Do nothing for now.
-                    genSimpleEvent( Event::Rotate , Service::Pointer , pt1x , pt1y );
+                    //Average out the rotation pts
+                    genSimpleEvent( Event::Rotate , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
                     //genSimpleEvent( Event::Rotate , Service::Pointer , pt2x , pt2y );
-                    omsg("Rotate:\n");
-                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
-                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
-                    ofmsg("\tAngle in rad : %1%" , %param );            
+//                    omsg("Rotate:\n");
+//                    ofmsg("\tPoint 1 @      %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("\tPoint 2 @      %1% , %2% " , %pt2x %pt2y);
+//                    ofmsg("\tAngle in rad : %1%" , %param );            
                     break;
                     
                 case Event::Zoom:   // param = scale
                     //Do nothing for now.
-                    genSimpleEvent( Event::Zoom , Service::Pointer , pt1x , pt1y );
+                    //genSimpleEvent( Event::Zoom , Service::Pointer , pt1x , pt1y );
                     //genSimpleEvent( Event::Zoom , Service::Pointer , pt2x , pt2y );
-                    omsg("Zoomed:\n");
-                    ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
-                    ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
-                    ofmsg("\tScale   : %1%" , %param );            
+//                    omsg("Zoomed:\n");
+//                    ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
+//                    ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
+//                    ofmsg("\tScale   : %1%" , %param );            
                     break;
                     
                 default:
