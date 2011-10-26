@@ -56,6 +56,8 @@ namespace omega
 		//! Current view transform
 		AffineTransform3 myViewTransform;
 		AffineTransform3 myHeadTransform;
+		
+		Vector3f myReferencePosition;
 
 		//! Observer current position.
 		Vector3f myHeadPosition;
