@@ -170,7 +170,7 @@ public:
                 case Event::Zoom:   // param = scale
                     if( midClick ) //If there is a middle click do a zoom
                     {
-                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+                        genSimpleEvent( Event::Zoom , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
                     }
                     else if( rtClick == false )  //This is the first rotate call so send a down
                     {
@@ -178,11 +178,11 @@ public:
                         rtClick = true;
                         anchor[0] = pt1x;
                         anchor[1] = pt1y;                        
-                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                        genSimpleEvent( Event::Zoom , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
                     }
                     else //The rest can be simple moves with average out the rotation pts
                     {
-                        genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+                        genSimpleEvent( Event::Zoom , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
 //                        omsg("ZOOM:");
 //                        ofmsg("\tPoint 1 @ %1% , %2% " , %pt1x %pt1y);
 //                        ofmsg("\tPoint 2 @ %1% , %2% " , %pt2x %pt2y);
