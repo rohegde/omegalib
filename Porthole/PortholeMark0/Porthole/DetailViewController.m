@@ -326,10 +326,10 @@
      Create a pan gesture recognizer.
      We're only interested in receiving messages from this recognizer, and the view will take ownership of it, so we don't need to keep a reference to it.
      */
-	recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(handlePan:)];
-    [ (UIPanGestureRecognizer*) recognizer setMinimumNumberOfTouches:3];
-    [ (UIPanGestureRecognizer*) recognizer setMaximumNumberOfTouches:3];
-	[self.FIA addGestureRecognizer:recognizer];
+//	recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(handlePan:)];
+//    [ (UIPanGestureRecognizer*) recognizer setMinimumNumberOfTouches:3];
+//    [ (UIPanGestureRecognizer*) recognizer setMaximumNumberOfTouches:3];
+//	[self.FIA addGestureRecognizer:recognizer];
     
     // -----------------------------
     // One finger, two taps
@@ -342,34 +342,34 @@
 	// -----------------------------
 	// Swipe down
 	// -----------------------------
-    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeDown:)];
-    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionDown];
-    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
-    [self.FIA addGestureRecognizer:recognizer];
+//    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeDown:)];
+//    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionDown];
+//    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:3];
+//    [self.FIA addGestureRecognizer:recognizer];
     
     // -----------------------------
     // Swipe up
 	// -----------------------------
-    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeUp:)];
-    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
-    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
-    [self.FIA addGestureRecognizer:recognizer];
+//    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeUp:)];
+//    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
+//    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:3];
+//    [self.FIA addGestureRecognizer:recognizer];
     
 	// -----------------------------
 	// Swipe left
 	// -----------------------------
-    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeLeft:)];
-    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
-    [self.FIA addGestureRecognizer:recognizer];
+//    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeLeft:)];
+//    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:3];
+//    [self.FIA addGestureRecognizer:recognizer];
     
     // -----------------------------
 	// Swipe right
 	// -----------------------------
-    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeRight:)];
-    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
-    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:2];
-    [self.FIA addGestureRecognizer:recognizer];
+//    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeRight:)];
+//    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+//    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:1];
+//    [self.FIA addGestureRecognizer:recognizer];
     
 }
 //----------------------------------------------------------------------------------------------------

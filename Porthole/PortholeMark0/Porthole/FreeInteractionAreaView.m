@@ -333,7 +333,7 @@
     
     if ([touch tapCount] == 2) 
     {
-        if( debugTouch ) NSLog(@"\tFIA : Touch : A double touch has ended");
+        //if( debugTouch ) NSLog(@"\tFIA : Touch : A double touch has ended");
     }
     else
     {
@@ -385,25 +385,26 @@
 #
 #
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(void)handlePinch:(UIPinchGestureRecognizer *) recognizer
+-(void)genTCPMsgWithRecognizer:(UIGestureRecognizer *)recognizer Event:(int)event Param:(CGFloat)param
 {
-    [super handlePinch:recognizer];
-    
     //If multi-touch
     if(!multiTouchAble) return;
     
     //clear any old marker list
     [self clearMarkerLoc];
-    
-    //Calcuations the Scale
-    CGFloat scale = 1.0 - ( lastScale - recognizer.scale);
-    lastScale = scale;
-    NSNumber *scaleN = [NSNumber numberWithFloat:scale];
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch : Scale %.2f " , scale);    
-    
+
+    switch (event) 
+    {
+        case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch"); break;
+        case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation"); break;
+        case MoveUp:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Up"); break;            
+        case MoveDown:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Down"); break;            
+        case MoveLeft:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Left"); break;            
+        case MoveRight: if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Right"); break;                        
+        case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap"); break;                        
+        default:break;
+    }
+
     //Grab the x,y info for the two points into a mutableArray 
     int numTouches = recognizer.numberOfTouches;
     NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
@@ -423,25 +424,67 @@
         if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);   
     }
     
-    //Add the scale to the NSMutableArray
-    [paramMutable addObject:scaleN];        
-
-    //Transform the NSMutableArray to NSArray
-    NSArray *param = [NSArray arrayWithArray:paramMutable];
-
-    //Send TCP msg
-    [self.delegate sendMsgAsService:Pointer event:Zoom param:param from:self];
+    NSNumber *paramN = [NSNumber numberWithFloat:param];
     
-    [self setNeedsDisplay];
+    switch (event) 
+    {
+        case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch : Scale %.2f " , param);    
+        case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotate : Angle %.2f " , param);    
+        default:break;
+    }
+
+    //Add the scale to the NSMutableArray
+    [paramMutable addObject:paramN];        
+    
+    //Transform the NSMutableArray to NSArray
+    NSArray *paramArray = [NSArray arrayWithArray:paramMutable];
+    
+    //Send TCP msg
+    [self.delegate sendMsgAsService:Pointer event:event param:paramArray from:self];
     
     //If done pinching reset the last pinch scale
     if(recognizer.state ==UIGestureRecognizerStateEnded)
     {
-        if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinching ended");        
-        lastScale = 1.0;            //Reset at the end
+        switch (event) 
+        {
+            case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch ended"); break;
+            case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended"); break;
+            case MoveUp:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Up ended"); break;            
+            case MoveDown:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Down ended"); break;            
+            case MoveLeft:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Left ended"); break;            
+            case MoveRight: if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Right ended"); break;                        
+            case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap ended"); break;                        
+            default:break;
+        }
+        
+        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithInt:0] , [NSNumber numberWithInt:0] , nil];
+        [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
+        
+        //Reset at the end
+        lastScale = 1.0;  
+        lastRotation = 0.0;
         [self wipeMarkers];
+        [self setNeedsDisplay];
+        return;
     }
     
+    [self setNeedsDisplay];
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+-(void)handlePinch:(UIPinchGestureRecognizer *) recognizer
+{
+    [super handlePinch:recognizer];
+    
+    //Calcuations the Scale
+    CGFloat scale = 1.0 - ( lastScale - recognizer.scale);
+    lastScale = scale;
+    
+    [self genTCPMsgWithRecognizer:recognizer Event:Zoom Param:scale];
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -462,61 +505,11 @@
 {
     [super handleRotation:recognizer];        
     
-    //If multi-touch
-    if(!multiTouchAble) return;
-    
-    //If done pinching reset the last rotation scale send message done
-    if(recognizer.state ==UIGestureRecognizerStateEnded)
-    {
-        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithInt:0] , [NSNumber numberWithInt:0] , nil];
-        [self.delegate sendMsgAsService:Pointer event:RotateEnd param:param from:self];
-        if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended");        
-        lastRotation = 0.0;            //Reset at the end
-        [self wipeMarkers];
-        [self setNeedsDisplay];
-        return;
-    }
-    
-    //clear any old marker list
-    [self clearMarkerLoc];
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation");            
-
-    //Grab the x,y info for the two points into a mutableArray 
-    int numTouches = recognizer.numberOfTouches;
-    
-    if(numTouches < 2) return;
-    
-    NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
-    for ( int curPoint = 0 ; curPoint < numTouches ; curPoint++)
-    {
-        //Grab the point
-        CGPoint point = [recognizer locationOfTouch:curPoint inView:self]; 
-        //Check within
-        if( ![self within:point.x and:point.y] ) return;
-        [self markerLocAdd:point];
-        //Place localized x and y location into NSArray
-        CGPoint localLoc = [self localLocOf:point];
-        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
-        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
-        [paramMutable addObject:xLoc];
-        [paramMutable addObject:yLoc];        
-        if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);   
-    }
-
     //Grab the rotation
-    lastRotation = lastRotation + recognizer.rotation; 
+    lastRotation = lastRotation+recognizer.rotation; 
     if( debugTouch ) NSLog(@"\t\tAngle in radians : %.2f " , lastRotation);   
-
-    //Add the scale to the NSMutableArray
-    [paramMutable addObject:[NSNumber numberWithFloat:lastRotation]];        
-
-    //Transform the NSMutableArray to NSArray
-    NSArray *param = [NSArray arrayWithArray:paramMutable];
     
-    //Send TCP msg
-    [self.delegate sendMsgAsService:Pointer event:Rotate param:param from:self];
-    
-    [self setNeedsDisplay];
+    [self genTCPMsgWithRecognizer:recognizer Event:Rotate Param:lastRotation];
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -526,7 +519,8 @@
 -(void)oneFingerTwoTaps:(UITapGestureRecognizer *) recognizer
 {
     [super oneFingerTwoTaps:recognizer];        
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 taps");            
+
+    [self genTCPMsgWithRecognizer:recognizer Event:Select Param:recognizer.numberOfTapsRequired];
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -536,7 +530,9 @@
 -(void)swipeUp:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeUp:recognizer];
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe up");
+
+    [self genTCPMsgWithRecognizer:recognizer Event:MoveUp Param:recognizer.direction];
+    
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -546,7 +542,8 @@
 -(void)swipeDown:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeDown:recognizer];
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe down");        
+    
+    [self genTCPMsgWithRecognizer:recognizer Event:MoveDown Param:recognizer.direction];
     
 }
 //----------------------------------------------------------------------------------------------------
@@ -557,7 +554,9 @@
 -(void)swipeRight:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeRight:recognizer];    
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe right");        
+
+    [self genTCPMsgWithRecognizer:recognizer Event:MoveRight Param:recognizer.direction];
+    
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -567,7 +566,9 @@
 -(void)swipeLeft:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeLeft:recognizer];        
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe left");            
+    
+    [self genTCPMsgWithRecognizer:recognizer Event:MoveLeft Param:recognizer.direction];
+    
 }
 //----------------------------------------------------------------------------------------------------
 
