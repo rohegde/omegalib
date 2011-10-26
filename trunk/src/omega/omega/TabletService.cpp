@@ -43,7 +43,9 @@ public:
 	TabletConnection(asio::io_service& ioService, int id, TabletService* service): 
 		TcpConnection(ioService),
 			myId(id), myService(service)
-	{	}
+	{
+        clickDown = false;
+	}
 
 	virtual void handleData()
 	{
@@ -77,10 +79,12 @@ public:
                     //ofmsg("move @ %1% , %2% " , %pt1x %pt1y);
                     break;
                 case Event::Up:
+                    clickDown = false;
                     genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
                     //ofmsg("up @ %1% , %2% " , %pt1x %pt1y);
                     break;
                 case Event::Down:
+                    clickDown = true;
                     genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
                     //ofmsg("down @ %1% , %2% " , %pt1x %pt1y);
                     break;
@@ -125,8 +129,13 @@ public:
 
 	}
 
-    void genSimpleEvent( Event::Type evtType , Service::ServiceType servType , float x , float y)
+    void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
     {
+        
+        Event::Flags myFlag;
+        
+        if( clickDown ) myFlag = Event::Left;
+        
 #ifdef OMEGA_USE_DISPLAY
          DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
          Vector2i canvasSize = ds->getCanvasSize();
@@ -138,7 +147,7 @@ public:
          Event* evt = myService->writeHead();
          evt->reset(evtType, servType, myId);
          evt->setPosition(myTouchPosition[0], myTouchPosition[1]);
-         evt->setFlags(0);
+         evt->setFlags(myFlag);
          
          Ray ray = ds->getViewRay(myTouchPosition);
          evt->setExtraDataType(Event::ExtraDataVector3Array);
@@ -152,7 +161,7 @@ public:
         Event* evt = myService->writeHead();
         evt->reset(evtType, servType, myId);
         evt->setPosition( x , y );
-        evt->setFlags(0);
+        evt->setFlags(myFlag);
         
         myService->unlockEvents();
 #endif
@@ -171,6 +180,7 @@ private:
 	TabletService* myService;
 	int myId;
 	Vector2i myTouchPosition;
+    bool clickDown;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
