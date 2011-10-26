@@ -461,7 +461,8 @@
     
     //clear any old marker list
     [self clearMarkerLoc];
-    
+    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation");            
+
     //Grab the x,y info for the two points into a mutableArray 
     int numTouches = recognizer.numberOfTouches;
     NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
@@ -506,7 +507,6 @@
         [self wipeMarkers];
     }
 
-    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation");            
 }
 //----------------------------------------------------------------------------------------------------
 
