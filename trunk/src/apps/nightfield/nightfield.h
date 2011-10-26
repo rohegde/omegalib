@@ -46,6 +46,8 @@ public:
 	void setVisible(bool value);
 
 	void setup(const Setting& setting);
+	void update(const UpdateContext& context);
+	void handleEvent(const Event& evt);
 
 	SceneNode* getSceneNode() { return mySceneNode; }
 	SceneObject* getObject() { return myObject; }
@@ -55,6 +57,12 @@ public:
 	bool isEnabled() { return myEnabled; }
 
 	bool isInteractive() { return myInteractive; }
+	bool isRotating() { return myRotating; }
+	void setRotating(bool value) { myRotating = value; }
+
+	void select();
+	void deselect();
+	bool isSelected() { return mySelected; }
 
 private:
 	EngineServer* myServer;
@@ -66,6 +74,9 @@ private:
 	bool myVisible;
 	bool myEnabled;
 	bool myInteractive;
+	bool mySelected;
+	bool myRotating;
+	float myRotationSpeed;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +96,6 @@ private:
 	ReferenceBox* myReferenceBox;
 	SceneNode* mySceneNode;
 	Flock* myFlock;
-	BoundingSphere* mySelectionSphere;
 	DefaultMouseInteractor* myMouseInteractor;
 
 	AffectorEntity* mySelectedEntity;
