@@ -53,5 +53,6 @@
 #include "omega/SystemManager.h"
 #include "omega/Texture.h"
 #include "omega/TypeInfo.h"
+#include "omega/xml/tinyxml.h"
 
 #endif

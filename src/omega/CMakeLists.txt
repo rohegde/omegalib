@@ -58,6 +58,12 @@ SET( srcs
 		#omega::script
 		omega/script/ScriptInterpreter.cpp
 		omega/script/ScriptModule.cpp
+		
+		#omega::xml
+		omega/xml/tinystr.cpp
+		omega/xml/tinyxml.cpp
+		omega/xml/tinyxmlerror.cpp
+		omega/xml/tinyxmlparser.cpp
         )
 		
 ###################################################################################################
@@ -96,6 +102,10 @@ SET( headers
 		#omega::script
 		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptModule.h
+		
+		#omega::xml
+		${OmegaLib_SOURCE_DIR}/include/omega/xml/tinyxml.h
+		${OmegaLib_SOURCE_DIR}/include/omega/xml/tinystr.h
         ) 
         
 ###################################################################################################

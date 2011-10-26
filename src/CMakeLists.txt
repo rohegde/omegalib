@@ -213,6 +213,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	if(OMEGA_BUILD_APPS)
 		add_subdirectory(apps/osg/osgshape)
 		add_subdirectory(apps/osg/osgviewer)
+		add_subdirectory(apps/osg/hplviewer)
 	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_OSG_LIB)
 

@@ -100,10 +100,13 @@ AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	myObject(object),
 	myServer(server),
 	myVisible(false),
-	myEnabled(true)
+	myEnabled(true),
+	mySelected(false),
+	myRotating(false),
+	myRotationSpeed(0.2f)
 {
 	mySelectionSphere = new BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setDrawOnSelected(false);
 	mySelectionSphere->setVisible(false);
 
 	mySceneNode = new SceneNode(server);
@@ -112,6 +115,7 @@ AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	mySceneNode->addObject(myObject);
 	mySceneNode->addObject(mySelectionSphere);
 
+	// Create the rendering effect for this entity.
 	MultipassEffect* mpfx = new MultipassEffect();
 	mySceneNode->setEffect(mpfx);
 
@@ -164,6 +168,7 @@ void AffectorEntity::setup(const Setting& setting)
 	if(setting.exists("interactive"))
 	{
 		myInteractive = setting["interactive"];
+		myRotating = myInteractive;
 	}
 
 	if(!myInteractive) mySceneNode->setSelectable(false);
@@ -188,6 +193,22 @@ void AffectorEntity::resetTransform()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::select()
+{
+	mySelected = true;
+	mySelectionSphere->setVisible(true);
+	mySceneNode->setSelected(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::deselect()
+{
+	mySelected = false;
+	mySelectionSphere->setVisible(false);
+	mySceneNode->setSelected(false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void AffectorEntity::updateFlockAffector(FlockAffector* af)
 {
 	const Sphere& bs = mySceneNode->getBoundingSphere();
@@ -196,6 +217,39 @@ void AffectorEntity::updateFlockAffector(FlockAffector* af)
 	af->z = bs.getCenter().z();
 	af->rx = bs.getRadius();
 	af->f1 = 2.0f;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::update(const UpdateContext& context)
+{
+	if(myRotating)
+	{
+		mySceneNode->yaw(myRotationSpeed * context.dt);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void AffectorEntity::handleEvent(const Event& evt)
+{
+	if( evt.getServiceType() == Service::Keyboard )
+    {
+        if(evt.isKeyDown('i')) 
+        {
+			Vector3f p = mySceneNode->getPosition();
+			p[2] += 0.1f;
+			mySceneNode->setPosition(p);
+        }
+        else if(evt.isKeyDown('k')) 
+        {
+			Vector3f p = mySceneNode->getPosition();
+			p[2] -= 0.1f;
+			mySceneNode->setPosition(p);
+        }
+		else if(evt.isKeyDown('l')) 
+        {
+			myRotating = !myRotating;
+        }
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,15 +272,10 @@ void Nightfield::initialize()
 
 	myFlock = new Flock();
 	
-	mySelectionSphere = new BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(true);
-	mySelectionSphere->setVisible(false);
-
 	scene->addChild(mySceneNode);
 	mySceneNode->addObject(myFlock);
 	myFlock->setup(&mySettings);
 	myFlock->initialize();
-	mySceneNode->addObject(mySelectionSphere);
 
 	myMouseInteractor = new DefaultMouseInteractor();
 	addActor(myMouseInteractor);
@@ -290,6 +339,7 @@ void Nightfield::update(const UpdateContext& context)
 	int i = 0;
 	foreach(AffectorEntity* ae, myEntities)
 	{
+		ae->update(context);
 		if(ae->isEnabled())
 		{
 			FlockAffector* fa = myFlock->getAffector(i);
@@ -322,6 +372,12 @@ void Nightfield::handleEvent(const Event& evt)
 			myFlock->getSettings()->center = newCenter;
 		}
 	}
+	if(mySelectedEntity != NULL)
+	{
+		mySelectedEntity->handleEvent(evt);
+		// When an entity is selected, the flock centers itself on it.
+		myFlock->getSettings()->center = mySelectedEntity->getSceneNode()->getPosition();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -348,19 +404,19 @@ void Nightfield::updateSelection(const Ray& ray)
 		{
 			if(mySelectedEntity != NULL)
 			{
-				mySelectedEntity->getSceneNode()->setSelected(false);
+				mySelectedEntity->deselect();
 			}
 			// The selected entity changed.
 			myMouseInteractor->setSceneNode(sn);
-			sn->setSelected(true);
 			mySelectedEntity = e;
+			mySelectedEntity->select();
 		}
 	}
 	else
 	{
 		if(mySelectedEntity != NULL)
 		{
-			mySelectedEntity->getSceneNode()->setSelected(false);
+			mySelectedEntity->deselect();
 			mySelectedEntity = NULL;
 			myMouseInteractor->setSceneNode(NULL);
 		}
