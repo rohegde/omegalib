@@ -51,6 +51,7 @@ namespace omega {
 	private:
 		TabletServer* myServer;
         void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y);
+        void genZoomEvent( Service::ServiceType servType , float x , float y , float scale);
         bool withinAnchor( float x , float y );
 	};
 }; // namespace omega
