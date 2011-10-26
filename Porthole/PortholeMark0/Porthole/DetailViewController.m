@@ -38,6 +38,11 @@
     {
         //If the app is suppose to connect to a server, send the TCP Msg 
         if( connectServer )[self.connection sendEventService:serviceType event:eventType param:eventParam];
+//        for( int i = 0 ; i < eventParam.count ; i++)
+//            {
+//                NSNumber* ele = [eventParam objectAtIndex:i];
+//                NSLog(@"val %d: %f" , i , ele.floatValue);
+//            }        
 	}    
 }
 - (void) sendMsgAsService:(int)service event:(int)event sid:(int)srcId value:(float)val from:(FreeInteractionAreaView *)requestor

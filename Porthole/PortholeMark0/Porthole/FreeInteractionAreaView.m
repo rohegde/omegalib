@@ -60,6 +60,7 @@
         {
             lastScale = 1.0;
             lastRotation = 0.0;
+            prevPt = CGPointMake(0.0 , 0.0);
         }
         
         myState = INIT;
@@ -392,6 +393,33 @@
     
     //clear any old marker list
     [self clearMarkerLoc];
+  
+    //If done pinching reset the last pinch scale
+    if(recognizer.state ==UIGestureRecognizerStateEnded)
+    {
+        switch (event) 
+        {
+            case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch ended"); break;
+            case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended"); break;
+            case MoveUp:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Up ended"); break;            
+            case MoveDown:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Down ended"); break;            
+            case MoveLeft:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Left ended"); break;            
+            case MoveRight: if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Right ended"); break;                        
+            case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap ended"); break;                        
+            default:break;
+        }
+        if( debugTouch ) NSLog(@"\%f , %f " , prevPt.x , prevPt.y);   
+
+        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithFloat:prevPt.x] , [NSNumber numberWithFloat:prevPt.y] , nil];
+        [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
+        
+        //Reset at the end
+        lastScale = 1.0;  
+        lastRotation = 0.0;
+        [self wipeMarkers];
+        [self setNeedsDisplay];
+        return;
+    }
     
     switch (event) 
     {
@@ -412,6 +440,7 @@
     {
         //Grab the point
         CGPoint point = [recognizer locationOfTouch:curPoint inView:self]; 
+        
         //Check within
         if( ![self within:point.x and:point.y] ) return;
         [self markerLocAdd:point];
@@ -421,7 +450,9 @@
         NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
         [paramMutable addObject:xLoc];
         [paramMutable addObject:yLoc];        
-        if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);   
+        if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);  
+        prevPt = localLoc;
+
     }
     
     NSNumber *paramN = [NSNumber numberWithFloat:param];
@@ -441,32 +472,6 @@
     
     //Send TCP msg
     [self.delegate sendMsgAsService:Pointer event:event param:paramArray from:self];
-    
-    //If done pinching reset the last pinch scale
-    if(recognizer.state ==UIGestureRecognizerStateEnded)
-    {
-        switch (event) 
-        {
-            case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch ended"); break;
-            case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation ended"); break;
-            case MoveUp:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Up ended"); break;            
-            case MoveDown:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Down ended"); break;            
-            case MoveLeft:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Left ended"); break;            
-            case MoveRight: if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Right ended"); break;                        
-            case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap ended"); break;                        
-            default:break;
-        }
-        
-        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithInt:0] , [NSNumber numberWithInt:0] , nil];
-        [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
-        
-        //Reset at the end
-        lastScale = 1.0;  
-        lastRotation = 0.0;
-        [self wipeMarkers];
-        [self setNeedsDisplay];
-        return;
-    }
     
     [self setNeedsDisplay];
     

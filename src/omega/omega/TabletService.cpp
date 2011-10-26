@@ -112,7 +112,7 @@ namespace omega {
                         ltClick = false;
                         rtClick = false;
                         genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
-                        //                    ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
+//                                            ofmsg("-----UP @ %1% , %2% -----" , %pt1x %pt1y);
                         break;
                         
                     case Event::Down:
