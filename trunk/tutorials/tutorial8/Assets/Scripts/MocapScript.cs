@@ -50,16 +50,16 @@ public class MocapScript : MonoBehaviour {
 			float y = float.Parse(words[3]);
 			float z = float.Parse(words[4]);
 			
-			float xR = float.Parse(words[2]);
-			float yR = float.Parse(words[3]);
-			float zR = float.Parse(words[4]);
-			float wR = float.Parse(words[5]);
+			float xR = float.Parse(words[5]);
+			float yR = float.Parse(words[6]);
+			float zR = float.Parse(words[7]);
+			float wR = float.Parse(words[8]);
 			
 			rawMocapPosition = new Vector3( x, y, z );
 			rawMocapOrientation = new Quaternion( xR, yR, zR, wR );
 			
 			mocapPosition = new Vector3( x, y, -z );
-			mocapOrientation = new Quaternion( xR, yR, zR, wR );
+			mocapOrientation = new Quaternion( -xR, -yR, zR, wR );
 		}
 	}
 	
