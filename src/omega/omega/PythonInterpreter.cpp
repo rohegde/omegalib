@@ -28,15 +28,11 @@
 #include "omega/StringUtils.h"
 #include "omega/DataManager.h"
 
-#include "omega/script/PythonInterpreter.h"
-#include "omega/script/PythonModule.h"
+#include "omega/PythonInterpreter.h"
 
 #include "PythonInterpreterWrapper.h"
 
 using namespace omega;
-using namespace omega::script;
-
-OMEGA_DEFINE_TYPE(PythonInterpreter, ScriptInterpreter);
 
 //struct vtkPythonMessage
 //{
@@ -102,11 +98,11 @@ void PythonInterpreter::initialize(const char* programName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::addModule(const char* name, ScriptModule* module)
-{
-	PythonModule* pm = (PythonModule*)module;
-	Py_InitModule(name, pm->getDefs());
-}
+//void PythonInterpreter::addModule(const char* name, ScriptModule* module)
+//{
+//	PythonModule* pm = (PythonModule*)module;
+//	Py_InitModule(name, pm->getDefs());
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
@@ -130,7 +126,7 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			char* fmt = const_cast<char*>(format);
 			if(!PyArg_Parse(result, format, va_arg(args, void*)))
 			{
-				ofwarn("PythonInterpreter: result of statement '%1%' cannot be parsed by format string '%2%'", %str %fmt);
+				ofwarn("!PythonInterpreter: result of statement '%1%' cannot be parsed by format string '%2%'", %str %fmt);
 			}
 
 			va_end(args);
@@ -151,6 +147,6 @@ void PythonInterpreter::runFile(const String& filename)
 	}
 	else
 	{
-		ofwarn("PythonInterpreter: script not found: %1%", %filename);
+		ofwarn("!PythonInterpreter: script not found: %1%", %filename);
 	}
 }

@@ -39,6 +39,7 @@ namespace omega
 	class ServiceManager;
 	class Service;
 	class DataManager;
+	class PythonInterpreter;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// The SystemManager class is the root object of the omegalib architecture.
@@ -91,6 +92,8 @@ namespace omega
 
 		bool isInitialized();
 
+		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
+
 	private:
 		SystemManager();
 		~SystemManager();
@@ -112,6 +115,7 @@ namespace omega
 		Application*	myApplication;
 		bool			myExitRequested;
 		String			myExitReason;
+		PythonInterpreter* myInterpreter;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

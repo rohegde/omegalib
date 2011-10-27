@@ -33,6 +33,10 @@
 #include "omega/HeartbeatService.h"
 #include "omega/TabletService.h"
 
+#ifdef OMEGA_USE_PYTHON
+	#include "omega/PythonInterpreter.h"
+#endif
+
 // Display system
 #ifdef OMEGA_USE_DISPLAY
 	#include "omega/DisplaySystem.h"
@@ -103,11 +107,16 @@ SystemManager::SystemManager():
 	myIsInitialized(false)
 {
 	myDataManager = new DataManager();
+#ifdef OMEGA_USE_PYTHON
+	myInterpreter = new PythonInterpreter();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::~SystemManager()
 {
+	delete myInterpreter;
+	myInterpreter = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

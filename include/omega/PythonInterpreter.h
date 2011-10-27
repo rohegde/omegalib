@@ -24,10 +24,28 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/script/ScriptInterpreter.h"
+#ifndef __PYTHON_INTERPRETER_H__
+#define __PYTHON_INTERPRETER_H__
 
-using namespace omega::script;
+#include "omega/osystem.h"
 
-OMEGA_DEFINE_TYPE(ScriptInterpreter, OmegaObject);
+namespace omega { 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class PythonInterpreter
+	{
+	public:
+	  PythonInterpreter();
+	  ~PythonInterpreter();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+	  virtual void initialize(const char* programName);
+	  //virtual void addModule(const char* name, ScriptModule* methods);
+ 	  virtual void eval(const String& script, const char* format = NULL, ...);
+	  virtual void runFile(const String& filename);
+	  virtual void addPath(const char*);
+
+	private:
+	  char* myExecutablePath;
+	};
+};
+
+#endif
