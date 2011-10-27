@@ -38,8 +38,8 @@ public abstract class TouchScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		touchlist = new Hashtable();
-		if( gameObject.tag != "TouchListener" ){
-			Debug.Log("Warning: " + gameObject.name + " has a TouchScript component, but is not tagged as 'TouchListener'.");
+		if( gameObject.tag != "OmegaListener" ){
+			gameObject.tag = "OmegaListener";
 		}
 		StartDerived();
 	}
