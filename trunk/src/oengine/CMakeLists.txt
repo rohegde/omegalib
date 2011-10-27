@@ -29,6 +29,9 @@
 # Compile definitions
 add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
 
+set(OENGINE_USE_OBJ false CACHE BOOL "Enable support for obj format inside oengine.")
+set(OENGINE_USE_PLY true CACHE BOOL "Enable support for ply format inside oengine.")
+
 ###################################################################################################
 # Source files
 set( srcs 
@@ -40,7 +43,6 @@ set( srcs
 		oengine/EngineServer.cpp
 		oengine/Font.cpp
 		oengine/OverlayRenderable.cpp
-		#oengine/ObjDataReader.cpp
 		oengine/Pointer.cpp
 		oengine/Renderer.cpp
 		oengine/Effect.cpp
@@ -60,17 +62,10 @@ set( srcs
 		oengine/SceneQuery.cpp
 		oengine/SceneNode.cpp
 		oengine/SceneRenderable.cpp
-		oengine/PlyDataReader.cpp
-		oengine/plyfile.cpp
 		oengine/ReferenceBox.cpp
 		oengine/Renderable.cpp
 		oengine/TransparentRenderPass.cpp
 		oengine/UiRenderPass.cpp
-		#oengine/obj/obj.cpp
-		#oengine/obj/obj.hpp
-		#oengine/obj/obj_config.hpp
-		#oengine/obj/obj_parser.cpp
-		#oengine/obj/obj_parser.hpp
 		
 		# omega::ui
 		oengine/ui/AbstractButton.cpp
@@ -93,7 +88,6 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/Box.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Console.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Font.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ObjDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ImageUtils.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/EngineClient.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/EngineServer.h
@@ -117,7 +111,6 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneQuery.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneNode.h
-		#${OmegaLib_SOURCE_DIR}/include/oengine/ParticleSystem.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ply.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ReferenceBox.h
@@ -144,6 +137,29 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h
         ) 
+
+###################################################################################################
+if(OENGINE_USE_OBJ)
+	set( srcs ${srcs}
+		oengine/ObjDataReader.cpp
+		oengine/obj/obj.cpp
+		oengine/obj/obj.hpp
+		oengine/obj/obj_config.hpp
+		oengine/obj/obj_parser.cpp
+		oengine/obj/obj_parser.hpp	)
+	set( headers ${headers}
+		${OmegaLib_SOURCE_DIR}/include/oengine/ObjDataReader.h)
+	add_definitions(-DOENGINE_USE_OBJ)
+endif(OENGINE_USE_OBJ)
+
+if(OENGINE_USE_PLY)
+	set( srcs ${srcs}
+		oengine/PlyDataReader.cpp
+		oengine/plyfile.cpp)
+	set( headers ${headers}
+		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h)
+	add_definitions(-DOENGINE_USE_PLY)
+endif(OENGINE_USE_PLY)
 
 ###################################################################################################
 source_group(oengine REGULAR_EXPRESSION oengine/)		

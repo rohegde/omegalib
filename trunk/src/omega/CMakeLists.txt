@@ -55,10 +55,6 @@ SET( srcs
 		omega/Tcp.cpp
 		omega/TypeInfo.cpp
 		
-		#omega::script
-		omega/script/ScriptInterpreter.cpp
-		omega/script/ScriptModule.cpp
-		
 		#omega::xml
 		omega/xml/tinystr.cpp
 		omega/xml/tinyxml.cpp
@@ -99,10 +95,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/math/AlignedBox.h
         ${OmegaLib_SOURCE_DIR}/include/omega/math/PlaneBoundedVolume.h
 		
-		#omega::script
-		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptInterpreter.h
-		${OmegaLib_SOURCE_DIR}/include/omega/script/ScriptModule.h
-		
 		#omega::xml
 		${OmegaLib_SOURCE_DIR}/include/omega/xml/tinyxml.h
 		${OmegaLib_SOURCE_DIR}/include/omega/xml/tinystr.h
@@ -112,18 +104,14 @@ SET( headers
 # Enable / disable specific modules within omegalib
 if(OMEGA_USE_PYTHON)
 	set( headers ${headers}
-		omega/script/PythonInterpreterWrapper.h
-		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonInterpreter.h
-		${OmegaLib_SOURCE_DIR}/include/omega/script/PythonModule.h)
+		omega/PythonInterpreterWrapper.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h)
 
-			
 	set( srcs ${srcs}
-		omega/script/PythonInterpreter.cpp
-		omega/script/PythonModule.cpp)
+		omega/PythonInterpreter.cpp)
 endif(OMEGA_USE_PYTHON)
 
 if(OMEGA_USE_DISPLAY)
-	#add_definitions( -DOMEGA_USE_DISPLAY)
 	set( srcs ${srcs}
 			omega/Application.cpp
 			omega/GpuBuffer.cpp
@@ -147,7 +135,6 @@ if(OMEGA_USE_DISPLAY)
 	
 	# Equalizer Display Module
 	if(OMEGA_USE_DISPLAY_EQUALIZER)
-		#add_definitions( -DOMEGA_USE_DISPLAY_EQUALIZER)
 		set( srcs ${srcs} 
 			omega/EqualizerDisplaySystem.cpp
 			omega/eqinternal/ChannelImpl.cpp
@@ -166,7 +153,6 @@ if(OMEGA_USE_DISPLAY)
 	if( WIN32 )
 		set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
 		if(OMEGA_USE_DISPLAY_GLUT)
-			#add_definitions( -DOMEGA_USE_DISPLAY_GLUT)
 			set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
 			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
 		endif(OMEGA_USE_DISPLAY_GLUT)
@@ -180,7 +166,6 @@ if(OMEGA_USE_DISPLAY)
 			find_package(OpenCL REQUIRED)
 		endif(NOT WIN32)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
-		#add_definitions( -DOMEGA_USE_OPENCL)
 	endif(OMEGA_USE_OPENCL)
 
 	# Mouse input support	
@@ -188,7 +173,6 @@ if(OMEGA_USE_DISPLAY)
 		if(OMEGA_USE_MOUSE)
 			set( srcs	 ${srcs} omega/MouseService.cpp )
 			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
-			#add_definitions( -DOMEGA_USE_MOUSE)
 		endif(OMEGA_USE_MOUSE)
 		
 	# Keyboard input support	
@@ -196,7 +180,6 @@ if(OMEGA_USE_DISPLAY)
 	if(OMEGA_USE_KEYBOARD)
 		set( srcs	 ${srcs} omega/KeyboardService.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h )
-		#add_definitions( -DOMEGA_USE_KEYBOARD)
 	endif(OMEGA_USE_KEYBOARD)
 endif(OMEGA_USE_DISPLAY)
 
@@ -205,7 +188,6 @@ set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
 if(OMEGA_USE_NETSERVICE)
 	set( srcs	 ${srcs} omega/NetService.cpp )
 	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NetService.h )
-	#add_definitions( -DOMEGA_USE_NETSERVICE)
 endif(OMEGA_USE_NETSERVICE)
 
 # OpenNI (Kinect) support
@@ -213,7 +195,6 @@ set(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support (OpenNI libr
 if(OMEGA_USE_OPENNI)
 	set( srcs	 ${srcs} omega/OpenNIService.cpp )
 	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OpenNIService.h )
-	#ADD_DEFINITIONS( -DOMEGA_USE_OPENNI)
 	if(WIN32)
 		include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
 	else(WIN32)
@@ -228,7 +209,6 @@ if(WIN32)
 	if(OMEGA_USE_NATURAL_POINT)
 		set( srcs	 ${srcs} omega/NaturalPointService.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NaturalPointService.h )
-		#add_definitions( -DOMEGA_USE_NATURAL_POINT)
 	ENDIF(OMEGA_USE_NATURAL_POINT)
 endif(WIN32)
 
@@ -238,7 +218,6 @@ if(WIN32)
 	if(OMEGA_USE_OPTITRACK)
 		set( srcs	 ${srcs} omega/OptiTrackService.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OptiTrackService.h )
-		#add_definitions( -DOMEGA_USE_OPTITRACK)
 	endif(OMEGA_USE_OPTITRACK)
 endif(WIN32)
 
@@ -248,7 +227,6 @@ if(WIN32)
 	if(OMEGA_USE_PQLABS)
 		set( srcs	 ${srcs} omega/PQService.cpp )
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/PQService.h )
-		#add_definitions( -DOMEGA_USE_PQLABS)
 	endif(OMEGA_USE_PQLABS)
 endif(WIN32)
 
@@ -262,7 +240,6 @@ if(WIN32)
 								${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h 
 								${OmegaLib_SOURCE_DIR}/include/omega/wiimote_common.h 
 								${OmegaLib_SOURCE_DIR}/include/omega/wiimote_state.h )
-		#add_definitions( -DOMEGA_USE_DIRECTINPUT)
 		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
 							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h 
 							 ${OmegaLib_SOURCE_DIR}/include/omega/wiimote_common.h 
@@ -284,7 +261,6 @@ if(WIN32)
 					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Types.h
 					 
 			)
-		#add_definitions( -DOMEGA_USE_VRPN)
 		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
 							 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn
 			)
@@ -299,7 +275,6 @@ if(WIN32)
 		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/ThinkGearService.h
 					 ${OmegaLib_SOURCE_DIR}/include/omega/thinkgear.h
 			)
-		#add_definitions( -OMEGA_USE_THINKGEAR)
 		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/ThinkGearService.h
 			)
 	endif(OMEGA_USE_THINKGEAR)
@@ -411,6 +386,10 @@ if(OMEGA_USE_THINKGEAR)
 		configure_file(${EXT_LIB_DIR}/thinkgear.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}COPYONLY)
 	endif(WIN32)
 endif(OMEGA_USE_THINKGEAR)
+
+if(OMEGA_USE_PYTHON)
+	target_link_libraries(omega ${PYTHON_LIBRARIES})
+endif(OMEGA_USE_PYTHON)
 
 ###################################################################################################
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)

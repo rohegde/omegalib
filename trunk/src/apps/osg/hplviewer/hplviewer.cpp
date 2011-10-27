@@ -27,6 +27,7 @@
 #include <osgUtil/Optimizer>
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
+#include <osg/MatrixTransform>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -98,16 +99,19 @@ osg::Node* HplViewer::loadMapXml(TiXmlDocument& doc)
 				int fileIndex = atoi(xchild->Attribute("FileIndex"));
 				int id = atoi(xchild->Attribute("ID"));
 
-				ofmsg("Placing object %1%", %id);
-
 				String strRotation(xchild->Attribute("Rotation"));
 				String strPos(xchild->Attribute("WorldPos"));
+				String strScale(xchild->Attribute("Scale"));
 
 				std::vector<String> rotArgs = StringUtils::split(strRotation, " ");
 				std::vector<String> posArgs = StringUtils::split(strPos, " ");
+				std::vector<String> scaleArgs = StringUtils::split(strScale, " ");
 
 				Vector3f rotation(atof(rotArgs[0].c_str()), atof(rotArgs[1].c_str()), atof(rotArgs[2].c_str()));
 				Vector3f position(atof(posArgs[0].c_str()), atof(posArgs[1].c_str()), atof(posArgs[2].c_str()));
+				Vector3f scale(atof(scaleArgs[0].c_str()), atof(scaleArgs[1].c_str()), atof(scaleArgs[2].c_str()));
+
+				ofmsg("Object %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
 
 				osg::Node* node = staticObjectFiles[fileIndex];
 				if(node != NULL)
@@ -116,18 +120,18 @@ osg::Node* HplViewer::loadMapXml(TiXmlDocument& doc)
 					xf->addChild(node);
 					root->addChild(xf);
 
-					xf->setPosition(osg::Vec3d(position[0], position[2], position[1]));
+					xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
 					xf->setAttitude(osg::Quat(
-						rotation[0], osg::Vec3d(1, 0, 0),
-						rotation[1], osg::Vec3d(0, 0, 1),
-						rotation[2], osg::Vec3d(0, 1, 0)
+						rotation[0] - Math::Pi / 2, osg::Vec3d(1, 0, 0),
+						rotation[1], osg::Vec3d(0, 1, 0),
+						rotation[2], osg::Vec3d(0, 0, 1)
 						));
+					xf->setScale(osg::Vec3d(scale[0], scale[1], -scale[2]));
 				}
 				xchild = xchild->NextSiblingElement();
 			}
 		}
 	}
-
 
 	return root;
 }
@@ -169,12 +173,12 @@ void HplViewer::initialize()
 				}
 				else
 				{
-					//Optimize scenegraph
+					// Optimize scenegraph
 					osgUtil::Optimizer optOSGFile;
-					optOSGFile.optimize(node);
+					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 
 					myOsg->setRootNode(node);
-					getDefaultCamera()->focusOn(getScene(0));
+					//getDefaultCamera()->focusOn(getScene(0));
 				}
 			}
 		}

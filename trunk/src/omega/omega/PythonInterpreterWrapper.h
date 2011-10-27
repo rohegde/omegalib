@@ -31,7 +31,7 @@
 #ifndef __PythonInterpreterWrapper_h
 #define __PythonInterpreterWrapper_h
 
-#include "omega/script/PythonInterpreter.h"
+#include "omega/PythonInterpreter.h"
 
 /* Undefine macros that Python.h defines to avoid redefinition warning.  */
 #undef _POSIX_C_SOURCE
@@ -80,7 +80,7 @@
 
 #include "structmember.h"
 
-namespace omega { namespace script {
+namespace omega { 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct PythonInterpreterWrapper
 	{
@@ -235,6 +235,6 @@ namespace omega { namespace script {
 
 		return wrapper;
 		}
-}; };
+};
 #endif
 

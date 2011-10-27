@@ -36,7 +36,7 @@ Camera::Camera():
 	myAutoAspect(false),
 	myTargetNode(NULL),
 	myNavigationMode(NavDisabled),
-	myNavigationSpeed(1.0f),
+	myNavigationSpeed(4.0f),
 	myNavigationStrafeMultiplier(1.0f),
 	myNavigationYawMultiplier(0.002f),
 	myNavigationPitchMultiplier(0.002f),
@@ -106,10 +106,10 @@ void Camera::update(const UpdateContext& context)
 		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, myNavigationSpeed);
 		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, -myNavigationSpeed);
 
-		myOrientation =  AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(Math::Pi, Vector3f::UnitZ());
+		myOrientation =  AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(-Math::Pi, Vector3f::UnitZ());
 
 		Vector3f ns = myOrientation * speed;
-		//ofmsg("|Camera speed vector: %1%", %ns);
+		//ofmsg("|dt: %1%   t %2%", %context.dt %context.time);
 
 		myPosition += ns * context.dt ;
 
@@ -119,7 +119,7 @@ void Camera::update(const UpdateContext& context)
 		myPosition = myTargetNode->getPosition();
 		myOrientation = myTargetNode->getOrientation();
 	}
-	//ofmsg("@Camera position: %1%", %myPosition);
+	//ofmsg("@Camera position: %1% orientation %2% %3%", %myPosition %myYaw %myPitch);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
