@@ -75,6 +75,7 @@ void DefaultMouseInteractor::updateNode()
 			myStartOrientation = myNode->getOrientation();
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
+			myHandleDistance = (myStartBSphere.getCenter() - myPointerRay.getOrigin()).norm();
 			myNode->setSelected(true);
 		}
 	}
@@ -90,16 +91,7 @@ void DefaultMouseInteractor::updateNode()
 		{
 			if(myPointerButton1Pressed)
 			{
-				Vector3f origin = myPointerRay.getOrigin();
-				Vector3f direction = myPointerRay.getDirection();
-				// Interstect the ray with the Z plane where the handle lies, to get
-				// the new handle position.
-				float tz = myHandlePosition[2] + myStartBSphere.getCenter()[2];
-				float l = (tz - origin[2]) / direction[2];
-				float tx = origin[0] + l * direction[0];
-				float ty = origin[1] + l * direction[1];
-
-				Vector3f newPos = Vector3f(tx, ty, tz) - myHandlePosition;
+				Vector3f newPos = myPointerRay.getPoint(myHandleDistance) - (myHandlePosition - myStartBSphere.getCenter());
 				myNode->setPosition(newPos);
 			}
 			else if(myPointerButton2Pressed)

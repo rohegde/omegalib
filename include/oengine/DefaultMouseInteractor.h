@@ -44,6 +44,7 @@ namespace oengine {
 
 	private:
 		Vector3f myHandlePosition;
+		float myHandleDistance;
 		Sphere myStartBSphere;
 		Quaternion myStartOrientation;
 		float myStartScale;

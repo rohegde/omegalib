@@ -178,7 +178,6 @@ void HplViewer::initialize()
 					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 
 					myOsg->setRootNode(node);
-					//getDefaultCamera()->focusOn(getScene(0));
 				}
 			}
 		}
