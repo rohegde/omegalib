@@ -106,14 +106,15 @@ void Camera::update(const UpdateContext& context)
 		// Update the observer position offset using current speed, orientation and dt.
 		if(myNavigationMoveFlags & MoveRight) speed += Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
 		if(myNavigationMoveFlags & MoveLeft) speed += Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
-		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, myNavigationSpeed, 0);
-		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, -myNavigationSpeed, 0);
+		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, -myNavigationSpeed, 0);
+		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, myNavigationSpeed, 0);
 		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, myNavigationSpeed);
 		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, -myNavigationSpeed);
 
-		myOrientation =  AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(-Math::Pi, Vector3f::UnitZ());
+		Quaternion navOrientation =  AngleAxis(-Math::Pi, Vector3f::UnitZ()) * AngleAxis(-myYaw, Vector3f::UnitY()) * AngleAxis(-myPitch, Vector3f::UnitX());
+		myOrientation =   AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(-Math::Pi, Vector3f::UnitZ());
 
-		Vector3f ns = myOrientation * speed;
+		Vector3f ns = navOrientation * speed;
 		//ofmsg("|dt: %1%   t %2%", %context.dt %context.time);
 
 		myPosition += ns * context.dt ;
