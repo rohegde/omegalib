@@ -275,7 +275,7 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	{
 		const DrawContext& dc = ch->getLastDrawContext();
 	    //ofmsg("Channel pixel X,Y: %1% %2%", %x %y);
-		return Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport, 1.0);
+		return Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport);
 	}
 	return Ray();
 }

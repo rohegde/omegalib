@@ -49,6 +49,9 @@ Camera::Camera():
 	myPitch = 0;
 	myRotating = false;
 	myLastPointerPosition = Vector3f::Zero();
+
+	// Set a standard focal offset of 1 meter away from camera.
+	myFocalOffset = Vector3f::UnitZ();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,13 +76,8 @@ void Camera::handleEvent(const Event& evt)
 		}
 		else if(evt.getServiceType() == Service::Pointer)
 		{
-			if(evt.getType() == Event::Down && evt.isFlagSet(Event::Left)) myRotating = true;
-			if(evt.getType() == Event::Up && evt.isFlagSet(Event::Left)) myRotating = false;
-			if(evt.getType() == Event::Zoom)
-			{
-				if(evt.getExtraDataInt(0) > 0) myNavigationMoveFlags |= MoveForward;
-				else myNavigationMoveFlags &= !MoveForward;
-			}
+			if(evt.isFlagSet(Event::Left)) myRotating = true;
+			else myRotating = false;
 			
 			if(myRotating)
 			{

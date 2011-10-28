@@ -52,10 +52,13 @@ namespace oengine {
 		void handleEvent(const Event& evt);
 
 		const Vector3f& getPosition() { return myPosition; }
-		const Quaternion& getOrientation() { return myOrientation; }
-
 		void setPosition(const Vector3f& value) { myPosition = value; }
-		void getOrientation(const Quaternion& value) { myOrientation = value; }
+
+		const Vector3f& getFocalOffset() { return myFocalOffset; }
+		void setFocalOffset(const Vector3f& value) { myFocalOffset = value; }
+
+		const Quaternion& getOrientation() { return myOrientation; }
+		void setOrientation(const Quaternion& value) { myOrientation = value; }
 
 		//const AffineTransform3& getViewTransform();
 		//const AffineTransform3& getProjectionTransform();
@@ -81,13 +84,36 @@ namespace oengine {
 		float getScale() { return myScale; }
 		void setScale(float value) { myScale = value; }
 
-
 		void focusOn(SceneNode* node, float scaledSize = 0.0f);
 
 	private:
+		//! Current view transform
+		AffineTransform3 myViewTransform;
+		//AffineTransform3 myProjection;
+
+		//! Observer current position.
+		//! This is the projection plane position when using a head tracked system + off-axis projection.
+		Vector3f myPosition;
+		//! Observer focal offset.
+		//! this is the head position when using a head tracked system + off-axis projection. When using in-axis
+		//! projection, only the z value is used to determine the near projection plane.
+		//! When omegalib is using head tracking, usually the observer update service takes care of setting this value
+		//! directly in the Observer class, so this value is ignored. On desktop system, the user can set this value
+		//! manually to test off-axis projection.
+		Vector3f myFocalOffset;
+		//! Observer current rotation.
+		Quaternion myOrientation;
+		float myScale;
+		//! Field of view (in radians)
+		float myFov;
+		float myAspect;
+		float myFarZ;
+		//! When set to true, the aspect is computed depending on the height & width of the camera render target.
+		bool myAutoAspect;
+
+		// Navigation stuff.
 		NavigationMode myNavigationMode;
 		SceneNode* myTargetNode;
-
 		float myNavigationSpeed;
 		float myNavigationStrafeMultiplier;
 		float myNavigationYawMultiplier;
@@ -97,22 +123,6 @@ namespace oengine {
 		float myPitch;
 		Vector3f myLastPointerPosition;
 		bool myRotating;
-
-		//! Current view transform
-		AffineTransform3 myViewTransform;
-		//AffineTransform3 myProjection;
-
-		//! Observer current position.
-		Vector3f myPosition;
-		//! Observer current rotation.
-		Quaternion myOrientation;
-		float myScale;
-		//! Field of view (in radians)
-		float myFov;
-		float myAspect;
-		float myNearZ;
-		float myFarZ;
-		bool myAutoAspect;
 	};
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////

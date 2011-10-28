@@ -52,9 +52,9 @@ void Observer::load(Setting& setting)
 	if(setting.exists("position"))
 	{
 		Setting& st = setting["position"];
-		myViewPosition.x() = (float)st[0];
-		myViewPosition.y() = (float)st[1];
-		myViewPosition.z() = (float)st[2];
+		position.x() = (float)st[0];
+		position.y() = (float)st[1];
+		position.z() = (float)st[2];
 	}
 
 	// Set observer initial position, neutral orientation.

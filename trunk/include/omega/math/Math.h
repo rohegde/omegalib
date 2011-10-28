@@ -389,7 +389,7 @@ namespace omega { namespace math
 		static inline quaternion<T> buildRotation(const vector<3,T>& a, const vector<3,T>& b, const vector<3,T>& fallbackAxis );//= vector<3,T>::Zero());
 
 		static 
-		Ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z);
+		Ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport);
 		static 
 		vector<3, float> project(const vector<3, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport);
 
@@ -1450,7 +1450,7 @@ namespace omega { namespace math
     template<typename T> inline 
 	Ray<T> Math<T>::unproject(
 		const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, 
-		const transform<3, T, Eigen::Projective>& projection, const Rect& viewport, float z)
+		const transform<3, T, Eigen::Projective>& projection, const Rect& viewport)
 	{
 		vector<3, T> origin;
 		vector<3, T> direction;
@@ -1463,20 +1463,27 @@ namespace omega { namespace math
 		vector<4, T> in;
 		in[0]=(point[0] - (float)viewport.x()) / (float)(viewport.width()) * 2.0f - 1.0f;
         in[1]=((viewport.height() - point[1]) - (float)viewport.y()) / (float)(viewport.height()) * 2.0f - 1.0f;
+		// z == projection plane z.
         in[2]= -1.0f;
         in[3]=1.0f;
 
 		vector<4, T> m1 = m * in;
 		m1 = m1 / m1[3];
 
+		// z == far projection plane z (I guess we could choose a different value since we are just using this
+		// to compute the ray direction).
         in[2] = 1.0f;
 		vector<4, T> m2 = m * in;
 		m2 = m2 / m2[3];
 
-		float t = (z - m1[2]) / (m2[2] - m1[2]);
-		origin[0] = m1[0] + t * (m2[0] - m1[0]);
-		origin[1] = m1[1] + t * (m2[1] - m1[1]);
-		origin[2] = z;
+		//float t = (z - m1[2]) / (m2[2] - m1[2]);
+		//origin[0] = m1[0] + t * (m2[0] - m1[0]);
+		//origin[1] = m1[1] + t * (m2[1] - m1[1]);
+		//origin[2] = z;
+
+		origin[0] = m1[0];
+		origin[1] = m1[1];
+		origin[2] = m1[2];
 
 		direction = vector<3, T>((m2[0] - m1[0]), (m2[1] - m1[1]), (m2[2] - m1[2]));
 		direction.normalize();
