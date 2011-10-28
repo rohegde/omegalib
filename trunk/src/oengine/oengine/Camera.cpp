@@ -70,10 +70,17 @@ void Camera::handleEvent(const Event& evt)
 			if(evt.isKeyUp('r')) myNavigationMoveFlags &= ~MoveUp;
 			if(evt.isKeyDown('f')) myNavigationMoveFlags |= MoveDown;
 			if(evt.isKeyUp('f')) myNavigationMoveFlags &= ~MoveDown;
-			if(evt.isKeyDown('q')) myRotating = !myRotating;
 		}
 		else if(evt.getServiceType() == Service::Pointer)
 		{
+			if(evt.getType() == Event::Down && evt.isFlagSet(Event::Left)) myRotating = true;
+			if(evt.getType() == Event::Up && evt.isFlagSet(Event::Left)) myRotating = false;
+			if(evt.getType() == Event::Zoom)
+			{
+				if(evt.getExtraDataInt(0) > 0) myNavigationMoveFlags |= MoveForward;
+				else myNavigationMoveFlags &= !MoveForward;
+			}
+			
 			if(myRotating)
 			{
 				Vector3f dpos = evt.getPosition() - myLastPointerPosition;
