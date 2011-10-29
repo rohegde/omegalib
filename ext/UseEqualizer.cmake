@@ -24,11 +24,19 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
+# When building in visual studio 10, use the NMake makefile generator for external projects. 
+# (Visual Studio 10 external generator has some speed / dependency resolution issues)
+set(EQUALIZER_GENERATOR ${CMAKE_GENERATOR})
+if(OMEGA_TOOL_VS10)
+	set(EQUALIZER_GENERATOR "NMake Makefiles")
+endif(OMEGA_TOOL_VS10)
+
 # Equalizer support enabled: uncompress and prepare the external project.
 ExternalProject_Add(
 	equalizer
 	URL ${CMAKE_SOURCE_DIR}/ext/equalizer.tar.gz
 	#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
+	CMAKE_GENERATOR ${EQUALIZER_GENERATOR}
 	CMAKE_ARGS 
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}

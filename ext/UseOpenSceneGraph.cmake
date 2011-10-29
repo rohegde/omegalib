@@ -62,5 +62,5 @@ endif(OMEGA_OS_WIN)
 include(${OmegaLib_SOURCE_DIR}/ext/UseOsgWorks.cmake)
 # Add osgWorks to openscenegraph includes and libraries (this simplified inclusion in other projects.
 # we consider osg and osgWorks as a single package.
-set(OSG_INCLUDES ${OSG_INCLUDES} ${OSGWORK_INCLUDES})
+set(OSG_INCLUDES ${OSG_INCLUDES} ${OSGWORKS_INCLUDES})
 set(OSG_LIBS ${OSG_LIBS} ${OSGWORKS_LIBS})
