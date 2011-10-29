@@ -23,12 +23,20 @@
 # USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-################################################################################################### osgGA osgText osgViewer osgSim osgDB osgUtil osg OpenThreads
+################################################################################################### 
+# When building in visual studio 10, use the NMake makefile generator for external projects.
+# (Visual Studio 10 external generator has some speed / dependency resolution issues)
+set(OSGWORKS_GENERATOR ${CMAKE_GENERATOR})
+if(OMEGA_TOOL_VS10)
+	set(OSGWORKS_GENERATOR "NMake Makefiles")
+endif(OMEGA_TOOL_VS10)
+
 # Equalizer support enabled: uncompress and prepare the external project.
 ExternalProject_Add(
 	osgWorks
 	URL ${CMAKE_SOURCE_DIR}/ext/osgw2.tar.gz
 	#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
+	CMAKE_GENERATOR ${OSGWORKS_GENERATOR}
 	CMAKE_ARGS 
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}
@@ -70,24 +78,24 @@ ExternalProject_Add(
 	)
 set_target_properties(osgWorks PROPERTIES FOLDER "3rdparty")
 # define path to libraries built by the equalizer external project
-set(OSGWORKS_BINARY_DIR ${CMAKE_BINARY_DIR}/src/osgWorks-prefix/src/osgWorks-build)
+set(OSGWORKS_BINARY_DIR ${CMAKE_BINARY_DIR}/src/osgWorks-prefix/src/osgWorks-build/lib)
 set(OSGWORKS_COMPONENTS osgwTools osgwQuery)
 
 # NEED SECTIONS DEPENDENT ON BUILD TOOL, NOT OS!
 if(OMEGA_OS_WIN)
-    foreach( C ${OSG_COMPONENTS} )
-		set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/${C}.lib)
-		set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/${C}d.lib)
-		set(${C}_INCLUDE_DIR ${OSG_INCLUDES})
-		set(OSGWORKS_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+    foreach( C ${OSGWORKS_COMPONENTS} )
+		set(${C}_LIBRARY ${OSGWORKS_BINARY_DIR}/${C}.lib)
+		set(${C}_LIBRARY_DEBUG ${OSGWORKS_BINARY_DIR}/${C}d.lib)
+		set(OSGWORKS_LIBS ${OSGWORKS_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
 	endforeach()
 elseif(OMEGA_OS_LINUX)
-    foreach( C ${OSG_COMPONENTS} )
-		set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/lib${C}.a)
-		set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/lib${C}d.a)
-		set(${C}_INCLUDE_DIR ${OSG_INCLUDES}/${C})
-		set(OSGWORKS_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+    foreach( C ${OSGWORKS_COMPONENTS} )
+		set(${C}_LIBRARY ${OSGWORKS_BINARY_DIR}/lib${C}.a)
+		set(${C}_LIBRARY_DEBUG ${OSGWORKS_BINARY_DIR}/lib${C}d.a)
+		set(OSGWORKS_LIBS ${OSGWORKS_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
 	endforeach()
 endif(OMEGA_OS_WIN)
+
+add_definitions(-DOSGWORKS_STATIC)
 
 set(OSGWORKS_INCLUDES ${CMAKE_BINARY_DIR}/src/osgWorks-prefix/src/osgWorks/include)
