@@ -64,51 +64,8 @@ include(${CMAKE_SOURCE_DIR}/ext/UseBoost.cmake)
 include(${CMAKE_SOURCE_DIR}/ext/UseAsio.cmake)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-# Equalizer support enabled: uncompress and prepare the external project.
-	ExternalProject_Add(
-		equalizer
-		URL ${CMAKE_SOURCE_DIR}/ext/equalizer.tar.gz
-		#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
-		CMAKE_ARGS 
-			-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
-			-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}
-			INSTALL_COMMAND ""
-		)
-	set_target_properties(equalizer PROPERTIES FOLDER "3rdparty")
-	# define path to libraries built by the equalizer external project
-	set(EQUALIZER_BINARY_DIR ${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build)
-	# NEED SECTIONS DEPENDENT ON BUILD TOOL, NOT OS!
-	if(WIN32)
-		set(EQUALIZER_EQ_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/client/Debug/Equalizer.lib)
-		set(EQUALIZER_CO_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/collage/Debug/Collage.lib)
-		set(EQUALIZER_LIBS_DEBUG debug ${EQUALIZER_EQ_LIB_DEBUG} debug ${EQUALIZER_CO_LIB_DEBUG})
-		set(EQUALIZER_EQ_LIB_RELEASE ${EQUALIZER_BINARY_DIR}/libs/client/Release/Equalizer.lib)
-		set(EQUALIZER_CO_LIB_RELEASE ${EQUALIZER_BINARY_DIR}/libs/collage/Release/Collage.lib)
-		set(EQUALIZER_LIBS_RELEASE optimized ${EQUALIZER_EQ_LIB_RELEASE} optimized ${EQUALIZER_CO_LIB_RELEASE})
-		# install(
-			# FILES ${EQUALIZER_CLIENT_LIBS_DEBUG}
-			# DESTINATION lib/Debug
-			# COMPONENT omegalib
-		# )
-		# install(
-			# FILES ${EQUALIZER_CLIENT_LIBS_RELEASE}
-			# DESTINATION lib/Debug
-			# COMPONENT omegalib
-		# )
-	else(WIN32)
-		set(EQUALIZER_EQ_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/client/libEqualizer.so)
-		set(EQUALIZER_CO_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/collage/libCollage.so)
-		set(EQUALIZER_LIBS_DEBUG ${EQUALIZER_EQ_LIB_DEBUG} ${EQUALIZER_CO_LIB_DEBUG})
-		set(EQUALIZER_LIBS_RELEASE )
-		# install(
-			# FILES ${EQUALIZER_CLIENT_LIBS_RELEASE}
-			# DESTINATION lib
-			# COMPONENT omegalib
-		# )
-	endif(WIN32)
-	set(EQUALIZER_LIBS ${EQUALIZER_LIBS_DEBUG} ${EQUALIZER_LIBS_RELEASE})
-	include_directories(${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build/include)
-	
+	include(${OmegaLib_SOURCE_DIR}/ext/UseEqualizer.cmake)
+	include_directories(${EQUALIZER_INCLUDES})
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
 ###################################################################################################

@@ -10,6 +10,7 @@ endif(OMEGA_OS_WIN)
 
 set(EXTLIB_TGZ ${CMAKE_BINARY_DIR}/${EXTLIB_NAME}.tar.gz)
 set(EXTLIB_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
+set(OSG_BINARY_DIR ${CMAKE_BINARY_DIR}/${EXTLIB_NAME})
 
 # Uncomment this line to make omegalib use an external openscenegraph binary build
 # set(EXTLIB_DIR D:/Workspace/3rdparty/OpenSceneGraph-3.0.1-VS10.0.30319-x86-debug-12741)
@@ -27,82 +28,27 @@ endif(NOT EXISTS ${EXTLIB_DIR})
 
 set(OSG_INCLUDES ${EXTLIB_DIR}/include)
 
+set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgGA osgManipulator osgShadow osgSim osgTerrain osgText osgUtil osgVolume osgViewer osgWidget OpenThreads)
+
 if(OMEGA_OS_WIN)
-	set(OSG_LIBS 
-		optimized ${EXTLIB_DIR}/lib/release/osg.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgAnimation.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgDB.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgFX.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgGA.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgManipulator.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgParticle.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgPresentation.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgShadow.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgSim.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgTerrain.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgText.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgUtil.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgVolume.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgViewer.lib
-		optimized ${EXTLIB_DIR}/lib/release/osgWidget.lib
-		
-		
-		debug ${EXTLIB_DIR}/lib/debug/osgd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgAnimationd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgDBd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgFXd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgGAd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgManipulatord.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgParticled.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgPresentationd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgShadowd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgSimd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgTerraind.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgTextd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgUtild.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgVolumed.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgViewerd.lib
-		debug ${EXTLIB_DIR}/lib/debug/osgWidgetd.lib)
-		
+    foreach( C ${OSG_COMPONENTS} )
+		set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/${C}.lib)
+		set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/${C}d.lib)
+		set(${C}_INCLUDE_DIR ${OSG_INCLUDES})
+		set(OSG_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+	endforeach()
+
 	# Copy the dlls into the target directories
 	file(COPY ${EXTLIB_DIR}/bin/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} PATTERN "*.dll")
 	file(COPY ${EXTLIB_DIR}/bin/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} PATTERN "*.dll")
+
 elseif(OMEGA_OS_LINUX)
-	set(OSG_LIBS 
-		optimized ${EXTLIB_DIR}/lib/release/libosg.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgAnimation.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgDB.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgFX.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgGA.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgManipulator.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgParticle.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgPresentation.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgShadow.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgSim.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgTerrain.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgText.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgUtil.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgVolume.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgViewer.so
-		optimized ${EXTLIB_DIR}/lib/release/libosgWidget.so
-		
-		
-		debug ${EXTLIB_DIR}/lib/debug/libosgd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgAnimationd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgDBd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgFXd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgGAd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgManipulatord.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgParticled.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgPresentationd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgShadowd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgSimd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgTerraind.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgTextd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgUtild.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgVolumed.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgViewerd.so
-		debug ${EXTLIB_DIR}/lib/debug/libosgWidgetd.so)
+    foreach( C ${OSG_COMPONENTS} )
+		set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/lib${C}.so)
+		set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/lib${C}d.so)
+		set(${C}_INCLUDE_DIR ${OSG_INCLUDES}/${C})
+		set(OSG_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+	endforeach()
 
 	if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 		file(COPY ${EXTLIB_DIR}/lib/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
@@ -112,3 +58,9 @@ elseif(OMEGA_OS_LINUX)
 		file(COPY ${EXTLIB_DIR}/lib/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 	endif(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif(OMEGA_OS_WIN)
+
+include(${OmegaLib_SOURCE_DIR}/ext/UseOsgWorks.cmake)
+# Add osgWorks to openscenegraph includes and libraries (this simplified inclusion in other projects.
+# we consider osg and osgWorks as a single package.
+set(OSG_INCLUDES ${OSG_INCLUDES} ${OSGWORK_INCLUDES})
+set(OSG_LIBS ${OSG_LIBS} ${OSGWORKS_LIBS})
