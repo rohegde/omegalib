@@ -174,8 +174,8 @@ void HplViewer::initialize()
 				else
 				{
 					// Optimize scenegraph
-					osgUtil::Optimizer optOSGFile;
-					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+					//osgUtil::Optimizer optOSGFile;
+					//optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 
 					myOsg->setRootNode(node);
 				}
