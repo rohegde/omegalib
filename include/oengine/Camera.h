@@ -43,7 +43,14 @@ namespace oengine {
 			MoveUp = 1 << 3,
 			MoveDown = 1 << 4,
 			MoveForward = 1 << 5,
-			MoveBackward = 1 << 6
+			MoveBackward = 1 << 6,
+
+			FocusLeft = 1 << 7,
+			FocusRight = 1 << 8,
+			FocusForward = 1 << 9,
+			FocusBackward = 1 << 10,
+			FocusUp = 1 << 11,
+			FocusDown = 1 << 12
 			};
 	public:
 		Camera();

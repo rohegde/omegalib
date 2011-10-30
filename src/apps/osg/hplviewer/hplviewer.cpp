@@ -29,6 +29,8 @@
 #include <osg/PositionAttitudeTransform>
 #include <osg/MatrixTransform>
 
+#include <osgwTools/Shapes.h>
+
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
 #include <oengine.h>
@@ -49,14 +51,38 @@ public:
 	osg::Node* loadMapXml(TiXmlDocument& doc);
 
 private:
+	void loadStaticObjectFiles(TiXmlElement* xStaticObjectFiles);
+	void createStaticObjects(osg::Group* root, TiXmlElement* xStaticObjectFiles);
+	void createPrimitives(osg::Group* root, TiXmlElement* xStaticObjectFiles);
+
+	Vector3f readVector3f(TiXmlElement* elem, const String& attributeName);
+	Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
+
+private:
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
+	Vector<osg::Node*> myStaticObjectFiles;
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector3f HplViewer::readVector3f(TiXmlElement* elem, const String& attributeName)
+{
+	String str(elem->Attribute(attributeName.c_str()));
+	std::vector<String> args = StringUtils::split(str, " ");
+	return Vector3f(atof(args[0].c_str()), atof(args[1].c_str()), atof(args[2].c_str()));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector2f HplViewer::readVector2f(TiXmlElement* elem, const String& attributeName)
+{
+	String str(elem->Attribute(attributeName.c_str()));
+	std::vector<String> args = StringUtils::split(str, " ");
+	return Vector2f(atof(args[0].c_str()), atof(args[1].c_str()));
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Node* HplViewer::loadMapXml(TiXmlDocument& doc)
 {
-	Vector<osg::Node*> staticObjectFiles;
 	osg::Group* root = new osg::Group();
 	TiXmlElement* xroot = doc.RootElement();
 	TiXmlElement* xlevel = xroot->FirstChildElement("MapData");
@@ -66,74 +92,133 @@ osg::Node* HplViewer::loadMapXml(TiXmlDocument& doc)
 		TiXmlElement* xStaticObjectFiles = xMapContents->FirstChildElement("FileIndex_StaticObjects");
 		if(xStaticObjectFiles != NULL)
 		{
-			TiXmlElement* xchild = xStaticObjectFiles->FirstChildElement();
-			while(xchild)
-			{
-				const char* filePath = xchild->Attribute("Path");
-				int index = atoi(xchild->Attribute("Id"));
-				ofmsg("Loading static object %1%", %index);
-				//staticObjectFiles[index] = String(filePath) + ".fbx.obj";
-				//staticObjectFiles.push_back(String(filePath) + ".fbx.obj");
-
-				DataManager* dm = SystemManager::instance()->getDataManager();
-				DataInfo cfgInfo = dm->getInfo(String(filePath) + ".fbx.obj");
-				if(!cfgInfo.isNull())
-				{
-					osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
-					if(node != NULL)
-					{
-						staticObjectFiles.push_back(node);
-					}
-				}
-
-				xchild = xchild->NextSiblingElement();
-			}
+			loadStaticObjectFiles(xStaticObjectFiles);
 		}
 
 		TiXmlElement* xStaticObjects = xMapContents->FirstChildElement("StaticObjects");
-		if(xStaticObjects)
+		if(xStaticObjects != NULL)
 		{
-			TiXmlElement* xchild = xStaticObjects->FirstChildElement();
-			while(xchild)
-			{
-				int fileIndex = atoi(xchild->Attribute("FileIndex"));
-				int id = atoi(xchild->Attribute("ID"));
+			createStaticObjects(root, xStaticObjects);
+		}
 
-				String strRotation(xchild->Attribute("Rotation"));
-				String strPos(xchild->Attribute("WorldPos"));
-				String strScale(xchild->Attribute("Scale"));
-
-				std::vector<String> rotArgs = StringUtils::split(strRotation, " ");
-				std::vector<String> posArgs = StringUtils::split(strPos, " ");
-				std::vector<String> scaleArgs = StringUtils::split(strScale, " ");
-
-				Vector3f rotation(atof(rotArgs[0].c_str()), atof(rotArgs[1].c_str()), atof(rotArgs[2].c_str()));
-				Vector3f position(atof(posArgs[0].c_str()), atof(posArgs[1].c_str()), atof(posArgs[2].c_str()));
-				Vector3f scale(atof(scaleArgs[0].c_str()), atof(scaleArgs[1].c_str()), atof(scaleArgs[2].c_str()));
-
-				ofmsg("Object %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
-
-				osg::Node* node = staticObjectFiles[fileIndex];
-				if(node != NULL)
-				{
-					osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-					xf->addChild(node);
-					root->addChild(xf);
-
-					xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
-					xf->setAttitude(osg::Quat(
-						rotation[0] - Math::Pi / 2, osg::Vec3d(1, 0, 0),
-						rotation[1], osg::Vec3d(0, 1, 0),
-						rotation[2], osg::Vec3d(0, 0, 1)
-						));
-					xf->setScale(osg::Vec3d(scale[0], scale[1], -scale[2]));
-				}
-				xchild = xchild->NextSiblingElement();
-			}
+		TiXmlElement* xPrimitives = xMapContents->FirstChildElement("Primitives");
+		if(xPrimitives != NULL)
+		{
+			createPrimitives(root, xPrimitives);
 		}
 	}
 
 	return root;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void HplViewer::loadStaticObjectFiles(TiXmlElement* xStaticObjectFiles)
+{
+	TiXmlElement* xchild = xStaticObjectFiles->FirstChildElement();
+	while(xchild)
+	{
+		const char* filePath = xchild->Attribute("Path");
+		int index = atoi(xchild->Attribute("Id"));
+		ofmsg("Loading static object %1%", %index);
+		DataManager* dm = SystemManager::instance()->getDataManager();
+		DataInfo cfgInfo = dm->getInfo(String(filePath) + ".fbx.obj");
+		if(!cfgInfo.isNull())
+		{
+			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
+			if(node != NULL)
+			{
+				myStaticObjectFiles.push_back(node);
+			}
+		}
+
+		xchild = xchild->NextSiblingElement();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void HplViewer::createStaticObjects(osg::Group* root, TiXmlElement* xStaticObjects)
+{
+	TiXmlElement* xchild = xStaticObjects->FirstChildElement();
+	while(xchild)
+	{
+		int fileIndex = atoi(xchild->Attribute("FileIndex"));
+		int id = atoi(xchild->Attribute("ID"));
+
+		Vector3f rotation = readVector3f(xchild, "Rotation");
+		Vector3f position = readVector3f(xchild, "WorldPos");
+		Vector3f scale = readVector3f(xchild, "Scale");
+
+		ofmsg("Object %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
+
+		osg::Node* node = myStaticObjectFiles[fileIndex];
+		if(node != NULL)
+		{
+			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
+			xf->addChild(node);
+			root->addChild(xf);
+
+			xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
+			xf->setAttitude(osg::Quat(
+				rotation[0] - Math::Pi / 2, osg::Vec3d(1, 0, 0),
+				rotation[1], osg::Vec3d(0, 1, 0),
+				rotation[2], osg::Vec3d(0, 0, 1)
+				));
+			xf->setScale(osg::Vec3d(scale[0], scale[1], -scale[2]));
+		}
+		xchild = xchild->NextSiblingElement();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void HplViewer::createPrimitives(osg::Group* root, TiXmlElement* xStaticObjects)
+{
+	TiXmlElement* xchild = xStaticObjects->FirstChildElement();
+	while(xchild)
+	{
+		osg::Geode* node = new osg::Geode();
+		String primType = xchild->Value();
+		if(primType == "Plane")
+		{
+			Vector3f startCorner = readVector3f(xchild, "StartCorner");
+			Vector3f endCorner = readVector3f(xchild, "EndCorner");
+
+			Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
+			Vector3f c2(endCorner[0], startCorner[1], startCorner[2]);
+			Vector3f u = (startCorner - c1);
+			Vector3f v = (startCorner - c2);
+			//u.normalize();
+			//v.normalize();
+
+			node->addDrawable(osgwTools::makePlane(
+				OOSG_VEC3(startCorner), 
+				OOSG_VEC3(u), 
+				OOSG_VEC3(v)));
+		}
+
+		int id = atoi(xchild->Attribute("ID"));
+
+		Vector3f rotation = readVector3f(xchild, "Rotation");
+		Vector3f position = readVector3f(xchild, "WorldPos");
+		Vector3f scale = readVector3f(xchild, "Scale");
+
+		ofmsg("Primitive %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
+
+		if(node != NULL)
+		{
+			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
+			xf->addChild(node);
+			root->addChild(xf);
+
+			xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
+			xf->setAttitude(osg::Quat(
+				rotation[0], osg::Vec3d(1, 0, 0),
+				rotation[1], osg::Vec3d(0, 1, 0),
+				rotation[2], osg::Vec3d(0, 0, 1)
+				));
+			xf->setScale(osg::Vec3d(scale[0], scale[1], -scale[2]));
+		}
+		xchild = xchild->NextSiblingElement();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

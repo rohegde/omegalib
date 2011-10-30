@@ -30,6 +30,10 @@
 #include "oosg/oosgbase.h"
 #include "oengine/EngineServer.h"
 
+//! Vector conversion macros
+#define OOSG_VEC3(v) osg::Vec3(v[0], v[1], v[2])
+#define OOSG_VEC2(v) osg::Vec2(v[0], v[1])
+
 namespace osg
 {
 	class Node;
