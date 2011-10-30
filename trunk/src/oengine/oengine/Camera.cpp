@@ -54,6 +54,9 @@ Camera::Camera():
 	myFocalOffset = Vector3f::UnitZ();
 }
 
+#define NAV_KEY(k, f) if(evt.isKeyDown(k)) myNavigationMoveFlags |= f; if(evt.isKeyUp(k)) myNavigationMoveFlags &= ~f; 
+#define SPECIAL_NAV_KEY(k, modifier, f) if(evt.isKeyDown(k) && evt.isFlagSet(Event::modifier)) myNavigationMoveFlags |= f; if(evt.isKeyUp(k) && evt.isFlagSet(Event::modifier)) myNavigationMoveFlags &= ~f; 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::handleEvent(const Event& evt)
 {
@@ -61,18 +64,20 @@ void Camera::handleEvent(const Event& evt)
 	{
 		if(evt.getServiceType() == Service::Keyboard)
 		{
-			if(evt.isKeyDown('d')) myNavigationMoveFlags |= MoveRight;
-			if(evt.isKeyUp('d')) myNavigationMoveFlags &= ~MoveRight; 
-			if(evt.isKeyDown('a')) myNavigationMoveFlags |= MoveLeft;
-			if(evt.isKeyUp('a')) myNavigationMoveFlags &= ~MoveLeft;
-			if(evt.isKeyDown('w')) myNavigationMoveFlags |= MoveForward;
-			if(evt.isKeyUp('w')) myNavigationMoveFlags &= !MoveForward;
-			if(evt.isKeyDown('s')) myNavigationMoveFlags |= MoveBackward;
-			if(evt.isKeyUp('s')) myNavigationMoveFlags &= ~MoveBackward;
-			if(evt.isKeyDown('r')) myNavigationMoveFlags |= MoveUp;
-			if(evt.isKeyUp('r')) myNavigationMoveFlags &= ~MoveUp;
-			if(evt.isKeyDown('f')) myNavigationMoveFlags |= MoveDown;
-			if(evt.isKeyUp('f')) myNavigationMoveFlags &= ~MoveDown;
+			NAV_KEY('d', MoveRight);
+			NAV_KEY('a', MoveLeft);
+			NAV_KEY('w', MoveForward);
+			NAV_KEY('s', MoveBackward);
+			NAV_KEY('r', MoveUp);
+			NAV_KEY('f', MoveDown);
+
+			// Control focus position
+			SPECIAL_NAV_KEY('d', Alt, FocusRight);
+			SPECIAL_NAV_KEY('a', Alt, FocusLeft);
+			SPECIAL_NAV_KEY('w', Alt, FocusForward);
+			SPECIAL_NAV_KEY('s', Alt, FocusBackward);
+			SPECIAL_NAV_KEY('r', Alt, FocusUp);
+			SPECIAL_NAV_KEY('f', Alt, FocusDown);
 		}
 		else if(evt.getServiceType() == Service::Pointer)
 		{
@@ -103,6 +108,7 @@ void Camera::update(const UpdateContext& context)
 	if(myNavigationMode == NavFreeFly)
 	{
 		Vector3f speed = Vector3f::Zero();
+		Vector3f focusSpeed = Vector3f::Zero();
 		// Update the observer position offset using current speed, orientation and dt.
 		if(myNavigationMoveFlags & MoveRight) speed += Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
 		if(myNavigationMoveFlags & MoveLeft) speed += Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
@@ -110,6 +116,17 @@ void Camera::update(const UpdateContext& context)
 		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, myNavigationSpeed, 0);
 		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, myNavigationSpeed);
 		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, -myNavigationSpeed);
+
+		// Update the observer position offset using current speed, orientation and dt.
+		float fs = 0.1f;
+		if(myNavigationMoveFlags & FocusRight) focusSpeed += Vector3f(-fs, 0, 0);
+		if(myNavigationMoveFlags & FocusLeft) focusSpeed += Vector3f(fs, 0, 0);
+		if(myNavigationMoveFlags & FocusUp) focusSpeed += Vector3f(0, -fs, 0);
+		if(myNavigationMoveFlags & FocusDown) focusSpeed += Vector3f(0, fs, 0);
+		if(myNavigationMoveFlags & FocusForward) focusSpeed += Vector3f(0, 0, fs);
+		if(myNavigationMoveFlags & FocusBackward) focusSpeed += Vector3f(0, 0, -fs);
+
+		myFocalOffset += focusSpeed * context.dt;
 
 		Quaternion navOrientation =  AngleAxis(-Math::Pi, Vector3f::UnitZ()) * AngleAxis(-myYaw, Vector3f::UnitY()) * AngleAxis(-myPitch, Vector3f::UnitX());
 		myOrientation =   AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(-Math::Pi, Vector3f::UnitZ());

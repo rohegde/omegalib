@@ -35,6 +35,11 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 KeyboardService* KeyboardService::mysInstance = NULL;
+static uint sKeyFlags = 0;
+
+#define HANDLE_KEY_FLAG(keycode, flag) \
+	if(key == keycode && type == Event::Down) sKeyFlags |= Event::flag; \
+	if(key == keycode && type == Event::Up) sKeyFlags &= ~Event::flag;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void KeyboardService::keyboardButtonCallback( uint key, Event::Type type )
@@ -45,6 +50,13 @@ void KeyboardService::keyboardButtonCallback( uint key, Event::Type type )
 
 		Event* evt = mysInstance->writeHead();
 		evt->reset(type, Service::Keyboard, key);
+
+		HANDLE_KEY_FLAG(296, Alt)
+		HANDLE_KEY_FLAG(292, Shift)
+		HANDLE_KEY_FLAG(294, Ctrl)
+
+		evt->setFlags(sKeyFlags);
+
 		mysInstance->unlockEvents();
 	}
 }
