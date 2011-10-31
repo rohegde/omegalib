@@ -1,20 +1,35 @@
-
-/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2003 Robert Osfield 
- *                           2010 Stefan Eilemann <eile@eyescale.ch>
- *
- * This library is open source and may be redistributed and/or modified under  
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
- * (at your option) any later version.  The full license is in LICENSE file
- * included with this distribution, and on the openscenegraph.org website.
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
  * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * OpenSceneGraph Public License for more details.
- */
-
-#ifndef OSG_SV_SCENEVIEW
-#define OSG_SV_SCENEVIEW
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Original code adapted from Equalizer/osg
+ * -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield 
+ *                           2010 Stefan Eilemann <eile@eyescale.ch>
+ *************************************************************************************************/
+#ifndef OOSG_SCENEVIEW
+#define OOSG_SCENEVIEW
 
 #include <osg/Node>
 #include <osg/StateSet>
@@ -27,15 +42,7 @@
 
 #include <osgUtil/CullVisitor>
 
-/**
- * Based on osgUtil::SceneView, but stripped done to only render and not
- * interfere with stereo setup.
- *
- * SceneView is deprecated, and is now just kept for backwards compatibility.
- * It is recommend that you use osgViewer::Viewer/Composite in combination
- * with osgViewer::GraphicsWindowEmbedded for embedded rendering support as
- * this provides a greater range of functionality and consistency of API.
- */
+///////////////////////////////////////////////////////////////////////////////////////////////////
 class SceneView : public osg::Object, public osg::CullSettings
 {
     public:
@@ -115,13 +122,6 @@ class SceneView : public osg::Object, public osg::CullSettings
         inline osg::DisplaySettings* getDisplaySettings() { return _displaySettings.get(); }
 
 
-        /** Set the color used in glClearColor().
-            Defaults to an off blue color.*/
-        void setClearColor(const osg::Vec4& color) { _camera->setClearColor(color); }
-
-        /** Get the color used in glClearColor.*/
-        const osg::Vec4& getClearColor() const { return _camera->getClearColor(); }
-        
         void setGlobalStateSet(osg::StateSet* state) { _globalStateSet = state; }
         osg::StateSet* getGlobalStateSet() { return _globalStateSet.get(); }
         const osg::StateSet* getGlobalStateSet() const { return _globalStateSet.get(); }

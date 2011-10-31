@@ -54,6 +54,9 @@ namespace oengine {
 		Renderer* getRenderer();
 
 	private:
+		void drawBackground(const DrawContext& context);
+
+	private:
 		EngineServer* myServer;
 		Renderer* myRenderer;
 		List<RenderPass*> myRenderPassList;

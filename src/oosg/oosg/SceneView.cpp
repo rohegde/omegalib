@@ -1,17 +1,33 @@
-
-/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield 
- *                           2010 Stefan Eilemann <eile@eyescale.ch>
- *
- * This library is open source and may be redistributed and/or modified under  
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
- * (at your option) any later version.  The full license is in LICENSE file
- * included with this distribution, and on the openscenegraph.org website.
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
  * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- * OpenSceneGraph Public License for more details.
-*/
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Original code adapted from Equalizer/osg
+ * -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield 
+ *                           2010 Stefan Eilemann <eile@eyescale.ch>
+ *************************************************************************************************/
 #include "oosg/SceneView.h"
 
 #include <osgUtil/UpdateVisitor>
@@ -35,6 +51,7 @@
 using namespace osg;
 using namespace osgUtil;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneView::SceneView( osg::DisplaySettings* ds)
 {
     _displaySettings = ds;
@@ -45,7 +62,7 @@ SceneView::SceneView( osg::DisplaySettings* ds)
     
     setCamera(new Camera);
     _camera->setViewport(new Viewport);
-    _camera->setClearColor(osg::Vec4(0.2f, 0.2f, 0.4f, 1.0f));
+	_camera->setClearMask(0);
     
     _initCalled = false;
 
@@ -61,6 +78,7 @@ SceneView::SceneView( osg::DisplaySettings* ds)
     _dynamicObjectCount = 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneView::SceneView(const SceneView& rhs, const osg::CopyOp& copyop):
     osg::Object(rhs,copyop),
     osg::CullSettings(rhs)
@@ -86,17 +104,18 @@ SceneView::SceneView(const SceneView& rhs, const osg::CopyOp& copyop):
     _dynamicObjectCount = 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneView::~SceneView()
 {
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setDefaults(unsigned int options)
 {
     osg::CullSettings::setDefaults();
 
-    _camera->getProjectionMatrix().makePerspective(50.0f,1.4f,1.0f,10000.0f);
-    _camera->getViewMatrix().makeIdentity();
+    //_camera->getProjectionMatrix().makePerspective(50.0f,1.4f,1.0f,10000.0f);
+    //_camera->getViewMatrix().makeIdentity();
 
     if (!_globalStateSet) _globalStateSet = new osg::StateSet;
     else _globalStateSet->clear();
@@ -135,25 +154,21 @@ void SceneView::setDefaults(unsigned int options)
     _renderStage = new RenderStage;
 
 
-    if (options & COMPILE_GLOBJECTS_AT_INIT)
-    {
-        GLObjectsVisitor::Mode  dlvMode = GLObjectsVisitor::COMPILE_DISPLAY_LISTS |
-                                          GLObjectsVisitor::COMPILE_STATE_ATTRIBUTES | 
-                                          GLObjectsVisitor::CHECK_BLACK_LISTED_MODES;
+    //if (options & COMPILE_GLOBJECTS_AT_INIT)
+    //{
+    //    GLObjectsVisitor::Mode  dlvMode = GLObjectsVisitor::COMPILE_DISPLAY_LISTS |
+    //                                      GLObjectsVisitor::COMPILE_STATE_ATTRIBUTES | 
+    //                                      GLObjectsVisitor::CHECK_BLACK_LISTED_MODES;
 
-    #ifdef __sgi
-        dlvMode = GLObjectsVisitor::COMPILE_STATE_ATTRIBUTES;
-    #endif
+    //    // sgi's IR graphics has a problem with lighting and display lists, as it seems to store 
+    //    // lighting state with the display list, and the display list visitor doesn't currently apply
+    //    // state before creating display lists. So will disable the init visitor default, this won't
+    //    // affect functionality since the display lists will be created as and when needed.
+    //    GLObjectsVisitor* dlv = new GLObjectsVisitor(dlvMode);
+    //    dlv->setNodeMaskOverride(0xffffffff);
+    //    _initVisitor = dlv;
 
-        // sgi's IR graphics has a problem with lighting and display lists, as it seems to store 
-        // lighting state with the display list, and the display list visitor doesn't currently apply
-        // state before creating display lists. So will disable the init visitor default, this won't
-        // affect functionality since the display lists will be created as and when needed.
-        GLObjectsVisitor* dlv = new GLObjectsVisitor(dlvMode);
-        dlv->setNodeMaskOverride(0xffffffff);
-        _initVisitor = dlv;
-
-    }
+    //}
     
     _updateVisitor = new UpdateVisitor;
 
@@ -164,16 +179,18 @@ void SceneView::setDefaults(unsigned int options)
 
     _globalStateSet->setGlobalDefaults();
 
-    #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-        // set up an texture environment by default to speed up blending operations.
-         osg::TexEnv* texenv = new osg::TexEnv;
-         texenv->setMode(osg::TexEnv::MODULATE);
-         _globalStateSet->setTextureAttributeAndModes(0,texenv, osg::StateAttribute::ON);
-    #endif
+    //#if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
+    //    // set up an texture environment by default to speed up blending operations.
+    //     osg::TexEnv* texenv = new osg::TexEnv;
+    //     texenv->setMode(osg::TexEnv::MODULATE);
+    //     _globalStateSet->setTextureAttributeAndModes(0,texenv, osg::StateAttribute::ON);
+    //#endif
          
-    _camera->setClearColor(osg::Vec4(0.2f, 0.2f, 0.4f, 1.0f));
+    // Do not clear the frame buffer - the omegalib engine takes care of this.
+	_camera->setClearMask(0);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera)
 {
     if (camera)
@@ -195,6 +212,7 @@ void SceneView::setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera)
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setSceneData(osg::Node* node)
 {
     // take a temporary reference to node to prevent the possibility
@@ -208,13 +226,10 @@ void SceneView::setSceneData(osg::Node* node)
     _camera->addChild(node);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::init()
 {
     _initCalled = true;
-
-    // force the initialization of the OpenGL extension string
-    // to try and work around a Windows NVidia driver bug circa Oct 2006.
-    osg::isGLExtensionSupported(_renderInfo.getState()->getContextID(),"");
 
     if (_camera.valid() && _initVisitor.valid())
     {
@@ -234,6 +249,7 @@ void SceneView::init()
     } 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::updateUniforms()
 {
     if (!_localStateSet)
@@ -293,6 +309,7 @@ void SceneView::updateUniforms()
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setLightingMode(LightingMode mode)
 {
     if (mode==_lightingMode) return;
@@ -311,19 +328,20 @@ void SceneView::setLightingMode(LightingMode mode)
 
     _lightingMode = mode;
 
-    if (_lightingMode!=NO_SCENEVIEW_LIGHT)
-    {
-        #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-            // add GL_LIGHTING mode
-            _globalStateSet->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-            if (_light.valid()) 
-            {
-                _globalStateSet->setAssociatedModes(_light.get(), osg::StateAttribute::ON);
-            }
-        #endif
-    }
+    //if (_lightingMode!=NO_SCENEVIEW_LIGHT)
+    //{
+    //    #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
+    //        // add GL_LIGHTING mode
+    //        _globalStateSet->setMode(GL_LIGHTING, osg::StateAttribute::ON);
+    //        if (_light.valid()) 
+    //        {
+    //            _globalStateSet->setAssociatedModes(_light.get(), osg::StateAttribute::ON);
+    //        }
+    //    #endif
+    //}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::inheritCullSettings(const osg::CullSettings& settings, unsigned int inheritanceMask)
 {
     if (_camera.valid() && _camera->getView()) 
@@ -354,7 +372,7 @@ void SceneView::inheritCullSettings(const osg::CullSettings& settings, unsigned 
     osg::CullSettings::inheritCullSettings(settings, inheritanceMask);
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::cull()
 {
     _dynamicObjectCount = 0;
@@ -416,6 +434,7 @@ void SceneView::cull()
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& modelview,osgUtil::CullVisitor* cullVisitor, osgUtil::StateGraph* rendergraph, osgUtil::RenderStage* renderStage, osg::Viewport *viewport)
 {
 
@@ -547,6 +566,7 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     return computeNearFar;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::releaseAllGLObjects()
 {
     if (!_camera) return;
@@ -557,7 +577,7 @@ void SceneView::releaseAllGLObjects()
     if (_renderInfo.getState()) _renderInfo.getState()->reset();
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::flushAllDeletedGLObjects()
 {
     _requiresFlush = false;
@@ -565,6 +585,7 @@ void SceneView::flushAllDeletedGLObjects()
     osg::flushAllDeletedGLObjects(getState()->getContextID());
  }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::flushDeletedGLObjects(double& availableTime)
 {
     osg::State* state = _renderInfo.getState();
@@ -576,6 +597,7 @@ void SceneView::flushDeletedGLObjects(double& availableTime)
     osg::flushDeletedGLObjects(getState()->getContextID(), currentTime, availableTime);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::draw()
 {
     if (_camera->getNodeMask()==0) return;
@@ -619,13 +641,6 @@ void SceneView::draw()
     state->popAllStateSets();
     state->apply();
 
-#if 0
-    if (_camera->getPostDrawCallback())
-    {
-        (*(_camera->getPostDrawCallback()))(*_camera);
-    }
-#endif
-
     if (state->getCheckForGLErrors()!=osg::State::NEVER_CHECK_GL_ERRORS)
     {
         if (state->checkGLErrors("end of SceneView::draw()"))
@@ -641,47 +656,37 @@ void SceneView::draw()
     tom->reportStats();
     bom->reportStats();
 #endif
-
-    // osg::notify(osg::NOTICE)<<"SceneView  draw() DynamicObjectCount"<<getState()->getDynamicObjectCount()<<std::endl;
-
 }
 
-//const osg::Matrix SceneView::computeMVPW() const
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//void SceneView::clearArea(int x,int y,int width,int height,const osg::Vec4& color)
 //{
-//    osg::Matrix matrix( getViewMatrix() * getProjectionMatrix());
-//        
-//    if (getViewport())
-//        matrix.postMult(getViewport()->computeWindowMatrix());
-//    else
-//        osg::notify(osg::WARN)<<"osg::Matrix SceneView::computeMVPW() - error no viewport attached to SceneView, coords will be computed inccorectly."<<std::endl;
+//    osg::ref_ptr<osg::Viewport> viewport = new osg::Viewport;
+//    viewport->setViewport(x,y,width,height);
 //
-//    return matrix;
+//    _renderInfo.getState()->applyAttribute(viewport.get());
+//    
+//    glScissor( x, y, width, height );
+//    glEnable( GL_SCISSOR_TEST );
+//    glClearColor( color[0], color[1], color[2], color[3]);
+//    glClear( GL_COLOR_BUFFER_BIT);
+//    glDisable( GL_SCISSOR_TEST );
 //}
+//
 
-void SceneView::clearArea(int x,int y,int width,int height,const osg::Vec4& color)
-{
-    osg::ref_ptr<osg::Viewport> viewport = new osg::Viewport;
-    viewport->setViewport(x,y,width,height);
-
-    _renderInfo.getState()->applyAttribute(viewport.get());
-    
-    glScissor( x, y, width, height );
-    glEnable( GL_SCISSOR_TEST );
-    glClearColor( color[0], color[1], color[2], color[3]);
-    glClear( GL_COLOR_BUFFER_BIT);
-    glDisable( GL_SCISSOR_TEST );
-}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneView::getStats(osgUtil::Statistics& stats)
 {
     return _renderStage->getStats(stats);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::collateReferencesToDependentCameras()
 {
     if (_renderStage.valid()) _renderStage->collateReferencesToDependentCameras();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::clearReferencesToDependentCameras()
 {
     if (_renderStage.valid()) _renderStage->clearReferencesToDependentCameras();

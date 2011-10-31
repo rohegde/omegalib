@@ -30,7 +30,12 @@
 ###################################################################################################
 # Source files
 set(SRCS 
-		hplviewer.cpp)
+		hplviewer.cpp
+		xobj/obj.cpp
+		xobj/obj.h
+		xobj/ReaderWriterXOBJ.cpp
+		xobj/XOBJWriterNodeVisitor.cpp
+		xobj/XOBJWriterNodeVisitor.h)
     
 ###################################################################################################
 # Setup compile info

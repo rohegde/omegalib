@@ -96,6 +96,8 @@ void EngineClient::draw(const DrawContext& context)
 		if(!rp->isInitialized()) rp->initialize();
 	}
 
+	drawBackground(context);
+
 	// Execute renderable commands.
 	while(!myRenderableCommands.empty())
 	{
@@ -135,4 +137,28 @@ void EngineClient::draw(const DrawContext& context)
 	}
 
 	//getGpu()->endDraw();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::drawBackground(const DrawContext& context)
+{
+	if(context.task == DrawContext::SceneDrawTask)
+	{
+		Vector2f rectSize(context.channel->canvasSize->x(), context.channel->canvasSize->y());
+		getRenderer()->beginDraw2D(context);
+
+		BackgroundSettings& bs = getServer()->getBackgroundsSettings();
+
+		if(bs.mode == BackgroundSettings::Color)
+		{
+			getRenderer()->drawRect(Vector2f(0, 0), rectSize, bs.startColor);
+		}
+		else if(bs.mode == BackgroundSettings::Gradient)
+		{
+			getRenderer()->drawRectGradient(Vector2f(0, 0), rectSize, omega::Horizontal, bs.startColor, bs.endColor, bs.gradient);
+		}
+
+
+		getRenderer()->endDraw();
+	}
 }

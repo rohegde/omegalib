@@ -64,10 +64,8 @@ void OsgRenderPass::initialize()
 	myModule = (OsgModule*)getUserData();
 	mySceneView = new SceneView();
     mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
-	mySceneView->setClearColor(osg::Vec4(0.1, 0.1, 0.1, 0.0));
     mySceneView->init();
 	mySceneView->getState()->setContextID(getClient()->getId());
-    mySceneView->getRenderStage()->setColorMask(new osg::ColorMask(255, 255, 255, true));
 
 	sInitLock.unlock();
 }
