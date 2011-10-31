@@ -31,6 +31,8 @@
 
 #include <osgwTools/Shapes.h>
 
+#include <osgFX/Cartoon>
+
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
 #include <oengine.h>
@@ -127,6 +129,8 @@ void HplViewer::loadStaticObjectFiles(TiXmlElement* xStaticObjectFiles)
 			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
 			if(node != NULL)
 			{
+				//osgFX::Effect* fx = new osgFX::Cartoon();
+				//fx->addChild(node);
 				myStaticObjectFiles.push_back(node);
 			}
 		}
