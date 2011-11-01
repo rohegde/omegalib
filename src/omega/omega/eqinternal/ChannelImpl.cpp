@@ -123,9 +123,6 @@ void ChannelImpl::initialize()
 		%sCanvasChannels.x() %sCanvasChannels.y()
 		%sCanvasSize.x() %sCanvasSize.y());
 
-	myChannelInfo.canvasChannels = &sCanvasChannels;
-	myChannelInfo.canvasSize = &sCanvasSize;
-
 	sLock.unlock();
 }
 
@@ -186,7 +183,11 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
+	myChannelInfo.canvasChannels = &sCanvasChannels;
+	myChannelInfo.canvasSize = &sCanvasSize;
+
 	eq::Channel::frameDraw( frameID );
+
 	//ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
