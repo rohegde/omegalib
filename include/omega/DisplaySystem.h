@@ -28,6 +28,7 @@
 #include "osystem.h"
 #include "Observer.h"
 #include "Application.h"
+#include "Color.h"
 
 namespace omega
 {
@@ -69,8 +70,14 @@ public:
 	//! Returns a view ray given a pointer position in pixel coordinates
 	virtual Ray getViewRay(Vector2i position) = 0;
 
+	const Color& getBackgroundColor() { return myBackgroundColor; }
+	void setBackgroundColor(const Color& value) { myBackgroundColor = value; }
+
 protected:
-	DisplaySystem() {}
+	DisplaySystem(): myBackgroundColor(0.2f, 0.2f, 0.2f) {}
+
+private:
+	Color myBackgroundColor;
 };
 
 }; // namespace omega

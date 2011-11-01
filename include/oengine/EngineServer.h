@@ -47,20 +47,6 @@ namespace oengine {
 	typedef List<EngineClient*> EngineClientList;
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct BackgroundSettings
-	{
-		enum Mode { Color, Gradient, Image };
-
-		BackgroundSettings():
-		mode(Gradient), startColor(0.4f, 0.4f, 0.5f), endColor(0.5f, 0.5f, 0.6f), gradient(0.7f) {}
-
-		Mode mode;
-		omega::Color startColor;
-		omega::Color endColor;
-		float gradient;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API EngineServer: public ApplicationServer
 	{
 	friend class EngineClient;
@@ -127,8 +113,6 @@ namespace oengine {
 		void setAmbientLightColor(const Color& value);
 		//@}
 
-		BackgroundSettings& getBackgroundsSettings() { return myBackgroundSettings; }
-
 		Camera* getDefaultCamera();
 
 		virtual void initialize();
@@ -148,7 +132,6 @@ namespace oengine {
 		ui::Container* myUi[MaxUis];
 		Light myLights[MaxLights];
 		Color myAmbientColor;
-		BackgroundSettings myBackgroundSettings;
 
 		// The default camera.
 		Camera* myDefaultCamera;
