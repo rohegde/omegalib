@@ -48,6 +48,13 @@
 
 #include <iterator>
 
+#include <osgwQuery/QueryUtils.h>
+#include <osgwQuery/QueryBenchmarks.h>
+#include <osgwQuery/QueryStats.h>
+
+// Define this to enable occlusion cullling.
+// #define USE_OCCLUSION_CULLING
+
 using namespace osg;
 using namespace osgUtil;
 
@@ -153,23 +160,6 @@ void SceneView::setDefaults(unsigned int options)
     _stateGraph = new StateGraph;
     _renderStage = new RenderStage;
 
-
-    //if (options & COMPILE_GLOBJECTS_AT_INIT)
-    //{
-    //    GLObjectsVisitor::Mode  dlvMode = GLObjectsVisitor::COMPILE_DISPLAY_LISTS |
-    //                                      GLObjectsVisitor::COMPILE_STATE_ATTRIBUTES | 
-    //                                      GLObjectsVisitor::CHECK_BLACK_LISTED_MODES;
-
-    //    // sgi's IR graphics has a problem with lighting and display lists, as it seems to store 
-    //    // lighting state with the display list, and the display list visitor doesn't currently apply
-    //    // state before creating display lists. So will disable the init visitor default, this won't
-    //    // affect functionality since the display lists will be created as and when needed.
-    //    GLObjectsVisitor* dlv = new GLObjectsVisitor(dlvMode);
-    //    dlv->setNodeMaskOverride(0xffffffff);
-    //    _initVisitor = dlv;
-
-    //}
-    
     _updateVisitor = new UpdateVisitor;
 
     _cullVisitor = CullVisitor::create();
@@ -179,13 +169,6 @@ void SceneView::setDefaults(unsigned int options)
 
     _globalStateSet->setGlobalDefaults();
 
-    //#if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-    //    // set up an texture environment by default to speed up blending operations.
-    //     osg::TexEnv* texenv = new osg::TexEnv;
-    //     texenv->setMode(osg::TexEnv::MODULATE);
-    //     _globalStateSet->setTextureAttributeAndModes(0,texenv, osg::StateAttribute::ON);
-    //#endif
-         
     // Do not clear the frame buffer - the omegalib engine takes care of this.
 	_camera->setClearMask(0);
 }
@@ -224,6 +207,14 @@ void SceneView::setSceneData(osg::Node* node)
     
     // add the new one in.
     _camera->addChild(node);
+
+#ifdef USE_OCCLUSION_CULLING
+    node->getOrCreateStateSet()->setRenderBinDetails( 0, _QUERY_FRONT_TO_BACK_BIN_NAME );
+    osgwQuery::AddQueries aqs;
+    aqs.setQueryStats( NULL );
+    _camera->accept( aqs );
+	_camera->setPreDrawCallback(new osgwQuery::InitCallback() );
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -380,6 +371,7 @@ void SceneView::cull()
     if (_camera->getNodeMask()==0) return;
 
     _renderInfo.setView(_camera->getView());
+	_renderInfo.pushCamera(_camera.get());
 
     // update the active uniforms
     updateUniforms();
@@ -406,6 +398,12 @@ void SceneView::cull()
     state->setFrameStamp(_frameStamp.get());
     state->setDisplaySettings(_displaySettings.get());
 
+#ifdef USE_OCCLUSION_CULLING
+	if (_camera->getPreDrawCallback())
+    {
+        (*(_camera->getPreDrawCallback()))(*_camera);
+    }
+#endif
 
     if (!_cullVisitor)
     {
@@ -432,6 +430,7 @@ void SceneView::cull()
         CullVisitor::value_type zFar = _cullVisitor->getCalculatedFarPlane();
         _cullVisitor->clampProjectionMatrix(getProjectionMatrix(),zNear,zFar);
     }
+	_renderInfo.popCamera();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -518,9 +517,7 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     renderStage->setClearStencil(_camera->getClearStencil());
     renderStage->setClearMask(_camera->getClearMask());
     
-#if 1    
     renderStage->setCamera(_camera.get());
-#endif
 
     if (_globalStateSet.valid()) cullVisitor->pushStateSet(_globalStateSet.get());
     if (_secondaryStateSet.valid()) cullVisitor->pushStateSet(_secondaryStateSet.get());
