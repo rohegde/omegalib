@@ -186,10 +186,17 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
-	myChannelInfo.canvasChannels = &sCanvasChannels;
-	myChannelInfo.canvasSize = &sCanvasSize;
-
 	eq::Channel::frameDraw( frameID );
+
+	// For some weird reason this piece of code f*#ks up the opengl context in some way (resource
+	// allocation fails inside oengine). Will need to fix in the future.
+#ifdef false
+	// Clear the frame buffer using the background color specified in display system.
+	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+	const Color& b = ds->getBackgroundColor();
+	glClearColor(b[0], b[1], b[2], b[3]);
+	glClear(GL_COLOR);
+#endif
 
 	//ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
