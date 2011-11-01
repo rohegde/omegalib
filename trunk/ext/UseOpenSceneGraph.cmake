@@ -46,7 +46,7 @@ elseif(OMEGA_OS_LINUX)
     foreach( C ${OSG_COMPONENTS} )
 		set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/lib${C}.so)
 		set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/lib${C}d.so)
-		set(${C}_INCLUDE_DIR ${OSG_INCLUDES}/${C})
+		set(${C}_INCLUDE_DIR ${OSG_INCLUDES})
 		set(OSG_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
 	endforeach()
 
