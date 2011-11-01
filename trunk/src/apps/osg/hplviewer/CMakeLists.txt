@@ -31,11 +31,11 @@
 # Source files
 set(SRCS 
 		hplviewer.cpp
+		SolidEffect.h
+		SolidEffect.cpp
 		xobj/obj.cpp
 		xobj/obj.h
-		xobj/ReaderWriterXOBJ.cpp
-		xobj/XOBJWriterNodeVisitor.cpp
-		xobj/XOBJWriterNodeVisitor.h)
+		xobj/ReaderXOBJ.cpp)
     
 ###################################################################################################
 # Setup compile info
