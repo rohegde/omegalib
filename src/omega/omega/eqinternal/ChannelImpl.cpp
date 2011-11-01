@@ -164,6 +164,9 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
 	context->modelview = mw * ds->getObserver(0)->getViewTransform();
 
+	myChannelInfo.canvasChannels = &sCanvasChannels;
+	myChannelInfo.canvasSize = &sCanvasSize;
+
 	// Setup draw context
 	myDrawBuffer.setGLId(getDrawBuffer());
 	context->drawBuffer = &myDrawBuffer;
