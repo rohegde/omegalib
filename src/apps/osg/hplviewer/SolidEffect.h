@@ -27,11 +27,17 @@
 #ifndef __SOLID_EFFECT__
 #define __SOLID_EFFECT__
 
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <oengine.h>
+
 #include <osgFX/Export>
 #include <osgFX/Effect>
 
 #include <osg/Material>
 #include <osg/LineWidth>
+
+#include "SceneManager.h"
 
 namespace hpl {
 	using namespace osgFX;
@@ -39,7 +45,7 @@ namespace hpl {
 	{
 	public:
 		SolidEffect();
-		SolidEffect(const SolidEffect& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+		SolidEffect(const SolidEffect& copy, const osg::CopyOp& copyop);
 
 		// effect class informations
 		META_Effect(
@@ -49,6 +55,13 @@ namespace hpl {
 			"SolidEffect",
 			"Alessandro Febretti");
 
+		void load(TiXmlElement* xdata);
+
+		osg::Texture2D* getDiffuseTexture() { return myDiffuse; }
+		osg::Texture2D* getNMapTexture() { return myNMap; }
+		osg::Texture2D* getSpecularTexture() { return mySpecular; }
+		osg::Texture2D* getHeightTexture() { return myHeight; }
+
 	protected:
 		virtual ~SolidEffect() {}
 		SolidEffect& operator=(const SolidEffect&) { return *this; }
@@ -56,7 +69,12 @@ namespace hpl {
 		bool define_techniques();
 
 	private:
+		SceneManager* mySceneManager;
 		osg::ref_ptr<osg::Material> myMaterial;
+		osg::Texture2D* myDiffuse;
+		osg::Texture2D* myNMap;
+		osg::Texture2D* mySpecular;
+		osg::Texture2D* myHeight;
 	};
 }
 

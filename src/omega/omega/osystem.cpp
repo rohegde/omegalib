@@ -95,10 +95,10 @@ namespace omega
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	void owarn(const String& str)
 	{
-		printf("WARNING: %s\n", str.c_str());
+		printf("!!! %s\n", str.c_str());
 		if(sLogFile)
 		{
-			fprintf(sLogFile, "WARNING: %s\n", str.c_str());
+			fprintf(sLogFile, "!!! %s\n", str.c_str());
 			fflush(sLogFile);
 		}
 		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
@@ -107,10 +107,10 @@ namespace omega
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	void oerror(const String& str)
 	{
-		printf("ERROR: %s\n", str.c_str());
+		printf("*** %s\n", str.c_str());
 		if(sLogFile)
 		{
-			fprintf(sLogFile, "ERROR: %s\n", str.c_str());
+			fprintf(sLogFile, "*** %s\n", str.c_str());
 			fflush(sLogFile);
 		}
 		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);

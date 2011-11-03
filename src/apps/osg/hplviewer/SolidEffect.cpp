@@ -49,40 +49,78 @@ using namespace hpl;
 class DefaultTechnique : public Technique 
 {
 public:
-    DefaultTechnique(osg::Material* mat)
-        : Technique(), myMaterial(mat) {}
+    DefaultTechnique(SolidEffect* fx)
+        : Technique(), myFx(fx) {}
 
 protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
     void define_passes()
     {
 		osg::StateSet* ss = new osg::StateSet();
-        osg::PolygonMode* polymode = new osg::PolygonMode();
-        polymode->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
-		ss->setAttribute(polymode);
+        //osg::PolygonMode* polymode = new osg::PolygonMode();
+        //polymode->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
+		//ss->setAttribute(polymode);
+
+		ss->setTextureAttributeAndModes(0, myFx->getDiffuseTexture(), osg::StateAttribute::ON);
+
 		addPass(ss);
     }
 
 private:
-	osg::ref_ptr<osg::Material> myMaterial;
+	SolidEffect* myFx;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SolidEffect::SolidEffect(): 
 	Effect()
 {
+	mySceneManager = SceneManager::getInstance();
 	myMaterial = new osg::Material();
+
+	myDiffuse = NULL;
+	myNMap = NULL;
+	mySpecular = NULL;
+	myHeight = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SolidEffect::SolidEffect(const SolidEffect& copy, const osg::CopyOp& copyop)
-:    Effect(copy, copyop)
+SolidEffect::SolidEffect(const SolidEffect& copy, const osg::CopyOp& copyop):
+	Effect(copy, copyop)
 {
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SolidEffect::load(TiXmlElement* xdata)
+{
+	TiXmlElement* xtextures = xdata->FirstChildElement("TextureUnits");
+	TiXmlElement* xchild = xtextures->FirstChildElement();
+	while(xchild)
+	{
+		String type = xchild->Value();
+		String file = xchild->Attribute("File");
+
+		if(type == "Diffuse")
+		{
+			myDiffuse = mySceneManager->getTexture(file);
+		}
+		else if(type == "NMap")
+		{
+			myNMap = mySceneManager->getTexture(file);
+		}
+		else if(type == "Specular")
+		{
+			mySpecular = mySceneManager->getTexture(file);
+		}
+		else if(type == "Height")
+		{
+			myHeight = mySceneManager->getTexture(file);
+		}
+		xchild = xchild->NextSiblingElement();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SolidEffect::define_techniques()
 {
-    addTechnique(new DefaultTechnique(myMaterial));
+    addTechnique(new DefaultTechnique(this));
     return true;
 }

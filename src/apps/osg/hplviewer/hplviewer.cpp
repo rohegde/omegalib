@@ -28,6 +28,11 @@
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
 #include <osg/MatrixTransform>
+#include <osg/OcclusionQueryNode>
+#include <osg/Depth>
+#include <osg/ColorMask>
+#include <osg/PolygonMode>
+#include <osg/PolygonOffset>
 
 #include <osgwTools/Shapes.h>
 
@@ -36,9 +41,15 @@
 #include <oengine.h>
 #include <oosg.h>
 
+#include "SceneManager.h"
+
+//#define USE_OCCLUSION_QUERY
+
 using namespace omega;
 using namespace oengine;
 using namespace oosg;
+using namespace hpl;
+using namespace osg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class HplViewer: public EngineServer
@@ -61,8 +72,37 @@ private:
 private:
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
+	SceneManager* mySceneManager;
 	Vector<osg::Node*> myStaticObjectFiles;
 };
+
+StateSet* sQSS = NULL;
+
+void createQueryStateSet()
+{
+	if(sQSS == NULL)
+	{
+		sQSS = new StateSet;
+		sQSS->setRenderBinDetails( 9, "RenderBin" );
+
+		sQSS->setMode( GL_LIGHTING, StateAttribute::OFF | StateAttribute::PROTECTED);
+		sQSS->setTextureMode( 0, GL_TEXTURE_2D, StateAttribute::OFF | StateAttribute::PROTECTED);
+		sQSS->setMode( GL_CULL_FACE, StateAttribute::ON | StateAttribute::PROTECTED);
+
+		ColorMask* cm = new ColorMask( false, false, false, false );
+		sQSS->setAttributeAndModes( cm, StateAttribute::ON | StateAttribute::PROTECTED);
+
+		Depth* d = new Depth( Depth::LEQUAL, 0.f, 1.f, false );
+		sQSS->setAttributeAndModes( d, StateAttribute::ON | StateAttribute::PROTECTED);
+
+		PolygonMode* pm = new PolygonMode( PolygonMode::FRONT_AND_BACK, PolygonMode::FILL );
+		sQSS->setAttributeAndModes( pm, StateAttribute::ON | StateAttribute::PROTECTED);
+
+		PolygonOffset* po = new PolygonOffset( -16., -16. );
+		sQSS->setAttributeAndModes( po, StateAttribute::ON | StateAttribute::PROTECTED);
+		sQSS->setMode( GL_POLYGON_OFFSET_FILL, StateAttribute::ON | StateAttribute::PROTECTED);
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector3f HplViewer::readVector3f(TiXmlElement* elem, const String& attributeName)
@@ -154,8 +194,18 @@ void HplViewer::createStaticObjects(osg::Group* root, TiXmlElement* xStaticObjec
 		if(node != NULL)
 		{
 			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-			xf->addChild(node);
 			root->addChild(xf);
+
+#ifdef USE_OCCLUSION_QUERY
+			osg::OcclusionQueryNode* oqn = new osg::OcclusionQueryNode();
+			createQueryStateSet();
+			oqn->setQueryStateSet(sQSS);
+			xf->addChild(oqn);
+			oqn->addChild(node);
+			oqn->setDebugDisplay(true);
+#else
+			xf->addChild(node);
+#endif
 
 			xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
 			xf->setAttitude(osg::Quat(
@@ -206,8 +256,18 @@ void HplViewer::createPrimitives(osg::Group* root, TiXmlElement* xStaticObjects)
 		if(node != NULL)
 		{
 			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-			xf->addChild(node);
 			root->addChild(xf);
+
+#ifdef USE_OCCLUSION_QUERY
+			osg::OcclusionQueryNode* oqn = new osg::OcclusionQueryNode();
+			createQueryStateSet();
+			oqn->setQueryStateSet(sQSS);
+			xf->addChild(oqn);
+			oqn->addChild(node);
+			oqn->setDebugDisplay(true);
+#else
+			xf->addChild(node);
+#endif
 
 			xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
 			xf->setAttitude(osg::Quat(
@@ -229,6 +289,8 @@ void HplViewer::initialize()
 
 	myOsg = new OsgModule();
 	myOsg->initialize(this);
+
+	mySceneManager = new SceneManager();
 
 	// Load osg object
 	if(cfg->exists("config/dataPath"))

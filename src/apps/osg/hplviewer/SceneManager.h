@@ -24,40 +24,32 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SOLID_EFFECT__
-#define __SOLID_EFFECT__
+#ifndef __SCENE_MANAGER__
+#define __SCENE_MANAGER__
 
-#include <osgFX/Export>
-#include <osgFX/Effect>
+#include <osg/Texture2D>
 
-#include <osg/Material>
-#include <osg/LineWidth>
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <oengine.h>
 
 namespace hpl {
-	using namespace osgFX;
-	class SolidEffect: public Effect 
+	class SceneManager
 	{
 	public:
-		SolidEffect();
-		SolidEffect(const SolidEffect& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+		static SceneManager* getInstance();
+		SceneManager();
 
-		// effect class informations
-		META_Effect(
-			osgFX, 
-			SolidEffect, 
-			"SolidEffect", 
-			"SolidEffect",
-			"Alessandro Febretti");
-
-	protected:
-		virtual ~SolidEffect() {}
-		SolidEffect& operator=(const SolidEffect&) { return *this; }
-
-		bool define_techniques();
+		osg::Texture2D* getTexture(const String& name);
 
 	private:
-		osg::ref_ptr<osg::Material> myMaterial;
+		static SceneManager* mysInstance;
+		Dictionary<String, osg::Texture2D*> myTextures;
 	};
-}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneManager* SceneManager::getInstance() 
+	{ return mysInstance; }
+};
 
 #endif

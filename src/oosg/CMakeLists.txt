@@ -35,8 +35,7 @@ SET( srcs
 		oosg/OsgModule.cpp
 		oosg/OsgRenderPass.cpp
 		oosg/OsgSceneObject.cpp
-		oosg/SceneView.cpp
-        )
+		oosg/SceneView.cpp)
 		
 ###################################################################################################
 # Headers

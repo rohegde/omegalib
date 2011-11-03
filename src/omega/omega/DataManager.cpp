@@ -25,8 +25,47 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/DataManager.h"
+#include "omega/FilesystemDataSource.h"
 
 using namespace omega;
+
+DataManager* DataManager::mysInstance = NULL;
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool DataManager::findFile(const String& name, String& outPath)
+{
+	DataInfo di = mysInstance->getInfo(name);
+	if(!di.isNull())
+	{
+		outPath = di.path;
+		return true;
+	}
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+DataManager::DataManager()
+{
+	if(mysInstance != NULL)
+	{
+		oerror("DataManager: creating multiple instances not allowed.");
+	}
+	mysInstance = this;
+	myCurrentPath = new FilesystemDataSource("[cwd]");
+	addSource(myCurrentPath);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DataManager::setCurrentPath(const String& path)
+{
+	myCurrentPath->setPath(path);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+String DataManager::getCurrentPath()
+{
+	return myCurrentPath->getPath();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DataManager::addSource(DataSource* source)

@@ -33,6 +33,7 @@ namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class DataSource;
+	class FilesystemDataSource;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct DataInfo
@@ -111,7 +112,14 @@ namespace omega
 	public:
 		typedef Dictionary<String, DataSource*> SourceDictionary;
 
+		static DataManager* getInstance() { return mysInstance; }
+
+		//! Utility method for finding a file in one of the data sources.
+		static bool findFile(const String& name, String& outPath);
+
 	public:
+		DataManager();
+
 		//! Data sources
 		//@{
 		void addSource(DataSource* source);
@@ -127,7 +135,12 @@ namespace omega
 		void deleteStream(DataStream* stream);
 		//@}
 
+		void setCurrentPath(const String& path);
+		String getCurrentPath();
+
 	private:
+		static DataManager* mysInstance;
+		FilesystemDataSource* myCurrentPath;
 		SourceDictionary mySources;
 	};
 

@@ -53,6 +53,16 @@ FilesystemDataSource::FilesystemDataSource(const String& path):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+inline void FilesystemDataSource::setPath(const String& value)
+{ 
+	myPath = value;
+	if(!StringUtils::endsWith(myPath, "/"))
+	{
+		myPath = value + "/";
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool FilesystemDataSource::exists(const String& name)
 {
 	String fullname = myPath + name;

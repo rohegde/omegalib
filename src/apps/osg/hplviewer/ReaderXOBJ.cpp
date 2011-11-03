@@ -65,8 +65,10 @@
 #include <osgUtil/SmoothingVisitor>
 #include <osgUtil/Tessellator>
 
+#include <osg/PolygonMode>
 
-#include "../SolidEffect.h"
+
+#include "SolidEffect.h"
 #include "obj.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,84 +105,6 @@ protected:
 
 // register with Registry to instantiate the above reader/writer.
 REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-static void load_material_texture(    obj::Model &model,
-                                    obj::Material::Map &map,
-                                    osg::StateSet *stateset,
-                                    const unsigned int texture_unit,
-                                    const osgDB::Options* options)
-{
-    std::string filename = map.name;
-    if (!filename.empty())
-    {
-        osg::ref_ptr< osg::Image > image;
-        if ( !model.getDatabasePath().empty() ) 
-        {
-            // first try with database path of parent. 
-            image = osgDB::readRefImageFile(model.getDatabasePath()+'/'+filename, options);
-        }
-        
-        if ( !image.valid() )
-        {
-            // if not already set then try the filename as is.
-            image = osgDB::readRefImageFile(filename, options);
-        }
-
-        if ( image.valid() )
-        {
-            osg::Texture2D* texture = new osg::Texture2D( image.get() );
-            osg::Texture::WrapMode textureWrapMode;
-            if(map.clamp == true)
-            {
-                textureWrapMode = osg::Texture::CLAMP_TO_BORDER;
-                texture->setBorderColor(osg::Vec4(0.0,0.0,0.0,0.0));    // transparent
-                //stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
-                //stateset->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-            }
-            else
-            {
-                textureWrapMode = osg::Texture::REPEAT;
-            }
-
-            texture->setWrap(osg::Texture2D::WRAP_R, textureWrapMode);
-            texture->setWrap(osg::Texture2D::WRAP_S, textureWrapMode);
-            texture->setWrap(osg::Texture2D::WRAP_T, textureWrapMode);
-            stateset->setTextureAttributeAndModes( texture_unit, texture,osg::StateAttribute::ON );
-            
-            if ( map.type == obj::Material::Map::REFLECTION )
-            {
-                osg::TexGen* texgen = new osg::TexGen;
-                texgen->setMode(osg::TexGen::SPHERE_MAP);
-                stateset->setTextureAttributeAndModes( texture_unit,texgen,osg::StateAttribute::ON );
-            }
-            
-            if  ( image->isImageTranslucent())
-            {
-                stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
-                stateset->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-            }
-        }
-    }
-
-    if (map.uScale != 1.0f || map.vScale != 1.0f ||
-            map.uOffset != 0.0f || map.vOffset != 0.0f)
-    {
-        osg::Matrix mat;
-        if (map.uScale != 1.0f || map.vScale != 1.0f)
-        {
-            mat *= osg::Matrix::scale(map.uScale, map.vScale, 1.0);
-        }
-        if (map.uOffset != 0.0f || map.vOffset != 0.0f)
-        {
-            mat *= osg::Matrix::translate(map.uOffset, map.vOffset, 0.0);
-        }
-
-        osg::TexMat* texmat = new osg::TexMat;
-        texmat->setMatrix(mat);
-        stateset->setTextureAttributeAndModes( texture_unit,texmat,osg::StateAttribute::ON );
-    }
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Geometry* ReaderXOBJ::convertElementListToGeometry(obj::Model& model, obj::Model::ElementList& elementList, ObjOptionsStruct& localOptions) const
@@ -462,6 +386,9 @@ osg::Geometry* ReaderXOBJ::convertElementListToGeometry(obj::Model& model, obj::
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStruct& localOptions, const Options* options) const
 {
+	// Pass the current working dir to the data manager so it will be able to find texture files when creating effects.
+	DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
+
     for(obj::Model::MaterialMap::iterator itr = model.materialMap.begin();
         itr != model.materialMap.end();
         ++itr)
@@ -485,6 +412,7 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 			if(type == "soliddiffuse")
 			{
 				hpl::SolidEffect* fx = new hpl::SolidEffect();
+				fx->load(doc.RootElement());
 				em[material.name] = fx;
 			}
 			else
@@ -548,14 +476,14 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
             geode->addDrawable(geometry);
             
 			osgFX::Effect* fx = fxs[es.materialName];
-			//if(fx != NULL)
-			//{
-			//	fx->addChild(geode);
-			//	group->addChild(fx);
-			//}
-			//else
+			if(fx != NULL)
 			{
-				//ofwarn("Could not find material %1%", %es.materialName);
+				fx->addChild(geode);
+				group->addChild(fx);
+			}
+			else
+			{
+				ofwarn("Could not find material %1%", %es.materialName);
 				group->addChild(geode);
 			}
 
