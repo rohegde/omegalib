@@ -40,6 +40,7 @@ namespace omega
 		FilesystemDataSource(const String& path);
 
 		const String& getPath();
+		void setPath(const String& value);
 
 		//! Data stream management
 		//@{

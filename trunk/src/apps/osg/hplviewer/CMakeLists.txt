@@ -33,9 +33,11 @@ set(SRCS
 		hplviewer.cpp
 		SolidEffect.h
 		SolidEffect.cpp
-		xobj/obj.cpp
-		xobj/obj.h
-		xobj/ReaderXOBJ.cpp)
+		SceneManager.cpp
+		SceneManager.h
+		obj.cpp
+		obj.h
+		ReaderXOBJ.cpp)
     
 ###################################################################################################
 # Setup compile info

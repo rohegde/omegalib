@@ -80,8 +80,11 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
 		mySceneView->setDrawBufferValue(context.drawBuffer->getGLId());
 
-		osg::Node* root = myModule->getRootNode();
-		mySceneView->setSceneData(root);
+		if(mySceneView->getSceneData() == NULL)
+		{
+			osg::Node* root = myModule->getRootNode();
+			mySceneView->setSceneData(root);
+		}
 		mySceneView->setFrameStamp(myModule->getFrameStamp());
 
 		mySceneView->cull();

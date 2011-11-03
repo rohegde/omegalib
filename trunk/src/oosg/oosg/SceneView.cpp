@@ -29,6 +29,7 @@
  *                           2010 Stefan Eilemann <eile@eyescale.ch>
  *************************************************************************************************/
 #include "oosg/SceneView.h"
+#include "omega/osystem.h"
 
 #include <osgUtil/UpdateVisitor>
 #include <osgUtil/GLObjectsVisitor>
@@ -47,13 +48,6 @@
 #include <osg/GLU>
 
 #include <iterator>
-
-#include <osgwQuery/QueryUtils.h>
-#include <osgwQuery/QueryBenchmarks.h>
-#include <osgwQuery/QueryStats.h>
-
-// Define this to enable occlusion cullling.
-// #define USE_OCCLUSION_CULLING
 
 using namespace osg;
 using namespace osgUtil;
@@ -116,9 +110,21 @@ SceneView::~SceneView()
 {
 }
 
+//class NH: public osg::NotifyHandler
+//{
+//public:
+//    virtual void notify(osg::NotifySeverity severity, const char *message)
+//	{
+//		message[strlen(message) - 1] = '\0';
+//		omega::omsg(message);
+//	}
+//};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setDefaults(unsigned int options)
 {
+	osg::setNotifyLevel(INFO);
+	//osg::setNotifyHandler(new NH());
     osg::CullSettings::setDefaults();
 
     //_camera->getProjectionMatrix().makePerspective(50.0f,1.4f,1.0f,10000.0f);
@@ -158,7 +164,7 @@ void SceneView::setDefaults(unsigned int options)
     _renderInfo.setState(new State);
     
     _stateGraph = new StateGraph;
-    _renderStage = new RenderStage;
+	_renderStage = new RenderStage();
 
     _updateVisitor = new UpdateVisitor;
 
@@ -207,14 +213,6 @@ void SceneView::setSceneData(osg::Node* node)
     
     // add the new one in.
     _camera->addChild(node);
-
-#ifdef USE_OCCLUSION_CULLING
-    node->getOrCreateStateSet()->setRenderBinDetails( 0, _QUERY_FRONT_TO_BACK_BIN_NAME );
-    osgwQuery::AddQueries aqs;
-    aqs.setQueryStats( NULL );
-    _camera->accept( aqs );
-	_camera->setPreDrawCallback(new osgwQuery::InitCallback() );
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -395,31 +393,9 @@ void SceneView::cull()
     // we in theory should be able to be able to bypass reset, but we'll call it just incase.
     //_state->reset();
    
+	state->initializeExtensionProcs();
     state->setFrameStamp(_frameStamp.get());
     state->setDisplaySettings(_displaySettings.get());
-
-#ifdef USE_OCCLUSION_CULLING
-	if (_camera->getPreDrawCallback())
-    {
-        (*(_camera->getPreDrawCallback()))(*_camera);
-    }
-#endif
-
-    if (!_cullVisitor)
-    {
-        osg::notify(osg::INFO) << "Warning: no valid osgUtil::SceneView:: attached, creating a default CullVisitor automatically."<< std::endl;
-        _cullVisitor = CullVisitor::create();
-    }
-    if (!_stateGraph)
-    {
-        osg::notify(osg::INFO) << "Warning: no valid osgUtil::SceneView:: attached, creating a global default StateGraph automatically."<< std::endl;
-        _stateGraph = new StateGraph;
-    }
-    if (!_renderStage)
-    {
-        osg::notify(osg::INFO) << "Warning: no valid osgUtil::SceneView::_renderStage attached, creating a default RenderStage automatically."<< std::endl;
-        _renderStage = new RenderStage;
-    }
 
     _cullVisitor->setTraversalMask(_cullMask);
     bool computeNearFar = cullStage(getProjectionMatrix(),getViewMatrix(),_cullVisitor.get(),_stateGraph.get(),_renderStage.get(),getViewport());
@@ -436,7 +412,6 @@ void SceneView::cull()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& modelview,osgUtil::CullVisitor* cullVisitor, osgUtil::StateGraph* rendergraph, osgUtil::RenderStage* renderStage, osg::Viewport *viewport)
 {
-
     if (!_camera || !viewport) return false;
 
     osg::ref_ptr<RefMatrix> proj = new osg::RefMatrix(projection);
@@ -484,7 +459,6 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     }
     
     cullVisitor->reset();
-
     cullVisitor->setFrameStamp(_frameStamp.get());
 
     // use the frame number for the traversal number.
@@ -545,8 +519,7 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     if (_secondaryStateSet.valid()) cullVisitor->popStateSet();
     if (_globalStateSet.valid()) cullVisitor->popStateSet();
     
-
-    renderStage->sort();
+	renderStage->sort();
 
     // prune out any empty StateGraph children.
     // note, this would be not required if the rendergraph had been
@@ -630,10 +603,15 @@ void SceneView::draw()
 
     _localStateSet->setAttribute(getViewport());
 
+    _renderInfo.setView(_camera->getView());
+	_renderInfo.pushCamera(_camera.get());
+
     // bog standard draw.
     _renderStage->drawPreRenderStages(_renderInfo,previous);
     _renderStage->draw(_renderInfo,previous);
     
+	_renderInfo.popCamera();
+
     // re apply the defalt OGL state.
     state->popAllStateSets();
     state->apply();
