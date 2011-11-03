@@ -53,7 +53,7 @@ FilesystemDataSource::FilesystemDataSource(const String& path):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-inline void FilesystemDataSource::setPath(const String& value)
+void FilesystemDataSource::setPath(const String& value)
 { 
 	myPath = value;
 	if(!StringUtils::endsWith(myPath, "/"))
