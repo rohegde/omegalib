@@ -126,6 +126,11 @@ public class Touches{
 public class InputServiceScript : MonoBehaviour {
 	enum ServiceType { Pointer, Mocap, Keyboard, Controller, UI, Generic, NeuroSky }; 
 	
+	// TCP Connection
+	TcpClient client;
+	NetworkStream streamToServer;
+		
+	// UDP Connection
     private static UdpClient udpClient;
     private static Thread listenerThread;
 	
@@ -147,6 +152,8 @@ public class InputServiceScript : MonoBehaviour {
 	
 	public int touchTimeOut = 250; // Milliseconds before an idle touch is auto-removed and an up event is sent.
 	
+	public bool ping;
+	
 	// Use this for initialization
 	void Start () {
         screenWidth = Screen.width;
@@ -161,30 +168,26 @@ public class InputServiceScript : MonoBehaviour {
 			try
 			{
 				// Create a TcpClient.
-				TcpClient client = new TcpClient(InputServer, msgPort);
+				client = new TcpClient(InputServer, msgPort);
 
 				// Translate the passed message into ASCII and store it as a Byte array.
 				String message = "data_on,"+dataPort;
 				Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
-				NetworkStream stream = client.GetStream();
+				streamToServer = client.GetStream();
 
 				// Create the UDP socket data will be received on
 				udpClient = new UdpClient(dataPort);
 
 				// Send the handshake message to the server. 
-				stream.Write(data, 0, data.Length);
+				streamToServer.Write(data, 0, data.Length);
 
 				//Console.WriteLine("Handshake Sent: {0}", message);
 				Debug.Log("InputService: Connected to "+InputServer);
 				
 				// Creates a separate thread to listen for incoming data
 				listenerThread = new Thread(Listen);
-				listenerThread.Start();
-
-				// Close everything.
-				stream.Close();
-				client.Close();
+				listenerThread.Start();				
 			}
 			catch (ArgumentNullException e)
 			{
@@ -362,8 +365,14 @@ public class InputServiceScript : MonoBehaviour {
     void OnApplicationQuit()
     {
 		if( EnableInputService ){
+			// Close UDP
 			udpClient.Close();
 			listenerThread.Abort();
+			
+			// Close TCP connection.
+			streamToServer.Close();
+			client.Close();
+			
 			Debug.Log("InputService: Disconnected");
 		}
     }
@@ -432,10 +441,20 @@ public class InputServiceScript : MonoBehaviour {
 			dgrams.Clear();
 		}
 		
-		//if( dgram != null ){
-		//	ParseDGram(dgram);
-		//	dgram = null;
-		//}
+		if( ping ){
+			// Translate the passed message into ASCII and store it as a Byte array.
+			client = new TcpClient(InputServer, msgPort);
+			String message = "client_in,101,one ping only";
+			Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+			
+			streamToServer = client.GetStream();
+			
+			// Send the message to the server. 
+			streamToServer.Write(data, 0, data.Length);
+			
+			Debug.Log("Ping sent");
+			ping = false;
+		}
 		
 		Hashtable tempList = new Hashtable(touchList);
 		foreach( DictionaryEntry elem in tempList )

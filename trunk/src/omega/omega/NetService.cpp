@@ -30,7 +30,7 @@ using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 NetService::NetService(){
-	touchTimeout = 250; // milliseconds
+	touchTimeout = 0.25; // seconds
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -286,9 +286,10 @@ void NetService::poll()
 	//-----------------------------------------------
 	// Check touchlist for old touches (haven't been updated recently) and remove them
 	//Event* evt;
-	timeb tb;
-	ftime( &tb );
-	int curTime = tb.millitm + (tb.time & 0xfffff) * 1000; // Millisecond timer
+	static float lastt;
+	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
+	if(curt - lastt > touchTimeout){
+	}
 		
 	std::map<int, NetTouches>::iterator p;
 	//printf("------------------\n");
@@ -297,12 +298,11 @@ void NetService::poll()
 	for(p = touchlist.begin(); p != touchlist.end(); p++) {
 		
 		NetTouches touch = p->second;
-		
-		//printf("Time: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)p->first, params[2],params[3] );
-		//printf("dTime: %d - Touch ID %d at (%f, %f)\n", (int)params[6], (int)params[1], params[2],params[3] );
-		int ts = touch.timestamp + touchTimeout;
-		//printf("Time: %d > %d ?? \n", curTime , ts );
-		if( curTime > ts ){
+		float timestamp = touch.timestamp;
+
+		//printf("NetService: Current time %f Current touch timestamp: %f \n", curt, timestamp);
+		//printf("NetService: Touch timeout %f \n", touchTimeout);
+		if( curt - timestamp > touchTimeout ){ //if( curTime > ts ){
 			mysInstance->lockEvents();
 			// Touch will be removed from touchlist - send touch up event
 			Event* newEvt = mysInstance->writeHead();
@@ -322,6 +322,7 @@ void NetService::poll()
 		
 	}
 	touchlist = swaplist;
+	lastt = curt;
 	//printf("------------------\n");
 }
 
@@ -441,7 +442,7 @@ void NetService::parseDGram(int result)
 				touch.yPos = params[3];
 				touch.xWidth = params[4];
 				touch.yWidth = params[5];
-				params[6] = evt->getTimestamp();
+				params[6] = (float)((double)clock() / CLOCKS_PER_SEC); // Set the timestamp
 				touch.timestamp = params[6];
 				
 				//printf("New Time set %d \n", curTime );
@@ -454,9 +455,12 @@ void NetService::parseDGram(int result)
 					printf("NetService: Touch ID %d - DOWN\n", touch.ID);
 				}
 				else if( (int)(params[0]) == Event::Move ){
-					evt->reset(Event::Move, Service::Pointer, touch.ID);
-					touchlist[touch.ID] = touch;
-					printf("NetService: Touch ID %d - MOVE\n", touch.ID);
+					//if( touchlist.count(touch.ID) > 0 ){
+						printf("NetService: Touchlist ID %d count: %d \n", touch.ID, touchlist.count(touch.ID));
+						evt->reset(Event::Move, Service::Pointer, touch.ID);
+						touchlist[touch.ID] = touch;
+						printf("NetService: Touch ID %d - MOVE\n", touch.ID);
+					//}
 				}
 				else if( (int)(params[0]) == Event::Up ){
 					evt->reset(Event::Up, Service::Pointer, touch.ID);
@@ -470,6 +474,10 @@ void NetService::parseDGram(int result)
 				evt->setExtraDataFloat(0, params[4] * (float)screenX);
 				evt->setExtraDataFloat(1, params[5] * (float)screenY);
 
+
+				break;
+			case(Service::Controller):
+				evt = mysInstance->writeHead();
 
 				break;
 			default:

@@ -57,7 +57,7 @@ struct NetTouches{
 	float yPos;
 	float xWidth;
 	float yWidth;
-	int timestamp;
+	float timestamp;
 
 	// Gestures
 	int gestureType;
@@ -103,7 +103,7 @@ private:
 	const char* serverAddress;
 	const char* serverPort;
 	const char* dataPort;
-	int touchTimeout;
+	float touchTimeout;
 
 	#define DEFAULT_BUFLEN 512
 	char recvbuf[DEFAULT_BUFLEN];
