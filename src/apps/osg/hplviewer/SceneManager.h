@@ -37,14 +37,25 @@ namespace hpl {
 	class SceneManager
 	{
 	public:
+		static const int ReceivesShadowTraversalMask = 0x1;
+		static const int CastsShadowTraversalMask = 0x2;
+
+		static bool findMaterialFile(const String& name, String& outPath);
+
+	public:
 		static SceneManager* getInstance();
 		SceneManager();
 
 		osg::Texture2D* getTexture(const String& name);
+		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+
+	private:
+		void loadShader(osg::Shader* shader, const String& name);
 
 	private:
 		static SceneManager* mysInstance;
 		Dictionary<String, osg::Texture2D*> myTextures;
+		Dictionary<String, osg::Program*> myPrograms;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

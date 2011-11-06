@@ -57,6 +57,9 @@ namespace hpl {
 
 		void load(TiXmlElement* xdata);
 
+		SceneManager* getSceneManager() { return mySceneManager; }
+		osg::Program* getProgram() { return myProgram; }
+
 		osg::Texture2D* getDiffuseTexture() { return myDiffuse; }
 		osg::Texture2D* getNMapTexture() { return myNMap; }
 		osg::Texture2D* getSpecularTexture() { return mySpecular; }
@@ -71,6 +74,9 @@ namespace hpl {
 	private:
 		SceneManager* mySceneManager;
 		osg::ref_ptr<osg::Material> myMaterial;
+
+		osg::Program* myProgram;
+
 		osg::Texture2D* myDiffuse;
 		osg::Texture2D* myNMap;
 		osg::Texture2D* mySpecular;

@@ -36,6 +36,10 @@
 
 #include <osgwTools/Shapes.h>
 
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/SoftShadowMap>
+
+
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
 #include <oengine.h>
@@ -55,9 +59,10 @@ using namespace osg;
 class HplViewer: public EngineServer
 {
 public:
-	HplViewer(Application* app): EngineServer(app) {}
+	HplViewer(Application* app): EngineServer(app), myLight2(NULL) {}
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
+	virtual void handleEvent(const Event& evt);
 
 	osg::Node* loadMapXml(TiXmlDocument& doc);
 
@@ -69,11 +74,17 @@ private:
 	Vector3f readVector3f(TiXmlElement* elem, const String& attributeName);
 	Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
 
+	void initShading();
+
 private:
 	OsgModule* myOsg;
-	SceneNode* mySceneNode;
+	osg::Node* mySceneNode;
 	SceneManager* mySceneManager;
 	Vector<osg::Node*> myStaticObjectFiles;
+	osg::Light* myLight2;
+
+	Vector3f myCenter;
+	float myMaxDistance;
 };
 
 StateSet* sQSS = NULL;
@@ -101,6 +112,9 @@ void createQueryStateSet()
 		PolygonOffset* po = new PolygonOffset( -16., -16. );
 		sQSS->setAttributeAndModes( po, StateAttribute::ON | StateAttribute::PROTECTED);
 		sQSS->setMode( GL_POLYGON_OFFSET_FILL, StateAttribute::ON | StateAttribute::PROTECTED);
+
+		sQSS->setMode( GL_VERTEX_SHADER, StateAttribute::OFF | StateAttribute::PROTECTED);
+		sQSS->setMode( GL_FRAGMENT_SHADER, StateAttribute::OFF | StateAttribute::PROTECTED);
 	}
 }
 
@@ -159,7 +173,7 @@ void HplViewer::loadStaticObjectFiles(TiXmlElement* xStaticObjectFiles)
 	{
 		const char* filePath = xchild->Attribute("Path");
 		int index = atoi(xchild->Attribute("Id"));
-		ofmsg("Loading static object %1%", %index);
+		//ofmsg("Loading static object %1%", %index);
 		DataManager* dm = SystemManager::instance()->getDataManager();
 		DataInfo cfgInfo = dm->getInfo(String(filePath) + ".fbx.obj");
 		if(!cfgInfo.isNull())
@@ -188,32 +202,34 @@ void HplViewer::createStaticObjects(osg::Group* root, TiXmlElement* xStaticObjec
 		Vector3f position = readVector3f(xchild, "WorldPos");
 		Vector3f scale = readVector3f(xchild, "Scale");
 
-		//ofmsg("Object %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
-
-		osg::Node* node = myStaticObjectFiles[fileIndex];
-		if(node != NULL)
+		if((position - myCenter).norm() < myMaxDistance)
 		{
-			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-			root->addChild(xf);
+			//ofmsg("Object %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
 
-#ifdef USE_OCCLUSION_QUERY
-			osg::OcclusionQueryNode* oqn = new osg::OcclusionQueryNode();
-			createQueryStateSet();
-			oqn->setQueryStateSet(sQSS);
-			xf->addChild(oqn);
-			oqn->addChild(node);
-			oqn->setDebugDisplay(true);
-#else
-			xf->addChild(node);
-#endif
+			osg::Node* node = myStaticObjectFiles[fileIndex];
+			if(node != NULL)
+			{
+				osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
+				root->addChild(xf);
+				#ifdef USE_OCCLUSION_QUERY
+					osg::OcclusionQueryNode* oqn = new osg::OcclusionQueryNode();
+					createQueryStateSet();
+					oqn->setQueryStateSet(sQSS);
+					xf->addChild(oqn);
+					oqn->addChild(node);
+					oqn->setDebugDisplay(true);
+				#else
+					xf->addChild(node);
+				#endif
 
-			xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
-			xf->setAttitude(osg::Quat(
-				rotation[0], osg::Vec3d(1, 0, 0),
-				rotation[1], osg::Vec3d(0, 1, 0),
-				rotation[2], osg::Vec3d(0, 0, 1)
-				));
-			xf->setScale(osg::Vec3d(scale[0], -scale[1], scale[2]));
+				xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
+				xf->setAttitude(osg::Quat(
+					rotation[0], osg::Vec3d(1, 0, 0),
+					rotation[1], osg::Vec3d(0, 1, 0),
+					rotation[2], osg::Vec3d(0, 0, 1)
+					));
+				xf->setScale(osg::Vec3d(scale[0], -scale[1], scale[2]));
+			}
 		}
 		xchild = xchild->NextSiblingElement();
 	}
@@ -226,59 +242,104 @@ void HplViewer::createPrimitives(osg::Group* root, TiXmlElement* xStaticObjects)
 	while(xchild)
 	{
 		osg::Geode* node = new osg::Geode();
-		String primType = xchild->Value();
-		if(primType == "Plane")
-		{
-			Vector3f startCorner = readVector3f(xchild, "StartCorner");
-			Vector3f endCorner = readVector3f(xchild, "EndCorner");
-
-			Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
-			Vector3f c2(endCorner[0], startCorner[1], startCorner[2]);
-			Vector3f u = (startCorner - c1);
-			Vector3f v = (startCorner - c2);
-			//u.normalize();
-			//v.normalize();
-
-			node->addDrawable(osgwTools::makePlane(
-				OOSG_VEC3(startCorner), 
-				OOSG_VEC3(u), 
-				OOSG_VEC3(v)));
-		}
-
-		int id = atoi(xchild->Attribute("ID"));
 
 		Vector3f rotation = readVector3f(xchild, "Rotation");
 		Vector3f position = readVector3f(xchild, "WorldPos");
 		Vector3f scale = readVector3f(xchild, "Scale");
 
-		//ofmsg("Primitive %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
-
-		if(node != NULL)
+		if((position - myCenter).norm() < myMaxDistance)
 		{
-			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-			root->addChild(xf);
+			String primType = xchild->Value();
+			if(primType == "Plane")
+			{
+				Vector3f startCorner = readVector3f(xchild, "StartCorner");
+				Vector3f endCorner = readVector3f(xchild, "EndCorner");
 
-#ifdef USE_OCCLUSION_QUERY
-			osg::OcclusionQueryNode* oqn = new osg::OcclusionQueryNode();
-			createQueryStateSet();
-			oqn->setQueryStateSet(sQSS);
-			xf->addChild(oqn);
-			oqn->addChild(node);
-			oqn->setDebugDisplay(true);
-#else
-			xf->addChild(node);
-#endif
+				Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
+				Vector3f c2(endCorner[0], startCorner[1], startCorner[2]);
+				Vector3f u = (c1 - startCorner);
+				Vector3f v = (c2 - startCorner);
+				//u.normalize();
+				//v.normalize();
 
-			xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
-			xf->setAttitude(osg::Quat(
-				rotation[0], osg::Vec3d(1, 0, 0),
-				rotation[1], osg::Vec3d(0, 1, 0),
-				rotation[2], osg::Vec3d(0, 0, 1)
-				));
-			xf->setScale(osg::Vec3d(scale[0], scale[1], -scale[2]));
+				node->addDrawable(osgwTools::makePlane(
+					OOSG_VEC3(startCorner), 
+					OOSG_VEC3(u), 
+					OOSG_VEC3(v)));
+			}
+
+			int id = atoi(xchild->Attribute("ID"));
+
+			//ofmsg("Primitive %1% position %2% rotation %3% scale %4%", %id %position %rotation %scale);
+
+			if(node != NULL)
+			{
+				osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
+				root->addChild(xf);
+
+				#ifdef USE_OCCLUSION_QUERY
+					osg::OcclusionQueryNode* oqn = new osg::OcclusionQueryNode();
+					createQueryStateSet();
+					oqn->setQueryStateSet(sQSS);
+					xf->addChild(oqn);
+					oqn->addChild(node);
+					oqn->setDebugDisplay(true);
+				#else
+					xf->addChild(node);
+				#endif
+
+				xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
+				xf->setAttitude(osg::Quat(
+					rotation[0], osg::Vec3d(1, 0, 0),
+					rotation[1], osg::Vec3d(0, 1, 0),
+					rotation[2], osg::Vec3d(0, 0, 1)
+					));
+				xf->setScale(osg::Vec3d(scale[0], scale[1], scale[2]));
+			}
 		}
 		xchild = xchild->NextSiblingElement();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void HplViewer::initShading()
+{
+	osgShadow::ShadowedScene* ss = new osgShadow::ShadowedScene();
+	ss->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
+	ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
+
+	osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
+	//sm->addShader(ssmFrag);
+	//sm->addShader(ssmVert);
+	sm->setTextureSize(osg::Vec2s(512, 512));
+	sm->setAmbientBias(osg::Vec2(0.5f, 0.5f));
+	sm->setTextureUnit(0);
+	//sm->setJitterTextureUnit(5);
+	//sm->setSoftnessWidth(0.01);
+
+	ss->addChild(mySceneNode);
+	ss->setShadowTechnique(sm.get());
+
+	osg::StateSet *sState = ss->getOrCreateStateSet();
+
+	myLight2 = new osg::Light;
+    myLight2->setLightNum(0);
+    myLight2->setPosition(osg::Vec4(0.0, 5, 5, 1.0));
+    myLight2->setAmbient(osg::Vec4(0.1f,0.1f,0.1f,1.0f));
+    myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
+    /*myLight2->setConstantAttenuation(1.0f);
+    myLight2->setLinearAttenuation(2.0f/70.0f);
+    myLight2->setQuadraticAttenuation(2.0f/osg::square(70.0f));*/
+
+    osg::LightSource* lightS2 = new osg::LightSource;    
+    lightS2->setLight(myLight2);
+    lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
+
+    lightS2->setStateSetModes(*sState,osg::StateAttribute::ON);
+	ss->addChild(lightS2);
+
+	mySceneNode = ss;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,6 +352,9 @@ void HplViewer::initialize()
 	myOsg->initialize(this);
 
 	mySceneManager = new SceneManager();
+
+	myCenter = Vector3f::Zero();
+	myMaxDistance = 10;
 
 	// Load osg object
 	if(cfg->exists("config/dataPath"))
@@ -320,11 +384,18 @@ void HplViewer::initialize()
 				}
 				else
 				{
-					// Optimize scenegraph
-					//osgUtil::Optimizer optOSGFile;
-					//optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+					mySceneNode = node;
 
-					myOsg->setRootNode(node);
+					osg::setNotifyLevel(INFO);
+					omsg("Optimizing scene graph...");
+					// Optimize scenegraph
+					osgUtil::Optimizer optOSGFile;
+					//optOSGFile.optimize(node, osgUtil::Optimizer::SPATIALIZE_GROUPS);
+					osg::setNotifyLevel(WARN);
+
+					initShading();
+
+					myOsg->setRootNode(mySceneNode);
 				}
 			}
 		}
@@ -340,6 +411,21 @@ void HplViewer::update(const UpdateContext& context)
 {
 	EngineServer::update(context);
 	myOsg->update(context);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void HplViewer::handleEvent(const Event& evt) 
+{
+	EngineServer::handleEvent(evt);
+	if(evt.isKeyDown('l'))
+    {
+		Vector3f pos = getDefaultCamera()->getPosition();
+		if(myLight2 != NULL)
+		{
+			myLight2->setPosition(Vec4(-pos[0], -pos[1], pos[2], 1.0f));
+			ofmsg("Light Position: %1%", %pos);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

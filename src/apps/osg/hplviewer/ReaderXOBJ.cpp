@@ -64,12 +64,16 @@
 #include <osgUtil/TriStripVisitor>
 #include <osgUtil/SmoothingVisitor>
 #include <osgUtil/Tessellator>
+#include <osgUtil/TangentSpaceGenerator>
 
 #include <osg/PolygonMode>
 
 
 #include "SolidEffect.h"
+#include "SceneManager.h"
 #include "obj.h"
+
+using namespace hpl;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class ReaderXOBJ : public osgDB::ReaderWriter
@@ -400,29 +404,36 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 		// Get the material name using the name of the diffuse texture.
 		String materialName = material.maps[obj::Material::Map::DIFFUSE].name;
 
-		String materialFile = StringUtils::replaceAll(materialName, ".dds", ".mat");
-		materialFile = model.getDatabasePath() + '/' + materialFile;
+		omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
 
-		// Open the material XML file.
-		TiXmlDocument doc(materialFile.c_str());
-		if(doc.LoadFile())
+		String materialPath;
+		if(SceneManager::findMaterialFile(materialName, materialPath))
 		{
-			String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
-			StringUtils::toLowerCase(type);
-			if(type == "soliddiffuse")
+			// Open the material XML file.
+			TiXmlDocument doc(materialPath.c_str());
+			if(doc.LoadFile())
 			{
-				hpl::SolidEffect* fx = new hpl::SolidEffect();
-				fx->load(doc.RootElement());
-				em[material.name] = fx;
+				String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
+				StringUtils::toLowerCase(type);
+				if(type == "soliddiffuse")
+				{
+					hpl::SolidEffect* fx = new hpl::SolidEffect();
+					fx->load(doc.RootElement());
+					em[material.name] = fx;
+				}
+				else
+				{
+					ofwarn("Unknown material type %1%", %type);
+				}
 			}
 			else
 			{
-				ofwarn("Unknown material type %1%", %type);
+				ofwarn("Could not open material file %1%", %materialName);
 			}
 		}
 		else
 		{
-			ofwarn("Could not open material file %1%", %materialFile);
+			ofwarn("Could not find material file %1%", %materialName);
 		}
 	}
 }
@@ -473,9 +484,24 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
             }
 
             osg::Geode* geode = new osg::Geode;
+			geode->setNodeMask(SceneManager::ReceivesShadowTraversalMask | SceneManager::CastsShadowTraversalMask);
             geode->addDrawable(geometry);
+
+			// Set geometry texture coords
+			geometry->setTexCoordArray(1, geometry->getTexCoordArray(0));
+			geometry->setTexCoordArray(2, geometry->getTexCoordArray(0));
+			geometry->setTexCoordArray(3, geometry->getTexCoordArray(0));
             
-			osgFX::Effect* fx = fxs[es.materialName];
+			// Generate tangent space for geometry
+			osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+			tsg->generate(geometry, 1);
+			osg::Vec4Array* a_tangent = tsg->getTangentArray();
+			geometry->setVertexAttribArray (6, a_tangent);
+			geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+
+			// Set geometry material
+			//osgFX::Effect* fx = fxs[es.materialName];
+			osgFX::Effect* fx = NULL;
 			if(fx != NULL)
 			{
 				fx->addChild(geode);
@@ -483,7 +509,7 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
 			}
 			else
 			{
-				ofwarn("Could not find material %1%", %es.materialName);
+				//ofwarn("Could not find material %1%", %es.materialName);
 				group->addChild(geode);
 			}
 

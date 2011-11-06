@@ -54,24 +54,6 @@ class SceneView : public osg::Object, public osg::CullSettings
 
         META_Object(osgUtil, SceneView);
 
-        enum Options
-        {
-            NO_SCENEVIEW_LIGHT = 0x0,
-            HEADLIGHT = 0x1,
-            SKY_LIGHT = 0x2,
-            COMPILE_GLOBJECTS_AT_INIT = 0x4,
-            STANDARD_SETTINGS = SKY_LIGHT |
-                                COMPILE_GLOBJECTS_AT_INIT
-        };
-
-        /* Set defaults. */
-        virtual void setDefaults() { setDefaults(STANDARD_SETTINGS); }
-
-        /** Set scene view to use default global state, light, camera
-         *  and render visitor.
-         */
-        virtual void setDefaults(unsigned int options);
-
         /** Set the camera used to represent the camera view of this SceneView.*/
         void setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera = true);
 
@@ -161,16 +143,6 @@ class SceneView : public osg::Object, public osg::CullSettings
 
         void updateUniforms();
         
-
-        typedef Options LightingMode;
-
-        void setLightingMode(LightingMode mode);
-        LightingMode getLightingMode() const { return _lightingMode; }
-
-        void setLight(osg::Light* light) { _light = light; }
-        osg::Light* getLight() { return _light.get(); }
-        const osg::Light* getLight() const { return _light.get(); }
-        
         void setState(osg::State* state) { _renderInfo.setState(state); }
         osg::State* getState() { return _renderInfo.getState(); }
         const osg::State* getState() const { return _renderInfo.getState(); }
@@ -259,14 +231,6 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Get the frame stamp for the current frame.*/
         inline const osg::FrameStamp* getFrameStamp() const { return _frameStamp.get(); }
 
-
-        /** Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask.*/
-        virtual void inheritCullSettings(const osg::CullSettings& settings) { inheritCullSettings(settings, _inheritanceMask); }
-
-        /** Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask.*/
-        virtual void inheritCullSettings(const osg::CullSettings& settings, unsigned int inheritanceMask);
-
-
         /** Do init traversal of attached scene graph using Init NodeVisitor.
           * The init traversal is called once for each SceneView, and should
           * be used to compile display list, texture objects intialize data
@@ -274,7 +238,7 @@ class SceneView : public osg::Object, public osg::CullSettings
           * called automatically by update & cull if it hasn't already been called
           * elsewhere. Also init() should only ever be called within a valid
           * graphics context.*/
-        virtual void init();
+        virtual void initialize();
 
         /** Do cull traversal of attached scene graph using Cull NodeVisitor.*/
         virtual void cull();
@@ -326,15 +290,12 @@ class SceneView : public osg::Object, public osg::CullSettings
         osg::ref_ptr<osg::Camera>                   _cameraWithOwnership;
         
         osg::ref_ptr<osg::StateSet>                 _globalStateSet;
-        osg::ref_ptr<osg::Light>                    _light;
         osg::ref_ptr<osg::DisplaySettings>          _displaySettings;
         
         osg::ref_ptr<osg::StateSet>                 _secondaryStateSet;
 
         float                                       _fusionDistanceValue;
 
-        LightingMode                                _lightingMode;
-        
         bool                                        _prioritizeTextures;
         
         bool                                        _requiresFlush;
