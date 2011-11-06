@@ -57,8 +57,6 @@ SceneView::SceneView( osg::DisplaySettings* ds)
 {
     _displaySettings = ds;
 
-    _lightingMode=NO_SCENEVIEW_LIGHT;
-    
     _prioritizeTextures = false;
     
     setCamera(new Camera);
@@ -86,8 +84,6 @@ SceneView::SceneView(const SceneView& rhs, const osg::CopyOp& copyop):
 {
     _displaySettings = rhs._displaySettings;
 
-    _lightingMode = rhs._lightingMode;
-    
     _prioritizeTextures = rhs._prioritizeTextures;
     
     _camera = rhs._camera;
@@ -119,65 +115,6 @@ SceneView::~SceneView()
 //		omega::omsg(message);
 //	}
 //};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::setDefaults(unsigned int options)
-{
-	osg::setNotifyLevel(INFO);
-	//osg::setNotifyHandler(new NH());
-    osg::CullSettings::setDefaults();
-
-    //_camera->getProjectionMatrix().makePerspective(50.0f,1.4f,1.0f,10000.0f);
-    //_camera->getViewMatrix().makeIdentity();
-
-    if (!_globalStateSet) _globalStateSet = new osg::StateSet;
-    else _globalStateSet->clear();
-
-    if ((options & HEADLIGHT) || (options & SKY_LIGHT))
-    {
-        #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-            _lightingMode=(options&HEADLIGHT) ? HEADLIGHT : SKY_LIGHT;
-            _light = new osg::Light;
-            _light->setLightNum(0);
-            _light->setAmbient(Vec4(0.00f,0.0f,0.00f,1.0f));
-            _light->setDiffuse(Vec4(0.8f,0.8f,0.8f,1.0f));
-            _light->setSpecular(Vec4(1.0f,1.0f,1.0f,1.0f));
-
-
-            _globalStateSet->setAssociatedModes(_light.get(),osg::StateAttribute::ON);
-
-            // enable lighting by default.
-            _globalStateSet->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-        #endif
-        
-        #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-            osg::LightModel* lightmodel = new osg::LightModel;
-            lightmodel->setAmbientIntensity(osg::Vec4(0.1f,0.1f,0.1f,1.0f));
-            _globalStateSet->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
-        #endif
-    }
-    else
-    {
-        _lightingMode = NO_SCENEVIEW_LIGHT;
-    }
- 
-    _renderInfo.setState(new State);
-    
-    _stateGraph = new StateGraph;
-	_renderStage = new RenderStage();
-
-    _updateVisitor = new UpdateVisitor;
-
-    _cullVisitor = CullVisitor::create();
-
-    _cullVisitor->setStateGraph(_stateGraph.get());
-    _cullVisitor->setRenderStage(_renderStage.get());
-
-    _globalStateSet->setGlobalDefaults();
-
-    // Do not clear the frame buffer - the omegalib engine takes care of this.
-	_camera->setClearMask(0);
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneView::setCamera(osg::Camera* camera, bool assumeOwnershipOfCamera)
@@ -216,9 +153,39 @@ void SceneView::setSceneData(osg::Node* node)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::init()
+void SceneView::initialize()
 {
     _initCalled = true;
+
+	//osg::setNotifyLevel(INFO);
+	//osg::setNotifyHandler(new NH());
+    osg::CullSettings::setDefaults();
+
+    //_camera->getProjectionMatrix().makePerspective(50.0f,1.4f,1.0f,10000.0f);
+    //_camera->getViewMatrix().makeIdentity();
+
+    if (!_globalStateSet) _globalStateSet = new osg::StateSet;
+    else _globalStateSet->clear();
+
+    // enable lighting by default.
+    _globalStateSet->setMode(GL_LIGHTING, osg::StateAttribute::ON);
+
+    _renderInfo.setState(new State);
+    
+    _stateGraph = new StateGraph;
+	_renderStage = new RenderStage();
+
+    _updateVisitor = new UpdateVisitor;
+
+    _cullVisitor = CullVisitor::create();
+
+    _cullVisitor->setStateGraph(_stateGraph.get());
+    _cullVisitor->setRenderStage(_renderStage.get());
+
+    _globalStateSet->setGlobalDefaults();
+
+    // Do not clear the frame buffer - the omegalib engine takes care of this.
+	_camera->setClearMask(0);
 
     if (_camera.valid() && _initVisitor.valid())
     {
@@ -296,69 +263,6 @@ void SceneView::updateUniforms()
         uniform->set(osg::Matrix::inverse(getViewMatrix()));
     }
 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::setLightingMode(LightingMode mode)
-{
-    if (mode==_lightingMode) return;
-    
-    if (_lightingMode!=NO_SCENEVIEW_LIGHT)
-    {
-        // remove GL_LIGHTING mode
-        _globalStateSet->removeMode(GL_LIGHTING);
-
-        if (_light.valid())
-        {
-            _globalStateSet->removeAssociatedModes(_light.get());
-        }
-
-    }
-
-    _lightingMode = mode;
-
-    //if (_lightingMode!=NO_SCENEVIEW_LIGHT)
-    //{
-    //    #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
-    //        // add GL_LIGHTING mode
-    //        _globalStateSet->setMode(GL_LIGHTING, osg::StateAttribute::ON);
-    //        if (_light.valid()) 
-    //        {
-    //            _globalStateSet->setAssociatedModes(_light.get(), osg::StateAttribute::ON);
-    //        }
-    //    #endif
-    //}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneView::inheritCullSettings(const osg::CullSettings& settings, unsigned int inheritanceMask)
-{
-    if (_camera.valid() && _camera->getView()) 
-    {
-        if (inheritanceMask & osg::CullSettings::LIGHTING_MODE)
-        {
-            LightingMode newLightingMode = _lightingMode;
-        
-            switch(_camera->getView()->getLightingMode())
-            {
-                case(osg::View::NO_LIGHT): newLightingMode = NO_SCENEVIEW_LIGHT; break;
-                case(osg::View::HEADLIGHT): newLightingMode = HEADLIGHT; break;
-                case(osg::View::SKY_LIGHT): newLightingMode = SKY_LIGHT; break;
-            }
-            
-            if (newLightingMode != _lightingMode)
-            {
-                setLightingMode(newLightingMode);
-            }
-        }
-                
-        if (inheritanceMask & osg::CullSettings::LIGHT)
-        {
-            setLight(_camera->getView()->getLight());
-        }
-    }
-    
-    osg::CullSettings::inheritCullSettings(settings, inheritanceMask);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -581,7 +485,7 @@ void SceneView::draw()
     osg::GLBufferObjectManager* bom = osg::GLBufferObjectManager::getGLBufferObjectManager(state->getContextID()).get();
     bom->newFrame(state->getFrameStamp());
 
-    if (!_initCalled) init();
+    if (!_initCalled) initialize();
 
     // note, to support multi-pipe systems the deletion of OpenGL display list
     // and texture objects is deferred until the OpenGL context is the correct

@@ -63,8 +63,7 @@ void OsgRenderPass::initialize()
 
 	myModule = (OsgModule*)getUserData();
 	mySceneView = new SceneView();
-    mySceneView->setDefaults( SceneView::STANDARD_SETTINGS );
-    mySceneView->init();
+    mySceneView->initialize();
 	mySceneView->getState()->setContextID(getClient()->getId());
 
 	sInitLock.unlock();

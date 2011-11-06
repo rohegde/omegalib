@@ -42,6 +42,26 @@ SceneManager::SceneManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneManager::findMaterialFile(const String& name, String& outPath)
+{
+	String materialName = StringUtils::replaceAll(name, ".dds", ".mat");
+	if(DataManager::findFile(materialName, outPath)) return true;
+	if(DataManager::findFile("../" + materialName, outPath)) return true;
+	if(DataManager::findFile("../wall/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../ceiling/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../pillar/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../special/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../floor/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../stairs/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../../decals/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../../debris/hole/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../../debris/rock/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../../debris/wood/" + materialName, outPath)) return true;
+	if(DataManager::findFile("../../castlebase/ceiling/" + materialName, outPath)) return true;
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Texture2D* SceneManager::getTexture(const String& name)
 {
 	// If texture has been loaded already return it.
@@ -57,7 +77,7 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 
 	if(DataManager::findFile(filename, path))
 	{
-		ofmsg("Loading texture file %1%", %path);
+		//ofmsg("Loading texture file %1%", %filename);
 
         osg::ref_ptr< osg::Image > image;
         // first try with database path of parent. 
@@ -86,4 +106,45 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 		ofwarn("Could not find texture file %1%", %filename);
 	}
 	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::loadShader(osg::Shader* shader, const String& name)
+{
+	String path;
+	if(DataManager::findFile(name, path))
+	{
+		//ofmsg("Loading shader file %1%", %name);
+	    shader->loadShaderSourceFromFile(path);
+	}
+	else
+	{
+		ofwarn("Could not find shader file %1%", %name);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Program* SceneManager::getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName)
+{
+	// If program has been loaded already return it.
+	if(myPrograms.find(name) != myPrograms.end())
+	{
+		return myPrograms[name];
+	}
+
+	osg::Program* prog = new osg::Program();
+	prog->setName(name);
+
+	osg::Shader* vs = new osg::Shader( osg::Shader::VERTEX );
+	osg::Shader* fs = new osg::Shader( osg::Shader::FRAGMENT );
+	prog->addShader(vs);
+	prog->addShader(fs);
+
+	// Load shader sources.
+	loadShader(vs, vertexShaderName);
+	loadShader(fs, fragmentShaderName);
+
+	myPrograms[name] = prog;
+
+	return prog;
 }

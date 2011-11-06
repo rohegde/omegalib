@@ -1,0 +1,641 @@
+MatrixTransform {
+  DataVariance STATIC
+  name "Scene Root"
+  nodeMask 0xff
+  cullingActive TRUE
+  StateSet {
+    UniqueID StateSet_0
+    DataVariance STATIC
+    rendering_hint DEFAULT_BIN
+    renderBinMode INHERIT
+    GL_LIGHTING OVERRIDE|OFF
+  }
+  referenceFrame RELATIVE
+  Matrix {
+    1 0 0 0
+    0 1 0 0
+    0 0 1 0
+    0 0 0 1
+  }
+  num_children 2
+  Group {
+    DataVariance STATIC
+    name "edificio14"
+    nodeMask 0xff
+    cullingActive TRUE
+    num_children 1
+    Geode {
+      UniqueID Geode_1
+      DataVariance STATIC
+      name "edificio14-GEODE"
+      nodeMask 0xff
+      cullingActive TRUE
+      num_drawables 1
+      Geometry {
+        DataVariance DYNAMIC
+        name "edificio14"
+        StateSet {
+          UniqueID StateSet_2
+          DataVariance STATIC
+          rendering_hint DEFAULT_BIN
+          renderBinMode INHERIT
+          GL_CULL_FACE ON
+          GL_LIGHTING OVERRIDE|OFF
+          0xba1 ON
+          Material {
+            UniqueID Material_3
+            DataVariance STATIC
+            ColorMode OFF
+            ambientColor 0.588235 0.588235 0.588235 1
+            diffuseColor 1 1 1 1
+            specularColor 0 0 0 1
+            emissionColor 0 0 0 1
+            shininess 0
+          }
+          textureUnit 0 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_4
+              DataVariance STATIC
+              file "..\images\edificio14_difusion.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r REPEAT
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            TexEnv {
+              UniqueID TexEnv_5
+              DataVariance STATIC
+              mode ADD
+            }
+          }
+          textureUnit 1 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_6
+              DataVariance STATIC
+              file "..\images\edificio14_normales.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r REPEAT
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+          textureUnit 2 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_7
+              DataVariance STATIC
+              file "..\images\edificio14AmbientOcclusion_MR_.tga"
+              wrap_s CLAMP_TO_EDGE
+              wrap_t CLAMP_TO_EDGE
+              wrap_r CLAMP_TO_EDGE
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+          textureUnit 3 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_8
+              DataVariance STATIC
+              file "..\images\edificio14_depthmap.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r REPEAT
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+        }
+        useDisplayList TRUE
+        useVertexBufferObjects FALSE
+        PrimitiveSets 11
+        {
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            1 2 0 3 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            7 4 6 5 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            31 28 30 29 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            41 42 40 43 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            37 38 36 39 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            33 34 32 35 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            27 24 26 25 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            23 20 22 21 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            19 16 18 17 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            15 12 14 13 
+          }
+          DrawElementsUShort TRIANGLE_STRIP 4
+          {
+            9 10 8 11 
+          }
+        }
+        VertexArray Vec3Array 44
+        {
+          435.662 -480.126 156.194
+          435.662 -480.126 16.7038
+          435.662 -577.817 16.7038
+          435.662 -577.817 156.194
+          547.128 -763.54 -28.5791
+          547.128 -763.54 16.7038
+          547.128 -577.817 16.7038
+          547.128 -577.817 -28.5791
+          435.662 -480.126 16.7038
+          435.662 -480.126 -28.5791
+          435.662 -577.817 -28.5791
+          435.662 -577.817 16.7038
+          627.244 -295.353 156.194
+          627.244 -295.353 16.7038
+          627.244 -480.126 16.7038
+          627.244 -480.126 156.194
+          734.751 -295.353 156.194
+          734.751 -295.353 16.7038
+          627.244 -295.353 16.7038
+          627.244 -295.353 156.194
+          435.662 -480.126 16.7038
+          435.662 -480.126 156.194
+          627.244 -480.126 156.194
+          627.244 -480.126 16.7038
+          435.662 -577.817 16.7038
+          435.662 -577.817 -28.5791
+          547.128 -577.817 -28.5791
+          547.128 -577.817 16.7038
+          627.244 -480.126 16.7038
+          627.244 -480.126 -28.5791
+          435.662 -480.126 -28.5791
+          435.662 -480.126 16.7038
+          547.128 -577.817 156.194
+          547.128 -577.817 16.7038
+          547.128 -763.54 16.7038
+          547.128 -763.54 156.194
+          435.662 -577.817 16.7038
+          547.128 -577.817 16.7038
+          547.128 -577.817 156.194
+          435.662 -577.817 156.194
+          627.244 -480.126 -28.5791
+          627.244 -480.126 16.7038
+          627.244 -295.353 16.7038
+          627.244 -295.353 -28.5791
+        }
+        NormalBinding PER_VERTEX
+        NormalArray Vec3Array 44
+        {
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 -1 0
+          0 -1 0
+          0 -1 0
+          0 -1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          0 1 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          0 -1 0
+          0 -1 0
+          0 -1 0
+          0 -1 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+          -1 0 0
+        }
+        TexCoordArray 0 Vec2Array 44
+        {
+          1.90471 1.47049
+          1.90471 0.002159
+          2.93304 0.002159
+          2.93304 1.47049
+          4.955 -1
+          4.955 -0.046667
+          3 -0.046667
+          3 -1
+          2 -0.046667
+          2 -1
+          3.02833 -1
+          3.02833 -0.046667
+          -0.945 1.46833
+          -0.945 0
+          1 0
+          1 1.46833
+          -3.14833 1.945
+          -3.14833 0.476667
+          -2.01667 0.476667
+          -2.01667 1.945
+          -8.98333 0
+          -8.98333 1.46833
+          -11 1.46833
+          -11 0
+          9 -0.046667
+          9 -1
+          10.1733 -1
+          10.1733 -0.046667
+          -11 -0.046667
+          -11 -1
+          -8.98333 -1
+          -8.98333 -0.046667
+          3 1.46833
+          3 0
+          4.955 0
+          4.955 1.46833
+          8.92444 0
+          10.0978 0
+          10.0978 1.46833
+          8.92444 1.46833
+          1.9725 -1
+          1.9725 -0.046667
+          0.0275 -0.046667
+          0.0275 -1
+        }
+        TexCoordArray 1 Vec2Array 44
+        {
+          1.90471 1.47049
+          1.90471 0.002159
+          2.93304 0.002159
+          2.93304 1.47049
+          4.955 -1
+          4.955 -0.046667
+          3 -0.046667
+          3 -1
+          2 -0.046667
+          2 -1
+          3.02833 -1
+          3.02833 -0.046667
+          -0.945 1.46833
+          -0.945 0
+          1 0
+          1 1.46833
+          -3.14833 1.945
+          -3.14833 0.476667
+          -2.01667 0.476667
+          -2.01667 1.945
+          -8.98333 0
+          -8.98333 1.46833
+          -11 1.46833
+          -11 0
+          9 -0.046667
+          9 -1
+          10.1733 -1
+          10.1733 -0.046667
+          -11 -0.046667
+          -11 -1
+          -8.98333 -1
+          -8.98333 -0.046667
+          3 1.46833
+          3 0
+          4.955 0
+          4.955 1.46833
+          8.92444 0
+          10.0978 0
+          10.0978 1.46833
+          8.92444 1.46833
+          1.9725 -1
+          1.9725 -0.046667
+          0.0275 -0.046667
+          0.0275 -1
+        }
+        TexCoordArray 2 Vec2Array 44
+        {
+          0 0.676412
+          0 0.426341
+          0.175135 0.426341
+          0.175135 0.676412
+          0.837638 0.0420096
+          0.918819 0.0420096
+          0.918819 0.374964
+          0.837638 0.374964
+          0.756458 0.175135
+          0.675277 0.175135
+          0.675277 0
+          0.756458 0
+          0.425206 0.676412
+          0.175135 0.676412
+          0.175135 0.34516
+          0.425206 0.34516
+          0.0326428 0.34516
+          0.0326428 0.0950894
+          0.225376 0.0950894
+          0.225376 0.34516
+          0.425206 0.332955
+          0.675277 0.332955
+          0.675277 0.676412
+          0.425206 0.676412
+          0.756458 0.374964
+          0.675277 0.374964
+          0.675277 0.175135
+          0.756458 0.175135
+          1 0.374964
+          0.918819 0.374964
+          0.918819 0.0315073
+          1 0.0315073
+          0.675277 0.332955
+          0.425206 0.332955
+          0.425206 0
+          0.675277 0
+          0.225376 0.0950894
+          0.425206 0.0950894
+          0.425206 0.34516
+          0.225376 0.34516
+          0.756458 0.0437127
+          0.837638 0.0437127
+          0.837638 0.374964
+          0.756458 0.374964
+        }
+        TexCoordArray 3 Vec2Array 44
+        {
+          1.90471 1.47049
+          1.90471 0.002159
+          2.93304 0.002159
+          2.93304 1.47049
+          4.955 -1
+          4.955 -0.046667
+          3 -0.046667
+          3 -1
+          2 -0.046667
+          2 -1
+          3.02833 -1
+          3.02833 -0.046667
+          -0.945 1.46833
+          -0.945 0
+          1 0
+          1 1.46833
+          -3.14833 1.945
+          -3.14833 0.476667
+          -2.01667 0.476667
+          -2.01667 1.945
+          -8.98333 0
+          -8.98333 1.46833
+          -11 1.46833
+          -11 0
+          9 -0.046667
+          9 -1
+          10.1733 -1
+          10.1733 -0.046667
+          -11 -0.046667
+          -11 -1
+          -8.98333 -1
+          -8.98333 -0.046667
+          3 1.46833
+          3 0
+          4.955 0
+          4.955 1.46833
+          8.92444 0
+          10.0978 0
+          10.0978 1.46833
+          8.92444 1.46833
+          1.9725 -1
+          1.9725 -0.046667
+          0.0275 -0.046667
+          0.0275 -1
+        }
+      }
+    }
+  }
+  Group {
+    DataVariance STATIC
+    name "piso_borrar"
+    nodeMask 0xff
+    cullingActive TRUE
+    num_children 1
+    Geode {
+      UniqueID Geode_9
+      DataVariance STATIC
+      name "piso_borrar-GEODE"
+      nodeMask 0xff
+      cullingActive TRUE
+      num_drawables 1
+      Geometry {
+        DataVariance DYNAMIC
+        name "piso_piedras"
+        StateSet {
+          UniqueID StateSet_10
+          DataVariance STATIC
+          rendering_hint DEFAULT_BIN
+          renderBinMode INHERIT
+          GL_CULL_FACE ON
+          GL_LIGHTING OVERRIDE|OFF
+          0xba1 ON
+          Use Material_3
+          textureUnit 0 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_11
+              DataVariance STATIC
+              file "..\images\rockwall.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r CLAMP_TO_EDGE
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+          textureUnit 1 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_12
+              DataVariance STATIC
+              file "..\images\rockwall_normal.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r CLAMP_TO_EDGE
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+          textureUnit 2 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_13
+              DataVariance STATIC
+              file "..\images\piso_piedrasAmbient Occlusion _MR_.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r CLAMP_TO_EDGE
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+          textureUnit 3 {
+            GL_TEXTURE_2D ON
+            Texture2D {
+              UniqueID Texture2D_14
+              DataVariance STATIC
+              file "..\images\rockwall_height.tga"
+              wrap_s REPEAT
+              wrap_t REPEAT
+              wrap_r CLAMP_TO_EDGE
+              min_filter LINEAR_MIPMAP_LINEAR
+              mag_filter LINEAR
+              maxAnisotropy 1
+              borderColor 0 0 0 0
+              borderWidth 0
+              useHardwareMipMapGeneration TRUE
+              unRefImageDataAfterApply FALSE
+              internalFormatMode USE_IMAGE_DATA_FORMAT
+              resizeNonPowerOfTwo TRUE
+            }
+            Use TexEnv_5
+          }
+        }
+        useDisplayList TRUE
+        useVertexBufferObjects FALSE
+        PrimitiveSets 1
+        {
+          DrawArrays TRIANGLE_STRIP 0 4
+        }
+        VertexArray Vec3Array 4
+        {
+          304.102 -198.267 -28.3439
+          304.102 -796.017 -28.3439
+          856.889 -198.267 -28.3439
+          856.889 -796.017 -28.3439
+        }
+        NormalBinding PER_VERTEX
+        NormalArray Vec3Array 4
+        {
+          0 0 1
+          0 0 1
+          0 0 1
+          0 0 1
+        }
+        TexCoordArray 0 Vec2Array 4
+        {
+          0.00149927 6.9985
+          0.00149855 0.00149935
+          6.9985 6.9985
+          6.9985 0.00149864
+        }
+        TexCoordArray 1 Vec2Array 4
+        {
+          0.00149927 2.9985
+          0.00149855 0.00149935
+          2.9985 2.9985
+          2.9985 0.00149864
+        }
+        TexCoordArray 2 Vec2Array 4
+        {
+          0.00149927 2.9985
+          0.00149855 0.00149935
+          2.9985 2.9985
+          2.9985 0.00149864
+        }
+        TexCoordArray 3 Vec2Array 4
+        {
+          0.00149927 2.9985
+          0.00149855 0.00149935
+          2.9985 2.9985
+          2.9985 0.00149864
+        }
+      }
+    }
+  }
+}

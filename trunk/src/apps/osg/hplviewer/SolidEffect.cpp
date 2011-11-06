@@ -61,7 +61,19 @@ protected:
         //polymode->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
 		//ss->setAttribute(polymode);
 
-		ss->setTextureAttributeAndModes(0, myFx->getDiffuseTexture(), osg::StateAttribute::ON);
+		osg::Program* prog = myFx->getProgram();
+		prog->addBindAttribLocation ("Tangent", 6);
+
+		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+
+		ss->addUniform( new osg::Uniform("colorMap", 0) );
+		ss->setTextureAttribute(0, myFx->getDiffuseTexture());
+
+		ss->addUniform( new osg::Uniform("normalMap", 1) );
+		ss->setTextureAttribute(1, myFx->getNMapTexture());
+
+		ss->addUniform( new osg::Uniform("heightMap", 2) );
+		ss->setTextureAttribute(2, myFx->getHeightTexture());
 
 		addPass(ss);
     }
@@ -81,6 +93,8 @@ SolidEffect::SolidEffect():
 	myNMap = NULL;
 	mySpecular = NULL;
 	myHeight = NULL;
+
+	myProgram = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,6 +130,8 @@ void SolidEffect::load(TiXmlElement* xdata)
 		}
 		xchild = xchild->NextSiblingElement();
 	}
+
+	myProgram = mySceneManager->getProgram("solid", "shaders/parallaxv4.vert", "shaders/parallaxv4.frag");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
