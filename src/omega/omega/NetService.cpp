@@ -288,12 +288,13 @@ void NetService::poll()
 	//Event* evt;
 	static float lastt;
 	float curt = (float)((double)clock() / CLOCKS_PER_SEC);
-	if(curt - lastt > touchTimeout){
-	}
-		
+			
 	std::map<int, NetTouches>::iterator p;
+	
 	//printf("------------------\n");
 	swaplist.clear();
+
+	bool experimentalTouchGestures = false;
 
 	for(p = touchlist.begin(); p != touchlist.end(); p++) {
 		
@@ -311,18 +312,129 @@ void NetService::poll()
 
 			newEvt->setExtraDataType(Event::ExtraDataFloatArray);
 			newEvt->setExtraDataFloat(0, touch.xWidth * (float)screenX);
-			newEvt->setExtraDataFloat(1, touch.xWidth * (float)screenX);
+			newEvt->setExtraDataFloat(1, touch.yWidth * (float)screenY);
 
 			mysInstance->unlockEvents();
 			printf("Touch ID %d removed at (%f, %f)\n", touch.ID, touch.xPos, touch.yPos );
 			swaplist.erase( touch.ID );
+		} else if( experimentalTouchGestures ) {
+			// Compare the still active touch with other active touches for gesture recognition
+			// This is all hardcoded here - FIX to more elaborate system when time permits
+			std::map<int, NetTouches>::iterator swapIt;
+			for( swapIt = swaplist.begin(); swapIt != swaplist.end(); swapIt++ ){
+				NetTouches swapTouch = swapIt->second;
+				float timestamp = swapTouch.timestamp;
+				int touchID1 = touch.ID;
+				int touchID2 = swapTouch.ID;
+				float x1 = touch.xPos * 8160;
+				float y1 = touch.yPos * 2304;
+				float x2 = swapTouch.xPos * 8160;
+				float y2 = swapTouch.yPos * 2304;
+				
+				//distanceToTarget = sqrt( sq(abs( DESTINATION[X] - POSITION[X] )) + sq(abs( DESTINATION[Y] - POSITION[Y] )) );
+
+				float distance = sqrt( (abs( x2 - x1 ) * abs( x2 - x1 )) + (abs( y2 - y1 ) * abs( y2 - y1 )) );
+				float midpointX = (x2 + x1)/2.0f;
+				float midpointY = (y2 + y1)/2.0f;
+				float minZoomDistance = 30; // Size in pixels (This probably should be a screen ratio later on)
+				float maxZoomDistance = 2000; // Max distance in fingers for a zoom gesture
+				//printf("Dist between touch ID %d and %d : %f \n", touchID1, touchID2, distance );
+
+				if(curt - lastt <= 0.05f ){
+					continue;
+				}
+				
+				if( distance <= 2000 && distance >= 30 && touchID1 != touchID2 ){
+					if( touch.gestureType != Event::Split && swapTouch.gestureType != Event::Split ){
+						// New split gesture - touch 1 ID becomes new gesture ID
+						touch.gestureType = Event::Split;
+						touch.x1 = x1;
+						touch.y1 = y1;
+						touch.x2 = x2;
+						touch.y2 = y2;
+						touch.initDistance = distance;
+
+						// Generate event
+						Vector3f pt1(
+								swapTouch.xPos * (float)screenX,
+								swapTouch.yPos * (float)screenY,
+								0);
+						Vector3f pt2(
+								touch.xPos * (float)screenX,
+								touch.yPos * (float)screenY,
+								0);
+
+						mysInstance->lockEvents();
+
+						Event* newEvt = mysInstance->writeHead();
+						newEvt->reset(Event::Split, Service::Pointer, touch.ID);
+						newEvt->setPosition(touch.xPos * (float)screenX, touch.yPos * (float)screenY);
+
+						newEvt->setExtraDataType(Event::ExtraDataFloatArray);
+						newEvt->setExtraDataFloat(0, swapTouch.xPos * (float)screenX);
+						newEvt->setExtraDataFloat(1, swapTouch.yPos * (float)screenY);
+						newEvt->setExtraDataFloat(2, touch.xPos * (float)screenX);
+						newEvt->setExtraDataFloat(3, touch.yPos * (float)screenY);
+						newEvt->setPosition((pt1 + pt2) / 2);
+						newEvt->setExtraDataFloat(4, 0); // delta distance
+						newEvt->setExtraDataFloat(5, 0); // delta ratio
+						mysInstance->unlockEvents();
+
+						//printf("NetService: New split gesture ID %d distance: %d \n", touch.ID, 0);
+					} else if( (touch.gestureType != Event::Split || swapTouch.gestureType != Event::Split) ){
+						NetTouches gesture, other;
+						if( touch.gestureType == Event::Split ){
+							gesture = touch;
+							other = swapTouch;
+						} else {
+							gesture = swapTouch;
+							other = swapTouch;
+						}
+
+						// Ignore pairs with same ID or no change in distance
+						if( gesture.initDistance == distance || gesture.ID == other.ID)
+							continue;
+						lastt = curt;
+						printf("NetService: Existing split ID %d %d deltaDist: %f \n", gesture.ID, other.ID, gesture.initDistance/distance );
+
+						// Generate event
+						Vector3f pt1(
+								swapTouch.xPos * (float)screenX,
+								swapTouch.yPos * (float)screenY,
+								0);
+						Vector3f pt2(
+								touch.xPos * (float)screenX,
+								touch.yPos * (float)screenY,
+								0);
+
+						mysInstance->lockEvents();
+
+						Event* newEvt = mysInstance->writeHead();
+						newEvt->reset(Event::Split, Service::Pointer, gesture.ID);
+						newEvt->setPosition(gesture.xPos * (float)screenX, gesture.yPos * (float)screenY);
+
+						newEvt->setExtraDataType(Event::ExtraDataFloatArray);
+						newEvt->setExtraDataFloat(0, swapTouch.xPos * (float)screenX);
+						newEvt->setExtraDataFloat(1, swapTouch.yPos * (float)screenY);
+						newEvt->setExtraDataFloat(2, touch.xPos * (float)screenX);
+						newEvt->setExtraDataFloat(3, touch.yPos * (float)screenY);
+						newEvt->setPosition((pt1 + pt2) / 2);
+						newEvt->setExtraDataFloat(4, gesture.initDistance / distance ); // delta distance
+						newEvt->setExtraDataFloat(5, distance); // delta ratio
+						mysInstance->unlockEvents();
+					}
+				}
+
+			}
+
+			swaplist[touch.ID] = touch; // Copy active touches			
 		} else {
 			swaplist[touch.ID] = touch; // Copy active touches
 		}
-		
+
 	}
 	touchlist = swaplist;
-	lastt = curt;
+	
 	//printf("------------------\n");
 }
 
@@ -387,7 +499,7 @@ void NetService::parseDGram(int result)
 	//    s, sizeof s));
 	//printf("listener: packet is %d bytes long\n", numbytes);
 	recvbuf[numbytes] = '\0';
-	printf("listener: packet contains \"%s\"\n", recvbuf);
+	//printf("listener: packet contains \"%s\"\n", recvbuf);
 	result = numbytes;
 #endif
 	if( result > 0 ){
@@ -452,20 +564,20 @@ void NetService::parseDGram(int result)
 					touchlist[touch.ID] = touch;
 					//pair<map<int,float*>::iterator,bool> ret
 					//ret = touchlist.insert (pair<int,float*>(params[1],params) );
-					printf("NetService: Touch ID %d - DOWN\n", touch.ID);
+					//printf("NetService: Touch ID %d - DOWN\n", touch.ID);
 				}
 				else if( (int)(params[0]) == Event::Move ){
 					//if( touchlist.count(touch.ID) > 0 ){
-						printf("NetService: Touchlist ID %d count: %d \n", touch.ID, touchlist.count(touch.ID));
+						//printf("NetService: Touchlist ID %d count: %d \n", touch.ID, touchlist.count(touch.ID));
 						evt->reset(Event::Move, Service::Pointer, touch.ID);
 						touchlist[touch.ID] = touch;
-						printf("NetService: Touch ID %d - MOVE\n", touch.ID);
+						//printf("NetService: Touch ID %d - MOVE\n", touch.ID);
 					//}
 				}
 				else if( (int)(params[0]) == Event::Up ){
 					evt->reset(Event::Up, Service::Pointer, touch.ID);
 					touchlist.erase( touch.ID );
-					printf("NetService: Touch ID %d - UP\n", touch.ID);
+					//printf("NetService: Touch ID %d - UP\n", touch.ID);
 				}
 				
 				evt->setPosition(params[2] * (float)screenX, params[3] * (float)screenY);
@@ -522,8 +634,8 @@ void NetService::setScreenResolution(int x, int y)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NetService::setTouchTimeout( int millisTimeout ) 
+void NetService::setTouchTimeout( float secTimeout ) 
 {
-	printf("Touch timeout set to %d millisecond\n", millisTimeout);
-	touchTimeout = millisTimeout;
+	printf("Touch timeout set to %d seconds\n", secTimeout);
+	touchTimeout = secTimeout;
 }

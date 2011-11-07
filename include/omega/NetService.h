@@ -61,8 +61,10 @@ struct NetTouches{
 
 	// Gestures
 	int gestureType;
-	int ID_1; // IDs of other touches in the same gesture
-	int ID_2;
+
+	// Split gesture
+	float x1,y1,x2,y2;
+	float initDistance;
 };
 
 namespace omega
@@ -83,7 +85,7 @@ public:
 	void setServer(const char*,const char*);
 	void setDataport(const char*);
 	void setScreenResolution(int,int);
-	void setTouchTimeout(int);
+	void setTouchTimeout(float);
 private:
 	void initHandshake();
 	void parseDGram(int);
