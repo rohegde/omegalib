@@ -51,11 +51,10 @@ Camera::Camera():
 	myLastPointerPosition = Vector3f::Zero();
 
 	// Set a standard focal offset of 1 meter away from camera.
-	myFocalOffset = Vector3f::UnitZ();
+	myProjectionOffset = -Vector3f::UnitZ();
 }
 
 #define NAV_KEY(k, f) if(evt.isKeyDown(k)) myNavigationMoveFlags |= f; if(evt.isKeyUp(k)) myNavigationMoveFlags &= ~f; 
-#define SPECIAL_NAV_KEY(k, modifier, f) if(evt.isKeyDown(k) && evt.isFlagSet(Event::modifier)) myNavigationMoveFlags |= f; if(evt.isKeyUp(k) && evt.isFlagSet(Event::modifier)) myNavigationMoveFlags &= ~f; 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::handleEvent(const Event& evt)
@@ -64,20 +63,25 @@ void Camera::handleEvent(const Event& evt)
 	{
 		if(evt.getServiceType() == Service::Keyboard)
 		{
-			NAV_KEY('d', MoveRight);
-			NAV_KEY('a', MoveLeft);
-			NAV_KEY('w', MoveForward);
-			NAV_KEY('s', MoveBackward);
-			NAV_KEY('r', MoveUp);
-			NAV_KEY('f', MoveDown);
-
-			// Control focus position
-			SPECIAL_NAV_KEY('d', Alt, FocusRight);
-			SPECIAL_NAV_KEY('a', Alt, FocusLeft);
-			SPECIAL_NAV_KEY('w', Alt, FocusForward);
-			SPECIAL_NAV_KEY('s', Alt, FocusBackward);
-			SPECIAL_NAV_KEY('r', Alt, FocusUp);
-			SPECIAL_NAV_KEY('f', Alt, FocusDown);
+			if(evt.isFlagSet(Event::Alt))
+			{
+				// Control focus position
+				NAV_KEY('d', FocusRight);
+				NAV_KEY('a', FocusLeft);
+				NAV_KEY('w', FocusForward);
+				NAV_KEY('s', FocusBackward);
+				NAV_KEY('r', FocusUp);
+				NAV_KEY('f', FocusDown);
+			}
+			else
+			{
+				NAV_KEY('d', MoveRight);
+				NAV_KEY('a', MoveLeft);
+				NAV_KEY('w', MoveForward);
+				NAV_KEY('s', MoveBackward);
+				NAV_KEY('r', MoveUp);
+				NAV_KEY('f', MoveDown);
+			}
 		}
 		else if(evt.getServiceType() == Service::Pointer)
 		{
@@ -126,13 +130,13 @@ void Camera::update(const UpdateContext& context)
 		if(myNavigationMoveFlags & FocusForward) focusSpeed += Vector3f(0, 0, fs);
 		if(myNavigationMoveFlags & FocusBackward) focusSpeed += Vector3f(0, 0, -fs);
 
-		myFocalOffset += focusSpeed * context.dt;
+		myProjectionOffset += focusSpeed * context.dt;
 
 		Quaternion navOrientation =  AngleAxis(-Math::Pi, Vector3f::UnitZ()) * AngleAxis(-myYaw, Vector3f::UnitY()) * AngleAxis(-myPitch, Vector3f::UnitX());
 		myOrientation =   AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(-Math::Pi, Vector3f::UnitZ());
 
 		Vector3f ns = navOrientation * speed;
-		//ofmsg("|dt: %1%   t %2%", %context.dt %context.time);
+		ofmsg("|position: %1%  offset %2%", %myPosition %myProjectionOffset);
 
 		myPosition += ns * context.dt ;
 
@@ -160,6 +164,13 @@ void Camera::focusOn(SceneNode* node, float scaledSize)
 		myScale = 1.0f;
 	}
 	ofmsg("|Camera focus changed: position %1%  scale %2%", %myPosition %myScale);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::updateObserver(Observer* obs)
+{
+	obs->updateHead(-myProjectionOffset, Quaternion::Identity());
+	obs->updateView(myPosition +myProjectionOffset, myOrientation, myScale);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -75,7 +75,7 @@ void DefaultMouseInteractor::updateNode()
 			myStartOrientation = myNode->getOrientation();
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
-			myHandleDistance = (myStartBSphere.getCenter() - myPointerRay.getOrigin()).norm();
+			myHandleDistance = (myHandlePosition - myPointerRay.getOrigin()).norm();
 			myNode->setSelected(true);
 		}
 	}

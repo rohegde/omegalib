@@ -204,7 +204,7 @@ void EngineServer::update(const UpdateContext& context)
 	// Update the default camera and use it to update the default omegalib observer.
 	myDefaultCamera->update(context);
 	Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
-	obs->updateView(myDefaultCamera->getPosition(), myDefaultCamera->getOrientation(), myDefaultCamera->getScale());
+	myDefaultCamera->updateObserver(obs);
 
 	// Update scene.
 	for(int i = 0; i < MaxScenes; i++)
