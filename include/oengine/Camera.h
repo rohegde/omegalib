@@ -30,6 +30,7 @@
 #include "oenginebase.h"
 #include "oengine/SceneNode.h"
 #include "omega/RenderTarget.h"
+#include "omega/Observer.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,8 +62,8 @@ namespace oengine {
 		const Vector3f& getPosition() { return myPosition; }
 		void setPosition(const Vector3f& value) { myPosition = value; }
 
-		const Vector3f& getFocalOffset() { return myFocalOffset; }
-		void setFocalOffset(const Vector3f& value) { myFocalOffset = value; }
+		const Vector3f& getProjectionOffset() { return myProjectionOffset; }
+		void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
 		const Quaternion& getOrientation() { return myOrientation; }
 		void setOrientation(const Quaternion& value) { myOrientation = value; }
@@ -93,6 +94,8 @@ namespace oengine {
 
 		void focusOn(SceneNode* node, float scaledSize = 0.0f);
 
+		void updateObserver(Observer* obs);
+
 	private:
 		//! Current view transform
 		AffineTransform3 myViewTransform;
@@ -101,13 +104,13 @@ namespace oengine {
 		//! Observer current position.
 		//! This is the projection plane position when using a head tracked system + off-axis projection.
 		Vector3f myPosition;
-		//! Observer focal offset.
-		//! this is the head position when using a head tracked system + off-axis projection. When using in-axis
+		//! Projection plane offset.
+		//! this is the position of the center of the projection plane when using a head tracked system + off-axis projection. When using in-axis
 		//! projection, only the z value is used to determine the near projection plane.
 		//! When omegalib is using head tracking, usually the observer update service takes care of setting this value
 		//! directly in the Observer class, so this value is ignored. On desktop system, the user can set this value
 		//! manually to test off-axis projection.
-		Vector3f myFocalOffset;
+		Vector3f myProjectionOffset;
 		//! Observer current rotation.
 		Quaternion myOrientation;
 		float myScale;
