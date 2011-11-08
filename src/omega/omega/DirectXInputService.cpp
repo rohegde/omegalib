@@ -464,7 +464,7 @@ void DirectXInputService::poll()
 
 			evt->setExtraDataType(Event::ExtraDataFloatArray);
 	
-			evt->setExtraDataFloat(0, ControllerType::Wii_Nunchuck); 
+			evt->setExtraDataFloat(0, ControllerType::Wii_Nunchuk); 
 			evt->setExtraDataFloat(1, remote.Nunchuk.Joystick.X * 1000);
 			evt->setExtraDataFloat(2, remote.Nunchuk.Joystick.Y * 1000);
 

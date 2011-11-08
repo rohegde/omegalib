@@ -530,6 +530,9 @@ void NetService::parseDGram(int result)
 		// Append last parameter
 		params[currentParam] = atof( msgStr.substr(lastIndex,msgLen).c_str() );
 
+		// Controller enum from DirectXInputService.h
+		enum ControllerType { Xbox360, PS3, Wiimote, Wii_Nunchuk, Wii_MotionPlus };
+
 		mysInstance->lockEvents();
 		Event* evt;
 		//printf("New Time %d \n", curTime );
@@ -590,7 +593,49 @@ void NetService::parseDGram(int result)
 				break;
 			case(Service::Controller):
 				evt = mysInstance->writeHead();
+				evt->reset(Event::Up, Service::Controller, params[0]);
 
+				evt->setExtraDataType(Event::ExtraDataFloatArray);
+				evt->setExtraDataFloat(0, (params[1])); // ControllerType
+
+				if( (int)(params[1]) == ControllerType::Xbox360 || (int)(params[1]) == ControllerType::PS3 ){
+					evt->setExtraDataFloat(1, params[2]); 
+					evt->setExtraDataFloat(2, params[3]);  // Left analog (-up, +down)
+
+					evt->setExtraDataFloat(3, params[4]); // Right analog (-left, +right)
+					evt->setExtraDataFloat(4, params[5]); // Right analog (-up, +down)
+
+					evt->setExtraDataFloat(5, params[6]); // Trigger 2 (+left, -right)
+
+					// Buttons
+					for( int i = 0; i < 15; i++ )
+					{
+						evt->setExtraDataFloat(i + 7, params[i + 7]);
+					}
+					evt->setExtraDataFloat(19, params[22]); // DPad
+
+					evt->setExtraDataFloat(20, params[23]); // Tilt (+left, -right)
+					evt->setExtraDataFloat(21, params[24]); // Tilt (+back, -forward)
+
+				}
+				else if( (int)(params[1]) == ControllerType::Wiimote ){
+					for( int i = 1; i < 29; i++ )
+					{
+						evt->setExtraDataFloat(i, params[i+1]);
+					}
+				}
+				else if( (int)(params[1]) == ControllerType::Wii_Nunchuk ){
+					for( int i = 1; i < 8; i++ )
+					{
+						evt->setExtraDataFloat(i, params[i+1]);
+					}
+				}
+				else if( (int)(params[1]) == ControllerType::Wii_MotionPlus ){
+					for( int i = 1; i < 4; i++ )
+					{
+						evt->setExtraDataFloat(i, params[i+1]);
+					}
+				}
 				break;
 			default:
 				printf("NetService: Unsupported input type %d \n", inputType);
