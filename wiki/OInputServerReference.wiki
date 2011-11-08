@@ -143,7 +143,7 @@ Controller Type ID:
 
 2: Wiimote
 
-3: Wii Nunchuck
+3: Wii Nunchuk
 
 4: Wii MotionPlus
 
@@ -218,7 +218,7 @@ Each of the IR data is the x,y position of the dot from 0 - 1000. A dot a 0,0 in
 
 The IR valid fields are either 0 or 1. Each IR point should only be used when the corresponding valid flag is 1.
 
-=== Wii Nunchuck Datagram ===
+=== Wii Nunchuk Datagram ===
 
 '3:{Source ID},3,Analog X,Analog Y,Acceleration X,Acceleration Y,Acceleration Z,C,Z '
 
