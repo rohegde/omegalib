@@ -77,11 +77,10 @@ void Observer::updateHead(const Vector3f& position, const Quaternion& orientatio
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::updateView(const Vector3f& position, const Quaternion& orientation, float scale)
+void Observer::updateView(const Vector3f& position, const Quaternion& orientation)
 {
 	myViewPosition = position;
 	myViewOrientation = orientation;
-	//myViewTransform = Math::makeViewMatrix(position, orientation);
 	myViewTransform = AffineTransform3::Identity();
 	Vector3f pivot = myHeadPosition + myReferencePosition;
 	myViewTransform.translate(pivot);
@@ -89,5 +88,4 @@ void Observer::updateView(const Vector3f& position, const Quaternion& orientatio
 	myViewTransform.translate(-pivot);
 	myViewTransform.translate(-position);
 	//myViewTransform = myViewTransform.inverse();
-	//myViewTransform.scale(scale);
 }
