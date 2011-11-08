@@ -44,8 +44,8 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		{
 			myPointerEventType = evt.getType();
 		}
-		if(evt.isFlagSet(Event::Left)) myPointerButton1Pressed = true;
-		if(evt.isFlagSet(Event::Right)) myPointerButton2Pressed = true;
+		if(evt.isFlagSet(myMoveButtonFlag)) myPointerButton1Pressed = true;
+		if(evt.isFlagSet(myRotateButtonFlag)) myPointerButton2Pressed = true;
 		evt.setProcessed();
 
 		if(evt.getExtraDataLength() == 2)
@@ -76,6 +76,7 @@ void DefaultMouseInteractor::updateNode()
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
 			myHandleDistance = (myHandlePosition - myPointerRay.getOrigin()).norm();
+			ofmsg("Handle Distance: %1%", %myHandleDistance);
 			myNode->setSelected(true);
 		}
 	}
