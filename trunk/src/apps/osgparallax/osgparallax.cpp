@@ -107,7 +107,7 @@ void OsgParallax::initialize()
 
 	pat->setScale(osg::Vec3(0.02f, 0.02f, 0.02f));
 	pat->setAttitude(osg::Quat(
-		Math::Pi / 2, osg::Vec3d(1, 0, 0),
+		-Math::Pi / 2, osg::Vec3d(1, 0, 0),
 		0, osg::Vec3d(0, 1, 0),
 		0, osg::Vec3d(0, 0, 1)
 		));
@@ -227,7 +227,11 @@ void OsgParallax::initialize()
 
 	myMouseInteractor = new DefaultMouseInteractor();
 	myMouseInteractor->setSceneNode(myLightNode);
+	myMouseInteractor->setRotateButtonFlag(Event::Middle);
+	myMouseInteractor->setMoveButtonFlag(Event::Right);
 	addActor(myMouseInteractor);
+
+	getDefaultCamera()->focusOn(getScene(0));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,12 +250,7 @@ void OsgParallax::handleEvent(const Event& evt)
 	if(evt.isKeyDown('l'))
     {
 		Vector3f pos = getDefaultCamera()->getPosition();
-		myLightNode->setPosition(-pos);
-		if(myLight2 != NULL)
-		{
-			//myLight2->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0f));
-			ofmsg("Light Position: %1%", %pos);
-		}
+		myLightNode->setPosition(pos);
 	}
 }
 

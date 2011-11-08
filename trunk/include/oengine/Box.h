@@ -38,8 +38,11 @@ namespace oengine {
 	public:
 		Box();
 		virtual Renderable* createRenderable();
+		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
+		virtual bool hasBoundingBox() { return true; }
 
 	private:
+		AlignedBox3 myBBox;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

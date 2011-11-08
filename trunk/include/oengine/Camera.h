@@ -88,11 +88,7 @@ namespace oengine {
 		SceneNode* getTargetNode() { return myTargetNode; }
 		//@}
 
-		//! Scale
-		float getScale() { return myScale; }
-		void setScale(float value) { myScale = value; }
-
-		void focusOn(SceneNode* node, float scaledSize = 0.0f);
+		void focusOn(SceneNode* node);
 
 		void updateObserver(Observer* obs);
 
@@ -113,7 +109,6 @@ namespace oengine {
 		Vector3f myProjectionOffset;
 		//! Observer current rotation.
 		Quaternion myOrientation;
-		float myScale;
 		//! Field of view (in radians)
 		float myFov;
 		float myAspect;

@@ -42,7 +42,6 @@ Camera::Camera():
 	myNavigationPitchMultiplier(0.002f),
 	myNavigationMoveFlags(0),
 	myPosition(Vector3f::Zero()),
-	myScale(1.0),
 	myOrientation(Quaternion::Identity())
 {
 	myYaw = 0;
@@ -149,27 +148,18 @@ void Camera::update(const UpdateContext& context)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::focusOn(SceneNode* node, float scaledSize)
+void Camera::focusOn(SceneNode* node)
 {
 	const Sphere& bs = node->getBoundingSphere();
 	myOrientation = Quaternion::Identity();
-	myPosition = bs.getCenter();
-	if(scaledSize != 0)
-	{
-		myScale = scaledSize / bs.getRadius();
-	}
-	else
-	{
-		myScale = 1.0f;
-	}
-	ofmsg("|Camera focus changed: position %1%  scale %2%", %myPosition %myScale);
+	myPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::updateObserver(Observer* obs)
 {
 	obs->updateHead(-myProjectionOffset, Quaternion::Identity());
-	obs->updateView(myPosition + myProjectionOffset, myOrientation, myScale);
+	obs->updateView(myPosition + myProjectionOffset, myOrientation);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
