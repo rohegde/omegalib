@@ -87,6 +87,7 @@ void Observer::updateView(const Vector3f& position, const Quaternion& orientatio
 	myViewTransform.translate(pivot);
 	myViewTransform.rotate(orientation);
 	myViewTransform.translate(-pivot);
-	myViewTransform.translate(position);
+	myViewTransform.translate(-position);
+	//myViewTransform = myViewTransform.inverse();
 	//myViewTransform.scale(scale);
 }

@@ -72,7 +72,9 @@ public:
 private:
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
+	SceneNode* myLightNode;
 	osg::Light* myLight2;
+	DefaultMouseInteractor* myMouseInteractor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,18 +101,9 @@ void OsgParallax::initialize()
 	osg::Node *cqNode = osgDB::readNodeFile(path);
 
 	osgUtil::Optimizer optimizer;
-	optimizer.optimize(cqNode,	osgUtil::Optimizer::FLATTEN_STATIC_TRANSFORMS |
-								osgUtil::Optimizer::REMOVE_REDUNDANT_NODES |
-								osgUtil::Optimizer::DEFAULT_OPTIMIZATIONS);
-
-	shadowedScene->addChild(cqNode);
-	root->addChild(shadowedScene);
-
-	findGeoVisitor findNode;
-	root->accept(findNode);
 
 	osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
-	pat->addChild(root);
+	pat->addChild(cqNode);
 
 	pat->setScale(osg::Vec3(0.02f, 0.02f, 0.02f));
 	pat->setAttitude(osg::Quat(
@@ -119,7 +112,17 @@ void OsgParallax::initialize()
 		0, osg::Vec3d(0, 0, 1)
 		));
 
-	myOsg->setRootNode(pat);
+	//optimizer.optimize(pat,	osgUtil::Optimizer::FLATTEN_STATIC_TRANSFORMS |
+	//							osgUtil::Optimizer::REMOVE_REDUNDANT_NODES |
+	//							osgUtil::Optimizer::DEFAULT_OPTIMIZATIONS);
+
+	shadowedScene->addChild(pat);
+	root->addChild(shadowedScene);
+
+	findGeoVisitor findNode;
+	root->accept(findNode);
+
+	myOsg->setRootNode(root);
 
 	//std::cout<<findNode.geolist.size()<<std::endl;
 
@@ -215,6 +218,16 @@ void OsgParallax::initialize()
 
     lightS2->setStateSetModes(*sState,osg::StateAttribute::ON);
 	shadowedScene->addChild(lightS2);
+
+	myLightNode = new SceneNode(this);
+	//myLightNode->scale(0.1f, 0.1f, 0.1f);
+	myLightNode->addObject(new Box());
+
+	getScene(0)->addChild(myLightNode);
+
+	myMouseInteractor = new DefaultMouseInteractor();
+	myMouseInteractor->setSceneNode(myLightNode);
+	addActor(myMouseInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,6 +235,8 @@ void OsgParallax::update(const UpdateContext& context)
 {
 	EngineServer::update(context);
 	myOsg->update(context);
+	Vector3f pos = myLightNode->getPosition();
+	myLight2->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0f));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,9 +246,10 @@ void OsgParallax::handleEvent(const Event& evt)
 	if(evt.isKeyDown('l'))
     {
 		Vector3f pos = getDefaultCamera()->getPosition();
+		myLightNode->setPosition(-pos);
 		if(myLight2 != NULL)
 		{
-			myLight2->setPosition(osg::Vec4(-pos[0], -pos[1], pos[2], 1.0f));
+			//myLight2->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0f));
 			ofmsg("Light Position: %1%", %pos);
 		}
 	}

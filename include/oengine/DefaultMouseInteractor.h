@@ -35,14 +35,25 @@ namespace oengine {
 	class OENGINE_API DefaultMouseInteractor: public Actor
 	{
 	public:
-		DefaultMouseInteractor() {}
+		DefaultMouseInteractor():
+			myMoveButtonFlag(Event::Left),
+			myRotateButtonFlag(Event::Right){}
 
 		virtual void handleEvent(const Event& evt);
+
+		Event::Flags getMoveButtonFlag() { return myMoveButtonFlag; }
+		void setMoveButtonFlag(Event::Flags value) { myMoveButtonFlag = value; }
+
+		Event::Flags getRotateButtonFlag() { return myRotateButtonFlag; }
+		void setRotateButtonFlag(Event::Flags value) { myRotateButtonFlag = value; }
 
 	private:
 		void updateNode();
 
 	private:
+		Event::Flags myMoveButtonFlag;
+		Event::Flags myRotateButtonFlag;
+
 		Vector3f myHandlePosition;
 		float myHandleDistance;
 		Sphere myStartBSphere;

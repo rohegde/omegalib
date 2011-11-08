@@ -494,14 +494,14 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
             
 			// Generate tangent space for geometry
 			osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-			tsg->generate(geometry, 1);
+			tsg->generate(geometry, 3);
 			osg::Vec4Array* a_tangent = tsg->getTangentArray();
 			geometry->setVertexAttribArray (6, a_tangent);
 			geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
 			// Set geometry material
-			//osgFX::Effect* fx = fxs[es.materialName];
-			osgFX::Effect* fx = NULL;
+			osgFX::Effect* fx = fxs[es.materialName];
+			//osgFX::Effect* fx = NULL;
 			if(fx != NULL)
 			{
 				fx->addChild(geode);

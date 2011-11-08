@@ -197,6 +197,8 @@ void MeshViewer::initialize()
 	if(interactorStyle == "Mouse")
 	{
 		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
+		interactor->setMoveButtonFlag(Event::Right);
+		interactor->setRotateButtonFlag(Event::Middle);
 		myInteractor = interactor;
 	}
 	else
@@ -319,16 +321,14 @@ void MeshViewer::handleEvent(const Event& evt)
         {
             autoRotate = !autoRotate;
         }
-        //up
-   //     if((char)evt.getSourceId() == 'z' && evt.getType() == Event::Down) 
-   //     {
-			//deltaScale = 0.1f;
-   //     }
-   //     
-   //     if((char)evt.getSourceId() == 'x' && evt.getType() == Event::Down)  
-   //     {
-   //         deltaScale = -0.1f;
-   //     }
+        else if((char)evt.getSourceId() == 'h' && evt.getType() == Event::Down) 
+        {
+			if(mySelectedEntity != NULL)
+			{
+				Vector3f pos = getDefaultCamera()->getPosition();
+				mySelectedEntity->getSceneNode()->setPosition(pos);;
+			}
+        }
     }
 }
 

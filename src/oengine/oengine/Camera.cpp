@@ -114,12 +114,12 @@ void Camera::update(const UpdateContext& context)
 		Vector3f speed = Vector3f::Zero();
 		Vector3f focusSpeed = Vector3f::Zero();
 		// Update the observer position offset using current speed, orientation and dt.
-		if(myNavigationMoveFlags & MoveRight) speed += Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
-		if(myNavigationMoveFlags & MoveLeft) speed += Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
-		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, -myNavigationSpeed, 0);
-		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, myNavigationSpeed, 0);
-		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, myNavigationSpeed);
-		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, -myNavigationSpeed);
+		if(myNavigationMoveFlags & MoveRight) speed += Vector3f(myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
+		if(myNavigationMoveFlags & MoveLeft) speed += Vector3f(-myNavigationSpeed * myNavigationStrafeMultiplier, 0, 0);
+		if(myNavigationMoveFlags & MoveUp) speed += Vector3f(0, myNavigationSpeed, 0);
+		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, -myNavigationSpeed, 0);
+		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, -myNavigationSpeed);
+		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, myNavigationSpeed);
 
 		// Update the observer position offset using current speed, orientation and dt.
 		float fs = 0.1f;
@@ -132,11 +132,10 @@ void Camera::update(const UpdateContext& context)
 
 		myProjectionOffset += focusSpeed * context.dt;
 
-		Quaternion navOrientation =  AngleAxis(-Math::Pi, Vector3f::UnitZ()) * AngleAxis(-myYaw, Vector3f::UnitY()) * AngleAxis(-myPitch, Vector3f::UnitX());
-		myOrientation =   AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(-Math::Pi, Vector3f::UnitZ());
+		Quaternion navOrientation =  AngleAxis(0, Vector3f::UnitZ()) * AngleAxis(-myYaw, Vector3f::UnitY()) * AngleAxis(-myPitch, Vector3f::UnitX());
+		myOrientation =   AngleAxis(myPitch, Vector3f::UnitX()) * AngleAxis(myYaw, Vector3f::UnitY()) * AngleAxis(0, Vector3f::UnitZ());
 
 		Vector3f ns = navOrientation * speed;
-		ofmsg("|position: %1%  offset %2%", %myPosition %myProjectionOffset);
 
 		myPosition += ns * context.dt ;
 
@@ -170,7 +169,7 @@ void Camera::focusOn(SceneNode* node, float scaledSize)
 void Camera::updateObserver(Observer* obs)
 {
 	obs->updateHead(-myProjectionOffset, Quaternion::Identity());
-	obs->updateView(myPosition +myProjectionOffset, myOrientation, myScale);
+	obs->updateView(myPosition + myProjectionOffset, myOrientation, myScale);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -168,7 +168,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	myChannelInfo.canvasSize = &sCanvasSize;
 
 	// Setup draw context
-	myDrawBuffer.setGLId(getDrawBuffer());
+	myDrawBuffer.setGLId(getDrawable());
 	context->drawBuffer = &myDrawBuffer;
 }
 
