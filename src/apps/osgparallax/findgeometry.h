@@ -8,6 +8,7 @@
 /*******************************************************************************/
 #include <osg/NodeVisitor>
 #include <iostream>
+#include <string.h>
 
 static int ReceivesShadowTraversalMask = 0x1;
 static int CastsShadowTraversalMask = 0x2;
