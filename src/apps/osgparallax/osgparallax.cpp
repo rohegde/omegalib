@@ -232,6 +232,7 @@ void OsgParallax::initialize()
 	addActor(myMouseInteractor);
 
 	getDefaultCamera()->focusOn(getScene(0));
+	getDefaultCamera()->setNavigationMode(Camera::NavFreeFly);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
