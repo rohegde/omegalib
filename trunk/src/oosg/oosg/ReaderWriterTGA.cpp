@@ -3,15 +3,17 @@
 #include <osg/Geode>
 #include <osg/GL>
 
-#include <osgDB/Registry>
+//#include <osgDB/Registry>
 #include <osgDB/FileNameUtils>
 #include <osgDB/FileUtils>
-#include <osgDB/fstream>
+//#include <osgDB/fstream>
 
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include "oosg/ReaderWriterTGA.h"
 
 /****************************************************************************
  *
@@ -283,10 +285,10 @@ int *numComponents_ret)
     flags = header[17];
 
     /* check for reasonable values in case this is not a tga file */
-    if ((type != 2 && type != 10) ||
+    if ((type != 2 && type != 10 && type != 3) ||
         (width < 0 || width > 4096) ||
         (height < 0 || height > 4096) ||
-        (depth < 2 || depth > 4))
+        (depth < 1 || depth > 4))
     {
         tgaerror = ERR_UNSUPPORTED;
         return NULL;
@@ -359,6 +361,25 @@ int *numComponents_ret)
             }
         }
         break;
+		case 3:
+		{
+			int x, y;
+			for (y = 0; y < height; y++)
+			{
+				fin.read((char*)linebuf,width*depth);
+				if (fin.gcount() != (std::streamsize) (width*depth))
+				{
+					tgaerror = ERR_READ;
+					break;
+				}
+				for (x = 0; x < width; x++)
+				{
+					dest[x] = linebuf[x];
+				}
+				dest += lineoffset;
+			}
+		}
+		break;
         case 9:                  /* colormap, compressed */
         {
             /* FIXME: write code */
@@ -464,164 +485,161 @@ int headerlen)
     return 0;
 }
 
-
-class ReaderWriterTGA : public osgDB::ReaderWriter
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriterTGA::ReaderWriterTGA()
 {
-    public:
-    
-        ReaderWriterTGA()
-        {
-            supportsExtension("tga","Tga Image format");
-        }
+    supportsExtension("tga","Tga Image format");
+}
         
-        virtual const char* className() const { return "TGA Image Reader"; }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::ReadResult ReaderWriterTGA::readTGAStream(std::istream& fin) const
+{
+    unsigned char *imageData = NULL;
+    int width_ret;
+    int height_ret;
+    int numComponents_ret;
 
-        ReadResult readTGAStream(std::istream& fin) const
-        {
-            unsigned char *imageData = NULL;
-            int width_ret;
-            int height_ret;
-            int numComponents_ret;
+    imageData = simage_tga_load(fin,&width_ret,&height_ret,&numComponents_ret);
 
-            imageData = simage_tga_load(fin,&width_ret,&height_ret,&numComponents_ret);
+    if (imageData==NULL) return ReadResult::FILE_NOT_HANDLED;
 
-            if (imageData==NULL) return ReadResult::FILE_NOT_HANDLED;
+    int s = width_ret;
+    int t = height_ret;
+    int r = 1;
 
-            int s = width_ret;
-            int t = height_ret;
-            int r = 1;
+    int internalFormat = numComponents_ret;
 
-            int internalFormat = numComponents_ret;
+    unsigned int pixelFormat =
+        numComponents_ret == 1 ? GL_LUMINANCE :
+    numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
+    numComponents_ret == 3 ? GL_RGB :
+    numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
 
-            unsigned int pixelFormat =
-                numComponents_ret == 1 ? GL_LUMINANCE :
-            numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
-            numComponents_ret == 3 ? GL_RGB :
-            numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
+    unsigned int dataType = GL_UNSIGNED_BYTE;
 
-            unsigned int dataType = GL_UNSIGNED_BYTE;
+    osg::Image* pOsgImage = new osg::Image;
+    pOsgImage->setImage(s,t,r,
+        internalFormat,
+        pixelFormat,
+        dataType,
+        imageData,
+        osg::Image::USE_NEW_DELETE);
 
-            osg::Image* pOsgImage = new osg::Image;
-            pOsgImage->setImage(s,t,r,
-                internalFormat,
-                pixelFormat,
-                dataType,
-                imageData,
-                osg::Image::USE_NEW_DELETE);
+    return pOsgImage;
 
-            return pOsgImage;
+}
 
-        }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::ReadResult ReaderWriterTGA::readObject(std::istream& fin,const osgDB::ReaderWriter::Options* options) const
+{
+    return readImage(fin, options);
+}
 
-        virtual ReadResult readObject(std::istream& fin,const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            return readImage(fin, options);
-        }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::ReadResult ReaderWriterTGA::readObject(const std::string& file, const osgDB::ReaderWriter::Options* options) const
+{
+    return readImage(file, options);
+}
 
-        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            return readImage(file, options);
-        }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::ReadResult ReaderWriterTGA::readImage(std::istream& fin,const Options* ) const
+{
+    return readTGAStream(fin);
+}
 
-        virtual ReadResult readImage(std::istream& fin,const Options* =NULL) const
-        {
-            return readTGAStream(fin);
-        }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::ReadResult ReaderWriterTGA::readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
+    if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
 
-        virtual ReadResult readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension(file);
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+    std::string fileName = osgDB::findDataFile( file, options );
+    if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
-            std::string fileName = osgDB::findDataFile( file, options );
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
-
-            osgDB::ifstream istream(fileName.c_str(), std::ios::in | std::ios::binary);
-            if(!istream) return ReadResult::FILE_NOT_HANDLED;
-            ReadResult rr = readTGAStream(istream);
-            if(rr.validImage()) rr.getImage()->setFileName(file);
-            return rr;
-        }
+    osgDB::ifstream istream(fileName.c_str(), std::ios::in | std::ios::binary);
+    if(!istream) return ReadResult::FILE_NOT_HANDLED;
+    ReadResult rr = readTGAStream(istream);
+    if(rr.validImage()) rr.getImage()->setFileName(file);
+    return rr;
+}
         
-        bool saveTGAStream(const osg::Image& image, std::ostream& fout) const
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool ReaderWriterTGA::saveTGAStream(const osg::Image& image, std::ostream& fout) const
+{
+    // At present, I will only save the image to unmapped RGB format
+    // Other data types can be added soon with different options
+    // The format description can be found at:
+    // http://local.wasp.uwa.edu.au/~pbourke/dataformats/tga/
+    unsigned int pixelFormat = image.getPixelFormat();
+    int width = image.s(), height = image.t();
+    int numPerPixel = image.computeNumComponents(pixelFormat);
+    int pixelMultiplier = (image.getDataType()==GL_FLOAT ? 255 : 1);
+    const unsigned char* data = image.data();
+    if ( !data ) return false;
+            
+    // Headers
+    fout.put(0);  // Identification field size
+    fout.put(0);  // Color map type
+    fout.put(2);  // Image type
+    fout.put(0); fout.put(0);  // Color map origin
+    fout.put(0); fout.put(0);  // Color map length
+    fout.put(0);  // Color map entry size
+    fout.put(0); fout.put(0);  // X origin of image
+    fout.put(0); fout.put(0);  // Y origin of image
+    fout.put(width&0xff); fout.put((width&0xff00)>>8);  // Width of image
+    fout.put(height&0xff); fout.put((height&0xff00)>>8);  // Height of image
+    fout.put(numPerPixel * 8);  // Image pixel size
+    fout.put(0);  // Image descriptor
+            
+    // Swap red/blue channels for BGR images
+    int r = 0, g = 1, b = 2;
+    if( pixelFormat == GL_BGR || pixelFormat == GL_BGRA )
+    {
+        r = 2;
+        b = 0;
+    }
+
+    // Data
+    for (int y=0; y<height; ++y)
+    {
+        const unsigned char* ptr = data + y * width * numPerPixel;
+        for (int x=0; x<width; ++x)
         {
-            // At present, I will only save the image to unmapped RGB format
-            // Other data types can be added soon with different options
-            // The format description can be found at:
-            // http://local.wasp.uwa.edu.au/~pbourke/dataformats/tga/
-            unsigned int pixelFormat = image.getPixelFormat();
-            int width = image.s(), height = image.t();
-            int numPerPixel = image.computeNumComponents(pixelFormat);
-            int pixelMultiplier = (image.getDataType()==GL_FLOAT ? 255 : 1);
-            const unsigned char* data = image.data();
-            if ( !data ) return false;
-            
-            // Headers
-            fout.put(0);  // Identification field size
-            fout.put(0);  // Color map type
-            fout.put(2);  // Image type
-            fout.put(0); fout.put(0);  // Color map origin
-            fout.put(0); fout.put(0);  // Color map length
-            fout.put(0);  // Color map entry size
-            fout.put(0); fout.put(0);  // X origin of image
-            fout.put(0); fout.put(0);  // Y origin of image
-            fout.put(width&0xff); fout.put((width&0xff00)>>8);  // Width of image
-            fout.put(height&0xff); fout.put((height&0xff00)>>8);  // Height of image
-            fout.put(numPerPixel * 8);  // Image pixel size
-            fout.put(0);  // Image descriptor
-            
-            // Swap red/blue channels for BGR images
-            int r = 0, g = 1, b = 2;
-            if( pixelFormat == GL_BGR || pixelFormat == GL_BGRA )
+            int off = x * numPerPixel;
+            switch ( numPerPixel )
             {
-                r = 2;
-                b = 0;
+            case 3:  // BGR
+                fout.put(ptr[off+b] * pixelMultiplier); fout.put(ptr[off+g] * pixelMultiplier);
+                fout.put(ptr[off+r] * pixelMultiplier);
+                break;
+            case 4:  // BGRA
+                fout.put(ptr[off+b] * pixelMultiplier); fout.put(ptr[off+g] * pixelMultiplier);
+                fout.put(ptr[off+r] * pixelMultiplier); fout.put(ptr[off+3] * pixelMultiplier);
+                break;
+            default:
+                return false;
             }
-
-            // Data
-            for (int y=0; y<height; ++y)
-            {
-                const unsigned char* ptr = data + y * width * numPerPixel;
-                for (int x=0; x<width; ++x)
-                {
-                    int off = x * numPerPixel;
-                    switch ( numPerPixel )
-                    {
-                    case 3:  // BGR
-                        fout.put(ptr[off+b] * pixelMultiplier); fout.put(ptr[off+g] * pixelMultiplier);
-                        fout.put(ptr[off+r] * pixelMultiplier);
-                        break;
-                    case 4:  // BGRA
-                        fout.put(ptr[off+b] * pixelMultiplier); fout.put(ptr[off+g] * pixelMultiplier);
-                        fout.put(ptr[off+r] * pixelMultiplier); fout.put(ptr[off+3] * pixelMultiplier);
-                        break;
-                    default:
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
+    }
+    return true;
+}
         
-        virtual WriteResult writeImage(const osg::Image& image, std::ostream& fout, const Options*) const
-        {
-            if (saveTGAStream(image, fout))
-                return WriteResult::FILE_SAVED;
-            else
-                return WriteResult::ERROR_IN_WRITING_FILE;
-        }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::WriteResult ReaderWriterTGA::writeImage(const osg::Image& image, std::ostream& fout, const Options*) const
+{
+    if (saveTGAStream(image, fout))
+        return WriteResult::FILE_SAVED;
+    else
+        return WriteResult::ERROR_IN_WRITING_FILE;
+}
         
-        virtual WriteResult writeImage(const osg::Image& image, const std::string& fileName, const Options* options) const
-        {
-            std::string ext = osgDB::getFileExtension(fileName);
-            if (!acceptsExtension(ext)) return WriteResult::FILE_NOT_HANDLED;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ReaderWriter::WriteResult ReaderWriterTGA::writeImage(const osg::Image& image, const std::string& fileName, const Options* options) const
+{
+    std::string ext = osgDB::getFileExtension(fileName);
+    if (!acceptsExtension(ext)) return WriteResult::FILE_NOT_HANDLED;
             
-            osgDB::ofstream fout(fileName.c_str(), std::ios::out | std::ios::binary);
-            if (!fout) return WriteResult::ERROR_IN_WRITING_FILE;
-            return writeImage(image, fout, options);
-        }
-};
-
-// now register with Registry to instantiate the above
-// reader/writer.
-REGISTER_OSGPLUGIN(tga, ReaderWriterTGA)
+    osgDB::ofstream fout(fileName.c_str(), std::ios::out | std::ios::binary);
+    if (!fout) return WriteResult::ERROR_IN_WRITING_FILE;
+    return writeImage(image, fout, options);
+}

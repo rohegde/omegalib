@@ -42,22 +42,23 @@ SceneManager::SceneManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::findMaterialFile(const String& name, String& outPath)
+bool SceneManager::findResource(const String& name, String& outPath)
 {
-	String materialName = StringUtils::replaceAll(name, ".dds", ".mat");
-	if(DataManager::findFile(materialName, outPath)) return true;
-	if(DataManager::findFile("../" + materialName, outPath)) return true;
-	if(DataManager::findFile("../wall/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../ceiling/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../pillar/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../special/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../floor/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../stairs/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../../decals/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../../debris/hole/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../../debris/rock/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../../debris/wood/" + materialName, outPath)) return true;
-	if(DataManager::findFile("../../castlebase/ceiling/" + materialName, outPath)) return true;
+	if(DataManager::findFile(name, outPath)) return true;
+	if(DataManager::findFile("../" + name, outPath)) return true;
+	if(DataManager::findFile("../wall/" + name, outPath)) return true;
+	if(DataManager::findFile("../ceiling/" + name, outPath)) return true;
+	if(DataManager::findFile("../pillar/" + name, outPath)) return true;
+	if(DataManager::findFile("../special/" + name, outPath)) return true;
+	if(DataManager::findFile("../floor/" + name, outPath)) return true;
+	if(DataManager::findFile("../stairs/" + name, outPath)) return true;
+	if(DataManager::findFile("../../decals/" + name, outPath)) return true;
+	if(DataManager::findFile("../../debris/hole/" + name, outPath)) return true;
+	if(DataManager::findFile("../../debris/rock/" + name, outPath)) return true;
+	if(DataManager::findFile("../../debris/wood/" + name, outPath)) return true;
+	if(DataManager::findFile("../../castlebase/ceiling/" + name, outPath)) return true;
+	if(DataManager::findFile("../cellarbase/floor/" + name, outPath)) return true;
+	if(DataManager::findFile("../../particles/materials/" + name, outPath)) return true;
 	return false;
 }
 
@@ -73,15 +74,16 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 	// Split the path and get the file name.
 	String path;
 	String filename;
-	StringUtils::splitFilename(name, filename, path);
+	String extension;
+	StringUtils::splitFullFilename(name, filename, extension, path);
 
-	if(DataManager::findFile(filename, path))
+	if(findResource(filename + "." + extension, path))
 	{
 		//ofmsg("Loading texture file %1%", %filename);
 
         osg::ref_ptr< osg::Image > image;
-        // first try with database path of parent. 
-        image = osgDB::readRefImageFile(path);
+
+		image = osgDB::readRefImageFile(path);
 
         if ( image.valid() )
         {

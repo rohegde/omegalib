@@ -24,43 +24,31 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENE_MANAGER__
-#define __SCENE_MANAGER__
+#ifndef __CONTROLLER_MANIPULATOR_H__
+#define __CONTROLLER_MANIPULATOR_H__
 
-#include <osg/Texture2D>
+#include "oenginebase.h"
+#include "oengine/Actor.h"
 
-#define OMEGA_NO_GL_HEADERS
-#include <omega.h>
-#include <oengine.h>
-
-namespace hpl {
-	class SceneManager
+namespace oengine {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API ControllerManipulator: public Actor
 	{
 	public:
-		static const int ReceivesShadowTraversalMask = 0x1;
-		static const int CastsShadowTraversalMask = 0x2;
+		ControllerManipulator() {}
 
-		static bool findResource(const String& name, String& outPath);
-
-	public:
-		static SceneManager* getInstance();
-		SceneManager();
-
-		osg::Texture2D* getTexture(const String& name);
-		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+		virtual void handleEvent(const Event& evt);
 
 	private:
-		void loadShader(osg::Shader* shader, const String& name);
+		void updateNode();
 
 	private:
-		static SceneManager* mysInstance;
-		Dictionary<String, osg::Texture2D*> myTextures;
-		Dictionary<String, osg::Program*> myPrograms;
+		// Controller event data.
+		Vector2f myAnalog1Position;
+		Vector2f myAnalog2Position;
+		bool myButton1Pressed;
+		bool myButton2Pressed;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* SceneManager::getInstance() 
-	{ return mysInstance; }
-};
+}; // namespace oengine
 
 #endif

@@ -112,21 +112,24 @@ void SolidEffect::load(TiXmlElement* xdata)
 		String type = xchild->Value();
 		String file = xchild->Attribute("File");
 
-		if(type == "Diffuse")
+		if(file != "")
 		{
-			myDiffuse = mySceneManager->getTexture(file);
-		}
-		else if(type == "NMap")
-		{
-			myNMap = mySceneManager->getTexture(file);
-		}
-		else if(type == "Specular")
-		{
-			mySpecular = mySceneManager->getTexture(file);
-		}
-		else if(type == "Height")
-		{
-			myHeight = mySceneManager->getTexture(file);
+			if(type == "Diffuse")
+			{
+				myDiffuse = mySceneManager->getTexture(file);
+			}
+			else if(type == "NMap")
+			{
+				myNMap = mySceneManager->getTexture(file);
+			}
+			else if(type == "Specular")
+			{
+				mySpecular = mySceneManager->getTexture(file);
+			}
+			else if(type == "Height")
+			{
+				myHeight = mySceneManager->getTexture(file);
+			}
 		}
 		xchild = xchild->NextSiblingElement();
 	}

@@ -24,77 +24,19 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oosg/OsgModule.h"
-#include "oosg/OsgRenderPass.h"
-#include "oosg/OsgSceneObject.h"
+#include "oengine/ControllerManipulator.h"
+#include "omega/StringUtils.h"
 
-#include <osgUtil/Optimizer>
-#include <osgUtil/UpdateVisitor>
-#include <osgDB/ReadFile>
-#include <osgDB/Registry>
-#include <osg/Node>
-#include <osg/FrameStamp>
-
-#include "oosg/ReaderWriterTGA.h"
-
-using namespace oosg;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgModule::OsgModule():
-	myRepresentationSize(0.4)
+void ControllerManipulator::handleEvent(const Event& evt)
 {
-	myRootNode = NULL;
-	myRootSceneObject = NULL;
-    myFrameStamp = new osg::FrameStamp;
-    myUpdateVisitor = new osgUtil::UpdateVisitor;
-    myUpdateVisitor->setFrameStamp( myFrameStamp );
 
-	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterTGA());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgModule::~OsgModule()
+void ControllerManipulator::updateNode()
 {
-	if(myRootNode != NULL)
-	{
-		myRootNode->unref();
-		myRootNode = NULL;
-	}
-    myFrameStamp->unref();
-	myFrameStamp = NULL;
-    myUpdateVisitor->unref();
-	myUpdateVisitor = NULL;
+	if(myNode == NULL) return;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgModule::initialize(EngineServer* server)
-{
-	myServer = server;
-	myServer->registerRenderPassClass<OsgRenderPass>();
-	myServer->addRenderPass("OsgRenderPass", this, true);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgModule::setRootNode(osg::Node* value) 
-{ 
-	myRootNode = value; 
-	myRootSceneObject = new OsgSceneObject(myRootNode);
-	myServer->getScene(0)->addObject(myRootSceneObject);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgModule::update(const UpdateContext& context)
-{
-	myFrameStamp->setFrameNumber(context.frameNum);
-    myFrameStamp->setReferenceTime(context.time);
-    myFrameStamp->setSimulationTime(context.time);
-
-	myUpdateVisitor->reset();
-	myUpdateVisitor->setFrameStamp(myFrameStamp);
-	myUpdateVisitor->setTraversalNumber(context.frameNum);
-	if(myRootNode != NULL)
-	{
-		myRootNode->accept(*myUpdateVisitor);
-	}
-}
-

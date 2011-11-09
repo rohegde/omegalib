@@ -46,6 +46,7 @@ set( srcs
 		oengine/Pointer.cpp
 		oengine/Renderer.cpp
 		oengine/Effect.cpp
+		oengine/ControllerManipulator.cpp
 		oengine/DefaultRenderPass.cpp
 		oengine/OverlayRenderPass.cpp
 		oengine/LightingPass.cpp
@@ -96,6 +97,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/BoundingSphere.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ControllerManipulator.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultMouseInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
