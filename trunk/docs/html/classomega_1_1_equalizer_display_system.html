@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -69,7 +70,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#af2f46949362744a5ed74da703ea85c2f">getCanvasSize</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the size of the display canvas.  <a href="#af2f46949362744a5ed74da703ea85c2f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a768c9030da2fc8bbfff4a4ffeaf670c8">getViewRay</a> (<a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> position)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a pointer position in pixel coordinates.  <a href="#a768c9030da2fc8bbfff4a4ffeaf670c8"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a global (canvas) pointer position in pixel coordinates.  <a href="#a768c9030da2fc8bbfff4a4ffeaf670c8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#af493adc68c8793d49e21b5447037b8b6">getViewRay</a> (<a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> position, int channelX, int channelY)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a loal pointer positon and a channel index.  <a href="#af493adc68c8793d49e21b5447037b8b6"></a><br/></td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa3e70360f62cdae5bcb401c4438d3391"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::EqualizerDisplaySystem" ref="aa3e70360f62cdae5bcb401c4438d3391" args="()" -->
@@ -239,9 +242,44 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Returns a view ray given a pointer position in pixel coordinates. </p>
+<p>Returns a view ray given a global (canvas) pointer position in pixel coordinates. </p>
 
 <p>Implements <a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">omega::DisplaySystem</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af493adc68c8793d49e21b5447037b8b6"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::getViewRay" ref="af493adc68c8793d49e21b5447037b8b6" args="(Vector2i position, int channelX, int channelY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a> EqualizerDisplaySystem::getViewRay </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a>&nbsp;</td>
+          <td class="paramname"> <em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>channelX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>channelY</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a view ray given a loal pointer positon and a channel index. </p>
 
 </div>
 </div>

@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classoengine_1_1_effect.html" title="oengine::Effect" alt="" coords="7,5,113,35"/>
+<area shape="rect" id="node1" href="$classoengine_1_1_base_effect.html" title="oengine::BaseEffect" alt="" coords="5,32,144,61"/>
+<area shape="rect" id="node3" href="$classoengine_1_1_effect.html" title="oengine::Effect" alt="" coords="221,5,328,35"/>
+<area shape="rect" id="node5" href="$classoengine_1_1_multipass_effect.html" title="oengine::MultipassEffect" alt="" coords="193,59,356,88"/>
 </map>

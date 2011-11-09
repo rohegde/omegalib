@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -35,10 +36,7 @@
 <h1>SceneView Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="SceneView" --><!-- doxytag: inherits="osg::Object,osg::CullSettings" -->
-<p>Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup.  
-<a href="#_details">More...</a></p>
-<div class="dynheader">
+<!-- doxytag: class="SceneView" --><!-- doxytag: inherits="osg::Object,osg::CullSettings" --><div class="dynheader">
 Inheritance diagram for SceneView:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_scene_view__inherit__graph.png" border="0" usemap="#_scene_view_inherit__map" alt="Inheritance graph"/></div>
@@ -50,15 +48,6 @@ Inheritance diagram for SceneView:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">Options</a> { <br/>
-&nbsp;&nbsp;<a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4a9a358f00c5b3d329ac29d54543310d1e">NO_SCENEVIEW_LIGHT</a> =  0x0, 
-<a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4a7f1ae055bee7fee00afab98cf54c8f9b">HEADLIGHT</a> =  0x1, 
-<a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4a592a60d179c7e3a43cef186953195398">SKY_LIGHT</a> =  0x2, 
-<a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4a03b2c0b1447e36445042fa43ae860224">COMPILE_GLOBJECTS_AT_INIT</a> =  0x4, 
-<br/>
-&nbsp;&nbsp;<a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4a57cd04cb82a0a4a00d04ea92d97e6c2e">STANDARD_SETTINGS</a>
-<br/>
- }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a0420e51bd0699ebc65558dd42623363b">ActiveUniforms</a> { <br/>
 &nbsp;&nbsp;<a class="el" href="class_scene_view.html#a0420e51bd0699ebc65558dd42623363ba10472f5b5ce1aa512145a0ac0905b5d9">FRAME_NUMBER_UNIFORM</a> =  1, 
 <a class="el" href="class_scene_view.html#a0420e51bd0699ebc65558dd42623363ba71e15917f4a6222d178c9dcc71833146">FRAME_TIME_UNIFORM</a> =  2, 
@@ -73,22 +62,18 @@ Public Types</h2></td></tr>
 &nbsp;&nbsp;<a class="el" href="class_scene_view.html#a0420e51bd0699ebc65558dd42623363baabae0719b5d49b99e38c9ded5e48e15f">ALL_UNIFORMS</a> =  0x7FFFFFFF
 <br/>
  }</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">Options</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a6b2dc7b5a52d642006bf802963c37be7">LightingMode</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a20af40d4d061bff374c75bd415e14ab0">SceneView</a> (osg::DisplaySettings *ds=NULL)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Construct a default scene view.  <a href="#a20af40d4d061bff374c75bd415e14ab0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a76d4e5f45323c8244a526497a279eb3a">SceneView</a> (const <a class="el" href="class_scene_view.html">SceneView</a> &amp;sceneview, const osg::CopyOp &amp;copyop=osg::CopyOp())</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a4ac78c57d4f2cb264669561500e5a8fa">META_Object</a> (osgUtil, <a class="el" href="class_scene_view.html">SceneView</a>)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a3134284a5094fac40052ce1f81058bc3">setDefaults</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa5671ef5b9a473682d339e2d89859b71">setDefaults</a> (unsigned int options)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set scene view to use default global state, light, camera and render visitor.  <a href="#aa5671ef5b9a473682d339e2d89859b71"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa7e5128232bf308281abc805c8124678">setCamera</a> (osg::Camera *camera, bool assumeOwnershipOfCamera=true)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the camera used to represent the camera view of this <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>.  <a href="#aa7e5128232bf308281abc805c8124678"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the camera used to represent the camera view of this <a class="el" href="class_scene_view.html">SceneView</a>.  <a href="#aa7e5128232bf308281abc805c8124678"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::Camera *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a6f3bced4dbf870fa2e070c4d3919864e">getCamera</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the camera used to represent the camera view of this <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>.  <a href="#a6f3bced4dbf870fa2e070c4d3919864e"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the camera used to represent the camera view of this <a class="el" href="class_scene_view.html">SceneView</a>.  <a href="#a6f3bced4dbf870fa2e070c4d3919864e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::Camera *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a9e297fd1c0091284252044256abc5390">getCamera</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the const camera used to represent the camera view of this <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>.  <a href="#a9e297fd1c0091284252044256abc5390"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the const camera used to represent the camera view of this <a class="el" href="class_scene_view.html">SceneView</a>.  <a href="#a9e297fd1c0091284252044256abc5390"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a69a186aa24e66af4ff643804997b4166">setSceneData</a> (osg::Node *node)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the data to view.  <a href="#a69a186aa24e66af4ff643804997b4166"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::Node *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a48dedfc09215ddf8611ceb3482800f02">getSceneData</a> (unsigned int childNo=0)</td></tr>
@@ -111,10 +96,6 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the const DisplaySettings.  <a href="#a477a9f5c7057614f7a904fc617f7dd84"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::DisplaySettings *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a4c514e73974febc9221abdcf38f04920">getDisplaySettings</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the DisplaySettings.  <a href="#a4c514e73974febc9221abdcf38f04920"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aed4766aca41787df43904368744d7e7f">setClearColor</a> (const osg::Vec4 &amp;color)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the color used in glClearColor().  <a href="#aed4766aca41787df43904368744d7e7f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const osg::Vec4 &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#acd84236bf8ffd09a846cf49c79c44676">getClearColor</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the color used in glClearColor.  <a href="#acd84236bf8ffd09a846cf49c79c44676"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#abca12a5afa3985c9356bbd6a0384e32a">setGlobalStateSet</a> (osg::StateSet *state)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::StateSet *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aeae914095cbbfbc9c043540e612b136e">getGlobalStateSet</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::StateSet *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a966cf74b5f6c42cc32fd10bcdbe5cdd7">getGlobalStateSet</a> () const </td></tr>
@@ -125,15 +106,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::StateSet *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a62d61ae83d2fcba9d653bbc10b3eb371">getLocalStateSet</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::StateSet *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a2482c4f926ce6ccf24427784df1210d1">getLocalStateSet</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a4ab521d22f151296da3ce716fc5dc9bf">setActiveUniforms</a> (int activeUniforms)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the uniforms that <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a> should set set up on each frame.  <a href="#a4ab521d22f151296da3ce716fc5dc9bf"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the uniforms that <a class="el" href="class_scene_view.html">SceneView</a> should set set up on each frame.  <a href="#a4ab521d22f151296da3ce716fc5dc9bf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a66aabd7bce49d1796c1ec2a263450284">getActiveUniforms</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the uniforms that <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a> should set set up on each frame.  <a href="#a66aabd7bce49d1796c1ec2a263450284"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the uniforms that <a class="el" href="class_scene_view.html">SceneView</a> should set set up on each frame.  <a href="#a66aabd7bce49d1796c1ec2a263450284"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a569af0195604dafc5d77de23ff490600">updateUniforms</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af13c7d88099f1db76ddd5bcc05e175de">setLightingMode</a> (<a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">LightingMode</a> mode)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">LightingMode</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a0d9cf5f8f4e23d4f050df6275234319a">getLightingMode</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ab998d5c1ff8b503611c9ee69a311a3f8">setLight</a> (osg::Light *light)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">osg::Light *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af3db30671be21d7eafe03d79195827fe">getLight</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const osg::Light *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ac744261006fdb5c4d8cc32713d086045">getLight</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a2517d45ce288814469a9c8920be43d5c">setState</a> (osg::State *state)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::State *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#acf26bd30458306d649dd883a90a504a6">getState</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::State *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a4d52f7d4a99c9bffe576ba956d8e6c27">getState</a> () const </td></tr>
@@ -145,32 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::RenderInfo &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a338768c2a441724df5a350f580fe378c">getRenderInfo</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a7c8dc4cb964312154b843127462ab153">setProjectionMatrix</a> (const osg::Matrixf &amp;matrix)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the projection matrix.  <a href="#a7c8dc4cb964312154b843127462ab153"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa1da6446dca8293d35e75aab54da2490">setProjectionMatrix</a> (const osg::Matrixd &amp;matrix)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the projection matrix.  <a href="#aa1da6446dca8293d35e75aab54da2490"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a2b153d05dced7b20e38ab24af64370eb">setProjectionMatrixAsOrtho</a> (double left, double right, double bottom, double top, double zNear, double zFar)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set to an orthographic projection.  <a href="#a2b153d05dced7b20e38ab24af64370eb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a3485bdb2def07f156d04e143f56c5142">setProjectionMatrixAsOrtho2D</a> (double left, double right, double bottom, double top)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set to a 2D orthographic projection.  <a href="#a3485bdb2def07f156d04e143f56c5142"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a03e53214d24a27d6656fdc9ad6720fc4">setProjectionMatrixAsFrustum</a> (double left, double right, double bottom, double top, double zNear, double zFar)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set to a perspective projection.  <a href="#a03e53214d24a27d6656fdc9ad6720fc4"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aad5a27fce37f4aa0ae006f00a33e1319">setProjectionMatrixAsPerspective</a> (double fovy, double aspectRatio, double zNear, double zFar)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create a symmetrical perspective projection, See OpenGL gluPerspective documentation for further details.  <a href="#aad5a27fce37f4aa0ae006f00a33e1319"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::Matrixd &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a1e76c1b9496640f8a00a259e92669e3b">getProjectionMatrix</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the projection matrix.  <a href="#a1e76c1b9496640f8a00a259e92669e3b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::Matrixd &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#afc71ca995d1b6150f4292500b9baad78">getProjectionMatrix</a> () const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the const projection matrix.  <a href="#afc71ca995d1b6150f4292500b9baad78"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ac3d431eaa2f551ef089d9e4d2cc4beaf">getProjectionMatrixAsOrtho</a> (double &amp;left, double &amp;right, double &amp;bottom, double &amp;top, double &amp;zNear, double &amp;zFar) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the orthographic settings of the orthographic projection matrix.  <a href="#ac3d431eaa2f551ef089d9e4d2cc4beaf"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af448062b54fdb445e25f16b37ef921d0">getProjectionMatrixAsFrustum</a> (double &amp;left, double &amp;right, double &amp;bottom, double &amp;top, double &amp;zNear, double &amp;zFar) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the frustum setting of a perspective projection matrix.  <a href="#af448062b54fdb445e25f16b37ef921d0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a3a2ce7438048d965fda8e5207a7e4a4b">getProjectionMatrixAsPerspective</a> (double &amp;fovy, double &amp;aspectRatio, double &amp;zNear, double &amp;zFar) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the frustum setting of a symmetric perspective projection matrix.  <a href="#a3a2ce7438048d965fda8e5207a7e4a4b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#adcb2746f193b91415d4e1ac45d92e4c9">setViewMatrix</a> (const osg::Matrixf &amp;matrix)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the view matrix.  <a href="#adcb2746f193b91415d4e1ac45d92e4c9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a8206b5fcfb475eb642df89f3b888286e">setViewMatrix</a> (const osg::Matrixd &amp;matrix)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the view matrix.  <a href="#a8206b5fcfb475eb642df89f3b888286e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a76e730250f9438ddd8b529ba5f5e1dec">setViewMatrixAsLookAt</a> (const osg::Vec3 &amp;eye, const osg::Vec3 &amp;center, const osg::Vec3 &amp;up)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set to the position and orientation of view matrix, using the same convention as gluLookAt.  <a href="#a76e730250f9438ddd8b529ba5f5e1dec"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::Matrixd &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ada436f0c0bac8ace57026e8c0aaecda0">getViewMatrix</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the view matrix.  <a href="#ada436f0c0bac8ace57026e8c0aaecda0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::Matrixd &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af1c785e27f1694be42d0e21685b19762">getViewMatrix</a> () const </td></tr>
@@ -208,22 +164,12 @@ osg::CollectOccludersVisitor *&nbsp;</td><td class="memItemRight" valign="bottom
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set whether the draw method should call renderer-&gt;prioritizeTexture.  <a href="#a6ef9e3a54039d1be8dc6475e08077333"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a02d43d31c5c10292273acf23bc02b15d">getPrioritizeTextures</a> () const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get whether the draw method should call renderer-&gt;prioritizeTexture.  <a href="#a02d43d31c5c10292273acf23bc02b15d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ac400b847969124db87269de30eed1c25">projectWindowIntoObject</a> (const osg::Vec3 &amp;window, osg::Vec3 &amp;object) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calculate the object coordinates of a point in window coordinates.  <a href="#ac400b847969124db87269de30eed1c25"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a2e5b51574d17e50d655f4fd76e606ac1">projectWindowXYIntoObject</a> (int x, int y, osg::Vec3 &amp;near_point, osg::Vec3 &amp;far_point) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calculate the object coordinates of a window x,y when projected onto the near and far planes.  <a href="#a2e5b51574d17e50d655f4fd76e606ac1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a335a3784a01a6b443e85cf4bbf9e731b">projectObjectIntoWindow</a> (const osg::Vec3 &amp;object, osg::Vec3 &amp;window) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calculate the window coordinates of a point in object coordinates.  <a href="#a335a3784a01a6b443e85cf4bbf9e731b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ae1d93c35fc993c382aa7a79ec5b2196c">setFrameStamp</a> (osg::FrameStamp *fs)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the frame stamp for the current frame.  <a href="#ae1d93c35fc993c382aa7a79ec5b2196c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const osg::FrameStamp *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aeb59a0a74b080efcb7d8dea86e56ba04">getFrameStamp</a> () const </td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get the frame stamp for the current frame.  <a href="#aeb59a0a74b080efcb7d8dea86e56ba04"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a723e8dea40702ea495b303fe6e93ebb8">inheritCullSettings</a> (const osg::CullSettings &amp;settings)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask.  <a href="#a723e8dea40702ea495b303fe6e93ebb8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a3edd21b27cc9041095d9d3b8eac80237">inheritCullSettings</a> (const osg::CullSettings &amp;settings, unsigned int inheritanceMask)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask.  <a href="#a3edd21b27cc9041095d9d3b8eac80237"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a055da2c495b6d0601a9472d1096b1769">init</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Do init traversal of attached scene graph using Init NodeVisitor.  <a href="#a055da2c495b6d0601a9472d1096b1769"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af9955cfa5808463a7c4b08b05645a655">initialize</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Do init traversal of attached scene graph using Init NodeVisitor.  <a href="#af9955cfa5808463a7c4b08b05645a655"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af04de028554f7c0570ec96d1227fbabf">cull</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Do cull traversal of attached scene graph using Cull NodeVisitor.  <a href="#af04de028554f7c0570ec96d1227fbabf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7">draw</a> ()</td></tr>
@@ -243,7 +189,6 @@ Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#adcbd83392596e10c2e82d1d8375dead1">~SceneView</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa11e885d2ca97a073b4ed0f0cee78579">cullStage</a> (const osg::Matrixd &amp;projection, const osg::Matrixd &amp;modelview, osgUtil::CullVisitor *cullVisitor, osgUtil::StateGraph *rendergraph, osgUtil::RenderStage *renderStage, osg::Viewport *viewport)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Do cull traversal of attached scene graph using Cull NodeVisitor.  <a href="#aa11e885d2ca97a073b4ed0f0cee78579"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const osg::Matrix&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a555ccc3d7cefc198465cec63294e9f31">computeMVPW</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a36f6ab467c831b548e4efe96dccf96ed">clearArea</a> (int x, int y, int width, int height, const osg::Vec4 &amp;color)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -263,12 +208,10 @@ Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::observer_ptr&lt; osg::Camera &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a3537b23105999fe9425352c4a5d9b099">_camera</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::ref_ptr&lt; osg::Camera &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ad1600db0a48fd7936c81491da45949df">_cameraWithOwnership</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::ref_ptr&lt; osg::StateSet &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a241851630f4c2254121bc69ba69f39f5">_globalStateSet</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">osg::ref_ptr&lt; osg::Light &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ae746a5e71ad5ffecf07d54f366ea93e2">_light</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::ref_ptr<br class="typebreak"/>
 &lt; osg::DisplaySettings &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#af5a43dc6264200f3b0bbf11256b17b97">_displaySettings</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::ref_ptr&lt; osg::StateSet &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#abb1b9fad5fb45f887cf15212c333cf90">_secondaryStateSet</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a079564a685e2d6ebd9943d50c64721c5">_fusionDistanceValue</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">LightingMode</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ab0d796fc9fc2d56e32292b94071b93ac">_lightingMode</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#ad0c0ed2c549cd1a55f39a7fe0d4f8424">_prioritizeTextures</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a1c68c67e5cf3092cdd8f7b0acfedcf3e">_requiresFlush</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#a212379287c41f632f9f792cadcd261c6">_activeUniforms</a></td></tr>
@@ -276,23 +219,6 @@ Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aea1dc06e205e06cddfc4e11c3bec242c">_previousSimulationTime</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_scene_view.html#aa332e8a32d09a640aa4eecea5c6f9aee">_dynamicObjectCount</a></td></tr>
 </table>
-<hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup. </p>
-<p><a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a> is deprecated, and is now just kept for backwards compatibility. It is recommend that you use osgViewer::Viewer/Composite in combination with osgViewer::GraphicsWindowEmbedded for embedded rendering support as this provides a greater range of functionality and consistency of API. </p>
-<hr/><h2>Member Typedef Documentation</h2>
-<a class="anchor" id="a6b2dc7b5a52d642006bf802963c37be7"></a><!-- doxytag: member="SceneView::LightingMode" ref="a6b2dc7b5a52d642006bf802963c37be7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">Options</a> <a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">SceneView::LightingMode</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="a0420e51bd0699ebc65558dd42623363b"></a><!-- doxytag: member="SceneView::ActiveUniforms" ref="a0420e51bd0699ebc65558dd42623363b" args="" -->
 <div class="memitem">
@@ -322,33 +248,6 @@ Protected Attributes</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a0420e51bd0699ebc65558dd42623363ba7603b751610d4c5ee0d729547c79d8a5"></a><!-- doxytag: member="DEFAULT_UNIFORMS" ref="a0420e51bd0699ebc65558dd42623363ba7603b751610d4c5ee0d729547c79d8a5" args="" -->DEFAULT_UNIFORMS</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a0420e51bd0699ebc65558dd42623363baabae0719b5d49b99e38c9ded5e48e15f"></a><!-- doxytag: member="ALL_UNIFORMS" ref="a0420e51bd0699ebc65558dd42623363baabae0719b5d49b99e38c9ded5e48e15f" args="" -->ALL_UNIFORMS</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a721a044446e58f7d9c96bd6a3474b4b4"></a><!-- doxytag: member="SceneView::Options" ref="a721a044446e58f7d9c96bd6a3474b4b4" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">SceneView::Options</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="a721a044446e58f7d9c96bd6a3474b4b4a9a358f00c5b3d329ac29d54543310d1e"></a><!-- doxytag: member="NO_SCENEVIEW_LIGHT" ref="a721a044446e58f7d9c96bd6a3474b4b4a9a358f00c5b3d329ac29d54543310d1e" args="" -->NO_SCENEVIEW_LIGHT</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a721a044446e58f7d9c96bd6a3474b4b4a7f1ae055bee7fee00afab98cf54c8f9b"></a><!-- doxytag: member="HEADLIGHT" ref="a721a044446e58f7d9c96bd6a3474b4b4a7f1ae055bee7fee00afab98cf54c8f9b" args="" -->HEADLIGHT</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a721a044446e58f7d9c96bd6a3474b4b4a592a60d179c7e3a43cef186953195398"></a><!-- doxytag: member="SKY_LIGHT" ref="a721a044446e58f7d9c96bd6a3474b4b4a592a60d179c7e3a43cef186953195398" args="" -->SKY_LIGHT</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a721a044446e58f7d9c96bd6a3474b4b4a03b2c0b1447e36445042fa43ae860224"></a><!-- doxytag: member="COMPILE_GLOBJECTS_AT_INIT" ref="a721a044446e58f7d9c96bd6a3474b4b4a03b2c0b1447e36445042fa43ae860224" args="" -->COMPILE_GLOBJECTS_AT_INIT</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a721a044446e58f7d9c96bd6a3474b4b4a57cd04cb82a0a4a00d04ea92d97e6c2e"></a><!-- doxytag: member="STANDARD_SETTINGS" ref="a721a044446e58f7d9c96bd6a3474b4b4a57cd04cb82a0a4a00d04ea92d97e6c2e" args="" -->STANDARD_SETTINGS</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -505,23 +404,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a555ccc3d7cefc198465cec63294e9f31"></a><!-- doxytag: member="SceneView::computeMVPW" ref="a555ccc3d7cefc198465cec63294e9f31" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const osg::Matrix SceneView::computeMVPW </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="af04de028554f7c0570ec96d1227fbabf"></a><!-- doxytag: member="SceneView::cull" ref="af04de028554f7c0570ec96d1227fbabf" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -668,26 +550,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Get the uniforms that <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a> should set set up on each frame. </p>
-
-</div>
-</div>
-<a class="anchor" id="a6f3bced4dbf870fa2e070c4d3919864e"></a><!-- doxytag: member="SceneView::getCamera" ref="a6f3bced4dbf870fa2e070c4d3919864e" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">osg::Camera* SceneView::getCamera </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Get the camera used to represent the camera view of this <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>. </p>
+<p>Get the uniforms that <a class="el" href="class_scene_view.html">SceneView</a> should set set up on each frame. </p>
 
 </div>
 </div>
@@ -706,26 +569,26 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Get the const camera used to represent the camera view of this <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>. </p>
+<p>Get the const camera used to represent the camera view of this <a class="el" href="class_scene_view.html">SceneView</a>. </p>
 
 </div>
 </div>
-<a class="anchor" id="acd84236bf8ffd09a846cf49c79c44676"></a><!-- doxytag: member="SceneView::getClearColor" ref="acd84236bf8ffd09a846cf49c79c44676" args="() const " -->
+<a class="anchor" id="a6f3bced4dbf870fa2e070c4d3919864e"></a><!-- doxytag: member="SceneView::getCamera" ref="a6f3bced4dbf870fa2e070c4d3919864e" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const osg::Vec4&amp; SceneView::getClearColor </td>
+          <td class="memname">osg::Camera* SceneView::getCamera </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Get the color used in glClearColor. </p>
+<p>Get the camera used to represent the camera view of this <a class="el" href="class_scene_view.html">SceneView</a>. </p>
 
 </div>
 </div>
@@ -763,23 +626,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a72a895fae57b3813934d16a5ec4b073a"></a><!-- doxytag: member="SceneView::getCullVisitor" ref="a72a895fae57b3813934d16a5ec4b073a" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const osgUtil::CullVisitor* SceneView::getCullVisitor </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a79ca5a2bc5b5854bfa5d6cac75acc28f"></a><!-- doxytag: member="SceneView::getCullVisitor" ref="a79ca5a2bc5b5854bfa5d6cac75acc28f" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -790,6 +636,23 @@ Protected Attributes</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a72a895fae57b3813934d16a5ec4b073a"></a><!-- doxytag: member="SceneView::getCullVisitor" ref="a72a895fae57b3813934d16a5ec4b073a" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const osgUtil::CullVisitor* SceneView::getCullVisitor </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -926,23 +789,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6b38ad798ff89d19a9d03df5435bd478"></a><!-- doxytag: member="SceneView::getInitVisitor" ref="a6b38ad798ff89d19a9d03df5435bd478" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const osg::NodeVisitor* SceneView::getInitVisitor </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="af853415233db45addb57755458de9fcd"></a><!-- doxytag: member="SceneView::getInitVisitor" ref="af853415233db45addb57755458de9fcd" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -960,46 +806,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af3db30671be21d7eafe03d79195827fe"></a><!-- doxytag: member="SceneView::getLight" ref="af3db30671be21d7eafe03d79195827fe" args="()" -->
+<a class="anchor" id="a6b38ad798ff89d19a9d03df5435bd478"></a><!-- doxytag: member="SceneView::getInitVisitor" ref="a6b38ad798ff89d19a9d03df5435bd478" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">osg::Light* SceneView::getLight </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ac744261006fdb5c4d8cc32713d086045"></a><!-- doxytag: member="SceneView::getLight" ref="ac744261006fdb5c4d8cc32713d086045" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const osg::Light* SceneView::getLight </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a0d9cf5f8f4e23d4f050df6275234319a"></a><!-- doxytag: member="SceneView::getLightingMode" ref="a0d9cf5f8f4e23d4f050df6275234319a" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">LightingMode</a> SceneView::getLightingMode </td>
+          <td class="memname">const osg::NodeVisitor* SceneView::getInitVisitor </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -1121,153 +933,20 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af448062b54fdb445e25f16b37ef921d0"></a><!-- doxytag: member="SceneView::getProjectionMatrixAsFrustum" ref="af448062b54fdb445e25f16b37ef921d0" args="(double &amp;left, double &amp;right, double &amp;bottom, double &amp;top, double &amp;zNear, double &amp;zFar) const " -->
+<a class="anchor" id="a601421d9a44f96eb57bfc8ffc16d54b2"></a><!-- doxytag: member="SceneView::getRenderInfo" ref="a601421d9a44f96eb57bfc8ffc16d54b2" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool SceneView::getProjectionMatrixAsFrustum </td>
+          <td class="memname">osg::RenderInfo&amp; SceneView::getRenderInfo </td>
           <td>(</td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>right</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>bottom</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>top</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>zNear</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>zFar</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td> const</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-
-<p>Get the frustum setting of a perspective projection matrix. </p>
-<p>Returns false if matrix is not a perspective matrix, where parameter values are undefined. </p>
-
-</div>
-</div>
-<a class="anchor" id="ac3d431eaa2f551ef089d9e4d2cc4beaf"></a><!-- doxytag: member="SceneView::getProjectionMatrixAsOrtho" ref="ac3d431eaa2f551ef089d9e4d2cc4beaf" args="(double &amp;left, double &amp;right, double &amp;bottom, double &amp;top, double &amp;zNear, double &amp;zFar) const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SceneView::getProjectionMatrixAsOrtho </td>
-          <td>(</td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>right</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>bottom</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>top</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>zNear</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>zFar</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td> const</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Get the orthographic settings of the orthographic projection matrix. </p>
-<p>Returns false if matrix is not an orthographic matrix, where parameter values are undefined. </p>
-
-</div>
-</div>
-<a class="anchor" id="a3a2ce7438048d965fda8e5207a7e4a4b"></a><!-- doxytag: member="SceneView::getProjectionMatrixAsPerspective" ref="a3a2ce7438048d965fda8e5207a7e4a4b" args="(double &amp;fovy, double &amp;aspectRatio, double &amp;zNear, double &amp;zFar) const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SceneView::getProjectionMatrixAsPerspective </td>
-          <td>(</td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>fovy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>aspectRatio</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>zNear</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&nbsp;</td>
-          <td class="paramname"> <em>zFar</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td> const</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Get the frustum setting of a symmetric perspective projection matrix. </p>
-<p>Returns false if matrix is not a perspective matrix, where parameter values are undefined. Note, if matrix is not a symmetric perspective matrix then the shear will be lost. Asymmetric matrices occur when stereo, power walls, caves and reality center display are used. In these configurations one should use the 'getProjectionMatrixAsFrustum' method instead. </p>
 
 </div>
 </div>
@@ -1288,16 +967,16 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a601421d9a44f96eb57bfc8ffc16d54b2"></a><!-- doxytag: member="SceneView::getRenderInfo" ref="a601421d9a44f96eb57bfc8ffc16d54b2" args="()" -->
+<a class="anchor" id="ad71b55750785176cc47c2eba5fe715c5"></a><!-- doxytag: member="SceneView::getRenderStage" ref="ad71b55750785176cc47c2eba5fe715c5" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">osg::RenderInfo&amp; SceneView::getRenderInfo </td>
+          <td class="memname">const osgUtil::RenderStage* SceneView::getRenderStage </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -1315,23 +994,6 @@ Protected Attributes</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad71b55750785176cc47c2eba5fe715c5"></a><!-- doxytag: member="SceneView::getRenderStage" ref="ad71b55750785176cc47c2eba5fe715c5" args="() const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const osgUtil::RenderStage* SceneView::getRenderStage </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -1449,23 +1111,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1729e71083330827e08e81bdb8e1a670"></a><!-- doxytag: member="SceneView::getStateGraph" ref="a1729e71083330827e08e81bdb8e1a670" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">osgUtil::StateGraph* SceneView::getStateGraph </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="ab47b541e542414b606b3b6d7c0847736"></a><!-- doxytag: member="SceneView::getStateGraph" ref="ab47b541e542414b606b3b6d7c0847736" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -1476,6 +1121,23 @@ Protected Attributes</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1729e71083330827e08e81bdb8e1a670"></a><!-- doxytag: member="SceneView::getStateGraph" ref="a1729e71083330827e08e81bdb8e1a670" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">osgUtil::StateGraph* SceneView::getStateGraph </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -1503,23 +1165,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab032277fb546085ee3b0b65f1226bb9c"></a><!-- doxytag: member="SceneView::getUpdateVisitor" ref="ab032277fb546085ee3b0b65f1226bb9c" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">osg::NodeVisitor* SceneView::getUpdateVisitor </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="af4a443c6ae09f6262d2227f0b191be27"></a><!-- doxytag: member="SceneView::getUpdateVisitor" ref="af4a443c6ae09f6262d2227f0b191be27" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -1530,6 +1175,23 @@ Protected Attributes</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab032277fb546085ee3b0b65f1226bb9c"></a><!-- doxytag: member="SceneView::getUpdateVisitor" ref="ab032277fb546085ee3b0b65f1226bb9c" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">osg::NodeVisitor* SceneView::getUpdateVisitor </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -1688,61 +1350,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3edd21b27cc9041095d9d3b8eac80237"></a><!-- doxytag: member="SceneView::inheritCullSettings" ref="a3edd21b27cc9041095d9d3b8eac80237" args="(const osg::CullSettings &amp;settings, unsigned int inheritanceMask)" -->
+<a class="anchor" id="af9955cfa5808463a7c4b08b05645a655"></a><!-- doxytag: member="SceneView::initialize" ref="af9955cfa5808463a7c4b08b05645a655" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SceneView::inheritCullSettings </td>
-          <td>(</td>
-          <td class="paramtype">const osg::CullSettings &amp;&nbsp;</td>
-          <td class="paramname"> <em>settings</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&nbsp;</td>
-          <td class="paramname"> <em>inheritanceMask</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask. </p>
-
-</div>
-</div>
-<a class="anchor" id="a723e8dea40702ea495b303fe6e93ebb8"></a><!-- doxytag: member="SceneView::inheritCullSettings" ref="a723e8dea40702ea495b303fe6e93ebb8" args="(const osg::CullSettings &amp;settings)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void SceneView::inheritCullSettings </td>
-          <td>(</td>
-          <td class="paramtype">const osg::CullSettings &amp;&nbsp;</td>
-          <td class="paramname"> <em>settings</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask. </p>
-
-</div>
-</div>
-<a class="anchor" id="a055da2c495b6d0601a9472d1096b1769"></a><!-- doxytag: member="SceneView::init" ref="a055da2c495b6d0601a9472d1096b1769" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::init </td>
+          <td class="memname">void SceneView::initialize </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -1753,7 +1366,7 @@ Protected Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Do init traversal of attached scene graph using Init NodeVisitor. </p>
-<p>The init traversal is called once for each <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>, and should be used to compile display list, texture objects intialize data not otherwise intialized during scene graph loading. Note, is called automatically by update &amp; cull if it hasn't already been called elsewhere. Also <a class="el" href="class_scene_view.html#a055da2c495b6d0601a9472d1096b1769" title="Do init traversal of attached scene graph using Init NodeVisitor.">init()</a> should only ever be called within a valid graphics context. </p>
+<p>The init traversal is called once for each <a class="el" href="class_scene_view.html">SceneView</a>, and should be used to compile display list, texture objects intialize data not otherwise intialized during scene graph loading. Note, is called automatically by update &amp; cull if it hasn't already been called elsewhere. Also init() should only ever be called within a valid graphics context. </p>
 
 </div>
 </div>
@@ -1781,114 +1394,6 @@ Protected Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a335a3784a01a6b443e85cf4bbf9e731b"></a><!-- doxytag: member="SceneView::projectObjectIntoWindow" ref="a335a3784a01a6b443e85cf4bbf9e731b" args="(const osg::Vec3 &amp;object, osg::Vec3 &amp;window) const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SceneView::projectObjectIntoWindow </td>
-          <td>(</td>
-          <td class="paramtype">const osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>object</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>window</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td> const</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Calculate the window coordinates of a point in object coordinates. </p>
-<p>Calculate, via glProject, the object coordinates of a window.</p>
-<p>Note, current implementation requires that <a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7" title="Do draw traversal of draw bins generated by cull traversal.">SceneView::draw()</a> has been previously called for projectWindowIntoObject to produce valid values. Consistent with OpenGL windows coordinates are calculated relative to the bottom left of the window, whereas window API's normally have the top left as the origin, so you may need to pass in (mouseX,window_height-mouseY,...). Returns true on successful projection.</p>
-<p>Note, current implementation requires that <a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7" title="Do draw traversal of draw bins generated by cull traversal.">SceneView::draw()</a> has been previously called for projectWindowIntoObject to produce valid values. As per OpenGL windows coordinates are calculated relative to the bottom left of the window. </p>
-
-</div>
-</div>
-<a class="anchor" id="ac400b847969124db87269de30eed1c25"></a><!-- doxytag: member="SceneView::projectWindowIntoObject" ref="ac400b847969124db87269de30eed1c25" args="(const osg::Vec3 &amp;window, osg::Vec3 &amp;object) const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SceneView::projectWindowIntoObject </td>
-          <td>(</td>
-          <td class="paramtype">const osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>window</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>object</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td> const</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Calculate the object coordinates of a point in window coordinates. </p>
-<p>Calculate, via glUnProject, the object coordinates of a window point.</p>
-<p>Note, current implementation requires that <a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7" title="Do draw traversal of draw bins generated by cull traversal.">SceneView::draw()</a> has been previously called for projectWindowIntoObject to produce valid values. Consistent with OpenGL windows coordinates are calculated relative to the bottom left of the window. Returns true on successful projection.</p>
-<p>Note, current implementation requires that <a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7" title="Do draw traversal of draw bins generated by cull traversal.">SceneView::draw()</a> has been previously called for projectWindowIntoObject to produce valid values. As per OpenGL windows coordinates are calculated relative to the bottom left of the window. </p>
-
-</div>
-</div>
-<a class="anchor" id="a2e5b51574d17e50d655f4fd76e606ac1"></a><!-- doxytag: member="SceneView::projectWindowXYIntoObject" ref="a2e5b51574d17e50d655f4fd76e606ac1" args="(int x, int y, osg::Vec3 &amp;near_point, osg::Vec3 &amp;far_point) const " -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SceneView::projectWindowXYIntoObject </td>
-          <td>(</td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>near_point</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>far_point</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td> const</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Calculate the object coordinates of a window x,y when projected onto the near and far planes. </p>
-<p>Calculate, via glUnProject, the object coordinates of a window x,y when projected onto the near and far planes.</p>
-<p>Note, current implementation requires that <a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7" title="Do draw traversal of draw bins generated by cull traversal.">SceneView::draw()</a> has been previously called for projectWindowIntoObject to produce valid values. Consistent with OpenGL windows coordinates are calculated relative to the bottom left of the window. Returns true on successful projection.</p>
-<p>Note, current implementation requires that <a class="el" href="class_scene_view.html#a6038a39e931765ad46443fc3ddd005e7" title="Do draw traversal of draw bins generated by cull traversal.">SceneView::draw()</a> has been previously called for projectWindowIntoObject to produce valid values. As per OpenGL windows coordinates are calculated relative to the bottom left of the window. </p>
 
 </div>
 </div>
@@ -1928,7 +1433,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Set the uniforms that <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a> should set set up on each frame. </p>
+<p>Set the uniforms that <a class="el" href="class_scene_view.html">SceneView</a> should set set up on each frame. </p>
 
 </div>
 </div>
@@ -1957,28 +1462,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Set the camera used to represent the camera view of this <a class="el" href="class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup...">SceneView</a>. </p>
-
-</div>
-</div>
-<a class="anchor" id="aed4766aca41787df43904368744d7e7f"></a><!-- doxytag: member="SceneView::setClearColor" ref="aed4766aca41787df43904368744d7e7f" args="(const osg::Vec4 &amp;color)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setClearColor </td>
-          <td>(</td>
-          <td class="paramtype">const osg::Vec4 &amp;&nbsp;</td>
-          <td class="paramname"> <em>color</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set the color used in glClearColor(). </p>
-<p>Defaults to an off blue color. </p>
+<p>Set the camera used to represent the camera view of this <a class="el" href="class_scene_view.html">SceneView</a>. </p>
 
 </div>
 </div>
@@ -2015,43 +1499,6 @@ Protected Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a3134284a5094fac40052ce1f81058bc3"></a><!-- doxytag: member="SceneView::setDefaults" ref="a3134284a5094fac40052ce1f81058bc3" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void SceneView::setDefaults </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline, virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aa5671ef5b9a473682d339e2d89859b71"></a><!-- doxytag: member="SceneView::setDefaults" ref="aa5671ef5b9a473682d339e2d89859b71" args="(unsigned int options)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setDefaults </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&nbsp;</td>
-          <td class="paramname"> <em>options</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set scene view to use default global state, light, camera and render visitor. </p>
 
 </div>
 </div>
@@ -2151,42 +1598,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab998d5c1ff8b503611c9ee69a311a3f8"></a><!-- doxytag: member="SceneView::setLight" ref="ab998d5c1ff8b503611c9ee69a311a3f8" args="(osg::Light *light)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setLight </td>
-          <td>(</td>
-          <td class="paramtype">osg::Light *&nbsp;</td>
-          <td class="paramname"> <em>light</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="af13c7d88099f1db76ddd5bcc05e175de"></a><!-- doxytag: member="SceneView::setLightingMode" ref="af13c7d88099f1db76ddd5bcc05e175de" args="(LightingMode mode)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setLightingMode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">LightingMode</a>&nbsp;</td>
-          <td class="paramname"> <em>mode</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a784619e605da8e0322ce69fe0b287e8b"></a><!-- doxytag: member="SceneView::setLocalStateSet" ref="a784619e605da8e0322ce69fe0b287e8b" args="(osg::StateSet *state)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2225,27 +1636,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa1da6446dca8293d35e75aab54da2490"></a><!-- doxytag: member="SceneView::setProjectionMatrix" ref="aa1da6446dca8293d35e75aab54da2490" args="(const osg::Matrixd &amp;matrix)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setProjectionMatrix </td>
-          <td>(</td>
-          <td class="paramtype">const osg::Matrixd &amp;&nbsp;</td>
-          <td class="paramname"> <em>matrix</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set the projection matrix. </p>
-<p>Can be thought of as setting the lens of a camera. </p>
-
-</div>
-</div>
 <a class="anchor" id="a7c8dc4cb964312154b843127462ab153"></a><!-- doxytag: member="SceneView::setProjectionMatrix" ref="a7c8dc4cb964312154b843127462ab153" args="(const osg::Matrixf &amp;matrix)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2264,198 +1654,6 @@ Protected Attributes</h2></td></tr>
 
 <p>Set the projection matrix. </p>
 <p>Can be thought of as setting the lens of a camera. </p>
-
-</div>
-</div>
-<a class="anchor" id="a03e53214d24a27d6656fdc9ad6720fc4"></a><!-- doxytag: member="SceneView::setProjectionMatrixAsFrustum" ref="a03e53214d24a27d6656fdc9ad6720fc4" args="(double left, double right, double bottom, double top, double zNear, double zFar)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setProjectionMatrixAsFrustum </td>
-          <td>(</td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>right</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>bottom</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>top</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>zNear</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>zFar</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set to a perspective projection. </p>
-<p>See OpenGL glFrustum documentation for further details. </p>
-
-</div>
-</div>
-<a class="anchor" id="a2b153d05dced7b20e38ab24af64370eb"></a><!-- doxytag: member="SceneView::setProjectionMatrixAsOrtho" ref="a2b153d05dced7b20e38ab24af64370eb" args="(double left, double right, double bottom, double top, double zNear, double zFar)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setProjectionMatrixAsOrtho </td>
-          <td>(</td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>right</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>bottom</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>top</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>zNear</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>zFar</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set to an orthographic projection. </p>
-<p>See OpenGL glOrtho for documentation further details. </p>
-
-</div>
-</div>
-<a class="anchor" id="a3485bdb2def07f156d04e143f56c5142"></a><!-- doxytag: member="SceneView::setProjectionMatrixAsOrtho2D" ref="a3485bdb2def07f156d04e143f56c5142" args="(double left, double right, double bottom, double top)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setProjectionMatrixAsOrtho2D </td>
-          <td>(</td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>right</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>bottom</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>top</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set to a 2D orthographic projection. </p>
-<p>See OpenGL glOrtho2D documentation for further details. </p>
-
-</div>
-</div>
-<a class="anchor" id="aad5a27fce37f4aa0ae006f00a33e1319"></a><!-- doxytag: member="SceneView::setProjectionMatrixAsPerspective" ref="aad5a27fce37f4aa0ae006f00a33e1319" args="(double fovy, double aspectRatio, double zNear, double zFar)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setProjectionMatrixAsPerspective </td>
-          <td>(</td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>fovy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>aspectRatio</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>zNear</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&nbsp;</td>
-          <td class="paramname"> <em>zFar</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Create a symmetrical perspective projection, See OpenGL gluPerspective documentation for further details. </p>
-<p>Aspect ratio is defined as width/height. </p>
 
 </div>
 </div>
@@ -2606,27 +1804,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8206b5fcfb475eb642df89f3b888286e"></a><!-- doxytag: member="SceneView::setViewMatrix" ref="a8206b5fcfb475eb642df89f3b888286e" args="(const osg::Matrixd &amp;matrix)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setViewMatrix </td>
-          <td>(</td>
-          <td class="paramtype">const osg::Matrixd &amp;&nbsp;</td>
-          <td class="paramname"> <em>matrix</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set the view matrix. </p>
-<p>Can be thought of as setting the position of the world relative to the camera in camera coordinates. </p>
-
-</div>
-</div>
 <a class="anchor" id="adcb2746f193b91415d4e1ac45d92e4c9"></a><!-- doxytag: member="SceneView::setViewMatrix" ref="adcb2746f193b91415d4e1ac45d92e4c9" args="(const osg::Matrixf &amp;matrix)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2645,41 +1822,6 @@ Protected Attributes</h2></td></tr>
 
 <p>Set the view matrix. </p>
 <p>Can be thought of as setting the position of the world relative to the camera in camera coordinates. </p>
-
-</div>
-</div>
-<a class="anchor" id="a76e730250f9438ddd8b529ba5f5e1dec"></a><!-- doxytag: member="SceneView::setViewMatrixAsLookAt" ref="a76e730250f9438ddd8b529ba5f5e1dec" args="(const osg::Vec3 &amp;eye, const osg::Vec3 &amp;center, const osg::Vec3 &amp;up)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SceneView::setViewMatrixAsLookAt </td>
-          <td>(</td>
-          <td class="paramtype">const osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>eye</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>center</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const osg::Vec3 &amp;&nbsp;</td>
-          <td class="paramname"> <em>up</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set to the position and orientation of view matrix, using the same convention as gluLookAt. </p>
 
 </div>
 </div>
@@ -2911,32 +2053,6 @@ Protected Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">osg::ref_ptr&lt;osg::NodeVisitor&gt; <a class="el" href="class_scene_view.html#a17fe3ad3f45371cbf5b24203c6688868">SceneView::_initVisitor</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ae746a5e71ad5ffecf07d54f366ea93e2"></a><!-- doxytag: member="SceneView::_light" ref="ae746a5e71ad5ffecf07d54f366ea93e2" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">osg::ref_ptr&lt;osg::Light&gt; <a class="el" href="class_scene_view.html#ae746a5e71ad5ffecf07d54f366ea93e2">SceneView::_light</a><code> [protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ab0d796fc9fc2d56e32292b94071b93ac"></a><!-- doxytag: member="SceneView::_lightingMode" ref="ab0d796fc9fc2d56e32292b94071b93ac" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_scene_view.html#a721a044446e58f7d9c96bd6a3474b4b4">LightingMode</a> <a class="el" href="class_scene_view.html#ab0d796fc9fc2d56e32292b94071b93ac">SceneView::_lightingMode</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>

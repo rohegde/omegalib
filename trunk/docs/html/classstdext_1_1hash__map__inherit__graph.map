@@ -1,14 +1,15 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, ComputeShader * \&gt;" alt="" coords="143,5,391,35"/>
-<area shape="rect" id="node5" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, DataSource * \&gt;" alt="" coords="156,59,377,88"/>
-<area shape="rect" id="node7" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Font * \&gt;" alt="" coords="176,112,357,141"/>
-<area shape="rect" id="node9" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, FragmentShader * \&gt;" alt="" coords="141,165,392,195"/>
-<area shape="rect" id="node11" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, GeometryShader * \&gt;" alt="" coords="140,219,393,248"/>
-<area shape="rect" id="node13" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Node * \&gt;" alt="" coords="175,272,359,301"/>
-<area shape="rect" id="node15" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, RenderPassFactory \&gt;" alt="" coords="136,325,397,355"/>
-<area shape="rect" id="node17" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Service * \&gt;" alt="" coords="168,379,365,408"/>
-<area shape="rect" id="node19" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, ServiceAllocator \&gt;" alt="" coords="148,432,385,461"/>
-<area shape="rect" id="node21" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Texture * \&gt;" alt="" coords="168,485,365,515"/>
-<area shape="rect" id="node23" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, VertexShader * \&gt;" alt="" coords="149,539,384,568"/>
-<area shape="rect" id="node25" href="$classomega_1_1_dictionary.html" title="omega::Dictionary\&lt; K, T \&gt;" alt="" coords="180,592,353,621"/>
+<area shape="rect" id="node3" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; char, Color \&gt;" alt="" coords="184,5,349,35"/>
+<area shape="rect" id="node5" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, ComputeShader * \&gt;" alt="" coords="143,59,391,88"/>
+<area shape="rect" id="node7" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, DataSource * \&gt;" alt="" coords="156,112,377,141"/>
+<area shape="rect" id="node9" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Font * \&gt;" alt="" coords="176,165,357,195"/>
+<area shape="rect" id="node11" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, FragmentShader * \&gt;" alt="" coords="141,219,392,248"/>
+<area shape="rect" id="node13" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, GeometryShader * \&gt;" alt="" coords="140,272,393,301"/>
+<area shape="rect" id="node15" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Node * \&gt;" alt="" coords="175,325,359,355"/>
+<area shape="rect" id="node17" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, RenderPassFactory \&gt;" alt="" coords="136,379,397,408"/>
+<area shape="rect" id="node19" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Service * \&gt;" alt="" coords="168,432,365,461"/>
+<area shape="rect" id="node21" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, ServiceAllocator \&gt;" alt="" coords="148,485,385,515"/>
+<area shape="rect" id="node23" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, Texture * \&gt;" alt="" coords="168,539,365,568"/>
+<area shape="rect" id="node25" href="$classomega_1_1_dictionary.html" title="Dictionary\&lt; String, VertexShader * \&gt;" alt="" coords="149,592,384,621"/>
+<area shape="rect" id="node27" href="$classomega_1_1_dictionary.html" title="omega::Dictionary\&lt; K, T \&gt;" alt="" coords="180,645,353,675"/>
 </map>

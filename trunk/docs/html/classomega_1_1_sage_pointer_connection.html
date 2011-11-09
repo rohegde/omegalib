@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -53,9 +54,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#a7bb5f3e0b620782fee93e2701a0f3c64">SagePointerConnection</a> (asio::io_service &amp;ioService, int id, <a class="el" href="classomega_1_1_sage_pointer_service.html">SagePointerService</a> *service)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#ae8135cbe9159d543383548a3de9015d6">handleData</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#ab6deb0bff83f0116ca1e2828332d9c89">handleClosed</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#aecc2ba7e3c6c00e40590de70881c399b">handleButtonMessage</a> (int pressed, int btn)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#af2941c7698d162e6a426d9a515e9679d">handleMoveMessage</a> (float x, float y)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#a0bd2b0c70451053f00f041de0202f494">handleInfoMessage</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;name, int r, int g, int b)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#acf50aecedfab293ee0747ada5cc77444">handleWheelMessage</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#afd081a0170069b8cd128d4630aeb715f">handleButtonMessage</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#ac1241288310dfbdfab60ed2574199b4c">handleMoveMessage</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_sage_pointer_connection.html#ae9a6a3b28827e3606d6778c37b30e5c2">handleInfoMessage</a> ()</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7bb5f3e0b620782fee93e2701a0f3c64"></a><!-- doxytag: member="omega::SagePointerConnection::SagePointerConnection" ref="a7bb5f3e0b620782fee93e2701a0f3c64" args="(asio::io_service &amp;ioService, int id, SagePointerService *service)" -->
@@ -92,26 +94,16 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="aecc2ba7e3c6c00e40590de70881c399b"></a><!-- doxytag: member="omega::SagePointerConnection::handleButtonMessage" ref="aecc2ba7e3c6c00e40590de70881c399b" args="(int pressed, int btn)" -->
+<a class="anchor" id="afd081a0170069b8cd128d4630aeb715f"></a><!-- doxytag: member="omega::SagePointerConnection::handleButtonMessage" ref="afd081a0170069b8cd128d4630aeb715f" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void omega::SagePointerConnection::handleButtonMessage </td>
           <td>(</td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>pressed</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>btn</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline]</code></td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -157,38 +149,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0bd2b0c70451053f00f041de0202f494"></a><!-- doxytag: member="omega::SagePointerConnection::handleInfoMessage" ref="a0bd2b0c70451053f00f041de0202f494" args="(const String &amp;name, int r, int g, int b)" -->
+<a class="anchor" id="ae9a6a3b28827e3606d6778c37b30e5c2"></a><!-- doxytag: member="omega::SagePointerConnection::handleInfoMessage" ref="ae9a6a3b28827e3606d6778c37b30e5c2" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void omega::SagePointerConnection::handleInfoMessage </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>g</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>b</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline]</code></td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -196,26 +166,33 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af2941c7698d162e6a426d9a515e9679d"></a><!-- doxytag: member="omega::SagePointerConnection::handleMoveMessage" ref="af2941c7698d162e6a426d9a515e9679d" args="(float x, float y)" -->
+<a class="anchor" id="ac1241288310dfbdfab60ed2574199b4c"></a><!-- doxytag: member="omega::SagePointerConnection::handleMoveMessage" ref="ac1241288310dfbdfab60ed2574199b4c" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void omega::SagePointerConnection::handleMoveMessage </td>
           <td>(</td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>x</em>, </td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acf50aecedfab293ee0747ada5cc77444"></a><!-- doxytag: member="omega::SagePointerConnection::handleWheelMessage" ref="acf50aecedfab293ee0747ada5cc77444" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>y</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline]</code></td>
+          <td class="memname">void omega::SagePointerConnection::handleWheelMessage </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>

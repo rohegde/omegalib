@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -52,6 +53,10 @@ Inheritance diagram for oengine::DefaultMouseInteractor:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_default_mouse_interactor.html#a32da06bdc7def61a821a7e60d5bccf0f">DefaultMouseInteractor</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_default_mouse_interactor.html#a6e35265a2b644d2a4b85757b07c64cde">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_default_mouse_interactor.html#a416d98c8ae6b0070b369aadd1147d6b3">getMoveButtonFlag</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_default_mouse_interactor.html#ad8ce18988ea6254595c13e102da2cd86">setMoveButtonFlag</a> (<a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a> value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_default_mouse_interactor.html#a450fe5bc120d81208c7f167afd31345b">getRotateButtonFlag</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_default_mouse_interactor.html#ad32fbe059e9bd379a67d919e74707542">setRotateButtonFlag</a> (<a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a> value)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a32da06bdc7def61a821a7e60d5bccf0f"></a><!-- doxytag: member="oengine::DefaultMouseInteractor::DefaultMouseInteractor" ref="a32da06bdc7def61a821a7e60d5bccf0f" args="()" -->
@@ -72,6 +77,40 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a416d98c8ae6b0070b369aadd1147d6b3"></a><!-- doxytag: member="oengine::DefaultMouseInteractor::getMoveButtonFlag" ref="a416d98c8ae6b0070b369aadd1147d6b3" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a> oengine::DefaultMouseInteractor::getMoveButtonFlag </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a450fe5bc120d81208c7f167afd31345b"></a><!-- doxytag: member="oengine::DefaultMouseInteractor::getRotateButtonFlag" ref="a450fe5bc120d81208c7f167afd31345b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a> oengine::DefaultMouseInteractor::getRotateButtonFlag </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a6e35265a2b644d2a4b85757b07c64cde"></a><!-- doxytag: member="oengine::DefaultMouseInteractor::handleEvent" ref="a6e35265a2b644d2a4b85757b07c64cde" args="(const Event &amp;evt)" -->
 <div class="memitem">
 <div class="memproto">
@@ -89,6 +128,42 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classoengine_1_1_actor.html#a4c5d1ae0caabd4de0bc25c66a330dc42">oengine::Actor</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad8ce18988ea6254595c13e102da2cd86"></a><!-- doxytag: member="oengine::DefaultMouseInteractor::setMoveButtonFlag" ref="ad8ce18988ea6254595c13e102da2cd86" args="(Event::Flags value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oengine::DefaultMouseInteractor::setMoveButtonFlag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a>&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad32fbe059e9bd379a67d919e74707542"></a><!-- doxytag: member="oengine::DefaultMouseInteractor::setRotateButtonFlag" ref="ad32fbe059e9bd379a67d919e74707542" args="(Event::Flags value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oengine::DefaultMouseInteractor::setRotateButtonFlag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_event.html#a361f2818b51b72798516ae3a5f029102">Event::Flags</a>&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>

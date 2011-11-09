@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -49,11 +50,13 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577">DrawType</a> { <a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577a25fc28922bec7ad4d98929604a6716fa">DrawTriangles</a>, 
 <a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577a2d5f78e7cbb5a31127c0aa7a4373e916">DrawLines</a>, 
-<a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577acc0260806b3ca66b69291b173db3a8da">DrawPoints</a>
+<a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577acc0260806b3ca66b69291b173db3a8da">DrawPoints</a>, 
+<a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577afc9ef8ee24c0d30e454a190f9d64ffa5">DrawTriangleStrip</a>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_renderer.html#a7ebf46f54dab9905f79b80f7fddb76a6">Renderer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_renderer.html#aa1fa3c5bdd9c1664cabc8c39ec7becdb">setForceDiffuseColor</a> (bool value)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -89,7 +92,7 @@ Public Member Functions</h2></td></tr>
 </div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_renderer.html#a631102a331117e17180f9bc2ee5e19f5">drawWireSphere</a> (const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;color, int segments, int slices)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">3D Drawing methods  <a href="#a631102a331117e17180f9bc2ee5e19f5"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_renderer.html#afa192432b3b8739fee1cd0121e6d1cac">drawIndexedPrimitives</a> (<a class="el" href="classomega_1_1_vertex_buffer.html">VertexBuffer</a> *vertices, <a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> *indices, <a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> size, <a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577">DrawType</a> type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_renderer.html#a7be2b03805689fca8b3f24827980fb1a">drawPrimitives</a> (<a class="el" href="classomega_1_1_vertex_buffer.html">VertexBuffer</a> *vertices, <a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> *indices, <a class="el" href="namespaceomega.html#a0a0b3fb5d51aeb31eed37334aa16c761">uint</a> size, <a class="el" href="classoengine_1_1_renderer.html#a31015d839aa557debe0a180d56c46577">DrawType</a> type)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -116,6 +119,8 @@ Public Member Functions</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a31015d839aa557debe0a180d56c46577a2d5f78e7cbb5a31127c0aa7a4373e916"></a><!-- doxytag: member="DrawLines" ref="a31015d839aa557debe0a180d56c46577a2d5f78e7cbb5a31127c0aa7a4373e916" args="" -->DrawLines</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a31015d839aa557debe0a180d56c46577acc0260806b3ca66b69291b173db3a8da"></a><!-- doxytag: member="DrawPoints" ref="a31015d839aa557debe0a180d56c46577acc0260806b3ca66b69291b173db3a8da" args="" -->DrawPoints</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a31015d839aa557debe0a180d56c46577afc9ef8ee24c0d30e454a190f9d64ffa5"></a><!-- doxytag: member="DrawTriangleStrip" ref="a31015d839aa557debe0a180d56c46577afc9ef8ee24c0d30e454a190f9d64ffa5" args="" -->DrawTriangleStrip</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -275,12 +280,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afa192432b3b8739fee1cd0121e6d1cac"></a><!-- doxytag: member="oengine::Renderer::drawIndexedPrimitives" ref="afa192432b3b8739fee1cd0121e6d1cac" args="(VertexBuffer *vertices, uint *indices, uint size, DrawType type)" -->
+<a class="anchor" id="a7be2b03805689fca8b3f24827980fb1a"></a><!-- doxytag: member="oengine::Renderer::drawPrimitives" ref="a7be2b03805689fca8b3f24827980fb1a" args="(VertexBuffer *vertices, uint *indices, uint size, DrawType type)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Renderer::drawIndexedPrimitives </td>
+          <td class="memname">void Renderer::drawPrimitives </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classomega_1_1_vertex_buffer.html">VertexBuffer</a> *&nbsp;</td>
           <td class="paramname"> <em>vertices</em>, </td>
@@ -677,6 +682,24 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void oengine::Renderer::setDefaultFont </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classoengine_1_1_font.html">Font</a> *&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa1fa3c5bdd9c1664cabc8c39ec7becdb"></a><!-- doxytag: member="oengine::Renderer::setForceDiffuseColor" ref="aa1fa3c5bdd9c1664cabc8c39ec7becdb" args="(bool value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oengine::Renderer::setForceDiffuseColor </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>

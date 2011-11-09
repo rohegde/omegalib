@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -51,14 +52,14 @@ Inheritance diagram for omega::Observer:</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a19c43f80a38a332a6f694783df3c9835">Observer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#ae7160926f5becfcaf58a02824ba81dd0">setReferencePosition</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a61ae1739ffb9341956649afa45dc1ca7">getReferencePosition</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#aa186e9a0237a07ed9015cc9fb58c6dcc">getSensorTransform</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#aa3bc4aa91cacd2b0aa9fd5fcc988934b">setSensorTransform</a> (const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a1315a170110cdebe4c95859d2b57a99b">setViewPosition</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a8839a3527f706468675faaca3fbdef0b">getViewPosition</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#af15fe0e4a253f1c6e71593fa68b6ecda">getViewTransform</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a0b25995d0e757e47c7e34941ac28d766">getHeadTransform</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#a95bb94ac0fc07f3ee74e5209a0e049f7">update</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;position, const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;orientation)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#aa7aab937c67da4be33bc2230dd82bae5">updateHead</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;position, const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;orientation)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#af4060d224dc76016e5d446c048fa74d9">updateView</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;position, const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;orientation)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#aba3ae27e68b95887dc289f1cffef4942">load</a> (<a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;setting)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_observer.html#adb1dd04e19227ce657a38a57d2892f59">getWorldHeadPosition</a> ()</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a19c43f80a38a332a6f694783df3c9835"></a><!-- doxytag: member="omega::Observer::Observer" ref="a19c43f80a38a332a6f694783df3c9835" args="()" -->
@@ -96,29 +97,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a61ae1739ffb9341956649afa45dc1ca7"></a><!-- doxytag: member="omega::Observer::getReferencePosition" ref="a61ae1739ffb9341956649afa45dc1ca7" args="()" -->
+<a class="anchor" id="a8839a3527f706468675faaca3fbdef0b"></a><!-- doxytag: member="omega::Observer::getViewPosition" ref="a8839a3527f706468675faaca3fbdef0b" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> omega::Observer::getReferencePosition </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aa186e9a0237a07ed9015cc9fb58c6dcc"></a><!-- doxytag: member="omega::Observer::getSensorTransform" ref="aa186e9a0237a07ed9015cc9fb58c6dcc" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> omega::Observer::getSensorTransform </td>
+          <td class="memname"><a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> omega::Observer::getViewPosition </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -136,6 +120,23 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> omega::Observer::getViewTransform </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adb1dd04e19227ce657a38a57d2892f59"></a><!-- doxytag: member="omega::Observer::getWorldHeadPosition" ref="adb1dd04e19227ce657a38a57d2892f59" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> omega::Observer::getWorldHeadPosition </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -165,12 +166,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae7160926f5becfcaf58a02824ba81dd0"></a><!-- doxytag: member="omega::Observer::setReferencePosition" ref="ae7160926f5becfcaf58a02824ba81dd0" args="(const Vector3f &amp;value)" -->
+<a class="anchor" id="a1315a170110cdebe4c95859d2b57a99b"></a><!-- doxytag: member="omega::Observer::setViewPosition" ref="a1315a170110cdebe4c95859d2b57a99b" args="(const Vector3f &amp;value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Observer::setReferencePosition </td>
+          <td class="memname">void omega::Observer::setViewPosition </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
@@ -183,17 +184,26 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa3bc4aa91cacd2b0aa9fd5fcc988934b"></a><!-- doxytag: member="omega::Observer::setSensorTransform" ref="aa3bc4aa91cacd2b0aa9fd5fcc988934b" args="(const AffineTransform3 &amp;value)" -->
+<a class="anchor" id="aa7aab937c67da4be33bc2230dd82bae5"></a><!-- doxytag: member="omega::Observer::updateHead" ref="aa7aab937c67da4be33bc2230dd82bae5" args="(const Vector3f &amp;position, const Quaternion &amp;orientation)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::Observer::setSensorTransform </td>
+          <td class="memname">void Observer::updateHead </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>value</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>orientation</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
@@ -201,12 +211,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a95bb94ac0fc07f3ee74e5209a0e049f7"></a><!-- doxytag: member="omega::Observer::update" ref="a95bb94ac0fc07f3ee74e5209a0e049f7" args="(const Vector3f &amp;position, const Quaternion &amp;orientation)" -->
+<a class="anchor" id="af4060d224dc76016e5d446c048fa74d9"></a><!-- doxytag: member="omega::Observer::updateView" ref="af4060d224dc76016e5d446c048fa74d9" args="(const Vector3f &amp;position, const Quaternion &amp;orientation)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Observer::update </td>
+          <td class="memname">void Observer::updateView </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>position</em>, </td>

@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -140,7 +141,7 @@ Eigen::Affine &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Get a bounding radius value from a bounding box.  <a href="#af122cc0bc650d14d2c5c330dcd9eb268"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1math_1_1quaternion.html">quaternion</a>&lt; T &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1math_1_1_math.html#a08cc3576819c3e05fc8d06e0f1302af6">buildRotation</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt; &amp;a, const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt; &amp;b, const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt; &amp;fallbackAxis)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Compute a quaternion rotation transforming vector a to vector b.  <a href="#a08cc3576819c3e05fc8d06e0f1302af6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&lt; T &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1math_1_1_math.html#a448d3388d21eb38e2d9e28e92aab2f3c">unproject</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 2, float &gt; &amp;point, const <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, Eigen::Affine &gt; &amp;modelview, const <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, Eigen::Projective &gt; &amp;projection, const <a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a> &amp;viewport, float z)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&lt; T &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1math_1_1_math.html#aa13a75ff74251768582b94a2922d6986">unproject</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 2, float &gt; &amp;point, const <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, Eigen::Affine &gt; &amp;modelview, const <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, Eigen::Projective &gt; &amp;projection, const <a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a> &amp;viewport)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, float &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1math_1_1_math.html#aac1aa83ca6cdab5c2fbecf3343e9475f">project</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, float &gt; &amp;point, const <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, Eigen::Affine &gt; &amp;modelview, const <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, Eigen::Projective &gt; &amp;projection, const <a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a> &amp;viewport)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1math_1_1_math.html#a523844e011b13c305214c1b28d12acee">normal</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt; &amp;aa, const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt; &amp;bb, const <a class="el" href="classomega_1_1math_1_1vector.html">vector</a>&lt; 3, T &gt; &amp;cc)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1math_1_1transform.html">transform</a>&lt; 3, T, <br class="typebreak"/>
@@ -2159,7 +2160,7 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a448d3388d21eb38e2d9e28e92aab2f3c"></a><!-- doxytag: member="omega::math::Math::unproject" ref="a448d3388d21eb38e2d9e28e92aab2f3c" args="(const vector&lt; 2, float &gt; &amp;point, const transform&lt; 3, T, Eigen::Affine &gt; &amp;modelview, const transform&lt; 3, T, Eigen::Projective &gt; &amp;projection, const Rect &amp;viewport, float z)" -->
+<a class="anchor" id="aa13a75ff74251768582b94a2922d6986"></a><!-- doxytag: member="omega::math::Math::unproject" ref="aa13a75ff74251768582b94a2922d6986" args="(const vector&lt; 2, float &gt; &amp;point, const transform&lt; 3, T, Eigen::Affine &gt; &amp;modelview, const transform&lt; 3, T, Eigen::Projective &gt; &amp;projection, const Rect &amp;viewport)" -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -2187,13 +2188,7 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>viewport</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>z</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>viewport</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>

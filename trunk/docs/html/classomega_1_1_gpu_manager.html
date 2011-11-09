@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -73,15 +74,14 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_fragment_shader.html">FragmentShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a8680e9c88344b8360e986f0964c10866">getFragmentShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_geometry_shader.html">GeometryShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a3ace16f831758d4eaf877b0d5607c245">getGeometryShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_compute_shader.html">ComputeShader</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#aac532161b1ce85e1126d1bc34b72f874">getComputeShader</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a3bd1612823c1f5533b601de8fcbd3d20">beginDraw</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#ad45bbab55882668bac0d008207326f44">endDraw</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_c_l_manager.html">CLManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a665c4830fa7bd095dba95eb05c8909ba">getCLManager</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a97daab93c431f4312c9795704277b699">setInitFlags</a> (unsigned int initFlags)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initialization.  <a href="#a97daab93c431f4312c9795704277b699"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#aeaad279463d3b091e6448f3074bb4023">isInitialized</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initialization.  <a href="#aeaad279463d3b091e6448f3074bb4023"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a421c70ad6c2556f58503f2ef3c594b58">initialize</a> (unsigned int initFlags=InitGL)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#aeba18c22cb2e4e4d902bb818952f0c40">initialize</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -93,8 +93,6 @@ Public Member Functions</h2></td></tr>
 </div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_gpu_program.html">GpuProgram</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a743cc8208a0168f8cde077f263e53640">getDefaultProgram</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Data.  <a href="#a743cc8208a0168f8cde077f263e53640"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#ad1d5c9642797533477706fc274a246f0">getFrameBuffer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_manager.html#a35f93ee493d809ff83d68300bd2f7902">setFrameBuffer</a> (<a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *fb)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -189,23 +187,6 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a3bd1612823c1f5533b601de8fcbd3d20"></a><!-- doxytag: member="omega::GpuManager::beginDraw" ref="a3bd1612823c1f5533b601de8fcbd3d20" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuManager::beginDraw </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a5fb60a326171d36ce318ea70c2785d00"></a><!-- doxytag: member="omega::GpuManager::createTexture" ref="a5fb60a326171d36ce318ea70c2785d00" args="(String textureName, int width, int height, byte *data=NULL)" -->
 <div class="memitem">
 <div class="memproto">
@@ -244,23 +225,6 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p><a class="el" href="classomega_1_1_texture.html">Texture</a> management. </p>
-
-</div>
-</div>
-<a class="anchor" id="ad45bbab55882668bac0d008207326f44"></a><!-- doxytag: member="omega::GpuManager::endDraw" ref="ad45bbab55882668bac0d008207326f44" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void GpuManager::endDraw </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
 
 </div>
 </div>
@@ -329,23 +293,6 @@ Public Member Functions</h2></td></tr>
           <td class="paramname"> <em>name</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad1d5c9642797533477706fc274a246f0"></a><!-- doxytag: member="omega::GpuManager::getFrameBuffer" ref="ad1d5c9642797533477706fc274a246f0" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> * omega::GpuManager::getFrameBuffer </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
@@ -426,15 +373,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a421c70ad6c2556f58503f2ef3c594b58"></a><!-- doxytag: member="omega::GpuManager::initialize" ref="a421c70ad6c2556f58503f2ef3c594b58" args="(unsigned int initFlags=InitGL)" -->
+<a class="anchor" id="aeba18c22cb2e4e4d902bb818952f0c40"></a><!-- doxytag: member="omega::GpuManager::initialize" ref="aeba18c22cb2e4e4d902bb818952f0c40" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void GpuManager::initialize </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&nbsp;</td>
-          <td class="paramname"> <em>initFlags</em> = <code>InitGL</code></td>
+          <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -494,8 +440,6 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-<p>Initialization. </p>
 
 </div>
 </div>
@@ -607,21 +551,23 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a35f93ee493d809ff83d68300bd2f7902"></a><!-- doxytag: member="omega::GpuManager::setFrameBuffer" ref="a35f93ee493d809ff83d68300bd2f7902" args="(RenderTarget *fb)" -->
+<a class="anchor" id="a97daab93c431f4312c9795704277b699"></a><!-- doxytag: member="omega::GpuManager::setInitFlags" ref="a97daab93c431f4312c9795704277b699" args="(unsigned int initFlags)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::GpuManager::setFrameBuffer </td>
+          <td class="memname">void omega::GpuManager::setInitFlags </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *&nbsp;</td>
-          <td class="paramname"> <em>fb</em></td>
+          <td class="paramtype">unsigned int&nbsp;</td>
+          <td class="paramname"> <em>initFlags</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Initialization. </p>
 
 </div>
 </div>
