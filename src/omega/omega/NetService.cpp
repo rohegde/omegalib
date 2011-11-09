@@ -513,6 +513,14 @@ void NetService::parseDGram(int result)
 		float params[32];
 		int currentParam = 0;
 
+						
+		// Controller enum from DirectXInputService.h
+		int Xbox360 = 0;
+		int PS3 = 1;
+		int Wiimote = 2;
+		int Wii_Nunchuk = 3;
+		int Wii_MotionPlus = 4;
+
 		for(int i = 0; i < msgLen; i++ ){
 			if( msgStr[i] == ':' ){
 				inputType = atoi( msgStr.substr(lastIndex,i).c_str() );
@@ -529,9 +537,6 @@ void NetService::parseDGram(int result)
 
 		// Append last parameter
 		params[currentParam] = atof( msgStr.substr(lastIndex,msgLen).c_str() );
-
-		// Controller enum from DirectXInputService.h
-		enum ControllerType { Xbox360, PS3, Wiimote, Wii_Nunchuk, Wii_MotionPlus };
 
 		mysInstance->lockEvents();
 		Event* evt;
@@ -592,13 +597,14 @@ void NetService::parseDGram(int result)
 
 				break;
 			case(Service::Controller):
+
 				evt = mysInstance->writeHead();
 				evt->reset(Event::Up, Service::Controller, params[0]);
 
 				evt->setExtraDataType(Event::ExtraDataFloatArray);
 				evt->setExtraDataFloat(0, (params[1])); // ControllerType
 
-				if( (int)(params[1]) == ControllerType::Xbox360 || (int)(params[1]) == ControllerType::PS3 ){
+				if( (int)(params[1]) == Xbox360 || (int)(params[1]) == PS3 ){
 					evt->setExtraDataFloat(1, params[2]); 
 					evt->setExtraDataFloat(2, params[3]);  // Left analog (-up, +down)
 
@@ -618,19 +624,19 @@ void NetService::parseDGram(int result)
 					evt->setExtraDataFloat(21, params[24]); // Tilt (+back, -forward)
 
 				}
-				else if( (int)(params[1]) == ControllerType::Wiimote ){
+				else if( (int)(params[1]) == Wiimote ){
 					for( int i = 1; i < 29; i++ )
 					{
 						evt->setExtraDataFloat(i, params[i+1]);
 					}
 				}
-				else if( (int)(params[1]) == ControllerType::Wii_Nunchuk ){
+				else if( (int)(params[1]) == Wii_Nunchuk ){
 					for( int i = 1; i < 8; i++ )
 					{
 						evt->setExtraDataFloat(i, params[i+1]);
 					}
 				}
-				else if( (int)(params[1]) == ControllerType::Wii_MotionPlus ){
+				else if( (int)(params[1]) == Wii_MotionPlus ){
 					for( int i = 1; i < 4; i++ )
 					{
 						evt->setExtraDataFloat(i, params[i+1]);
