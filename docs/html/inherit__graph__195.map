@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$structwiimote__state_1_1balance__board_1_1sensors__f.html" title="wiimote_state::balance_board::sensors_f" alt="" coords="5,5,264,35"/>
+<area shape="rect" id="node1" href="$classvtk_open_g_l_render_window.html" title="vtkOpenGLRenderWindow" alt="" coords="5,5,179,35"/>
+<area shape="rect" id="node3" href="$classvtk_generic_open_g_l_render_window.html" title="vtkGenericOpenGLRenderWindow" alt="" coords="227,5,445,35"/>
 </map>

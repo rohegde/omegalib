@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -38,7 +39,7 @@
 <h1>oengine::Mesh Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="oengine::Mesh" --><!-- doxytag: inherits="oengine::SceneObject" --><div class="dynheader">
+<!-- doxytag: class="oengine::Mesh" --><!-- doxytag: inherits="oengine::SceneObject,oengine::SceneObject" --><div class="dynheader">
 Inheritance diagram for oengine::Mesh:</div>
 <div class="dyncontent">
 <div class="center"><img src="classoengine_1_1_mesh__inherit__graph.png" border="0" usemap="#oengine_1_1_mesh_inherit__map" alt="Inheritance graph"/></div>
@@ -57,6 +58,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#a3aeeffab1c83457bb940f9d5193b778d">setData</a> (<a class="el" href="classoengine_1_1_mesh_data.html">MeshData</a> *value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#ae2b83c6b67ff353ed7451e875088217c">getBoundingBox</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#afe6fa8e604ab95dc6fc20acb41cd5d3f">hasBoundingBox</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#ab92e41848bad6743698457f2236cd014">Mesh</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#a6cb239572660565bd164cc797b6f8774">~Mesh</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classoengine_1_1_renderable.html">Renderable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#a041140e5e7add95e2f17c5c3cb6aa2f3">createRenderable</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoengine_1_1_mesh_data.html">MeshData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#a8651e6cc5b711eb8f72b3faab1b9956a">getData</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#a3ca1510d1d8f16301e24e3f61a7dd351">setData</a> (<a class="el" href="classoengine_1_1_mesh_data.html">MeshData</a> *value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#a730a001a02c44a7d83e38fee46c767e0">getBoundingBox</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_mesh.html#aad8cd278d279c671d777782ad72148a0">hasBoundingBox</a> ()</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a2af137f1571af89172b9c102302c416b"></a><!-- doxytag: member="oengine::Mesh::Mesh" ref="a2af137f1571af89172b9c102302c416b" args="()" -->
@@ -93,6 +101,40 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ab92e41848bad6743698457f2236cd014"></a><!-- doxytag: member="oengine::Mesh::Mesh" ref="ab92e41848bad6743698457f2236cd014" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">oengine::Mesh::Mesh </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6cb239572660565bd164cc797b6f8774"></a><!-- doxytag: member="oengine::Mesh::~Mesh" ref="a6cb239572660565bd164cc797b6f8774" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">oengine::Mesh::~Mesh </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a5b4573ff18735d1d06ded3bc9e09df52"></a><!-- doxytag: member="oengine::Mesh::createRenderable" ref="a5b4573ff18735d1d06ded3bc9e09df52" args="()" -->
 <div class="memitem">
@@ -109,7 +151,26 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Implements <a class="el" href="classoengine_1_1_renderable_factory.html#a2072b77d93412a2d8a07c63beef123e2">oengine::RenderableFactory</a>.</p>
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#ad1dbccb64c9d571c48fb096c282c69bb">oengine::SceneObject</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a041140e5e7add95e2f17c5c3cb6aa2f3"></a><!-- doxytag: member="oengine::Mesh::createRenderable" ref="a041140e5e7add95e2f17c5c3cb6aa2f3" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classoengine_1_1_renderable.html">Renderable</a>* oengine::Mesh::createRenderable </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#ad1dbccb64c9d571c48fb096c282c69bb">oengine::SceneObject</a>.</p>
 
 </div>
 </div>
@@ -119,6 +180,25 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> * Mesh::getBoundingBox </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#a554e9609f1e89a4e2a96bcab24b87e40">oengine::SceneObject</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a730a001a02c44a7d83e38fee46c767e0"></a><!-- doxytag: member="oengine::Mesh::getBoundingBox" ref="a730a001a02c44a7d83e38fee46c767e0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a>* oengine::Mesh::getBoundingBox </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -149,6 +229,23 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a8651e6cc5b711eb8f72b3faab1b9956a"></a><!-- doxytag: member="oengine::Mesh::getData" ref="a8651e6cc5b711eb8f72b3faab1b9956a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoengine_1_1_mesh_data.html">MeshData</a>* oengine::Mesh::getData </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="afe6fa8e604ab95dc6fc20acb41cd5d3f"></a><!-- doxytag: member="oengine::Mesh::hasBoundingBox" ref="afe6fa8e604ab95dc6fc20acb41cd5d3f" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -168,12 +265,49 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aad8cd278d279c671d777782ad72148a0"></a><!-- doxytag: member="oengine::Mesh::hasBoundingBox" ref="aad8cd278d279c671d777782ad72148a0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool oengine::Mesh::hasBoundingBox </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#a61412761cdb5e0725928427b37ff3344">oengine::SceneObject</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a3aeeffab1c83457bb940f9d5193b778d"></a><!-- doxytag: member="oengine::Mesh::setData" ref="a3aeeffab1c83457bb940f9d5193b778d" args="(MeshData *value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void Mesh::setData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_mesh_data.html">MeshData</a> *&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3ca1510d1d8f16301e24e3f61a7dd351"></a><!-- doxytag: member="oengine::Mesh::setData" ref="a3ca1510d1d8f16301e24e3f61a7dd351" args="(MeshData *value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oengine::Mesh::setData </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classoengine_1_1_mesh_data.html">MeshData</a> *&nbsp;</td>
           <td class="paramname"> <em>value</em></td>

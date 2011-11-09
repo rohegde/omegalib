@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -34,17 +35,18 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>oengine::ReferenceBox Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="oengine::ReferenceBox" --><!-- doxytag: inherits="oengine::Renderable" --><div class="dynheader">
+<!-- doxytag: class="oengine::ReferenceBox" --><!-- doxytag: inherits="oengine::SceneObject" --><div class="dynheader">
 Inheritance diagram for oengine::ReferenceBox:</div>
 <div class="dyncontent">
 <div class="center"><img src="classoengine_1_1_reference_box__inherit__graph.png" border="0" usemap="#oengine_1_1_reference_box_inherit__map" alt="Inheritance graph"/></div>
 <map name="oengine_1_1_reference_box_inherit__map" id="oengine_1_1_reference_box_inherit__map">
-<area shape="rect" id="node2" href="classoengine_1_1_renderable.html" title="oengine::Renderable" alt="" coords="13,83,152,112"/><area shape="rect" id="node4" href="classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="8,5,157,35"/></map>
+<area shape="rect" id="node2" href="classoengine_1_1_scene_object.html" title="oengine::SceneObject" alt="" coords="23,83,172,112"/><area shape="rect" id="node4" href="classoengine_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="5,5,189,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classoengine_1_1_reference_box-members.html">List of all members.</a></p>
@@ -65,7 +67,7 @@ Public Types</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a6d1762c154f53adaa37c03d52bc61046">ReferenceBox</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#ac83ddbf73fb9cdc0da198f2ef24f6c1e">render</a> (<a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *node, <a class="el" href="structoengine_1_1_render_state.html">RenderState</a> *state)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classoengine_1_1_renderable.html">Renderable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#ad51cb323e35f971fd5b2d5c29af5eaa6">createRenderable</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_color.html">Color</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a6dc192c2f4a8fb51d07ccdf35830c5aa">getColor</a> (<a class="el" href="classoengine_1_1_reference_box.html#aa9a32b087404c537e85005bafb9ff426">Side</a> side)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#afa825b678ca139ab1eacb93827078727">setColor</a> (<a class="el" href="classoengine_1_1_reference_box.html#aa9a32b087404c537e85005bafb9ff426">Side</a> side, const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;color)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a29ecb0d8fb71263ec1fa7677099a3466">isFaceEnabled</a> (<a class="el" href="classoengine_1_1_reference_box.html#aa9a32b087404c537e85005bafb9ff426">Side</a> side)</td></tr>
@@ -78,6 +80,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a35542bd0ca637c9564e3a44d75ae4783">setSize</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a471d23f22f3de55038bfcfbbdd165d1c">getBoundingBox</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a77a77f97dd0b7ae0fafa353881e77c41">hasBoundingBox</a> ()</td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_reference_box.html#a01a5ebaee946adbc18ca1741b4d78e5e">ReferenceBoxRenderable</a></td></tr>
 </table>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="aa9a32b087404c537e85005bafb9ff426"></a><!-- doxytag: member="oengine::ReferenceBox::Side" ref="aa9a32b087404c537e85005bafb9ff426" args="" -->
@@ -130,6 +135,25 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ad51cb323e35f971fd5b2d5c29af5eaa6"></a><!-- doxytag: member="oengine::ReferenceBox::createRenderable" ref="ad51cb323e35f971fd5b2d5c29af5eaa6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classoengine_1_1_renderable.html">Renderable</a> * ReferenceBox::createRenderable </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#ad1dbccb64c9d571c48fb096c282c69bb">oengine::SceneObject</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a471d23f22f3de55038bfcfbbdd165d1c"></a><!-- doxytag: member="oengine::ReferenceBox::getBoundingBox" ref="a471d23f22f3de55038bfcfbbdd165d1c" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -144,6 +168,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#a554e9609f1e89a4e2a96bcab24b87e40">oengine::SceneObject</a>.</p>
 
 </div>
 </div>
@@ -231,6 +257,8 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#a61412761cdb5e0725928427b37ff3344">oengine::SceneObject</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a29ecb0d8fb71263ec1fa7677099a3466"></a><!-- doxytag: member="oengine::ReferenceBox::isFaceEnabled" ref="a29ecb0d8fb71263ec1fa7677099a3466" args="(Side side)" -->
@@ -244,33 +272,6 @@ Public Member Functions</h2></td></tr>
           <td class="paramname"> <em>side</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ac83ddbf73fb9cdc0da198f2ef24f6c1e"></a><!-- doxytag: member="oengine::ReferenceBox::render" ref="ac83ddbf73fb9cdc0da198f2ef24f6c1e" args="(SceneNode *node, RenderState *state)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ReferenceBox::render </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *&nbsp;</td>
-          <td class="paramname"> <em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structoengine_1_1_render_state.html">RenderState</a> *&nbsp;</td>
-          <td class="paramname"> <em>state</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -379,6 +380,20 @@ Public Member Functions</h2></td></tr>
           <td class="paramname"> <em>value</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a01a5ebaee946adbc18ca1741b4d78e5e"></a><!-- doxytag: member="oengine::ReferenceBox::ReferenceBoxRenderable" ref="a01a5ebaee946adbc18ca1741b4d78e5e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classoengine_1_1_reference_box_renderable.html">ReferenceBoxRenderable</a><code> [friend]</code></td>
         </tr>
       </table>
 </div>

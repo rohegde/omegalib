@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -52,6 +53,8 @@ Inheritance diagram for oengine::Box:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_box.html#aca78d7db44972bfa78d46b7bbc8796f6">Box</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classoengine_1_1_renderable.html">Renderable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_box.html#a85668ae34815a7e3fd094af4186c0f06">createRenderable</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_box.html#a41f59997f531deec7afa5dcec30e1205">getBoundingBox</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_box.html#a015c8d32854518cf2bc778200704c75e">hasBoundingBox</a> ()</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aca78d7db44972bfa78d46b7bbc8796f6"></a><!-- doxytag: member="oengine::Box::Box" ref="aca78d7db44972bfa78d46b7bbc8796f6" args="()" -->
@@ -87,7 +90,45 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Implements <a class="el" href="classoengine_1_1_renderable_factory.html#a2072b77d93412a2d8a07c63beef123e2">oengine::RenderableFactory</a>.</p>
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#ad1dbccb64c9d571c48fb096c282c69bb">oengine::SceneObject</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a41f59997f531deec7afa5dcec30e1205"></a><!-- doxytag: member="oengine::Box::getBoundingBox" ref="a41f59997f531deec7afa5dcec30e1205" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a>* oengine::Box::getBoundingBox </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#a554e9609f1e89a4e2a96bcab24b87e40">oengine::SceneObject</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a015c8d32854518cf2bc778200704c75e"></a><!-- doxytag: member="oengine::Box::hasBoundingBox" ref="a015c8d32854518cf2bc778200704c75e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool oengine::Box::hasBoundingBox </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classoengine_1_1_scene_object.html#a61412761cdb5e0725928427b37ff3344">oengine::SceneObject</a>.</p>
 
 </div>
 </div>

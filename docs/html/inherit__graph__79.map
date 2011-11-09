@@ -1,5 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classosg_1_1_cull_settings.html" title="CullSettings" alt="" coords="7,5,97,35"/>
-<area shape="rect" id="node3" href="$class_scene_view.html" title="Based on osgUtil::SceneView, but stripped done to only render and not interfere with stereo setup..." alt="" coords="148,32,233,61"/>
-<area shape="rect" id="node4" href="$classosg_1_1_object.html" title="Object" alt="" coords="23,59,81,88"/>
+<area shape="rect" id="node1" href="$classobj_1_1obj__parser.html" title="obj::obj_parser" alt="" coords="5,5,112,35"/>
 </map>

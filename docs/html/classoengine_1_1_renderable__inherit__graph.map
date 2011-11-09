@@ -1,12 +1,14 @@
 <map id="G" name="G">
-<area shape="rect" id="node5" href="$classoengine_1_1_overlay_renderable.html" title="oengine::OverlayRenderable" alt="" coords="393,59,575,88"/>
-<area shape="rect" id="node11" href="$classoengine_1_1_reference_box.html" title="oengine::ReferenceBox" alt="" coords="407,112,561,141"/>
-<area shape="rect" id="node13" href="$classoengine_1_1_scene_renderable.html" title="oengine::SceneRenderable" alt="" coords="396,165,572,195"/>
-<area shape="rect" id="node21" href="$classoengine_1_1_teapot.html" title="oengine::Teapot" alt="" coords="427,219,541,248"/>
-<area shape="rect" id="node2" href="$classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="5,165,155,195"/>
-<area shape="rect" id="node7" href="$classoengine_1_1_pointer_renderable.html" title="oengine::PointerRenderable" alt="" coords="651,5,832,35"/>
-<area shape="rect" id="node9" href="$classoengine_1_1ui_1_1_widget_renderable.html" title="oengine::ui::WidgetRenderable" alt="" coords="643,59,840,88"/>
-<area shape="rect" id="node15" href="$classoengine_1_1_bounding_sphere_renderable.html" title="oengine::BoundingSphereRenderable" alt="" coords="624,112,859,141"/>
-<area shape="rect" id="node17" href="$classoengine_1_1_box_renderable.html" title="oengine::BoxRenderable" alt="" coords="660,165,823,195"/>
-<area shape="rect" id="node19" href="$classoengine_1_1_mesh_renderable.html" title="oengine::MeshRenderable" alt="" coords="656,219,827,248"/>
+<area shape="rect" id="node5" href="$classoengine_1_1_overlay_renderable.html" title="oengine::OverlayRenderable" alt="" coords="393,85,575,115"/>
+<area shape="rect" id="node13" href="$classoengine_1_1_scene_renderable.html" title="oengine::SceneRenderable" alt="" coords="396,245,572,275"/>
+<area shape="rect" id="node24" href="$classoengine_1_1_teapot.html" title="oengine::Teapot" alt="" coords="427,299,541,328"/>
+<area shape="rect" id="node27" href="$classoosg_1_1_osg_renderable.html" title="oosg::OsgRenderable" alt="" coords="411,352,557,381"/>
+<area shape="rect" id="node2" href="$classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="5,299,155,328"/>
+<area shape="rect" id="node7" href="$classoengine_1_1_console_renderable.html" title="oengine::ConsoleRenderable" alt="" coords="648,5,835,35"/>
+<area shape="rect" id="node9" href="$classoengine_1_1_pointer_renderable.html" title="oengine::PointerRenderable" alt="" coords="651,59,832,88"/>
+<area shape="rect" id="node11" href="$classoengine_1_1ui_1_1_widget_renderable.html" title="oengine::ui::WidgetRenderable" alt="" coords="643,112,840,141"/>
+<area shape="rect" id="node15" href="$classoengine_1_1_bounding_sphere_renderable.html" title="oengine::BoundingSphereRenderable" alt="" coords="624,165,859,195"/>
+<area shape="rect" id="node17" href="$classoengine_1_1_box_renderable.html" title="oengine::BoxRenderable" alt="" coords="660,219,823,248"/>
+<area shape="rect" id="node19" href="$classoengine_1_1_mesh_renderable.html" title="oengine::MeshRenderable" alt="" coords="656,272,827,301"/>
+<area shape="rect" id="node22" href="$classoengine_1_1_reference_box_renderable.html" title="oengine::ReferenceBoxRenderable" alt="" coords="631,325,852,355"/>
 </map>

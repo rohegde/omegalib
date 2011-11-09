@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -43,7 +44,7 @@ Inheritance diagram for oengine::SceneObject:</div>
 <div class="dyncontent">
 <div class="center"><img src="classoengine_1_1_scene_object__inherit__graph.png" border="0" usemap="#oengine_1_1_scene_object_inherit__map" alt="Inheritance graph"/></div>
 <map name="oengine_1_1_scene_object_inherit__map" id="oengine_1_1_scene_object_inherit__map">
-<area shape="rect" id="node7" href="classoengine_1_1_bounding_sphere.html" title="oengine::BoundingSphere" alt="" coords="5,237,176,267"/><area shape="rect" id="node9" href="classoengine_1_1_box.html" title="oengine::Box" alt="" coords="200,237,299,267"/><area shape="rect" id="node11" href="classoengine_1_1_mesh.html" title="oengine::Mesh" alt="" coords="323,237,429,267"/><area shape="rect" id="node2" href="classoengine_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="157,83,341,112"/><area shape="rect" id="node4" href="classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="175,5,324,35"/></map>
+<area shape="rect" id="node7" href="classoengine_1_1_bounding_sphere.html" title="oengine::BoundingSphere" alt="" coords="635,5,805,35"/><area shape="rect" id="node9" href="classoengine_1_1_box.html" title="oengine::Box" alt="" coords="671,59,769,88"/><area shape="rect" id="node11" href="classoengine_1_1_mesh.html" title="oengine::Mesh" alt="" coords="667,112,773,141"/><area shape="rect" id="node14" href="classoengine_1_1_reference_box.html" title="oengine::ReferenceBox" alt="" coords="643,165,797,195"/><area shape="rect" id="node16" href="classoosg_1_1_osg_scene_object.html" title="oosg::OsgSceneObject" alt="" coords="641,219,799,248"/><area shape="rect" id="node2" href="classoengine_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="203,112,387,141"/><area shape="rect" id="node4" href="classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="5,112,155,141"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classoengine_1_1_scene_object-members.html">List of all members.</a></p>
@@ -51,6 +52,8 @@ Inheritance diagram for oengine::SceneObject:</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_scene_object.html#a0d268d96d77dbeb45b07a6442e2f4d0d">SceneObject</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classoengine_1_1_renderable.html">Renderable</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_scene_object.html#ad1dbccb64c9d571c48fb096c282c69bb">createRenderable</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_scene_object.html#a51c7a6f28ce26c6dbc1494631a4e4bbe">update</a> (<a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *owner)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_scene_object.html#a8426efae50deb918d8b086ca83335cbe">draw</a> (<a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *node, <a class="el" href="structoengine_1_1_render_state.html">RenderState</a> *state)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">This method is called by engine client threads to traverse the scene hierarchy during rendering.  <a href="#a8426efae50deb918d8b086ca83335cbe"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classomega_1_1math_1_1_aligned_box3.html">AlignedBox3</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_scene_object.html#a554e9609f1e89a4e2a96bcab24b87e40">getBoundingBox</a> ()</td></tr>
@@ -75,6 +78,27 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ad1dbccb64c9d571c48fb096c282c69bb"></a><!-- doxytag: member="oengine::SceneObject::createRenderable" ref="ad1dbccb64c9d571c48fb096c282c69bb" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classoengine_1_1_renderable.html">Renderable</a>* oengine::SceneObject::createRenderable </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implements <a class="el" href="classoengine_1_1_renderable_factory.html#a2072b77d93412a2d8a07c63beef123e2">oengine::RenderableFactory</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classoengine_1_1_bounding_sphere.html#ab562f8697a48de626739ddbf297c6eca">oengine::BoundingSphere</a>, <a class="el" href="classoengine_1_1_box.html#a85668ae34815a7e3fd094af4186c0f06">oengine::Box</a>, <a class="el" href="classoengine_1_1_mesh.html#a5b4573ff18735d1d06ded3bc9e09df52">oengine::Mesh</a>, <a class="el" href="classoengine_1_1_mesh.html#a041140e5e7add95e2f17c5c3cb6aa2f3">oengine::Mesh</a>, and <a class="el" href="classoengine_1_1_reference_box.html#ad51cb323e35f971fd5b2d5c29af5eaa6">oengine::ReferenceBox</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a8426efae50deb918d8b086ca83335cbe"></a><!-- doxytag: member="oengine::SceneObject::draw" ref="a8426efae50deb918d8b086ca83335cbe" args="(SceneNode *node, RenderState *state)" -->
 <div class="memitem">
 <div class="memproto">
@@ -119,7 +143,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classoengine_1_1_mesh.html#ae2b83c6b67ff353ed7451e875088217c">oengine::Mesh</a>.</p>
+<p>Reimplemented in <a class="el" href="classoengine_1_1_box.html#a41f59997f531deec7afa5dcec30e1205">oengine::Box</a>, <a class="el" href="classoengine_1_1_mesh.html#ae2b83c6b67ff353ed7451e875088217c">oengine::Mesh</a>, <a class="el" href="classoengine_1_1_mesh.html#a730a001a02c44a7d83e38fee46c767e0">oengine::Mesh</a>, <a class="el" href="classoengine_1_1_reference_box.html#a471d23f22f3de55038bfcfbbdd165d1c">oengine::ReferenceBox</a>, and <a class="el" href="classoosg_1_1_osg_scene_object.html#aa64053ccc93da536162acd60502f2cb4">oosg::OsgSceneObject</a>.</p>
 
 </div>
 </div>
@@ -138,7 +162,27 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classoengine_1_1_mesh.html#afe6fa8e604ab95dc6fc20acb41cd5d3f">oengine::Mesh</a>.</p>
+<p>Reimplemented in <a class="el" href="classoengine_1_1_box.html#a015c8d32854518cf2bc778200704c75e">oengine::Box</a>, <a class="el" href="classoengine_1_1_mesh.html#afe6fa8e604ab95dc6fc20acb41cd5d3f">oengine::Mesh</a>, <a class="el" href="classoengine_1_1_mesh.html#aad8cd278d279c671d777782ad72148a0">oengine::Mesh</a>, <a class="el" href="classoengine_1_1_reference_box.html#a77a77f97dd0b7ae0fafa353881e77c41">oengine::ReferenceBox</a>, and <a class="el" href="classoosg_1_1_osg_scene_object.html#a6375035f3794811de55b15931a2d0ed8">oosg::OsgSceneObject</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a51c7a6f28ce26c6dbc1494631a4e4bbe"></a><!-- doxytag: member="oengine::SceneObject::update" ref="a51c7a6f28ce26c6dbc1494631a4e4bbe" args="(SceneNode *owner)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void oengine::SceneObject::update </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *&nbsp;</td>
+          <td class="paramname"> <em>owner</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classoosg_1_1_osg_scene_object.html#a0f93b11ad1f1a600fe3a2fe00b36e0c8">oosg::OsgSceneObject</a>.</p>
 
 </div>
 </div>

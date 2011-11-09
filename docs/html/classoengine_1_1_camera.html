@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -33,50 +34,146 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <h1>oengine::Camera Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="oengine::Camera" -->
+<!-- doxytag: class="oengine::Camera" --><!-- doxytag: inherits="omega::DynamicObject" --><div class="dynheader">
+Inheritance diagram for oengine::Camera:</div>
+<div class="dyncontent">
+<div class="center"><img src="classoengine_1_1_camera__inherit__graph.png" border="0" usemap="#oengine_1_1_camera_inherit__map" alt="Inheritance graph"/></div>
+<map name="oengine_1_1_camera_inherit__map" id="oengine_1_1_camera_inherit__map">
+<area shape="rect" id="node2" href="classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="5,5,163,35"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+
 <p><a href="classoengine_1_1_camera-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203">NavigationMode</a> { <a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203af3c1ec8a0a60a6bcbc5ce7a5d56448dc">NavDisabled</a>, 
+<a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203a1e00a3d368799a3806e371a5c82ebc8f">NavFollow</a>, 
+<a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203a67cda24c42407fc89d1c841516ecb77b">NavFreeFly</a>
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131">MoveFlags</a> { <br/>
+&nbsp;&nbsp;<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a7ead8499d47e41ca939b0e40016bd85b">MoveLeft</a> =  1 &lt;&lt; 1, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a2934680a328b6180e9237d6659ceb8b1">MoveRight</a> =  1 &lt;&lt; 2, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131acfd5bf3eb2af455f19ad7e0151bd3ab6">MoveUp</a> =  1 &lt;&lt; 3, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a512c3c9a9173dea623ac266bbfaeb5de">MoveDown</a> =  1 &lt;&lt; 4, 
+<br/>
+&nbsp;&nbsp;<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131ad9f24b23edc19a0772bd6b155c25dcef">MoveForward</a> =  1 &lt;&lt; 5, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a6bd5d14a3b25e759db6db76f8adfb354">MoveBackward</a> =  1 &lt;&lt; 6, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a445863dcf74d278ab46784b67fff4c61">FocusLeft</a> =  1 &lt;&lt; 7, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131adeb839ec8ed8c00ae0eb6724b1923797">FocusRight</a> =  1 &lt;&lt; 8, 
+<br/>
+&nbsp;&nbsp;<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131aae15eacc33e0f387bfddab83e07a65f5">FocusForward</a> =  1 &lt;&lt; 9, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131afa23ec5279109fce019830321ded726a">FocusBackward</a> =  1 &lt;&lt; 10, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a35d9be79c30440763bc6001dabe4c228">FocusUp</a> =  1 &lt;&lt; 11, 
+<a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131a67bffd488dbd06f226da0a35b5e74411">FocusDown</a> =  1 &lt;&lt; 12
+<br/>
+ }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#aa86bd56808c0423602eb0aceb59be9e0">Camera</a> (<a class="el" href="classoengine_1_1_scene_manager.html">SceneManager</a> *scene, <a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *target)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a897c4b2622e9524402c44fa4fb44786e">getViewTransform</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a9cac168ee30388fde7a93f915732a278">getProjectionTransform</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#aebf19e010084adb9773eeb4208b9de1f">setProjectionTransform</a> (const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a835c0d6632d4fe10b0428ce565319c9e">setViewTransform</a> (const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a6fe3b137658f0619279e583d723e67b5">updateView</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;position, const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;orientation)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a15d755522116e896c221e38cbd613662">updateProjection</a> (float fov, float aspect, float nearZ, float farZ)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a4de2f4b634d3f40a9efedaecca61a31b">getRenderTarget</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoengine_1_1_scene_manager.html">SceneManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a79ee72d801961ef13a11b43bf2bf960d">getScene</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a01f94c3543f56ede7af49dc778f19331">Camera</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#ae7a0178680936f898b19ffacbafc77e0">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#ad1a8e7d765d6f62bb27e90ffb2736d2e">handleEvent</a> (const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;evt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a6558c15218a8bae5a8a7fa558a9f6b48">getPosition</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a51dea23c39d4b12e81fc0016b08093bc">setPosition</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a47d79cdd605990fd6445ab7a8f926b1f">getProjectionOffset</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a23ac079775a8f7ded220f4d53cf877e1">setProjectionOffset</a> (const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a99d32262eb26afe07254d938b6c377e7">getOrientation</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#adb1606212440e12e8560ef561522a688">setOrientation</a> (const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a3f508ecc9e7bdfebe69ef87df8a4528b">getAutoAspect</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a6a3957a2bbb4b57a334e23367c8b4551">setAutoAspect</a> (bool value)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#abcf6c6a807fb908a75c007258251dfb5">render</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#aa61016b286b9d6c4336c6efa5432c407">focusOn</a> (<a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *node)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a7f850eea9e802c1d905f250c35820bf5">updateObserver</a> (<a class="el" href="classomega_1_1_observer.html">Observer</a> *obs)</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
+</div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a446a0b0ecff0cc8318b9d04e075dfa05">setNavigationMode</a> (<a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203">NavigationMode</a> value)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Navigation management.  <a href="#a446a0b0ecff0cc8318b9d04e075dfa05"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203">NavigationMode</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a6338ea42c926f03e1b46c1e6a1206e08">getNavigationMode</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#ab2ede6c68fdd501c9a5e4f3984692a02">setTargetNode</a> (<a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *n)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set the target node that will be used when in NavFollow navigation mode.  <a href="#ab2ede6c68fdd501c9a5e4f3984692a02"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoengine_1_1_camera.html#a7a6afb6d193489a0abfef318d83f0565">getTargetNode</a> ()</td></tr>
 </table>
+<hr/><h2>Member Enumeration Documentation</h2>
+<a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131"></a><!-- doxytag: member="oengine::Camera::MoveFlags" ref="ad2ec6c8cb486505c0c47948a403d8131" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classoengine_1_1_camera.html#ad2ec6c8cb486505c0c47948a403d8131">oengine::Camera::MoveFlags</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a7ead8499d47e41ca939b0e40016bd85b"></a><!-- doxytag: member="MoveLeft" ref="ad2ec6c8cb486505c0c47948a403d8131a7ead8499d47e41ca939b0e40016bd85b" args="" -->MoveLeft</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a2934680a328b6180e9237d6659ceb8b1"></a><!-- doxytag: member="MoveRight" ref="ad2ec6c8cb486505c0c47948a403d8131a2934680a328b6180e9237d6659ceb8b1" args="" -->MoveRight</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131acfd5bf3eb2af455f19ad7e0151bd3ab6"></a><!-- doxytag: member="MoveUp" ref="ad2ec6c8cb486505c0c47948a403d8131acfd5bf3eb2af455f19ad7e0151bd3ab6" args="" -->MoveUp</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a512c3c9a9173dea623ac266bbfaeb5de"></a><!-- doxytag: member="MoveDown" ref="ad2ec6c8cb486505c0c47948a403d8131a512c3c9a9173dea623ac266bbfaeb5de" args="" -->MoveDown</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131ad9f24b23edc19a0772bd6b155c25dcef"></a><!-- doxytag: member="MoveForward" ref="ad2ec6c8cb486505c0c47948a403d8131ad9f24b23edc19a0772bd6b155c25dcef" args="" -->MoveForward</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a6bd5d14a3b25e759db6db76f8adfb354"></a><!-- doxytag: member="MoveBackward" ref="ad2ec6c8cb486505c0c47948a403d8131a6bd5d14a3b25e759db6db76f8adfb354" args="" -->MoveBackward</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a445863dcf74d278ab46784b67fff4c61"></a><!-- doxytag: member="FocusLeft" ref="ad2ec6c8cb486505c0c47948a403d8131a445863dcf74d278ab46784b67fff4c61" args="" -->FocusLeft</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131adeb839ec8ed8c00ae0eb6724b1923797"></a><!-- doxytag: member="FocusRight" ref="ad2ec6c8cb486505c0c47948a403d8131adeb839ec8ed8c00ae0eb6724b1923797" args="" -->FocusRight</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131aae15eacc33e0f387bfddab83e07a65f5"></a><!-- doxytag: member="FocusForward" ref="ad2ec6c8cb486505c0c47948a403d8131aae15eacc33e0f387bfddab83e07a65f5" args="" -->FocusForward</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131afa23ec5279109fce019830321ded726a"></a><!-- doxytag: member="FocusBackward" ref="ad2ec6c8cb486505c0c47948a403d8131afa23ec5279109fce019830321ded726a" args="" -->FocusBackward</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a35d9be79c30440763bc6001dabe4c228"></a><!-- doxytag: member="FocusUp" ref="ad2ec6c8cb486505c0c47948a403d8131a35d9be79c30440763bc6001dabe4c228" args="" -->FocusUp</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="ad2ec6c8cb486505c0c47948a403d8131a67bffd488dbd06f226da0a35b5e74411"></a><!-- doxytag: member="FocusDown" ref="ad2ec6c8cb486505c0c47948a403d8131a67bffd488dbd06f226da0a35b5e74411" args="" -->FocusDown</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4fbc37ea85b06fcdf852990c3b496203"></a><!-- doxytag: member="oengine::Camera::NavigationMode" ref="a4fbc37ea85b06fcdf852990c3b496203" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203">oengine::Camera::NavigationMode</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a4fbc37ea85b06fcdf852990c3b496203af3c1ec8a0a60a6bcbc5ce7a5d56448dc"></a><!-- doxytag: member="NavDisabled" ref="a4fbc37ea85b06fcdf852990c3b496203af3c1ec8a0a60a6bcbc5ce7a5d56448dc" args="" -->NavDisabled</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a4fbc37ea85b06fcdf852990c3b496203a1e00a3d368799a3806e371a5c82ebc8f"></a><!-- doxytag: member="NavFollow" ref="a4fbc37ea85b06fcdf852990c3b496203a1e00a3d368799a3806e371a5c82ebc8f" args="" -->NavFollow</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a4fbc37ea85b06fcdf852990c3b496203a67cda24c42407fc89d1c841516ecb77b"></a><!-- doxytag: member="NavFreeFly" ref="a4fbc37ea85b06fcdf852990c3b496203a67cda24c42407fc89d1c841516ecb77b" args="" -->NavFreeFly</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa86bd56808c0423602eb0aceb59be9e0"></a><!-- doxytag: member="oengine::Camera::Camera" ref="aa86bd56808c0423602eb0aceb59be9e0" args="(SceneManager *scene, RenderTarget *target)" -->
+<a class="anchor" id="a01f94c3543f56ede7af49dc778f19331"></a><!-- doxytag: member="oengine::Camera::Camera" ref="a01f94c3543f56ede7af49dc778f19331" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Camera::Camera </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classoengine_1_1_scene_manager.html">SceneManager</a> *&nbsp;</td>
-          <td class="paramname"> <em>scene</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *&nbsp;</td>
-          <td class="paramname"> <em>target</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
@@ -85,6 +182,24 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="aa61016b286b9d6c4336c6efa5432c407"></a><!-- doxytag: member="oengine::Camera::focusOn" ref="aa61016b286b9d6c4336c6efa5432c407" args="(SceneNode *node)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Camera::focusOn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *&nbsp;</td>
+          <td class="paramname"> <em>node</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a3f508ecc9e7bdfebe69ef87df8a4528b"></a><!-- doxytag: member="oengine::Camera::getAutoAspect" ref="a3f508ecc9e7bdfebe69ef87df8a4528b" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -102,12 +217,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9cac168ee30388fde7a93f915732a278"></a><!-- doxytag: member="oengine::Camera::getProjectionTransform" ref="a9cac168ee30388fde7a93f915732a278" args="()" -->
+<a class="anchor" id="a6338ea42c926f03e1b46c1e6a1206e08"></a><!-- doxytag: member="oengine::Camera::getNavigationMode" ref="a6338ea42c926f03e1b46c1e6a1206e08" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp; oengine::Camera::getProjectionTransform </td>
+          <td class="memname"><a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203">NavigationMode</a> oengine::Camera::getNavigationMode </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -119,12 +234,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4de2f4b634d3f40a9efedaecca61a31b"></a><!-- doxytag: member="oengine::Camera::getRenderTarget" ref="a4de2f4b634d3f40a9efedaecca61a31b" args="()" -->
+<a class="anchor" id="a99d32262eb26afe07254d938b6c377e7"></a><!-- doxytag: member="oengine::Camera::getOrientation" ref="a99d32262eb26afe07254d938b6c377e7" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> * oengine::Camera::getRenderTarget </td>
+          <td class="memname">const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a>&amp; oengine::Camera::getOrientation </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -136,12 +251,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a79ee72d801961ef13a11b43bf2bf960d"></a><!-- doxytag: member="oengine::Camera::getScene" ref="a79ee72d801961ef13a11b43bf2bf960d" args="()" -->
+<a class="anchor" id="a6558c15218a8bae5a8a7fa558a9f6b48"></a><!-- doxytag: member="oengine::Camera::getPosition" ref="a6558c15218a8bae5a8a7fa558a9f6b48" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classoengine_1_1_scene_manager.html">SceneManager</a> * oengine::Camera::getScene </td>
+          <td class="memname">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a>&amp; oengine::Camera::getPosition </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -153,12 +268,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a897c4b2622e9524402c44fa4fb44786e"></a><!-- doxytag: member="oengine::Camera::getViewTransform" ref="a897c4b2622e9524402c44fa4fb44786e" args="()" -->
+<a class="anchor" id="a47d79cdd605990fd6445ab7a8f926b1f"></a><!-- doxytag: member="oengine::Camera::getProjectionOffset" ref="a47d79cdd605990fd6445ab7a8f926b1f" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp; oengine::Camera::getViewTransform </td>
+          <td class="memname">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a>&amp; oengine::Camera::getProjectionOffset </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -170,14 +285,32 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abcf6c6a807fb908a75c007258251dfb5"></a><!-- doxytag: member="oengine::Camera::render" ref="abcf6c6a807fb908a75c007258251dfb5" args="()" -->
+<a class="anchor" id="a7a6afb6d193489a0abfef318d83f0565"></a><!-- doxytag: member="oengine::Camera::getTargetNode" ref="a7a6afb6d193489a0abfef318d83f0565" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Camera::render </td>
+          <td class="memname"><a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a>* oengine::Camera::getTargetNode </td>
           <td>(</td>
           <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad1a8e7d765d6f62bb27e90ffb2736d2e"></a><!-- doxytag: member="oengine::Camera::handleEvent" ref="ad1a8e7d765d6f62bb27e90ffb2736d2e" args="(const Event &amp;evt)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Camera::handleEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_event.html">Event</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>evt</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -205,14 +338,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aebf19e010084adb9773eeb4208b9de1f"></a><!-- doxytag: member="oengine::Camera::setProjectionTransform" ref="aebf19e010084adb9773eeb4208b9de1f" args="(const AffineTransform3 &amp;value)" -->
+<a class="anchor" id="a446a0b0ecff0cc8318b9d04e075dfa05"></a><!-- doxytag: member="oengine::Camera::setNavigationMode" ref="a446a0b0ecff0cc8318b9d04e075dfa05" args="(NavigationMode value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void oengine::Camera::setProjectionTransform </td>
+          <td class="memname">void oengine::Camera::setNavigationMode </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;&nbsp;</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_camera.html#a4fbc37ea85b06fcdf852990c3b496203">NavigationMode</a>&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Navigation management. </p>
+
+</div>
+</div>
+<a class="anchor" id="adb1606212440e12e8560ef561522a688"></a><!-- doxytag: member="oengine::Camera::setOrientation" ref="adb1606212440e12e8560ef561522a688" args="(const Quaternion &amp;value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oengine::Camera::setOrientation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>value</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
@@ -223,83 +376,91 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a835c0d6632d4fe10b0428ce565319c9e"></a><!-- doxytag: member="oengine::Camera::setViewTransform" ref="a835c0d6632d4fe10b0428ce565319c9e" args="(const AffineTransform3 &amp;value)" -->
+<a class="anchor" id="a51dea23c39d4b12e81fc0016b08093bc"></a><!-- doxytag: member="oengine::Camera::setPosition" ref="a51dea23c39d4b12e81fc0016b08093bc" args="(const Vector3f &amp;value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void oengine::Camera::setViewTransform </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>value</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a15d755522116e896c221e38cbd613662"></a><!-- doxytag: member="oengine::Camera::updateProjection" ref="a15d755522116e896c221e38cbd613662" args="(float fov, float aspect, float nearZ, float farZ)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Camera::updateProjection </td>
-          <td>(</td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>fov</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>aspect</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>nearZ</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&nbsp;</td>
-          <td class="paramname"> <em>farZ</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a6fe3b137658f0619279e583d723e67b5"></a><!-- doxytag: member="oengine::Camera::updateView" ref="a6fe3b137658f0619279e583d723e67b5" args="(const Vector3f &amp;position, const Quaternion &amp;orientation)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Camera::updateView </td>
+          <td class="memname">void oengine::Camera::setPosition </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>position</em>, </td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a23ac079775a8f7ded220f4d53cf877e1"></a><!-- doxytag: member="oengine::Camera::setProjectionOffset" ref="a23ac079775a8f7ded220f4d53cf877e1" args="(const Vector3f &amp;value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1quaternion.html">Quaternion</a> &amp;&nbsp;</td>
-          <td class="paramname"> <em>orientation</em></td><td>&nbsp;</td>
+          <td class="memname">void oengine::Camera::setProjectionOffset </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1math_1_1vector.html">Vector3f</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab2ede6c68fdd501c9a5e4f3984692a02"></a><!-- doxytag: member="oengine::Camera::setTargetNode" ref="ab2ede6c68fdd501c9a5e4f3984692a02" args="(SceneNode *n)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
         <tr>
+          <td class="memname">void oengine::Camera::setTargetNode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_scene_node.html">SceneNode</a> *&nbsp;</td>
+          <td class="paramname"> <em>n</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set the target node that will be used when in NavFollow navigation mode. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae7a0178680936f898b19ffacbafc77e0"></a><!-- doxytag: member="oengine::Camera::update" ref="ae7a0178680936f898b19ffacbafc77e0" args="(const UpdateContext &amp;context)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Camera::update </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>context</em></td>
+          <td>&nbsp;)&nbsp;</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7f850eea9e802c1d905f250c35820bf5"></a><!-- doxytag: member="oengine::Camera::updateObserver" ref="a7f850eea9e802c1d905f250c35820bf5" args="(Observer *obs)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Camera::updateObserver </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_observer.html">Observer</a> *&nbsp;</td>
+          <td class="paramname"> <em>obs</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
         </tr>
       </table>
 </div>

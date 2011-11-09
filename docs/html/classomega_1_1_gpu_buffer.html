@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -64,8 +65,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#abe08babb91a10b962905281732a052af">copyTo</a> (<a class="el" href="classomega_1_1_gpu_buffer.html">GpuBuffer</a> *destination, int srcOffset, int dstOffset, int length)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a26e23032c1e5d199375e4992a7727e1a">isCLNative</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets wether this buffer is a CL native buffer.  <a href="#a26e23032c1e5d199375e4992a7727e1a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a79e53626c9225526e2a4e2ba4ead9697">setData</a> (void *data)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the gpu buffer data.  <a href="#a79e53626c9225526e2a4e2ba4ead9697"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a3b8b3310f08fee7b02db165ce5c599b7">write</a> (void *data, int offset, int length)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the gpu buffer data.  <a href="#a3b8b3310f08fee7b02db165ce5c599b7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a86def74611c21fdc4e0c81d855811ed3">read</a> (void *data, int offset, int length)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">GLuint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a8790a20e65533938d9b0d1fb025f0524">getGLBuffer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">cl_mem&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a667ed8d60457afd12007380ddf0a224b">getCLBuffer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_gpu_buffer.html#a6e715c78509141e6ef54d4f053c3416c">getSize</a> ()</td></tr>
@@ -351,23 +353,36 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a79e53626c9225526e2a4e2ba4ead9697"></a><!-- doxytag: member="omega::GpuBuffer::setData" ref="a79e53626c9225526e2a4e2ba4ead9697" args="(void *data)" -->
+<a class="anchor" id="a86def74611c21fdc4e0c81d855811ed3"></a><!-- doxytag: member="omega::GpuBuffer::read" ref="a86def74611c21fdc4e0c81d855811ed3" args="(void *data, int offset, int length)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void GpuBuffer::setData </td>
+          <td class="memname">void GpuBuffer::read </td>
           <td>(</td>
           <td class="paramtype">void *&nbsp;</td>
-          <td class="paramname"> <em>data</em></td>
-          <td>&nbsp;)&nbsp;</td>
+          <td class="paramname"> <em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-
-<p>Sets the gpu buffer data. </p>
 
 </div>
 </div>
@@ -405,6 +420,41 @@ Protected Attributes</h2></td></tr>
 <p>Implements <a class="el" href="classomega_1_1_gpu_data.html#a567283280c217ca6b84701e8f3067727">omega::GpuData</a>.</p>
 
 <p>Reimplemented in <a class="el" href="classomega_1_1_vertex_buffer.html#ab21005b2cd65d609c70b59a2d7d397c6">omega::VertexBuffer</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3b8b3310f08fee7b02db165ce5c599b7"></a><!-- doxytag: member="omega::GpuBuffer::write" ref="a3b8b3310f08fee7b02db165ce5c599b7" args="(void *data, int offset, int length)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GpuBuffer::write </td>
+          <td>(</td>
+          <td class="paramtype">void *&nbsp;</td>
+          <td class="paramname"> <em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>length</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the gpu buffer data. </p>
 
 </div>
 </div>

@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -62,7 +63,12 @@ Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a412b9e10e109f7ed52640e40b8d4bbe1">setupDrawContext</a> (<a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> *context, const uint128_t &amp;spin)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a88150fc9def3c4b1246ccf6fdb5f334f">frameDraw</a> (const uint128_t &amp;spin)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a6fef1867b333b814afa8fd5be65f8dff">frameViewFinish</a> (const uint128_t &amp;spin)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a0d7e43c89d567846ddbf392e765f95ad">frameViewStart</a> (const uint128_t &amp;spin)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#aa5b0595e5425cccd45cbf86ae9c7bc60">configInit</a> (const uint128_t &amp;initID)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_application_client.html">omega::ApplicationClient</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#af45f03308c605d63ac150fec97538b3d">getClient</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a21ba547a7fa797b33a11ea6d3065269f">getLayers</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#a286bb8c49575cb5090d72f36b1e80ca6">isDrawStatisticsEnabled</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_channel_impl.html#af18eb208bc2bfe4026a566711c4d731d">isDrawFpsEnabled</a> ()</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p><b>For internal use only.</b></p>
@@ -157,6 +163,41 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0d7e43c89d567846ddbf392e765f95ad"></a><!-- doxytag: member="omega::ChannelImpl::frameViewStart" ref="a0d7e43c89d567846ddbf392e765f95ad" args="(const uint128_t &amp;spin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void omega::ChannelImpl::frameViewStart </td>
+          <td>(</td>
+          <td class="paramtype">const uint128_t &amp;&nbsp;</td>
+          <td class="paramname"> <em>spin</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af45f03308c605d63ac150fec97538b3d"></a><!-- doxytag: member="omega::ChannelImpl::getClient" ref="af45f03308c605d63ac150fec97538b3d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_application_client.html">omega::ApplicationClient</a> * ChannelImpl::getClient </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a4481e44deabe97e60d6ddf4b43d2e5a8"></a><!-- doxytag: member="omega::ChannelImpl::getLastDrawContext" ref="a4481e44deabe97e60d6ddf4b43d2e5a8" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -167,6 +208,23 @@ Protected Member Functions</h2></td></tr>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a21ba547a7fa797b33a11ea6d3065269f"></a><!-- doxytag: member="omega::ChannelImpl::getLayers" ref="a21ba547a7fa797b33a11ea6d3065269f" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int ChannelImpl::getLayers </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
         </tr>
       </table>
 </div>
@@ -197,6 +255,40 @@ Protected Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void ChannelImpl::initialize </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af18eb208bc2bfe4026a566711c4d731d"></a><!-- doxytag: member="omega::ChannelImpl::isDrawFpsEnabled" ref="af18eb208bc2bfe4026a566711c4d731d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ChannelImpl::isDrawFpsEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a286bb8c49575cb5090d72f36b1e80ca6"></a><!-- doxytag: member="omega::ChannelImpl::isDrawStatisticsEnabled" ref="a286bb8c49575cb5090d72f36b1e80ca6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ChannelImpl::isDrawStatisticsEnabled </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>

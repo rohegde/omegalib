@@ -1,14 +1,17 @@
 <map id="G" name="G">
-<area shape="rect" id="node5" href="$classoengine_1_1_pointer.html" title="oengine::Pointer" alt="" coords="453,32,568,61"/>
-<area shape="rect" id="node7" href="$classoengine_1_1_scene_object.html" title="oengine::SceneObject" alt="" coords="436,85,585,115"/>
-<area shape="rect" id="node15" href="$classoengine_1_1ui_1_1_widget.html" title="oengine::ui::Widget" alt="" coords="444,245,577,275"/>
+<area shape="rect" id="node5" href="$classoengine_1_1_console.html" title="oengine::Console" alt="" coords="449,5,572,35"/>
+<area shape="rect" id="node7" href="$classoengine_1_1_pointer.html" title="oengine::Pointer" alt="" coords="453,59,568,88"/>
+<area shape="rect" id="node9" href="$classoengine_1_1_scene_object.html" title="oengine::SceneObject" alt="" coords="436,112,585,141"/>
+<area shape="rect" id="node22" href="$classoengine_1_1ui_1_1_widget.html" title="oengine::ui::Widget" alt="" coords="444,352,577,381"/>
 <area shape="rect" id="node2" href="$classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="5,85,155,115"/>
-<area shape="rect" id="node9" href="$classoengine_1_1_bounding_sphere.html" title="oengine::BoundingSphere" alt="" coords="640,5,811,35"/>
-<area shape="rect" id="node11" href="$classoengine_1_1_box.html" title="oengine::Box" alt="" coords="676,59,775,88"/>
-<area shape="rect" id="node13" href="$classoengine_1_1_mesh.html" title="oengine::Mesh" alt="" coords="672,112,779,141"/>
-<area shape="rect" id="node17" href="$classoengine_1_1ui_1_1_abstract_button.html" title="oengine::ui::AbstractButton" alt="" coords="636,165,815,195"/>
-<area shape="rect" id="node19" href="$classoengine_1_1ui_1_1_container.html" title="oengine::ui::Container" alt="" coords="652,219,799,248"/>
-<area shape="rect" id="node21" href="$classoengine_1_1ui_1_1_image.html" title="oengine::ui::Image" alt="" coords="661,272,789,301"/>
-<area shape="rect" id="node23" href="$classoengine_1_1ui_1_1_label.html" title="oengine::ui::Label" alt="" coords="664,325,787,355"/>
-<area shape="rect" id="node25" href="$classoengine_1_1ui_1_1_slider.html" title="oengine::ui::Slider" alt="" coords="663,379,788,408"/>
+<area shape="rect" id="node11" href="$classoengine_1_1_bounding_sphere.html" title="oengine::BoundingSphere" alt="" coords="640,5,811,35"/>
+<area shape="rect" id="node13" href="$classoengine_1_1_box.html" title="oengine::Box" alt="" coords="676,59,775,88"/>
+<area shape="rect" id="node15" href="$classoengine_1_1_mesh.html" title="oengine::Mesh" alt="" coords="672,112,779,141"/>
+<area shape="rect" id="node18" href="$classoengine_1_1_reference_box.html" title="oengine::ReferenceBox" alt="" coords="648,165,803,195"/>
+<area shape="rect" id="node20" href="$classoosg_1_1_osg_scene_object.html" title="oosg::OsgSceneObject" alt="" coords="647,219,804,248"/>
+<area shape="rect" id="node24" href="$classoengine_1_1ui_1_1_abstract_button.html" title="oengine::ui::AbstractButton" alt="" coords="636,272,815,301"/>
+<area shape="rect" id="node26" href="$classoengine_1_1ui_1_1_container.html" title="oengine::ui::Container" alt="" coords="652,325,799,355"/>
+<area shape="rect" id="node28" href="$classoengine_1_1ui_1_1_image.html" title="oengine::ui::Image" alt="" coords="661,379,789,408"/>
+<area shape="rect" id="node30" href="$classoengine_1_1ui_1_1_label.html" title="oengine::ui::Label" alt="" coords="664,432,787,461"/>
+<area shape="rect" id="node32" href="$classoengine_1_1ui_1_1_slider.html" title="oengine::ui::Slider" alt="" coords="663,485,788,515"/>
 </map>

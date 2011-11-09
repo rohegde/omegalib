@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -52,17 +53,25 @@ Inheritance diagram for omega::DirectXInputService:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5">ControllerType</a> { <a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5ac65b1b0c2df2411358a81f29e384f838">Xbox360</a>, 
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5">ControllerType</a> { <br/>
+&nbsp;&nbsp;<a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5ac65b1b0c2df2411358a81f29e384f838">Xbox360</a>, 
 <a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5ae46b07252a5700d13a927cd560c397b7">PS3</a>, 
 <a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5a35a8f6f6856869db23296a95c49c809f">Wiimote</a>, 
-<a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5aa011062dd9edc238938537b02c86c3a1">Wii_Nunchuck</a>
+<a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5aa011062dd9edc238938537b02c86c3a1">Wii_Nunchuck</a>, 
+<br/>
+&nbsp;&nbsp;<a class="el" href="classomega_1_1_direct_x_input_service.html#a33657075e27230b070c1c388b37d50a5a51196ff868bb772a27ca43bfe85e06f0">Wii_MotionPlus</a>
+<br/>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#ae11db4f69e85a4e3e0dbe5d0d402ab64">setup</a> (<a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;settings)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#ab2daf8601b2bb4acf921682e264854eb">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#afb606f1e643772fe8f7967706fbd0db5">poll</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual OMEGA_API void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#a958c16360ed379262b1cbdd1c285e2dc">dispose</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#a56ac96254f3dd64f6300ba129466c896">checkForNewControllers</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#ac39944b4fdcc2b3c60a4cad41e775733">setUpdateInterval</a> (float value)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets the data update interval, in seconds.  <a href="#ac39944b4fdcc2b3c60a4cad41e775733"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#a40450676dacaba905b1b65a26024a2b0">getUpdateInterval</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_direct_x_input_service.html">DirectXInputService</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_direct_x_input_service.html#a1bd01a0c88d9058270c5558d6ad2bfc3">New</a> ()</td></tr>
@@ -86,6 +95,8 @@ Static Public Member Functions</h2></td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a33657075e27230b070c1c388b37d50a5a35a8f6f6856869db23296a95c49c809f"></a><!-- doxytag: member="Wiimote" ref="a33657075e27230b070c1c388b37d50a5a35a8f6f6856869db23296a95c49c809f" args="" -->Wiimote</em>&nbsp;</td><td>
 </td></tr>
 <tr><td valign="top"><em><a class="anchor" id="a33657075e27230b070c1c388b37d50a5aa011062dd9edc238938537b02c86c3a1"></a><!-- doxytag: member="Wii_Nunchuck" ref="a33657075e27230b070c1c388b37d50a5aa011062dd9edc238938537b02c86c3a1" args="" -->Wii_Nunchuck</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a33657075e27230b070c1c388b37d50a5a51196ff868bb772a27ca43bfe85e06f0"></a><!-- doxytag: member="Wii_MotionPlus" ref="a33657075e27230b070c1c388b37d50a5a51196ff868bb772a27ca43bfe85e06f0" args="" -->Wii_MotionPlus</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -127,6 +138,24 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classomega_1_1_service.html#a2119d75beac303c22c19b6f1695622e8">omega::Service</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a40450676dacaba905b1b65a26024a2b0"></a><!-- doxytag: member="omega::DirectXInputService::getUpdateInterval" ref="a40450676dacaba905b1b65a26024a2b0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float omega::DirectXInputService::getUpdateInterval </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classomega_1_1_direct_x_input_service.html#ac39944b4fdcc2b3c60a4cad41e775733" title="Sets the data update interval, in seconds.">setUpdateInterval</a> </dd></dl>
 
 </div>
 </div>
@@ -183,6 +212,47 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classomega_1_1_service.html#a5b2b5479d15c0cd5f1ac54cad9288f48">omega::Service</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae11db4f69e85a4e3e0dbe5d0d402ab64"></a><!-- doxytag: member="omega::DirectXInputService::setup" ref="ae11db4f69e85a4e3e0dbe5d0d402ab64" args="(Setting &amp;settings)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DirectXInputService::setup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceomega.html#a420d23d2b86345b4ba2207621991e6e0">Setting</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>settings</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_service.html#a021a8337e054d36f118d59e36ff3d38c">omega::Service</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac39944b4fdcc2b3c60a4cad41e775733"></a><!-- doxytag: member="omega::DirectXInputService::setUpdateInterval" ref="ac39944b4fdcc2b3c60a4cad41e775733" args="(float value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DirectXInputService::setUpdateInterval </td>
+          <td>(</td>
+          <td class="paramtype">float&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the data update interval, in seconds. </p>
+<p>This is the interval at which this service will generate events If set to zero, the service will generate events as fast as possible. </p>
 
 </div>
 </div>

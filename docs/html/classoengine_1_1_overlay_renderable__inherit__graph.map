@@ -1,11 +1,12 @@
 <map id="G" name="G">
-<area shape="rect" id="node7" href="$classoengine_1_1_pointer_renderable.html" title="oengine::PointerRenderable" alt="" coords="633,59,815,88"/>
-<area shape="rect" id="node9" href="$classoengine_1_1ui_1_1_widget_renderable.html" title="oengine::ui::WidgetRenderable" alt="" coords="625,112,823,141"/>
-<area shape="rect" id="node2" href="$classoengine_1_1_renderable.html" title="oengine::Renderable" alt="" coords="204,85,343,115"/>
-<area shape="rect" id="node4" href="$classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="5,85,155,115"/>
-<area shape="rect" id="node11" href="$classoengine_1_1ui_1_1_container_renderable.html" title="oengine::ui::ContainerRenderable" alt="" coords="884,5,1097,35"/>
-<area shape="rect" id="node13" href="$classoengine_1_1ui_1_1_default_button_renderable.html" title="oengine::ui::DefaultButtonRenderable" alt="" coords="873,59,1108,88"/>
-<area shape="rect" id="node15" href="$classoengine_1_1ui_1_1_default_slider_renderable.html" title="oengine::ui::DefaultSliderRenderable" alt="" coords="876,112,1105,141"/>
-<area shape="rect" id="node17" href="$classoengine_1_1ui_1_1_image_renderable.html" title="oengine::ui::ImageRenderable" alt="" coords="895,165,1087,195"/>
-<area shape="rect" id="node19" href="$classoengine_1_1ui_1_1_label_renderable.html" title="oengine::ui::LabelRenderable" alt="" coords="896,219,1085,248"/>
+<area shape="rect" id="node7" href="$classoengine_1_1_console_renderable.html" title="oengine::ConsoleRenderable" alt="" coords="631,5,817,35"/>
+<area shape="rect" id="node9" href="$classoengine_1_1_pointer_renderable.html" title="oengine::PointerRenderable" alt="" coords="633,59,815,88"/>
+<area shape="rect" id="node11" href="$classoengine_1_1ui_1_1_widget_renderable.html" title="oengine::ui::WidgetRenderable" alt="" coords="625,112,823,141"/>
+<area shape="rect" id="node2" href="$classoengine_1_1_renderable.html" title="oengine::Renderable" alt="" coords="204,59,343,88"/>
+<area shape="rect" id="node4" href="$classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="5,59,155,88"/>
+<area shape="rect" id="node13" href="$classoengine_1_1ui_1_1_container_renderable.html" title="oengine::ui::ContainerRenderable" alt="" coords="884,5,1097,35"/>
+<area shape="rect" id="node15" href="$classoengine_1_1ui_1_1_default_button_renderable.html" title="oengine::ui::DefaultButtonRenderable" alt="" coords="873,59,1108,88"/>
+<area shape="rect" id="node17" href="$classoengine_1_1ui_1_1_default_slider_renderable.html" title="oengine::ui::DefaultSliderRenderable" alt="" coords="876,112,1105,141"/>
+<area shape="rect" id="node19" href="$classoengine_1_1ui_1_1_image_renderable.html" title="oengine::ui::ImageRenderable" alt="" coords="895,165,1087,195"/>
+<area shape="rect" id="node21" href="$classoengine_1_1ui_1_1_label_renderable.html" title="oengine::ui::LabelRenderable" alt="" coords="896,219,1085,248"/>
 </map>

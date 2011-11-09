@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -56,6 +57,7 @@ This is the complete list of members for <a class="el" href="classoengine_1_1_sc
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#abb87f0ae54132573e7b786c8415cf738">getDerivedOrientation</a>(void) const </td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a23a511816193475645b32d819705a3a9">getDerivedPosition</a>(void) const </td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#ad519b253d070fb5c8ab8ff33585fa251">getDerivedScale</a>(void) const </td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a14a497c5003f2227f615011a75465dc5">getEffect</a>()</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a46620526683ba6fd76a3669bdf46ab9f">getFullTransform</a>(void) const </td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a4d08daa0534eb9163fe737762a03f779">getInheritOrientation</a>(void) const </td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a6c80249647c02b895455e60124f197aa">getInheritScale</a>(void) const </td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
@@ -113,11 +115,11 @@ This is the complete list of members for <a class="el" href="classoengine_1_1_sc
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#af5c1c904284aa895e1631ac3f9a226c7">rotate</a>(const Quaternion &amp;q, TransformSpace relativeTo=TransformLocal)</td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a76397bf505156bfa7f0f6daf072446b4">scale</a>(const Vector3f &amp;scale)</td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a516253fce2a299665b26d664a3dd7735">scale</a>(float x, float y, float z)</td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a284464b0561a6f2915f04b0245b987f0">SceneManager</a> class</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [friend]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a57f8231e903bd55e04c3db080307b7d9">SceneNode</a>(EngineServer *server)</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#ad95d8504af2855ff4eba3707b03798e8">SceneNode</a>(EngineServer *server, const String &amp;name)</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a64a99024abcdab6717c95efdd5a7d3ec">setBoundingBoxColor</a>(const Color &amp;color)</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a012e1b25ee3ef0fa1bf28859cddaef3f">setBoundingBoxVisible</a>(bool value)</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a8880f8229344ccbc5bbfd58d00151bb9">setEffect</a>(BaseEffect *value)</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a4a9ea1aa33df4b47b0e88e37ab95c3f9">setInheritOrientation</a>(bool inherit)</td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_node.html#a08ab23ea9bb1b71ba28f18e0fef1569a">setInheritScale</a>(bool inherit)</td><td><a class="el" href="classoengine_1_1_node.html">oengine::Node</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classoengine_1_1_scene_node.html#a7d40c3eed18aee40f290ef00f0154e19">setListener</a>(SceneNodeListener *listener)</td><td><a class="el" href="classoengine_1_1_scene_node.html">oengine::SceneNode</a></td><td></td></tr>

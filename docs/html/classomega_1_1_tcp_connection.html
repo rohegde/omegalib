@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -44,7 +45,7 @@ Inheritance diagram for omega::TcpConnection:</div>
 <div class="dyncontent">
 <div class="center"><img src="classomega_1_1_tcp_connection__inherit__graph.png" border="0" usemap="#omega_1_1_tcp_connection_inherit__map" alt="Inheritance graph"/></div>
 <map name="omega_1_1_tcp_connection_inherit__map" id="omega_1_1_tcp_connection_inherit__map">
-<area shape="rect" id="node5" href="classomega_1_1_sage_pointer_connection.html" title="omega::SagePointerConnection" alt="" coords="5,160,211,189"/><area shape="rect" id="node2" href="classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="33,5,183,35"/></map>
+<area shape="rect" id="node5" href="classomega_1_1_sage_pointer_connection.html" title="omega::SagePointerConnection" alt="" coords="5,160,211,189"/><area shape="rect" id="node7" href="classomega_1_1_tablet_connection.html" title="omega::TabletConnection" alt="" coords="235,160,403,189"/><area shape="rect" id="node2" href="classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="139,5,288,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_1_1_tcp_connection-members.html">List of all members.</a></p>
@@ -62,6 +63,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tcp_connection.html#aec0ab17a836c854ce0fb9b36581bfed4">write</a> (const <a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a> &amp;data)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Data IO.  <a href="#aec0ab17a836c854ce0fb9b36581bfed4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#a39676bdac3c610b014bda97c88a94083">String</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tcp_connection.html#acf4be99c4bb784dd7a24dc2c2da1a5ed">readLine</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_tcp_connection.html#af24787dc643cdbfbc0101381c75491f3">readString</a> (char *buffer, size_t size, char delimiter= '\0')</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Synchronously read character data until the specified delimiter is found or the buffer fills up.  <a href="#af24787dc643cdbfbc0101381c75491f3"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -146,7 +149,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_sage_pointer_connection.html#ab6deb0bff83f0116ca1e2828332d9c89">omega::SagePointerConnection</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_sage_pointer_connection.html#ab6deb0bff83f0116ca1e2828332d9c89">omega::SagePointerConnection</a>, and <a class="el" href="classomega_1_1_tablet_connection.html#a5f836ccb330ac1153c12fd382d23e177">omega::TabletConnection</a>.</p>
 
 </div>
 </div>
@@ -184,7 +187,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_sage_pointer_connection.html#ae8135cbe9159d543383548a3de9015d6">omega::SagePointerConnection</a>.</p>
+<p>Reimplemented in <a class="el" href="classomega_1_1_sage_pointer_connection.html#ae8135cbe9159d543383548a3de9015d6">omega::SagePointerConnection</a>, and <a class="el" href="classomega_1_1_tablet_connection.html#ab4f2b59205c4164d001a9854208e16de">omega::TabletConnection</a>.</p>
 
 </div>
 </div>
@@ -280,6 +283,41 @@ Protected Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af24787dc643cdbfbc0101381c75491f3"></a><!-- doxytag: member="omega::TcpConnection::readString" ref="af24787dc643cdbfbc0101381c75491f3" args="(char *buffer, size_t size, char delimiter= '\0')" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t TcpConnection::readString </td>
+          <td>(</td>
+          <td class="paramtype">char *&nbsp;</td>
+          <td class="paramname"> <em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&nbsp;</td>
+          <td class="paramname"> <em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&nbsp;</td>
+          <td class="paramname"> <em>delimiter</em> = <code>'\0'</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Synchronously read character data until the specified delimiter is found or the buffer fills up. </p>
 
 </div>
 </div>

@@ -10,6 +10,8 @@
 <area shape="rect" id="node21" href="$classomega_1_1_opti_track_service.html" title="omega::OptiTrackService" alt="" coords="392,432,557,461"/>
 <area shape="rect" id="node23" href="$classomega_1_1_p_q_service.html" title="omega::PQService" alt="" coords="409,485,540,515"/>
 <area shape="rect" id="node25" href="$classomega_1_1_sage_pointer_service.html" title="Implements a service able to receive pointer updates from the SAGE pointer application." alt="" coords="384,539,565,568"/>
-<area shape="rect" id="node27" href="$classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,592,548,621"/>
-<area shape="rect" id="node2" href="$classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,299,164,328"/>
+<area shape="rect" id="node27" href="$classomega_1_1_tablet_service.html" title="omega::TabletService" alt="" coords="401,592,548,621"/>
+<area shape="rect" id="node29" href="$classomega_1_1_think_gear_service.html" title="omega::ThinkGearService" alt="" coords="389,645,560,675"/>
+<area shape="rect" id="node31" href="$classomega_1_1_v_r_p_n_service.html" title="omega::VRPNService" alt="" coords="401,699,548,728"/>
+<area shape="rect" id="node2" href="$classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="7,352,164,381"/>
 </map>

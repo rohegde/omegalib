@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -33,64 +34,58 @@
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#friends">Friends</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <h1>oosg::OsgRenderPass Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="oosg::OsgRenderPass" --><!-- doxytag: inherits="RenderPass" --><div class="dynheader">
+<!-- doxytag: class="oosg::OsgRenderPass" --><!-- doxytag: inherits="oengine::RenderPass" --><div class="dynheader">
 Inheritance diagram for oosg::OsgRenderPass:</div>
 <div class="dyncontent">
 <div class="center"><img src="classoosg_1_1_osg_render_pass__inherit__graph.png" border="0" usemap="#oosg_1_1_osg_render_pass_inherit__map" alt="Inheritance graph"/></div>
 <map name="oosg_1_1_osg_render_pass_inherit__map" id="oosg_1_1_osg_render_pass_inherit__map">
-<area shape="rect" id="node2" href="class_render_pass.html" title="RenderPass" alt="" coords="35,5,128,35"/></map>
+<area shape="rect" id="node2" href="classoengine_1_1_render_pass.html" title="oengine::RenderPass" alt="" coords="8,83,155,112"/><area shape="rect" id="node4" href="classomega_1_1_omega_object.html" title="Base class for all omegalib high level objects." alt="" coords="7,5,156,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classoosg_1_1_osg_render_pass-members.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#ac328554e0ef2ef1896903a4ec2164f93">RenderFlags</a> { <a class="el" href="classoosg_1_1_osg_render_pass.html#ac328554e0ef2ef1896903a4ec2164f93a0f51888064389acf80f01e8c5ae84d6e">RenderOsg</a> =  RenderPass::RenderCustom &lt;&lt; 2
- }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#ac0fb406449483c235a46b31f3f74fbd8">OsgRenderPass</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#a7302be4ab896b54ba42210a9b3c5c08f">OsgRenderPass</a> (<a class="el" href="classoengine_1_1_engine_client.html">EngineClient</a> *client)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#a0c6f3e6f4690592850b2df8cb16f1a58">OsgRenderPass</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#a237961d7a3283dae043b0044217644bf">~OsgRenderPass</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#acf7b231457ba428b264150b75e9b2b3e">initialize</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#ab07767c261335e7d502e8a89b2fb36d0">render</a> (SceneManager *mng, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td colspan="2"><h2><a name="friends"></a>
-Friends</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#a9d760e33b92ef3a5dfae8990cda9de20">OsgRenderable</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#acf7b231457ba428b264150b75e9b2b3e">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#a67b134b7d843a65be117d132239f5de1">render</a> (<a class="el" href="classoengine_1_1_engine_client.html">EngineClient</a> *client, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classoengine_1_1_render_pass.html">RenderPass</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoosg_1_1_osg_render_pass.html#a3478d6a10648069e3c3d2cf19bc5ce2f">createInstance</a> (<a class="el" href="classoengine_1_1_engine_client.html">EngineClient</a> *client)</td></tr>
 </table>
-<hr/><h2>Member Enumeration Documentation</h2>
-<a class="anchor" id="ac328554e0ef2ef1896903a4ec2164f93"></a><!-- doxytag: member="oosg::OsgRenderPass::RenderFlags" ref="ac328554e0ef2ef1896903a4ec2164f93" args="" -->
+<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a7302be4ab896b54ba42210a9b3c5c08f"></a><!-- doxytag: member="oosg::OsgRenderPass::OsgRenderPass" ref="a7302be4ab896b54ba42210a9b3c5c08f" args="(EngineClient *client)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="classoosg_1_1_osg_render_pass.html#ac328554e0ef2ef1896903a4ec2164f93">oosg::OsgRenderPass::RenderFlags</a></td>
+          <td class="memname">oosg::OsgRenderPass::OsgRenderPass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_engine_client.html">EngineClient</a> *&nbsp;</td>
+          <td class="paramname"> <em>client</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="ac328554e0ef2ef1896903a4ec2164f93a0f51888064389acf80f01e8c5ae84d6e"></a><!-- doxytag: member="RenderOsg" ref="ac328554e0ef2ef1896903a4ec2164f93a0f51888064389acf80f01e8c5ae84d6e" args="" -->RenderOsg</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
 
 </div>
 </div>
-<hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ac0fb406449483c235a46b31f3f74fbd8"></a><!-- doxytag: member="oosg::OsgRenderPass::OsgRenderPass" ref="ac0fb406449483c235a46b31f3f74fbd8" args="()" -->
+<a class="anchor" id="a0c6f3e6f4690592850b2df8cb16f1a58"></a><!-- doxytag: member="oosg::OsgRenderPass::OsgRenderPass" ref="a0c6f3e6f4690592850b2df8cb16f1a58" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OsgRenderPass::OsgRenderPass </td>
+          <td class="memname">oosg::OsgRenderPass::OsgRenderPass </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -120,6 +115,24 @@ Friends</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a3478d6a10648069e3c3d2cf19bc5ce2f"></a><!-- doxytag: member="oosg::OsgRenderPass::createInstance" ref="a3478d6a10648069e3c3d2cf19bc5ce2f" args="(EngineClient *client)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classoengine_1_1_render_pass.html">RenderPass</a>* oosg::OsgRenderPass::createInstance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_engine_client.html">EngineClient</a> *&nbsp;</td>
+          <td class="paramname"> <em>client</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="acf7b231457ba428b264150b75e9b2b3e"></a><!-- doxytag: member="oosg::OsgRenderPass::initialize" ref="acf7b231457ba428b264150b75e9b2b3e" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -129,23 +142,25 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td></td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
+<p>Reimplemented from <a class="el" href="classoengine_1_1_render_pass.html#af87bf8c0f6bb8328ff93ea49e244c501">oengine::RenderPass</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="ab07767c261335e7d502e8a89b2fb36d0"></a><!-- doxytag: member="oosg::OsgRenderPass::render" ref="ab07767c261335e7d502e8a89b2fb36d0" args="(SceneManager *mng, const DrawContext &amp;context)" -->
+<a class="anchor" id="a67b134b7d843a65be117d132239f5de1"></a><!-- doxytag: member="oosg::OsgRenderPass::render" ref="a67b134b7d843a65be117d132239f5de1" args="(EngineClient *client, const DrawContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void OsgRenderPass::render </td>
           <td>(</td>
-          <td class="paramtype">SceneManager *&nbsp;</td>
-          <td class="paramname"> <em>mng</em>, </td>
+          <td class="paramtype"><a class="el" href="classoengine_1_1_engine_client.html">EngineClient</a> *&nbsp;</td>
+          <td class="paramname"> <em>client</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -162,19 +177,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-</div>
-</div>
-<hr/><h2>Friends And Related Function Documentation</h2>
-<a class="anchor" id="a9d760e33b92ef3a5dfae8990cda9de20"></a><!-- doxytag: member="oosg::OsgRenderPass::OsgRenderable" ref="a9d760e33b92ef3a5dfae8990cda9de20" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">friend class <a class="el" href="classoosg_1_1_osg_renderable.html">OsgRenderable</a><code> [friend]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
+<p>Implements <a class="el" href="classoengine_1_1_render_pass.html#a2071fb443be52b263442a8ca3037d998">oengine::RenderPass</a>.</p>
 
 </div>
 </div>

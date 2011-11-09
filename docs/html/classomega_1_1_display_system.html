@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -71,6 +72,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns the size of the display canvas.  <a href="#a9381fc4e6e08ac322b45f632ea2fb938"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1math_1_1_ray.html">Ray</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">getViewRay</a> (<a class="el" href="classomega_1_1math_1_1vector.html">Vector2i</a> position)=0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a pointer position in pixel coordinates.  <a href="#a24a713b287d7efb437318abb073dc931"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a2c48a0ad27086caef221eb1ffba15497">getBackgroundColor</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#afa1d3fbb7f8fbdd22b64747191265b20">setBackgroundColor</a> (const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;value)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_display_system.html#a0c88959c2f31470c906cd0c38cebd9d1">DisplaySystem</a> ()</td></tr>
@@ -151,6 +154,23 @@ Protected Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a136f3e7e82709151ddafdc6c6e09df01">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a374325095a49b62a3cf040a0934fb568">omega::GlutDisplaySystem</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2c48a0ad27086caef221eb1ffba15497"></a><!-- doxytag: member="omega::DisplaySystem::getBackgroundColor" ref="a2c48a0ad27086caef221eb1ffba15497" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classomega_1_1_color.html">Color</a>&amp; omega::DisplaySystem::getBackgroundColor </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -292,6 +312,24 @@ Protected Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Implemented in <a class="el" href="classomega_1_1_equalizer_display_system.html#a41e4103460f536d2f6dca8464f642824">omega::EqualizerDisplaySystem</a>, and <a class="el" href="classomega_1_1_glut_display_system.html#a64db551b35506991a95b349167e027e5">omega::GlutDisplaySystem</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afa1d3fbb7f8fbdd22b64747191265b20"></a><!-- doxytag: member="omega::DisplaySystem::setBackgroundColor" ref="afa1d3fbb7f8fbdd22b64747191265b20" args="(const Color &amp;value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::DisplaySystem::setBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_1_1_color.html">Color</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
