@@ -407,12 +407,19 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 		omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
 
 		String materialPath;
-		if(SceneManager::findMaterialFile(materialName, materialPath))
+		materialName = StringUtils::replaceAll(materialName, ".dds", ".mat");
+		if(SceneManager::findResource(materialName, materialPath))
 		{
 			// Open the material XML file.
 			TiXmlDocument doc(materialPath.c_str());
 			if(doc.LoadFile())
 			{
+				// Update the current path to the material path for texture loading
+				String filename;
+				String path;
+				StringUtils::splitFilename(materialPath, filename, path);
+				omega::DataManager::getInstance()->setCurrentPath(path);
+
 				String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
 				StringUtils::toLowerCase(type);
 				if(type == "soliddiffuse")
@@ -488,13 +495,12 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
             geode->addDrawable(geometry);
 
 			// Set geometry texture coords
-			geometry->setTexCoordArray(1, geometry->getTexCoordArray(0));
-			geometry->setTexCoordArray(2, geometry->getTexCoordArray(0));
-			geometry->setTexCoordArray(3, geometry->getTexCoordArray(0));
+			//geometry->setTexCoordArray(1, geometry->getTexCoordArray(0));
+			//geometry->setTexCoordArray(2, geometry->getTexCoordArray(0));
             
 			// Generate tangent space for geometry
 			osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-			tsg->generate(geometry, 3);
+			tsg->generate(geometry, 0);
 			osg::Vec4Array* a_tangent = tsg->getTangentArray();
 			geometry->setVertexAttribArray (6, a_tangent);
 			geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);

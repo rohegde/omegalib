@@ -1,3 +1,5 @@
+#include <osg/Image>
+#include <osg/Notify>
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
@@ -24,43 +26,31 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENE_MANAGER__
-#define __SCENE_MANAGER__
+#ifndef __READER_WRITER_TGA_H__
+#define __READER_WRITER_TGA_H__
 
-#include <osg/Texture2D>
+#include "oosgbase.h"
+#include <osgDB/fstream>
+#include <osg/Image>
+#include <osgDB/ReaderWriter>
+#include <osgDB/Registry>
 
-#define OMEGA_NO_GL_HEADERS
-#include <omega.h>
-#include <oengine.h>
+using namespace osgDB;
 
-namespace hpl {
-	class SceneManager
-	{
-	public:
-		static const int ReceivesShadowTraversalMask = 0x1;
-		static const int CastsShadowTraversalMask = 0x2;
-
-		static bool findResource(const String& name, String& outPath);
-
-	public:
-		static SceneManager* getInstance();
-		SceneManager();
-
-		osg::Texture2D* getTexture(const String& name);
-		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
-
-	private:
-		void loadShader(osg::Shader* shader, const String& name);
-
-	private:
-		static SceneManager* mysInstance;
-		Dictionary<String, osg::Texture2D*> myTextures;
-		Dictionary<String, osg::Program*> myPrograms;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* SceneManager::getInstance() 
-	{ return mysInstance; }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class OOSG_API ReaderWriterTGA : public osgDB::ReaderWriter
+{
+public:
+        ReaderWriterTGA();
+        virtual const char* className() const { return "TGA Image Reader"; }
+        ReadResult readTGAStream(std::istream& fin) const;
+        virtual ReadResult readObject(std::istream& fin,const osgDB::ReaderWriter::Options* options =NULL) const;
+        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options =NULL) const;
+        virtual ReadResult readImage(std::istream& fin,const Options* =NULL) const;
+        virtual ReadResult readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const;
+        bool saveTGAStream(const osg::Image& image, std::ostream& fout) const;
+        virtual WriteResult writeImage(const osg::Image& image, std::ostream& fout, const Options*) const;
+        virtual WriteResult writeImage(const osg::Image& image, const std::string& fileName, const Options* options) const;
 };
 
 #endif

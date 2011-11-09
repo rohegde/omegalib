@@ -48,6 +48,8 @@ Camera::Camera():
 	myPitch = 0;
 	myRotating = false;
 	myLastPointerPosition = Vector3f::Zero();
+	myControllerMoveVector = Vector2f::Zero();
+	myControllerRotateVector = Vector2f::Zero();
 
 	// Set a standard focal offset of 1 meter away from camera.
 	myProjectionOffset = -Vector3f::UnitZ();
@@ -95,6 +97,25 @@ void Camera::handleEvent(const Event& evt)
 			}
 			myLastPointerPosition = evt.getPosition();
 		}
+		else if(evt.getServiceType() == Service::Controller)
+		{
+			float n = 1000;
+			float x = evt.getExtraDataFloat(1) / n;
+			float y = evt.getExtraDataFloat(2) / n;
+			float yaw = evt.getExtraDataFloat(3) / n;
+			float pitch = evt.getExtraDataFloat(4) / n;
+			float tresh = 0.2f;
+
+			if(x < tresh && x > -tresh) x = 0;
+			if(y < tresh && y > -tresh) y = 0;
+			if(yaw < tresh && yaw > -tresh) yaw = 0;
+			if(pitch < tresh && pitch > -tresh) pitch = 0;
+
+			myControllerMoveVector = Vector2f(x, y);
+			myControllerRotateVector = Vector2f(yaw, pitch);
+
+			//ofmsg("%1% %2% %3% %4%", %x %y %yaw %pitch);
+		}
 	}
 }
 
@@ -119,6 +140,15 @@ void Camera::update(const UpdateContext& context)
 		if(myNavigationMoveFlags & MoveDown) speed += Vector3f(0, -myNavigationSpeed, 0);
 		if(myNavigationMoveFlags & MoveForward) speed += Vector3f(0, 0, -myNavigationSpeed);
 		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, myNavigationSpeed);
+
+		speed[2] += myControllerMoveVector[1] * myNavigationSpeed;
+		speed[0] += myControllerMoveVector[0] * myNavigationSpeed;
+
+		myYaw += myControllerRotateVector[0] * context.dt;
+		myPitch += myControllerRotateVector[1] * context.dt;
+
+		myControllerMoveVector *= 0.5f;
+		myControllerRotateVector *= 0.5f;
 
 		// Update the observer position offset using current speed, orientation and dt.
 		float fs = 0.1f;

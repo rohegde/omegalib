@@ -222,13 +222,13 @@ void HplViewer::createStaticObjects(osg::Group* root, TiXmlElement* xStaticObjec
 					xf->addChild(node);
 				#endif
 
-				xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
+				xf->setPosition(osg::Vec3d(position[0], position[1], position[2]));
 				xf->setAttitude(osg::Quat(
 					rotation[0], osg::Vec3d(1, 0, 0),
 					rotation[1], osg::Vec3d(0, 1, 0),
 					rotation[2], osg::Vec3d(0, 0, 1)
 					));
-				xf->setScale(osg::Vec3d(scale[0], -scale[1], scale[2]));
+				xf->setScale(osg::Vec3d(scale[0], scale[1], scale[2]));
 			}
 		}
 		xchild = xchild->NextSiblingElement();
@@ -288,7 +288,7 @@ void HplViewer::createPrimitives(osg::Group* root, TiXmlElement* xStaticObjects)
 					xf->addChild(node);
 				#endif
 
-				xf->setPosition(osg::Vec3d(position[0], -position[1], position[2]));
+				xf->setPosition(osg::Vec3d(position[0], position[1], position[2]));
 				xf->setAttitude(osg::Quat(
 					rotation[0], osg::Vec3d(1, 0, 0),
 					rotation[1], osg::Vec3d(0, 1, 0),
@@ -308,13 +308,13 @@ void HplViewer::initShading()
 	ss->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
 	ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
-	osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
+	osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
 	//sm->addShader(ssmFrag);
 	//sm->addShader(ssmVert);
 	sm->setTextureSize(osg::Vec2s(512, 512));
-	sm->setAmbientBias(osg::Vec2(0.5f, 0.5f));
-	sm->setTextureUnit(0);
-	//sm->setJitterTextureUnit(5);
+	sm->setAmbientBias(osg::Vec2(0.1f, 0.9f));
+	sm->setTextureUnit(4);
+	sm->setJitterTextureUnit(5);
 	//sm->setSoftnessWidth(0.01);
 
 	ss->addChild(mySceneNode);
@@ -422,7 +422,7 @@ void HplViewer::handleEvent(const Event& evt)
 		Vector3f pos = getDefaultCamera()->getPosition();
 		if(myLight2 != NULL)
 		{
-			myLight2->setPosition(Vec4(-pos[0], -pos[1], pos[2], 1.0f));
+			myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
 			ofmsg("Light Position: %1%", %pos);
 		}
 	}
