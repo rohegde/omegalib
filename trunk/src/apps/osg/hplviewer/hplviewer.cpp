@@ -354,6 +354,8 @@ void HplViewer::initialize()
 	EngineServer::initialize();
 	Config* cfg = getSystemManager()->getAppConfig();
 
+	removeAllRenderPasses();
+
 	myOsg = new OsgModule();
 	myOsg->initialize(this);
 
@@ -396,7 +398,7 @@ void HplViewer::initialize()
 					omsg("Optimizing scene graph...");
 					// Optimize scenegraph
 					osgUtil::Optimizer optOSGFile;
-					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
+					//optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 					osg::setNotifyLevel(WARN);
 
 					initShading();

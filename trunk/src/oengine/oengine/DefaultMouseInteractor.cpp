@@ -34,6 +34,10 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 {
 	if(evt.getServiceType() == Service::Pointer)
 	{
+		// If a node is assigned to this actor and is selected, we consider mouse events consumed
+		// by this actor.
+		if(myNode != NULL && myNode->isSelected()) evt.setProcessed();
+
 		myPointerButton1Pressed = false;
 		myPointerButton2Pressed = false;
 		myPointerEventReceived = true;
@@ -46,7 +50,6 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		}
 		if(evt.isFlagSet(myMoveButtonFlag)) myPointerButton1Pressed = true;
 		if(evt.isFlagSet(myRotateButtonFlag)) myPointerButton2Pressed = true;
-		evt.setProcessed();
 
 		if(evt.getExtraDataLength() == 2)
 		{

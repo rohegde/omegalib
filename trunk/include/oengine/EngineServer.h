@@ -72,6 +72,7 @@ namespace oengine {
 		template<typename T> void registerRenderPassClass();
 		void addRenderPass(String renderPass, void* userData = NULL, bool addToFront = false);
 		void removeRenderPass(String renderPass);
+		void removeAllRenderPasses();
 		//@}
 
 		//! Font management

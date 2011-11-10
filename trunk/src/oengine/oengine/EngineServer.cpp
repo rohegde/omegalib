@@ -120,6 +120,15 @@ void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFr
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::removeAllRenderPasses()
+{
+	foreach(EngineClient* client, myClients)
+	{
+		client->removeAllRenderPasses();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::removeRenderPass(String renderPass)
 {
 	oassert(false); // Not implemented.
@@ -232,16 +241,17 @@ void EngineServer::handleEvent(const Event& evt)
 		}
 	}
 
-	foreach(Actor* a, myActors)
-	{
-		a->handleEvent(evt);
-		if(evt.isProcessed()) return;
-	}
 	for(int i = 0; i < MaxUis; i++)
 	{
 		myUi[i]->handleEvent(evt);
-		if(evt.isProcessed()) return;
 	}
+	if(evt.isProcessed()) return;
+
+	foreach(Actor* a, myActors)
+	{
+		a->handleEvent(evt);
+	}
+	if(evt.isProcessed()) return;
 
 	myDefaultCamera->handleEvent(evt);
 
