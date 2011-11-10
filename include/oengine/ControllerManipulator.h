@@ -45,6 +45,9 @@ namespace oengine {
 		// Controller event data.
 		Vector2f myAnalog1Position;
 		Vector2f myAnalog2Position;
+		float myYaw;
+		float myPitch;
+		float myRoll;
 		float myTrigger;
 		bool myButtonState[MaxButtons];
 	};

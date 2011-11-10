@@ -38,6 +38,9 @@ ControllerManipulator::ControllerManipulator()
 	myAnalog1Position = Vector2f::Zero();
 	myAnalog2Position = Vector2f::Zero();
 	myTrigger = 0;
+	myYaw = 0;
+	myPitch = 0;
+	myRoll = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +87,13 @@ void ControllerManipulator::update(const UpdateContext& context)
 		float speed = 4.0f;
 		Vector3f move(myAnalog1Position[0] * speed, myAnalog1Position[1] * speed, myTrigger * speed);
 
+		myYaw += myAnalog2Position[0] * context.dt;
+		myRoll += myAnalog2Position[1] * context.dt;
+
 		move = myNode->getPosition() + move * context.dt;
 		myNode->setPosition(move);
+
+		Quaternion quat =  AngleAxis(myYaw, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitY()) * AngleAxis(myRoll, Vector3f::UnitZ());
+		myNode->setOrientation(quat);
 	}
 }
