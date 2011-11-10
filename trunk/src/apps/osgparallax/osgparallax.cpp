@@ -1,3 +1,29 @@
+/**************************************************************************************************
+ * THE OMEGA LIB PROJECT
+ *-------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Alessandro Febretti		febret@gmail.com
+ *-------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted 
+ * provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions 
+ * and the following disclaimer. Redistributions in binary form must reproduce the above copyright 
+ * notice, this list of conditions and the following disclaimer in the documentation and/or other 
+ * materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF 
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************************************/
 /*******************************************************************************/
 /*
  * Author: Ing. Jose Larios Delgado.
@@ -42,8 +68,8 @@ using namespace omega;
 using namespace oengine;
 using namespace oosg;
 
-static osg::Timer_t old_tick, new_tick; 
-static double delta;
+//static osg::Timer_t old_tick, new_tick; 
+//static double delta;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void LoadShaderSource( osg::Shader* shader, const std::string& fileName )
@@ -67,7 +93,6 @@ public:
 	OsgParallax(Application* app): EngineServer(app) {}
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
-	void handleEvent(const Event& evt);
 
 private:
 	OsgModule* myOsg;
@@ -75,6 +100,7 @@ private:
 	SceneNode* myLightNode;
 	osg::Light* myLight2;
 	DefaultMouseInteractor* myMouseInteractor;
+	ControllerManipulator* myControllerManipulator;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,8 +126,6 @@ void OsgParallax::initialize()
 	DataManager::findFile("osg/paralax.osg", path);
 	osg::Node *cqNode = osgDB::readNodeFile(path);
 
-	osgUtil::Optimizer optimizer;
-
 	osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
 	pat->addChild(cqNode);
 
@@ -112,34 +136,18 @@ void OsgParallax::initialize()
 		0, osg::Vec3d(0, 0, 1)
 		));
 
-	//optimizer.optimize(pat,	osgUtil::Optimizer::FLATTEN_STATIC_TRANSFORMS |
-	//							osgUtil::Optimizer::REMOVE_REDUNDANT_NODES |
-	//							osgUtil::Optimizer::DEFAULT_OPTIMIZATIONS);
-
 	shadowedScene->addChild(pat);
 	root->addChild(shadowedScene);
-
 	findGeoVisitor findNode;
 	root->accept(findNode);
-
 	myOsg->setRootNode(root);
-
-	//std::cout<<findNode.geolist.size()<<std::endl;
-
-	//------------------------------------------------------------------
-	//---------------------------------------------------------------------
 
 	for(unsigned int i = 0; i < findNode.geolist.size(); i++ )
 	{
-		
 		osg::StateSet *terrainState = findNode.geolist.at(i)->getOrCreateStateSet();
 		terrainState->addUniform( new osg::Uniform("colorMap", 0) );
-	
 		terrainState->addUniform( new osg::Uniform("normalMap", 1) );
-	
 		terrainState->addUniform( new osg::Uniform("heightMap", 3) );
-	
-
 	
 		osg::Material *material = new osg::Material();
 		material->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(0.9f, 0.9f, 0.9f, 1.0f));
@@ -148,7 +156,6 @@ void OsgParallax::initialize()
 		material->setShininess(osg::Material::FRONT_AND_BACK, 4.0f);
 		terrainState->setAttribute(material, osg::StateAttribute::ON);	
 
-
 		illProgram = new osg::Program;
 		illProgram->setName( "Parallax" );
 		illVertObj = new osg::Shader( osg::Shader::VERTEX );
@@ -156,7 +163,6 @@ void OsgParallax::initialize()
 		illProgram->addShader( illFragObj );
 		illProgram->addShader( illVertObj );
 		terrainState->setAttributeAndModes(illProgram, osg::StateAttribute::ON);
-
 
 		LoadShaderSource( illVertObj, "shaders/parallaxv4.vert" );
 		LoadShaderSource( illFragObj, "shaders/parallaxv4.frag" );
@@ -175,42 +181,24 @@ void OsgParallax::initialize()
 		//findNode.geolist.at(i)->setVertexAttribBinding (7, osg::Geometry::BIND_PER_VERTEX);
 		illProgram->addBindAttribLocation ("Tangent", 6);
 		//illProgram->addBindAttribLocation ("binormal", 7);
-
-		//std::cout<<tmpGeo->getNumVertexAttribArrays()<<std::endl;
-
-		
 	}
-	//---------------------------------------------------------------------
-	//---------------------------------------------------------------------
 
 	osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
-	//sm->addShader(ssmFrag);
-	//sm->addShader(ssmVert);
 	sm->setTextureSize(osg::Vec2s(512, 512));
 	sm->setAmbientBias(osg::Vec2(0.8f, 0.8f));
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
-	//sm->setSoftnessWidth(0.01);
 
     shadowedScene->setShadowTechnique(sm.get());
 
-	/*osg::StateSet *rootState = new osg::StateSet();
-	root->setStateSet(rootState);*/
-
 	osg::StateSet *sState = shadowedScene->getOrCreateStateSet();
 
-	/*osg::Uniform* sbias   = new osg::Uniform( "scaleBias", osg::Vec2(0.034f, 0.004f));
-	rootState->addUniform( sbias );*/
-	
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
     myLight2->setPosition(osg::Vec4(0.0, 282.8427, 282.8427, 0.0));
     myLight2->setAmbient(osg::Vec4(0.2f,0.2f,0.2f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
-    /*myLight2->setConstantAttenuation(1.0f);
-    myLight2->setLinearAttenuation(2.0f/70.0f);
-    myLight2->setQuadraticAttenuation(2.0f/osg::square(70.0f));*/
 
     osg::LightSource* lightS2 = new osg::LightSource;    
     lightS2->setLight(myLight2);
@@ -220,7 +208,6 @@ void OsgParallax::initialize()
 	shadowedScene->addChild(lightS2);
 
 	myLightNode = new SceneNode(this);
-	//myLightNode->scale(0.1f, 0.1f, 0.1f);
 	myLightNode->addObject(new Box());
 
 	getScene(0)->addChild(myLightNode);
@@ -229,7 +216,10 @@ void OsgParallax::initialize()
 	myMouseInteractor->setSceneNode(myLightNode);
 	myMouseInteractor->setRotateButtonFlag(Event::Middle);
 	myMouseInteractor->setMoveButtonFlag(Event::Right);
+	myControllerManipulator = new ControllerManipulator();
+	myControllerManipulator->setSceneNode(myLightNode);
 	addActor(myMouseInteractor);
+	addActor(myControllerManipulator);
 
 	getDefaultCamera()->focusOn(getScene(0));
 	getDefaultCamera()->setNavigationMode(Camera::NavFreeFly);
@@ -242,17 +232,6 @@ void OsgParallax::update(const UpdateContext& context)
 	myOsg->update(context);
 	Vector3f pos = myLightNode->getPosition();
 	myLight2->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0f));
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgParallax::handleEvent(const Event& evt) 
-{
-	EngineServer::handleEvent(evt);
-	if(evt.isKeyDown('l'))
-    {
-		Vector3f pos = getDefaultCamera()->getPosition();
-		myLightNode->setPosition(pos);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

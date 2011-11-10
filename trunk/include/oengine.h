@@ -32,6 +32,7 @@
 #include "oengine/BoundingSphere.h"
 #include "oengine/Box.h"
 #include "oengine/Camera.h"
+#include "oengine/ControllerManipulator.h"
 #include "oengine/DefaultMouseInteractor.h"
 #include "oengine/DefaultTwoHandsInteractor.h"
 #include "oengine/DefaultRenderPass.h"

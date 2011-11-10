@@ -29,14 +29,62 @@
 
 using namespace oengine;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ControllerManipulator::handleEvent(const Event& evt)
-{
+#define SET_BUTTON_STATE(btn, index) if(evt.getExtraDataFloat(index) > 0) { myButtonState[btn] = true; evt.setProcessed(); } else myButtonState[btn] = false;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ControllerManipulator::ControllerManipulator()
+{
+	memset(myButtonState, 0, sizeof(bool) * MaxButtons);
+	myAnalog1Position = Vector2f::Zero();
+	myAnalog2Position = Vector2f::Zero();
+	myTrigger = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ControllerManipulator::updateNode()
+void ControllerManipulator::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == Service::Controller)
+	{
+		float n = 1000;
+		float x = evt.getExtraDataFloat(1) / n;
+		float y = evt.getExtraDataFloat(2) / n;
+		float yaw = evt.getExtraDataFloat(3) / n;
+		float pitch = evt.getExtraDataFloat(4) / n;
+		float trigger = evt.getExtraDataFloat(5) / n;
+		float tresh = 0.2f;
+
+		if(x < tresh && x > -tresh) x = 0;
+		if(y < tresh && y > -tresh) y = 0;
+		if(yaw < tresh && yaw > -tresh) yaw = 0;
+		if(pitch < tresh && pitch > -tresh) pitch = 0;
+		if(trigger < tresh && trigger > -tresh) trigger = 0;
+
+		myAnalog1Position = Vector2f(x, y);
+		myAnalog2Position = Vector2f(yaw, pitch);
+		myTrigger = trigger;
+
+		SET_BUTTON_STATE(Button1, 6);
+		SET_BUTTON_STATE(Button2, 7);
+		SET_BUTTON_STATE(Button3, 8);
+		SET_BUTTON_STATE(Button4, 9);
+		SET_BUTTON_STATE(RSButton, 10);
+		SET_BUTTON_STATE(RSButton, 11);
+
+		//ofmsg("%1% %2% %3% %4%", %x %y %yaw %pitch);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ControllerManipulator::update(const UpdateContext& context)
 {
 	if(myNode == NULL) return;
+
+	if(myButtonState[RSButton])
+	{
+		float speed = 4.0f;
+		Vector3f move(myAnalog1Position[0] * speed, myAnalog1Position[1] * speed, myTrigger * speed);
+
+		move = myNode->getPosition() + move * context.dt;
+		myNode->setPosition(move);
+	}
 }
