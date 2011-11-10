@@ -45,6 +45,8 @@ namespace oengine {
 
 		void addRenderPass(RenderPass* pass, bool addToFront);
 		void removeRenderPass(RenderPass* pass);
+		void removeAllRenderPasses();
+
 
 		void queueRenderableCommand(RenderableCommand& cmd);
 

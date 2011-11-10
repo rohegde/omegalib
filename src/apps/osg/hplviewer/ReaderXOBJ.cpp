@@ -502,7 +502,7 @@ ReaderXOBJ::ObjOptionsStruct ReaderXOBJ::parseOptions(const osgDB::ReaderWriter:
 {
     ObjOptionsStruct localOptions;
     localOptions.noTesselateLargePolygons = false;
-    localOptions.noTriStripPolygons = false;
+    localOptions.noTriStripPolygons = true;
     localOptions.generateFacetNormals = false;
 
     if (options!=NULL)
