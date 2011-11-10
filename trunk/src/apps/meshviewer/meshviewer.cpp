@@ -205,6 +205,13 @@ void MeshViewer::initialize()
 		interactor->setRotateButtonFlag(Event::Middle);
 		myInteractor = interactor;
 	}
+	else if(interactorStyle == "Controller")
+	{
+		ControllerManipulator* interactor = new ControllerManipulator();
+		//interactor->setMoveButtonFlag(Event::Right);
+		//interactor->setRotateButtonFlag(Event::Middle);
+		myInteractor = interactor;
+	}
 	else
 	{
 		DefaultTwoHandsInteractor* interactor =  new DefaultTwoHandsInteractor();
