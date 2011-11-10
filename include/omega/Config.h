@@ -28,6 +28,7 @@
 #define __CONFIG_H__
 
 #include "osystem.h"
+#include "omega/Color.h"
 
 namespace omega
 {
@@ -36,6 +37,13 @@ class OMEGA_API Config
 {
 public:
 	static String getTypeName(Setting::Type type);
+	static bool getBoolValue(const String& name, const Setting& s, bool defaultValue = false);
+	static float getFloatValue(const String& name, const Setting& s, float defaultValue = 0.0f);
+	static float getFloatValue(int index, const Setting& s, float defaultValue = 0.0f);
+	static int getIntValue(const String& name, const Setting& s, int defaultValue = 0.0f);
+	static String getStringValue(const String& name, const Setting& s, const String& defaultValue = "");
+	static Vector3f getVector3fValue(const String& name, const Setting& s, const Vector3f& defaultValue = Vector3f::Zero());
+	static Color getColorValue(const String& name, const Setting& s, const Color& defaultValue = Color(1, 1, 1, 1));
 
 public:
 	Config(const String& filename);

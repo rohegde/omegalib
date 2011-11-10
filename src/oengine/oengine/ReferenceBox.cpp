@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "oengine/ReferenceBox.h"
 #include "omega/glheaders.h"
+#include "omega/Config.h"
 
 using namespace omega;
 using namespace oengine;
@@ -49,6 +50,23 @@ ReferenceBox::ReferenceBox()
 	mySideColor[Top]    =  Color(0.1f, 0.1f, 0.2f, 1.0f);
 
 	for(int i = 0; i < NumSides; i++) mySideEnabled[i] = true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ReferenceBox::setup(Setting& s)
+{
+	float colorScale = Config::getFloatValue("colorScale", s, 1.0f);
+	mySideColor[Back] = Config::getColorValue("backColor", s, mySideColor[Back]);
+	mySideColor[Front] = Config::getColorValue("frontColor", s, mySideColor[Front]);
+	mySideColor[Left] = Config::getColorValue("leftColor", s, mySideColor[Left]);
+	mySideColor[Right] = Config::getColorValue("rightColor", s, mySideColor[Right]);
+	mySideColor[Bottom] = Config::getColorValue("bottomColor", s, mySideColor[Bottom]);
+	mySideColor[Top] = Config::getColorValue("topColor", s, mySideColor[Top]);
+
+	myPrimaryLineColor = Config::getColorValue("primaryLineColor", s, myPrimaryLineColor);
+	myPrimaryLineInterval = Config::getFloatValue("primaryLineInterval", s, myPrimaryLineInterval);
+
+	mySize = Config::getVector3fValue("size", s, mySize);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -45,6 +45,8 @@ namespace oengine {
 	public:
 		ReferenceBox();
 
+		void setup(Setting& s);
+
 		virtual Renderable* createRenderable();
 
 		Color& getColor(Side side);

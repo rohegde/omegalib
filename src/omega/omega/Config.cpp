@@ -146,3 +146,95 @@ bool Config::getBoolValue(const String& name, bool defaultValue)
 	return (bool)s;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Config::getBoolValue(const String& name, const Setting& s, bool defaultValue)
+{
+	if(!s.exists(name)) return defaultValue;
+	Setting& sv = s[name];
+	if(sv.getType() != Setting::TypeBoolean)
+	{
+		ofwarn("%1%: wrong setting type. Expected 'bool', found '%2%'", %name %getTypeName(sv.getType()));
+		return defaultValue;
+	}
+	return (bool)sv;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+float Config::getFloatValue(const String& name, const Setting& s, float defaultValue)
+{
+	if(!s.exists(name)) return defaultValue;
+	Setting& sv = s[name];
+	if(sv.getType() != Setting::TypeFloat && sv.getType() != Setting::TypeInt)
+	{
+		ofwarn("%1%: wrong setting type. Expected 'float', found '%2%'", %name %getTypeName(sv.getType()));
+		return defaultValue;
+	}
+	if(sv.getType() == Setting::TypeInt) return (float)((int)sv);
+	return (float)sv;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+float Config::getFloatValue(int index, const Setting& s, float defaultValue)
+{
+	if(s.getLength() <= index) return defaultValue;
+	Setting& sv = s[index];
+	if(sv.getType() != Setting::TypeFloat && sv.getType() != Setting::TypeInt)
+	{
+		ofwarn("%1%[%2%]: wrong setting type. Expected 'float', found '%3%'", %s.getName() %index %getTypeName(sv.getType()));
+		return defaultValue;
+	}
+	if(sv.getType() == Setting::TypeInt) return (float)((int)sv);
+	return (float)sv;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int Config::getIntValue(const String& name, const Setting& s, int defaultValue)
+{
+	if(!s.exists(name)) return defaultValue;
+	Setting& sv = s[name];
+	if(sv.getType() != Setting::TypeFloat && sv.getType() != Setting::TypeInt)
+	{
+		ofwarn("%1%: wrong setting type. Expected 'int', found '%2%'", %name %getTypeName(sv.getType()));
+		return defaultValue;
+	}
+	if(sv.getType() == Setting::TypeFloat) return (int)((float)sv);
+	return (int)sv;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+String Config::getStringValue(const String& name, const Setting& s, const String& defaultValue)
+{
+	if(!s.exists(name)) return defaultValue;
+	Setting& sv = s[name];
+	if(sv.getType() != Setting::TypeString)
+	{
+		ofwarn("%1%: wrong setting type. Expected 'String', found '%2%'", %name %getTypeName(sv.getType()));
+		return defaultValue;
+	}
+	return String((const char*)sv);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector3f Config::getVector3fValue(const String& name, const Setting& s, const Vector3f& defaultValue)
+{
+	if(!s.exists(name)) return defaultValue;
+	Setting& sv = s[name];
+	Vector3f value;
+	value[0] = getFloatValue(0, sv, defaultValue[0]);
+	value[1] = getFloatValue(1, sv, defaultValue[1]);
+	value[2] = getFloatValue(2, sv, defaultValue[2]);
+	return value;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Color Config::getColorValue(const String& name, const Setting& s, const Color& defaultValue)
+{
+	if(!s.exists(name)) return defaultValue;
+	Setting& sv = s[name];
+	Color value;
+	value[0] = getFloatValue(0, sv, defaultValue[0]);
+	value[1] = getFloatValue(1, sv, defaultValue[1]);
+	value[2] = getFloatValue(2, sv, defaultValue[2]);
+	value[3] = getFloatValue(3, sv, defaultValue[3]);
+	return value;
+}

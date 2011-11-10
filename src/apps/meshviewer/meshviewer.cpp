@@ -189,7 +189,11 @@ void MeshViewer::initialize()
 	{
 		myReferenceBox = new ReferenceBox();
 		getScene(0)->addObject(myReferenceBox);
+		// Default box size for meshviewer, if left unspecified by config
 		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
+
+		// Read config for reference box.
+		myReferenceBox->setup(cfg->lookup("config/referenceBox"));
 	}
 
 	// Set the interactor style used to manipulate meshes.
