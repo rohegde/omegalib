@@ -33,6 +33,7 @@
 #include <osg/ColorMask>
 #include <osg/PolygonMode>
 #include <osg/PolygonOffset>
+#include <osgFX/Effect>
 
 #include <osgwTools/Shapes.h>
 
@@ -243,6 +244,8 @@ void HplViewer::createPrimitives(osg::Group* root, TiXmlElement* xStaticObjects)
 	{
 		osg::Geode* node = new osg::Geode();
 
+		String material = xchild->Attribute("Material");
+
 		Vector3f rotation = readVector3f(xchild, "Rotation");
 		Vector3f position = readVector3f(xchild, "WorldPos");
 		Vector3f scale = readVector3f(xchild, "Scale");
@@ -266,6 +269,9 @@ void HplViewer::createPrimitives(osg::Group* root, TiXmlElement* xStaticObjects)
 					OOSG_VEC3(startCorner), 
 					OOSG_VEC3(u), 
 					OOSG_VEC3(v)));
+
+				osg::StateSet* fx = mySceneManager->loadMaterial(material);
+				node->setStateSet(fx);
 			}
 
 			int id = atoi(xchild->Attribute("ID"));
@@ -354,7 +360,7 @@ void HplViewer::initialize()
 	mySceneManager = new SceneManager();
 
 	myCenter = Vector3f::Zero();
-	myMaxDistance = 10;
+	myMaxDistance = 15;
 
 	// Load osg object
 	if(cfg->exists("config/dataPath"))
@@ -390,7 +396,7 @@ void HplViewer::initialize()
 					omsg("Optimizing scene graph...");
 					// Optimize scenegraph
 					osgUtil::Optimizer optOSGFile;
-					//optOSGFile.optimize(node, osgUtil::Optimizer::SPATIALIZE_GROUPS);
+					optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 					osg::setNotifyLevel(WARN);
 
 					initShading();

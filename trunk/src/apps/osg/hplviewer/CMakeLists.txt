@@ -31,8 +31,6 @@
 # Source files
 set(SRCS 
 		hplviewer.cpp
-		SolidEffect.h
-		SolidEffect.cpp
 		SceneManager.cpp
 		SceneManager.h
 		obj.cpp

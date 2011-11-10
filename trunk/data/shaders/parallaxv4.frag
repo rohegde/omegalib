@@ -83,6 +83,7 @@ void main (void)
 		
 	// Calculate offset, scale & biais
 	float height = texture2D(heightMap, texCoord).a ;
+	//height = 0;
 	vec2 newTexCoord = texCoord + ((height * 0.2 - 0.1) * (vVec.xy));
 		
 		
@@ -101,7 +102,7 @@ void main (void)
 	
 	
     // apply shadow, modulo the ambient bias
-    gl_FragColor = (vAmbient*base + (vDiffuse*base + vSpecular)) * (osgShadow_ambientBias.x + shadow * osgShadow_ambientBias.y); 
-    //gl_FragColor = base * (osgShadow_ambientBias.x + shadow * osgShadow_ambientBias.y); 
+    //gl_FragColor = (vAmbient*base + (vDiffuse*base + vSpecular)) * (osgShadow_ambientBias.x + shadow * osgShadow_ambientBias.y); 
+    gl_FragColor = vec4(diffuse, diffuse, diffuse, diffuse) * (osgShadow_ambientBias.x + shadow * osgShadow_ambientBias.y); 
    
 }
