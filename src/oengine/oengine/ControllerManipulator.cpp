@@ -87,8 +87,8 @@ void ControllerManipulator::update(const UpdateContext& context)
 		float speed = 4.0f;
 		Vector3f move(myAnalog1Position[0] * speed, myAnalog1Position[1] * speed, myTrigger * speed);
 
-		myYaw += myAnalog2Position[0] * context.dt;
-		myRoll += myAnalog2Position[1] * context.dt;
+		myYaw += myAnalog2Position[1] * context.dt;
+		myRoll += myAnalog2Position[0] * context.dt;
 
 		move = myNode->getPosition() + move * context.dt;
 		myNode->setPosition(move);
