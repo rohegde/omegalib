@@ -84,7 +84,7 @@ void ControllerManipulator::update(const UpdateContext& context)
 
 	if(myButtonState[RSButton])
 	{
-		float speed = 4.0f;
+		float speed = 1.0f;
 		Vector3f move(myAnalog1Position[0] * speed, myAnalog1Position[1] * speed, myTrigger * speed);
 
 		myYaw += myAnalog2Position[1] * context.dt;
