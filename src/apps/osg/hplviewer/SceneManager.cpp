@@ -150,3 +150,94 @@ osg::Program* SceneManager::getProgram(const String& name, const String& vertexS
 
 	return prog;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata)
+{
+	osg::StateSet* ss = new osg::StateSet();
+
+	osg::Program* prog = getProgram("solid", "shaders/parallaxv4.vert", "shaders/parallaxv4.frag");
+	prog->addBindAttribLocation ("Tangent", 6);
+
+	ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+
+	TiXmlElement* xtextures = xdata->FirstChildElement("TextureUnits");
+	TiXmlElement* xchild = xtextures->FirstChildElement();
+	while(xchild)
+	{
+		String type = xchild->Value();
+		String file = xchild->Attribute("File");
+
+		if(file != "")
+		{
+			if(type == "Diffuse")
+			{
+				ss->addUniform( new osg::Uniform("colorMap", 0) );
+				ss->setTextureAttribute(0, getTexture(file));
+			}
+			else if(type == "NMap")
+			{
+				ss->addUniform( new osg::Uniform("normalMap", 1) );
+				ss->setTextureAttribute(1, getTexture(file));
+			}
+			else if(type == "Specular")
+			{
+				//mySpecular = mySceneManager->getTexture(file);
+			}
+			else if(type == "Height")
+			{
+				ss->addUniform( new osg::Uniform("heightMap", 2) );
+				ss->setTextureAttribute(2, getTexture(file));
+			}
+		}
+		xchild = xchild->NextSiblingElement();
+	}
+
+	return ss;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+osg::StateSet* SceneManager::loadMaterial(const String& materialName)
+{
+	// If material has been loaded already return it.
+	if(myMaterials.find(materialName) != myMaterials.end())
+	{
+		return myMaterials[materialName];
+	}
+
+	String materialPath;
+	if(findResource(materialName, materialPath))
+	{
+		// Open the material XML file.
+		TiXmlDocument doc(materialPath.c_str());
+		if(doc.LoadFile())
+		{
+			// Update the current path to the material path for texture loading
+			String filename;
+			String path;
+			StringUtils::splitFilename(materialPath, filename, path);
+			omega::DataManager::getInstance()->setCurrentPath(path);
+
+			String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
+			StringUtils::toLowerCase(type);
+			if(type == "soliddiffuse")
+			{
+				return createMaterial(doc.RootElement());
+			}
+			else
+			{
+				ofwarn("Unknown material type %1%", %type);
+			}
+		}
+		else
+		{
+			ofwarn("Could not open material file %1%", %materialName);
+		}
+	}
+	else
+	{
+		ofwarn("Could not find material file %1%", %materialName);
+	}
+	return NULL;
+}
+

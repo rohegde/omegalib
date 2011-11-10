@@ -48,14 +48,18 @@ namespace hpl {
 
 		osg::Texture2D* getTexture(const String& name);
 		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+		osg::StateSet* loadMaterial(const String& filename);
 
 	private:
 		void loadShader(osg::Shader* shader, const String& name);
+		osg::StateSet* createMaterial(TiXmlElement* xdata);
+
 
 	private:
 		static SceneManager* mysInstance;
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, osg::Program*> myPrograms;
+		Dictionary<String, osg::StateSet*> myMaterials;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -69,7 +69,6 @@
 #include <osg/PolygonMode>
 
 
-#include "SolidEffect.h"
 #include "SceneManager.h"
 #include "obj.h"
 
@@ -99,7 +98,7 @@ protected:
         bool generateFacetNormals;
     };
 
-    typedef Dictionary<String, osgFX::Effect*> EffectMap;
+    typedef Dictionary<String, osg::StateSet*> EffectMap;
 
     void buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStruct& localOptions, const Options* options) const;
     osg::Geometry* convertElementListToGeometry(obj::Model& model, obj::Model::ElementList& elementList, ObjOptionsStruct& localOptions) const;
@@ -399,8 +398,6 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
     {
         obj::Material& material = itr->second;
        
-        //osg::ref_ptr< osg::StateSet > stateset = new osg::StateSet;
-
 		// Get the material name using the name of the diffuse texture.
 		String materialName = material.maps[obj::Material::Map::DIFFUSE].name;
 
@@ -408,40 +405,7 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 
 		String materialPath;
 		materialName = StringUtils::replaceAll(materialName, ".dds", ".mat");
-		if(SceneManager::findResource(materialName, materialPath))
-		{
-			// Open the material XML file.
-			TiXmlDocument doc(materialPath.c_str());
-			if(doc.LoadFile())
-			{
-				// Update the current path to the material path for texture loading
-				String filename;
-				String path;
-				StringUtils::splitFilename(materialPath, filename, path);
-				omega::DataManager::getInstance()->setCurrentPath(path);
-
-				String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
-				StringUtils::toLowerCase(type);
-				if(type == "soliddiffuse")
-				{
-					hpl::SolidEffect* fx = new hpl::SolidEffect();
-					fx->load(doc.RootElement());
-					em[material.name] = fx;
-				}
-				else
-				{
-					ofwarn("Unknown material type %1%", %type);
-				}
-			}
-			else
-			{
-				ofwarn("Could not open material file %1%", %materialName);
-			}
-		}
-		else
-		{
-			ofwarn("Could not find material file %1%", %materialName);
-		}
+		em[material.name] = SceneManager::getInstance()->loadMaterial(materialName);
 	}
 }
 
@@ -506,18 +470,12 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
 			geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
 			// Set geometry material
-			osgFX::Effect* fx = fxs[es.materialName];
-			//osgFX::Effect* fx = NULL;
-			if(fx != NULL)
+			osg::StateSet* mat = fxs[es.materialName];
+			if(mat != NULL)
 			{
-				fx->addChild(geode);
-				group->addChild(fx);
+				geode->setStateSet(mat);
 			}
-			else
-			{
-				//ofwarn("Could not find material %1%", %es.materialName);
-				group->addChild(geode);
-			}
+			group->addChild(geode);
 
 			// Set object name.
             //if (es.objectName.empty())
