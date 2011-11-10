@@ -34,20 +34,19 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API ControllerManipulator: public Actor
 	{
+		enum Buttons {Button1, Button2, Button3, Button4, LSButton, RSButton, MaxButtons };
 	public:
-		ControllerManipulator() {}
+		ControllerManipulator();
 
 		virtual void handleEvent(const Event& evt);
-
-	private:
-		void updateNode();
+		virtual void update(const UpdateContext& context);
 
 	private:
 		// Controller event data.
 		Vector2f myAnalog1Position;
 		Vector2f myAnalog2Position;
-		bool myButton1Pressed;
-		bool myButton2Pressed;
+		float myTrigger;
+		bool myButtonState[MaxButtons];
 	};
 }; // namespace oengine
 

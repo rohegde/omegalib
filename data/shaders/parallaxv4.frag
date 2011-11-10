@@ -86,7 +86,7 @@ void main (void)
 	vec2 newTexCoord = texCoord + ((height * 0.2 - 0.1) * (vVec.xy));
 		
 		
-	vec4 base = texture2D(heightMap, newTexCoord);
+	vec4 base = texture2D(colorMap, newTexCoord);
 	vec3 bump = normalize(texture2D(normalMap, newTexCoord).xyz * 2.0 - 1.0);
 	bump = normalize(bump);
 	

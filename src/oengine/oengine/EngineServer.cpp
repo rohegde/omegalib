@@ -221,7 +221,6 @@ void EngineServer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::handleEvent(const Event& evt)
 {
-	myDefaultCamera->handleEvent(evt);
 	if( evt.getServiceType() == Service::Keyboard )
     {
 		// Esc = force exit
@@ -232,6 +231,19 @@ void EngineServer::handleEvent(const Event& evt)
 			myConsoleEnabled = !myConsoleEnabled;
 		}
 	}
+
+	foreach(Actor* a, myActors)
+	{
+		a->handleEvent(evt);
+		if(evt.isProcessed()) return;
+	}
+	for(int i = 0; i < MaxUis; i++)
+	{
+		myUi[i]->handleEvent(evt);
+		if(evt.isProcessed()) return;
+	}
+
+	myDefaultCamera->handleEvent(evt);
 
 	// Update pointers.
 	if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
@@ -253,15 +265,6 @@ void EngineServer::handleEvent(const Event& evt)
 		{
 			myActivePointers[pointerId].first->setPosition(evt.getPosition().x(), evt.getPosition().y());
 		}
-	}
-
-	foreach(Actor* a, myActors)
-	{
-		a->handleEvent(evt);
-	}
-	for(int i = 0; i < MaxUis; i++)
-	{
-		myUi[i]->handleEvent(evt);
 	}
 }
 
