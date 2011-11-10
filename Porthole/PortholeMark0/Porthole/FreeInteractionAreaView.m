@@ -53,16 +53,19 @@
         [self addSubview:background];     
         
         [self setupLabel];
-        [self setupOverlay];
+        [self setupThumbnail:frame];   
+
         
-        if( touch )[self setupMarkerWith:frame];
+        if( touch )
+        {
+            [self setupMarkerWith:frame];   
+        }
         if( mTouch )
         {
             lastScale = 1.0;
             lastRotation = 0.0;
             prevPt = CGPointMake(0.0 , 0.0);
         }
-        
         myState = INIT;
     }
     return self;
@@ -93,20 +96,14 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
--(void)setupOverlay
+-(void)setupThumbnail:(CGRect)frame
 {
-    CGSize size = self.bounds.size;
     
-    UIImage *overlayImage;
-    overlayImage = [ UIImage imageNamed:@"overlay.png" ];
-    UIImage *overlayImgResized = [overlayImage resizedImage:size interpolationQuality:kCGInterpolationDefault];
-    
-    overlayView = [ [ UIImageView alloc ] initWithImage: overlayImgResized];
+    overlayView = [ [UIImageView alloc] initWithFrame:frame];
     overlayView.hidden = YES;
-    [overlayView setNeedsDisplay];
     [self addSubview:overlayView];     
-    
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -117,11 +114,9 @@
     PulseCircleView *newMarker = [[PulseCircleView alloc] initWithFrame:frame];
     self.markerView = newMarker;
     self.markerView.hidden = YES;
-    self.markerView.PCVDelegate = self;
-    
-    [self.markerView setNeedsDisplay];
+    self.markerView.PCVDelegate = self;  
     [self addSubview:markerView];     
-    
+
 }
 
 
@@ -134,54 +129,83 @@
 -(void) makeLabelWithString:(NSString*) msg
 {
     myLabel.text = msg;
+    myLabel.textColor = [UIColor whiteColor];
+    myLabel.shadowColor = [UIColor blackColor];
+    myLabel.shadowOffset = CGSizeMake(1,1);
+    myLabel.font = [UIFont fontWithName:@"Helvetica" size:20];
+    myLabel.backgroundColor = [UIColor clearColor];
 }
 
-- (void)drawInit
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+-(void)genThumbnail
 {
-    overlayView.hidden = YES;
-    [self makeLabelWithString:@"OmegaViewer Server Started"];
-}
+    stateIAV curState = [self.delegate getConnectionState:self];
 
-- (void)drawConnected
-{
-    overlayView.hidden = NO;
-    [self makeLabelWithString:@"Connection to OmegaViewer Established"];
-}
+    switch (curState)
+    {
+        case INIT:
+            overlayView.hidden = YES;
+            [self makeLabelWithString:@"Waiting for connection to app server. Touch to Continue..."];
+            return;
+            break;
+            
+            
+        case CONNECTED:
+            overlayView.hidden = YES;
+            [self makeLabelWithString:@"Connection to app server established. Touch to Continue..."];
+            return;
+            break;
 
-- (void)drawNewModel
+        case NEW_MODEL:
+            [self makeLabelWithString:@"New Model Loaded <insert img here>. Touch to Continue..."];
+            break;
 
-{
-    overlayView.hidden = YES;
-    [self makeLabelWithString:@"Model Loaded"];
-}
-
-- (void)drawSameModel
-{
-    overlayView.hidden = YES;    
-    [self makeLabelWithString:@""];
+        case SAME_MODEL:
+            [self makeLabelWithString:@""];
+            break;
+        default:
+            break;
+    }
+    
+    if( curState == NEW_MODEL )
+    {
+        //Grab the png info into UIImage
+        UIImage *img = [UIImage imageNamed:@"Oscar.png"];
+    
+        //Resize the img
+        CGSize size = self.bounds.size;
+        UIImage *imgResized = [img resizedImage:size interpolationQuality:kCGInterpolationDefault];
+    
+        //UIImage --> NSData
+        NSData *imageData = UIImagePNGRepresentation(imgResized);
+        
+        //Convert the NSData to Bytes array
+        NSUInteger len = [imageData length];
+        Byte *byteData = (Byte*)malloc(len);
+        memcpy(byteData, [imageData bytes], len);
+    
+        //Convert byte Array to NSData
+        NSData *imgDataRecv = [ NSData dataWithBytes:byteData length:len ];
+    
+        //Convert NSData to UIImage
+        UIImage *imgRecv = [UIImage imageWithData:imgDataRecv];
+        [overlayView setImage:imgRecv];
+        overlayView.hidden = NO;
+    }
+    [overlayView setNeedsDisplay];
+    
 }
 
 // Only override drawRect: if you perform custom drawing.
 - (void)drawRect:(CGRect)rect
 {
-    /*
-     switch (myState) 
-     {
-     case INIT: [self drawInit]; break;
-     case CONNECTED: [self drawConnected]; break;
-     case NEW_MODEL: [self drawNewModel]; break;    
-     case SAME_MODEL: [self drawSameModel]; break;       
-     default: break;
-     }
-     */
-    
+    [self genThumbnail ];
     if( self.touchAble && markerLoc != nil)
     {
         self.markerView.hidden = NO;
-        [self.markerView setNeedsDisplay];        
+        [self.markerView setNeedsDisplay];  
     }
-    
-    
 }
 
 #
@@ -237,6 +261,26 @@
     }    
     else
     {
+        switch ([self.delegate getConnectionState:self] )
+        {
+            case INIT:
+                if( debugTouch) NSLog(@"\tFIA : Touch : Connect");                
+                [self.delegate connect:self];
+                [self.delegate incrConnectionState:self];
+                return;
+                break;
+            case CONNECTED:
+                [self.delegate incrConnectionState:self];
+                return;
+                break;
+            case NEW_MODEL:
+                [self.delegate incrConnectionState:self];
+                return;
+                break;
+            default:
+                break;
+        }
+        
         //Grab the point
         CGPoint point = [ touch locationInView:self];
         
@@ -256,11 +300,6 @@
         
         //Send TCP msg 
         [self.delegate sendMsgAsService:Pointer event:Down param:param from:self];
-        
-        if( myState == INIT ) myState = CONNECTED;
-        else if( myState == CONNECTED ) myState = NEW_MODEL;
-        else if( myState == NEW_MODEL ) myState = SAME_MODEL;
-        else if( myState == SAME_MODEL ) myState = INIT;
         [self setNeedsDisplay];
     }
     [self setNeedsDisplay];

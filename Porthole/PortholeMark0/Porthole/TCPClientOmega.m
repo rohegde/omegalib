@@ -15,9 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) 
     {
-        NSString* addy = [NSString stringWithUTF8String:IP_ADDRESS];
-        NSString* port = [NSString stringWithUTF8String:PORT];
-        [super setupTCPConnectionTo:addy at:port];
+        myState = CLINET_INIT; 
     }
     return self;
 }
@@ -28,14 +26,20 @@
 #
 #
 
-
+-(void) connection
+{
+    NSString* addy = [NSString stringWithUTF8String:IP_ADDRESS];
+    NSString* port = [NSString stringWithUTF8String:PORT];
+    
+    [super setupTCPConnectionTo:addy at:port];
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
 -(BOOL) sendEventService:(int)service event:(int)event param:(NSArray*)eventParam
 {
-    if( myState == CLINET_GUIRECVED )
+    if( myState == CLINET_WAIT )
     {
         NSNumber *serviceN = [NSNumber numberWithInt:service];
         NSNumber *eventN = [NSNumber numberWithInt:event];        
@@ -54,7 +58,7 @@
 //
 -(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val
 {
-    if( myState == CLINET_GUIRECVED )
+    if( myState == CLINET_WAIT )
     {
         NSNumber *serviceN = [NSNumber numberWithInt:service];
         NSNumber *eventN = [NSNumber numberWithInt:event];        

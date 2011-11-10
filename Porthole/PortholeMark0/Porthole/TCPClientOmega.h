@@ -14,11 +14,12 @@
 #define PORT "3490" // the port client will be connecting to 
 
 //#define IP_ADDRESS "192.168.1.105"    //Home
-//#define IP_ADDRESS "131.193.77.197"   //EVL
+#define IP_ADDRESS "131.193.77.197"   //EVL
 //#define IP_ADDRESS "131.193.77.249"   //EVL LabPad
 //#define IP_ADDRESS "131.193.77.222"   //myPad
 //#define IP_ADDRESS "131.193.77.200"   //Alessandro's Machine
-#define IP_ADDRESS "131.193.78.108"   //Dual2.evl.uic.edu
+//#define IP_ADDRESS "131.193.78.108"   //Dual2.evl.uic.edu
+//#define IP_ADDRESS "131.193.77.112"   //Thor.evl.uic.edu
 
 typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
 
@@ -26,7 +27,7 @@ typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
 {
 }
 
-//GUI parsing
+//GUI parsing   
 -(void) handleGUIElementsFor:(int)GUIType in:(NSArray*)pieces;
 -(void) determineGUISpec:(NSString*) GUISpec;
 
@@ -34,5 +35,6 @@ typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
 -(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val;
 -(BOOL) sendEventService:(int)service event:(int)event param:(NSArray*)eventParam;
 -(NSString*) genEventMsgWith:(NSArray*)data param:(NSArray*)info;
+-(void) connection;
 
 @end

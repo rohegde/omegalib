@@ -23,7 +23,7 @@
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 
-typedef enum { CLINET_INIT , CLINET_CONNECTED , CLINET_GUIRECVED } TCPClientState;
+typedef enum { CLINET_INIT , CLINET_CONNECTED , CLINET_GUIRECVED , CLINET_WAIT } TCPClientState;
 
 @class TCPClient;
  

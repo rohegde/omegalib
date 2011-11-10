@@ -31,11 +31,57 @@
 #pragma mark - Managing the detail item
 #
 #
+- (void) connect:(FreeInteractionAreaView *)requestor
+{
+    if (requestor == self.FIA) 
+    {
+        if( debugTouch) NSLog(@"\tDVC : delegate connection");
+        [self.connection connection];
+        //[self setupConnectionToServer];
+    }    
+}
+
+
+- (stateIAV) getConnectionState:(FreeInteractionAreaView *)requestor
+{
+	if (requestor == self.FIA) 
+    {
+        if(connectServer && self.connection != nil)
+        {
+            switch (self.connection.myState) {
+                case CLINET_INIT: return INIT; break;
+                case CLINET_CONNECTED: return CONNECTED; break;
+                case CLINET_GUIRECVED: return NEW_MODEL; break;
+                case CLINET_WAIT: return SAME_MODEL; break;                    
+            }
+        }
+            
+        else return -1;
+    }    
+    else return -1;
+}
+
+- (void) intConnectionState:(FreeInteractionAreaView *)requestor
+{
+	if (requestor == self.FIA) 
+    {
+        if(connectServer && self.connection != nil) self.connection.myState = CLINET_INIT;
+    }    
+}
+
+- (void) incrConnectionState:(FreeInteractionAreaView *)requestor
+{
+	if (requestor == self.FIA) 
+    {
+        if(connectServer && self.connection != nil) self.connection.myState++;
+    }    
+}
 
 - (void) sendMsgAsService:(int)serviceType event:(int)eventType param:(NSArray*)eventParam from:(FreeInteractionAreaView *)requestor
 {
 	if (requestor == self.FIA) 
     {
+//        NSLog(@"Sending");
         //If the app is suppose to connect to a server, send the TCP Msg 
         if( connectServer )[self.connection sendEventService:serviceType event:eventType param:eventParam];
 //        for( int i = 0 ; i < eventParam.count ; i++)
@@ -92,7 +138,7 @@
     CGRect FIABounds = CGRectMake( 0 , curHeight , screenW , screenH * FIAHeight );
     FIA = [ [FreeInteractionAreaView alloc] initWithFrame:FIABounds name:@"FIA" bounds:FIABounds withTouch:YES withMultiTouch:YES];
     [FIA setDebugTouch:debugTouch];
-    [FIA setBackgroundColor:[UIColor grayColor]];
+    [FIA setBackgroundColor:[UIColor blackColor]];
     FIA.delegate = self;
     curHeight = curHeight + screenH * FIAHeight;
 
@@ -100,7 +146,7 @@
     CGRect CUABounds = CGRectMake( 0 , curHeight, screenW, screenH * CUAHeight );
     CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" bounds:CUABounds withTouch:YES withMultiTouch:NO];
     curHeight = curHeight + screenH * CUAHeight;
-    [CUA setBackgroundColor:[UIColor purpleColor]];
+    [CUA setBackgroundColor:[UIColor grayColor]];
     
     [self.view addSubview:FIA];
     [self.view addSubview:CUA];
@@ -140,6 +186,8 @@
     
     if (connectServer) [self setupConnectionToServer];
     else self.connection = nil;
+
+    if (!connectServer) self.connection = nil;
     
     [self configureView];
     
@@ -187,7 +235,7 @@
     //    }
     if( interfaceOrientation == UIInterfaceOrientationPortrait)
     {
-        NSLog(@"DetailVC :: Portrait");
+        if(debugMode) NSLog(@"DetailVC :: Portrait");
         [self setBoundsPortrait];
         [self.FIA setNeedsDisplay];
         [self.CUA setNeedsDisplay];
@@ -195,7 +243,7 @@
     }
     else if ( interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
     {        
-        NSLog(@"DetailVC :: Landscape left");
+        if(debugMode) NSLog(@"DetailVC :: Landscape left");
         [self setBoundsLandscape];
         [self.FIA setNeedsDisplay];
         [self.CUA setNeedsDisplay];
@@ -203,7 +251,7 @@
     }
     else if ( interfaceOrientation == UIInterfaceOrientationLandscapeRight)
     {
-        NSLog(@"DetailVC :: Landscape right");
+        if(debugMode) NSLog(@"DetailVC :: Landscape right");
         [self setBoundsLandscape];
         [self.FIA setNeedsDisplay];
         [self.CUA setNeedsDisplay];
@@ -211,7 +259,7 @@
     }
     else if ( interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
     {
-        NSLog(@"DetailVC :: Portrait Upside Down");
+        if(debugMode) NSLog(@"DetailVC :: Portrait Upside Down");
         [self setBoundsPortrait];
         [self.FIA setNeedsDisplay];
         [self.CUA setNeedsDisplay];
@@ -219,7 +267,7 @@
     }
     else
     {
-        NSLog(@"DetailVC :: Orientation Error");
+        if(debugMode) NSLog(@"DetailVC :: Orientation Error");
         return NO;   
     }
     
@@ -243,7 +291,7 @@
     CGFloat viewY = viewFrame.origin.y;
     
     //In landscape modes, there is no CUA and FIA is the whole area
-    NSLog(@" %.2f , %.2f :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
+    if(debugMode) NSLog(@" %F.2f , %.2f :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
     [self.FIA setFrame:CGRectMake( viewX , viewY , viewW , viewH)];
     
     [self.CUA setHidden:YES];
@@ -262,7 +310,7 @@
     CGFloat viewX = viewFrame.origin.x;
     CGFloat viewY = viewFrame.origin.y;
     
-    NSLog(@" %.2f , %.2f :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
+    if(debugMode) NSLog(@" %.2f , %.2f :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
     
     [self.FIA setFrame:CGRectMake( viewX , viewY , viewW , viewH * FIAHeight )];
     viewY = viewY + viewH * FIAHeight;
