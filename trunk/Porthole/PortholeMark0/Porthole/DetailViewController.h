@@ -12,7 +12,7 @@
 #import "TCPClientOmega.h"
 
 #define DEFAULT_SERVER_ON   YES;
-#define DEFAULT_DVC_DEBUG   YES;
+#define DEFAULT_DVC_DEBUG   NO;
 #define DEFAULT_DEBUG_TOUCH YES;
 
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate>

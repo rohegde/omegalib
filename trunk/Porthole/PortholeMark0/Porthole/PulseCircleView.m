@@ -24,20 +24,27 @@
 
 -(void)drawCircleWith:(CGContextRef)context at:(CGPoint)loc
 {
+    const int numberColors = 5;
     // Draw the gray background for our progress view:    
     // gradient properties:
     CGGradientRef myGradient;
     // You need tell Quartz your colour space (how you define colours), there are many colour spaces: RGBA, black&white...
     CGColorSpaceRef myColorspace; 
     // the number of different colours
-    size_t num_locations = 3; 
+    size_t num_locations = numberColors; 
     // the location of each colour change, these are between 0 and 1, zero is the first circle and 1 is the end circle, so 0.5 is in the middle.
-    CGFloat locations[3] = { 0.0, 0.5 ,1.0 }; 
+    CGFloat locations[numberColors] = { 0.00 , 0.25 , 0.50 , 0.75 , 1.00 }; 
     // this is the colour components array, because we are using an RGBA system each colour has four components (four numbers associated with it).
-    CGFloat components[12] = {  
-        0.4, 0.4, 0.4, 0.9, // Start colour
-        0.9, 0.9, 0.9, 1.0,	// middle colour
-        0.4, 0.4, 0.4, 0.9 }; // End colour
+    CGFloat components[numberColors * 5] = {  
+//        0.4, 0.4, 0.4, 0.9, // Start colour
+//        0.9, 0.9, 0.9, 1.0,	// middle colour
+//        0.4, 0.4, 0.4, 0.9 }; // End colour
+        0.61, 0.78, 0.97, 0.50, // Start colour
+        0.16, 0.02, 0.95, 0.70,	// middle colour
+        0.90, 0.90, 0.90, 0.60,	// middle colour        
+        0.16, 0.02, 0.95, 0.70,	// middle colour
+        0.61, 0.78, 0.97, 0.50 }; // End colour
+        
     myColorspace = CGColorSpaceCreateDeviceRGB(); 
     myGradient = CGGradientCreateWithColorComponents (myColorspace, components,locations, num_locations);
 

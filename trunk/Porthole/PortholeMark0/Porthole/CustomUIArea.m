@@ -50,10 +50,10 @@
     
     
     UILabel *label = [[UILabel alloc] initWithFrame:labelBounds];
-    label.text = self.myName;    
+    label.text = @"Custom UI Area Goes Here";    
     label.textAlignment = UITextAlignmentCenter;
-    label.textColor = [UIColor yellowColor];
-    label.shadowColor = [UIColor whiteColor];
+    label.textColor = [UIColor whiteColor];
+    label.shadowColor = [UIColor blackColor];
     label.shadowOffset = CGSizeMake(1,1);
     label.font = [UIFont fontWithName:@"Helvetica" size:20];
     label.backgroundColor = [UIColor clearColor];

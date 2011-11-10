@@ -19,6 +19,10 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 @protocol FreeInteractionAreaViewDelegate
 - (void) sendMsgAsService:(int)serviceType event:(int)eventType param:(NSArray*)eventParam from:(FreeInteractionAreaView *)requestor;
 - (void) sendMsgAsService:(int)service event:(int)event sid:(int)srcId value:(float)val from:(FreeInteractionAreaView *)requestor;
+- (stateIAV) getConnectionState:(FreeInteractionAreaView *)requestor;
+- (void) intConnectionState:(FreeInteractionAreaView *)requestor;
+- (void) incrConnectionState:(FreeInteractionAreaView *)requestor;
+- (void) connect:(FreeInteractionAreaView *)requestor;
 @end
 
 
@@ -34,7 +38,6 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     PulseCircleView *markerView;
     
     id <FreeInteractionAreaViewDelegate> __unsafe_unretained delegate;
-    
 }
 
 @property (strong) PulseCircleView *markerView;
@@ -45,9 +48,11 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 
 -(void) makeLabelWithString:(NSString*)msg;
 
--(void)setupOverlay;
+-(void)genThumbnail;
+
 -(void)setupLabel;
 -(void)setupMarkerWith:(CGRect)frame;
+-(void)setupThumbnail:(CGRect)frame;
 
 -(void)wipeMarkers;
 
