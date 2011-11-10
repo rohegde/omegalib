@@ -258,6 +258,7 @@ void MeshViewer::initUi()
 	{
 		EntityData* ed = myEntityLibrary[i];
 		Button* btn = wf->createButton(ed->name, entityButtons);
+		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 	}
 
