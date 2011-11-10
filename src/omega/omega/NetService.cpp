@@ -616,7 +616,7 @@ void NetService::parseDGram(int result)
 					// Buttons
 					for( int i = 0; i < 15; i++ )
 					{
-						evt->setExtraDataFloat(i + 7, params[i + 7]);
+						evt->setExtraDataFloat(i + 6, params[i + 6]);
 					}
 					evt->setExtraDataFloat(19, params[22]); // DPad
 
