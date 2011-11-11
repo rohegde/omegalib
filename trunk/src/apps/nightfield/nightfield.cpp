@@ -281,8 +281,9 @@ void Nightfield::initialize()
 	myFlock->setup(&mySettings);
 	myFlock->initialize();
 
-	myMouseInteractor = new DefaultMouseInteractor();
-	addActor(myMouseInteractor);
+	//myInteractor = new DefaultMouseInteractor();
+	myInteractor = new ControllerManipulator();
+	addActor(myInteractor);
 
 	// Create a reference box around the scene.
 	if(cfg->exists("config/referenceBox"))
@@ -291,6 +292,7 @@ void Nightfield::initialize()
 		scene->addObject(myReferenceBox);
 		myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 		myReferenceBox->setColor(ReferenceBox::Back, Color(0.8f, 0.8f, 0.8f));
+		myReferenceBox->setup(cfg->lookup("config/referenceBox"));
 	}
 
 	if(cfg->exists("config/entities"))
@@ -411,7 +413,7 @@ void Nightfield::updateSelection(const Ray& ray)
 				mySelectedEntity->deselect();
 			}
 			// The selected entity changed.
-			myMouseInteractor->setSceneNode(sn);
+			myInteractor->setSceneNode(sn);
 			mySelectedEntity = e;
 			mySelectedEntity->select();
 		}
@@ -422,7 +424,7 @@ void Nightfield::updateSelection(const Ray& ray)
 		{
 			mySelectedEntity->deselect();
 			mySelectedEntity = NULL;
-			myMouseInteractor->setSceneNode(NULL);
+			myInteractor->setSceneNode(NULL);
 		}
 	}
 }

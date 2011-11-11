@@ -62,7 +62,7 @@ void ControllerManipulator::handleEvent(const Event& evt)
 		if(pitch < tresh && pitch > -tresh) pitch = 0;
 		if(trigger < tresh && trigger > -tresh) trigger = 0;
 
-		myAnalog1Position = Vector2f(x, y);
+		myAnalog1Position = Vector2f(x, -y);
 		myAnalog2Position = Vector2f(yaw, pitch);
 		myTrigger = trigger;
 

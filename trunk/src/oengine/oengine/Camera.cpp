@@ -36,7 +36,7 @@ Camera::Camera():
 	myAutoAspect(false),
 	myTargetNode(NULL),
 	myNavigationMode(NavDisabled),
-	myNavigationSpeed(4.0f),
+	myNavigationSpeed(2.0f),
 	myNavigationStrafeMultiplier(1.0f),
 	myNavigationYawMultiplier(0.002f),
 	myNavigationPitchMultiplier(0.002f),
@@ -48,7 +48,7 @@ Camera::Camera():
 	myPitch = 0;
 	myRotating = false;
 	myLastPointerPosition = Vector3f::Zero();
-	myControllerMoveVector = Vector2f::Zero();
+	myControllerMoveVector = Vector3f::Zero();
 	myControllerRotateVector = Vector2f::Zero();
 
 	// Set a standard focal offset of 1 meter away from camera.
@@ -102,16 +102,18 @@ void Camera::handleEvent(const Event& evt)
 			float n = 1000;
 			float x = evt.getExtraDataFloat(1) / n;
 			float y = evt.getExtraDataFloat(2) / n;
+			float z = evt.getExtraDataFloat(5) / n;
 			float yaw = evt.getExtraDataFloat(3) / n;
 			float pitch = evt.getExtraDataFloat(4) / n;
 			float tresh = 0.2f;
 
 			if(x < tresh && x > -tresh) x = 0;
 			if(y < tresh && y > -tresh) y = 0;
+			if(z < tresh && z > -tresh) z = 0;
 			if(yaw < tresh && yaw > -tresh) yaw = 0;
 			if(pitch < tresh && pitch > -tresh) pitch = 0;
 
-			myControllerMoveVector = Vector2f(x, y);
+			myControllerMoveVector = Vector3f(x, y, z);
 			myControllerRotateVector = Vector2f(yaw, pitch);
 
 			//ofmsg("%1% %2% %3% %4%", %x %y %yaw %pitch);
@@ -142,6 +144,7 @@ void Camera::update(const UpdateContext& context)
 		if(myNavigationMoveFlags & MoveBackward) speed += Vector3f(0, 0, myNavigationSpeed);
 
 		speed[2] += myControllerMoveVector[1] * myNavigationSpeed;
+		speed[1] += myControllerMoveVector[2] * myNavigationSpeed;
 		speed[0] += myControllerMoveVector[0] * myNavigationSpeed;
 
 		myYaw += myControllerRotateVector[0] * context.dt;
