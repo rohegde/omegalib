@@ -32,17 +32,34 @@
 using namespace omega;
 using namespace oengine;
 
+Lock Font::sLock;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Font::lock()
+{
+	sLock.lock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Font::unlock()
+{
+	sLock.unlock();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector2f Font::computeSize(const omega::String& text) 
 { 
+	Font::lock();
 	FTBBox bbox = myFontImpl->BBox(text.c_str());
 	Vector2f size = Vector2f((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf());
+	Font::unlock();
 	return size;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Font::render(const omega::String& text, float x, float y) 
 { 
+	Font::lock();
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glScalef(1.0f, -1.0f, 1.0f);
@@ -50,5 +67,6 @@ void Font::render(const omega::String& text, float x, float y)
 	myFontImpl->Render(text.c_str(), text.length(), FTPoint(x, y, 0.0f)); 
 
 	glPopMatrix();
+	Font::unlock();
 }
 
