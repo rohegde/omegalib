@@ -41,6 +41,7 @@ ControllerManipulator::ControllerManipulator()
 	myYaw = 0;
 	myPitch = 0;
 	myRoll = 0;
+	myScale = 1.0f;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,6 +93,19 @@ void ControllerManipulator::update(const UpdateContext& context)
 
 		move = myNode->getPosition() + move * context.dt;
 		myNode->setPosition(move);
+		
+		float scaleSpeed = 0.99f;
+		float scaleChange = 1.0f;
+		if(myButtonState[Button1])
+		{
+			scaleChange = scaleSpeed;
+		}
+		else if(myButtonState[Button3])
+		{
+			scaleChange = 1.0f / scaleSpeed;
+		}
+		myScale *= scaleChange;
+		myNode->setScale(myScale, myScale, myScale);
 
 		Quaternion quat =  AngleAxis(myYaw, Vector3f::UnitX()) * AngleAxis(0, Vector3f::UnitY()) * AngleAxis(myRoll, Vector3f::UnitZ());
 		myNode->setOrientation(quat);

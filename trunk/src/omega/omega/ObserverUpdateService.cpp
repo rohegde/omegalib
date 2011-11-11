@@ -33,7 +33,8 @@
 using namespace omega;
 
 // Define to enable a simple version of the service with no update threshold and separate orientation support.
-#define OMEGA_SIMPLE_OBSERVER_UPDATE
+//#define OMEGA_SIMPLE_OBSERVER_UPDATE
+//#define OMEGA_USE_THRESHOLD
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ObserverUpdateService::ObserverUpdateService():
@@ -156,6 +157,7 @@ void ObserverUpdateService::poll()
 						q = myLastOrientation;
 					}
 
+#ifdef OMEGA_USE_THRESHOLD
 					float d = (myLastPosition - pos).norm();
 					if(d > myCurrentMovementThreshold)
 					{
@@ -166,7 +168,10 @@ void ObserverUpdateService::poll()
 					}
 					myCurrentMovementThreshold = (myCurrentMovementThreshold * myMovementThresholdCoeff + myMovementThresholdTarget) / (myMovementThresholdCoeff + 1);
 					//ofmsg("mvth: %1%", %myCurrentMovementThreshold);
-					myObserver->update(myLastPosition, q);
+					myObserver->updateHead(myLastPosition, q);
+#else
+					myObserver->updateHead(pos, q);
+#endif
 				}
 #endif
 			}

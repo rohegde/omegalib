@@ -174,14 +174,14 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata)
 			if(type == "Diffuse")
 			{
 				ss->addUniform( new osg::Uniform("colorMap", 0) );
-				//ss->setTextureAttribute(0, getTexture(file));
-				ss->setTextureAttribute(0, getTexture("rockwall.tga"));
+				ss->setTextureAttribute(0, getTexture(file));
+				//ss->setTextureAttribute(0, getTexture("rockwall.tga"));
 			}
 			else if(type == "NMap")
 			{
 				ss->addUniform( new osg::Uniform("normalMap", 1) );
-				//ss->setTextureAttribute(1, getTexture(file));
-				ss->setTextureAttribute(1, getTexture("rockwall_normal.tga"));
+				ss->setTextureAttribute(1, getTexture(file));
+				//ss->setTextureAttribute(1, getTexture("rockwall_normal.tga"));
 			}
 			else if(type == "Specular")
 			{
@@ -190,8 +190,8 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata)
 			else if(type == "Height")
 			{
 				ss->addUniform( new osg::Uniform("heightMap", 2) );
-				//ss->setTextureAttribute(2, getTexture(file));
-				ss->setTextureAttribute(2, getTexture("rockwall_height.tga"));
+				ss->setTextureAttribute(2, getTexture(file));
+				//ss->setTextureAttribute(2, getTexture("rockwall_height.tga"));
 			}
 		}
 		xchild = xchild->NextSiblingElement();
