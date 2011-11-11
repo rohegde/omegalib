@@ -337,8 +337,7 @@ void MeshViewer::handleEvent(const Event& evt)
         {
 			if(mySelectedEntity != NULL)
 			{
-				Vector3f pos = getDefaultCamera()->getPosition();
-				mySelectedEntity->getSceneNode()->setPosition(pos);;
+				mySelectedEntity->resetTransform();
 			}
         }
     }
