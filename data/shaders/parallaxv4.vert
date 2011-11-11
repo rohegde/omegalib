@@ -29,10 +29,10 @@ void main(void)
 	vec3 v;
 	
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
-	//vec3 vVec = -vVertex;
-	v.x = dot(vVertex, t);
-	v.y = dot(vVertex, b);
-	v.z = dot(-vVertex, n);
+	vec3 vVec = -vVertex;
+	v.x = dot(vVec, t);
+	v.y = dot(vVec, b);
+	v.z = dot(vVec, n);
 	viewVec = v;
 
 	vec3 lVec = normalize(vec3(gl_LightSource[0].position));
