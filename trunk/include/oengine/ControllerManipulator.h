@@ -49,6 +49,7 @@ namespace oengine {
 		float myPitch;
 		float myRoll;
 		float myTrigger;
+		float myScale;
 		bool myButtonState[MaxButtons];
 	};
 }; // namespace oengine
