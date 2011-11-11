@@ -96,7 +96,7 @@ private:
 	ReferenceBox* myReferenceBox;
 	SceneNode* mySceneNode;
 	Flock* myFlock;
-	DefaultMouseInteractor* myMouseInteractor;
+	Actor* myInteractor;
 
 	AffectorEntity* mySelectedEntity;
 	List<AffectorEntity*> myEntities;
