@@ -24,7 +24,8 @@ void main(void)
 		
 	vec3 n = normalize(gl_NormalMatrix * gl_Normal);
 	vec3 t = normalize(gl_NormalMatrix * Tangent.xyz);
-	vec3 b = normalize(gl_NormalMatrix * cross(gl_Normal, Tangent.xyz) * Tangent.w);
+	//vec3 b = normalize(gl_NormalMatrix * cross(gl_Normal, Tangent.xyz) * Tangent.w);
+	vec3 b = cross(n, t);
 		
 	vec3 v;
 	
