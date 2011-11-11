@@ -128,7 +128,7 @@ namespace oengine {
 		float myPitch;
 		Vector3f myLastPointerPosition;
 		bool myRotating;
-		Vector2f myControllerMoveVector;
+		Vector3f myControllerMoveVector;
 		Vector2f myControllerRotateVector;
 	};
 	
