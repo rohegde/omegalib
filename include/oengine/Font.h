@@ -50,6 +50,10 @@ namespace oengine {
 	class OENGINE_API Font
 	{
 	public:
+		static void lock();
+		static void unlock();
+
+	public:
 		enum Align {HALeft = 1 << 0, HARight = 1 << 1, HACenter = 1 << 2,
 					VATop = 1 << 3, VABottom = 1 << 4, VAMiddle = 1 << 5};
 	public:
@@ -59,6 +63,7 @@ namespace oengine {
 		Vector2f computeSize(const omega::String& text);
 
 	private:
+		static Lock sLock;
 		FTFont* myFontImpl;
 	};
 }; // namespace oengine
