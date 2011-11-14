@@ -38,7 +38,7 @@ if(OMEGA_BINARY_DIR)
 	# in the future, just ${OMEGA_ROOT_DIR}/include will be needed, but for now, multiple paths 
 	# have to be specified. If building a project without Cmake, remember to specify ALL these directories
 	# as include paths for your compiler.
-	set(OMEGA_INCLUDE_DIRS ${OMEGA_BINARY_DIR}/include ${OMEGA_SOURCE_DIR}/include)
+	set(OMEGA_INCLUDE_DIRS ${OMEGA_BINARY_DIR}/include ${OMEGA_SOURCE_DIR}/include ${OMEGA_SOURCE_DIR}/ext/windows/include)
 		  
 	set(OMEGA_LIB_DIR_RELEASE ${OMEGA_BINARY_DIR}/lib/release)
 	set(OMEGA_LIB_DIR_DEBUG ${OMEGA_BINARY_DIR}/lib/debug)
