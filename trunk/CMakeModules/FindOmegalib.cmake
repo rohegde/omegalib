@@ -65,6 +65,10 @@ if(OMEGA_BINARY_DIR)
 		find_library(LIBCONFIG_LIB_DEBUG NAMES libconfig PATHS ${OMEGA_LIB_DIR_DEBUG})
 		find_library(LIBCONFIG_LIB_RELEASE NAMES libconfig PATHS ${OMEGA_LIB_DIR_RELEASE})
 		
+		# glew
+		find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR_DEBUG})
+		find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR_RELEASE})
+		
 	else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 		# omega
 		find_library(OMEGA_LIB_DEBUG NAMES omega PATHS ${OMEGA_BIN_DIR})
@@ -77,9 +81,13 @@ if(OMEGA_BINARY_DIR)
 		# libconfig
 		find_library(LIBCONFIG_LIB_DEBUG NAMES libconfig PATHS ${OMEGA_BIN_DIR})
 		find_library(LIBCONFIG_LIB_RELEASE NAMES libconfig PATHS ${OMEGA_BIN_DIR})
+		
+		# glew
+		find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_BIN_DIR})
+		find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_BIN_DIR})
 	endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
-	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} ${OPENGL_LIBRARY} ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} ${OPENGL_LIBRARY} ${LIBCONFIG_LIB_RELEASE})
+	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} ${OPENGL_LIBRARY} ${GLEW_LIB_DEBUG} ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} ${GLEW_LIB_RELEASE} ${OPENGL_LIBRARY} ${LIBCONFIG_LIB_RELEASE})
 	set(OENGINE_LIB debug ${OENGINE_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OENGINE_LIB_RELEASE} ${OPENGL_LIBRARY})
 
 	###################################################################################################
