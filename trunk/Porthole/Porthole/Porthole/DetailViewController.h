@@ -13,16 +13,16 @@
 
 #define DEFAULT_SERVER_ON   YES;
 #define DEFAULT_DVC_DEBUG   NO;
-#define DEFAULT_DEBUG_TOUCH YES;
+#define DEFAULT_DEBUG_TOUCH NO;
 
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate>
 {
     BOOL debugMode;
+    BOOL debugTouch; 
     
     FreeInteractionAreaView *FIA;
     CustomUIArea *CUA;    
     
-    BOOL debugTouch; 
     BOOL connectServer;
     float FIAHeight;
     float CUAHeight;
@@ -40,7 +40,6 @@
 @property ( strong , nonatomic ) TCPClientOmega *connection;
 
 -(void) setupGestureSupport;
-
 -(void) setupConnectionToServer;
 
 -(void) setBoundsLandscape;
