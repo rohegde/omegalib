@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2BD088DF1468D9850010DF51 /* Oscar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BD088DE1468D9850010DF51 /* Oscar.png */; };
+		2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF445E31472417B004FCF5E /* portholeiPad.png */; };
 		2BF7FB651455D7B400942695 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB641455D7B400942695 /* UIKit.framework */; };
 		2BF7FB671455D7B400942695 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB661455D7B400942695 /* Foundation.framework */; };
 		2BF7FB691455D7B400942695 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB681455D7B400942695 /* CoreGraphics.framework */; };
@@ -20,7 +21,6 @@
 		2BF7FB801455D7B400942695 /* Porthole.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB7E1455D7B400942695 /* Porthole.xcdatamodeld */; };
 		2BF7FB831455D7B400942695 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB821455D7B400942695 /* MasterViewController.m */; };
 		2BF7FB861455D7B400942695 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FB851455D7B400942695 /* DetailViewController.m */; };
-		2BF7FB9D1455D90800942695 /* portholeiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FB9C1455D90800942695 /* portholeiPad.png */; };
 		2BF7FB9F1455D90F00942695 /* portholeiPodRetina.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FB9E1455D90F00942695 /* portholeiPodRetina.png */; };
 		2BF7FBA11455D91200942695 /* portholeiPod.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA01455D91200942695 /* portholeiPod.png */; };
 		2BF7FBA41455D9F300942695 /* UIArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA31455D9F300942695 /* UIArea.m */; };
@@ -35,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		2BD088DE1468D9850010DF51 /* Oscar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Oscar.png; path = Porthole/Resources/Oscar.png; sourceTree = "<group>"; };
+		2BF445E31472417B004FCF5E /* portholeiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPad.png; sourceTree = "<group>"; };
 		2BF7FB601455D7B400942695 /* Porthole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Porthole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF7FB641455D7B400942695 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2BF7FB661455D7B400942695 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -53,7 +54,6 @@
 		2BF7FB821455D7B400942695 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
 		2BF7FB841455D7B400942695 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		2BF7FB851455D7B400942695 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		2BF7FB9C1455D90800942695 /* portholeiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPad.png; sourceTree = "<group>"; };
 		2BF7FB9E1455D90F00942695 /* portholeiPodRetina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPodRetina.png; sourceTree = "<group>"; };
 		2BF7FBA01455D91200942695 /* portholeiPod.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPod.png; sourceTree = "<group>"; };
 		2BF7FBA21455D9F300942695 /* UIArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIArea.h; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 			children = (
 				2BF7FBA01455D91200942695 /* portholeiPod.png */,
 				2BF7FB9E1455D90F00942695 /* portholeiPodRetina.png */,
-				2BF7FB9C1455D90800942695 /* portholeiPad.png */,
+				2BF445E31472417B004FCF5E /* portholeiPad.png */,
 				2B91D0F61468A0A5005C13A5 /* Resource */,
 				2BF7FB6C1455D7B400942695 /* Porthole */,
 				2BF7FB631455D7B400942695 /* Frameworks */,
@@ -333,10 +333,10 @@
 				2BF7FB711455D7B400942695 /* InfoPlist.strings in Resources */,
 				2BF7FB7A1455D7B400942695 /* MainStoryboard_iPhone.storyboard in Resources */,
 				2BF7FB7D1455D7B400942695 /* MainStoryboard_iPad.storyboard in Resources */,
-				2BF7FB9D1455D90800942695 /* portholeiPad.png in Resources */,
 				2BF7FB9F1455D90F00942695 /* portholeiPodRetina.png in Resources */,
 				2BF7FBA11455D91200942695 /* portholeiPod.png in Resources */,
 				2BD088DF1468D9850010DF51 /* Oscar.png in Resources */,
+				2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
