@@ -35,9 +35,11 @@
 {
     if (requestor == self.FIA) 
     {
-        if( debugTouch) NSLog(@"\tDVC : delegate connection");
-        [self.connection connection];
-        //[self setupConnectionToServer];
+        if( [self.connection estConnectionToServer] )
+        {
+            NSLog(@"\tDetailVC : delegate connection ... SUCCESS ");
+        }
+        else if( debugMode) NSLog(@"\tDetailVC : delegate connection ... FAILED ");
     }    
 }
 
@@ -49,13 +51,12 @@
         if(connectServer && self.connection != nil)
         {
             switch (self.connection.myState) {
-                case CLINET_INIT: return INIT; break;
-                case CLINET_CONNECTED: return CONNECTED; break;
-                case CLINET_GUIRECVED: return NEW_MODEL; break;
-                case CLINET_WAIT: return SAME_MODEL; break;                    
+                case CLIENT_INIT: return INIT; break;
+                case CLIENT_CONNECTED: return CONNECTED; break;
+                case CLIENT_GUIRECVED: return NEW_MODEL; break;
+                case CLIENT_IDLE: return SAME_MODEL; break;                    
             }
         }
-            
         else return -1;
     }    
     else return -1;
@@ -65,14 +66,18 @@
 {
 	if (requestor == self.FIA) 
     {
-        if(connectServer && self.connection != nil) self.connection.myState = CLINET_INIT;
+        //if connectServer and allows to connect, then set connection to init state
+        if(connectServer && self.connection != nil) self.connection.myState = CLIENT_INIT;
     }    
 }
+
+//TODO::Enum Fix:: Assumed that the states are ordered
 
 - (void) incrConnectionState:(FreeInteractionAreaView *)requestor
 {
 	if (requestor == self.FIA) 
     {
+        //if connectServer and allows to connect, increment the state by one
         if(connectServer && self.connection != nil) self.connection.myState++;
     }    
 }
@@ -81,9 +86,12 @@
 {
 	if (requestor == self.FIA) 
     {
-//        NSLog(@"Sending");
-        //If the app is suppose to connect to a server, send the TCP Msg 
+        
+        if( debugMode ) NSLog(@"\tDetailVC :: Sending");
+
+        //If there is a connection to the server, send the TCP msg
         if( connectServer )[self.connection sendEventService:serviceType event:eventType param:eventParam];
+
 //        for( int i = 0 ; i < eventParam.count ; i++)
 //            {
 //                NSNumber* ele = [eventParam objectAtIndex:i];
@@ -95,7 +103,9 @@
 {
 	if (requestor == self.FIA) 
     {
-        //If the app is suppose to connect to a server, send the TCP Msg 
+        if( debugMode ) NSLog(@"\tDetailVC :: Sending");
+
+        //If there is a connection to the server, send the TCP msg
         if( connectServer )[self.connection sendEventService:service event:event sid:srcId value:val];        
 	}    
 }    
@@ -122,7 +132,7 @@
 
 - (void)configureView
 {
-    if(debugMode) NSLog(@"DetailVC :: configureView");
+    if(debugMode) NSLog(@"\tDetailVC :: configureView");
     
     if (self.detailItem) 
     {
@@ -167,7 +177,7 @@
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
-    if(debugMode) NSLog(@"DetailVC :: didReceiveMemoryWarning - There is a memory problem!!!");
+    NSLog(@"DetailVC :: didReceiveMemoryWarning - There is a memory problem!!!");
     
 }
 //----------------------------------------------------------------------------------------------------
@@ -186,8 +196,6 @@
     
     if (connectServer) [self setupConnectionToServer];
     else self.connection = nil;
-
-    if (!connectServer) self.connection = nil;
     
     [self configureView];
     
@@ -290,8 +298,9 @@
     CGFloat viewX = viewFrame.origin.x;
     CGFloat viewY = viewFrame.origin.y;
     
+//    if(debugMode) NSLog(@"\tDetailVC :: bounds for landscape at: %F.2f , %.2f by :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
+    
     //In landscape modes, there is no CUA and FIA is the whole area
-    if(debugMode) NSLog(@" %F.2f , %.2f :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
     [self.FIA setFrame:CGRectMake( viewX , viewY , viewW , viewH)];
     
     [self.CUA setHidden:YES];
@@ -310,7 +319,7 @@
     CGFloat viewX = viewFrame.origin.x;
     CGFloat viewY = viewFrame.origin.y;
     
-    if(debugMode) NSLog(@" %.2f , %.2f :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
+//    if(debugMode) NSLog(@"\tDetailVC :: bounds for portrait at: %F.2f , %.2f by :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
     
     [self.FIA setFrame:CGRectMake( viewX , viewY , viewW , viewH * FIAHeight )];
     viewY = viewY + viewH * FIAHeight;

@@ -28,7 +28,6 @@
 		2BF7FBAC1455DA0200942695 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBA81455DA0200942695 /* UIImage+Resize.m */; };
 		2BF7FBAD1455DA0200942695 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBAA1455DA0200942695 /* UIImage+RoundedCorner.m */; };
 		2BF7FBB01455DA2C00942695 /* FreeInteractionAreaView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBAF1455DA2C00942695 /* FreeInteractionAreaView.m */; };
-		2BF7FBB41455DA3400942695 /* TCPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBB21455DA3400942695 /* TCPClient.m */; };
 		2BF7FBB71455DA3D00942695 /* PulseCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBB61455DA3D00942695 /* PulseCircleView.m */; };
 		2BF7FBBA1455DA4500942695 /* CustomUIArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBB91455DA4500942695 /* CustomUIArea.m */; };
 		2BF7FBC61455F36600942695 /* TCPClientOmega.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7FBC51455F36600942695 /* TCPClientOmega.m */; };
@@ -67,8 +66,6 @@
 		2BF7FBAA1455DA0200942695 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		2BF7FBAE1455DA2C00942695 /* FreeInteractionAreaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreeInteractionAreaView.h; sourceTree = "<group>"; };
 		2BF7FBAF1455DA2C00942695 /* FreeInteractionAreaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FreeInteractionAreaView.m; sourceTree = "<group>"; };
-		2BF7FBB11455DA3400942695 /* TCPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPClient.h; sourceTree = "<group>"; };
-		2BF7FBB21455DA3400942695 /* TCPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCPClient.m; sourceTree = "<group>"; };
 		2BF7FBB31455DA3400942695 /* OmegaProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OmegaProtocol.h; sourceTree = "<group>"; };
 		2BF7FBB51455DA3D00942695 /* PulseCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseCircleView.h; sourceTree = "<group>"; };
 		2BF7FBB61455DA3D00942695 /* PulseCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulseCircleView.m; sourceTree = "<group>"; };
@@ -184,15 +181,6 @@
 			name = PulseCircle;
 			sourceTree = "<group>";
 		};
-		2BF7FB8F1455D81200942695 /* TCPClient */ = {
-			isa = PBXGroup;
-			children = (
-				2BF7FBB11455DA3400942695 /* TCPClient.h */,
-				2BF7FBB21455DA3400942695 /* TCPClient.m */,
-			);
-			name = TCPClient;
-			sourceTree = "<group>";
-		};
 		2BF7FB901455D81B00942695 /* FreeInteractionAreaView */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,7 +193,6 @@
 		2BF7FB911455D82D00942695 /* General Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2BF7FB8F1455D81200942695 /* TCPClient */,
 				2BF7FB931455D84A00942695 /* UIArea */,
 				2BF7FB921455D83C00942695 /* UIImage */,
 			);
@@ -370,7 +357,6 @@
 				2BF7FBAC1455DA0200942695 /* UIImage+Resize.m in Sources */,
 				2BF7FBAD1455DA0200942695 /* UIImage+RoundedCorner.m in Sources */,
 				2BF7FBB01455DA2C00942695 /* FreeInteractionAreaView.m in Sources */,
-				2BF7FBB41455DA3400942695 /* TCPClient.m in Sources */,
 				2BF7FBB71455DA3D00942695 /* PulseCircleView.m in Sources */,
 				2BF7FBBA1455DA4500942695 /* CustomUIArea.m in Sources */,
 				2BF7FBC61455F36600942695 /* TCPClientOmega.m in Sources */,
