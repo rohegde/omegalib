@@ -32,7 +32,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
-	eq::Pipe(parent), myClient(NULL), myInitialized(false) 
+	eq::Pipe(parent), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
 {
 	NodeImpl* ni = (NodeImpl*)parent;
 	Application* app = SystemManager::instance()->getApplication();
@@ -55,6 +55,12 @@ PipeImpl::~PipeImpl()
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void PipeImpl::signalChannelInitialized(ChannelImpl* ch)
+{
+	myChannelsInitialized = true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool PipeImpl::configInit( const uint128_t& initID )
 {
 	bool result = eq::Pipe::configInit(initID);
@@ -68,12 +74,10 @@ bool PipeImpl::configInit( const uint128_t& initID )
 
 	NodeImpl* node = static_cast<NodeImpl*>( getNode( ));
 
-
 	// Initialize an application client.
 	if(myClient)
 	{
 		const eq::fabric::PixelViewport pw = getPixelViewport();
-		//myClient->setup();
 	}
 	return result;
 }
@@ -103,9 +107,8 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 	if(!myInitialized)
 	{
 		myClient->initialize();
-		myInitialized = true;
 	}
-	//else
+	else
 	{
 		// Syncronize frame data (containing input events and possibly other stuff)
 		myFrameData.sync(frameID);
@@ -134,5 +137,15 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 			}
 		}
 		myClient->update(context);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber )
+{
+	eq::Pipe::frameFinish(frameID, frameNumber);
+	if(!myInitialized)
+	{
+		myInitialized = true;
 	}
 }

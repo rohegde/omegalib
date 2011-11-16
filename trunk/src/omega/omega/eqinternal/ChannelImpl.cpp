@@ -188,7 +188,6 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameDraw( frameID );
 
-
 	// Clear the frame buffer using the background color specified in display system.
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 	const Color& b = ds->getBackgroundColor();
@@ -199,6 +198,9 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	ApplicationClient* client = pipe->getClient();
+
+	// If the pipe has not been initialized yet, return now.
+	if(!pipe->isReady()) return;
 
 	setupDrawContext(&myDC, frameID);
 
@@ -211,6 +213,11 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
+
+	// If the pipe has not been initialized yet, return now.
+	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	if(!pipe->isReady()) return;
+
 	setupDrawContext(&myDC, frameID);
 
 	myDC.layer = getLayers();
