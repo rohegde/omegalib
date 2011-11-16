@@ -231,15 +231,19 @@ public:
 	PipeImpl(eq::Node* parent);
 	ApplicationClient* getClient();
 	FrameData& getFrameData();
+	bool isReady() { return myInitialized && !myChannelsInitialized; }
+	void signalChannelInitialized(ChannelImpl* ch);
 
 protected:
 	virtual ~PipeImpl();
 	virtual bool configInit( const uint128_t& initID );
 	virtual bool configExit();
 	virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
+	virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 
 private:
 	bool myInitialized;
+	bool myChannelsInitialized;
 	ApplicationClient* myClient;
 	FrameData myFrameData;
 };
