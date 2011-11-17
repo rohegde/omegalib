@@ -138,7 +138,7 @@ namespace omega
 	class ApplicationServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationClient: public DynamicObject, public IEventListener
+	class OMEGA_API ApplicationClient: public DynamicObject
 	{
 	friend class DisplaySystem;
 	friend class ApplicationServer;
@@ -153,9 +153,7 @@ namespace omega
 		virtual void initialize();
 		virtual void finalize() {}
 
-		virtual void update(const UpdateContext& context) {}
 		virtual void draw(const DrawContext& context) {}
-		virtual void handleEvent(const Event& evt) { }
 
 		ApplicationServer* getServer() { return myServer; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }

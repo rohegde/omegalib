@@ -218,7 +218,14 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	if(!pipe->isReady()) return;
 
+	// In frame finish we just perform overlay draw operations, so always force the eye to be 
+	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
+	// Ignore the second call.
+	if(getEye() != eq::fabric::EYE_CYCLOP &&
+		myDC.frameNum >= frameID.low()) return;
+
 	setupDrawContext(&myDC, frameID);
+	myDC.eye = DrawContext::EyeCyclop;
 
 	myDC.layer = getLayers();
 	myDC.task = DrawContext::OverlayDrawTask;
