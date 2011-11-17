@@ -47,10 +47,6 @@ ApplicationClient* PipeImpl::getClient()
 { return myClient; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-FrameData& PipeImpl::getFrameData() 
-{ return myFrameData; }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::~PipeImpl() 
 {}
 
@@ -58,37 +54,6 @@ PipeImpl::~PipeImpl()
 void PipeImpl::signalChannelInitialized(ChannelImpl* ch)
 {
 	myChannelsInitialized = true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool PipeImpl::configInit( const uint128_t& initID )
-{
-	bool result = eq::Pipe::configInit(initID);
-
-	// Map the frame data object.
-	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig( ));
-	const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
-	oassert( mapped );
-
-	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-
-	NodeImpl* node = static_cast<NodeImpl*>( getNode( ));
-
-	// Initialize an application client.
-	if(myClient)
-	{
-		const eq::fabric::PixelViewport pw = getPixelViewport();
-	}
-	return result;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool PipeImpl::configExit()
-{
-	eq::Config* config = getConfig();
-	config->unmapObject( &myFrameData );
-
-	return eq::Pipe::configExit();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,36 +72,6 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 	if(!myInitialized)
 	{
 		myClient->initialize();
-	}
-	else
-	{
-		// Syncronize frame data (containing input events and possibly other stuff)
-		myFrameData.sync(frameID);
-
-		static float lt = 0.0f;
-		// Compute dt.
-		float t = (float)((double)clock() / CLOCKS_PER_SEC);
-		UpdateContext context;
-		if(lt == 0) lt = t;
-		context.time = t - lt;
-		context.dt = t - context.time;
-		context.frameNum = frameNumber;
-
-		// Dispatch received events events to application client.
-		int av = myFrameData.getNumEvents();
-		if(av != 0)
-		{
-			for( int evtNum = 0; evtNum < av; evtNum++)
-			{
-				Event& evt = myFrameData.getEvent(evtNum);
-				// Pointer events are sent out by channels, after being converted to correct viewport coordinates.
-				if(evt.getServiceType() != Service::Pointer)
-				{
-					if(!evt.isProcessed()) myClient->handleEvent(evt);
-				}
-			}
-		}
-		myClient->update(context);
 	}
 }
 
