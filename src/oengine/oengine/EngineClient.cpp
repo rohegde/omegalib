@@ -120,9 +120,9 @@ void EngineClient::draw(const DrawContext& context)
 		pass->render(this, context);
 	}
 
+	// Draw the pointers and console
 	if(context.task == DrawContext::OverlayDrawTask)
 	{
-		// Draw the pointers and console
 		RenderState state;
 		state.pass = NULL;
 		state.flags = RenderPass::RenderOverlay;
