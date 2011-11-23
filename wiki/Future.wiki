@@ -14,3 +14,9 @@ Separate display and services code.
 
 == Multimachine / distributed app changes ==
 	
+== SAGE Integration ==
+Send pixels to SAGE through SAIL. Options:
+	* Integrate as separate display system (I would have to take care of doing off-axis projection and a bunch of other stuff) *NO*
+	* Integrate on top of display system at:
+		* omega/DisplaySystem level (more generic)
+		* oengine level (allows me to use Camera / RenderPass functionality)
