@@ -47,7 +47,7 @@ ControllerManipulator::ControllerManipulator()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ControllerManipulator::handleEvent(const Event& evt)
 {
-	if(evt.getServiceType() == Service::Controller)
+	if(evt.getServiceType() == Service::Controller && evt.getSourceId() == 0)
 	{
 		float n = 1000;
 		float x = evt.getExtraDataFloat(1) / n;
