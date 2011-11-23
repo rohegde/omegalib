@@ -1,0 +1,20 @@
+#summary omegalib Current bugs, needed fixes and other issues
+#sidebar Sidebar
+
+On this page you can post any current issue, bug or requested improvement to omegalib.
+
+= Trunk (1.0) =
+omegalib supports builds in visual studio 2008 and 2010. Both 32 and 64 bit builds should work, but currently only
+Visual studio 2010 32 bit builds are tested regularly.
+
+== Minor Bugs ==
+	* fix depth problem in osg
+	* OpenGL included in minimal build
+	* tutorial 5 _ITERATOR_DEBUG_LEVEL mishmatch
+	* fix the fact that you always have to set mesh data after adding scene object.
+	* Thinkgear not compiling in release mode?
+	* meshviewer crashes when mesh file does not exist 
+
+== Improvements ==
+	* Readd GLUT support (Win & Linux)
+	* if OPENCL_INCLUDE_DIR is not found, set it automatically to internal ext/windows/include dir

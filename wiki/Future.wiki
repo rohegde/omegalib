@@ -1,0 +1,16 @@
+#summary omegalib Future plans for omegalib
+#sidebar Sidebar
+
+= omegalib 2.0 =
+
+== Library Refactoring ==
+Separate display and services code. 
+	* `ocore` contains just input serives and basic omegalib functionality (like math & configuration support)
+	* `odisplay` (or `omedia`? or just `omega`?) contains display services and the current engine
+	
+== New oinputserver / NetService, new protocol ==
+
+== Refactor Event class, generic messaging support ==
+
+== Multimachine / distributed app changes ==
+	
