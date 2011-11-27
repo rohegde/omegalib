@@ -16,3 +16,9 @@ For DirectInput to work, you have to make sure the Visual Studio compiler search
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/DirectInputConfig.png" width="500"/></p><p align="middle">
 _^Make sure the WinDDK include directory is the first one in the include directories section under Project Options >> Projects and Solutions >> VC++ Directories^_
 </p>
+
+=== "The build fails because the equalizer header 'api.h' is noy found" ===
+Similar to the 'lexer.cpp' error. Sometimes building again all that is needed to solve the problem. Otherwise, to make sure it goes away, build equalizer separately (see the picture) the do the same for the omega project
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/HOWTO2.png" width="500"/></p><p align="middle">
+_^How to build equalizer separately to solve this error.^_
+</p>
