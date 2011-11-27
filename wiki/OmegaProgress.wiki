@@ -6,7 +6,7 @@ See [ReleaseNotes]
 
 ------------------------------------------------------------------------
 
-= omegalib v0.6 (*current developement version*) =
+= omegalib v0.6 =
 == Summary ==
 The main features of omegalib 0.6 will be a complete integration with third party libraries like Vtk and OSG, finishing the work started in omegalib 0.5 It will also support communication and interaction with tablet devices like the iPad. This version will also improve support
 for clustered / multigpu display systems. 
