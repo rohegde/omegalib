@@ -20,16 +20,6 @@
 
 #import "OmegaProtocol.h"
 
-#define PORT 3490 // the port client will be connecting to 
-
-#define IP_ADDRESS "192.168.1.100"    //Home
-//#define IP_ADDRESS "131.193.77.197"   //EVL
-//#define IP_ADDRESS "131.193.77.249"   //EVL LabPad
-//#define IP_ADDRESS "131.193.77.222"   //myPad
-//#define IP_ADDRESS "131.193.77.200"   //Alessandro's Machine
-//#define IP_ADDRESS "131.193.78.108"   //Dual2.evl.uic.edu
-//#define IP_ADDRESS "131.193.77.112"   //Thor.evl.uic.edu
-
 #define DEBUG_CLIENT_DEFAULT YES;
 
 typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
@@ -37,16 +27,38 @@ typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
 //TODO::Enum Fix:: Assumed that the states are ordered
 typedef enum { CLIENT_INIT=0 , CLIENT_CONNECTED=1  , CLIENT_GUIRECVED=2 , CLIENT_IDLE=3 } ClientState;
 
-@interface TCPClientOmega : UIView
+@class TCPClientOmega;
+
+@protocol TCPClientOmegaDelegate
+- (void) flagRedraw:(TCPClientOmega*)requestor;
+@end
+
+@interface TCPClientOmega : UIView <NSStreamDelegate>
 {
-    CFSocketRef serverSocket;
     ClientState myState;
     BOOL debugClient;
-}
+    
+    NSInputStream *inputStream;
+    NSOutputStream *outputStream;
 
-@property (assign) CFSocketRef serverSocket;
+    Byte *imgByteData;
+    NSUInteger imgByteDataLength;    
+    BOOL newImgByteData;
+
+    id <TCPClientOmegaDelegate> __unsafe_unretained TCPClientOmegaDelegate;
+
+}
 @property (assign) ClientState myState;
 @property (assign) BOOL debugClient;
+
+@property (assign) Byte *imgByteData;
+@property (assign) NSUInteger imgByteDataLength;    
+@property (assign) BOOL newImgByteData;    
+
+@property (nonatomic, retain) NSInputStream *inputStream;
+@property (nonatomic, retain) NSOutputStream *outputStream;
+
+@property (unsafe_unretained) id <TCPClientOmegaDelegate> TCPClientOmegaDelegate;
 
 
 //GUI parsing   
@@ -57,9 +69,19 @@ typedef enum { CLIENT_INIT=0 , CLIENT_CONNECTED=1  , CLIENT_GUIRECVED=2 , CLIENT
 -(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val;
 -(BOOL) sendEventService:(int)service event:(int)event param:(NSArray*)eventParam;
 -(NSString*) genEventMsgWith:(NSArray*)data param:(NSArray*)info;
+-(void) sendToServer:(NSString*)msg;
+-(UInt32) determinePort;
 
 //Connection mng
--(BOOL) estConnectionToServer;
-void CallBackFunction(CFSocketRef, CFSocketCallBackType , CFDataRef , const void *, void *);
+- (NSString*) determineIP;
+
+- (void) estConnectionToServer;
+
+//Img Msg recieved
+- (void) messageReceived:(NSString *)message;
+-(void) clearOutOldImgByteData;
+
+//- (void) callbackFuncFor:(CFSocketRef)socket callType:(CFSocketCallBackType)type withAddress:(CFDataRef)addy withData:(const void *)data withInfo:(void*)info;
+//void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRef address , const void *data , void *info);
 
 @end

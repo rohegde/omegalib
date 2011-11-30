@@ -23,15 +23,15 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
 {
     self = [super initWithFrame:frame];
     if (self) 
     {
         // Initialization code here.
         [self setMyName:theName];
-        [self setBounds:theBounds];
         [self setTouchAble:touch];
+        [self setFrame:frame];
         [self setMultiTouchAble:mTouch];
         [self clearMarkerLoc];
     }

@@ -10,9 +10,16 @@
 
 @implementation TCPClientOmega
 
-@synthesize serverSocket;
 @synthesize myState;
 @synthesize debugClient;
+@synthesize inputStream;
+@synthesize outputStream;
+
+@synthesize imgByteData;
+@synthesize imgByteDataLength;    
+@synthesize newImgByteData;
+
+@synthesize TCPClientOmegaDelegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -21,143 +28,178 @@
     {
         myState = CLIENT_INIT; 
         debugClient = DEBUG_CLIENT_DEFAULT;
+        
+        inputStream = nil;
+        outputStream = nil;
+        
+        imgByteData = NULL;
+        imgByteDataLength = -1;
+
     }
     return self;
 }
+
+
 
 #
 #
 #pragma mark Handle Connection
 #
 #
-
--(BOOL) estConnectionToServer
+- (NSString*) determineIP
 {
-    //Create a socket of with the specificed details
-    CFAllocatorRef allocator = NULL;    
-    SInt32 protocolFamily = PF_INET;
-    SInt32 socketType = SOCK_STREAM;
-    SInt32 protocol = IPPROTO_TCP;
-
-    //kCFSocketNoCallBack       ::  No callback should be made for any activity.
-    //kCFSocketReadCallBack     ::  The callback is called when data is available to be read or a new connection is waiting to be accepted. 
-    //                              The data is not automatically read; the callback must read the data itself.
-    //kCFSocketAcceptCallBack   ::  New connections will be automatically accepted and the callback is called with the data argument being
-    //                              a pointer to a CFSocketNativeHandle of the child socket. This callback is usable only with listening sockets.
-    //kCFSocketDataCallBack     ::  Incoming data will be read in chunks in the background and the callback is called with the data argument 
-    //                              being a CFData object containing the read data.
-    //kCFSocketConnectCallBack  ::  If a connection attempt is made in the background by calling CFSocketConnectToAddress or 
-    //                              CFSocketCreateConnectedToSocketSignature with a negative timeout value, this callback type is made when the connect finishes. 
-    //                              In this case the data argument is either NULL or a pointer to an SInt32 error code, if the connect failed. 
-    //                              This callback will never be sent more than once for a given socket.
-    //kCFSocketWriteCallBack    ::  The callback is called when the socket is writable. 
-    //                              This callback type may be useful when large amounts of data are being sent rapidly over the socket and 
-    //                              you want a notification when there is space in the kernel buffers for more data.
-    CFOptionFlags callBackTypes = kCFSocketReadCallBack + kCFSocketDataCallBack + kCFSocketConnectCallBack;
-    CFSocketCallBack callout = (CFSocketCallBack)CallBackFunction;
-    char detail[] = "This is the socket for OmegaClient\n\r";
-    CFSocketContext context = { 0, detail, NULL, NULL, NULL };
-    serverSocket = CFSocketCreate ( allocator , protocolFamily , socketType , protocol , callBackTypes, callout, &context);
-    
-    if ( serverSocket == NULL )
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *overrideIP = [ NSString stringWithString:[defaults stringForKey:@"overrideIP"]];
+    if( [overrideIP isEqualToString:@""] ) //there is no overriding IP
     {
-        NSLog(@"\tOmegaClient :: ERROR : socket creation error.");   
-        return NO;
+        NSString *knownIP = [ NSString stringWithString:[defaults stringForKey:@"knownIP"]];
+        
+        //Get the sections of the IP that is the address
+        NSString* seperator = [NSString stringWithUTF8String:")"];
+        NSArray *sections = [ knownIP componentsSeparatedByString:seperator ];
+        //Know that it is always the last part : (name)              000.000.000.000
+        knownIP = [sections objectAtIndex:1];
+        knownIP = [knownIP stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        return knownIP;        
     }
-    else
+    else // There is an overriding IP
     {
-        if( debugClient ) NSLog(@"\tOmegaClient : socket created");
+        overrideIP = [overrideIP stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];        
+        return overrideIP;
     }
-    
-    //Set the port and address we want to listen on 
-    struct sockaddr_in addr;
-    memset(&addr, 0, sizeof(addr));
-    addr.sin_len = sizeof(addr);
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons( PORT );
-    addr.sin_addr.s_addr = INADDR_ANY;
-    
-    //Grab the host name of the specficed IP
-    //Later need to change this to incorporate Bonjour so the IP does not need to be specified
-    struct hostent *hp;
-    hp = gethostbyname( IP_ADDRESS );
-    if( hp == NULL )
-    {
-        NSLog(@"\tOmegaClient :: ERROR : can not resolve host name for IP : %s" , IP_ADDRESS);
-        return NO;
-    }
-    memcpy( &addr.sin_addr.s_addr, hp->h_addr_list[0], hp->h_length );
-    
-    
-    //Generate the CFDataRef for the connection address
-    CFDataRef connectAddr = CFDataCreate(NULL, (unsigned char *)&addr, sizeof(addr));
-    
-    //Connect to the address
-    CFSocketError error = CFSocketConnectToAddress(serverSocket, connectAddr, -1.0);
-    switch (error)
-    {
-        case kCFSocketSuccess:
-            if( debugClient ) NSLog(@"\tOmegaClient : socket connected.");
-            myState = CLIENT_CONNECTED; 
-            break;
-        case kCFSocketError:
-            NSLog(@"\tOmegaClient :: ERROR : socket connection error.");
-            return NO;
-            break;
-        case kCFSocketTimeout:
-            NSLog(@"\tOmegaClient :: ERROR : socket connection timeout");
-            return NO;
-            break;
-    }
-    
-    CFRunLoopSourceRef sourceRef = CFSocketCreateRunLoopSource(kCFAllocatorDefault, serverSocket, 0);
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), sourceRef, kCFRunLoopCommonModes);
-    CFRelease(sourceRef);
-    CFRunLoopRun();
-
-    return YES;
-    
 }
 
-void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRef address , const void *data , void *info)
+-(UInt32) determinePort
 {
-    //    CFReadStreamRef readStream = NULL;
-    //    CFWriteStreamRef writeStream = NULL;
-    //    CFIndex bytes;
-    UInt8 buffer[250];
-    //    UInt8 recv_len = 0, send_len = 0;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *serverPort = [ NSString stringWithString:[defaults stringForKey:@"serverPort"]];
+    UInt32 port = [serverPort intValue];
+    return port;
+}
+
+-(void) estConnectionToServer
+{
+    CFReadStreamRef readStream = nil;
+    CFWriteStreamRef writeStream = nil;
     
-    //The native socket, used for various operations
-    CFSocketNativeHandle sock = CFSocketGetNative(socket);
+    // CFStreamCreatePairWithSocketToHost helps us to bind two streams to a host and a port. 
+    // Prepared the connection but there is no communication established. 
+
+    NSString* IP = [self determineIP];
+    CFStringRef CFIP = (__bridge CFStringRef) IP;
+    UInt32 port = [ self determinePort];
     
-    switch (type) {
-        case kCFSocketReadCallBack:
-            NSLog(@"\tOmegaClient :: socket read call back");
-            break;
+    CFStreamCreatePairWithSocketToHost( NULL,  CFIP, port , &readStream, &writeStream);
+    CFRelease(CFIP);
+//    inputStream = ( __bridge NSInputStream *)readStream;
+//    outputStream = ( __bridge NSOutputStream *)writeStream;
+
+    inputStream = objc_unretainedObject(readStream);
+    outputStream = objc_unretainedObject(writeStream);    
+    
+    [inputStream setDelegate:self];
+	[outputStream setDelegate:self];
+	[inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[inputStream open];
+	[outputStream open];
+    
+    NSLog(@"OmegaClient connecting to %@ Port %lu ..... " , IP , port );
+}
+
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent 
+{
+    switch (streamEvent) 
+    {
+		case NSStreamEventOpenCompleted:
+            if([theStream isEqual:inputStream] ) NSLog(@"\tOmegaClient :: Input Stream Opened.");            
+            if([theStream isEqual:outputStream] ) NSLog(@"\tOmegaClient :: Output Stream Opened.");            
+			break;
+		case NSStreamEventHasBytesAvailable:
+			if (theStream == inputStream) 
+            {
+				uint8_t buffer[1024];
+				int len;
+				
+				while ([inputStream hasBytesAvailable]) 
+                {
+					len = [inputStream read:buffer maxLength:sizeof(buffer)];
+					if (len > 0) 
+                    {
+						NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+						if (nil != output) 
+                        {
+                            if(debugClient) NSLog(@"\tOmegaClient :: Server said : %@ " , output);
+                            [self messageReceived:output];
+						}
+					}
+				}
+			}
+			break;
             
-        case kCFSocketDataCallBack:
-            NSLog(@"\tOmegaClient :: socket data call back");            
+			
+		case NSStreamEventErrorOccurred:
+            NSLog(@"\t\tERROR : Can not conenect to the host ...");
+            NSLog(@"\t\t\t Check internet connection is working.");            
+            NSLog(@"\t\t\t Check that the IP is set correctly under Settings-->Porthole");                        
+            NSLog(@"\t\t\t Check that the Port is set correctly under Settings-->Porthole");      
+			break;			
+		case NSStreamEventEndEncountered:
+            NSLog(@"\tOmegaClient :: Closing the input stream");
+            [theStream close];
+            [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            theStream = nil;			
+			break;
+
+        case NSStreamEventNone:
             break;
-            
-        case kCFSocketConnectCallBack:
-            NSLog(@"\tOmegaClient :: socket connection call back");            
+		case NSStreamEventHasSpaceAvailable:            
+
             break;
-        default:
-            break;
-    }
+	}
+}
+
+
+#
+#
+#pragma mark Handle Recieve Data from Sockets
+#
+#
+
+-(void) clearOutOldImgByteData
+{
+    free(imgByteData);
+    imgByteData = NULL;
+    imgByteDataLength = -1;
+    newImgByteData = NO;
+}
+
+
+- (void) messageReceived:(NSString *)message 
+{
+    [self clearOutOldImgByteData];
+    //simulate getting the byte array of data 
+    //static BOOL first = YES;
+    //if( first )
+    //{
+        //Grab the png info into UIImage
+        UIImage *img = [UIImage imageNamed:@"Tendrils.png"];
     
+        //UIImage --> NSData
+        NSData *imageData = UIImagePNGRepresentation(img);
+
+        //Convert the NSData to Bytes array
+        imgByteDataLength = [imageData length];
+        imgByteData = (Byte*)malloc( imgByteDataLength );
+        memcpy(imgByteData, [imageData bytes], imgByteDataLength);
+     //   first = NO;
+        newImgByteData = YES;
+    //}
     
-    /* The joke we stored in the socket context */
-    //    char *joke = info;
-    
-    //printf("OK. %s", joke);
-    
-    //send(sock, joke, strlen(joke)+1, 0);
-    //recv(sock, buffer, sizeof(buffer), 0);
-    //printf("%s", buffer);
-    
-    //close(sock);
-    //exit(EXIT_SUCCESS);
+    NSLog(@"TCP :: Recieving data");
+    [self.TCPClientOmegaDelegate flagRedraw:self];
+    [self clearOutOldImgByteData];
+
 }
 
 #
@@ -165,6 +207,15 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
 #pragma mark Handle Event Msg Generation
 #
 #
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+-(void) sendToServer:(NSString*)msg
+{
+    NSData *data = [[NSData alloc] initWithData:[msg dataUsingEncoding:NSASCIIStringEncoding]];
+	[outputStream write:[data bytes] maxLength:[data length]];
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -179,7 +230,7 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
         NSArray *eventData = [NSArray arrayWithObjects:serviceN, eventN, nil];
         
         NSString *eventMsg = [self genEventMsgWith:eventData param:eventParam];
-//TODO::Network Port        [super sendToServer:eventMsg];
+        [self sendToServer:eventMsg];
     }
     return YES;
 }
@@ -201,8 +252,8 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
         NSArray *eventParam= [NSArray arrayWithObjects:srcIdN, valN , nil ];        
         NSString *eventMsg = [self genEventMsgWith:eventData param:eventParam];
         
-//TODO::Network Port         [super sendToServer:eventMsg];
-    }
+        [self sendToServer:eventMsg];
+}
     return YES;
 }
 
@@ -237,15 +288,6 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
     }
     eventMsg = [eventMsg stringByAppendingString:seperator];
     
-    //Append the msg length in the beginning
-//    int eventMsgLen = eventMsg.length;
-//    NSString *eventLenS = [ NSString stringWithFormat:@"%d" , eventMsgLen];
-//    eventMsgLen = eventMsgLen + eventLenS.length;
-//    eventLenS = [ NSString stringWithFormat:@"%d" , eventMsgLen];
-//    
-//    eventLenS = [eventLenS stringByAppendingString:spacer];
-//    eventLenS = [eventLenS stringByAppendingString:eventMsg];
-    
     return eventMsg;
 }
 
@@ -262,6 +304,7 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
 //
 -(void) handleGUIElementsFor:(int)GUIType in:(NSArray*)pieces
 {
+    /*
     //Get all the other pieces
     int numOfElements = pieces.count - 2;   // 1 for the count and 1 for the end marker
     
@@ -290,6 +333,7 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
 //TODO::GUI Spec fix            if(debugClient) NSLog(@"\t\t id:%@ label:%@" , id , label);
         }
     }
+     */
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -297,6 +341,7 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
 //
 -(void) determineGUISpec:(NSString*) GUISpec
 {
+    /*
     int msgLength;
     
 //TODO::GUI Spec fix   if(debugClient) NSLog( @"GUISpec : %@ \n" , GUISpec );
@@ -336,6 +381,7 @@ void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRe
                 break;                
         }
     }
+    */
 }
 
 @end

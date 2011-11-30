@@ -17,7 +17,7 @@
 
 #include "utility.h"
 
-#define PORT "3490"  // the port users will be connecting to
+#define PORT_NO "3490"  // the port users will be connecting to
 #define BACKLOG 10     // how many pending connectionSockets queue will hold
 #define MAXDATASIZE 250 // max number of bytes we can get at once 
 
@@ -138,7 +138,7 @@ int main(void)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE; // use my IP
     
-    if ((rv = getaddrinfo(NULL, PORT, &hints, &servinfo)) != 0) {
+    if ((rv = getaddrinfo(NULL, PORT_NO, &hints, &servinfo)) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
@@ -186,7 +186,7 @@ int main(void)
         exit(1);
     }
     
-    printf("Waiting for connectionSockets...\n");
+    printf("Waiting for connectionSockets ..... \n");
     
     while(1) {  // main accept() loop
         sin_size = sizeof their_addr;
@@ -210,8 +210,17 @@ int main(void)
         long numbytes;
         char buf[MAXDATASIZE];
         
+        int counter = 0;
+        
         while (1)
         {
+            if ( counter == 5 )
+            {
+                string GUIMsg = generateGUIMsg();
+                printf("Sending GUI msg\n");
+                
+                if (send(connectionSocket , GUIMsg.c_str() , GUIMsg.length() , 0) == -1)perror("send");
+            }
             if ((numbytes = recv(connectionSocket, buf, MAXDATASIZE-1, 0)) == -1)             
             {
                 perror("recv");
@@ -229,6 +238,7 @@ int main(void)
                 break;
             }
             
+            counter++;
         }
         close(connectionSocket);  // parent doesn't need this]
         printf("Done\n");

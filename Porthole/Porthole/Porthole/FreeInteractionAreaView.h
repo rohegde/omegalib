@@ -29,6 +29,9 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
 @interface FreeInteractionAreaView : UIArea <PulseCircleViewDelegate>
 {
     UIImageView *overlayView;   
+    UIImage *overlayImg;
+    BOOL overLayImgNew;
+    
     UILabel *myLabel;
     stateIAV myState;
     CGFloat lastScale;
@@ -37,14 +40,21 @@ typedef enum { INIT , CONNECTED , NEW_MODEL , SAME_MODEL } stateIAV;
     CGPoint prevPt;
     PulseCircleView *markerView;
     
-    id <FreeInteractionAreaViewDelegate> __unsafe_unretained delegate;
+    CGFloat portraitH;
+    CGFloat landscapeH;
+    
+    id <FreeInteractionAreaViewDelegate> __unsafe_unretained FIAdelegate;
 }
 
+@property (strong) UIImage *overlayImg;
+@property (assign) BOOL overLayImgNew;
+
 @property (strong) PulseCircleView *markerView;
+
 @property (assign) CGFloat lastScale;
 @property (assign) CGFloat lastRotation;
 
-@property (unsafe_unretained) id <FreeInteractionAreaViewDelegate> delegate;
+@property (unsafe_unretained) id <FreeInteractionAreaViewDelegate> FIAdelegate;
 
 -(void) makeLabelWithString:(NSString*)msg;
 

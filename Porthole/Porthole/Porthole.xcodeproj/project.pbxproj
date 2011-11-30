@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B0C2B2F14749E1C002A1436 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2B0C2B2E14749E1C002A1436 /* Settings.bundle */; };
+		2B0C2B321474D0C5002A1436 /* Tendrils.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B0C2B311474D0C5002A1436 /* Tendrils.png */; };
+		2B741F5B14725A8F001EB9E5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */; };
 		2BD088DF1468D9850010DF51 /* Oscar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BD088DE1468D9850010DF51 /* Oscar.png */; };
+		2BF40FCD1480D78F002903C6 /* middleRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FC91480D78F002903C6 /* middleRow.png */; };
+		2BF40FCE1480D78F002903C6 /* topAndBottomRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */; };
+		2BF40FD01480D78F002903C6 /* topRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FCC1480D78F002903C6 /* topRow.png */; };
 		2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF445E31472417B004FCF5E /* portholeiPad.png */; };
 		2BF7FB651455D7B400942695 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB641455D7B400942695 /* UIKit.framework */; };
 		2BF7FB671455D7B400942695 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BF7FB661455D7B400942695 /* Foundation.framework */; };
@@ -34,7 +40,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B0C2B2E14749E1C002A1436 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Porthole/Settings.bundle; sourceTree = "<group>"; };
+		2B0C2B311474D0C5002A1436 /* Tendrils.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tendrils.png; path = Porthole/Resources/Tendrils.png; sourceTree = "<group>"; };
+		2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2BD088DE1468D9850010DF51 /* Oscar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Oscar.png; path = Porthole/Resources/Oscar.png; sourceTree = "<group>"; };
+		2BF40FC91480D78F002903C6 /* middleRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = middleRow.png; path = Porthole/Resources/middleRow.png; sourceTree = "<group>"; };
+		2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topAndBottomRow.png; path = Porthole/Resources/topAndBottomRow.png; sourceTree = "<group>"; };
+		2BF40FCC1480D78F002903C6 /* topRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topRow.png; path = Porthole/Resources/topRow.png; sourceTree = "<group>"; };
 		2BF445E31472417B004FCF5E /* portholeiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portholeiPad.png; sourceTree = "<group>"; };
 		2BF7FB601455D7B400942695 /* Porthole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Porthole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BF7FB641455D7B400942695 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -84,6 +96,7 @@
 				2BF7FB671455D7B400942695 /* Foundation.framework in Frameworks */,
 				2BF7FB691455D7B400942695 /* CoreGraphics.framework in Frameworks */,
 				2BF7FB6B1455D7B400942695 /* CoreData.framework in Frameworks */,
+				2B741F5B14725A8F001EB9E5 /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +106,10 @@
 		2B91D0F61468A0A5005C13A5 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				2BF40FC91480D78F002903C6 /* middleRow.png */,
+				2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */,
+				2BF40FCC1480D78F002903C6 /* topRow.png */,
+				2B0C2B311474D0C5002A1436 /* Tendrils.png */,
 				2BD088DE1468D9850010DF51 /* Oscar.png */,
 			);
 			name = Resource;
@@ -108,6 +125,7 @@
 				2BF7FB6C1455D7B400942695 /* Porthole */,
 				2BF7FB631455D7B400942695 /* Frameworks */,
 				2BF7FB611455D7B400942695 /* Products */,
+				2B0C2B2E14749E1C002A1436 /* Settings.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +140,7 @@
 		2BF7FB631455D7B400942695 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */,
 				2BF7FB641455D7B400942695 /* UIKit.framework */,
 				2BF7FB661455D7B400942695 /* Foundation.framework */,
 				2BF7FB681455D7B400942695 /* CoreGraphics.framework */,
@@ -337,6 +356,11 @@
 				2BF7FBA11455D91200942695 /* portholeiPod.png in Resources */,
 				2BD088DF1468D9850010DF51 /* Oscar.png in Resources */,
 				2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */,
+				2B0C2B2F14749E1C002A1436 /* Settings.bundle in Resources */,
+				2B0C2B321474D0C5002A1436 /* Tendrils.png in Resources */,
+				2BF40FCD1480D78F002903C6 /* middleRow.png in Resources */,
+				2BF40FCE1480D78F002903C6 /* topAndBottomRow.png in Resources */,
+				2BF40FD01480D78F002903C6 /* topRow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,7 +422,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -413,6 +437,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -423,7 +448,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -432,6 +457,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
