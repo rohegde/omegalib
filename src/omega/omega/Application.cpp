@@ -27,10 +27,6 @@
 #include "omega/Application.h"
 #include "omega/Lock.h"
 
-#ifdef OMEGA_USE_DISPLAY
-#include "omega/GpuManager.h"
-#endif
-
 #include "omega/StringUtils.h"
 
 using namespace omega;
@@ -63,36 +59,16 @@ Layer::Enum Layer::fromString(const String& str)
 void ApplicationServer::addClient(ApplicationClient* cli)
 {
 	myClients.push_back(cli);
-	cli->myId = myClientId++;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server) 
+ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server), myGpuContext(NULL)
 {
 	myServer->addClient(this);
-#ifdef OMEGA_USE_DISPLAY
-	myGpu = new GpuManager();
-#else
-	myGpu = NULL;
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ApplicationClient::~ApplicationClient() 
 {
-#ifdef OMEGA_USE_DISPLAY
-	delete myGpu;
-	myGpu = NULL;
-#endif
 }
 
-Lock l;
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ApplicationClient::initialize() 
-{
-#ifdef OMEGA_USE_DISPLAY
-	l.lock();
-	myGpu->initialize();
-	l.unlock();
-#endif
-}

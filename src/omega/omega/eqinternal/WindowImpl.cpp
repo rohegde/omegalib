@@ -36,7 +36,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-	eq::Window(parent), myFrameBuffer(NULL), myInitialized(false)
+	eq::Window(parent), myInitialized(false)
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,17 +47,15 @@ WindowImpl::~WindowImpl()
 bool WindowImpl::configInitGL(const uint128_t& initID)
 {
 	// Initialize this window frame buffer.
-	bool res = Window::configInitGL(initID);
-	const eq::fabric::PixelViewport& pvp = getPixelViewport();
-	myFrameBuffer = new RenderTarget();
-	myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, pvp.w, pvp.h);
+	return Window::configInitGL(initID);
+	//const eq::fabric::PixelViewport& pvp = getPixelViewport();
+	//myFrameBuffer = new RenderTarget();
+	//myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, pvp.w, pvp.h);
 
-	// Get the gpu manager from the client instance.
-	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-	ApplicationClient* client = pipe->getClient();
-	myGpu = client->getGpu();
-
-	return res;
+	//// Get the gpu manager from the client instance.
+	//PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	//ApplicationClient* client = pipe->getClient();
+	//myGpu = client->getGpu();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

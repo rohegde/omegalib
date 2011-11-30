@@ -34,7 +34,7 @@ using namespace std;
 
 using namespace eq;
 
-// horrible hack.
+// Kinda hack.
 bool initStaticVars = false;
 omega::Vector2i sCanvasChannels;
 omega::Vector2i sCanvasSize;
@@ -47,7 +47,7 @@ omega::Lock sLock;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
-	:eq::Channel( parent ), myWindow(parent), myInitialized(false)
+	:eq::Channel( parent ), myWindow(parent), myInitialized(false), myDrawBuffer(NULL)
 {
 	sLock.lock();
 	if(!initStaticVars)
@@ -57,7 +57,6 @@ ChannelImpl::ChannelImpl( eq::Window* parent )
 		initStaticVars = true;
 	}
 	sLock.unlock();
-	myDrawBuffer.initialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,8 +117,7 @@ void ChannelImpl::initialize()
 		sCanvasSize.y() = sCanvasChannels.y() * h;
 	}
 
-	ofmsg("@Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
-		%pipe->getClient()->getId()
+	ofmsg("@Initializing channel. channels=%1%x%2% size=%3%x%4%",
 		%sCanvasChannels.x() %sCanvasChannels.y()
 		%sCanvasSize.x() %sCanvasSize.y());
 
@@ -136,6 +134,8 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
 	eq::PixelViewport pvp = getPixelViewport();
 	eq::PixelViewport gpvp = getWindow()->getPixelViewport();
+
+	context->gpuContext = pipe->getGpuContext();
 
 	context->channel = &myChannelInfo;
 
@@ -167,9 +167,12 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	myChannelInfo.canvasChannels = &sCanvasChannels;
 	myChannelInfo.canvasSize = &sCanvasSize;
 
-	// Setup draw context
-	myDrawBuffer.setGLId(getDrawable());
-	context->drawBuffer = &myDrawBuffer;
+	// Setup draw buffer
+	if(myDrawBuffer == NULL)
+	{
+		myDrawBuffer = new RenderTarget(pipe->getGpuContext(), RenderTarget::RenderOnscreen, getDrawable());
+	}
+	context->drawBuffer = myDrawBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,6 +184,12 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 		initialize();
 		myInitialized = true;
 	}
+	
+	// If the pipe has not been initialized yet, return now.
+	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+	if(!pipe->isReady()) return;
+
+	getClient()->startFrame(FrameInfo(frameID.low(), pipe->getGpuContext()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,6 +223,10 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
 
+	EQ_GL_CALL( applyBuffer( ));
+	EQ_GL_CALL( applyViewport( ));
+	EQ_GL_CALL( setupAssemblyState( ));
+
 	// If the pipe has not been initialized yet, return now.
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	if(!pipe->isReady()) return;
@@ -237,9 +250,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	}
 	else if(isDrawFpsEnabled())
 	{
-		EQ_GL_CALL( applyBuffer( ));
-		EQ_GL_CALL( applyViewport( ));
-		EQ_GL_CALL( setupAssemblyState( ));
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
 		applyScreenFrustum();
@@ -248,8 +258,10 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 		glDisable( GL_LIGHTING );
 
 		getWindow()->drawFPS();
-		EQ_GL_CALL( resetAssemblyState( ));
 	}
+
+	getClient()->finishFrame(FrameInfo(frameID.low(), pipe->getGpuContext()));
+	EQ_GL_CALL( resetAssemblyState( ));
 }
 
 

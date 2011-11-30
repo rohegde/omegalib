@@ -34,14 +34,38 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ImageUtils::loadImage(const String& filename, ImageData* data)
+ImageData::ImageData(const String& filename, int width, int height):
+	myFilename(filename), myWidth(width), myHeight(height)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ImageData::setPixels(PixelData* pixels) 
+{
+	if(pixels == NULL) 
+	{
+		owarn("ImageData::setPixels: pixels = NULL");
+	}
+	else if(pixels->getWidth() != myWidth || pixels->getHeight() != myHeight)
+	{
+		ofwarn("ImageData::setPixels: wrong size. Expected %1%x%2%, got %3%x%4%", 
+			%myWidth %myHeight %pixels->getWidth() %pixels->getHeight());
+	}
+	else
+	{
+		myPixels = pixels; 
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ImageData* ImageUtils::loadImage(const String& filename)
 {
 	DataManager* dm = SystemManager::instance()->getDataManager();
 	DataInfo info = dm->getInfo(filename);
 
 	if(info.isNull())
 	{
-		return false;
+		return NULL;
 	}
 
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(info.path.c_str(), 0);
@@ -51,23 +75,27 @@ bool ImageUtils::loadImage(const String& filename, ImageData* data)
 	image = FreeImage_ConvertTo32Bits(image);
 	FreeImage_Unload(temp);
 	
-	data->width = FreeImage_GetWidth(image);
-	data->height = FreeImage_GetHeight(image);
+	int width = FreeImage_GetWidth(image);
+	int height = FreeImage_GetHeight(image);
 
-	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %data->width %data->height);
+	ImageData* imageData = new ImageData(filename, width, height);
+
+	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
 	
-	data->data = onew(GLubyte[4 * data->width * data->height]);
+	byte* data = new byte[4 * width * height];
 	char* pixels = (char*)FreeImage_GetBits(image);
 	
-	for(int j= 0; j < data->width * data->height ; j++)
+	for(int j= 0; j < width * height ; j++)
 	{
-		data->data[j*4+0]= pixels[j*4+2];
-		data->data[j*4+1]= pixels[j*4+1];
-		data->data[j*4+2]= pixels[j*4+0];
-		data->data[j*4+3]= pixels[j*4+3];
+		data[j*4+0]= pixels[j*4+2];
+		data[j*4+1]= pixels[j*4+1];
+		data[j*4+2]= pixels[j*4+0];
+		data[j*4+3]= pixels[j*4+3];
 	}
 	
 	FreeImage_Unload(image);
 
-	return true;
+	imageData->setPixels(new PixelData(PixelData::FormatRgb, width, height, data));
+
+	return imageData;
 }

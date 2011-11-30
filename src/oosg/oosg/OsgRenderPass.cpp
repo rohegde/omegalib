@@ -64,7 +64,7 @@ void OsgRenderPass::initialize()
 	myModule = (OsgModule*)getUserData();
 	mySceneView = new SceneView();
     mySceneView->initialize();
-	mySceneView->getState()->setContextID(getClient()->getId());
+	mySceneView->getState()->setContextID(getClient()->getGpuContext()->getId());
 
 	sInitLock.unlock();
 }
@@ -77,7 +77,7 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
 		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
-		mySceneView->setDrawBufferValue(context.drawBuffer->getGLId());
+		mySceneView->setDrawBufferValue(context.drawBuffer->getContext()->getId());
 
 		if(mySceneView->getSceneData() == NULL)
 		{

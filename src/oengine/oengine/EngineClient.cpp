@@ -76,7 +76,7 @@ void EngineClient::removeAllRenderPasses()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
-	ofmsg("@EngineClient::Initialize: id = %1%", %getId());
+	ofmsg("@EngineClient::Initialize: id = %1%", %getGpuContext()->getId());
 
 	// Create the default font.
 	const FontInfo& fi = myServer->getDefaultFont();
@@ -91,6 +91,24 @@ void EngineClient::initialize()
 void EngineClient::queueRenderableCommand(RenderableCommand& cmd)
 {
 	myRenderableCommands.push(cmd);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::startFrame(const FrameInfo& frame)
+{
+	foreach(Camera* cam, myServer->getCameras())
+	{
+		cam->startFrame(frame);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::finishFrame(const FrameInfo& frame)
+{
+	foreach(Camera* cam, myServer->getCameras())
+	{
+		cam->finishFrame(frame);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +132,27 @@ void EngineClient::draw(const DrawContext& context)
 		myRenderableCommands.pop();
 	}
 
-	// Execute all render passes in order.
+	// Draw once for the default camera (using the passed main draw context).
+	innerDraw(context);
+
+	// Perform draw for the additional enabled cameras.
+	foreach(Camera* cam, myServer->getCameras())
+	{
+		// See if camera is enabled for the current client and draw context.
+		if(cam->isEnabled(context))
+		{
+			// Begin drawing with the camera: get the camera draw context.
+			const DrawContext& cameraContext = cam->beginDraw(context);
+			innerDraw(cameraContext);
+			cam->endDraw(context);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineClient::innerDraw(const DrawContext& context)
+{
+	// Execute all render passes in order. 
 	foreach(RenderPass* pass, myRenderPassList)
 	{
 		pass->render(this, context);
@@ -140,4 +178,5 @@ void EngineClient::draw(const DrawContext& context)
 		getRenderer()->endDraw();
 	}
 }
+
 

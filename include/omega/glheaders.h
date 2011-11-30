@@ -27,6 +27,9 @@
 #ifndef __GL_HEADERS_H__
 #define __GL_HEADERS_H__
 
+#include "osystem.h"
+#include "StringUtils.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef OMEGA_OS_WIN
 	#define NOMINMAX
@@ -52,5 +55,25 @@
 #include "CL/cl.h"
 #include "CL/cl_gl.h"
 #endif
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//! Returns true if the last opengl call failed, and prints an error message.
+inline bool _oglError(const char* file, int line)
+{
+	GLenum glErr = glGetError();
+
+	if(glErr)
+	{
+		const unsigned char* str = gluErrorString(glErr);
+		omega::String path;
+		omega::String filename;
+		omega::StringUtils::splitFilename(omega::String(file), filename, path);
+		omega::oferror("GL Error at %1%:%2%. %3%", %filename %line %str);
+		return true;
+	}
+	return false;
+}
+
+#define oglError _oglError(__FILE__, __LINE__)
 
 #endif

@@ -85,6 +85,9 @@ namespace omega
 		ApplicationServer* myAppServer;
 		RenderTarget* myFrameBuffer;
 		Layer::Enum myLayer;
+
+		GpuManager* myGpu;
+		GpuContext* myGpuContext;
 	};
 }; // namespace omega
 

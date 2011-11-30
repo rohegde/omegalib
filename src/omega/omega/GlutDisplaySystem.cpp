@@ -63,7 +63,7 @@ void displayCallback(void)
 	lt = t;
 
 	as->update(uc);
-	ac->update(uc);
+	//ac->update(uc);
 
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -84,7 +84,7 @@ void displayCallback(void)
 	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.data() );
 	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.data() );
 
-	dc.drawBuffer = ds->getFrameBuffer();
+	//dc.drawBuffer = ds->getFrameBuffer();
 
 	// Process events.
 	ServiceManager* im = SystemManager::instance()->getServiceManager();
@@ -98,7 +98,6 @@ void displayCallback(void)
 		for( int evtNum = 0; evtNum < av; evtNum++)
 		{
 			as->handleEvent(evts[evtNum]);
-			ac->handleEvent(evts[evtNum]);
 		}
 	}
 
@@ -194,6 +193,10 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 	glutDisplayFunc(displayCallback); 
 
+	myGpu = new GpuManager();
+	myGpu->initialize();
+	myGpuContext = new GpuContext(myGpu);
+
 	// Setup and initialize the application server and client.
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
@@ -203,9 +206,10 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 		myAppServer->initialize();
 
-		myFrameBuffer = new RenderTarget();
-		myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
+		//myFrameBuffer = new RenderTarget();
+		//myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
 		//myAppClient->setup();
+		myAppClient->setGpuContext(myGpuContext);
 		myAppClient->initialize();
 	}
 }

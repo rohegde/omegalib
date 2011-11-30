@@ -36,6 +36,7 @@ using namespace oengine::ui;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Image::Image(EngineServer* srv):
 	Widget(srv),
+	myAutoRefresh(false),
 	myData(NULL)
 {
 
@@ -56,18 +57,16 @@ Renderable* Image::createRenderable()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ImageRenderable::refresh()
 {
-	GpuManager* gpu = getClient()->getGpu();
+	GpuManager* gpu = getClient()->getGpuContext()->getGpu();
 	if(myOwner->myData != NULL)
 	{
-		myTexture = gpu->getTexture(myOwner->myData->filename);
+		PixelData* pd = myOwner->myData;
 		if(myTexture == NULL)
 		{
-			myTexture = gpu->createTexture(
-				myOwner->myData->filename,
-				myOwner->myData->width,
-				myOwner->myData->height,
-				myOwner->myData->data);
+			myTexture = new Texture(getClient()->getGpuContext());
+			myTexture->initialize(pd->getWidth(), pd->getHeight());
 		}
+		myTexture->writePixels(pd);
 	}
 }
 
@@ -78,6 +77,14 @@ void ImageRenderable::drawContent()
 
 	if(myTexture != NULL)
 	{
+		// If autorefresh is enabled, refresh texture data every time you draw.
+		// Not very efficient but works for now.
+		if(myOwner->myAutoRefresh) refresh();
+
 		getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize());
+	}
+	else
+	{
+		refresh();
 	}
 }

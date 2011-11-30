@@ -50,7 +50,6 @@ set( srcs
 		oengine/DefaultRenderPass.cpp
 		oengine/OverlayRenderPass.cpp
 		oengine/LightingPass.cpp
-		oengine/RenderToTexture.cpp
 		oengine/Camera.cpp
 		oengine/BoundingSphere.cpp
 		oengine/DefaultMouseInteractor.cpp
@@ -116,7 +115,6 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ply.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ReferenceBox.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/RenderToTexture.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/TransparentRenderPass.h

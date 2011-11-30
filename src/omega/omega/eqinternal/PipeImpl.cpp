@@ -32,7 +32,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
-	eq::Pipe(parent), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
+	eq::Pipe(parent), myGpu(NULL), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
 {
 	NodeImpl* ni = (NodeImpl*)parent;
 	Application* app = SystemManager::instance()->getApplication();
@@ -69,8 +69,12 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 	glewSetContext(glewc);
 
 	// Initialize the client at the first frame.
-	if(!myInitialized)
+	if(!myInitialized && myClient != NULL)
 	{
+		myGpu = new GpuManager();
+		myGpu->initialize();
+		myGpuContext = new GpuContext(myGpu);
+		myClient->setGpuContext(myGpuContext);
 		myClient->initialize();
 	}
 }

@@ -238,7 +238,7 @@ void MeshViewer::initUi()
 
 	Container* root = getUi(0);
 	root->setUIEventHandler(this);
-	root->setLayout(Container::LayoutVertical);
+	root->setLayout(Container::LayoutFree);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
 
@@ -248,10 +248,14 @@ void MeshViewer::initUi()
 	{
 		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
 	}
-	if(cfg->exists("config/ui/root"))
-	{
-		root->load(cfg->lookup("config/ui/root"));
-	}
+	//if(cfg->exists("config/ui/root"))
+	//{
+	//	root->load(cfg->lookup("config/ui/root"));
+	//}
+
+	entityButtons->setPosition(Vector2f(0, 0));
+	entityButtons->setSize(Vector2f(300, 400));
+	entityButtons->setDebugModeEnabled(true);
 
 	// Add buttons for each entity
 	for(int i = 0; i < myEntityLibrary.size(); i++)
@@ -262,14 +266,20 @@ void MeshViewer::initUi()
 		myEntityButtons.push_back(btn);
 	}
 
-	// If openNI service is available, add User manager panel to the secondary ui
-	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
-	{
-		root = getUi(1);
-		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel(this);
-		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
-	}
+	Image* img = wf->createImage("img", root);
+	PixelData* pd = new PixelData(PixelData::FormatRgba, 320, 320);
+	img->setData(pd);
+	img->setAutoRefresh(true);
+	img->setPosition(Vector2f(400, 0));
+	img->setSize(Vector2f(320, 320));
+	img->setDebugModeEnabled(true);
+
+	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DefaultFlags);
+	cam->setProjection(90, 1, 0.1f, 100);
+	cam->setAutoAspect(true);
+	cam->setPosition(Vector3f(0, 0, 2));
+	cam->getOutput(0)->setReadbackTarget(pd);
+	cam->getOutput(0)->setEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

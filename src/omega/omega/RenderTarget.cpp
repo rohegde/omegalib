@@ -31,14 +31,23 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-RenderTarget::RenderTarget():
-	myWidth(0),
-	myHeight(0),
-	myId(0),
-	myColorTarget(NULL),
-	myInitialized(false),
-	myDrawing(false)
+RenderTarget::RenderTarget(GpuContext* context, Type type, GLuint id):
+	GpuResource(context),
+	myType(type),
+	myId(id),
+	myRbColorId(0),
+	myRbDepthId(0),
+	myRbWidth(0),
+	myRbHeight(0),
+	myTextureColorTarget(NULL),
+	myTextureDepthTarget(NULL),
+	myBound(false)
 {
+	if(myType != RenderOnscreen && myId == 0)
+	{
+		glGenFramebuffers(1, &myId);
+		if(oglError) oerror("Fatal OpenGL error");
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,60 +56,149 @@ RenderTarget::~RenderTarget()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::setColorTarget(Texture* target) 
+void RenderTarget::setTextureTarget(Texture* color, Texture* depth)
 {
-	myColorTarget = target; 
-	myWidth = myColorTarget->getWidth();
-	myHeight = myColorTarget->getHeight();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::initialize(Type type, int width, int height)
-{
-	myWidth = width;
-	myHeight = height;
-	myType = type;
-
-	if(type == TypeRenderBuffer || type == TypeTexture)
+	if(myType != RenderToTexture)
 	{
-		glGenFramebuffers(1, &myId);
+		owarn("RenderTarget::setTextureTarget: this rendertarget is not of RenderToTexture type.");
 	}
-
-	myInitialized = true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::endDraw()
-{
-	myDrawing = false;
-	if(myColorTarget != NULL)
+	else
 	{
-		if(myId == 0)
-		{
-			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, myColorTarget->getWidth(), myColorTarget->getHeight(), 0);
-			myColorTarget->unbind();
-		}
-		else
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		}
+		myTextureColorTarget = color;
+		myTextureDepthTarget = depth;
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderTarget::beginDraw()
+///////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::setReadbackTarget(PixelData* color, PixelData* depth)
 {
-	myDrawing = true;
-	if(myColorTarget != NULL)
+	myReadbackColorTarget = color;
+	myReadbackDepthTarget = depth;
+	if(myReadbackColorTarget != NULL)
 	{
-		if(myId == 0)
+		myReadbackViewport = Rect(
+			0, 0, 
+			myReadbackColorTarget->getWidth(), myReadbackColorTarget->getHeight());
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport)
+{
+	setReadbackTarget(color, depth);
+	myReadbackViewport = readbackViewport;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+int RenderTarget::getWidth() 
+{ 
+	if(myType == RenderToTexture && myTextureColorTarget != NULL)
+	{
+		return myTextureColorTarget->getWidth();
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+int RenderTarget::getHeight() 
+{ 
+	if(myType == RenderToTexture && myTextureColorTarget != NULL)
+	{
+		return myTextureColorTarget->getHeight();
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::unbind()
+{
+	myBound = false;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::readback()
+{
+	bool needBinding = false;
+
+	if(!myBound) needBinding = true;
+	if(needBinding) bind();
+
+	if(myReadbackColorTarget != NULL)
+	{
+		glReadPixels(
+			myReadbackViewport.x(), myReadbackViewport.y(), 
+			myReadbackViewport.width(), myReadbackViewport.height(), GL_RGBA, GL_UNSIGNED_BYTE, 
+			(GLvoid*)myReadbackColorTarget->lockData());
+		myReadbackColorTarget->unlockData();
+	}
+	if(myReadbackDepthTarget != NULL)
+	{
+		glReadPixels(
+			myReadbackViewport.x(), myReadbackViewport.y(), 
+			myReadbackViewport.width(), myReadbackViewport.height(), GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 
+			(GLvoid*)myReadbackDepthTarget->lockData());
+		myReadbackDepthTarget->unlockData();
+	}
+	if(needBinding) unbind();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::bind()
+{
+	myBound = true;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, myId);
+	if(oglError) return;
+
+	if(myType == RenderToTexture)
+	{
+		if(myTextureColorTarget != NULL)
 		{
-			myColorTarget->bind(GpuManager::TextureUnit0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, myTextureColorTarget->getGLTexture(), 0);
+			if(oglError) return;
 		}
-		else
+		if(myTextureDepthTarget != NULL)
 		{
-			glBindFramebuffer(GL_FRAMEBUFFER, myId);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, myColorTarget->getGLTexture(), 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, myTextureDepthTarget->getGLTexture(), 0);
+			if(oglError) return;
 		}
 	}
+	else if(myType == RenderOffscreen)
+	{
+		// See if we need to create a renderbuffer or update its storage.
+		if(myRbColorId == 0)
+		{
+			glGenRenderbuffers(1, &myRbColorId);
+			if(oglError) return;
+			glGenRenderbuffers(1, &myRbDepthId);
+			if(oglError) return;
+		}
+		if(myRbWidth != myReadbackColorTarget->getWidth() || myRbHeight != myReadbackColorTarget->getHeight())
+		{
+			myRbWidth = myReadbackColorTarget->getWidth();
+			myRbHeight = myReadbackColorTarget->getHeight();
+			glBindRenderbuffer(GL_RENDERBUFFER, myRbColorId);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, myRbWidth, myRbHeight);
+			glBindRenderbuffer(GL_RENDERBUFFER, myRbDepthId);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, myRbWidth, myRbHeight);
+			glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		}
+
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, myRbColorId);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, myRbDepthId);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderTarget::clear()
+{
+	bool needBinding = false;
+
+	if(!myBound) needBinding = true;
+	if(needBinding) bind();
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	if(needBinding) unbind();
 }
