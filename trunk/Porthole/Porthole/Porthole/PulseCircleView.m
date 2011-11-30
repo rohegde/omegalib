@@ -22,14 +22,25 @@
 #pragma mark -
 #pragma mark Drawing Code:
 
+-(void)drawSimpleCircleWith:(CGContextRef)context at:(CGPoint)loc
+{
+    CGContextSetLineWidth(context, 1.0);
+    
+    CGContextSetRGBFillColor(context, 255.0, 0.0 , 0.0 , 1.0 );
+    
+    CGContextSetRGBStrokeColor(context, 255.0, 0.0, 0.0, 1.0);
+    
+    CGFloat size = 50;
+    
+    CGRect rectHoldingCircle = CGRectMake( loc.x - size*.5 , loc.y- size*.5 , size , size);
+    
+    CGContextFillEllipseInRect(context, rectHoldingCircle);   
+}
+
 -(void)drawCircleWith:(CGContextRef)context at:(CGPoint)loc
 {
-    const int numberColors = 5;
-    // Draw the gray background for our progress view:    
-    // gradient properties:
-    CGGradientRef myGradient;
-    // You need tell Quartz your colour space (how you define colours), there are many colour spaces: RGBA, black&white...
-    CGColorSpaceRef myColorspace; 
+   const int numberColors = 5;
+
     // the number of different colours
     size_t num_locations = numberColors; 
     // the location of each colour change, these are between 0 and 1, zero is the first circle and 1 is the end circle, so 0.5 is in the middle.
@@ -44,9 +55,13 @@
         0.90, 0.90, 0.90, 0.60,	// middle colour        
         0.16, 0.02, 0.95, 0.70,	// middle colour
         0.61, 0.78, 0.97, 0.50 }; // End colour
-        
-    myColorspace = CGColorSpaceCreateDeviceRGB(); 
-    myGradient = CGGradientCreateWithColorComponents (myColorspace, components,locations, num_locations);
+
+    // You need tell Quartz your colour space (how you define colours), there are many colour spaces: RGBA, black&white...
+    CGColorSpaceRef myColorspace = CGColorSpaceCreateDeviceRGB(); 
+    
+    // Draw the gray background for our progress view:    
+    // gradient properties:
+    CGGradientRef myGradient = CGGradientCreateWithColorComponents (myColorspace, components,locations, num_locations);
 
     // gradient start and end points
     CGPoint myStartPoint, myEndPoint; 
@@ -68,11 +83,13 @@
                                 myEndPoint, 
                                 myEndRadius, 0);
     CGGradientRelease(myGradient);
+    CGColorSpaceRelease(myColorspace);
 }
 
 // Drawing code.
 - (void)drawRect:(CGRect)rect 
 {
+    //TODO :: Test Img NSLog(@"PCV :: drawRect");
     // get the drawing canvas (CGContext):
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -89,6 +106,8 @@
         NSValue *curLoc = [ markerLocs objectAtIndex:curMarker];
         CGPoint curLocCG = [ curLoc CGPointValue ];
         [self drawCircleWith:context at:CGPointMake( curLocCG.x , curLocCG.y ) ];        
+//        [self drawSimpleCircleWith:context at:CGPointMake( curLocCG.x , curLocCG.y ) ];        
+
     }
 }
 

@@ -37,6 +37,8 @@
 @property (strong) id <PulseCircleViewDelegate>PCVDelegate;
 
 -(void)drawCircleWith:(CGContextRef)context at:(CGPoint)loc;
+-(void)drawSimpleCircleWith:(CGContextRef)context at:(CGPoint)loc;
+
 -(void) setProgress:(CGFloat) newProgress;		// set the component's value
 -(void) setColourR:(CGFloat) r G:(CGFloat) g B:(CGFloat) b A:(CGFloat) a;	// set component colour, set using RGBA system, each value should be between 0 and 1.
 -(CGFloat) progress; // returns the component's value.

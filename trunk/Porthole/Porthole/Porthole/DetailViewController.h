@@ -11,11 +11,17 @@
 #import "CustomUIArea.h"
 #import "TCPClientOmega.h"
 
-#define DEFAULT_SERVER_ON   YES;
 #define DEFAULT_DVC_DEBUG   NO;
 #define DEFAULT_DEBUG_TOUCH NO;
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate>
+#define FIA_LAND_RATIO 0.8
+#define FIA_PORT_RATIO 0.6
+
+#define CUA_LAND_RATIO 0.2
+#define CUA_PORT_RATIO 0.4
+
+
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate , TCPClientOmegaDelegate , CustomUIAreaDelegate>
 {
     BOOL debugMode;
     BOOL debugTouch; 
@@ -24,13 +30,13 @@
     CustomUIArea *CUA;    
     
     BOOL connectServer;
-    float FIAHeight;
-    float CUAHeight;
-    
     TCPClientOmega* connection;
+    
+    CGRect titleBar;
 }
 
 @property (assign , nonatomic) BOOL debugMode;
+
 @property (strong , nonatomic) id detailItem;
 @property (strong , nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
@@ -39,10 +45,13 @@
 
 @property ( strong , nonatomic ) TCPClientOmega *connection;
 
--(void) setupGestureSupport;
+@property (assign , nonatomic) CGRect titleBar;
+
+-(void) setupGestureSupportFIA;
 -(void) setupConnectionToServer;
 
--(void) setBoundsLandscape;
--(void) setBoundsPortrait;
+-(void) setupGestureSupportCUA;
+
+-(void) setBoundsForAreas;
 
 @end

@@ -25,21 +25,76 @@
 @synthesize CUA;
 @synthesize connection;
 
+@synthesize titleBar;
 
 #
 #
-#pragma mark - Managing the detail item
+#pragma mark - TCPClientOmega Delegates
 #
 #
+- (void) flagRedraw:(TCPClientOmega*)requestor
+{
+    if (requestor == self.connection)
+    {
+        NSLog(@"DetailVC :: Dumping img data to FIA and telling it to draw ");
+        //Convert byte Array to NSData
+        NSData *imgDataRecv = [ NSData dataWithBytes:self.connection.imgByteData length:self.connection.imgByteDataLength ];    
+        //Convert NSData to UIImage
+        UIImage *imgRecv = [UIImage imageWithData:imgDataRecv];
+        
+        self.FIA.overlayImg = imgRecv;
+        self.FIA.overLayImgNew = YES;
+        [self.FIA setNeedsDisplay];
+    }
+
+}
+
+#
+#
+#pragma mark - CUA Delegates
+#
+#
+- (void) CUAFlagRedraw:(CustomUIArea*)requestor
+{
+    if (requestor == self.CUA)
+    {
+        [self setBoundsForAreas];
+        [self.CUA setNeedsDisplay];
+    }
+    
+}
+
+
+#
+#
+#pragma mark - FIA Delegates
+#
+#
+
+//-(UIImage*) getImage:(FreeInteractionAreaView *)requestor
+//{
+//    if (requestor == self.FIA) 
+//    {
+//        if( self.connection.newImgByteData)
+//        {   
+//            NSLog(@"DetailVC :: getImage for FIA from TCP");
+//            //Convert byte Array to NSData
+//            NSData *imgDataRecv = [ NSData dataWithBytes:self.connection.imgByteData length:self.connection.imgByteDataLength ];    
+//            //Convert NSData to UIImage
+//            UIImage *imgRecv = [UIImage imageWithData:imgDataRecv];
+//            
+//            return imgRecv;
+//        }
+//        else return nil;
+//    }   
+//    else return nil;
+//}
+
 - (void) connect:(FreeInteractionAreaView *)requestor
 {
     if (requestor == self.FIA) 
     {
-        if( [self.connection estConnectionToServer] )
-        {
-            NSLog(@"\tDetailVC : delegate connection ... SUCCESS ");
-        }
-        else if( debugMode) NSLog(@"\tDetailVC : delegate connection ... FAILED ");
+        [self.connection estConnectionToServer];
     }    
 }
 
@@ -79,6 +134,10 @@
     {
         //if connectServer and allows to connect, increment the state by one
         if(connectServer && self.connection != nil) self.connection.myState++;
+
+        //After every state draw something.
+        NSLog(@"DetailVC :: State change draw something" );
+        [self.FIA setNeedsDisplay];
     }    
 }
 
@@ -130,8 +189,90 @@
     }        
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
+-(void)setBoundsForAreas
+{
+    if( debugMode ) NSLog(@"\tDetailVC :: setBoundsForAreas");
+    //Size of the workable space 
+    CGRect frame = self.view.frame;         
+    CGFloat frameX = frame.origin.x;
+    CGFloat frameY = frame.origin.y;    
+    CGFloat frameH = frame.size.height;
+    CGFloat frameW = frame.size.width;
+
+    if( debugMode ) NSLog(@"\t\tFrame : x : %.2f : w : %.2f : y : %.2f h : %.2f" , frameX , frameW , frameY , frameH);
+    
+    CGFloat FIAH , CUAH;
+    
+    //If the CUA is visable
+    if( self.CUA.CUAVisable )        
+    {
+        if( [[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft ||
+           [[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight)
+        {
+            FIAH = FIA_LAND_RATIO * frameH;
+            CUAH = CUA_LAND_RATIO * frameH;
+        }
+        else
+        {
+            FIAH = FIA_PORT_RATIO * frameH;
+            CUAH = CUA_PORT_RATIO * frameH;
+        }    
+    }
+    
+    //If the CUA is ~visable
+    else
+    {
+        //In landscape modes, there is only the top of the CUA and FIA is the rest of the area
+        UIView *CUAHitBox = self.CUA.hitBox;
+        if( debugMode ) NSLog(@"\t\tCUAHitBox : x : %.2f to %.2f : y : %.2f to %.2f" , CUAHitBox.bounds.origin.x , CUAHitBox.bounds.size.width , CUAHitBox.bounds.origin.y , CUAHitBox.bounds.size.height);
+
+        CUAH = CUAHitBox.frame.size.height;            
+        FIAH = (frameH - CUAH);
+    }
+   
+    [self.FIA setFrame:CGRectMake( frameX , frameY , frameW , FIAH )];
+    if( debugMode ) NSLog(@"\t\tFIA x: %.2f to %.2f  : y : %.2f to %.2f" , frameX , frameW , frameY , frameY + FIAH);
+    frameY = frameY + FIAH;        
+    
+    [self.CUA setFrame:CGRectMake( frameX , frameY , frameW , CUAH )];
+    if( debugMode ) NSLog(@"\t\tCUA x: %.2f to %.2f  : y : %.2f to %.2f" , frameX , frameW , frameY , frameY + CUAH);
+    frameY = frameY + CUAH;
+}
+//----------------------------------------------------------------------------------------------------
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
 - (void)configureView
 {
+    //    //Size of the device in portrait mode 
+    //    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    //    CGFloat screenX = screenBounds.origin.x;    //iPad 2 = 0
+    //    CGFloat screenY = screenBounds.origin.y;    //iPad 2 = 0
+    //    CGFloat screenW = screenBounds.size.width;  //iPad 2 = 768
+    //    CGFloat screenH = screenBounds.size.height; //iPad 2 = 1024
+    //    NSLog(@"Screen : x : %f : y : %f : w : %f h :  %f " , screenX , screenY, screenW , screenH);
+    //    
+    //    //Size of the workable space 
+    //    CGRect frame = self.view.frame;         
+    //    CGFloat frameX = frame.origin.x;         //iPad 2 = 0
+    //    CGFloat frameY = frame.origin.y;         //iPad 2 = 20    
+    //    CGFloat frameW = frame.size.width;       //iPad 2 = 768
+    //    CGFloat frameH = frame.size.height;      //iPad 2 = 1004
+    //    NSLog(@"Frame : x : %f : y : %f : w : %f h :  %f " , frameX , frameY , frameW , frameH);
+    //
+    //    
+    //    //Size of the workable space 
+    //    CGRect bounds = self.view.bounds;         
+    //    CGFloat boundsX = bounds.origin.x;         //iPad 2 = 0
+    //    CGFloat boundsY = bounds.origin.y;         //iPad 2 = 0    
+    //    CGFloat boundsW = bounds.size.width;       //iPad 2 = 768
+    //    CGFloat boundsH = bounds.size.height;      //iPad 2 = 1004
+    //    NSLog(@"Brounds : x : %f : y : %f : w : %f h :  %f " , boundsX , boundsY , boundsW , boundsH);
+
     if(debugMode) NSLog(@"\tDetailVC :: configureView");
     
     if (self.detailItem) 
@@ -139,28 +280,33 @@
         self.detailDescriptionLabel.text = [self.detailItem description];
     }
     
+    //Size of the device in portrait mode 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenH = screenBounds.size.height;
-    CGFloat screenW = screenBounds.size.width;
-    
+    CGFloat screenW = screenBounds.size.width;  //iPad 2 = 768
+    CGFloat screenH = screenBounds.size.height; //iPad 2 = 1024
+
     float curHeight = 0;
     
-    CGRect FIABounds = CGRectMake( 0 , curHeight , screenW , screenH * FIAHeight );
-    FIA = [ [FreeInteractionAreaView alloc] initWithFrame:FIABounds name:@"FIA" bounds:FIABounds withTouch:YES withMultiTouch:YES];
+    if(debugMode) NSLog(@"\t\tFIA : x : %f : w : %f : y : %f h :  %f ", 0.0  , screenW , curHeight, screenH * FIA_PORT_RATIO );
+    CGRect FIABounds = CGRectMake( 0 , curHeight , screenW , screenH * FIA_PORT_RATIO );
+    FIA = [ [FreeInteractionAreaView alloc] initWithFrame:FIABounds name:@"FIA" withTouch:YES withMultiTouch:YES];
     [FIA setDebugTouch:debugTouch];
     [FIA setBackgroundColor:[UIColor blackColor]];
-    FIA.delegate = self;
-    curHeight = curHeight + screenH * FIAHeight;
+    self.FIA.FIAdelegate = self;
+    curHeight = curHeight + screenH * FIA_PORT_RATIO;
 
-    
-    CGRect CUABounds = CGRectMake( 0 , curHeight, screenW, screenH * CUAHeight );
-    CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" bounds:CUABounds withTouch:YES withMultiTouch:NO];
-    curHeight = curHeight + screenH * CUAHeight;
+    if(debugMode) NSLog(@"\t\tCUA : x : %f : w : %f : y : %f h :  %f " , 0.0  , screenW , curHeight, screenH * CUA_PORT_RATIO );
+    CGRect CUABounds = CGRectMake( 0 , curHeight, screenW, screenH * CUA_PORT_RATIO );
+    CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" withTouch:YES withMultiTouch:YES];
+    [CUA setDebugTouch:debugTouch];
     [CUA setBackgroundColor:[UIColor grayColor]];
+    self.CUA.CUAdelegate = self;
+
+    curHeight = curHeight + screenH * CUA_PORT_RATIO;
     
     [self.view addSubview:FIA];
     [self.view addSubview:CUA];
-    
+
 }
 
 #
@@ -168,6 +314,14 @@
 #pragma mark - View lifecycle
 #
 #
+
+// Drawing code.
+- (void)drawRect:(CGRect)rect 
+{
+    NSLog(@"\tDetailVC :: drawing");
+    [self.CUA setNeedsDisplay];
+    [self.FIA setNeedsDisplay];
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -184,46 +338,78 @@
 
 - (void)viewDidLoad
 {
-    debugMode = DEFAULT_DVC_DEBUG;
-    connectServer = DEFAULT_SERVER_ON;
-    debugTouch = DEFAULT_DEBUG_TOUCH;
-    FIAHeight = 0.6;
-    CUAHeight = 0.4;
-    
-    if(debugMode) NSLog(@"DetailVC :: viewDidLoad");
-    
     [super viewDidLoad];
+    if(debugMode) NSLog(@"DetailVC :: viewDidLoad");
+
+    debugMode = DEFAULT_DVC_DEBUG;
+    debugTouch = DEFAULT_DEBUG_TOUCH;
+
+    //Determine from defaults in Settings, whether to allow connection to server.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL estConnectionToServer = [defaults boolForKey:@"connectToServer"];
+    connectServer = estConnectionToServer;
+
+    self.CUA.CUAVisable = YES;
     
     if (connectServer) [self setupConnectionToServer];
     else self.connection = nil;
     
     [self configureView];
     
-    [self setupGestureSupport];
+    [self setupGestureSupportFIA];
+    [self setupGestureSupportCUA];
+
+    NSLog(@"Detail View Controller Loaded ..... ");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
+-(void) setupConnectionToServer
+{
+    TCPClientOmega *newConnect = [ [TCPClientOmega alloc] initWithFrame:[[UIScreen mainScreen] bounds ]];
+    self.connection = newConnect;
+    self.connection.TCPClientOmegaDelegate = self;
     
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
 - (void)viewDidUnload
 {
     if(debugMode) NSLog(@"DetailVC :: viewDidUnload");
     [super viewDidUnload];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
@@ -234,44 +420,21 @@
 //
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    //    // Return YES for supported orientations
-    //    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) 
-    //    {
-    //    } else 
-    //    {
-    //       return YES;
-    //    }
-    if( interfaceOrientation == UIInterfaceOrientationPortrait)
+    if( interfaceOrientation == UIInterfaceOrientationPortrait ||
+       interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
     {
         if(debugMode) NSLog(@"DetailVC :: Portrait");
-        [self setBoundsPortrait];
-        [self.FIA setNeedsDisplay];
-        [self.CUA setNeedsDisplay];
+        [self setBoundsForAreas];
+        [self.view setNeedsDisplay];
         return YES;   
     }
-    else if ( interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
+    else if ( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+             interfaceOrientation == UIInterfaceOrientationLandscapeRight)
     {        
-        if(debugMode) NSLog(@"DetailVC :: Landscape left");
-        [self setBoundsLandscape];
-        [self.FIA setNeedsDisplay];
-        [self.CUA setNeedsDisplay];
+        if(debugMode) NSLog(@"DetailVC :: Landscape");
+        [self setBoundsForAreas];
+        [self.view setNeedsDisplay];
         return YES;
-    }
-    else if ( interfaceOrientation == UIInterfaceOrientationLandscapeRight)
-    {
-        if(debugMode) NSLog(@"DetailVC :: Landscape right");
-        [self setBoundsLandscape];
-        [self.FIA setNeedsDisplay];
-        [self.CUA setNeedsDisplay];
-        return YES;
-    }
-    else if ( interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
-    {
-        if(debugMode) NSLog(@"DetailVC :: Portrait Upside Down");
-        [self setBoundsPortrait];
-        [self.FIA setNeedsDisplay];
-        [self.CUA setNeedsDisplay];
-        return YES;       
     }
     else
     {
@@ -281,55 +444,6 @@
     
 }
 //----------------------------------------------------------------------------------------------------
-
-#
-#
-#pragma mark - Set bounds of the FIA and CUA subview
-#
-#
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// 
-//
--(void)setBoundsLandscape
-{
-    CGRect viewFrame = self.view.frame;
-    CGFloat viewH = viewFrame.size.height;
-    CGFloat viewW = viewFrame.size.width;
-    CGFloat viewX = viewFrame.origin.x;
-    CGFloat viewY = viewFrame.origin.y;
-    
-//    if(debugMode) NSLog(@"\tDetailVC :: bounds for landscape at: %F.2f , %.2f by :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
-    
-    //In landscape modes, there is no CUA and FIA is the whole area
-    [self.FIA setFrame:CGRectMake( viewX , viewY , viewW , viewH)];
-    
-    [self.CUA setHidden:YES];
-    [self.CUA setFrame:CGRectMake( viewX , viewY , 0 , 0 )];
-}
-//----------------------------------------------------------------------------------------------------
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// 
-//
--(void)setBoundsPortrait
-{
-    CGRect viewFrame = self.view.frame;
-    CGFloat viewH = viewFrame.size.height;
-    CGFloat viewW = viewFrame.size.width;
-    CGFloat viewX = viewFrame.origin.x;
-    CGFloat viewY = viewFrame.origin.y;
-    
-//    if(debugMode) NSLog(@"\tDetailVC :: bounds for portrait at: %F.2f , %.2f by :  %.2f x %.2f" , viewX , viewY , viewW , viewH);
-    
-    [self.FIA setFrame:CGRectMake( viewX , viewY , viewW , viewH * FIAHeight )];
-    viewY = viewY + viewH * FIAHeight;
-    
-    [self.CUA setHidden:NO];
-    [self.CUA setFrame:CGRectMake( viewX , viewY , viewW , viewH * CUAHeight )];
-    viewY = viewY + viewH * CUAHeight;
-}
-//----------------------------------------------------------------------------------------------------
-
 
 #
 #
@@ -352,18 +466,9 @@
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// 
+//- (void) setupGestureSupportFIA
 //
--(void) setupConnectionToServer
-{
-    TCPClientOmega *newConnect = [ [TCPClientOmega alloc] initWithFrame:[[UIScreen mainScreen] bounds ]];
-    self.connection = newConnect;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-//- (void) setupGestureSupport
-//
-- (void) setupGestureSupport
+- (void)setupGestureSupportFIA
 {
     /*
      Create and configure the five recognizers. Add each to the view as a gesture recognizer.
@@ -412,10 +517,10 @@
     // -----------------------------
     // Swipe up
 	// -----------------------------
-//    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeUp:)];
-//    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
-//    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:3];
-//    [self.FIA addGestureRecognizer:recognizer];
+    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.FIA action:@selector(swipeUp:)];
+    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
+    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:1];
+    [self.FIA addGestureRecognizer:recognizer];
     
 	// -----------------------------
 	// Swipe left
@@ -435,4 +540,41 @@
     
 }
 //----------------------------------------------------------------------------------------------------
+
+#
+#
+#pragma mark - DetailVC touch stuff
+#
+#
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//- (void) setupGestureSupportCUA
+//
+- (void)setupGestureSupportCUA
+{
+    /*
+     Create and configure the five recognizers. Add each to the view as a gesture recognizer.
+     */
+	UIGestureRecognizer *recognizer;
+    
+    // -----------------------------
+    // Swipe up
+	// -----------------------------
+    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.CUA action:@selector(swipeUp:)];
+    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionUp];
+    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:1];
+    [self.CUA addGestureRecognizer:recognizer];
+    
+    // -----------------------------
+    // Swipe down
+	// -----------------------------
+    recognizer = [ [UISwipeGestureRecognizer alloc] initWithTarget:self.CUA action:@selector(swipeDown:)];
+    [(UISwipeGestureRecognizer*) recognizer setDirection:UISwipeGestureRecognizerDirectionDown];
+    [(UISwipeGestureRecognizer*) recognizer setNumberOfTouchesRequired:1];
+    [self.CUA addGestureRecognizer:recognizer];
+
+    
+}
+//----------------------------------------------------------------------------------------------------
+
 @end

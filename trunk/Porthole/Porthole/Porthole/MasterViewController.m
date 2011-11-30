@@ -49,6 +49,8 @@
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     self.navigationItem.rightBarButtonItem = addButton;
+
+    NSLog(@"Master View Controller Loaded ..... ");
 }
 
 - (void)viewDidUnload

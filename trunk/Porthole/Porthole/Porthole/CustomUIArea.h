@@ -10,12 +10,44 @@
 
 #import "UIArea.h"
 
-@interface CustomUIArea : UIArea 
+#define DEFAULT_CUA_DEBUG   NO;
+
+#define CUA_HIT_AREA 0.07
+
+@class CustomUIArea;
+
+@protocol CustomUIAreaDelegate
+- (void) CUAFlagRedraw:(CustomUIArea*)requestor;
+@end
+
+
+@interface CustomUIArea : UIArea <UITableViewDelegate, UITableViewDataSource>
 {
-    UILabel *myLabel;
+    BOOL CUAVisable;
+    CGFloat hitArea;
+    
+    UITableView *GUITable;
+    NSMutableArray *GUITableData;
+    
+    UIView *hitBox;
+    
+    BOOL debugMode;
+    
+    id <CustomUIAreaDelegate> __unsafe_unretained CUAdelegate;
 }
 
--(void)setupLabel;
+@property (assign) BOOL CUAVisable;
+@property (assign) BOOL debugMode;
+@property (assign) CGFloat hitArea;
+
+@property ( strong , nonatomic ) UITableView *GUITable;
+@property ( strong , nonatomic ) NSMutableArray *GUITableData;
+
+@property ( strong , nonatomic ) UIView *hitBox;
+
+@property (unsafe_unretained) id <CustomUIAreaDelegate> CUAdelegate;
+
+-(void) setupsubViews:(CGRect)frame;
 
 -(void)handlePinch:(UIPinchGestureRecognizer *) recognizer;
 -(void)handlePan:(UIPanGestureRecognizer *)recognizer; 

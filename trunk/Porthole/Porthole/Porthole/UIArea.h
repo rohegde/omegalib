@@ -26,7 +26,7 @@
 @property (assign) BOOL multiTouchAble;
 @property (assign) BOOL debugTouch;
 
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch;
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch;
 -(BOOL) within: (int)xLoc and:(int)yLoc;
 -(void) clearMarkerLoc;
 -(void) markerLocAddOne:(CGPoint) marker;

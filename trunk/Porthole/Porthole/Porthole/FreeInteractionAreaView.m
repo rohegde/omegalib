@@ -10,10 +10,15 @@
 
 @implementation FreeInteractionAreaView
 
+@synthesize overlayImg;
+@synthesize overLayImgNew;
+
 @synthesize markerView;
+
 @synthesize lastScale;
 @synthesize lastRotation;
-@synthesize delegate;
+
+@synthesize FIAdelegate;
 
 #
 #
@@ -41,23 +46,24 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-- (id)initWithFrame:(CGRect)frame name:(NSString*)theName bounds:(CGRect)theBounds withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
+- (id)initWithFrame:(CGRect)frame name:(NSString*)theName withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
 {
-    self = [super initWithFrame:frame name:theName bounds:theBounds withTouch:touch withMultiTouch:mTouch];
+    self = [super initWithFrame:frame name:theName withTouch:touch withMultiTouch:mTouch];
     if (self) 
     {
-        // Initialization code
-        NSLog(@"FIA init\n");
-        
-        UIView *background = [[UIView alloc] initWithFrame:theBounds];
+        //Setup the background
+        UIView *background = [[UIView alloc] initWithFrame:frame];
         [self addSubview:background];     
         
+        //Setup the label
         [self setupLabel];
-        [self setupThumbnail:frame];   
 
+        //Setup the thumbnail view
+        [self setupThumbnail:frame];   
         
         if( touch )
         {
+            //setup the marker view
             [self setupMarkerWith:frame];   
         }
         if( mTouch )
@@ -67,6 +73,8 @@
             prevPt = CGPointMake(0.0 , 0.0);
         }
         myState = INIT;
+        
+        NSLog(@"Free Interaction Area Loaded ..... \n");
     }
     return self;
 }
@@ -98,7 +106,8 @@
 //
 -(void)setupThumbnail:(CGRect)frame
 {
-    
+    overlayImg = nil;
+    overLayImgNew = NO;
     overlayView = [ [UIImageView alloc] initWithFrame:frame];
     overlayView.hidden = YES;
     [self addSubview:overlayView];     
@@ -113,7 +122,7 @@
     
     PulseCircleView *newMarker = [[PulseCircleView alloc] initWithFrame:frame];
     self.markerView = newMarker;
-    self.markerView.hidden = YES;
+    self.markerView.hidden = NO;
     self.markerView.PCVDelegate = self;  
     [self addSubview:markerView];     
 
@@ -140,8 +149,9 @@
 //
 -(void)genThumbnail
 {
-    stateIAV curState = [self.delegate getConnectionState:self];
+    stateIAV curState = [self.FIAdelegate getConnectionState:self];
 
+    //Draw the text instructions needed
     switch (curState)
     {
         case INIT:
@@ -168,8 +178,10 @@
             break;
     }
     
+    //If it is a new model draw the overlay of instructions
     if( curState == NEW_MODEL )
     {
+        //TODO :: Test Img NSLog(@"FIA :: Drawing Overlay for instructions");
         //Grab the png info into UIImage
         UIImage *img = [UIImage imageNamed:@"Oscar.png"];
     
@@ -193,13 +205,30 @@
         [overlayView setImage:imgRecv];
         overlayView.hidden = NO;
     }
+    //If it is the same model draw the thumbnail
+    if( curState == SAME_MODEL )
+    {
+        if( self.overlayImg != nil && self.overLayImgNew)
+        {
+            //TODO :: Test Img NSLog(@"FIA :: Drawing new img byte data");            
+            [overlayView setImage:self.overlayImg];
+            overlayView.hidden = NO;                
+        }
+        else 
+        {
+            
+            //TODO :: Test Img NSLog(@"FIA :: Not drawing shit");            
+        }
+    }
     [overlayView setNeedsDisplay];
-    
 }
 
 // Only override drawRect: if you perform custom drawing.
 - (void)drawRect:(CGRect)rect
 {
+    //TODO :: Test Img NSLog(@" ");
+    //TODO :: Test Img NSLog(@"FIA :: drawRect Called");
+
     [self genThumbnail ];
     if( self.touchAble && markerLoc != nil)
     {
@@ -232,7 +261,7 @@
 {
     [self clearMarkerLoc];
     self.markerView.hidden = YES;
-    [self.markerView setNeedsDisplay];
+    [self setNeedsDisplay];
 }
 
 #
@@ -261,20 +290,20 @@
     }    
     else
     {
-        switch ([self.delegate getConnectionState:self] )
+        switch ([self.FIAdelegate getConnectionState:self] )
         {
             case INIT:
                 if( debugTouch) NSLog(@"\tFIA : Touch : Connect");                
-                [self.delegate connect:self];
-                [self.delegate incrConnectionState:self];
+                [self.FIAdelegate connect:self];
+                [self.FIAdelegate incrConnectionState:self];
                 return;
                 break;
             case CONNECTED:
-                [self.delegate incrConnectionState:self];
+                [self.FIAdelegate incrConnectionState:self];
                 return;
                 break;
             case NEW_MODEL:
-                [self.delegate incrConnectionState:self];
+                [self.FIAdelegate incrConnectionState:self];
                 return;
                 break;
             default:
@@ -299,13 +328,9 @@
         NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
         
         //Send TCP msg 
-        [self.delegate sendMsgAsService:Pointer event:Down param:param from:self];
+        [self.FIAdelegate sendMsgAsService:Pointer event:Down param:param from:self];
         [self setNeedsDisplay];
     }
-    [self setNeedsDisplay];
-    
-    
-    
     
 }
 //----------------------------------------------------------------------------------------------------
@@ -351,7 +376,7 @@
         NSArray *param = [NSArray arrayWithObjects:localX , localY , nil];             
         
         //Send TCP msg 
-        [self.delegate sendMsgAsService:Pointer event:Move param:param from:self];
+        [self.FIAdelegate sendMsgAsService:Pointer event:Move param:param from:self];
     }  
     [self setNeedsDisplay];
 }
@@ -392,13 +417,12 @@
         NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
         
         //Send TCP msg
-        [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
+        [self.FIAdelegate sendMsgAsService:Pointer event:Up param:param from:self];
         
         //Clear the touches in the markLoc array
         [self wipeMarkers];
     }    
-    [self setNeedsDisplay];
-    
+    [self setNeedsDisplay];    
     
 }
 //----------------------------------------------------------------------------------------------------
@@ -447,10 +471,10 @@
             case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap ended"); break;                        
             default:break;
         }
-        if( debugTouch ) NSLog(@"\%f , %f " , prevPt.x , prevPt.y);   
+        if( debugTouch ) NSLog(@"\t\t%f , %f " , prevPt.x , prevPt.y);   
 
         NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithFloat:prevPt.x] , [NSNumber numberWithFloat:prevPt.y] , nil];
-        [self.delegate sendMsgAsService:Pointer event:Up param:param from:self];
+        [self.FIAdelegate sendMsgAsService:Pointer event:Up param:param from:self];
         
         //Reset at the end
         lastScale = 1.0;  
@@ -510,7 +534,7 @@
     NSArray *paramArray = [NSArray arrayWithArray:paramMutable];
     
     //Send TCP msg
-    [self.delegate sendMsgAsService:Pointer event:event param:paramArray from:self];
+    [self.FIAdelegate sendMsgAsService:Pointer event:event param:paramArray from:self];
     
     [self setNeedsDisplay];
     
@@ -574,9 +598,8 @@
 -(void)swipeUp:(UISwipeGestureRecognizer *) recognizer
 {
     [super swipeUp:recognizer];
-    
+
     [self genTCPMsgWithRecognizer:recognizer Event:MoveUp Param:recognizer.direction];
-    
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -588,6 +611,7 @@
     [super swipeDown:recognizer];
     
     [self genTCPMsgWithRecognizer:recognizer Event:MoveDown Param:recognizer.direction];
+    NSLog(@"FIA :: Swipe down");
     
 }
 //----------------------------------------------------------------------------------------------------
