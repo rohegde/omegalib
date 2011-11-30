@@ -28,6 +28,7 @@
 #define __GPU_MANAGER_H__
 
 #include "osystem.h"
+#include "omega/Lock.h"
 #include "omega/GpuProgram.h"
 
 // HACK: To be removed (see GpuManager::TextureUnit)
@@ -104,15 +105,7 @@ namespace omega
 
 		//! Data
 		//@{
-		GpuProgram* getDefaultProgram();
-		//RenderTarget* getFrameBuffer();
-		//void setFrameBuffer(RenderTarget* fb);
-		//@}
-
-		//! Texture management
-		//@{
-		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
-		Texture* getTexture(const String& textureName);
+		//GpuProgram* getDefaultProgram();
 		//@}
 
 		CLManager* getCLManager() { return myCLManager; }
@@ -133,26 +126,40 @@ namespace omega
 		ComputeShaderDictionary myComputeShaders;
 		TextureDictionary myTextures;
 
-		//! Current frame buffer.
-		//RenderTarget* myFrameBuffer;
-
 		// Default gpu program
-		GpuProgram* myDefaultProgram;
+		//GpuProgram* myDefaultProgram;
 
 		CLManager* myCLManager;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline GpuProgram* GpuManager::getDefaultProgram()
-	{ return myDefaultProgram; }
+	class OMEGA_API GpuContext
+	{
+	public:
+		static const unsigned int MaxContexts = 64;
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline RenderTarget* GpuManager::getFrameBuffer()
-	//{ return myFrameBuffer; }
+		GpuContext(GpuManager* gpu);
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline void GpuManager::setFrameBuffer(RenderTarget* fb)
-	//{ myFrameBuffer = fb; }
+		uint getId() { return myId; }
+		GpuManager* getGpu() { return myGpu; }
+
+	private:
+		static uint mysNumContexts;
+		static Lock mysContextLock;
+
+		uint myId;
+		GpuManager* myGpu;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API GpuResource: public DynamicObject
+	{
+	public:
+		GpuResource(GpuContext* ctx): myContext(ctx) {}
+		GpuContext* getContext() { return myContext; }
+	private:
+		GpuContext* myContext;
+	};
 }; // namespace omega
 
 #endif

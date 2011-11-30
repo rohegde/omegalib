@@ -52,7 +52,6 @@
 #include "oengine/Pointer.h"
 #include "oengine/Renderable.h"
 #include "oengine/ReferenceBox.h"
-#include "oengine/RenderToTexture.h"
 #include "oengine/RenderPass.h"
 #include "oengine/SceneQuery.h"
 #include "oengine/SceneNode.h"

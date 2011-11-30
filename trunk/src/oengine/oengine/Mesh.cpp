@@ -126,7 +126,7 @@ void MeshRenderable::refresh()
 	}
 
 	// Allocate index and vertex buffers.
-	GpuManager* gpuMng = getClient()->getGpu();
+	GpuManager* gpuMng = getClient()->getGpuContext()->getGpu();
 	myVertexBuffer = new VertexBuffer(gpuMng);
 
 	// Define position attribute for vertex buffer.

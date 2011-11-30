@@ -119,6 +119,7 @@ if(OMEGA_USE_DISPLAY)
 			omega/GpuProgram.cpp
 			omega/RenderTarget.cpp
 			omega/SagePointerService.cpp
+			omega/PixelData.cpp
 			omega/Texture.cpp
  		    omega/ObserverUpdateService.cpp
 			)
@@ -130,6 +131,7 @@ if(OMEGA_USE_DISPLAY)
 			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
 			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 			${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
+			${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
 			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
 	

@@ -29,30 +29,21 @@
 
 #include "osystem.h"
 #include "omega/GpuManager.h"
+#include "omega/PixelData.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Texture
+	class OMEGA_API Texture: public GpuResource
 	{
 	public:
-		Texture(): 
-		  myInitialized(false), 
-		  myDirty(true),
-		  myData(NULL),
-		  myTextureUnit(GpuManager::TextureUnitInvalid) {}
+		Texture(GpuContext* context);
 
 		//! Initializes this texture object
-		void initialize(byte* data, int width, int height); 
+		void initialize(int width, int height); 
 
-		//! Resets the texture object specifying a new size and data pointer for it.
-		void reset(byte* data, int width, int height);
-
-		bool isDirty() { return myDirty; }
-		void setDirty() { myDirty = true; }
-
-		byte* getData() { return myData; }
-		void setData(byte* value) { myData = value; }
+		void writePixels(PixelData* data);
+		void readPixels(PixelData* data);
 
 		int getWidth();
 		int getHeight();
@@ -69,9 +60,7 @@ namespace omega
 
 	private:
 		bool myInitialized;
-		bool myDirty;
 		GLuint myId;
-		GLubyte* myData;
 		int myWidth;
 		int myHeight;
 

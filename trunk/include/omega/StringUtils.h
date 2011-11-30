@@ -43,7 +43,7 @@ namespace omega
 	//! conversion operator.
 	typedef boost::format Format;
 	// Define some macros to simplify string formatting and formatted logging
-	#define ostr(format, args) boost::str(Format(format) args)
+	#define ostr(format, args) boost::str(omega::Format(format) args)
 	#define ofmsg(format, args) omsg(ostr(format, args))
 	#define oferror(format, args) oerror(ostr(format, args))
 	#define ofwarn(format, args) owarn(ostr(format, args))

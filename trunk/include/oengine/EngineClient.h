@@ -52,8 +52,13 @@ namespace oengine {
 
 		virtual void initialize();
 		virtual void draw(const DrawContext& context);
+		virtual void startFrame(const FrameInfo& frame);
+		virtual void finishFrame(const FrameInfo& frame);
 
 		Renderer* getRenderer();
+
+	private:
+		void innerDraw(const DrawContext& context);
 
 	private:
 		EngineServer* myServer;

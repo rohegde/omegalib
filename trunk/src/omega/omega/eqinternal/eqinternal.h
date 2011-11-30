@@ -232,6 +232,7 @@ public:
 	ApplicationClient* getClient();
 	bool isReady() { return myInitialized && !myChannelsInitialized; }
 	void signalChannelInitialized(ChannelImpl* ch);
+	GpuContext* getGpuContext() { return myGpuContext; }
 
 protected:
 	virtual ~PipeImpl();
@@ -242,6 +243,8 @@ private:
 	bool myInitialized;
 	bool myChannelsInitialized;
 	ApplicationClient* myClient;
+	GpuManager* myGpu;
+	GpuContext* myGpuContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,8 +267,6 @@ protected:
 	void initialize();
 
 private:
-	RenderTarget* myFrameBuffer;
-	GpuManager* myGpu;
 	Vector2i myIndex;
 	bool myInitialized;
 };
@@ -304,7 +305,7 @@ private:
 	ChannelInfo myChannelInfo;
 	DrawContext myDC;
 	uint128_t myLastFrame;
-	RenderTarget myDrawBuffer;
+	RenderTarget* myDrawBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

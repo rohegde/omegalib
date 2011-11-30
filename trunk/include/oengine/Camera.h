@@ -34,6 +34,37 @@
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API CameraOutput
+	{
+	public:
+		CameraOutput(bool offscreen = false): myEnabled(false), myRenderTarget(NULL), myOffscreen(offscreen),
+			myReadbackColorTarget(NULL), myReadbackDepthTarget(NULL)
+		{}
+
+		void beginDraw(const DrawContext& context);
+		void endDraw(const DrawContext& context);
+		void startFrame(const FrameInfo& frame);
+		void finishFrame(const FrameInfo& frame);
+
+		bool isEnabled() { return myEnabled; }
+		void setEnabled(bool value) { myEnabled = value; }
+
+		void setReadbackTarget(PixelData* color, PixelData* depth = NULL);
+		void setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport);
+
+		const Rect& getReadbackViewport() { return myReadbackViewport; }
+
+	private:
+		bool myEnabled;
+		bool myOffscreen;
+		RenderTarget* myRenderTarget;
+
+		PixelData* myReadbackColorTarget;
+		PixelData* myReadbackDepthTarget;
+		Rect myReadbackViewport;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Camera: public DynamicObject
 	{
 	public:
@@ -53,8 +84,22 @@ namespace oengine {
 			FocusUp = 1 << 11,
 			FocusDown = 1 << 12
 			};
+
+		enum CameraFlags
+		{
+			ForceMono = 1 << 1,
+			DrawScene = 1 << 2,
+			DrawOverlay = 1 << 3,
+			Offscreen = 1 << 4,
+			DefaultFlags = DrawScene | DrawOverlay
+		};
+
 	public:
-		Camera();
+		Camera(uint flags = DefaultFlags);
+
+		bool isOffscreen() { return myFlags & Offscreen; }
+
+		CameraOutput* getOutput(uint contextId);
 
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
@@ -68,13 +113,15 @@ namespace oengine {
 		const Quaternion& getOrientation() { return myOrientation; }
 		void setOrientation(const Quaternion& value) { myOrientation = value; }
 
+		void setProjection(float fov, float aspect, float nearZ, float farZ);
+
 		//const AffineTransform3& getViewTransform();
 		//const AffineTransform3& getProjectionTransform();
 		//void setProjectionTransform(const AffineTransform3& value);
 		//void setViewTransform(const AffineTransform3& value);
 
 		//void updateView(const Vector3f& position, const Quaternion& orientation);
-		//void updateProjection(float fov, float aspect, float nearZ, float farZ);
+		//void setProjection(float fov, float aspect, float nearZ, float farZ);
 
 		bool getAutoAspect();
 		void setAutoAspect(bool value);
@@ -92,27 +139,43 @@ namespace oengine {
 
 		void updateObserver(Observer* obs);
 
+		bool isEnabled(const DrawContext& context);
+
+		void endDraw(const DrawContext& context);
+		const DrawContext& beginDraw(const DrawContext& context);
+		void startFrame(const FrameInfo& frame);
+		void finishFrame(const FrameInfo& frame);
+
 	private:
+		uint myFlags;
+
+		CameraOutput* myOutput[GpuContext::MaxContexts];
+		DrawContext myDrawContext[GpuContext::MaxContexts];
+
 		//! Current view transform
-		AffineTransform3 myViewTransform;
-		//AffineTransform3 myProjection;
+		//AffineTransform3 myViewTransform;
+		Transform3 myProjection;
 
 		//! Observer current position.
 		//! This is the projection plane position when using a head tracked system + off-axis projection.
 		Vector3f myPosition;
+
+		//! Observer current rotation.
+		Quaternion myOrientation;
+
 		//! Projection plane offset.
-		//! this is the position of the center of the projection plane when using a head tracked system + off-axis projection. When using in-axis
-		//! projection, only the z value is used to determine the near projection plane.
+		//! this is the position of the center of the projection plane when using a head tracked system + off-axis projection. 
 		//! When omegalib is using head tracking, usually the observer update service takes care of setting this value
 		//! directly in the Observer class, so this value is ignored. On desktop system, the user can set this value
 		//! manually to test off-axis projection.
 		Vector3f myProjectionOffset;
-		//! Observer current rotation.
-		Quaternion myOrientation;
+
 		//! Field of view (in radians)
 		float myFov;
 		float myAspect;
+		float myNearZ;
 		float myFarZ;
+
 		//! When set to true, the aspect is computed depending on the height & width of the camera render target.
 		bool myAutoAspect;
 

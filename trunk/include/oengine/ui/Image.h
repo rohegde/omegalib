@@ -41,11 +41,15 @@ namespace oengine { namespace ui {
 
 		Renderable* createRenderable();
 
-		ImageData* getData();
-		void setData(ImageData* value);
+		PixelData* getData();
+		void setData(PixelData* value);
+
+		void setAutoRefresh(bool value) { myAutoRefresh = value; }
+		bool isAutoRefreshEnabled() { return myAutoRefresh; }
 
 	protected:
-		ImageData* myData;
+		PixelData* myData;
+		bool myAutoRefresh;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,11 +68,11 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ImageData* Image::getData() 
+	inline PixelData* Image::getData() 
 	{ return myData; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Image::setData(ImageData* value) 
+	inline void Image::setData(PixelData* value) 
 	{ myData = value; refresh(); }
 }; }; // namespace oengine
 #endif

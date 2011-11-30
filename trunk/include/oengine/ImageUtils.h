@@ -28,17 +28,26 @@
 #define __IMAGE_UTILS_H__
 
 #include "oenginebase.h"
+#include "omega/PixelData.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct ImageData
+	class ImageData
 	{
-		String filename;
-		bool monochrome;
-		bool alpha;
-		byte* data;
-		int width;
-		int height;
+	public:
+		ImageData(const String& filename, int width, int height);
+
+		PixelData* getPixels();
+		void setPixels(PixelData* pixels);
+
+		int getWidth() { return myWidth; }
+		int getHeight() { return myHeight; }
+
+	private:
+		PixelData* myPixels;
+		int myWidth;
+		int myHeight;
+		String myFilename;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,11 +56,15 @@ namespace oengine {
 	{
 	public:
 		//! Load an image from a file.
-		static bool loadImage(const String& filename, ImageData* data);
+		static ImageData* loadImage(const String& filename);
 
 	private:
 		ImageUtils() {}
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline PixelData* ImageData::getPixels() 
+	{ return myPixels; }
 }; // namespace oengine
 
 #endif

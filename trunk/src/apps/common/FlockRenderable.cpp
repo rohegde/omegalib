@@ -31,19 +31,12 @@ OMEGA_DEFINE_TYPE(FlockRenderable, SceneRenderable)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::initialize()
 {
-	//myCurrentPreset = mySettings.presets[0];
+	GpuManager* gpu = getClient()->getGpuContext()->getGpu();
 
-	//myFontMng = new FontManager();
-
-	GpuManager* gpu = getClient()->getGpu();
-
-	ImageData& img = myOwner->getAgentImage();
-	myAgentTexture = gpu->createTexture(
-		img.filename,
-		img.width,
-		img.height,
-		img.data);
-
+	ImageData* img = myOwner->getAgentImage();
+	myAgentTexture = new Texture(getClient()->getGpuContext());
+	myAgentTexture->initialize(img->getWidth(), img->getHeight());
+	myAgentTexture->writePixels(img->getPixels());
 
 	// Create the gpu buffers and constants.
 	int bufSize = myOwner->getSettings()->numAgents * sizeof(Agent);

@@ -31,9 +31,67 @@
 using namespace omega;
 using namespace oengine;
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth)
+{
+	myReadbackColorTarget = color;
+	myReadbackDepthTarget = depth;
+	if(myReadbackColorTarget != NULL)
+	{
+		myReadbackViewport = Rect(
+			0, 0, 
+			myReadbackColorTarget->getWidth(), myReadbackColorTarget->getHeight());
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport)
+{
+	setReadbackTarget(color, depth);
+	myReadbackViewport = readbackViewport;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera::Camera():
+void CameraOutput::beginDraw(const DrawContext& context)
+{
+	if(myOffscreen) 
+	{
+		if(myRenderTarget == NULL)
+		{
+			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOffscreen);
+		}
+		myRenderTarget->setReadbackTarget(myReadbackColorTarget, myReadbackDepthTarget, myReadbackViewport);
+		myRenderTarget->bind();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::endDraw(const DrawContext& context)
+{
+	if(myRenderTarget != NULL)
+	{
+		myRenderTarget->unbind();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::startFrame(const FrameInfo& frame)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::finishFrame(const FrameInfo& frame)
+{
+	if(myRenderTarget != NULL)
+	{
+		myRenderTarget->readback();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera::Camera(uint flags):
 	myAutoAspect(false),
+	myFlags(flags),
 	myTargetNode(NULL),
 	myNavigationMode(NavDisabled),
 	myNavigationSpeed(2.0f),
@@ -53,6 +111,11 @@ Camera::Camera():
 
 	// Set a standard focal offset of 1 meter away from camera.
 	myProjectionOffset = -Vector3f::UnitZ();
+
+	for(int i = 0; i < GpuContext::MaxContexts; i++)
+	{
+		myOutput[i] = new CameraOutput(isOffscreen());
+	}
 }
 
 #define NAV_KEY(k, f) if(evt.isKeyDown(k)) myNavigationMoveFlags |= f; if(evt.isKeyUp(k)) myNavigationMoveFlags &= ~f; 
@@ -124,13 +187,6 @@ void Camera::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::update(const UpdateContext& context)
 {
-	//if(myAutoAspect)
-	//{
-	//	Rect viewport = Rect(0, 0, myRenderTarget->getWidth(), myRenderTarget->getHeight());
-	//	float aspect = (float)viewport.width() / viewport.height();
-	//	updateProjection(myFov, aspect, myNearZ, myFarZ);
-	//}
-
 	if(myNavigationMode == NavFreeFly)
 	{
 		Vector3f speed = Vector3f::Zero();
@@ -196,6 +252,74 @@ void Camera::updateObserver(Observer* obs)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+CameraOutput* Camera::getOutput(uint contextId)
+{
+	oassert(contextId < GpuContext::MaxContexts);
+	return myOutput[contextId];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Camera::isEnabled(const DrawContext& context)
+{
+	CameraOutput* output = getOutput(context.gpuContext->getId());
+	if(!output->isEnabled()) return false;
+	if((myFlags & DrawScene) && context.task == DrawContext::SceneDrawTask)
+	{
+		// When forcing mono rendering, we only render cyclops eye or left eye 
+		// (hyjiacking it to cyclops), so skip right eye rendering.
+		if((myFlags & ForceMono) && context.eye == DrawContext::EyeRight) return false;
+		return true;
+	}
+	if((myFlags & DrawOverlay) && context.task == DrawContext::OverlayDrawTask) return true;
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+const DrawContext& Camera::beginDraw(const DrawContext& context)
+{
+	CameraOutput* output = getOutput(context.gpuContext->getId());
+	DrawContext& dc = myDrawContext[context.gpuContext->getId()];
+
+	dc = context;
+	dc.modelview = Math::makeViewMatrix(myPosition, myOrientation);
+	if(myFlags & Offscreen)
+	{
+		dc.viewport = output->getReadbackViewport();
+		if(myAutoAspect)
+		{
+			float aspect = (float)dc.viewport.width() / dc.viewport.height();
+			setProjection(myFov, aspect, myNearZ, myFarZ);
+		}
+		dc.projection = myProjection;
+	}
+
+	output->beginDraw(dc);
+	return dc;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::endDraw(const DrawContext& context)
+{
+	CameraOutput* output = getOutput(context.gpuContext->getId());
+	DrawContext& dc = myDrawContext[context.gpuContext->getId()];
+	output->endDraw(dc);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::startFrame(const FrameInfo& frame)
+{
+	CameraOutput* output = getOutput(frame.gpuContext->getId());
+	output->startFrame(frame);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+void Camera::finishFrame(const FrameInfo& frame)
+{
+	CameraOutput* output = getOutput(frame.gpuContext->getId());
+	output->finishFrame(frame);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 //void Camera::updateView(const Vector3f& position, const Quaternion& orientation)
 //{
 //	myPosition = position;
@@ -204,11 +328,11 @@ void Camera::updateObserver(Observer* obs)
 //}
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//void Camera::updateProjection(float fov, float aspect, float nearZ, float farZ)
-//{
-//	myProjection = Math::makePerspectiveMatrix(fov, aspect, nearZ, farZ);
-//	myFov = fov;
-//	myNearZ = nearZ;
-//	myFarZ = farZ;
-//	myAspect = aspect;
-//}
+void Camera::setProjection(float fov, float aspect, float nearZ, float farZ)
+{
+	myProjection = Math::makePerspectiveMatrix(fov, aspect, nearZ, farZ);
+	myFov = fov;
+	myNearZ = nearZ;
+	myFarZ = farZ;
+	myAspect = aspect;
+}

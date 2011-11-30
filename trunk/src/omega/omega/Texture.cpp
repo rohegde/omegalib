@@ -31,57 +31,56 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::initialize(byte* data, int width, int height)
+Texture::Texture(GpuContext* context): 
+	GpuResource(context),
+	myInitialized(false),
+	myTextureUnit(GpuManager::TextureUnitInvalid) 
+{}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::initialize(int width, int height)
 {
-	myData = data; 
 	myWidth = width; 
 	myHeight = height; 
 
 	//Now generate the OpenGL texture object 
 	glGenTextures(1, &myId);
-		
+	glBindTexture(GL_TEXTURE_2D, myId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	GLenum glErr = glGetError();
+
 	if(glErr)
 	{
 		const unsigned char* str = gluErrorString(glErr);
-		oferror("Texture initialization: %1%", %str);
+		oferror("Texture::initialize: %1%", %str);
 		return;
 	}
-	myDirty = true;
+
 	myInitialized = true;
-	refresh();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::reset(byte* data, int width, int height)
+void Texture::writePixels(PixelData* data)
 {
-	oassert(myInitialized);
-
-	myData = data; 
-	myWidth = width; 
-	myHeight = height; 
-
-	myDirty = true;
-	refresh();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::refresh()
-{
-	if(myDirty)
+	if(myInitialized && data != NULL)
 	{
 		glBindTexture(GL_TEXTURE_2D, myId);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		int xoffset = 0;
+		int yoffset = 0;
+		int h = data->getHeight();
+		int w = data->getWidth();
+		byte* pixels = data->lockData();
+		glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, w, h, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)pixels);
+		data->unlockData();
 		GLenum glErr = glGetError();
 
 		if(glErr)
 		{
 			const unsigned char* str = gluErrorString(glErr);
-			oferror("Texture refresh: %1%", %str);
+			oferror("Texture::writePixels: %1%", %str);
 			return;
 		}
-		myDirty = false;
 	}
 }
 

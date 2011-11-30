@@ -109,7 +109,7 @@ public:
 	const AlignedBox3* getBoundingBox();
 	bool hasBoundingBox();
 
-	ImageData& getAgentImage() { return myAgentImage; }
+	ImageData* getAgentImage() { return myAgentImage; }
 	Settings* getSettings() { return mySettings; }
 	Preset* getCurrentPreset() { return myCurrentPreset; }
 
@@ -126,7 +126,7 @@ private:
 
 	AlignedBox3 myBoundingBox;
 
-	ImageData myAgentImage;
+	ImageData* myAgentImage;
 
 	// Gpu used for computing
 	GpuManager* myComputeGpu;

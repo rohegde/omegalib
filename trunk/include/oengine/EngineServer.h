@@ -52,6 +52,7 @@ namespace oengine {
 	friend class EngineClient;
 	public:
 		typedef RenderPass* (*RenderPassFactory)(EngineClient*);
+		typedef List<Camera*> CameraCollection;
 
 	public:
 		static const int MaxScenes = 3;
@@ -115,6 +116,10 @@ namespace oengine {
 		//@}
 
 		Camera* getDefaultCamera();
+		Camera* createCamera(uint flags = Camera::DefaultFlags);
+		void destroyCamera(Camera* cam);
+		CameraCollection::Range getCameras();
+		CameraCollection::ConstRange getCameras() const;
 
 		virtual void initialize();
 		virtual void handleEvent(const Event& evt);
@@ -134,8 +139,9 @@ namespace oengine {
 		Light myLights[MaxLights];
 		Color myAmbientColor;
 
-		// The default camera.
+		// Cameras.
 		Camera* myDefaultCamera;
+		CameraCollection myCameras;
 
 		// Pointers
 		List<Pointer*> myPointers;

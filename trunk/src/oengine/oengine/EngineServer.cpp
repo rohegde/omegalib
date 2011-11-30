@@ -105,6 +105,34 @@ void EngineServer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* EngineServer::createCamera(uint flags)
+{
+	Camera* cam = new Camera(flags);
+	myCameras.push_back(cam);
+	return cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::destroyCamera(Camera* cam)
+{
+	oassert(cam != NULL);
+	myCameras.remove(cam);
+	delete cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+EngineServer::CameraCollection::Range EngineServer::getCameras()
+{
+	return CameraCollection::Range(myCameras.begin(), myCameras.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+EngineServer::CameraCollection::ConstRange EngineServer::getCameras() const
+{
+	return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFront)
 {
 	RenderPassFactory rpNew = myRenderPassFactories[renderPass];
@@ -137,8 +165,6 @@ void EngineServer::removeRenderPass(String renderPass)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::addClient(EngineClient* client)
 {
-	ofmsg("EngineServer::addClient: id = %1%", %client->getId());
-
 	oassert(client != NULL);
 	myClients.push_back(client);
 }
