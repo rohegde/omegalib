@@ -137,19 +137,11 @@ TcpConnection::TcpConnection(ConnectionInfo ci):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool TcpConnection::poll()
 {
-	if(mySocket.is_open() != myOpen)
+	if(!mySocket.is_open())
 	{
-		if(!mySocket.is_open())
-		{
-			handleClosed();
-			return false;
-		} 
-		else 
-		{
-			handleConnected();
-		}
-	}
-	myOpen = mySocket.is_open();
+		handleClosed();
+		return false;
+	} 
 
 	while(mySocket.is_open() && mySocket.available() != 0)
 	{
