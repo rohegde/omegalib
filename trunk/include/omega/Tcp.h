@@ -58,7 +58,7 @@ namespace omega {
 	typedef asio::error_code ConnectionError;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TcpConnection: public OmegaObject
+	class OMEGA_API TcpConnection: public OmegaObject
 	{
 	OMEGA_DECLARE_TYPE(TcpConnection)
 	public:
@@ -101,7 +101,7 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TcpServer: public OmegaObject
+	class OMEGA_API TcpServer: public OmegaObject
 	{
 	OMEGA_DECLARE_TYPE(TcpServer)
 	public:
