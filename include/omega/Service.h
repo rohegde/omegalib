@@ -48,6 +48,8 @@ namespace omega
 		// Class constructor
 		Service(): myManager(NULL), myPriority(PollNormal), myDebug(false) {}
 
+		int getServiceId() { return myId; }
+
 	   // Class destructor
 		virtual ~Service() {}
 
@@ -77,12 +79,13 @@ namespace omega
 
 	private:
 		void doSetup(Setting& settings);
-		void setManager(ServiceManager* mng) { myManager = mng; }
+		void doInitialize(ServiceManager* mng, int serviceId);
 
 	private:
 		ServiceManager* myManager;
 		String myName;
 		ServicePollPriority myPriority;
+		int myId;
 		bool myDebug;
 	};
 

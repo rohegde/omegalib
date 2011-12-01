@@ -201,8 +201,8 @@ void MeshViewer::initialize()
 	if(interactorStyle == "Mouse")
 	{
 		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-		interactor->setMoveButtonFlag(Event::Right);
-		interactor->setRotateButtonFlag(Event::Middle);
+		interactor->setMoveButtonFlag(Event::Left);
+		interactor->setRotateButtonFlag(Event::Right);
 		myInteractor = interactor;
 	}
 	else if(interactorStyle == "Controller")
@@ -236,26 +236,16 @@ void MeshViewer::initUi()
 {
 	WidgetFactory* wf = getWidgetFactory();
 
+	int canvasWidth = getCanvasWidth();
+	int canvasHeight = getCanvasHeight();
+
 	Container* root = getUi(0);
-	root->setUIEventHandler(this);
-	root->setLayout(Container::LayoutFree);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-
-	// Setup ui layout using from config file sections.
-	Config* cfg = SystemManager::instance()->getAppConfig();
-	if(cfg->exists("config/ui/entityButtons"))
-	{
-		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
-	}
-	//if(cfg->exists("config/ui/root"))
-	//{
-	//	root->load(cfg->lookup("config/ui/root"));
-	//}
-
-	entityButtons->setPosition(Vector2f(0, 0));
-	entityButtons->setSize(Vector2f(300, 400));
 	entityButtons->setDebugModeEnabled(true);
+
+	entityButtons->setPosition(Vector2f(5, 5));
+	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
 
 	// Add buttons for each entity
 	for(int i = 0; i < myEntityLibrary.size(); i++)
@@ -270,14 +260,13 @@ void MeshViewer::initUi()
 	PixelData* pd = new PixelData(PixelData::FormatRgba, 320, 320);
 	img->setData(pd);
 	img->setAutoRefresh(true);
-	img->setPosition(Vector2f(400, 0));
-	img->setSize(Vector2f(320, 320));
-	img->setDebugModeEnabled(true);
+	img->setPosition(Vector2f(canvasWidth - 325, 0));
+	img->setSize(Vector2f(420, 420));
 
 	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DefaultFlags);
-	cam->setProjection(90, 1, 0.1f, 100);
+	cam->setProjection(30, 1, 0.1f, 100);
 	cam->setAutoAspect(true);
-	cam->setPosition(Vector3f(0, 0, 2));
+	cam->setPosition(Vector3f(0, 0, 1));
 	cam->getOutput(0)->setReadbackTarget(pd);
 	cam->getOutput(0)->setEnabled(true);
 }

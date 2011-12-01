@@ -24,54 +24,85 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESH_H__
-#define __MESH_H__
+#ifndef __TEXTURE_H__
+#define __TEXTURE_H__
 
-#include "oenginebase.h"
-#include "Effect.h"
-#include "Renderable.h"
-#include "MeshData.h"
-#include "RenderPass.h"
-#include "SceneObject.h"
-#include "omega/GpuBuffer.h"
+#include "osystem.h"
+#include "omega/GpuManager.h"
 
-namespace oengine {
+namespace omega
+{
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Mesh: public SceneObject
+	class OMEGA_API Texture: public GpuResource
 	{
-	OMEGA_DECLARE_TYPE(Mesh)
 	public:
-		Mesh();
-		~Mesh();
-		virtual Renderable* createRenderable();
+		Texture(GpuContext* context): 
+		  GpuResource(context),
+		  myInitialized(false), 
+		  myDirty(true),
+		  myData(NULL),
+		  myTextureUnit(GpuManager::TextureUnitInvalid) {}
 
-		MeshData* getData();
-		void setData(MeshData* value);
+		//! Initializes this texture object
+		void initialize(byte* data, int width, int height); 
 
-		const AlignedBox3* getBoundingBox();
-		bool hasBoundingBox();
+		//! Resets the texture object specifying a new size and data pointer for it.
+		void reset(byte* data, int width, int height);
 
-	private:
-		MeshData* myData;
-	};
+		bool isDirty() { return myDirty; }
+		void setDirty() { myDirty = true; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API MeshRenderable: public SceneRenderable
-	{
-	OMEGA_DECLARE_TYPE(MeshRenderable)
-	public:
-		MeshRenderable(Mesh* mesh);
-		~MeshRenderable();
-		virtual void initialize();
-		virtual void dispose();
-		void draw(RenderState* state);
+		byte* getData() { return myData; }
+		void setData(byte* value) { myData = value; }
+
+		int getWidth();
+		int getHeight();
+
+		//! Texture operations
+		//@{
+		GLuint getGLTexture();
+		void bind(GpuManager::TextureUnit unit);
+		void unbind();
 		void refresh();
+		bool isBound();
+		GpuManager::TextureUnit getTextureUnit();
+		//@}
 
 	private:
-		Mesh* myMesh;
-		VertexBuffer* myVertexBuffer;
-		unsigned int* myIndexData;
+		bool myInitialized;
+		bool myDirty;
+		GLuint myId;
+		GLubyte* myData;
+		int myWidth;
+		int myHeight;
+
+		GpuManager::TextureUnit myTextureUnit;
 	};
-}; // namespace oengine
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Texture::getWidth() 
+	{ return myWidth; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Texture::getHeight() 
+	{ return myHeight; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GLuint Texture::getGLTexture() 
+	{
+		oassert(myInitialized);
+		return myId; 
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Texture::isBound()
+	{
+		return (myTextureUnit != GpuManager::TextureUnitInvalid ? true : false);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GpuManager::TextureUnit Texture::getTextureUnit()
+	{ return myTextureUnit; }
+}; // namespace omega
 
 #endif

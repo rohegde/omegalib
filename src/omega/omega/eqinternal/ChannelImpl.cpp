@@ -183,6 +183,7 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 	{
 		initialize();
 		myInitialized = true;
+		return;
 	}
 	
 	// If the pipe has not been initialized yet, return now.
@@ -196,6 +197,9 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameDraw( frameID );
+
+	// Skip the first frame to give time to the channels to initialize
+	if(frameID == 0) return;
 
 	// Clear the frame buffer using the background color specified in display system.
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -222,6 +226,9 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
+
+	// Skip the first frame to give time to the channels to initialize
+	if(frameID == 0) return;
 
 	EQ_GL_CALL( applyBuffer( ));
 	EQ_GL_CALL( applyViewport( ));

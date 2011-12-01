@@ -24,64 +24,44 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Application.h"
-#include "omega/DisplaySystem.h"
-#include "omega/Lock.h"
-
-#include "omega/StringUtils.h"
+#include "omega/PixelData.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum Layer::fromString(const String& str)
+PixelData::PixelData(Format fmt, int width, int height, byte* data):
+	myData(data),
+	myWidth(width),
+	myHeight(height),
+	myFormat(fmt)
 {
-	String tmp = StringUtils::replaceAll(str, " ", "");
-	String s = StringUtils::replaceAll(tmp, "ui", "overlay");
-	StringUtils::toLowerCase(s);
-	if(s == "scene0") return Scene0;
-	if(s == "scene1") return Scene1;
-	if(s == "scene2") return Scene2;
-	if(s == "overlay0") return Overlay0;
-	if(s == "scene0overlay0") return Scene0Overlay0;
-	if(s == "scene1overlay0") return Scene1Overlay0;
-	if(s == "scene2overlay0") return Scene2Overlay0;
-	if(s == "overlay1") return Overlay1;
-	if(s == "scene0overlay1") return Scene0Overlay1;
-	if(s == "scene1overlay1") return Scene1Overlay1;
-	if(s == "scene2overlay1") return Scene2Overlay1;
-	if(s == "overlay2") return Overlay2;
-	if(s == "scene0overlay2") return Scene0Overlay2;
-	if(s == "scene1overlay2") return Scene1Overlay2;
-	if(s == "scene2overlay2") return Scene2Overlay2;
-	return Null;
+	if(myData == NULL)
+	{
+		switch(myFormat)
+		{
+		case FormatRgb:
+			myData = new byte[width * height * 3];
+			break;
+		case FormatRgba:
+			myData = new byte[width * height * 4];
+			break;
+		case FormatMonochrome:
+			myData = new byte[width * height];
+			break;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ApplicationServer::addClient(ApplicationClient* cli)
+byte* PixelData::lockData()
 {
-	myClients.push_back(cli);
+	myLock.lock();
+	return myData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasWidth() 
+void PixelData::unlockData()
 {
-	return getDisplaySystem()->getCanvasSize().x(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasHeight()
-{
-	return getDisplaySystem()->getCanvasSize().y(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server), myGpuContext(NULL)
-{
-	myServer->addClient(this);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::~ApplicationClient() 
-{
+	myLock.unlock();
 }
 

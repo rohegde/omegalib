@@ -61,6 +61,9 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 {
 	eq::Pipe::frameStart(frameID, frameNumber);
 
+	// Skip the first frame to give time to the channels to initialize
+	if(frameID == 0) return;
+
 	// Activate the glew context for this pipe, so initialize and update client
 	// methods can handle openGL buffers associated with this Pipe.
 	// NOTE: getting the glew context from the first window is correct since all
@@ -83,6 +86,10 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber )
 {
 	eq::Pipe::frameFinish(frameID, frameNumber);
+
+	// Skip the first frame to give time to the channels to initialize
+	if(frameID == 0) return;
+
 	if(!myInitialized)
 	{
 		myInitialized = true;

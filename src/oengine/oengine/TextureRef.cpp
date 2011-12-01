@@ -24,64 +24,77 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Application.h"
-#include "omega/DisplaySystem.h"
-#include "omega/Lock.h"
-
+#include "omega/Texture.h"
 #include "omega/StringUtils.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum Layer::fromString(const String& str)
+void Texture::initialize(byte* data, int width, int height)
 {
-	String tmp = StringUtils::replaceAll(str, " ", "");
-	String s = StringUtils::replaceAll(tmp, "ui", "overlay");
-	StringUtils::toLowerCase(s);
-	if(s == "scene0") return Scene0;
-	if(s == "scene1") return Scene1;
-	if(s == "scene2") return Scene2;
-	if(s == "overlay0") return Overlay0;
-	if(s == "scene0overlay0") return Scene0Overlay0;
-	if(s == "scene1overlay0") return Scene1Overlay0;
-	if(s == "scene2overlay0") return Scene2Overlay0;
-	if(s == "overlay1") return Overlay1;
-	if(s == "scene0overlay1") return Scene0Overlay1;
-	if(s == "scene1overlay1") return Scene1Overlay1;
-	if(s == "scene2overlay1") return Scene2Overlay1;
-	if(s == "overlay2") return Overlay2;
-	if(s == "scene0overlay2") return Scene0Overlay2;
-	if(s == "scene1overlay2") return Scene1Overlay2;
-	if(s == "scene2overlay2") return Scene2Overlay2;
-	return Null;
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	//Now generate the OpenGL texture object 
+	glGenTextures(1, &myId);
+		
+	GLenum glErr = glGetError();
+	if(glErr)
+	{
+		const unsigned char* str = gluErrorString(glErr);
+		oferror("Texture initialization: %1%", %str);
+		return;
+	}
+	myDirty = true;
+	myInitialized = true;
+	refresh();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ApplicationServer::addClient(ApplicationClient* cli)
+void Texture::reset(byte* data, int width, int height)
 {
-	myClients.push_back(cli);
+	oassert(myInitialized);
+
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	myDirty = true;
+	refresh();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasWidth() 
+void Texture::refresh()
 {
-	return getDisplaySystem()->getCanvasSize().x(); 
+	if(myDirty)
+	{
+		glBindTexture(GL_TEXTURE_2D, myId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		GLenum glErr = glGetError();
+
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oferror("Texture refresh: %1%", %str);
+			return;
+		}
+		myDirty = false;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasHeight()
+void Texture::bind(GpuManager::TextureUnit unit)
 {
-	return getDisplaySystem()->getCanvasSize().y(); 
+	myTextureUnit = unit;
+	glActiveTexture(myTextureUnit);
+	glBindTexture(GL_TEXTURE_2D, myId);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server), myGpuContext(NULL)
+void Texture::unbind()
 {
-	myServer->addClient(this);
+	myTextureUnit = GpuManager::TextureUnitInvalid;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::~ApplicationClient() 
-{
-}
-

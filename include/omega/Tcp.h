@@ -44,12 +44,25 @@ using asio::ip::tcp;
 
 
 namespace omega {
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct ConnectionInfo
+	{
+		ConnectionInfo(asio::io_service& io, int id):
+			ioService(io), id(id) {}
+
+		asio::io_service& ioService;
+		int id;
+	};
+
+	typedef asio::error_code ConnectionError;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class TcpConnection: public OmegaObject
 	{
 	OMEGA_DECLARE_TYPE(TcpConnection)
 	public:
-		TcpConnection(asio::io_service& ioService);
+		TcpConnection(ConnectionInfo& ci);
 		tcp::socket& getSocket() { return mySocket; }
 
 		bool poll();
@@ -60,23 +73,28 @@ namespace omega {
 		//! Data IO
 		//@{
 		void write(const String& data);
-		String readLine();
-		//! Synchronously read character data until the specified delimiter is found or the buffer fills up.
-		size_t readString(char* buffer, size_t size, char delimiter = '\0');
+		void write(void* data, size_t size);
+		//String readLine();
+		//! Synchronously read byte data until the specified delimiter is found or the buffer fills up.
+		size_t readUntil(char* buffer, size_t size, char delimiter = '\0');
+		//! Synchronously read thre specified number of bytes from the stream.
+		size_t read(byte* buffer, size_t size);
 		//@}
 
 		//! Connection event management
 		//@{
 		virtual void handleConnected();
 		virtual void handleClosed();
-		virtual void handleError();
+		virtual void handleError(const ConnectionError& err);
 		virtual void handleData();
-		virtual void handleWrite(const asio::error_code& err, size_t size);
 		//@}
 
+		const ConnectionInfo& getConnectionInfo() { return myConnectionInfo; }
+
 	protected:
 
 	protected:
+		ConnectionInfo& myConnectionInfo;
 		bool myOpen;
 		tcp::socket mySocket;
 		asio::streambuf myInputBuffer;
@@ -94,6 +112,7 @@ namespace omega {
 		virtual void stop();
 		virtual void poll();
 		int getPort() { return myPort; }
+		TcpConnection* getConnection(int id);
 
 	protected:
 		virtual TcpConnection* createConnection();
@@ -101,6 +120,7 @@ namespace omega {
 		virtual void handleAccept(TcpConnection* newConnection, const asio::error_code& error);
 
 	protected:
+		int myConnectionCounter;
 		int myPort;
 		bool myInitialized;
 		bool myRunning;

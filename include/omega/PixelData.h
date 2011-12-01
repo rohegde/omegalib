@@ -24,38 +24,36 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/RenderTarget.h"
-#include "omega/Texture.h"
-#include "oengine/Camera.h"
-#include "oengine/RenderToTexture.h"
+#ifndef __PIXEL_DATA_H__
+#define __PIXEL_DATA_H__
 
-using namespace omega;
-using namespace oengine;
+#include "osystem.h"
+#include "omega/Lock.h"
 
-static NameGenerator sRenderToTextureNameGenerator("RenderToTexture_");
+namespace omega {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct OMEGA_API PixelData
+	{
+	public:
+		enum Format { FormatRgb, FormatRgba, FormatMonochrome};
+	public:
+		PixelData(Format fmt, int width, int height, byte* data = NULL);
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//RenderToTexture::RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height)
-//{
-//	myScene = scene;
-//	myTexture = txman->createTexture(sRenderToTextureNameGenerator.generate(), width, height);
-//	myRenderTarget = new RenderTarget();
-//	myRenderTarget->initialize(RenderTarget::TypeTexture);
-//	myRenderTarget->setColorTarget(myTexture);
-//	myCamera = new Camera(myScene, myRenderTarget);
-//	myCamera->setAutoAspect(true);
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//RenderToTexture::~RenderToTexture()
-//{
-//	delete myTexture;
-//	delete myRenderTarget;
-//	delete myCamera;
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//void RenderToTexture::render()
-//{
-//	myCamera->render();
-//}
+		byte* lockData();
+		void unlockData();
+
+		int getWidth() { return myWidth; }
+		int getHeight() { return myHeight; }
+		Format getFormat() { return myFormat; }
+
+	private:
+		Lock myLock;
+		Format myFormat;
+		byte* myData;
+		int myWidth;
+		int myHeight;
+
+	};
+}; // namespace oengine
+
+#endif

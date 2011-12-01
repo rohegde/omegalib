@@ -24,38 +24,24 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TABLET_SERVICE_H__
-#define __TABLET_SERVICE_H__
+#ifndef __TABLET_INTERFACE_H__
+#define __TABLET_INTERFACE_H__
 
-#include "omega/osystem.h"
-#include "omega/ServiceManager.h"
-#include "omega/Tcp.h"
+#include "oenginebase.h"
+#include "omega/TabletService.h"
 
-namespace omega {
-	class TabletServer;
-    
+namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TabletService: public Service
+	class TabletInterface: public OmegaObject
 	{
-        friend class TabletConnection;
 	public:
-		//! Allocator function (will be used to register the service inside SystemManager)
-		static TabletService* New() { return new TabletService(); }
-        
-	public:
-		TabletService();
-		~TabletService();
-        
-		virtual void setup(Setting& settings);
-		virtual void poll();
+		TabletInterface(TabletService* service, int tabletId);
 
-		TcpConnection* getConnection(int id);
-        
 	private:
-		TabletServer* myServer;
-        void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y);
-        bool withinAnchor( float x , float y , float tolerance );
+		TabletService* myService;
+		int myTabletId;
+		TcpConnection* myConnection;
 	};
-}; // namespace omega
+}; 
 
 #endif
