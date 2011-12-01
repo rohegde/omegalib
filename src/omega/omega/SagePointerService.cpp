@@ -39,7 +39,7 @@ class SagePointerConnection: public TcpConnection
 {
 public:
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	SagePointerConnection(ConnectionInfo& ci, SagePointerService* service): 
+	SagePointerConnection(ConnectionInfo ci, SagePointerService* service): 
 		TcpConnection(ci),
 			myService(service),
 			myButtonFlags(0)

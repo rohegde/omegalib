@@ -62,7 +62,7 @@ namespace omega {
 	{
 	OMEGA_DECLARE_TYPE(TcpConnection)
 	public:
-		TcpConnection(ConnectionInfo& ci);
+		TcpConnection(ConnectionInfo ci);
 		tcp::socket& getSocket() { return mySocket; }
 
 		bool poll();
