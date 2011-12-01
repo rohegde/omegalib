@@ -144,22 +144,22 @@ namespace omega
 	#endif
 		public:
 			typedef KeyValue<K, T> Item;
-			typedef std::pair< iterator, iterator> Range;
-			typedef std::pair< const_iterator, const_iterator> ConstRange;
+			typedef std::pair< std::vector<T>::iterator, std::vector<T>::iterator> Range;
+			typedef std::pair< std::vector<T>::const_iterator, std::vector<T>::const_iterator> ConstRange;
 		};
 
 	template<typename T> class Vector: public std::vector<T>
 	{
 	public:
-		typedef std::pair< iterator, iterator> Range;
-		typedef std::pair< const_iterator, const_iterator> ConstRange;
+		typedef std::pair< std::vector<T>::iterator, std::vector<T>::iterator> Range;
+		typedef std::pair< std::vector<T>::const_iterator, std::vector<T>::const_iterator> ConstRange;
 	};
 
 	template<typename T> class List: public std::list<T> 
 	{
 	public:
-		typedef std::pair< iterator, iterator> Range;
-		typedef std::pair< const_iterator, const_iterator> ConstRange;
+		typedef std::pair< std::vector<T>::iterator, std::vector<T>::iterator> Range;
+		typedef std::pair< std::vector<T>::const_iterator, std::vector<T>::const_iterator> ConstRange;
 	};
 
 	template<typename T> class Queue: public std::queue<T>
