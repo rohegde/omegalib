@@ -92,7 +92,7 @@ void ServiceManager::initialize()
 
 	int svcId = 0;
 
-	foreach(ServiceDictionary::Item it, myServices)
+	foreach(Service* it, myServices)
 	{
 		it->doInitialize(this, svcId);
 		svcId++;
@@ -104,7 +104,7 @@ void ServiceManager::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::dispose()
 {
-	foreach(ServiceDictionary::Item it, myServices)
+	foreach(Service* it, myServices)
 	{
 		it->dispose();
 	}
@@ -115,7 +115,7 @@ void ServiceManager::dispose()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::start()
 {
-	foreach(ServiceDictionary::Item it, myServices)
+	foreach(Service* it, myServices)
 	{
 		it->start();
 	}
@@ -124,7 +124,7 @@ void ServiceManager::start()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServiceManager::stop()
 {
-	foreach(ServiceDictionary::Item it, myServices)
+	foreach(Service* it, myServices)
 	{
 		it->stop();
 	}
@@ -135,7 +135,7 @@ void ServiceManager::poll()
 {
 	for(int pollPriority = Service::PollFirst; pollPriority <= Service::PollLast; pollPriority++)
 	{
-		foreach(ServiceDictionary::Item svc, myServices)
+		foreach(Service* svc, myServices)
 		{
 			if(svc->getPollPriority() == pollPriority) svc->poll();
 		}
@@ -156,7 +156,7 @@ Service* ServiceManager::addService(const String& svcClass)
 		{
 			// Input service found: create and setup it.
 			Service* svc = svcAllocator();
-			myServices.insert(ServiceDictionary::value_type(std::string(svc->getName()), svc));
+			myServices.push_back(svc);
 
 			ofmsg("Service added: %1%", %svcClass);
 

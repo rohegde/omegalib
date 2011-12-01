@@ -43,7 +43,6 @@ namespace omega
 
 	typedef Service* (*ServiceAllocator)();
 	typedef Dictionary<String, ServiceAllocator> ServiceAllocatorDictionary;
-	typedef Dictionary<String, Service*> ServiceDictionary;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API ServiceManager
@@ -67,6 +66,7 @@ namespace omega
 		Service* addService(const String& svcClass);
 		Service* findService(String svcName);
 		template<typename T> T* findService(String svcName);
+		Service* getService(int id);
 		template<typename T> T* getService(int id);
 
 		// initialize
@@ -107,7 +107,7 @@ namespace omega
 		ServiceAllocatorDictionary myServiceRegistry;
 
 		// Dictionary of active services
-		ServiceDictionary myServices;
+		List<Service*> myServices;
 
 		// Event buffer stuff.
 		Lock*  myEventBufferLock;
@@ -122,15 +122,33 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Service* ServiceManager::findService(String svcName)
 	{
-		ServiceDictionary::const_iterator elem = myServices.find(svcName);
-		if(elem == myServices.end()) return NULL;
-		return elem->second;
+		foreach(Service* svc, myServices)
+		{
+			if(svc->getName() == svcName) return svc;
+		}
+		return NULL;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	template<typename T> inline T* ServiceManager::findService(String svcName)
 	{
 		return (T*)findService(svcName);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Service* ServiceManager::getService(int id)
+	{
+		foreach(Service* svc, myServices)
+		{
+			if(svc->getServiceId() == id) return svc;
+		}
+		return NULL;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename T> inline T* ServiceManager::getService(int id)
+	{
+		return (T*)getService(id);
 	}
 }; // namespace omega
 

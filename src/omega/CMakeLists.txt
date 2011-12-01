@@ -38,6 +38,7 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 ###################################################################################################
 # Source files
 SET( srcs 
+		omega/ByteArray.cpp
         omega/osystem.cpp
 		omega/Color.cpp
 		omega/Config.cpp
@@ -66,6 +67,7 @@ SET( srcs
 # Headers
 SET( headers 
 		${OmegaLib_SOURCE_DIR}/include/omega.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ByteArray.h
         ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Color.h

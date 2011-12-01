@@ -33,23 +33,58 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 	myData(data),
 	myWidth(width),
 	myHeight(height),
-	myFormat(fmt)
+	myFormat(fmt),
+	mySize(0)
 {
 	if(myData == NULL)
 	{
 		switch(myFormat)
 		{
 		case FormatRgb:
-			myData = new byte[width * height * 3];
+			mySize = width * height * 3;
 			break;
 		case FormatRgba:
-			myData = new byte[width * height * 4];
+			mySize = width * height * 4;
 			break;
 		case FormatMonochrome:
-			myData = new byte[width * height];
+			mySize = width * height;
 			break;
 		}
+		myData = new byte[mySize];
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int PixelData::getPitch()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		return myWidth * 3;
+	case FormatRgba:
+		return myWidth * 4;
+	case FormatMonochrome:
+		return myWidth;
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int PixelData::getBpp()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		return 24;
+		break;
+	case FormatRgba:
+		return 32;
+		break;
+	case FormatMonochrome:
+		return 8;
+		break;
+	}
+	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@
 #endif
 #endif
 #include "omega/Application.h"
+#include "omega/ByteArray.h"
 #include "omega/Color.h"
 #include "omega/Config.h"
 #include "omega/DataManager.h"

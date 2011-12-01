@@ -29,13 +29,16 @@
 
 #include "oenginebase.h"
 #include "omega/TabletService.h"
+#include "omega/PixelData.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TabletInterface: public OmegaObject
+	class OENGINE_API TabletInterface: public OmegaObject
 	{
 	public:
 		TabletInterface(TabletService* service, int tabletId);
+
+		void sendImage(PixelData* data);
 
 	private:
 		TabletService* myService;

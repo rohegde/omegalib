@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/TabletInterface.h"
+#include "oengine/ImageUtils.h"
 
 using namespace omega;
 using namespace oengine;
@@ -33,5 +34,20 @@ using namespace oengine;
 TabletInterface::TabletInterface(TabletService* svc, int tabletId):
 	myService(svc), myTabletId(tabletId)
 {
+	myConnection = svc->getConnection(tabletId);
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletInterface::sendImage(PixelData* data)
+{
+	ByteArray* png = ImageUtils::encode(data, ImageUtils::FormatPng);
+
+	int size = png->getSize();
+	char header[] = {'i', 'p', 'n', 'g'};
+
+	myConnection->write(header, 4);
+	myConnection->write(&size, sizeof(int));
+	myConnection->write(png->lock(), size);
+	png->unlock();
+	delete png;
 }

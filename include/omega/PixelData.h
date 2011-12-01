@@ -45,6 +45,10 @@ namespace omega {
 		int getWidth() { return myWidth; }
 		int getHeight() { return myHeight; }
 		Format getFormat() { return myFormat; }
+		size_t getSize() { return mySize; }
+
+		int getPitch();
+		int getBpp();
 
 	private:
 		Lock myLock;
@@ -52,6 +56,7 @@ namespace omega {
 		byte* myData;
 		int myWidth;
 		int myHeight;
+		size_t mySize;
 
 	};
 }; // namespace oengine

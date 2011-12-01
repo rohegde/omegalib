@@ -35,9 +35,10 @@ namespace omega {
 	class TabletServer;
     
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TabletService: public Service
+	class OMEGA_API TabletService: public Service
 	{
         friend class TabletConnection;
+        friend class TabletServer;
 	public:
 		//! Allocator function (will be used to register the service inside SystemManager)
 		static TabletService* New() { return new TabletService(); }
@@ -50,7 +51,7 @@ namespace omega {
 		virtual void poll();
 
 		TcpConnection* getConnection(int id);
-        
+
 	private:
 		TabletServer* myServer;
         void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y);
