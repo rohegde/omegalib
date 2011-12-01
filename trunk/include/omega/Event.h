@@ -100,6 +100,7 @@ namespace omega
 	{
 	// Friend the class that implements methods used for event serialization by equalizer.
 	friend class EqUtils; 
+	friend class Service; 
 	public:
 		static const int ExtraDataSize = 1024;
 		static const int MaxExtraDataItems = 32;
@@ -131,10 +132,14 @@ namespace omega
 			Up, 
 			//! Trace: generated when a new object is identified by the device managed by the input service 
 			//! (i.e head tracking, or a mocap system rigid body).
-			Trace, 
+			Trace,
+			//! Alternate name for Trace events
+			Connect = Trace,
 			//! Trace: generated when a traced object is lost by the device managed by the input service 
 			//! (i.e head tracking, or a mocap system rigid body).
 			Untrace,
+			//! Alternate name for Untrace events
+			Disconnect = Untrace,
 
 			//! Click: generated on a down followed by an immediate up event.
 			//! parameters: position
@@ -212,7 +217,7 @@ namespace omega
 
 		void copyFrom(const Event& e);
 
-		void reset(Type type, Service::ServiceType serviceType, unsigned int sourceId = 0, int serviceId = 0);
+		void reset(Type type, Service::ServiceType serviceType, unsigned int sourceId = 0);
 
 		//! id of the source of this event. Input services associate unique ids to each of their event sources.
 		unsigned int getSourceId() const;
@@ -303,12 +308,11 @@ namespace omega
 	{}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Event::reset(Type type, Service::ServiceType serviceType, unsigned int sourceId, int serviceId)
+	inline void Event::reset(Type type, Service::ServiceType serviceType, unsigned int sourceId)
 	{
 		myType = type;
 		mySourceId = sourceId;
 		myServiceType = serviceType;
-		myServiceId = serviceId;
 		myFlags = 0;
 		myExtraDataLength = 0;
 		myExtraDataValidMask = 0;

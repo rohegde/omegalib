@@ -65,6 +65,8 @@ void EngineServer::initialize()
 	for(int i = 0; i < MaxUis; i++)
 	{
 		myUi[i] = new ui::Container(this);
+		myUi[i]->setLayout(ui::Container::LayoutFree);
+		myUi[i]->setUIEventHandler(this);
 	}
 
 	myDefaultCamera = new Camera();

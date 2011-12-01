@@ -37,7 +37,8 @@ OMEGA_DEFINE_TYPE(TcpServer, OmegaObject)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TcpServer::TcpServer():
 	myRunning(false),
-	myInitialized(false)
+	myInitialized(false),
+	myConnectionCounter(0)
 {
 }
 
@@ -111,14 +112,25 @@ void TcpServer::handleAccept(TcpConnection* newConnection, const asio::error_cod
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TcpConnection* TcpServer::createConnection()
 {
-	TcpConnection* conn = new TcpConnection(myIOService);
+	TcpConnection* conn = new TcpConnection(ConnectionInfo(myIOService, myConnectionCounter++));
 	myClients.push_back(conn);
 	return conn;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TcpConnection::TcpConnection(asio::io_service& ioService):
-	mySocket(ioService),
+TcpConnection* TcpServer::getConnection(int id)
+{
+	foreach(TcpConnection* c, myClients)
+	{
+		if(c->getConnectionInfo().id == id) return c;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TcpConnection::TcpConnection(ConnectionInfo& ci):
+	myConnectionInfo(ci),
+	mySocket(ci.ioService),
 	myOpen(false)
 {}
 	
@@ -158,45 +170,76 @@ void TcpConnection::close()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpConnection::write(const String& data)
 {
-	// TODO: make sure data is not invalidated before transmission ends. On request, create copies
-	// of data and keep a list of pending operations & buffers.
-	asio::async_write(mySocket, asio::buffer(data),
-		boost::bind(
-			&TcpConnection::handleWrite, this, 
-			asio::placeholders::error, asio::placeholders::bytes_transferred));
+	asio::error_code error;
+	asio::write(mySocket, asio::buffer(data), error);
+	if(error)
+	{
+		handleError(error);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-size_t TcpConnection::readString(char* buffer, size_t size, char delimiter)
+void TcpConnection::write(void* data, size_t size)
+{
+	asio::error_code error;
+	asio::write(mySocket, asio::buffer(data, size), error);
+	if(error)
+	{
+		handleError(error);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+size_t TcpConnection::readUntil(char* buffer, size_t size, char delimiter)
 {
 		asio::error_code error;
 		size_t bufsize = asio::read_until(mySocket, myInputBuffer, delimiter, error);
 		if(!error)
 		{
 			if(bufsize > size - 1) bufsize = size;
-			myInputBuffer.sgetn(buffer, bufsize);
+			myInputBuffer.sgetn((char*)buffer, bufsize);
 			buffer[bufsize] = '\0';
 			return bufsize;
+		}
+		else
+		{
+			handleError(error);
 		}
 		return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-String TcpConnection::readLine()
+size_t TcpConnection::read(byte* buffer, size_t size)
 {
-	asio::error_code error;
-	size_t size = asio::read_until(mySocket, myInputBuffer, '\n', error);
-	if(!error)
-	{
-		char* buf = new char[size];
-		myInputBuffer.sgetn(buf, size);
-		buf[size] = '\0';
-		String str(buf);
-		delete buf;
-		return str;
-	}
-	return "";
+		asio::error_code error;
+		size_t bufsize = asio::read(mySocket, myInputBuffer, asio::transfer_exactly(size), error);
+		if(!error)
+		{
+			return size;
+		}
+		else
+		{
+			handleError(error);
+		}
+		return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//String TcpConnection::readLine()
+//{
+//	asio::error_code error;
+//	size_t size = asio::read_until(mySocket, myInputBuffer, '\n', error);
+//	if(!error)
+//	{
+//		char* buf = new char[size];
+//		myInputBuffer.sgetn(buf, size);
+//		buf[size] = '\0';
+//		String str(buf);
+//		delete buf;
+//		return str;
+//	}
+//	return "";
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpConnection::handleConnected()
@@ -209,13 +252,9 @@ void TcpConnection::handleClosed()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TcpConnection::handleError()
+void TcpConnection::handleError(const ConnectionError& err)
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TcpConnection::handleWrite(const asio::error_code& err, size_t size)
-{
+	ofwarn("TcpConnection: %1%", %err.message());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

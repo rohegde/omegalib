@@ -64,6 +64,7 @@ set( srcs
 		oengine/SceneRenderable.cpp
 		oengine/ReferenceBox.cpp
 		oengine/Renderable.cpp
+		oengine/TabletInterface.cpp
 		oengine/TransparentRenderPass.cpp
 		oengine/UiRenderPass.cpp
 		
@@ -123,6 +124,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/TabletInterface.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/UiRenderPass.h
 		
 		# omega::ui

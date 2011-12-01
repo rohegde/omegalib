@@ -37,6 +37,7 @@ const int ServiceManager::MaxEvents = OMEGA_MAX_EVENTS;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ServiceManager::ServiceManager(SystemManager* sys):
 	mySys(sys),
+	myInitialized(false),
 	myEventBuffer(NULL),
 	myEventBufferHead(0),
 	myEventBufferTail(0),
@@ -73,19 +74,10 @@ void ServiceManager::setup(Setting& settings)
 	for(int i = 0; i < settings.getLength(); i++)
 	{
 		Setting& stSvc = settings[i];
-		ServiceAllocator svcAllocator = findServiceAllocator(stSvc.getName());
-		if(svcAllocator != NULL)
+		Service* svc = addService(stSvc.getName());
+		if(svc != NULL)
 		{
-			// Input service found: create and setup it.
-			Service* svc = svcAllocator();
 			svc->doSetup(stSvc);
-			addService(svc);
-
-			ofmsg("Service added: %1%", %stSvc.getName());
-		}
-		else
-		{
-			ofwarn("Service not found: %1%", %stSvc.getName());
 		}
 	}
 }
@@ -98,10 +90,15 @@ void ServiceManager::initialize()
 	myEventBuffer = new Event[MaxEvents];
 	ofmsg("Event buffer allocated. Max events: %1%", %MaxEvents);
 
+	int svcId = 0;
+
 	foreach(ServiceDictionary::Item it, myServices)
 	{
-		it->initialize();
+		it->doInitialize(this, svcId);
+		svcId++;
 	}
+
+	myInitialized = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,18 +143,31 @@ void ServiceManager::poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServiceManager::addService(Service* svc)
+Service* ServiceManager::addService(const String& svcClass)
 {
-	oassert(svc != NULL);
+	if(myInitialized)
+	{
+		owarn("ServiceManager::addService: cannot add services after service manager initialization.");
+	}
+	else
+	{
+		ServiceAllocator svcAllocator = findServiceAllocator(svcClass);
+		if(svcAllocator != NULL)
+		{
+			// Input service found: create and setup it.
+			Service* svc = svcAllocator();
+			myServices.insert(ServiceDictionary::value_type(std::string(svc->getName()), svc));
 
-	myServices.insert(ServiceDictionary::value_type(std::string(svc->getName()), svc));
-	svc->setManager(this);
-}
+			ofmsg("Service added: %1%", %svcClass);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServiceManager::removeService(Service* svc)
-{
-	oassert(false | !"Not Implemented");
+			return svc;
+		}
+		else
+		{
+			ofwarn("Service not found: %1%", %svcClass);
+		}
+	}
+	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

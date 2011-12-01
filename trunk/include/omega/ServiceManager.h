@@ -64,10 +64,10 @@ namespace omega
 		ServiceAllocator findServiceAllocator(String svcName);
 
 		// Add a new input service to the manager.
-		void addService(Service* svc);
-		void removeService(Service* svc);
+		Service* addService(const String& svcClass);
 		Service* findService(String svcName);
 		template<typename T> T* findService(String svcName);
+		template<typename T> T* getService(int id);
 
 		// initialize
 		void setup(Setting& settings);
@@ -100,6 +100,8 @@ namespace omega
 
 	private:
 		SystemManager*	mySys;
+
+		bool myInitialized;
 
 		// The service registry.
 		ServiceAllocatorDictionary myServiceRegistry;

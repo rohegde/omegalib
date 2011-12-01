@@ -180,6 +180,9 @@ namespace omega
 
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		Application* getApplication() { return myApplication; }
+		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+		int getCanvasWidth(); 
+		int getCanvasHeight();
 
 	private:
 		void addClient(ApplicationClient* cli);

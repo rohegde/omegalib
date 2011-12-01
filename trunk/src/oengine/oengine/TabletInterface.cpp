@@ -24,41 +24,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __RENDER_TO_TEXTURE_H__
-#define __RENDER_TO_TEXTURE_H__
+#include "oengine/TabletInterface.h"
 
-#include "oenginebase.h"
-#include "omega/RenderTarget.h"
+using namespace omega;
+using namespace oengine;
 
-namespace oengine {
-	class Camera;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TabletInterface::TabletInterface(TabletService* svc, int tabletId):
+	myService(svc), myTabletId(tabletId)
+{
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//class OENGINE_API RenderToTexture
-	//{
-	//public:
-	//	RenderToTexture(SceneManager* scene, TextureManager* txman, int width, int height);
-	//	~RenderToTexture();
-
-	//	void render();
-	//	
-	//	Camera* getCamera();
-	//	Texture* getTexture();
-
-	//private:
-	//	RenderTarget* myRenderTarget;
-	//	SceneManager* myScene;
-	//	Camera* myCamera;
-	//	Texture* myTexture;
-	//};
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline Camera* RenderToTexture::getCamera() 
-	//{ return myCamera; }
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline Texture* RenderToTexture::getTexture() 
-	//{ return myTexture; }
-}; // namespace oengine
-
-#endif
+}

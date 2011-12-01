@@ -27,7 +27,6 @@
 #include "omega/SystemManager.h"
 #include "omega/TabletService.h"
 #include "omega/StringUtils.h"
-#include "omega/Tcp.h"
 
 #ifdef OMEGA_USE_DISPLAY
 #include "omega/DisplaySystem.h"
@@ -40,9 +39,8 @@ namespace omega {
     class TabletConnection: public TcpConnection
     {
     public:
-        TabletConnection(asio::io_service& ioService, int id, TabletService* service): 
-		TcpConnection(ioService),
-        myId(id), myService(service)
+        TabletConnection(ConnectionInfo& ci, TabletService* service): 
+		TcpConnection(ci), myService(service)
         {
             ltClick = false;
             rtClick = false;
@@ -57,11 +55,11 @@ namespace omega {
             //		int length = atoi(myBuffer);
             
             // Read service id.
-            readString(myBuffer, BufferSize, ':');
+            readUntil(myBuffer, BufferSize, ':');
             int serviceId = atoi(myBuffer);
             
             // Read event type.
-            readString(myBuffer, BufferSize, ':');
+            readUntil(myBuffer, BufferSize, ':');
             int eventType = atoi(myBuffer);
             
             float pt1x , pt1y , pt2x , pt2y;
@@ -76,11 +74,11 @@ namespace omega {
             else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
             {
                 // Read x.
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 pt1x = atof(myBuffer);
                 
                 // Read y.
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 pt1y = atof(myBuffer);
                 
                 switch (eventType) 
@@ -89,7 +87,7 @@ namespace omega {
                     case Event::Move:
                         if ( ltClick == true )  //This is not the first touch down
                         {
-                            float tolerance = .1;
+                            float tolerance = .1f;
                             if( withinAnchor( pt1x , pt1y , tolerance) ) //if ess. the same pt.
                             {
                                 genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
@@ -138,22 +136,22 @@ namespace omega {
             else if(eventType == Event::Zoom || eventType == Event::Rotate )
             {
                 // Read point 1 x.
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 pt1x = atof(myBuffer);
                 
                 // Read point 1 y.
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 pt1y = atof(myBuffer);
                 
                 // Read point 2 x.
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 pt2x = atof(myBuffer);
                 
                 // Read point 2 y.
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 pt2y = atof(myBuffer);
                 
-                readString(myBuffer, BufferSize, ':');
+                readUntil(myBuffer, BufferSize, ':');
                 float param = atof(myBuffer);
                 
                 switch (eventType)
@@ -202,7 +200,7 @@ namespace omega {
             else
             {
                 // Read until the end of the message
-                readString(myBuffer, BufferSize, '|');
+                readUntil(myBuffer, BufferSize, '|');
             }
         }
         
@@ -230,7 +228,7 @@ namespace omega {
             
             myService->lockEvents();
             Event* evt = myService->writeHead();
-            evt->reset(evtType, servType, myId);
+            evt->reset(evtType, servType, myConnectionInfo.id);
             evt->setPosition(myTouchPosition[0], myTouchPosition[1]);
             evt->setFlags(myFlag);
             
@@ -255,7 +253,7 @@ namespace omega {
         
         virtual void handleClosed()
         {
-            ofmsg("Connection closed (id=%1%)", %myId);
+            ofmsg("Connection closed (id=%1%)", %myConnectionInfo.id);
         }
         
     private:
@@ -263,7 +261,6 @@ namespace omega {
         char myBuffer[BufferSize];
         
         TabletService* myService;
-        int myId;
         Vector2i myTouchPosition;
         Vector2f anchor;
         bool ltClick;
@@ -275,20 +272,20 @@ namespace omega {
     {
     public:
         TabletServer(TabletService* service):
-		myPointerCounter(0),
+		myConnectionCounter(0),
 		myService(service)
 		{}
         
         virtual TcpConnection* createConnection()
         {
-            ofmsg("New tablet connection (id=%1%)", %myPointerCounter);
-            TabletConnection* conn = new TabletConnection(myIOService, ++myPointerCounter, myService);
+            ofmsg("New tablet connection (id=%1%)", %myConnectionCounter);
+            TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, ++myConnectionCounter), myService);
             myClients.push_back(conn);
             return conn;
         }
         
     private:
-        int myPointerCounter;
+        int myConnectionCounter;
         TabletService* myService;
     };
 };
@@ -323,3 +320,14 @@ void TabletService::poll()
 {
 	myServer->poll();
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TcpConnection* TabletService::getConnection(int id)
+{
+	if(myServer != NULL)
+	{
+		return myServer->getConnection(id);
+	}
+	return NULL;
+}
+
