@@ -256,9 +256,20 @@ namespace omega {
         ///////////////////////////////////////////////////////////////////////////////////////////
         virtual void handleClosed()
         {
-            ofmsg("Connection closed (id=%1%)", %myConnectionInfo.id);
+            ofmsg("Tablet connection closed (id=%1%)", %myConnectionInfo.id);
         }
         
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        virtual void handleConnected()
+        {
+            ofmsg("Tablet connection open (id=%1%)", %myConnectionInfo.id);
+			// Send out event
+            myService->lockEvents();
+			Event* evt = myService->writeHead();
+			evt->reset(Event::Connect, Service::Generic, myConnectionInfo.id);
+            myService->unlockEvents();
+        }
+
     private:
         static const int BufferSize = 1024;
         char myBuffer[BufferSize];
@@ -282,15 +293,9 @@ namespace omega {
 		///////////////////////////////////////////////////////////////////////////////////////////
         virtual TcpConnection* createConnection()
         {
-            ofmsg("New tablet connection (id=%1%)", %myConnectionCounter);
+            //ofmsg("New tablet connection (id=%1%)", %myConnectionCounter);
             TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, ++myConnectionCounter), myService);
             myClients.push_back(conn);
-
-			// Send out event
-            myService->lockEvents();
-			Event* evt = myService->writeHead();
-			evt->reset(Event::Connect, Service::Generic, conn->getConnectionInfo().id);
-            myService->unlockEvents();
 
             return conn;
         }
