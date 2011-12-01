@@ -262,6 +262,8 @@ namespace omega {
         ///////////////////////////////////////////////////////////////////////////////////////////
         virtual void handleConnected()
         {
+			TcpConnection::handleConnected();
+
             ofmsg("Tablet connection open (id=%1%)", %myConnectionInfo.id);
 			// Send out event
             myService->lockEvents();
