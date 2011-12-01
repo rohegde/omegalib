@@ -128,7 +128,7 @@ TcpConnection* TcpServer::getConnection(int id)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TcpConnection::TcpConnection(ConnectionInfo& ci):
+TcpConnection::TcpConnection(ConnectionInfo ci):
 	myConnectionInfo(ci),
 	mySocket(ci.ioService),
 	myOpen(false)

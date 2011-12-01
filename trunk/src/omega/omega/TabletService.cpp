@@ -39,7 +39,7 @@ namespace omega {
     class TabletConnection: public TcpConnection
     {
     public:
-        TabletConnection(ConnectionInfo& ci, TabletService* service): 
+        TabletConnection(ConnectionInfo ci, TabletService* service): 
 		TcpConnection(ci), myService(service)
         {
             ltClick = false;
