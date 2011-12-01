@@ -205,6 +205,7 @@ namespace omega {
             }
         }
         
+		///////////////////////////////////////////////////////////////////////////////////////////
         bool withinAnchor( float x , float y , float tolerance )
         {
             if( x + tolerance > anchor[0] && x - tolerance < anchor[0] &&  
@@ -212,6 +213,7 @@ namespace omega {
             else return false;
         }
         
+		///////////////////////////////////////////////////////////////////////////////////////////
         void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
         {
             
@@ -251,7 +253,7 @@ namespace omega {
 #endif
         }
         
-        
+        ///////////////////////////////////////////////////////////////////////////////////////////
         virtual void handleClosed()
         {
             ofmsg("Connection closed (id=%1%)", %myConnectionInfo.id);
@@ -277,11 +279,19 @@ namespace omega {
 		myService(service)
 		{}
         
+		///////////////////////////////////////////////////////////////////////////////////////////
         virtual TcpConnection* createConnection()
         {
             ofmsg("New tablet connection (id=%1%)", %myConnectionCounter);
             TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, ++myConnectionCounter), myService);
             myClients.push_back(conn);
+
+			// Send out event
+            myService->lockEvents();
+			Event* evt = myService->writeHead();
+			evt->reset(Event::Connect, Service::Generic, conn->getConnectionInfo().id);
+            myService->unlockEvents();
+
             return conn;
         }
         
@@ -316,13 +326,13 @@ void TabletService::setup(Setting& settings)
 	myServer->start();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void TabletService::poll() 
 {
 	myServer->poll();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 TcpConnection* TabletService::getConnection(int id)
 {
 	if(myServer != NULL)

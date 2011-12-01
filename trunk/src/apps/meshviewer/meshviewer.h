@@ -29,6 +29,7 @@
 
 #include <omega.h>
 #include <oengine.h>
+#include "oengine/TabletInterface.h"
 
 using namespace omega;
 using namespace oengine;
@@ -76,7 +77,7 @@ private:
 class MeshViewer: public EngineServer
 {
 public:
-	MeshViewer(Application* app): EngineServer(app) {}
+	MeshViewer(Application* app): EngineServer(app), myTablet(NULL) {}
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);
@@ -106,6 +107,9 @@ private:
 
 	// Interactors.
 	Actor* myInteractor;
+
+	TabletInterface* myTablet;
+	PixelData* mySecondaryViewData;
 
 	Entity* mySelectedEntity;
 

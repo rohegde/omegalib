@@ -24,51 +24,51 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __IMAGE_UTILS_H__
-#define __IMAGE_UTILS_H__
-
-#include "oenginebase.h"
-#include "omega/PixelData.h"
 #include "omega/ByteArray.h"
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ImageData
-	{
-	public:
-		ImageData(const String& filename, int width, int height);
+using namespace omega;
 
-		PixelData* getPixels();
-		void setPixels(PixelData* pixels);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ByteArray::ByteArray(size_t size):
+	mySize(size)
+{
+	myData = (byte*)malloc(size);
+}
 
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ByteArray::~ByteArray()
+{
+	free(myData);
+	myData = NULL;
+}
 
-	private:
-		PixelData* myPixels;
-		int myWidth;
-		int myHeight;
-		String myFilename;
-	};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+byte* ByteArray::lock()
+{
+	myLock.lock();
+	return myData;
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads and manages image data.
-	class OENGINE_API ImageUtils
-	{
-	public:
-		enum ImageFormat { FormatPng };
-	public:
-		//! Load an image from a file.
-		static ImageData* loadImage(const String& filename);
-		static ByteArray* encode(PixelData* data, ImageFormat format);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ByteArray::unlock()
+{
+	myLock.unlock();
+}
 
-	private:
-		ImageUtils() {}
-	};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ByteArray::copyFrom(byte* src, size_t size)
+{
+	myLock.lock();
+	size_t actualSize = size < mySize ? size : mySize;
+	memcpy(myData, src, actualSize);
+	myLock.unlock();
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline PixelData* ImageData::getPixels() 
-	{ return myPixels; }
-}; // namespace oengine
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ByteArray::copyTo(byte* dst, size_t size)
+{
+	myLock.lock();
+	memcpy(dst, myData, size);
+	myLock.unlock();
+}
 
-#endif

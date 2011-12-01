@@ -99,3 +99,37 @@ ImageData* ImageUtils::loadImage(const String& filename)
 
 	return imageData;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
+{
+	// Allocate a freeimage bitmap and memory buffer to do the conversion.
+	//FIBITMAP* fibmp = FreeImage_Allocate(data->getWidth(), data->getHeight(), 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+	FIMEMORY* fmem = FreeImage_OpenMemory();
+
+	byte* pdpixels = data->lockData();
+	data->unlockData();
+	FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
+		pdpixels,
+		data->getWidth(),
+		data->getHeight(),
+		data->getPitch(),
+		data->getBpp(),
+		0xff000000, 0x00ff0000, 0x0000ff00);
+
+	// Encode the bitmap to a freeimage memory buffer
+	FreeImage_SaveToMemory(FIF_PNG, fibmp, fmem);
+
+	// Copy the freeimage memory buffer to omegalib bytearray
+	BYTE* fmemdata = NULL;
+	DWORD fmemsize = 0;
+	FreeImage_AcquireMemory(fmem, &fmemdata, &fmemsize);
+	ByteArray* encodedData = new ByteArray(fmemsize);
+	encodedData->copyFrom(fmemdata, fmemsize);
+
+	// Release resources
+	FreeImage_CloseMemory(fmem);
+	FreeImage_Unload(fibmp);
+
+	return encodedData;
+}

@@ -24,51 +24,33 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __IMAGE_UTILS_H__
-#define __IMAGE_UTILS_H__
+#ifndef __BYTE_ARRAY_H__
+#define __BYTE_ARRAY_H__
 
-#include "oenginebase.h"
-#include "omega/PixelData.h"
-#include "omega/ByteArray.h"
+#include "osystem.h"
+#include "omega/Lock.h"
 
-namespace oengine {
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ImageData
+	struct OMEGA_API ByteArray: public OmegaObject
 	{
 	public:
-		ImageData(const String& filename, int width, int height);
+		ByteArray(size_t size);
+		virtual ~ByteArray();
 
-		PixelData* getPixels();
-		void setPixels(PixelData* pixels);
+		void copyFrom(byte* src, size_t size);
+		void copyTo(byte* dst, size_t size);
 
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
+		byte* lock();
+		void unlock();
 
-	private:
-		PixelData* myPixels;
-		int myWidth;
-		int myHeight;
-		String myFilename;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Loads and manages image data.
-	class OENGINE_API ImageUtils
-	{
-	public:
-		enum ImageFormat { FormatPng };
-	public:
-		//! Load an image from a file.
-		static ImageData* loadImage(const String& filename);
-		static ByteArray* encode(PixelData* data, ImageFormat format);
+		size_t getSize() { return mySize; }
 
 	private:
-		ImageUtils() {}
+		Lock myLock;
+		byte* myData;
+		size_t mySize;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline PixelData* ImageData::getPixels() 
-	{ return myPixels; }
 }; // namespace oengine
 
 #endif

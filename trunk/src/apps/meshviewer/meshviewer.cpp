@@ -257,17 +257,17 @@ void MeshViewer::initUi()
 	}
 
 	Image* img = wf->createImage("img", root);
-	PixelData* pd = new PixelData(PixelData::FormatRgba, 320, 320);
-	img->setData(pd);
+	mySecondaryViewData = new PixelData(PixelData::FormatRgba, 854, 480);
+	img->setData(mySecondaryViewData);
 	img->setAutoRefresh(true);
 	img->setPosition(Vector2f(canvasWidth - 325, 0));
-	img->setSize(Vector2f(420, 420));
+	img->setSize(Vector2f(200, 200));
 
-	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DefaultFlags);
+	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
 	cam->setProjection(30, 1, 0.1f, 100);
 	cam->setAutoAspect(true);
 	cam->setPosition(Vector3f(0, 0, 1));
-	cam->getOutput(0)->setReadbackTarget(pd);
+	cam->getOutput(0)->setReadbackTarget(mySecondaryViewData);
 	cam->getOutput(0)->setEnabled(true);
 }
 
@@ -317,22 +317,30 @@ void MeshViewer::handleEvent(const Event& evt)
 	}
 	else if( evt.getServiceType() == Service::Keyboard )
     {
-        if((char)evt.getSourceId() == 'e' && evt.getType() == Event::Down) 
+        if(evt.isKeyDown('e')) 
         {
 			if(mySelectedEntity != NULL)
 			{
 				destroyEntity(mySelectedEntity);
 			}
         }
-        if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
+		if(evt.isKeyDown('s')) 
         {
-            myShowUI = !myShowUI;
+			//FILE* f = fopen("./test.png", "wb");
+			//fwrite(png->lock(), 1, png->getSize(), f);
+			//png->unlock();
+			//fclose(f);
+
+			if(myTablet != NULL)
+			{
+				myTablet->sendImage(mySecondaryViewData);
+			}
         }
-        if((char)evt.getSourceId() == 'r' && evt.getType() == Event::Down) 
+        if(evt.isKeyDown('r')) 
         {
             autoRotate = !autoRotate;
         }
-        else if((char)evt.getSourceId() == 'h' && evt.getType() == Event::Down) 
+        else if(evt.isKeyDown('h')) 
         {
 			if(mySelectedEntity != NULL)
 			{
@@ -340,6 +348,14 @@ void MeshViewer::handleEvent(const Event& evt)
 			}
         }
     }
+	else if( evt.getServiceType() == Service::Generic )
+    {
+		if(evt.getType() == Event::Connect)
+		{
+			TabletService* tsvc = getServiceManager()->getService<TabletService>(evt.getServiceId());
+			myTablet = new TabletInterface(tsvc, evt.getSourceId());
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
