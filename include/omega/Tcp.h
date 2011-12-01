@@ -83,7 +83,7 @@ namespace omega {
 
 		//! Connection event management
 		//@{
-		virtual void handleConnected() { myOpen = true; }
+		virtual void handleConnected();
 		virtual void handleClosed();
 		virtual void handleError(const ConnectionError& err);
 		virtual void handleData();
