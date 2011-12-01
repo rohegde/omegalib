@@ -94,7 +94,7 @@ namespace omega {
 	protected:
 
 	protected:
-		ConnectionInfo& myConnectionInfo;
+		ConnectionInfo myConnectionInfo;
 		bool myOpen;
 		tcp::socket mySocket;
 		asio::streambuf myInputBuffer;

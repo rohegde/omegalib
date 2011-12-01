@@ -216,8 +216,7 @@ namespace omega {
 		///////////////////////////////////////////////////////////////////////////////////////////
         void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
         {
-            
-            Event::Flags myFlag;
+            Event::Flags myFlag = (Event::Flags)0;
             
             if( ltClick ) myFlag = Event::Left;
             if( rtClick ) myFlag = Event::Right;
@@ -296,7 +295,7 @@ namespace omega {
         virtual TcpConnection* createConnection()
         {
             //ofmsg("New tablet connection (id=%1%)", %myConnectionCounter);
-            TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, ++myConnectionCounter), myService);
+            TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, myConnectionCounter++), myService);
             myClients.push_back(conn);
 
             return conn;

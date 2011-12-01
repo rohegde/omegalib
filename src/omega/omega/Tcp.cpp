@@ -131,13 +131,13 @@ TcpConnection* TcpServer::getConnection(int id)
 TcpConnection::TcpConnection(ConnectionInfo ci):
 	myConnectionInfo(ci),
 	mySocket(ci.ioService),
-	myOpen(false)
+	myOpen(true)
 {}
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool TcpConnection::poll()
 {
-	if(!mySocket.is_open())
+	if(!myOpen)
 	{
 		handleClosed();
 		return false;
