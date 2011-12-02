@@ -90,7 +90,8 @@ ReferenceBoxRenderable::~ReferenceBoxRenderable()
 void ReferenceBoxRenderable::draw(RenderState* state)
 {
 	glDisable(GL_LIGHTING);
-	glDisable(GL_BLEND);
+	glEnable(GL_BLEND);
+
 	if(state->isFlagSet(RenderPass::RenderOpaque))
 	{
 		int gridLinesX = (int)(myOwner->mySize[0] / myOwner->myPrimaryLineInterval);
@@ -105,23 +106,28 @@ void ReferenceBoxRenderable::draw(RenderState* state)
 		Vector3f nrb = myOwner->myBox.getCorner(AlignedBox3::NEAR_RIGHT_BOTTOM);
 		Vector3f nrt = myOwner->myBox.getCorner(AlignedBox3::NEAR_RIGHT_TOP);
 
-		drawReferencePlane(flt, frb, AxisZ, myOwner->mySideColor[ReferenceBox::Back]);
+		float offset = 0.01f;
+		Vector3f zoff(0, 0, offset);
+		Vector3f xoff(offset, 0, 0);
+		Vector3f yoff(0, offset, 0);
+
+		drawReferencePlane(flt - zoff, frb - zoff, AxisZ, myOwner->mySideColor[ReferenceBox::Back]);
 		drawReferenceGrid(flt, frb, AxisX, myOwner->myPrimaryLineColor, gridLinesX);
 		drawReferenceGrid(flt, frb, AxisY, myOwner->myPrimaryLineColor, gridLinesY);
 
-		drawReferencePlane(flt, nlb, AxisX, myOwner->mySideColor[ReferenceBox::Left]);
+		drawReferencePlane(flt - xoff, nlb - xoff, AxisX, myOwner->mySideColor[ReferenceBox::Left]);
 		drawReferenceGrid(flt, nlb, AxisY, myOwner->myPrimaryLineColor, gridLinesY);
 		drawReferenceGrid(flt, nlb, AxisZ, myOwner->myPrimaryLineColor, gridLinesZ);
 
-		drawReferencePlane(frt, nrb, AxisX, myOwner->mySideColor[ReferenceBox::Right]);
+		drawReferencePlane(frt + xoff, nrb + xoff, AxisX, myOwner->mySideColor[ReferenceBox::Right]);
 		drawReferenceGrid(frt, nrb, AxisY, myOwner->myPrimaryLineColor, gridLinesY);
 		drawReferenceGrid(frt, nrb, AxisZ, myOwner->myPrimaryLineColor, gridLinesZ);
 
-		drawReferencePlane(flb, nrb, AxisY, myOwner->mySideColor[ReferenceBox::Bottom]);
+		drawReferencePlane(flb - yoff, nrb - yoff, AxisY, myOwner->mySideColor[ReferenceBox::Bottom]);
 		drawReferenceGrid(flb, nrb, AxisX, myOwner->myPrimaryLineColor, gridLinesX);
 		drawReferenceGrid(flb, nrb, AxisZ, myOwner->myPrimaryLineColor, gridLinesZ);
 
-		drawReferencePlane(flt, nrt, AxisY, myOwner->mySideColor[ReferenceBox::Top]);
+		drawReferencePlane(flt + yoff, nrt + yoff, AxisY, myOwner->mySideColor[ReferenceBox::Top]);
 		drawReferenceGrid(flt, nrt, AxisX, myOwner->myPrimaryLineColor, gridLinesX);
 		drawReferenceGrid(flt, nrt, AxisZ, myOwner->myPrimaryLineColor, gridLinesZ);
 	}
@@ -172,7 +178,7 @@ void ReferenceBoxRenderable::drawReferencePlane(
 void ReferenceBoxRenderable::drawReferenceGrid(
 	const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines)
 {
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 
 	float vmin;
 	float vmax;
@@ -228,5 +234,5 @@ void ReferenceBoxRenderable::drawReferenceGrid(
 	}
 	glEnd();
 
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 }

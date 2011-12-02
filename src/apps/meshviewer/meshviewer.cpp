@@ -242,7 +242,7 @@ void MeshViewer::initUi()
 	Container* root = getUi(0);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-	entityButtons->setDebugModeEnabled(true);
+	//entityButtons->setDebugModeEnabled(true);
 
 	entityButtons->setPosition(Vector2f(5, 5));
 	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
@@ -258,10 +258,10 @@ void MeshViewer::initUi()
 
 	Image* img = wf->createImage("img", root);
 	mySecondaryViewData = new PixelData(PixelData::FormatRgba, 854, 480);
-	img->setData(mySecondaryViewData);
+	//img->setData(mySecondaryViewData);
 	img->setAutoRefresh(true);
 	img->setPosition(Vector2f(canvasWidth - 325, 0));
-	img->setSize(Vector2f(200, 200));
+	img->setSize(Vector2f(420, 240));
 
 	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
 	cam->setProjection(30, 1, 0.1f, 100);
