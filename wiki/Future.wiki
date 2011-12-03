@@ -7,13 +7,36 @@
 Separate display and services code. 
 	* `ocore` contains just input serives and basic omegalib functionality (like math & configuration support)
 	* `odisplay` (or `omedia`? or just `omega`?) contains display services and the current engine
+	* Unify Engine and basic Application classes	
+	* Unify Camera and Observer
+	* Streamline RenderPass flow
+	* Direct openGL rendering is now supported through implementation of custom RenderPasses.
+	* `outils` for sample utility classes that are not good enough to be part of odisplay
+		* ReferenceBox
+		* Box
+		* PlyReader
+		* BoundingSphere
+		* etc.
+
+=== Revise Equalizer display system initialization flow ===
+	* There is probably a lot of redundancy - inefficiency in the currect way the Equalizer / application init flow works. Revise it.
+	* *?* Render interlaced & side by side directly inside channel render function without relying on equalizer config and multiple equalizer draw calls
+		* Would allow to work around some problems with equalizer
+		* Would this lead to better performance?
+
+=== Revise Event class ===
+	* Zoom -> Scale
+	* split: convert to Scale
+	* Remove SplitStart / SplitEnd, RotateStart, RotateEnd
+	* Remove DoubleClick
+	* Remove MoveUp, Down, Etc. events?
 	
 == New oinputserver / NetService, new protocol ==
 
 == Refactor Event class, generic messaging support ==
 
 == Multimachine / distributed app changes ==
-	
+
 == SAGE Integration ==
 Send pixels to SAGE through SAIL. Options:
 	* Integrate as separate display system (I would have to take care of doing off-axis projection and a bunch of other stuff) *NO*
@@ -35,3 +58,8 @@ Starting / Stopping the service connects/disconnects to SAGE, so the application
 Multiple sail service instances can create multiple windows on SAGE from the same omegalib application (i.e a Vtk app displaying multiple plots on a SAGE display)
 
 Sail UI capabilities can be used to create a view + control panel on a SAGE display
+
+
+== Memory management and statistics support ==
+Add a way to collect info about memory leaks, allocations and timing statistics in the application. 
+	* Allow those statistics to be viewed as an OSD (like the console)
