@@ -33,6 +33,9 @@
 #include "omega/glheaders.h"
 #include "omega/StringUtils.h"
 
+// Uncomment to print debug messages about client flow.
+//#define OMEGA_DEBUG_FLOW
+
 
 using namespace omega;
 using namespace oengine;
@@ -96,6 +99,10 @@ void EngineClient::queueRenderableCommand(RenderableCommand& cmd)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::startFrame(const FrameInfo& frame)
 {
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("EngineClient::startFrame %1%", %frame.frameNum);
+#endif
+
 	foreach(Camera* cam, myServer->getCameras())
 	{
 		cam->startFrame(frame);
@@ -105,6 +112,10 @@ void EngineClient::startFrame(const FrameInfo& frame)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::finishFrame(const FrameInfo& frame)
 {
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("EngineClient::finishFrame %1%", %frame.frameNum);
+#endif
+
 	foreach(Camera* cam, myServer->getCameras())
 	{
 		cam->finishFrame(frame);
@@ -114,6 +125,10 @@ void EngineClient::finishFrame(const FrameInfo& frame)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::draw(const DrawContext& context)
 {
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("EngineClient::draw %1%", %context.frameNum);
+#endif
+
 	// First of all make sure all render passes are initialized.
 	foreach(RenderPass* rp, myRenderPassList)
 	{

@@ -51,6 +51,7 @@ namespace oengine {
 		int myLines;
 		Color myBackgroundColor;
 		FontInfo myFont;
+		Lock myLock;
 
 		List<String> myLineBuffer;
 		String myHeadline;
