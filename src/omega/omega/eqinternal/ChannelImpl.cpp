@@ -186,11 +186,10 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 		return;
 	}
 	
-	// If the pipe has not been initialized yet, return now.
-	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-	if(!pipe->isReady()) return;
-
-	getClient()->startFrame(FrameInfo(frameID.low(), pipe->getGpuContext()));
+	// In frame finish we just perform overlay draw operations, so always force the eye to be 
+	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
+	// Ignore the second call (Right Eye)
+	//if(getEye() == eq::fabric::EYE_RIGHT) return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,6 +229,16 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
 
+	// In frame finish we just perform overlay draw operations, so always force the eye to be 
+	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
+	// Ignore the second call (Right Eye)
+	//if(getEye() == eq::fabric::EYE_RIGHT) return;
+
+	setupDrawContext(&myDC, frameID);
+	myDC.eye = DrawContext::EyeCyclop;
+	myDC.layer = getLayers();
+	myDC.task = DrawContext::OverlayDrawTask;
+
 	EQ_GL_CALL( applyBuffer( ));
 	EQ_GL_CALL( applyViewport( ));
 	EQ_GL_CALL( setupAssemblyState( ));
@@ -238,17 +247,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	if(!pipe->isReady()) return;
 
-	// In frame finish we just perform overlay draw operations, so always force the eye to be 
-	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
-	// Ignore the second call.
-	if(getEye() != eq::fabric::EYE_CYCLOP &&
-		myDC.frameNum >= frameID.low()) return;
-
-	setupDrawContext(&myDC, frameID);
-	myDC.eye = DrawContext::EyeCyclop;
-
-	myDC.layer = getLayers();
-	myDC.task = DrawContext::OverlayDrawTask;
 	getClient()->draw(myDC);
 
 	if(isDrawStatisticsEnabled())
@@ -267,10 +265,8 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 		getWindow()->drawFPS();
 	}
 
-	getClient()->finishFrame(FrameInfo(frameID.low(), pipe->getGpuContext()));
 	EQ_GL_CALL( resetAssemblyState( ));
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)

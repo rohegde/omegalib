@@ -257,8 +257,8 @@ void MeshViewer::initUi()
 	}
 
 	Image* img = wf->createImage("img", root);
-	mySecondaryViewData = new PixelData(PixelData::FormatRgba, 854, 480);
-	//img->setData(mySecondaryViewData);
+	mySecondaryViewData = new PixelData(PixelData::FormatRgba, 420, 240);
+	img->setData(mySecondaryViewData);
 	img->setAutoRefresh(true);
 	img->setPosition(Vector2f(canvasWidth - 325, 0));
 	img->setSize(Vector2f(420, 240));
@@ -266,7 +266,8 @@ void MeshViewer::initUi()
 	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
 	cam->setProjection(30, 1, 0.1f, 100);
 	cam->setAutoAspect(true);
-	cam->setPosition(Vector3f(0, 0, 1));
+	cam->setPosition(Vector3f(0, 2, 0));
+	cam->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitY()));
 	cam->getOutput(0)->setReadbackTarget(mySecondaryViewData);
 	cam->getOutput(0)->setEnabled(true);
 }

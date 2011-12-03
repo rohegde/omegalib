@@ -25,10 +25,14 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "eqinternal.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace co::base;
 using namespace std;
+
+// Uncomment to print debug messages about client flow.
+//#define OMEGA_DEBUG_FLOW
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
@@ -61,6 +65,10 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 {
 	eq::Pipe::frameStart(frameID, frameNumber);
 
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("PipeImpl::frameStart %1%", %frameNumber);
+#endif
+
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
 
@@ -80,12 +88,18 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 		myClient->setGpuContext(myGpuContext);
 		myClient->initialize();
 	}
+
+	myClient->startFrame(FrameInfo(frameID.low(), getGpuContext()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber )
 {
 	eq::Pipe::frameFinish(frameID, frameNumber);
+
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("PipeImpl::frameFinish %1%", %frameNumber);
+#endif
 
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
@@ -94,4 +108,6 @@ void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber
 	{
 		myInitialized = true;
 	}
+
+	myClient->finishFrame(FrameInfo(frameID.low(), getGpuContext()));
 }

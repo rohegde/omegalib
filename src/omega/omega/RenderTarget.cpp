@@ -112,8 +112,14 @@ int RenderTarget::getHeight()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderTarget::unbind()
 {
-	myBound = false;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//omsg("RenderTarget::unbind");
+
+	if(myBound)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		myBound = false;
+		glPopAttrib();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,10 +152,17 @@ void RenderTarget::readback()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderTarget::bind()
 {
-	myBound = true;
+	//omsg("RenderTarget::bind");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, myId);
 	if(oglError) return;
+
+	myBound = true;
+
+	// Disable scissor test for render targets
+	glPushAttrib(GL_SCISSOR_BIT);
+	glDisable(GL_SCISSOR_TEST);
+	//glDisable(GL_STENCIL_TEST);
 
 	if(myType == RenderToTexture)
 	{
