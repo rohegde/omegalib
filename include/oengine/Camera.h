@@ -104,24 +104,26 @@ namespace oengine {
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
-		const Vector3f& getPosition() { return myPosition; }
-		void setPosition(const Vector3f& value) { myPosition = value; }
-
 		const Vector3f& getProjectionOffset() { return myProjectionOffset; }
 		void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
 		const Quaternion& getOrientation();
 		void setOrientation(const Quaternion& value);
 
+		const Vector3f& getPosition();
+		void setPosition(const Vector3f& value);
+
 		void setProjection(float fov, float aspect, float nearZ, float farZ);
+		void setModelView(const Vector3f& position, const Quaternion& orientation);
+
+		//! Returns a view ray given an origin point in normalized coordinates.
+		//! @param normalizedPoint - the origin point for the ray in normalized ([0, 1]) coordinates
+		Ray getViewRay(const Vector2f& normalizedPoint);
 
 		//const AffineTransform3& getViewTransform();
 		//const AffineTransform3& getProjectionTransform();
 		//void setProjectionTransform(const AffineTransform3& value);
 		//void setViewTransform(const AffineTransform3& value);
-
-		//void updateView(const Vector3f& position, const Quaternion& orientation);
-		//void setProjection(float fov, float aspect, float nearZ, float farZ);
 
 		bool getAutoAspect();
 		void setAutoAspect(bool value);
@@ -139,6 +141,7 @@ namespace oengine {
 
 		void updateObserver(Observer* obs);
 
+		//! Returns true if this camera is enabled in the specified draw context.
 		bool isEnabled(const DrawContext& context);
 
 		void endDraw(const DrawContext& context);
@@ -147,21 +150,21 @@ namespace oengine {
 		void finishFrame(const FrameInfo& frame);
 
 	private:
-		uint myFlags;
-
-		CameraOutput* myOutput[GpuContext::MaxContexts];
-		DrawContext myDrawContext[GpuContext::MaxContexts];
-
 		//! Current view transform
-		//AffineTransform3 myViewTransform;
+		AffineTransform3 myModelView;
 		Transform3 myProjection;
 
 		//! Observer current position.
-		//! This is the projection plane position when using a head tracked system + off-axis projection.
 		Vector3f myPosition;
 
 		//! Observer current rotation.
 		Quaternion myOrientation;
+
+		//! Field of view (in radians)
+		float myFov;
+		float myAspect;
+		float myNearZ;
+		float myFarZ;
 
 		//! Projection plane offset.
 		//! this is the position of the center of the projection plane when using a head tracked system + off-axis projection. 
@@ -170,14 +173,13 @@ namespace oengine {
 		//! manually to test off-axis projection.
 		Vector3f myProjectionOffset;
 
-		//! Field of view (in radians)
-		float myFov;
-		float myAspect;
-		float myNearZ;
-		float myFarZ;
-
 		//! When set to true, the aspect is computed depending on the height & width of the camera render target.
 		bool myAutoAspect;
+
+		// Offscren rendering stuff
+		uint myFlags;
+		CameraOutput* myOutput[GpuContext::MaxContexts];
+		DrawContext myDrawContext[GpuContext::MaxContexts];
 
 		// Navigation stuff.
 		NavigationMode myNavigationMode;
@@ -225,7 +227,15 @@ namespace oengine {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setOrientation(const Quaternion& value) 
-	{ myOrientation = value; }
+	{ myOrientation = value; setModelView(myPosition, myOrientation);}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Vector3f& Camera::getPosition() 
+	{ return myPosition; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Camera::setPosition(const Vector3f& value) 
+	{ myPosition = value; setModelView(myPosition, myOrientation); }
 }; // namespace oengine
 
 #endif

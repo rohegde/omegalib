@@ -285,7 +285,7 @@ const DrawContext& Camera::beginDraw(const DrawContext& context)
 	DrawContext& dc = myDrawContext[context.gpuContext->getId()];
 
 	dc = context;
-	dc.modelview = Math::makeViewMatrix(myPosition, myOrientation);
+	dc.modelview = myModelView;
 	if(myFlags & Offscreen)
 	{
 		dc.viewport = output->getReadbackViewport();
@@ -324,13 +324,13 @@ void Camera::finishFrame(const FrameInfo& frame)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//void Camera::updateView(const Vector3f& position, const Quaternion& orientation)
-//{
-//	myPosition = position;
-//	myOrientation = orientation;
-//	myView = Math::makeViewMatrix(position, orientation);
-//}
-//
+void Camera::setModelView(const Vector3f& position, const Quaternion& orientation)
+{
+	myPosition = position;
+	myOrientation = orientation;
+	myModelView = Math::makeViewMatrix(position, orientation);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::setProjection(float fov, float aspect, float nearZ, float farZ)
 {
@@ -339,4 +339,13 @@ void Camera::setProjection(float fov, float aspect, float nearZ, float farZ)
 	myNearZ = nearZ;
 	myFarZ = farZ;
 	myAspect = aspect;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+Ray Camera::getViewRay(const Vector2f& normalizedPoint)
+{
+	Vector2f pt(
+		normalizedPoint[0] * 2.0f - 1.0f,
+		normalizedPoint[1] * 2.0f - 1.0f);
+	return Math::unprojectNormalized(pt, myModelView, myProjection);
 }
