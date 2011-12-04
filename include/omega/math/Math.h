@@ -413,8 +413,10 @@ namespace omega { namespace math
     const T Math<T>::PositiveInfinity = std::numeric_limits<T>::infinity();
     template<typename T>
     const T Math<T>::NegativeInfinity = -std::numeric_limits<T>::infinity();
+    
     template<typename T>
-    const T Math<T>::Pi = T( 4.0 * atan( 1.0 ) );
+    const float Math<T>::Pi = 3.1415926535;
+
     template<typename T>
     const T Math<T>::TwoPi = T( 2.0 * Pi );
     template<typename T>
