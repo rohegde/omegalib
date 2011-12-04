@@ -110,8 +110,8 @@ namespace oengine {
 		const Vector3f& getProjectionOffset() { return myProjectionOffset; }
 		void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
-		const Quaternion& getOrientation() { return myOrientation; }
-		void setOrientation(const Quaternion& value) { myOrientation = value; }
+		const Quaternion& getOrientation();
+		void setOrientation(const Quaternion& value);
 
 		void setProjection(float fov, float aspect, float nearZ, float farZ);
 
@@ -218,6 +218,14 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setAutoAspect(bool value)
 	{ myAutoAspect = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Quaternion& Camera::getOrientation()
+	{ return myOrientation; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Camera::setOrientation(const Quaternion& value) 
+	{ myOrientation = value; }
 }; // namespace oengine
 
 #endif
