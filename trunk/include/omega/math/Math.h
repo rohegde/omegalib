@@ -391,6 +391,8 @@ namespace omega { namespace math
 		static 
 		Ray<T> unproject(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport);
 		static 
+		Ray<T> unprojectNormalized(const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection);
+		static 
 		vector<3, float> project(const vector<3, float>& point, const transform<3, T, Eigen::Affine>& modelview, const transform<3, T, Eigen::Projective>& projection, const Rect& viewport);
 
 		static vector< 3, T > normal(const vector< 3, T >& aa, const vector< 3, T >& bb, const vector< 3, T >& cc);
@@ -1454,6 +1456,19 @@ namespace omega { namespace math
 		const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, 
 		const transform<3, T, Eigen::Projective>& projection, const Rect& viewport)
 	{
+		vector<2, T> np;
+		np[0]=(point[0] - (float)viewport.x()) / (float)(viewport.width()) * 2.0f - 1.0f;
+        np[1]=((viewport.height() - point[1]) - (float)viewport.y()) / (float)(viewport.height()) * 2.0f - 1.0f;
+
+		return unprojectNormalized(np, modelview, projection);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+    template<typename T> inline 
+	Ray<T> Math<T>::unprojectNormalized(
+		const vector<2, float>& point, const transform<3, T, Eigen::Affine>& modelview, 
+		const transform<3, T, Eigen::Projective>& projection)
+	{
 		vector<3, T> origin;
 		vector<3, T> direction;
 
@@ -1463,8 +1478,8 @@ namespace omega { namespace math
 		//if(!A.inverse(m)) return Ray<T>();
 
 		vector<4, T> in;
-		in[0]=(point[0] - (float)viewport.x()) / (float)(viewport.width()) * 2.0f - 1.0f;
-        in[1]=((viewport.height() - point[1]) - (float)viewport.y()) / (float)(viewport.height()) * 2.0f - 1.0f;
+		in[0]= point[0];
+        in[1]= point[1];
 		// z == projection plane z.
         in[2]= -1.0f;
         in[3]=1.0f;

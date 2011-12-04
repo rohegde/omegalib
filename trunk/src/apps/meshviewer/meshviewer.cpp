@@ -266,7 +266,7 @@ void MeshViewer::initUi()
 	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
 	cam->setProjection(30, 1, 0.1f, 100);
 	cam->setAutoAspect(true);
-	cam->setPosition(Vector3f(0, 2, 0));
+	cam->setPosition(Vector3f(0, 1, 0));
 	Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
 	cam->setOrientation(o);
 	cam->getOutput(0)->setReadbackTarget(mySecondaryViewData);
