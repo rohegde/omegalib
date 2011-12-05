@@ -404,7 +404,7 @@ namespace omega { namespace math
 
         static const T PositiveInfinity;
         static const T NegativeInfinity;
-        static const T Pi;
+        static const float Pi;
         static const T TwoPi;
         static const T HalfPi;
 		static const T DegToRad;
