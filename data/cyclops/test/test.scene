@@ -1,0 +1,21 @@
+<Level>
+    <MapData>
+        <MapContents>
+            <FileIndex_StaticObjects>
+            </FileIndex_StaticObjects>
+			
+            <FileIndex_Entities>
+                <File Id="0" Path="cyclops/test/dna.ply" />
+            </FileIndex_Entities>
+			
+            <StaticObjects>
+           </StaticObjects>
+            <Entities>
+                <Entity FileIndex="0" ID="0" Rotation="0 0 0" Scale="0.1 0.1 0.1" Tag="" WorldPos="0 0 0" />
+            </Entities>
+            <Primitives>
+                <Plane Active="true" AlignToWorldCoords="true" CastShadows="false" Collides="true" Corner1UV="1 0" Corner2UV="1 1" Corner3UV="0 0" Corner4UV="0 1" EndCorner="10 0 10" ID="1" Material="cyclops/test/simple.material" Name="Plane_1" Rotation="0 0 0" Scale="1 1 1" StartCorner="0 0 0" Tag="" TextureAngle="0" TileAmount="0.4 0.4 0.4" TileOffset="0 0 0" WorldPos="-2 -2 -2" />
+            </Primitives>
+        </MapContents>
+    </MapData>
+</Level>
