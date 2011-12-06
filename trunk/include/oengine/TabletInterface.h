@@ -36,14 +36,25 @@ namespace oengine {
 	class OENGINE_API TabletInterface: public OmegaObject
 	{
 	public:
+		static const int MaxGuiDefSize = 1024;
+
+	public:
 		TabletInterface(TabletService* service, int tabletId);
 
 		void sendImage(PixelData* data);
+
+		void beginGui();
+		void finishGui();
+		void addButton(int id, const String& label, const String& description, const String& text);
+		void addSlider(int id, const String& label, const String& description, int min, int max, int value);
+		void addSwitch(int id, const String& label, const String& description, bool value);
 
 	private:
 		TabletService* myService;
 		int myTabletId;
 		TcpConnection* myConnection;
+		
+		char myGuiDef[MaxGuiDefSize];
 	};
 }; 
 
