@@ -328,11 +328,6 @@ void MeshViewer::handleEvent(const Event& evt)
         }
 		if(evt.isKeyDown('s')) 
         {
-			//FILE* f = fopen("./test.png", "wb");
-			//fwrite(png->lock(), 1, png->getSize(), f);
-			//png->unlock();
-			//fclose(f);
-
 			if(myTablet != NULL)
 			{
 				myTablet->sendImage(mySecondaryViewData);
@@ -356,6 +351,14 @@ void MeshViewer::handleEvent(const Event& evt)
 		{
 			TabletService* tsvc = getServiceManager()->getService<TabletService>(evt.getServiceId());
 			myTablet = new TabletInterface(tsvc, evt.getSourceId());
+			myTablet->beginGui();
+			myTablet->addButton(0, "Button1", "Hello I'm a Button", "Click me!");
+			myTablet->addButton(1, "Button2", "Hello I'm another Button", "Click me!");
+			myTablet->addSlider(2, "Slider1", "Hello I'm a Slider! (0, 100, 50)", 0, 100, 50);
+			myTablet->addSlider(3, "Slider2", "Hello I'm another Slider! (0, 10, 10)", 0, 10, 10);
+			myTablet->addSwitch(4, "Switch1", "Hello I'm a Switch! (on)", true);
+			myTablet->addSwitch(5, "Switch2", "Hello I'm another Switch! (off)", false);
+			myTablet->finishGui();
 		}
 	}
 }

@@ -51,3 +51,44 @@ void TabletInterface::sendImage(PixelData* data)
 	png->unlock();
 	delete png;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletInterface::beginGui()
+{
+	memset(myGuiDef, 0, MaxGuiDefSize);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletInterface::finishGui()
+{
+	int size = strlen(myGuiDef);
+	char header[] = {'m', 'g', 'u', 'i'};
+
+	myConnection->write(header, 4);
+	myConnection->write(&size, sizeof(int));
+	myConnection->write(myGuiDef, size);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletInterface::addButton(int id, const String& label, const String& description, const String& text)
+{
+	char msg[MaxGuiDefSize];
+	sprintf(msg, "%d:%s:%s:%s:|", id, label.c_str(), description.c_str(), text.c_str());
+	strcat(myGuiDef, msg);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletInterface::addSlider(int id, const String& label, const String& description, int min, int max, int value)
+{
+	char msg[MaxGuiDefSize];
+	sprintf(msg, "%d:%s:%s:%d:%d:%d:|", id, label.c_str(), description.c_str(), min, max, value);
+	strcat(myGuiDef, msg);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletInterface::addSwitch(int id, const String& label, const String& description, bool value)
+{
+	char msg[MaxGuiDefSize];
+	sprintf(msg, "%d:%s:%s:%d:|", id, label.c_str(), description.c_str(), value ? 1 : 0);
+	strcat(myGuiDef, msg);
+}
