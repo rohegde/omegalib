@@ -73,7 +73,7 @@ void TabletInterface::finishGui()
 void TabletInterface::addButton(int id, const String& label, const String& description, const String& text)
 {
 	char msg[MaxGuiDefSize];
-	sprintf(msg, "%d:%s:%s:%s:|", id, label.c_str(), description.c_str(), text.c_str());
+	sprintf(msg, "0:%d:%s:%s:%s:|", id, label.c_str(), description.c_str(), text.c_str());
 	strcat(myGuiDef, msg);
 }
 
@@ -81,7 +81,7 @@ void TabletInterface::addButton(int id, const String& label, const String& descr
 void TabletInterface::addSlider(int id, const String& label, const String& description, int min, int max, int value)
 {
 	char msg[MaxGuiDefSize];
-	sprintf(msg, "%d:%s:%s:%d:%d:%d:|", id, label.c_str(), description.c_str(), min, max, value);
+	sprintf(msg, "1:%d:%s:%s:%d:%d:%d:|", id, label.c_str(), description.c_str(), min, max, value);
 	strcat(myGuiDef, msg);
 }
 
@@ -89,6 +89,6 @@ void TabletInterface::addSlider(int id, const String& label, const String& descr
 void TabletInterface::addSwitch(int id, const String& label, const String& description, bool value)
 {
 	char msg[MaxGuiDefSize];
-	sprintf(msg, "%d:%s:%s:%d:|", id, label.c_str(), description.c_str(), value ? 1 : 0);
+	sprintf(msg, "2:%d:%s:%s:%d:|", id, label.c_str(), description.c_str(), value ? 1 : 0);
 	strcat(myGuiDef, msg);
 }
