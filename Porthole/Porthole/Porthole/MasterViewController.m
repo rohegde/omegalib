@@ -44,9 +44,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-    // Set up the edit and add buttons.
+
+    // Set up the edit buttons.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
+    // Set up the add buttons.
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     self.navigationItem.rightBarButtonItem = addButton;
 
@@ -166,7 +168,8 @@
 }
 
 #pragma mark - Fetched results controller
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Change a section 
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (__fetchedResultsController != nil) {
@@ -208,12 +211,18 @@
     
     return __fetchedResultsController;
 }    
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Change a section 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView beginUpdates];
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Change a section 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
@@ -228,6 +237,9 @@
     }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+//      Change a cell 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
@@ -236,28 +248,37 @@
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
+            NSLog(@"Item inserted" );
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
+            NSLog(@"Item deleted" );
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeUpdate:
+            NSLog(@"Item updated" );
             [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
+            NSLog(@"Item moved" );
+
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView endUpdates];
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
 // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
@@ -269,12 +290,18 @@
 }
  */
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+//      Add a new cell based on the value from NSManagedObject *managedObject
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[managedObject valueForKey:@"timeStamp"] description];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  - (void)insertNewObject
+//      Code when the "+" button is hit on the Master bar.
 - (void)insertNewObject
 {
     // Create a new instance of the entity managed by the fetched results controller.

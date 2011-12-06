@@ -29,67 +29,52 @@
 
 #
 #
-#pragma mark - TCPClientOmega Delegates
+#pragma mark Handle Notification
 #
 #
-- (void) flagRedraw:(TCPClientOmega*)requestor
+- (void) setupRedrawFIA:(NSNotification *) notification
 {
-    if (requestor == self.connection)
+    if ([[notification name] isEqualToString:@"DetailVCRedrawFIA"])
     {
-        NSLog(@"DetailVC :: Dumping img data to FIA and telling it to draw ");
-        //Convert byte Array to NSData
-        NSData *imgDataRecv = [ NSData dataWithBytes:self.connection.imgByteData length:self.connection.imgByteDataLength ];    
-        //Convert NSData to UIImage
-        UIImage *imgRecv = [UIImage imageWithData:imgDataRecv];
-        
-        self.FIA.overlayImg = imgRecv;
-        self.FIA.overLayImgNew = YES;
-        [self.FIA setNeedsDisplay];
+        if( self.connection.myState > CLIENT_CONNECTED )
+        {
+            NSLog(@"\t\tDetailVC :: Dumping img data to FIA and telling it to draw ");
+            if( self.connection.byteData != nil )
+            {            
+                //Convert byte Array to NSData
+                NSData *imgDataRecv = [ NSData dataWithBytes:self.connection.byteData length:self.connection.byteLen ];    
+                //Convert NSData to UIImage
+                UIImage *imgRecv = [UIImage imageWithData:imgDataRecv];
+            
+                self.FIA.overlayImg = imgRecv;
+                self.FIA.overLayImgNew = YES;
+                [self.FIA setNeedsDisplay];
+            }
+            
+        }
     }
 
 }
 
-#
-#
-#pragma mark - CUA Delegates
-#
-#
-- (void) CUAFlagRedraw:(CustomUIArea*)requestor
+
+- (void) setupRedrawCUA:(NSNotification *) notification
 {
-    if (requestor == self.CUA)
+    if ([[notification name] isEqualToString:@"DetailVCRedrawCUA"])
     {
+        NSLog(@" ");
+        NSLog(@"\tDetailVC :: redrawing via notification redraw CUA");
+        
+        [self.view setNeedsDisplay];
         [self setBoundsForAreas];
         [self.CUA setNeedsDisplay];
     }
-    
 }
-
 
 #
 #
 #pragma mark - FIA Delegates
 #
 #
-
-//-(UIImage*) getImage:(FreeInteractionAreaView *)requestor
-//{
-//    if (requestor == self.FIA) 
-//    {
-//        if( self.connection.newImgByteData)
-//        {   
-//            NSLog(@"DetailVC :: getImage for FIA from TCP");
-//            //Convert byte Array to NSData
-//            NSData *imgDataRecv = [ NSData dataWithBytes:self.connection.imgByteData length:self.connection.imgByteDataLength ];    
-//            //Convert NSData to UIImage
-//            UIImage *imgRecv = [UIImage imageWithData:imgDataRecv];
-//            
-//            return imgRecv;
-//        }
-//        else return nil;
-//    }   
-//    else return nil;
-//}
-
 - (void) connect:(FreeInteractionAreaView *)requestor
 {
     if (requestor == self.FIA) 
@@ -158,16 +143,6 @@
 //            }        
 	}    
 }
-- (void) sendMsgAsService:(int)service event:(int)event sid:(int)srcId value:(float)val from:(FreeInteractionAreaView *)requestor
-{
-	if (requestor == self.FIA) 
-    {
-        if( debugMode ) NSLog(@"\tDetailVC :: Sending");
-
-        //If there is a connection to the server, send the TCP msg
-        if( connectServer )[self.connection sendEventService:service event:event sid:srcId value:val];        
-	}    
-}    
 
 #
 #
@@ -300,7 +275,6 @@
     CUA = [[CustomUIArea alloc] initWithFrame:CUABounds name:@"CUA" withTouch:YES withMultiTouch:YES];
     [CUA setDebugTouch:debugTouch];
     [CUA setBackgroundColor:[UIColor grayColor]];
-    self.CUA.CUAdelegate = self;
 
     curHeight = curHeight + screenH * CUA_PORT_RATIO;
     
@@ -314,7 +288,14 @@
 #pragma mark - View lifecycle
 #
 #
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 // Drawing code.
 - (void)drawRect:(CGRect)rect 
 {
@@ -359,6 +340,10 @@
     [self setupGestureSupportFIA];
     [self setupGestureSupportCUA];
 
+    //setup notification for when a GUI spec recieved
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupRedrawCUA:) name:@"DetailVCRedrawCUA" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupRedrawFIA:) name:@"DetailVCRedrawFIA" object:nil];
+    
     NSLog(@"Detail View Controller Loaded ..... ");
 }
 
@@ -368,9 +353,7 @@
 -(void) setupConnectionToServer
 {
     TCPClientOmega *newConnect = [ [TCPClientOmega alloc] initWithFrame:[[UIScreen mainScreen] bounds ]];
-    self.connection = newConnect;
-    self.connection.TCPClientOmegaDelegate = self;
-    
+    self.connection = newConnect;    
 }
 
 

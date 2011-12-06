@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2B0C2B2F14749E1C002A1436 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2B0C2B2E14749E1C002A1436 /* Settings.bundle */; };
-		2B0C2B321474D0C5002A1436 /* Tendrils.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B0C2B311474D0C5002A1436 /* Tendrils.png */; };
 		2B741F5B14725A8F001EB9E5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */; };
 		2BD088DF1468D9850010DF51 /* Oscar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BD088DE1468D9850010DF51 /* Oscar.png */; };
 		2BF40FCD1480D78F002903C6 /* middleRow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BF40FC91480D78F002903C6 /* middleRow.png */; };
@@ -41,7 +40,6 @@
 
 /* Begin PBXFileReference section */
 		2B0C2B2E14749E1C002A1436 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Porthole/Settings.bundle; sourceTree = "<group>"; };
-		2B0C2B311474D0C5002A1436 /* Tendrils.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Tendrils.png; path = Porthole/Resources/Tendrils.png; sourceTree = "<group>"; };
 		2B741F5A14725A8F001EB9E5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		2BD088DE1468D9850010DF51 /* Oscar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Oscar.png; path = Porthole/Resources/Oscar.png; sourceTree = "<group>"; };
 		2BF40FC91480D78F002903C6 /* middleRow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = middleRow.png; path = Porthole/Resources/middleRow.png; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 				2BF40FC91480D78F002903C6 /* middleRow.png */,
 				2BF40FCA1480D78F002903C6 /* topAndBottomRow.png */,
 				2BF40FCC1480D78F002903C6 /* topRow.png */,
-				2B0C2B311474D0C5002A1436 /* Tendrils.png */,
 				2BD088DE1468D9850010DF51 /* Oscar.png */,
 			);
 			name = Resource;
@@ -357,7 +354,6 @@
 				2BD088DF1468D9850010DF51 /* Oscar.png in Resources */,
 				2BF445E41472417B004FCF5E /* portholeiPad.png in Resources */,
 				2B0C2B2F14749E1C002A1436 /* Settings.bundle in Resources */,
-				2B0C2B321474D0C5002A1436 /* Tendrils.png in Resources */,
 				2BF40FCD1480D78F002903C6 /* middleRow.png in Resources */,
 				2BF40FCE1480D78F002903C6 /* topAndBottomRow.png in Resources */,
 				2BF40FD01480D78F002903C6 /* topRow.png in Resources */,
@@ -422,6 +418,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -437,6 +434,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PROVISIONING_PROFILE = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -448,6 +446,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dennis Chau (QNFT9H7G2U)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -457,6 +456,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9429CEA-87E3-4938-B8D9-95C26FE3047A";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
