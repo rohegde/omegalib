@@ -25,8 +25,7 @@ using namespace std;
 
 void *get_in_addr(struct sockaddr *sa);
 void sigchld_handler(int s);
-string generateGUIMsg();
-
+void generateGUIMsg( int socket);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -50,30 +49,38 @@ void *get_in_addr(struct sockaddr *sa)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-string generateGUIMsg()
+void generateGUIMsg( int socket)
 {
     int uniqueID = 1;
     
     string GUIMsg;
     string spacer = ":";
     string seperator = "|";
+
     //Buttons section
     ////////////////////////////////    
-    string numButtons = intToString( 2 );
     
     string buttonId = intToString ( uniqueID );
     string buttonIdent = "I am a button";
-    
-    GUIMsg = GUIMsg + numButtons;
+    string buttonDescr = "I love to be pushed.";
+    string buttonText = "Push Me";
+
+    GUIMsg = GUIMsg + "0";
     GUIMsg = GUIMsg + spacer + buttonId;
     GUIMsg = GUIMsg + spacer + buttonIdent;
+    GUIMsg = GUIMsg + spacer + buttonDescr;
+    GUIMsg = GUIMsg + spacer + buttonText;
     GUIMsg = GUIMsg + spacer;
+    GUIMsg = GUIMsg + seperator;    
     uniqueID++;
     
     buttonId = intToString ( uniqueID );
     buttonIdent = "OMG I am a button";
-    GUIMsg = GUIMsg + buttonId;
+    GUIMsg = GUIMsg + "0";
+    GUIMsg = GUIMsg + spacer + buttonId;
     GUIMsg = GUIMsg + spacer + buttonIdent;
+    GUIMsg = GUIMsg + spacer + buttonDescr;    
+    GUIMsg = GUIMsg + spacer + buttonText;
     GUIMsg = GUIMsg + spacer;
     GUIMsg = GUIMsg + seperator;
     uniqueID++;
@@ -83,15 +90,20 @@ string generateGUIMsg()
     string numSldiers = intToString( 1 );
     
     string sliderId = intToString ( uniqueID );
-    string sliderIdent = "Slider1";
+    string sliderIdent = "Slide to the left";
+    string sliderDescr = "I like need to slide";
+
     string sliderMin = intToString( 0 );
     string sliderMax = intToString( 10 );
+    string sliderVal = intToString( 5 );
     
-    GUIMsg = GUIMsg + numSldiers;
+    GUIMsg = GUIMsg + "1";
     GUIMsg = GUIMsg + spacer + sliderId;
     GUIMsg = GUIMsg + spacer + sliderIdent;
+    GUIMsg = GUIMsg + spacer + sliderDescr;
     GUIMsg = GUIMsg + spacer + sliderMin;
     GUIMsg = GUIMsg + spacer + sliderMax;    
+    GUIMsg = GUIMsg + spacer + sliderVal;    
     GUIMsg = GUIMsg + spacer;
     GUIMsg = GUIMsg + seperator;
     uniqueID++;
@@ -102,20 +114,34 @@ string generateGUIMsg()
     string numToggles = intToString( 1 );
     
     string toggleId = intToString ( uniqueID );
-    string toggleIdent = "Toggle1";
-    
-    GUIMsg = GUIMsg + numToggles;
+    string toggleIdent = "On...Off...?!";
+    string toggleDescr = "I like need to waffle";
+    string toggleInit = intToString( 1 );
+
+    GUIMsg = GUIMsg + "2";
     GUIMsg = GUIMsg + spacer + toggleId;
     GUIMsg = GUIMsg + spacer + toggleIdent;
+    GUIMsg = GUIMsg + spacer + toggleDescr;
+    GUIMsg = GUIMsg + spacer + toggleInit;        
     GUIMsg = GUIMsg + spacer;    
     GUIMsg = GUIMsg + seperator;
     uniqueID++;
+        
+    //Send the ident which is the first 4 bytes
+    ////////////////////////////////        
+    if (send(socket, "mgui", 4, 0) == -1) perror("Error sending mgui");
     
-    //Append the length
-    ////////////////////////////////    
-    string GUIMsgLen = unsignedLongToString( GUIMsg.length());
-    GUIMsg = GUIMsgLen + seperator + GUIMsg;
-    return GUIMsg;
+    //Send the length which is the next 4 bytes
+    ////////////////////////////////        
+    unsigned long length = GUIMsg.length();
+    const char* pBytesOfLength = (const char*)&length;    
+    if (send(socket, pBytesOfLength, 4, 0) == -1) perror("Error sending mgui length");
+    
+    //Send the message
+    ////////////////////////////////        
+    if (send(socket, GUIMsg.c_str(), GUIMsg.length(), 0) == -1) perror("Error sending mgui msg");
+    fprintf(stderr, "GUIMsg Sent\n");
+    return;
 }
 
 
@@ -185,66 +211,46 @@ int main(void)
         perror("sigaction");
         exit(1);
     }
+    fprintf( stderr , "Waiting for connectionSockets ..... \n");
     
-    printf("Waiting for connectionSockets ..... \n");
-    
-    while(1) {  // main accept() loop
-        sin_size = sizeof their_addr;
-        connectionSocket = accept(listenSocket, (struct sockaddr *)&their_addr, &sin_size);
-        if (connectionSocket == -1) {
-            perror("accept");
-            continue;
-        }
+    sin_size = sizeof their_addr;
+    connectionSocket = accept(listenSocket, (struct sockaddr *)&their_addr, &sin_size);
+    if (connectionSocket == -1) perror("accept");
         
-        inet_ntop(their_addr.ss_family,
-                  get_in_addr((struct sockaddr *)&their_addr),
-                  s, sizeof s);
-        printf("Got connectionSocket from %s\n", s);
+    inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
+    fprintf(stderr, "Got connectionSocket from %s\n", s);
         
-        string GUIMsg = generateGUIMsg();
-        printf("Sending GUI msg\n");
+    long numbytes;
+    char buf[MAXDATASIZE];
+    while (1)
+    {
+        static bool guiSent = false;
         
-        if (send(connectionSocket , GUIMsg.c_str() , GUIMsg.length() , 0) == -1)
-            perror("send");
-        
-        long numbytes;
-        char buf[MAXDATASIZE];
-        
-        int counter = 0;
-        
-        while (1)
+        if( !guiSent )
         {
-            if ( counter == 5 )
-            {
-                string GUIMsg = generateGUIMsg();
-                printf("Sending GUI msg\n");
-                
-                if (send(connectionSocket , GUIMsg.c_str() , GUIMsg.length() , 0) == -1)perror("send");
-            }
-            if ((numbytes = recv(connectionSocket, buf, MAXDATASIZE-1, 0)) == -1)             
-            {
-                perror("recv");
-                exit(1);
-            }
-            if( numbytes > 0 )
-            {
-                buf[numbytes] = '\0';
-                printf("Received '%s'\n",buf);
-            }                
-            
-            string closeFilter = string(buf);
-            if ( closeFilter == "CommunicationComplete")
-            {
-                break;
-            }
-            
-            counter++;
+            generateGUIMsg( connectionSocket );
+            guiSent = true;
         }
-        close(connectionSocket);  // parent doesn't need this]
-        printf("Done\n");
         
-        
-    }
-    
+        if ((numbytes = recv(connectionSocket, buf, MAXDATASIZE-1, 0)) == -1)             
+        {
+            perror("recv");
+            exit(1);
+        }
+        if( numbytes > 0 )
+        {
+            buf[numbytes] = '\0';
+            printf("Received '%s'\n",buf);
+        }                
+            
+        string closeFilter = string(buf);
+        if ( closeFilter == "CommunicationComplete")
+        {
+            break;
+        }
+    }        
+    close(connectionSocket);  // parent doesn't need this]
+    printf("Done\n");
+
     return 0;
 }

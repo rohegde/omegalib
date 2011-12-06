@@ -14,12 +14,9 @@
 
 #define CUA_HIT_AREA 0.07
 
+typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
+
 @class CustomUIArea;
-
-@protocol CustomUIAreaDelegate
-- (void) CUAFlagRedraw:(CustomUIArea*)requestor;
-@end
-
 
 @interface CustomUIArea : UIArea <UITableViewDelegate, UITableViewDataSource>
 {
@@ -32,8 +29,6 @@
     UIView *hitBox;
     
     BOOL debugMode;
-    
-    id <CustomUIAreaDelegate> __unsafe_unretained CUAdelegate;
 }
 
 @property (assign) BOOL CUAVisable;
@@ -43,9 +38,8 @@
 @property ( strong , nonatomic ) UITableView *GUITable;
 @property ( strong , nonatomic ) NSMutableArray *GUITableData;
 
-@property ( strong , nonatomic ) UIView *hitBox;
 
-@property (unsafe_unretained) id <CustomUIAreaDelegate> CUAdelegate;
+@property ( strong , nonatomic ) UIView *hitBox;
 
 -(void) setupsubViews:(CGRect)frame;
 
@@ -63,6 +57,14 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event; 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event; 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event; 
+
+- (void) UIElementReaction:(id)sender;
+
+//Notificaitons
+- (void) setupCUAFromGUISpec:(NSNotification *) notification;
+
+//GUI parsing   
+-(void) determineGUISpec:(NSString*) GUISpec;
 
 
 @end

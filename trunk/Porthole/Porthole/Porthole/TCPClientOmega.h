@@ -22,48 +22,44 @@
 
 #define DEBUG_CLIENT_DEFAULT YES;
 
-typedef enum { CUA_BUTTON=0 , CUA_SLIDER=1  , CUA_TOGGLE=2 } CUATypes;
-
 //TODO::Enum Fix:: Assumed that the states are ordered
 typedef enum { CLIENT_INIT=0 , CLIENT_CONNECTED=1  , CLIENT_GUIRECVED=2 , CLIENT_IDLE=3 } ClientState;
 
-@class TCPClientOmega;
+typedef enum { CLIENT_MSG_NONE=0 , CLIENT_MSG_IMG=1 , CLIENT_MSG_GUI=2 } ClientMsgType;
 
-@protocol TCPClientOmegaDelegate
-- (void) flagRedraw:(TCPClientOmega*)requestor;
-@end
+
+@class TCPClientOmega;
 
 @interface TCPClientOmega : UIView <NSStreamDelegate>
 {
     ClientState myState;
+
     BOOL debugClient;
     
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
 
-    Byte *imgByteData;
-    NSUInteger imgByteDataLength;    
-    BOOL newImgByteData;
+    char *byteData;
+    int byteLen;    
 
-    id <TCPClientOmegaDelegate> __unsafe_unretained TCPClientOmegaDelegate;
-
+    int readUpTo;
+    BOOL readyForNewData;
+    ClientMsgType msgState;
+    
 }
 @property (assign) ClientState myState;
+
 @property (assign) BOOL debugClient;
 
-@property (assign) Byte *imgByteData;
-@property (assign) NSUInteger imgByteDataLength;    
-@property (assign) BOOL newImgByteData;    
+@property (assign) char *byteData;
+@property (assign) int byteLen;    
+
+@property (assign) int readUpTo;
+@property (assign) BOOL readyForNewData;
+@property (assign) ClientMsgType msgState;
 
 @property (nonatomic, retain) NSInputStream *inputStream;
 @property (nonatomic, retain) NSOutputStream *outputStream;
-
-@property (unsafe_unretained) id <TCPClientOmegaDelegate> TCPClientOmegaDelegate;
-
-
-//GUI parsing   
--(void) handleGUIElementsFor:(int)GUIType in:(NSArray*)pieces;
--(void) determineGUISpec:(NSString*) GUISpec;
 
 //Event Msg Sending 
 -(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val;
@@ -77,11 +73,10 @@ typedef enum { CLIENT_INIT=0 , CLIENT_CONNECTED=1  , CLIENT_GUIRECVED=2 , CLIENT
 
 - (void) estConnectionToServer;
 
-//Img Msg recieved
-- (void) messageReceived:(NSString *)message;
--(void) clearOutOldImgByteData;
+//Msg recieved
+- (void) clearOutFlagsForByteData;
 
-//- (void) callbackFuncFor:(CFSocketRef)socket callType:(CFSocketCallBackType)type withAddress:(CFDataRef)addy withData:(const void *)data withInfo:(void*)info;
-//void CallBackFunction( CFSocketRef socket , CFSocketCallBackType type , CFDataRef address , const void *data , void *info);
+//Notificaitons
+- (void) UIElementMsg:(NSNotification *) notification;
 
 @end

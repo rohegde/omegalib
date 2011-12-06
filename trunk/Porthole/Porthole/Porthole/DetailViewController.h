@@ -12,7 +12,7 @@
 #import "TCPClientOmega.h"
 
 #define DEFAULT_DVC_DEBUG   NO;
-#define DEFAULT_DEBUG_TOUCH NO;
+#define DEFAULT_DEBUG_TOUCH YES;
 
 #define FIA_LAND_RATIO 0.8
 #define FIA_PORT_RATIO 0.6
@@ -21,7 +21,7 @@
 #define CUA_PORT_RATIO 0.4
 
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate , TCPClientOmegaDelegate , CustomUIAreaDelegate>
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate , UIGestureRecognizerDelegate, FreeInteractionAreaViewDelegate >
 {
     BOOL debugMode;
     BOOL debugTouch; 

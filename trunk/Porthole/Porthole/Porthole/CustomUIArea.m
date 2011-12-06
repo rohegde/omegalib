@@ -18,8 +18,6 @@
 @synthesize GUITable;
 @synthesize GUITableData;
 
-@synthesize CUAdelegate;
-
 #
 #
 #pragma mark Memory management
@@ -27,11 +25,18 @@
 #
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
 #
 #
 #pragma mark View Setup
 #
 #
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 - (id)initWithFrame:(CGRect)frame name:(NSString*)theName withTouch:(BOOL)touch withMultiTouch:(BOOL)mTouch
@@ -39,16 +44,22 @@
     self = [super initWithFrame:frame name:theName withTouch:touch withMultiTouch:mTouch];
     if (self) 
     {
+        debugMode = DEFAULT_CUA_DEBUG;
+        
         // Initialization code
         UIView *background = [[UIView alloc] initWithFrame:frame];
         [self addSubview:background];     
         
-        CUAVisable = YES;
-        debugMode = DEFAULT_CUA_DEBUG;
-        
         //setup the hit and GUI area subviews
         [self setupsubViews: frame];
 
+        //If there is no GUI, do not show the CUA.
+        if( self.GUITableData == nil ) CUAVisable = NO;
+        else CUAVisable = YES;
+        
+        //setup notification for when a GUI spec recieved
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupCUAFromGUISpec:) name:@"SetupCUAFromGUISpec" object:nil];
+        
         
         NSLog(@"Custom User Interface Area Started ..... \n");
     }
@@ -61,6 +72,7 @@
 {   
     hitArea = CUA_HIT_AREA;
 
+    //Bookeeping for subviews 
     if(debugMode) NSLog(@"\tCUA : Setting up subviews");
 
     CGFloat boundsX = self.frame.origin.x;
@@ -70,6 +82,7 @@
 
     CGFloat curH = boundsY;
 
+    //The hit box area
     CGFloat hitAreaH = boundsH * hitArea;
     if(debugMode) NSLog(@"\t\thitArea : x : %.2f : w : %.2f : y : %.2f : h : %.2f" , boundsX , boundsW , curH , hitAreaH );
     CGRect hitBoxRect = CGRectMake( boundsX , curH , boundsW , hitAreaH );
@@ -86,9 +99,9 @@
 	[containerView addSubview:headerLabel];
 	self.hitBox = containerView;
     [self addSubview:hitBox];
-
     curH = curH + hitAreaH;
     
+    //The hit GUI Table Area as 
     int cellSize = 75;
     CGFloat GUIAreaH = boundsH * (1 - hitArea);
     if(debugMode) NSLog(@"\t\tGUIArea : x : %.2f : w : %.2f : y : %.2f : h : %.2f" , boundsX , boundsW , curH , GUIAreaH );
@@ -97,15 +110,14 @@
 	self.GUITable.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.GUITable.rowHeight = cellSize;
     self.GUITable.backgroundColor = [UIColor blackColor];
-
     [self addSubview:GUITable];
     curH = curH + GUIAreaH;    
-
-    GUITableData = [[NSMutableArray alloc]init];    
-    [GUITableData addObjectsFromArray:[NSArray arrayWithObjects: @"Button", @"Slider", @"Switch", nil]]; 
-    
     [ self.GUITable setDataSource:self];
 	[ self.GUITable setDelegate:self];
+
+    //Setup the GUITableData
+    GUITableData = [[NSMutableArray alloc]init];    
+    [GUITableData addObjectsFromArray:[NSArray arrayWithObjects: @"0:1:Button:PushMe:PushMe", @"1:2:Slider:SliderDescr:0:10:5", @"2:3:Switch:On/Off:", nil]]; 
 }
 
 #
@@ -119,69 +131,132 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	
-	return [GUITableData count];
+    if( GUITableData == nil ) return 0;
+	else return [GUITableData count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-	
-  	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"Cell %i",indexPath.section]];
+- (void) UIElementReaction:(id)sender
+{
+    NSString *msg;
+    
+    if( [sender isKindOfClass:[UIButton class] ] )
+    {
+        UIButton *temp = sender;
+        msg = [NSString stringWithFormat:@"gi:%d:1", temp.tag];
+    }
+    else if( [sender isKindOfClass:[UISlider class] ] )
+    {
+        UISlider *temp = sender;
+        msg = [NSString stringWithFormat:@"gi:%d:%d", temp.tag , (int)temp.value];
+    }
+    else if( [sender isKindOfClass:[UISwitch class] ] )
+    {
+        UISwitch *temp = sender;
+        msg = [NSString stringWithFormat:@"gi:%d:%d", temp.tag , temp.isOn];
+    }
+    else 
+    {
+        msg = [NSString stringWithString:@"CUA :: ERROR : Unhandeled call back "];        
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UIElementSendMsg" object:msg];
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//
+//      Load the cells in the CUA tableView
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{	    
+    BOOL debugTabelViewCells = NO;
+    if( debugTabelViewCells ) NSLog(@"\tCUA :: Cell Gen :: Loading cells for tableview");
+    if( debugTabelViewCells ) NSLog(@"\tCUA :: section : row :: %d:%d" , indexPath.section , indexPath.row);
+    
+    //Get each UIElement that is seperated by ':'
+    NSString* UIElement = [GUITableData objectAtIndex: indexPath.row];
+    NSString* seperator = [NSString stringWithUTF8String:":"];
+    NSArray *SpecsArray = [ UIElement componentsSeparatedByString:seperator ];
+    
+    //TODO::Check that the msg coming in is good.
+    
+    //Element Type 
+    CUATypes guiElementType = [ [SpecsArray objectAtIndex:0] integerValue];
+
+    //Unique ident
+    NSInteger guiElementId = [ [SpecsArray objectAtIndex:1] integerValue];
+
+    //Get cell with unique ident 
+  	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"Cell %i",guiElementId]];
+
+    //If there is no cell with the specified unique ident
+    if (cell == nil)     
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:[NSString stringWithFormat:@"Cell %i" , guiElementId]];        
+        if( debugTabelViewCells ) NSLog(@"\t\t Generating new cell : %@ " , [cell reuseIdentifier] );
+    }
 
     CGFloat cellH = tableView.rowHeight;
-    CGFloat indent = 200.0;
+    CGFloat indent = 500;
     
-	if (cell == nil) 
+    cell.textLabel.text = [SpecsArray objectAtIndex:2];
+    cell.detailTextLabel.text = [SpecsArray objectAtIndex:3];;
+
+    if ([cell.contentView subviews])
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:[NSString stringWithFormat:@"Cell %i",indexPath.section]];        
-        
-        cell.textLabel.text = [GUITableData objectAtIndex: indexPath.row];
-        cell.detailTextLabel.text = @"  Here be dragons bro dude";
-
-        switch (indexPath.row)
+        for (UIView *subview in [cell.contentView subviews]) 
         {
-            case 0 :
-            {
-                CGFloat buttonH = 35.0;
-                CGFloat buttonW = 150.0;
-                CGFloat marginH = (cellH - buttonH) * 0.5;
-                
-                UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchDown];
-                [button setTitle:@"Show View" forState:UIControlStateNormal];
-                button.frame = CGRectMake(indent, marginH , buttonW , buttonH);
-                [cell addSubview:button];
-                break;
-            }   
-            case 1 :
-            {
-                CGFloat sliderH = 35.0;
-                CGFloat sliderW = 200.0;
-                CGFloat marginH = (cellH - sliderH) * 0.5;
+            [subview removeFromSuperview];
+        }
+    }
+        
+    switch (guiElementType)
+    {
+        case CUA_BUTTON :
+        {
+            CGFloat buttonH = 35.0;
+            CGFloat buttonW = 150.0;
+            CGFloat marginH = (cellH - buttonH) * 0.5;
+            
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [button addTarget:self action:@selector(UIElementReaction:) forControlEvents:UIControlEventTouchDown];
+            [button setTitle:[SpecsArray objectAtIndex:4] forState:UIControlStateNormal];
+            [button setTag:guiElementId];
+            button.frame = CGRectMake(indent, marginH , buttonW , buttonH);
+            [cell.contentView addSubview:button];
+            break;
+        }   
+        case CUA_SLIDER :
+        {
+            CGFloat sliderH = 35.0;
+            CGFloat sliderW = 200.0;
+            CGFloat marginH = (cellH - sliderH) * 0.5;
 
-                UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(indent, marginH, sliderW, sliderH)];
-                [slider addTarget:self action:@selector(sliderAction:) forControlEvents:UIControlEventValueChanged];
-                [slider setBackgroundColor:[UIColor clearColor]];
-                slider.minimumValue = 0.0;
-                slider.maximumValue = 50.0;
-                slider.continuous = YES;
-                slider.value = 25.0;
-                [cell addSubview:slider];
-                break;
-            }   
-            case 2 :
-            {
-                CGFloat switchH = 35.0;
-                CGFloat switchW = 200.0;
-                CGFloat marginH = (cellH - switchH) * 0.5;
+            UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(indent, marginH, sliderW, sliderH)];
+            [slider addTarget:self action:@selector(UIElementReaction:) forControlEvents:UIControlEventValueChanged];
+            [slider setBackgroundColor:[UIColor clearColor]];
+            [slider setTag:guiElementId];
+            slider.minimumValue = [[SpecsArray objectAtIndex:4] integerValue];
+            slider.maximumValue = [[SpecsArray objectAtIndex:5] integerValue];
+            slider.value = [[SpecsArray objectAtIndex:6] integerValue];
+            slider.continuous = NO;
+            [cell.contentView addSubview:slider];
+            break;
+        }   
+        case CUA_TOGGLE :
+        {
+            CGFloat switchH = 35.0;
+            CGFloat switchW = 200.0;
+            CGFloat marginH = (cellH - switchH) * 0.5;
 
-                UISwitch *toggle = [[UISwitch alloc] initWithFrame:CGRectMake(indent, marginH, switchW, switchH)];
-                [toggle addTarget: self action: @selector(toggleAction:) forControlEvents:UIControlEventValueChanged];
-                [cell addSubview: toggle];
-                break;
-            }   
-
-        }        
-	}
+            UISwitch *toggle = [[UISwitch alloc] initWithFrame:CGRectMake(indent, marginH, switchW, switchH)];
+            [toggle addTarget: self action: @selector(UIElementReaction:) forControlEvents:UIControlEventValueChanged];
+            [toggle setTag:guiElementId];
+            [toggle setOn:[[SpecsArray objectAtIndex:4] integerValue]];
+            [cell.contentView addSubview: toggle];
+            break;
+        }   
+    }
     
     //set the colors for the cell
     UIView *background = [[UIImageView alloc] initWithFrame:cell.bounds];
@@ -193,6 +268,8 @@
     
     cell.detailTextLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.backgroundColor = [UIColor blackColor];
+
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 	
 	//TODO::Delete when done : NSLog(@" Section : %d : Index/Row : %d : %@" , [ indexPath indexAtPosition: 0] , [ indexPath indexAtPosition: 1] , [GUITableData objectAtIndex: indexPath.row]);
 
@@ -203,6 +280,71 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+#
+#
+#pragma mark Handle Notification
+#
+#
+- (void) setupCUAFromGUISpec:(NSNotification *) notification
+{
+    bool debugCUANotifcation = NO;
+    //Make sure it is the right notifcation
+    if ([[notification name] isEqualToString:@"SetupCUAFromGUISpec"])
+    {
+        //Get the object that the notifcation is sending 
+        id object = [notification object];
+        
+        //If it is a string
+        if( [object isKindOfClass:[NSString class] ] )
+        {
+            //report the string
+            if( debugCUANotifcation ) NSLog(@"\tCUA :: Spec recv'ed : %@" , object);        
+            [self determineGUISpec:object];
+        }
+    }
+
+}
+
+
+#
+#
+#pragma mark Handle GUI Spec Parse
+#
+#
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+-(void) determineGUISpec:(NSString*) GUISpec
+{
+    bool debugdetermineGUISpec = NO;
+
+    //The seperator that is btn ea UIElement
+    NSString* seperator = [NSString stringWithUTF8String:"|"];
+     
+    //Get each UIElement that is seperated by '|'
+    NSArray *UIElementSpecsArray = [ GUISpec componentsSeparatedByString:seperator ];
+    
+    //Clear the old GUI Table Data
+    [self.GUITableData removeAllObjects];
+
+    //Add in the new
+    [self.GUITableData addObjectsFromArray:UIElementSpecsArray];
+    [self.GUITableData removeObjectAtIndex:(self.GUITableData.count-1)];
+    
+    for( int iTableCell = 0; iTableCell < self.GUITableData.count ; iTableCell++ )
+    {
+        NSString* cellStr = [self.GUITableData objectAtIndex:iTableCell];
+        if( debugdetermineGUISpec ) NSLog(@"\t\t%d : %@" , iTableCell , cellStr);
+    }
+
+    [self.GUITable reloadData];    
+    [self.GUITable setNeedsLayout];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DetailVCRedrawCUA" object:nil];
+
+}
+
 
 #
 #
@@ -331,7 +473,7 @@
     {
         if( debugTouch ) NSLog(@"\tCUA : Gesture : Swipe up");        
         CUAVisable = YES;
-        [self.CUAdelegate CUAFlagRedraw:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DetailVCRedrawCUA" object:nil];
     }
 }
 
@@ -345,7 +487,7 @@
     {
         if( debugTouch ) NSLog(@"\tCUA : Gesture : Swipe down");        
         CUAVisable = NO;
-        [self.CUAdelegate CUAFlagRedraw:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DetailVCRedrawCUA" object:nil];
     }
 }
 

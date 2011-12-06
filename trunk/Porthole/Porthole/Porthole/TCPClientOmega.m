@@ -8,6 +8,12 @@
 
 #import "TCPClientOmega.h"
 
+//notification functions
+@interface TCPClientOmega (private)
+- (void) test:(NSNotification *) notification;
+@end
+
+
 @implementation TCPClientOmega
 
 @synthesize myState;
@@ -15,37 +21,81 @@
 @synthesize inputStream;
 @synthesize outputStream;
 
-@synthesize imgByteData;
-@synthesize imgByteDataLength;    
-@synthesize newImgByteData;
+@synthesize byteData;
+@synthesize byteLen;    
 
-@synthesize TCPClientOmegaDelegate;
+@synthesize readUpTo;
+@synthesize readyForNewData;
+@synthesize msgState;
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+- (void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) 
     {
-        myState = CLIENT_INIT; 
-        debugClient = DEBUG_CLIENT_DEFAULT;
+        self.myState = CLIENT_INIT; 
+        self.debugClient = DEBUG_CLIENT_DEFAULT;
         
-        inputStream = nil;
-        outputStream = nil;
+        self.inputStream = nil;
+        self.outputStream = nil;
         
-        imgByteData = NULL;
-        imgByteDataLength = -1;
-
+        self.byteData = NULL;
+        self.byteLen = -1;
+        
+        self.msgState = CLIENT_MSG_NONE;
+        self.readUpTo = 0;
+        self.readyForNewData = YES;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIElementMsg:) name:@"UIElementSendMsg" object:nil];
     }
     return self;
 }
 
+#
+#
+#pragma mark Handle Notifications
+#
+#
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+- (void) UIElementMsg:(NSNotification *) notification
+{
+    BOOL debugGUIMsg = NO;
+    //Make sure it is the right notifcation
+    if ([[notification name] isEqualToString:@"UIElementSendMsg"])
+    {
+        //Get the object that the notifcation is sending 
+        id object = [notification object];
+        
+        //If it is a string
+        if( [object isKindOfClass:[NSString class] ] )
+        {
+            //report the string
+            if( debugGUIMsg ) NSLog(@"%@" , object);        
+            [self sendToServer:object];
 
+        }
+    }
+        
+}
 
 #
 #
 #pragma mark Handle Connection
 #
 #
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
 - (NSString*) determineIP
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -69,6 +119,9 @@
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
 -(UInt32) determinePort
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -77,6 +130,9 @@
     return port;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
 -(void) estConnectionToServer
 {
     CFReadStreamRef readStream = nil;
@@ -91,8 +147,6 @@
     
     CFStreamCreatePairWithSocketToHost( NULL,  CFIP, port , &readStream, &writeStream);
     CFRelease(CFIP);
-//    inputStream = ( __bridge NSInputStream *)readStream;
-//    outputStream = ( __bridge NSOutputStream *)writeStream;
 
     inputStream = objc_unretainedObject(readStream);
     outputStream = objc_unretainedObject(writeStream);    
@@ -107,6 +161,9 @@
     NSLog(@"OmegaClient connecting to %@ Port %lu ..... " , IP , port );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent 
 {
     switch (streamEvent) 
@@ -117,22 +174,101 @@
 			break;
 		case NSStreamEventHasBytesAvailable:
 			if (theStream == inputStream) 
-            {
-				uint8_t buffer[1024];
-				int len;
-				
-				while ([inputStream hasBytesAvailable]) 
+            {			
+                bool debugByteInput = NO;
+
+                Byte identBuffer[4];
+				Byte lenBuffer[4];                
+				NSUInteger read;
+                
+				while ([inputStream hasBytesAvailable]) //while there are bytes in the stream 
                 {
-					len = [inputStream read:buffer maxLength:sizeof(buffer)];
-					if (len > 0) 
+                    switch (msgState) 
                     {
-						NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
-						if (nil != output) 
+                        //If there is no msg being processed
+                        case CLIENT_MSG_NONE:
                         {
-                            if(debugClient) NSLog(@"\tOmegaClient :: Server said : %@ " , output);
-                            [self messageReceived:output];
-						}
-					}
+                            //setup for new data
+                            if( readyForNewData )
+                            {
+                                //get msg ident type from the first 4 bytes
+                                read = [inputStream read:identBuffer maxLength:4];
+                                NSString *ident = [[NSString alloc] initWithBytes:identBuffer length:4 encoding:NSUTF8StringEncoding];
+                                if(debugByteInput)
+                                {
+                                    NSLog(@" " );
+                                    NSLog(@"\tOmegaClient :: read : ident  : %@" , ident);   
+                                }
+                                
+                                //ident matchs supported msgs
+                                if( [ident isEqualToString:@"ipng"]) self.msgState = CLIENT_MSG_IMG;
+                                else if( [ident isEqualToString:@"mgui"]) self.msgState = CLIENT_MSG_GUI;
+                                else //if not return bc not support read
+                                {
+                                    NSLog(@"\tOmegaClient :: ERROR : msg recv'ed on the stream, but not supported msg type : %@ " , ident );
+                                    return;
+                                }
+                                
+                                self.readyForNewData = NO;       //currently working on an img so no new idents
+                                self.readUpTo = 0;              //reset how much has been read 
+                                
+                                //Read the next 4 bytes for the length 
+                                read = read + [inputStream read:lenBuffer maxLength:4];                                  
+                                int length = (lenBuffer[0] << 24) + (lenBuffer[1] << 16) + (lenBuffer[2] << 8) + lenBuffer[3];
+                                length = NSSwapBigIntToHost(length);
+                                length = NSSwapLittleIntToHost(length);
+                                self.byteLen = length;
+                                if(debugByteInput) NSLog(@"\t\tread : length  : %d" , length);
+                                
+                                //setup the class level img buffer
+                                self.byteData = (char*)malloc( self.byteLen );;
+                                break;
+                            }
+                        }
+                        case CLIENT_MSG_IMG:
+                        case CLIENT_MSG_GUI:
+                        {
+                            //read in data to a local buffer
+                            Byte imgBuffer[self.byteLen];                
+                            read = [inputStream read:imgBuffer maxLength:self.byteLen - readUpTo];                    
+                            if(debugByteInput) NSLog(@"\t\tread : data was read up to : %d bytes" , read);                            
+                            
+                            //append this to the class data buffer
+                            for( int iByte = 0 ; iByte < read ; iByte++ )
+                            {
+                                self.byteData[readUpTo] = imgBuffer[iByte];
+                                self.readUpTo++;
+                            }
+                            
+                            //if received enough bytes process the msg                            
+                            if( self.readUpTo == self.byteLen )
+                            {
+                                //If it is an img
+                                if ( msgState == CLIENT_MSG_IMG )
+                                {
+                                    if(debugByteInput) NSLog(@"\t\tImg Data Recv");
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"DetailVCRedrawFIA" object:nil];
+                                }
+                                //If it is a gui                                
+                                else if ( msgState == CLIENT_MSG_GUI )
+                                {
+                                    NSString *GUISpec =[NSString stringWithUTF8String:self.byteData];
+                                    if(debugByteInput) NSLog(@"\t\tGUI Data Recv :");
+                                    if(debugByteInput) NSLog(@"\t\t%s" , self.byteData);
+
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"SetupCUAFromGUISpec" object:GUISpec];
+                                }
+
+                                //reset flags and stuff
+                                [self clearOutFlagsForByteData];
+                            
+                            }
+                            break;
+                        }
+                        default:
+                            NSLog(@"\tOmegaClient :: ERROR : there is a ClientMsgType that is not supported");
+                            break;
+                    }
 				}
 			}
 			break;
@@ -159,48 +295,22 @@
 	}
 }
 
-
-#
-#
-#pragma mark Handle Recieve Data from Sockets
-#
-#
-
--(void) clearOutOldImgByteData
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+-(void) clearOutFlagsForByteData
 {
-    free(imgByteData);
-    imgByteData = NULL;
-    imgByteDataLength = -1;
-    newImgByteData = NO;
+    //Clear out image related data and flags
+    free(byteData);
+    byteData = NULL;
+    byteLen = -1;
+ 
+    //Clear out data related data and flags
+    msgState = CLIENT_MSG_NONE;
+    readyForNewData = YES;
+    readUpTo = 0;
 }
 
-
-- (void) messageReceived:(NSString *)message 
-{
-    [self clearOutOldImgByteData];
-    //simulate getting the byte array of data 
-    //static BOOL first = YES;
-    //if( first )
-    //{
-        //Grab the png info into UIImage
-        UIImage *img = [UIImage imageNamed:@"Tendrils.png"];
-    
-        //UIImage --> NSData
-        NSData *imageData = UIImagePNGRepresentation(img);
-
-        //Convert the NSData to Bytes array
-        imgByteDataLength = [imageData length];
-        imgByteData = (Byte*)malloc( imgByteDataLength );
-        memcpy(imgByteData, [imageData bytes], imgByteDataLength);
-     //   first = NO;
-        newImgByteData = YES;
-    //}
-    
-    NSLog(@"TCP :: Recieving data");
-    [self.TCPClientOmegaDelegate flagRedraw:self];
-    [self clearOutOldImgByteData];
-
-}
 
 #
 #
@@ -289,99 +399,6 @@
     eventMsg = [eventMsg stringByAppendingString:seperator];
     
     return eventMsg;
-}
-
-
-#
-#
-#pragma mark Handle GUI Parsing
-#
-#
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(void) handleGUIElementsFor:(int)GUIType in:(NSArray*)pieces
-{
-    /*
-    //Get all the other pieces
-    int numOfElements = pieces.count - 2;   // 1 for the count and 1 for the end marker
-    
-    for( int iPiece = 1 ; iPiece < numOfElements ; iPiece++)
-    {
-        if( GUIType == CUA_SLIDER ) //group the source_id, label, min , max
-        {
-            NSString* id = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* label = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* min = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* max = [pieces objectAtIndex:iPiece];  
-            iPiece++;
-            
-//TODO::GUI Spec fix           if(debugClient) NSLog(@"\t\t id:%@ label:%@ min:%@ max:%@" , id , label , min , max );
-            
-        }
-        else    //group the source_id and label
-        {
-            NSString* id = [pieces objectAtIndex:iPiece];
-            iPiece++;
-            NSString* label = [pieces objectAtIndex:iPiece];
-            
-//TODO::GUI Spec fix            if(debugClient) NSLog(@"\t\t id:%@ label:%@" , id , label);
-        }
-    }
-     */
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(void) determineGUISpec:(NSString*) GUISpec
-{
-    /*
-    int msgLength;
-    
-//TODO::GUI Spec fix   if(debugClient) NSLog( @"GUISpec : %@ \n" , GUISpec );
-    
-    NSString* spacer = [NSString stringWithUTF8String:":"];
-    NSString* seperator = [NSString stringWithUTF8String:"|"];
-    
-    //Get the sections of the GUISpec and put them in sections NSArray
-    NSArray *pieces;
-    NSArray *sections = [ GUISpec componentsSeparatedByString:seperator ];
-    for ( int iSection = 0 ; iSection < 4 ; iSection++ )
-    {
-        NSString* curSection = [sections objectAtIndex:iSection];
-        
-        switch (iSection)
-        {
-            case 0: 
-                msgLength = [curSection intValue];
-//TODO::GUI Spec fix                if(debugClient) NSLog(@"\t Msg Length : %i" , msgLength);
-                break;
-            default:
-                //Grab all the pieces out of the section
-                pieces = [ curSection componentsSeparatedByString:spacer];
-                
-                //First piece always tells you the number of elements
-//TODO::GUI Spec fix                if(debugClient) NSLog(@"\t Section : %i - has %@ elements" , iSection , [pieces objectAtIndex:0] );
-                
-                CUATypes GUIType;
-                switch (iSection)
-            {
-                case 1:GUIType = CUA_BUTTON;break;
-                case 2:GUIType = CUA_SLIDER;break;
-                case 3:GUIType = CUA_TOGGLE;break;                    
-            }
-                
-                [self handleGUIElementsFor:GUIType in:pieces];
-                break;                
-        }
-    }
-    */
 }
 
 @end

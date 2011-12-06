@@ -600,6 +600,7 @@
     [super swipeUp:recognizer];
 
     [self genTCPMsgWithRecognizer:recognizer Event:MoveUp Param:recognizer.direction];
+    NSLog(@"FIA :: Swipe Left");    
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -624,7 +625,7 @@
     [super swipeRight:recognizer];    
     
     [self genTCPMsgWithRecognizer:recognizer Event:MoveRight Param:recognizer.direction];
-    
+    NSLog(@"FIA :: Swipe Right");    
 }
 //----------------------------------------------------------------------------------------------------
 
@@ -636,7 +637,7 @@
     [super swipeLeft:recognizer];        
     
     [self genTCPMsgWithRecognizer:recognizer Event:MoveLeft Param:recognizer.direction];
-    
+    NSLog(@"FIA :: Swipe Left");
 }
 //----------------------------------------------------------------------------------------------------
 
