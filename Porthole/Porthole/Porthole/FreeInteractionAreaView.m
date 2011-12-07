@@ -323,16 +323,23 @@
         
         //Place localized x and y location into NSArray
         CGPoint localLoc = [self localLocOf:point];
-        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
-        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
-        NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
+//        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
+//        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
+//        NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
+//        //Send TCP msg 
+//        [self.FIAdelegate sendMsgAsService:Pointer event:Down param:param from:self];
         
-        //Send TCP msg 
-        [self.FIAdelegate sendMsgAsService:Pointer event:Down param:param from:self];
+        //Gen and store the TCP for a touch         
+        NSMutableString* msg = [NSMutableString stringWithFormat:@"t:%d:%f:%f:|", Down , localLoc.x , localLoc.y];
+    
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TCPClientOmegaSendMsg" object:[NSString stringWithString: msg]];
+
+        
         [self setNeedsDisplay];
     }
     
-}
+}//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+
 //----------------------------------------------------------------------------------------------------
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -370,16 +377,22 @@
         if( debugTouch) NSLog(@"\tFIA : Touch : Touch moved : %.2f , %.2f from: %.2f , %.2f " , point.x , point.y , prevPoint.x , prevPoint.y );      
         
         //Place localized x and y location into NSArray
-        CGPoint localPoint = [self localLocOf:prevPoint];
-        NSNumber *localX = [NSNumber numberWithFloat:localPoint.x];
-        NSNumber *localY = [NSNumber numberWithFloat:localPoint.y]; 
-        NSArray *param = [NSArray arrayWithObjects:localX , localY , nil];             
-        
-        //Send TCP msg 
-        [self.FIAdelegate sendMsgAsService:Pointer event:Move param:param from:self];
+        CGPoint localLoc = [self localLocOf:prevPoint];
+//        NSNumber *localX = [NSNumber numberWithFloat:localPoint.x];
+//        NSNumber *localY = [NSNumber numberWithFloat:localPoint.y]; 
+//        NSArray *param = [NSArray arrayWithObjects:localX , localY , nil];             
+//        
+//        //Send TCP msg 
+//        [self.FIAdelegate sendMsgAsService:Pointer event:Move param:param from:self];
+
+        //Gen and store the TCP for a touch         
+        NSMutableString* msg = [NSMutableString stringWithFormat:@"t:%d:%f:%f:|", Move , localLoc.x , localLoc.y];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TCPClientOmegaSendMsg" object:[NSString stringWithString: msg]];
+
+    
     }  
     [self setNeedsDisplay];
-}
+}//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event 
 //----------------------------------------------------------------------------------------------------
 
 
@@ -412,12 +425,16 @@
         
         //Place localized x and y location into NSArray
         CGPoint localLoc = [self localLocOf:point];
-        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
-        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
-        NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
         
-        //Send TCP msg
-        [self.FIAdelegate sendMsgAsService:Pointer event:Up param:param from:self];
+//        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
+//        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
+//        NSArray *param = [NSArray arrayWithObjects:xLoc , yLoc , nil];             
+//        [self.FIAdelegate sendMsgAsService:Pointer event:Up param:param from:self];
+        
+        //Gen and store the TCP for a touch 
+        NSMutableString* msg = [NSMutableString stringWithFormat:@"t:%d:%f:%f:|", Up , localLoc.x , localLoc.y];        
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TCPClientOmegaSendMsg" object:[NSString stringWithString: msg]];
         
         //Clear the touches in the markLoc array
         [self wipeMarkers];
@@ -448,6 +465,13 @@
 #pragma mark - Callback for gesture interaction
 #
 #
+//Gestures usually have two fingers and some parameters
+//  Need to Send 
+//      the two fingers x1,y1 and x2,y2 
+//      parameters that go along with these two fingers 
+//  param is the extra data that comes with the gesture
+//  TODO :: ctrl-f to find them
+
 
 -(void)genTCPMsgWithRecognizer:(UIGestureRecognizer *)recognizer Event:(int)event Param:(CGFloat)param
 {
@@ -457,7 +481,7 @@
     //clear any old marker list
     [self clearMarkerLoc];
   
-    //If done pinching reset the last pinch scale
+    //If there was a gesture ended do somehting and return
     if(recognizer.state ==UIGestureRecognizerStateEnded)
     {
         switch (event) 
@@ -473,8 +497,13 @@
         }
         if( debugTouch ) NSLog(@"\t\t%f , %f " , prevPt.x , prevPt.y);   
 
-        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithFloat:prevPt.x] , [NSNumber numberWithFloat:prevPt.y] , nil];
-        [self.FIAdelegate sendMsgAsService:Pointer event:Up param:param from:self];
+//        NSArray *param = [NSArray arrayWithObjects:[NSNumber numberWithFloat:prevPt.x] , [NSNumber numberWithFloat:prevPt.y] , nil];
+//        [self.FIAdelegate sendMsgAsService:Pointer event:Up param:param from:self];
+
+        //Gen and store the TCP for a touch  
+        NSMutableString* msg = [NSMutableString stringWithFormat:@"t:%d:%f:%f:|", Up , prevPt.x , prevPt.y];        
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TCPClientOmegaSendMsg" object:[NSString stringWithString: msg]];
         
         //Reset at the end
         lastScale = 1.0;  
@@ -484,61 +513,75 @@
         return;
     }
     
-    switch (event) 
+    //If there was a gesture beginning
+    else 
     {
-        case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch"); break;
-        case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation"); break;
-        case MoveUp:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Up"); break;            
-        case MoveDown:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Down"); break;            
-        case MoveLeft:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Left"); break;            
-        case MoveRight: if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Right"); break;                        
-        case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap"); break;                        
-        default:break;
-    }
-    
-    //Grab the x,y info for the two points into a mutableArray 
-    int numTouches = recognizer.numberOfTouches;
-    NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
-    for ( int curPoint = 0 ; curPoint < numTouches ; curPoint++)
-    {
-        //Grab the point
-        CGPoint point = [recognizer locationOfTouch:curPoint inView:self]; 
-        
-        //Check within
-        if( ![self within:point.x and:point.y] ) return;
-        [self markerLocAdd:point];
-        //Place localized x and y location into NSArray
-        CGPoint localLoc = [self localLocOf:point];
-        NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
-        NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
-        [paramMutable addObject:xLoc];
-        [paramMutable addObject:yLoc];        
-        if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);  
-        prevPt = localLoc;
+        switch (event) 
+        {
+            case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch"); break;
+            case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotation"); break;
+            case MoveUp:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Up"); break;            
+            case MoveDown:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Down"); break;            
+            case MoveLeft:  if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Left"); break;            
+            case MoveRight: if( debugTouch ) NSLog(@"\tFIA : Gesture : Swipe Right"); break;                        
+            case Select:    if( debugTouch ) NSLog(@"\tFIA : Gesture : 1 finger 2 tap"); break;                        
+            default:break;
+        }
 
+        //Grab the x,y info for the two points into a mutableArray 
+        int numTouches = recognizer.numberOfTouches;
+        NSMutableArray *paramMutable = [NSMutableArray arrayWithCapacity:numTouches];
+        for ( int curPoint = 0 ; curPoint < numTouches ; curPoint++)
+        {
+            //Grab the point
+            CGPoint point = [recognizer locationOfTouch:curPoint inView:self]; 
+            
+            //Check within
+            if( ![self within:point.x and:point.y] ) return;
+            [self markerLocAdd:point];
+            
+            //Place localized x and y location into NSArray
+            CGPoint localLoc = [self localLocOf:point];
+            NSNumber *xLoc = [NSNumber numberWithFloat:localLoc.x];
+            NSNumber *yLoc = [NSNumber numberWithFloat:localLoc.y]; 
+            [paramMutable addObject:xLoc];
+            [paramMutable addObject:yLoc];        
+            if( debugTouch ) NSLog(@"\t\t@ : %.2f(%.2f), %.2f(%.2f) " , point.x , localLoc.x, point.y , localLoc.y);  
+            prevPt = localLoc;
+        }
+
+        //grab the extra data that was passed in
+        NSNumber *paramN = [NSNumber numberWithFloat:param];
+        //Add the extra data to the NSMutableArray
+        [paramMutable addObject:paramN];        
+
+        switch (event) 
+        {
+            case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch : Scale %.2f " , param);    break;
+            default:break;
+        }
+
+//        //Transform the NSMutableArray to NSArray 
+//        NSArray *paramArray = [NSArray arrayWithArray:paramMutable];
+//        ////Send TCP msg
+//        [self.FIAdelegate sendMsgAsService:Pointer event:event param:paramArray from:self];
+
+        //Gen and store the TCP msg for this gesture 
+        NSMutableString* msg = [NSMutableString stringWithFormat:@"t:%d:", event];    //indicate gesture and type of gesture
+        
+        //load the two fingers x1,y1 and x2,y2 and parameters that go along with these two fingers 
+        for( int iParam = 0 ; iParam < paramMutable.count ; iParam++)
+        {
+            [msg appendString:[NSString stringWithFormat:@"%f:", [paramMutable objectAtIndex:iParam] ]];
+        }
+        [msg appendString:[NSString stringWithString:@"|"]];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"TCPClientOmegaSendMsg" object:[NSString stringWithString: msg]];
     }
-    
-    NSNumber *paramN = [NSNumber numberWithFloat:param];
-    
-    switch (event) 
-    {
-        case Zoom:      if( debugTouch ) NSLog(@"\tFIA : Gesture : Pinch : Scale %.2f " , param);    
-        case Rotate:    if( debugTouch ) NSLog(@"\tFIA : Gesture : Rotate : Angle %.2f " , param);    
-        default:break;
-    }
-    
-    //Add the scale to the NSMutableArray
-    [paramMutable addObject:paramN];        
-    
-    //Transform the NSMutableArray to NSArray
-    NSArray *paramArray = [NSArray arrayWithArray:paramMutable];
-    
-    //Send TCP msg
-    [self.FIAdelegate sendMsgAsService:Pointer event:event param:paramArray from:self];
-    
     [self setNeedsDisplay];
     
 }
+//-(void)genTCPMsgWithRecognizer:(UIGestureRecognizer *)recognizer Event:(int)event Param:(CGFloat)param
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -159,7 +159,7 @@
         msg = [NSString stringWithString:@"CUA :: ERROR : Unhandeled call back "];        
     }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"UIElementSendMsg" object:msg];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TCPClientOmegaSendMsg" object:msg];
 
 }
 

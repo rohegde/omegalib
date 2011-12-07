@@ -62,7 +62,6 @@ typedef enum { CLIENT_MSG_NONE=0 , CLIENT_MSG_IMG=1 , CLIENT_MSG_GUI=2 } ClientM
 @property (nonatomic, retain) NSOutputStream *outputStream;
 
 //Event Msg Sending 
--(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val;
 -(BOOL) sendEventService:(int)service event:(int)event param:(NSArray*)eventParam;
 -(NSString*) genEventMsgWith:(NSArray*)data param:(NSArray*)info;
 -(void) sendToServer:(NSString*)msg;
@@ -75,8 +74,5 @@ typedef enum { CLIENT_MSG_NONE=0 , CLIENT_MSG_IMG=1 , CLIENT_MSG_GUI=2 } ClientM
 
 //Msg recieved
 - (void) clearOutFlagsForByteData;
-
-//Notificaitons
-- (void) UIElementMsg:(NSNotification *) notification;
 
 @end
