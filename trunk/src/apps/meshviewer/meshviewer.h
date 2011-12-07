@@ -29,6 +29,7 @@
 
 #include <omega.h>
 #include <oengine.h>
+#include "oengine/TabletManagerModule.h"
 
 using namespace omega;
 using namespace oengine;
