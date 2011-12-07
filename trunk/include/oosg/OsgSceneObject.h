@@ -53,6 +53,8 @@ namespace oosg
 		virtual const AlignedBox3* getBoundingBox();
 		virtual bool hasBoundingBox() { return true; }
 
+		osg::MatrixTransform* getTransformedNode() { return myTransform; }
+
 	private:
 		osg::Node* myNode;
 		osg::MatrixTransform* myTransform;

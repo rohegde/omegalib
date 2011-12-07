@@ -44,15 +44,14 @@ Entity::Entity(SceneManager* mng, EntityAsset* asset):
 {
 	EngineServer* engine = mng->getEngine();
 
-	myOsgNode = myAsset->node;
-
 	mySceneNode = new SceneNode(engine);
 	mySceneNode->setSelectable(true);
 	engine->getScene(0)->addChild(mySceneNode);
-	OsgSceneObject* oso = new OsgSceneObject(myOsgNode);
+	OsgSceneObject* oso = new OsgSceneObject(myAsset->node);
+
+	myOsgNode = oso->getTransformedNode();
 
 	mySceneNode->addObject(oso);
-	mySceneNode->addObject(mySelectionSphere);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
