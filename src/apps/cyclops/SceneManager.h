@@ -72,7 +72,6 @@ namespace cyclops {
 		osg::Node* myOsgNode;
 		SceneNode* mySceneNode;
 		EntityAsset* myAsset;
-		oengine::BoundingSphere* mySelectionSphere;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

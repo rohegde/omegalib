@@ -46,7 +46,7 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneEditorModule::SceneEditorModule():
-	myEngine(NULL), myInteractor(NULL)
+	myEngine(NULL), myInteractor(NULL), mySelectedObject(NULL)
 {
 }
 
