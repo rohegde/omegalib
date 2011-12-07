@@ -35,7 +35,9 @@ WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 #include "omega/DataManager.h"
 
-#define LITTLE_ENDIAN // Force little-endiannes (default architecture for Win & Linux)
+#ifndef LITTLE_ENDIAN
+	#define LITTLE_ENDIAN // Force little-endiannes (default architecture for Win & Linux)
+#endif
 
 #ifdef __cplusplus
 extern "C" {
