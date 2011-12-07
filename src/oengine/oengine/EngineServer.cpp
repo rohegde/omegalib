@@ -91,6 +91,12 @@ void EngineServer::initialize()
 		myConsole->setFont(FontInfo("console", "fonts/arial.ttf", 12));
 	}
 
+	// Setup the system font.
+	if(cfg->exists("config/defaultFont"))
+	{
+		Setting& fontSetting = cfg->lookup("config/defaultFont");
+		setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
+	}
 
 	// Setup default render chain.
 	registerRenderPassClass<LightingPass>();

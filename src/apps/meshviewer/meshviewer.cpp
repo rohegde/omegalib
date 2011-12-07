@@ -27,22 +27,19 @@
 #include "meshviewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(EntityData* data, EngineServer* server):
-	myData(data),
+Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label):
+	myMeshData(data),
 	myServer(server),
-	myVisible(false)
+	myName(name),
+	myLabel(label),
+	myInteractor(interactor)
 {
 	myMesh = new Mesh();
-	mySelectionSphere = new BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(true);
-	mySelectionSphere->setVisible(false);
-
 	mySceneNode = new SceneNode(server);
 	mySceneNode->setSelectable(true);
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
-	mySceneNode->addObject(mySelectionSphere);
-	myMesh->setData(myData->meshData);
+	myMesh->setData(myMeshData);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,29 +49,24 @@ Entity::~Entity()
 	delete mySceneNode;
 	mySceneNode = NULL;
 
-	delete mySelectionSphere;
-	mySelectionSphere = NULL;
-
 	delete myMesh;
 	myMesh = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setVisible(bool value)
-{
-	myVisible = value;
-	if(myMesh != NULL)
-	{
-		mySceneNode->setVisible(value);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::resetTransform()
+void Entity::show()
 {
 	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
 	mySceneNode->resetOrientation();
+	mySceneNode->setVisible(true);
+	myInteractor->setSceneNode(mySceneNode);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::hide()
+{
+	mySceneNode->setVisible(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,22 +80,20 @@ void MeshViewer::loadEntityLibrary()
 		{
 			Setting& entitySetting = entities[i];
 
-			EntityData* ed = new EntityData();
-
-			ed->name = entitySetting.getName();
-			ed->label = String((const char*)entitySetting["label"]);
-
 			if(entitySetting.exists("mesh"))
 			{
 				String meshFilename = String((const char*)entitySetting["mesh"]);
-				ed->meshData = MeshUtils::load(meshFilename);
-				if(ed->meshData != NULL)
+				MeshData* mesh = MeshUtils::load(meshFilename);
+				
+				if(mesh != NULL)
 				{
-					ed->meshData->scale(0.8f);	
+					mesh->scale(0.8f);	
+					String name = entitySetting.getName();
+					String label = String((const char*)entitySetting["label"]);
+					Entity* e = new Entity(mesh, this, myInteractor, name, label);
+					myEntities.push_back(e);
 				}
 			}
-
-			myEntityLibrary.push_back(ed);
 		}
 	}
 }
@@ -113,48 +103,15 @@ void MeshViewer::initialize()
 {
 	EngineServer::initialize();
 
-	loadEntityLibrary();
-
-	Config* cfg = getSystemManager()->getAppConfig();
-
-	// Setup the system font.
-	if(cfg->exists("config/defaultFont"))
-	{
-		Setting& fontSetting = cfg->lookup("config/defaultFont");
-		setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
-	}
-
-	// Create and initialize meshviewer UI
-	initUi();
-
-	setAmbientLightColor(Color::Black);
-
+	// Setup lighting
 	Light* light = getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.5f, 0.5f, 0.5f));
 	light->setPosition(Vector3f(0, 3, 3));
-
-	light = getLight(1);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(-3, 0, 0));
-
-	light = getLight(2);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.35f, 0.3f));
-	light->setPosition(Vector3f(3, 0, 0));
-
-	light = getLight(3);
-	light->setEnabled(true);
-	light->setColor(Color(0.3f, 0.3f, 0.35f));
-	light->setPosition(Vector3f(0, -3, 0));
-
-	light = getLight(4);
-	light->setEnabled(true);
-	light->setColor(Color(0.35f, 0.3f, 0.3f));
-	light->setPosition(Vector3f(0, 0, -3));
-
+	setAmbientLightColor(Color::Black);
+	
 	// Create a reference box around the scene.
+	Config* cfg = getSystemManager()->getAppConfig();
 	if(cfg->exists("config/referenceBox"))
 	{
 		myReferenceBox = new ReferenceBox();
@@ -165,7 +122,7 @@ void MeshViewer::initialize()
 		// Read config for reference box.
 		myReferenceBox->setup(cfg->lookup("config/referenceBox"));
 	}
-
+	
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
@@ -178,8 +135,6 @@ void MeshViewer::initialize()
 	else if(interactorStyle == "Controller")
 	{
 		ControllerManipulator* interactor = new ControllerManipulator();
-		//interactor->setMoveButtonFlag(Event::Right);
-		//interactor->setRotateButtonFlag(Event::Middle);
 		myInteractor = interactor;
 	}
 	else
@@ -188,15 +143,23 @@ void MeshViewer::initialize()
 		interactor->initialize("ObserverUpdateService");
 		myInteractor = interactor;
 	}
-	
 	addActor(myInteractor);
+	
+	// Load the entities specified in the configuration file.
+	loadEntityLibrary();
+
+	// Create and initialize the gui
+	initUi();
 
     myShowUI = true;
     autoRotate = true;
 	deltaScale = 0;
+	
+	// Display the first entity in the entity library.
+	mySelectedEntity = myEntities[0];
+	mySelectedEntity->show();
 
-	createEntity(myEntityLibrary[0]);
-
+	// Get the default camera and focus in on the scene root (do we need this call?)
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
 }
@@ -218,10 +181,10 @@ void MeshViewer::initUi()
 	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
 
 	// Add buttons for each entity
-	for(int i = 0; i < myEntityLibrary.size(); i++)
+	for(int i = 0; i < myEntities.size(); i++)
 	{
-		EntityData* ed = myEntityLibrary[i];
-		Button* btn = wf->createButton(ed->name, entityButtons);
+		Entity* e = myEntities[i];
+		Button* btn = wf->createButton(e->getName(), entityButtons);
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 	}
@@ -244,58 +207,15 @@ void MeshViewer::initUi()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::createEntity(EntityData* ed)
-{
-	Entity* e = new Entity(ed, this);
-	//e->getMesh()->setEffect(myColorIdEffect);
-	myEntities.push_back(e);
-	myInteractor->setSceneNode(e->getSceneNode());
-	mySelectedEntity = e;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::destroyEntity(Entity* e)
-{
-	myEntities.remove(e);
-	delete e;
-	myInteractor->setSceneNode(NULL);
-	if(mySelectedEntity == e) mySelectedEntity = NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
-	if(evt.getServiceType() == Service::Pointer) 
-	{
-		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
-		{
-			if(mySelectedEntity != NULL)
-			{
-				destroyEntity(mySelectedEntity);
-			}
-		}
-		else if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
-		{
-			Ray ray;
-			ray.setOrigin(evt.getExtraDataVector3(0));
-			ray.setDirection(evt.getExtraDataVector3(1));
-			updateSelection(ray);
-		}
-	}
 	if(evt.getServiceType() == Service::Ui) 
 	{
 		handleUiEvent(evt);
 	}
 	else if( evt.getServiceType() == Service::Keyboard )
     {
-        if(evt.isKeyDown('e')) 
-        {
-			if(mySelectedEntity != NULL)
-			{
-				destroyEntity(mySelectedEntity);
-			}
-        }
 		if(evt.isKeyDown('s')) 
         {
 			if(myTablet != NULL)
@@ -306,13 +226,6 @@ void MeshViewer::handleEvent(const Event& evt)
         if(evt.isKeyDown('r')) 
         {
             autoRotate = !autoRotate;
-        }
-        else if(evt.isKeyDown('h')) 
-        {
-			if(mySelectedEntity != NULL)
-			{
-				mySelectedEntity->resetTransform();
-			}
         }
     }
 	else if( evt.getServiceType() == Service::Generic )
@@ -340,51 +253,10 @@ void MeshViewer::handleUiEvent(const Event& evt)
 	{
 		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
-			EntityData* ed = myEntityLibrary[i];
-			createEntity(ed);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity* MeshViewer::findEntity(SceneNode* node)
-{
-	foreach(Entity* e, myEntities)
-	{
-		if(e->getSceneNode() == node) return e;
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::updateSelection(const Ray& ray)
-{
-	const SceneQueryResultList& sqrl = querySceneRay(0, ray);
-	if(sqrl.size() != 0)
-	{
-		// The ray intersected with something.
-		SceneNode* sn = sqrl.front().node;
-		Entity* e = findEntity(sn);
-
-		if(mySelectedEntity != e)
-		{
-			if(mySelectedEntity != NULL)
-			{
-				mySelectedEntity->getSceneNode()->setSelected(false);
-			}
-			// The selected entity changed.
-			myInteractor->setSceneNode(sn);
-			sn->setSelected(true);
+			Entity* e = myEntities[i];
+			mySelectedEntity->hide();
 			mySelectedEntity = e;
-		}
-	}
-	else
-	{
-		if(mySelectedEntity != NULL)
-		{
-			mySelectedEntity->getSceneNode()->setSelected(false);
-			mySelectedEntity = NULL;
-			myInteractor->setSceneNode(NULL);
+			mySelectedEntity->show();
 		}
 	}
 }

@@ -36,41 +36,28 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class EntityData
-{
-public:
-	EntityData():
-	  meshData(NULL) {}
-
-	String name;
-	String label;
-	MeshData* meshData;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 class Entity: public DynamicObject
 {
 public:
-	Entity(EntityData* data, EngineServer* server);
+	Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label);
 	~Entity();
 
-	void resetTransform();
-	bool isVisible() { return myVisible; }
-	void setVisible(bool value);
-
+	void show();
+	void hide();
+	
 	SceneNode* getSceneNode() { return mySceneNode; }
 	Mesh* getMesh() { return myMesh; }
-	EntityData* getData() { return myData; }
-
+	const String& getName() { return myName; }
+	const String& getLabel() { return myLabel; }
+	
 private:
 	EngineServer* myServer;
-	EntityData* myData;
-
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
-
-	BoundingSphere* mySelectionSphere;
-	bool myVisible;
+	MeshData* myMeshData;
+	Actor* myInteractor;
+	String myName;
+	String myLabel;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,19 +72,12 @@ public:
 	virtual void update(const UpdateContext& context);
 
 private:
-	//! Find the entity associated with this scene node
-	Entity* findEntity(SceneNode* node);
-	void updateSelection(const Ray& ray);
 	void loadEntityLibrary();
 	void initUi();
-	void createEntity(EntityData* ed);
-	void destroyEntity(Entity* e);
 
 private:
-	Vector<EntityData*> myEntityLibrary;
-
-	// Entities
-	List<Entity*> myEntities;
+	Vector<Entity*> myEntities;
+	Entity* mySelectedEntity;
 
 	// Scene
 	ReferenceBox* myReferenceBox;
@@ -111,10 +91,6 @@ private:
 	TabletInterface* myTablet;
 	PixelData* mySecondaryViewData;
 
-	Entity* mySelectedEntity;
-
-	//Effect* myColorIdEffect;
-    
     bool myShowUI;
    	bool autoRotate;
    	float deltaScale;
