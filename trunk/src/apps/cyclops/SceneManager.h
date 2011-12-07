@@ -125,6 +125,7 @@ namespace cyclops {
 
 		EngineServer* myEngine;
 		OsgModule* myOsg;
+		SceneEditorModule* myEditor;
 		osg::Group* mySceneRoot;
 
 		Vector<ModelAsset*> myStaticObjectFiles;
@@ -133,6 +134,8 @@ namespace cyclops {
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, osg::Program*> myPrograms;
 		Dictionary<String, osg::StateSet*> myMaterials;
+
+		List<Entity*> myEntities;
 
 		osg::Light* myLight2;
 	};

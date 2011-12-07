@@ -24,50 +24,69 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OENGINE_H__
-#define __OENGINE_H__
+#ifndef __SCENE_EDITOR_MODULE_H__
+#define __SCENE_EDITOR_MODULE_H__
 
-#include "oengine/oenginebase.h"
-#include "oengine/Actor.h"
-#include "oengine/BoundingSphere.h"
-#include "oengine/Box.h"
-#include "oengine/Camera.h"
-#include "oengine/ControllerManipulator.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/DefaultTwoHandsInteractor.h"
-#include "oengine/DefaultRenderPass.h"
-#include "oengine/Effect.h"
-#include "oengine/EngineClient.h"
 #include "oengine/EngineServer.h"
-#include "oengine/ImageUtils.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
-#include "oengine/Mesh.h"
-#include "oengine/MeshData.h"
-#include "oengine/Node.h"
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/ObjDataReader.h"
-#include "oengine/PlyDataReader.h"
-#include "oengine/ply.h"
-#include "oengine/Pointer.h"
-#include "oengine/Renderable.h"
-#include "oengine/ReferenceBox.h"
-#include "oengine/RenderPass.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/SceneNode.h"
-#include "oengine/SceneEditorModule.h"
-#include "oengine/Renderer.h"
-#include "oengine/Teapot.h"
+#include "oengine/BoundingSphere.h"
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
-#include "oengine/ui/Label.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UserManagerPanel.h"
+namespace oengine
+{
+	class SceneEditorModule;
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class EditableObject
+	{
+	public:
+		EditableObject(SceneNode* node, SceneEditorModule* editor);
+
+		SceneNode* getSceneNode() { return mySceneNode; }
+		BoundingSphere* getBoundingSphere() { return mySelectionSphere; }
+		SceneEditorModule* getEditor() { return myEditor; }
+
+	private:
+		SceneNode* mySceneNode;
+		BoundingSphere* mySelectionSphere;
+		SceneEditorModule* myEditor;
+		String myName;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API SceneEditorModule
+	{
+	public:
+		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
+
+	public:
+		SceneEditorModule();
+		~SceneEditorModule();
+
+		void initialize(EngineServer* server);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
+
+		void setInteractorStyle(InteractorStyle style);
+		InteractorStyle getInteractorStyle() { return myInteractorStyle; }
+
+		void addNode(SceneNode* node);
+		void removeNode(SceneNode* node);
+
+		SceneNode* getSelectedNode();
+
+		EngineServer* getEngine() { return myEngine; }
+
+	private:
+		EditableObject* findEditableObject(SceneNode* node);
+		void updateSelection(const Ray& ray);
+
+	private:
+		EngineServer* myEngine;
+		
+		InteractorStyle myInteractorStyle;
+		Actor* myInteractor;
+
+		EditableObject* mySelectedObject;
+		List<EditableObject*> myObjects;
+	};
+};
 #endif

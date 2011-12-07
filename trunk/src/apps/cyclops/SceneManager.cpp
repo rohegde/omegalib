@@ -42,10 +42,6 @@ SceneManager* SceneManager::mysInstance = NULL;
 Entity::Entity(SceneManager* mng, EntityAsset* asset):
 	mySceneManager(mng), myAsset(asset)
 {
-	mySelectionSphere = new oengine::BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(true);
-	mySelectionSphere->setVisible(false);
-
 	EngineServer* engine = mng->getEngine();
 
 	mySceneNode = new SceneNode(engine);
@@ -71,6 +67,10 @@ void SceneManager::initialize(EngineServer* engine)
 	myEngine = engine;
 	myOsg = new OsgModule();
 	myOsg->initialize(myEngine);
+
+	myEditor = new SceneEditorModule();
+	myEditor->initialize(myEngine);
+
 	mySceneRoot = new osg::Group();
 }
 
@@ -78,11 +78,13 @@ void SceneManager::initialize(EngineServer* engine)
 void SceneManager::update(const UpdateContext& context) 
 {
 	myOsg->update(context);
+	myEditor->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
+	myEditor->handleEvent(evt);
 	if(evt.isKeyDown('l'))
     {
 		Vector3f pos = myEngine->getDefaultCamera()->getPosition();
@@ -154,14 +156,21 @@ void SceneManager::addStaticObject(int assetId, const Vector3f& position, const 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
 {
-	ModelAsset* asset = getEntityAsset(assetId);
+	EntityAsset* asset = getEntityAsset(assetId);
 	if(asset == NULL)
 	{
 		ofwarn("SceneManager::addEntity: could not locate entity asset %1%", %assetId);
 	}
 	else
 	{
-		addNode(asset->node, position, rotation, scale);
+		Entity* e = new Entity(this, asset);
+		addNode(e->getOsgNode());
+		e->getSceneNode()->setPosition(position);
+		e->getSceneNode()->yaw(rotation[0] * Math::DegToRad);
+		e->getSceneNode()->pitch(rotation[1] * Math::DegToRad);
+		e->getSceneNode()->roll(rotation[2] * Math::DegToRad);
+		e->getSceneNode()->setScale(scale);
+		myEditor->addNode(e->getSceneNode());
 	}
 }
 
@@ -169,21 +178,8 @@ void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector
 bool SceneManager::findResource(const String& name, String& outPath)
 {
 	if(DataManager::findFile(name, outPath)) return true;
-	if(DataManager::findFile("images/" + name, outPath)) return true;
+	//if(DataManager::findFile("images/" + name, outPath)) return true;
 	//if(DataManager::findFile("../" + name, outPath)) return true;
-	//if(DataManager::findFile("../wall/" + name, outPath)) return true;
-	//if(DataManager::findFile("../ceiling/" + name, outPath)) return true;
-	//if(DataManager::findFile("../pillar/" + name, outPath)) return true;
-	//if(DataManager::findFile("../special/" + name, outPath)) return true;
-	//if(DataManager::findFile("../floor/" + name, outPath)) return true;
-	//if(DataManager::findFile("../stairs/" + name, outPath)) return true;
-	//if(DataManager::findFile("../../decals/" + name, outPath)) return true;
-	//if(DataManager::findFile("../../debris/hole/" + name, outPath)) return true;
-	//if(DataManager::findFile("../../debris/rock/" + name, outPath)) return true;
-	//if(DataManager::findFile("../../debris/wood/" + name, outPath)) return true;
-	//if(DataManager::findFile("../../castlebase/ceiling/" + name, outPath)) return true;
-	//if(DataManager::findFile("../cellarbase/floor/" + name, outPath)) return true;
-	//if(DataManager::findFile("../../particles/materials/" + name, outPath)) return true;
 	return false;
 }
 
@@ -399,8 +395,6 @@ void SceneManager::initShading()
 	ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
 	osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
-	//sm->addShader(ssmFrag);
-	//sm->addShader(ssmVert);
 	sm->setTextureSize(osg::Vec2s(512, 512));
 	sm->setAmbientBias(osg::Vec2(0.1f, 0.9f));
 	sm->setTextureUnit(4);

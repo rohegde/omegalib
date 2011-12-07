@@ -139,10 +139,6 @@ void MeshViewer::initialize()
 {
 	EngineServer::initialize();
 
-	//myColorIdEffect = new Effect(getEffectManager());
-	//myColorIdEffect->setDiffuseColor(Color::getColorByIndex(getId()));
-	//myColorIdEffect->setForcedDiffuseColor(true);
-
 	loadEntityLibrary();
 
 	Config* cfg = getSystemManager()->getAppConfig();
