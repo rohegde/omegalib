@@ -10,9 +10,8 @@
 
 //notification functions
 @interface TCPClientOmega (private)
-- (void) test:(NSNotification *) notification;
+- (void) SendMsg:(NSNotification *) notification;
 @end
-
 
 @implementation TCPClientOmega
 
@@ -54,7 +53,7 @@
         self.readUpTo = 0;
         self.readyForNewData = YES;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIElementMsg:) name:@"UIElementSendMsg" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SendMsg:) name:@"TCPClientOmegaSendMsg" object:nil];
     }
     return self;
 }
@@ -67,11 +66,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
-- (void) UIElementMsg:(NSNotification *) notification
+- (void) SendMsg:(NSNotification *) notification
 {
-    BOOL debugGUIMsg = NO;
+    BOOL debugGUIMsg = YES;
     //Make sure it is the right notifcation
-    if ([[notification name] isEqualToString:@"UIElementSendMsg"])
+    if ([[notification name] isEqualToString:@"TCPClientOmegaSendMsg"])
     {
         //Get the object that the notifcation is sending 
         id object = [notification object];
@@ -340,30 +339,10 @@
         NSArray *eventData = [NSArray arrayWithObjects:serviceN, eventN, nil];
         
         NSString *eventMsg = [self genEventMsgWith:eventData param:eventParam];
+        
         [self sendToServer:eventMsg];
+        
     }
-    return YES;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
--(BOOL) sendEventService:(int)service event:(int)event sid:(int)srcId value:(float)val
-{
-    if( myState == CLIENT_IDLE )
-    {
-        NSNumber *serviceN = [NSNumber numberWithInt:service];
-        NSNumber *eventN = [NSNumber numberWithInt:event];        
-        NSNumber *srcIdN = [NSNumber numberWithInt:srcId];
-        NSNumber *valN = [NSNumber numberWithFloat:val];        
-        
-        NSArray *eventData = [NSArray arrayWithObjects:serviceN , eventN , nil ];        
-        NSArray *eventParam= [NSArray arrayWithObjects:srcIdN, valN , nil ];        
-        NSString *eventMsg = [self genEventMsgWith:eventData param:eventParam];
-        
-        [self sendToServer:eventMsg];
-}
     return YES;
 }
 
