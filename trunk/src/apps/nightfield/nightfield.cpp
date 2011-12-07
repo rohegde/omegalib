@@ -26,6 +26,8 @@
  *************************************************************************************************/
 #include "nightfield.h"
 
+#define EVL_DEMO
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
 	numAgents(2000),
@@ -377,6 +379,15 @@ void Nightfield::handleEvent(const Event& evt)
 			Vector3f newCenter = r.getPoint(pt.second);
 			myFlock->getSettings()->center = newCenter;
 		}
+#ifdef EVL_DEMO
+		if(evt.getSourceId() > 0)
+		  {
+		    Ray r(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1));
+			std::pair<bool, float> pt = r.intersects(Plane(Vector3f(0, 0, 1), 0));
+			Vector3f newCenter = r.getPoint(pt.second);
+			myFlock->getSettings()->center = newCenter;
+		  }
+#endif
 	}
 	if(mySelectedEntity != NULL)
 	{
