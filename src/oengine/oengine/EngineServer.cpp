@@ -70,9 +70,16 @@ void EngineServer::initialize()
 	}
 
 	myDefaultCamera = new Camera();
-	if(cfg->getBoolValue("config/enableCameraNavigation", false))
+
+	if(cfg->exists("config/camera"))
 	{
-		myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
+		Setting& s = cfg->lookup("config/camera");
+		if(Config::getBoolValue("enableNavigation", s, false))
+		{
+			myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
+		}
+		Vector3f camPos = cfg->getVector3fValue("position", s); 
+		myDefaultCamera->setPosition(camPos);
 	}
 
 	// Create console.

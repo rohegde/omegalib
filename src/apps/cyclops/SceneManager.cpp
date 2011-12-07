@@ -390,6 +390,9 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initShading()
 {
+	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.8f, 0.8f, 0.8f, 1.0f));
+
+
 	osgShadow::ShadowedScene* ss = new osgShadow::ShadowedScene();
 	ss->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
 	ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
@@ -399,7 +402,8 @@ void SceneManager::initShading()
 	sm->setAmbientBias(osg::Vec2(0.1f, 0.9f));
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
-	//sm->setSoftnessWidth(0.01);
+	sm->setSoftnessWidth(0.01f);
+	sm->setJitteringScale(4);
 
 	ss->addChild(mySceneRoot);
 	ss->setShadowTechnique(sm.get());
@@ -412,11 +416,15 @@ void SceneManager::initShading()
     myLight2->setAmbient(osg::Vec4(0.1f,0.1f,0.1f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
+    myLight2->setLinearAttenuation(1.0f);
     /*myLight2->setConstantAttenuation(1.0f);
     myLight2->setLinearAttenuation(2.0f/70.0f);
     myLight2->setQuadraticAttenuation(2.0f/osg::square(70.0f));*/
 
-    osg::LightSource* lightS2 = new osg::LightSource;    
+    osg::LightSource* lightS2 = new osg::LightSource;  
+
+	myLight2->setPosition(Vec4(0, 6.0f, 0, 1.0f));
+
     lightS2->setLight(myLight2);
     lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
 
