@@ -24,6 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#ifndef OMEGA_NO_GL_HEADERS
+
 #ifndef __GL_HEADERS_H__
 #define __GL_HEADERS_H__
 
@@ -76,4 +78,5 @@ inline bool _oglError(const char* file, int line)
 
 #define oglError _oglError(__FILE__, __LINE__)
 
+#endif
 #endif

@@ -54,6 +54,8 @@ namespace oengine {
 
 		const Rect& getReadbackViewport() { return myReadbackViewport; }
 
+		RenderTarget* getRenderTarget() { return myRenderTarget; }
+
 	private:
 		bool myEnabled;
 		bool myOffscreen;

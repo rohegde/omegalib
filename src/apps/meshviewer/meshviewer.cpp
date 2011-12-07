@@ -162,6 +162,9 @@ void MeshViewer::initialize()
 	// Get the default camera and focus in on the scene root (do we need this call?)
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
+
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,62 +191,24 @@ void MeshViewer::initUi()
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 	}
-
-	Image* img = wf->createImage("img", root);
-	mySecondaryViewData = new PixelData(PixelData::FormatRgba, 420, 240);
-	img->setData(mySecondaryViewData);
-	img->setAutoRefresh(true);
-	img->setPosition(Vector2f(canvasWidth - 325, 0));
-	img->setSize(Vector2f(420, 240));
-
-	Camera* cam = createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
-	cam->setProjection(30, 1, 0.1f, 100);
-	cam->setAutoAspect(true);
-	cam->setPosition(Vector3f(0, 1, 0));
-	Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
-	cam->setOrientation(o);
-	cam->getOutput(0)->setReadbackTarget(mySecondaryViewData);
-	cam->getOutput(0)->setEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
+	myTabletManager->handleEvent(evt);
 	if(evt.getServiceType() == Service::Ui) 
 	{
 		handleUiEvent(evt);
 	}
 	else if( evt.getServiceType() == Service::Keyboard )
     {
-		if(evt.isKeyDown('s')) 
-        {
-			if(myTablet != NULL)
-			{
-				myTablet->sendImage(mySecondaryViewData);
-			}
-        }
         if(evt.isKeyDown('r')) 
         {
             autoRotate = !autoRotate;
         }
     }
-	else if( evt.getServiceType() == Service::Generic )
-    {
-		if(evt.getType() == Event::Connect)
-		{
-			TabletService* tsvc = getServiceManager()->getService<TabletService>(evt.getServiceId());
-			myTablet = new TabletInterface(tsvc, evt.getSourceId());
-			myTablet->beginGui();
-			myTablet->addButton(0, "Button1", "Hello I'm a Button", "Click me!");
-			myTablet->addButton(1, "Button2", "Hello I'm another Button", "Click me!");
-			myTablet->addSlider(2, "Slider1", "Hello I'm a Slider! (0, 100, 50)", 0, 100, 50);
-			myTablet->addSlider(3, "Slider2", "Hello I'm another Slider! (0, 10, 10)", 0, 10, 10);
-			myTablet->addSwitch(4, "Switch1", "Hello I'm a Switch! (on)", true);
-			myTablet->addSwitch(5, "Switch2", "Hello I'm another Switch! (off)", false);
-			myTablet->finishGui();
-		}
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +229,8 @@ void MeshViewer::handleUiEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::update(const UpdateContext& context)
 {
-	EngineServer::update( context );
+	EngineServer::update(context);
+	myTabletManager->update(context);
 
 	SceneNode* daSceneNode = myInteractor->getSceneNode();
 	if(daSceneNode != NULL)

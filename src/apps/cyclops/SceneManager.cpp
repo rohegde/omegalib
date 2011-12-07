@@ -72,6 +72,9 @@ void SceneManager::initialize(EngineServer* engine)
 	myEditor->initialize(myEngine);
 
 	mySceneRoot = new osg::Group();
+
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(myEngine);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,12 +82,14 @@ void SceneManager::update(const UpdateContext& context)
 {
 	myOsg->update(context);
 	myEditor->update(context);
+	myTabletManager->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
 	myEditor->handleEvent(evt);
+	myTabletManager->handleEvent(evt);
 	if(evt.isKeyDown('l'))
     {
 		Vector3f pos = myEngine->getDefaultCamera()->getPosition();

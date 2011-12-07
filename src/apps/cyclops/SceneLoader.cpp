@@ -150,6 +150,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 
 				osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
 				pat->setScale(osg::Vec3(scale, scale, scale));
+				pat->addChild(node);
 
 				node = pat;
 			}

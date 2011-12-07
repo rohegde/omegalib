@@ -24,71 +24,70 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/TabletInterface.h"
-#include "oengine/ImageUtils.h"
+#include "oengine/TabletManagerModule.h"
+#include "oengine/Camera.h"
+#include "omega/TabletService.h"
 
 using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TabletInterface::TabletInterface(TabletService* svc, int tabletId):
-	myService(svc), myTabletId(tabletId)
+TabletManagerModule::TabletManagerModule():
+	myAutoUpdateInterval(5.0f), myEngine(NULL)
 {
-	myConnection = svc->getConnection(tabletId);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::sendImage(PixelData* data)
+void TabletManagerModule::initialize(EngineServer* engine)
 {
-	ByteArray* png = ImageUtils::encode(data, ImageUtils::FormatPng);
+	myEngine = engine;
 
-	int size = png->getSize();
-	char header[] = {'i', 'p', 'n', 'g'};
+	myTabletPixels = new PixelData(PixelData::FormatRgba, 420, 240);
 
-	myConnection->write(header, 4);
-	myConnection->write(&size, sizeof(int));
-	myConnection->write(png->lock(), size);
-	png->unlock();
-	delete png;
+	Camera* cam = myEngine->createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
+	cam->setProjection(30, 1, 0.1f, 100);
+	cam->setAutoAspect(true);
+	cam->setPosition(Vector3f(1, 3, 0));
+	Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
+	cam->setOrientation(o);
+	cam->getOutput(0)->setReadbackTarget(myTabletPixels);
+	cam->getOutput(0)->setEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::beginGui()
+void TabletManagerModule::update(const UpdateContext& context)
 {
-	memset(myGuiDef, 0, MaxGuiDefSize);
+	if(context.time - myLastUpdateTime > myAutoUpdateInterval)
+	{
+		myLastUpdateTime = context.time;
+		foreach(TabletInterface* tablet, myTablets)
+		{
+			tablet->sendImage(myTabletPixels);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::finishGui()
+void TabletManagerModule::handleEvent(const Event& evt)
 {
-	int size = strlen(myGuiDef);
-	char header[] = {'m', 'g', 'u', 'i'};
+	if( evt.getServiceType() == Service::Generic )
+    {
+		if(evt.getType() == Event::Connect)
+		{
+			TabletService* tsvc = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
+			TabletInterface* tablet = new TabletInterface(tsvc, evt.getSourceId());
+			tablet->beginGui();
+			tablet->addButton(0, "Button1", "Hello I'm a Button", "Click me!");
+			tablet->addButton(1, "Button2", "Hello I'm another Button", "Click me!");
+			tablet->addSlider(2, "Slider1", "Hello I'm a Slider! (0, 100, 50)", 0, 100, 50);
+			tablet->addSlider(3, "Slider2", "Hello I'm another Slider! (0, 10, 10)", 0, 10, 10);
+			tablet->addSwitch(4, "Switch1", "Hello I'm a Switch! (on)", true);
+			tablet->addSwitch(5, "Switch2", "Hello I'm another Switch! (off)", false);
+			tablet->finishGui();
 
-	myConnection->write(header, 4);
-	myConnection->write(&size, sizeof(int));
-	myConnection->write(myGuiDef, size);
-}
+			myTablets.push_back(tablet);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::addButton(int id, const String& label, const String& description, const String& text)
-{
-	char msg[MaxGuiDefSize];
-	sprintf(msg, "0:%d:%s:%s:%s:|", id, label.c_str(), description.c_str(), text.c_str());
-	strcat(myGuiDef, msg);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::addSlider(int id, const String& label, const String& description, int min, int max, int value)
-{
-	char msg[MaxGuiDefSize];
-	sprintf(msg, "1:%d:%s:%s:%d:%d:%d:|", id, label.c_str(), description.c_str(), min, max, value);
-	strcat(myGuiDef, msg);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::addSwitch(int id, const String& label, const String& description, bool value)
-{
-	char msg[MaxGuiDefSize];
-	sprintf(msg, "2:%d:%s:%s:%d:|", id, label.c_str(), description.c_str(), value ? 1 : 0);
-	strcat(myGuiDef, msg);
+			evt.setProcessed();
+		}
+	}
 }

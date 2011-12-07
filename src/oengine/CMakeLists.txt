@@ -66,6 +66,7 @@ set( srcs
 		oengine/Renderable.cpp
 		oengine/SceneEditorModule.cpp
 		oengine/TabletInterface.cpp
+		oengine/TabletManagerModule.cpp
 		oengine/TransparentRenderPass.cpp
 		oengine/UiRenderPass.cpp
 		
@@ -127,6 +128,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/TabletInterface.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/TabletManagerModule.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/UiRenderPass.h
 		
 		# omega::ui

@@ -58,6 +58,8 @@
 #include "oengine/SceneEditorModule.h"
 #include "oengine/Renderer.h"
 #include "oengine/Teapot.h"
+//#include "oengine/TabletInterface.h"
+//#include "oengine/TabletManagerModule.h"
 
 #include "oengine/ui/AbstractButton.h"
 #include "oengine/ui/Button.h"

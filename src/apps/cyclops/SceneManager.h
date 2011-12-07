@@ -36,6 +36,9 @@
 #include <oengine.h>
 #include <oosg.h>
 
+#include "oengine/TabletManagerModule.h"
+
+
 namespace cyclops {
 	using namespace omega;
 	using namespace oengine;
@@ -125,6 +128,8 @@ namespace cyclops {
 		EngineServer* myEngine;
 		OsgModule* myOsg;
 		SceneEditorModule* myEditor;
+		TabletManagerModule* myTabletManager;
+
 		osg::Group* mySceneRoot;
 
 		Vector<ModelAsset*> myStaticObjectFiles;
