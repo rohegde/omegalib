@@ -43,7 +43,6 @@ using namespace cyclops;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneLoader::SceneLoader(TiXmlDocument& doc):
 	myDoc(doc),
-	mySceneNode(NULL), 
 	mySceneManager(NULL)
 {
 }
@@ -89,8 +88,6 @@ void SceneLoader::startLoading(SceneManager* sm)
 			createObjects(root, xEntities);
 		}
 	}
-
-	mySceneNode = root;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,12 +105,6 @@ int SceneLoader::getLoadProgress()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneLoader::loadStep()
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-osg::Group* SceneLoader::getScene()
-{
-	return mySceneNode;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,64 +165,29 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 	TiXmlElement* xchild = xObjects->FirstChildElement();
 	while(xchild)
 	{
-		osg::Node* node = NULL;
-
 		String objtype = xchild->Value();
 		StringUtils::toLowerCase(objtype);
+
+		Vector3f rotation = readVector3f(xchild, "Rotation");
+		Vector3f position = readVector3f(xchild, "WorldPos");
+		Vector3f scale = readVector3f(xchild, "Scale");
 
 		if(objtype == "staticobject")
 		{
 			int fileIndex = atoi(xchild->Attribute("FileIndex"));
-			ModelAsset* asset = mySceneManager->getModelAsset(fileIndex);
-			if(asset == NULL)
-			{
-				ofwarn("createObjects: could not locate static object asset %1%", %fileIndex);
-			}
-			else
-			{
-				node = asset->node;
-			}
+			mySceneManager->addStaticObject(fileIndex, position, rotation, scale);
 		}
 		else if(objtype == "entity")
 		{
 			int fileIndex = atoi(xchild->Attribute("FileIndex"));
-			ModelAsset* asset = mySceneManager->getEntityAsset(fileIndex);
-			if(asset == NULL)
-			{
-				ofwarn("createObjects: could not locate entity asset %1%", %fileIndex);
-			}
-			else
-			{
-				node = asset->node;
-			}
+			mySceneManager->addEntity(fileIndex, position, rotation, scale);
 		}
 		else if(objtype == "plane")
 		{
-			node = createPlane(xchild);
+			osg::Node* node = createPlane(xchild);
+			mySceneManager->addNode(node, position, rotation, scale);
 		}
 		
-		if(node == NULL)
-		{
-			ofwarn("createObject: could not create object of type %1%", %objtype);
-		}
-		else
-		{
-			Vector3f rotation = readVector3f(xchild, "Rotation");
-			Vector3f position = readVector3f(xchild, "WorldPos");
-			Vector3f scale = readVector3f(xchild, "Scale");
-
-			osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-			root->addChild(xf);
-			xf->addChild(node);
-
-			xf->setPosition(osg::Vec3d(position[0], position[1], position[2]));
-			xf->setAttitude(osg::Quat(
-				rotation[0] * Math::DegToRad, osg::Vec3d(1, 0, 0),
-				rotation[1] * Math::DegToRad, osg::Vec3d(0, 1, 0),
-				rotation[2] * Math::DegToRad, osg::Vec3d(0, 0, 1)
-				));
-			xf->setScale(osg::Vec3d(scale[0], scale[1], scale[2]));
-		}
 		xchild = xchild->NextSiblingElement();
 	}
 }

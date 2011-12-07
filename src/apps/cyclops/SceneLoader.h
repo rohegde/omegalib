@@ -51,7 +51,6 @@ namespace cyclops {
 		bool isLoadingComplete();
 		int getLoadProgress();
 		void loadStep();
-		osg::Group* getScene();
 
 		void loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::AssetType type);
 
@@ -69,7 +68,6 @@ namespace cyclops {
 	private:
 		TiXmlDocument& myDoc;
 		SceneManager* mySceneManager;
-		osg::Group* mySceneNode;
 	};
 };
 

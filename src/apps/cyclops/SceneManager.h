@@ -42,6 +42,7 @@ namespace cyclops {
 	using namespace oosg;
 
 	class SceneLoader;
+	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelAsset
@@ -54,6 +55,24 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct EntityAsset: public ModelAsset
 	{
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class Entity
+	{
+	public:
+		Entity(SceneManager* mng, EntityAsset* asset);
+
+		osg::Node* getOsgNode() { return myOsgNode; }
+		SceneNode* getSceneNode() { return mySceneNode; }
+		EntityAsset* getAsset() { return myAsset; }
+
+	private:
+		SceneManager* mySceneManager;
+		osg::Node* myOsgNode;
+		SceneNode* mySceneNode;
+		EntityAsset* myAsset;
+		oengine::BoundingSphere* mySelectionSphere;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,11 +91,21 @@ namespace cyclops {
 		static SceneManager* getInstance();
 		SceneManager();
 
+		EngineServer* getEngine() { return myEngine; }
+
 		void initialize(EngineServer* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
 		void load(SceneLoader* loader);
+
+		//! Scene creation API
+		//@{
+		void addNode(osg::Node* node);
+		void addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		void addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		void addEntity(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		//@}
 
 		void addAsset(ModelAsset* asset, AssetType type);
 		ModelAsset* getModelAsset(int fileIndex);

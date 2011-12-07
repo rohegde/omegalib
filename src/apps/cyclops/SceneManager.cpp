@@ -29,6 +29,7 @@
 #include <osgUtil/Optimizer>
 #include <osgDB/Archive>
 #include <osgDB/ReadFile>
+#include <osg/PositionAttitudeTransform>
 
 #include "SceneManager.h"
 #include "SceneLoader.h"
@@ -36,6 +37,26 @@
 using namespace cyclops;
 
 SceneManager* SceneManager::mysInstance = NULL;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Entity::Entity(SceneManager* mng, EntityAsset* asset):
+	mySceneManager(mng), myAsset(asset)
+{
+	mySelectionSphere = new oengine::BoundingSphere();
+	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setVisible(false);
+
+	EngineServer* engine = mng->getEngine();
+
+	mySceneNode = new SceneNode(engine);
+	mySceneNode->setSelectable(true);
+	engine->getScene(0)->addChild(mySceneNode);
+
+	OsgSceneObject* oso = new OsgSceneObject(myOsgNode);
+
+	mySceneNode->addObject(oso);
+	mySceneNode->addObject(mySelectionSphere);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
@@ -50,6 +71,7 @@ void SceneManager::initialize(EngineServer* engine)
 	myEngine = engine;
 	myOsg = new OsgModule();
 	myOsg->initialize(myEngine);
+	mySceneRoot = new osg::Group();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,8 +99,6 @@ void SceneManager::load(SceneLoader* loader)
 {
 	loader->startLoading(this);
 	while(!loader->isLoadingComplete()) loader->loadStep();
-
-	mySceneRoot = loader->getScene();
 	if (mySceneRoot != NULL) 
 	{
 		osg::setNotifyLevel(INFO);
@@ -91,6 +111,57 @@ void SceneManager::load(SceneLoader* loader)
 		initShading();
 
 		myOsg->setRootNode(mySceneRoot);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addNode(osg::Node* node)
+{
+	mySceneRoot->addChild(node);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
+{
+	osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
+	xf->addChild(node);
+
+	xf->setPosition(osg::Vec3d(position[0], position[1], position[2]));
+	xf->setAttitude(osg::Quat(
+		rotation[0] * Math::DegToRad, osg::Vec3d(1, 0, 0),
+		rotation[1] * Math::DegToRad, osg::Vec3d(0, 1, 0),
+		rotation[2] * Math::DegToRad, osg::Vec3d(0, 0, 1)
+		));
+	xf->setScale(osg::Vec3d(scale[0], scale[1], scale[2]));
+
+	addNode(xf);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
+{
+	ModelAsset* asset = getModelAsset(assetId);
+	if(asset == NULL)
+	{
+		ofwarn("SceneManager::addStaticObject: could not locate static object asset %1%", %assetId);
+	}
+	else
+	{
+		addNode(asset->node, position, rotation, scale);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
+{
+	ModelAsset* asset = getEntityAsset(assetId);
+	if(asset == NULL)
+	{
+		ofwarn("SceneManager::addEntity: could not locate entity asset %1%", %assetId);
+	}
+	else
+	{
+		addNode(asset->node, position, rotation, scale);
 	}
 }
 
