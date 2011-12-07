@@ -64,6 +64,7 @@ set( srcs
 		oengine/SceneRenderable.cpp
 		oengine/ReferenceBox.cpp
 		oengine/Renderable.cpp
+		oengine/SceneEditorModule.cpp
 		oengine/TabletInterface.cpp
 		oengine/TransparentRenderPass.cpp
 		oengine/UiRenderPass.cpp
@@ -121,6 +122,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/TransparentRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneEditorModule.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h

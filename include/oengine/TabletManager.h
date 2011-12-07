@@ -24,50 +24,38 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OENGINE_H__
-#define __OENGINE_H__
+#ifndef __TABLET_INTERFACE_H__
+#define __TABLET_INTERFACE_H__
 
-#include "oengine/oenginebase.h"
-#include "oengine/Actor.h"
-#include "oengine/BoundingSphere.h"
-#include "oengine/Box.h"
-#include "oengine/Camera.h"
-#include "oengine/ControllerManipulator.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/DefaultTwoHandsInteractor.h"
-#include "oengine/DefaultRenderPass.h"
-#include "oengine/Effect.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/ImageUtils.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
-#include "oengine/Mesh.h"
-#include "oengine/MeshData.h"
-#include "oengine/Node.h"
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/ObjDataReader.h"
-#include "oengine/PlyDataReader.h"
-#include "oengine/ply.h"
-#include "oengine/Pointer.h"
-#include "oengine/Renderable.h"
-#include "oengine/ReferenceBox.h"
-#include "oengine/RenderPass.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/SceneNode.h"
-#include "oengine/SceneEditorModule.h"
-#include "oengine/Renderer.h"
-#include "oengine/Teapot.h"
+#include "oenginebase.h"
+#include "omega/TabletService.h"
+#include "omega/PixelData.h"
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
-#include "oengine/ui/Label.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/WidgetFactory.h"
-#include "oengine/ui/UserManagerPanel.h"
+namespace oengine {
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API TabletInterface: public OmegaObject
+	{
+	public:
+		static const int MaxGuiDefSize = 1024;
+
+	public:
+		TabletInterface(TabletService* service, int tabletId);
+
+		void sendImage(PixelData* data);
+
+		void beginGui();
+		void finishGui();
+		void addButton(int id, const String& label, const String& description, const String& text);
+		void addSlider(int id, const String& label, const String& description, int min, int max, int value);
+		void addSwitch(int id, const String& label, const String& description, bool value);
+
+	private:
+		TabletService* myService;
+		int myTabletId;
+		TcpConnection* myConnection;
+		
+		char myGuiDef[MaxGuiDefSize];
+	};
+}; 
 
 #endif
