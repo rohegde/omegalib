@@ -71,7 +71,7 @@ namespace oosg
 		EngineServer* myServer;
 		float myRepresentationSize;
 
-		OsgSceneObject* myRootSceneObject;
+		//OsgSceneObject* myRootSceneObject;
 		osg::Node* myRootNode;
 		osg::FrameStamp* myFrameStamp;
 		osg::NodeVisitor* myUpdateVisitor;

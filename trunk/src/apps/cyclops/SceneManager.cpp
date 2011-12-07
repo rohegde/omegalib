@@ -163,6 +163,7 @@ void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector
 	}
 	else
 	{
+		omsg("AddEntity");
 		Entity* e = new Entity(this, asset);
 		addNode(e->getOsgNode());
 		e->getSceneNode()->setPosition(position);
@@ -278,7 +279,7 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 	osg::StateSet* ss = new osg::StateSet();
 
 	osg::Program* prog = NULL;
-	
+
 	if(type == "solid")
 	{
 		prog = getProgram("solid", "cyclops/shaders/Solid.vert", "cyclops/shaders/Solid.frag");
@@ -286,7 +287,11 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 	}
 	else if(type == "simple")
 	{
-		prog = getProgram("solid", "cyclops/shaders/Solid.vert", "cyclops/shaders/Simple.frag");
+		prog = getProgram("simple", "cyclops/shaders/Solid.vert", "cyclops/shaders/Simple.frag");
+	}
+	else if(type == "vertexcolor")
+	{
+		prog = getProgram("vertexcolor", "cyclops/shaders/VertexColor.vert", "cyclops/shaders/VertexColor.frag");
 	}
 
 	ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
@@ -370,6 +375,10 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 			{
 				return createMaterial(doc.RootElement(), "simple");
 			}
+			else if(type == "vertexcolor")
+			{
+				return createMaterial(doc.RootElement(), "vertexcolor");
+			}
 			else
 			{
 				ofwarn("Unknown material type %1%", %type);
@@ -403,7 +412,7 @@ void SceneManager::initShading()
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
 	sm->setSoftnessWidth(0.01f);
-	sm->setJitteringScale(4);
+	sm->setJitteringScale(16);
 
 	ss->addChild(mySceneRoot);
 	ss->setShadowTechnique(sm.get());
@@ -413,7 +422,7 @@ void SceneManager::initShading()
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
     myLight2->setPosition(osg::Vec4(0.0, 5, 5, 1.0));
-    myLight2->setAmbient(osg::Vec4(0.1f,0.1f,0.1f,1.0f));
+    myLight2->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
     myLight2->setLinearAttenuation(1.0f);
