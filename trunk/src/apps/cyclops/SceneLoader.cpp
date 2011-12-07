@@ -137,6 +137,14 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		if(!cfgInfo.isNull())
 		{
 			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
+
+			if(xchild->Attribute("Material") != NULL)
+			{
+				String material = xchild->Attribute("Material");
+				osg::StateSet* fx = mySceneManager->loadMaterial(material);
+				node->setStateSet(fx);
+			}
+
 			if(node != NULL)
 			{
 				ModelAsset* asset = NULL;

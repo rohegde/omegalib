@@ -100,7 +100,7 @@ namespace oengine {
     };
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class MeshUtils
+	class OENGINE_API MeshUtils
 	{
 	public:
 		static MeshData* load(const String& file);
