@@ -295,10 +295,10 @@ const DrawContext& Camera::beginDraw(const DrawContext& context)
 			setProjection(myFov, aspect, myNearZ, myFarZ);
 		}
 		dc.projection = myProjection;
-		dc.drawBuffer = output->getRenderTarget();
 	}
 
 	output->beginDraw(dc);
+	dc.drawBuffer = output->getRenderTarget();
 	return dc;
 }
 
