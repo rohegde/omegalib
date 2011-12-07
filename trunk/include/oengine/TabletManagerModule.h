@@ -24,37 +24,32 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TABLET_INTERFACE_H__
-#define __TABLET_INTERFACE_H__
+#ifndef __TABLET_MANAGER_MODULE_H__
+#define __TABLET_MANAGER_MODULE_H__
 
 #include "oenginebase.h"
-#include "omega/TabletService.h"
-#include "omega/PixelData.h"
+#include "oengine/TabletInterface.h"
+#include "oengine/EngineServer.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API TabletInterface: public OmegaObject
+	class OENGINE_API TabletManagerModule
 	{
 	public:
-		static const int MaxGuiDefSize = 1024;
+		TabletManagerModule();
 
-	public:
-		TabletInterface(TabletService* service, int tabletId);
-
-		void sendImage(PixelData* data);
-
-		void beginGui();
-		void finishGui();
-		void addButton(int id, const String& label, const String& description, const String& text);
-		void addSlider(int id, const String& label, const String& description, int min, int max, int value);
-		void addSwitch(int id, const String& label, const String& description, bool value);
+		void initialize(EngineServer* engine);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
 
 	private:
-		TabletService* myService;
-		int myTabletId;
-		TcpConnection* myConnection;
-		
-		char myGuiDef[MaxGuiDefSize];
+		EngineServer* myEngine;
+
+		float myLastUpdateTime;
+		float myAutoUpdateInterval;
+		PixelData* myTabletPixels;
+
+		List<TabletInterface*> myTablets;
 	};
 }; 
 

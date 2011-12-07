@@ -72,6 +72,8 @@ namespace omega
 		void clear();
 		//@}
 
+		GLuint getId() { return myId; };
+
 	private:
 		GLuint myId;
 		Type myType;

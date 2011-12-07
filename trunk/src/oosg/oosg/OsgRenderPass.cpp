@@ -77,7 +77,7 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
 		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
-		mySceneView->setDrawBufferValue(context.drawBuffer->getContext()->getId());
+		mySceneView->setDrawBufferValue(context.drawBuffer->getId());
 
 		if(mySceneView->getSceneData() == NULL)
 		{
