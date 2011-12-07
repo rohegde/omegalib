@@ -44,7 +44,7 @@ OsgModule::OsgModule():
 	myRepresentationSize(0.4)
 {
 	myRootNode = NULL;
-	myRootSceneObject = NULL;
+	//myRootSceneObject = NULL;
     myFrameStamp = new osg::FrameStamp;
     myUpdateVisitor = new osgUtil::UpdateVisitor;
     myUpdateVisitor->setFrameStamp( myFrameStamp );
@@ -78,8 +78,8 @@ void OsgModule::initialize(EngineServer* server)
 void OsgModule::setRootNode(osg::Node* value) 
 { 
 	myRootNode = value; 
-	myRootSceneObject = new OsgSceneObject(myRootNode);
-	myServer->getScene(0)->addObject(myRootSceneObject);
+	//myRootSceneObject = new OsgSceneObject(myRootNode);
+	//myServer->getScene(0)->addObject(myRootSceneObject);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

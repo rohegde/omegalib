@@ -139,10 +139,19 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
 
 			if(xchild->Attribute("Material") != NULL)
+
+			if(xchild->Attribute("Size") != NULL)
 			{
-				String material = xchild->Attribute("Material");
-				osg::StateSet* fx = mySceneManager->loadMaterial(material);
-				node->setStateSet(fx);
+				float size = atof(xchild->Attribute("Size"));
+
+				float r = node->getBound().radius() * 2;
+
+				float scale = size / r;
+
+				osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
+				pat->setScale(osg::Vec3(scale, scale, scale));
+
+				node = pat;
 			}
 
 			if(node != NULL)

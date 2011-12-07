@@ -39,7 +39,7 @@ OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node)
     myTransform->addChild( node );
     myTransform->setDataVariance( osg::Object::STATIC );
 
-	const osg::BoundingSphere& bs = myNode->getBound();
+	const osg::BoundingSphere& bs = node->getBound();
 	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
 	Vector3f radius(bs.radius(), bs.radius(), bs.radius());
 
