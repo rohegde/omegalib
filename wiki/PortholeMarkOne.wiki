@@ -15,6 +15,9 @@ This document contains the Porthole application concept, timeline and developeme
 
 = Message Passing Protocol =
   The diagram below outlines all the messages that are passed between the VR Application, running the OmegaAppServer, and Porthole, acting as Client on the iPad.
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/portholeMsgPassing.png" width="300"/></p><p align="middle">
+_^An overview of the omegalib architecture.^_
+</p>
 
 Outline the message passing with a diagram
 Order of the message passing.
