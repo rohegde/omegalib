@@ -1,0 +1,68 @@
+#summary Developement proposal and design for omegaviewer
+#sidebar Sidebar
+This document contains the omegaviewer application concept, timeline and developement notes.
+
+= Introduction and Research Question =   
+As Scalable Adaptive Graphics Environment (SAGE) and Cave Automatic Virtual Environment (CAVE) have shown, large display environments are an effective way to visualize, interact and manipulate complex data. The Next Generation Cave (NGCave) technology aims to be a blending of the 2D nature of SAGE and the immersive nature of CAVE systems. However, given their different nature, SAGE and CAVE systems use very different metaphors to interact with the represented data. A currently open question is: what will the best and most intuitive interaction(s) schema on this new, potentially hybrid device. Will it be a blending of the old interaction metaphors, or will it be a radical departure from them?
+
+One goal of this project is lay the framework needed to investigate this question. A device that already tried to blend 2D/3D interaction in a VR environment is the [http://www.evl.uic.edu/files/pdf/ISVC11_Febretti.pdf OmegaDesk].  As a part of OmegaDesk research, we developed [Concept omegalib], a framework for multitouch, kinect, 3D hand gesturing, and head tracking support. Additional work for SAGENext will focus on how to push content to a large scale LCD tiled display via laptop.  
+
+However, there is still a missing piece: mobile and tablet devices.  Given their prevalence, what impact do they have on the interaction schema of NGCave, if any.  Certainly the goal of this semester project is not to answer this complex question, but to lay the foundations for exploring this avenue of research.
+
+= Application Concept =
+The application we are going to implement will be a testbed for some interaction metaphors that can later be adapted to NGCave. The application will be a 3d model manipulation system implemented using a tiled stereo display, head tracked stereo glasses, and a tablet interface.  The tablet of choice for this experiment will be a second generation iPad.
+
+The iPad will provide an interface that allows the user to select and change the model being shown on the Hyundai 2x2 VR System.  Once a model is loaded, the image below gives a generalized version of what the user should expect:
+
+ # *Free Interaction Area*: This will allow the user to freely manipulate the data via touch.  Interactions such as translation, rotation and scaling will be implemented using iPad's multitouch capability.  Implementing the Free Interaction Area is the stepping stone to answering the above research questions.  Additionally it will demonstrate that the subtleties of a VR system are understood by this group.
+
+ # *Custom UI*: The UI is determined based on the type of parameters used to alter the data/model. These specification, like the data/model itself, will be given by the user.  Currently it is unsure whether this will be done programmatically or via a configuration file.
+
+Changes to either the Custom UI or the Free Interaction Area will be reflected on the 2x2 Hyundai VR Display.  One "wishlist" item is to provide a thumbnail of the model on the iPad.  This would require the streaming of image data from the application to the iPad at each update.
+
+= Technical Overview =
+ * The VR system will be driven by omegalib + Equalizer in order to control all 4 displays and 2 GPUs available in the system. The rendering load will be distributed between the Gpus, allowing to display fairly complex models.
+ * Head tracking (and possibly controller input) will be received from a secondary machine running an omegalib input server. 
+ * The iPad will run a custom program, connecting to the main machine through TCP and exchanging input messages using the protocol implemented by the input server [OInputServerReference]
+* Additional protocols will be added to this scheme to take into account the Dynamic UI specifications.
+ 
+== iPad technical features ==
+ * Receive commands to create Dynamic UIs
+ * Send UI commands to server
+ * Send gestures to server
+ * Receive and display images to the iPad as a thumbnail
+
+== VR application technical features ==
+ * Specify commands to create Dynamic UIs
+ * Update the model according to menu selections from the iPad
+ * Update the model according to touch interaction data from the iPad
+ * Generate a small thumbnail of the data and stream to this image to the iPad
+ 
+= List of proposed features =
+== Primary Features ==
+ * The application will connect to a single iPad
+ * The user will be able to choose a 3d model from a list of available ones displayed on the iPad. The model will be visualized on the 3d display
+ * The application will support interaction with the iPad to move, rotate and scale the object.  As stated in the Application Concept , this interaction will occur in the Interaction Area.  The supported interactions types will be.
+  * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
+  * two finger pushing  in the z direction *with respect to the user viewpoint*
+  * rotation
+  * pinch zoom to scale the object
+ * The user will be able to open a secondary user interface on the iPad, and modify properties of the displayed model or of the scene. Supported properties:
+  * The model draw mode (wireframe, shaded, wireframe + shaded)
+  * The model material properties
+  * The placement of lights in the scene and their color.
+ * At any time, the user will be able to switch to another model.
+ * The entire system will be head tracked. Object manipulation will always happen with respect to the user view point.
+
+== Wishlist / Future work ==
+ * In addition to the UI, the tabled displays a dynamic thumbnail of the 3d model or some other image streamed by the VR system.
+ * In addition to interaction via iPad, game controller interaction to navigate around the model will be supported
+ * Interaction with multiple models in the scene
+  * The user can display a set of models in the scene and interact with them separately.
+  * Multiple users can use separate iPad to interact with objects
+ * Loading of more complex models (i.e. Vtk visualizations)
+ * Interaction with complex model parameters (i.e. controlling a vtk pipeline)
+ * Multiple display surfaces controlled by the system (hyundai + samsung)
+ 
+= One Page Project Management (OPPM) for OmegaViewer =
+https://docs.google.com/spreadsheet/ccc?key=0Ak41PBgfmhF7dEM5ZEVpTTJZVThLTjhOTjdzM0tOUnc&hl=en_US#gid=0
