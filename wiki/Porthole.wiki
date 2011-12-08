@@ -1,6 +1,8 @@
-#summary Developement proposal and design for omegaviewer
+#summary Developement proposal and design for Porthole, the iOS implementation of OmegaViewer
 #sidebar Sidebar
-This document contains the omegaviewer application concept, timeline and developement notes.
+This document contains the Porthole application concept, timeline and developement notes.
+
+<wiki:toc max_depth="2" />
 
 = Introduction and Research Question =   
 As Scalable Adaptive Graphics Environment (SAGE) and Cave Automatic Virtual Environment (CAVE) have shown, large display environments are an effective way to visualize, interact and manipulate complex data. The Next Generation Cave (NGCave) technology aims to be a blending of the 2D nature of SAGE and the immersive nature of CAVE systems. However, given their different nature, SAGE and CAVE systems use very different metaphors to interact with the represented data. A currently open question is: what will the best and most intuitive interaction(s) schema on this new, potentially hybrid device. Will it be a blending of the old interaction metaphors, or will it be a radical departure from them?
