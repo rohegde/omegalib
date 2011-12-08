@@ -24,16 +24,16 @@ _^This is a generic outline of the messages exchanged between Porthole and the V
   Implementing a VR Application was fairly straight forward.  However generating the correct views for both the VR device and iPad simultaneously proved to be a bit of a challenge.  This will be elaborate on more shortly.
 
 = Porthole Application =
-  The Porthole Application has two main areas: the Free Interaction Area (FIA) and the Custom UI Area (CUA). The Free Interaction Area allow the user to freely manipulate the data via touch.  The iPad support translation, rotation, pinch and swipe gestures as well as simple touches.  A subset of these were used to demonstrate that manipulations made on the FIA were reflected on the VR Application running on the VR device.  Additionally the FIA had a thumbnail of the data being manipulated as feedback for the user.
-The Custom UI Area provided users with specified fileds that would allo for further data manipulation.  This section support iOS buttons, sliders, and switches.  The main hurdle was designing an architecture that fostered communication between the main application loop, FIA , CUA , and the TCP Socket connection.
-Overall Arch ?
+  The Porthole Application has two main areas: the Free Interaction Area (FIA) and the Custom UI Area (CUA). The Free Interaction Area allow the user to freely manipulate the data via touch.  The iPad support translation, rotation, pinch and swipe gestures as well as simple touches.  A subset of these were used to demonstrate that manipulations made on the FIA were reflected on the VR Application running on the VR device.  Additionally the FIA had a thumbnail of the data being manipulated as feedback for the user. The Custom UI Area provided users with specified fileds that would allo for further data manipulation.  This section support iOS buttons, sliders, and switches.  The main hurdle was designing an architecture that fostered communication between the main application loop, FIA , CUA , and the TCP Socket connection.
+ 
+Overall Arch Diagram
 
 = Future Works =
   One short term future work would be to clean up this code so that Porthole can be released to the public.  Additionally, a OmegaAppicaitonServerProxy was designed and implemented so in order to test the message passing.  This will also be repackaged as an simple example for users to understand how to comunicate with Porthole from the VR Application side.  Longer term future work would be to add in the transportation functionality mentioned in the introduction.  
 
 = List of proposed features =
-== Primary Features ==
  * The application will connect to a single iPad
+    This was accomplished and extended to two iPads.
  * The user will be able to choose a 3d model from a list of available ones displayed on the iPad. The model will be visualized on the 3d display
  * The application will support interaction with the iPad to move, rotate and scale the object.  As stated in the Application Concept , this interaction will occur in the Interaction Area.  The supported interactions types will be.
   * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
@@ -46,16 +46,6 @@ Overall Arch ?
   * The placement of lights in the scene and their color.
  * At any time, the user will be able to switch to another model.
  * The entire system will be head tracked. Object manipulation will always happen with respect to the user view point.
-
-== Wishlist / Future work ==
- * In addition to the UI, the tabled displays a dynamic thumbnail of the 3d model or some other image streamed by the VR system.
- * In addition to interaction via iPad, game controller interaction to navigate around the model will be supported
- * Interaction with multiple models in the scene
-  * The user can display a set of models in the scene and interact with them separately.
-  * Multiple users can use separate iPad to interact with objects
- * Loading of more complex models (i.e. Vtk visualizations)
- * Interaction with complex model parameters (i.e. controlling a vtk pipeline)
- * Multiple display surfaces controlled by the system (hyundai + samsung)
  
 = One Page Project Management (OPPM) for OmegaViewer =
 https://docs.google.com/spreadsheet/ccc?key=0Ak41PBgfmhF7dEM5ZEVpTTJZVThLTjhOTjdzM0tOUnc&hl=en_US#gid=0\end{abstract}
