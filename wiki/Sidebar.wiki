@@ -16,7 +16,7 @@
      * [Tutorial6]
      * [Tutorial8]
  * Porthole
-   * [OmegaViewer CS528 Project Concept]
+   * [OmegaViewer CS528 VR Project Concept]
    * [Porthole Introduction and Design]
  * Internal docs
    * [PackagingChecklist Packaging checklist]
