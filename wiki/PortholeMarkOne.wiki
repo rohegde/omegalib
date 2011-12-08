@@ -34,18 +34,16 @@ Overall Arch Diagram
 = List of proposed features =
  * The application will connect to a single iPad
     This was accomplished and extended to two iPads.
- * The user will be able to choose a 3d model from a list of available ones displayed on the iPad. The model will be visualized on the 3d display
- * The application will support interaction with the iPad to move, rotate and scale the object.  As stated in the Application Concept , this interaction will occur in the Interaction Area.  The supported interactions types will be.
-  * single finger moving: object translation on the x, y plane *with respect to the user viewpoint*
-  * two finger pushing  in the z direction *with respect to the user viewpoint*
-  * rotation
-  * pinch zoom to scale the object
+ * The user will be able to choose a 3d model from a list of available ones displayed on the iPad. The model will be visualized on the 3d display.
+    This was accomplished.   
+ * The application will support multi-touch input from the iPad and reflect those changes to the VR Application.
+    This was simplified to match the VR Application and accomplished.     
  * The user will be able to open a secondary user interface on the iPad, and modify properties of the displayed model or of the scene. Supported properties:
-  * The model draw mode (wireframe, shaded, wireframe + shaded)
-  * The model material properties
-  * The placement of lights in the scene and their color.
+    This was simplified to match the VR Application and accomplished.     
  * At any time, the user will be able to switch to another model.
+    This was accomplished.
  * The entire system will be head tracked. Object manipulation will always happen with respect to the user view point.
- 
+    This was accomplished.
+
 = One Page Project Management (OPPM) for OmegaViewer =
 https://docs.google.com/spreadsheet/ccc?key=0Ak41PBgfmhF7dEM5ZEVpTTJZVThLTjhOTjdzM0tOUnc&hl=en_US#gid=0\end{abstract}
