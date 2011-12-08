@@ -12,32 +12,21 @@ This document contains the Porthole application concept, timeline and developeme
 
   This report summarizes our current implementation of Porthole as a middleware application between VR applications and an iPad2 for easy manipulation and viewing. A message passing protocol was established in order to communicate between the VR Application and Porthole. The VR applications tested are all managed by OmegaLib, which handles manipulations, rendering and message passing to Porthole. Porthole uses iOS infrastructure to handle message passing and an interface that incorporates a custom GUI specified by the VR application and rendered images. Given the time allotted, the transportation of the resulting data was not feasible and will be discussed along with the other future works.
 
-
 = Message Passing Protocol =
-  The diagram below outlines all the messages that are passed between the VR Application, running the OmegaAppServer, and Porthole, acting as Client on the iPad.
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/portholeMsgPassing.png" width="500"/></p><p align="middle">
-_^An overview of the omegalib architecture.^_
-</p>
-The detailed protocol is outlined in this a pdf that can be downloaded [http://omegalib.googlecode.com/svn/wiki/PortholeMsgPassProtocol.pdf" here].
+  The diagram below outlines all the messages that are passed between the VR Application, running the OmegaAppServer, and Porthole, acting as Client on the iPad. The detailed protocol is outlined in this a pdf that can be downloaded [http://omegalib.googlecode.com/svn/wiki/PortholeMsgPassProtocol.pdf" here].
 
-Outline the message passing with a diagram
-Order of the message passing.
-Give a link to the protocol
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/portholeMsgPassing.png" width="450"/></p><p align="middle">
+_^This is a generic outline of the messages exchanged between Porthole and the VR Application.^_
+</p>
 
 = VR Applications =
-Talk about mesh viewer?
-OpenSceneGraph?
-When you passed a img mesh?
-When you passed a GUI mesh?
-The VR system will be driven by omegalib + Equalizer in order to control all 4 displays and 2 GPUs available in the system. 
-The rendering load will be distributed between the Gpus, allowing to display fairly complex models?
+  The VR Application incorporate OmegaLib.  OmegaLib handle setting up the VR scene and generating the correct views.  One of the views will be polarized passive stereo for the VR device of choice and the other the view for the iPad for user feedback.  All device input will be abstracted by OmegaLib in order to manipulate the scene.  This includes the mouse and keyboard, the iPad GUI element inputs, iPad multi-touch input, and head tracker data.  
+  Implementing a VR Application was fairly straight forward.  However generating the correct views for both the VR device and iPad simultaneously proved to be a bit of a challenge.  This will be elaborate on more shortly.
 
 = Porthole Application =
-The layout of the application 
-
- # *Free Interaction Area*: This will allow the user to freely manipulate the data via touch.  Interactions such as translation, rotation and scaling will be implemented using iPad's multitouch capability.  Implementing the Free Interaction Area is the stepping stone to answering the above research questions.  Additionally it will demonstrate that the subtleties of a VR system are understood by this group.
-
- # *Custom UI*: The UI is determined based on the type of parameters used to alter the data/model. These specification, like the data/model itself, will be given by the user.  Currently it is unsure whether this will be done programmatically or via a configuration file.
+The Porthole Application has two main areas: the Free Interaction Area (FIA) and the Custom UI Area (CUA).
+The Free Interaction Area allow the user to freely manipulate the data via touch.  The iPad support translation, rotation, pinch and swipe gestures as well as simple touches.  A subset of these were used to demonstrate that manipulations made on the FIA were reflected on the VR Application running on the VR device.  Additionally the FIA had a thumbnail of the data being manipulated as feedback for the user.
+The Custom UI Area provided users with specified fileds that would allo for further data manipulation.  This section support iOS buttons, sliders, and switches.  
 
 Overall Arch ?
 
