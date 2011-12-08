@@ -15,8 +15,9 @@
      * [Tutorial5]
      * [Tutorial6]
      * [Tutorial8]
+ * Porthole
+   * [OmegaViewer]
  * Internal docs
    * [PackagingChecklist Packaging checklist]
-   * [OmegaViewer]
    * [MeetingNotes notes from omegalib meetings]
    * [Future Future plans]
