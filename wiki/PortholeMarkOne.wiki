@@ -24,14 +24,15 @@ _^This is a generic outline of the messages exchanged between Porthole and the V
   Implementing a VR Application was fairly straight forward.  However generating the correct views for both the VR device and iPad simultaneously proved to be a bit of a challenge.  This will be elaborate on more shortly.
 
 = Porthole Application =
-The Porthole Application has two main areas: the Free Interaction Area (FIA) and the Custom UI Area (CUA).
+  The Porthole Application has two main areas: the Free Interaction Area (FIA) and the Custom UI Area (CUA).
 The Free Interaction Area allow the user to freely manipulate the data via touch.  The iPad support translation, rotation, pinch and swipe gestures as well as simple touches.  A subset of these were used to demonstrate that manipulations made on the FIA were reflected on the VR Application running on the VR device.  Additionally the FIA had a thumbnail of the data being manipulated as feedback for the user.
-The Custom UI Area provided users with specified fileds that would allo for further data manipulation.  This section support iOS buttons, sliders, and switches.  
-
+The Custom UI Area provided users with specified fileds that would allo for further data manipulation.  This section support iOS buttons, sliders, and switches.  The main hurdle was designing an architecture that fostered communication between the main application loop, FIA , CUA , and the TCP Socket connection.
 Overall Arch ?
 
 = Future Works =
+  One short term future work would be to clean up this code so that Porthole can be released to the public.  Additionally, a OmegaAppicaitonServerProxy was designed and implemented so in order to test the message passing.  This will also be repackaged as an simple example for users to understand how to comunicate with Porthole from the VR Application side.  
 
+  The longer term future work would be to add in the transportation functionality mentioned in the introduction.  
 
 = List of proposed features =
 == Primary Features ==
