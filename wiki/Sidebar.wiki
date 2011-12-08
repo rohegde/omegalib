@@ -17,7 +17,7 @@
      * [Tutorial8]
  * Porthole
    * [OmegaViewer CS528 VR Project Concept]
-   * [PortholeMark1 Porthole Mark 1]
+   * [PortholeMarkOne Porthole Mark 1]
  * Internal docs
    * [PackagingChecklist Packaging checklist]
    * [MeetingNotes notes from omegalib meetings]
