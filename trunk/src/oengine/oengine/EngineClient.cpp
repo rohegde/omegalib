@@ -147,9 +147,6 @@ void EngineClient::draw(const DrawContext& context)
 		myRenderableCommands.pop();
 	}
 
-	// Draw once for the default camera (using the passed main draw context).
-	innerDraw(context);
-
 	// Perform draw for the additional enabled cameras.
 	foreach(Camera* cam, myServer->getCameras())
 	{
@@ -162,6 +159,9 @@ void EngineClient::draw(const DrawContext& context)
 			cam->endDraw(context);
 		}
 	}
+
+	// Draw once for the default camera (using the passed main draw context).
+	innerDraw(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

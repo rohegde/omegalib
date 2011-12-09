@@ -24,46 +24,69 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __PIXEL_DATA_H__
-#define __PIXEL_DATA_H__
+#ifndef __SCENE_EDITOR_MODULE_H__
+#define __SCENE_EDITOR_MODULE_H__
 
-#include "osystem.h"
-#include "omega/Lock.h"
+#include "oengine/EngineServer.h"
+#include "oengine/BoundingSphere.h"
 
-namespace omega {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct OMEGA_API PixelData
+namespace oengine
+{
+	class SceneEditorModule;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class EditableObject
 	{
 	public:
-		enum Format { FormatRgb, FormatRgba, FormatMonochrome};
-	public:
-		PixelData(Format fmt, int width, int height, byte* data = NULL);
+		EditableObject(SceneNode* node, SceneEditorModule* editor);
 
-		byte* lockData();
-		void unlockData();
-
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
-		Format getFormat() { return myFormat; }
-		size_t getSize() { return mySize; }
-
-		int getPitch();
-		int getBpp();
-
-		uint getRedMask();
-		uint getGreenMask();
-		uint getBlueMask();
-		uint getAlphaMask();
+		SceneNode* getSceneNode() { return mySceneNode; }
+		BoundingSphere* getBoundingSphere() { return mySelectionSphere; }
+		SceneEditorModule* getEditor() { return myEditor; }
 
 	private:
-		Lock myLock;
-		Format myFormat;
-		byte* myData;
-		int myWidth;
-		int myHeight;
-		size_t mySize;
-
+		SceneNode* mySceneNode;
+		BoundingSphere* mySelectionSphere;
+		SceneEditorModule* myEditor;
+		String myName;
 	};
-}; // namespace oengine
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API SceneEditorModule
+	{
+	public:
+		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
+
+	public:
+		SceneEditorModule();
+		~SceneEditorModule();
+
+		void initialize(EngineServer* server);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
+
+		void setInteractorStyle(InteractorStyle style);
+		InteractorStyle getInteractorStyle() { return myInteractorStyle; }
+
+		void addNode(SceneNode* node);
+		void removeNode(SceneNode* node);
+
+		SceneNode* getSelectedNode();
+
+		EngineServer* getEngine() { return myEngine; }
+
+	private:
+		EditableObject* findEditableObject(SceneNode* node);
+		void updateSelection(const Ray& ray);
+
+	private:
+		EngineServer* myEngine;
+		
+		InteractorStyle myInteractorStyle;
+		Actor* myInteractor;
+
+		EditableObject* mySelectedObject;
+		List<EditableObject*> myObjects;
+	};
+};
 #endif

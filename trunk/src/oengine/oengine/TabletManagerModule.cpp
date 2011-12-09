@@ -33,8 +33,38 @@ using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletManagerModule::TabletManagerModule():
-	myAutoUpdateInterval(5.0f), myEngine(NULL)
+	myAutoUpdateInterval(0.1f), myEngine(NULL)
 {
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletManagerModule::beginGui()
+{
+	foreach(TabletGuiElement* e, myGuiElements)
+	{
+		delete e;
+	}
+	myGuiElements.empty();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletManagerModule::addGuiElement(TabletGuiElement* elem)
+{
+	myGuiElements.push_back(elem);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletManagerModule::finishGui()
+{
+	foreach(TabletInterface* tablet, myTablets)
+	{
+		tablet->beginGui();
+		foreach(TabletGuiElement* e, myGuiElements)
+		{
+			tablet->addGuiElement(e);
+		}
+		tablet->finishGui();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,10 +72,10 @@ void TabletManagerModule::initialize(EngineServer* engine)
 {
 	myEngine = engine;
 
-	myTabletPixels = new PixelData(PixelData::FormatRgba, 420, 240);
+	myTabletPixels = new PixelData(PixelData::FormatRgb, 840, 480);
 
-	Camera* cam = myEngine->createCamera(Camera::ForceMono | Camera::Offscreen | Camera::DrawScene);
-	cam->setProjection(30, 1, 0.1f, 100);
+	Camera* cam = myEngine->createCamera(Camera::ForceMono | Camera::DrawScene);
+	cam->setProjection(60, 1, 0.1f, 100);
 	cam->setAutoAspect(true);
 	cam->setPosition(Vector3f(1, 3, 0));
 	Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
@@ -76,17 +106,7 @@ void TabletManagerModule::handleEvent(const Event& evt)
 		{
 			TabletService* tsvc = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
 			TabletInterface* tablet = new TabletInterface(tsvc, evt.getSourceId());
-			tablet->beginGui();
-			tablet->addButton(0, "Button1", "Hello I'm a Button", "Click me!");
-			tablet->addButton(1, "Button2", "Hello I'm another Button", "Click me!");
-			tablet->addSlider(2, "Slider1", "Hello I'm a Slider! (0, 100, 50)", 0, 100, 50);
-			tablet->addSlider(3, "Slider2", "Hello I'm another Slider! (0, 10, 10)", 0, 10, 10);
-			tablet->addSwitch(4, "Switch1", "Hello I'm a Switch! (on)", true);
-			tablet->addSwitch(5, "Switch2", "Hello I'm another Switch! (off)", false);
-			tablet->finishGui();
-
 			myTablets.push_back(tablet);
-
 			evt.setProcessed();
 		}
 	}

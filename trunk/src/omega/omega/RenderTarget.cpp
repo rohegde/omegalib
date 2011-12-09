@@ -127,16 +127,27 @@ void RenderTarget::readback()
 {
 	bool needBinding = false;
 
-	if(!myBound) needBinding = true;
+	if(myType != RenderOnscreen && !myBound) needBinding = true;
 	if(needBinding) bind();
 
 	if(myReadbackColorTarget != NULL)
 	{
-		glReadPixels(
-			myReadbackViewport.x(), myReadbackViewport.y(), 
-			myReadbackViewport.width(), myReadbackViewport.height(), GL_RGBA, GL_UNSIGNED_BYTE, 
-			(GLvoid*)myReadbackColorTarget->lockData());
-		myReadbackColorTarget->unlockData();
+		if(myReadbackColorTarget->getFormat() == PixelData::FormatRgb)
+		{
+			glReadPixels(
+				myReadbackViewport.x(), myReadbackViewport.y(), 
+				myReadbackViewport.width(), myReadbackViewport.height(), GL_BGR, GL_UNSIGNED_BYTE, 
+				(GLvoid*)myReadbackColorTarget->lockData());
+			myReadbackColorTarget->unlockData();
+		}
+		else if(myReadbackColorTarget->getFormat() == PixelData::FormatRgba)
+		{
+			glReadPixels(
+				myReadbackViewport.x(), myReadbackViewport.y(), 
+				myReadbackViewport.width(), myReadbackViewport.height(), GL_BGRA, GL_UNSIGNED_BYTE, 
+				(GLvoid*)myReadbackColorTarget->lockData());
+			myReadbackColorTarget->unlockData();
+		}
 	}
 	if(myReadbackDepthTarget != NULL)
 	{

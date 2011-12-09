@@ -32,6 +32,60 @@
 #include "omega/PixelData.h"
 
 namespace oengine {
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct OENGINE_API TabletGuiElement
+	{
+	public:
+		enum ElementType { ElementTypeButton, ElementTypeSlider, ElementTypeSwitch };
+		static const int MaxElemDefSize = 1024;
+	
+	public:
+		static TabletGuiElement* createButton(int id, const String& label, const String& description, const String& text);
+		static TabletGuiElement* createSlider(int id, const String& label, const String& description, int min, int max, int value);
+		static TabletGuiElement* createSwitch(int id, const String& label, const String& description, bool value);
+
+	public:
+
+		ElementType getType() { return myType; }
+		void setType(ElementType value) { myType = value; }
+
+		int getId() { return myId; }
+		void setId(int value) { myId = value; }
+
+		const String& getLabel() { return myLabel; }
+		void setLabel(const String& value) { myLabel = value; }
+
+		const String& getDescription() { return myDescription; }
+		void setDescription(const String& value) { myDescription = value; }
+
+		const String& getText() { return myText; }
+		void setText(const String& value) { myText = value; }
+
+		int getMinimum() { return myMin; }
+		void setMinimum(int value) { myMin = value; }
+
+		int getMaximum() { return myMax; }
+		void setMaximum(int value) { myMax = value; }
+
+		int getValue() { return myValue; }
+		void setValue(int value) { myValue = value; }
+
+		const char* getDef();
+
+	private:
+		ElementType myType;
+		int myId;
+		String myLabel;
+		String myDescription;
+		String myText;
+		int myMin;
+		int myMax;
+		int myValue;
+
+		char myElemDef[MaxElemDefSize];
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API TabletInterface: public OmegaObject
 	{
@@ -45,9 +99,7 @@ namespace oengine {
 
 		void beginGui();
 		void finishGui();
-		void addButton(int id, const String& label, const String& description, const String& text);
-		void addSlider(int id, const String& label, const String& description, int min, int max, int value);
-		void addSwitch(int id, const String& label, const String& description, bool value);
+		void addGuiElement(TabletGuiElement* e);
 
 	private:
 		TabletService* myService;

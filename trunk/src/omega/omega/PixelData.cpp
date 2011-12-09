@@ -50,7 +50,7 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 			mySize = width * height;
 			break;
 		}
-		myData = new byte[mySize];
+		myData = (byte*)malloc(mySize);
 	}
 }
 
@@ -60,7 +60,7 @@ int PixelData::getPitch()
 	switch(myFormat)
 	{
 	case FormatRgb:
-		return myWidth * 3;
+		return (myWidth) * 3;
 	case FormatRgba:
 		return myWidth * 4;
 	case FormatMonochrome:
@@ -76,13 +76,10 @@ int PixelData::getBpp()
 	{
 	case FormatRgb:
 		return 24;
-		break;
 	case FormatRgba:
 		return 32;
-		break;
 	case FormatMonochrome:
 		return 8;
-		break;
 	}
 	return 0;
 }
@@ -100,3 +97,54 @@ void PixelData::unlockData()
 	myLock.unlock();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+uint PixelData::getRedMask()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		return 0x0000ff;
+	case FormatRgba:
+		return 0xff000000;
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+uint PixelData::getGreenMask()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		return 0x00ff00;
+	case FormatRgba:
+		return 0x00000000;
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+uint PixelData::getBlueMask()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		return 0xff0000;
+	case FormatRgba:
+		return 0x00000000;
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+uint PixelData::getAlphaMask()
+{
+	switch(myFormat)
+	{
+	case FormatRgb:
+		return 0x000000;
+	case FormatRgba:
+		return 0xff000000;
+	}
+	return 0;
+}

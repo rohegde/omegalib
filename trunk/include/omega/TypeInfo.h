@@ -35,6 +35,10 @@
 
 #define OMEGA_DEFINE_TYPE(tname, tbase) const omega::TypeInfo* tname::Type = new omega::TypeInfo(#tname, tbase::Type);
 
+// Syntactic sugar for r/w properties
+#define OMEGA_PROPERTY(type, name, var) type get##name() { return var; } void set##name(type value) { var = value; }
+
+
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
