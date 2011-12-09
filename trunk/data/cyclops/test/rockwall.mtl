@@ -1,0 +1,11 @@
+# 
+# Wavefront material file
+# Created with Kaydara FBX
+# 
+
+newmtl blinn1SG
+map_Kd rockwall.tga
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+illum 1
+Tr 1.000000

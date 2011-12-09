@@ -33,7 +33,7 @@ using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletManagerModule::TabletManagerModule():
-	myAutoUpdateInterval(0.5f), myEngine(NULL), myEnabled(true), myTabletService(NULL)
+myAutoUpdateInterval(0.5f), myEngine(NULL), myEnabled(true), myTabletService(NULL), myEventFlags(Event::Left)
 {
 }
 
@@ -44,7 +44,7 @@ void TabletManagerModule::beginGui()
 	{
 		delete e;
 	}
-	myGuiElements.empty();
+	myGuiElements.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,8 +145,10 @@ void TabletManagerModule::processEvent(Event* evt)
 		if(evt->getServiceType() == Service::Pointer && evt->getServiceId() == myTabletService->getServiceId())
 		{
 			Vector2f normalizedPoint(evt->getPosition(0), 1 - evt->getPosition(1));
-			ofmsg("pt %1%", %normalizedPoint);
+			//ofmsg("pt %1%", %normalizedPoint);
 			Ray ray = myTabletCamera->getViewRay(normalizedPoint);
+			evt->clearFlags();
+			evt->setFlags(myEventFlags);
 			evt->setExtraDataType(Event::ExtraDataVector3Array);
 			evt->setExtraDataVector3(0, ray.getOrigin());
 			evt->setExtraDataVector3(1, ray.getDirection());
