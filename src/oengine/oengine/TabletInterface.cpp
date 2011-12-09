@@ -45,7 +45,7 @@ TabletGuiElement* TabletGuiElement::createButton(int id, const String& label, co
 TabletGuiElement* TabletGuiElement::createSlider(int id, const String& label, const String& description, int min, int max, int value)
 {
 	TabletGuiElement* e = new TabletGuiElement();
-	e->setType(TabletGuiElement::ElementTypeButton);
+	e->setType(TabletGuiElement::ElementTypeSlider);
 	e->setLabel(label);
 	e->setMinimum(min);
 	e->setMaximum(max);
@@ -57,7 +57,7 @@ TabletGuiElement* TabletGuiElement::createSlider(int id, const String& label, co
 TabletGuiElement* TabletGuiElement::createSwitch(int id, const String& label, const String& description, bool value)
 {
 	TabletGuiElement* e = new TabletGuiElement();
-	e->setType(TabletGuiElement::ElementTypeButton);
+	e->setType(TabletGuiElement::ElementTypeSwitch);
 	e->setLabel(label);
 	e->setValue(value ? 1 : 0);
 	return e;
@@ -75,7 +75,7 @@ const char* TabletGuiElement::getDef()
 		sprintf(myElemDef, "1:%d:%s:%s:%d:%d:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myMin, myMax, myValue);
 		break;
 	case ElementTypeSwitch:
-		sprintf(myElemDef, "1:%d:%s:%s:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myValue);
+		sprintf(myElemDef, "2:%d:%s:%s:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myValue);
 		break;
 	}
 	return myElemDef;
