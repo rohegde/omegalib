@@ -149,6 +149,10 @@ void MeshViewer::initialize()
 	// Load the entities specified in the configuration file.
 	loadEntityLibrary();
 
+	// Get the default camera and focus in on the scene root
+	Camera* cam = getDefaultCamera();
+	cam->focusOn(getScene(0));
+
 	myTabletManager = new TabletManagerModule();
 	myTabletManager->initialize(this);
 
@@ -162,10 +166,6 @@ void MeshViewer::initialize()
 	// Display the first entity in the entity library.
 	mySelectedEntity = myEntities[0];
 	mySelectedEntity->show();
-
-	// Get the default camera and focus in on the scene root
-	Camera* cam = getDefaultCamera();
-	cam->focusOn(getScene(0));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,9 +194,12 @@ void MeshViewer::initUi()
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 
-		myTabletManager->addGuiElement(TabletGuiElement::createButton(i, e->getName(), e->getLabel(), e->getName()));
+		myTabletManager->addGuiElement(TabletGuiElement::createButton(btn->getId(), e->getName(), e->getLabel(), e->getName()));
 	}
-
+	// Add autorotate button.
+	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(128, "Autorotate", "Autorotate", 1));
+	// Add scale slider.
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
 	myTabletManager->finishGui();
 }
 
@@ -221,14 +224,33 @@ void MeshViewer::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleUiEvent(const Event& evt)
 {
-	for(int i = 0; i < myEntityButtons.size(); i++)
+	if(evt.getSourceId() == 128)
 	{
-		if(myEntityButtons[i]->getId() == evt.getSourceId())
+		if(evt.getExtraDataInt(0) == 1)
 		{
-			Entity* e = myEntities[i];
-			mySelectedEntity->hide();
-			mySelectedEntity = e;
-			mySelectedEntity->show();
+			autoRotate = true;
+		}
+		else
+		{
+			autoRotate = false;
+		}
+	}
+	else if(evt.getSourceId() == 129)
+	{
+		int scale = evt.getExtraDataInt(0);
+		mySelectedEntity->getSceneNode()->setScale(scale, scale, scale);
+	}
+	else
+	{
+		for(int i = 0; i < myEntityButtons.size(); i++)
+		{
+			if(myEntityButtons[i]->getId() == evt.getSourceId())
+			{
+				Entity* e = myEntities[i];
+				mySelectedEntity->hide();
+				mySelectedEntity = e;
+				mySelectedEntity->show();
+			}
 		}
 	}
 }

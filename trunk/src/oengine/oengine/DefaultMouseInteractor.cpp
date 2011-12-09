@@ -79,7 +79,7 @@ void DefaultMouseInteractor::updateNode()
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
 			myHandleDistance = (myHandlePosition - myPointerRay.getOrigin()).norm();
-			ofmsg("Handle Distance: %1%", %myHandleDistance);
+			ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 			myNode->setSelected(true);
 		}
 	}
@@ -95,7 +95,7 @@ void DefaultMouseInteractor::updateNode()
 		{
 			if(myPointerButton1Pressed)
 			{
-				Vector3f newPos = myPointerRay.getPoint(myHandleDistance) - (myHandlePosition - myStartBSphere.getCenter());
+				Vector3f newPos = myPointerRay.getPoint(myHandleDistance); //- (myHandlePosition - myStartBSphere.getCenter());
 				myNode->setPosition(newPos);
 			}
 			else if(myPointerButton2Pressed)

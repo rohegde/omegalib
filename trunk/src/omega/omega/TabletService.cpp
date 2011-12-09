@@ -28,12 +28,7 @@
 #include "omega/TabletService.h"
 #include "omega/StringUtils.h"
 
-#ifdef OMEGA_USE_DISPLAY
-#include "omega/DisplaySystem.h"
-#endif
-
 using namespace omega;
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class TabletConnection: public TcpConnection
@@ -206,35 +201,13 @@ public:
         if( ltClick ) myFlag = Event::Left;
         if( rtClick ) myFlag = Event::Right;
             
-#ifdef OMEGA_USE_DISPLAY
-        DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-        Vector2i canvasSize = ds->getCanvasSize();
-            
-        myTouchPosition[0] = x * canvasSize[0];
-        myTouchPosition[1] = y * canvasSize[1];
-            
         myService->lockEvents();
         Event* evt = myService->writeHead();
-        evt->reset(evtType, servType, myConnectionInfo.id);
-        evt->setPosition(myTouchPosition[0], myTouchPosition[1]);
-        evt->setFlags(myFlag);
-            
-        Ray ray = ds->getViewRay(myTouchPosition);
-        evt->setExtraDataType(Event::ExtraDataVector3Array);
-        evt->setExtraDataVector3(0, ray.getOrigin());
-        evt->setExtraDataVector3(1, ray.getDirection());
-            
-        myService->unlockEvents();
-            
-#else
-        myService->lockEvents();
-        Event* evt = myService->writeHead();
-        evt->reset(evtType, servType, myId);
+		evt->reset(evtType, servType, myConnectionInfo.id);
         evt->setPosition( x , y );
         evt->setFlags(myFlag);
             
         myService->unlockEvents();
-#endif
     }
         
     ///////////////////////////////////////////////////////////////////////////////////////////

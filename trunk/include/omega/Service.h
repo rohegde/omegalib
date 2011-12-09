@@ -76,7 +76,7 @@ namespace omega
 		Event* readTail();
 		Event* getEvent(int index);
 
-	private:
+	protected:
 		void doSetup(Setting& settings);
 		void doInitialize(ServiceManager* mng, int serviceId);
 

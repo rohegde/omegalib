@@ -30,13 +30,19 @@
 #include "oenginebase.h"
 #include "oengine/TabletInterface.h"
 #include "oengine/EngineServer.h"
+#include "omega/TabletService.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API TabletManagerModule
+	class OENGINE_API TabletManagerModule: public Service
 	{
 	public:
 		TabletManagerModule();
+
+		// The tablet manager is implemented as an event service because it needs to intercept 
+		// tablet events and process them before they get delivered to the application.
+		virtual void poll();
+		void processEvent(Event* evt);
 
 		void initialize(EngineServer* engine, bool hires = true, bool offscreen = true);
 		void update(const UpdateContext& context);
@@ -53,6 +59,8 @@ namespace oengine {
 
 	private:
 		EngineServer* myEngine;
+
+		TabletService* myTabletService;
 
 		bool myEnabled;
 

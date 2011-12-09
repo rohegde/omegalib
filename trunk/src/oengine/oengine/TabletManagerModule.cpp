@@ -33,7 +33,7 @@ using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletManagerModule::TabletManagerModule():
-	myAutoUpdateInterval(0.1f), myEngine(NULL), myEnabled(true)
+	myAutoUpdateInterval(0.1f), myEngine(NULL), myEnabled(true), myTabletService(NULL)
 {
 }
 
@@ -71,6 +71,12 @@ void TabletManagerModule::finishGui()
 void TabletManagerModule::initialize(EngineServer* engine, bool hires, bool offscreen)
 {
 	myEngine = engine;
+
+	// Register as a service.
+	ServiceManager* sm = SystemManager::instance()->getServiceManager();
+	doInitialize(sm, 128);
+	sm->addService(this);
+	setPollPriority(Service::PollLast);
 
 	if(hires)
 	{
@@ -119,14 +125,44 @@ void TabletManagerModule::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletManagerModule::poll()
+{
+	lockEvents();
+	int numEvts = getManager()->getAvailableEvents();
+	for(int i = 0; i < numEvts; i++)
+	{
+		Event* evt = getEvent(i);
+		processEvent(evt);
+	}
+	unlockEvents();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletManagerModule::processEvent(Event* evt)
+{
+	if(myTabletService != NULL)
+	{
+		if(evt->getServiceType() == Service::Pointer && evt->getServiceId() == myTabletService->getServiceId())
+		{
+			Vector2f normalizedPoint(evt->getPosition(0), 1 - evt->getPosition(1));
+			ofmsg("pt %1%", %normalizedPoint);
+			Ray ray = myTabletCamera->getViewRay(normalizedPoint);
+			evt->setExtraDataType(Event::ExtraDataVector3Array);
+			evt->setExtraDataVector3(0, ray.getOrigin());
+			evt->setExtraDataVector3(1, ray.getDirection());
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void TabletManagerModule::handleEvent(const Event& evt)
 {
 	if( evt.getServiceType() == Service::Generic )
-    {
+	{
 		if(evt.getType() == Event::Connect)
 		{
-			TabletService* tsvc = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
-			TabletInterface* tablet = new TabletInterface(tsvc, evt.getSourceId());
+			myTabletService = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
+			TabletInterface* tablet = new TabletInterface(myTabletService, evt.getSourceId());
 			myTablets.push_back(tablet);
 
 			if(myGuiElements.size() != 0)
