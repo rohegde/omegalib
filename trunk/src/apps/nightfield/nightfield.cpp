@@ -283,8 +283,8 @@ void Nightfield::initialize()
 	myFlock->setup(&mySettings);
 	myFlock->initialize();
 
-	//myInteractor = new DefaultMouseInteractor();
-	myInteractor = new ControllerManipulator();
+	myInteractor = new DefaultMouseInteractor();
+	//myInteractor = new ControllerManipulator();
 	addActor(myInteractor);
 
 	// Create a reference box around the scene.
@@ -338,12 +338,22 @@ void Nightfield::initialize()
 	light->setEnabled(true);
 	light->setColor(Color(0.6f, 0.6f, 0.6f));
 	light->setPosition(Vector3f(0, 3, 3));
+
+	getDisplaySystem()->setBackgroundColor(Color::Black);
+
+	// Get the default camera and focus in on the scene root
+	Camera* cam = getDefaultCamera();
+	cam->focusOn(getScene(0));
+
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::update(const UpdateContext& context)
 {
 	EngineServer::update(context);
+	myTabletManager->update(context);
 	int i = 0;
 	foreach(AffectorEntity* ae, myEntities)
 	{
@@ -363,6 +373,7 @@ void Nightfield::update(const UpdateContext& context)
 void Nightfield::handleEvent(const Event& evt)
 {
 	EngineServer::handleEvent(evt);
+	myTabletManager->handleEvent(evt);
 	if(evt.getServiceType() == Service::Pointer)
 	{
 		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Left) && evt.getExtraDataLength() == 2)

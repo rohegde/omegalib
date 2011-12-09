@@ -38,7 +38,7 @@ namespace oengine {
 	public:
 		TabletManagerModule();
 
-		void initialize(EngineServer* engine);
+		void initialize(EngineServer* engine, bool hires = true, bool offscreen = true);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -48,8 +48,13 @@ namespace oengine {
 
 		Camera* getCamera() { return myTabletCamera; }
 
+		void setEnabled(bool value) { myEnabled = value; }
+		bool isEnabled() { return myEnabled; }
+
 	private:
 		EngineServer* myEngine;
+
+		bool myEnabled;
 
 		float myLastUpdateTime;
 		float myAutoUpdateInterval;
