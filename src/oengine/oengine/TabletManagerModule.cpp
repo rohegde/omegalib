@@ -72,16 +72,16 @@ void TabletManagerModule::initialize(EngineServer* engine)
 {
 	myEngine = engine;
 
-	myTabletPixels = new PixelData(PixelData::FormatRgb, 840, 480);
+	myTabletPixels = new PixelData(PixelData::FormatRgb, 420, 240);
 
-	Camera* cam = myEngine->createCamera(Camera::ForceMono | Camera::DrawScene);
-	cam->setProjection(60, 1, 0.1f, 100);
-	cam->setAutoAspect(true);
-	cam->setPosition(Vector3f(1, 3, 0));
-	Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
-	cam->setOrientation(o);
-	cam->getOutput(0)->setReadbackTarget(myTabletPixels);
-	cam->getOutput(0)->setEnabled(true);
+	myTabletCamera = myEngine->createCamera(Camera::ForceMono | Camera::DrawScene);
+	myTabletCamera->setProjection(60, 1, 0.1f, 100);
+	myTabletCamera->setAutoAspect(true);
+	myTabletCamera->setPosition(Vector3f(0, 0, 3));
+	//Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
+	//myTabletCamera->setOrientation(o);
+	myTabletCamera->getOutput(0)->setReadbackTarget(myTabletPixels);
+	myTabletCamera->getOutput(0)->setEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

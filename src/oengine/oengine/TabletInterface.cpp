@@ -34,6 +34,7 @@ using namespace oengine;
 TabletGuiElement* TabletGuiElement::createButton(int id, const String& label, const String& description, const String& text)
 {
 	TabletGuiElement* e = new TabletGuiElement();
+	e->setId(id);
 	e->setType(TabletGuiElement::ElementTypeButton);
 	e->setLabel(label);
 	e->setDescription(description);
@@ -45,6 +46,7 @@ TabletGuiElement* TabletGuiElement::createButton(int id, const String& label, co
 TabletGuiElement* TabletGuiElement::createSlider(int id, const String& label, const String& description, int min, int max, int value)
 {
 	TabletGuiElement* e = new TabletGuiElement();
+	e->setId(id);
 	e->setType(TabletGuiElement::ElementTypeSlider);
 	e->setLabel(label);
 	e->setMinimum(min);
@@ -57,6 +59,7 @@ TabletGuiElement* TabletGuiElement::createSlider(int id, const String& label, co
 TabletGuiElement* TabletGuiElement::createSwitch(int id, const String& label, const String& description, bool value)
 {
 	TabletGuiElement* e = new TabletGuiElement();
+	e->setId(id);
 	e->setType(TabletGuiElement::ElementTypeSwitch);
 	e->setLabel(label);
 	e->setValue(value ? 1 : 0);

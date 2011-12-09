@@ -24,69 +24,45 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENE_EDITOR_MODULE_H__
-#define __SCENE_EDITOR_MODULE_H__
+#ifndef __SCENE_SCRIPT_H__
+#define __SCENE_SCRIPT_H__
 
 #include "oengine/EngineServer.h"
-#include "oengine/BoundingSphere.h"
 
-namespace oengine
+namespace cyclops
 {
-	class SceneEditorModule;
+	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class EditableObject
+	class SceneScript
 	{
 	public:
-		EditableObject(SceneNode* node, SceneEditorModule* editor);
+		SceneScript(): myScene(NULL) {}
+		virtual ~SceneScript() {}
 
-		SceneNode* getSceneNode() { return mySceneNode; }
-		BoundingSphere* getBoundingSphere() { return mySelectionSphere; }
-		SceneEditorModule* getEditor() { return myEditor; }
+		virtual void initialize(SceneManager* sceneMng) {}
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
+
+		SceneManager* getScene() { return myScene; }
+		void setScene(SceneManager* value) { myScene = value; }
 
 	private:
-		SceneNode* mySceneNode;
-		BoundingSphere* mySelectionSphere;
-		SceneEditorModule* myEditor;
-		String myName;
+		SceneManager* myScene;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API SceneEditorModule
+	class DemoSceneScript: public SceneScript
 	{
 	public:
-		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
+		DemoSceneScript();
+		virtual ~DemoSceneScript();
 
-	public:
-		SceneEditorModule();
-		~SceneEditorModule();
-
-		void initialize(EngineServer* server);
-		void update(const UpdateContext& context);
-		void handleEvent(const Event& evt);
-
-		void setInteractorStyle(InteractorStyle style);
-		InteractorStyle getInteractorStyle() { return myInteractorStyle; }
-
-		void addNode(SceneNode* node);
-		void removeNode(SceneNode* node);
-
-		SceneNode* getSelectedNode();
-
-		EngineServer* getEngine() { return myEngine; }
+		virtual void initialize(SceneManager* sceneMng);
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
 
 	private:
-		EditableObject* findEditableObject(SceneNode* node);
-		void updateSelection(const Ray& ray);
-
-	private:
-		EngineServer* myEngine;
-		
-		InteractorStyle myInteractorStyle;
-		Actor* myInteractor;
-
-		EditableObject* mySelectedObject;
-		List<EditableObject*> myObjects;
 	};
 };
 #endif
