@@ -31,8 +31,9 @@
 #include "omega/ServiceManager.h"
 #include "omega/Tcp.h"
 
+class TabletServer;
+class TabletConnection;
 namespace omega {
-	class TabletServer;
     
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API TabletService: public Service

@@ -46,12 +46,15 @@ namespace oengine {
 		void addGuiElement(TabletGuiElement* elem);
 		void finishGui();
 
+		Camera* getCamera() { return myTabletCamera; }
+
 	private:
 		EngineServer* myEngine;
 
 		float myLastUpdateTime;
 		float myAutoUpdateInterval;
 		PixelData* myTabletPixels;
+		Camera* myTabletCamera;
 
 		List<TabletGuiElement*> myGuiElements;
 

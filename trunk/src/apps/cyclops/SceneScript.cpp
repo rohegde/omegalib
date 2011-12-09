@@ -24,148 +24,33 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/SceneEditorModule.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/ControllerManipulator.h"
+#include "SceneScript.h"
 
 using namespace oengine;
 using namespace omega;
+using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
-	mySceneNode(node), myEditor(editor)
-{
-	mySceneNode = node;
-
-	mySelectionSphere = new BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(false);
-	mySelectionSphere->setVisible(true);
-	mySceneNode->addObject(mySelectionSphere);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneEditorModule::SceneEditorModule():
-	myEngine(NULL), myInteractor(NULL), mySelectedObject(NULL)
+DemoSceneScript::DemoSceneScript()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneEditorModule::~SceneEditorModule()
+DemoSceneScript::~DemoSceneScript()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EditableObject* SceneEditorModule::findEditableObject(SceneNode* node)
-{
-	foreach(EditableObject* eo, myObjects)
-	{
-		if(eo->getSceneNode() == node) return eo;
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::addNode(SceneNode* node)
-{
-	EditableObject* eo = new EditableObject(node, this);
-	myObjects.push_back(eo);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::removeNode(SceneNode* node)
-{
-	EditableObject* eo = findEditableObject(node); 
-	if(eo)
-	{
-		myObjects.remove(eo);
-		delete eo;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneNode* SceneEditorModule::getSelectedNode()
-{
-	if(mySelectedObject != NULL) return mySelectedObject->getSceneNode();
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::setInteractorStyle(InteractorStyle style)
-{
-	myInteractorStyle = style;
-	if(myInteractorStyle == MouseInteractorStyle)
-	{
-		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-		interactor->setMoveButtonFlag(Event::Left);
-		interactor->setRotateButtonFlag(Event::Right);
-		myInteractor = interactor;
-	}
-	else if(myInteractorStyle == ControllerInteractorStyle)
-	{
-		ControllerManipulator* interactor = new ControllerManipulator();
-		myInteractor = interactor;
-	}
-	
-	myEngine->addActor(myInteractor);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::updateSelection(const Ray& ray)
-{
-	const SceneQueryResultList& sqrl = myEngine->querySceneRay(0, ray);
-	if(sqrl.size() != 0)
-	{
-		// The ray intersected with something.
-		SceneNode* sn = sqrl.front().node;
-		EditableObject* e = findEditableObject(sn);
-
-		if(mySelectedObject != e)
-		{
-			if(mySelectedObject != NULL)
-			{
-				mySelectedObject->getSceneNode()->setSelected(false);
-			}
-			// The selected entity changed.
-			myInteractor->setSceneNode(sn);
-			sn->setSelected(true);
-			mySelectedObject = e;
-		}
-	}
-	else
-	{
-		if(mySelectedObject != NULL)
-		{
-			mySelectedObject->getSceneNode()->setSelected(false);
-			mySelectedObject = NULL;
-			myInteractor->setSceneNode(NULL);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::initialize(EngineServer* server)
-{
-	myEngine = server;
-	setInteractorStyle(MouseInteractorStyle);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::update(const UpdateContext& context)
+void DemoSceneScript::initialize(SceneManager* sceneMng)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::handleEvent(const Event& evt)
+void DemoSceneScript::update(const UpdateContext& context)
 {
-	if(evt.getServiceType() == Service::Pointer) 
-	{
-		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
-		{
-			Ray ray;
-			ray.setOrigin(evt.getExtraDataVector3(0));
-			ray.setDirection(evt.getExtraDataVector3(1));
-			updateSelection(ray);
-		}
-	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void DemoSceneScript::handleEvent(const Event& evt)
+{
 }

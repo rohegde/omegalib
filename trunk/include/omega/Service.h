@@ -69,7 +69,6 @@ namespace omega
 		virtual void stop() {}
 		virtual void dispose() {}
 
-	protected:
 		void lockEvents();
 		void unlockEvents();
 		Event* writeHead();

@@ -78,7 +78,7 @@ void SceneManager::initialize(EngineServer* engine)
 
 	myTabletManager->beginGui();
 	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "Button", "Test Button", "Ok"));
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(0, "Slider", "Test Slider", 0, 100, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Slider", "Test Slider", 0, 100, 30));
 	myTabletManager->finishGui();
 }
 
@@ -102,6 +102,14 @@ void SceneManager::handleEvent(const Event& evt)
 		{
 			myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
 			ofmsg("Light Position: %1%", %pos);
+		}
+	}
+	if(evt.getServiceType() == Service::Ui)
+	{
+		if(evt.getSourceId() == 1)
+		{
+			float value = (float)evt.getExtraDataInt(0) / 10;
+			myTabletManager->getCamera()->setPosition(Vector3f(0, 0, value));
 		}
 	}
 }

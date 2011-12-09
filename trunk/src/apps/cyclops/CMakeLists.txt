@@ -35,6 +35,8 @@ set(SRCS
 		SceneLoader.h
 		SceneManager.cpp
 		SceneManager.h
+		SceneScript.cpp
+		SceneScript.h
 		obj.cpp
 		obj.h
 		ReaderXOBJ.cpp)
