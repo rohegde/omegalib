@@ -74,7 +74,7 @@ void SceneManager::initialize(EngineServer* engine)
 	mySceneRoot = new osg::Group();
 
 	myTabletManager = new TabletManagerModule();
-	myTabletManager->initialize(myEngine);
+	myTabletManager->initialize(myEngine, true, false);
 
 	myTabletManager->beginGui();
 	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "Button", "Test Button", "Ok"));

@@ -5,7 +5,7 @@
             </FileIndex_StaticObjects>
 			
             <FileIndex_Entities>
-                <File Id="0" Path="cyclops/test/dna.obj" Material="cyclops/test/VertexColor.material" Size="5"/>
+                <File Id="0" Path="cyclops/test/dna.ply" Material="cyclops/test/VertexColor.material" Size="5"/>
             </FileIndex_Entities>
 			
             <StaticObjects>

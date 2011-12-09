@@ -440,11 +440,11 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
             }
             
             // tri strip polygons to improve graphics peformance
-            if (!localOptions.noTriStripPolygons)
-            {
-                osgUtil::TriStripVisitor tsv;
-                tsv.stripify(*geometry);
-            }
+            //if (!localOptions.noTriStripPolygons)
+            //{
+            //    osgUtil::TriStripVisitor tsv;
+            //    tsv.stripify(*geometry);
+            //}
             
             // if no normals present add them.
             if (localOptions.generateFacetNormals==false && (!geometry->getNormalArray() || geometry->getNormalArray()->getNumElements()==0))
@@ -462,11 +462,11 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
 			//geometry->setTexCoordArray(2, geometry->getTexCoordArray(0));
             
 			// Generate tangent space for geometry
-			osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-			tsg->generate(geometry, 0);
-			osg::Vec4Array* a_tangent = tsg->getTangentArray();
-			geometry->setVertexAttribArray (6, a_tangent);
-			geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+			//osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+			//tsg->generate(geometry, 0);
+			//osg::Vec4Array* a_tangent = tsg->getTangentArray();
+			//geometry->setVertexAttribArray (6, a_tangent);
+			//geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
 			// Set geometry material
 			osg::StateSet* mat = fxs[es.materialName];
