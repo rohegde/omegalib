@@ -33,7 +33,7 @@ using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletManagerModule::TabletManagerModule():
-	myAutoUpdateInterval(0.1f), myEngine(NULL)
+	myAutoUpdateInterval(0.1f), myEngine(NULL), myEnabled(true)
 {
 }
 
@@ -68,16 +68,31 @@ void TabletManagerModule::finishGui()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::initialize(EngineServer* engine)
+void TabletManagerModule::initialize(EngineServer* engine, bool hires, bool offscreen)
 {
 	myEngine = engine;
 
-	myTabletPixels = new PixelData(PixelData::FormatRgb, 420, 240);
+	if(hires)
+	{
+		myTabletPixels = new PixelData(PixelData::FormatRgb, 840, 480);
+	}
+	else
+	{
+		myTabletPixels = new PixelData(PixelData::FormatRgb, 420, 240);
+	}
 
-	myTabletCamera = myEngine->createCamera(Camera::ForceMono | Camera::DrawScene);
+	uint flags = Camera::ForceMono | Camera::DrawScene;
+	if(offscreen) flags |= Camera::Offscreen;
+
+	myTabletCamera = myEngine->createCamera(flags);
 	myTabletCamera->setProjection(60, 1, 0.1f, 100);
 	myTabletCamera->setAutoAspect(true);
-	myTabletCamera->setPosition(Vector3f(0, 0, 3));
+
+	// Initialize the tablet camera position to be the same as the main camera.
+	Camera* defaultCamera = myEngine->getDefaultCamera();
+	myTabletCamera->setPosition(defaultCamera->getPosition());
+
+
 	//Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
 	//myTabletCamera->setOrientation(o);
 	myTabletCamera->getOutput(0)->setReadbackTarget(myTabletPixels);
@@ -87,12 +102,18 @@ void TabletManagerModule::initialize(EngineServer* engine)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TabletManagerModule::update(const UpdateContext& context)
 {
-	if(context.time - myLastUpdateTime > myAutoUpdateInterval)
+	// Enable / disable tablet camera rendering
+	myTabletCamera->getOutput(0)->setEnabled(myEnabled);
+
+	if(myEnabled)
 	{
-		myLastUpdateTime = context.time;
-		foreach(TabletInterface* tablet, myTablets)
+		if(context.time - myLastUpdateTime > myAutoUpdateInterval)
 		{
-			tablet->sendImage(myTabletPixels);
+			myLastUpdateTime = context.time;
+			foreach(TabletInterface* tablet, myTablets)
+			{
+				tablet->sendImage(myTabletPixels);
+			}
 		}
 	}
 }
@@ -108,13 +129,16 @@ void TabletManagerModule::handleEvent(const Event& evt)
 			TabletInterface* tablet = new TabletInterface(tsvc, evt.getSourceId());
 			myTablets.push_back(tablet);
 
-			// Send the current gui definition to the tablet.
-			tablet->beginGui();
-			foreach(TabletGuiElement* e, myGuiElements)
+			if(myGuiElements.size() != 0)
 			{
-				tablet->addGuiElement(e);
+				// Send the current gui definition to the tablet.
+				tablet->beginGui();
+				foreach(TabletGuiElement* e, myGuiElements)
+				{
+					tablet->addGuiElement(e);
+				}
+				tablet->finishGui();
 			}
-			tablet->finishGui();
 
 			evt.setProcessed();
 		}

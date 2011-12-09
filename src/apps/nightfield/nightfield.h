@@ -30,6 +30,7 @@
 #include <omega.h>
 #include <oengine.h>
 #include "../common/Flock.h"
+#include "oengine/TabletManagerModule.h"
 
 using namespace omega;
 using namespace oengine;
@@ -100,6 +101,8 @@ private:
 
 	AffectorEntity* mySelectedEntity;
 	List<AffectorEntity*> myEntities;
+
+	TabletManagerModule* myTabletManager;
 };
 
 #endif

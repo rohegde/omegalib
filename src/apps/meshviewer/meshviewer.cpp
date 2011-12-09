@@ -37,6 +37,7 @@ Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const St
 	myMesh = new Mesh();
 	mySceneNode = new SceneNode(server);
 	mySceneNode->setSelectable(true);
+	mySceneNode->setVisible(false);
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
 	myMesh->setData(myMeshData);
@@ -148,6 +149,9 @@ void MeshViewer::initialize()
 	// Load the entities specified in the configuration file.
 	loadEntityLibrary();
 
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(this);
+
 	// Create and initialize the gui
 	initUi();
 
@@ -159,12 +163,9 @@ void MeshViewer::initialize()
 	mySelectedEntity = myEntities[0];
 	mySelectedEntity->show();
 
-	// Get the default camera and focus in on the scene root (do we need this call?)
+	// Get the default camera and focus in on the scene root
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
-
-	myTabletManager = new TabletManagerModule();
-	myTabletManager->initialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,6 +184,8 @@ void MeshViewer::initUi()
 	entityButtons->setPosition(Vector2f(5, 5));
 	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
 
+	myTabletManager->beginGui();
+
 	// Add buttons for each entity
 	for(int i = 0; i < myEntities.size(); i++)
 	{
@@ -190,7 +193,11 @@ void MeshViewer::initUi()
 		Button* btn = wf->createButton(e->getName(), entityButtons);
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
+
+		myTabletManager->addGuiElement(TabletGuiElement::createButton(i, e->getName(), e->getLabel(), e->getName()));
 	}
+
+	myTabletManager->finishGui();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
