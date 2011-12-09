@@ -77,9 +77,13 @@ void SceneManager::initialize(EngineServer* engine)
 	myTabletManager->initialize(myEngine, true, false);
 
 	myTabletManager->beginGui();
-	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "Button", "Test Button", "Ok"));
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Slider", "Test Slider", 0, 100, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
 	myTabletManager->finishGui();
+
+	frontView = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,10 +110,38 @@ void SceneManager::handleEvent(const Event& evt)
 	}
 	if(evt.getServiceType() == Service::Ui)
 	{
+		if(evt.getSourceId() == 0)
+		{
+			frontView = !frontView;
+			if(frontView)
+			{
+				myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
+				myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
+			}
+			else
+			{
+				myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
+				myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
+			}
+		}
 		if(evt.getSourceId() == 1)
 		{
-			float value = (float)evt.getExtraDataInt(0) / 10;
-			myTabletManager->getCamera()->setPosition(Vector3f(0, 0, value));
+			localZoom = (float)evt.getExtraDataInt(0) / 10;
+			if(frontView)
+			{
+				myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
+				myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
+			}
+			else
+			{
+				myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
+				myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
+			}
+		}
+		if(evt.getSourceId() == 2)
+		{
+			remoteZoom = (float)evt.getExtraDataInt(0) / 10;
+			myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
 		}
 	}
 }
@@ -450,7 +482,7 @@ void SceneManager::initShading()
 
     osg::LightSource* lightS2 = new osg::LightSource;  
 
-	myLight2->setPosition(Vec4(0, 6.0f, 0, 1.0f));
+	myLight2->setPosition(Vec4(0, 10.0f, 0, 1.0f));
 
     lightS2->setLight(myLight2);
     lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
