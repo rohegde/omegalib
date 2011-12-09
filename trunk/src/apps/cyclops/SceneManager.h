@@ -142,6 +142,9 @@ namespace cyclops {
 		List<Entity*> myEntities;
 
 		osg::Light* myLight2;
+		bool frontView;
+		float localZoom;
+		float remoteZoom;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
