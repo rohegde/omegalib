@@ -57,8 +57,13 @@ namespace oengine {
 		void setEnabled(bool value) { myEnabled = value; }
 		bool isEnabled() { return myEnabled; }
 
+		uint getEventFlags() { return myEventFlags; }
+		void setEventFlags(uint value) { myEventFlags = value; }
+
 	private:
 		EngineServer* myEngine;
+
+		uint myEventFlags;
 
 		TabletService* myTabletService;
 

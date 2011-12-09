@@ -143,6 +143,25 @@ void SceneManager::handleEvent(const Event& evt)
 			remoteZoom = (float)evt.getExtraDataInt(0) / 10;
 			myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
 		}
+		if(evt.getSourceId() == 3)
+		{
+			myRotate = evt.getExtraDataInt(0);
+			if(myRotate == 1)
+			{
+				myTabletManager->setEventFlags(Event::Right);
+			}
+			else
+			{
+				myTabletManager->setEventFlags(Event::Left);
+			}
+		}
+
+		myTabletManager->beginGui();
+		myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, (int)(localZoom * 10)));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, (int)(remoteZoom * 10)));
+		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", myRotate));
+		myTabletManager->finishGui();
 	}
 }
 

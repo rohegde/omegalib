@@ -404,7 +404,8 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 		omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
 
 		String materialPath;
-		materialName = StringUtils::replaceAll(materialName, ".dds", ".mat");
+		materialName = StringUtils::replaceAll(materialName, ".dds", ".material");
+		materialName = StringUtils::replaceAll(materialName, ".tga", ".material");
 		em[material.name] = SceneManager::getInstance()->loadMaterial(materialName);
 	}
 }
