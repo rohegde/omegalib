@@ -75,6 +75,11 @@ void SceneManager::initialize(EngineServer* engine)
 
 	myTabletManager = new TabletManagerModule();
 	myTabletManager->initialize(myEngine);
+
+	myTabletManager->beginGui();
+	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "Button", "Test Button", "Ok"));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(0, "Slider", "Test Slider", 0, 100, 30));
+	myTabletManager->finishGui();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -417,7 +422,7 @@ void SceneManager::initShading()
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
 	sm->setSoftnessWidth(0.01f);
-	sm->setJitteringScale(16);
+	sm->setJitteringScale(32);
 
 	ss->addChild(mySceneRoot);
 	ss->setShadowTechnique(sm.get());
@@ -426,7 +431,7 @@ void SceneManager::initShading()
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
-    myLight2->setPosition(osg::Vec4(0.0, 5, 5, 1.0));
+    myLight2->setPosition(osg::Vec4(0.0, 10, 0, 1.0));
     myLight2->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));

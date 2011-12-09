@@ -42,12 +42,18 @@ namespace oengine {
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
+		void beginGui();
+		void addGuiElement(TabletGuiElement* elem);
+		void finishGui();
+
 	private:
 		EngineServer* myEngine;
 
 		float myLastUpdateTime;
 		float myAutoUpdateInterval;
 		PixelData* myTabletPixels;
+
+		List<TabletGuiElement*> myGuiElements;
 
 		List<TabletInterface*> myTablets;
 	};

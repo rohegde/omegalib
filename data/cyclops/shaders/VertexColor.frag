@@ -83,4 +83,5 @@ void main (void)
 
     // apply shadow, modulo the ambient bias
     gl_FragColor = color * (osgShadow_ambientBias.x + shadow * osgShadow_ambientBias.y); 
+	//gl_FragColor.a = 0.0;
 }

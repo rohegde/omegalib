@@ -107,15 +107,15 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 	//FIBITMAP* fibmp = FreeImage_Allocate(data->getWidth(), data->getHeight(), 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
 	FIMEMORY* fmem = FreeImage_OpenMemory();
 
+	// For some reason it looks like color masks are ignored right now. Maybe it is just when encoding to png.
 	byte* pdpixels = data->lockData();
-	data->unlockData();
 	FIBITMAP* fibmp = FreeImage_ConvertFromRawBits(
 		pdpixels,
 		data->getWidth(),
 		data->getHeight(),
 		data->getPitch(),
 		data->getBpp(),
-		0xff000000, 0x00ff0000, 0x0000ff00);
+		data->getRedMask(), data->getGreenMask(), data->getBlueMask());
 
 	// Encode the bitmap to a freeimage memory buffer
 	FreeImage_SaveToMemory(FIF_PNG, fibmp, fmem);
@@ -130,6 +130,8 @@ ByteArray* ImageUtils::encode(PixelData* data, ImageFormat format)
 	// Release resources
 	FreeImage_CloseMemory(fmem);
 	FreeImage_Unload(fibmp);
+
+	data->unlockData();
 
 	return encodedData;
 }

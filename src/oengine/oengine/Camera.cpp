@@ -54,15 +54,19 @@ void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth, const R
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void CameraOutput::beginDraw(const DrawContext& context)
 {
-	if(myOffscreen) 
+	if(myRenderTarget == NULL)
 	{
-		if(myRenderTarget == NULL)
+		if(myOffscreen) 
 		{
 			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOffscreen);
 		}
-		myRenderTarget->setReadbackTarget(myReadbackColorTarget, myReadbackDepthTarget, myReadbackViewport);
-		myRenderTarget->bind();
+		else
+		{
+			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOnscreen);
+		}
 	}
+	myRenderTarget->setReadbackTarget(myReadbackColorTarget, myReadbackDepthTarget, myReadbackViewport);
+	myRenderTarget->bind();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +74,9 @@ void CameraOutput::endDraw(const DrawContext& context)
 {
 	if(myRenderTarget != NULL)
 	{
+		// HACK
+		myRenderTarget->readback();
+
 		myRenderTarget->unbind();
 	}
 }
@@ -88,7 +95,8 @@ void CameraOutput::finishFrame(const FrameInfo& frame)
 {
 	if(myRenderTarget != NULL)
 	{
-		myRenderTarget->readback();
+		// HACK
+		//myRenderTarget->readback();
 	}
 }
 
@@ -286,19 +294,19 @@ const DrawContext& Camera::beginDraw(const DrawContext& context)
 
 	dc = context;
 	dc.modelview = myModelView;
-	if(myFlags & Offscreen)
+	dc.viewport = output->getReadbackViewport();
+	if(myAutoAspect)
 	{
-		dc.viewport = output->getReadbackViewport();
-		if(myAutoAspect)
-		{
-			float aspect = (float)dc.viewport.width() / dc.viewport.height();
-			setProjection(myFov, aspect, myNearZ, myFarZ);
-		}
-		dc.projection = myProjection;
+		float aspect = (float)dc.viewport.width() / dc.viewport.height();
+		setProjection(myFov, aspect, myNearZ, myFarZ);
 	}
+	dc.projection = myProjection;
 
 	output->beginDraw(dc);
-	dc.drawBuffer = output->getRenderTarget();
+	if(myFlags & Offscreen)
+	{
+		dc.drawBuffer = output->getRenderTarget();
+	}
 	return dc;
 }
 
@@ -335,7 +343,7 @@ void Camera::setModelView(const Vector3f& position, const Quaternion& orientatio
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::setProjection(float fov, float aspect, float nearZ, float farZ)
 {
-	myProjection = Math::makePerspectiveMatrix(fov, aspect, nearZ, farZ);
+	myProjection = Math::makePerspectiveMatrix(fov * Math::DegToRad, aspect, nearZ, farZ);
 	myFov = fov;
 	myNearZ = nearZ;
 	myFarZ = farZ;

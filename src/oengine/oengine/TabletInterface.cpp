@@ -31,16 +31,81 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+TabletGuiElement* TabletGuiElement::createButton(int id, const String& label, const String& description, const String& text)
+{
+	TabletGuiElement* e = new TabletGuiElement();
+	e->setType(TabletGuiElement::ElementTypeButton);
+	e->setLabel(label);
+	e->setDescription(description);
+	e->setText(text);
+	return e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TabletGuiElement* TabletGuiElement::createSlider(int id, const String& label, const String& description, int min, int max, int value)
+{
+	TabletGuiElement* e = new TabletGuiElement();
+	e->setType(TabletGuiElement::ElementTypeButton);
+	e->setLabel(label);
+	e->setMinimum(min);
+	e->setMaximum(max);
+	e->setValue(value);
+	return e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TabletGuiElement* TabletGuiElement::createSwitch(int id, const String& label, const String& description, bool value)
+{
+	TabletGuiElement* e = new TabletGuiElement();
+	e->setType(TabletGuiElement::ElementTypeButton);
+	e->setLabel(label);
+	e->setValue(value ? 1 : 0);
+	return e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const char* TabletGuiElement::getDef()
+{
+	switch(myType)
+	{
+	case ElementTypeButton:
+		sprintf(myElemDef, "0:%d:%s:%s:%s:|", myId, myLabel.c_str(), myDescription.c_str(), myText.c_str());
+		break;
+	case ElementTypeSlider:
+		sprintf(myElemDef, "1:%d:%s:%s:%d:%d:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myMin, myMax, myValue);
+		break;
+	case ElementTypeSwitch:
+		sprintf(myElemDef, "1:%d:%s:%s:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myValue);
+		break;
+	}
+	return myElemDef;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletInterface::TabletInterface(TabletService* svc, int tabletId):
 	myService(svc), myTabletId(tabletId)
 {
 	myConnection = svc->getConnection(tabletId);
 }
 
+//#define DEBUG_PNG
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TabletInterface::sendImage(PixelData* data)
 {
 	ByteArray* png = ImageUtils::encode(data, ImageUtils::FormatPng);
+
+#ifdef DEBUG_PNG
+	static bool doOnce = false;
+	if(!doOnce)
+	{
+		doOnce = true;
+		FILE* fpng = fopen("./debug.png", "wb");
+		fwrite(png->lock(), 1, png->getSize(), fpng);
+		png->unlock();
+		fclose(fpng);
+	}
+#endif
 
 	int size = png->getSize();
 	char header[] = {'i', 'p', 'n', 'g'};
@@ -70,25 +135,7 @@ void TabletInterface::finishGui()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::addButton(int id, const String& label, const String& description, const String& text)
+void TabletInterface::addGuiElement(TabletGuiElement* e)
 {
-	char msg[MaxGuiDefSize];
-	sprintf(msg, "0:%d:%s:%s:%s:|", id, label.c_str(), description.c_str(), text.c_str());
-	strcat(myGuiDef, msg);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::addSlider(int id, const String& label, const String& description, int min, int max, int value)
-{
-	char msg[MaxGuiDefSize];
-	sprintf(msg, "1:%d:%s:%s:%d:%d:%d:|", id, label.c_str(), description.c_str(), min, max, value);
-	strcat(myGuiDef, msg);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletInterface::addSwitch(int id, const String& label, const String& description, bool value)
-{
-	char msg[MaxGuiDefSize];
-	sprintf(msg, "2:%d:%s:%s:%d:|", id, label.c_str(), description.c_str(), value ? 1 : 0);
-	strcat(myGuiDef, msg);
+	strcat(myGuiDef, e->getDef());
 }
