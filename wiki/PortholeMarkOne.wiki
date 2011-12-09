@@ -21,11 +21,18 @@ _^This is a generic outline of the messages exchanged between Porthole and the V
   The VR Application incorporate OmegaLib.  OmegaLib handle setting up the VR scene and generating the correct views.  One of the views will be polarized passive stereo for the VR device of choice and the other the view for the iPad for user feedback.  All device input will be abstracted by OmegaLib in order to manipulate the scene.  This includes the mouse and keyboard, the iPad GUI element inputs, iPad multi-touch input, and head tracker data.  Implementing a VR Application was fairly straight forward.  However generating the correct views for both the VR device and iPad simultaneously proved to be a bit of a challenge.  This will be elaborate on more shortly.
 
    In addition to the VR Application, the Omega Application Server Proxy was created to test the message passing between Porthole and Application Server.  Though this was a development tool, it can easy serve as a starting point when trying to understand how a program communicated with Porthole.  This would allow developers to extend Porthole to transfer other types of data.
+   
+	<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/omegaporthole.png" width="500"/></p><p align="middle">
+	_^Porthole and omegalib applications are developed independently. They communicate though a common protocol to share pixel data, gui elements, and input events.^_
+	</p>
+   
 
 = Porthole Application =
   The Porthole Application has two main areas: the Free Interaction Area (FIA) and the Custom UI Area (CUA). The Free Interaction Area allow the user to freely manipulate the data via touch.  The iPad support translation, rotation, pinch and swipe gestures as well as simple touches.  A subset of these were used to demonstrate that manipulations made on the FIA were reflected on the VR Application running on the VR device.  Additionally the FIA had a thumbnail of the data being manipulated as feedback for the user. The Custom UI Area provided users with specified fileds that would allo for further data manipulation.  This section support iOS buttons, sliders, and switches.  The main hurdle was designing an architecture that fostered communication between the main application loop, FIA , CUA , and the TCP Socket connection.
  
-Picture of this.
+	<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/omegaporthole.png" width="500"/></p><p align="middle">
+	_^Porthole Supports various view configurations depending on the orientation of the device and the application gui.^_
+	</p>
 
 = Future Works =
   The short term future work focuses on releasing Porthole to the public.  This would involve clean up this code and packaging it.  Additionally, the Omega Application Server Proxy needs to be repackaged as an simple example for users to understand how to comunicate with Porthole.  
