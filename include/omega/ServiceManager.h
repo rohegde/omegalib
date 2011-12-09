@@ -62,7 +62,9 @@ namespace omega
 		//! See registerInputService for additional information.
 		ServiceAllocator findServiceAllocator(String svcName);
 
-		// Add a new input service to the manager.
+		//! Add a preinitialized service to the manager
+		void addService(Service* service);
+		//! Add a new service to the manager.
 		Service* addService(const String& svcClass);
 		Service* findService(String svcName);
 		template<typename T> T* findService(String svcName);
