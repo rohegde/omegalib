@@ -107,6 +107,15 @@ void TabletManagerModule::handleEvent(const Event& evt)
 			TabletService* tsvc = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
 			TabletInterface* tablet = new TabletInterface(tsvc, evt.getSourceId());
 			myTablets.push_back(tablet);
+
+			// Send the current gui definition to the tablet.
+			tablet->beginGui();
+			foreach(TabletGuiElement* e, myGuiElements)
+			{
+				tablet->addGuiElement(e);
+			}
+			tablet->finishGui();
+
 			evt.setProcessed();
 		}
 	}
