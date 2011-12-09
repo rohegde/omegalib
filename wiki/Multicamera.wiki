@@ -1,0 +1,8 @@
+#summary oengine Multi camera support
+#sidebar Sidebar
+
+The omega engine library support secondary camera rendering to onscreen, offscreen or texture buffers. Rendering is output is managed through a `RenderTarget` instance. A camera has as many render targets as the number of Gpu contexts created by the application. Cameras can render in just one of the contexts or on all of them. Options for each specific render target are controlled through a `CameraOptions` class instance. This allows applications to create flexible secondary camera rendering configurations, i.e.
+	* A secondary camera can render to an onscreen region (like an additional viewport)
+	* A number of cameras can be mapped to separate gpu contexts to render multiple independent views in parallel
+	* A camera can use `CameraOptions` to split its rendering into separate areas and render them in separate gpucontexts to distribute a single view rendering across gpus.
+

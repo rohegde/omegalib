@@ -17,6 +17,7 @@ Separate display and services code.
 		* PlyReader
 		* BoundingSphere
 		* etc.
+	* move `libconfig` in `ocore`
 
 === Revise Equalizer display system initialization flow ===
 	* There is probably a lot of redundancy - inefficiency in the currect way the Equalizer / application init flow works. Revise it.
