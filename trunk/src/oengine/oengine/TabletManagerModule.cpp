@@ -33,7 +33,7 @@ using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletManagerModule::TabletManagerModule():
-	myAutoUpdateInterval(0.1f), myEngine(NULL), myEnabled(true), myTabletService(NULL)
+	myAutoUpdateInterval(0.5f), myEngine(NULL), myEnabled(true), myTabletService(NULL)
 {
 }
 
