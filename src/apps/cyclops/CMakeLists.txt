@@ -39,6 +39,12 @@ set(SRCS
 		SceneScript.h
 		obj.cpp
 		obj.h
+		ply.h
+		plyfile.cpp
+		ReaderWriterPLY.cpp
+		typedefs.h
+		vertexData.cpp
+		vertexData.h
 		ReaderXOBJ.cpp)
     
 ###################################################################################################
