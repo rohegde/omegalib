@@ -362,7 +362,7 @@ void HplViewer::initialize()
 	mySceneManager = new SceneManager();
 
 	myCenter = Vector3f::Zero();
-	myMaxDistance = 15;
+	myMaxDistance = 500;
 
 	// Load osg object
 	if(cfg->exists("config/dataPath"))
