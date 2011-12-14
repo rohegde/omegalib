@@ -12,7 +12,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class OmegaControllerScript : MonoBehaviour {
+public abstract class OmegaControllerScript : MonoBehaviour {
 	public int controllerID = -1; // Controller ID this object accepts
 	
 	public float analogStick0Sensitivity = 1.0f;
