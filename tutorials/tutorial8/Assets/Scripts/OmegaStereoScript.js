@@ -1,6 +1,37 @@
+/********************************************************************************************************************** 
+ * THE OMEGA LIB PROJECT
+ *---------------------------------------------------------------------------------------------------------------------
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Authors:										
+ *  Dennis Chau
+ *  Arthur Nishimoto								anishimoto42@gmail.com
+ *---------------------------------------------------------------------------------------------------------------------
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+ * disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ * and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE  GOODS OR 
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *********************************************************************************************************************/
+
+/*
+	Based on Stereoskopix 3D v027 by Perry Hoberman <hoberman (at) bway.net
+	http://forum.unity3d.com/threads/63874
+*/
+
 @script RequireComponent (Camera)
 
-var enableStereo : boolean = true;
+//var enableStereo : boolean = true;
 var eyePosition : Transform;
 var focusPosition: Transform;
 
@@ -10,6 +41,25 @@ private var leftCam;
 private var rightCam;
 
 public var stereoMaterial : Material;
+
+public var interaxialDistance : float = 0.03175;
+
+enum stereoModes { None, Anaglyph, SideBySide, Interlace };
+public var stereoMode = stereoModes.Interlace;
+public var interlaceRows = 1526;
+
+// Single display dimentions (including bezels)
+public var displayWidth : float = 1.26;
+public var displayHeight : float = 0.58;
+
+public var topBezelWidth : float = 0.007;
+public var bottomBezelWidth : float = 0.005;
+public var leftBezelWidth : float = 0.006;
+public var rightBezelWidth : float = 0.004;
+
+// Manual tweaking for aspect ratio
+public var manualVertStretch : float = -0.26;
+public var manualHorzStretch : float = 0;
 
 function Start () {
 	//check stereo material 
@@ -48,22 +98,24 @@ function Start () {
 	camera.cullingMask = 0;
 	camera.backgroundColor = Color (0,0,0,0);
 	camera.clearFlags = CameraClearFlags.Nothing;
-
 }
 
 function Update () 
 {
-	//overridden function : Where user interaction from teh GUI would update the scene
+	//overridden function : Where user interaction from the GUI would update the scene
 }
 
 function LateUpdate() {
    UpdateView();
+   SetWeave(0);
 }
 
 function UpdateView() {
 	transform.localPosition = new Vector3( 0, 0, 0 );
 	leftCam.camera.projectionMatrix = projectionMatrix(true);
 	rightCam.camera.projectionMatrix = projectionMatrix(false);
+	
+	transform.localRotation = eyePosition.localRotation;
 }
 
 function OnRenderImage (source:RenderTexture, destination:RenderTexture) 
@@ -72,8 +124,27 @@ function OnRenderImage (source:RenderTexture, destination:RenderTexture)
 	GL.PushMatrix();
 	GL.LoadOrtho();
 	
-	stereoMaterial.SetPass(3);
-	DrawQuad(3);
+	switch( stereoMode ){
+		case( stereoModes.Anaglyph ):
+			stereoMaterial.SetPass(0);
+    		DrawQuad(0);
+			break;
+		case( stereoModes.Interlace ):
+			stereoMaterial.SetPass(3);
+			DrawQuad(3);
+			break;
+		case( stereoModes.SideBySide ):
+			for(var i:int = 1; i <= 2; i++) {
+				stereoMaterial.SetPass(i);
+				DrawQuad(i);
+			}
+			break;
+		default:
+			stereoMaterial.SetPass(3);
+			DrawQuad(3);
+			break;
+	}
+	
 	GL.PopMatrix();
 }
 
@@ -90,18 +161,39 @@ function DoWindow (windowID : int)
 	if (!xy) 
 	{
 		stereoMaterial.SetFloat("_Weave_X", 1);
-		stereoMaterial.SetFloat("_Weave_Y", Screen.height + 1);
+		stereoMaterial.SetFloat("_Weave_Y", interlaceRows);
 	}
 }
 
  
 private function DrawQuad(cam) {
-	GL.Begin (GL.QUADS);      
-   	GL.TexCoord2( 0.0, 0.0 ); GL.Vertex3( 0.0, 0.0, 0.1 );
-   	GL.TexCoord2( 1.0, 0.0 ); GL.Vertex3( 1, 0.0, 0.1 );
-  	GL.TexCoord2( 1.0, 1.0 ); GL.Vertex3( 1, 1.0, 0.1 );
-  	GL.TexCoord2( 0.0, 1.0 ); GL.Vertex3( 0.0, 1.0, 0.1 );
-	GL.End();
+	switch( stereoMode ){
+		case( stereoModes.SideBySide ):
+			if (cam==1) {
+				GL.Begin (GL.QUADS);      
+				GL.TexCoord2( 0.0, 0.0 ); GL.Vertex3( 0.0, 0.0, 0.1 );
+				GL.TexCoord2( 1.0, 0.0 ); GL.Vertex3( 0.5, 0.0, 0.1 );
+				GL.TexCoord2( 1.0, 1.0 ); GL.Vertex3( 0.5, 1.0, 0.1 );
+				GL.TexCoord2( 0.0, 1.0 ); GL.Vertex3( 0.0, 1.0, 0.1 );
+				GL.End();
+			} else {
+				GL.Begin (GL.QUADS);      
+				GL.TexCoord2( 0.0, 0.0 ); GL.Vertex3( 0.5, 0.0, 0.1 );
+				GL.TexCoord2( 1.0, 0.0 ); GL.Vertex3( 1.0, 0.0, 0.1 );
+				GL.TexCoord2( 1.0, 1.0 ); GL.Vertex3( 1.0, 1.0, 0.1 );
+				GL.TexCoord2( 0.0, 1.0 ); GL.Vertex3( 0.5, 1.0, 0.1 );
+				GL.End();
+			}
+			break;
+		default:
+			GL.Begin (GL.QUADS);      
+		   	GL.TexCoord2( 0.0, 0.0 ); GL.Vertex3( 0.0, 0.0, 0.1 );
+		   	GL.TexCoord2( 1.0, 0.0 ); GL.Vertex3( 1, 0.0, 0.1 );
+		  	GL.TexCoord2( 1.0, 1.0 ); GL.Vertex3( 1, 1.0, 0.1 );
+		  	GL.TexCoord2( 0.0, 1.0 ); GL.Vertex3( 0.0, 1.0, 0.1 );
+			GL.End();
+			break;
+	}
 } 
 
 function projectionMatrix(isLeftCam : boolean) : Matrix4x4 
@@ -110,7 +202,7 @@ function projectionMatrix(isLeftCam : boolean) : Matrix4x4
 	var windowUpperOffset : float = 0.539;
 	var windowLowerOffset : float = -0.552;
 	var windowLeftOffset : float = -0.965;
-	var wndowRightOffset : float =  0.973;
+	var windowRightOffset : float =  0.973;
 	
 	var manualOffsetR : float = -0.34;
 	var manualOffsetU : float = 0.09;
@@ -119,20 +211,27 @@ function projectionMatrix(isLeftCam : boolean) : Matrix4x4
 	var manualOffsetV : float = -0.05;
 	
 	// 2731x1525 (Windowed) - Nearly fills screen
-	windowUpperOffset = 0.539 + manualOffsetU + manualOffsetV;
-	windowLowerOffset = -0.552 + manualOffsetV;
-	windowLeftOffset = -1.16 + manualOffsetH;
-	wndowRightOffset =  1.17 + manualOffsetR + manualOffsetH;
+	//windowUpperOffset = 0.539 + manualOffsetU + manualOffsetV;
+	//windowLowerOffset = -0.535 + manualOffsetV;
+	//windowLeftOffset = -1.16 + manualOffsetH;
+	//windowRightOffset =  1.17 + manualOffsetR + manualOffsetH;
 
+	var menuBarHeight : float = 0.015;
+	
+	// Distance from the visible screen center (in meters) to the edges of the visible screen
+	windowUpperOffset = displayHeight - topBezelWidth - menuBarHeight + manualHorzStretch;
+	windowLowerOffset = -(displayHeight - bottomBezelWidth + manualHorzStretch);
+	windowLeftOffset = -(displayWidth - leftBezelWidth + manualVertStretch);
+	windowRightOffset =  displayWidth - rightBezelWidth + manualVertStretch;
+	
 	var Scr_LL_wc : Vector3 = Vector3( windowLeftOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Left Corner 
-    var Scr_LR_wc : Vector3 = Vector3( wndowRightOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Right Corner 
+    var Scr_LR_wc : Vector3 = Vector3( windowRightOffset , windowLowerOffset , 0 ) + focusPosition.localPosition;   //Lower Right Corner 
     var Scr_UL_wc : Vector3 = Vector3( windowLeftOffset , windowUpperOffset , 0 ) + focusPosition.localPosition;   //Upper Left Corner 
 
     //Coord of the eye
     var eye : Vector3;
-	var eyeOffset : float = 0.03175;
-	
-	if( !enableStereo )
+	var eyeOffset : float = interaxialDistance;
+	if( stereoMode == stereoModes.None )
 		eyeOffset = 0;
 	
 	if( isLeftCam )
@@ -141,15 +240,13 @@ function projectionMatrix(isLeftCam : boolean) : Matrix4x4
 			eye  = Vector3( eyePosition.localPosition.x - eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
 		else // Tested for versions 3.3.0 and 3.4.0
 			eye  = Vector3( eyePosition.localPosition.x - eyeOffset , eyePosition.localPosition.y, eyePosition.localPosition.z);
-		//eye  = Vector3( -0.03175 , 0, -.9);	
 	}
 	else 
 	{	
 		if( Application.unityVersion.Contains("3.1.0") ) // Flips eye y translation for older versions of Unity
 			eye  = Vector3( eyePosition.localPosition.x + eyeOffset , -eyePosition.localPosition.y, eyePosition.localPosition.z);
 		else // Tested for versions 3.3.0 and 3.4.0
-			eye  = Vector3( eyePosition.localPosition.x + eyeOffset , eyePosition.localPosition.y, eyePosition.localPosition.z);
-		//eye  = Vector3( 0.03175 , 0, -.9);	
+			eye  = Vector3( eyePosition.localPosition.x + eyeOffset , eyePosition.localPosition.y, eyePosition.localPosition.z);	
 	}
 	
 	//temp
@@ -170,7 +267,6 @@ function projectionMatrix(isLeftCam : boolean) : Matrix4x4
     v_normal = -(vec3_temp) / vec3_temp.magnitude; 
 	
 	//Calculate the vectors from the eye to the screen corners
-	
 	var vec_e_LL = Scr_LL_wc - eye;
     var vec_e_LR = Scr_LR_wc - eye;
     var vec_e_UL = Scr_UL_wc - eye;
