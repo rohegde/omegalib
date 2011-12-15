@@ -39,7 +39,7 @@ public:
 private:
 	SceneNode* mySceneNode;
 	TexturedQuad* myTexturedQuad;
-	ImageData myImageData;
+	ImageData* myImageData;
 	BoundingSphere* mySelectionSphere;
 	DefaultMouseInteractor* myMouseInteractor;
 };
@@ -73,9 +73,10 @@ void SimpleScene::initialize()
 		Setting& sCfg = cfg->lookup("config");
 		String imageName = sCfg["imageName"];
 		// Load the image to be used for texturing the quad
-		if(ImageUtils::loadImage(imageName, &myImageData))
+		myImageData = ImageUtils::loadImage(imageName);
+		if(myImageData != NULL)
 		{
-			myTexturedQuad->setImage(&myImageData);
+			myTexturedQuad->setImage(myImageData->getPixels());
 		}
 	}
 }

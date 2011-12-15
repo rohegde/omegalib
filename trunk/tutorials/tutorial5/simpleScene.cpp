@@ -39,7 +39,7 @@ public:
 
 private:
 	SceneNode* mySceneNode;
-	PlyDataReader* myMeshData;
+	MeshData* myMeshData;
 	Mesh* myMesh;
 	DefaultMouseInteractor* myMouseInteractor;
 };
@@ -55,8 +55,7 @@ void SimpleScene::initialize()
 	{
 		Setting& sCfg = cfg->lookup("config");
 
-		myMeshData = new PlyDataReader();
-		myMeshData->readPlyFile(sCfg["mesh"]);
+		myMeshData = MeshUtils::load(sCfg["mesh"]);
 		myMeshData->scale(0.8f);
 	}
 

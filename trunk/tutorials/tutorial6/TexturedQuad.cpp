@@ -102,7 +102,7 @@ void TexturedQuadRenderable::refresh()
 	}
 
 	// Allocate index and vertex buffers.
-	GpuManager* gpuMng = getClient()->getGpu();
+	GpuManager* gpuMng = getClient()->getGpuContext()->getGpu();
 	myVertexBuffer = new VertexBuffer(gpuMng);
 
 	// Define position attribute for vertex buffer.
@@ -135,17 +135,14 @@ void TexturedQuadRenderable::refresh()
 	myVertexBuffer->initialize(elementSize * numElements, elementSize, data);
 
 	// Setup the texture
-	ImageData* img = myTexturedQuad->getImage();
+	PixelData* img = myTexturedQuad->getImage();
 	if(img != NULL)
 	{
-		myTexture = gpuMng->getTexture(img->filename);
 		if(myTexture == NULL)
 		{
-			myTexture = gpuMng->createTexture(
-				img->filename,
-				img->width,
-				img->height,
-				img->data);
+			myTexture = new Texture(getClient()->getGpuContext());
+			myTexture->initialize(img->getWidth(), img->getHeight());
+			myTexture->writePixels(img);
 		}
 	}
 }
