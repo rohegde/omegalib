@@ -42,7 +42,8 @@ ServiceManager::ServiceManager(SystemManager* sys):
 	myEventBufferHead(0),
 	myEventBufferTail(0),
 	myAvailableEvents(0),
-	myDroppedEvents(0)
+	myDroppedEvents(0),
+	myServiceIdCounter(0)
 {
 	myEventBufferLock = new Lock();
 }
@@ -90,12 +91,10 @@ void ServiceManager::initialize()
 	myEventBuffer = new Event[MaxEvents];
 	ofmsg("Event buffer allocated. Max events: %1%", %MaxEvents);
 
-	int svcId = 0;
-
 	foreach(Service* it, myServices)
 	{
-		it->doInitialize(this, svcId);
-		svcId++;
+		it->doInitialize(this, myServiceIdCounter);
+		myServiceIdCounter++;
 	}
 
 	myInitialized = true;
@@ -146,6 +145,10 @@ void ServiceManager::poll()
 void ServiceManager::addService(Service* service)
 {
 	myServices.push_back(service);
+	if(!service->isInitialized())
+	{
+		service->doInitialize(this, myServiceIdCounter++);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

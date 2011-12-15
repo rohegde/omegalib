@@ -36,7 +36,7 @@
 #include <oengine.h>
 #include <oosg.h>
 
-#include "oengine/TabletManagerModule.h"
+#include "oengine/PortholeTabletService.h"
 
 
 namespace cyclops {
@@ -128,7 +128,7 @@ namespace cyclops {
 		EngineServer* myEngine;
 		OsgModule* myOsg;
 		SceneEditorModule* myEditor;
-		TabletManagerModule* myTabletManager;
+		PortholeTabletService* myTabletManager;
 
 		osg::Group* mySceneRoot;
 

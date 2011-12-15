@@ -31,10 +31,60 @@
 #include "omega/ServiceManager.h"
 #include "omega/Tcp.h"
 
-class TabletServer;
-class TabletConnection;
 namespace omega {
     
+	class TabletService;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class TabletConnection: public TcpConnection
+	{
+	public:
+		TabletConnection(ConnectionInfo ci, TabletService* service);
+
+		virtual void handleData();
+		virtual void handleClosed();
+		virtual void handleConnected();
+
+	private:
+		void handleUiEvent();
+		void handleTouchEvent();
+		bool withinAnchor( float x , float y , float tolerance );
+		void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y);
+
+	private:
+		static const int BufferSize = 1024;
+		char myBuffer[BufferSize];
+        
+		TabletService* myService;
+		Vector2i myTouchPosition;
+		Vector2f anchor;
+		bool ltClick;
+		bool rtClick;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class TabletServer: public TcpServer
+	{
+	public:
+		TabletServer(TabletService* service):
+			myConnectionCounter(0),
+			myService(service)
+		{}
+        
+		///////////////////////////////////////////////////////////////////////////////////////////
+		virtual TcpConnection* createConnection()
+		{
+			TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, myConnectionCounter++), myService);
+			myClients.push_back(conn);
+
+			return conn;
+		}
+        
+	private:
+		int myConnectionCounter;
+		TabletService* myService;
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API TabletService: public Service
 	{
@@ -51,7 +101,7 @@ namespace omega {
 		virtual void setup(Setting& settings);
 		virtual void poll();
 
-		TcpConnection* getConnection(int id);
+		TabletConnection* getConnection(int id);
 
 	private:
 		TabletServer* myServer;

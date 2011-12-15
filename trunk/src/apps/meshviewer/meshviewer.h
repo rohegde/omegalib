@@ -29,7 +29,7 @@
 
 #include <omega.h>
 #include <oengine.h>
-#include "oengine/TabletManagerModule.h"
+#include "oengine/PortholeTabletService.h"
 
 using namespace omega;
 using namespace oengine;
@@ -79,7 +79,7 @@ private:
 	Vector<Entity*> myEntities;
 	Entity* mySelectedEntity;
 
-	TabletManagerModule* myTabletManager;
+	PortholeTabletService* myTabletManager;
 
 	// Scene
 	ReferenceBox* myReferenceBox;

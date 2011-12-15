@@ -41,6 +41,8 @@
 using namespace omega;
 using namespace oengine;
 
+EngineServer* EngineServer::mysInstance = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineServer::EngineServer(Application* app):
 	ApplicationServer(app),
@@ -49,6 +51,7 @@ EngineServer::EngineServer(Application* app):
 	myDefaultCamera(NULL),
 	myConsoleEnabled(false)
 {
+	mysInstance = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

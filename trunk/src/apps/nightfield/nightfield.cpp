@@ -345,8 +345,7 @@ void Nightfield::initialize()
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
 
-	myTabletManager = new TabletManagerModule();
-	myTabletManager->initialize(this);
+	myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

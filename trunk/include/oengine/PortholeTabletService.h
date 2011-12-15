@@ -24,15 +24,15 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __TABLET_INTERFACE_H__
-#define __TABLET_INTERFACE_H__
+#ifndef __PORHOLE_TABLET_SERVICE_H__
+#define __PORHOLE_TABLET_SERVICE_H__
 
 #include "oenginebase.h"
+#include "oengine/EngineServer.h"
 #include "omega/TabletService.h"
-#include "omega/PixelData.h"
 
 namespace oengine {
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct OENGINE_API TabletGuiElement
 	{
@@ -87,26 +87,63 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API TabletInterface: public OmegaObject
+	//! Implements an interface to tablet device applications using the Porthole protocol.
+	class OENGINE_API PortholeTabletService: public Service
 	{
 	public:
 		static const int MaxGuiDefSize = 1024;
 
-	public:
-		TabletInterface(TabletService* service, int tabletId);
+		//! Allocator function (will be used to register the service inside SystemManager)
+		static PortholeTabletService* New() { return new PortholeTabletService(); }
 
-		void sendImage(PixelData* data);
+	public:
+		PortholeTabletService();
+
+		virtual void setup(Setting& settings);
+		virtual void poll();
+		void processEvent(Event* evt);
+
+		void initialize();
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
 
 		void beginGui();
+		void addGuiElement(TabletGuiElement* elem);
 		void finishGui();
-		void addGuiElement(TabletGuiElement* e);
+
+		Camera* getCamera() { return myTabletCamera; }
+
+		void setEnabled(bool value) { myEnabled = value; }
+		bool isEnabled() { return myEnabled; }
+
+		uint getEventFlags() { return myEventFlags; }
+		void setEventFlags(uint value) { myEventFlags = value; }
 
 	private:
-		TabletService* myService;
-		int myTabletId;
-		TcpConnection* myConnection;
-		
+		void refreshGuiDef();
+		void sendMessage(TabletConnection* conn, const char* header, void* data, int size);
+
+	private:
+		EngineServer* myEngine;
+
+		// Config properties
+		bool myHires;
+		bool myOffscreen;
+
+		List<TabletConnection*> myTablets;
+		TabletService* myTabletService;
+
+		bool myEnabled;
+
+		float myLastUpdateTime;
+		float myAutoUpdateInterval;
+		PixelData* myTabletPixels;
+		Camera* myTabletCamera;
+		uint myEventFlags;
+
+		List<TabletGuiElement*> myGuiElements;
 		char myGuiDef[MaxGuiDefSize];
+
 	};
 }; 
 
