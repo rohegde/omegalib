@@ -392,6 +392,7 @@ void OpenNIService::poll(void)
 							// j is the kinect index, used as service / device id
 							theEvent->reset(Event::Move, Service::Mocap, aUsers[i], j);
 
+
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_HEAD, theEvent, j);
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_NECK, theEvent, j);
 							joint2eventPointSet(aUsers[i], OMEGA_SKEL_TORSO, theEvent, j);

@@ -217,7 +217,7 @@ namespace omega
 
 		void copyFrom(const Event& e);
 
-		void reset(Type type, Service::ServiceType serviceType, unsigned int sourceId = 0);
+		void reset(Type type, Service::ServiceType serviceType, uint sourceId = 0, int serviceId = -1);
 
 		//! id of the source of this event. Input services associate unique ids to each of their event sources.
 		unsigned int getSourceId() const;
@@ -308,7 +308,7 @@ namespace omega
 	{}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Event::reset(Type type, Service::ServiceType serviceType, unsigned int sourceId)
+	inline void Event::reset(Type type, Service::ServiceType serviceType, uint sourceId, int serviceId)
 	{
 		myType = type;
 		mySourceId = sourceId;
@@ -317,6 +317,7 @@ namespace omega
 		myExtraDataLength = 0;
 		myExtraDataValidMask = 0;
 		myExtraDataType = ExtraDataNull;
+		if(serviceId != -1) myServiceId = serviceId;
 
 		timeb tb;
 		ftime( &tb );

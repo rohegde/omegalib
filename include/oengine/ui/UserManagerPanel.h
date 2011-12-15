@@ -50,7 +50,7 @@ namespace oengine { namespace ui {
 		ObserverUpdateService* myObserverUpdateService;
 
 		Image* myDepthImage;
-		ImageData* myDepthImageData;
+		PixelData* myDepthImageData;
 	};
 };};
 #endif

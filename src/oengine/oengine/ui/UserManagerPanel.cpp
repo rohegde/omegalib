@@ -62,38 +62,9 @@ void UserManagerPanel::update(const UpdateContext& context)
 
 	if( myDepthImageData == NULL ) 
 	{
-		myDepthImageData = new ImageData();
-		myDepthImageData->width = svc->getImageDataWidth();
-		myDepthImageData->height = svc->getImageDataHeight();
-		myDepthImageData->data = (byte*)svc->getDepthImageData();
-
+		myDepthImageData = new PixelData(PixelData::FormatRgb, svc->getImageDataWidth(), svc->getImageDataHeight(), (byte*)svc->getDepthImageData());
 		myDepthImage->setData(myDepthImageData);
 	}
 	myDepthImage->refresh();
 #endif
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//void MeshViewerUI::onTraceUser(int userId)
-//{
-//	WidgetFactory* wf = myClient->getEngine()->getUiManager()->getWidgetFactory();
-//	String name = ostr("%1%", %userId);
-//	String label = ostr("User %1%", %userId);
-//	Button* btn = wf->createButton(name, myUserUI);
-//	btn->setText(label);
-//
-//	// Set button color through user id
-//#ifdef OMEGA_USE_OPENNI
-//	OpenNIService* svc = myClient->getServiceManager()->findService<OpenNIService>("OpenNIService");
-//	Color col = svc->getUserColor(userId);
-//	btn->setColor(col.scale(0.2f));
-//#endif
-//}
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//void MeshViewerUI::onUntraceUser(int userId)
-//{
-//	String name = ostr("%1%", %userId);
-//	myUserUI->removeChild(name);
-//}

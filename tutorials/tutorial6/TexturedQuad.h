@@ -43,12 +43,12 @@ namespace oengine {
 		const AlignedBox3* getBoundingBox();
 		bool hasBoundingBox();
 
-		ImageData* getImage();
-		void setImage(ImageData* value);
+		PixelData* getImage();
+		void setImage(PixelData* value);
 
 	private:
 		AlignedBox3 myBoundingBox;
-		ImageData* myImage;
+		PixelData* myImage;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,11 +70,11 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ImageData* TexturedQuad::getImage() 
+	inline PixelData* TexturedQuad::getImage() 
 	{ return myImage; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void TexturedQuad::setImage(ImageData* value) 
+	inline void TexturedQuad::setImage(PixelData* value) 
 	{ myImage = value; refresh(); }
 }; // namespace oengine
 

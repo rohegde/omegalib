@@ -25,13 +25,13 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 cmake_minimum_required(VERSION 2.8.1) 
-project(Tutorial5)
+project(Tutorial6)
 
 include(${CMAKE_SOURCE_DIR}/../../CMakeModules/FindOmegalib.cmake)
 
 include_directories(${OMEGA_INCLUDE_DIRS})
-add_executable(simpleScene customRenderable.cpp TexturedQuad.cpp TexturedQuad.h)
-target_link_libraries(simpleScene ${OMEGA_LIB} ${OENGINE_LIB})
+add_executable(customRenderable customRenderable.cpp TexturedQuad.cpp TexturedQuad.h)
+target_link_libraries(customRenderable ${OMEGA_LIB} ${OENGINE_LIB})
 
 
 
