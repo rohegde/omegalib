@@ -153,8 +153,7 @@ void MeshViewer::initialize()
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
 
-	myTabletManager = new TabletManagerModule();
-	myTabletManager->initialize(this);
+	myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 
 	// Create and initialize the gui
 	initUi();
@@ -184,7 +183,10 @@ void MeshViewer::initUi()
 	entityButtons->setPosition(Vector2f(5, 5));
 	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
 
-	myTabletManager->beginGui();
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->beginGui();
+	}
 
 	// Add buttons for each entity
 	for(int i = 0; i < myEntities.size(); i++)
@@ -194,13 +196,19 @@ void MeshViewer::initUi()
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 
-		myTabletManager->addGuiElement(TabletGuiElement::createButton(btn->getId(), e->getName(), e->getLabel(), e->getName()));
+		if(myTabletManager != NULL)
+		{
+			myTabletManager->addGuiElement(TabletGuiElement::createButton(btn->getId(), e->getName(), e->getLabel(), e->getName()));
+		}
 	}
-	// Add autorotate button.
-	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(128, "Autorotate", "Autorotate", 1));
-	// Add scale slider.
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
-	myTabletManager->finishGui();
+	if(myTabletManager != NULL)
+	{
+		// Add autorotate button.
+		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(128, "Autorotate", "Autorotate", 1));
+		// Add scale slider.
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
+		myTabletManager->finishGui();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +267,10 @@ void MeshViewer::handleUiEvent(const Event& evt)
 void MeshViewer::update(const UpdateContext& context)
 {
 	EngineServer::update(context);
-	myTabletManager->update(context);
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->update(context);
+	}
 
 	SceneNode* daSceneNode = myInteractor->getSceneNode();
 	if(daSceneNode != NULL)

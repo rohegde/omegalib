@@ -46,7 +46,7 @@ namespace omega
 
 	public:
 		// Class constructor
-		Service(): myManager(NULL), myPriority(PollNormal), myDebug(false) {}
+		Service(): myManager(NULL), myPriority(PollNormal), myDebug(false), myInitialized(false) {}
 
 		int getServiceId() { return myId; }
 
@@ -55,6 +55,8 @@ namespace omega
 
 		ServiceManager* getManager();
 		String getName();
+
+		bool isInitialized() { return myInitialized; }
 
 		//! Returns true if debug mode is enabled for this service.
 		bool isDebugEnabled();
@@ -76,8 +78,10 @@ namespace omega
 		Event* readTail();
 		Event* getEvent(int index);
 
-	protected:
+	public:
+		//! @internal
 		void doSetup(Setting& settings);
+		//! @internal
 		void doInitialize(ServiceManager* mng, int serviceId);
 
 	private:
@@ -86,6 +90,7 @@ namespace omega
 		ServicePollPriority myPriority;
 		int myId;
 		bool myDebug;
+		bool myInitialized;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

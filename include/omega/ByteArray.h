@@ -28,7 +28,7 @@
 #define __BYTE_ARRAY_H__
 
 #include "osystem.h"
-#include "omega/Lock.h"
+#include "omega/TypeInfo.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,13 +41,11 @@ namespace omega {
 		void copyFrom(byte* src, size_t size);
 		void copyTo(byte* dst, size_t size);
 
-		byte* lock();
-		void unlock();
+		byte* getData() { return myData; }
 
 		size_t getSize() { return mySize; }
 
 	private:
-		Lock myLock;
 		byte* myData;
 		size_t mySize;
 	};

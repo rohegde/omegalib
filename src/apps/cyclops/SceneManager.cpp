@@ -73,15 +73,17 @@ void SceneManager::initialize(EngineServer* engine)
 
 	mySceneRoot = new osg::Group();
 
-	myTabletManager = new TabletManagerModule();
-	myTabletManager->initialize(myEngine, true, false);
+	myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 
-	myTabletManager->beginGui();
-	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
-	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
-	myTabletManager->finishGui();
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->beginGui();
+		myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
+		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
+		myTabletManager->finishGui();
+	}
 
 	frontView = true;
 }
@@ -91,7 +93,11 @@ void SceneManager::update(const UpdateContext& context)
 {
 	myOsg->update(context);
 	myEditor->update(context);
-	myTabletManager->update(context);
+
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->update(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,7 +486,7 @@ void SceneManager::initShading()
 	sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
-	sm->setSoftnessWidth(0.004f);
+	sm->setSoftnessWidth(0.005f);
 	sm->setJitteringScale(32);
 
 	ss->addChild(mySceneRoot);

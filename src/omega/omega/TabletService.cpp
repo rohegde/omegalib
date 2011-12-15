@@ -31,238 +31,200 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class TabletConnection: public TcpConnection
+TabletConnection::TabletConnection(ConnectionInfo ci, TabletService* service): 
+	TcpConnection(ci), myService(service)
 {
-public:
-    TabletConnection(ConnectionInfo ci, TabletService* service): 
-		TcpConnection(ci), myService(service)
-    {
-        ltClick = false;
-        rtClick = false;
-        anchor[0] = -1;
-        anchor[1] = -1;
-    }
+    ltClick = false;
+    rtClick = false;
+    anchor[0] = -1;
+    anchor[1] = -1;
+}
         
-	///////////////////////////////////////////////////////////////////////////////////////////////
-    virtual void handleData()
-    {
-        // Read message type.
-        readUntil(myBuffer, BufferSize, ':');
-		if(myBuffer[0] == 't') 
-		{
-			handleTouchEvent();
-		}
-		else 
-		{
-			handleUiEvent();
-		}
-        // Read until the end of the message
-        readUntil(myBuffer, BufferSize, '|');
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	void handleUiEvent()
-	{
-        readUntil(myBuffer, BufferSize, ':');
-		int id = atoi(myBuffer);
-
-        readUntil(myBuffer, BufferSize, ':');
-		int value = atoi(myBuffer);
-
-        myService->lockEvents();
-        Event* evt = myService->writeHead();
-		evt->reset(Event::ChangeValue, Service::Ui, id);
-		evt->setExtraDataType(Event::ExtraDataIntArray);
-		evt->setExtraDataInt(0, value);
-        myService->unlockEvents();
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-	void handleTouchEvent()
-	{
-        // Read event type.
-        readUntil(myBuffer, BufferSize, ':');
-        int eventType = atoi(myBuffer);
-            
-        float pt1x , pt1y , pt2x , pt2y;
-            
-        if ( eventType == Event::RotateEnd )
-        {
-            rtClick = false;
-            genSimpleEvent( Event::Up , Service::Pointer , 0.0 , 0.0 );
-        }
-        else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
-        {
-            // Read x.
-            readUntil(myBuffer, BufferSize, ':');
-            pt1x = atof(myBuffer);
-                
-            // Read y.
-            readUntil(myBuffer, BufferSize, ':');
-            pt1y = atof(myBuffer);
-                
-            switch (eventType) 
-            {
-                case Event::Move:
-                    if ( ltClick == true )  //This is not the first touch down
-                    {
-                        float tolerance = .1f;
-                        if( withinAnchor( pt1x , pt1y , tolerance) ) //if ess. the same pt.
-                        {
-                            genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
-                            anchor[0] = pt1x;
-                            anchor[1] = pt1y;
-                        }
-                    }
-                    break;
-                case Event::Up:
-                    ltClick = false;
-                    rtClick = false;
-                    genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
-                    break;
-                case Event::Down:
-                    if ( ltClick != true )  //This is not the first touch down
-                    {
-                        ltClick = true;                        
-                        genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
-                        anchor[0] = pt1x;
-                        anchor[1] = pt1y;                        
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        else if(eventType == Event::Zoom || eventType == Event::Rotate )
-        {
-            // Read point 1 x.
-            readUntil(myBuffer, BufferSize, ':');
-            pt1x = atof(myBuffer);
-                
-            // Read point 1 y.
-            readUntil(myBuffer, BufferSize, ':');
-            pt1y = atof(myBuffer);
-                
-            // Read point 2 x.
-            readUntil(myBuffer, BufferSize, ':');
-            pt2x = atof(myBuffer);
-                
-            // Read point 2 y.
-            readUntil(myBuffer, BufferSize, ':');
-            pt2y = atof(myBuffer);
-                
-            readUntil(myBuffer, BufferSize, ':');
-            float param = atof(myBuffer);
-                
-            switch (eventType)
-            {
-                case Event::Rotate: // param = angle
-                    if( rtClick == false )  //This is the first rotate call so send a down
-                    {
-                        rtClick = true;
-                        anchor[0] = pt1x;
-                        anchor[1] = pt1y;                        
-                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
-                    }
-                    //The rest can be simple moves with average out the rotation pts
-                    genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
-                    break;
-                        
-                case Event::Zoom:   // param = scale
-                    if( rtClick == false )  //This is the first rotate call so send a down
-                    {
-                        rtClick = true;
-                        anchor[0] = pt1x;
-                        anchor[1] = pt1y;                        
-                        genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
-                    }
-                    //The rest can be simple moves with average out the rotation pts
-                    genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
-                    break;
-                default:
-                    break;
-            }             
-        }
-    }
-        
-	///////////////////////////////////////////////////////////////////////////////////////////
-    bool withinAnchor( float x , float y , float tolerance )
-    {
-        if( x + tolerance > anchor[0] && x - tolerance < anchor[0] &&  
-            y + tolerance > anchor[1] && y - tolerance < anchor[1]) return true;
-        else return false;
-    }
-        
-	///////////////////////////////////////////////////////////////////////////////////////////
-    void genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
-    {
-        Event::Flags myFlag = (Event::Flags)0;
-            
-        if( ltClick ) myFlag = Event::Left;
-        if( rtClick ) myFlag = Event::Right;
-            
-        myService->lockEvents();
-        Event* evt = myService->writeHead();
-		evt->reset(evtType, servType, myConnectionInfo.id);
-        evt->setPosition( x , y );
-        evt->setFlags(myFlag);
-            
-        myService->unlockEvents();
-    }
-        
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    virtual void handleClosed()
-    {
-        ofmsg("Tablet connection closed (id=%1%)", %myConnectionInfo.id);
-    }
-        
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    virtual void handleConnected()
-    {
-		TcpConnection::handleConnected();
-
-        ofmsg("Tablet connection open (id=%1%)", %myConnectionInfo.id);
-		// Send out event
-        myService->lockEvents();
-		Event* evt = myService->writeHead();
-		evt->reset(Event::Connect, Service::Generic, myConnectionInfo.id);
-        myService->unlockEvents();
-    }
-
-private:
-    static const int BufferSize = 1024;
-    char myBuffer[BufferSize];
-        
-    TabletService* myService;
-    Vector2i myTouchPosition;
-    Vector2f anchor;
-    bool ltClick;
-    bool rtClick;
-};
-    
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class TabletServer: public TcpServer
+void TabletConnection::handleData()
 {
-public:
-    TabletServer(TabletService* service):
-	myConnectionCounter(0),
-	myService(service)
-	{}
-        
-	///////////////////////////////////////////////////////////////////////////////////////////
-    virtual TcpConnection* createConnection()
-    {
-        //ofmsg("New tablet connection (id=%1%)", %myConnectionCounter);
-        TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, myConnectionCounter++), myService);
-        myClients.push_back(conn);
+    // Read message type.
+    readUntil(myBuffer, BufferSize, ':');
+	if(myBuffer[0] == 't') 
+	{
+		handleTouchEvent();
+	}
+	else 
+	{
+		handleUiEvent();
+	}
+    // Read until the end of the message
+    readUntil(myBuffer, BufferSize, '|');
+}
 
-        return conn;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletConnection::handleUiEvent()
+{
+    readUntil(myBuffer, BufferSize, ':');
+	int id = atoi(myBuffer);
+
+    readUntil(myBuffer, BufferSize, ':');
+	int value = atoi(myBuffer);
+
+    myService->lockEvents();
+    Event* evt = myService->writeHead();
+	evt->reset(Event::ChangeValue, Service::Ui, id);
+	evt->setExtraDataType(Event::ExtraDataIntArray);
+	evt->setExtraDataInt(0, value);
+    myService->unlockEvents();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletConnection::handleTouchEvent()
+{
+    // Read event type.
+    readUntil(myBuffer, BufferSize, ':');
+    int eventType = atoi(myBuffer);
+            
+    float pt1x , pt1y , pt2x , pt2y;
+            
+    if ( eventType == Event::RotateEnd )
+    {
+        rtClick = false;
+        genSimpleEvent( Event::Up , Service::Pointer , 0.0 , 0.0 );
     }
+    else if(eventType == Event::Move || eventType == Event::Up || eventType == Event::Down )
+    {
+        // Read x.
+        readUntil(myBuffer, BufferSize, ':');
+        pt1x = atof(myBuffer);
+                
+        // Read y.
+        readUntil(myBuffer, BufferSize, ':');
+        pt1y = atof(myBuffer);
+                
+        switch (eventType) 
+        {
+            case Event::Move:
+                if ( ltClick == true )  //This is not the first touch down
+                {
+                    float tolerance = .1f;
+                    if( withinAnchor( pt1x , pt1y , tolerance) ) //if ess. the same pt.
+                    {
+                        genSimpleEvent( Event::Move , Service::Pointer , pt1x , pt1y );
+                        anchor[0] = pt1x;
+                        anchor[1] = pt1y;
+                    }
+                }
+                break;
+            case Event::Up:
+                ltClick = false;
+                rtClick = false;
+                genSimpleEvent( Event::Up , Service::Pointer , pt1x , pt1y );
+                break;
+            case Event::Down:
+                if ( ltClick != true )  //This is not the first touch down
+                {
+                    ltClick = true;                        
+                    genSimpleEvent( Event::Down , Service::Pointer , pt1x , pt1y );
+                    anchor[0] = pt1x;
+                    anchor[1] = pt1y;                        
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    else if(eventType == Event::Zoom || eventType == Event::Rotate )
+    {
+        // Read point 1 x.
+        readUntil(myBuffer, BufferSize, ':');
+        pt1x = atof(myBuffer);
+                
+        // Read point 1 y.
+        readUntil(myBuffer, BufferSize, ':');
+        pt1y = atof(myBuffer);
+                
+        // Read point 2 x.
+        readUntil(myBuffer, BufferSize, ':');
+        pt2x = atof(myBuffer);
+                
+        // Read point 2 y.
+        readUntil(myBuffer, BufferSize, ':');
+        pt2y = atof(myBuffer);
+                
+        readUntil(myBuffer, BufferSize, ':');
+        float param = atof(myBuffer);
+                
+        switch (eventType)
+        {
+            case Event::Rotate: // param = angle
+                if( rtClick == false )  //This is the first rotate call so send a down
+                {
+                    rtClick = true;
+                    anchor[0] = pt1x;
+                    anchor[1] = pt1y;                        
+                    genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                }
+                //The rest can be simple moves with average out the rotation pts
+                genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+                break;
+                        
+            case Event::Zoom:   // param = scale
+                if( rtClick == false )  //This is the first rotate call so send a down
+                {
+                    rtClick = true;
+                    anchor[0] = pt1x;
+                    anchor[1] = pt1y;                        
+                    genSimpleEvent( Event::Down , Service::Pointer , (pt1x + pt2x) * 0.5 , (pt1y + pt2y) * 0.5 );
+                }
+                //The rest can be simple moves with average out the rotation pts
+                genSimpleEvent( Event::Move , Service::Pointer , (anchor[0] + pt2x) * 0.5 , (anchor[1] + pt2y) * 0.5 );                    
+                break;
+            default:
+                break;
+        }             
+    }
+}
         
-private:
-    int myConnectionCounter;
-    TabletService* myService;
-};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool TabletConnection::withinAnchor( float x , float y , float tolerance )
+{
+    if( x + tolerance > anchor[0] && x - tolerance < anchor[0] &&  
+        y + tolerance > anchor[1] && y - tolerance < anchor[1]) return true;
+    else return false;
+}
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletConnection::genSimpleEvent( Event::Type evtType ,Service::ServiceType servType , float x , float y)
+{
+    Event::Flags myFlag = (Event::Flags)0;
+            
+    if( ltClick ) myFlag = Event::Left;
+    if( rtClick ) myFlag = Event::Right;
+            
+    myService->lockEvents();
+    Event* evt = myService->writeHead();
+	evt->reset(evtType, servType, myConnectionInfo.id);
+    evt->setPosition( x , y );
+    evt->setFlags(myFlag);
+            
+    myService->unlockEvents();
+}
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletConnection::handleClosed()
+{
+    ofmsg("Tablet connection closed (id=%1%)", %myConnectionInfo.id);
+}
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TabletConnection::handleConnected()
+{
+	TcpConnection::handleConnected();
+
+    ofmsg("Tablet connection open (id=%1%)", %myConnectionInfo.id);
+	// Send out event
+    myService->lockEvents();
+	Event* evt = myService->writeHead();
+	evt->reset(Event::Connect, Service::Generic, myConnectionInfo.id);
+    myService->unlockEvents();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletService::TabletService()
@@ -296,11 +258,11 @@ void TabletService::poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TcpConnection* TabletService::getConnection(int id)
+TabletConnection* TabletService::getConnection(int id)
 {
 	if(myServer != NULL)
 	{
-		return myServer->getConnection(id);
+		return (TabletConnection*)myServer->getConnection(id);
 	}
 	return NULL;
 }

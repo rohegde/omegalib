@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/Service.h"
 #include "omega/ServiceManager.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -55,9 +56,16 @@ void Service::doSetup(Setting& settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Service::doInitialize(ServiceManager* mng, int serviceId)
 {
-	myId = serviceId;
-	myManager = mng;
-	initialize();
+	if(!myInitialized)
+	{
+		myId = serviceId;
+		myManager = mng;
+		initialize();
+	}
+	else
+	{
+		ofwarn("Service::doInitialize: %1% already initialized.", %getName());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

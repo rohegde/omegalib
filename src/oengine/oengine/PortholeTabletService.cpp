@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/TabletManagerModule.h"
+#include "oengine/PortholeTabletService.h"
 #include "oengine/Camera.h"
 #include "omega/TabletService.h"
 
@@ -32,53 +32,86 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TabletManagerModule::TabletManagerModule():
+TabletGuiElement* TabletGuiElement::createButton(int id, const String& label, const String& description, const String& text)
+{
+	TabletGuiElement* e = new TabletGuiElement();
+	e->setId(id);
+	e->setType(TabletGuiElement::ElementTypeButton);
+	e->setLabel(label);
+	e->setDescription(description);
+	e->setText(text);
+	return e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TabletGuiElement* TabletGuiElement::createSlider(int id, const String& label, const String& description, int min, int max, int value)
+{
+	TabletGuiElement* e = new TabletGuiElement();
+	e->setId(id);
+	e->setType(TabletGuiElement::ElementTypeSlider);
+	e->setLabel(label);
+	e->setMinimum(min);
+	e->setMaximum(max);
+	e->setValue(value);
+	return e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TabletGuiElement* TabletGuiElement::createSwitch(int id, const String& label, const String& description, bool value)
+{
+	TabletGuiElement* e = new TabletGuiElement();
+	e->setId(id);
+	e->setType(TabletGuiElement::ElementTypeSwitch);
+	e->setLabel(label);
+	e->setValue(value ? 1 : 0);
+	return e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const char* TabletGuiElement::getDef()
+{
+	switch(myType)
+	{
+	case ElementTypeButton:
+		sprintf(myElemDef, "0:%d:%s:%s:%s:|", myId, myLabel.c_str(), myDescription.c_str(), myText.c_str());
+		break;
+	case ElementTypeSlider:
+		sprintf(myElemDef, "1:%d:%s:%s:%d:%d:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myMin, myMax, myValue);
+		break;
+	case ElementTypeSwitch:
+		sprintf(myElemDef, "2:%d:%s:%s:%d:|", myId, myLabel.c_str(), myDescription.c_str(), myValue);
+		break;
+	}
+	return myElemDef;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PortholeTabletService::PortholeTabletService():
 myAutoUpdateInterval(0.5f), myEngine(NULL), myEnabled(true), myTabletService(NULL), myEventFlags(Event::Left)
 {
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::beginGui()
-{
-	foreach(TabletGuiElement* e, myGuiElements)
-	{
-		delete e;
-	}
-	myGuiElements.clear();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::addGuiElement(TabletGuiElement* elem)
-{
-	myGuiElements.push_back(elem);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::finishGui()
-{
-	foreach(TabletInterface* tablet, myTablets)
-	{
-		tablet->beginGui();
-		foreach(TabletGuiElement* e, myGuiElements)
-		{
-			tablet->addGuiElement(e);
-		}
-		tablet->finishGui();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::initialize(EngineServer* engine, bool hires, bool offscreen)
-{
-	myEngine = engine;
-
-	// Register as a service.
-	ServiceManager* sm = SystemManager::instance()->getServiceManager();
-	doInitialize(sm, 128);
-	sm->addService(this);
 	setPollPriority(Service::PollLast);
+}
 
-	if(hires)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::setup(Setting& settings)
+{
+	myHires = true;
+	myOffscreen = true;
+
+	// Create and setup the internal tablet service.
+	myTabletService	= (TabletService*)getManager()->addService("TabletService");
+	if(myTabletService != NULL)
+	{
+		myTabletService->doSetup(settings);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::initialize()
+{
+	myEngine = EngineServer::instance();
+
+	if(myHires)
 	{
 		myTabletPixels = new PixelData(PixelData::FormatRgb, 840, 480);
 	}
@@ -88,7 +121,7 @@ void TabletManagerModule::initialize(EngineServer* engine, bool hires, bool offs
 	}
 
 	uint flags = Camera::ForceMono | Camera::DrawScene;
-	if(offscreen) flags |= Camera::Offscreen;
+	if(myOffscreen) flags |= Camera::Offscreen;
 
 	myTabletCamera = myEngine->createCamera(flags);
 	myTabletCamera->setProjection(60, 1, 0.1f, 100);
@@ -98,7 +131,6 @@ void TabletManagerModule::initialize(EngineServer* engine, bool hires, bool offs
 	Camera* defaultCamera = myEngine->getDefaultCamera();
 	myTabletCamera->setPosition(defaultCamera->getPosition());
 
-
 	//Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
 	//myTabletCamera->setOrientation(o);
 	myTabletCamera->getOutput(0)->setReadbackTarget(myTabletPixels);
@@ -106,7 +138,7 @@ void TabletManagerModule::initialize(EngineServer* engine, bool hires, bool offs
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::update(const UpdateContext& context)
+void PortholeTabletService::update(const UpdateContext& context)
 {
 	// Enable / disable tablet camera rendering
 	myTabletCamera->getOutput(0)->setEnabled(myEnabled);
@@ -116,16 +148,17 @@ void TabletManagerModule::update(const UpdateContext& context)
 		if(context.time - myLastUpdateTime > myAutoUpdateInterval)
 		{
 			myLastUpdateTime = context.time;
-			foreach(TabletInterface* tablet, myTablets)
+			ByteArray* png = ImageUtils::encode(myTabletPixels, ImageUtils::FormatPng);
+			foreach(TabletConnection* tablet, myTablets)
 			{
-				tablet->sendImage(myTabletPixels);
+				sendMessage(tablet, "ipng", png->getData(), png->getSize());
 			}
 		}
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::poll()
+void PortholeTabletService::poll()
 {
 	lockEvents();
 	int numEvts = getManager()->getAvailableEvents();
@@ -138,7 +171,7 @@ void TabletManagerModule::poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::processEvent(Event* evt)
+void PortholeTabletService::processEvent(Event* evt)
 {
 	if(myTabletService != NULL)
 	{
@@ -157,28 +190,67 @@ void TabletManagerModule::processEvent(Event* evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TabletManagerModule::handleEvent(const Event& evt)
+void PortholeTabletService::handleEvent(const Event& evt)
 {
 	if( evt.getServiceType() == Service::Generic )
 	{
 		if(evt.getType() == Event::Connect)
 		{
 			myTabletService = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
-			TabletInterface* tablet = new TabletInterface(myTabletService, evt.getSourceId());
-			myTablets.push_back(tablet);
+			TabletConnection* connection = myTabletService->getConnection(evt.getServiceId());
+			myTablets.push_back(connection);
 
 			if(myGuiElements.size() != 0)
 			{
-				// Send the current gui definition to the tablet.
-				tablet->beginGui();
-				foreach(TabletGuiElement* e, myGuiElements)
-				{
-					tablet->addGuiElement(e);
-				}
-				tablet->finishGui();
+				sendMessage(connection, "mgui", myGuiDef, strlen(myGuiDef));
 			}
 
 			evt.setProcessed();
 		}
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::beginGui()
+{
+	foreach(TabletGuiElement* e, myGuiElements)
+	{
+		delete e;
+	}
+	myGuiElements.clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::addGuiElement(TabletGuiElement* elem)
+{
+	myGuiElements.push_back(elem);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::finishGui()
+{
+	refreshGuiDef();
+	foreach(TabletConnection* tablet, myTablets)
+	{
+		sendMessage(tablet, "mgui", myGuiDef, strlen(myGuiDef));
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::refreshGuiDef()
+{
+	memset(myGuiDef, 0, MaxGuiDefSize);
+	foreach(TabletGuiElement* e, myGuiElements)
+	{
+		strcat(myGuiDef, e->getDef());
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::sendMessage(TabletConnection* conn, const char* header, void* data, int size)
+{
+	conn->write((void*)header, 4);
+	conn->write(&size, sizeof(int));
+	conn->write(data, size);
+}
+

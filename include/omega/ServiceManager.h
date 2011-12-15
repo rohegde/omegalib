@@ -109,6 +109,7 @@ namespace omega
 		ServiceAllocatorDictionary myServiceRegistry;
 
 		// Dictionary of active services
+		int myServiceIdCounter;
 		List<Service*> myServices;
 
 		// Event buffer stuff.
