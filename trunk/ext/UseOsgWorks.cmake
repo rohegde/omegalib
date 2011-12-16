@@ -27,9 +27,9 @@
 # When building in visual studio 10, use the NMake makefile generator for external projects.
 # (Visual Studio 10 external generator has some speed / dependency resolution issues)
 set(OSGWORKS_GENERATOR ${CMAKE_GENERATOR})
-if(OMEGA_TOOL_VS10)
-	set(OSGWORKS_GENERATOR "NMake Makefiles")
-endif(OMEGA_TOOL_VS10)
+#if(OMEGA_TOOL_VS10)
+#	set(OSGWORKS_GENERATOR "NMake Makefiles")
+#endif(OMEGA_TOOL_VS10)
 
 # Equalizer support enabled: uncompress and prepare the external project.
 ExternalProject_Add(
@@ -38,6 +38,9 @@ ExternalProject_Add(
 	#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
 	CMAKE_GENERATOR ${OSGWORKS_GENERATOR}
 	CMAKE_ARGS 
+		-DCMAKE_SHARED_LINKER_FLAGS:STRING="${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:msvcprt.lib /NODEFAULTLIB:libcpmt.lib"
+		-DCMAKE_LINKER_FLAGS:STRING="${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcpmt.lib /NODEFAULTLIB:msvcprt.lib"
+		-DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}
 		-DOSGInstallType:STRING="Alternate Install Location"

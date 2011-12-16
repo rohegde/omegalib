@@ -167,10 +167,14 @@ if(OMEGA_BUILD_OSG_LIB)
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(oosg)
 	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/osgparallax)
 		add_subdirectory(apps/cyclops)
 		add_subdirectory(apps/osgviewer)
 	endif(OMEGA_BUILD_APPS)
+	
+	if(OMEGA_BUILD_TUTORIALS)
+		# osgshape tutorial
+		omega_add_tutorial(tutorial7) 
+	endif(OMEGA_BUILD_TUTORIALS)
 endif(OMEGA_BUILD_OSG_LIB)
 
 # Qt configuration, libraries and applications
