@@ -24,13 +24,19 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-cmake_minimum_required(VERSION 2.8.1) 
-project(Tutorial7)
 
-include(${CMAKE_SOURCE_DIR}/../../CMakeModules/FindOmegalib.cmake)
+###################################################################################################
 
-include_directories(${OMEGA_INCLUDE_DIRS})
-add_executable(osgshape osgshape.cpp)
-target_link_libraries(osgshape ${OMEGA_LIB} ${OENGINE_LIB} ${OOSG_LIB})
-
-
+###################################################################################################
+# Source files
+set(SRCS 
+		osgviewer.cpp)
+    
+###################################################################################################
+# Setup compile info
+add_executable(osgviewer ${SRCS})
+set_target_properties(osgviewer PROPERTIES FOLDER apps)
+target_link_libraries(osgviewer
+	omega 
+	oengine
+    oosg)

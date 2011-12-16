@@ -93,7 +93,7 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void handleClosed()
 	{
-		ofmsg("Connection closed (id=%1%)", %myConnectionInfo.id);
+		ofmsg("Connection closed (id=%1%)", %getConnectionInfo().id);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ public:
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(Event::Zoom, Service::Pointer, myConnectionInfo.id);
+		evt->reset(Event::Zoom, Service::Pointer, getConnectionInfo().id);
 		evt->setExtraDataType(Event::ExtraDataIntArray);
 		evt->setExtraDataInt(0, wheel);
 		myService->unlockEvents();
@@ -124,7 +124,7 @@ public:
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(pressed == 1 ? Event::Down : Event::Up, Service::Pointer, myConnectionInfo.id);
+		evt->reset(pressed == 1 ? Event::Down : Event::Up, Service::Pointer, getConnectionInfo().id);
 		evt->setPosition(myPosition[0], myPosition[1]);
 
 		if(pressed == 1)
@@ -168,7 +168,7 @@ public:
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(Event::Move, Service::Pointer, myConnectionInfo.id);
+		evt->reset(Event::Move, Service::Pointer, getConnectionInfo().id);
 		evt->setPosition(myPosition[0], myPosition[1]);
 		evt->setFlags(myButtonFlags);
 
@@ -205,7 +205,7 @@ public:
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(Event::Update, Service::Pointer, myConnectionInfo.id);
+		evt->reset(Event::Update, Service::Pointer, getConnectionInfo().id);
 		evt->setPosition((float)r/255, (float)g/255, (float)b/255);
 		evt->setExtraDataType(Event::ExtraDataString);
 		evt->setExtraDataString(myName);
@@ -227,20 +227,17 @@ class SagePointerServer: public TcpServer
 {
 public:
 	SagePointerServer(SagePointerService* service):
-		myPointerCounter(0),
 		myService(service)
 		{}
 
-	virtual TcpConnection* createConnection()
+	virtual TcpConnection* createConnection(const ConnectionInfo& ci)
 	{
-		ofmsg("New sage pointer connection (id=%1%)", %myPointerCounter);
-		SagePointerConnection* conn = new SagePointerConnection(ConnectionInfo(myIOService, ++myPointerCounter), myService);
-	    myClients.push_back(conn);
+		ofmsg("New sage pointer connection (id=%1%)", %ci.id);
+		SagePointerConnection* conn = new SagePointerConnection(ci, myService);
 	    return conn;
 	}
 
 private:
-	int myPointerCounter;
 	SagePointerService* myService;
 };
 };

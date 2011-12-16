@@ -200,7 +200,7 @@ void TabletConnection::genSimpleEvent( Event::Type evtType ,Service::ServiceType
             
     myService->lockEvents();
     Event* evt = myService->writeHead();
-	evt->reset(evtType, servType, myConnectionInfo.id);
+	evt->reset(evtType, servType, getConnectionInfo().id);
     evt->setPosition( x , y );
     evt->setFlags(myFlag);
             
@@ -210,7 +210,7 @@ void TabletConnection::genSimpleEvent( Event::Type evtType ,Service::ServiceType
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TabletConnection::handleClosed()
 {
-    ofmsg("Tablet connection closed (id=%1%)", %myConnectionInfo.id);
+    ofmsg("Tablet connection closed (id=%1%)", %getConnectionInfo().id);
 }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,11 +218,11 @@ void TabletConnection::handleConnected()
 {
 	TcpConnection::handleConnected();
 
-    ofmsg("Tablet connection open (id=%1%)", %myConnectionInfo.id);
+    ofmsg("Tablet connection open (id=%1%)", %getConnectionInfo().id);
 	// Send out event
     myService->lockEvents();
 	Event* evt = myService->writeHead();
-	evt->reset(Event::Connect, Service::Generic, myConnectionInfo.id);
+	evt->reset(Event::Connect, Service::Generic, getConnectionInfo().id);
     myService->unlockEvents();
 }
 

@@ -95,7 +95,7 @@ void TcpServer::poll()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpServer::accept()
 {
-	TcpConnection* conn = createConnection();
+	TcpConnection* conn = doCreateConnection();
 	myAcceptor->async_accept(conn->getSocket(), boost::bind(&TcpServer::handleAccept, this, conn, asio::placeholders::error));
 }
 
@@ -104,15 +104,22 @@ void TcpServer::handleAccept(TcpConnection* newConnection, const asio::error_cod
 {
 	if(!error)
 	{
-		newConnection->handleConnected();
+		newConnection->doHandleConnected();
 		accept();
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-TcpConnection* TcpServer::createConnection()
+TcpConnection* TcpServer::createConnection(const ConnectionInfo& ci)
 {
-	TcpConnection* conn = new TcpConnection(ConnectionInfo(myIOService, myConnectionCounter++));
+	return new TcpConnection(ci);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TcpConnection* TcpServer::doCreateConnection()
+{
+	ConnectionInfo ci(myIOService, myConnectionCounter++);
+	TcpConnection* conn = createConnection(ci);
 	myClients.push_back(conn);
 	return conn;
 }
@@ -131,31 +138,44 @@ TcpConnection* TcpServer::getConnection(int id)
 TcpConnection::TcpConnection(ConnectionInfo ci):
 	myConnectionInfo(ci),
 	mySocket(ci.ioService),
-	myOpen(true)
+	myState(ConnectionListening)
 {}
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool TcpConnection::poll()
 {
-	if(!myOpen)
-	{
-		handleClosed();
-		return false;
-	} 
+	// If connection is in listening state (waiting for other end to connect) do nothing
+	if(myState == ConnectionListening) return true;
 
-	while(mySocket.is_open() && mySocket.available() != 0)
+	if(myState == ConnectionOpen)
 	{
-		handleData();
-	}
-	return true;
+		// If connection is open but the inner socket is not, signal that the connection has 
+		// been closed.
+		if(!mySocket.is_open())
+		{
+			myState = ConnectionClosed;
+			handleClosed();
+			return false;
+		}
+		else if(mySocket.available() != 0)
+		{
+			handleData();
+			return true;
+		}
+	} 
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpConnection::close()
 {
-	if(myOpen)
+	if(myState == ConnectionOpen)
 	{
 		mySocket.close();
+	}
+	else 
+	{
+		ofwarn("TcpConnection::close (id=%1%): connection was not open", %myConnectionInfo.id);
 	}
 }
 
@@ -217,37 +237,28 @@ size_t TcpConnection::read(byte* buffer, size_t size)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//String TcpConnection::readLine()
-//{
-//	asio::error_code error;
-//	size_t size = asio::read_until(mySocket, myInputBuffer, '\n', error);
-//	if(!error)
-//	{
-//		char* buf = new char[size];
-//		myInputBuffer.sgetn(buf, size);
-//		buf[size] = '\0';
-//		String str(buf);
-//		delete buf;
-//		return str;
-//	}
-//	return "";
-//}
+void TcpConnection::doHandleConnected()
+{
+	myState = ConnectionOpen;
+	handleConnected();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpConnection::handleConnected()
 {
-	myOpen = true;
+	ofmsg("TcpConnection::handleConnected (id=%1%)", %myConnectionInfo.id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpConnection::handleClosed()
 {
+	ofmsg("TcpConnection::handleClosed (id=%1%)", %myConnectionInfo.id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void TcpConnection::handleError(const ConnectionError& err)
 {
-	ofwarn("TcpConnection: %1%", %err.message());
+	ofwarn("TcpConnection:handleError (id=%1%): %1%", %myConnectionInfo.id %err.message());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
