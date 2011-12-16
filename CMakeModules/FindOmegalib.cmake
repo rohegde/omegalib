@@ -95,9 +95,9 @@ if(OMEGA_BINARY_DIR)
 		find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR})
 	endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
-	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} ${OPENGL_LIBRARY} ${GLEW_LIB_DEBUG} ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} ${GLEW_LIB_RELEASE} ${OPENGL_LIBRARY} ${LIBCONFIG_LIB_RELEASE})
-	set(OENGINE_LIB debug ${OENGINE_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OENGINE_LIB_RELEASE} ${OPENGL_LIBRARY})
-	set(OOSG_LIB debug ${OOSG_LIB_DEBUG} ${OPENGL_LIBRARY} optimized ${OOSG_LIB_RELEASE} ${OPENGL_LIBRARY})
+	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} debug ${GLEW_LIB_DEBUG} debug ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} optimized ${GLEW_LIB_RELEASE} optimized ${OPENGL_LIBRARY} optimized ${LIBCONFIG_LIB_RELEASE})
+	set(OENGINE_LIB debug ${OENGINE_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OENGINE_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
+	set(OOSG_LIB debug ${OOSG_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OOSG_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
 
 	###################################################################################################
 	# Visual studio specific options.

@@ -29,6 +29,9 @@ project(Tutorial7)
 
 include(${CMAKE_SOURCE_DIR}/../../CMakeModules/FindOmegalib.cmake)
 
+include(${CMAKE_SOURCE_DIR}/../../ext/UseOpenSceneGraph.cmake)
+include_directories(${OSG_INCLUDES})
+
 include_directories(${OMEGA_INCLUDE_DIRS})
 add_executable(osgshape osgshape.cpp)
 target_link_libraries(osgshape ${OMEGA_LIB} ${OENGINE_LIB} ${OOSG_LIB})
