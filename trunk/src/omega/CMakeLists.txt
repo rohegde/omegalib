@@ -397,8 +397,6 @@ endif(OMEGA_USE_PYTHON)
 
 ###################################################################################################
 configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
-configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
-
 
 ###################################################################################################
 install(
