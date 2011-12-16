@@ -1,3 +1,5 @@
+include(ExternalProject)
+
 if(OMEGA_OS_WIN)
 	set(EXTLIB_NAME OpenSceneGraph-3.0.1-VS10-x86)
 elseif(OMEGA_OS_LINUX)
@@ -59,7 +61,7 @@ elseif(OMEGA_OS_LINUX)
 	endif(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif(OMEGA_OS_WIN)
 
-include(${OmegaLib_SOURCE_DIR}/ext/UseOsgWorks.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/UseOsgWorks.cmake)
 # Add osgWorks to openscenegraph includes and libraries (this simplified inclusion in other projects.
 # we consider osg and osgWorks as a single package.
 set(OSG_INCLUDES ${OSG_INCLUDES} ${OSGWORKS_INCLUDES})

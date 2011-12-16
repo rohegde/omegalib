@@ -196,3 +196,5 @@ if(OMEGA_BUILD_QT_LIB)
 	endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_QT_LIB)
 
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
+
