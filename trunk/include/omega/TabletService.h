@@ -67,21 +67,17 @@ namespace omega {
 	{
 	public:
 		TabletServer(TabletService* service):
-			myConnectionCounter(0),
 			myService(service)
 		{}
         
 		///////////////////////////////////////////////////////////////////////////////////////////
-		virtual TcpConnection* createConnection()
+		virtual TcpConnection* createConnection(const ConnectionInfo& ci)
 		{
-			TabletConnection* conn = new TabletConnection(ConnectionInfo(myIOService, myConnectionCounter++), myService);
-			myClients.push_back(conn);
-
+			TabletConnection* conn = new TabletConnection(ci, myService);
 			return conn;
 		}
         
 	private:
-		int myConnectionCounter;
 		TabletService* myService;
 	};
 

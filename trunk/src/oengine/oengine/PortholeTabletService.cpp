@@ -196,7 +196,6 @@ void PortholeTabletService::handleEvent(const Event& evt)
 	{
 		if(evt.getType() == Event::Connect)
 		{
-			myTabletService = myEngine->getServiceManager()->getService<TabletService>(evt.getServiceId());
 			TabletConnection* connection = myTabletService->getConnection(evt.getServiceId());
 			myTablets.push_back(connection);
 

@@ -61,27 +61,37 @@ namespace omega {
 	class OMEGA_API TcpConnection: public OmegaObject
 	{
 	OMEGA_DECLARE_TYPE(TcpConnection)
+	friend class TcpServer;
+	public:
+		enum ConnectionState { ConnectionListening, ConnectionOpen, ConnectionClosed };
+
 	public:
 		TcpConnection(ConnectionInfo ci);
-		tcp::socket& getSocket() { return mySocket; }
 
+		//! Connection properties
+		//@{
+		tcp::socket& getSocket() { return mySocket; }
+		ConnectionState getState() { return myState; }
+		const ConnectionInfo& getConnectionInfo() { return myConnectionInfo; }
+		//@}
+
+		//! Connection management
+		//@{
 		bool poll();
 		void close();
-
-		bool isOpen() { return myOpen; }
+		//@}
 
 		//! Data IO
 		//@{
 		void write(const String& data);
 		void write(void* data, size_t size);
-		//String readLine();
 		//! Synchronously read byte data until the specified delimiter is found or the buffer fills up.
 		size_t readUntil(char* buffer, size_t size, char delimiter = '\0');
 		//! Synchronously read thre specified number of bytes from the stream.
 		size_t read(byte* buffer, size_t size);
 		//@}
 
-		//! Connection event management
+		//! Connection events
 		//@{
 		virtual void handleConnected();
 		virtual void handleClosed();
@@ -89,13 +99,12 @@ namespace omega {
 		virtual void handleData();
 		//@}
 
-		const ConnectionInfo& getConnectionInfo() { return myConnectionInfo; }
+	private:
+		void doHandleConnected();
 
-	protected:
-
-	protected:
+	private:
 		ConnectionInfo myConnectionInfo;
-		bool myOpen;
+		ConnectionState myState;
 		tcp::socket mySocket;
 		asio::streambuf myInputBuffer;
 	};
@@ -115,11 +124,14 @@ namespace omega {
 		TcpConnection* getConnection(int id);
 
 	protected:
-		virtual TcpConnection* createConnection();
+		virtual TcpConnection* createConnection(const ConnectionInfo& ci);
 		virtual void accept();
 		virtual void handleAccept(TcpConnection* newConnection, const asio::error_code& error);
 
-	protected:
+	private:
+		TcpConnection* doCreateConnection();
+
+	private:
 		int myConnectionCounter;
 		int myPort;
 		bool myInitialized;
