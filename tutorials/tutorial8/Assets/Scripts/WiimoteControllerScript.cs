@@ -101,27 +101,27 @@ public class WiimoteControllerScript : OmegaControllerScript {
 		IR2 = getIRDot2() * 10;
 		IR3 = getIRDot3() * 10;
 		
-		if( IR0_valid ){
+		if( IR0_valid && IR_DOT0 ){
 			IR_DOT0.transform.position = new Vector3(IR0.x, IR0.y, 0);
-		} else {
+		} else if( IR_DOT0 ){
 			IR_DOT0.transform.position = new Vector3(0, -10, 0);
 		}
 		
-		if( IR1_valid ){
+		if( IR1_valid && IR_DOT1 ){
 			IR_DOT1.transform.position = IR1;
-		} else {
+		} else if( IR_DOT1 ){
 			IR_DOT1.transform.position = new Vector3(0, -10, 0);
 		}
 		
-		if( IR2_valid ){
+		if( IR2_valid && IR_DOT2 ){
 			IR_DOT2.transform.position = IR2;
-		} else {
+		} else if( IR_DOT2 ){
 			IR_DOT2.transform.position = new Vector3(0, -10, 0);
 		}
 		
-		if( IR3_valid ){
+		if( IR3_valid && IR_DOT3 ){
 			IR_DOT3.transform.position = IR3;
-		} else {
+		} else if( IR_DOT3 ){
 			IR_DOT3.transform.position = new Vector3(0, -10, 0);
 		}
 	}
