@@ -18,12 +18,14 @@ Separate display and services code.
 		* BoundingSphere
 		* etc.
 	* move `libconfig` in `ocore`
+	* Keep using seprate namespaces or just a single one (like `omega`)?
 
-=== Revise Equalizer display system initialization flow ===
-	* There is probably a lot of redundancy - inefficiency in the currect way the Equalizer / application init flow works. Revise it.
+=== Revise Equalizer display system ===
+	* There is probably a lot of redundancy in the initialization flow - inefficiency in the current way the Equalizer / application init flow works. Revise it.
 	* *?* Render interlaced & side by side directly inside channel render function without relying on equalizer config and multiple equalizer draw calls
 		* Would allow to work around some problems with equalizer
 		* Would this lead to better performance?
+	* create autogenerator of eq configurations using libconfig
 
 === Revise Event class ===
 	* Zoom -> Scale
@@ -33,6 +35,10 @@ Separate display and services code.
 	* Remove MoveUp, Down, Etc. events?
 	
 == New oinputserver / NetService, new protocol ==
+	* ?create a lightweight library that given observer info from netservice, a config file and a tile id, returns the corrent modelview and projection matrices
+		* How to deal with stereo rendering?
+		 * Not easy to do without modifying more deeply the rendering system of the target application. At the end of the day, the lighter solution is the current one - just stream observer position and orientation and let the target app do the rest.
+	
 
 == Refactor Event class, generic messaging support ==
 
@@ -64,3 +70,7 @@ Sail UI capabilities can be used to create a view + control panel on a SAGE disp
 == Memory management and statistics support ==
 Add a way to collect info about memory leaks, allocations and timing statistics in the application. 
 	* Allow those statistics to be viewed as an OSD (like the console)
+	
+== Other stuff ==
+ * make osg & vtk data a downloadable package.
+ * re-add vtk support
