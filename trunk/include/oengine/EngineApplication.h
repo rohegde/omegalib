@@ -24,11 +24,13 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ENGINE_CLIENT_H__
-#define __ENGINE_CLIENT_H__
+#ifndef __ENGINE_APPLICATION_H__
+#define __ENGINE_APPLICATION_H__
 
 #include "oenginebase.h"
 #include "Renderable.h"
+#include "EngineClient.h"
+#include "EngineServer.h"
 #include "omega/Application.h"
 #include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
@@ -38,44 +40,55 @@ namespace oengine {
 	class EngineServer;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API EngineClient: public ApplicationClient
+	class OENGINE_API IEngineModule
 	{
 	public:
-		EngineClient(ApplicationServer* server);
-
-		EngineServer* getServer();
-
-		void addRenderPass(RenderPass* pass, bool addToFront);
-		void removeRenderPass(RenderPass* pass);
-		void removeAllRenderPasses();
-
-
-		void queueRenderableCommand(RenderableCommand& cmd);
-
-		virtual void initialize();
-		virtual void draw(const DrawContext& context);
-		virtual void startFrame(const FrameInfo& frame);
-		virtual void finishFrame(const FrameInfo& frame);
-
-		Renderer* getRenderer();
-
-	private:
-		void innerDraw(const DrawContext& context);
-
-	private:
-		EngineServer* myServer;
-		Renderer* myRenderer;
-		List<RenderPass*> myRenderPassList;
-		Queue<RenderableCommand> myRenderableCommands;
+		virtual void initialize(EngineServer* engine) {}
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Renderer* EngineClient::getRenderer()
-	{ return myRenderer; }
+	class EngineModuleServices
+	{
+	public:
+		static void addModule(IEngineModule* module)
+		{ 
+			mysModules.push_back(module); 
+		}
+
+		static List<IEngineModule*>::ConstRange getModules() 
+		{ 
+			return List<IEngineModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
+		}
+
+		static void initialize(EngineServer* engine)
+		{
+			foreach(IEngineModule* module, mysModules)
+			{
+				module->initialize(engine);
+			}
+		}
+	private:
+		static List<IEngineModule*> mysModules;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* EngineClient::getServer()
-	{ return myServer; }
+	//! a convenience application class to create oengine applications
+	void OENGINE_API registerPortholeTabletService();
+	template<typename T> 
+	class EngineApplication: public Application
+	{
+	public:
+		virtual void initialize() 
+		{ registerPortholeTabletService(); }
+		virtual ApplicationClient* createClient(ApplicationServer* server) 
+		{ return new EngineClient(server); }
+		virtual ApplicationServer* createServer() 
+		{ return new T(this); }
+
+	private:
+	};
 }; // namespace oengine
 
 #endif

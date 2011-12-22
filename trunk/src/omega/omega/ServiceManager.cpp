@@ -78,7 +78,7 @@ void ServiceManager::setup(Setting& settings)
 		Service* svc = addService(stSvc.getName());
 		if(svc != NULL)
 		{
-			svc->doSetup(stSvc);
+			svc->doSetup(this, stSvc);
 		}
 	}
 }
@@ -93,7 +93,7 @@ void ServiceManager::initialize()
 
 	foreach(Service* it, myServices)
 	{
-		it->doInitialize(this, myServiceIdCounter);
+		it->doInitialize(myServiceIdCounter);
 		myServiceIdCounter++;
 	}
 
@@ -147,7 +147,7 @@ void ServiceManager::addService(Service* service)
 	myServices.push_back(service);
 	if(!service->isInitialized())
 	{
-		service->doInitialize(this, myServiceIdCounter++);
+		service->doInitialize(myServiceIdCounter++);
 	}
 }
 

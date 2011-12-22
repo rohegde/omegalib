@@ -29,6 +29,8 @@
 
 #include "oenginebase.h"
 #include "oengine/EngineServer.h"
+#include "oengine/EngineApplication.h"
+#include "oengine/Camera.h"
 #include "omega/TabletService.h"
 
 namespace oengine {
@@ -88,7 +90,7 @@ namespace oengine {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements an interface to tablet device applications using the Porthole protocol.
-	class OENGINE_API PortholeTabletService: public Service
+	class OENGINE_API PortholeTabletService: public Service, IEngineModule
 	{
 	public:
 		static const int MaxGuiDefSize = 1024;
@@ -103,7 +105,8 @@ namespace oengine {
 		virtual void poll();
 		void processEvent(Event* evt);
 
-		void initialize();
+		virtual void initialize();
+		virtual void initialize(EngineServer* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 

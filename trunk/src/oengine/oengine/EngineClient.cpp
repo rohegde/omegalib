@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "oengine/EngineClient.h"
 #include "oengine/EngineServer.h"
+#include "oengine/PortholeTabletService.h"
 
 #include "omega/DisplaySystem.h"
 #include "omega/GpuManager.h"
@@ -35,7 +36,6 @@
 
 // Uncomment to print debug messages about client flow.
 //#define OMEGA_DEBUG_FLOW
-
 
 using namespace omega;
 using namespace oengine;

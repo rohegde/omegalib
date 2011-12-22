@@ -26,10 +26,17 @@
  *************************************************************************************************/
 #include "oengine/PortholeTabletService.h"
 #include "oengine/Camera.h"
+#include "oengine/EngineApplication.h"
 #include "omega/TabletService.h"
 
 using namespace omega;
 using namespace oengine;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void oengine::registerPortholeTabletService()
+{
+	SystemManager::instance()->getServiceManager()->registerService("PortholeTabletService", (ServiceAllocator)PortholeTabletService::New);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TabletGuiElement* TabletGuiElement::createButton(int id, const String& label, const String& description, const String& text)
@@ -102,14 +109,20 @@ void PortholeTabletService::setup(Setting& settings)
 	myTabletService	= (TabletService*)getManager()->addService("TabletService");
 	if(myTabletService != NULL)
 	{
-		myTabletService->doSetup(settings);
+		myTabletService->doSetup(getManager(), settings);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeTabletService::initialize()
 {
-	myEngine = EngineServer::instance();
+	EngineModuleServices::addModule(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PortholeTabletService::initialize(EngineServer* engine)
+{
+	myEngine = engine;
 
 	if(myHires)
 	{

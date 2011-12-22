@@ -193,7 +193,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Application
+	class OMEGA_API Application
 	{
 	public:
 		static const int MaxLayers = 16;

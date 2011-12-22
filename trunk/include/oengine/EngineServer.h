@@ -60,9 +60,6 @@ namespace oengine {
 		static const int MaxActivePointers = 128;
 		static const int MaxLights = 16;
 
-		static EngineServer* mysInstance;
-		static EngineServer* instance() { return mysInstance; }
-
 	public:
 		EngineServer(Application* app);
 

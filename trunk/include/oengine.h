@@ -37,6 +37,7 @@
 #include "oengine/DefaultTwoHandsInteractor.h"
 #include "oengine/DefaultRenderPass.h"
 #include "oengine/Effect.h"
+#include "oengine/EngineApplication.h"
 #include "oengine/EngineClient.h"
 #include "oengine/EngineServer.h"
 #include "oengine/ImageUtils.h"
