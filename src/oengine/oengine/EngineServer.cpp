@@ -31,6 +31,7 @@
 #include "oengine/TransparentRenderPass.h"
 #include "oengine/UiRenderPass.h"
 #include "oengine/Renderable.h"
+#include "oengine/PortholeTabletService.h"
 #include "oengine/ui/DefaultSkin.h"
 #include "omega/StringUtils.h"
 #include "omega/Observer.h"
@@ -41,7 +42,7 @@
 using namespace omega;
 using namespace oengine;
 
-EngineServer* EngineServer::mysInstance = NULL;
+List<IEngineModule*> EngineModuleServices::mysModules;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineServer::EngineServer(Application* app):
@@ -51,7 +52,6 @@ EngineServer::EngineServer(Application* app):
 	myDefaultCamera(NULL),
 	myConsoleEnabled(false)
 {
-	mysInstance = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +120,9 @@ void EngineServer::initialize()
 	addRenderPass("TransparentRenderPass");
 	addRenderPass("OverlayRenderPass");
 	addRenderPass("UiRenderPass");
+
+	// Initialize modules
+	EngineModuleServices::initialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

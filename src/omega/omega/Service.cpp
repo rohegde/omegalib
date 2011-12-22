@@ -31,8 +31,10 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Service::doSetup(Setting& settings)
+void Service::doSetup(ServiceManager* mng, Setting& settings)
 {
+	myManager = mng;
+
 	// set the service name.
 	if(settings.exists("name"))
 	{
@@ -54,12 +56,11 @@ void Service::doSetup(Setting& settings)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Service::doInitialize(ServiceManager* mng, int serviceId)
+void Service::doInitialize(int serviceId)
 {
 	if(!myInitialized)
 	{
 		myId = serviceId;
-		myManager = mng;
 		initialize();
 	}
 	else

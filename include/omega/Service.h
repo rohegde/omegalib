@@ -80,9 +80,9 @@ namespace omega
 
 	public:
 		//! @internal
-		void doSetup(Setting& settings);
+		void doSetup(ServiceManager* mng, Setting& settings);
 		//! @internal
-		void doInitialize(ServiceManager* mng, int serviceId);
+		void doInitialize(int serviceId);
 
 	private:
 		ServiceManager* myManager;

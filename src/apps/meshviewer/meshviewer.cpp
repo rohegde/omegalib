@@ -41,6 +41,29 @@ Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const St
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
 	myMesh->setData(myMeshData);
+
+	// Create the rendering effect for this entity.
+	MultipassEffect* mpfx = new MultipassEffect();
+	mySceneNode->setEffect(mpfx);
+
+	Effect* wirefx = new Effect();
+	wirefx->setDrawMode(Effect::DrawWireframe);
+	wirefx->setLightingEnabled(false);
+	wirefx->setColor(Color(1,1,1,0.03f));
+	wirefx->setForcedDiffuseColor(true);
+	wirefx->setBlendMode(Effect::BlendAdditive);
+	wirefx->setDepthTestMode(Effect::DepthTestDisabled);
+
+	Effect* basefx = new Effect();
+	basefx->setDrawMode(Effect::DrawSmooth);
+	basefx->setLightingEnabled(true);
+	basefx->setColor(Color(0.5f, 0.5f, 0.7f, 0.5f));
+	basefx->setShininess(16.0f);
+	basefx->setBlendMode(Effect::BlendAdditive);
+	basefx->setForcedDiffuseColor(true);
+
+	mpfx->addEffect(basefx);
+	mpfx->addEffect(wirefx);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

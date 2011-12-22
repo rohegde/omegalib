@@ -203,6 +203,13 @@ void SystemManager::setupServiceManager()
 	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
 #endif
 
+	// Kinda hack: run application initialize here because for now it is used to register services from
+	// external libraries, so it needs to run before setting up services from the config file.
+#ifdef OMEGA_USE_DISPLAY
+	// Initialize the application object (if present)
+	if(myApplication) myApplication->initialize();
+#endif
+
 	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
 	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
 	if(stRoot.exists("input"))
@@ -269,11 +276,6 @@ void SystemManager::initialize()
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
 #endif
 	myServiceManager->initialize();
-
-#ifdef OMEGA_USE_DISPLAY
-	// Initialize the application object (if present)
-	if(myApplication) myApplication->initialize();
-#endif
 
 	myIsInitialized = true;
 }

@@ -91,6 +91,7 @@ set( headers
 		${OmegaLib_SOURCE_DIR}/include/oengine/Console.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Font.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ImageUtils.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/EngineApplication.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/EngineClient.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/EngineServer.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
