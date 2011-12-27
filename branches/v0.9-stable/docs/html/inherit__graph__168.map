@@ -1,0 +1,11 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$class_ti_xml_base.html" title="TiXmlBase is a base class for every class in TinyXml." alt="" coords="5,112,88,141"/>
+<area shape="rect" id="node3" href="$class_ti_xml_attribute.html" title="An attribute is a name&#45;value pair." alt="" coords="137,85,239,115"/>
+<area shape="rect" id="node5" href="$class_ti_xml_node.html" title="The parent class for everything in the Document Object Model." alt="" coords="147,139,229,168"/>
+<area shape="rect" id="node7" href="$class_ti_xml_comment.html" title="An XML comment." alt="" coords="293,5,403,35"/>
+<area shape="rect" id="node9" href="$class_ti_xml_declaration.html" title="In correct XML the declaration is the first entry in the file." alt="" coords="289,59,407,88"/>
+<area shape="rect" id="node11" href="$class_ti_xml_document.html" title="Always the top level node." alt="" coords="292,112,404,141"/>
+<area shape="rect" id="node13" href="$class_ti_xml_element.html" title="The element is a container class." alt="" coords="297,165,399,195"/>
+<area shape="rect" id="node15" href="$class_ti_xml_text.html" title="XML text." alt="" coords="309,219,387,248"/>
+<area shape="rect" id="node17" href="$class_ti_xml_unknown.html" title="Any tag that tinyXml doesn&#39;t recognize is saved as an unknown." alt="" coords="295,272,401,301"/>
+</map>
