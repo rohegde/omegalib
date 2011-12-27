@@ -1,0 +1,47 @@
+<Level>
+    <MapData>
+        <MapContents>
+            <FileIndex_StaticObjects NumOfFiles="1">
+                <File Id="0" Path="static_objects/decals/trail_amnesia_floor01.dae" />
+            </FileIndex_StaticObjects>
+            <FileIndex_Entities NumOfFiles="1">
+                <File Id="0" Path="entities/furniture/table_wood02/table_wood02.ent" />
+            </FileIndex_Entities>
+            <StaticObjects>
+                <StaticObject CastShadows="true" Collides="true" FileIndex="0" ID="13" Name="wall_door_way_1" Rotation="0 4.71239 0" Scale="1 1 1" Tag="" WorldPos="2.22194 0 1.16249" />
+           </StaticObjects>
+            <Primitives>
+                <Plane Active="true" AlignToWorldCoords="true" CastShadows="false" Collides="true" Corner1UV="-1.61122 6.665" Corner2UV="-1.61122 1.365" Corner3UV="0.988776 1.365" Corner4UV="0.988776 6.665" EndCorner="6.5 0 13.25" ID="95" Material="static_objects/castlebase/castlebase_floor.mat" Name="Plane_1" Rotation="0 0 0" Scale="1 1 1" StartCorner="0 0 0" Tag="" TextureAngle="0" TileAmount="0.4 0.4 0.4" TileOffset="0 0 0" WorldPos="-4.02806 0 3.41249" />
+            </Primitives>
+            <Entities>
+                <Entity Active="true" FileIndex="0" ID="188" Name="table_wood02_1" Rotation="3.14159 -1.5708 3.14159" Scale="1 1 1" Tag="" WorldPos="7.85197 0 1.15535">
+                    <UserVariables>
+                        <Var Name="CastShadows" Value="true" />
+                        <Var Name="IsAffectedByDecal" Value="true" />
+                    </UserVariables>
+                </Entity>
+            </Entities>
+        </MapContents>
+    </MapData>
+</Level>
+
+----------------------
+
+<Level>
+    <MapData>
+        <MapContents>
+            <FileIndex_StaticObjects NumOfFiles="1">
+                <File Id="0" Path="cyclops/test/paralax.osg" />
+            </FileIndex_StaticObjects>
+            <FileIndex_Entities NumOfFiles="1">
+            </FileIndex_Entities>
+            <StaticObjects>
+                <StaticObject CastShadows="true" Collides="true" FileIndex="0" ID="0" Name="parallax" Rotation="90 0 180" Scale="0.01 0.01 0.01" Tag="" WorldPos="0 0 0" />
+           </StaticObjects>
+            <Primitives>
+                <Plane Active="true" AlignToWorldCoords="true" CastShadows="false" Collides="true" Corner1UV="1 0" Corner2UV="1 1" Corner3UV="0 0" Corner4UV="0 1" EndCorner="1 0 1" ID="1" Material="cyclops/test/rockwall.mat" Name="Plane_1" Rotation="0 0 0" Scale="1 1 1" StartCorner="0 0 0" Tag="" TextureAngle="0" TileAmount="0.4 0.4 0.4" TileOffset="0 0 0" WorldPos="0 0 0" />
+            </Primitives>
+        </MapContents>
+    </MapData>
+</Level>
+
