@@ -25,13 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Application.h"
-#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
-#include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
-#include "omega/StringUtils.h"
-
-#include "libconfig/ArgumentHelper.h"
 
 #define GLEW_MX
 #include "GL/glew.h"
@@ -91,7 +86,7 @@ void displayCallback(void)
 	int av = im->getAvailableEvents();
 	if(av != 0)
 	{
-		Event evts[OMEGA_MAX_EVENTS];
+		Event evts[OMICRON_MAX_EVENTS];
 		im->getEvents(evts, ServiceManager::MaxEvents);
 
 		// Dispatch events to application server.

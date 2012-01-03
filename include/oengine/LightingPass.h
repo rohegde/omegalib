@@ -33,7 +33,6 @@
 namespace oengine {
 	class OENGINE_API LightingPass: public RenderPass
 	{
-	OMEGA_DECLARE_TYPE(LightingPass)
 	public:
 		LightingPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new LightingPass(client); }

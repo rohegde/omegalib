@@ -45,7 +45,6 @@ WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 #include <string.h>
 
 #include "omega/SystemManager.h"
-#include "omega/DataManager.h"
 
 using namespace omega;
 

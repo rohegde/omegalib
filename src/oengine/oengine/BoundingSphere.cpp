@@ -30,9 +30,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(BoundingSphere, SceneObject);
-OMEGA_DEFINE_TYPE(BoundingSphereRenderable, SceneRenderable);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable* BoundingSphere::createRenderable()
 {

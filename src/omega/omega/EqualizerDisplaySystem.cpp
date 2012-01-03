@@ -24,13 +24,9 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Config.h"
-#include "omega/Event.h"
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/SystemManager.h"
-#include "omega/DataManager.h"
 #include "omega/MouseService.h"
-#include "omega/StringUtils.h"
 #include "omega/GpuManager.h"
 
 #include "eqinternal/eqinternal.h"
@@ -87,7 +83,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 		cfgInfo.path.c_str()
 	};
 
-	myNodeFactory = onew(EqualizerNodeFactory)();
+	myNodeFactory = new EqualizerNodeFactory();
 
 	omsg(":: Equalizer Initialization ::");
 	if( !eq::init( 3, (char**)argv, myNodeFactory ))

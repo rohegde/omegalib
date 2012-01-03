@@ -32,9 +32,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(Console, RenderableFactory);
-OMEGA_DEFINE_TYPE(ConsoleRenderable, OverlayRenderable);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Console::Console():
 	myLines(8),

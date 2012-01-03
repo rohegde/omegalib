@@ -27,8 +27,6 @@
 #include "omega/GpuManager.h"
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
-#include "omega/StringUtils.h"
-#include "omega/DataManager.h"
 #include "omega/Texture.h"
 
 #include "omega/glheaders.h"

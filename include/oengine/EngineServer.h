@@ -40,7 +40,6 @@
 #include "Console.h"
 #include "ui/Container.h"
 #include "ui/WidgetFactory.h"
-#include "omega/Application.h"
 
 namespace oengine {
 

@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "oengine/ui/Button.h"
 //#include "oengine/ui/DefaultSkin.h"
-#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace oengine;

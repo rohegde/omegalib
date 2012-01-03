@@ -27,7 +27,6 @@
 #include "oengine/PortholeTabletService.h"
 #include "oengine/Camera.h"
 #include "oengine/EngineApplication.h"
-#include "omega/TabletService.h"
 
 using namespace omega;
 using namespace oengine;
@@ -106,7 +105,7 @@ void PortholeTabletService::setup(Setting& settings)
 	myOffscreen = true;
 
 	// Create and setup the internal tablet service.
-	myTabletService	= (TabletService*)getManager()->addService("TabletService");
+	myTabletService	= (BasicPortholeService*)getManager()->addService("BasicPortholeService");
 	if(myTabletService != NULL)
 	{
 		myTabletService->doSetup(getManager(), settings);

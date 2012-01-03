@@ -27,9 +27,6 @@
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 #include "omega/SagePointerService.h"
-#include "omega/StringUtils.h"
-#include "omega/Color.h"
-#include "omega/Tcp.h"
 
 using namespace omega;
 

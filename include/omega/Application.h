@@ -29,20 +29,18 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
-#include "IEventListener.h"
+//#include "IEventListener.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class SystemManager;
-	class ServiceManager;
 	class DisplaySystem;
 	class RenderTarget;
 	class Application;
 	class ChannelImpl;
 	class GpuContext;
-	class Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! The Layer class contains enumerated values representing drawing layers.

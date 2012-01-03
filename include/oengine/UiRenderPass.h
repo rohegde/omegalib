@@ -33,7 +33,6 @@
 namespace oengine {
 	class OENGINE_API UiRenderPass: public RenderPass
 	{
-	OMEGA_DECLARE_TYPE(UiRenderPass)
 	public:
 		UiRenderPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new UiRenderPass(client); }

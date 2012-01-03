@@ -29,7 +29,6 @@
 
 #include "oenginebase.h"
 #include "omega/Application.h"
-#include "omega/Event.h"
 #include "oengine/SceneNode.h"
 
 namespace oengine {

@@ -27,7 +27,6 @@
 
 #include "oenginebase.h"
 #include "omega/GpuProgram.h"
-#include "omega/Color.h"
 
 namespace oengine {
 

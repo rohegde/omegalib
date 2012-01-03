@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "eqinternal.h"
 #include "omega/DisplaySystem.h"
-#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace co::base;
@@ -52,8 +51,8 @@ ChannelImpl::ChannelImpl( eq::Window* parent )
 	sLock.lock();
 	if(!initStaticVars)
 	{
-		sCanvasChannels = Vector2i(0, 0);
-		sCanvasSize = Vector2i(0, 0);
+		sCanvasChannels = omicron::Vector2i(0, 0);
+		sCanvasSize = omicron::Vector2i(0, 0);
 		initStaticVars = true;
 	}
 	sLock.unlock();
@@ -84,7 +83,7 @@ void ChannelImpl::initialize()
 	String name = getName();
 
 	vector<String> args = StringUtils::split(name, "x,");
-	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+	myChannelInfo.index = omicron::Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 	int ix = myChannelInfo.index[0];
 	int iy = myChannelInfo.index[1];
 
@@ -93,8 +92,8 @@ void ChannelImpl::initialize()
 	
 	ofmsg("@Channel %1% size: %2% %3%", %name %w %h);
 
-	myChannelInfo.offset = Vector2i(ix * w, iy * h);
-	myChannelInfo.size = Vector2i(w, h);
+	myChannelInfo.offset = omicron::Vector2i(ix * w, iy * h);
+	myChannelInfo.size = omicron::Vector2i(w, h);
 
 	sLock.lock();
 	// Refresh the number of channels in this view.

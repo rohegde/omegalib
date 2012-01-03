@@ -36,7 +36,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Renderable: public OmegaObject
 	{
-	OMEGA_DECLARE_TYPE(Renderable)
 	public:
 		Renderable();
 
@@ -76,7 +75,6 @@ namespace oengine {
 	//! Base class for objects that can create renderables.
 	class OENGINE_API RenderableFactory: public OmegaObject
 	{
-	OMEGA_DECLARE_TYPE(RenderableFactory)
 	public:
 		RenderableFactory();
 		virtual ~RenderableFactory();

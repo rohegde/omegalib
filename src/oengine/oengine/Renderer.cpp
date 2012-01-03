@@ -26,11 +26,8 @@
  *************************************************************************************************/
 #include "oengine/Renderer.h"
 #include "omega/Texture.h"
-#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
-#include "omega/Lock.h"
 #include "omega/SystemManager.h"
-#include "omega/DataManager.h"
 
 #include "FTGL/ftgl.h"
 

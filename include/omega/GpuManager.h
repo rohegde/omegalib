@@ -28,7 +28,6 @@
 #define __GPU_MANAGER_H__
 
 #include "osystem.h"
-#include "omega/Lock.h"
 #include "omega/GpuProgram.h"
 
 // HACK: To be removed (see GpuManager::TextureUnit)

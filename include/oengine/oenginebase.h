@@ -46,6 +46,9 @@
 	#define OENGINE_API
 #endif
 
-using namespace omega;
+namespace oengine
+{
+	using namespace omega;
+};
 
 #endif

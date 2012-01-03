@@ -27,7 +27,6 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/MouseService.h"
 #include "omega/KeyboardService.h"
-#include "omega/StringUtils.h"
 #include "omega/Observer.h"
 
 #include "eqinternal.h"
@@ -41,7 +40,7 @@ extern omega::Vector2i sCanvasChannels;
 extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void EqUtils::serializeEvent(Event& evt, co::DataOStream& os)
+void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
 {
 	os << evt.myProcessed;
 	os << evt.myTimestamp;
@@ -64,7 +63,7 @@ void EqUtils::serializeEvent(Event& evt, co::DataOStream& os)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void EqUtils::deserializeEvent(Event& evt, co::DataIStream& is)
+void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 {
 	is >> evt.myProcessed;
 	is >> evt.myTimestamp;

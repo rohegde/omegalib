@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/DefaultTwoHandsInteractor.h"
-#include "omega/PointSetId.h"
 
 using namespace omega;
 using namespace oengine;

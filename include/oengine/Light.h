@@ -28,7 +28,6 @@
 #define __LIGHT_H__
 
 #include "oenginebase.h"
-#include "omega/Color.h"
 //#include "oengine/RenderPass.h"
 
 namespace oengine {

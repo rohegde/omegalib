@@ -33,8 +33,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(DefaultRenderPass, RenderPass);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultRenderPass::render(EngineClient* client, const DrawContext& context)
 {

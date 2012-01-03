@@ -28,7 +28,6 @@
 #include "oengine/SceneNode.h"
 #include "oengine/SceneObject.h"
 #include "oengine/Renderable.h"
-#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
 
 using namespace omega;

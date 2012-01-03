@@ -30,7 +30,7 @@
 #include "oenginebase.h"
 #include "oengine/Font.h"
 #include "omega/Application.h"
-#include "omega/Color.h"
+
 #include "omega/Texture.h"
 #include "omega/GpuBuffer.h"
 

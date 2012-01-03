@@ -30,7 +30,6 @@
 #include "oenginebase.h"
 #include "oengine/Effect.h"
 #include "oengine/Node.h"
-#include "omega/Color.h"
 
 namespace oengine {
 	class EngineServer;

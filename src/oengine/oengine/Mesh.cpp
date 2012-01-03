@@ -31,9 +31,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(Mesh, SceneObject)
-OMEGA_DEFINE_TYPE(MeshRenderable, SceneRenderable)
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Mesh::Mesh(): 
 	myData(NULL)

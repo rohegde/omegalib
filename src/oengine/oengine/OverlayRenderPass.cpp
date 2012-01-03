@@ -33,8 +33,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(OverlayRenderPass, RenderPass)
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OverlayRenderPass::render(EngineClient* client, const DrawContext& context)
 {

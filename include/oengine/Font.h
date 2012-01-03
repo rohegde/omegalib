@@ -28,7 +28,6 @@
 #define __FONT_H__
 
 #include "oengine/oenginebase.h"
-#include "omega/Lock.h"
 
 class FTFont;
 

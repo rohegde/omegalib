@@ -31,8 +31,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(SceneRenderable, Renderable)
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneRenderable::SceneRenderable()
 {
