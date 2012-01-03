@@ -25,18 +25,13 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
+include(FindOmicron)
 include(ExternalProject)
 include(OmegaAddTutorial)
+include(UsePch)
 
 ###################################################################################################
 # Options
-set(OMEGA_BUILD_STATIC false CACHE BOOL "Build omega as a static library")
-if(OMEGA_BUILD_STATIC)
-	add_definitions(-DOMEGA_STATIC)
-endif(OMEGA_BUILD_STATIC)
-
-set(OMEGA_BUILD_APPS false CACHE BOOL "Enable building of omegalib applications. When disabled, only libraries will be built.")
-
 set(OMEGA_BUILD_TUTORIALS false CACHE BOOL "Enable building of omegalib tutorials.")
 
 set(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
@@ -50,19 +45,6 @@ if(OMEGA_USE_DISPLAY)
 	endif(OMEGA_BUILD_ENGINE)
 endif(OMEGA_USE_DISPLAY)
 
-set(OMEGA_USE_PYTHON false CACHE BOOL "Enable python scripting support.")
-if(OMEGA_USE_PYTHON)
-	find_package(PythonLibs)
-	if(PYTHONLIBS_FOUND)
-		include_directories(${PYTHON_INCLUDE_DIRS})
-	else(PYTHONLIBS_FOUND)
-		message(ERROR "Python libraries not found")
-	endif(PYTHONLIBS_FOUND)
-endif(OMEGA_USE_PYTHON)
-
-include(${CMAKE_SOURCE_DIR}/ext/UseBoost.cmake)
-include(${CMAKE_SOURCE_DIR}/ext/UseAsio.cmake)
-
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 	include(${OmegaLib_SOURCE_DIR}/ext/UseEqualizer.cmake)
 	include_directories(${EQUALIZER_INCLUDES})
@@ -71,34 +53,19 @@ endif(OMEGA_USE_DISPLAY_EQUALIZER)
 ###################################################################################################
 # Set include paths
 include_directories(
-  ${OmegaLib_BINARY_DIR}/include/
-  ${OmegaLib_SOURCE_DIR}/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/libconfig  
+  ${CMAKE_BINARY_DIR}/include/
+  ${CMAKE_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
 #hack
-  ${OmegaLib_SOURCE_DIR}/ext/windows/include
+  ${CMAKE_SOURCE_DIR}/ext/windows/include
+  ${OMICRON_INCLUDE_DIRS}
   )
 
 ###################################################################################################
 # Add libraries and applications to the project.
-add_subdirectory(3rdparty/libconfig)
-add_subdirectory(3rdparty/OpenThreads)
-
-# TODO: should this be moved inside then omega OPENNI module block?
-if(WIN32)
-	include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
-endif(WIN32)
 
 # Add the core omega project
 add_subdirectory(omega)
-
-if(OMEGA_BUILD_APPS)
-	add_subdirectory(apps/eventlogger)
-	# oinputserver currently works only on Windows (uses WINSOCK)
-	if(WIN32)
-		add_subdirectory(apps/oinputserver)
-	endif(WIN32)
-endif(OMEGA_BUILD_APPS)
 
 if(OMEGA_BUILD_TUTORIALS)
 	omega_add_tutorial(tutorial2)
@@ -107,9 +74,7 @@ endif(OMEGA_BUILD_TUTORIALS)
 
 if(OMEGA_USE_DISPLAY)
 	add_subdirectory(3rdparty/glew)
-	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/ohello)
-	endif(OMEGA_BUILD_APPS)
+	add_subdirectory(apps/ohello)
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(tutorial4)
 	endif(OMEGA_BUILD_TUTORIALS)
@@ -126,14 +91,12 @@ if(OMEGA_BUILD_ENGINE)
 	  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
 	)
 	add_subdirectory(oengine)
-	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/meshviewer)
-		if(OMEGA_USE_OPENNI)
-			add_subdirectory(apps/kinectdemo)
-			add_subdirectory(apps/mocalib)
-		endif(OMEGA_USE_OPENNI)
+	add_subdirectory(apps/meshviewer)
+	if(OMICRON_USE_OPENNI)
+		add_subdirectory(apps/kinectdemo)
+		add_subdirectory(apps/mocalib)
+	endif(OMICRON_USE_OPENNI)
 	add_subdirectory(apps/nightfield)
-	endif(OMEGA_BUILD_APPS)
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(tutorial5)
 		omega_add_tutorial(tutorial6)
@@ -166,10 +129,8 @@ if(OMEGA_BUILD_OSG_LIB)
 	include(${OmegaLib_SOURCE_DIR}/ext/UseOpenSceneGraph.cmake)
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(oosg)
-	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/cyclops)
-		add_subdirectory(apps/osgviewer)
-	endif(OMEGA_BUILD_APPS)
+	add_subdirectory(apps/cyclops)
+	add_subdirectory(apps/osgviewer)
 	
 	if(OMEGA_BUILD_TUTORIALS)
 		# osgshape tutorial
@@ -191,9 +152,7 @@ if(OMEGA_BUILD_QT_LIB)
 	link_directories(${QT_LIB_DIR})
 	
 	add_subdirectory(oqt)
-	if(OMEGA_BUILD_APPS)
-		add_subdirectory(apps/qtdemo)
-	endif(OMEGA_BUILD_APPS)
+	add_subdirectory(apps/qtdemo)
 endif(OMEGA_BUILD_QT_LIB)
 
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)

@@ -28,7 +28,7 @@
 #include "osystem.h"
 #include "Observer.h"
 #include "Application.h"
-#include "Color.h"
+//#include "Color.h"
 
 namespace omega
 {

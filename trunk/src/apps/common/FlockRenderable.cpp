@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "Flock.h"
 
-OMEGA_DEFINE_TYPE(FlockRenderable, SceneRenderable)
+#include <omegaGl.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::initialize()

@@ -32,9 +32,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(Pointer, RenderableFactory);
-OMEGA_DEFINE_TYPE(PointerRenderable, OverlayRenderable);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable* Pointer::createRenderable()
 {

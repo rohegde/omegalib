@@ -33,7 +33,6 @@
 namespace oengine {
 	class OENGINE_API TransparentRenderPass: public RenderPass
 	{
-	OMEGA_DECLARE_TYPE(TransparentRenderPass)
 	public:
 		TransparentRenderPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new TransparentRenderPass(client); }

@@ -27,7 +27,7 @@
 
 ###################################################################################################
 # Compile definitions
-add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
+add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC -DFREEIMAGE_LIB)
 
 set(OENGINE_USE_OBJ false CACHE BOOL "Enable support for obj format inside oengine.")
 set(OENGINE_USE_PLY true CACHE BOOL "Enable support for ply format inside oengine.")
@@ -173,11 +173,7 @@ source_group(oengine::mvc REGULAR_EXPRESSION oengine/mvc/)
 
 ###################################################################################################
 # Setup compile info
-if(OMEGA_BUILD_STATIC)
-	add_library( oengine ${srcs} ${headers})
-else(OMEGA_BUILD_STATIC)
-	add_library( oengine SHARED ${srcs} ${headers})
-endif(OMEGA_BUILD_STATIC)
+add_library( oengine SHARED ${srcs} ${headers})
 
 ###################################################################################################
 # Setup link info.

@@ -33,7 +33,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class Console: public RenderableFactory, public ILogListener
 	{
-	OMEGA_DECLARE_TYPE(Console)
 	friend class ConsoleRenderable;
 	public:
 		Console();
@@ -61,7 +60,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API ConsoleRenderable: public OverlayRenderable
 	{
-	OMEGA_DECLARE_TYPE(ConsoleRenderable)
 	public:
 		ConsoleRenderable(Console* owner): 
 		  myOwner(owner), myFont(NULL)

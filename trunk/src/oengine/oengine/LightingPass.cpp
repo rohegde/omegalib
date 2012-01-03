@@ -33,8 +33,6 @@
 using namespace omega;
 using namespace oengine;
 
-OMEGA_DEFINE_TYPE(LightingPass, RenderPass);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void LightingPass::render(EngineClient* client, const DrawContext& context)
 {

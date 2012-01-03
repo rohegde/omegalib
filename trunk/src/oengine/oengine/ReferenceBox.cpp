@@ -26,13 +26,9 @@
  *************************************************************************************************/
 #include "oengine/ReferenceBox.h"
 #include "omega/glheaders.h"
-#include "omega/Config.h"
 
 using namespace omega;
 using namespace oengine;
-
-OMEGA_DEFINE_TYPE(ReferenceBox, SceneObject);
-OMEGA_DEFINE_TYPE(ReferenceBoxRenderable, SceneRenderable);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ReferenceBox::ReferenceBox()

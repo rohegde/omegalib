@@ -30,7 +30,6 @@
 #include "oenginebase.h"
 #include "Renderable.h"
 #include "omega/Application.h"
-#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
 
 namespace oengine {

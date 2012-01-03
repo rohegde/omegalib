@@ -1,11 +1,11 @@
 /********************************************************************************************************************** 
  * THE OMEGA LIB PROJECT
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright 2010								Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011							Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti							febret@gmail.com
  *---------------------------------------------------------------------------------------------------------------------
- * Copyright (c) 2010, Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright (c) 2010-2011, Electronic Visualization Laboratory, University of Illinois at Chicago
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
  * following conditions are met:
@@ -22,18 +22,9 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __OMEGA_UI_H__
-#define __OMEGA_UI_H__
+#ifndef __OMEGA_GL__
+#define __OMEGA_GL__
 
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Button.h"
-#include "omega/ui/Container.h"
-#include "omega/ui/Image.h"
-#include "omega/ui/Label.h"
-#include "omega/ui/DefaultSkin.h"
-#include "omega/ui/Slider.h"
-#include "omega/ui/UIManager.h"
-#include "omega/ui/UserManagerPanel.h"
-#include "omega/ui/Widget.h"
+#include "omega/glheaders.h"
 
 #endif

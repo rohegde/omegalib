@@ -34,7 +34,6 @@
  *               2009, Stefan Eilemann <eile@equalizergraphics.com>
  *************************************************************************************************/
 #include "oengine/PlyDataReader.h"
-#include "omega/StringUtils.h"
 #include <cstdlib>
 #include <algorithm>
 //#include <math.h>

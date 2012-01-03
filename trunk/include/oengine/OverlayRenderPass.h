@@ -33,7 +33,6 @@
 namespace oengine {
 	class OENGINE_API OverlayRenderPass: public RenderPass
 	{
-	OMEGA_DECLARE_TYPE(OverlayRenderPass)
 	public:
 		OverlayRenderPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new OverlayRenderPass(client); }

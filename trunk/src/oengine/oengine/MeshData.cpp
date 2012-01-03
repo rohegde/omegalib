@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "oengine/MeshData.h"
 #include "oengine/PlyDataReader.h"
-#include "omega/StringUtils.h"
 //#include <cstdlib>
 //#include <math.h>
 

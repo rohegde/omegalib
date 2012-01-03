@@ -23,7 +23,6 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include "oengine/SceneQuery.h"
-#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace oengine;

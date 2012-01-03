@@ -27,13 +27,11 @@
 #include "omega/DisplaySystem.h"
 #include "omega/Observer.h"
 #include "omega/ObserverUpdateService.h"
-#include "omega/StringUtils.h"
-#include "omega/PointSetId.h"
 
 using namespace omega;
 
 // Define to enable a simple version of the service with no update threshold and separate orientation support.
-//#define OMEGA_SIMPLE_OBSERVER_UPDATE
+#define OMEGA_SIMPLE_OBSERVER_UPDATE
 //#define OMEGA_USE_THRESHOLD
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

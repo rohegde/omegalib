@@ -90,6 +90,10 @@ endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
 set(OMEGA_DATA_PATH "${OmegaLib_SOURCE_DIR}/data")
 
+if(OMEGA_OS_WIN)
+	add_definitions(-D_WIN32_WINNT=0x0501)
+endif(OMEGA_OS_WIN)
+
 ###################################################################################################
 # Set the output directories for libraries and binary files
 if(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
@@ -114,12 +118,12 @@ endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
 ###################################################################################################
 # Visual studio specific options.
-if(MSVC)
-	# Exclude libcmt when linking in visual studio
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
-endif(MSVC)
+# if(MSVC)
+	# # Exclude libcmt when linking in visual studio
+    # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+    # set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+	# add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
+# endif(MSVC)
 
 ###################################################################################################
 # Add subdirectiories

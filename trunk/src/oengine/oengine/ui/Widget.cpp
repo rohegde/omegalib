@@ -28,7 +28,6 @@
 #include "oengine/ui/Container.h"
 //#include "oengine/ui/DefaultSkin.h"
 #include "oengine/Renderer.h"
-#include "omega/StringUtils.h"
 
 #include "omega/glheaders.h"
 

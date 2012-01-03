@@ -33,7 +33,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API Pointer: public RenderableFactory
 	{
-	OMEGA_DECLARE_TYPE(Pointer)
 	friend class PointerRenderable;
 	public:
 		Pointer(): 
@@ -66,7 +65,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API PointerRenderable: public OverlayRenderable
 	{
-	OMEGA_DECLARE_TYPE(PointerRenderable)
 	public:
 		PointerRenderable(Pointer* pointer): 
 		  myPointer(pointer)

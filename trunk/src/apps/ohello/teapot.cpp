@@ -45,6 +45,7 @@ OpenGL(TM) is a trademark of Silicon Graphics, Inc.
 */
 
 #include <omega.h>
+#include <omegaGl.h>
 
 #ifdef WIN32
 	#pragma warning( disable : 4305)

@@ -37,7 +37,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API ReferenceBox: public SceneObject
 	{
-	OMEGA_DECLARE_TYPE(ReferenceBox)
 	friend class ReferenceBoxRenderable;
 	public:
 		enum Side { Left, Right, Top, Bottom, Front, Back, NumSides };
@@ -79,7 +78,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OENGINE_API ReferenceBoxRenderable: public SceneRenderable
 	{
-	OMEGA_DECLARE_TYPE(ReferenceBoxRenderable)
 	public:
 		ReferenceBoxRenderable(ReferenceBox* owner);
 		virtual ~ReferenceBoxRenderable();

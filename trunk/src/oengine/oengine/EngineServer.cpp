@@ -33,9 +33,7 @@
 #include "oengine/Renderable.h"
 #include "oengine/PortholeTabletService.h"
 #include "oengine/ui/DefaultSkin.h"
-#include "omega/StringUtils.h"
 #include "omega/Observer.h"
-#include "omega/Config.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 

@@ -44,21 +44,11 @@
 
 // Enabled modules
 #cmakedefine OMEGA_USE_DISPLAY
-#cmakedefine OMEGA_USE_DISPLAY
 #cmakedefine OMEGA_USE_DISPLAY_GLUT
 #cmakedefine OMEGA_USE_DISPLAY_EQUALIZER
 #cmakedefine OMEGA_USE_PYTHON
 #cmakedefine OMEGA_USE_OPENCL
 #cmakedefine OMEGA_USE_MOUSE
 #cmakedefine OMEGA_USE_KEYBOARD
-#cmakedefine OMEGA_USE_NETSERVICE
-#cmakedefine OMEGA_USE_OPENNI
-#cmakedefine OMEGA_USE_NATURAL_POINT
-#cmakedefine OMEGA_USE_OPTITRACK
-#cmakedefine OMEGA_USE_PQLABS
-#cmakedefine OMEGA_USE_DIRECTINPUT
-#cmakedefine OMEGA_USE_VRPN
-#cmakedefine OMEGA_USE_THINKGEAR
-
 
 #define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"

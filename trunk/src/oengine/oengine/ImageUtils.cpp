@@ -25,8 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/ImageUtils.h"
-#include "omega/StringUtils.h"
-#include "omega/DataManager.h"
 #include "omega/SystemManager.h"
 #include "FreeImage.h"
 

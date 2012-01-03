@@ -29,17 +29,17 @@
 
 #include "osystem.h"
 
+namespace omicron
+{
+	class PythonInterpreter;
+};
+
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class Application;
-	class Config;
 	class DisplaySystem;
-	class ServiceManager;
-	class Service;
-	class DataManager;
-	class PythonInterpreter;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// The SystemManager class is the root object of the omegalib architecture.

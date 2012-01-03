@@ -28,13 +28,8 @@
 #include "oengine/EngineClient.h"
 #include "oengine/EngineServer.h"
 
-#include "omega/StringUtils.h"
-
 using namespace omega;
 using namespace oengine;
-
-OMEGA_DEFINE_TYPE(Renderable, OmegaObject)
-OMEGA_DEFINE_TYPE(RenderableFactory, OmegaObject)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable::Renderable():

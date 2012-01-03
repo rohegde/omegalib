@@ -31,7 +31,7 @@
 #include "oengine/EngineServer.h"
 #include "oengine/EngineApplication.h"
 #include "oengine/Camera.h"
-#include "omega/TabletService.h"
+#include "omicron/BasicPortholeService.h"
 
 namespace oengine {
 
@@ -134,7 +134,7 @@ namespace oengine {
 		bool myOffscreen;
 
 		List<TabletConnection*> myTablets;
-		TabletService* myTabletService;
+		BasicPortholeService* myTabletService;
 
 		bool myEnabled;
 

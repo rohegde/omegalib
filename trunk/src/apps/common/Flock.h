@@ -92,7 +92,6 @@ struct FlockAffector
 class Flock: public SceneObject
 {
 public:
-OMEGA_DECLARE_TYPE(Flock)
 static const int MaxAffectors = 32;
 
 public:
@@ -164,7 +163,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class FlockRenderable: public SceneRenderable
 {
-OMEGA_DECLARE_TYPE(FlockRenderable)
 public:
 	FlockRenderable(Flock* owner): myOwner(owner) {}
 

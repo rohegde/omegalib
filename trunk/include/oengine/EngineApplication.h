@@ -32,7 +32,6 @@
 #include "EngineClient.h"
 #include "EngineServer.h"
 #include "omega/Application.h"
-#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
 
 namespace oengine {

@@ -24,18 +24,12 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Config.h"
-#include "omega/DataManager.h"
+#include "omega/osystem.h"
 #include "omega/SystemManager.h"
-#include "omega/FilesystemDataSource.h"
-#include "omega/StringUtils.h"
 
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	FILE* sLogFile = NULL;
-	List<ILogListener*> sLogListeners;
-
 	GLEWContext* sGlewContext;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,91 +42,6 @@ namespace omega
 	void glewSetContext(const GLEWContext* context)
 	{
 		sGlewContext = (GLEWContext*)context;
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void ologaddlistener(ILogListener* listener)
-	{
-		sLogListeners.push_back(listener);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void ologremlistener(ILogListener* listener)
-	{
-		sLogListeners.remove(listener);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void ologopen(const char* filename)
-	{
-		if(!filename) filename = "./log.txt";
-		sLogFile = fopen(filename, "w");
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void ologclose()
-	{
-		if(sLogFile)
-		{
-			fflush(sLogFile);
-			fclose(sLogFile);
-			sLogFile = NULL;
-		}
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void omsg(const String& str)
-	{
-		printf("%s\n", str.c_str());
-		if(sLogFile)
-		{
-			fprintf(sLogFile, "%s\n", str.c_str());
-			fflush(sLogFile);
-		}
-		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void owarn(const String& str)
-	{
-		printf("!!! %s\n", str.c_str());
-		if(sLogFile)
-		{
-			fprintf(sLogFile, "!!! %s\n", str.c_str());
-			fflush(sLogFile);
-		}
-		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void oerror(const String& str)
-	{
-		printf("*** %s\n", str.c_str());
-		if(sLogFile)
-		{
-			fprintf(sLogFile, "*** %s\n", str.c_str());
-			fflush(sLogFile);
-		}
-		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void oabort(const char* file, int line, const char* reason)
-	{
-		String filename;
-		String path;
-
-		StringUtils::splitFilename(file, filename, path);
-
-		ofmsg("Assertion failed at %1%:%2% - %3%", %file %line %reason);
-
-		abort();
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void oexit(int code)
-	{
-		exit(code);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////

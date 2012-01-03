@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/ui/Slider.h"
-#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace oengine;

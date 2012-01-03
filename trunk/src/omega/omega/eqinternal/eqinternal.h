@@ -27,11 +27,9 @@
 #ifndef EQ_INTERNAL
 #define EQ_INTERNAL
 
-//#include "omega/osystem.h"
+#include "omega/osystem.h"
 #include "omega/Application.h"
-#include "omega/ServiceManager.h"
 #include "omega/RenderTarget.h"
-#include "omega/Event.h"
 
 // Equalizer includes
 #include "eq/eq.h"
@@ -47,18 +45,19 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-namespace omega {
-class RenderTarget;
-
-	class EqUtils
+namespace omicron {
+	class EventUtils
 	{
 	public:
 		static void serializeEvent(Event& evt, co::DataOStream& os);
 		static void deserializeEvent(Event& evt, co::DataIStream& is);
 	private:
-		EqUtils() {}
+		EventUtils() {}
 	};
+};
 
+namespace omega {
+	class RenderTarget;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 //!  Frame-specific data.
@@ -91,7 +90,7 @@ protected:
 			os << myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				EqUtils::serializeEvent(myEventBuffer[i], os);
+				EventUtils::serializeEvent(myEventBuffer[i], os);
 			}
 		}
 	}
@@ -105,7 +104,7 @@ protected:
 			is >> myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				EqUtils::deserializeEvent(myEventBuffer[i], is);
+				EventUtils::deserializeEvent(myEventBuffer[i], is);
 			}
 		}
 	}
@@ -117,7 +116,7 @@ protected:
 
 private:
 	int myNumEvents;
-	Event myEventBuffer[ OMEGA_MAX_EVENTS ];
+	Event myEventBuffer[ OMICRON_MAX_EVENTS ];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -302,7 +301,7 @@ protected:
 private:
 	bool myInitialized;
 	eq::Window* myWindow;
-	Lock myLock;
+	omicron::Lock myLock;
 	ViewImpl* myView;
 	ChannelInfo myChannelInfo;
 	DrawContext myDC;

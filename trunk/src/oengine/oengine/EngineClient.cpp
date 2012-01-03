@@ -32,15 +32,12 @@
 #include "omega/GpuManager.h"
 #include "omega/Texture.h"
 #include "omega/glheaders.h"
-#include "omega/StringUtils.h"
 
 // Uncomment to print debug messages about client flow.
 //#define OMEGA_DEBUG_FLOW
 
 using namespace omega;
 using namespace oengine;
-
-OMEGA_DEFINE_TYPE(RenderPass, OmegaObject)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineClient::EngineClient(ApplicationServer* server):
