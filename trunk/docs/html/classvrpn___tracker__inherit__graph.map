@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node7" href="$classvrpn___tracker___n_u_l_l.html" title="vrpn_Tracker_NULL" alt="" coords="5,237,139,267"/>
-<area shape="rect" id="node9" href="$classvrpn___tracker___remote.html" title="vrpn_Tracker_Remote" alt="" coords="163,237,309,267"/>
-<area shape="rect" id="node11" href="$classvrpn___tracker___serial.html" title="vrpn_Tracker_Serial" alt="" coords="333,237,467,267"/>
-<area shape="rect" id="node13" href="$classvrpn___tracker___server.html" title="vrpn_Tracker_Server" alt="" coords="491,237,629,267"/>
-<area shape="rect" id="node2" href="$classvrpn___base_class.html" title="Class from which all user&#45;level (and other) classes that communicate with vrpn_Connections should der..." alt="" coords="260,83,375,112"/>
-<area shape="rect" id="node4" href="$classvrpn___base_class_unique.html" title="INTERNAL class to hold members that there should only be one copy of even when a class inherits from ..." alt="" coords="240,5,395,35"/>
-</map>

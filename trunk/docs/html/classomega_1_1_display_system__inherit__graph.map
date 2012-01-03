@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node5" href="$classomega_1_1_equalizer_display_system.html" title="omega::EqualizerDisplaySystem" alt="" coords="5,160,216,189"/>
-<area shape="rect" id="node7" href="$classomega_1_1_glut_display_system.html" title="Implements a display system based on GLUT, offering a single render window and mouse input support..." alt="" coords="240,160,421,189"/>
-<area shape="rect" id="node2" href="$classomega_1_1_dynamic_object.html" title="omega::DynamicObject" alt="" coords="141,5,299,35"/>
-</map>

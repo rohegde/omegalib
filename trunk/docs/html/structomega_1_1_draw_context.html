@@ -12,7 +12,6 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -57,11 +56,11 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#a05fe52b7a4dc035bd7dafe16dbac7829">uint64</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#ad57d82276bb5c10a8a69016eefdd8e00">frameNum</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint64&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#ad57d82276bb5c10a8a69016eefdd8e00">frameNum</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a8194febe50624db62d1f3f3989d61f28">layer</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a252dc6d93dd7fc3950e18c7a96a96a49">modelview</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1math_1_1transform.html">Transform3</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db">projection</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">viewport</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">AffineTransform3&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a252dc6d93dd7fc3950e18c7a96a96a49">modelview</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Transform3&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db">projection</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Rect&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">viewport</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The pixel viewport coordinates of this context with respect to the owner window of the context.  <a href="#aa52c0e14a78effc78e23dc203fe1239b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_draw_context.html#a4a9e2dc4852222ea6542927a9d0264e0">Eye</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a3e9781dcb951970883cfbe9d10a92a85">eye</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The eye being rendered for this context.  <a href="#a3e9781dcb951970883cfbe9d10a92a85"></a><br/></td></tr>
@@ -70,6 +69,7 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_1_1_channel_info.html">ChannelInfo</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a0652c8fee16c6a1568972f782f7e2766">channel</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Information about the drawing channel associated with this context.  <a href="#a0652c8fee16c6a1568972f782f7e2766"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_render_target.html">RenderTarget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#ad5639a082fb11e9cdaebe45b14eeb097">drawBuffer</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_gpu_context.html">GpuContext</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_draw_context.html#a755c0d31fff831ada4970da76979ae98">gpuContext</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Contains information about the context in which a drawing operation is taking place. </p>
@@ -167,7 +167,20 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceomega.html#a05fe52b7a4dc035bd7dafe16dbac7829">uint64</a> <a class="el" href="structomega_1_1_draw_context.html#ad57d82276bb5c10a8a69016eefdd8e00">omega::DrawContext::frameNum</a></td>
+          <td class="memname">uint64 <a class="el" href="structomega_1_1_draw_context.html#ad57d82276bb5c10a8a69016eefdd8e00">omega::DrawContext::frameNum</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a755c0d31fff831ada4970da76979ae98"></a><!-- doxytag: member="omega::DrawContext::gpuContext" ref="a755c0d31fff831ada4970da76979ae98" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_gpu_context.html">GpuContext</a>* <a class="el" href="structomega_1_1_draw_context.html#a755c0d31fff831ada4970da76979ae98">omega::DrawContext::gpuContext</a></td>
         </tr>
       </table>
 </div>
@@ -193,7 +206,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1math_1_1transform.html">AffineTransform3</a> <a class="el" href="structomega_1_1_draw_context.html#a252dc6d93dd7fc3950e18c7a96a96a49">omega::DrawContext::modelview</a></td>
+          <td class="memname">AffineTransform3 <a class="el" href="structomega_1_1_draw_context.html#a252dc6d93dd7fc3950e18c7a96a96a49">omega::DrawContext::modelview</a></td>
         </tr>
       </table>
 </div>
@@ -206,7 +219,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1math_1_1transform.html">Transform3</a> <a class="el" href="structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db">omega::DrawContext::projection</a></td>
+          <td class="memname">Transform3 <a class="el" href="structomega_1_1_draw_context.html#accae58455968f893011768e1aa9f35db">omega::DrawContext::projection</a></td>
         </tr>
       </table>
 </div>
@@ -234,7 +247,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structomega_1_1math_1_1_rect.html">Rect</a> <a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">omega::DrawContext::viewport</a></td>
+          <td class="memname">Rect <a class="el" href="structomega_1_1_draw_context.html#aa52c0e14a78effc78e23dc203fe1239b">omega::DrawContext::viewport</a></td>
         </tr>
       </table>
 </div>
