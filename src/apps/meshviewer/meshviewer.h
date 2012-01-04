@@ -36,7 +36,7 @@ using namespace oengine;
 using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public DynamicObject
+class Entity: public ReferenceType
 {
 public:
 	Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label);

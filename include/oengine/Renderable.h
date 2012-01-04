@@ -34,7 +34,7 @@ namespace oengine {
 	class EngineServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Renderable: public OmegaObject
+	class OENGINE_API Renderable: public ReferenceType
 	{
 	public:
 		Renderable();
@@ -73,7 +73,7 @@ namespace oengine {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Base class for objects that can create renderables.
-	class OENGINE_API RenderableFactory: public OmegaObject
+	class OENGINE_API RenderableFactory: public ReferenceType
 	{
 	public:
 		RenderableFactory();

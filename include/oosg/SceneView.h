@@ -247,7 +247,7 @@ class SceneView : public osg::Object, public osg::CullSettings
         virtual void draw();
         
         /** Compute the number of dynamic objects that will be held in the rendering backend */
-        unsigned int getDynamicObjectCount() const { return _dynamicObjectCount; }
+        unsigned int getReferenceTypeCount() const { return _dynamicObjectCount; }
         
         /** Release all OpenGL objects from the scene graph, such as texture objects, display lists etc.
           * These released scene graphs placed in the respective delete GLObjects cache, which

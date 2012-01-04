@@ -36,7 +36,7 @@ using namespace omega;
 using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class AffectorEntity: public DynamicObject
+class AffectorEntity: public ReferenceType
 {
 public:
 	AffectorEntity(SceneObject* obj, EngineServer* server);

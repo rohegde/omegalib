@@ -35,7 +35,7 @@ namespace oengine {
 	class EngineClient;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API RenderPass: public OmegaObject
+	class OENGINE_API RenderPass: public ReferenceType
 	{
 	public:
 		enum RenderFlags { 

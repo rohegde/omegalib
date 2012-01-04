@@ -70,7 +70,7 @@ OsgModule::~OsgModule()
 void OsgModule::initialize(EngineServer* server)
 {
 	myServer = server;
-	myServer->registerRenderPassClass<OsgRenderPass>();
+	myServer->registerRenderPassClass("OsgRenderPass", (EngineServer::RenderPassFactory)OsgRenderPass::createInstance);
 	myServer->addRenderPass("OsgRenderPass", this, true);
 }
 

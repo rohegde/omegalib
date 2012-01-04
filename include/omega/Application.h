@@ -135,7 +135,7 @@ namespace omega
 	class ApplicationServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationClient: public DynamicObject
+	class OMEGA_API ApplicationClient: public ReferenceType
 	{
 	friend class DisplaySystem;
 	friend class ApplicationServer;
@@ -164,7 +164,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationServer: public DynamicObject, public IEventListener
+	class OMEGA_API ApplicationServer: public ReferenceType, public IEventListener
 	{
 	friend class ApplicationClient;
 	public:
