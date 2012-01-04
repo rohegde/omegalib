@@ -46,7 +46,7 @@ if(OMEGA_USE_DISPLAY)
 endif(OMEGA_USE_DISPLAY)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
-	include(${OmegaLib_SOURCE_DIR}/ext/UseEqualizer.cmake)
+	include(${OmegaLib_SOURCE_DIR}/external/UseEqualizer.cmake)
 	include_directories(${EQUALIZER_INCLUDES})
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
 
@@ -57,7 +57,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
 #hack
-  ${CMAKE_SOURCE_DIR}/ext/windows/include
+  ${CMAKE_SOURCE_DIR}/external/windows/include
   ${OMICRON_INCLUDE_DIRS}
   )
 
@@ -82,9 +82,9 @@ endif(OMEGA_USE_DISPLAY)
 
 # Add some libraries used for display support.
 if(OMEGA_BUILD_ENGINE)
-	include(${OmegaLib_SOURCE_DIR}/ext/UseFreeImage.cmake)
-	include(${OmegaLib_SOURCE_DIR}/ext/UseFreeType.cmake)
-	include(${OmegaLib_SOURCE_DIR}/ext/UseFtgl.cmake)
+	include(${OmegaLib_SOURCE_DIR}/external/UseFreeImage.cmake)
+	include(${OmegaLib_SOURCE_DIR}/external/UseFreeType.cmake)
+	include(${OmegaLib_SOURCE_DIR}/external/UseFtgl.cmake)
 	include_directories(
 	  ${OmegaLib_BINARY_DIR}/ftgl/src/
 	  ${OmegaLib_BINARY_DIR}/freetype/include/
@@ -126,7 +126,7 @@ endif(OMEGA_BUILD_VTK_LIB)
 
 # Open Scene Graph configuration, libraries and applications
 if(OMEGA_BUILD_OSG_LIB)
-	include(${OmegaLib_SOURCE_DIR}/ext/UseOpenSceneGraph.cmake)
+	include(${OmegaLib_SOURCE_DIR}/external/UseOpenSceneGraph.cmake)
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(oosg)
 	add_subdirectory(apps/cyclops)

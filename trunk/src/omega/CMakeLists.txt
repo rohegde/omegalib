@@ -150,8 +150,8 @@ target_link_libraries(omega ${OMICRON_LIB})
 
 ###################################################################################################
 # Setup module-specific link info
-set(EXT_LIB_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/libs32)
-set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/include)
+set(EXT_LIB_DIR ${OmegaLib_SOURCE_DIR}/external/libs32)
+set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/external/include)
 
 include_directories(${EXT_INCLUDE_DIR})
 
