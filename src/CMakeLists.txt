@@ -57,7 +57,7 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/include/
   ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
 #hack
-  ${CMAKE_SOURCE_DIR}/external/windows/include
+  ${CMAKE_SOURCE_DIR}/external/include
   ${OMICRON_INCLUDE_DIRS}
   )
 
