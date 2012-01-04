@@ -39,16 +39,9 @@
 #cmakedefine OMEGA_TOOL_XCODE
 #cmakedefine OMEGA_TOOL_GCC
 
-// Build options
-#cmakedefine OMEGA_BUILD_STATIC
-
 // Enabled modules
-#cmakedefine OMEGA_USE_DISPLAY
 #cmakedefine OMEGA_USE_DISPLAY_GLUT
 #cmakedefine OMEGA_USE_DISPLAY_EQUALIZER
-#cmakedefine OMEGA_USE_PYTHON
 #cmakedefine OMEGA_USE_OPENCL
-#cmakedefine OMEGA_USE_MOUSE
-#cmakedefine OMEGA_USE_KEYBOARD
 
 #define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"
