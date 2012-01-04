@@ -33,7 +33,7 @@
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Actor: public DynamicObject, IEventListener
+	class OENGINE_API Actor: public ReferenceType, IEventListener
 	{
 	public:
 		Actor(): myNode(NULL)  {}

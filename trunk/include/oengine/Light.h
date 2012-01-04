@@ -31,7 +31,7 @@
 //#include "oengine/RenderPass.h"
 
 namespace oengine {
-	class Light: public DynamicObject
+	class Light: public ReferenceType
 	{
 	public:
 		enum Type { Point, Directional, Spot };

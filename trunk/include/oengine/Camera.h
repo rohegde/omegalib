@@ -67,7 +67,7 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Camera: public DynamicObject
+	class OENGINE_API Camera: public ReferenceType
 	{
 	public:
 		enum NavigationMode { NavDisabled, NavFollow, NavFreeFly };

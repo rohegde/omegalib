@@ -32,7 +32,7 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Observer: public DynamicObject
+	class OMEGA_API Observer: public ReferenceType
 	{
 	public:
 		EIGEN_MAKE_ALIGNED_OPERATOR_NEW

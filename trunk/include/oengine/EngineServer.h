@@ -69,7 +69,7 @@ namespace oengine {
 
 		//! Render pass management
 		//@{
-		template<typename T> void registerRenderPassClass();
+		void registerRenderPassClass(const String& name, RenderPassFactory factory);
 		void addRenderPass(String renderPass, void* userData = NULL, bool addToFront = false);
 		void removeRenderPass(String renderPass);
 		void removeAllRenderPasses();
@@ -166,10 +166,9 @@ namespace oengine {
 	{ return SystemManager::instance()->getServiceManager(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	template<typename T> 
-	inline void EngineServer::registerRenderPassClass()
+	inline void EngineServer::registerRenderPassClass(const String& name, RenderPassFactory factory)
 	{
-		myRenderPassFactories[T::Type->getName()] = (RenderPassFactory)T::createInstance;
+		myRenderPassFactories[name] = factory;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

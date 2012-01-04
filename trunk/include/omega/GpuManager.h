@@ -151,7 +151,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API GpuResource: public DynamicObject
+	class OMEGA_API GpuResource: public ReferenceType
 	{
 	public:
 		GpuResource(GpuContext* ctx): myContext(ctx) {}

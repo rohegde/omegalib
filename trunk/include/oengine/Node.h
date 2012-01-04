@@ -58,7 +58,7 @@ namespace oengine {
             This is an abstract class - concrete classes are based on this for specific purposes,
             e.g. SceneNode, Bone
     */
-    class OENGINE_API Node: public DynamicObject 
+    class OENGINE_API Node: public ReferenceType 
     {
     public:
         /** Enumeration denoting the spaces which a transform can be relative to.

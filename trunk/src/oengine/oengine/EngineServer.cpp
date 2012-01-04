@@ -107,11 +107,11 @@ void EngineServer::initialize()
 	}
 
 	// Setup default render chain.
-	registerRenderPassClass<LightingPass>();
-	registerRenderPassClass<DefaultRenderPass>();
-	registerRenderPassClass<TransparentRenderPass>();
-	registerRenderPassClass<OverlayRenderPass>();
-	registerRenderPassClass<UiRenderPass>();
+	registerRenderPassClass("LightingPass", (RenderPassFactory)LightingPass::createInstance);
+	registerRenderPassClass("DefaultRenderPass", (RenderPassFactory)DefaultRenderPass::createInstance);
+	registerRenderPassClass("TransparentRenderPass", (RenderPassFactory)TransparentRenderPass::createInstance);
+	registerRenderPassClass("OverlayRenderPass", (RenderPassFactory)OverlayRenderPass::createInstance);
+	registerRenderPassClass("UiRenderPass", (RenderPassFactory)UiRenderPass::createInstance);
 
 	addRenderPass("LightingPass");
 	addRenderPass("DefaultRenderPass");
