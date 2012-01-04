@@ -25,7 +25,6 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-include(FindOmicron)
 include(ExternalProject)
 include(OmegaAddTutorial)
 include(UsePch)
@@ -33,22 +32,11 @@ include(UsePch)
 ###################################################################################################
 # Options
 set(OMEGA_BUILD_TUTORIALS false CACHE BOOL "Enable building of omegalib tutorials.")
+set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
 
-set(OMEGA_USE_DISPLAY false CACHE BOOL "Enable display system support.")
-if(OMEGA_USE_DISPLAY)
-	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
-	set(OMEGA_BUILD_ENGINE false CACHE BOOL "Enable to build the omegalib engine library (oengine). oengine is needed to support integration with external toolkits like vtk and Qt.")
-	if(OMEGA_BUILD_ENGINE)
-		set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
-		set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
-		set(OMEGA_BUILD_QT_LIB false CACHE BOOL "Enable build of Qt integration library")
-	endif(OMEGA_BUILD_ENGINE)
-endif(OMEGA_USE_DISPLAY)
-
-if(OMEGA_USE_DISPLAY_EQUALIZER)
-	include(${OmegaLib_SOURCE_DIR}/external/UseEqualizer.cmake)
-	include_directories(${EQUALIZER_INCLUDES})
-endif(OMEGA_USE_DISPLAY_EQUALIZER)
+# EXPERIMENTAL LIBS
+#set(OMEGA_BUILD_QT_LIB false CACHE BOOL "Enable build of Qt integration library")
+#set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
 
 ###################################################################################################
 # Set include paths
@@ -64,6 +52,8 @@ include_directories(
 ###################################################################################################
 # Add libraries and applications to the project.
 
+include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
+
 # Add the core omega project
 add_subdirectory(omega)
 
@@ -72,36 +62,37 @@ if(OMEGA_BUILD_TUTORIALS)
 	omega_add_tutorial(tutorial3)
 endif(OMEGA_BUILD_TUTORIALS)
 
-if(OMEGA_USE_DISPLAY)
-	add_subdirectory(3rdparty/glew)
-	add_subdirectory(apps/ohello)
-	if(OMEGA_BUILD_TUTORIALS)
-		omega_add_tutorial(tutorial4)
-	endif(OMEGA_BUILD_TUTORIALS)
-endif(OMEGA_USE_DISPLAY)
+add_subdirectory(3rdparty/glew)
+add_subdirectory(apps/ohello)
+if(OMEGA_BUILD_TUTORIALS)
+	omega_add_tutorial(tutorial4)
+endif(OMEGA_BUILD_TUTORIALS)
 
 # Add some libraries used for display support.
-if(OMEGA_BUILD_ENGINE)
-	include(${OmegaLib_SOURCE_DIR}/external/UseFreeImage.cmake)
-	include(${OmegaLib_SOURCE_DIR}/external/UseFreeType.cmake)
-	include(${OmegaLib_SOURCE_DIR}/external/UseFtgl.cmake)
-	include_directories(
-	  ${OmegaLib_BINARY_DIR}/ftgl/src/
-	  ${OmegaLib_BINARY_DIR}/freetype/include/
-	  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
-	)
-	add_subdirectory(oengine)
-	add_subdirectory(apps/meshviewer)
-	if(OMICRON_USE_OPENNI)
-		add_subdirectory(apps/kinectdemo)
-		add_subdirectory(apps/mocalib)
-	endif(OMICRON_USE_OPENNI)
-	add_subdirectory(apps/nightfield)
-	if(OMEGA_BUILD_TUTORIALS)
-		omega_add_tutorial(tutorial5)
-		omega_add_tutorial(tutorial6)
-	endif(OMEGA_BUILD_TUTORIALS)
-endif(OMEGA_BUILD_ENGINE)
+include(${OmegaLib_SOURCE_DIR}/external/UseFreeImage.cmake)
+include(${OmegaLib_SOURCE_DIR}/external/UseFreeType.cmake)
+include(${OmegaLib_SOURCE_DIR}/external/UseFtgl.cmake)
+include_directories(
+  ${OmegaLib_BINARY_DIR}/ftgl/src/
+  ${OmegaLib_BINARY_DIR}/freetype/include/
+  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
+)
+
+add_subdirectory(oengine)
+
+add_subdirectory(apps/meshviewer)
+add_subdirectory(apps/nightfield)
+
+# Add a couple of applications that require OpenNI support.
+if(OMICRON_USE_OPENNI)
+	add_subdirectory(apps/kinectdemo)
+	add_subdirectory(apps/mocalib)
+endif(OMICRON_USE_OPENNI)
+
+if(OMEGA_BUILD_TUTORIALS)
+	omega_add_tutorial(tutorial5)
+	omega_add_tutorial(tutorial6)
+endif(OMEGA_BUILD_TUTORIALS)
 
 # OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
 if(OMEGA_USE_DISPLAY_GLUT) 
@@ -109,20 +100,6 @@ if(OMEGA_USE_DISPLAY_GLUT)
 	    add_subdirectory(3rdparty/freeglut)
     endif(NOT APPLE)
 endif(OMEGA_USE_DISPLAY_GLUT)
-
-# vtk configuration, libraries and applications
-if(OMEGA_BUILD_VTK_LIB)
-	find_package(VTK)
-	if(NOT VTK_DIR)
-	  message(FATAL_ERROR "Please set VTK_DIR.")
-	endif(NOT VTK_DIR)
-	include(${VTK_USE_FILE})
-	
-	add_subdirectory(ovtk)
-	#if(OMEGA_BUILD_APPS)
-		#add_subdirectory(apps/vtkviewer)
-	#endif(OMEGA_BUILD_APPS)
-endif(OMEGA_BUILD_VTK_LIB)
 
 # Open Scene Graph configuration, libraries and applications
 if(OMEGA_BUILD_OSG_LIB)
@@ -137,6 +114,22 @@ if(OMEGA_BUILD_OSG_LIB)
 		omega_add_tutorial(tutorial7) 
 	endif(OMEGA_BUILD_TUTORIALS)
 endif(OMEGA_BUILD_OSG_LIB)
+
+###################################################################################################
+# EXPERIMENTAL LIBS
+# vtk configuration, libraries and applications
+if(OMEGA_BUILD_VTK_LIB)
+	find_package(VTK)
+	if(NOT VTK_DIR)
+	  message(FATAL_ERROR "Please set VTK_DIR.")
+	endif(NOT VTK_DIR)
+	include(${VTK_USE_FILE})
+	
+	add_subdirectory(ovtk)
+	#if(OMEGA_BUILD_APPS)
+		#add_subdirectory(apps/vtkviewer)
+	#endif(OMEGA_BUILD_APPS)
+endif(OMEGA_BUILD_VTK_LIB)
 
 # Qt configuration, libraries and applications
 if(OMEGA_BUILD_QT_LIB)

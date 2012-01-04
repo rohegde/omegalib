@@ -41,6 +41,17 @@ SET( srcs
         omega/osystem.cpp
         omega/Observer.cpp
 		omega/SystemManager.cpp
+		omega/Application.cpp
+		omega/GpuBuffer.cpp
+		omega/GpuManager.cpp
+		omega/GpuProgram.cpp
+		omega/RenderTarget.cpp
+		omega/SagePointerService.cpp
+		omega/PixelData.cpp
+		omega/Texture.cpp
+		omega/ObserverUpdateService.cpp
+		omega/MouseService.cpp
+		omega/KeyboardService.cpp
         )
 		
 ###################################################################################################
@@ -51,92 +62,60 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
-        ) 
+		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
+		${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
+		${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
+		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
+		)
         
 ###################################################################################################
 # Enable / disable specific modules within omegalib
-if(OMEGA_USE_PYTHON)
-	set( headers ${headers}
-		omega/PythonInterpreterWrapper.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h)
 
-	set( srcs ${srcs}
-		omega/PythonInterpreter.cpp)
-endif(OMEGA_USE_PYTHON)
-
-if(OMEGA_USE_DISPLAY)
-	set( srcs ${srcs}
-			omega/Application.cpp
-			omega/GpuBuffer.cpp
-			omega/GpuManager.cpp
-			omega/GpuProgram.cpp
-			omega/RenderTarget.cpp
-			omega/SagePointerService.cpp
-			omega/PixelData.cpp
-			omega/Texture.cpp
- 		    omega/ObserverUpdateService.cpp
-			)
-	set( headers ${headers}
-			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
-			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
-			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
-			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
-			${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
-			${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
-			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
+# Equalizer Display Module
+set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
+if(OMEGA_USE_DISPLAY_EQUALIZER)
+	include(${CMAKE_SOURCE_DIR}/external/UseEqualizer.cmake)
+	include_directories(${EQUALIZER_INCLUDES})
+	set( srcs ${srcs} 
+		omega/EqualizerDisplaySystem.cpp
+		omega/eqinternal/ChannelImpl.cpp
+		omega/eqinternal/ConfigImpl.cpp
+		omega/eqinternal/ViewImpl.cpp
+		omega/eqinternal/WindowImpl.cpp
+		omega/eqinternal/NodeImpl.cpp
+		omega/eqinternal/PipeImpl.cpp
+		)
+	set( headers ${headers} 
+		omega/eqinternal/eqinternal.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
+endif(OMEGA_USE_DISPLAY_EQUALIZER)
 	
-	# Equalizer Display Module
-	if(OMEGA_USE_DISPLAY_EQUALIZER)
-		set( srcs ${srcs} 
-			omega/EqualizerDisplaySystem.cpp
-			omega/eqinternal/ChannelImpl.cpp
-			omega/eqinternal/ConfigImpl.cpp
-			omega/eqinternal/ViewImpl.cpp
-			omega/eqinternal/WindowImpl.cpp
-			omega/eqinternal/NodeImpl.cpp
-			omega/eqinternal/PipeImpl.cpp
-			)
-		set( headers ${headers} 
-			omega/eqinternal/eqinternal.h
-			${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
-	endif(OMEGA_USE_DISPLAY_EQUALIZER)
-		
-	# Glut Display Module
-	if( WIN32 )
-		set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
-		if(OMEGA_USE_DISPLAY_GLUT)
-			set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
-			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
-		endif(OMEGA_USE_DISPLAY_GLUT)
-		set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
-	endif( WIN32 )
-		
-	# OpenCL Module
-	set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
-	if(OMEGA_USE_OPENCL)
-		if(NOT WIN32)
-			find_package(OpenCL REQUIRED)
-		endif(NOT WIN32)
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
-	endif(OMEGA_USE_OPENCL)
-
-	# Mouse input support	
-		set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
-		if(OMEGA_USE_MOUSE)
-			set( srcs	 ${srcs} omega/MouseService.cpp )
-			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
-		endif(OMEGA_USE_MOUSE)
-		
-	# Keyboard input support	
-	set(OMEGA_USE_KEYBOARD true CACHE BOOL "Enable/disable mouse input support")
-	if(OMEGA_USE_KEYBOARD)
-		set( srcs	 ${srcs} omega/KeyboardService.cpp )
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h )
-	endif(OMEGA_USE_KEYBOARD)
-endif(OMEGA_USE_DISPLAY)
+# Glut Display Module
+if( WIN32 )
+	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+	if(OMEGA_USE_DISPLAY_GLUT)
+		set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
+	endif(OMEGA_USE_DISPLAY_GLUT)
+	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
+endif( WIN32 )
+	
+# OpenCL Module
+set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
+if(OMEGA_USE_OPENCL)
+	if(NOT WIN32)
+		find_package(OpenCL REQUIRED)
+	endif(NOT WIN32)
+	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
+endif(OMEGA_USE_OPENCL)
 
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
