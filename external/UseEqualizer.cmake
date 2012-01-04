@@ -27,7 +27,7 @@
 # Equalizer support enabled: uncompress and prepare the external project.
 ExternalProject_Add(
 	equalizer
-	URL ${CMAKE_SOURCE_DIR}/ext/equalizer.tar.gz
+	URL ${CMAKE_SOURCE_DIR}/external/equalizer.tar.gz
 	#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
 	CMAKE_ARGS 
 		-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}

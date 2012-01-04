@@ -34,7 +34,7 @@ set(OSGWORKS_GENERATOR ${CMAKE_GENERATOR})
 # Equalizer support enabled: uncompress and prepare the external project.
 ExternalProject_Add(
 	osgWorks
-	URL ${CMAKE_SOURCE_DIR}/ext/osgw2.tar.gz
+	URL ${CMAKE_SOURCE_DIR}/external/osgw2.tar.gz
 	#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
 	CMAKE_GENERATOR ${OSGWORKS_GENERATOR}
 	CMAKE_ARGS 
