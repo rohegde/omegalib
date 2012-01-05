@@ -10,7 +10,7 @@ Visual studio 2010 32 bit builds are tested regularly.
 == General Tips & Tricks ==
 === Speeding up builds ===
 After the first build, it is possible to speed up successive builds by unloading projects in the 3rdparty folder. These dependencies need to be built only once per configuration, so they can be disabled after the first build. This way, the build system won't have to go through them to check if they are up to date. 
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnloadProjects.png" width="400"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/UnloadProjects.png" width="300"/></p><p align="middle">
 _^To unload third party projects, right-click on the 3rdparty folder and select "Unload Projects in Solution Folder"^_
 
 == Visual Studio 2010 Notes ==
