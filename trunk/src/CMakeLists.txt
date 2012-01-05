@@ -29,6 +29,8 @@ include(ExternalProject)
 include(OmegaAddTutorial)
 include(UsePch)
 
+include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
+
 ###################################################################################################
 # Options
 set(OMEGA_BUILD_TUTORIALS false CACHE BOOL "Enable building of omegalib tutorials.")
@@ -51,8 +53,6 @@ include_directories(
 
 ###################################################################################################
 # Add libraries and applications to the project.
-
-include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
 
 # Add the core omega project
 add_subdirectory(omega)
