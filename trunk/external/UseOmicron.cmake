@@ -24,14 +24,19 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-set(OMICRON_BINARY_DIR ${CMAKE_BINARY_DIR}/src/omicron/src/omicron-build)
+set(OMICRON_BINARY_DIR ${CMAKE_BINARY_DIR}/omicron)
 set(OMICRON_SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/omicron)
 
 ExternalProject_Add(
 	omicron
 	PREFIX omicron
-	URL ${OMICRON_SOURCE_DIR}
-	#CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}
+	DOWNLOAD_COMMAND ""
+	UPDATE_COMMAND ""
+	INSTALL_COMMAND ""
+	SOURCE_DIR ${OMICRON_SOURCE_DIR}
+	BINARY_DIR ${OMICRON_BINARY_DIR}/build
+	STAMP_DIR ${OMICRON_BINARY_DIR}/stamp
+	TMP_DIR ${OMICRON_BINARY_DIR}/tmp
 	CMAKE_ARGS 
 		-DOMICRON_LIBRARY_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG}
 		-DOMICRON_LIBRARY_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE}
@@ -39,7 +44,6 @@ ExternalProject_Add(
 		-DOMICRON_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE}
 		-DOMICRON_RUNTIME_OUTPUT_DIRECTORY_DEBUG:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG}
 		-DOMICRON_RUNTIME_OUTPUT_DIRECTORY_RELEASE:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}
-		INSTALL_COMMAND ""
 	)
 
 set_target_properties(omicron PROPERTIES FOLDER "3rdparty")
@@ -48,10 +52,7 @@ set_target_properties(omicron PROPERTIES FOLDER "3rdparty")
 # in the future, just ${OMICRON_ROOT_DIR}/include will be needed, but for now, multiple paths 
 # have to be specified. If building a project without Cmake, remember to specify ALL these directories
 # as include paths for your compiler.
-#HACK make it point to the omicron binary dir as well because boost, asio and other libs 
-# get extracted there instead of ${OMICRON_BINARY_DIR}/include (don't know why..)
-
-set(OMICRON_INCLUDE_DIRS ${OMICRON_BINARY_DIR} ${OMICRON_BINARY_DIR}/include ${OMICRON_SOURCE_DIR}/include ${OMICRON_SOURCE_DIR}/external/include)
+set(OMICRON_INCLUDE_DIRS ${OMICRON_BINARY_DIR}/include ${OMICRON_SOURCE_DIR}/include ${OMICRON_SOURCE_DIR}/external/include)
 	  
 set(OMICRON_LIB_DIR_RELEASE ${CMAKE_BINARY_DIR}/lib/release)
 set(OMICRON_LIB_DIR_DEBUG ${CMAKE_BINARY_DIR}/lib/debug)
