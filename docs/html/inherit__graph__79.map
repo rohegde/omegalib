@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1" href="$classoengine_1_1_i_engine_module.html" title="oengine::IEngineModule" alt="" coords="5,5,165,35"/>
-<area shape="rect" id="node3" href="$classoengine_1_1_porthole_tablet_service.html" title="Implements an interface to tablet device applications using the Porthole protocol." alt="" coords="215,5,415,35"/>
-<area shape="rect" id="node4" href="$class_service.html" title="Service" alt="" coords="53,112,117,141"/>
-<area shape="rect" id="node7" href="$classomega_1_1_keyboard_service.html" title="omega::KeyboardService" alt="" coords="232,59,397,88"/>
-<area shape="rect" id="node9" href="$classomega_1_1_mouse_service.html" title="omega::MouseService" alt="" coords="240,112,389,141"/>
-<area shape="rect" id="node11" href="$classomega_1_1_observer_update_service.html" title="omega::ObserverUpdateService" alt="" coords="213,165,416,195"/>
-<area shape="rect" id="node13" href="$classomega_1_1_sage_pointer_service.html" title="Implements a service able to receive pointer updates from the SAGE pointer application." alt="" coords="224,219,405,248"/>
-</map>
