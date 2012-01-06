@@ -27,9 +27,7 @@
 
 ###################################################################################################
 # Find required packages
-if(OMEGA_USE_DISPLAY)
-	find_package(OpenGL)
-endif(OMEGA_USE_DISPLAY)
+find_package(OpenGL)
 
 ###################################################################################################
 # Compile definitions
@@ -134,9 +132,7 @@ set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/external/include)
 
 include_directories(${EXT_INCLUDE_DIR})
 
-if(OMEGA_USE_DISPLAY)
-	target_link_libraries( omega ${OPENGL_LIBRARY} glew)
-endif(OMEGA_USE_DISPLAY)
+target_link_libraries( omega ${OPENGL_LIBRARY} glew)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 	target_link_libraries( omega ${EQUALIZER_LIBS})

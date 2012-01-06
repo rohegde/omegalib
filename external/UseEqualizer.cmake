@@ -36,7 +36,7 @@ ExternalProject_Add(
 	)
 set_target_properties(equalizer PROPERTIES FOLDER "3rdparty")
 # define path to libraries built by the equalizer external project
-set(EQUALIZER_BINARY_DIR ${CMAKE_BINARY_DIR}/src/equalizer-prefix/src/equalizer-build)
+set(EQUALIZER_BINARY_DIR ${CMAKE_BINARY_DIR}/src/omega/equalizer-prefix/src/equalizer-build)
 # NEED SECTIONS DEPENDENT ON BUILD TOOL, NOT OS!
 if(WIN32)
 	set(EQUALIZER_EQ_LIB_DEBUG ${EQUALIZER_BINARY_DIR}/libs/client/Debug/Equalizer.lib)
