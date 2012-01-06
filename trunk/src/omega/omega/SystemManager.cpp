@@ -31,11 +31,9 @@
 #endif
 
 // Display system
-#ifdef OMEGA_USE_DISPLAY
-	#include "omega/DisplaySystem.h"
-	#include "omega/ObserverUpdateService.h"
-	#include "omega/SagePointerService.h"
-#endif
+#include "omega/DisplaySystem.h"
+#include "omega/ObserverUpdateService.h"
+#include "omega/SagePointerService.h"
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
 	#include "omega/EqualizerDisplaySystem.h"
@@ -67,9 +65,7 @@ SystemManager* SystemManager::instance()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::SystemManager():
 	mySystemConfig(NULL),
-#ifdef OMEGA_USE_DISPLAY
 	myDisplaySystem(NULL),
-#endif
 	myApplication(NULL),
 	myExitRequested(false),
 	myIsInitialized(false)
@@ -116,9 +112,7 @@ void SystemManager::setup(Config* appcfg)
 	try
 	{
 		setupServiceManager();
-#ifdef OMEGA_USE_DISPLAY
 		setupDisplaySystem();
-#endif
 	}
 	catch(libconfig::SettingTypeException ste)
 	{
@@ -138,17 +132,13 @@ void SystemManager::setupServiceManager()
 	myServiceManager->registerService("KeyboardService", (ServiceAllocator)KeyboardService::New);
 #endif
 
-#ifdef OMEGA_USE_DISPLAY
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
 	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
-#endif
 
 	// Kinda hack: run application initialize here because for now it is used to register services from
 	// external libraries, so it needs to run before setting up services from the config file.
-#ifdef OMEGA_USE_DISPLAY
 	// Initialize the application object (if present)
 	if(myApplication) myApplication->initialize();
-#endif
 
 	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
 	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
@@ -167,7 +157,6 @@ void SystemManager::setupServiceManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#ifdef OMEGA_USE_DISPLAY
 void SystemManager::setupDisplaySystem()
 {
 	// Instantiate input services
@@ -206,14 +195,11 @@ void SystemManager::setupDisplaySystem()
 		}
 	}
 }
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::initialize()
 {
-#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
-#endif
 	myServiceManager->initialize();
 
 	myIsInitialized = true;
@@ -226,7 +212,6 @@ void SystemManager::run()
 	if(!myIsInitialized) initialize();
 
 	myServiceManager->start();
-#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem)
 	{
 		myDisplaySystem->run();
@@ -235,15 +220,12 @@ void SystemManager::run()
 	{
 		owarn("SystemManager::run - no display system specified, returning immediately");
 	}
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::cleanup()
 {
-#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->cleanup();
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

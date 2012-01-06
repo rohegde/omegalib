@@ -45,8 +45,7 @@ set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integra
 include_directories(
   ${CMAKE_BINARY_DIR}/include/
   ${CMAKE_SOURCE_DIR}/include/
-  ${OmegaLib_SOURCE_DIR}/src/3rdparty/glew  
-#hack
+  ${CMAKE_SOURCE_DIR}/src/3rdparty/glew  
   ${CMAKE_SOURCE_DIR}/external/include
   ${OMICRON_INCLUDE_DIRS}
   )
