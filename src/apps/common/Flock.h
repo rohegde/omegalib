@@ -28,10 +28,10 @@
 #define __FLOCK_H__
 
 #include <omega.h>
-#include <oengine.h>
+#include <omegaToolkit.h>
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Preset

@@ -24,18 +24,18 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/EngineServer.h"
-#include "oengine/UiModule.h"
-#include "oengine/ui/UserManagerPanel.h"
-#include "oengine/ui/WidgetFactory.h"
+#include "omega/EngineServer.h"
+#include "omegaToolkit/UiModule.h"
+#include "omegaToolkit/ui/UserManagerPanel.h"
+#include "omegaToolkit/ui/WidgetFactory.h"
 
 #ifdef OMEGA_USE_OPENNI
 #include "omega/OpenNIService.h"
 #endif
 
 using namespace omega;
-using namespace oengine;
-using namespace oengine::ui;
+using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UserManagerPanel::initialize(Container* owner, const String& openNIServiceName, const String& observerUpdateServiceName)

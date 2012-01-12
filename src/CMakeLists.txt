@@ -77,7 +77,7 @@ if(OMEGA_BUILD_TUTORIALS)
 	omega_add_tutorial(tutorial4)
 endif(OMEGA_BUILD_TUTORIALS)
 
-add_subdirectory(oengine)
+add_subdirectory(omegaToolkit)
 
 add_subdirectory(apps/meshviewer)
 add_subdirectory(apps/nightfield)

@@ -30,9 +30,9 @@
 #include "RenderableSceneObject.h"
 #include "SceneRenderable.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphere: public RenderableSceneObject
+	class OTK_API BoundingSphere: public RenderableSceneObject
 	{
 	friend class BoundingSphereRenderable;
 	public:
@@ -69,7 +69,7 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphereRenderable: public SceneRenderable
+	class OTK_API BoundingSphereRenderable: public SceneRenderable
 	{
 	public:
 		BoundingSphereRenderable(BoundingSphere* boundingSphere): 
@@ -120,6 +120,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void BoundingSphere::setSlices(int value)
 	{ mySlices = value; }
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

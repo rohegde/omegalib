@@ -27,17 +27,17 @@
 #ifndef __LIGHTING_PASS_H__
 #define __LIGHTING_PASS_H__
 
-#include "oenginebase.h"
-#include "oengine/RenderPass.h"
+#include "omegaToolkitConfig.h"
+#include "omega/RenderPass.h"
 
-namespace oengine {
-	class OENGINE_API LightingPass: public RenderPass
+namespace omegaToolkit {
+	class OTK_API LightingPass: public RenderPass
 	{
 	public:
 		LightingPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new LightingPass(client); }
 		virtual void render(EngineClient* client, const DrawContext& context);
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

@@ -24,11 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/SceneRenderable.h"
+#include "omegaToolkit/SceneRenderable.h"
 #include "omega/EngineClient.h"
 #include "omega/Renderer.h"
 
-using namespace omega;
+using namespace omegaToolkit;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

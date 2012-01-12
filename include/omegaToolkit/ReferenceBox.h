@@ -30,12 +30,9 @@
 #include "RenderableSceneObject.h"
 #include "SceneRenderable.h"
 
-namespace oengine {
-	// Forward declarations
-	class SceneNode;
-
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ReferenceBox: public RenderableSceneObject
+	class OTK_API ReferenceBox: public RenderableSceneObject
 	{
 	friend class ReferenceBoxRenderable;
 	public:
@@ -76,7 +73,7 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ReferenceBoxRenderable: public SceneRenderable
+	class OTK_API ReferenceBoxRenderable: public SceneRenderable
 	{
 	public:
 		ReferenceBoxRenderable(ReferenceBox* owner);
@@ -141,6 +138,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool ReferenceBox::hasBoundingBox() 
 	{ return true; }
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

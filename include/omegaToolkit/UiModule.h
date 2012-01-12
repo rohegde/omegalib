@@ -27,16 +27,16 @@
 #ifndef __UI_MODULE_H__
 #define __UI_MODULE_H__
 
-#include "oengine/EngineServer.h"
-#include "oengine/EngineApplication.h"
-#include "oengine/BoundingSphere.h"
+#include "omega/EngineServer.h"
+#include "omega/EngineApplication.h"
+#include "omegaToolkit/BoundingSphere.h"
 #include "ui/Container.h"
 #include "ui/WidgetFactory.h"
 
-namespace oengine
+namespace omegaToolkit
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API UiModule: public IEngineModule
+	class OTK_API UiModule: public IEngineModule
 	{
 	public:
 		static const int MaxUis = 3;

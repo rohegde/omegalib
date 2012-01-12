@@ -27,17 +27,15 @@
 #ifndef __RENDERABLE_SCENE_OBJECT_H__
 #define __RENDERABLE_SCENE_OBJECT_H__
 
-#include "oenginebase.h"
+#include "omegaToolkitConfig.h"
 #include "SceneRenderable.h"
-#include "ISceneObject.h"
-#include "oengine/Effect.h"
+#include "omega/ISceneObject.h"
+#include "omegaToolkit/Effect.h"
 
-namespace oengine {
-	// Forward declarations
-	class SceneNode;
+namespace omegaToolkit {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API RenderableSceneObject: public RenderableFactory, ISceneObject
+	class OTK_API RenderableSceneObject: public RenderableFactory, public ISceneObject
 	{
 	public:
 		RenderableSceneObject();
@@ -55,9 +53,14 @@ namespace oengine {
 
 		void setEffect(BaseEffect* value) { myEffect = value; }
 		BaseEffect* getEffect() { return myEffect; }
+
+		virtual bool isInitialized() { return myInitialized; }
+		virtual void initialize(EngineServer* srv) { myInitialized = true; }
+
 	private:
 		BaseEffect* myEffect;
+		bool myInitialized;
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

@@ -27,12 +27,12 @@
 #ifndef __CONTROLLER_MANIPULATOR_H__
 #define __CONTROLLER_MANIPULATOR_H__
 
-#include "oenginebase.h"
-#include "oengine/Actor.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Actor.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ControllerManipulator: public Actor
+	class OTK_API ControllerManipulator: public Actor
 	{
 		enum Buttons {Button1, Button2, Button3, Button4, LSButton, RSButton, MaxButtons };
 	public:
@@ -52,6 +52,6 @@ namespace oengine {
 		float myScale;
 		bool myButtonState[MaxButtons];
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

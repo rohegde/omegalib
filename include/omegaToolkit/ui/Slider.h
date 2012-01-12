@@ -27,10 +27,10 @@
 #ifndef __SLIDER_H__
 #define __SLIDER_H__
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Label.h"
+#include "omegaToolkit/ui/AbstractButton.h"
+#include "omegaToolkit/ui/Label.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class Slider: public Widget
 	{
@@ -91,6 +91,6 @@ namespace oengine { namespace ui {
 	{ return myDeferUpdate; }
 
 }; 
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

@@ -27,12 +27,13 @@
 #ifndef __IMAGE_H__
 #define __IMAGE_H__
 
-#include "oengine/ImageUtils.h"
-#include "oengine/ui/Widget.h"
+#include "omegaToolkit/omegaToolkitConfig.h"
+#include "omega/ImageUtils.h"
+#include "omegaToolkit/ui/Widget.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Image: public Widget
+	class OTK_API Image: public Widget
 	{
 	friend class ImageRenderable;
 	public:
@@ -53,7 +54,7 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ImageRenderable: public WidgetRenderable
+	class OTK_API ImageRenderable: public WidgetRenderable
 	{
 	public:
 		ImageRenderable(Image* owner): WidgetRenderable(owner), myOwner(owner), myTexture(NULL) {}
@@ -74,5 +75,5 @@ namespace oengine { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Image::setData(PixelData* value) 
 	{ myData = value; refresh(); }
-}; }; // namespace oengine
+}; }; // namespace omegaToolkit
 #endif

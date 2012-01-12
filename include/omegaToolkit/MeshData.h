@@ -27,14 +27,14 @@
 #ifndef MESH_DATA
 #define MESH_DATA
 
-#include "oenginebase.h"
+#include "omegaToolkitConfig.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Used to store mesh data loaded from a file in a common format, before transfering it to 
 	//! vertex and index buffers and material specifications. Mesh readers either derive from this 
 	//! class, or have a method that returns an instance of it.
-    class OENGINE_API MeshData
+    class OTK_API MeshData
     {
     public:
 		MeshData() { clear(); }
@@ -99,7 +99,7 @@ namespace oengine {
     };
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API MeshUtils
+	class OTK_API MeshUtils
 	{
 	public:
 		static MeshData* load(const String& file);

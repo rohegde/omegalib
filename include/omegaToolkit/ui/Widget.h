@@ -27,14 +27,14 @@
 #ifndef __WIDGET_H__
 #define __WIDGET_H__
 
-#include "oengine/oenginebase.h"
-#include "oengine/Renderer.h"
-#include "oengine/Renderable.h"
+#include "omegaToolkit/omegaToolkitConfig.h"
+#include "omega/Renderer.h"
+#include "omega/Renderable.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	class Container;
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Widget: public RenderableFactory, IEventListener
+	class OTK_API Widget: public RenderableFactory, IEventListener
 	{
 	friend class UiManager;
 	friend class Container;
@@ -184,7 +184,7 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API WidgetRenderable: public Renderable
+	class OTK_API WidgetRenderable: public Renderable
 	{
 	public:
 		WidgetRenderable(Widget* owner): myOwner(owner) {}
@@ -345,6 +345,6 @@ namespace oengine { namespace ui {
 	inline void Widget::setVisible(bool value) 
 	{ myVisible = value; }
 };
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

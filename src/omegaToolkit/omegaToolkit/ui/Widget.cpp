@@ -24,18 +24,18 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/Container.h"
-//#include "oengine/ui/DefaultSkin.h"
-#include "oengine/Renderer.h"
+#include "omegaToolkit/ui/Widget.h"
+#include "omegaToolkit/ui/Container.h"
+//#include "omegaToolkit/ui/DefaultSkin.h"
+#include "omega/Renderer.h"
 
 #include "omega/glheaders.h"
 
 #include <float.h>
 
 using namespace omega;
-using namespace oengine;
-using namespace oengine::ui;
+using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 NameGenerator Widget::mysNameGenerator("Widget_");
 

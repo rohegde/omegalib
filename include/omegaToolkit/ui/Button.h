@@ -27,12 +27,12 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
-#include "oengine/ui/AbstractButton.h"
-#include "oengine/ui/Label.h"
+#include "omegaToolkit/ui/AbstractButton.h"
+#include "omegaToolkit/ui/Label.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Button: public AbstractButton
+	class OTK_API Button: public AbstractButton
 	{
 	public:
 		Button(EngineServer* srv);

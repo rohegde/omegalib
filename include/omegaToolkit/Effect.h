@@ -25,16 +25,16 @@
 #ifndef __EFFECT_H__
 #define __EFFECT_H__
 
-#include "oenginebase.h"
+#include "omegaToolkitConfig.h"
 #include "omega/GpuProgram.h"
+#include "omega/RenderPass.h"
 
-namespace oengine {
+namespace omegaToolkit {
 
 	class SceneRenderable;
-	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BaseEffect
+	class OTK_API BaseEffect
 	{
 	public:
 		virtual void load(const Setting& setting) {}
@@ -46,7 +46,7 @@ namespace oengine {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//! @warning This is a work in progress! It may be deeply modified or removed altogether in future versions.
-	class OENGINE_API Effect: public BaseEffect
+	class OTK_API Effect: public BaseEffect
 	{
 	public:
 		enum DrawMode { DrawPoints, DrawWireframe, DrawFlat, DrawSmooth };
@@ -142,7 +142,7 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API MultipassEffect: public BaseEffect
+	class OTK_API MultipassEffect: public BaseEffect
 	{
 	public:
 		void draw(SceneRenderable* sr, RenderState* state);
@@ -157,6 +157,6 @@ namespace oengine {
 	private:
 		List<Effect*> myEffects;
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

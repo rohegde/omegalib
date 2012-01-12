@@ -97,6 +97,7 @@ void Entity::hide()
 MeshViewer::MeshViewer(Application* app): 
 	EngineServer(app) 
 {
+	EngineModuleServices::addModule(new LightingModule());
 	EngineModuleServices::addModule(new UiModule());
 }
 
@@ -135,11 +136,11 @@ void MeshViewer::initialize()
 	EngineServer::initialize();
 
 	// Setup lighting
-	Light* light = getLight(0);
+	Light* light = LightingModule::instance()->getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.5f, 0.5f, 0.5f));
 	light->setPosition(Vector3f(0, 3, 3));
-	setAmbientLightColor(Color::Black);
+	LightingModule::instance()->setAmbientLightColor(Color::Black);
 	
 	// Create a reference box around the scene.
 	Config* cfg = getSystemManager()->getAppConfig();

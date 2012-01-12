@@ -24,12 +24,13 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/SceneEditorModule.h"
-#include "oengine/SceneQuery.h"
-#include "oengine/DefaultMouseInteractor.h"
-#include "oengine/ControllerManipulator.h"
+#include "omegaToolkit/SceneEditorModule.h"
+#include "omega/SceneQuery.h"
+#include "omegaToolkit/DefaultMouseInteractor.h"
+#include "omegaToolkit/ControllerManipulator.h"
+#include "omegaToolkit/BoundingSphere.h"
 
-using namespace oengine;
+using namespace omegaToolkit;
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

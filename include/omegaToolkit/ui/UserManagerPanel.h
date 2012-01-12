@@ -27,15 +27,15 @@
 #ifndef __USER_MANAGER_H__
 #define __USER_MANAGER_H__
 
-#include "oengine/oenginebase.h"
+#include "omegaToolkit/omegaToolkitConfig.h"
 #include "omega/ObserverUpdateService.h"
 #include "omega/Texture.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Image.h"
+#include "omegaToolkit/ui/Container.h"
+#include "omegaToolkit/ui/Image.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API UserManagerPanel: public Container
+	class OTK_API UserManagerPanel: public Container
 	{
 	public:
 		UserManagerPanel(EngineServer* srv): Container(srv), myDepthImageData(NULL), myDepthImage(NULL) {}

@@ -24,9 +24,9 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/ControllerManipulator.h"
+#include "omegaToolkit/ControllerManipulator.h"
 
-using namespace oengine;
+using namespace omegaToolkit;
 
 #define SET_BUTTON_STATE(btn, index) if(evt.getExtraDataFloat(index) > 0) { myButtonState[btn] = true; evt.setProcessed(); } else myButtonState[btn] = false;
 

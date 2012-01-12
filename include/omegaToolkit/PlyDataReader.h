@@ -37,12 +37,12 @@
 #ifndef PLY_DATA_READER
 #define PLY_DATA_READER
 
-#include "oengine/MeshData.h"
-#include "oengine/ply.h"
+#include "omegaToolkit/MeshData.h"
+#include "omegaToolkit/ply.h"
 
-namespace oengine {
+namespace omegaToolkit {
     /*  Holds the flat data and offers routines to read, scale and sort it.  */
-    class OENGINE_API PlyDataReader: public MeshData
+    class OTK_API PlyDataReader: public MeshData
     {
     public:
         PlyDataReader();
@@ -64,7 +64,7 @@ namespace oengine {
 
         bool        _invertFaces;
     };
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 
 #endif // MESH_VERTEXDATA_H

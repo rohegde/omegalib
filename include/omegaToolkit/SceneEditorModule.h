@@ -27,10 +27,10 @@
 #ifndef __SCENE_EDITOR_MODULE_H__
 #define __SCENE_EDITOR_MODULE_H__
 
-#include "oengine/EngineServer.h"
-#include "oengine/BoundingSphere.h"
+#include "omega/EngineServer.h"
+#include "omegaToolkit/BoundingSphere.h"
 
-namespace oengine
+namespace omegaToolkit
 {
 	class SceneEditorModule;
 
@@ -52,7 +52,7 @@ namespace oengine
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API SceneEditorModule
+	class OTK_API SceneEditorModule
 	{
 	public:
 		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };

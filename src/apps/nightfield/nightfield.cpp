@@ -259,6 +259,12 @@ void AffectorEntity::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Nightfield::Nightfield(Application* app): EngineServer(app)
+{
+	EngineModuleServices::addModule(new LightingModule());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::initialize()
 {
 	mySelectedEntity = NULL;
@@ -332,9 +338,9 @@ void Nightfield::initialize()
 			}
 		}
 	}
-	setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
+	LightingModule::instance()->setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
 
-	Light* light = getLight(0);
+	Light* light = LightingModule::instance()->getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.6f, 0.6f, 0.6f));
 	light->setPosition(Vector3f(0, 3, 3));

@@ -27,12 +27,12 @@
 #ifndef __CONTAINER_H__
 #define __CONTAINER_H__
 
-#include "oengine/ui/Widget.h"
-#include "oengine/UiRenderPass.h"
+#include "omegaToolkit/ui/Widget.h"
+#include "omegaToolkit/UiRenderPass.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Container: public Widget
+	class OTK_API Container: public Widget
 	{
 	friend class EngineServer;
 	friend class ContainerRenderable;
@@ -107,7 +107,7 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ContainerRenderable: public WidgetRenderable
+	class OTK_API ContainerRenderable: public WidgetRenderable
 	{
 	public:
 		ContainerRenderable(Container* owner): WidgetRenderable(owner), myOwner(owner) {}

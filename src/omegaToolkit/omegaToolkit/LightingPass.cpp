@@ -24,14 +24,15 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/LightingPass.h"
-#include "oengine/Light.h"
+#include "omega/EngineClient.h"
+#include "omega/EngineServer.h"
+#include "omegaToolkit/LightingModule.h"
+#include "omegaToolkit/LightingPass.h"
+#include "omegaToolkit/Light.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void LightingPass::render(EngineClient* client, const DrawContext& context)
@@ -42,12 +43,12 @@ void LightingPass::render(EngineClient* client, const DrawContext& context)
     glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
 
-	EngineServer* es = client->getServer();
+	LightingModule* es = LightingModule::instance();
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, es->getAmbientLightColor().data());
 
 	GLenum lightId = GL_LIGHT0;
-	for(int i = 0; i < EngineServer::MaxLights; i++)
+	for(int i = 0; i < LightingModule::MaxLights; i++)
 	{
 		Light* light = es->getLight(i);
 		if(light->isEnabled())

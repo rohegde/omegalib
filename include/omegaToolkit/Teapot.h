@@ -25,17 +25,13 @@
 #ifndef __TEAPOT_H__
 #define __TEAPOT_H__
 
-#include "oenginebase.h"
-#include "oengine/oenginebase.h"
-#include "oengine/Renderable.h"
-#include "oengine/Effect.h"
+#include "omegaToolkitConfig.h"
+#include "omegaToolkit/omegaToolkitConfig.h"
+#include "omegaToolkit/Effect.h"
 
-namespace oengine {
-	// Forward declarations
-	class SceneNode;
-
+namespace omegaToolkit {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Teapot: public Renderable
+	class OTK_API Teapot: public Renderable
 	{
 	public:
 		Teapot(): mySize(1), myResolution(16), myEffect(NULL) {}
@@ -56,6 +52,6 @@ namespace oengine {
 		int myResolution;
 		Effect* myEffect;
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

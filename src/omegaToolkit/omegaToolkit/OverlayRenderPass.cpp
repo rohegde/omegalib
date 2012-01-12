@@ -24,14 +24,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/OverlayRenderPass.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/Renderer.h"
-#include "oengine/SceneNode.h"
+#include "omegaToolkit/OverlayRenderPass.h"
+#include "omega/EngineClient.h"
+#include "omega/EngineServer.h"
+#include "omega/Renderer.h"
+#include "omega/SceneNode.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OverlayRenderPass::render(EngineClient* client, const DrawContext& context)

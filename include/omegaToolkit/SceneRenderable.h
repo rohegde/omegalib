@@ -27,12 +27,13 @@
 #ifndef __SCENE_RENDERABLE_H__
 #define __SCENE_RENDERABLE_H__
 
-#include "Renderable.h"
-#include "SceneNode.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Renderable.h"
+#include "omega/SceneNode.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API SceneRenderable: public Renderable
+	class OTK_API SceneRenderable: public Renderable
 	{
 	public:
 		SceneRenderable();
@@ -54,6 +55,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline SceneNode* SceneRenderable::getSceneNode()
 	{ return mySceneNode; }
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

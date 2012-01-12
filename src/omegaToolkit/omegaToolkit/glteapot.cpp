@@ -226,9 +226,9 @@ teapot(GLint grid, GLdouble scale, GLenum type)
 
 /* ENDCENTRY */
 
-#include "oengine/glteapot.h"
+#include "omegaToolkit/glteapot.h"
 
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Teapot::render(SceneNode* node, RenderState* state)
