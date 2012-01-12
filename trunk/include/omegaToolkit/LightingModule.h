@@ -24,20 +24,20 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __UI_MODULE_H__
-#define __UI_MODULE_H__
+#ifndef __LIGHTING_MODULE_H__
+#define __LIGHTING_MODULE_H__
 
-#include "oengine/EngineServer.h"
-#include "oengine/EngineApplication.h"
-#include "oengine/Light.h"
+#include "omega/EngineServer.h"
+#include "omega/EngineApplication.h"
+#include "omegaToolkit/Light.h"
 
-namespace oengine
+namespace omegaToolkit
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API LightingModule: public IEngineModule
+	class OTK_API LightingModule: public IEngineModule
 	{
 	public:
-		static const int MaxUis = 3;
+		static const int MaxLights = 16;
 		static LightingModule* instance() { return mysInstance; }
 
 	public:

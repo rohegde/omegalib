@@ -27,9 +27,8 @@
 #ifndef __SCENENODE_H__
 #define __SCENENODE_H__
 
-#include "oenginebase.h"
-#include "oengine/Effect.h"
-#include "oengine/Node.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Node.h"
 
 namespace oengine {
 	class EngineServer;

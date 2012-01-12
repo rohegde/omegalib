@@ -24,12 +24,12 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/ui/Button.h"
-//#include "oengine/ui/DefaultSkin.h"
+#include "omegaToolkit/ui/Button.h"
+//#include "omegaToolkit/ui/DefaultSkin.h"
 
 using namespace omega;
-using namespace oengine;
-using namespace oengine::ui;
+using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Button::Button(EngineServer* srv):

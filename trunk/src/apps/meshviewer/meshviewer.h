@@ -28,12 +28,12 @@
 #define __MESHVIEWER_H__
 
 #include <omega.h>
-#include <oengine.h>
-#include "oengine/PortholeTabletService.h"
+#include <omegaToolkit.h>
+#include "omega/PortholeTabletService.h"
 
 using namespace omega;
-using namespace oengine;
-using namespace oengine::ui;
+using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class Entity: public ReferenceType

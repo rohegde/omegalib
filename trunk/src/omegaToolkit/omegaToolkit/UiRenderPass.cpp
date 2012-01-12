@@ -24,17 +24,17 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/UiRenderPass.h"
-#include "oengine/EngineClient.h"
-#include "oengine/EngineServer.h"
-#include "oengine/Renderer.h"
-#include "oengine/SceneNode.h"
-#include "oengine/ui/Container.h"
-#include "oengine/UiModule.h"
+#include "omegaToolkit/UiRenderPass.h"
+#include "omega/EngineClient.h"
+#include "omega/EngineServer.h"
+#include "omega/Renderer.h"
+#include "omega/SceneNode.h"
+#include "omegaToolkit/ui/Container.h"
+#include "omegaToolkit/UiModule.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiRenderPass::render(EngineClient* client, const DrawContext& context)

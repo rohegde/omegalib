@@ -27,11 +27,11 @@
 #ifndef __LABEL_H__
 #define __LABEL_H__
 
-#include "oengine/ui/Widget.h"
+#include "omegaToolkit/ui/Widget.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Label: public Widget
+	class OTK_API Label: public Widget
 	{
 	friend class LabelRenderable;
 	public:
@@ -86,7 +86,7 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API LabelRenderable: public WidgetRenderable
+	class OTK_API LabelRenderable: public WidgetRenderable
 	{
 	friend class Label;
 	public:

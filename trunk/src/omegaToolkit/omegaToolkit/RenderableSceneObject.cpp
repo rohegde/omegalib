@@ -24,16 +24,16 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/SceneNode.h"
-#include "oengine/RenderableSceneObject.h"
-#include "oengine/EngineServer.h"
+#include "omega/SceneNode.h"
+#include "omegaToolkit/RenderableSceneObject.h"
+#include "omega/EngineServer.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 RenderableSceneObject::RenderableSceneObject():
-	myEffect(NULL)
+	myEffect(NULL), myInitialized(false)
 {
 }
 

@@ -24,10 +24,10 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/LightingModule.h"
-#include "oengine/LightingPass.h"
+#include "omegaToolkit/LightingModule.h"
+#include "omegaToolkit/LightingPass.h"
 
-using namespace oengine;
+using namespace omegaToolkit;
 using namespace omega;
 
 LightingModule* LightingModule::mysInstance = NULL;
@@ -53,12 +53,12 @@ void LightingModule::initialize(EngineServer* server)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiModule::update(const UpdateContext& context)
+void LightingModule::update(const UpdateContext& context)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiModule::handleEvent(const Event& evt)
+void LightingModule::handleEvent(const Event& evt)
 {
 }
 

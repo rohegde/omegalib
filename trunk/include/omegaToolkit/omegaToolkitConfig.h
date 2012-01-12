@@ -24,57 +24,31 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ENGINE_CLIENT_H__
-#define __ENGINE_CLIENT_H__
+#ifndef __OTK_BASE_H__
+#define __OTK_BASE_H__
 
-#include "oenginebase.h"
-#include "Renderable.h"
+#include "omega/osystem.h"
 #include "omega/Application.h"
-#include "omega/SystemManager.h"
-
-namespace oengine {
-	class RenderPass;
-	class EngineServer;
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API EngineClient: public ApplicationClient
-	{
-	public:
-		EngineClient(ApplicationServer* server);
-
-		EngineServer* getServer();
-
-		void addRenderPass(RenderPass* pass, bool addToFront);
-		void removeRenderPass(RenderPass* pass);
-		void removeAllRenderPasses();
 
 
-		void queueRenderableCommand(RenderableCommand& cmd);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef WIN32
+	#ifndef OTK_STATIC
+		#ifdef OTK_EXPORTING
+		   #define OTK_API    __declspec(dllexport)
+		#else
+		   #define OTK_API    __declspec(dllimport)
+		#endif
+	#else
+		#define OTK_API
+	#endif
+#else
+	#define OTK_API
+#endif
 
-		virtual void initialize();
-		virtual void draw(const DrawContext& context);
-		virtual void startFrame(const FrameInfo& frame);
-		virtual void finishFrame(const FrameInfo& frame);
-
-		Renderer* getRenderer();
-
-	private:
-		void innerDraw(const DrawContext& context);
-
-	private:
-		EngineServer* myServer;
-		Renderer* myRenderer;
-		List<RenderPass*> myRenderPassList;
-		Queue<RenderableCommand> myRenderableCommands;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Renderer* EngineClient::getRenderer()
-	{ return myRenderer; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* EngineClient::getServer()
-	{ return myServer; }
-}; // namespace oengine
+namespace omegaToolkit
+{
+	using namespace omega;
+};
 
 #endif

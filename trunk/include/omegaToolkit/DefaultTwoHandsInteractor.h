@@ -27,13 +27,13 @@
 #ifndef __DEFAULT_TWO_HANDS_INTERACTOR_H__
 #define __DEFAULT_TWO_HANDS_INTERACTOR_H__
 
-#include "oenginebase.h"
-#include "oengine/Actor.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Actor.h"
 #include "omega/ObserverUpdateService.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API DefaultTwoHandsInteractor: public Actor
+	class OTK_API DefaultTwoHandsInteractor: public Actor
 	{
 	public:
 		DefaultTwoHandsInteractor() {}
@@ -67,6 +67,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void DefaultTwoHandsInteractor::setActiveUserId(int value)
 	{ myActiveUserId = value; }
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

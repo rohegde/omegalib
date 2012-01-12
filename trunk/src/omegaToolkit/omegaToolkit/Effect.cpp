@@ -22,14 +22,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#include "oengine/Effect.h"
-#include "oengine/SceneRenderable.h"
-#include "oengine/EngineClient.h"
+#include "omegaToolkit/Effect.h"
+#include "omegaToolkit/SceneRenderable.h"
+#include "omega/EngineClient.h"
 #include "omega/GpuManager.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Effect::Effect(): 

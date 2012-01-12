@@ -27,10 +27,10 @@
 #ifndef OBJ_DATA_READER
 #define OBJ_DATA_READER
 
-#include "oengine/MeshData.h"
+#include "omegaToolkit/MeshData.h"
 
-namespace oengine {
-    class OENGINE_API ObjDataReader: public MeshData
+namespace omegaToolkit {
+    class OTK_API ObjDataReader: public MeshData
     {
 	friend class ObjParser;
     public:

@@ -27,10 +27,10 @@
 #ifndef __LIGHT_H__
 #define __LIGHT_H__
 
-#include "oenginebase.h"
-//#include "oengine/RenderPass.h"
+#include "omegaToolkitConfig.h"
+//#include "omegaToolkit/RenderPass.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	class Light: public ReferenceType
 	{
 	public:
@@ -61,6 +61,6 @@ namespace oengine {
 		Type myType;
 		bool myEnabled;
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

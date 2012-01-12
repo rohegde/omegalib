@@ -33,7 +33,7 @@
  * Copyright (c) 2007, Tobias Wolf <twolf@access.unizh.ch>
  *               2009, Stefan Eilemann <eile@equalizergraphics.com>
  *************************************************************************************************/
-#include "oengine/PlyDataReader.h"
+#include "omegaToolkit/PlyDataReader.h"
 #include <cstdlib>
 #include <algorithm>
 //#include <math.h>
@@ -54,7 +54,7 @@
 typedef unsigned char uint8_t;
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 
 /*  Contructor.  */

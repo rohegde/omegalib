@@ -27,11 +27,11 @@
 #ifndef __DEFAULT_SKIN_H__
 #define __DEFAULT_SKIN_H__
 
-#include "oengine/ui/WidgetFactory.h"
+#include "omegaToolkit/ui/WidgetFactory.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API DefaultButtonRenderable: public WidgetRenderable
+	class OTK_API DefaultButtonRenderable: public WidgetRenderable
 	{
 	public:
 		DefaultButtonRenderable(Button* owner): WidgetRenderable(owner), myOwner(owner) {}
@@ -44,7 +44,7 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API DefaultSliderRenderable: public WidgetRenderable
+	class OTK_API DefaultSliderRenderable: public WidgetRenderable
 	{
 	public:
 		DefaultSliderRenderable(Slider* owner): WidgetRenderable(owner), myOwner(owner) {}

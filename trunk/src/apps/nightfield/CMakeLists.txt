@@ -49,6 +49,6 @@ SET( HEADERS
 add_executable( nightfield ${SRCS} ${HEADERS})
 set_target_properties(nightfield PROPERTIES FOLDER apps)
 target_link_libraries( nightfield
-	omega oengine)
+	omega omegaToolkit)
 
 

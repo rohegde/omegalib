@@ -89,7 +89,7 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! a convenience application class to create oengine applications
+	//! a convenience application class to create omegaToolkit applications
 	void OMEGA_API registerPortholeTabletService();
 	template<typename T> 
 	class EngineApplication: public Application

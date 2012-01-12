@@ -24,11 +24,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oengine/UiModule.h"
-#include "oengine/ui/DefaultSkin.h"
-#include "oengine/UiRenderPass.h"
+#include "omegaToolkit/UiModule.h"
+#include "omegaToolkit/ui/DefaultSkin.h"
+#include "omegaToolkit/UiRenderPass.h"
 
-using namespace oengine;
+using namespace omegaToolkit;
 using namespace omega;
 
 UiModule* UiModule::mysInstance = NULL;

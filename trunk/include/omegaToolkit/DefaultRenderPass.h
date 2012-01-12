@@ -27,17 +27,17 @@
 #ifndef __DEFAULT_RENDER_PASS_H__
 #define __DEFAULT_RENDER_PASS_H__
 
-#include "oenginebase.h"
-#include "oengine/RenderPass.h"
+#include "omegaToolkitConfig.h"
+#include "omega/RenderPass.h"
 
-namespace oengine {
-	class OENGINE_API DefaultRenderPass: public RenderPass
+namespace omegaToolkit {
+	class OTK_API DefaultRenderPass: public RenderPass
 	{
 	public:
 		DefaultRenderPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new DefaultRenderPass(client); }
 		virtual void render(EngineClient* client, const DrawContext& context);
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

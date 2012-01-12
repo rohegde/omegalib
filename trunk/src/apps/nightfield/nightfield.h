@@ -28,12 +28,12 @@
 #define __NIGHTFIELD_H__
 
 #include <omega.h>
-#include <oengine.h>
+#include <omegaToolkit.h>
 #include "../common/Flock.h"
-#include "oengine/PortholeTabletService.h"
+#include "omega/PortholeTabletService.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class AffectorEntity: public ReferenceType
@@ -84,7 +84,7 @@ private:
 class Nightfield: public EngineServer
 {
 public:
-	Nightfield(Application* app): EngineServer(app) {}
+	Nightfield(Application* app);
 	virtual void initialize();
 	void update(const UpdateContext& context);
 	void handleEvent(const Event& evt);

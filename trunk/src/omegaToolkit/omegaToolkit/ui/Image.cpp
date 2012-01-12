@@ -25,13 +25,13 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/GpuManager.h"
-#include "oengine/EngineClient.h"
-#include "oengine/ui/Image.h"
-#include "oengine/Renderer.h"
+#include "omega/EngineClient.h"
+#include "omegaToolkit/ui/Image.h"
+#include "omega/Renderer.h"
 
 using namespace omega;
-using namespace oengine;
-using namespace oengine::ui;
+using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Image::Image(EngineServer* srv):

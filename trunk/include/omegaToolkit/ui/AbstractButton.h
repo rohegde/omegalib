@@ -27,11 +27,11 @@
 #ifndef __BASE_BUTTON_H__
 #define __BASE_BUTTON_H__
 
-#include "oengine/ui/Widget.h"
+#include "omegaToolkit/ui/Widget.h"
 
-namespace oengine { namespace ui {
+namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API AbstractButton: public Widget
+	class OTK_API AbstractButton: public Widget
 	{
 	public:
 		AbstractButton(EngineServer* srv);

@@ -25,13 +25,13 @@
 #ifndef __WIDGET_FACTORY_H__
 #define __WIDGET_FACTORY_H__
 
-#include "oengine/ui/Button.h"
-#include "oengine/ui/Container.h"
-#include "oengine/ui/Slider.h"
-#include "oengine/ui/Widget.h"
-#include "oengine/ui/Image.h"
+#include "omegaToolkit/ui/Button.h"
+#include "omegaToolkit/ui/Container.h"
+#include "omegaToolkit/ui/Slider.h"
+#include "omegaToolkit/ui/Widget.h"
+#include "omegaToolkit/ui/Image.h"
 
-namespace oengine { namespace ui
+namespace omegaToolkit { namespace ui
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class WidgetFactory

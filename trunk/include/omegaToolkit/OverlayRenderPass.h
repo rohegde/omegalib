@@ -27,17 +27,17 @@
 #ifndef __OVERLAY_RENDER_PASS_H__
 #define __OVERLAY_RENDER_PASS_H__
 
-#include "oenginebase.h"
-#include "oengine/RenderPass.h"
+#include "omegaToolkitConfig.h"
+#include "omega/RenderPass.h"
 
-namespace oengine {
-	class OENGINE_API OverlayRenderPass: public RenderPass
+namespace omegaToolkit {
+	class OTK_API OverlayRenderPass: public RenderPass
 	{
 	public:
 		OverlayRenderPass(EngineClient* client): RenderPass(client) {}
 		static RenderPass* createInstance(EngineClient* client) { return new OverlayRenderPass(client); }
 		virtual void render(EngineClient* client, const DrawContext& context);
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

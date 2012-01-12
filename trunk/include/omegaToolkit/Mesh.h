@@ -27,17 +27,17 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include "oenginebase.h"
+#include "omegaToolkitConfig.h"
 #include "Effect.h"
-#include "Renderable.h"
+#include "omega/Renderable.h"
 #include "MeshData.h"
-#include "RenderPass.h"
+#include "omega/RenderPass.h"
 #include "RenderableSceneObject.h"
 #include "omega/GpuBuffer.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Mesh: public RenderableSceneObject
+	class OTK_API Mesh: public RenderableSceneObject
 	{
 	public:
 		Mesh();
@@ -56,7 +56,7 @@ namespace oengine {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API MeshRenderable: public SceneRenderable
+	class OTK_API MeshRenderable: public SceneRenderable
 	{
 	public:
 		MeshRenderable(Mesh* mesh);
@@ -71,6 +71,6 @@ namespace oengine {
 		VertexBuffer* myVertexBuffer;
 		unsigned int* myIndexData;
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

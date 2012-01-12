@@ -30,9 +30,9 @@
 #include "RenderableSceneObject.h"
 #include "SceneRenderable.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class OTK_API Box: public RenderableSceneObject
 	{
 	public:
 		Box();
@@ -61,6 +61,6 @@ namespace oengine {
 		Vector3f myVertices[8];
 		Color myFaceColors[6];
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif

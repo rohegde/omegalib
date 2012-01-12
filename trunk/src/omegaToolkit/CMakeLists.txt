@@ -27,127 +27,124 @@
 
 ###################################################################################################
 # Compile definitions
-add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC )
+add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOTK_EXPORTING -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC )
 
-#set(OENGINE_USE_OBJ false CACHE BOOL "Enable support for obj format inside oengine.")
-#set(OENGINE_USE_PLY true CACHE BOOL "Enable support for ply format inside oengine.")
-set(OENGINE_USE_OBJ false)
-set(OENGINE_USE_PLY true)
+#set(omegaToolkit_USE_OBJ false CACHE BOOL "Enable support for obj format inside omegaToolkit.")
+#set(omegaToolkit_USE_PLY true CACHE BOOL "Enable support for ply format inside omegaToolkit.")
+set(OTK_USE_OBJ false)
+set(OTK_USE_PLY true)
 
 ###################################################################################################
 # Source files
 set( srcs 
-		oengine/BoundingSphere.cpp
-		oengine/Box.cpp
-		oengine/ControllerManipulator.cpp
-		oengine/DefaultMouseInteractor.cpp
-		oengine/DefaultRenderPass.cpp
-		oengine/DefaultTwoHandsInteractor.cpp
-		oengine/Effect.cpp
-		oengine/glteapot.cpp
-		oengine/LightingModule.cpp
-		oengine/LightingPass.cpp
-		oengine/Mesh.cpp
-		oengine/MeshData.cpp
-		oengine/OverlayRenderPass.cpp
-		oengine/ReferenceBox.cpp
-		oengine/RenderableSceneObject.cpp
-		oengine/SceneEditorModule.cpp
-		oengine/SceneRenderable.cpp
-		oengine/TransparentRenderPass.cpp
-		oengine/UiModule.cpp
-		oengine/UiRenderPass.cpp
+		omegaToolkit/BoundingSphere.cpp
+		omegaToolkit/Box.cpp
+		omegaToolkit/ControllerManipulator.cpp
+		omegaToolkit/DefaultMouseInteractor.cpp
+		omegaToolkit/DefaultRenderPass.cpp
+		omegaToolkit/DefaultTwoHandsInteractor.cpp
+		omegaToolkit/Effect.cpp
+		omegaToolkit/glteapot.cpp
+		omegaToolkit/LightingModule.cpp
+		omegaToolkit/LightingPass.cpp
+		omegaToolkit/Mesh.cpp
+		omegaToolkit/MeshData.cpp
+		omegaToolkit/OverlayRenderPass.cpp
+		omegaToolkit/ReferenceBox.cpp
+		omegaToolkit/RenderableSceneObject.cpp
+		omegaToolkit/SceneEditorModule.cpp
+		omegaToolkit/SceneRenderable.cpp
+		omegaToolkit/TransparentRenderPass.cpp
+		omegaToolkit/UiModule.cpp
+		omegaToolkit/UiRenderPass.cpp
 		# omega::ui
-		oengine/ui/AbstractButton.cpp
-		oengine/ui/Button.cpp
-		oengine/ui/Container.cpp
-		oengine/ui/Image.cpp
-		oengine/ui/Label.cpp
-		oengine/ui/DefaultSkin.cpp
-		oengine/ui/Slider.cpp
-		oengine/ui/Widget.cpp
-		oengine/ui/UserManagerPanel.cpp
+		omegaToolkit/ui/AbstractButton.cpp
+		omegaToolkit/ui/Button.cpp
+		omegaToolkit/ui/Container.cpp
+		omegaToolkit/ui/Image.cpp
+		omegaToolkit/ui/Label.cpp
+		omegaToolkit/ui/DefaultSkin.cpp
+		omegaToolkit/ui/Slider.cpp
+		omegaToolkit/ui/Widget.cpp
+		omegaToolkit/ui/UserManagerPanel.cpp
         )
 		
 ###################################################################################################
 # Headers
 set( headers 
-		${OmegaLib_SOURCE_DIR}/include/oengine/BoundingSphere.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Box.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ControllerManipulator.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultMouseInteractor.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Effect.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/glteapot.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/LightingModule.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/MeshData.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ply.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ReferenceBox.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/RenderableSceneObject.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneEditorModule.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Teapot.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/TransparentRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/UiModule.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/UiRenderPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/BoundingSphere.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Box.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ControllerManipulator.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultMouseInteractor.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultTwoHandsInteractor.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultRenderPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Effect.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/glteapot.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Light.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/LightingModule.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/LightingPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Mesh.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MeshData.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/OverlayRenderPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ply.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/PlyDataReader.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ReferenceBox.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/RenderableSceneObject.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneEditorModule.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneRenderable.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Teapot.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/TransparentRenderPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiModule.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiRenderPass.h
 		# omega::ui
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/AbstractButton.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Button.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Container.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Image.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Label.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/DefaultSkin.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Slider.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Widget.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/WidgetFactory.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ui/UserManagerPanel.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/AbstractButton.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Button.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Container.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Image.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Label.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/DefaultSkin.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Slider.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Widget.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/WidgetFactory.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/UserManagerPanel.h
         ) 
 
 ###################################################################################################
-if(OENGINE_USE_OBJ)
+if(OTK_USE_OBJ)
 	set( srcs ${srcs}
-		oengine/ObjDataReader.cpp
-		oengine/obj/obj.cpp
-		oengine/obj/obj.hpp
-		oengine/obj/obj_config.hpp
-		oengine/obj/obj_parser.cpp
-		oengine/obj/obj_parser.hpp	)
+		omegaToolkit/ObjDataReader.cpp
+		omegaToolkit/obj/obj.cpp
+		omegaToolkit/obj/obj.hpp
+		omegaToolkit/obj/obj_config.hpp
+		omegaToolkit/obj/obj_parser.cpp
+		omegaToolkit/obj/obj_parser.hpp	)
 	set( headers ${headers}
-		${OmegaLib_SOURCE_DIR}/include/oengine/ObjDataReader.h)
-	add_definitions(-DOENGINE_USE_OBJ)
-endif(OENGINE_USE_OBJ)
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ObjDataReader.h)
+	add_definitions(-DOTK_USE_OBJ)
+endif(OTK_USE_OBJ)
 
-if(OENGINE_USE_PLY)
+if(OTK_USE_PLY)
 	set( srcs ${srcs}
-		oengine/PlyDataReader.cpp
-		oengine/plyfile.cpp)
+		omegaToolkit/PlyDataReader.cpp
+		omegaToolkit/plyfile.cpp)
 	set( headers ${headers}
-		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h)
-	add_definitions(-DOENGINE_USE_PLY)
-endif(OENGINE_USE_PLY)
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/PlyDataReader.h)
+	add_definitions(-DOTK_USE_PLY)
+endif(OTK_USE_PLY)
 
 ###################################################################################################
-source_group(oengine REGULAR_EXPRESSION oengine/)		
-source_group(oengine::ui REGULAR_EXPRESSION oengine/ui/)		
-source_group(oengine::mvc REGULAR_EXPRESSION oengine/mvc/)		
+source_group(omegaToolkit REGULAR_EXPRESSION omegaToolkit/)		
+source_group(omegaToolkit::ui REGULAR_EXPRESSION omegaToolkit/ui/)		
+source_group(omegaToolkit::mvc REGULAR_EXPRESSION omegaToolkit/mvc/)		
 
 ###################################################################################################
 # Setup compile info
-enable_precompiled_headers(oengine/precompiled.h srcs)
-add_library( oengine SHARED ${srcs} ${headers})
+enable_precompiled_headers(omegaToolkit/precompiled.h srcs)
+add_library( omegaToolkit SHARED ${srcs} ${headers})
 
 ###################################################################################################
 # Setup link info.
-target_link_libraries( oengine omega)
-if(OMEGA_USE_PYTHON)
-	target_link_libraries( oengine ${PYTHON_LIBRARIES})
-endif(OMEGA_USE_PYTHON)
+target_link_libraries( omegaToolkit omega)
 
 ###################################################################################################
 # configure include header

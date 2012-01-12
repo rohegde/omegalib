@@ -27,12 +27,12 @@
 #ifndef __DEFAULT_MOUSE_INTERACTOR_H__
 #define __DEFAULT_MOUSE_INTERACTOR_H__
 
-#include "oenginebase.h"
-#include "oengine/Actor.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Actor.h"
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API DefaultMouseInteractor: public Actor
+	class OTK_API DefaultMouseInteractor: public Actor
 	{
 	public:
 		DefaultMouseInteractor():
@@ -69,6 +69,6 @@ namespace oengine {
 		bool myPointerButton1Pressed;
 		bool myPointerButton2Pressed;
 	};
-}; // namespace oengine
+}; // namespace omegaToolkit
 
 #endif
