@@ -24,43 +24,49 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#include "omega/Font.h"
+#include "omega/glheaders.h"
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "FTGL/ftgl.h"
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
-	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+using namespace omega;
 
-	private:
-		AlignedBox3 myBBox;
-	};
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+Lock Font::sLock;
 
-	private:
-		Box* myBox;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Font::lock()
+{
+	sLock.lock();
+}
 
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Font::unlock()
+{
+	sLock.unlock();
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector2f Font::computeSize(const omega::String& text) 
+{ 
+	Font::lock();
+	FTBBox bbox = myFontImpl->BBox(text.c_str());
+	Vector2f size = Vector2f((int)bbox.Upper().Xf(), (int)bbox.Upper().Yf());
+	Font::unlock();
+	return size;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Font::render(const omega::String& text, float x, float y) 
+{ 
+	Font::lock();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glScalef(1.0f, -1.0f, 1.0f);
+
+	myFontImpl->Render(text.c_str(), text.length(), FTPoint(x, y, 0.0f)); 
+
+	glPopMatrix();
+	Font::unlock();
+}
+

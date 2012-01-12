@@ -24,43 +24,54 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __RENDER_PASS_H__
+#define __RENDER_PASS_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "omega/Application.h"
+#include "Renderer.h"
 
-namespace oengine {
+namespace omega {
+	class EngineClient;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class OMEGA_API RenderPass: public ReferenceType
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		enum RenderFlags { 
+			RenderOpaque = 1 << 1, 
+			RenderTransparent = 1 << 2,
+			RenderOverlay = 1 << 3,
+			RenderCustom = 1 << 8 };
 
-	private:
-		AlignedBox3 myBBox;
+	public:
+		RenderPass(EngineClient* client): myInitialized(false), myClient(client) {}
+		virtual void initialize() { myInitialized = true; }
+		virtual void render(EngineClient* client, const DrawContext& context) = 0;
+
+		void setUserData(void* value) { myUserData = value; }
+		void* getUserData() { return myUserData; }
+
+		bool isInitialized() { return myInitialized; }
+
+		EngineClient* getClient() { return myClient; }
+
+	private: 
+		bool myInitialized;
+		void* myUserData;
+		EngineClient* myClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	struct RenderState
 	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		uint flags;
+		RenderPass* pass;
+		EngineClient* client;
+		const DrawContext* context;
 
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }
 	};
-}; // namespace oengine
+}; // namespace omega
 
 #endif

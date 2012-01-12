@@ -24,123 +24,159 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __REFERENCE_BOX_H__
-#define __REFERENCE_BOX_H__
+#ifndef __SCENE_NODE_H__
+#define __SCENE_NODE_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "omega/ISceneObject.h"
+#include "omega/Node.h"
 
-namespace oengine {
-	// Forward declarations
+namespace omega {
+	class EngineServer;
+	class Renderable;
 	class SceneNode;
+	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ReferenceBox: public RenderableSceneObject
+	class SceneNodeListener
 	{
-	friend class ReferenceBoxRenderable;
 	public:
-		enum Side { Left, Right, Top, Bottom, Front, Back, NumSides };
-
-	public:
-		ReferenceBox();
-
-		void setup(Setting& s);
-
-		virtual Renderable* createRenderable();
-
-		Color& getColor(Side side);
-		void setColor(Side side, const Color& color);
-
-		bool isFaceEnabled(Side side);
-		void setFaceEnabled(Side side, bool enabled);
-
-		Color& getPrimaryLineColor();
-		void setPrimaryLineColor(const Color& color);
-
-		float getPrimaryLineInterval();
-		void setPrimaryLineInterval(float value);
-
-		const Vector3f& getSize();
-		void setSize(const Vector3f value);
-
-		virtual const AlignedBox3* getBoundingBox();
-		virtual bool hasBoundingBox();
-
-	private:
-		bool mySideEnabled[NumSides];
-		Color mySideColor[NumSides];
-		Color myPrimaryLineColor;
-		float myPrimaryLineInterval;
-		Vector3f mySize;
-		AlignedBox3 myBox;
+		virtual void onVisibleChanged(SceneNode* source, bool value) {}
+		virtual void onSelectedChanged(SceneNode* source, bool value) {}
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API ReferenceBoxRenderable: public SceneRenderable
+	class OMEGA_API SceneNode: public Node
 	{
 	public:
-		ReferenceBoxRenderable(ReferenceBox* owner);
-		virtual ~ReferenceBoxRenderable();
+		typedef ChildNode<SceneNode> Child;
+		enum HitType { HitBoundingSphere };
+
+	public:
+		SceneNode(EngineServer* server):
+			myServer(server),
+			myListener(NULL),
+			myBoundingBoxColor(1, 1, 1, 1),
+			myBoundingBoxVisible(false),
+			mySelectable(false),
+			myChanged(false),
+			myVisible(true),
+			mySelected(false)
+			{}
+
+		SceneNode(EngineServer* server, const String& name):
+			Node(name),
+			myServer(server),
+			myListener(NULL),
+			myBoundingBoxColor(1, 1, 1, 1),
+			myBoundingBoxVisible(false),
+			mySelectable(false),
+			myChanged(false),
+			myVisible(true),
+			mySelected(false)
+			{}
+
+		EngineServer* getServer();
+
+		// Object
+		//@{
+		void addObject(ISceneObject* o);
+		int getNumObjects();
+		void removeObject(ISceneObject* o);
+		//@}
+
+		// Options
+		//@{
+		bool isSelectable();
+		void setSelectable(bool value);
+		bool isVisible();
+		void setVisible(bool value);
+		void setSelected(bool value);
+		bool isSelected();
+		//@}
+
+		// Bounding box handling
+		//@{
+		const AlignedBox3& getBoundingBox();
+		const Sphere& getBoundingSphere();
+		bool isBoundingBoxVisible();
+		void setBoundingBoxVisible(bool value);
+		const Color& getBoundingBoxColor();
+		void setBoundingBoxColor(const Color& color);
+		//@}
+
+		// Bounding box handling
+		//@{
+		void setListener(SceneNodeListener* listener);
+		SceneNodeListener* getListener();
+		//@}
+
+		//! Hit test.
+		bool hit(const Ray& ray, Vector3f* hitPoint, HitType type);
+
+		virtual void update(bool updateChildren, bool parentHasChanged);
+
 		void draw(RenderState* state);
-	
-	private:
-		void drawReferencePlane(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color);
-		void drawReferenceGrid(const Vector3f& min, const Vector3f& max, Axis normal, const Color& color, int lines);
 
 	private:
-		ReferenceBox* myOwner;
+		void drawBoundingBox();
+		void updateBoundingBox();
+
+	private:
+		EngineServer* myServer;
+
+		SceneNodeListener* myListener;
+
+		List<ISceneObject*> myObjects;
+
+		bool mySelectable;
+		bool mySelected;
+		bool myVisible;
+
+		bool myChanged;
+		AlignedBox3 myBBox;
+		Sphere myBSphere;
+
+		// Bounding box stuff.
+		bool myBoundingBoxVisible;
+		Color myBoundingBoxColor;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color& ReferenceBox::getColor(Side side)
-	{ return mySideColor[side];	}
+	inline const AlignedBox3& SceneNode::getBoundingBox() 
+	{ return myBBox; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ReferenceBox::setColor(Side side, const Color& color)
-	{ mySideColor[side] = color; }
+	inline const Sphere& SceneNode::getBoundingSphere() 
+	{ return myBSphere; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool ReferenceBox::isFaceEnabled(Side side)
-	{ return mySideEnabled[side]; }
+	inline bool SceneNode::isBoundingBoxVisible() 
+	{ return myBoundingBoxVisible; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ReferenceBox::setFaceEnabled(Side side, bool enabled)
-	{ mySideEnabled[side] = enabled; }
+	inline void SceneNode::setBoundingBoxVisible(bool value) 
+	{ myBoundingBoxVisible = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color& ReferenceBox::getPrimaryLineColor()
-	{ return myPrimaryLineColor; }
+	inline const Color& SceneNode::getBoundingBoxColor() 
+	{ return myBoundingBoxColor; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ReferenceBox::setPrimaryLineColor(const Color& value)
-	{ myPrimaryLineColor = value; }
+	inline void SceneNode::setBoundingBoxColor(const Color& color) 
+	{ myBoundingBoxColor = color; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline float ReferenceBox::getPrimaryLineInterval()
-	{ return myPrimaryLineInterval;	}
+	inline EngineServer* SceneNode::getServer()
+	{ return myServer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ReferenceBox::setPrimaryLineInterval(float value)
-	{ myPrimaryLineInterval = value; }
+	inline bool SceneNode::isSelectable() 
+	{ return mySelectable; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const Vector3f& ReferenceBox::getSize()
-	{ return mySize; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ReferenceBox::setSize(const Vector3f value)
-	{
-		mySize = value;
-		myBox = AlignedBox3(-mySize / 2, mySize / 2);
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AlignedBox3* ReferenceBox::getBoundingBox() 
-	{ return &myBox; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool ReferenceBox::hasBoundingBox() 
-	{ return true; }
-}; // namespace oengine
+	inline void SceneNode::setSelectable(bool value) 
+	{ mySelectable = value; }
+}; // namespace omega
 
 #endif

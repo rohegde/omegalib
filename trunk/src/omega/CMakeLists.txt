@@ -31,47 +31,82 @@ find_package(OpenGL)
 
 ###################################################################################################
 # Compile definitions
-add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
+add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC -DFTGL_LIBRARY_STATIC  -DFREEIMAGE_LIB)
 
 ###################################################################################################
 # Source files
 SET( srcs 
-        omega/osystem.cpp
-        omega/Observer.cpp
-		omega/SystemManager.cpp
 		omega/Application.cpp
+		omega/Camera.cpp
+		omega/Console.cpp
+		omega/EngineClient.cpp
+		omega/EngineServer.cpp
+		omega/Font.cpp
 		omega/GpuBuffer.cpp
 		omega/GpuManager.cpp
 		omega/GpuProgram.cpp
+		omega/ImageUtils.cpp
+		omega/KeyboardService.cpp
+		omega/MouseService.cpp
+		omega/Node.cpp
+        omega/Observer.cpp
+		omega/ObserverUpdateService.cpp
+        omega/osystem.cpp
+		omega/PixelData.cpp
+		omega/Pointer.cpp
+		omega/PortholeTabletService.cpp
+		omega/Renderable.cpp
+		omega/Renderer.cpp
 		omega/RenderTarget.cpp
 		omega/SagePointerService.cpp
-		omega/PixelData.cpp
+		omega/SceneNode.cpp
+		omega/SceneQuery.cpp
+		omega/SystemManager.cpp
 		omega/Texture.cpp
-		omega/ObserverUpdateService.cpp
-		omega/MouseService.cpp
-		omega/KeyboardService.cpp
         )
 		
 ###################################################################################################
 # Headers
 SET( headers 
 		${OmegaLib_SOURCE_DIR}/include/omega.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
+		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EngineApplication.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EngineClient.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EngineServer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Font.h
+		${OmegaLib_SOURCE_DIR}/include/omega/glheaders.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
+		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Pointer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PortholeTabletService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
+		${OmegaLib_SOURCE_DIR}/include/omega/scene.h
+		${OmegaLib_SOURCE_DIR}/include/omega/SceneNode.h
+		${OmegaLib_SOURCE_DIR}/include/omega/SceneQuery.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
 		)
         
 ###################################################################################################
@@ -123,7 +158,7 @@ source_group(omega REGULAR_EXPRESSION omega/)
 # Create the library with the provided sources and headers
 enable_precompiled_headers(omega/precompiled.h srcs)
 add_library( omega SHARED ${srcs} ${headers})
-target_link_libraries(omega ${OMICRON_LIB})
+target_link_libraries(omega ${OMICRON_LIB} freetype ftgl FreeImage)
 
 ###################################################################################################
 # Setup module-specific link info
@@ -159,4 +194,4 @@ if(OMEGA_USE_PYTHON)
 endif(OMEGA_USE_PYTHON)
 
 ###################################################################################################
-configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
+configure_file(omega/omegaConfig.h.in ${CMAKE_BINARY_DIR}/include/omegaConfig.h)

@@ -98,7 +98,7 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
+AffectorEntity::AffectorEntity(RenderableSceneObject* object, EngineServer* server):
 	myObject(object),
 	myServer(server),
 	myVisible(false),
@@ -119,7 +119,7 @@ AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 
 	// Create the rendering effect for this entity.
 	MultipassEffect* mpfx = new MultipassEffect();
-	mySceneNode->setEffect(mpfx);
+	myObject->setEffect(mpfx);
 
 	Effect* wirefx = new Effect();
 	wirefx->setDrawMode(Effect::DrawWireframe);

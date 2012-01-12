@@ -24,43 +24,91 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __RENDERABLE_H__
+#define __RENDERABLE_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "RenderPass.h"
 
-namespace oengine {
+namespace omega {
+	class EngineServer;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class OMEGA_API Renderable: public ReferenceType
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		Renderable();
+
+		void setClient(EngineClient* client);
+		EngineClient* getClient();
+		Renderer* getRenderer();
+
+		virtual void initialize() {}
+		virtual void dispose() {}
+		virtual void refresh() {}
+		virtual void draw(RenderState* state) = 0;
 
 	private:
-		AlignedBox3 myBBox;
+		EngineClient* myClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	struct RenderableCommand
+	{
+		enum Command { Initialize, Dispose, Refresh };
+		Renderable* renderable;
+		Command command;
+
+		RenderableCommand(Renderable* r, Command c): renderable(r), command(c) {}
+		void execute()
+		{
+			switch(command)
+			{
+			case Initialize: renderable->initialize(); break;
+			case Dispose: renderable->dispose(); break;
+			case Refresh: renderable->refresh(); break;
+			}
+		}
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Base class for objects that can create renderables.
+	class OMEGA_API RenderableFactory: public ReferenceType
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		RenderableFactory();
+		virtual ~RenderableFactory();
+		virtual Renderable* createRenderable() = 0;
+		void initialize(EngineServer* srv);
+		void dispose();
+		void refresh();
+		bool isInitialized();
+		Renderable* getRenderable(EngineClient* client);
+		Renderable* getFirstRenderable();
+		EngineServer* getServer();
 
 	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		bool myInitialized;
+		EngineServer* myServer;
+		List<Renderable*> myRenderables;
 	};
-}; // namespace oengine
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Renderable::setClient(EngineClient* value)
+	{ myClient = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline EngineClient* Renderable::getClient()
+	{ return myClient; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool RenderableFactory::isInitialized()
+	{ return myInitialized; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline EngineServer* RenderableFactory::getServer()
+	{ return myServer; }
+
+}; // namespace omega
 
 #endif

@@ -24,43 +24,50 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __IMAGE_UTILS_H__
+#define __IMAGE_UTILS_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "omega/PixelData.h"
 
-namespace oengine {
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class ImageData
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		ImageData(const String& filename, int width, int height);
+
+		PixelData* getPixels();
+		void setPixels(PixelData* pixels);
+
+		int getWidth() { return myWidth; }
+		int getHeight() { return myHeight; }
 
 	private:
-		AlignedBox3 myBBox;
+		PixelData* myPixels;
+		int myWidth;
+		int myHeight;
+		String myFilename;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	//! Loads and manages image data.
+	class OMEGA_API ImageUtils
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		enum ImageFormat { FormatPng };
+	public:
+		//! Load an image from a file.
+		static ImageData* loadImage(const String& filename);
+		static ByteArray* encode(PixelData* data, ImageFormat format);
 
 	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		ImageUtils() {}
 	};
-}; // namespace oengine
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline PixelData* ImageData::getPixels() 
+	{ return myPixels; }
+}; // namespace omega
 
 #endif

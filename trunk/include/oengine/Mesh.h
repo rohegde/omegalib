@@ -32,12 +32,12 @@
 #include "Renderable.h"
 #include "MeshData.h"
 #include "RenderPass.h"
-#include "SceneObject.h"
+#include "RenderableSceneObject.h"
 #include "omega/GpuBuffer.h"
 
 namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Mesh: public SceneObject
+	class OENGINE_API Mesh: public RenderableSceneObject
 	{
 	public:
 		Mesh();

@@ -39,7 +39,7 @@ using namespace oengine;
 class AffectorEntity: public ReferenceType
 {
 public:
-	AffectorEntity(SceneObject* obj, EngineServer* server);
+	AffectorEntity(RenderableSceneObject* obj, EngineServer* server);
 	~AffectorEntity();
 
 	void resetTransform();
@@ -51,7 +51,7 @@ public:
 	void handleEvent(const Event& evt);
 
 	SceneNode* getSceneNode() { return mySceneNode; }
-	SceneObject* getObject() { return myObject; }
+	RenderableSceneObject* getObject() { return myObject; }
 
 	void updateFlockAffector(FlockAffector* af);
 	void setEnabled(bool value) { myEnabled = value; }
@@ -69,7 +69,7 @@ private:
 	EngineServer* myServer;
 
 	SceneNode* mySceneNode;
-	SceneObject* myObject;
+	RenderableSceneObject* myObject;
 
 	BoundingSphere* mySelectionSphere;
 	bool myVisible;

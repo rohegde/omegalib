@@ -24,43 +24,27 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __ISCENE_OBJECT_H__
+#define __ISCENE_OBJECT_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
-	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
-
-	private:
-		AlignedBox3 myBBox;
-	};
+namespace omega {
+	class SceneNode;
+	class EngineServer;
+	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	class ISceneObject
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
-
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		virtual void update(SceneNode* owner) = 0;
+		virtual void draw(SceneNode* node, RenderState* state) = 0;
+		virtual const AlignedBox3* getBoundingBox() = 0;
+		virtual bool hasBoundingBox() = 0;
+		virtual bool isInitialized() = 0;
+		virtual void initialize(EngineServer* server) = 0;
 	};
-}; // namespace oengine
+}; // namespace omega
 
 #endif

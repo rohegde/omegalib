@@ -24,33 +24,91 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/SceneRenderable.h"
-#include "omega/EngineClient.h"
-#include "omega/Renderer.h"
+#include "omega/Console.h"
+#include "omega/Font.h"
+#include "omega/SystemManager.h"
+#include "omega/glheaders.h"
 
 using namespace omega;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneRenderable::SceneRenderable()
+Console::Console():
+	myLines(8),
+	myBackgroundColor(Color(0, 0, 0, 0.6f))
 {
+	myConsoleColors['!'] = Color(0.8f, 0.8f, 0.1f);
+	myConsoleColors['*'] = Color(1.0f, 0.2f, 0.1f);
+	myConsoleColors['^'] = Color(0.8f, 0.8f, 0.8f);
+	myConsoleColors['&'] = Color(0.2f, 1.0f, 0.2f);
+	myConsoleColors['@'] = Color(0.8f, 0.7f, 1.0f);
+
+	myHeadline = SystemManager::instance()->getApplication()->getName();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneRenderable::~SceneRenderable()
+void Console::addLine(const String& line)
 {
+	myLock.lock();
+	if(line[0] == '|')
+	{
+		myHeadline = line.substr(1);
+	}
+	else
+	{
+		myLineBuffer.push_back(line);
+		while(myLineBuffer.size() > myLines)
+		{
+			myLineBuffer.pop_front();
+		}
+	}
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneRenderable::pushNodeTransform()
+Renderable* Console::createRenderable()
 {
-	Renderer* r = getClient()->getRenderer();
-	r->pushTransform(mySceneNode->getFullTransform());
+	return new ConsoleRenderable(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneRenderable::popNodeTransform()
+void ConsoleRenderable::draw(RenderState* state)
 {
-	Renderer* r = getClient()->getRenderer();
-	r->popTransform();
+	// We assume the transforms and viewport have already been set correctly.
+
+	FontInfo& fi = myOwner->myFont;
+	if(myFont == NULL)
+	{
+		myFont = getRenderer()->createFont(fi.name, fi.filename, fi.size);
+	}
+
+	float x = 0; 
+	float y = 0;
+	float lineHeight = fi.size + 4;
+	float lineWidth = state->context->channel->canvasSize->x(); 
+
+	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * (myOwner->myLines + 1)), myOwner->myBackgroundColor);
+
+	if(myFont != NULL)
+	{
+		getRenderer()->drawRectOutline(Vector2f(-1, 0), Vector2f(lineWidth + 2, lineHeight - 2), Color::Gray);
+		glColor4f(1.0f, 0.9f, 0.3f, 1);
+		getRenderer()->drawText(myOwner->myHeadline, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+		y += lineHeight;
+
+		foreach(String& s, myOwner->myLineBuffer)
+		{
+			if(myOwner->myConsoleColors.find(s[0]) != myOwner->myConsoleColors.end())
+			{
+				glColor4fv(myOwner->myConsoleColors[s[0]].data());
+				getRenderer()->drawText(s.substr(1), myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+			}
+			else
+			{
+				glColor4f(1, 1, 1, 1);
+				getRenderer()->drawText(s, myFont, Vector2f(x + 2, y + 2), Font::HALeft | Font::VATop);
+			}
+			y += lineHeight;
+		}
+	}
 }

@@ -24,43 +24,76 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#include "omega/Texture.h"
+#include "omega/glheaders.h"
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+using namespace omega;
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::initialize(byte* data, int width, int height)
+{
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	//Now generate the OpenGL texture object 
+	glGenTextures(1, &myId);
+		
+	GLenum glErr = glGetError();
+	if(glErr)
 	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		const unsigned char* str = gluErrorString(glErr);
+		oferror("Texture initialization: %1%", %str);
+		return;
+	}
+	myDirty = true;
+	myInitialized = true;
+	refresh();
+}
 
-	private:
-		AlignedBox3 myBBox;
-	};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::reset(byte* data, int width, int height)
+{
+	oassert(myInitialized);
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	myDirty = true;
+	refresh();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::refresh()
+{
+	if(myDirty)
 	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		glBindTexture(GL_TEXTURE_2D, myId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		GLenum glErr = glGetError();
 
-	private:
-		Box* myBox;
+		if(glErr)
+		{
+			const unsigned char* str = gluErrorString(glErr);
+			oferror("Texture refresh: %1%", %str);
+			return;
+		}
+		myDirty = false;
+	}
+}
 
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::bind(GpuManager::TextureUnit unit)
+{
+	myTextureUnit = unit;
+	glActiveTexture(myTextureUnit);
+	glBindTexture(GL_TEXTURE_2D, myId);
+}
 
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::unbind()
+{
+	myTextureUnit = GpuManager::TextureUnitInvalid;
+}

@@ -24,43 +24,37 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __ACTOR_H__
+#define __ACTOR_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "omega/Application.h"
+#include "omega/SceneNode.h"
 
-namespace oengine {
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class OMEGA_API Actor: public ReferenceType, IEventListener
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		Actor(): myNode(NULL)  {}
 
-	private:
-		AlignedBox3 myBBox;
+		void setSceneNode(SceneNode* node);
+		SceneNode* getSceneNode();
+
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
+
+	protected:
+		SceneNode* myNode;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+	inline void Actor::setSceneNode(SceneNode* node)
+	{ myNode = node; }
 
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneNode* Actor::getSceneNode()
+	{ return myNode; }
+}; // namespace omega
 
 #endif

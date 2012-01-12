@@ -24,43 +24,36 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#include "oengine/SceneNode.h"
+#include "oengine/RenderableSceneObject.h"
+#include "oengine/EngineServer.h"
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+using namespace omega;
+using namespace oengine;
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderableSceneObject::RenderableSceneObject():
+	myEffect(NULL)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderableSceneObject::draw(SceneNode* node, RenderState* state)
+{ 
+	SceneRenderable* sr = (SceneRenderable*)getRenderable(state->client);
+	if(sr != NULL)
 	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		sr->setSceneNode(node);
+		// If this object has an associated effect use it to draw the renderable. 
+		// Otherwise, draw renderable directly
+		if(myEffect != NULL)
+		{
+			myEffect->draw(sr, state);
+		}
+		else
+		{
+			sr->draw(state);
+		}
+	}
+}
 
-	private:
-		AlignedBox3 myBBox;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
-
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
-
-#endif

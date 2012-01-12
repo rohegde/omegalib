@@ -24,33 +24,101 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/SceneRenderable.h"
-#include "omega/EngineClient.h"
-#include "omega/Renderer.h"
+#include "omega/Renderable.h"
+#include "omega/EngineServer.h"
 
 using namespace omega;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneRenderable::SceneRenderable()
+Renderable::Renderable():
+	myClient(NULL)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+Renderer* Renderable::getRenderer()
+{ 
+	return myClient->getRenderer(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderableFactory::RenderableFactory():
+	myInitialized(false),
+	myServer(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneRenderable::~SceneRenderable()
+RenderableFactory::~RenderableFactory()
 {
+	dispose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneRenderable::pushNodeTransform()
+void RenderableFactory::initialize(EngineServer* srv)
 {
-	Renderer* r = getClient()->getRenderer();
-	r->pushTransform(mySceneNode->getFullTransform());
+	if(!myInitialized)
+	{
+		//ofmsg("Initializing renderable factory: %1%", %toString());
+		myServer = srv;
+		foreach(EngineClient* client, srv->getClients())
+		{
+			Renderable* r = createRenderable();
+			if(r != NULL)
+			{
+				r->setClient(client);
+				myRenderables.push_back(r);
+				RenderableCommand rc(r, RenderableCommand::Initialize);
+				client->queueRenderableCommand(rc);
+			}
+		}
+		myInitialized = true;
+	}
+	else
+	{
+		owarn("!RenderableFactory::initialize - renderable already initialized");
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneRenderable::popNodeTransform()
+void RenderableFactory::dispose()
 {
-	Renderer* r = getClient()->getRenderer();
-	r->popTransform();
+	if(myInitialized)
+	{
+		//ofmsg("Disposing renderable factory: %1%", %toString());
+		foreach(Renderable* r, myRenderables)
+		{
+			RenderableCommand rc(r, RenderableCommand::Dispose);
+			r->getClient()->queueRenderableCommand(rc);
+		}
+		myRenderables.empty();
+		myInitialized = false;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void RenderableFactory::refresh()
+{
+	foreach(Renderable* r, myRenderables)
+	{
+		RenderableCommand rc(r, RenderableCommand::Refresh);
+		r->getClient()->queueRenderableCommand(rc);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* RenderableFactory::getRenderable(EngineClient* client)
+{
+	foreach(Renderable* r, myRenderables)
+	{
+		if(r->getClient() == client) return r;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* RenderableFactory::getFirstRenderable()
+{
+	return myRenderables.front();
 }

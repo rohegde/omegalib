@@ -24,43 +24,56 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __CONSOLE_H__
+#define __CONSOLE_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "Renderable.h"
+#include "Renderer.h"
 
-namespace oengine {
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class Console: public RenderableFactory, public ILogListener
 	{
+	friend class ConsoleRenderable;
 	public:
-		Box();
+		Console();
+
 		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+
+		void setFont(const FontInfo& font);
+
+		//! Draw the console. Assume the 
+		void draw(const DrawContext& context);
+
+		virtual void addLine(const String& line);
 
 	private:
-		AlignedBox3 myBBox;
+		int myLines;
+		Color myBackgroundColor;
+		FontInfo myFont;
+		Lock myLock;
+
+		List<String> myLineBuffer;
+		String myHeadline;
+		Dictionary<char, Color> myConsoleColors;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	class OMEGA_API ConsoleRenderable: public Renderable
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
+		ConsoleRenderable(Console* owner): 
+		  myOwner(owner), myFont(NULL)
+		{}
 		void draw(RenderState* state);
 
 	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		Console* myOwner;
+		Font* myFont;
 	};
-}; // namespace oengine
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Console::setFont(const FontInfo& font)
+	{ myFont = font; }
+};
 #endif

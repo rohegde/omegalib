@@ -24,43 +24,66 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#include "oengine/UiModule.h"
+#include "oengine/ui/DefaultSkin.h"
+#include "oengine/UiRenderPass.h"
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+using namespace oengine;
+using namespace omega;
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+UiModule* UiModule::mysInstance = NULL;
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+UiModule::UiModule():
+	myWidgetFactory(NULL),
+	myEngine(NULL)
+{
+	mysInstance = this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+UiModule::~UiModule()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::initialize(EngineServer* server)
+{
+	myEngine = server;
+	myWidgetFactory = new ui::DefaultWidgetFactory(myEngine);
+	for(int i = 0; i < MaxUis; i++)
 	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		myUi[i] = new ui::Container(myEngine);
+		myUi[i]->setLayout(ui::Container::LayoutFree);
+		myUi[i]->setUIEventHandler(myEngine);
+	}
+	myEngine->registerRenderPassClass("UiRenderPass", (EngineServer::RenderPassFactory)UiRenderPass::createInstance);
+	myEngine->addRenderPass("UiRenderPass");
+}
 
-	private:
-		AlignedBox3 myBBox;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::update(const UpdateContext& context)
+{
+	// Update ui.
+	for(int i = 0; i < MaxUis; i++)
 	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		myUi[i]->update(context);
+	}
+}
 
-	private:
-		Box* myBox;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::handleEvent(const Event& evt)
+{
+	for(int i = 0; i < MaxUis; i++)
+	{
+		myUi[i]->handleEvent(evt);
+	}
+}
 
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
+///////////////////////////////////////////////////////////////////////////////////////////////
+ui::Container* UiModule::getUi(int id)
+{
+	oassert(id >= 0 && id < MaxUis);
+	return myUi[id];
+}
 
-#endif

@@ -53,6 +53,16 @@ include_directories(
 ###################################################################################################
 # Add libraries and applications to the project.
 
+# Add some libraries used for display support.
+include(${OmegaLib_SOURCE_DIR}/external/UseFreeImage.cmake)
+include(${OmegaLib_SOURCE_DIR}/external/UseFreeType.cmake)
+include(${OmegaLib_SOURCE_DIR}/external/UseFtgl.cmake)
+include_directories(
+  ${OmegaLib_BINARY_DIR}/ftgl/src/
+  ${OmegaLib_BINARY_DIR}/freetype/include/
+  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
+)
+
 # Add the core omega project
 add_subdirectory(omega)
 
@@ -66,16 +76,6 @@ add_subdirectory(apps/ohello)
 if(OMEGA_BUILD_TUTORIALS)
 	omega_add_tutorial(tutorial4)
 endif(OMEGA_BUILD_TUTORIALS)
-
-# Add some libraries used for display support.
-include(${OmegaLib_SOURCE_DIR}/external/UseFreeImage.cmake)
-include(${OmegaLib_SOURCE_DIR}/external/UseFreeType.cmake)
-include(${OmegaLib_SOURCE_DIR}/external/UseFtgl.cmake)
-include_directories(
-  ${OmegaLib_BINARY_DIR}/ftgl/src/
-  ${OmegaLib_BINARY_DIR}/freetype/include/
-  ${OmegaLib_BINARY_DIR}/FreeImage/Source/
-)
 
 add_subdirectory(oengine)
 

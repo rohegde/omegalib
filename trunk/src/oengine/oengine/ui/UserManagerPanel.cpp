@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "oengine/EngineServer.h"
+#include "oengine/UiModule.h"
 #include "oengine/ui/UserManagerPanel.h"
 #include "oengine/ui/WidgetFactory.h"
 
@@ -43,7 +44,7 @@ void UserManagerPanel::initialize(Container* owner, const String& openNIServiceN
 	myObserverUpdateService =  sm->findService<ObserverUpdateService>(observerUpdateServiceName);
 
 	owner->addChild(this);
-	WidgetFactory* wf = getServer()->getWidgetFactory();
+	WidgetFactory* wf = UiModule::instance()->getWidgetFactory();
 
 #ifdef OMEGA_USE_OPENNI
 	myOpenNIService = sm->findService<OpenNIService>(openNIServiceName);

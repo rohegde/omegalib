@@ -24,43 +24,85 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __TEXTURE_H__
+#define __TEXTURE_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "omega/GpuManager.h"
 
-namespace oengine {
+namespace omega
+{
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class OMEGA_API Texture: public GpuResource
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		Texture(GpuContext* context): 
+		  GpuResource(context),
+		  myInitialized(false), 
+		  myDirty(true),
+		  myData(NULL),
+		  myTextureUnit(GpuManager::TextureUnitInvalid) {}
+
+		//! Initializes this texture object
+		void initialize(byte* data, int width, int height); 
+
+		//! Resets the texture object specifying a new size and data pointer for it.
+		void reset(byte* data, int width, int height);
+
+		bool isDirty() { return myDirty; }
+		void setDirty() { myDirty = true; }
+
+		byte* getData() { return myData; }
+		void setData(byte* value) { myData = value; }
+
+		int getWidth();
+		int getHeight();
+
+		//! Texture operations
+		//@{
+		GLuint getGLTexture();
+		void bind(GpuManager::TextureUnit unit);
+		void unbind();
+		void refresh();
+		bool isBound();
+		GpuManager::TextureUnit getTextureUnit();
+		//@}
 
 	private:
-		AlignedBox3 myBBox;
+		bool myInitialized;
+		bool myDirty;
+		GLuint myId;
+		GLubyte* myData;
+		int myWidth;
+		int myHeight;
+
+		GpuManager::TextureUnit myTextureUnit;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	inline int Texture::getWidth() 
+	{ return myWidth; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int Texture::getHeight() 
+	{ return myHeight; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GLuint Texture::getGLTexture() 
 	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		oassert(myInitialized);
+		return myId; 
+	}
 
-	private:
-		Box* myBox;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Texture::isBound()
+	{
+		return (myTextureUnit != GpuManager::TextureUnitInvalid ? true : false);
+	}
 
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline GpuManager::TextureUnit Texture::getTextureUnit()
+	{ return myTextureUnit; }
+}; // namespace omega
 
 #endif
