@@ -24,43 +24,48 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __UI_MODULE_H__
+#define __UI_MODULE_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "oengine/EngineServer.h"
+#include "oengine/EngineApplication.h"
+#include "oengine/BoundingSphere.h"
+#include "ui/Container.h"
+#include "ui/WidgetFactory.h"
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+namespace oengine
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API UiModule: public IEngineModule
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		static const int MaxUis = 3;
+		static UiModule* instance() { return mysInstance; }
+
+	public:
+		UiModule();
+		~UiModule();
+
+		void initialize(EngineServer* server);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
+
+		EngineServer* getEngine() { return myEngine; }
+
+		ui::Container* getUi(int id);
+		ui::WidgetFactory* getWidgetFactory();
 
 	private:
-		AlignedBox3 myBBox;
+		static UiModule* mysInstance;
+
+		EngineServer* myEngine;
+		ui::Container* myUi[MaxUis];
+		ui::WidgetFactory* myWidgetFactory;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
-
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
-
+	inline ui::WidgetFactory* UiModule::getWidgetFactory()
+	{ return myWidgetFactory; }
+		
+};
 #endif

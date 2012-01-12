@@ -27,7 +27,7 @@
 #ifndef __OMEGA_TYPES_H__
 #define __OMEGA_TYPES_H__
 
-#include "osysdefs.h"
+#include "omegaConfig.h"
 
 #include <omicron.h>
 

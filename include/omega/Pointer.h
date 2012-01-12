@@ -24,43 +24,92 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __POINTER_H__
+#define __POINTER_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "Renderable.h"
 
-namespace oengine {
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	class OMEGA_API Pointer: public RenderableFactory
 	{
+	friend class PointerRenderable;
 	public:
-		Box();
+		Pointer(): 
+ 		  myVisible(true),
+		  myColor(0.5f, 0.4f, 1.0f, 1.0f),
+		  myText("Pointer") {}
+
 		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+
+		void setVisible(bool value);
+		bool getVisible();
+
+		void setPosition(const Vector2i& position);
+		void setPosition(int x, int y);
+		Vector2i getPosition();
+
+		Color getColor();
+		void setColor(const Color& value);
+
+		String getText();
+		void setText(const String& value);
 
 	private:
-		AlignedBox3 myBBox;
+		bool myVisible;
+		Color myColor;
+		Vector2i myPosition;
+		String myText;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	class OMEGA_API PointerRenderable: public Renderable
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
+		PointerRenderable(Pointer* pointer): 
+		  myPointer(pointer)
+		{}
 		void draw(RenderState* state);
 
 	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		Pointer* myPointer;
 	};
-}; // namespace oengine
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setVisible(bool value)
+	{ myVisible = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool Pointer::getVisible()
+	{ return myVisible; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color Pointer::getColor()
+	{ return myColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setColor(const Color& value)
+	{ myColor = value;}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setPosition(const Vector2i& position)
+	{ myPosition = position; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setPosition(int x, int y)
+	{ myPosition = Vector2i(x, y); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Vector2i Pointer::getPosition()
+	{ return myPosition; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline String Pointer::getText()
+	{ return myText; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setText(const String& value)
+	{ myText = value; }
+}; // namespace omega
 
 #endif

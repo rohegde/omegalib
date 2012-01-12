@@ -89,7 +89,7 @@ struct FlockAffector
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Flock: public SceneObject
+class Flock: public RenderableSceneObject
 {
 public:
 static const int MaxAffectors = 32;

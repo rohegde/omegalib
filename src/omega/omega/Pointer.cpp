@@ -24,43 +24,47 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#include "omega/Pointer.h"
+#include "omega/Renderer.h"
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "omega/glheaders.h"
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+using namespace omega;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* Pointer::createRenderable()
+{
+	return new PointerRenderable(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PointerRenderable::draw(RenderState* state)
+{
+	if(myPointer->myVisible)
 	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		int size = 30;
+		int x = myPointer->myPosition[0];
+		int y = myPointer->myPosition[1];
 
-	private:
-		AlignedBox3 myBBox;
-	};
+		glColor4fv(myPointer->myColor.data());
+		glBegin(GL_TRIANGLES);
+		glVertex2i(x, y);
+		glVertex2i(x + size, y + size / 2);
+		glVertex2i(x + size / 2, y + size);
+		glEnd();
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		glColor4f(1, 1, 1, 1);
+		glBegin(GL_LINE_LOOP);
+		glVertex2i(x, y);
+		glVertex2i(x + size, y + size / 2);
+		glVertex2i(x + size / 2, y + size);
+		glEnd();
 
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
-
-#endif
+		Font* fnt = getRenderer()->getDefaultFont();
+		if(fnt != NULL)
+		{
+			getRenderer()->drawText(myPointer->myText, fnt, Vector2f(x + size, y + size), Font::HALeft | Font::VABottom);
+		}
+	}
+}

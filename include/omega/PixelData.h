@@ -63,6 +63,6 @@ namespace omega {
 		size_t mySize;
 
 	};
-}; // namespace oengine
+}; // namespace omega
 
 #endif

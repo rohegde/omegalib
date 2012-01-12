@@ -24,102 +24,104 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOUNDING_SPHERE_DRAWABLE_H__
-#define __BOUNDING_SPHERE_DRAWABLE_H__
+#ifndef __RENDERER_H__
+#define __RENDERER_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "osystem.h"
+#include "omega/Font.h"
+#include "omega/Application.h"
 
-namespace oengine {
+#include "omega/Texture.h"
+#include "omega/GpuBuffer.h"
+
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphere: public RenderableSceneObject
+	class OMEGA_API Renderer
 	{
-	friend class BoundingSphereRenderable;
 	public:
-		BoundingSphere(): 
-		  myDrawOnSelected(false), 
- 		  myVisible(true),
-		  mySlices(5),
-		  mySegments(32),
-		  myColor(0.8f, 0.8f, 1.0f, 1.0f) {}
+		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };
+		enum DrawType { DrawTriangles, DrawLines, DrawPoints, DrawTriangleStrip };
 
-		virtual Renderable* createRenderable();
+	public:
+		Renderer();
 
-		void setDrawOnSelected(bool value);
-		bool getDrawOnSelected();
+		//! Renderer options
+		//@{
+		void setTargetTexture(Texture* texture);
+		Texture* getTargetTexture();
+		//@}
 
-		void setVisible(bool value);
-		bool getVisible();
+		//! Drawing control
+		//@{
+		void beginDraw3D(const DrawContext& context);
+		void beginDraw2D(const DrawContext& context);
+		void endDraw();
+		bool isDrawing();
+		//@}
 
-		Color getColor();
-		void setColor(const Color& value);
+		//! Drawing control
+		//@{
+		void pushTransform(const AffineTransform3& transform);
+		void popTransform();
+		//@}
 
-		int getSegments();
-		void setSegments(int value);
+		//! 2D Drawing methods
+		//@{
+		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
+			Color startColor, Color endColor, float pc = 0.5f);
+		void drawRect(Vector2f pos, Vector2f size, Color color);
+		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
+		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
+		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0);
+		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
+		//@}
 
-		int getSlices();
-		void setSlices(int value);
+		//! 3D Drawing methods
+		//@{
+		void drawWireSphere(const Color& color, int segments, int slices);
+		void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
+		//@}
+
+		//! Font management
+		//@{
+		Font* createFont(omega::String fontName, omega::String filename, int size);
+		Font* getFont(omega::String fontName);
+		Font* getDefaultFont();
+		void setDefaultFont(Font* value);
+		//@}
+
+		// Hack
+		void setForceDiffuseColor(bool value) { myForceDiffuseColor = value; }
 
 	private:
-		bool myVisible;
-		bool myDrawOnSelected;
-		Color myColor;
-		int mySegments;
-		int mySlices;
+		bool myDrawing;
+		Texture* myTargetTexture;
+		Dictionary<String, Font*> myFonts;
+		Font* myDefaultFont;
+		Lock myLock;
+
+		bool myForceDiffuseColor;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API BoundingSphereRenderable: public SceneRenderable
-	{
-	public:
-		BoundingSphereRenderable(BoundingSphere* boundingSphere): 
-		  myBoundingSphere(boundingSphere)
-		{}
-		void draw(RenderState* state);
-
-	private:
-		BoundingSphere* myBoundingSphere;
-	};
+	inline bool Renderer::isDrawing()
+	{ return myDrawing; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setDrawOnSelected(bool value)
-	{ myDrawOnSelected = value; }
+	inline void Renderer::setTargetTexture(Texture* texture)
+	{ myTargetTexture = texture; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool BoundingSphere::getDrawOnSelected()
-	{ return myDrawOnSelected; }
+	inline Texture* Renderer::getTargetTexture()
+	{ return myTargetTexture; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setVisible(bool value)
-	{ myVisible = value; }
+	inline Font* Renderer::getDefaultFont()
+	{ return myDefaultFont; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool BoundingSphere::getVisible()
-	{ return myVisible; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Color BoundingSphere::getColor()
-	{ return myColor; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setColor(const Color& value)
-	{ myColor = value;}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int BoundingSphere::getSegments()
-	{ return mySegments; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setSegments(int value)
-	{ mySegments = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int BoundingSphere::getSlices()
-	{ return mySlices;}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void BoundingSphere::setSlices(int value)
-	{ mySlices = value; }
-}; // namespace oengine
+	inline void Renderer::setDefaultFont(Font* value)
+	{ myDefaultFont = value; }
+}; // namespace omega
 
 #endif

@@ -24,43 +24,47 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __FONT_H__
+#define __FONT_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "omega/osystem.h"
 
-namespace oengine {
+class FTFont;
+
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+	struct FontInfo
 	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		FontInfo():
+			name(""), filename(""), size(0) {} 
+		FontInfo(String theName, String theFilename, int theSize):
+			name(theName), filename(theFilename), size(theSize) {} 
 
-	private:
-		AlignedBox3 myBBox;
+		String name;
+		String filename;
+		int size;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	class OMEGA_API Font
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		static void lock();
+		static void unlock();
+
+	public:
+		enum Align {HALeft = 1 << 0, HARight = 1 << 1, HACenter = 1 << 2,
+					VATop = 1 << 3, VABottom = 1 << 4, VAMiddle = 1 << 5};
+	public:
+		Font(FTFont* fontImpl): myFontImpl(fontImpl) {}
+
+		void render(const String& text, float x, float y);
+		Vector2f computeSize(const omega::String& text);
 
 	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		static Lock sLock;
+		FTFont* myFontImpl;
 	};
-}; // namespace oengine
+}; // namespace omega
 
 #endif

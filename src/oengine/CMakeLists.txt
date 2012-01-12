@@ -27,48 +27,36 @@
 
 ###################################################################################################
 # Compile definitions
-add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DFTGL_LIBRARY_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC -DFREEIMAGE_LIB)
+add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOENGINE_EXPORTING -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC )
 
-set(OENGINE_USE_OBJ false CACHE BOOL "Enable support for obj format inside oengine.")
-set(OENGINE_USE_PLY true CACHE BOOL "Enable support for ply format inside oengine.")
+#set(OENGINE_USE_OBJ false CACHE BOOL "Enable support for obj format inside oengine.")
+#set(OENGINE_USE_PLY true CACHE BOOL "Enable support for ply format inside oengine.")
+set(OENGINE_USE_OBJ false)
+set(OENGINE_USE_PLY true)
 
 ###################################################################################################
 # Source files
 set( srcs 
-		# omega
-		oengine/Box.cpp
-		oengine/Console.cpp
-		oengine/ImageUtils.cpp
-		oengine/EngineClient.cpp
-		oengine/EngineServer.cpp
-		oengine/Font.cpp
-		oengine/OverlayRenderable.cpp
-		oengine/Pointer.cpp
-		oengine/Renderer.cpp
-		oengine/Effect.cpp
-		oengine/ControllerManipulator.cpp
-		oengine/DefaultRenderPass.cpp
-		oengine/OverlayRenderPass.cpp
-		oengine/LightingPass.cpp
-		oengine/Camera.cpp
 		oengine/BoundingSphere.cpp
+		oengine/Box.cpp
+		oengine/ControllerManipulator.cpp
 		oengine/DefaultMouseInteractor.cpp
+		oengine/DefaultRenderPass.cpp
 		oengine/DefaultTwoHandsInteractor.cpp
+		oengine/Effect.cpp
+		oengine/glteapot.cpp
+		oengine/LightingModule.cpp
+		oengine/LightingPass.cpp
 		oengine/Mesh.cpp
 		oengine/MeshData.cpp
-		oengine/Node.cpp
-		oengine/glteapot.cpp
-		oengine/SceneObject.cpp
-		oengine/SceneQuery.cpp
-		oengine/SceneNode.cpp
-		oengine/SceneRenderable.cpp
+		oengine/OverlayRenderPass.cpp
 		oengine/ReferenceBox.cpp
-		oengine/Renderable.cpp
+		oengine/RenderableSceneObject.cpp
 		oengine/SceneEditorModule.cpp
-		oengine/PortholeTabletService.cpp
+		oengine/SceneRenderable.cpp
 		oengine/TransparentRenderPass.cpp
+		oengine/UiModule.cpp
 		oengine/UiRenderPass.cpp
-		
 		# omega::ui
 		oengine/ui/AbstractButton.cpp
 		oengine/ui/Button.cpp
@@ -84,52 +72,30 @@ set( srcs
 ###################################################################################################
 # Headers
 set( headers 
-		# omega
-		${OmegaLib_SOURCE_DIR}/include/oengine.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/oenginebase.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Box.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Console.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Font.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ImageUtils.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/EngineApplication.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/EngineClient.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/EngineServer.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Renderer.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/BoundingSphere.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Box.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ControllerManipulator.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultMouseInteractor.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultTwoHandsInteractor.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Effect.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/glteapot.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/LightingModule.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/Mesh.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/MeshData.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Node.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Effect.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Renderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Pointer.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/glteapot.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneObject.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneQuery.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneNode.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ply.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/ReferenceBox.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/RenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/DefaultRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/TransparentRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/SceneEditorModule.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/OverlayRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/LightingPass.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/Light.h
-		${OmegaLib_SOURCE_DIR}/include/oengine/PortholeTabletService.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ply.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/PlyDataReader.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/ReferenceBox.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/RenderableSceneObject.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneEditorModule.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/SceneRenderable.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/Teapot.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/TransparentRenderPass.h
+		${OmegaLib_SOURCE_DIR}/include/oengine/UiModule.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/UiRenderPass.h
-		
 		# omega::ui
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/AbstractButton.h
 		${OmegaLib_SOURCE_DIR}/include/oengine/ui/Button.h
@@ -173,11 +139,12 @@ source_group(oengine::mvc REGULAR_EXPRESSION oengine/mvc/)
 
 ###################################################################################################
 # Setup compile info
+enable_precompiled_headers(oengine/precompiled.h srcs)
 add_library( oengine SHARED ${srcs} ${headers})
 
 ###################################################################################################
 # Setup link info.
-target_link_libraries( oengine omega freetype ftgl FreeImage)
+target_link_libraries( oengine omega)
 if(OMEGA_USE_PYTHON)
 	target_link_libraries( oengine ${PYTHON_LIBRARIES})
 endif(OMEGA_USE_PYTHON)

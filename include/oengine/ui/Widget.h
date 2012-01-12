@@ -29,7 +29,7 @@
 
 #include "oengine/oenginebase.h"
 #include "oengine/Renderer.h"
-#include "oengine/OverlayRenderable.h"
+#include "oengine/Renderable.h"
 
 namespace oengine { namespace ui {
 	class Container;
@@ -184,7 +184,7 @@ namespace oengine { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API WidgetRenderable: public OverlayRenderable
+	class OENGINE_API WidgetRenderable: public Renderable
 	{
 	public:
 		WidgetRenderable(Widget* owner): myOwner(owner) {}

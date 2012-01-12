@@ -24,43 +24,52 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __UI_MODULE_H__
+#define __UI_MODULE_H__
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+#include "oengine/EngineServer.h"
+#include "oengine/EngineApplication.h"
+#include "oengine/Light.h"
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
+namespace oengine
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class OENGINE_API LightingModule: public IEngineModule
 	{
 	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+		static const int MaxUis = 3;
+		static LightingModule* instance() { return mysInstance; }
 
+	public:
+		LightingModule();
+		~LightingModule();
+
+		void initialize(EngineServer* server);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
+
+		EngineServer* getEngine() { return myEngine; }
+
+		Light* getLight(int index);
+		Color& getAmbientLightColor();
+		void setAmbientLightColor(const Color& value);
 	private:
-		AlignedBox3 myBBox;
+		static LightingModule* mysInstance;
+
+		EngineServer* myEngine;
+		Light myLights[MaxLights];
+		Color myAmbientColor;
 	};
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light* LightingModule::getLight(int index)
+	{ return &myLights[index]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+	inline Color& LightingModule::getAmbientLightColor()
+	{ return myAmbientColor; }
 
-	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
-
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void LightingModule::setAmbientLightColor(const Color& value)
+	{ myAmbientColor = value; }
+};
 #endif

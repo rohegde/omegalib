@@ -30,6 +30,7 @@
 #include "oengine/Renderer.h"
 #include "oengine/SceneNode.h"
 #include "oengine/ui/Container.h"
+#include "oengine/UiModule.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -48,7 +49,7 @@ void UiRenderPass::render(EngineClient* client, const DrawContext& context)
 
 		client->getRenderer()->beginDraw2D(context);
 
-		ui::Container* ui = client->getServer()->getUi(0);
+		ui::Container* ui = UiModule::instance()->getUi(0);
 		const Rect& vp = Rect(0, 0, context.channel->canvasSize->x(), context.channel->canvasSize->y());
 
 		// Update the root container size if necessary.

@@ -24,75 +24,57 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MESHVIEWER_H__
-#define __MESHVIEWER_H__
+#ifndef __ENGINE_CLIENT_H__
+#define __ENGINE_CLIENT_H__
 
-#include <omega.h>
-#include <oengine.h>
-#include "oengine/PortholeTabletService.h"
+#include "osystem.h"
+#include "Renderable.h"
+#include "omega/Application.h"
+#include "omega/SystemManager.h"
 
-using namespace omega;
-using namespace oengine;
-using namespace oengine::ui;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public ReferenceType
-{
-public:
-	Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label);
-	~Entity();
-
-	void show();
-	void hide();
+namespace omega {
+	class RenderPass;
+	class EngineServer;
 	
-	SceneNode* getSceneNode() { return mySceneNode; }
-	Mesh* getMesh() { return myMesh; }
-	const String& getName() { return myName; }
-	const String& getLabel() { return myLabel; }
-	
-private:
-	EngineServer* myServer;
-	SceneNode* mySceneNode;
-	Mesh* myMesh;
-	MeshData* myMeshData;
-	Actor* myInteractor;
-	String myName;
-	String myLabel;
-};
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API EngineClient: public ApplicationClient
+	{
+	public:
+		EngineClient(ApplicationServer* server);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewer: public EngineServer
-{
-public:
-	MeshViewer(Application* app);
+		EngineServer* getServer();
 
-	virtual void initialize();
-	virtual void handleEvent(const Event& evt);
-	virtual void handleUiEvent(const Event& evt);
-	virtual void update(const UpdateContext& context);
+		void addRenderPass(RenderPass* pass, bool addToFront);
+		void removeRenderPass(RenderPass* pass);
+		void removeAllRenderPasses();
 
-private:
-	void loadEntityLibrary();
-	void initUi();
 
-private:
-	Vector<Entity*> myEntities;
-	Entity* mySelectedEntity;
+		void queueRenderableCommand(RenderableCommand& cmd);
 
-	PortholeTabletService* myTabletManager;
+		virtual void initialize();
+		virtual void draw(const DrawContext& context);
+		virtual void startFrame(const FrameInfo& frame);
+		virtual void finishFrame(const FrameInfo& frame);
 
-	// Scene
-	ReferenceBox* myReferenceBox;
+		Renderer* getRenderer();
 
-	// UI
-	Vector<Button*> myEntityButtons;
+	private:
+		void innerDraw(const DrawContext& context);
 
-	// Interactors.
-	Actor* myInteractor;
+	private:
+		EngineServer* myServer;
+		Renderer* myRenderer;
+		List<RenderPass*> myRenderPassList;
+		Queue<RenderableCommand> myRenderableCommands;
+	};
 
-    bool myShowUI;
-   	bool autoRotate;
-   	float deltaScale;
-};
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Renderer* EngineClient::getRenderer()
+	{ return myRenderer; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline EngineServer* EngineClient::getServer()
+	{ return myServer; }
+}; // namespace omega
 
 #endif

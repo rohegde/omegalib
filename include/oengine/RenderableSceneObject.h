@@ -24,42 +24,39 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __RENDERABLE_SCENE_OBJECT_H__
+#define __RENDERABLE_SCENE_OBJECT_H__
 
-#include "RenderableSceneObject.h"
+#include "oenginebase.h"
 #include "SceneRenderable.h"
+#include "ISceneObject.h"
+#include "oengine/Effect.h"
 
 namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
-	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
-
-	private:
-		AlignedBox3 myBBox;
-	};
+	// Forward declarations
+	class SceneNode;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
+	class OENGINE_API RenderableSceneObject: public RenderableFactory, ISceneObject
 	{
 	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+		RenderableSceneObject();
 
+		virtual Renderable* createRenderable() { return NULL; }
+
+		virtual void update(SceneNode* owner) {}
+
+		//! This method is called by engine client threads to traverse the scene hierarchy during
+		//! rendering.
+		void draw(SceneNode* node, RenderState* state);
+
+		virtual const AlignedBox3* getBoundingBox() { return NULL; }
+		virtual bool hasBoundingBox() { return false; }
+
+		void setEffect(BaseEffect* value) { myEffect = value; }
+		BaseEffect* getEffect() { return myEffect; }
 	private:
-		Box* myBox;
-
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
+		BaseEffect* myEffect;
 	};
 }; // namespace oengine
 

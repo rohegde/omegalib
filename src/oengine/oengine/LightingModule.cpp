@@ -24,43 +24,41 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __BOX_H__
-#define __BOX_H__
+#include "oengine/LightingModule.h"
+#include "oengine/LightingPass.h"
 
-#include "RenderableSceneObject.h"
-#include "SceneRenderable.h"
+using namespace oengine;
+using namespace omega;
 
-namespace oengine {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OENGINE_API Box: public RenderableSceneObject
-	{
-	public:
-		Box();
-		virtual Renderable* createRenderable();
-		virtual const AlignedBox3* getBoundingBox() { return &myBBox; }
-		virtual bool hasBoundingBox() { return true; }
+LightingModule* LightingModule::mysInstance = NULL;
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+LightingModule::LightingModule():
+	myEngine(NULL)
+{
+	mysInstance = this;
+}
 
-	private:
-		AlignedBox3 myBBox;
-	};
+///////////////////////////////////////////////////////////////////////////////////////////////////
+LightingModule::~LightingModule()
+{
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class BoxRenderable: public SceneRenderable
-	{
-	public:
-		BoxRenderable(Box* box);
-		virtual ~BoxRenderable();
-		void initialize();
-		void draw(RenderState* state);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void LightingModule::initialize(EngineServer* server)
+{
+	myEngine = server;
+	myEngine->registerRenderPassClass("LightingPass", (EngineServer::RenderPassFactory)LightingPass::createInstance);
+	myEngine->addRenderPass("LightingPass");
+}
 
-	private:
-		Box* myBox;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::update(const UpdateContext& context)
+{
+}
 
-		Vector3f myNormals[6];
-		Vector4i myFaces[6]; 
-		Vector3f myVertices[8];
-		Color myFaceColors[6];
-	};
-}; // namespace oengine
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::handleEvent(const Event& evt)
+{
+}
 
-#endif

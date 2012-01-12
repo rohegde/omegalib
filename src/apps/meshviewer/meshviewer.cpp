@@ -44,7 +44,7 @@ Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const St
 
 	// Create the rendering effect for this entity.
 	MultipassEffect* mpfx = new MultipassEffect();
-	mySceneNode->setEffect(mpfx);
+	myMesh->setEffect(mpfx);
 
 	Effect* wirefx = new Effect();
 	wirefx->setDrawMode(Effect::DrawWireframe);
@@ -91,6 +91,13 @@ void Entity::show()
 void Entity::hide()
 {
 	mySceneNode->setVisible(false);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MeshViewer::MeshViewer(Application* app): 
+	EngineServer(app) 
+{
+	EngineModuleServices::addModule(new UiModule());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,12 +200,12 @@ void MeshViewer::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::initUi()
 {
-	WidgetFactory* wf = getWidgetFactory();
+	WidgetFactory* wf = UiModule::instance()->getWidgetFactory();
 
 	int canvasWidth = getCanvasWidth();
 	int canvasHeight = getCanvasHeight();
 
-	Container* root = getUi(0);
+	Container* root = UiModule::instance()->getUi(0);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
 	//entityButtons->setDebugModeEnabled(true);
