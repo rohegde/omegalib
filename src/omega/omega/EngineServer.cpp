@@ -91,17 +91,6 @@ void EngineServer::initialize()
 		setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
 	}
 
-	// Setup default render chain.
-	//registerRenderPassClass("LightingPass", (RenderPassFactory)LightingPass::createInstance);
-	//registerRenderPassClass("DefaultRenderPass", (RenderPassFactory)DefaultRenderPass::createInstance);
-	//registerRenderPassClass("TransparentRenderPass", (RenderPassFactory)TransparentRenderPass::createInstance);
-	//registerRenderPassClass("OverlayRenderPass", (RenderPassFactory)OverlayRenderPass::createInstance);
-
-	//addRenderPass("LightingPass");
-	//addRenderPass("DefaultRenderPass");
-	//addRenderPass("TransparentRenderPass");
-	//addRenderPass("OverlayRenderPass");
-
 	// Initialize modules
 	EngineModuleServices::initialize(this);
 }
@@ -140,12 +129,17 @@ void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFr
 	RenderPassFactory rpNew = myRenderPassFactories[renderPass];
 	if(rpNew != NULL)
 	{
+		ofmsg("EngineServer: adding render pass %1%", %renderPass);
 		foreach(EngineClient* client, myClients)
 		{
 			RenderPass* rp = rpNew(client);
 			rp->setUserData(userData);
 			client->addRenderPass(rp, addToFront);
 		}
+	}
+	else
+	{
+		ofwarn("EngineServer::addRenderPass - render pass not found: %1%", %renderPass);
 	}
 }
 
