@@ -31,10 +31,14 @@
 //#include "omegaToolkit/RenderPass.h"
 
 namespace omegaToolkit {
-	class Light: public ReferenceType
+	class OTK_API Light: public ReferenceType
 	{
 	public:
 		enum Type { Point, Directional, Spot };
+		static const int MaxLights = 16;
+		static Light* getLight(int index);
+		static Color& getAmbientLightColor();
+		static void setAmbientLightColor(const Color& value);
 
 	public:
 		Light():
@@ -56,11 +60,27 @@ namespace omegaToolkit {
 		void setEnabled(bool value) { myEnabled = value; }
 
 	private:
+		static Light mysLights[MaxLights];
+		static Color mysAmbientColor;
+
 		Vector3f myPosition;
 		Color myColor;
 		Type myType;
 		bool myEnabled;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light* Light::getLight(int index)
+	{ return &mysLights[index]; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Color& Light::getAmbientLightColor()
+	{ return mysAmbientColor; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Light::setAmbientLightColor(const Color& value)
+	{ mysAmbientColor = value; }
+
 }; // namespace omegaToolkit
 
 #endif

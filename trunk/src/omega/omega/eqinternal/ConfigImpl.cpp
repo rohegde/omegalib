@@ -160,7 +160,6 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 
 	switch( event->data.type )
 	{
-#ifdef OMEGA_USE_KEYBOARD
         case eq::Event::KEY_PRESS:
         {
             KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Down);
@@ -171,9 +170,6 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
             KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Up);
 			return true;   
         }
-#endif //OMEGA_USE_KEYBOARD
-
-#ifdef OMEGA_USE_MOUSE
 	case eq::Event::WINDOW_POINTER_MOTION:
 		{
 			Vector2i pos;
@@ -222,7 +218,6 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 			MouseService::mouseWheelCallback(buttons, wheel, 0, 0);
 			return true;
 		}
-#endif
 	}
 	return Config::handleEvent(event);
 }

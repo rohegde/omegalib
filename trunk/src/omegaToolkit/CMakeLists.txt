@@ -45,7 +45,6 @@ set( srcs
 		omegaToolkit/DefaultTwoHandsInteractor.cpp
 		omegaToolkit/Effect.cpp
 		omegaToolkit/glteapot.cpp
-		omegaToolkit/LightingModule.cpp
 		omegaToolkit/LightingPass.cpp
 		omegaToolkit/Mesh.cpp
 		omegaToolkit/MeshData.cpp
@@ -72,6 +71,8 @@ set( srcs
 ###################################################################################################
 # Headers
 set( headers 
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit.h
+		
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/BoundingSphere.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Box.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ControllerManipulator.h
@@ -81,10 +82,10 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Effect.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/glteapot.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Light.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/LightingModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/LightingPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Mesh.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MeshData.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/OmegaToolkitApplication.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/OverlayRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ply.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/PlyDataReader.h

@@ -26,10 +26,6 @@
  *************************************************************************************************/
 #include "omega/SystemManager.h"
 
-#ifdef OMEGA_USE_PYTHON
-	#include "omega/PythonInterpreter.h"
-#endif
-
 // Display system
 #include "omega/DisplaySystem.h"
 #include "omega/ObserverUpdateService.h"
@@ -43,12 +39,8 @@
 #endif
 
 // Input services
-#ifdef OMEGA_USE_KEYBOARD
-	#include "omega/KeyboardService.h"
-#endif
-#ifdef OMEGA_USE_MOUSE
-	#include "omega/MouseService.h"
-#endif
+#include "omega/KeyboardService.h"
+#include "omega/MouseService.h"
 
 using namespace omega;
 
@@ -125,13 +117,8 @@ void SystemManager::setupServiceManager()
 {
 	myServiceManager = new ServiceManager();
 
-#ifdef OMEGA_USE_MOUSE
 	myServiceManager->registerService("MouseService", (ServiceAllocator)MouseService::New);
-#endif
-#ifdef OMEGA_USE_KEYBOARD
 	myServiceManager->registerService("KeyboardService", (ServiceAllocator)KeyboardService::New);
-#endif
-
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
 	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
 

@@ -261,7 +261,6 @@ void AffectorEntity::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Nightfield::Nightfield(Application* app): EngineServer(app)
 {
-	EngineModuleServices::addModule(new LightingModule());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,9 +337,9 @@ void Nightfield::initialize()
 			}
 		}
 	}
-	LightingModule::instance()->setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
+	Light::setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
 
-	Light* light = LightingModule::instance()->getLight(0);
+	Light* light = Light::getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.6f, 0.6f, 0.6f));
 	light->setPosition(Vector3f(0, 3, 3));
@@ -460,7 +459,7 @@ void Nightfield::updateSelection(const Ray& ray)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<Nightfield> app;
+	OmegaToolkitApplication<Nightfield> app;
 	omain(
 		app, 
 		"nightfield.cfg", 

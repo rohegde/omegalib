@@ -97,8 +97,6 @@ void Entity::hide()
 MeshViewer::MeshViewer(Application* app): 
 	EngineServer(app) 
 {
-	EngineModuleServices::addModule(new LightingModule());
-	EngineModuleServices::addModule(new UiModule());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,11 +134,11 @@ void MeshViewer::initialize()
 	EngineServer::initialize();
 
 	// Setup lighting
-	Light* light = LightingModule::instance()->getLight(0);
+	Light* light = Light::getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.5f, 0.5f, 0.5f));
 	light->setPosition(Vector3f(0, 3, 3));
-	LightingModule::instance()->setAmbientLightColor(Color::Black);
+	Light::setAmbientLightColor(Color::Black);
 	
 	// Create a reference box around the scene.
 	Config* cfg = getSystemManager()->getAppConfig();
@@ -325,7 +323,7 @@ void MeshViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<MeshViewer> app;
+	OmegaToolkitApplication<MeshViewer> app;
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";

@@ -26,13 +26,15 @@
  *************************************************************************************************/
 #include "omega/EngineClient.h"
 #include "omega/EngineServer.h"
-#include "omegaToolkit/LightingModule.h"
 #include "omegaToolkit/LightingPass.h"
 #include "omegaToolkit/Light.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omegaToolkit;
+
+Light Light::mysLights[MaxLights];
+Color Light::mysAmbientColor;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void LightingPass::render(EngineClient* client, const DrawContext& context)
@@ -43,14 +45,12 @@ void LightingPass::render(EngineClient* client, const DrawContext& context)
     glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
 
-	LightingModule* es = LightingModule::instance();
-
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, es->getAmbientLightColor().data());
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, Light::getAmbientLightColor().data());
 
 	GLenum lightId = GL_LIGHT0;
-	for(int i = 0; i < LightingModule::MaxLights; i++)
+	for(int i = 0; i < Light::MaxLights; i++)
 	{
-		Light* light = es->getLight(i);
+		Light* light = Light::getLight(i);
 		if(light->isEnabled())
 		{
 			glEnable(lightId);
