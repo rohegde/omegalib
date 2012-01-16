@@ -44,7 +44,6 @@ void Flock::setup(Settings* settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Flock::initialize()
 {
-
 	myAgentImage = ImageUtils::loadImage(myCurrentPreset->flockImage);
 
 	// Setup the agent buffer.

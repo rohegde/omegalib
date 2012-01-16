@@ -1,7 +1,7 @@
 ###################################################################################################
 # THE OMEGA LIB PROJECT
 #-------------------------------------------------------------------------------------------------
-# Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+# Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
 # Authors:										
 #  Alessandro Febretti		febret@gmail.com
 #-------------------------------------------------------------------------------------------------
@@ -26,7 +26,6 @@
 ###################################################################################################
 if(COMMAND cmake_policy)
       cmake_policy(SET CMP0003 NEW)
-      #cmake_policy(SET CMP0008 NEW)
 endif(COMMAND cmake_policy)
 
 set(OMEGA_BINARY_DIR CACHE PATH "Path of the omegalib bin directory (the one containing the include, bin and lib folders")
@@ -38,7 +37,7 @@ if(OMEGA_BINARY_DIR)
 	# in the future, just ${OMEGA_ROOT_DIR}/include will be needed, but for now, multiple paths 
 	# have to be specified. If building a project without Cmake, remember to specify ALL these directories
 	# as include paths for your compiler.
-	set(OMEGA_INCLUDE_DIRS ${OMEGA_BINARY_DIR}/include ${OMEGA_SOURCE_DIR}/include ${OMEGA_SOURCE_DIR}/external/include)
+	set(OMEGA_INCLUDE_DIRS ${OMICRON_INCLUDE_DIRS} ${OMEGA_BINARY_DIR}/include ${OMEGA_SOURCE_DIR}/include ${OMEGA_SOURCE_DIR}/external/include)
 		  
 	set(OMEGA_LIB_DIR_RELEASE ${OMEGA_BINARY_DIR}/lib/release)
 	set(OMEGA_LIB_DIR_DEBUG ${OMEGA_BINARY_DIR}/lib/debug)
@@ -54,50 +53,43 @@ if(OMEGA_BINARY_DIR)
 		# Since visual studio and Xcode builds are multiconfiguration, set two separate directories for debug and release builds
 		
 		# omega
-		find_library(OMEGA_LIB_DEBUG NAMES omega PATHS ${OMEGA_LIB_DIR_DEBUG})
-		find_library(OMEGA_LIB_RELEASE NAMES omega PATHS ${OMEGA_LIB_DIR_RELEASE})
+		set(OMEGA_LIB_DEBUG ${OMEGA_LIB_DIR_DEBUG}/omega.lib)
+		set(OMEGA_LIB_RELEASE ${OMEGA_LIB_DIR_RELEASE}/omega.lib)
 		
-		# oengine
-		find_library(OENGINE_LIB_DEBUG NAMES oengine PATHS ${OMEGA_LIB_DIR_DEBUG})
-		find_library(OENGINE_LIB_RELEASE NAMES oengine PATHS ${OMEGA_LIB_DIR_RELEASE})
+		# omegaToolkit
+		set(OTK_LIB_DEBUG ${OMEGA_LIB_DIR_DEBUG}/omegaToolkit.lib)
+		set(OTK_LIB_RELEASE ${OMEGA_LIB_DIR_RELEASE}/omegaToolkit.lib)
 		
-		# oosg
-		find_library(OOSG_LIB_DEBUG NAMES oosg PATHS ${OMEGA_LIB_DIR_DEBUG})
-		find_library(OOSG_LIB_RELEASE NAMES oosg PATHS ${OMEGA_LIB_DIR_RELEASE})
-		
-		# libconfig
-		find_library(LIBCONFIG_LIB_DEBUG NAMES libconfig PATHS ${OMEGA_LIB_DIR_DEBUG})
-		find_library(LIBCONFIG_LIB_RELEASE NAMES libconfig PATHS ${OMEGA_LIB_DIR_RELEASE})
+		# omegaOsg
+		set(OOSG_LIB_DEBUG ${OMEGA_LIB_DIR_DEBUG}/omegaOsg.lib)
+		set(OOSG_LIB_RELEASE ${OMEGA_LIB_DIR_RELEASE}/omegaOsg.lib)
 		
 		# glew
-		find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR_DEBUG})
-		find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR_RELEASE})
+		#find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR_DEBUG})
+		#find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR_RELEASE})
 		
 	else(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 		# omega
-		find_library(OMEGA_LIB_DEBUG NAMES omega PATHS ${OMEGA_BIN_DIR})
-		find_library(OMEGA_LIB_RELEASE NAMES omega PATHS ${OMEGA_BIN_DIR})
+		set(OMEGA_LIB_DEBUG ${OMEGA_BIN_DIR}/omega.so)
+		set(OMEGA_LIB_RELEASE ${OMEGA_BIN_DIR}/omega.so)
 		
-		# oengine
-		find_library(OENGINE_LIB_DEBUG NAMES oengine PATHS ${OMEGA_BIN_DIR})
-		find_library(OENGINE_LIB_RELEASE NAMES oengine PATHS ${OMEGA_BIN_DIR})
+		# omegaToolkit
+		set(OTK_LIB_DEBUG ${OMEGA_BIN_DIR}/omegaToolkit.so)
+		set(OTK_LIB_RELEASE ${OMEGA_BIN_DIR}/omegaToolkit.so)
 		
 		# oosg
-		find_library(OOSG_LIB_DEBUG NAMES oosg PATHS ${OMEGA_BIN_DIR})
-		find_library(OOSG_LIB_RELEASE NAMES oosg PATHS ${OMEGA_BIN_DIR})
-		
-		# libconfig
-		find_library(LIBCONFIG_LIB_DEBUG NAMES libconfig PATHS ${OMEGA_LIB_DIR})
-		find_library(LIBCONFIG_LIB_RELEASE NAMES libconfig PATHS ${OMEGA_LIB_DIR})
+		set(OOSG_LIB_DEBUG ${OMEGA_BIN_DIR}/omegaOsg.so)
+		set(OOSG_LIB_RELEASE ${OMEGA_BIN_DIR}/omegaOsg.so)
 		
 		# glew
-		find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR})
-		find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR})
+		#find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR})
+		#find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR})
 	endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
-	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} debug ${GLEW_LIB_DEBUG} debug ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} optimized ${GLEW_LIB_RELEASE} optimized ${OPENGL_LIBRARY} optimized ${LIBCONFIG_LIB_RELEASE})
-	set(OENGINE_LIB debug ${OENGINE_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OENGINE_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
-	set(OOSG_LIB debug ${OOSG_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OOSG_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
+	#set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} debug ${GLEW_LIB_DEBUG} debug ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} optimized ${GLEW_LIB_RELEASE} optimized ${OPENGL_LIBRARY} optimized ${LIBCONFIG_LIB_RELEASE})
+	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OMEGA_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
+	set(OMEGA_TOOLKIT_LIB debug ${OTK_LIB_DEBUG} optimized ${OTK_LIB_RELEASE})
+	set(OMEGA_OSG_LIB debug ${OOSG_LIB_DEBUG} optimized ${OOSG_LIB_RELEASE})
 
 	###################################################################################################
 	# Visual studio specific options.

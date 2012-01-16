@@ -54,12 +54,10 @@ namespace omegaToolkit {
 		void setEffect(BaseEffect* value) { myEffect = value; }
 		BaseEffect* getEffect() { return myEffect; }
 
-		virtual bool isInitialized() { return myInitialized; }
-		virtual void initialize(EngineServer* srv) { myInitialized = true; }
-
+		virtual bool isInitialized() {return RenderableFactory::isInitialized(); }
+		virtual void initialize(EngineServer* server) {RenderableFactory::initialize(server); }
 	private:
 		BaseEffect* myEffect;
-		bool myInitialized;
 	};
 }; // namespace omegaToolkit
 

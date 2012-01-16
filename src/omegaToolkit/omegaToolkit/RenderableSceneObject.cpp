@@ -33,7 +33,7 @@ using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 RenderableSceneObject::RenderableSceneObject():
-	myEffect(NULL), myInitialized(false)
+	myEffect(NULL)
 {
 }
 
