@@ -31,7 +31,7 @@ include(${CMAKE_SOURCE_DIR}/../../CMakeModules/FindOmegalib.cmake)
 
 include_directories(${OMEGA_INCLUDE_DIRS})
 add_executable(customRenderable customRenderable.cpp TexturedQuad.cpp TexturedQuad.h)
-target_link_libraries(customRenderable ${OMEGA_LIB} ${OENGINE_LIB})
+target_link_libraries(customRenderable ${OMEGA_LIB} ${OMEGA_TOOLKIT_LIB})
 
 
 

@@ -58,7 +58,7 @@ void UiModule::initialize(EngineServer* server)
 		myUi[i]->setUIEventHandler(myEngine);
 	}
 	myEngine->registerRenderPassClass("UiRenderPass", (EngineServer::RenderPassFactory)UiRenderPass::createInstance);
-	//myEngine->addRenderPass("UiRenderPass");
+	myEngine->addRenderPass("UiRenderPass");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

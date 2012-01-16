@@ -110,7 +110,10 @@ public:
 
 	ImageData* getAgentImage() { return myAgentImage; }
 	Settings* getSettings() { return mySettings; }
-	Preset* getCurrentPreset() { return myCurrentPreset; }
+	Preset* getCurrentPreset() 
+	{ 
+		return myCurrentPreset; 
+	}
 
 	FlockAffector* getAffector(int index) { return &myAffectorData[index]; }
 	void setActiveAffectors(int value) { myActiveAffectors = value; }

@@ -66,11 +66,6 @@ include_directories(
 # Add the core omega project
 add_subdirectory(omega)
 
-if(OMEGA_BUILD_TUTORIALS)
-	omega_add_tutorial(tutorial2)
-	omega_add_tutorial(tutorial3)
-endif(OMEGA_BUILD_TUTORIALS)
-
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 if(OMEGA_BUILD_TUTORIALS)

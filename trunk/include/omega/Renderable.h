@@ -79,10 +79,10 @@ namespace omega {
 		RenderableFactory();
 		virtual ~RenderableFactory();
 		virtual Renderable* createRenderable() = 0;
-		void initialize(EngineServer* srv);
+		virtual void initialize(EngineServer* srv);
 		void dispose();
 		void refresh();
-		bool isInitialized();
+		virtual bool isInitialized();
 		Renderable* getRenderable(EngineClient* client);
 		Renderable* getFirstRenderable();
 		EngineServer* getServer();
