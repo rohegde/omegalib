@@ -28,3 +28,7 @@ Similar to the 'lexer.cpp' error. Sometimes building again all that is needed to
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/HOWTO2.png" width="500"/></p><p align="middle">
 _^How to build equalizer separately to solve this error.^_
 </p>
+
+=== "In Debug mode the build succeeds but the program will fail running with a 0xc0150002 error" ===
+Some of the libraries used internally by omegalib need the Visual Studio 2008 Debug CRT to run.
+To solve this issue install Visual C++ Express 2008 (post link)
