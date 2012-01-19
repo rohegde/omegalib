@@ -33,12 +33,17 @@ set(OMEGA_BINARY_DIR CACHE PATH "Path of the omegalib bin directory (the one con
 if(OMEGA_BINARY_DIR)
 	include(${OMEGA_BINARY_DIR}/UseOmegalib.cmake)
 
+	set(OMICRON_BINARY_DIR ${OMEGA_BINARY_DIR}/omicron/omicron)
+	set(OMICRON_BIN_DIR ${OMEGA_BINARY_DIR}/bin)
+	set(OMICRON_LIB_DIR ${OMEGA_BINARY_DIR}/lib)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/../../external/omicron/CMakeModules/FindOmicron.cmake)
+
 	# the following are the include directories needed to build a 3rd party omegalib application.
 	# in the future, just ${OMEGA_ROOT_DIR}/include will be needed, but for now, multiple paths 
 	# have to be specified. If building a project without Cmake, remember to specify ALL these directories
 	# as include paths for your compiler.
 	set(OMEGA_INCLUDE_DIRS ${OMICRON_INCLUDE_DIRS} ${OMEGA_BINARY_DIR}/include ${OMEGA_SOURCE_DIR}/include ${OMEGA_SOURCE_DIR}/external/include)
-		  
+
 	set(OMEGA_LIB_DIR_RELEASE ${OMEGA_BINARY_DIR}/lib/release)
 	set(OMEGA_LIB_DIR_DEBUG ${OMEGA_BINARY_DIR}/lib/debug)
 	set(OMEGA_LIB_DIR ${OMEGA_BINARY_DIR}/lib)
@@ -87,7 +92,7 @@ if(OMEGA_BINARY_DIR)
 	endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
 	#set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} debug ${GLEW_LIB_DEBUG} debug ${LIBCONFIG_LIB_DEBUG} optimized ${OMEGA_LIB_RELEASE} optimized ${GLEW_LIB_RELEASE} optimized ${OPENGL_LIBRARY} optimized ${LIBCONFIG_LIB_RELEASE})
-	set(OMEGA_LIB debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OMEGA_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
+	set(OMEGA_LIB ${OMICRON_LIB} debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OMEGA_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
 	set(OMEGA_TOOLKIT_LIB debug ${OTK_LIB_DEBUG} optimized ${OTK_LIB_RELEASE})
 	set(OMEGA_OSG_LIB debug ${OOSG_LIB_DEBUG} optimized ${OOSG_LIB_RELEASE})
 

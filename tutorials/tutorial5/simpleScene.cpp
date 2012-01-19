@@ -25,10 +25,10 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include <omega.h>
-#include <oengine.h>
+#include <omegaToolkit.h>
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SimpleScene: public EngineServer

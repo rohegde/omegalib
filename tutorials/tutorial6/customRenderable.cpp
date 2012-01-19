@@ -27,7 +27,7 @@
 #include "TexturedQuad.h"
 
 using namespace omega;
-using namespace oengine;
+using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class SimpleScene: public EngineServer
