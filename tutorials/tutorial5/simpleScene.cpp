@@ -67,6 +67,7 @@ void SimpleScene::initialize()
 	
 	scene->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
+	mySceneNode->setPosition(Vector3f::Zero());
 
 	myMesh->setData(myMeshData);
 
