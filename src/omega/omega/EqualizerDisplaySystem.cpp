@@ -57,8 +57,8 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
-	setting.lookupValue("config", myDisplayConfig);
-	setting.lookupValue("debugMouse", myDebugMouse);
+	myDebugMouse = Config::getBoolValue("debugMouse", setting, false);
+	myDisplayConfig = Config::getStringValue("config", setting);
 	mySetting = &setting;
 }
 
