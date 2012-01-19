@@ -25,7 +25,7 @@
 #ifndef __OMEGA__
 #define __OMEGA__
 
-#include "osysdefs.h"
+#include "omegaConfig.h"
 #include "omega/Application.h"
 #include "omega/DisplaySystem.h"
 #include "omega/GpuBuffer.h"
