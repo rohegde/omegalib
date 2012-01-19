@@ -116,10 +116,13 @@ void DefaultMouseInteractor::updateNode()
 	if(myPointerEventType == Event::Zoom)
 	{
 		// Manipulate object, if one is active.
-		float sc;
-		if(myPointerEventData < 0) sc = 0.9f;
-		else sc = 1.1f;
-		myNode->scale(sc, sc, sc);
+		if(myPointerEventData != 0)
+		{
+			float sc = 0.0f;
+			if(myPointerEventData < 0) sc = 0.9f;
+			else sc = 1.1f;
+			myNode->scale(sc, sc, sc);
+		}
 	}
 
 	myPointerEventReceived = false;

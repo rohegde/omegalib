@@ -85,7 +85,7 @@ void SimpleScene::initialize()
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<SimpleScene> app;
+	OmegaToolkitApplication<SimpleScene> app;
 	omain(
 		app, 
 		"../tutorials/tutorial6/customRenderable.cfg", 
