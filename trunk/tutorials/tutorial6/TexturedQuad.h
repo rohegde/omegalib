@@ -28,13 +28,12 @@
 #define __TEXTURED_QUAD_H__
 
 #include <omega.h>
-#include <oengine.h>
+#include <omegaToolkit.h>
 
-namespace oengine {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TexturedQuad: public SceneObject
+	class TexturedQuad: public RenderableSceneObject
 	{
-	OMEGA_DECLARE_TYPE(TexturedQuad)
 	public:
 		TexturedQuad();
 		~TexturedQuad();
@@ -54,7 +53,6 @@ namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class TexturedQuadRenderable: public SceneRenderable
 	{
-	OMEGA_DECLARE_TYPE(TexturedQuadRenderable)
 	public:
 		TexturedQuadRenderable(TexturedQuad* tq);
 		~TexturedQuadRenderable();
