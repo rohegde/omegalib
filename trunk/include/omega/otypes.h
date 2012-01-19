@@ -34,6 +34,7 @@
 // Forward declarations of some OpenGL and OpenCL types.
 // Using these, we can avoid including gl, cl (and windows) headers for every compiled source file.
 // Source files that make explicit use of OpenGL/or OpenCL functionality have to include glheaders.h
+// TODO: Check if we actually need this stuff.
 struct _cl_program;
 struct _cl_kernel;
 struct _cl_context;
