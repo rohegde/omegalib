@@ -61,6 +61,9 @@ namespace omega {
 		static ImageData* loadImage(const String& filename);
 		static ByteArray* encode(PixelData* data, ImageFormat format);
 
+		static void internalInitialize();
+		static void internalDispose();
+
 	private:
 		ImageUtils() {}
 	};
