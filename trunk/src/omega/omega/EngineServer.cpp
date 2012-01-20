@@ -31,6 +31,7 @@
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
+#include "omega/ImageUtils.h"
 
 using namespace omega;
 
@@ -49,6 +50,8 @@ EngineServer::EngineServer(Application* app):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::initialize()
 {
+	ImageUtils::internalInitialize();
+
 	for(int i = 0; i < MaxScenes; i++)
 	{
 		myScene[i] = new SceneNode(this, "root");
@@ -93,6 +96,12 @@ void EngineServer::initialize()
 
 	// Initialize modules
 	EngineModuleServices::initialize(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::finalize()
+{
+	ImageUtils::internalDispose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

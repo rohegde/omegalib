@@ -107,6 +107,7 @@ namespace omega {
 		CameraCollection::ConstRange getCameras() const;
 
 		virtual void initialize();
+		virtual void finalize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
 
