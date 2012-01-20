@@ -24,15 +24,16 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oosg/OsgSceneObject.h"
+#include "omegaOsg/OsgSceneObject.h"
+#include "omega/SceneNode.h"
 
 #include <osg/Node>
 #include <osg/MatrixTransform>
 
-using namespace oosg;
+using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node)
+OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false)
 {
     myTransform = new osg::MatrixTransform();
     myTransform->addChild( node );

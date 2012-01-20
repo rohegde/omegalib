@@ -24,9 +24,9 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "oosg/OsgModule.h"
-#include "oosg/OsgRenderPass.h"
-#include "oosg/OsgSceneObject.h"
+#include "omegaOsg/OsgModule.h"
+#include "omegaOsg/OsgRenderPass.h"
+#include "omegaOsg/OsgSceneObject.h"
 
 #include <osgUtil/Optimizer>
 #include <osgUtil/UpdateVisitor>
@@ -35,9 +35,9 @@
 #include <osg/Node>
 #include <osg/FrameStamp>
 
-#include "oosg/ReaderWriterTGA.h"
+#include "omegaOsg/ReaderWriterTGA.h"
 
-using namespace oosg;
+using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():

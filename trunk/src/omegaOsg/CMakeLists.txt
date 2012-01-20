@@ -32,36 +32,36 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOOSG_EXPORTING)
 ###################################################################################################
 # Source files
 SET( srcs 
-		oosg/OsgModule.cpp
-		oosg/OsgRenderPass.cpp
-		oosg/OsgSceneObject.cpp
-		oosg/SceneView.cpp
-		oosg/ReaderWriterTGA.cpp
+		omegaOsg/OsgModule.cpp
+		omegaOsg/OsgRenderPass.cpp
+		omegaOsg/OsgSceneObject.cpp
+		omegaOsg/SceneView.cpp
+		omegaOsg/ReaderWriterTGA.cpp
 		)
 		
 ###################################################################################################
 # Headers
 SET( headers 
 		# omega
-		${OmegaLib_SOURCE_DIR}/include/oosg/oosgbase.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/OsgModule.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/OsgRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/OsgSceneObject.h
-		${OmegaLib_SOURCE_DIR}/include/oosg/SceneView.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/oosgbase.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgModule.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgRenderPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgSceneObject.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/SceneView.h
         ) 
         
 ###################################################################################################
-source_group(oosg REGULAR_EXPRESSION oosg/)		
+source_group(omegaOsg REGULAR_EXPRESSION omegaOsg/)		
 
 ###################################################################################################
 # Setup compile info
 if(OMEGA_BUILD_STATIC)
-	add_library( oosg ${srcs} ${headers})
+	add_library( omegaOsg ${srcs} ${headers})
 else(OMEGA_BUILD_STATIC)
-	add_library( oosg SHARED ${srcs} ${headers})
+	add_library( omegaOsg SHARED ${srcs} ${headers})
 endif(OMEGA_BUILD_STATIC)
 
 ###################################################################################################
 # Setup link info.
-target_link_libraries( oosg 
-	omega oengine ${OSG_LIBS})
+target_link_libraries(omegaOsg 
+	omega ${OSG_LIBS})

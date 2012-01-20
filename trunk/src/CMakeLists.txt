@@ -81,33 +81,33 @@ add_subdirectory(apps/nightfield)
 if(OMICRON_USE_OPENNI)
 	add_subdirectory(apps/kinectdemo)
 	add_subdirectory(apps/mocalib)
-endif(OMICRON_USE_OPENNI)
+endif()
 
 if(OMEGA_BUILD_TUTORIALS)
 	omega_add_tutorial(tutorial5)
 	omega_add_tutorial(tutorial6)
-endif(OMEGA_BUILD_TUTORIALS)
+endif()
 
 # OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
 if(OMEGA_USE_DISPLAY_GLUT) 
     if(NOT APPLE) 
 	    add_subdirectory(3rdparty/freeglut)
-    endif(NOT APPLE)
-endif(OMEGA_USE_DISPLAY_GLUT)
+    endif()
+endif()
 
 # Open Scene Graph configuration, libraries and applications
 if(OMEGA_BUILD_OSG_LIB)
 	include(${OmegaLib_SOURCE_DIR}/external/UseOpenSceneGraph.cmake)
 	include_directories(${OSG_INCLUDES})
-	add_subdirectory(oosg)
+	add_subdirectory(omegaOsg)
 	add_subdirectory(apps/cyclops)
 	add_subdirectory(apps/osgviewer)
 	
 	if(OMEGA_BUILD_TUTORIALS)
 		# osgshape tutorial
 		omega_add_tutorial(tutorial7) 
-	endif(OMEGA_BUILD_TUTORIALS)
-endif(OMEGA_BUILD_OSG_LIB)
+	endif()
+endif()
 
 ###################################################################################################
 # EXPERIMENTAL LIBS

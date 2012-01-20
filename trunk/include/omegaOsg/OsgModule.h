@@ -27,8 +27,8 @@
 #ifndef __OSG_MODULE_H__
 #define __OSG_MODULE_H__
 
-#include "oosg/oosgbase.h"
-#include "oengine/EngineServer.h"
+#include "omegaOsg/oosgbase.h"
+#include "omega/EngineServer.h"
 
 //! Vector conversion macros
 #define OOSG_VEC3(v) osg::Vec3(v[0], v[1], v[2])
@@ -41,10 +41,9 @@ namespace osg
 	class NodeVisitor;
 }
 
-namespace oosg
+namespace omegaOsg
 {
 	using namespace omega;
-	using namespace oengine;
 
 	class OsgSceneObject;
 

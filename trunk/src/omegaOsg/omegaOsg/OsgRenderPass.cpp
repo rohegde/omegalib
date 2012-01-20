@@ -25,10 +25,10 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
-#include "oosg/SceneView.h"
-#include "oosg/OsgRenderPass.h"
+#include "omegaOsg/SceneView.h"
+#include "omegaOsg/OsgRenderPass.h"
 
-using namespace oosg;
+using namespace omegaOsg;
 
 Lock sInitLock;
 

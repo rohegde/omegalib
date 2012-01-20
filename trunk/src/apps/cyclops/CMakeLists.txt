@@ -53,5 +53,5 @@ add_executable(cyclops ${SRCS})
 set_target_properties(cyclops PROPERTIES FOLDER apps)
 target_link_libraries(cyclops
 	omega 
-	oengine
-    oosg)
+	omegaToolkit
+    omegaOsg)

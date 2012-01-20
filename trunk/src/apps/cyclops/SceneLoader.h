@@ -26,8 +26,8 @@
  *************************************************************************************************/
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <oengine.h>
-#include <oosg.h>
+#include <omegaToolkit.h>
+#include <omegaOsg.h>
 
 #include <osg/Group>
 
@@ -35,8 +35,8 @@
 
 
 using namespace omega;
-using namespace oengine;
-using namespace oosg;
+using namespace omegaToolkit;
+using namespace omegaOsg;
 using namespace osg;
 
 namespace cyclops {

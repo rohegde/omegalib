@@ -33,6 +33,6 @@ include_directories(${OSG_INCLUDES})
 
 include_directories(${OMEGA_INCLUDE_DIRS})
 add_executable(osgshape osgshape.cpp)
-target_link_libraries(osgshape ${OMEGA_LIB} ${OENGINE_LIB} ${OOSG_LIB} ${OSG_LIBS})
+target_link_libraries(osgshape ${OMEGA_LIB} ${OMEGA_OSG_LIB})
 
 

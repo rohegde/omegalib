@@ -38,5 +38,5 @@ add_executable(osgviewer ${SRCS})
 set_target_properties(osgviewer PROPERTIES FOLDER apps)
 target_link_libraries(osgviewer
 	omega 
-	oengine
-    oosg)
+	omegaToolkit
+    omegaOsg)

@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "SceneScript.h"
 
-using namespace oengine;
+//using namespace omegaToolkit;
 using namespace omega;
 using namespace cyclops;
 

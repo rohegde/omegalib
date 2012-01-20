@@ -27,8 +27,8 @@
 #ifndef __OSG_SCENE_OBJECT_H__
 #define __OSG_SCENE_OBJECT_H__
 
-#include "oosg/oosgbase.h"
-#include "oengine/SceneObject.h"
+#include "omegaOsg/oosgbase.h"
+#include "omega/ISceneObject.h"
 
 namespace osg
 {
@@ -36,13 +36,12 @@ namespace osg
 	class Node;
 }
 
-namespace oosg
+namespace omegaOsg
 {
 	using namespace omega;
-	using namespace oengine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgSceneObject: public SceneObject
+	class OOSG_API OsgSceneObject: public ISceneObject
 	{
 	public:
 		OsgSceneObject(osg::Node* node);
@@ -55,10 +54,13 @@ namespace oosg
 
 		osg::MatrixTransform* getTransformedNode() { return myTransform; }
 
+		virtual bool isInitialized() { return myInitialized; }
+		virtual void initialize(EngineServer* server) { myInitialized = true; }
 	private:
 		osg::Node* myNode;
 		osg::MatrixTransform* myTransform;
 		AlignedBox3 myBBox;
+		bool myInitialized;
 	};
 };
 #endif
