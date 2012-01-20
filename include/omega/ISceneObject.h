@@ -35,11 +35,11 @@ namespace omega {
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ISceneObject
+	class OMEGA_API ISceneObject
 	{
 	public:
 		virtual void update(SceneNode* owner) = 0;
-		virtual void draw(SceneNode* node, RenderState* state) = 0;
+		virtual void draw(SceneNode* node, RenderState* state) {};
 		virtual const AlignedBox3* getBoundingBox() = 0;
 		virtual bool hasBoundingBox() = 0;
 		virtual bool isInitialized() = 0;

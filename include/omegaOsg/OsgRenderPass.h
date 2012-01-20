@@ -27,10 +27,10 @@
 #ifndef __OSG_RENDER_PASS_H__
 #define __OSG_RENDER_PASS_H__
 
-#include "oengine/RenderPass.h"
+#include "omega/RenderPass.h"
 
-#include "oosg/oosgbase.h"
-#include "oosg/OsgModule.h"
+#include "omegaOsg/oosgbase.h"
+#include "omegaOsg/OsgModule.h"
 
 
 class SceneView;
@@ -40,10 +40,9 @@ namespace osg
 	class Node;
 }
 
-namespace oosg
+namespace omegaOsg
 {
 	using namespace omega;
-	using namespace oengine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OOSG_API OsgRenderPass: public RenderPass

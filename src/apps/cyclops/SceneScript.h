@@ -27,7 +27,7 @@
 #ifndef __SCENE_SCRIPT_H__
 #define __SCENE_SCRIPT_H__
 
-#include "oengine/EngineServer.h"
+#include <omega.h>
 
 namespace cyclops
 {

@@ -28,7 +28,7 @@
  * -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield 
  *                           2010 Stefan Eilemann <eile@eyescale.ch>
  *************************************************************************************************/
-#include "oosg/SceneView.h"
+#include "omegaOsg/SceneView.h"
 #include "omega/osystem.h"
 
 #include <osgUtil/UpdateVisitor>

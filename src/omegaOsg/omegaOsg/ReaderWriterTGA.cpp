@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "oosg/ReaderWriterTGA.h"
+#include "omegaOsg/ReaderWriterTGA.h"
 
 /****************************************************************************
  *

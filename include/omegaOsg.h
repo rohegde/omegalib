@@ -25,8 +25,8 @@
 #ifndef __OOSG__
 #define __OOSG__
 
-#include "oosg/oosgbase.h"
-#include "oosg/OsgModule.h"
-#include "oosg/OsgSceneObject.h"
-#include "oosg/OsgRenderPass.h"
+#include "omegaOsg/oosgbase.h"
+#include "omegaOsg/OsgModule.h"
+#include "omegaOsg/OsgSceneObject.h"
+#include "omegaOsg/OsgRenderPass.h"
 #endif

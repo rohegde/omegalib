@@ -41,7 +41,7 @@
  *************************************************************************************************/
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <oengine.h>
+#include <omegaToolkit.h>
 
 #include <osg/Notify>
 #include <osg/Node>
