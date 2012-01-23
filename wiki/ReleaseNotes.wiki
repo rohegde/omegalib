@@ -7,7 +7,7 @@
 == Change Log ==
 
 ------------------------------------------------------------------------
-= omegalib v1.0 (*current developer version*) =
+= omegalib v1.0 =
 *Initial Revision*: 965
 *Branch-out Revision*: 1035
 == Summary ==
