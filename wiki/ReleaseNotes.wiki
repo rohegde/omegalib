@@ -1,9 +1,147 @@
 #summary This page contains release notes for omegalib starting from version 1.0
 #sidebar Sidebar
 
-= omegalib v1.0 (*current developer version*) =
-*Initial Revision*: 965
+= omegalib v1.1 (*current developer version*) =
+*Initial Revision*: 1036
 == Summary ==
 == Change Log ==
-   
+
+------------------------------------------------------------------------
+= omegalib v1.0 (*current developer version*) =
+*Initial Revision*: 965
+*Branch-out Revision*: 1035
+== Summary ==
+	This is the first "official" version of the omegalib (and omicron) APIs. The project has been deeply refactored into a set of well-separated modules:
+		* `omicron`: lives an external project, and contains all the event services code, input device support, plus various utility classes.
+		* `omega`: contains most of the dispaly system support code, plus a lightweight rendering system that allows building applications that distribute rendering on multiple gpus / machine nodes.
+		* `omegaToolkit`: contains a set of utility classes that simplify the developement of graphical applications (i.e. mesh loading and rendering, gui support). `omegaToolkit` is used mainly by the demo applications included with omega. Most of the code inside `omegaToolkit` should be considered experimental and is not part of the stable API.
+		* `omegaOsg`: contains classes that integrate OpenSceneGraph wwith omegalib. omegaOsg deeply simplifies the conversion of existing osg programs into virtual relity applications running on top of omegalib.
+		Like previous versions, omegalib has no external dependencies, and compiles out-of-the-box. Required third party packages are either included as binary downloadables or as source code, and compile / link automatically as part of the omegalib build process.
+== Change Log ==
+	* REMOVED: old unity app (new one is tutorial8)
+	* MOVE: qt stuff to old folder
+	* MOVE: oqt to old folder
+	* CHANGE: oengine >> omegaToolkit
+	* CHANGE: ext >> external
+	* CHANGE: OmegaObject & TypeInfo classes removed.
+	* CHANGE: cybersplash moved to old folder 
+	* CHANGE: 1.0 - now depends on omicron SDK 
+	* NEW: Anaglyph, side-by-side stereo for Unity stereo script. 
+	* UPDATE: Interleaved stereo script renamed OmegaControllerScript.cs. Added public variables to adjust stereo, 
+	* UPDATE: MocapScript.cs now abstract. Added orientation toggle.
+	* MOVE: porthole moved to old folder. Porthole now lives as its own separate project.
+	* NEW: cyclops supports modes size spec
+	* Changed the FIA touch msgs to generate Notifcations instead of using delegate.  Crappy copy before delete the old stuff
+	* NEW: SceneEditorModule
+	* NEW: gui serialization on TabletInterface
+	* NEW: cyclops
+	* NEW: camera view ray support 
+	* NEW: Image serialization support (only as png for now)
+	* NEW: Revised tcp connection, display system initialization, other minor things.
+	* NEW: RenderTarget & secondary camera support 
+	* CHANGE: equalizer optimizations
+	* NEW: Event key codes
+	* Scale in controller, new define in ObserverUpdateService
+	* NEW: ControllerManipulator
+	* NEW: Added controller support for NetService.
+	* NEW: Experimental zoom gesture added to NetService to eventually replace PQ gestures.
+	* NEW: started working on material effects for hplviewer
+	* CHANGE: removed support for background gradients in oengine (2d drawing cannot be done correctly interlaced mode). Substituted by simple color clear buffer in equalizer channels.
+	* NEW: Engine background support, hplviewer uses internal obj viewer now
+	* CHANGE: camera support focus change, hpl work with planes
+	* NEW: added osgWorks
+	* CHANGE: camera mouse movement using mouse buttons
+	* NEW: tinyxml, hplviewer, new interaction in nightfield
+	* UPDATE: OmegaControllerScript updated to use new Wiimote datagram (battery,IR, MotionPlus moved to its own controller type) FIX: InputServiceScript no longer give warning about TouchListener (TouchListener tag will be removed soon) RE* MOVE: ...
+	* TabletService fixed rotation and pinch gesture abstraction to mouse
+	* CHANGE: camera move up support + osgviewer working again
+	* NEW: camera scale support
+	* NEW: Camera navigation
+	* NEW: NeuroSky Unity example added.
+	* Generalized TCPClient and made a specialized TCPClientOmega.  Setup simple delegation btn DetailVC and FIA.  Need to pipe all networking msgs through this delegate next.
+	* NEW: on-screen console
+	* CHANGE: fixes / changes to engine to make osg rendering work.
+	* NEW: download linux binaries for openscenegraph
+	* CHANGE: osg binary packages are now in googlecode download page.
+	* CHANGE: moved flock files in common folder
+	* CHANGE: nighfield flock center over last selected object
+	* NEW: nightfield allows for customized selectable objects
+	* CHANGE: revised effect
+	* NEW: Depth test setting in Effect
+	* NEW: effects are not added to scenenode. Added multipass effect support.
+	* CHANGE: Removed the battery attribute from ThinkGear/oinputserver. 
+	* CHANGE: ThinkGear logging is now disabled by default, but can be enabled via config. 
+	* NEW: ThinkGear blink support. 
+	* UPDATED: Oinputserver wiki with ThinkGear/NeuroSky datagra...
+	* NEW: esc button force closes the application.
+	* NEW: support for custom meshes
+	* NEW: nightfield config & cybercommon text meshes
+	* CHANGE: TabletService now works as pointer controller.
+	* CHANGE: processing launcher unmaintained, moved into old code folder.
+	* CHANGE: old kinectdemo removed and substituted by multipleKinectDemo.
+	* UPDATE: nightfield - added support for trail rendering.
+	* UPDATE: nightfield interaction working + correct transparency support.
+	* UPDATE: add color and normal to sphere mesh
+	* nightfield: Interactor >> FlockAffector + fix for missing font in Pointer class
+	* CHANGE: updated nightfield to support drawing lines in flockrenderable
+	* NEW: nightfield uses oengine and custom renderables now (multigpu support)
+	* NEW: ThinkGearService and Brain events. 
+	* UPDATED: Update intervals for VRPN and ThinkGear are handled in their respective config setting rather than by oinputserver. By default oinputserver streams as fast as possible.
+	* CHANGE: added define to compile a simplified version of ObserverUpdateService 
+	* NEW: NavigationInteractor
+	* NEW: OpenSceneGraph binary packages
+	* UPDATED: Unity 3.2 to 3.4.1 now supported for the stereo script/prefab/package.
+	* CHANGE: Fixed ReferenceBox
+	* NEW: tutorial 6, custom renderable
+	* MERGE: bugfixes from the 0.6 branch
+	* UPDATED: Stereo script/prefab/package now configured for 2731x1525 (nearly full screen) resolution. Added stereo toggle to script.
+	* NEW: added option to batch build tutorials together with library
+== Bugfixes ==   
+	* FIX: image loading
+	* FIX: osg
+	* FIX: tutorials and mouse wheel zoom
+	* FIX: FreeImage linux x64 build
+	* FIX: omicron integration
+	* FIX: WiimoteControllerScript no longer gives errors messages if there are no IR test objects attached.
+	* FIX: offsreen rendering in osg
+	* FIX: gui serialization on TabletInterface
+	* FIX: bug in math library constant definitions.
+	* FIX: secondary camera rendering on multipipe configs
+	* FIX: tcp connection
+	* FIX: tablet connection
+	* FIX: controller manipulator is hardcoded to get input from controller Id 0 to avoid problems when multiple controllers are active.
+	* FIX: pipe / channel initialization
+	* FIX: FindOmega.cmake
+	* FIX: external project include dirs
+	* FIX: font multithreading bug.
+	* FIX: Error in controller datagram parser
+	* FIX: NetService controller enumerations changed to ints for Linux compile.
+	* FIX: osgparallax light movement kinda fixed now
+	* FIX: Camera view transform
+	* FIX: Customizable camera projection offset
+	* FIX: NetService touch timeouts now work properly.
+	* FIX: osg dependency paths in linux
+	* FIX: external projects use nmake generator for visual studio 10 to fix some dependency issues.
+	* FIX: freefly camera navigation.
+	* FIX: Pointer ray unprojection for arbitrary observer positions.
+	* FIX: Unity MocapScript orientation working correctly. Updated example.
+	* FIX: Unity touch example and TouchScript
+	* FIX: NetService now supports events with up to 32 'Extra Data' values.
+	* FIX: Removed update interval from ThinkGear service. Was broken and not really needed due to native update interval of ThinkGear. 
+	* FIX: Corrected quaternion ordering into event stream.
+	* FIX: OInputServer timing out on handshake. 
+	* FIX: Update interval for ThinkGearService now updates correctly. 
+	* FIX: overlay draw task for engine client performed during scene draw.
+	* FIX: app config files
+	* FIX: FindOpenSceneGraph.cmake
+	* FIX: linux opencl
+	* FIX: nightfield demo working again
+	* FIX: meshviewer object deletion + support for deletion using middle mouse button.
+	* FIX: lights not getting disabled in LightingPass + ambient light not set.
+	* FIX: Lights & LightingPass work again.
+	* FIX: Mouse causing crashes & vertex buffer drawing.
+	* FIX: pointer & draw functionality for interlaced mode.
+	* FIX: Tcp connection now processed all available data on each poll call.
+	* FIXED: Adding missing meta files for Unity tutorial.
+	* FIX: interlaced stuff
 ------------------------------------------------------------------------
