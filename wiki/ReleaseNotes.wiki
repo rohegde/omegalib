@@ -52,7 +52,7 @@
 	* NEW: added osgWorks
 	* CHANGE: camera mouse movement using mouse buttons
 	* NEW: tinyxml, hplviewer, new interaction in nightfield
-	* UPDATE: OmegaControllerScript updated to use new Wiimote datagram (battery,IR, MotionPlus moved to its own controller type) FIX: InputServiceScript no longer give warning about TouchListener (TouchListener tag will be removed soon) RE* MOVE: ...
+	* UPDATE: OmegaControllerScript updated to use new Wiimote datagram (battery,IR, MotionPlus moved to its own controller type) FIX: InputServiceScript no longer give warning about TouchListener (TouchListener tag will be removed soon) 
 	* TabletService fixed rotation and pinch gesture abstraction to mouse
 	* CHANGE: camera move up support + osgviewer working again
 	* NEW: camera scale support
