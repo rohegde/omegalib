@@ -31,7 +31,6 @@
 #include "omega/ui.h"
 #include "omega/scene/SceneNode.h"
 #include "omega/scene/BoundingSphere.h"
-#include "omega/mvc/ViewClient.h"
 
 #include "ovtkbase.h"
 #include "ovtk/VtkRenderable.h"
@@ -45,8 +44,6 @@ namespace ovtk {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OVTK_API VtkViewClient: public omega::mvc::ViewClient
 	{
-	OMEGA_DECLARE_TYPE(VtkClient);
-	OMEGA_DECLARE_VIEW_CLIENT(VtkViewClient);
 	public:
 		VtkViewClient(omega::mvc::View* owner, omega::EngineClient* client);
 

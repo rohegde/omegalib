@@ -28,14 +28,13 @@
 #define __VTK_MODEL_H__
 
 #include "ovtkbase.h"
-#include "ovtk/PythonInterpreter.h"
-#include "omega/mvc/Model.h"
+#include "omega/ISceneObject.h"
 
 namespace ovtk {
 	using namespace omega;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkModel: public omega::mvc::Model
+	class OVTK_API VtkSceneObject: public ISceneObject
 	{
 	OMEGA_DECLARE_TYPE(VtkModel);
 	public:
