@@ -1,7 +1,7 @@
 ###################################################################################################
 # THE OMEGA LIB PROJECT
 #-------------------------------------------------------------------------------------------------
-# Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+# Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
 # Authors:										
 #  Alessandro Febretti		febret@gmail.com
 #-------------------------------------------------------------------------------------------------
@@ -32,7 +32,6 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 ###################################################################################################
 # Source files
 SET( srcs 
-		ovtk/PythonInterpreter.cpp
 		ovtk/PythonUIEventHandler.cpp
 		ovtk/PyVtk.cpp
 		ovtk/VtkModule.cpp
@@ -48,8 +47,6 @@ SET( srcs
 SET( headers 
 		# omega
 		${OmegaLib_SOURCE_DIR}/include/ovtk/ovtkbase.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonInterpreter.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonInterpreterWrapper.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonUIEventHandler.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PyVtk.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkModule.h
