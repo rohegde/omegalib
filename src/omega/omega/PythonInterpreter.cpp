@@ -152,7 +152,7 @@ void PythonInterpreter::initialize(const char* programName)
 	wrapperErr->DumpToError = false;
 
 	// Redirect Python's stdout and stderr and stdin
-	PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
+	//PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
 	//PySys_SetObject(const_cast<char*>("stderr"), reinterpret_cast<PyObject*>(wrapperErr));
 	//PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
 
