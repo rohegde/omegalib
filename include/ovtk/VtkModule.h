@@ -33,22 +33,21 @@
 
 #include "omega/osystem.h"
 #include "omega/EngineClient.h"
-#include "omega/mvc/ViewManager.h"
+#include "omega/EngineServer.h"
+#include "omega/EngineApplication.h"
 
 
 class vtkActor;
 namespace ovtk
 {
 	using namespace omega;
-	using namespace omega::scene;
-	using namespace omega::mvc;
 
 	class PythonInterpreter;
 	class VtkDrawable;
 	class VtkEntity;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkModule
+	class OVTK_API VtkModule: public IEngineModule
 	{
 	public:
 		VtkModule();
@@ -56,18 +55,19 @@ namespace ovtk
 
 		static VtkModule* instance();
 
-		void initialize(ViewManager* viewMng);
-		void initialize(EngineClient* client);
+		virtual void initialize(EngineServer* server);
+		//virtual void update(const UpdateContext& context);
+		//virtual void handleEvent(const Event& evt);
+
+		EngineServer* getEngine() { return myEngine; }
 
 		//! Script ovtk calls will apply to this entity
 		void setActiveClient(VtkViewClient* entity);
 		VtkViewClient* getActiveClient();
-
-		PythonInterpreter* getInterpreter();
-
 	private:
 		static VtkModule* myInstance;
 
+		EngineServer* myEngine;
 		VtkViewClient* myActiveClient;
 	};
 
