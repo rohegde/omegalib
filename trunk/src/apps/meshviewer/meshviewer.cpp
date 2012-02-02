@@ -244,7 +244,10 @@ void MeshViewer::initUi()
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
-	myTabletManager->handleEvent(evt);
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->handleEvent(evt);
+	}
 	if(evt.getServiceType() == Service::Ui) 
 	{
 		handleUiEvent(evt);

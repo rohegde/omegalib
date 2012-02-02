@@ -30,11 +30,7 @@
 #include "ovtk/VtkRenderable.h"
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::mvc;
 using namespace ovtk;
-
-OMEGA_DEFINE_TYPE(VtkViewClient, ViewClient);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkViewClient::VtkViewClient(View* owner, EngineClient* client):

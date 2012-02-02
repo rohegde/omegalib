@@ -74,8 +74,6 @@ void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
 		mySceneView->setViewMatrix(buildOsgMatrix(context.modelview.matrix()));
