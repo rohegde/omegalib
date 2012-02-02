@@ -43,5 +43,6 @@
 #cmakedefine OMEGA_USE_DISPLAY_GLUT
 #cmakedefine OMEGA_USE_DISPLAY_EQUALIZER
 #cmakedefine OMEGA_USE_OPENCL
+#cmakedefine OMEGA_USE_PYTHON
 
 #define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"

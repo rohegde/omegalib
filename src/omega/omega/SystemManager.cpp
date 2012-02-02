@@ -30,6 +30,7 @@
 #include "omega/DisplaySystem.h"
 #include "omega/ObserverUpdateService.h"
 #include "omega/SagePointerService.h"
+#include "omega/PythonInterpreter.h"
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
 	#include "omega/EqualizerDisplaySystem.h"
@@ -63,9 +64,7 @@ SystemManager::SystemManager():
 	myIsInitialized(false)
 {
 	myDataManager = DataManager::getInstance();
-#ifdef OMEGA_USE_PYTHON
 	myInterpreter = new PythonInterpreter();
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,6 +187,8 @@ void SystemManager::initialize()
 {
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
 	myServiceManager->initialize();
+
+	myInterpreter->initialize("omegalib");
 
 	myIsInitialized = true;
 }

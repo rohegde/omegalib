@@ -35,10 +35,7 @@ include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
 # Options
 set(OMEGA_BUILD_TUTORIALS false CACHE BOOL "Enable building of omegalib tutorials.")
 set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
-
-# EXPERIMENTAL LIBS
-#set(OMEGA_BUILD_QT_LIB false CACHE BOOL "Enable build of Qt integration library")
-#set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
+set(OMEGA_BUILD_VTK_LIB false CACHE BOOL "Enable build of vtk integration library (Vtk has to be compiled with Python support)")
 
 ###################################################################################################
 # Set include paths
@@ -124,23 +121,6 @@ if(OMEGA_BUILD_VTK_LIB)
 		#add_subdirectory(apps/vtkviewer)
 	#endif(OMEGA_BUILD_APPS)
 endif(OMEGA_BUILD_VTK_LIB)
-
-# Qt configuration, libraries and applications
-if(OMEGA_BUILD_QT_LIB)
-	# Find QT and provide a hint on where it might be
-	find_package(Qt4 REQUIRED)
-	if(${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} LESS 4.6)
-		message(FATAL_ERROR "Qt version 4.6 or higher required. Found version ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.")
-	endif(${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} LESS 4.6)
-	message(STATUS "Using Qt version "${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}.)
-	set(QT_USE_QTUITOOLS TRUE)
-	include(${QT_USE_FILE})
-	include_directories(${QT_INCLUDES})
-	link_directories(${QT_LIB_DIR})
-	
-	add_subdirectory(oqt)
-	add_subdirectory(apps/qtdemo)
-endif(OMEGA_BUILD_QT_LIB)
 
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
 

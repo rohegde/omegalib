@@ -55,6 +55,7 @@ SET( srcs
 		omega/PixelData.cpp
 		omega/Pointer.cpp
 		omega/PortholeTabletService.cpp
+		omega/PythonInterpreter.cpp
 		omega/Renderable.cpp
 		omega/Renderer.cpp
 		omega/RenderTarget.cpp
@@ -96,6 +97,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Pointer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PortholeTabletService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h
@@ -189,9 +191,16 @@ if(OMEGA_USE_OPENCL)
 	endif(WIN32)
 endif(OMEGA_USE_OPENCL)
 
-if(OMEGA_USE_PYTHON)
+###################################################################################################
+# See if we can setup Python support for this build
+find_package(PythonLibs)
+if(PYTHONLIBS_FOUND)
+	set(OMEGA_USE_PYTHON true)
+	include_directories(${PYTHON_INCLUDE_DIRS})
 	target_link_libraries(omega ${PYTHON_LIBRARIES})
-endif(OMEGA_USE_PYTHON)
+else()
+	message("Python libraries not found on this system. Omegalib Python support will be disabled")
+endif()
 
 ###################################################################################################
 configure_file(omega/omegaConfig.h.in ${CMAKE_BINARY_DIR}/include/omegaConfig.h)

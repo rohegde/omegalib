@@ -23,25 +23,41 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *-------------------------------------------------------------------------------------------------
+ * Original code Copyright (c) Kitware, Inc.
+ * All rights reserved.
+ * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
-// Operating system
-#cmakedefine OMEGA_OS_WIN
-#cmakedefine OMEGA_OS_OSX
-#cmakedefine OMEGA_OS_LINUX
+#ifndef __PYTHON_INTERPRETER_H__
+#define __PYTHON_INTERPRETER_H__
 
-// Architecture (32/64bit)
-#cmakedefine OMEGA_ARCH_32
-#cmakedefine OMEGA_ARCH_64
+#include "omega/osystem.h"
 
-// Build toolset
-#cmakedefine OMEGA_TOOL_VS9
-#cmakedefine OMEGA_TOOL_VS10
-#cmakedefine OMEGA_TOOL_XCODE
-#cmakedefine OMEGA_TOOL_GCC
+struct PyMethodDef;
+class PythonInteractiveThread;
 
-// Enabled modules
-#cmakedefine OMEGA_USE_DISPLAY_GLUT
-#cmakedefine OMEGA_USE_DISPLAY_EQUALIZER
-#cmakedefine OMEGA_USE_OPENCL
+namespace omega
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class PythonInterpreter
+	{
+		friend struct PythonInterpreterWrapper;
+	public:
+		PythonInterpreter();
+		~PythonInterpreter();
 
-#define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"
+		void initialize(const char* programName);
+		void addModule(const char* name, PyMethodDef* methods);
+		void eval(const String& script, const char* format = NULL, ...);
+		void runFile(const String& filename);
+		void addPythonPath(const char*);
+		bool isEnabled();
+
+	protected:
+		bool myEnabled;
+		PythonInteractiveThread* myInteractiveThread;
+		//char* myExecutablePath;
+	};
+};
+#endif
+

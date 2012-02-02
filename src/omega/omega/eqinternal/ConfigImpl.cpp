@@ -42,7 +42,6 @@ extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][Config
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
 {
-	os << evt.myProcessed;
 	os << evt.myTimestamp;
 	os << evt.mySourceId;
 	os << evt.myServiceId;
@@ -65,7 +64,6 @@ void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 {
-	is >> evt.myProcessed;
 	is >> evt.myTimestamp;
 	is >> evt.mySourceId;
 	is >> evt.myServiceId;

@@ -31,10 +31,20 @@
 #ifndef __PythonInterpreterWrapper_h
 #define __PythonInterpreterWrapper_h
 
+#ifdef _DEBUG
+	#define PYTHON_DEBUG_HACK
+	#undef _DEBUG
+#endif
+
 #include <Python.h>
+
+#ifdef PYTHON_DEBUG_HACK
+	#define _DEBUG
+#endif
+
 #include "structmember.h"
 
-namespace ovtk
+namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct PythonInterpreterWrapper
@@ -165,7 +175,7 @@ namespace ovtk
 	  PythonInterpreterWrapper* wrapper = 
 		reinterpret_cast<PythonInterpreterWrapper*>(self);
 
-	  vtkStdString ret;
+	  String ret;
 	  if (wrapper)
 		{
 		ret = wrapper->Read();
