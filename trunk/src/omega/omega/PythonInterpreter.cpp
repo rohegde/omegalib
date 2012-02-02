@@ -1,7 +1,7 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
@@ -28,48 +28,55 @@
  * All rights reserved.
  * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
-#include "ovtk/PythonInterpreter.h"
+#include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
-#include "omega/StringUtils.h"
-#include "omega/DataManager.h"
 
-#include <vtkCommand.h>
-#include <vtkObjectFactory.h>
-#include <vtkStdString.h>
-#include <vtkWindows.h>
-#include <vtkActor.h>
-#include <vtksys/SystemTools.hxx>
-#include <vtkstd/algorithm>
-#include <vtkstd/string>
+using namespace omega;
+
+#ifdef OMEGA_USE_PYTHON
 
 #include <signal.h>  // for signal
+#include "omega/PythonInterpreterWrapper.h"
 
-using namespace ovtk;
+//#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
+//#define VTK_LIBRARY_DIR_POSTFIX "/Release"
+//#else
+//#define VTK_LIBRARY_DIR_POSTFIX 
+//#endif
 
-#include "ovtk/PythonInterpreterWrapper.h"
+//struct vtkPythonMessage
+//{
+//  vtkStdString Message;
+//  bool IsError;
+//};
 
-#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
-#define VTK_LIBRARY_DIR_POSTFIX "/Release"
-#else
-#define VTK_LIBRARY_DIR_POSTFIX 
-#endif
-
-struct vtkPythonMessage
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class PythonInteractiveThread: public Thread
 {
-  vtkStdString Message;
-  bool IsError;
+public:
+	virtual void threadProc()
+	{
+		PyRun_InteractiveLoop(stdin, "<stdin>");
+	}
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool PythonInterpreter::isEnabled()
+{
+	return true;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PythonInterpreter::PythonInterpreter()
 {
-  myExecutablePath = 0;
+	myInteractiveThread = new PythonInteractiveThread();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PythonInterpreter::~PythonInterpreter()
 {
-  myExecutablePath = NULL;
+	delete myInteractiveThread;
+	myInteractiveThread = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,8 +84,8 @@ void PythonInterpreter::addPythonPath(const char* dir)
 {
   // Convert slashes for this platform.
   String out_dir = dir ? dir : "";
-#if defined(_WIN32) && !defined(__CYGWIN__)
-  vtkstd::replace(out_dir.begin(), out_dir.end(), '/', '\\');
+#ifdef OMEGA_OS_WIN
+  out_dir = StringUtils::replaceAll(out_dir, "/", "\\");
 #endif
 
   // Append the path to the python sys.path object.
@@ -108,22 +115,22 @@ void PythonInterpreter::initialize(const char* programName)
 	// Compute the directory containing this executable.  The python
 	// sys.executable variable contains the full path to the interpreter
 	// executable.
-	if (!myExecutablePath)
-	{
-		PyObject* executable = PySys_GetObject(const_cast<char*>("executable"));
-		char* exe_str = PyString_AsString(executable);
-		if (exe_str)
-		{
-			// Use the executable location to try to set sys.path to include
-			// the VTK python modules.
-			vtkstd::string self_dir;
-			vtkstd::string self_name;
-			omega::StringUtils::splitFilename(exe_str, self_name, self_dir);
-			addPythonPath(self_dir.c_str());
-			addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
-			addPythonPath(VTK_PYTHON_DIR);
-		}
-	}
+	//if (!myExecutablePath)
+	//{
+	//	PyObject* executable = PySys_GetObject(const_cast<char*>("executable"));
+	//	char* exe_str = PyString_AsString(executable);
+	//	if (exe_str)
+	//	{
+	//		// Use the executable location to try to set sys.path to include
+	//		// the VTK python modules.
+	//		vtkstd::string self_dir;
+	//		vtkstd::string self_name;
+	//		omega::StringUtils::splitFilename(exe_str, self_name, self_dir);
+	//		addPythonPath(self_dir.c_str());
+	//		addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
+	//		addPythonPath(VTK_PYTHON_DIR);
+	//	}
+	//}
 
 	// HACK: Calling PyRun_SimpleString for the first time for some reason results in
 	// a "\n" message being generated which is causing the error dialog to
@@ -145,6 +152,8 @@ void PythonInterpreter::initialize(const char* programName)
 
 	Py_DECREF(wrapperOut);
 	Py_DECREF(wrapperErr);
+
+	myInteractiveThread->start();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,3 +208,31 @@ void PythonInterpreter::runFile(const String& filename)
 		ofwarn("PythonInterpreter: script not found: %1%", %filename);
 	}
 }
+
+#else
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool PythonInterpreter::isEnabled() { return false; }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PythonInterpreter::PythonInterpreter() { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PythonInterpreter::~PythonInterpreter() { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::addPythonPath(const char* dir) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::initialize(const char* programName) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::addModule(const char* name, PyMethodDef* methods) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::eval(const String& script, const char* format, ...) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::runFile(const String& filename) { }
+
+#endif
