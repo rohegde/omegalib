@@ -56,7 +56,7 @@ class PythonInteractiveThread: public Thread
 public:
 	virtual void threadProc()
 	{
-		PyRun_InteractiveLoop(stdin, "<stdin>");
+		PyRun_InteractiveLoop(stderr, "<stderr>");
 	}
 };
 
