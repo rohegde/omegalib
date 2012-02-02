@@ -56,7 +56,13 @@ class PythonInteractiveThread: public Thread
 public:
 	virtual void threadProc()
 	{
-		PyRun_InteractiveLoop(stderr, "<stderr>");
+		while(true)
+		{
+			char buf[65535];
+			char* line = gets(buf);
+			//strcat(line, "\n");
+			PyRun_SimpleString(line);
+		}
 	}
 };
 
@@ -143,12 +149,12 @@ void PythonInterpreter::initialize(const char* programName)
 	wrapperOut->DumpToError = false;
 
 	PythonInterpreterWrapper* wrapperErr = vtkWrapInterpretor(this);
-	wrapperErr->DumpToError = true;
+	wrapperErr->DumpToError = false;
 
 	// Redirect Python's stdout and stderr and stdin
 	PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
 	PySys_SetObject(const_cast<char*>("stderr"), reinterpret_cast<PyObject*>(wrapperErr));
-	//PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
+	PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
 
 	Py_DECREF(wrapperOut);
 	Py_DECREF(wrapperErr);
