@@ -46,15 +46,18 @@ namespace omega
 		PythonInterpreter();
 		~PythonInterpreter();
 
+		void setup(const Setting& setting);
 		void initialize(const char* programName);
 		void addModule(const char* name, PyMethodDef* methods);
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
 		void addPythonPath(const char*);
 		bool isEnabled();
+		bool isShellEnabled() { return myShellEnabled; }
 
 	protected:
 		bool myEnabled;
+		bool myShellEnabled;
 		PythonInteractiveThread* myInteractiveThread;
 		//char* myExecutablePath;
 	};
