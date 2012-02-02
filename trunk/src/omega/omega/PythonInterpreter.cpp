@@ -75,6 +75,7 @@ bool PythonInterpreter::isEnabled()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PythonInterpreter::PythonInterpreter()
 {
+	myShellEnabled = false;
 	myInteractiveThread = new PythonInteractiveThread();
 }
 
@@ -99,6 +100,12 @@ void PythonInterpreter::addPythonPath(const char* dir)
   PyObject* newpath = PyString_FromString(out_dir.c_str());
   PyList_Insert(opath, 0, newpath);
   Py_DECREF(newpath);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::setup(const Setting& setting)
+{
+	myShellEnabled = Config::getBoolValue("pythonShellEnabled", setting, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,14 +159,18 @@ void PythonInterpreter::initialize(const char* programName)
 	wrapperErr->DumpToError = false;
 
 	// Redirect Python's stdout and stderr and stdin
-	//PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
-	//PySys_SetObject(const_cast<char*>("stderr"), reinterpret_cast<PyObject*>(wrapperErr));
+	PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
+	PySys_SetObject(const_cast<char*>("stderr"), reinterpret_cast<PyObject*>(wrapperErr));
 	//PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
 
 	Py_DECREF(wrapperOut);
 	Py_DECREF(wrapperErr);
 
-	myInteractiveThread->start();
+	if(myShellEnabled)
+	{
+		omsg("PythonInterpreter: starting interactive shell thread.");
+		myInteractiveThread->start();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,10 +232,16 @@ void PythonInterpreter::runFile(const String& filename)
 bool PythonInterpreter::isEnabled() { return false; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PythonInterpreter::PythonInterpreter() { }
+PythonInterpreter::PythonInterpreter() 
+{ 	
+	myShellEnabled = false;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PythonInterpreter::~PythonInterpreter() { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::setup(const Setting& setting) { }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addPythonPath(const char* dir) { }

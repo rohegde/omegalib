@@ -104,6 +104,14 @@ void SystemManager::setup(Config* appcfg)
 	{
 		setupServiceManager();
 		setupDisplaySystem();
+		if(myInterpreter->isEnabled())
+		{
+			if(mySystemConfig->exists("config"))
+			{
+				const Setting& sConfig = mySystemConfig->lookup("config");
+				myInterpreter->setup(sConfig);
+			}
+		}
 	}
 	catch(libconfig::SettingTypeException ste)
 	{
