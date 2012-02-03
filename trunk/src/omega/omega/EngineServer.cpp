@@ -213,7 +213,7 @@ SceneNode* EngineServer::getScene(int id)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::update(const UpdateContext& context)
 {
-	EngineModuleServices::update(context);
+	EngineModuleServices::update(this, context);
 
 	// Update pointers
 	for(int i = 0; i < MaxActivePointers; i++)
@@ -262,7 +262,7 @@ void EngineServer::handleEvent(const Event& evt)
 		}
 	}
 
-	EngineModuleServices::handleEvent(evt);
+	EngineModuleServices::handleEvent(this, evt);
 	if(evt.isProcessed()) return;
 
 	foreach(Actor* a, myActors)

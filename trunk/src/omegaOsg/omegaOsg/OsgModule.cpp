@@ -39,10 +39,14 @@
 
 using namespace omegaOsg;
 
+OsgModule* OsgModule::mysInstance = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():
 	myRepresentationSize(0.4)
 {
+	mysInstance = this;
+
 	myRootNode = NULL;
 	//myRootSceneObject = NULL;
     myFrameStamp = new osg::FrameStamp;
@@ -69,9 +73,13 @@ OsgModule::~OsgModule()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgModule::initialize(EngineServer* server)
 {
+	omsg("OsgModule initializing...");
+
 	myServer = server;
 	myServer->registerRenderPassClass("OsgRenderPass", (EngineServer::RenderPassFactory)OsgRenderPass::createInstance);
 	myServer->addRenderPass("OsgRenderPass", this, true);
+
+	omsg("OsgModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

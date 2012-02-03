@@ -49,6 +49,8 @@ namespace omegaToolkit {
 
 		virtual void initialize(EngineServer* engine) 
 		{
+			omsg("OmegaToolkitEngineModule initializing...");
+
 			// Setup default render chain.
 			engine->registerRenderPassClass("LightingPass", (EngineServer::RenderPassFactory)LightingPass::createInstance);
 			engine->registerRenderPassClass("DefaultRenderPass", (EngineServer::RenderPassFactory)DefaultRenderPass::createInstance);
@@ -59,7 +61,11 @@ namespace omegaToolkit {
 			engine->addRenderPass("DefaultRenderPass");
 			engine->addRenderPass("TransparentRenderPass");
 			engine->addRenderPass("OverlayRenderPass");
+
+			omsg("OmegaToolkitEngineModule initialization OK");
 		}
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {};
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

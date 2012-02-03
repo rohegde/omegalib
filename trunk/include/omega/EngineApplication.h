@@ -42,9 +42,17 @@ namespace omega {
 	class OMEGA_API IEngineModule
 	{
 	public:
-		virtual void initialize(EngineServer* engine) {}
-		virtual void update(const UpdateContext& context) {}
-		virtual void handleEvent(const Event& evt) {}
+		IEngineModule(): myInitialized(false) {}
+
+		virtual void initialize(EngineServer* engine) = 0;
+		virtual void update(const UpdateContext& context) = 0;
+		virtual void handleEvent(const Event& evt) = 0;
+
+		void doInitialize(EngineServer* server) { if(!myInitialized) initialize(server); myInitialized = true; }
+		virtual bool isInitialized() { return myInitialized; }
+
+	private:
+		bool myInitialized;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,22 +73,24 @@ namespace omega {
 		{
 			foreach(IEngineModule* module, mysModules)
 			{
-				module->initialize(engine);
+				module->doInitialize(engine);
 			}
 		}
 
-		static void update(const UpdateContext& context)
+		static void update(EngineServer* srv, const UpdateContext& context)
 		{
 			foreach(IEngineModule* module, mysModules)
 			{
+				module->doInitialize(srv);
 				module->update(context);
 			}
 		}
 
-		static void handleEvent(const Event& evt)
+		static void handleEvent(EngineServer* srv, const Event& evt)
 		{
 			foreach(IEngineModule* module, mysModules)
 			{
+				module->doInitialize(srv);
 				module->handleEvent(evt);
 			}
 		}
