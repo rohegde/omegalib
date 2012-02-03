@@ -64,6 +64,7 @@ public:
 			getline(std::cin, line);
 			if(line.size() > 0)
 			{
+				line = line + '\n';
 				PyRun_SimpleString(line.c_str());
 			}
 		}
