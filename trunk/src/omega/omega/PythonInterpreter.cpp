@@ -58,16 +58,7 @@ class PythonInteractiveThread: public Thread
 public:
 	virtual void threadProc()
 	{
-		while(true)
-		{
-			String line;
-			getline(std::cin, line);
-			if(line.size() > 0)
-			{
-				line = line + '\n';
-				PyRun_SimpleString(line.c_str());
-			}
-		}
+		PyRun_InteractiveLoop(stdin, "<stdin>");
 	}
 };
 
