@@ -147,8 +147,12 @@ void SceneEditorModule::updateSelection(const Ray& ray)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::initialize(EngineServer* server)
 {
+	omsg("SceneEditorModule initializing...");
+
 	myEngine = server;
 	setInteractorStyle(MouseInteractorStyle);
+
+	omsg("SceneEditorModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

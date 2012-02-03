@@ -59,17 +59,16 @@ SceneManager::SceneManager():
 	myOsg(NULL)
 {
 	mysInstance = this;
+	myOsg = new OsgModule();
+	myEditor = new SceneEditorModule();
+	EngineModuleServices::addModule(myOsg);
+	EngineModuleServices::addModule(myEditor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initialize(EngineServer* engine)
 {
 	myEngine = engine;
-	myOsg = new OsgModule();
-	myOsg->initialize(myEngine);
-
-	myEditor = new SceneEditorModule();
-	myEditor->initialize(myEngine);
 
 	mySceneRoot = new osg::Group();
 
@@ -91,9 +90,6 @@ void SceneManager::initialize(EngineServer* engine)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::update(const UpdateContext& context) 
 {
-	myOsg->update(context);
-	myEditor->update(context);
-
 	if(myTabletManager != NULL)
 	{
 		myTabletManager->update(context);
@@ -103,7 +99,6 @@ void SceneManager::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
-	myEditor->handleEvent(evt);
 	if(myTabletManager != NULL)
 	{
 		myTabletManager->handleEvent(evt);
