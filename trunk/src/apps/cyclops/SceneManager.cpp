@@ -104,7 +104,10 @@ void SceneManager::update(const UpdateContext& context)
 void SceneManager::handleEvent(const Event& evt) 
 {
 	myEditor->handleEvent(evt);
-	myTabletManager->handleEvent(evt);
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->handleEvent(evt);
+	}
 	if(evt.isKeyDown('l'))
     {
 		Vector3f pos = myEngine->getDefaultCamera()->getPosition();
