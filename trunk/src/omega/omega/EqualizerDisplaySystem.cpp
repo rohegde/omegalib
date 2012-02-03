@@ -65,6 +65,8 @@ void EqualizerDisplaySystem::setup(Setting& setting)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
+	glewInit();
+
 	Log::level = LOG_WARN;
 
 	mySys = sys;

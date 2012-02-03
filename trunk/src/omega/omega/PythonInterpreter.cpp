@@ -38,6 +38,8 @@ using namespace omega;
 #include <signal.h>  // for signal
 #include "omega/PythonInterpreterWrapper.h"
 
+#include<iostream>
+
 //#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
 //#define VTK_LIBRARY_DIR_POSTFIX "/Release"
 //#else
@@ -58,10 +60,12 @@ public:
 	{
 		while(true)
 		{
-			char buf[65535];
-			char* line = gets(buf);
-			strcat(line, "\n");
-			PyRun_SimpleString(line);
+			String line;
+			getline(std::cin, line);
+			if(line.size() > 0)
+			{
+				PyRun_SimpleString(line.c_str());
+			}
 		}
 	}
 };
