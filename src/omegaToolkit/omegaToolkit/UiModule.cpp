@@ -49,7 +49,7 @@ UiModule::~UiModule()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::initialize(EngineServer* server)
 {
-	ofmsg("UiModule initializing...");
+	omsg("UiModule initializing...");
 
 	myEngine = server;
 	myWidgetFactory = new ui::DefaultWidgetFactory(myEngine);
@@ -62,7 +62,7 @@ void UiModule::initialize(EngineServer* server)
 	myEngine->registerRenderPassClass("UiRenderPass", (EngineServer::RenderPassFactory)UiRenderPass::createInstance);
 	myEngine->addRenderPass("UiRenderPass");
 
-	ofmsg("UiModule initialization OK");
+	omsg("UiModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
