@@ -28,8 +28,7 @@
 #define __VTK_RENDER_PASS_H__
 
 #include "omega/osystem.h"
-#include "omega/scene/RenderPass.h"
-#include "omega/scene/SceneManager.h"
+#include "omega/RenderPass.h"
 
 class vtkProp;
 class vtkRenderer;
@@ -44,7 +43,6 @@ class vtkVolumetricPass;
 namespace ovtk
 {
 	using namespace omega;
-	using namespace omega::scene;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class VtkRenderPass: public RenderPass
@@ -54,15 +52,16 @@ namespace ovtk
 		enum QueueType { QueueOpaque, QueueTransparent, QueueVolume, QueueOverlay, NumQueues };
 		enum RenderFlags { RenderVtk = RenderPass::RenderCustom << 1 };
 		static const int MaxQueuedProps = 128;
+		static RenderPass* createInstance(EngineClient* client) { return new VtkRenderPass(client, "VtkRenderPass"); }
 
 	public:
-		VtkRenderPass();
+		VtkRenderPass(EngineClient* client, const String& name): RenderPass(client, name) {}
+		virtual ~VtkRenderPass();
 
 		void initialize();
-		virtual void render(SceneManager* mng, const DrawContext& context);
-
-	private:
+		virtual void render(EngineClient* client, const DrawContext& context);
 		void queueProp(vtkProp* actor, QueueType queue);
+		void resetPropQueues();
 
 	private:
 		vtkRenderer* myRenderer;

@@ -40,7 +40,7 @@
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass()
+VtkRenderPass::~VtkRenderPass()
 {
 }
 
@@ -60,6 +60,8 @@ void VtkRenderPass::initialize()
 
 	myRenderState = new vtkRenderState(myRenderer);
 
+	resetPropQueues();
+
 	//myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
 }
 
@@ -75,47 +77,54 @@ void VtkRenderPass::queueProp(vtkProp* actor, QueueType queue)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(SceneManager* mng, const DrawContext& context)
+void VtkRenderPass::resetPropQueues()
 {
-	RenderState state;
-	state.pass = this;
-	state.flags = VtkRenderPass::RenderVtk;
-	state.renderer = mng->getRenderer();
-
 	for(int i = 0; i < NumQueues; i++) myPropQueueSize[i] = 0;
+}
 
-	mng->getRootNode()->draw(&state);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkRenderPass::render(EngineClient* mng, const DrawContext& context)
+{
+	if(context.task == DrawContext::SceneDrawTask)
+	{
+		//RenderState state;
+		//state.pass = this;
+		//state.flags = VtkRenderPass::RenderVtk;
+		//state.renderer = mng->getRenderer();
 
-	// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
-	// stored inside the scene nodes. So, create a new, clean transform on the stack.
-	glPushMatrix();
-	glLoadMatrixf(context.modelview.data());
+		//mng->getRootNode()->draw(&state);
 
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glEnable(GL_NORMALIZE);
-	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
+		// For scene node drawing, we are not using the gl matrix stack, we are using our own transforms,
+		// stored inside the scene nodes. So, create a new, clean transform on the stack.
+		glPushMatrix();
+		glLoadMatrixf(context.modelview.data());
 
-	myRenderState->SetPropArrayAndCount(myPropQueue[QueueOpaque], myPropQueueSize[QueueOpaque]);
-	myOpaquePass->Render(myRenderState);
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glEnable(GL_NORMALIZE);
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
 
-	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	//glBlendFunc(GL_ONE, GL_ONE);
-	//glDisable(GL_DEPTH_TEST);
+		myRenderState->SetPropArrayAndCount(myPropQueue[QueueOpaque], myPropQueueSize[QueueOpaque]);
+		myOpaquePass->Render(myRenderState);
 
-	myRenderState->SetPropArrayAndCount(myPropQueue[QueueTransparent], myPropQueueSize[QueueTransparent]);
-	myTranslucentPass->Render(myRenderState);
+		glEnable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		//glBlendFunc(GL_ONE, GL_ONE);
+		//glDisable(GL_DEPTH_TEST);
+
+		myRenderState->SetPropArrayAndCount(myPropQueue[QueueTransparent], myPropQueueSize[QueueTransparent]);
+		myTranslucentPass->Render(myRenderState);
 	
-	// Volume rendering not supported for now: it requires forwarding to vtk information
-	// about the view through the renderer active camera (vtkCamera) and also information
-	// about the viewport. This is doable but will probably require a custom version of
-	// vtkCamera and vtkRenderer
-	//myVolumetricPass->Render(myRenderState);
+		// Volume rendering not supported for now: it requires forwarding to vtk information
+		// about the view through the renderer active camera (vtkCamera) and also information
+		// about the viewport. This is doable but will probably require a custom version of
+		// vtkCamera and vtkRenderer
+		//myVolumetricPass->Render(myRenderState);
 	
-	myRenderState->SetPropArrayAndCount(myPropQueue[QueueOverlay], myPropQueueSize[QueueOverlay]);
-	myOverlayPass->Render(myRenderState);
+		myRenderState->SetPropArrayAndCount(myPropQueue[QueueOverlay], myPropQueueSize[QueueOverlay]);
+		myOverlayPass->Render(myRenderState);
 
-	glPopAttrib();
-	glPopMatrix();
+		glPopAttrib();
+		glPopMatrix();
+	}
 }

@@ -192,13 +192,8 @@ endif(OMEGA_USE_OPENCL)
 
 ###################################################################################################
 # See if we can setup Python support for this build
-find_package(PythonLibs)
-if(PYTHONLIBS_FOUND)
-	set(OMEGA_USE_PYTHON true)
-	include_directories(${PYTHON_INCLUDE_DIRS})
+if(OMEGA_USE_PYTHON)
 	target_link_libraries(omega ${PYTHON_LIBRARIES})
-else()
-	message("Python libraries not found on this system. Omegalib Python support will be disabled")
 endif()
 
 ###################################################################################################

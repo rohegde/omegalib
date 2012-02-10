@@ -122,3 +122,9 @@ Renderable* RenderableFactory::getFirstRenderable()
 {
 	return myRenderables.front();
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+List<Renderable*>::ConstRange RenderableFactory::getRenderables() const
+{
+	return List<Renderable*>::ConstRange(myRenderables.begin(), myRenderables.end());
+}

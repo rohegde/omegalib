@@ -45,9 +45,11 @@ namespace omega {
 			RenderCustom = 1 << 8 };
 
 	public:
-		RenderPass(EngineClient* client): myInitialized(false), myClient(client) {}
+		RenderPass(EngineClient* client, const String& name): myInitialized(false), myClient(client), myName(name) {}
 		virtual void initialize() { myInitialized = true; }
 		virtual void render(EngineClient* client, const DrawContext& context) = 0;
+
+		const String& getName() { return myName; }
 
 		void setUserData(void* value) { myUserData = value; }
 		void* getUserData() { return myUserData; }
@@ -59,6 +61,7 @@ namespace omega {
 	private: 
 		bool myInitialized;
 		void* myUserData;
+		String myName;
 		EngineClient* myClient;
 	};
 

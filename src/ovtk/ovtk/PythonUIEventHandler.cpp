@@ -25,39 +25,38 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "ovtk/PythonUIEventHandler.h"
-#include "omega/StringUtils.h"
-#include "omega/ui/AbstractButton.h"
-#include "omega/ui/Slider.h"
+#include "omegaToolkit/ui/AbstractButton.h"
+#include "omegaToolkit/ui/Slider.h"
 
-using namespace ovtk;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PythonUIEventHandler::PythonUIEventHandler(UIManager* ui, PythonInterpreter* interp):
-	myInterpreter(interp),
-	myUI(ui)
-{
-}
+//using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonUIEventHandler::handleEvent(const Event& evt)
-{
-	if(evt.getType() == Event::Click)
-	{
-		myInterpreter->eval(myClickCommand);
-	}
-	else if(evt.getType() == Event::Toggle)
-	{
-		AbstractButton* btn = myUI->getWidgetById<AbstractButton>(evt.getSourceId());
-		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %btn->isChecked()));
-		myInterpreter->eval(expr);
-	}
-	else if(evt.getType() == Event::ChangeValue)
-	{
-		Slider* sld = myUI->getWidgetById<Slider>(evt.getSourceId());
-		float interval = mySliderMaxValue - mySliderMinValue;
-		float value = ((float)sld->getValue() / sld->getTicks() * interval) + mySliderMinValue;
-		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %value));
-		myInterpreter->eval(expr);
-	}
-}
-
+//PythonUIEventHandler::PythonUIEventHandler(UIManager* ui, PythonInterpreter* interp):
+//	myInterpreter(interp),
+//	myUI(ui)
+//{
+//}
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//void PythonUIEventHandler::handleEvent(const Event& evt)
+//{
+//	if(evt.getType() == Event::Click)
+//	{
+//		myInterpreter->eval(myClickCommand);
+//	}
+//	else if(evt.getType() == Event::Toggle)
+//	{
+//		AbstractButton* btn = myUI->getWidgetById<AbstractButton>(evt.getSourceId());
+//		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %btn->isChecked()));
+//		myInterpreter->eval(expr);
+//	}
+//	else if(evt.getType() == Event::ChangeValue)
+//	{
+//		Slider* sld = myUI->getWidgetById<Slider>(evt.getSourceId());
+//		float interval = mySliderMaxValue - mySliderMinValue;
+//		float value = ((float)sld->getValue() / sld->getTicks() * interval) + mySliderMinValue;
+//		String expr = StringUtils::replaceAll(myChangeValueCommand, "${value}", ostr("%1%", %value));
+//		myInterpreter->eval(expr);
+//	}
+//}
+//

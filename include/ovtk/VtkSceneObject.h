@@ -24,59 +24,83 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __VTK_DRAWABLE_H__
-#define __VTK_DRAWABLE_H__
+#ifndef __VTK_VIEW_CLIENT_H__
+#define __VTK_VIEW_CLIENT_H__
 
-#include "ovtk/ovtkbase.h"
-#include "omega/osystem.h"
-#include "omega/scene/Effect.h"
-#include "omega/scene/SceneNode.h"
-#include "omega/scene/RenderPass.h"
+#include "omegaToolkit/RenderableSceneObject.h"
 
-#include <vtkActor.h>
-#include <vtkMatrix4x4.h>
+#include "ovtkbase.h"
 
-class vtkActor;
+class vtkProp3D;
+class vtkMatrix4x4;
+namespace ovtk {
 
-using namespace omega;
-using namespace omega::scene;
-
-namespace ovtk
-{
 	using namespace omega;
-	using namespace omega::scene;
+	using namespace omegaToolkit;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OVTK_API VtkSceneObject: public RenderableSceneObject
+	{
+	public:
+		VtkSceneObject(const String& name);
+		~VtkSceneObject();
+
+		virtual Renderable* createRenderable();
+
+		float getRepresentationSize();
+		void setRepresentationSize(float value);
+
+		virtual void update(SceneNode* owner);
+
+		virtual const AlignedBox3* getBoundingBox();
+		virtual bool hasBoundingBox();
+
+		virtual bool isInitialized() { return myInitialized; }
+		virtual void initialize(EngineServer* server) { myInitialized = true; }
+
+		const String& getName() { return myName; }
+
+	private:
+		//! Gets the first available vtk prop from the attached renderables.
+		vtkProp3D* getFirstProp();
+
+	private:
+		vtkMatrix4x4* myMatrix;
+		AlignedBox3 myBBox;
+		float myRepresentationSize;
+		bool myInitialized;
+		String myName;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OVTK_API VtkRenderable: public Renderable
 	{
 	public:
-		VtkRenderable();
+		VtkRenderable(): myActor(NULL) {}
 
-		virtual void render(SceneNode* node, RenderState* state);
-
-		virtual const AlignedBox3* getBoundingBox();
-		virtual bool hasBoundingBox() { return (myActor != NULL); }
+		virtual void draw(RenderState* state) {}
 
 		void setActor(vtkProp3D* value);
 		vtkProp3D* getActor();
 
 	private:
 		vtkProp3D* myActor;
-		vtkMatrix4x4* myMatrix;
-		AlignedBox3 myBBox;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline float VtkSceneObject::getRepresentationSize()
+	{ return myRepresentationSize; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	inline void VtkSceneObject::setRepresentationSize(float value)
+	{ myRepresentationSize = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void VtkRenderable::setActor(vtkProp3D* value)
-	{
-		myActor = value;
-	}
+	{ myActor = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline vtkProp3D* VtkRenderable::getActor()
-	{
-		return myActor;
-	}
-
+	{ return myActor; }
 };
 #endif

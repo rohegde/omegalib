@@ -24,20 +24,16 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/PyVtk.h"
-#include "ovtk/PythonInterpreter.h"
+//#include "ovtk/PyVtk.h"
 #include "ovtk/VtkModule.h"
-#include "ovtk/VtkRenderable.h"
+#include "ovtk/VtkRenderPass.h"
+#include "ovtk/VtkSceneObject.h"
 
 
-#include "omega/scene.h"
-#include "omega/SystemManager.h"
-#include "omega/DataManager.h"
-
-#include <vtkProp3D.h>
+#include <vtkActor.h>
+#include <vtkProperty.h>
 
 using namespace omega;
-using namespace omega::mvc;
 using namespace ovtk;
 
 VtkModule* VtkModule::myInstance = NULL;
@@ -46,6 +42,8 @@ VtkModule* VtkModule::myInstance = NULL;
 VtkModule::VtkModule()
 {
 	myInstance = this;
+	myActiveClient = NULL;
+	myActiveRenderPass = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,22 +52,87 @@ VtkModule::~VtkModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::initialize(ViewManager* viewMng)
+void VtkModule::initialize(EngineServer* server)
 {
-	viewMng->registerViewClientClass<VtkViewClient>();
+	omsg("VtkModule initializing...");
+
+	myEngine = server;
+	myEngine->registerRenderPassClass("VtkRenderPass", (EngineServer::RenderPassFactory)VtkRenderPass::createInstance);
+	myEngine->addRenderPass("VtkRenderPass", this, true);
+
+	omsg("VtkModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::initialize(EngineClient* client)
+void VtkModule::beginClientInitialize(EngineClient* client)
 {
-	oassert(client != NULL);
+	oassert(myActiveClient == NULL);
 
-	VtkRenderPass* rp = onew(VtkRenderPass)();
-	rp->initialize();
-
-	client->getSceneManager()->addRenderPass(rp);
-
-	//SceneManager* sm = client->getSceneManager();
-	//myVtkNode = onew(SceneNode)(sm, "vtk");
-	//sm->getRootNode()->addChild(myVtkNode);
+	myClientLock.lock();
+	myActiveClient = client;
+	myActiveRenderPass = dynamic_cast<VtkRenderPass*>(myActiveClient->getRenderPass("VtkRenderPass"));
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::endClientInitialize()
+{
+	if(myActiveClient != NULL)
+	{
+		myActiveClient = NULL;
+		myActiveRenderPass = NULL;
+		myClientLock.unlock();
+	}
+	else
+	{
+		owarn("VtkModule::endClientInitialize: beginClientInitialize has not been called. Returning.");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::attachActor(vtkActor* actor, VtkSceneObject* sceneObject)
+{
+	if(myActiveClient != NULL)
+	{
+		if(actor->HasTranslucentPolygonalGeometry())
+		{
+			myActiveRenderPass->queueProp(actor, VtkRenderPass::QueueTransparent);
+		}
+		else
+		{
+			myActiveRenderPass->queueProp(actor, VtkRenderPass::QueueOpaque);
+		}
+
+		VtkRenderable* renderable = dynamic_cast<VtkRenderable*>(sceneObject->getRenderable(myActiveClient));
+		renderable->setActor(actor);
+	}
+	else
+	{
+		owarn("VtkModule::addActor: beginClientInitialize has not been called. Returning");
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::registerSceneObject(VtkSceneObject* sceneObject)
+{
+	if(sceneObject != NULL)
+	{
+		mySceneObjects[sceneObject->getName()] = sceneObject;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::unregisterSceneObject(VtkSceneObject* sceneObject)
+{
+	if(sceneObject != NULL)
+	{
+		mySceneObjects[sceneObject->getName()] = NULL;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+VtkSceneObject* VtkModule::getSceneObject(const String& name)
+{
+	return mySceneObjects[name];
+}
+

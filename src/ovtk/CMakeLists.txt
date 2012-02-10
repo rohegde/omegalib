@@ -34,12 +34,11 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 SET( srcs 
 		ovtk/PythonUIEventHandler.cpp
 		ovtk/PyVtk.cpp
-		ovtk/VtkModule.cpp
-		ovtk/VtkRenderable.cpp
 		ovtk/vtkGenericOpenGLRenderWindow.cpp
+		ovtk/VtkModule.cpp
 		ovtk/VtkRenderPass.cpp
-		ovtk/VtkViewClient.cpp
-		ovtk/VtkModel.cpp
+		ovtk/VtkSceneObject.cpp
+		ovtk/omegaVtkPythonApi.cpp
         )
 		
 ###################################################################################################
@@ -50,11 +49,10 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonUIEventHandler.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/PyVtk.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkModule.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkRenderable.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/vtkGenericOpenGLRenderWindow.h
 		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkViewClient.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkModel.h
+		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkSceneObject.h
+		${OmegaLib_SOURCE_DIR}/include/ovtk/omegaVtkPythonApi.h
         ) 
         
 ###################################################################################################
@@ -72,6 +70,6 @@ ENDIF(OMEGA_BUILD_STATIC)
 # Setup link info.
 TARGET_LINK_LIBRARIES( ovtk 
 	omega 
-	outils
+	omegaToolkit
     vtkRendering
 	)

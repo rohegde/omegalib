@@ -24,66 +24,87 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkRenderable.h"
-#include "ovtk/VtkRenderPass.h"
-#include "omega/StringUtils.h"
+#include "ovtk/VtkModule.h"
+#include "ovtk/VtkSceneObject.h"
 
+#include <vtkMatrix4x4.h>
+#include <vtkActor.h>
+
+using namespace omega;
 using namespace ovtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderable::VtkRenderable(): myActor(NULL) 
+VtkSceneObject::VtkSceneObject(const String& name): myName(name)
 {
-	myMatrix = vtkMatrix4x4::New();
+	VtkModule::instance()->registerSceneObject(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderable::render(SceneNode* node, RenderState* state)
+VtkSceneObject::~VtkSceneObject()
 {
-	// Do stuff only if render pass is a Vtk render pass
-	if(state->isFlagSet(VtkRenderPass::RenderVtk))
+	VtkModule::instance()->unregisterSceneObject(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* VtkSceneObject::createRenderable()
+{
+	return new VtkRenderable();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkSceneObject::update(SceneNode* owner)
+{
+	const AffineTransform3& xform =  owner->getFullTransform();
+	const omega::math::matrix<4, 4>& m = xform.matrix();
+	for(int i = 0; i < 4; i++)
 	{
-		if(myActor != NULL && myActor->GetVisibility() != 0)
+		for(int j = 0; j < 4; j++)
 		{
-			const AffineTransform3& xform =  node->getFullTransform();
-			const omega::math::matrix<4, 4>& m = xform.matrix();
-			for(int i = 0; i < 4; i++)
-			{
-				for(int j = 0; j < 4; j++)
-				{
-					myMatrix->SetElement(i, j, m(i, j));
-				}
-			}
-
-			myActor->SetUserMatrix(myMatrix);
-
-			// Add actor to render pass prop list.
-			// NOTE: we assume this cast works since only VtkRenderPass should set the 
-			// RenderVtk flag on a render state.
-			VtkRenderPass* vtkrp = (VtkRenderPass*)state->pass;
-
-			if(myActor->HasTranslucentPolygonalGeometry())
-			{
-				vtkrp->queueProp(myActor, VtkRenderPass::QueueTransparent);
-			}
-			else
-			{
-				vtkrp->queueProp(myActor, VtkRenderPass::QueueOpaque);
-			}
+			myMatrix->SetElement(i, j, m(i, j));
+		}
+	}
+	foreach(Renderable* r, getRenderables())
+	{
+		VtkRenderable* vtkr = dynamic_cast<VtkRenderable*>(r);
+		vtkProp3D* vtkProp = vtkr->getActor();
+		if(vtkProp != NULL)
+		{
+			vtkProp->SetUserMatrix(myMatrix);
 		}
 	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-const AlignedBox3* VtkRenderable::getBoundingBox()
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+vtkProp3D* VtkSceneObject::getFirstProp()
 {
-	if(myActor != NULL)
+	Renderable* r = getFirstRenderable();
+	if(r != NULL)
+	{
+		VtkRenderable* vtkr = dynamic_cast<VtkRenderable*>(r);
+		return vtkr->getActor();
+	}
+	return NULL; 
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+bool VtkSceneObject::hasBoundingBox() 
+{ 
+	vtkProp3D* p = getFirstProp();
+	return (p != NULL);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+const AlignedBox3* VtkSceneObject::getBoundingBox()
+{
+	vtkProp3D* prop = getFirstProp();
+	if(prop != NULL)
 	{
 		// We have to make sure no transformation is applied to the actor, to get back the
 		// original bounding box.
 		myMatrix->Identity();
-		myActor->SetUserMatrix(myMatrix);
+		prop->SetUserMatrix(myMatrix);
 
-		double* bounds = myActor->GetBounds();
+		double* bounds = prop->GetBounds();
 		float fbounds[6];
 		fbounds[0] = bounds[0];
 		fbounds[1] = bounds[1];
@@ -96,4 +117,3 @@ const AlignedBox3* VtkRenderable::getBoundingBox()
 	}
 	return NULL;
 }
-

@@ -73,6 +73,16 @@ void EngineClient::removeAllRenderPasses()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+RenderPass* EngineClient::getRenderPass(const String& name)
+{
+	foreach(RenderPass* rp, myRenderPassList)
+	{
+		if(rp->getName() == name) return rp;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineClient::initialize()
 {
 	ofmsg("@EngineClient::Initialize: id = %1%", %getGpuContext()->getId());

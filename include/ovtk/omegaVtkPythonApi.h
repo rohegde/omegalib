@@ -28,25 +28,12 @@
 #define __VTK_MODEL_H__
 
 #include "ovtkbase.h"
-#include "omega/ISceneObject.h"
 
 namespace ovtk {
 	using namespace omega;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkSceneObject: public ISceneObject
-	{
-	OMEGA_DECLARE_TYPE(VtkModel);
-	public:
-		VtkModel();
-
-		void loadScript(const String& filename);
-
-		void evalCommand(const String cmd);
-
-	private:
-		PythonInterpreter* myInterpreter;
-	};
+	void omegaVtkPythonApiInit();
 }; // namespace omega
 
 #endif
