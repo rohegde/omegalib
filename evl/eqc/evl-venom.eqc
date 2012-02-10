@@ -1,0 +1,313 @@
+#Equalizer 1.0 ascii
+global
+{
+    EQ_CONFIG_FATTR_EYE_BASE        0.06
+    EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+server
+{
+    config
+    {
+        appNode											
+        {
+			attributes
+			{
+				thread_model DRAW_SYNC
+			}
+            pipe
+            {
+				port 0
+				device 4
+                window
+                {
+                    name     "0x2"
+                    channel { name "0x2" }
+                    attributes
+					{
+						hint_decoration OFF
+            			hint_fullscreen ON
+					}
+                }
+            }
+            pipe
+            {
+				port 0
+				device 2
+                window
+                {
+                    name     "0x1"
+                    channel { name "0x1" }
+                    attributes
+					{
+						hint_decoration OFF
+            			hint_fullscreen ON
+					}
+                }
+            }
+            pipe
+            {
+				port 0
+				device 0
+                window
+                {
+                    name     "0x0"
+                    channel { name "0x0" }
+                    attributes
+					{
+						hint_decoration OFF
+            			hint_fullscreen ON
+					}
+                }
+            }
+            pipe
+            {
+				port 0
+				device 5
+                window
+                {
+                    name     "1x2"
+                    channel { name "1x2" }
+                    attributes
+					{
+						hint_decoration OFF
+            			hint_fullscreen ON
+					}
+                }
+            }
+            pipe
+            {
+				port 0
+				device 3
+                window
+                {
+                    name     "1x1"
+                    channel { name "1x1" }
+                    attributes
+					{
+						hint_decoration OFF
+            			hint_fullscreen ON
+					}
+                }
+            }
+            pipe
+            {
+				port 0
+				device 1
+                window
+                {
+                    name     "1x0"
+                    channel { name "1x0" }
+                    attributes
+					{
+						hint_decoration OFF
+            			hint_fullscreen ON
+					}
+                }
+            }
+        }
+
+		observer 
+		{ 
+			name "observer0" 
+		}
+
+        layout
+        {
+            name "layout"
+			view
+            {
+                name "main"
+                observer "observer0"
+                viewport [ 0 0 1 1]
+            }
+        }
+		
+        canvas
+        {
+            layout "layout"
+
+			wall
+			{
+				bottom_left  [ -2. -.9 0 ]
+				bottom_right [  2. -.9 0 ]
+				top_left     [ -2. .9 0 ]
+			}
+
+            segment
+            {
+                viewport [ 0 0 0.5 0.33]
+                channel "0x2"
+            }
+            segment
+            {
+                viewport [ 0 0.33 0.5 0.33]
+                channel "0x1"
+            }
+            segment
+            {
+                viewport [ 0 0.66 0.5 0.33]
+                channel "0x0"
+            }
+            segment
+            {
+                viewport [ 0.5 0. 0.5 0.33]
+                channel "1x2"
+            }
+            segment
+            {
+                viewport [ 0.5 0.33 0.5 0.33]
+                channel "1x1"
+            }
+            segment
+            {
+                viewport [ 0.5 0.66 0.5 0.33]
+                channel "1x0"
+            }
+        }
+
+		compound
+        {
+			channel ( segment 2 layout "layout" view 0 )
+			eye [RIGHT LEFT]
+			attributes { stereo_mode PASSIVE }
+            compound
+            {
+				eye [RIGHT]
+				attributes { stereo_mode PASSIVE }
+                channel "0x0"
+                pixel [ 0 0 1 2 ]     # which pixels to assemble
+                outputframe { name "0x0r" type texture }
+            }
+            compound
+            {
+				eye [LEFT]
+				attributes { stereo_mode PASSIVE }
+                channel "0x0"
+                pixel [ 0 1 1 2 ]     # which pixels to assemble
+                outputframe { name "0x0l" type texture }
+            }
+            inputframe { name "0x0r" }
+            inputframe { name "0x0l" }
+		}
+		compound
+        {
+			channel ( segment 1 layout "layout" view 0 )
+			eye [RIGHT LEFT]
+			attributes { stereo_mode PASSIVE }
+            compound
+            {
+				eye [RIGHT]
+				attributes { stereo_mode PASSIVE }
+                channel "0x1"
+                pixel [ 0 0 1 2 ]     # which pixels to assemble
+                outputframe { name "0x1r" type texture }
+            }
+            compound
+            {
+				eye [LEFT]
+				attributes { stereo_mode PASSIVE }
+                channel "0x1"
+                pixel [ 0 1 1 2 ]     # which pixels to assemble
+                outputframe { name "0x1l" type texture }
+            }
+            inputframe { name "0x1r" }
+            inputframe { name "0x1l" }
+		}
+		compound
+        {
+			channel ( segment 0 layout "layout" view 0 )
+			eye [RIGHT LEFT]
+			attributes { stereo_mode PASSIVE }
+            compound
+            {
+				eye [RIGHT]
+				attributes { stereo_mode PASSIVE }
+                channel "0x2"
+                pixel [ 0 0 1 2 ]     # which pixels to assemble
+                outputframe { name "0x2r" type texture }
+            }
+            compound
+            {
+				eye [LEFT]
+				attributes { stereo_mode PASSIVE }
+                channel "0x2"
+                pixel [ 0 1 1 2 ]     # which pixels to assemble
+                outputframe { name "0x2l" type texture }
+            }
+            inputframe { name "0x2r" }
+            inputframe { name "0x2l" }
+		}
+		compound
+        {
+			channel ( segment 5 layout "layout" view 0 )
+			eye [RIGHT LEFT]
+			attributes { stereo_mode PASSIVE }
+            compound
+            {
+				eye [RIGHT]
+				attributes { stereo_mode PASSIVE }
+                channel "1x0"
+                pixel [ 0 0 1 2 ]     # which pixels to assemble
+                outputframe { name "1x0r" type texture }
+            }
+            compound
+            {
+				eye [LEFT]
+				attributes { stereo_mode PASSIVE }
+                channel "1x0"
+                pixel [ 0 1 1 2 ]     # which pixels to assemble
+                outputframe { name "1x0l" type texture }
+            }
+            inputframe { name "1x0r" }
+            inputframe { name "1x0l" }
+		}
+		compound
+        {
+			channel ( segment 4 layout "layout" view 0 )
+			eye [RIGHT LEFT]
+			attributes { stereo_mode PASSIVE }
+            compound
+            {
+				eye [RIGHT]
+				attributes { stereo_mode PASSIVE }
+                channel "1x1"
+                pixel [ 0 0 1 2 ]     # which pixels to assemble
+                outputframe { name "1x1r" type texture }
+            }
+            compound
+            {
+				eye [LEFT]
+				attributes { stereo_mode PASSIVE }
+                channel "1x1"
+                pixel [ 0 1 1 2 ]     # which pixels to assemble
+                outputframe { name "1x1l" type texture }
+            }
+            inputframe { name "1x1r" }
+            inputframe { name "1x1l" }
+		}
+		compound
+        {
+			channel ( segment 3 layout "layout" view 0 )
+			eye [RIGHT LEFT]
+			attributes { stereo_mode PASSIVE }
+            compound
+            {
+				eye [RIGHT]
+				attributes { stereo_mode PASSIVE }
+                channel "1x2"
+                pixel [ 0 0 1 2 ]     # which pixels to assemble
+                outputframe { name "1x2r" type texture }
+            }
+            compound
+            {
+				eye [LEFT]
+				attributes { stereo_mode PASSIVE }
+                channel "1x2"
+                pixel [ 0 1 1 2 ]     # which pixels to assemble
+                outputframe { name "1x2l" type texture }
+            }
+            inputframe { name "1x2r" }
+            inputframe { name "1x2l" }
+		}
+    }
+}
