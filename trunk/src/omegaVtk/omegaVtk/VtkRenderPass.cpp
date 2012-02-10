@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkRenderPass.h"
-#include "ovtk/vtkGenericOpenGLRenderWindow.h"
+#include "omegaVtk/VtkRenderPass.h"
+#include "omegaVtk/vtkGenericOpenGLRenderWindow.h"
 
 #include <vtkCamera.h>
 #include <vtkRenderer.h>
@@ -37,7 +37,7 @@
 #include <vtkVolumetricPass.h>
 #include <vtkRenderState.h>
 
-using namespace ovtk;
+using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkRenderPass::~VtkRenderPass()

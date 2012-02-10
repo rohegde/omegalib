@@ -40,7 +40,7 @@ class vtkGenericOpenGLRenderWindow;
 class vtkRenderState;
 class vtkVolumetricPass;
 
-namespace ovtk
+namespace omegaVtk
 {
 	using namespace omega;
 

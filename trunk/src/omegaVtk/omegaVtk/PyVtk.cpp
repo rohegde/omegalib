@@ -28,7 +28,7 @@
  * All rights reserved.
  * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
-#include "ovtk/PyVtk.h"
+#include "omegaVtk/PyVtk.h"
 
 #include "vtkSystemIncludes.h"
 

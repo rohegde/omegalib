@@ -32,43 +32,43 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 ###################################################################################################
 # Source files
 SET( srcs 
-		ovtk/PythonUIEventHandler.cpp
-		ovtk/PyVtk.cpp
-		ovtk/vtkGenericOpenGLRenderWindow.cpp
-		ovtk/VtkModule.cpp
-		ovtk/VtkRenderPass.cpp
-		ovtk/VtkSceneObject.cpp
-		ovtk/omegaVtkPythonApi.cpp
+		omegaVtk/PythonUIEventHandler.cpp
+		omegaVtk/PyVtk.cpp
+		omegaVtk/vtkGenericOpenGLRenderWindow.cpp
+		omegaVtk/VtkModule.cpp
+		omegaVtk/VtkRenderPass.cpp
+		omegaVtk/VtkSceneObject.cpp
+		omegaVtk/omegaVtkPythonApi.cpp
         )
 		
 ###################################################################################################
 # Headers
 SET( headers 
 		# omega
-		${OmegaLib_SOURCE_DIR}/include/ovtk/ovtkbase.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/PythonUIEventHandler.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/PyVtk.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkModule.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/vtkGenericOpenGLRenderWindow.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkRenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/VtkSceneObject.h
-		${OmegaLib_SOURCE_DIR}/include/ovtk/omegaVtkPythonApi.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/ovtkbase.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/PythonUIEventHandler.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/PyVtk.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkModule.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/vtkGenericOpenGLRenderWindow.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkRenderPass.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkSceneObject.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/omegaVtkPythonApi.h
         ) 
         
 ###################################################################################################
-SOURCE_GROUP(ovtk REGULAR_EXPRESSION ovtk/)		
+SOURCE_GROUP(omegaVtk REGULAR_EXPRESSION omegaVtk/)		
 
 ###################################################################################################
 # Setup compile info
 IF(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( ovtk ${srcs} ${headers})
+	ADD_LIBRARY( omegaVtk ${srcs} ${headers})
 ELSE(OMEGA_BUILD_STATIC)
-	ADD_LIBRARY( ovtk SHARED ${srcs} ${headers})
+	ADD_LIBRARY( omegaVtk SHARED ${srcs} ${headers})
 ENDIF(OMEGA_BUILD_STATIC)
 
 ###################################################################################################
 # Setup link info.
-TARGET_LINK_LIBRARIES( ovtk 
+TARGET_LINK_LIBRARIES( omegaVtk 
 	omega 
 	omegaToolkit
     vtkRendering

@@ -69,6 +69,10 @@ if(OMEGA_BINARY_DIR)
 		set(OOSG_LIB_DEBUG ${OMEGA_LIB_DIR_DEBUG}/omegaOsg.lib)
 		set(OOSG_LIB_RELEASE ${OMEGA_LIB_DIR_RELEASE}/omegaOsg.lib)
 		
+		# omegaVtk
+		set(OVTK_LIB_DEBUG ${OMEGA_LIB_DIR_DEBUG}/omegaVtk.lib)
+		set(OVTK_LIB_RELEASE ${OMEGA_LIB_DIR_RELEASE}/omegaVtk.lib)
+		
 		# glew
 		#find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR_DEBUG})
 		#find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR_RELEASE})
@@ -86,6 +90,10 @@ if(OMEGA_BINARY_DIR)
 		set(OOSG_LIB_DEBUG ${OMEGA_BIN_DIR}/omegaOsg.so)
 		set(OOSG_LIB_RELEASE ${OMEGA_BIN_DIR}/omegaOsg.so)
 		
+		# oosg
+		set(OVTK_LIB_DEBUG ${OMEGA_BIN_DIR}/omegaVtk.so)
+		set(OVTK_LIB_RELEASE ${OMEGA_BIN_DIR}/omegaVtk.so)
+		
 		# glew
 		#find_library(GLEW_LIB_DEBUG NAMES glew PATHS ${OMEGA_LIB_DIR})
 		#find_library(GLEW_LIB_RELEASE NAMES glew PATHS ${OMEGA_LIB_DIR})
@@ -95,6 +103,7 @@ if(OMEGA_BINARY_DIR)
 	set(OMEGA_LIB ${OMICRON_LIB} debug ${OMEGA_LIB_DEBUG} debug ${OPENGL_LIBRARY} optimized ${OMEGA_LIB_RELEASE} optimized ${OPENGL_LIBRARY})
 	set(OMEGA_TOOLKIT_LIB debug ${OTK_LIB_DEBUG} optimized ${OTK_LIB_RELEASE})
 	set(OMEGA_OSG_LIB debug ${OOSG_LIB_DEBUG} optimized ${OOSG_LIB_RELEASE} ${OSG_LIBS})
+	set(OMEGA_VTK_LIB debug ${OVTK_LIB_DEBUG} optimized ${OVTK_LIB_RELEASE})
 
 	###################################################################################################
 	# Visual studio specific options.

@@ -24,17 +24,17 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-//#include "ovtk/PyVtk.h"
-#include "ovtk/VtkModule.h"
-#include "ovtk/VtkRenderPass.h"
-#include "ovtk/VtkSceneObject.h"
+//#include "omegaVtk/PyVtk.h"
+#include "omegaVtk/VtkModule.h"
+#include "omegaVtk/VtkRenderPass.h"
+#include "omegaVtk/VtkSceneObject.h"
 
 
 #include <vtkActor.h>
 #include <vtkProperty.h>
 
 using namespace omega;
-using namespace ovtk;
+using namespace omegaVtk;
 
 VtkModule* VtkModule::myInstance = NULL;
 

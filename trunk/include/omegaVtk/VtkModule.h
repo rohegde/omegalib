@@ -27,8 +27,8 @@
 #ifndef __VTK_MODULE_H__
 #define __VTK_MODULE_H__
 
-#include "ovtk/ovtkbase.h"
-#include "ovtk/VtkRenderPass.h"
+#include "omegaVtk/ovtkbase.h"
+#include "omegaVtk/VtkRenderPass.h"
 
 #include "omega/osystem.h"
 #include "omega/EngineClient.h"
@@ -37,7 +37,7 @@
 
 
 class vtkActor;
-namespace ovtk
+namespace omegaVtk
 {
 	using namespace omega;
 
