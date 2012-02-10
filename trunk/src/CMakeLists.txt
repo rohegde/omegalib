@@ -32,6 +32,16 @@ include(UsePch)
 include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
 
 ###################################################################################################
+# See if we can setup Python support for this build
+find_package(PythonLibs)
+if(PYTHONLIBS_FOUND)
+	set(OMEGA_USE_PYTHON true)
+	include_directories(${PYTHON_INCLUDE_DIRS})
+else()
+	message("Python libraries not found on this system. Omegalib Python support will be disabled")
+endif()
+
+###################################################################################################
 # Options
 set(OMEGA_BUILD_TUTORIALS false CACHE BOOL "Enable building of omegalib tutorials.")
 set(OMEGA_BUILD_OSG_LIB false CACHE BOOL "Enable build of OpenSceneGraph integration library")
@@ -101,13 +111,10 @@ if(OMEGA_BUILD_OSG_LIB)
 	add_subdirectory(apps/osgviewer)
 	
 	if(OMEGA_BUILD_TUTORIALS)
-		# osgshape tutorial
 		omega_add_tutorial(tutorial7) 
 	endif()
 endif()
 
-###################################################################################################
-# EXPERIMENTAL LIBS
 # vtk configuration, libraries and applications
 if(OMEGA_BUILD_VTK_LIB)
 	find_package(VTK)
@@ -120,6 +127,9 @@ if(OMEGA_BUILD_VTK_LIB)
 	#if(OMEGA_BUILD_APPS)
 		#add_subdirectory(apps/vtkviewer)
 	#endif(OMEGA_BUILD_APPS)
+	if(OMEGA_BUILD_TUTORIALS)
+		omega_add_tutorial(vtkScene) 
+	endif()
 endif(OMEGA_BUILD_VTK_LIB)
 
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)

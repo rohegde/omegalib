@@ -34,8 +34,8 @@ namespace omegaToolkit {
 	class OTK_API DefaultRenderPass: public RenderPass
 	{
 	public:
-		DefaultRenderPass(EngineClient* client): RenderPass(client) {}
-		static RenderPass* createInstance(EngineClient* client) { return new DefaultRenderPass(client); }
+		DefaultRenderPass(EngineClient* client, const String& name): RenderPass(client, name) {}
+		static RenderPass* createInstance(EngineClient* client) { return new DefaultRenderPass(client, "DefaultRenderPass"); }
 		virtual void render(EngineClient* client, const DrawContext& context);
 	};
 }; // namespace omegaToolkit

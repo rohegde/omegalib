@@ -29,7 +29,6 @@
 
 #include "ovtk/ovtkbase.h"
 #include "ovtk/VtkRenderPass.h"
-#include "ovtk/VtkViewClient.h"
 
 #include "omega/osystem.h"
 #include "omega/EngineClient.h"
@@ -49,6 +48,7 @@ namespace ovtk
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OVTK_API VtkModule: public IEngineModule
 	{
+	friend class VtkSceneObject;
 	public:
 		VtkModule();
 		~VtkModule();
@@ -56,31 +56,38 @@ namespace ovtk
 		static VtkModule* instance();
 
 		virtual void initialize(EngineServer* server);
-		//virtual void update(const UpdateContext& context);
-		//virtual void handleEvent(const Event& evt);
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
 
 		EngineServer* getEngine() { return myEngine; }
 
-		//! Script ovtk calls will apply to this entity
-		void setActiveClient(VtkViewClient* entity);
-		VtkViewClient* getActiveClient();
+		//! Client-side API
+		//@{
+		void beginClientInitialize(EngineClient* client);
+		void endClientInitialize();
+		void attachActor(vtkActor* actor, VtkSceneObject* sceneObject);
+		//@}
+
+		VtkSceneObject* getSceneObject(const String& name);
+
+	private:
+		void registerSceneObject(VtkSceneObject* sceneObject);
+		void unregisterSceneObject(VtkSceneObject* sceneObject);
+
 	private:
 		static VtkModule* myInstance;
 
+		Dictionary<String, VtkSceneObject*> mySceneObjects;
+
 		EngineServer* myEngine;
-		VtkViewClient* myActiveClient;
+		Lock myClientLock;
+		VtkRenderPass* myActiveRenderPass;
+		EngineClient* myActiveClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	inline VtkModule* VtkModule::instance()
 	{ return myInstance; }
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void VtkModule::setActiveClient(VtkViewClient* entity)
-	{ myActiveClient = entity; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline VtkViewClient* VtkModule::getActiveClient()
-	{ return myActiveClient; }
 };
 #endif

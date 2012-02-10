@@ -28,87 +28,85 @@
 #define __PYTHON_UI_EVENT_HANDLER_H__
 
 #include "ovtk/ovtkbase.h"
-#include "ovtk/PythonInterpreter.h"
 
 #include "omega/osystem.h"
-#include "omega/ui/UIManager.h"
 
-namespace ovtk
-{
-	using namespace omega;
-	using namespace omega::ui;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class PythonUIEventHandler: public IEventListener
-	{
-	public:
-		PythonUIEventHandler(UIManager* ui, PythonInterpreter* interp);
-
-		virtual void handleEvent(const Event& evt);
-
-		void setClickCommand(const String& value);
-		const String& getClickCommand();
-
-		void setChangeValueCommand(const String& value);
-		const String& getChangeValueCommand();
-
-		void setSliderMaxValue(float value);
-		float getSliderMaxValue();
-
-		void setSliderMinValue(float value);
-		float getSliderMinValue();
-
-		void setSliderStep(float value);
-		float getSliderStep();
-
-	private:
-		String myClickCommand;
-		String myChangeValueCommand;
-		UIManager* myUI;
-		PythonInterpreter* myInterpreter;
-		float mySliderMaxValue;
-		float mySliderMinValue;
-		float mySliderStep;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void PythonUIEventHandler::setClickCommand(const String& value)
-	{ myClickCommand = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline const String& PythonUIEventHandler::getClickCommand()
-	{ return myClickCommand; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void PythonUIEventHandler::setChangeValueCommand(const String& value)
-	{ myChangeValueCommand = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline const String& PythonUIEventHandler::getChangeValueCommand()
-	{ return myChangeValueCommand; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void PythonUIEventHandler::setSliderMaxValue(float value)
-	{ mySliderMaxValue = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline float PythonUIEventHandler::getSliderMaxValue()
-	{ return mySliderMaxValue; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void PythonUIEventHandler::setSliderMinValue(float value)
-	{ mySliderMinValue = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline float PythonUIEventHandler::getSliderMinValue()
-	{ return mySliderMinValue; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void PythonUIEventHandler::setSliderStep(float value)
-	{ mySliderStep = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline float PythonUIEventHandler::getSliderStep()
-	{ return mySliderStep; }
-};
+//namespace ovtk
+//{
+//	using namespace omega;
+//	using namespace omega::ui;
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	class PythonUIEventHandler: public IEventListener
+//	{
+//	public:
+//		PythonUIEventHandler(UIManager* ui, PythonInterpreter* interp);
+//
+//		virtual void handleEvent(const Event& evt);
+//
+//		void setClickCommand(const String& value);
+//		const String& getClickCommand();
+//
+//		void setChangeValueCommand(const String& value);
+//		const String& getChangeValueCommand();
+//
+//		void setSliderMaxValue(float value);
+//		float getSliderMaxValue();
+//
+//		void setSliderMinValue(float value);
+//		float getSliderMinValue();
+//
+//		void setSliderStep(float value);
+//		float getSliderStep();
+//
+//	private:
+//		String myClickCommand;
+//		String myChangeValueCommand;
+//		UIManager* myUI;
+//		PythonInterpreter* myInterpreter;
+//		float mySliderMaxValue;
+//		float mySliderMinValue;
+//		float mySliderStep;
+//	};
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline void PythonUIEventHandler::setClickCommand(const String& value)
+//	{ myClickCommand = value; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline const String& PythonUIEventHandler::getClickCommand()
+//	{ return myClickCommand; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline void PythonUIEventHandler::setChangeValueCommand(const String& value)
+//	{ myChangeValueCommand = value; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline const String& PythonUIEventHandler::getChangeValueCommand()
+//	{ return myChangeValueCommand; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline void PythonUIEventHandler::setSliderMaxValue(float value)
+//	{ mySliderMaxValue = value; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline float PythonUIEventHandler::getSliderMaxValue()
+//	{ return mySliderMaxValue; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline void PythonUIEventHandler::setSliderMinValue(float value)
+//	{ mySliderMinValue = value; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline float PythonUIEventHandler::getSliderMinValue()
+//	{ return mySliderMinValue; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline void PythonUIEventHandler::setSliderStep(float value)
+//	{ mySliderStep = value; }
+//
+//	///////////////////////////////////////////////////////////////////////////////////////////////////
+//	inline float PythonUIEventHandler::getSliderStep()
+//	{ return mySliderStep; }
+//};
 #endif

@@ -48,10 +48,9 @@ namespace omegaOsg
 	class OOSG_API OsgRenderPass: public RenderPass
 	{
 	public:
-		OsgRenderPass(EngineClient* client): RenderPass(client) {}
-		static RenderPass* createInstance(EngineClient* client) { return new OsgRenderPass(client); }
+		OsgRenderPass(EngineClient* client, const String& name): RenderPass(client, name) {}
+		static RenderPass* createInstance(EngineClient* client) { return new OsgRenderPass(client, "OsgRenderPass"); }
 	public:
-		OsgRenderPass();
 		~OsgRenderPass();
 
 		virtual void initialize();
