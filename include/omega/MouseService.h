@@ -28,6 +28,7 @@
 #define __MOUSE__SERVICE_H__
 
 #include "omega/osystem.h"
+#include "omega/ServiceManager.h"
 
 namespace omega
 {

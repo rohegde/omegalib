@@ -27,43 +27,22 @@
 #include "meshviewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label):
-	myMeshData(data),
+Entity::Entity(EntityData* data, EngineServer* server):
+	myData(data),
 	myServer(server),
-	myName(name),
-	myLabel(label),
-	myInteractor(interactor)
+	myVisible(false)
 {
 	myMesh = new Mesh();
+	mySelectionSphere = new BoundingSphere();
+	mySelectionSphere->setDrawOnSelected(true);
+	mySelectionSphere->setVisible(false);
+
 	mySceneNode = new SceneNode(server);
 	mySceneNode->setSelectable(true);
-	mySceneNode->setVisible(false);
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
-	myMesh->setData(myMeshData);
-
-	// Create the rendering effect for this entity.
-	//MultipassEffect* mpfx = new MultipassEffect();
-	//myMesh->setEffect(mpfx);
-
-	//Effect* wirefx = new Effect();
-	//wirefx->setDrawMode(Effect::DrawWireframe);
-	//wirefx->setLightingEnabled(false);
-	//wirefx->setColor(Color(1,1,1,0.03f));
-	//wirefx->setForcedDiffuseColor(true);
-	//wirefx->setBlendMode(Effect::BlendAdditive);
-	//wirefx->setDepthTestMode(Effect::DepthTestDisabled);
-
-	//Effect* basefx = new Effect();
-	//basefx->setDrawMode(Effect::DrawSmooth);
-	//basefx->setLightingEnabled(true);
-	//basefx->setColor(Color(0.5f, 0.5f, 0.7f, 0.5f));
-	//basefx->setShininess(16.0f);
-	//basefx->setBlendMode(Effect::BlendAdditive);
-	//basefx->setForcedDiffuseColor(true);
-
-	//mpfx->addEffect(basefx);
-	//mpfx->addEffect(wirefx);
+	mySceneNode->addObject(mySelectionSphere);
+	myMesh->setData(myData->meshData);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,30 +52,29 @@ Entity::~Entity()
 	delete mySceneNode;
 	mySceneNode = NULL;
 
+	delete mySelectionSphere;
+	mySelectionSphere = NULL;
+
 	delete myMesh;
 	myMesh = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::show()
+void Entity::setVisible(bool value)
+{
+	myVisible = value;
+	if(myMesh != NULL)
+	{
+		mySceneNode->setVisible(value);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::resetTransform()
 {
 	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
 	mySceneNode->resetOrientation();
-	mySceneNode->setVisible(true);
-	myInteractor->setSceneNode(mySceneNode);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::hide()
-{
-	mySceneNode->setVisible(false);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-MeshViewer::MeshViewer(Application* app): 
-	EngineServer(app) 
-{
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,20 +88,48 @@ void MeshViewer::loadEntityLibrary()
 		{
 			Setting& entitySetting = entities[i];
 
+			EntityData* ed = new EntityData();
+
+			ed->name = entitySetting.getName();
+			ed->label = String((const char*)entitySetting["label"]);
+
 			if(entitySetting.exists("mesh"))
 			{
 				String meshFilename = String((const char*)entitySetting["mesh"]);
-				MeshData* mesh = MeshUtils::load(meshFilename);
-				
-				if(mesh != NULL)
+
+				if(StringUtils::endsWith(meshFilename, "ply"))
 				{
-					mesh->scale(0.8f);	
-					String name = entitySetting.getName();
-					String label = String((const char*)entitySetting["label"]);
-					Entity* e = new Entity(mesh, this, myInteractor, name, label);
-					myEntities.push_back(e);
+					PlyDataReader* reader = new PlyDataReader();
+					if(!reader->readPlyFile(meshFilename))
+					{
+						ofwarn("Could not load mesh file %1%.", %meshFilename);
+					}
+					else
+					{
+						reader->scale(0.8f);
+						ed->meshData = reader;
+					}
+				}
+				else if(StringUtils::endsWith(meshFilename, "obj"))
+				{
+					// ObjDataReader* reader = new ObjDataReader();
+					// if(!reader->readFile(meshFilename))
+					// {
+						// ofwarn("Could not load mesh file %1%.", %meshFilename);
+					// }
+					// else
+					// {
+						// reader->scale(0.8f);
+						// ed->meshData = reader;
+					// }
+				}
+				else
+				{
+					ofwarn("%1%: unsupported file format.", %meshFilename);
 				}
 			}
+
+			myEntityLibrary.push_back(ed);
 		}
 	}
 }
@@ -133,15 +139,52 @@ void MeshViewer::initialize()
 {
 	EngineServer::initialize();
 
-	// Setup lighting
-	Light* light = Light::getLight(0);
+	//myColorIdEffect = new Effect(getEffectManager());
+	//myColorIdEffect->setDiffuseColor(Color::getColorByIndex(getId()));
+	//myColorIdEffect->setForcedDiffuseColor(true);
+
+	loadEntityLibrary();
+
+	Config* cfg = getSystemManager()->getAppConfig();
+
+	// Setup the system font.
+	if(cfg->exists("config/defaultFont"))
+	{
+		Setting& fontSetting = cfg->lookup("config/defaultFont");
+		setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
+	}
+
+	// Create and initialize meshviewer UI
+	initUi();
+
+	setAmbientLightColor(Color::Black);
+
+	Light* light = getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.5f, 0.5f, 0.5f));
 	light->setPosition(Vector3f(0, 3, 3));
-	Light::setAmbientLightColor(Color::Black);
-	
+
+	light = getLight(1);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(-3, 0, 0));
+
+	light = getLight(2);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.35f, 0.3f));
+	light->setPosition(Vector3f(3, 0, 0));
+
+	light = getLight(3);
+	light->setEnabled(true);
+	light->setColor(Color(0.3f, 0.3f, 0.35f));
+	light->setPosition(Vector3f(0, -3, 0));
+
+	light = getLight(4);
+	light->setEnabled(true);
+	light->setColor(Color(0.35f, 0.3f, 0.3f));
+	light->setPosition(Vector3f(0, 0, -3));
+
 	// Create a reference box around the scene.
-	Config* cfg = getSystemManager()->getAppConfig();
 	if(cfg->exists("config/referenceBox"))
 	{
 		myReferenceBox = new ReferenceBox();
@@ -152,19 +195,21 @@ void MeshViewer::initialize()
 		// Read config for reference box.
 		myReferenceBox->setup(cfg->lookup("config/referenceBox"));
 	}
-	
+
 	// Set the interactor style used to manipulate meshes.
 	String interactorStyle = cfg->lookup("config/interactorStyle");
 	if(interactorStyle == "Mouse")
 	{
 		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-		interactor->setMoveButtonFlag(Event::Left);
-		interactor->setRotateButtonFlag(Event::Right);
+		interactor->setMoveButtonFlag(Event::Right);
+		interactor->setRotateButtonFlag(Event::Middle);
 		myInteractor = interactor;
 	}
 	else if(interactorStyle == "Controller")
 	{
 		ControllerManipulator* interactor = new ControllerManipulator();
+		//interactor->setMoveButtonFlag(Event::Right);
+		//interactor->setRotateButtonFlag(Event::Middle);
 		myInteractor = interactor;
 	}
 	else
@@ -173,80 +218,99 @@ void MeshViewer::initialize()
 		interactor->initialize("ObserverUpdateService");
 		myInteractor = interactor;
 	}
-	addActor(myInteractor);
 	
-	// Load the entities specified in the configuration file.
-	loadEntityLibrary();
-
-	// Get the default camera and focus in on the scene root
-	Camera* cam = getDefaultCamera();
-	cam->focusOn(getScene(0));
-
-	myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
-
-	// Create and initialize the gui
-	initUi();
+	addActor(myInteractor);
 
     myShowUI = true;
     autoRotate = true;
 	deltaScale = 0;
-	
-	// Display the first entity in the entity library.
-	mySelectedEntity = myEntities[0];
-	mySelectedEntity->show();
+
+	createEntity(myEntityLibrary[0]);
+
+	Camera* cam = getDefaultCamera();
+	cam->focusOn(getScene(0));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::initUi()
 {
-	WidgetFactory* wf = UiModule::instance()->getWidgetFactory();
+	WidgetFactory* wf = getWidgetFactory();
 
-	int canvasWidth = getCanvasWidth();
-	int canvasHeight = getCanvasHeight();
-
-	Container* root = UiModule::instance()->getUi(0);
+	Container* root = getUi(0);
+	root->setUIEventHandler(this);
+	root->setLayout(Container::LayoutVertical);
 
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-	//entityButtons->setDebugModeEnabled(true);
 
-	entityButtons->setPosition(Vector2f(5, 5));
-	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
-
-	if(myTabletManager != NULL)
+	// Setup ui layout using from config file sections.
+	Config* cfg = SystemManager::instance()->getAppConfig();
+	if(cfg->exists("config/ui/entityButtons"))
 	{
-		myTabletManager->beginGui();
+		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
+	}
+	if(cfg->exists("config/ui/root"))
+	{
+		root->load(cfg->lookup("config/ui/root"));
 	}
 
 	// Add buttons for each entity
-	for(int i = 0; i < myEntities.size(); i++)
+	for(int i = 0; i < myEntityLibrary.size(); i++)
 	{
-		Entity* e = myEntities[i];
-		Button* btn = wf->createButton(e->getName(), entityButtons);
+		EntityData* ed = myEntityLibrary[i];
+		Button* btn = wf->createButton(ed->name, entityButtons);
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
+	}
 
-		if(myTabletManager != NULL)
-		{
-			myTabletManager->addGuiElement(TabletGuiElement::createButton(btn->getId(), e->getName(), e->getLabel(), e->getName()));
-		}
-	}
-	if(myTabletManager != NULL)
+	// If openNI service is available, add User manager panel to the secondary ui
+	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
 	{
-		// Add autorotate button.
-		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(128, "Autorotate", "Autorotate", 1));
-		// Add scale slider.
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
-		myTabletManager->finishGui();
+		root = getUi(1);
+		root->setLayout(Container::LayoutVertical);
+		UserManagerPanel* ump = new UserManagerPanel(this);
+		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewer::createEntity(EntityData* ed)
+{
+	Entity* e = new Entity(ed, this);
+	//e->getMesh()->setEffect(myColorIdEffect);
+	myEntities.push_back(e);
+	myInteractor->setSceneNode(e->getSceneNode());
+	mySelectedEntity = e;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewer::destroyEntity(Entity* e)
+{
+	myEntities.remove(e);
+	delete e;
+	myInteractor->setSceneNode(NULL);
+	if(mySelectedEntity == e) mySelectedEntity = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
-	if(myTabletManager != NULL)
+	if(evt.getServiceType() == Service::Pointer) 
 	{
-		myTabletManager->handleEvent(evt);
+		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
+		{
+			if(mySelectedEntity != NULL)
+			{
+				destroyEntity(mySelectedEntity);
+			}
+		}
+		else if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
+		{
+			Ray ray;
+			ray.setOrigin(evt.getExtraDataVector3(0));
+			ray.setDirection(evt.getExtraDataVector3(1));
+			updateSelection(ray);
+		}
 	}
 	if(evt.getServiceType() == Service::Ui) 
 	{
@@ -254,9 +318,27 @@ void MeshViewer::handleEvent(const Event& evt)
 	}
 	else if( evt.getServiceType() == Service::Keyboard )
     {
-        if(evt.isKeyDown('r')) 
+        if((char)evt.getSourceId() == 'e' && evt.getType() == Event::Down) 
+        {
+			if(mySelectedEntity != NULL)
+			{
+				destroyEntity(mySelectedEntity);
+			}
+        }
+        if((char)evt.getSourceId() == 's' && evt.getType() == Event::Down) 
+        {
+            myShowUI = !myShowUI;
+        }
+        if((char)evt.getSourceId() == 'r' && evt.getType() == Event::Down) 
         {
             autoRotate = !autoRotate;
+        }
+        else if((char)evt.getSourceId() == 'h' && evt.getType() == Event::Down) 
+        {
+			if(mySelectedEntity != NULL)
+			{
+				mySelectedEntity->resetTransform();
+			}
         }
     }
 }
@@ -264,33 +346,55 @@ void MeshViewer::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleUiEvent(const Event& evt)
 {
-	if(evt.getSourceId() == 128)
+	for(int i = 0; i < myEntityButtons.size(); i++)
 	{
-		if(evt.getExtraDataInt(0) == 1)
+		if(myEntityButtons[i]->getId() == evt.getSourceId())
 		{
-			autoRotate = true;
-		}
-		else
-		{
-			autoRotate = false;
+			EntityData* ed = myEntityLibrary[i];
+			createEntity(ed);
 		}
 	}
-	else if(evt.getSourceId() == 129)
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity* MeshViewer::findEntity(SceneNode* node)
+{
+	foreach(Entity* e, myEntities)
 	{
-		int scale = evt.getExtraDataInt(0);
-		mySelectedEntity->getSceneNode()->setScale(scale, scale, scale);
+		if(e->getSceneNode() == node) return e;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MeshViewer::updateSelection(const Ray& ray)
+{
+	const SceneQueryResultList& sqrl = querySceneRay(0, ray);
+	if(sqrl.size() != 0)
+	{
+		// The ray intersected with something.
+		SceneNode* sn = sqrl.front().node;
+		Entity* e = findEntity(sn);
+
+		if(mySelectedEntity != e)
+		{
+			if(mySelectedEntity != NULL)
+			{
+				mySelectedEntity->getSceneNode()->setSelected(false);
+			}
+			// The selected entity changed.
+			myInteractor->setSceneNode(sn);
+			sn->setSelected(true);
+			mySelectedEntity = e;
+		}
 	}
 	else
 	{
-		for(int i = 0; i < myEntityButtons.size(); i++)
+		if(mySelectedEntity != NULL)
 		{
-			if(myEntityButtons[i]->getId() == evt.getSourceId())
-			{
-				Entity* e = myEntities[i];
-				mySelectedEntity->hide();
-				mySelectedEntity = e;
-				mySelectedEntity->show();
-			}
+			mySelectedEntity->getSceneNode()->setSelected(false);
+			mySelectedEntity = NULL;
+			myInteractor->setSceneNode(NULL);
 		}
 	}
 }
@@ -298,11 +402,7 @@ void MeshViewer::handleUiEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::update(const UpdateContext& context)
 {
-	EngineServer::update(context);
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->update(context);
-	}
+	EngineServer::update( context );
 
 	SceneNode* daSceneNode = myInteractor->getSceneNode();
 	if(daSceneNode != NULL)
@@ -326,7 +426,7 @@ void MeshViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<MeshViewer> app;
+	EngineApplication<MeshViewer> app;
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";

@@ -27,9 +27,11 @@
 #ifndef EQ_INTERNAL
 #define EQ_INTERNAL
 
-#include "omega/osystem.h"
+//#include "omega/osystem.h"
 #include "omega/Application.h"
+#include "omega/ServiceManager.h"
 #include "omega/RenderTarget.h"
+#include "omega/Event.h"
 
 // Equalizer includes
 #include "eq/eq.h"
@@ -45,19 +47,18 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-namespace omicron {
-	class EventUtils
+namespace omega {
+class RenderTarget;
+
+	class EqUtils
 	{
 	public:
 		static void serializeEvent(Event& evt, co::DataOStream& os);
 		static void deserializeEvent(Event& evt, co::DataIStream& is);
 	private:
-		EventUtils() {}
+		EqUtils() {}
 	};
-};
 
-namespace omega {
-	class RenderTarget;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 //!  Frame-specific data.
@@ -90,7 +91,7 @@ protected:
 			os << myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				EventUtils::serializeEvent(myEventBuffer[i], os);
+				EqUtils::serializeEvent(myEventBuffer[i], os);
 			}
 		}
 	}
@@ -104,7 +105,7 @@ protected:
 			is >> myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				EventUtils::deserializeEvent(myEventBuffer[i], is);
+				EqUtils::deserializeEvent(myEventBuffer[i], is);
 			}
 		}
 	}
@@ -116,7 +117,7 @@ protected:
 
 private:
 	int myNumEvents;
-	Event myEventBuffer[ OMICRON_MAX_EVENTS ];
+	Event myEventBuffer[ OMEGA_MAX_EVENTS ];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,7 +232,6 @@ public:
 	ApplicationClient* getClient();
 	bool isReady() { return myInitialized && !myChannelsInitialized; }
 	void signalChannelInitialized(ChannelImpl* ch);
-	GpuContext* getGpuContext() { return myGpuContext; }
 
 protected:
 	virtual ~PipeImpl();
@@ -242,8 +242,6 @@ private:
 	bool myInitialized;
 	bool myChannelsInitialized;
 	ApplicationClient* myClient;
-	GpuManager* myGpu;
-	GpuContext* myGpuContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -266,6 +264,8 @@ protected:
 	void initialize();
 
 private:
+	RenderTarget* myFrameBuffer;
+	GpuManager* myGpu;
 	Vector2i myIndex;
 	bool myInitialized;
 };
@@ -288,10 +288,8 @@ protected:
 	void initialize();
 	void setupDrawContext(DrawContext* context, const uint128_t& spin);
 	virtual void frameDraw( const uint128_t& spin );
-
-	virtual void frameViewFinish(const uint128_t& spin);
-	virtual void frameViewStart(const uint128_t& spin);
-
+	virtual void frameViewFinish( const uint128_t& spin );
+	virtual void frameViewStart( const uint128_t& spin );
 	virtual bool configInit(const uint128_t& initID);
 	omega::ApplicationClient* getClient();
 	unsigned int getLayers();
@@ -301,12 +299,12 @@ protected:
 private:
 	bool myInitialized;
 	eq::Window* myWindow;
-	omicron::Lock myLock;
+	Lock myLock;
 	ViewImpl* myView;
 	ChannelInfo myChannelInfo;
 	DrawContext myDC;
 	uint128_t myLastFrame;
-	RenderTarget* myDrawBuffer;
+	RenderTarget myDrawBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

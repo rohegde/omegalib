@@ -28,10 +28,10 @@
 #define __FLOCK_H__
 
 #include <omega.h>
-#include <omegaToolkit.h>
+#include <oengine.h>
 
 using namespace omega;
-using namespace omegaToolkit;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Preset
@@ -89,9 +89,10 @@ struct FlockAffector
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Flock: public RenderableSceneObject
+class Flock: public SceneObject
 {
 public:
+OMEGA_DECLARE_TYPE(Flock)
 static const int MaxAffectors = 32;
 
 public:
@@ -108,12 +109,9 @@ public:
 	const AlignedBox3* getBoundingBox();
 	bool hasBoundingBox();
 
-	ImageData* getAgentImage() { return myAgentImage; }
+	ImageData& getAgentImage() { return myAgentImage; }
 	Settings* getSettings() { return mySettings; }
-	Preset* getCurrentPreset() 
-	{ 
-		return myCurrentPreset; 
-	}
+	Preset* getCurrentPreset() { return myCurrentPreset; }
 
 	FlockAffector* getAffector(int index) { return &myAffectorData[index]; }
 	void setActiveAffectors(int value) { myActiveAffectors = value; }
@@ -128,7 +126,7 @@ private:
 
 	AlignedBox3 myBoundingBox;
 
-	ImageData* myAgentImage;
+	ImageData myAgentImage;
 
 	// Gpu used for computing
 	GpuManager* myComputeGpu;
@@ -166,6 +164,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class FlockRenderable: public SceneRenderable
 {
+OMEGA_DECLARE_TYPE(FlockRenderable)
 public:
 	FlockRenderable(Flock* owner): myOwner(owner) {}
 

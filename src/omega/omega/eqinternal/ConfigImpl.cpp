@@ -27,6 +27,7 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/MouseService.h"
 #include "omega/KeyboardService.h"
+#include "omega/StringUtils.h"
 #include "omega/Observer.h"
 
 #include "eqinternal.h"
@@ -40,8 +41,9 @@ extern omega::Vector2i sCanvasChannels;
 extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
+void EqUtils::serializeEvent(Event& evt, co::DataOStream& os)
 {
+	os << evt.myProcessed;
 	os << evt.myTimestamp;
 	os << evt.mySourceId;
 	os << evt.myServiceId;
@@ -62,8 +64,9 @@ void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
+void EqUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 {
+	is >> evt.myProcessed;
 	is >> evt.myTimestamp;
 	is >> evt.mySourceId;
 	is >> evt.myServiceId;
@@ -158,6 +161,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 
 	switch( event->data.type )
 	{
+#ifdef OMEGA_USE_KEYBOARD
         case eq::Event::KEY_PRESS:
         {
             KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Down);
@@ -168,6 +172,9 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
             KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Up);
 			return true;   
         }
+#endif //OMEGA_USE_KEYBOARD
+
+#ifdef OMEGA_USE_MOUSE
 	case eq::Event::WINDOW_POINTER_MOTION:
 		{
 			Vector2i pos;
@@ -216,6 +223,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 			MouseService::mouseWheelCallback(buttons, wheel, 0, 0);
 			return true;
 		}
+#endif
 	}
 	return Config::handleEvent(event);
 }

@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "eqinternal.h"
 #include "omega/DisplaySystem.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace co::base;
@@ -33,7 +34,7 @@ using namespace std;
 
 using namespace eq;
 
-// Kinda hack.
+// horrible hack.
 bool initStaticVars = false;
 omega::Vector2i sCanvasChannels;
 omega::Vector2i sCanvasSize;
@@ -46,16 +47,17 @@ omega::Lock sLock;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
-	:eq::Channel( parent ), myWindow(parent), myInitialized(false), myDrawBuffer(NULL)
+	:eq::Channel( parent ), myWindow(parent), myInitialized(false)
 {
 	sLock.lock();
 	if(!initStaticVars)
 	{
-		sCanvasChannels = omicron::Vector2i(0, 0);
-		sCanvasSize = omicron::Vector2i(0, 0);
+		sCanvasChannels = Vector2i(0, 0);
+		sCanvasSize = Vector2i(0, 0);
 		initStaticVars = true;
 	}
 	sLock.unlock();
+	myDrawBuffer.initialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +85,7 @@ void ChannelImpl::initialize()
 	String name = getName();
 
 	vector<String> args = StringUtils::split(name, "x,");
-	myChannelInfo.index = omicron::Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 	int ix = myChannelInfo.index[0];
 	int iy = myChannelInfo.index[1];
 
@@ -92,8 +94,8 @@ void ChannelImpl::initialize()
 	
 	ofmsg("@Channel %1% size: %2% %3%", %name %w %h);
 
-	myChannelInfo.offset = omicron::Vector2i(ix * w, iy * h);
-	myChannelInfo.size = omicron::Vector2i(w, h);
+	myChannelInfo.offset = Vector2i(ix * w, iy * h);
+	myChannelInfo.size = Vector2i(w, h);
 
 	sLock.lock();
 	// Refresh the number of channels in this view.
@@ -116,7 +118,8 @@ void ChannelImpl::initialize()
 		sCanvasSize.y() = sCanvasChannels.y() * h;
 	}
 
-	ofmsg("@Initializing channel. channels=%1%x%2% size=%3%x%4%",
+	ofmsg("@Initializing channel. pipe id=%1% canvas=default channels=%2%x%3% size=%4%x%5%",
+		%pipe->getClient()->getId()
 		%sCanvasChannels.x() %sCanvasChannels.y()
 		%sCanvasSize.x() %sCanvasSize.y());
 
@@ -133,8 +136,6 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
 	eq::PixelViewport pvp = getPixelViewport();
 	eq::PixelViewport gpvp = getWindow()->getPixelViewport();
-
-	context->gpuContext = pipe->getGpuContext();
 
 	context->channel = &myChannelInfo;
 
@@ -166,12 +167,9 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 	myChannelInfo.canvasChannels = &sCanvasChannels;
 	myChannelInfo.canvasSize = &sCanvasSize;
 
-	// Setup draw buffer
-	if(myDrawBuffer == NULL)
-	{
-		myDrawBuffer = new RenderTarget(pipe->getGpuContext(), RenderTarget::RenderOnscreen, getDrawable());
-	}
-	context->drawBuffer = myDrawBuffer;
+	// Setup draw context
+	myDrawBuffer.setGLId(getDrawable());
+	context->drawBuffer = &myDrawBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,22 +180,13 @@ void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 	{
 		initialize();
 		myInitialized = true;
-		return;
 	}
-	
-	// In frame finish we just perform overlay draw operations, so always force the eye to be 
-	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
-	// Ignore the second call (Right Eye)
-	//if(getEye() == eq::fabric::EYE_RIGHT) return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameDraw( frameID );
-
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
 
 	// Clear the frame buffer using the background color specified in display system.
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -225,27 +214,21 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
 
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
-	// In frame finish we just perform overlay draw operations, so always force the eye to be 
-	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
-	// Ignore the second call (Right Eye)
-	//if(getEye() == eq::fabric::EYE_RIGHT) return;
-
-	setupDrawContext(&myDC, frameID);
-	myDC.eye = DrawContext::EyeCyclop;
-	myDC.layer = getLayers();
-	myDC.task = DrawContext::OverlayDrawTask;
-
-	EQ_GL_CALL( applyBuffer( ));
-	EQ_GL_CALL( applyViewport( ));
-	EQ_GL_CALL( setupAssemblyState( ));
-
 	// If the pipe has not been initialized yet, return now.
 	PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
 	if(!pipe->isReady()) return;
 
+	// In frame finish we just perform overlay draw operations, so always force the eye to be 
+	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
+	// Ignore the second call.
+	if(getEye() != eq::fabric::EYE_CYCLOP &&
+		myDC.frameNum >= frameID.low()) return;
+
+	setupDrawContext(&myDC, frameID);
+	myDC.eye = DrawContext::EyeCyclop;
+
+	myDC.layer = getLayers();
+	myDC.task = DrawContext::OverlayDrawTask;
 	getClient()->draw(myDC);
 
 	if(isDrawStatisticsEnabled())
@@ -254,6 +237,9 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	}
 	else if(isDrawFpsEnabled())
 	{
+		EQ_GL_CALL( applyBuffer( ));
+		EQ_GL_CALL( applyViewport( ));
+		EQ_GL_CALL( setupAssemblyState( ));
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
 		applyScreenFrustum();
@@ -262,10 +248,10 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 		glDisable( GL_LIGHTING );
 
 		getWindow()->drawFPS();
+		EQ_GL_CALL( resetAssemblyState( ));
 	}
-
-	EQ_GL_CALL( resetAssemblyState( ));
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)

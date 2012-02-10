@@ -24,9 +24,13 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omega/Config.h"
+#include "omega/Event.h"
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/SystemManager.h"
+#include "omega/DataManager.h"
 #include "omega/MouseService.h"
+#include "omega/StringUtils.h"
 #include "omega/GpuManager.h"
 
 #include "eqinternal/eqinternal.h"
@@ -57,16 +61,14 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setup(Setting& setting) 
 {
-	myDebugMouse = Config::getBoolValue("debugMouse", setting, false);
-	myDisplayConfig = Config::getStringValue("config", setting);
+	setting.lookupValue("config", myDisplayConfig);
+	setting.lookupValue("debugMouse", myDebugMouse);
 	mySetting = &setting;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
-	glewInit();
-
 	Log::level = LOG_WARN;
 
 	mySys = sys;
@@ -85,7 +87,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 		cfgInfo.path.c_str()
 	};
 
-	myNodeFactory = new EqualizerNodeFactory();
+	myNodeFactory = onew(EqualizerNodeFactory)();
 
 	omsg(":: Equalizer Initialization ::");
 	if( !eq::init( 3, (char**)argv, myNodeFactory ))

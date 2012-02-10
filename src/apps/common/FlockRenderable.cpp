@@ -26,17 +26,24 @@
  *************************************************************************************************/
 #include "Flock.h"
 
-#include <omegaGl.h>
+OMEGA_DEFINE_TYPE(FlockRenderable, SceneRenderable)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void FlockRenderable::initialize()
 {
-	GpuManager* gpu = getClient()->getGpuContext()->getGpu();
+	//myCurrentPreset = mySettings.presets[0];
 
-	ImageData* img = myOwner->getAgentImage();
-	myAgentTexture = new Texture(getClient()->getGpuContext());
-	myAgentTexture->initialize(img->getWidth(), img->getHeight());
-	myAgentTexture->writePixels(img->getPixels());
+	//myFontMng = new FontManager();
+
+	GpuManager* gpu = getClient()->getGpu();
+
+	ImageData& img = myOwner->getAgentImage();
+	myAgentTexture = gpu->createTexture(
+		img.filename,
+		img.width,
+		img.height,
+		img.data);
+
 
 	// Create the gpu buffers and constants.
 	int bufSize = myOwner->getSettings()->numAgents * sizeof(Agent);

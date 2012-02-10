@@ -29,18 +29,20 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
-//#include "IEventListener.h"
+#include "IEventListener.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class SystemManager;
+	class ServiceManager;
 	class DisplaySystem;
 	class RenderTarget;
 	class Application;
 	class ChannelImpl;
-	class GpuContext;
+	class GpuManager;
+	class Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! The Layer class contains enumerated values representing drawing layers.
@@ -86,15 +88,6 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Contains information about the current frame.
-	struct FrameInfo
-	{
-		FrameInfo(uint64 frame, GpuContext* context): frameNum(frame), gpuContext(context) {}
-		uint64 frameNum;
-		GpuContext* gpuContext;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Contains information about a drawing channel.
 	struct ChannelInfo
 	{
@@ -116,7 +109,7 @@ namespace omega
 	{
 		enum Eye { EyeLeft , EyeRight, EyeCyclop };
 		enum Task { SceneDrawTask, OverlayDrawTask };
-		uint64 frameNum; // TODO: Substitute with frameinfo
+		uint64 frameNum;
 		unsigned int layer; // turn to content ID.
 		AffineTransform3 modelview;
 		Transform3 projection;
@@ -129,13 +122,12 @@ namespace omega
 		//! Information about the drawing channel associated with this context.
 		ChannelInfo* channel;
 		RenderTarget* drawBuffer;
-		GpuContext* gpuContext;
 	};
 
 	class ApplicationServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationClient: public ReferenceType
+	class OMEGA_API ApplicationClient: public DynamicObject
 	{
 	friend class DisplaySystem;
 	friend class ApplicationServer;
@@ -143,32 +135,43 @@ namespace omega
 		ApplicationClient(ApplicationServer* app);
 		virtual ~ApplicationClient(); 
 
-		GpuContext* getGpuContext() { return myGpuContext; } 
-		void setGpuContext(GpuContext* ctx) { myGpuContext = ctx; } 
+		//! Returns a numeric identifier for this client (relative to server).
+		uint getId();
 
-		virtual void initialize() {}
+		//virtual void setup() {}
+		virtual void initialize();
 		virtual void finalize() {}
 
 		virtual void draw(const DrawContext& context) {}
-		virtual void startFrame(const FrameInfo& context) {}
-		virtual void finishFrame(const FrameInfo& context) {}
 
 		ApplicationServer* getServer() { return myServer; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
+		GpuManager*		getGpu() { return myGpu; }
+
+	protected:
+		void resetGLContext();
 
 	private:
+
+	private:
+		uint myId;
+
 		ApplicationServer* myServer;
-		GpuContext* myGpuContext;
+		GpuManager* myGpu;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationServer: public ReferenceType, public IEventListener
+	inline uint ApplicationClient::getId()
+	{ return myId; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API ApplicationServer: public DynamicObject, public IEventListener
 	{
 	friend class ApplicationClient;
 	public:
-		ApplicationServer(Application* app): myApplication(app) {}
+		ApplicationServer(Application* app): myApplication(app), myClientId(0) {}
 		virtual ~ApplicationServer() {}
 
 		virtual void initialize() {}
@@ -178,20 +181,18 @@ namespace omega
 
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		Application* getApplication() { return myApplication; }
-		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-		int getCanvasWidth(); 
-		int getCanvasHeight();
 
 	private:
 		void addClient(ApplicationClient* cli);
 
 	private:
+		uint myClientId;
 		Application* myApplication;
 		List<ApplicationClient*> myClients;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Application
+	class Application
 	{
 	public:
 		static const int MaxLayers = 16;

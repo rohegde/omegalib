@@ -25,7 +25,7 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
-cmake_minimum_required(VERSION 2.8.3) 
+cmake_minimum_required(VERSION 2.8.1) 
 
 project(OmegaLib)
 
@@ -79,7 +79,7 @@ elseif(CMAKE_GENERATOR STREQUAL "Unix Makefiles")
 			set(OMEGA_TOOL_GCC 1)
 		endif()
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -ldl -lrt")	
-	endif()
+	endif(APPLE)
 elseif(CMAKE_GENERATOR STREQUAL "Xcode")
 	execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
 	set(OMEGA_OS_OSX 1)
@@ -89,10 +89,6 @@ elseif(CMAKE_GENERATOR STREQUAL "Xcode")
 endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 
 set(OMEGA_DATA_PATH "${OmegaLib_SOURCE_DIR}/data")
-
-if(OMEGA_OS_WIN)
-	add_definitions(-D_WIN32_WINNT=0x0501)
-endif(OMEGA_OS_WIN)
 
 ###################################################################################################
 # Set the output directories for libraries and binary files
@@ -118,14 +114,13 @@ endif(MSVC OR CMAKE_GENERATOR STREQUAL "Xcode")
 
 ###################################################################################################
 # Visual studio specific options.
-# if(MSVC)
-	# # Exclude libcmt when linking in visual studio
-    # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-    # set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
-	# add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
-# endif(MSVC)
+if(MSVC)
+	# Exclude libcmt when linking in visual studio
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} /NODEFAULTLIB:libcmt.lib")
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
+endif(MSVC)
 
 ###################################################################################################
 # Add subdirectiories
 add_subdirectory(src)
-

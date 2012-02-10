@@ -24,13 +24,25 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
+#include "omega/DataManager.h"
+#include "omega/Config.h"
+#include "omega/StringUtils.h"
+
+#include "omega/HeartbeatService.h"
+#include "omega/TabletService.h"
+
+#ifdef OMEGA_USE_PYTHON
+	#include "omega/PythonInterpreter.h"
+#endif
 
 // Display system
-#include "omega/DisplaySystem.h"
-#include "omega/ObserverUpdateService.h"
-#include "omega/SagePointerService.h"
-#include "omega/PythonInterpreter.h"
+#ifdef OMEGA_USE_DISPLAY
+	#include "omega/DisplaySystem.h"
+	#include "omega/ObserverUpdateService.h"
+	#include "omega/SagePointerService.h"
+#endif
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
 	#include "omega/EqualizerDisplaySystem.h"
@@ -40,10 +52,39 @@
 #endif
 
 // Input services
-#include "omega/KeyboardService.h"
-#include "omega/MouseService.h"
+#ifdef OMEGA_USE_DIRECTINPUT
+	#include "omega/DirectXInputService.h"
+#endif
+#ifdef OMEGA_USE_NATURAL_POINT
+	#include "omega/NaturalPointService.h"
+#endif
+#ifdef OMEGA_USE_KEYBOARD
+	#include "omega/KeyboardService.h"
+#endif
+#ifdef OMEGA_USE_MOUSE
+	#include "omega/MouseService.h"
+#endif
+#ifdef OMEGA_USE_NETSERVICE
+	#include "omega/NetService.h"
+#endif
+#ifdef OMEGA_USE_PQLABS
+	#include "omega/PQService.h"
+#endif
+#ifdef OMEGA_USE_OPTITRACK
+	#include "omega/OptiTrackService.h"
+#endif
+#ifdef OMEGA_USE_OPENNI
+	#include "omega/OpenNIService.h"
+#endif
+#ifdef OMEGA_USE_VRPN
+	#include "omega/VRPNService.h"
+#endif
+#ifdef OMEGA_USE_THINKGEAR
+	#include "omega/ThinkGearService.h"
+#endif
 
 using namespace omega;
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager* SystemManager::mysInstance = NULL;
@@ -58,13 +99,17 @@ SystemManager* SystemManager::instance()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::SystemManager():
 	mySystemConfig(NULL),
+#ifdef OMEGA_USE_DISPLAY
 	myDisplaySystem(NULL),
+#endif
 	myApplication(NULL),
 	myExitRequested(false),
 	myIsInitialized(false)
 {
-	myDataManager = DataManager::getInstance();
+	myDataManager = new DataManager();
+#ifdef OMEGA_USE_PYTHON
 	myInterpreter = new PythonInterpreter();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,15 +148,9 @@ void SystemManager::setup(Config* appcfg)
 	try
 	{
 		setupServiceManager();
+#ifdef OMEGA_USE_DISPLAY
 		setupDisplaySystem();
-		if(myInterpreter->isEnabled())
-		{
-			if(mySystemConfig->exists("config"))
-			{
-				const Setting& sConfig = mySystemConfig->lookup("config");
-				myInterpreter->setup(sConfig);
-			}
-		}
+#endif
 	}
 	catch(libconfig::SettingTypeException ste)
 	{
@@ -122,17 +161,47 @@ void SystemManager::setup(Config* appcfg)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::setupServiceManager()
 {
-	myServiceManager = new ServiceManager();
+	myServiceManager = new ServiceManager(this);
 
+	// register standard input services.
+	myServiceManager->registerService("HeartbeatService", (ServiceAllocator)HeartbeatService::New);
+	myServiceManager->registerService("TabletService", (ServiceAllocator)TabletService::New);
+
+#ifdef OMEGA_USE_DIRECTINPUT
+	myServiceManager->registerService("DirectXInputService", (ServiceAllocator)DirectXInputService::New);
+#endif
+#ifdef OMEGA_USE_MOUSE
 	myServiceManager->registerService("MouseService", (ServiceAllocator)MouseService::New);
+#endif
+#ifdef OMEGA_USE_KEYBOARD
 	myServiceManager->registerService("KeyboardService", (ServiceAllocator)KeyboardService::New);
+#endif
+#ifdef OMEGA_USE_NATURAL_POINT
+	myServiceManager->registerService("NaturalPointService", (ServiceAllocator)NaturalPointService::New);
+#endif
+#ifdef OMEGA_USE_NETSERVICE
+	myServiceManager->registerService("NetService", (ServiceAllocator)NetService::New);
+#endif
+#ifdef OMEGA_USE_PQLABS
+	myServiceManager->registerService("PQService", (ServiceAllocator)PQService::New);
+#endif
+#ifdef OMEGA_USE_VRPN
+	myServiceManager->registerService("VRPNService", (ServiceAllocator)VRPNService::New);
+#endif
+#ifdef OMEGA_USE_THINKGEAR
+	myServiceManager->registerService("ThinkGearService", (ServiceAllocator)ThinkGearService::New);
+#endif
+#ifdef OMEGA_USE_OPTITRACK
+	myServiceManager->registerService("OptiTrackService", (ServiceAllocator)OptiTrackService::New);
+#endif
+#ifdef OMEGA_USE_OPENNI
+	myServiceManager->registerService("OpenNIService", (ServiceAllocator)OpenNIService::New);
+#endif
+
+#ifdef OMEGA_USE_DISPLAY
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
 	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
-
-	// Kinda hack: run application initialize here because for now it is used to register services from
-	// external libraries, so it needs to run before setting up services from the config file.
-	// Initialize the application object (if present)
-	if(myApplication) myApplication->initialize();
+#endif
 
 	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
 	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
@@ -151,6 +220,7 @@ void SystemManager::setupServiceManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef OMEGA_USE_DISPLAY
 void SystemManager::setupDisplaySystem()
 {
 	// Instantiate input services
@@ -169,6 +239,7 @@ void SystemManager::setupDisplaySystem()
 #else
 			oerror("Equalizer display system support disabled for this build!");
 #endif
+
 		}
 		else if(displaySystemType == "Glut")
 		{
@@ -189,14 +260,20 @@ void SystemManager::setupDisplaySystem()
 		}
 	}
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::initialize()
 {
+#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->initialize(this);
+#endif
 	myServiceManager->initialize();
 
-	myInterpreter->initialize("omegalib");
+#ifdef OMEGA_USE_DISPLAY
+	// Initialize the application object (if present)
+	if(myApplication) myApplication->initialize();
+#endif
 
 	myIsInitialized = true;
 }
@@ -208,6 +285,7 @@ void SystemManager::run()
 	if(!myIsInitialized) initialize();
 
 	myServiceManager->start();
+#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem)
 	{
 		myDisplaySystem->run();
@@ -216,12 +294,15 @@ void SystemManager::run()
 	{
 		owarn("SystemManager::run - no display system specified, returning immediately");
 	}
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::cleanup()
 {
+#ifdef OMEGA_USE_DISPLAY
 	if(myDisplaySystem) myDisplaySystem->cleanup();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

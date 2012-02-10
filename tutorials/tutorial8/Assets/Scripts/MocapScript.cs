@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class MocapScript : MonoBehaviour {
+public class MocapScript : MonoBehaviour {
 	public int trackedObjectID;
 	public Vector3 offsetFromOrigin = new Vector3( 0, -1.5f, -1.7f );
 	
 	bool moving = false;
-	public bool useOrientation = true;
 	public bool stopJitter = false;
 	float idleStartTime;
 	float idleTime = 0;
@@ -40,11 +39,6 @@ public abstract class MocapScript : MonoBehaviour {
 	
 		if( moving || !stopJitter ){
 			gameObject.transform.localPosition = Vector3.Lerp( gameObject.transform.localPosition, getPosition(), Time.deltaTime * 6 );
-			
-			if( useOrientation )
-				gameObject.transform.localRotation = Quaternion.Lerp( gameObject.transform.localRotation, getOrientation(), Time.deltaTime * 6 );
-			else
-				gameObject.transform.localRotation = Quaternion.identity;
 		} else {
 		}
 	}

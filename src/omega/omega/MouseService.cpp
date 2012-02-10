@@ -25,6 +25,7 @@
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 #include "omega/MouseService.h"
+#include "omega/StringUtils.h"
 
 #ifdef OMEGA_USE_DISPLAY_GLUT
 #include "GL/freeglut.h"

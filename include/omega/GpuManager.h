@@ -104,7 +104,15 @@ namespace omega
 
 		//! Data
 		//@{
-		//GpuProgram* getDefaultProgram();
+		GpuProgram* getDefaultProgram();
+		//RenderTarget* getFrameBuffer();
+		//void setFrameBuffer(RenderTarget* fb);
+		//@}
+
+		//! Texture management
+		//@{
+		Texture* createTexture(String textureName, int width, int height, byte* data = NULL);
+		Texture* getTexture(const String& textureName);
 		//@}
 
 		CLManager* getCLManager() { return myCLManager; }
@@ -125,40 +133,26 @@ namespace omega
 		ComputeShaderDictionary myComputeShaders;
 		TextureDictionary myTextures;
 
+		//! Current frame buffer.
+		//RenderTarget* myFrameBuffer;
+
 		// Default gpu program
-		//GpuProgram* myDefaultProgram;
+		GpuProgram* myDefaultProgram;
 
 		CLManager* myCLManager;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API GpuContext
-	{
-	public:
-		static const unsigned int MaxContexts = 64;
+	inline GpuProgram* GpuManager::getDefaultProgram()
+	{ return myDefaultProgram; }
 
-		GpuContext(GpuManager* gpu);
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline RenderTarget* GpuManager::getFrameBuffer()
+	//{ return myFrameBuffer; }
 
-		uint getId() { return myId; }
-		GpuManager* getGpu() { return myGpu; }
-
-	private:
-		static uint mysNumContexts;
-		static Lock mysContextLock;
-
-		uint myId;
-		GpuManager* myGpu;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API GpuResource: public ReferenceType
-	{
-	public:
-		GpuResource(GpuContext* ctx): myContext(ctx) {}
-		GpuContext* getContext() { return myContext; }
-	private:
-		GpuContext* myContext;
-	};
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	//inline void GpuManager::setFrameBuffer(RenderTarget* fb)
+	//{ myFrameBuffer = fb; }
 }; // namespace omega
 
 #endif

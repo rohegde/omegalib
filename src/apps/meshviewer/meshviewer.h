@@ -28,43 +28,55 @@
 #define __MESHVIEWER_H__
 
 #include <omega.h>
-#include <omegaToolkit.h>
-#include "omega/PortholeTabletService.h"
+#include <oengine.h>
 
 using namespace omega;
-using namespace omegaToolkit;
-using namespace omegaToolkit::ui;
+using namespace oengine;
+using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public ReferenceType
+class EntityData
 {
 public:
-	Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label);
+	EntityData():
+	  meshData(NULL) {}
+
+	String name;
+	String label;
+	MeshData* meshData;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class Entity: public DynamicObject
+{
+public:
+	Entity(EntityData* data, EngineServer* server);
 	~Entity();
 
-	void show();
-	void hide();
-	
+	void resetTransform();
+	bool isVisible() { return myVisible; }
+	void setVisible(bool value);
+
 	SceneNode* getSceneNode() { return mySceneNode; }
 	Mesh* getMesh() { return myMesh; }
-	const String& getName() { return myName; }
-	const String& getLabel() { return myLabel; }
-	
+	EntityData* getData() { return myData; }
+
 private:
 	EngineServer* myServer;
+	EntityData* myData;
+
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
-	MeshData* myMeshData;
-	Actor* myInteractor;
-	String myName;
-	String myLabel;
+
+	BoundingSphere* mySelectionSphere;
+	bool myVisible;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class MeshViewer: public EngineServer
 {
 public:
-	MeshViewer(Application* app);
+	MeshViewer(Application* app): EngineServer(app) {}
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);
@@ -72,14 +84,19 @@ public:
 	virtual void update(const UpdateContext& context);
 
 private:
+	//! Find the entity associated with this scene node
+	Entity* findEntity(SceneNode* node);
+	void updateSelection(const Ray& ray);
 	void loadEntityLibrary();
 	void initUi();
+	void createEntity(EntityData* ed);
+	void destroyEntity(Entity* e);
 
 private:
-	Vector<Entity*> myEntities;
-	Entity* mySelectedEntity;
+	Vector<EntityData*> myEntityLibrary;
 
-	PortholeTabletService* myTabletManager;
+	// Entities
+	List<Entity*> myEntities;
 
 	// Scene
 	ReferenceBox* myReferenceBox;
@@ -90,6 +107,10 @@ private:
 	// Interactors.
 	Actor* myInteractor;
 
+	Entity* mySelectedEntity;
+
+	//Effect* myColorIdEffect;
+    
     bool myShowUI;
    	bool autoRotate;
    	float deltaScale;

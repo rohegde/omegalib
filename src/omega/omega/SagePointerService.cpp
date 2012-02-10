@@ -27,41 +27,41 @@
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 #include "omega/SagePointerService.h"
+#include "omega/StringUtils.h"
+#include "omega/Color.h"
+#include "omega/Tcp.h"
 
 using namespace omega;
-
 
 namespace omega {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class SagePointerConnection: public TcpConnection
 {
 public:
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	SagePointerConnection(ConnectionInfo ci, SagePointerService* service): 
-		TcpConnection(ci),
-			myService(service),
+	SagePointerConnection(asio::io_service& ioService, int id, SagePointerService* service): 
+		TcpConnection(ioService),
+			myId(id), myService(service),
 			myButtonFlags(0)
 	{	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void handleData()
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
 		// Read ip address
-		readUntil(myBuffer, BufferSize, ':');
+		readString(myBuffer, BufferSize, ':');
 
 		// Read user name
-		if(readUntil(myBuffer, BufferSize, ' ') > 0)
+		if(readString(myBuffer, BufferSize, ' ') > 0)
 		{
 			myName = myBuffer;
 		}
 		
 		// Read device name
-		readUntil(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, ' ');
 
 		// Read command
-		readUntil(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, ' ');
 		int cmd = atoi(myBuffer);
 
 		switch(cmd)
@@ -87,41 +87,38 @@ public:
 		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void handleClosed()
 	{
-		ofmsg("Connection closed (id=%1%)", %getConnectionInfo().id);
+		ofmsg("Connection closed (id=%1%)", %myId);
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	void handleWheelMessage()
 	{
 		// Read wheel
-		readUntil(myBuffer, BufferSize, '\n');
+		readString(myBuffer, BufferSize, '\n');
 		int wheel = atoi(myBuffer);
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(Event::Zoom, Service::Pointer, getConnectionInfo().id);
+		evt->reset(Event::Zoom, Service::Pointer, myId);
 		evt->setExtraDataType(Event::ExtraDataIntArray);
 		evt->setExtraDataInt(0, wheel);
 		myService->unlockEvents();
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	void handleButtonMessage()
 	{
 		// Read button
-		readUntil(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, ' ');
 		int btn = atoi(myBuffer);
 
 		// Read pressed
-		readUntil(myBuffer, BufferSize, '\n');
+		readString(myBuffer, BufferSize, '\n');
 		int pressed = atoi(myBuffer);
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(pressed == 1 ? Event::Down : Event::Up, Service::Pointer, getConnectionInfo().id);
+		evt->reset(pressed == 1 ? Event::Down : Event::Up, Service::Pointer, myId);
 		evt->setPosition(myPosition[0], myPosition[1]);
 
 		if(pressed == 1)
@@ -146,15 +143,14 @@ public:
 		myService->unlockEvents();
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	void handleMoveMessage()
 	{
 		// Read x
-		readUntil(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, ' ');
 		float x = atof(myBuffer);
 
 		// Read y
-		readUntil(myBuffer, BufferSize, '\n');
+		readString(myBuffer, BufferSize, '\n');
 		float y = atof(myBuffer);
 
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -165,7 +161,7 @@ public:
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(Event::Move, Service::Pointer, getConnectionInfo().id);
+		evt->reset(Event::Move, Service::Pointer, myId);
 		evt->setPosition(myPosition[0], myPosition[1]);
 		evt->setFlags(myButtonFlags);
 
@@ -185,24 +181,23 @@ public:
 		myService->unlockEvents();
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	void handleInfoMessage()
 	{
 		// Read r
-		readUntil(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, ' ');
 		int r = atoi(myBuffer);
 
 		// Read g
-		readUntil(myBuffer, BufferSize, ' ');
+		readString(myBuffer, BufferSize, ' ');
 		int g = atoi(myBuffer);
 
 		// Read b
-		readUntil(myBuffer, BufferSize, '\n');
+		readString(myBuffer, BufferSize, '\n');
 		int b = atoi(myBuffer);
 
         myService->lockEvents();
 		Event* evt = myService->writeHead();
-		evt->reset(Event::Update, Service::Pointer, getConnectionInfo().id);
+		evt->reset(Event::Update, Service::Pointer, myId);
 		evt->setPosition((float)r/255, (float)g/255, (float)b/255);
 		evt->setExtraDataType(Event::ExtraDataString);
 		evt->setExtraDataString(myName);
@@ -214,6 +209,7 @@ private:
 	char myBuffer[BufferSize];
 
 	SagePointerService* myService;
+	int myId;
 	uint myButtonFlags;
 	String myName;
 	Vector2i myPosition;
@@ -224,17 +220,20 @@ class SagePointerServer: public TcpServer
 {
 public:
 	SagePointerServer(SagePointerService* service):
+		myPointerCounter(0),
 		myService(service)
 		{}
 
-	virtual TcpConnection* createConnection(const ConnectionInfo& ci)
+	virtual TcpConnection* createConnection()
 	{
-		ofmsg("New sage pointer connection (id=%1%)", %ci.id);
-		SagePointerConnection* conn = new SagePointerConnection(ci, myService);
+		ofmsg("New sage pointer connection (id=%1%)", %myPointerCounter);
+		SagePointerConnection* conn = new SagePointerConnection(myIOService, ++myPointerCounter, myService);
+	    myClients.push_back(conn);
 	    return conn;
 	}
 
 private:
+	int myPointerCounter;
 	SagePointerService* myService;
 };
 };
@@ -259,7 +258,7 @@ void SagePointerService::setup(Setting& settings)
 	myServer->start();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SagePointerService::poll() 
 {
 	myServer->poll();

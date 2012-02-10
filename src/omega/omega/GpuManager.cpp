@@ -27,6 +27,8 @@
 #include "omega/GpuManager.h"
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
+#include "omega/StringUtils.h"
+#include "omega/DataManager.h"
 #include "omega/Texture.h"
 
 #include "omega/glheaders.h"
@@ -161,6 +163,7 @@ GpuManager::GpuManager():
 	myInitialized(false),
 	myCLManager(NULL)
 {
+	myDefaultProgram = new GpuProgram(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -310,6 +313,24 @@ void GpuManager::printShaderLog(GLuint shader)
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* GpuManager::createTexture(String textureName, int width, int height, byte* data)
+{
+	Texture* tx = new Texture();
+	tx->initialize(data, width, height);
+
+	// @todo: Check for already existing textures with same name & notify + deallocate.
+
+	myTextures[textureName] = tx;
+	return tx;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Texture* GpuManager::getTexture(const String& textureName)
+{
+	return myTextures[textureName];
+}
+
 #ifdef OMEGA_USE_OPENCL
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void CLManager::initialize()
@@ -436,13 +457,3 @@ void CLManager::initialize()
 	omsg("OpenCL: initialization successful!");
 }
 #endif
-
-uint GpuContext::mysNumContexts = 0;
-Lock GpuContext::mysContextLock = Lock();
-
-GpuContext::GpuContext(GpuManager* gpu): myGpu(gpu) 
-{
-	mysContextLock.lock();
-	myId = mysNumContexts++;
-	mysContextLock.unlock();
-}

@@ -11350,6 +11350,7 @@ const GLubyte* glewGetString (GLenum name)
 /* ------------------------------------------------------------------------ */
 
 GLboolean glewExperimental = GL_FALSE;
+
 #if !defined(GLEW_MX)
 
 #if defined(_WIN32)

@@ -25,7 +25,13 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Application.h"
-#include "omega/DisplaySystem.h"
+#include "omega/Lock.h"
+
+#ifdef OMEGA_USE_DISPLAY
+#include "omega/GpuManager.h"
+#endif
+
+#include "omega/StringUtils.h"
 
 using namespace omega;
 
@@ -57,28 +63,36 @@ Layer::Enum Layer::fromString(const String& str)
 void ApplicationServer::addClient(ApplicationClient* cli)
 {
 	myClients.push_back(cli);
+	cli->myId = myClientId++;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasWidth() 
-{
-	return getDisplaySystem()->getCanvasSize().x(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasHeight()
-{
-	return getDisplaySystem()->getCanvasSize().y(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server), myGpuContext(NULL)
+ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server) 
 {
 	myServer->addClient(this);
+#ifdef OMEGA_USE_DISPLAY
+	myGpu = new GpuManager();
+#else
+	myGpu = NULL;
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ApplicationClient::~ApplicationClient() 
 {
+#ifdef OMEGA_USE_DISPLAY
+	delete myGpu;
+	myGpu = NULL;
+#endif
 }
 
+Lock l;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ApplicationClient::initialize() 
+{
+#ifdef OMEGA_USE_DISPLAY
+	l.lock();
+	myGpu->initialize();
+	l.unlock();
+#endif
+}

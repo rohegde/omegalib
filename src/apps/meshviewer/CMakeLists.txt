@@ -40,4 +40,4 @@ set(HEADERS
 add_executable(meshviewer ${SRCS} ${HEADERS})
 set_target_properties(meshviewer PROPERTIES FOLDER apps)
 target_link_libraries(meshviewer
-	omega omegaToolkit)
+	omega oengine)

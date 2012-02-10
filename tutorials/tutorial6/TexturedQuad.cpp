@@ -25,10 +25,12 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "TexturedQuad.h"
-#include <omegaGl.h>
 
 using namespace omega;
-using namespace omegaToolkit;
+using namespace oengine;
+
+OMEGA_DEFINE_TYPE(TexturedQuad, SceneObject)
+OMEGA_DEFINE_TYPE(TexturedQuadRenderable, SceneRenderable)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 TexturedQuad::TexturedQuad():
@@ -100,7 +102,7 @@ void TexturedQuadRenderable::refresh()
 	}
 
 	// Allocate index and vertex buffers.
-	GpuManager* gpuMng = getClient()->getGpuContext()->getGpu();
+	GpuManager* gpuMng = getClient()->getGpu();
 	myVertexBuffer = new VertexBuffer(gpuMng);
 
 	// Define position attribute for vertex buffer.
@@ -133,14 +135,17 @@ void TexturedQuadRenderable::refresh()
 	myVertexBuffer->initialize(elementSize * numElements, elementSize, data);
 
 	// Setup the texture
-	PixelData* img = myTexturedQuad->getImage();
+	ImageData* img = myTexturedQuad->getImage();
 	if(img != NULL)
 	{
+		myTexture = gpuMng->getTexture(img->filename);
 		if(myTexture == NULL)
 		{
-			myTexture = new Texture(getClient()->getGpuContext());
-			myTexture->initialize(img->getWidth(), img->getHeight());
-			myTexture->writePixels(img);
+			myTexture = gpuMng->createTexture(
+				img->filename,
+				img->width,
+				img->height,
+				img->data);
 		}
 	}
 }

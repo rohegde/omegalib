@@ -30,12 +30,9 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-// Uncomment to print debug messages about client flow.
-//#define OMEGA_DEBUG_FLOW
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
-	eq::Pipe(parent), myGpu(NULL), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
+	eq::Pipe(parent), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
 {
 	NodeImpl* ni = (NodeImpl*)parent;
 	Application* app = SystemManager::instance()->getApplication();
@@ -64,13 +61,6 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 {
 	eq::Pipe::frameStart(frameID, frameNumber);
 
-#ifdef OMEGA_DEBUG_FLOW
-	ofmsg("PipeImpl::frameStart %1%", %frameNumber);
-#endif
-
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
 	// Activate the glew context for this pipe, so initialize and update client
 	// methods can handle openGL buffers associated with this Pipe.
 	// NOTE: getting the glew context from the first window is correct since all
@@ -79,34 +69,18 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 	glewSetContext(glewc);
 
 	// Initialize the client at the first frame.
-	if(!myInitialized && myClient != NULL)
+	if(!myInitialized)
 	{
-		myGpu = new GpuManager();
-		myGpu->initialize();
-		myGpuContext = new GpuContext(myGpu);
-		myClient->setGpuContext(myGpuContext);
 		myClient->initialize();
 	}
-
-	myClient->startFrame(FrameInfo(frameID.low(), getGpuContext()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber )
 {
 	eq::Pipe::frameFinish(frameID, frameNumber);
-
-#ifdef OMEGA_DEBUG_FLOW
-	ofmsg("PipeImpl::frameFinish %1%", %frameNumber);
-#endif
-
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
 	if(!myInitialized)
 	{
 		myInitialized = true;
 	}
-
-	myClient->finishFrame(FrameInfo(frameID.low(), getGpuContext()));
 }

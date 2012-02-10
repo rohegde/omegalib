@@ -1,7 +1,7 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
@@ -23,28 +23,16 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *-------------------------------------------------------------------------------------------------
- * Original code Copyright (c) Kitware, Inc.
- * All rights reserved.
- * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
-#include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
+#include "omega/StringUtils.h"
+#include "omega/DataManager.h"
+
+#include "omega/PythonInterpreter.h"
+
+#include "PythonInterpreterWrapper.h"
 
 using namespace omega;
-
-#ifdef OMEGA_USE_PYTHON
-
-#include <signal.h>  // for signal
-#include "omega/PythonInterpreterWrapper.h"
-
-#include<iostream>
-
-//#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
-//#define VTK_LIBRARY_DIR_POSTFIX "/Release"
-//#else
-//#define VTK_LIBRARY_DIR_POSTFIX 
-//#endif
 
 //struct vtkPythonMessage
 //{
@@ -53,55 +41,25 @@ using namespace omega;
 //};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class PythonInteractiveThread: public Thread
+PythonInterpreter::PythonInterpreter():
+	myExecutablePath(NULL)
 {
-public:
-	virtual void threadProc()
-	{
-		while(true)	PyRun_InteractiveLoop(stdin,  "<stdin>");
-	}
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool PythonInterpreter::isEnabled()
-{
-	return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PythonInterpreter::PythonInterpreter()
-{
-	myShellEnabled = false;
-	myInteractiveThread = new PythonInteractiveThread();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PythonInterpreter::~PythonInterpreter()
 {
-	delete myInteractiveThread;
-	myInteractiveThread = NULL;
+  myExecutablePath = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::addPythonPath(const char* dir)
+void PythonInterpreter::addPath(const char* dir)
 {
-  // Convert slashes for this platform.
-  String out_dir = dir ? dir : "";
-#ifdef OMEGA_OS_WIN
-  out_dir = StringUtils::replaceAll(out_dir, "/", "\\");
-#endif
-
   // Append the path to the python sys.path object.
   PyObject* opath = PySys_GetObject(const_cast<char*>("path"));
-  PyObject* newpath = PyString_FromString(out_dir.c_str());
+  PyObject* newpath = PyString_FromString(dir);
   PyList_Insert(opath, 0, newpath);
   Py_DECREF(newpath);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::setup(const Setting& setting)
-{
-	myShellEnabled = Config::getBoolValue("pythonShellEnabled", setting, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,30 +75,6 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize interpreter.
 	Py_Initialize();
 
-	// The following code will hack in the path for running VTK/Python
-	// from the build tree. Do not try this at home. We are
-	// professionals.
-
-	// Compute the directory containing this executable.  The python
-	// sys.executable variable contains the full path to the interpreter
-	// executable.
-	//if (!myExecutablePath)
-	//{
-	//	PyObject* executable = PySys_GetObject(const_cast<char*>("executable"));
-	//	char* exe_str = PyString_AsString(executable);
-	//	if (exe_str)
-	//	{
-	//		// Use the executable location to try to set sys.path to include
-	//		// the VTK python modules.
-	//		vtkstd::string self_dir;
-	//		vtkstd::string self_name;
-	//		omega::StringUtils::splitFilename(exe_str, self_name, self_dir);
-	//		addPythonPath(self_dir.c_str());
-	//		addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
-	//		addPythonPath(VTK_PYTHON_DIR);
-	//	}
-	//}
-
 	// HACK: Calling PyRun_SimpleString for the first time for some reason results in
 	// a "\n" message being generated which is causing the error dialog to
 	// popup. So we flush that message out of the system before setting up the
@@ -148,32 +82,27 @@ void PythonInterpreter::initialize(const char* programName)
 	// The cast is necessary because PyRun_SimpleString() hasn't always been
 	// const-correct.
 	PyRun_SimpleString(const_cast<char*>(""));
-	PythonInterpreterWrapper* wrapperOut = vtkWrapInterpretor(this);
+	PythonInterpreterWrapper* wrapperOut = wrapInterpretor(this);
 	wrapperOut->DumpToError = false;
 
-	PythonInterpreterWrapper* wrapperErr = vtkWrapInterpretor(this);
-	wrapperErr->DumpToError = false;
+	PythonInterpreterWrapper* wrapperErr = wrapInterpretor(this);
+	wrapperErr->DumpToError = true;
 
 	// Redirect Python's stdout and stderr and stdin
 	PySys_SetObject(const_cast<char*>("stdout"), reinterpret_cast<PyObject*>(wrapperOut));
 	PySys_SetObject(const_cast<char*>("stderr"), reinterpret_cast<PyObject*>(wrapperErr));
-	//PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
+	PySys_SetObject(const_cast<char*>("stdin"), reinterpret_cast<PyObject*>(wrapperErr));
 
 	Py_DECREF(wrapperOut);
 	Py_DECREF(wrapperErr);
-
-	if(myShellEnabled)
-	{
-		omsg("PythonInterpreter: starting interactive shell thread.");
-		myInteractiveThread->start();
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
-{
-	Py_InitModule(name, methods);
-}
+//void PythonInterpreter::addModule(const char* name, ScriptModule* module)
+//{
+//	PythonModule* pm = (PythonModule*)module;
+//	Py_InitModule(name, pm->getDefs());
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
@@ -197,7 +126,7 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			char* fmt = const_cast<char*>(format);
 			if(!PyArg_Parse(result, format, va_arg(args, void*)))
 			{
-				ofwarn("PythonInterpreter: result of statement '%1%' cannot be parsed by format string '%2%'", %str %fmt);
+				ofwarn("!PythonInterpreter: result of statement '%1%' cannot be parsed by format string '%2%'", %str %fmt);
 			}
 
 			va_end(args);
@@ -218,40 +147,6 @@ void PythonInterpreter::runFile(const String& filename)
 	}
 	else
 	{
-		ofwarn("PythonInterpreter: script not found: %1%", %filename);
+		ofwarn("!PythonInterpreter: script not found: %1%", %filename);
 	}
 }
-
-#else
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool PythonInterpreter::isEnabled() { return false; }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PythonInterpreter::PythonInterpreter() 
-{ 	
-	myShellEnabled = false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PythonInterpreter::~PythonInterpreter() { }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::setup(const Setting& setting) { }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::addPythonPath(const char* dir) { }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::initialize(const char* programName) { }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::addModule(const char* name, PyMethodDef* methods) { }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::eval(const String& script, const char* format, ...) { }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::runFile(const String& filename) { }
-
-#endif

@@ -26,8 +26,6 @@
  *************************************************************************************************/
 #include "nightfield.h"
 
-#define EVL_DEMO
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Settings::Settings():
 	numAgents(2000),
@@ -98,7 +96,7 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AffectorEntity::AffectorEntity(RenderableSceneObject* object, EngineServer* server):
+AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	myObject(object),
 	myServer(server),
 	myVisible(false),
@@ -119,7 +117,7 @@ AffectorEntity::AffectorEntity(RenderableSceneObject* object, EngineServer* serv
 
 	// Create the rendering effect for this entity.
 	MultipassEffect* mpfx = new MultipassEffect();
-	myObject->setEffect(mpfx);
+	mySceneNode->setEffect(mpfx);
 
 	Effect* wirefx = new Effect();
 	wirefx->setDrawMode(Effect::DrawWireframe);
@@ -259,11 +257,6 @@ void AffectorEntity::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Nightfield::Nightfield(Application* app): EngineServer(app)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::initialize()
 {
 	mySelectedEntity = NULL;
@@ -288,8 +281,8 @@ void Nightfield::initialize()
 	myFlock->setup(&mySettings);
 	myFlock->initialize();
 
-	myInteractor = new DefaultMouseInteractor();
-	//myInteractor = new ControllerManipulator();
+	//myInteractor = new DefaultMouseInteractor();
+	myInteractor = new ControllerManipulator();
 	addActor(myInteractor);
 
 	// Create a reference box around the scene.
@@ -337,27 +330,18 @@ void Nightfield::initialize()
 			}
 		}
 	}
-	Light::setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
+	setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
 
-	Light* light = Light::getLight(0);
+	Light* light = getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.6f, 0.6f, 0.6f));
 	light->setPosition(Vector3f(0, 3, 3));
-
-	getDisplaySystem()->setBackgroundColor(Color::Black);
-
-	// Get the default camera and focus in on the scene root
-	Camera* cam = getDefaultCamera();
-	cam->focusOn(getScene(0));
-
-	myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::update(const UpdateContext& context)
 {
 	EngineServer::update(context);
-	myTabletManager->update(context);
 	int i = 0;
 	foreach(AffectorEntity* ae, myEntities)
 	{
@@ -377,7 +361,6 @@ void Nightfield::update(const UpdateContext& context)
 void Nightfield::handleEvent(const Event& evt)
 {
 	EngineServer::handleEvent(evt);
-	myTabletManager->handleEvent(evt);
 	if(evt.getServiceType() == Service::Pointer)
 	{
 		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Left) && evt.getExtraDataLength() == 2)
@@ -394,15 +377,6 @@ void Nightfield::handleEvent(const Event& evt)
 			Vector3f newCenter = r.getPoint(pt.second);
 			myFlock->getSettings()->center = newCenter;
 		}
-#ifdef EVL_DEMO
-		if(evt.getSourceId() > 0)
-		  {
-		    Ray r(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1));
-			std::pair<bool, float> pt = r.intersects(Plane(Vector3f(0, 0, 1), 0));
-			Vector3f newCenter = r.getPoint(pt.second);
-			myFlock->getSettings()->center = newCenter;
-		  }
-#endif
 	}
 	if(mySelectedEntity != NULL)
 	{
@@ -459,7 +433,7 @@ void Nightfield::updateSelection(const Ray& ray)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<Nightfield> app;
+	EngineApplication<Nightfield> app;
 	omain(
 		app, 
 		"nightfield.cfg", 

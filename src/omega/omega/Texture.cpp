@@ -25,61 +25,63 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Texture.h"
+#include "omega/StringUtils.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Texture::Texture(GpuContext* context): 
-	GpuResource(context),
-	myInitialized(false),
-	myTextureUnit(GpuManager::TextureUnitInvalid) 
-{}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::initialize(int width, int height)
+void Texture::initialize(byte* data, int width, int height)
 {
+	myData = data; 
 	myWidth = width; 
 	myHeight = height; 
 
 	//Now generate the OpenGL texture object 
 	glGenTextures(1, &myId);
-	glBindTexture(GL_TEXTURE_2D, myId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		
 	GLenum glErr = glGetError();
-
 	if(glErr)
 	{
 		const unsigned char* str = gluErrorString(glErr);
-		oferror("Texture::initialize: %1%", %str);
+		oferror("Texture initialization: %1%", %str);
 		return;
 	}
-
+	myDirty = true;
 	myInitialized = true;
+	refresh();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Texture::writePixels(PixelData* data)
+void Texture::reset(byte* data, int width, int height)
 {
-	if(myInitialized && data != NULL)
+	oassert(myInitialized);
+
+	myData = data; 
+	myWidth = width; 
+	myHeight = height; 
+
+	myDirty = true;
+	refresh();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Texture::refresh()
+{
+	if(myDirty)
 	{
 		glBindTexture(GL_TEXTURE_2D, myId);
-		int xoffset = 0;
-		int yoffset = 0;
-		int h = data->getHeight();
-		int w = data->getWidth();
-		byte* pixels = data->lockData();
-		glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, w, h, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)pixels);
-		data->unlockData();
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myWidth, myHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,(GLvoid*)myData );
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		GLenum glErr = glGetError();
 
 		if(glErr)
 		{
 			const unsigned char* str = gluErrorString(glErr);
-			oferror("Texture::writePixels: %1%", %str);
+			oferror("Texture refresh: %1%", %str);
 			return;
 		}
+		myDirty = false;
 	}
 }
 

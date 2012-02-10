@@ -27,148 +27,321 @@
 
 ###################################################################################################
 # Find required packages
-find_package(OpenGL)
+if(OMEGA_USE_DISPLAY)
+	find_package(OpenGL)
+endif(OMEGA_USE_DISPLAY)
 
 ###################################################################################################
 # Compile definitions
-add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC -DFTGL_LIBRARY_STATIC  -DFREEIMAGE_LIB)
+add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC)
 
 ###################################################################################################
 # Source files
 SET( srcs 
-		omega/Application.cpp
-		omega/Camera.cpp
-		omega/Console.cpp
-		omega/EngineClient.cpp
-		omega/EngineServer.cpp
-		omega/Font.cpp
-		omega/GpuBuffer.cpp
-		omega/GpuManager.cpp
-		omega/GpuProgram.cpp
-		omega/ImageUtils.cpp
-		omega/KeyboardService.cpp
-		omega/MouseService.cpp
-		omega/Node.cpp
-        omega/Observer.cpp
-		omega/ObserverUpdateService.cpp
         omega/osystem.cpp
-		omega/PixelData.cpp
-		omega/Pointer.cpp
-		omega/PortholeTabletService.cpp
-		omega/PythonInterpreter.cpp
-		omega/Renderable.cpp
-		omega/Renderer.cpp
-		omega/RenderTarget.cpp
-		omega/SagePointerService.cpp
-		omega/SceneNode.cpp
-		omega/SceneQuery.cpp
+		omega/Color.cpp
+		omega/Config.cpp
+		omega/Lock.cpp
+		omega/ServiceManager.cpp
+		omega/Service.cpp
+		omega/HeartbeatService.cpp
+        omega/Observer.cpp
 		omega/SystemManager.cpp
-		omega/Texture.cpp
+		omega/StringUtils.cpp
+		omega/DataManager.cpp
+		omega/FileDataStream.cpp
+		omega/FilesystemDataSource.cpp
+		omega/TabletService.cpp
+		omega/Tcp.cpp
+		omega/TypeInfo.cpp
+		
+		#omega::xml
+		omega/xml/tinystr.cpp
+		omega/xml/tinyxml.cpp
+		omega/xml/tinyxmlerror.cpp
+		omega/xml/tinyxmlparser.cpp
         )
 		
 ###################################################################################################
 # Headers
 SET( headers 
 		${OmegaLib_SOURCE_DIR}/include/omega.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Actor.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
-		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
-		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
-		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineApplication.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineClient.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineServer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Font.h
-		${OmegaLib_SOURCE_DIR}/include/omega/glheaders.h
-		${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
-		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Pointer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PortholeTabletService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h
-		${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
-		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/SceneNode.h
-		${OmegaLib_SOURCE_DIR}/include/omega/SceneQuery.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Color.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Config.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Event.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/IEventListener.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Lock.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/ServiceManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Service.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/HeartbeatService.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-		${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
-		)
+        ${OmegaLib_SOURCE_DIR}/include/omega/StringUtils.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/DataManager.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/FilesystemDataSource.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/FileDataStream.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/TabletService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Tcp.h
+		${OmegaLib_SOURCE_DIR}/include/omega/TypeInfo.h
+
+		# eigenwrap
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/EigenWrappers.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Math.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Ray.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Sphere.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/Plane.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/AlignedBox.h
+        ${OmegaLib_SOURCE_DIR}/include/omega/math/PlaneBoundedVolume.h
+		
+		#omega::xml
+		${OmegaLib_SOURCE_DIR}/include/omega/xml/tinyxml.h
+		${OmegaLib_SOURCE_DIR}/include/omega/xml/tinystr.h
+        ) 
         
 ###################################################################################################
 # Enable / disable specific modules within omegalib
+if(OMEGA_USE_PYTHON)
+	set( headers ${headers}
+		omega/PythonInterpreterWrapper.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h)
 
-# Equalizer Display Module
-set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
-if(OMEGA_USE_DISPLAY_EQUALIZER)
-	include(${CMAKE_SOURCE_DIR}/external/UseEqualizer.cmake)
-	include_directories(${EQUALIZER_INCLUDES})
-	set( srcs ${srcs} 
-		omega/EqualizerDisplaySystem.cpp
-		omega/eqinternal/ChannelImpl.cpp
-		omega/eqinternal/ConfigImpl.cpp
-		omega/eqinternal/ViewImpl.cpp
-		omega/eqinternal/WindowImpl.cpp
-		omega/eqinternal/NodeImpl.cpp
-		omega/eqinternal/PipeImpl.cpp
-		)
-	set( headers ${headers} 
-		omega/eqinternal/eqinternal.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
-endif(OMEGA_USE_DISPLAY_EQUALIZER)
+	set( srcs ${srcs}
+		omega/PythonInterpreter.cpp)
+endif(OMEGA_USE_PYTHON)
+
+if(OMEGA_USE_DISPLAY)
+	set( srcs ${srcs}
+			omega/Application.cpp
+			omega/GpuBuffer.cpp
+			omega/GpuManager.cpp
+			omega/GpuProgram.cpp
+			omega/RenderTarget.cpp
+			omega/SagePointerService.cpp
+			omega/Texture.cpp
+ 		    omega/ObserverUpdateService.cpp
+			)
+	set( headers ${headers}
+			${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+			${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
+			${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
+			${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
+			${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
+			${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
+	        ${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h)
 	
-# Glut Display Module
-if( WIN32 )
-	set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
-	if(OMEGA_USE_DISPLAY_GLUT)
-		set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
-		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
-	endif(OMEGA_USE_DISPLAY_GLUT)
-	set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
-endif( WIN32 )
+	# Equalizer Display Module
+	if(OMEGA_USE_DISPLAY_EQUALIZER)
+		set( srcs ${srcs} 
+			omega/EqualizerDisplaySystem.cpp
+			omega/eqinternal/ChannelImpl.cpp
+			omega/eqinternal/ConfigImpl.cpp
+			omega/eqinternal/ViewImpl.cpp
+			omega/eqinternal/WindowImpl.cpp
+			omega/eqinternal/NodeImpl.cpp
+			omega/eqinternal/PipeImpl.cpp
+			)
+		set( headers ${headers} 
+			omega/eqinternal/eqinternal.h
+			${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
+	endif(OMEGA_USE_DISPLAY_EQUALIZER)
+		
+	# Glut Display Module
+	if( WIN32 )
+		set(OMEGA_USE_DISPLAY_GLUT true CACHE BOOL "Enable GLUT display system support")
+		if(OMEGA_USE_DISPLAY_GLUT)
+			set( srcs ${srcs} omega/GlutDisplaySystem.cpp)
+			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/GlutDisplaySystem.h) 
+		endif(OMEGA_USE_DISPLAY_GLUT)
+		set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
+	endif( WIN32 )
+		
+	# OpenCL Module
+	set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
+	if(OMEGA_USE_OPENCL)
+		if(NOT WIN32)
+			find_package(OpenCL REQUIRED)
+		endif(NOT WIN32)
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
+	endif(OMEGA_USE_OPENCL)
+
+	# Mouse input support	
+		set(OMEGA_USE_MOUSE true CACHE BOOL "Enable/disable mouse input support")
+		if(OMEGA_USE_MOUSE)
+			set( srcs	 ${srcs} omega/MouseService.cpp )
+			set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h )
+		endif(OMEGA_USE_MOUSE)
+		
+	# Keyboard input support	
+	set(OMEGA_USE_KEYBOARD true CACHE BOOL "Enable/disable mouse input support")
+	if(OMEGA_USE_KEYBOARD)
+		set( srcs	 ${srcs} omega/KeyboardService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h )
+	endif(OMEGA_USE_KEYBOARD)
+endif(OMEGA_USE_DISPLAY)
+
+# Network input support    
+set(OMEGA_USE_NETSERVICE true CACHE BOOL "Enable/disable Network input support")
+if(OMEGA_USE_NETSERVICE)
+	set( srcs	 ${srcs} omega/NetService.cpp )
+	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NetService.h )
+endif(OMEGA_USE_NETSERVICE)
+
+# OpenNI (Kinect) support
+set(OMEGA_USE_OPENNI true CACHE BOOL "Enable/disable OpenNI support (OpenNI libraries must be installed in the system)")
+if(OMEGA_USE_OPENNI)
+	set( srcs	 ${srcs} omega/OpenNIService.cpp )
+	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OpenNIService.h )
+	if(WIN32)
+		include_directories($ENV{PROGRAMFILES}/OpenNI/Include)
+	else(WIN32)
+		include_directories(/usr/include/ni)
+		include_directories(/usr/include/nite)
+	endif(WIN32)
+endif(OMEGA_USE_OPENNI)
 	
-# OpenCL Module
-set(OMEGA_USE_OPENCL false CACHE BOOL "Enable OpenCL support for GPU programs")
-if(OMEGA_USE_OPENCL)
-	if(NOT WIN32)
-		find_package(OpenCL REQUIRED)
-	endif(NOT WIN32)
-	set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h )
-endif(OMEGA_USE_OPENCL)
+# NaturalPoint Motion capture system support
+if(WIN32)
+	set(OMEGA_USE_NATURAL_POINT true CACHE BOOL "Enable/disable NaturalPoint MoCap support")
+	if(OMEGA_USE_NATURAL_POINT)
+		set( srcs	 ${srcs} omega/NaturalPointService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/NaturalPointService.h )
+	ENDIF(OMEGA_USE_NATURAL_POINT)
+endif(WIN32)
+
+# Optitrack tracking system support
+if(WIN32)
+	set(OMEGA_USE_OPTITRACK true CACHE BOOL "Enable/disable OptiTrack camera support")
+	if(OMEGA_USE_OPTITRACK)
+		set( srcs	 ${srcs} omega/OptiTrackService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/OptiTrackService.h )
+	endif(OMEGA_USE_OPTITRACK)
+endif(WIN32)
+
+# PQLabs touch surface module
+if(WIN32)
+	set(OMEGA_USE_PQLABS true CACHE BOOL "Enable/disable PqLabs multitouch support")
+	if(OMEGA_USE_PQLABS)
+		set( srcs	 ${srcs} omega/PQService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/PQService.h )
+	endif(OMEGA_USE_PQLABS)
+endif(WIN32)
+
+# DirectInput support
+if(WIN32)
+	set(OMEGA_USE_DIRECTINPUT true CACHE BOOL "Enable/disable DirectX Input support")
+	if(OMEGA_USE_DIRECTINPUT)
+		set( srcs	 ${srcs} omega/DirectXInputService.cpp
+					 ${srcs} omega/Wiimote.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
+								${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h 
+								${OmegaLib_SOURCE_DIR}/include/omega/wiimote_common.h 
+								${OmegaLib_SOURCE_DIR}/include/omega/wiimote_state.h )
+		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/DirectXInputService.h
+							 ${OmegaLib_SOURCE_DIR}/include/omega/Wiimote.h 
+							 ${OmegaLib_SOURCE_DIR}/include/omega/wiimote_common.h 
+							 ${OmegaLib_SOURCE_DIR}/include/omega/wiimote_state.h )
+	endif(OMEGA_USE_DIRECTINPUT)
+endif(WIN32)
+	
+# VRPN module support
+if(WIN32)
+	set(OMEGA_USE_VRPN true CACHE BOOL "Enable/disable VRPN Client support")
+	if(OMEGA_USE_VRPN)
+		set( srcs	 ${srcs} omega/VRPNService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_BaseClass.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Configure.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Connection.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Shared.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Tracker.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn/vrpn_Types.h
+					 
+			)
+		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/VRPNService.h
+							 ${OmegaLib_SOURCE_DIR}/include/omega/vrpn
+			)
+	endif(OMEGA_USE_VRPN)
+endif(WIN32)
+
+# ThinkGear module support
+if(WIN32)
+	set(OMEGA_USE_THINKGEAR true CACHE BOOL "Enable/disable ThinkGear support")
+	if(OMEGA_USE_THINKGEAR)
+		set( srcs	 ${srcs} omega/ThinkGearService.cpp )
+		set( headers ${headers} ${OmegaLib_SOURCE_DIR}/include/omega/ThinkGearService.h
+					 ${OmegaLib_SOURCE_DIR}/include/omega/thinkgear.h
+			)
+		include_directories( ${OmegaLib_SOURCE_DIR}/include/omega/ThinkGearService.h
+			)
+	endif(OMEGA_USE_THINKGEAR)
+endif(WIN32)
 
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
+source_group(omega::math REGULAR_EXPRESSION omega/math)		
+source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
+source_group(omega::script REGULAR_EXPRESSION omega/script/)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers
-enable_precompiled_headers(omega/precompiled.h srcs)
-add_library( omega SHARED ${srcs} ${headers})
-target_link_libraries(omega ${OMICRON_LIB} freetype ftgl FreeImage)
+if(OMEGA_BUILD_STATIC)
+	add_library( omega ${srcs} ${headers})
+else(OMEGA_BUILD_STATIC)
+	add_library( omega SHARED ${srcs} ${headers})
+endif(OMEGA_BUILD_STATIC)
+
+target_link_libraries( omega libconfig OpenThreads)
 
 ###################################################################################################
 # Setup module-specific link info
-set(EXT_LIB_DIR ${OmegaLib_SOURCE_DIR}/external/libs32)
-set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/external/include)
+set(EXT_LIB_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/libs32)
+set(EXT_INCLUDE_DIR ${OmegaLib_SOURCE_DIR}/ext/windows/include)
 
 include_directories(${EXT_INCLUDE_DIR})
 
-target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+if(OMEGA_USE_NATURAL_POINT)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/NatNetLibStatic.lib)
+	endif(WIN32)
+endif(OMEGA_USE_NATURAL_POINT)
+
+if(OMEGA_USE_OPTITRACK)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/optitrackuuid.lib)
+	endif(WIN32)
+endif(OMEGA_USE_OPTITRACK)
+
+if(OMEGA_USE_PQLABS)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/PQMTClient.lib)
+		# Copy the PQLabs dll into the destination bin directory
+		configure_file(${EXT_LIB_DIR}/PQMTClient.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} COPYONLY)
+		configure_file(${EXT_LIB_DIR}/PQMTClient.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} COPYONLY)
+	endif(WIN32)
+endif(OMEGA_USE_PQLABS)
+
+if(OMEGA_USE_NETSERVICE)
+	if(WIN32)
+		target_link_libraries( omega ws2_32.lib)
+	endif(WIN32)
+endif(OMEGA_USE_NETSERVICE)
+
+IF(OMEGA_USE_OPENNI)
+	IF(WIN32)
+		TARGET_LINK_LIBRARIES( omega $ENV{PROGRAMFILES}/OpenNI/Lib/openNI.lib )
+	ELSE(WIN32)
+		TARGET_LINK_LIBRARIES( omega OpenNI ) 
+	ENDIF(WIN32)
+ENDIF(OMEGA_USE_OPENNI)
+
+if(OMEGA_USE_DISPLAY)
+	target_link_libraries( omega ${OPENGL_LIBRARY} glew)
+endif(OMEGA_USE_DISPLAY)
 
 if(OMEGA_USE_DISPLAY_EQUALIZER)
 	target_link_libraries( omega ${EQUALIZER_LIBS})
@@ -190,11 +363,48 @@ if(OMEGA_USE_OPENCL)
 	endif(WIN32)
 endif(OMEGA_USE_OPENCL)
 
-###################################################################################################
-# See if we can setup Python support for this build
+if(OMEGA_USE_DIRECTINPUT)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/dinput8.lib)
+		target_link_libraries( omega ${EXT_LIB_DIR}/dxguid.lib)
+		target_link_libraries( omega ${EXT_LIB_DIR}/hid.lib)
+		target_link_libraries( omega ${EXT_LIB_DIR}/setupapi.lib)
+	endif(WIN32)
+endif(OMEGA_USE_DIRECTINPUT)
+
+if(OMEGA_USE_VRPN)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/vrpn.lib)
+	endif(WIN32)
+endif(OMEGA_USE_VRPN)
+
+if(OMEGA_USE_THINKGEAR)
+	if(WIN32)
+		target_link_libraries( omega ${EXT_LIB_DIR}/thinkgear.lib)
+		# Copy the PQLabs dll into the destination bin directory
+		configure_file(${EXT_LIB_DIR}/thinkgear.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} COPYONLY)
+		configure_file(${EXT_LIB_DIR}/thinkgear.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}COPYONLY)
+	endif(WIN32)
+endif(OMEGA_USE_THINKGEAR)
+
 if(OMEGA_USE_PYTHON)
 	target_link_libraries(omega ${PYTHON_LIBRARIES})
-endif()
+endif(OMEGA_USE_PYTHON)
 
 ###################################################################################################
-configure_file(omega/omegaConfig.h.in ${CMAKE_BINARY_DIR}/include/omegaConfig.h)
+configure_file(omega/osysdefs.h.in ${CMAKE_BINARY_DIR}/include/osysdefs.h)
+configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
+
+
+###################################################################################################
+install(
+    TARGETS omega
+    ARCHIVE DESTINATION lib COMPONENT omegalib
+    LIBRARY DESTINATION lib COMPONENT omegalib
+    RUNTIME DESTINATION bin COMPONENT omegalib
+)
+install(
+    FILES ${headers}
+    DESTINATION include/omega
+    COMPONENT omegalib
+)

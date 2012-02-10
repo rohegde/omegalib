@@ -57,8 +57,7 @@ bool NodeImpl::configExit()
 	eq::Config* config = getConfig();
 	config->unmapObject( &myFrameData );
 
-	delete myServer;
-	myServer = NULL;
+	odelete(myServer);
 
 	return Node::configExit();
 }
@@ -66,11 +65,6 @@ bool NodeImpl::configExit()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
 {
-	Node::frameStart(frameID, frameNumber);
-
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
 	// If server has not been initialized yet, do it now.
 	if(myInitialized == false)
 	{
@@ -107,5 +101,7 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 		}
 	}
 	myServer->update(uc);
+
+	Node::frameStart(frameID, frameNumber);
 }
 

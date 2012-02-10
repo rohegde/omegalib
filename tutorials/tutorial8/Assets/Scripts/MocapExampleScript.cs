@@ -15,9 +15,6 @@ public class MocapExampleScript : MocapScript {
 		gameObject.transform.position = Vector3.Lerp( gameObject.transform.position, getPosition(), Time.deltaTime * 6 );
 		
 		// Set object's orientation to the tracked object's orientation
-		if( useOrientation )
-			gameObject.transform.rotation = getOrientation();
-		else
-			gameObject.transform.rotation = Quaternion.identity;
+		gameObject.transform.rotation = getOrientation();
 	}
 }

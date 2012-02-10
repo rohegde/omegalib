@@ -28,8 +28,6 @@
 #define __RENDER_TARGET_H__
 
 #include "osystem.h"
-#include "GpuManager.h"
-#include "Texture.h"
 
 namespace omega
 {
@@ -38,69 +36,77 @@ namespace omega
 	class Texture;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API RenderTarget: public GpuResource
+	class OMEGA_API RenderTarget
 	{
 	public:
-		enum Type {
-			//! Render to the main framebuffer. Supports readback targets.
-			RenderOnscreen, 
-			//! Render to an offscreen buffer. Supports readback targets.
-			RenderOffscreen, 
-			//! Render to a texture. Supports texture and readback targets.
-			RenderToTexture};
+		enum Type { TypeFrameBuffer, TypeRenderBuffer, TypeTexture};
 
 	public:
-		RenderTarget(GpuContext* context, Type type, GLuint id = 0);
+		RenderTarget();
 		~RenderTarget();
+
+		//! Initalization
+		//@{
+		void initialize(Type type = TypeFrameBuffer, int width = 0, int height = 0);
+		bool isInitialized();
+		//@}
 
 		//! Render target configuration
 		//@{
 		int getWidth();
 		int getHeight();
 		Type getType();
-		void setTextureTarget(Texture* color, Texture* depth = NULL);
-		void setReadbackTarget(PixelData* color, PixelData* depth = NULL);
-		void setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport);
+		void setColorTarget(Texture* target);
 		//@}
 
 		//! Drawing
 		//@{
-		void bind();
-		void unbind();
-		bool isBound();
-		void readback();
-		void clear();
+		void beginDraw();
+		void endDraw();
+		GLuint getGLId();
+		void setGLId(GLuint value);
 		//@}
 
-		GLuint getId() { return myId; };
-
 	private:
+		bool myInitialized;
 		GLuint myId;
+		int myWidth;
+		int myHeight;
 		Type myType;
-		bool myBound;
+		bool myDrawing;
 
-		// Render buffer stuff
-		GLuint myRbColorId;
-		GLuint myRbDepthId;
-		int myRbWidth;
-		int myRbHeight;
-
-		// Target stuff
-		Texture* myTextureColorTarget;
-		Texture* myTextureDepthTarget;
-
-		PixelData* myReadbackColorTarget;
-		PixelData* myReadbackDepthTarget;
-		Rect myReadbackViewport;
+		Texture* myColorTarget;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline bool RenderTarget::isInitialized() 
+	{ return myInitialized; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int RenderTarget::getWidth() 
+	{ return myWidth; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int RenderTarget::getHeight() 
+	{ return myHeight; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline RenderTarget::Type RenderTarget::getType() 
 	{ return myType; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool RenderTarget::isBound()
-	{ return myBound; }
+	inline GLuint RenderTarget::getGLId() 
+	{
+		oassert(myInitialized);
+		return myId; 
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void RenderTarget::setGLId(GLuint id) 
+	{
+		oassert(myInitialized);
+		myId = id; 
+	}
 }; // namespace omega
 
 #endif

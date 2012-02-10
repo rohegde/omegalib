@@ -25,8 +25,13 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Application.h"
+#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
+#include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
+#include "omega/StringUtils.h"
+
+#include "libconfig/ArgumentHelper.h"
 
 #define GLEW_MX
 #include "GL/glew.h"
@@ -58,7 +63,7 @@ void displayCallback(void)
 	lt = t;
 
 	as->update(uc);
-	//ac->update(uc);
+	ac->update(uc);
 
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -79,20 +84,21 @@ void displayCallback(void)
 	glGetFloatv( GL_MODELVIEW_MATRIX, dc.modelview.data() );
 	glGetFloatv( GL_PROJECTION_MATRIX, dc.projection.data() );
 
-	//dc.drawBuffer = ds->getFrameBuffer();
+	dc.drawBuffer = ds->getFrameBuffer();
 
 	// Process events.
 	ServiceManager* im = SystemManager::instance()->getServiceManager();
 	int av = im->getAvailableEvents();
 	if(av != 0)
 	{
-		Event evts[OMICRON_MAX_EVENTS];
+		Event evts[OMEGA_MAX_EVENTS];
 		im->getEvents(evts, ServiceManager::MaxEvents);
 
 		// Dispatch events to application server.
 		for( int evtNum = 0; evtNum < av; evtNum++)
 		{
 			as->handleEvent(evts[evtNum]);
+			ac->handleEvent(evts[evtNum]);
 		}
 	}
 
@@ -188,10 +194,6 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 	glutDisplayFunc(displayCallback); 
 
-	myGpu = new GpuManager();
-	myGpu->initialize();
-	myGpuContext = new GpuContext(myGpu);
-
 	// Setup and initialize the application server and client.
 	Application* app = SystemManager::instance()->getApplication();
 	if(app)
@@ -201,10 +203,9 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 
 		myAppServer->initialize();
 
-		//myFrameBuffer = new RenderTarget();
-		//myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
+		myFrameBuffer = new RenderTarget();
+		myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, myResolution[0], myResolution[1]);
 		//myAppClient->setup();
-		myAppClient->setGpuContext(myGpuContext);
 		myAppClient->initialize();
 	}
 }
