@@ -123,7 +123,7 @@ if(OMEGA_BUILD_VTK_LIB)
 	endif(NOT VTK_DIR)
 	include(${VTK_USE_FILE})
 	
-	add_subdirectory(ovtk)
+	add_subdirectory(omegaVtk)
 	#if(OMEGA_BUILD_APPS)
 		#add_subdirectory(apps/vtkviewer)
 	#endif(OMEGA_BUILD_APPS)

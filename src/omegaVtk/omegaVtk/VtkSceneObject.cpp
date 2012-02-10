@@ -24,14 +24,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "ovtk/VtkModule.h"
-#include "ovtk/VtkSceneObject.h"
+#include "omegaVtk/VtkModule.h"
+#include "omegaVtk/VtkSceneObject.h"
 
 #include <vtkMatrix4x4.h>
 #include <vtkActor.h>
 
 using namespace omega;
-using namespace ovtk;
+using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkSceneObject::VtkSceneObject(const String& name): myName(name)

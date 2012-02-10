@@ -27,11 +27,11 @@
 #ifndef __PYTHON_UI_EVENT_HANDLER_H__
 #define __PYTHON_UI_EVENT_HANDLER_H__
 
-#include "ovtk/ovtkbase.h"
+#include "omegaVtk/ovtkbase.h"
 
 #include "omega/osystem.h"
 
-//namespace ovtk
+//namespace omegaVtk
 //{
 //	using namespace omega;
 //	using namespace omega::ui;

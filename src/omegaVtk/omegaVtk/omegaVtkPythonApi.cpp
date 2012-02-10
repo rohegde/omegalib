@@ -25,12 +25,12 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
-#include "ovtk/PyVtk.h"
-#include "ovtk/VtkModule.h"
+#include "omegaVtk/PyVtk.h"
+#include "omegaVtk/VtkModule.h"
 
 #include <vtkPython.h>
 
-using namespace ovtk;
+using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //static PyObject* ovtk_addActor(PyObject* self, PyObject* args)

@@ -33,7 +33,7 @@
 
 class vtkProp3D;
 class vtkMatrix4x4;
-namespace ovtk {
+namespace omegaVtk {
 
 	using namespace omega;
 	using namespace omegaToolkit;
