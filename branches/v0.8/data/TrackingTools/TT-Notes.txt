@@ -1,0 +1,40 @@
+2010-11-03_MainLab.ttp
+	-EVERYONE SHOULD BE USING THIS PROJECT FILE all others are out of date
+	-check each camera to see if it is on and functioning correctly
+	 you may need to re-open the file a few times to get it to work
+	-Rigid bodies:
+		Head		- id 1
+		Handheld	- id 2
+		Light		- id 3
+		OldHead		- id 4
+	**Please note any changes made to the project file here
+
+
+2010-06-28_WorldCoordinates.ttp
+	-EVERYONE SHOULD BE USING THIS PROJECT FILE all others are out of date
+	-same problems as always, check to see all cameras are functioning
+	-Rigid bodies:
+		Head		- id 1
+		Handheld	- id 2
+
+otest 2010-06-16 1.46pm.ttp
+	-double click on this file to launch tracking tools
+	-check each camera to see if it is on and functioning correctly
+	 you may need to re-open the file a few times to get it to work
+	-there are two rigid bodies in the scene:
+		Glasses 	- id 1
+		Hand Held 	- id 2
+		**Please do not change the id's of these rigid bodies
+		  without noting it here
+
+GENERAL NOTES & COMMENTS:
+
+	-The object ID numbers set inside of Tracking Tools are used to
+	 distinguish between rigid bodies at the application level.
+
+	-For the purposes of OpenGL the definitions of pitch, roll, and
+	 yaw are as follows:
+		pitch - rotation about the x-axis
+		roll  - rotation about the z-axis
+		yaw   - rotation about the y-axis
+		*pitch and roll are switched in tracking tools
