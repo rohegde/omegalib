@@ -26,6 +26,8 @@
  *************************************************************************************************/
 #include "meshviewer.h"
 
+#define EVL_DEMO
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label):
 	myMeshData(data),
@@ -80,11 +82,18 @@ Entity::~Entity()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::show()
 {
+#ifdef EVL_DEMO
+	mySceneNode->setPosition(0, 0, 0.0f);
+	mySceneNode->setScale( 3.0 , 3.0 , 3.0 );
+	mySceneNode->roll( Math::Pi / 2 );
+#else
 	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
-	mySceneNode->resetOrientation();
+#endif	
+	//mySceneNode->resetOrientation();
 	mySceneNode->setVisible(true);
 	myInteractor->setSceneNode(mySceneNode);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,6 +147,14 @@ void MeshViewer::initialize()
 	light->setEnabled(true);
 	light->setColor(Color(0.5f, 0.5f, 0.5f));
 	light->setPosition(Vector3f(0, 3, 3));
+	//Light::setAmbientLightColor(Color(0.2f, 0.2f, 0.2f, 1.0f));
+	Light::setAmbientLightColor(Color::Black);
+	
+	// Setup lighting
+	light = Light::getLight(1);
+	light->setEnabled(true);
+	light->setColor(Color(0.5f, 0.5f, 0.8f));
+	light->setPosition(Vector3f(0, -3, 3));
 	Light::setAmbientLightColor(Color::Black);
 	
 	// Create a reference box around the scene.
@@ -206,7 +223,7 @@ void MeshViewer::initUi()
 
 	Container* root = UiModule::instance()->getUi(0);
 
-	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
+	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutVertical);
 	//entityButtons->setDebugModeEnabled(true);
 
 	entityButtons->setPosition(Vector2f(5, 5));
@@ -280,6 +297,41 @@ void MeshViewer::handleUiEvent(const Event& evt)
 		int scale = evt.getExtraDataInt(0);
 		mySelectedEntity->getSceneNode()->setScale(scale, scale, scale);
 	}
+	else if(evt.getSourceId() == 130)
+	{
+		mySelectedEntity->yaw = (float)evt.getExtraDataInt(0) / 360 * Math::TwoPi;
+		mySelectedEntity->getSceneNode()->setOrientation(Quaternion::Identity());
+		mySelectedEntity->getSceneNode()->yaw(mySelectedEntity->yaw);
+		mySelectedEntity->getSceneNode()->pitch(mySelectedEntity->pitch);
+		mySelectedEntity->getSceneNode()->roll(mySelectedEntity->roll);
+	}
+	else if(evt.getSourceId() == 131)
+	{
+		mySelectedEntity->pitch = (float)evt.getExtraDataInt(0) / 360 * Math::TwoPi;
+		mySelectedEntity->getSceneNode()->setOrientation(Quaternion::Identity());
+		mySelectedEntity->getSceneNode()->yaw(mySelectedEntity->yaw);
+		mySelectedEntity->getSceneNode()->pitch(mySelectedEntity->pitch);
+		mySelectedEntity->getSceneNode()->roll(mySelectedEntity->roll);
+	}
+	else if(evt.getSourceId() == 132)
+	{
+		mySelectedEntity->roll = (float)evt.getExtraDataInt(0) / 360 * Math::TwoPi;
+		mySelectedEntity->getSceneNode()->setOrientation(Quaternion::Identity());
+		mySelectedEntity->getSceneNode()->yaw(mySelectedEntity->yaw);
+		mySelectedEntity->getSceneNode()->pitch(mySelectedEntity->pitch);
+		mySelectedEntity->getSceneNode()->roll(mySelectedEntity->roll);
+	}
+	else if(evt.getSourceId() == 133)
+	{
+		// if(evt.getExtraDataInt(0) == 1)
+		// {
+			// mySelectedEntity->getSceneNode()->setEffect(mySelectedEntity->myFx);
+		// }
+		// else
+		// {
+			// mySelectedEntity->getSceneNode()->setEffect(NULL);
+		// }
+	}
 	else
 	{
 		for(int i = 0; i < myEntityButtons.size(); i++)
@@ -309,7 +361,8 @@ void MeshViewer::update(const UpdateContext& context)
 	{
 		if ( autoRotate )
 		{
-			daSceneNode->yaw( 0.01f );
+			daSceneNode->yaw( 0.1f * context.dt);
+			daSceneNode->pitch( 0.01f * context.dt);
 		}
 	
 		if( deltaScale != 0 )
