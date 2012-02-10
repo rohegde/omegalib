@@ -49,6 +49,12 @@ public:
 	Mesh* getMesh() { return myMesh; }
 	const String& getName() { return myName; }
 	const String& getLabel() { return myLabel; }
+
+public:
+	float yaw;
+	float pitch;
+	float roll;
+	MultipassEffect* myFx;
 	
 private:
 	EngineServer* myServer;
@@ -58,6 +64,7 @@ private:
 	Actor* myInteractor;
 	String myName;
 	String myLabel;
+	
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
