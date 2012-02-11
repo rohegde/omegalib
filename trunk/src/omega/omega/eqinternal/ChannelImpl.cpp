@@ -234,8 +234,11 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	myDC.task = DrawContext::SceneDrawTask;
 	client->draw(myDC);
 
-	myDC.task = DrawContext::OverlayDrawTask;
-	getClient()->draw(myDC);
+	if(getEye() != eq::fabric::EYE_CYCLOP)
+	{
+		myDC.task = DrawContext::OverlayDrawTask;
+		getClient()->draw(myDC);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,11 +246,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
 
-	if(myLastFrame != frameID) 
-	{
-		myLastFrame = frameID;
-		return;
-	}
+	if(getEye() != eq::fabric::EYE_LAST && getEye() != eq::fabric::EYE_CYCLOP) return;
 
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
