@@ -226,8 +226,8 @@ void MeshViewer::initUi()
 	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutVertical);
 	//entityButtons->setDebugModeEnabled(true);
 
-	entityButtons->setPosition(Vector2f(5, 5));
-	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
+	entityButtons->setPosition(Vector2f(500, 5));
+	entityButtons->setSize(Vector2f(300, 300));
 
 	if(myTabletManager != NULL)
 	{
@@ -255,6 +255,13 @@ void MeshViewer::initUi()
 		myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
 		myTabletManager->finishGui();
 	}
+
+	Image* img = wf->createImage("img", root);
+	img->setStereo(true);
+	ImageData* imgData = ImageUtils::loadImage("images/artInstitute.jpg");
+	img->setData(imgData->getPixels());
+	img->setPosition(Vector2f(0, 0));
+	img->setSize(Vector2f(470, 470));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

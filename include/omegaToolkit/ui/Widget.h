@@ -133,6 +133,8 @@ namespace omegaToolkit { namespace ui {
 		int getId();
 		virtual void layout();
 
+		void setStereo(bool value) { myStereo = value; }
+		bool isStereo() { return myStereo; }
 	protected:
 		//! internal layout management
 		//@{
@@ -152,6 +154,7 @@ namespace omegaToolkit { namespace ui {
 		//float myScale;
 
 	private:
+		bool myStereo;
 		bool myInitialized;
 
 		EngineServer* myServer;
@@ -195,8 +198,12 @@ namespace omegaToolkit { namespace ui {
 		void preDraw();
 		void postDraw();
 
+		//! Gets the current renderstate (accessible inside drawContent)
+		RenderState* getRenderState() { return myRenderState; }
+
 	private:
 		Widget* myOwner;
+		RenderState* myRenderState;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

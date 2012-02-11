@@ -399,7 +399,14 @@ void ContainerRenderable::draw(RenderState* state)
 	preDraw();
 
     // draw myself.
-	drawContent();
+	if(myOwner->isStereo())
+	{
+		if(state->context->eye != DrawContext::EyeCyclop) drawContent();
+	}
+	else
+	{
+		if(state->context->eye == DrawContext::EyeCyclop) drawContent();
+	}
 
 	// draw children.
 	foreach(Widget* w, myOwner->myChildren)
