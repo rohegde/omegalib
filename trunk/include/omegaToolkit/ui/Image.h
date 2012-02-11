@@ -43,7 +43,7 @@ namespace omegaToolkit { namespace ui {
 		Renderable* createRenderable();
 
 		PixelData* getData();
-		void setData(PixelData* value);
+		void setData(PixelData* data);
 
 		void setAutoRefresh(bool value) { myAutoRefresh = value; }
 		bool isAutoRefreshEnabled() { return myAutoRefresh; }

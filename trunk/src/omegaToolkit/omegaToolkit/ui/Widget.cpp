@@ -41,6 +41,7 @@ NameGenerator Widget::mysNameGenerator("Widget_");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Widget::Widget(EngineServer* server):
+	myStereo(false),
 	myInitialized(false),
 	myServer(server),
 	myEventHandler(NULL),
@@ -231,9 +232,26 @@ void WidgetRenderable::postDraw()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WidgetRenderable::draw(RenderState* state)
 {
-	preDraw();
-	drawContent();
-	postDraw();
+	myRenderState = state;
+
+	if(myOwner->isStereo())
+	{
+		if(state->context->eye != DrawContext::EyeCyclop) 
+		{
+			preDraw();
+			drawContent();
+			postDraw();
+		}
+	}
+	else
+	{
+		if(state->context->eye == DrawContext::EyeCyclop) 
+		{
+			preDraw();
+			drawContent();
+			postDraw();
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

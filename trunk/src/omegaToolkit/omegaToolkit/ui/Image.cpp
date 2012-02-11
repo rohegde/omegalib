@@ -81,7 +81,22 @@ void ImageRenderable::drawContent()
 		// Not very efficient but works for now.
 		if(myOwner->myAutoRefresh) refresh();
 
-		getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize());
+		if(myOwner->isStereo())
+		{
+			DrawContext::Eye eye = getRenderState()->context->eye;
+			if(eye == DrawContext::EyeLeft)
+			{
+				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), Renderer::FlipY, Vector2f(0, 0), Vector2f(0.5f, 1.0f));
+			}
+			else if(eye == DrawContext::EyeRight)
+			{
+				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), Renderer::FlipY, Vector2f(0.5f, 0), Vector2f(1.0f, 1.0f));
+			}
+		}
+		else
+		{
+			getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), Renderer::FlipY);
+		}
 	}
 	else
 	{

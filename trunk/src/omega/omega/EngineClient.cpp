@@ -132,7 +132,12 @@ void EngineClient::finishFrame(const FrameInfo& frame)
 void EngineClient::draw(const DrawContext& context)
 {
 #ifdef OMEGA_DEBUG_FLOW
-	ofmsg("EngineClient::draw %1%", %context.frameNum);
+	String eyeName = "Cyclops";
+	if(context.eye == DrawContext::EyeLeft) eyeName = "EyeLeft";
+	else if(context.eye == DrawContext::EyeRight) eyeName = "EyeRight";
+	String task = "Scene";
+	if(context.task == DrawContext::OverlayDrawTask) task = "Overlay";
+	ofmsg("EngineClient::draw frame=%1% task=%2% eye=%3%", %context.frameNum %task %eyeName);
 #endif
 
 	// First of all make sure all render passes are initialized.
@@ -180,7 +185,8 @@ void EngineClient::innerDraw(const DrawContext& context)
 	}
 
 	// Draw the pointers and console
-	if(context.task == DrawContext::OverlayDrawTask)
+	if(context.task == DrawContext::OverlayDrawTask && 
+		context.eye == DrawContext::EyeCyclop)
 	{
 		RenderState state;
 		state.pass = NULL;
@@ -189,7 +195,7 @@ void EngineClient::innerDraw(const DrawContext& context)
 		state.context = &context;
 
 		getRenderer()->beginDraw2D(context);
-	
+
 		if(myServer->isConsoleEnabled())
 		{
 			myServer->getConsole()->getRenderable(this)->draw(&state);

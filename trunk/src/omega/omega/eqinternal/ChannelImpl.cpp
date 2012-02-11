@@ -198,6 +198,21 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
+	if(frameID == 1)
+	{
+		String name = getName();
+		vector<String> args = StringUtils::split(name, "x,");
+		int cx = atoi(args[0].c_str());
+		int cy = atoi(args[1].c_str());
+
+		ChannelImpl* channel = sCanvasChannelPointers[cx][cy];
+		if(channel != this)
+		{
+			ofmsg("Initializing leaf channel for main channel %1%x%2%", %cx %cy);
+			myChannelInfo = channel->myChannelInfo;
+		}
+		return;
+	}
 
 	// Clear the frame buffer using the background color specified in display system.
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -218,6 +233,9 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	myDC.layer = view->getLayer();
 	myDC.task = DrawContext::SceneDrawTask;
 	client->draw(myDC);
+
+	myDC.task = DrawContext::OverlayDrawTask;
+	getClient()->draw(myDC);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,18 +243,19 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
 
+	if(myLastFrame != frameID) 
+	{
+		myLastFrame = frameID;
+		return;
+	}
+
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
 
-	// In frame finish we just perform overlay draw operations, so always force the eye to be 
-	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
-	// Ignore the second call (Right Eye)
-	//if(getEye() == eq::fabric::EYE_RIGHT) return;
-
 	setupDrawContext(&myDC, frameID);
-	myDC.eye = DrawContext::EyeCyclop;
 	myDC.layer = getLayers();
 	myDC.task = DrawContext::OverlayDrawTask;
+	myDC.eye = DrawContext::EyeCyclop;
 
 	EQ_GL_CALL( applyBuffer( ));
 	EQ_GL_CALL( applyViewport( ));
@@ -306,4 +325,11 @@ bool ChannelImpl::isDrawFpsEnabled()
 {
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	return view->isDrawFpsEnabled();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ChannelImpl::frameAssemble( const eq::uint128_t& spin)
+{
+	Channel::frameAssemble(spin);
+	//omsg("Channel::frameAssemble");
 }
