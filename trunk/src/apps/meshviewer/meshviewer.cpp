@@ -256,12 +256,36 @@ void MeshViewer::initUi()
 		myTabletManager->finishGui();
 	}
 
-	Image* img = wf->createImage("img", root);
-	img->setStereo(true);
-	ImageData* imgData = ImageUtils::loadImage("images/artInstitute.jpg");
-	img->setData(imgData->getPixels());
-	img->setPosition(Vector2f(0, 0));
-	img->setSize(Vector2f(470, 470));
+	// Create a reference box around the scene.
+	Config* cfg = getSystemManager()->getAppConfig();
+	if(cfg->exists("config/images"))
+	{
+		Setting& images = cfg->lookup("config/images");
+		for(int i = 0; i < images.getLength(); i++)
+		{
+			Setting& imageSetting = images[i];
+
+			String& fileName = Config::getStringValue("source", imageSetting, "");
+			if(fileName != "")
+			{
+				Image* img = wf->createImage("img", root);
+
+				bool stereo = Config::getBoolValue("stereo", imageSetting, false);
+
+				img->setStereo(stereo);
+				ImageData* imgData = ImageUtils::loadImage(fileName);
+				img->setData(imgData->getPixels());
+
+				Vector2f position = Config::getVector2fValue("position", imageSetting, Vector2f(0, 0));
+				Vector2f size = Config::getVector2fValue("size", imageSetting, 
+					Vector2f(imgData->getWidth() / (stereo ? 2 : 1), imgData->getHeight()));
+				float scale = Config::getFloatValue("scale", imageSetting, 1);
+
+				img->setPosition(position);
+				img->setSize(size * scale);
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
