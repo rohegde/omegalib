@@ -265,7 +265,7 @@ void MeshViewer::initUi()
 		{
 			Setting& imageSetting = images[i];
 
-			String& fileName = Config::getStringValue("source", imageSetting, "");
+			String fileName = Config::getStringValue("source", imageSetting, "");
 			if(fileName != "")
 			{
 				Image* img = wf->createImage("img", root);
