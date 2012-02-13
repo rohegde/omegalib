@@ -44,6 +44,9 @@ ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::M
 
 omega::Lock sLock;
 
+//! Comment do disable running of overlay render tasks.
+#define ENABLE_OVERLAY_TASK
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
 	:eq::Channel( parent ), myWindow(parent), myInitialized(false), myDrawBuffer(NULL)
@@ -234,18 +237,20 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	myDC.task = DrawContext::SceneDrawTask;
 	client->draw(myDC);
 
+#ifdef ENABLE_OVERLAY_TASK
 	if(getEye() != eq::fabric::EYE_CYCLOP)
 	{
 		myDC.task = DrawContext::OverlayDrawTask;
 		getClient()->draw(myDC);
 	}
+#endif 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
-
+#ifdef ENABLE_OVERLAY_TASK
 	if(getEye() != eq::fabric::EYE_LAST && getEye() != eq::fabric::EYE_CYCLOP) return;
 
 	// Skip the first frame to give time to the channels to initialize
@@ -283,6 +288,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	}
 
 	EQ_GL_CALL( resetAssemblyState( ));
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
