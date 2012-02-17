@@ -54,7 +54,8 @@ Widget::Widget(EngineServer* server):
 	myUserMoveEnabled(false),
 	myMoving(false),
 	myMaximumSize(FLT_MAX, FLT_MAX),
-	myMinimumSize(0, 0)
+	myMinimumSize(0, 0),
+	myActive(false)
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();
@@ -83,6 +84,65 @@ void Widget::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::handleEvent(const Event& evt) 
 {
+	Vector2f pos2d = vector3to2(evt.getPosition());
+	if(myActive)
+	{
+		if(evt.getType() == Event::Zoom)
+		{
+			float val = evt.getExtraDataInt(0);
+			if(val != 0)
+			{
+				float sc = 0.0f;
+				if(val < 0) sc = 0.9f;
+				else sc = 1.1f;
+
+				float width = mySize[0] * sc;
+				float height = mySize[1] * sc;
+
+				setSize(Vector2f(width, height));
+			}
+		}
+	}
+	if(hitTest(transformPoint(pos2d)))
+	{
+		if(!evt.isProcessed())
+		{
+			if(myUserMoveEnabled)
+			{
+				if(evt.getType() == Event::Down)
+				{
+					myUserMovePosition = pos2d;
+					evt.setProcessed();
+					myMoving = true;
+					myActive = true;
+				}
+				else if(evt.getType() == Event::Move && myMoving)
+				{
+					Vector2f delta = pos2d - myUserMovePosition;
+					myUserMovePosition = pos2d;
+
+					myPosition += delta;
+					evt.setProcessed();
+				}
+				else if(myMoving && evt.getType() == Event::Up)
+				{
+					myMoving = false;
+					myActive = false;
+					evt.setProcessed();
+				}
+				//if(evt.getType() == Event::Rotate)
+				//{
+				//	myRotation += evt.rotation[0];
+				//	evt.setProcessed();
+				//}
+			}
+		}
+	}
+	else
+	{
+		myMoving = false;
+		myActive = false;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

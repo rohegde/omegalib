@@ -283,6 +283,7 @@ void MeshViewer::initUi()
 
 				img->setPosition(position);
 				img->setSize(size * scale);
+				img->setUserMoveEnabled(true);
 			}
 		}
 	}
