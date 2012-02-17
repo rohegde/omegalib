@@ -65,13 +65,24 @@ void displayCallback(void)
 
 	// setup the context viewport.
 	DrawContext dc;
+	ChannelInfo ci;
+	Vector2i canvasChannels(1, 1);
+	Vector2i canvasSize(1, 1);
+
+	ci.canvasChannels = &canvasChannels;
+	ci.canvasSize = &ds->getCanvasSize();
+	ci.index = Vector2i(0, 0);
+	ci.offset = Vector2i(0, 0);
+	ci.size = ds->getCanvasSize();
 	dc.frameNum = frame++;
+	dc.channel = &ci;
+	dc.gpuContext = ds->getGpuContext();
 
 	ds->updateProjectionMatrix();
 
 	// Push observer matrix.
 	glPushMatrix();
-	AffineTransform3 mat = ds->getObserver().getViewTransform();
+	AffineTransform3 mat = ds->getObserver(0)->getViewTransform();
 	glLoadIdentity();
 	glLoadMatrixf(mat.data());
 
@@ -97,6 +108,10 @@ void displayCallback(void)
 	}
 
 	dc.layer = ds->getLayer(NULL);
+	dc.eye = DrawContext::EyeCyclop;
+	dc.task = DrawContext::SceneDrawTask;
+	ac->draw(dc);
+	dc.task = DrawContext::OverlayDrawTask;
 	ac->draw(dc);
 
 	glPopMatrix();
