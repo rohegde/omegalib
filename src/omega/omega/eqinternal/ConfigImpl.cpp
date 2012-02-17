@@ -205,15 +205,22 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 				event->data.pointerButtonPress.y,
 				pos, ray);
 			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-			MouseService::mouseButtonCallback(buttons, 0, x, y);
+			MouseService::mouseButtonCallback(buttons, 0, pos[0], pos[1]);
 			MouseService::instance()->setPointerRay(ray);
 			return true;
 		}
 	case eq::Event::WINDOW_POINTER_WHEEL:
 		{
 			int wheel = event->data.pointerWheel.xAxis;
+			Vector2i pos;
+			Ray ray;
+			processMousePosition(
+				this->find<eq::Window>(event->data.originator),
+				event->data.pointerWheel.x,
+				event->data.pointerWheel.y,
+				pos, ray);
 			uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-			MouseService::mouseWheelCallback(buttons, wheel, 0, 0);
+			MouseService::mouseWheelCallback(buttons, wheel, pos[0], pos[1]);
 			return true;
 		}
 	}

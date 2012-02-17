@@ -123,8 +123,8 @@ namespace omegaToolkit { namespace ui {
 		bool isVisible();
 		void setVisible(bool value);
 
-		//bool isUserMoveEnabled() { return myUserMoveEnabled; }
-		//void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
+		bool isUserMoveEnabled() { return myUserMoveEnabled; }
+		void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
 		
 		bool hitTest(const omega::Vector2f& point);
 		static bool hitTest(const omega::Vector2f& point, const omega::Vector2f& pos, const omega::Vector2f& size);
@@ -179,6 +179,7 @@ namespace omegaToolkit { namespace ui {
 		omega::Vector2f myUserMovePosition;
 
 		bool myVisible;
+		bool myActive;
 
 		// Size constraints.
 		omega::Vector2f myMinimumSize;
