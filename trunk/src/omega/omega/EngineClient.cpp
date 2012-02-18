@@ -94,6 +94,8 @@ void EngineClient::initialize()
 		Font* fnt = myRenderer->createFont(fi.name, fi.filename, fi.size);
 		myRenderer->setDefaultFont(fnt);
 	}
+
+	myServer->clientInitialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

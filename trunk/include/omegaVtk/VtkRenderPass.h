@@ -55,7 +55,7 @@ namespace omegaVtk
 		static RenderPass* createInstance(EngineClient* client) { return new VtkRenderPass(client, "VtkRenderPass"); }
 
 	public:
-		VtkRenderPass(EngineClient* client, const String& name): RenderPass(client, name) {}
+		VtkRenderPass(EngineClient* client, const String& name);
 		virtual ~VtkRenderPass();
 
 		void initialize();

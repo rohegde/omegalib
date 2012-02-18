@@ -42,6 +42,7 @@ namespace omegaVtk {
 	class OVTK_API VtkSceneObject: public RenderableSceneObject
 	{
 	public:
+		VtkSceneObject();
 		VtkSceneObject(const String& name);
 		~VtkSceneObject();
 

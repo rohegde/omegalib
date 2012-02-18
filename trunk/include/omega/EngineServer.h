@@ -41,6 +41,15 @@
 namespace omega {
 
 	typedef List<EngineClient*> EngineClientList;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	template<typename T> class ClientObject
+	{
+	public:
+		T& operator[](EngineClient* c) { return myObjs[c]; }
+	private:
+		Dictionary<EngineClient*, T> myObjs;
+	};
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API EngineServer: public ApplicationServer
@@ -106,16 +115,30 @@ namespace omega {
 		CameraCollection::Range getCameras();
 		CameraCollection::ConstRange getCameras() const;
 
+		//! Old initialization entry point. Deprecated now. use onInitalize instead.
+		//! @remarks when reimplementing initalize, user code must call Engine::initialize() explicitly.
 		virtual void initialize();
+		//! Internal method.
+		void clientInitialize(EngineClient* client);
+
 		virtual void finalize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
+
+		//! Called once after engine server initialization
+		virtual void onInitialize() {}
+		//! Called once after each engine client (that is, local render thread) initialization.
+		//! @remarks This method is guaranteed to be invoked after onInitialize
+		virtual void onClientInitialize(EngineClient* client) {}
 
 	private:
 		//! Draw pointer objects inside a specific client context.
 		void drawPointers(EngineClient* client, RenderState* state);
 
 	private:
+		// Engine lock, used when client / server thread synchronization is needed.
+		Lock myLock;
+
 		List<EngineClient*> myClients;
 
 		Dictionary<String, RenderPassFactory> myRenderPassFactories;

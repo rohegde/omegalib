@@ -24,104 +24,91 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omegaVtk/VtkModule.h"
-#include "omegaVtk/VtkSceneObject.h"
+#include <omega.h>
+#include <omegaToolkit.h>
+#include <omegaVtk.h>
 
-#include <vtkMatrix4x4.h>
+#include <vtkSphereSource.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 #include <vtkActor.h>
 
 using namespace omega;
+using namespace omegaToolkit;
 using namespace omegaVtk;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject::VtkSceneObject(): myName("VtkSceneObject")
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class VtkScene: public EngineServer
 {
-	VtkModule::instance()->registerSceneObject(this);
-	myMatrix = vtkMatrix4x4::New();
-}
+public:
+	VtkScene(Application* app);
+	virtual void onInitialize();
+	virtual void onClientInitialize(EngineClient* cli);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject::VtkSceneObject(const String& name): myName(name)
-{
-	VtkModule::instance()->registerSceneObject(this);
-	myMatrix = vtkMatrix4x4::New();
-}
+private:
+	VtkModule* myVtkModule;
+	SceneNode* mySceneNode;
+	DefaultMouseInteractor* myMouseInteractor;
+	VtkSceneObject* myVtkObject;
+	vtkSphereSource* mySphere;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject::~VtkSceneObject()
-{
-	VtkModule::instance()->unregisterSceneObject(this);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* VtkSceneObject::createRenderable()
-{
-	return new VtkRenderable();
-}
+	// Client objecs.
+	ClientObject<vtkPolyDataMapper*> myPolyDataMapper;
+	ClientObject<vtkActor*> myActor;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkSceneObject::update(SceneNode* owner)
+VtkScene::VtkScene(Application* app): 
+	EngineServer(app) 
 {
-	const AffineTransform3& xform =  owner->getFullTransform();
-	const omega::math::matrix<4, 4>& m = xform.matrix();
-	for(int i = 0; i < 4; i++)
-	{
-		for(int j = 0; j < 4; j++)
-		{
-			myMatrix->SetElement(i, j, m(i, j));
-		}
-	}
-	foreach(Renderable* r, getRenderables())
-	{
-		VtkRenderable* vtkr = dynamic_cast<VtkRenderable*>(r);
-		vtkProp3D* vtkProp = vtkr->getActor();
-		if(vtkProp != NULL)
-		{
-			vtkProp->SetUserMatrix(myMatrix);
-		}
-	}
+	myVtkModule = new VtkModule();
+	EngineModuleServices::addModule(myVtkModule);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-vtkProp3D* VtkSceneObject::getFirstProp()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkScene::onInitialize()
 {
-	Renderable* r = getFirstRenderable();
-	if(r != NULL)
-	{
-		VtkRenderable* vtkr = dynamic_cast<VtkRenderable*>(r);
-		return vtkr->getActor();
-	}
-	return NULL; 
+	// As simple as it gets: create a sphere in vtk.
+	mySphere = vtkSphereSource::New(); 
+	mySphere->SetRadius(0.20); 
+	mySphere->SetThetaResolution(18); 
+	mySphere->SetPhiResolution(18);
+
+	mySceneNode = new SceneNode(this);
+	getScene(0)->addChild(mySceneNode);
+
+	myVtkObject = new VtkSceneObject("vtk");
+	mySceneNode->addObject(myVtkObject);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-bool VtkSceneObject::hasBoundingBox() 
-{ 
-	vtkProp3D* p = getFirstProp();
-	return (p != NULL);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkScene::onClientInitialize(EngineClient* cli)
+{
+	myPolyDataMapper[cli] = vtkPolyDataMapper::New();
+	myPolyDataMapper[cli]->SetInput(mySphere->GetOutput());
+	myActor[cli] = vtkActor::New(); 
+	myActor[cli]->SetMapper(myPolyDataMapper[cli]); 
+	myActor[cli]->GetProperty()->SetColor(0,0,1);
+	myActor[cli]->SetPosition(0, 0, -1);
+
+	myVtkModule->beginClientInitialize(cli);
+	myVtkModule->attachActor(myActor[cli], myVtkObject);
+	myVtkModule->endClientInitialize();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-const AlignedBox3* VtkSceneObject::getBoundingBox()
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Application entry point
+int main(int argc, char** argv)
 {
-	vtkProp3D* prop = getFirstProp();
-	if(prop != NULL)
-	{
-		// We have to make sure no transformation is applied to the actor, to get back the
-		// original bounding box.
-		myMatrix->Identity();
-		prop->SetUserMatrix(myMatrix);
+	EngineApplication<VtkScene> app;
 
-		double* bounds = prop->GetBounds();
-		float fbounds[6];
-		fbounds[0] = bounds[0];
-		fbounds[1] = bounds[1];
-		fbounds[2] = bounds[2];
-		fbounds[3] = bounds[3];
-		fbounds[4] = bounds[4];
-		fbounds[5] = bounds[5];
-		myBBox.setExtents(fbounds[0], fbounds[2], fbounds[4], fbounds[1], fbounds[3], fbounds[5]);
-		return &myBBox;
-	}
-	return NULL;
+	// Read config file name from command line or use default one.
+	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 
+	// So, we are going to load directly a system configuration file.
+	const char* cfgName = "system/desktop.cfg";
+	if(argc == 2) cfgName = argv[1];
+
+	omain(app, cfgName, "vtkScene.log", new FilesystemDataSource(OMEGA_DATA_PATH));
+
+	return 0;
 }

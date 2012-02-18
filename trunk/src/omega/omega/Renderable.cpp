@@ -56,6 +56,17 @@ RenderableFactory::~RenderableFactory()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable* RenderableFactory::addRenderable(EngineClient* cli)
+{
+	Renderable* r = createRenderable();
+	r->setClient(cli);
+	myRenderables.push_back(r);
+	RenderableCommand rc(r, RenderableCommand::Initialize);
+	cli->queueRenderableCommand(rc);
+	return r;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void RenderableFactory::initialize(EngineServer* srv)
 {
 	if(!myInitialized)
@@ -64,14 +75,7 @@ void RenderableFactory::initialize(EngineServer* srv)
 		myServer = srv;
 		foreach(EngineClient* client, srv->getClients())
 		{
-			Renderable* r = createRenderable();
-			if(r != NULL)
-			{
-				r->setClient(client);
-				myRenderables.push_back(r);
-				RenderableCommand rc(r, RenderableCommand::Initialize);
-				client->queueRenderableCommand(rc);
-			}
+			addRenderable(client);
 		}
 		myInitialized = true;
 	}
@@ -114,13 +118,15 @@ Renderable* RenderableFactory::getRenderable(EngineClient* client)
 	{
 		if(r->getClient() == client) return r;
 	}
-	return NULL;
+	// A renderable has not ben created yet for the specified client. do it now.
+	return addRenderable(client);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderable* RenderableFactory::getFirstRenderable()
 {
-	return myRenderables.front();
+	if(myRenderables.size() != 0) return myRenderables.front();
+	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

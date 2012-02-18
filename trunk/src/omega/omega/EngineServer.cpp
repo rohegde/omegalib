@@ -49,6 +49,7 @@ EngineServer::EngineServer(Application* app):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EngineServer::initialize()
 {
+	myLock.lock();
 	ImageUtils::internalInitialize();
 
 	for(int i = 0; i < MaxScenes; i++)
@@ -95,6 +96,18 @@ void EngineServer::initialize()
 
 	// Initialize modules
 	EngineModuleServices::initialize(this);
+
+	onInitialize();
+	myLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EngineServer::clientInitialize(EngineClient* client)
+{
+	// Make sure onClientInitialize is always called after onInitialize;
+	myLock.lock();
+	onClientInitialize(client);
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
