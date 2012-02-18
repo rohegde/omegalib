@@ -40,6 +40,12 @@
 using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+VtkRenderPass::VtkRenderPass(EngineClient* client, const String& name): RenderPass(client, name)
+{
+	resetPropQueues();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkRenderPass::~VtkRenderPass()
 {
 }
@@ -60,7 +66,7 @@ void VtkRenderPass::initialize()
 
 	myRenderState = new vtkRenderState(myRenderer);
 
-	resetPropQueues();
+	//resetPropQueues();
 
 	//myTranslucentPass->SetTranslucentPass(vtkTranslucentPass::New());
 }

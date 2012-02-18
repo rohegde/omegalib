@@ -88,6 +88,9 @@ namespace omega {
 		EngineServer* getServer();
 		List<Renderable*>::ConstRange getRenderables() const;
 
+	protected:
+		Renderable* addRenderable(EngineClient* cli);
+
 	private:
 		bool myInitialized;
 		EngineServer* myServer;
