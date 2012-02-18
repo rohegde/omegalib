@@ -75,10 +75,15 @@ void VtkScene::onInitialize()
 	mySphere->SetPhiResolution(18);
 
 	mySceneNode = new SceneNode(this);
+	mySceneNode->setBoundingBoxVisible(true);
 	getScene(0)->addChild(mySceneNode);
 
 	myVtkObject = new VtkSceneObject("vtk");
 	mySceneNode->addObject(myVtkObject);
+
+	myMouseInteractor = new DefaultMouseInteractor();
+	myMouseInteractor->setSceneNode(mySceneNode);
+	addActor(myMouseInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
