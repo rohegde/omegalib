@@ -56,6 +56,7 @@ SET( srcs
 		omega/Pointer.cpp
 		omega/PortholeTabletService.cpp
 		omega/PythonInterpreter.cpp
+		omega/omegaPythonApi.cpp
 		omega/Renderable.cpp
 		omega/Renderer.cpp
 		omega/RenderTarget.cpp

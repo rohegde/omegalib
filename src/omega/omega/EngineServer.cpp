@@ -36,6 +36,7 @@ using namespace omega;
 
 
 List<IEngineModule*> EngineModuleServices::mysModules;
+EngineServer* EngineServer::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EngineServer::EngineServer(Application* app):
@@ -44,6 +45,7 @@ EngineServer::EngineServer(Application* app):
 	myDefaultCamera(NULL),
 	myConsoleEnabled(false)
 {
+	mysInstance = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

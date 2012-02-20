@@ -52,6 +52,8 @@ using namespace omega;
 //  bool IsError;
 //};
 
+void omegaPythonApiInit();
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class PythonInteractiveThread: public Thread
 {
@@ -167,6 +169,9 @@ void PythonInterpreter::initialize(const char* programName)
 		omsg("PythonInterpreter: starting interactive shell thread.");
 		myInteractiveThread->start();
 	}
+
+	// Initialize internal Apis
+	omegaPythonApiInit();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
