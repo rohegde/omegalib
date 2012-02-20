@@ -24,14 +24,14 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include <omegaGl.h>
+
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/SystemManager.h"
 #include "omega/MouseService.h"
 #include "omega/GpuManager.h"
 
 #include "eqinternal/eqinternal.h"
-
-#include <omegaGl.h>
 
 using namespace omega;
 using namespace co::base;
