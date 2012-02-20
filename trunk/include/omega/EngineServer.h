@@ -62,6 +62,7 @@ namespace omega {
 	public:
 		static const int MaxScenes = 3;
 		static const int MaxActivePointers = 128;
+		static EngineServer* instance() { return mysInstance; }
 
 	public:
 		EngineServer(Application* app);
@@ -136,6 +137,8 @@ namespace omega {
 		void drawPointers(EngineClient* client, RenderState* state);
 
 	private:
+		static EngineServer* mysInstance;
+
 		// Engine lock, used when client / server thread synchronization is needed.
 		Lock myLock;
 
