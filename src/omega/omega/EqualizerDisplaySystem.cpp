@@ -31,6 +31,8 @@
 
 #include "eqinternal/eqinternal.h"
 
+#include <omegaGl.h>
+
 using namespace omega;
 using namespace co::base;
 using namespace std;
