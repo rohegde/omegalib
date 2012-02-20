@@ -31,6 +31,8 @@
 #include "omega/Application.h"
 #include "omega/RenderTarget.h"
 
+#define EQ_IGNORE_GLEW
+
 // Equalizer includes
 #include "eq/eq.h"
 #include "co/co.h"
