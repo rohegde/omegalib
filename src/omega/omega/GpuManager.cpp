@@ -52,7 +52,7 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return true;
 	
-	oferror("At %1%:%2% ", %file %line);
+	ofmsg("At %1%:%2% ", %file %line);
 	
 	switch(status)
 	{
