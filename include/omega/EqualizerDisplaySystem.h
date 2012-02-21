@@ -98,6 +98,7 @@ public:
 private:
 	void initLayers();
 	void initObservers();
+	String generateEqConfig(const String& cfgPath);
 
 private:
 	SystemManager* mySys;
