@@ -44,14 +44,22 @@ extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][Config
 struct TileConfig
 {
 	Vector2i index;
-	bool fullscreen;
-	bool interleaved;
 	int device;
+};
+
+struct NodeConfig
+{
+	static const int MaxTiles = 64;
+	int numTiles;
+	String hostname;
+	bool isRemote;
+	TileConfig* tiles[MaxTiles];
 };
 
 struct EqualizerConfig
 {
 	static const int MaxTiles = 64;
+	static const int MaxNodes = 64;
 	enum ConfigType {ConfigPlanar, ConfigCylindrical};
 	ConfigType type;
 	Vector2i numTiles;
@@ -61,7 +69,12 @@ struct EqualizerConfig
 	float columnYawIncrement;
 	bool autoOffsetWindows;
 	Vector2i tileResolution;
+	Vector2i windowOffset;
 	TileConfig tiles[MaxTiles][MaxTiles];
+	int numNodes;
+	NodeConfig nodes[MaxNodes];
+	bool interleaved;
+	bool fullscreen;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,20 +91,41 @@ void parseConfig(const Setting& scfg, EqualizerConfig& cfg)
 	cfg.columnYawIncrement = Config::getFloatValue("columnYawIncrement", scfg);
 	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
+	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
+	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
+	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 
 	const Setting& sTiles = scfg["tiles"];
+	cfg.numNodes = 0;
 	for(int i = 0; i < sTiles.getLength(); i++)
 	{
-		const Setting& sTile = sTiles[i];
+		const Setting& sTileHost = sTiles[i];
+		NodeConfig& ncfg = cfg.nodes[cfg.numNodes];
+		ncfg.hostname = sTileHost.getName();
+		ncfg.numTiles = 0;
+		if(ncfg.hostname != "local")
+		{
+			ncfg.isRemote = true;
+		}
+		else
+		{
+			ncfg.isRemote = false;
+		}
 
-		// Parse tile index.
-		std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
-		Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+		for(int j = 0; j < sTileHost.getLength(); j++)
+		{
+			const Setting& sTile = sTileHost[j];
+			// Parse tile index.
+			std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
+			Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
-		TileConfig& tc = cfg.tiles[index[0]][index[1]];
-		tc.fullscreen = Config::getBoolValue("fullscreen", sTile);
-		tc.interleaved = Config::getBoolValue("interleaved", sTile);
-		tc.device = Config::getIntValue("device", sTile);
+			TileConfig& tc = cfg.tiles[index[0]][index[1]];
+			//tc.interleaved = Config::getBoolValue("interleaved", sTile);
+			tc.device = Config::getIntValue("device", sTile);
+			ncfg.tiles[ncfg.numTiles] = &tc;
+			ncfg.numTiles++;
+		}
+		cfg.numNodes++;
 	}
 }
 
@@ -117,51 +151,86 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	START_BLOCK(result, "global");
 
 	result += 
-		L("EQ_CONFIG_FATTR_EYE_BASE 1.025") +
+		L("EQ_CONFIG_FATTR_EYE_BASE 0.06") +
 		L("EQ_WINDOW_IATTR_PLANES_STENCIL ON");
 
 	END_BLOCK(result);
 
 	START_BLOCK(result, "server");
+
+	START_BLOCK(result, "connection");
+	result +=
+		L("type TCPIP") +
+		L("hostname \"orion\"");
+	END_BLOCK(result)
+
 	START_BLOCK(result, "config");
-	START_BLOCK(result, "appNode");
 
-	result += L("attributes { thread_model LOCAL_SYNC }");
-
-	int winX = 0;
-	int winY = 0;
-
-	// Write pipes section
-	for(int x = 0; x < eqcfg.numTiles[0]; x++)
+	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
-		for(int y = 0; y < eqcfg.numTiles[0]; y++)
+		NodeConfig& nc = eqcfg.nodes[n];
+		if(nc.isRemote)
 		{
-			TileConfig& tc = eqcfg.tiles[x][y];
-
-			if(eqcfg.autoOffsetWindows)
-			{
-				winX = x * eqcfg.tileResolution[0];
-				winY = y * eqcfg.tileResolution[1];
-			}
-			
-			String tileName = ostr("%1%x%2%", %x %y);
-			String viewport = ostr("viewport [%1% %2% %3% %4%]", %winX %winY %eqcfg.tileResolution[0] %eqcfg.tileResolution[1]);
-
-			String tileCfg = "";
-			START_BLOCK(tileCfg, "pipe");
-			START_BLOCK(tileCfg, "window");
-			tileCfg +=
-				L("name \"" + tileName + "\"") +
-				L(viewport) +
-				L("channel { name \"" + tileName + "\"}");
-			END_BLOCK(tileCfg)
-			END_BLOCK(tileCfg)
-			result += tileCfg;
+			START_BLOCK(result, "node");
+			START_BLOCK(result, "connection");
+			result +=
+				L("type TCPIP") +
+				L("hostname \"" + nc.hostname + "\"");
+			END_BLOCK(result);
+			START_BLOCK(result, "attributes");
+			result +=
+				L("thread_model LOCAL_SYNC");
+			END_BLOCK(result);
 		}
-	}
+		else
+		{
+			START_BLOCK(result, "appNode");
+			result += L("attributes { thread_model LOCAL_SYNC }");
+		}
 
-	// end of appnode
-	END_BLOCK(result);
+
+		int winX = eqcfg.windowOffset[0];
+		int winY = eqcfg.windowOffset[1];
+
+		// Write pipes section
+		for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		{
+			for(int y = 0; y < eqcfg.numTiles[0]; y++)
+			{
+				TileConfig& tc = eqcfg.tiles[x][y];
+				if(eqcfg.autoOffsetWindows)
+				{
+					winX = x * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
+					winY = y * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
+				}
+			
+				String tileName = ostr("%1%x%2%", %x %y);
+				String viewport = ostr("viewport [%1% %2% %3% %4%]", %winX %winY %eqcfg.tileResolution[0] %eqcfg.tileResolution[1]);
+
+				String tileCfg = "";
+				START_BLOCK(tileCfg, "pipe");
+				START_BLOCK(tileCfg, "window");
+				tileCfg +=
+					L("name \"" + tileName + "\"") +
+					L(viewport) +
+					L("channel { name \"" + tileName + "\"}");
+				if(eqcfg.fullscreen)
+				{
+					START_BLOCK(tileCfg, "attributes");
+					tileCfg +=
+						L("hint_fullscreen ON") +
+						L("hint_decoration OFF");
+					END_BLOCK(tileCfg);
+				}
+				END_BLOCK(tileCfg)
+				END_BLOCK(tileCfg)
+				result += tileCfg;
+			}
+		}
+
+		// end of node
+		END_BLOCK(result);
+	}
 
 	// observer
 	result += 
@@ -193,7 +262,9 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	Vector3f canvasTopLeft = Vector3f(
 		-eqcfg.referenceTile[0] * eqcfg.tileSize[0] - eqcfg.tileSize[0] / 2,
 		eqcfg.referenceTile[1] * eqcfg.tileSize[1] + eqcfg.tileSize[1] / 2,
-		0);
+		0) + eqcfg.referenceOffset;
+
+
 
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
@@ -236,14 +307,50 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	// compound
 	START_BLOCK(result, "compound")
 
+
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
 		for(int y = 0; y < eqcfg.numTiles[0]; y++)
 		{
 			TileConfig& tc = eqcfg.tiles[x][y];
 			String segmentName = ostr("%1%x%2%", %x %y);
-			String tileCfg = "\t\tchannel ( segment \"" + segmentName + "\" layout \"layout\" view 0 )\n";
-			result += tileCfg;
+
+			if(eqcfg.interleaved)
+			{
+				String tileCfg = "";
+				START_BLOCK(tileCfg, "compound");
+				tileCfg += 
+					L("channel ( segment \"" + segmentName + "\" layout \"layout\" view 0 )") +
+					L("eye [LEFT RIGHT]") +
+					L("attributes { stereo_mode PASSIVE }");
+				START_BLOCK(tileCfg, "compound");
+				tileCfg += 
+					L("eye [RIGHT]") +
+					L("attributes { stereo_mode PASSIVE }") +
+					L("channel \"" + segmentName + "\"") +
+					L("pixel [ 0 0 1 2 ]") +
+					L("outputframe { name \"" + segmentName + "r\" type texture }");
+				END_BLOCK(tileCfg);
+				START_BLOCK(tileCfg, "compound");
+				tileCfg += 
+					L("eye [LEFT]") +
+					L("attributes { stereo_mode PASSIVE }") +
+					L("channel \"" + segmentName + "\"") +
+					L("pixel [ 0 1 1 2 ]") +
+					L("outputframe { name \"" + segmentName + "l\" type texture }");
+				END_BLOCK(tileCfg);
+				tileCfg +=
+					L("inputframe { name \"" + segmentName + "r\" }") +
+					L("inputframe { name \"" + segmentName + "l\" }");
+				END_BLOCK(tileCfg);
+
+				result += tileCfg;
+			}
+			else
+			{
+				String tileCfg = "\t\tchannel ( segment \"" + segmentName + "\" layout \"layout\" view 0 )\n";
+				result += tileCfg;
+			}
 		}
 	}
 
