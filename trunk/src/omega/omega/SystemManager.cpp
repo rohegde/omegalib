@@ -61,7 +61,8 @@ SystemManager::SystemManager():
 	myDisplaySystem(NULL),
 	myApplication(NULL),
 	myExitRequested(false),
-	myIsInitialized(false)
+	myIsInitialized(false),
+	myIsRemote(false)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();
@@ -72,6 +73,14 @@ SystemManager::~SystemManager()
 {
 	delete myInterpreter;
 	myInterpreter = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SystemManager::setupRemote(Config* cfg, const String& masterHostname)
+{
+	myIsRemote = true;
+	myMasterHostname = masterHostname;
+	setup(cfg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/osystem.h"
 #include "omega/SystemManager.h"
+#include "omicron/StringUtils.h"
 
 namespace omega
 {
@@ -49,8 +50,20 @@ namespace omega
 	{
 		ologopen(logFile);
 
-		Config* cfg = new Config(configFile);
-
+		bool remote = false;
+		String masterHostname;
+		String configFilename;
+		
+		std::vector<std::string> args = StringUtils::split(configFile, "@");
+		configFilename = args[0];
+		if(args.size() == 2)
+		{
+			remote = true;
+			masterHostname = args[1];
+		}
+		
+		Config* cfg = new Config(configFilename);
+		
 		SystemManager* sys = SystemManager::instance();
 		DataManager* dm = sys->getDataManager();
 		// Add a default filesystem data source using current work dir.
@@ -63,7 +76,14 @@ namespace omega
 		}
 
 		sys->setApplication(&app);
-		sys->setup(cfg);
+		if(remote)
+		{
+			sys->setupRemote(cfg, masterHostname);
+		}
+		else
+		{
+			sys->setup(cfg);
+		}
 		sys->initialize();
 		sys->run();
 
