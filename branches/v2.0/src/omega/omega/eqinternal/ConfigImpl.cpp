@@ -96,14 +96,15 @@ ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::init(const uint128_t& initID)
 {
-	registerObject(&myFrameData);
+	omsg("ConfigImpl::init - registering frame data object...");
+	//registerObject(&myFrameData);
 	return eq::Config::init(initID);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::exit()
 {
-	deregisterObject( &myFrameData );
+	//deregisterObject( &myFrameData );
 	const bool ret = eq::Config::exit();
 	return ret;
 }
@@ -230,7 +231,7 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::startFrame( const uint128_t& version )
 {
-	myFrameData.commit();
+	//myFrameData.commit();
 	return eq::Config::startFrame( version );
 }
 
@@ -242,23 +243,23 @@ uint32_t ConfigImpl::finishFrame()
 	im->poll();
 
 	// Process events.
-	int av = im->getAvailableEvents();
-	myFrameData.setNumEvents(av);
-	myFrameData.setDirtyEvents();
-	if(av != 0)
-	{
-		im->lockEvents();
-		// Dispatch events to application server.
-		for( int evtNum = 0; evtNum < av; evtNum++)
-		{
-			Event* evt = im->getEvent(evtNum);
-			//myServer->handleEvent(*evt);
-			// Copy events to frame data.
-			myFrameData.getEvent(evtNum) = *evt;
-		}
-		im->unlockEvents();
-	}
-	im->clearEvents();
+	//int av = im->getAvailableEvents();
+	//myFrameData.setNumEvents(av);
+	//myFrameData.setDirtyEvents();
+	//if(av != 0)
+	//{
+	//	im->lockEvents();
+	//	// Dispatch events to application server.
+	//	for( int evtNum = 0; evtNum < av; evtNum++)
+	//	{
+	//		Event* evt = im->getEvent(evtNum);
+	//		//myServer->handleEvent(*evt);
+	//		// Copy events to frame data.
+	//		myFrameData.getEvent(evtNum) = *evt;
+	//	}
+	//	im->unlockEvents();
+	//}
+	//im->clearEvents();
 
 	// update observer head matrices.
 	for( unsigned int i = 0; i < getObservers().size(); i++) 

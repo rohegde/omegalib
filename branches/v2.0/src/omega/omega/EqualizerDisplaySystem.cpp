@@ -415,7 +415,6 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	int numArgs = 0;
 	
 	String cfgPath;
-	char buf[256];
 	if(!SystemManager::instance()->isRemote())
 	{
 		argv[0] = appName;
@@ -436,11 +435,9 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	{
 		argv[0] = appName;
 		argv[1] = "--eq-client";
-		sprintf(buf, "--eq-listen %s", SystemManager::instance()->getMasterHostname().c_str());
-		argv[2] = buf;
-		printf("HEY %s\n", SystemManager::instance()->getMasterHostname().c_str());
-		//argv[3] = SystemManager::instance()->getMasterHostname().c_str();
-		numArgs = 3;
+		argv[2] = "--eq-listen";
+		argv[3] = SystemManager::instance()->getMasterHostname().c_str();
+		numArgs = 4;
 	}
 
 	myNodeFactory = new EqualizerNodeFactory();
@@ -452,23 +449,30 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	}
 
 	bool error  = false;
-	myConfig = static_cast<ConfigImpl*>(eq::getConfig( 3, (char**)argv ));
-	omsg(":: Equalizer initialization DONE ::");
+	ConfigImpl* cfg = static_cast<ConfigImpl*>(eq::getConfig( numArgs, (char**)argv ));
+	finishInitialize(cfg);
+}
 
-	// Create observers.
-	int numObservers = myConfig->getObservers().size();
-	for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
-	ofmsg("initialized %1% observer(s).", %numObservers);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
+{
+	myConfig = config;
+	//int numObservers = myConfig->getObservers().size();
+	//for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
 
-	// Initialize layers and observers from configuration settings.
-	initLayers();
+	myObservers.push_back(new Observer());
 
+	//initLayers();
 	initObservers();
+
+	omsg(":: Equalizer initialization DONE ::");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::initObservers()
 {
+	ofmsg("Initializing %1% observer(s).", %myObservers.size());
+
 	if(mySetting->exists("observers"))
 	{
 		Setting& stObservers = (*mySetting)["observers"];

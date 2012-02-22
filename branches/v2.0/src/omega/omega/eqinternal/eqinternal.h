@@ -215,7 +215,7 @@ protected:
 private:
 	bool myInitialized;
 	ApplicationServer* myServer;
-	FrameData myFrameData;
+	//FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

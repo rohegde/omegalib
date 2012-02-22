@@ -95,6 +95,7 @@ public:
 	//! Returns a view ray given a loal pointer positon and a channel index.
 	Ray	getViewRay(Vector2i position, int channelX, int channelY);
 
+	void finishInitialize(ConfigImpl* config);
 private:
 	void initLayers();
 	void initObservers();

@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "eqinternal.h"
+#include "omega/EqualizerDisplaySystem.h"
 
 using namespace omega;
 using namespace co::base;
@@ -43,19 +44,25 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
-	// Map the frame data object.
-	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
-	const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
-	oassert( mapped );
+	if(!Node::configInit(initID)) return false;
 
-	return Node::configInit(initID);
+	// Map the frame data object.
+	omsg("NodeImpl::configInit - registering frame data object...");
+
+	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
+	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	eqds->finishInitialize(config);
+
+	//const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
+	//oassert( mapped );
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configExit()
 {
 	eq::Config* config = getConfig();
-	config->unmapObject( &myFrameData );
+	//config->unmapObject( &myFrameData );
 
 	delete myServer;
 	myServer = NULL;
@@ -91,21 +98,21 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 	lt = t;
 
 	// Syncronize frame data (containing input events and possibly other stuff)
-	myFrameData.sync(frameID);
+	//myFrameData.sync(frameID);
 
-	// Dispatch received events events to application server.
-	int av = myFrameData.getNumEvents();
-	if(av != 0)
-	{
-		for( int evtNum = 0; evtNum < av; evtNum++)
-		{
-			Event& evt = myFrameData.getEvent(evtNum);
-			if(!evt.isProcessed())
-			{
-				myServer->handleEvent(evt);
-			}
-		}
-	}
+	//// Dispatch received events events to application server.
+	//int av = myFrameData.getNumEvents();
+	//if(av != 0)
+	//{
+	//	for( int evtNum = 0; evtNum < av; evtNum++)
+	//	{
+	//		Event& evt = myFrameData.getEvent(evtNum);
+	//		if(!evt.isProcessed())
+	//		{
+	//			myServer->handleEvent(evt);
+	//		}
+	//	}
+	//}
 	myServer->update(uc);
 }
 
