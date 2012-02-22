@@ -158,11 +158,12 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 
 	START_BLOCK(result, "server");
 
-	START_BLOCK(result, "connection");
-	result +=
-		L("type TCPIP") +
-		L("hostname \"orion\"");
-	END_BLOCK(result)
+	// START_BLOCK(result, "connection");
+	// result +=
+		// L("type TCPIP") +
+		// L("hostname \"orion.evl.uic.edu\"") +
+		// L("port 24000");
+	// END_BLOCK(result)
 
 	START_BLOCK(result, "config");
 
@@ -175,7 +176,8 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 			START_BLOCK(result, "connection");
 			result +=
 				L("type TCPIP") +
-				L("hostname \"" + nc.hostname + "\"");
+				//L("hostname \"" + nc.hostname + "\"") +
+				L("port 24000");
 			END_BLOCK(result);
 			START_BLOCK(result, "attributes");
 			result +=
@@ -409,26 +411,42 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	oassert(!cfgInfo.isNull())
 	oassert(cfgInfo.local);
 
-	const char* argv[3];
+	const char* argv[4];
+	int numArgs = 0;
 	
-	argv[0] = appName;
-	argv[1] = "--eq-config";
-
 	String cfgPath;
-	if(StringUtils::endsWith(cfgInfo.path, ".cfg"))
+	char buf[256];
+	if(!SystemManager::instance()->isRemote())
 	{
-		cfgPath = generateEqConfig(cfgInfo.path);
-		argv[2] = cfgPath.c_str();
+		argv[0] = appName;
+		argv[1] = "--eq-config";
+
+		if(StringUtils::endsWith(cfgInfo.path, ".cfg"))
+		{
+			cfgPath = generateEqConfig(cfgInfo.path);
+			argv[2] = cfgPath.c_str();
+		}
+		else
+		{
+			argv[2] = cfgInfo.path.c_str();
+		}
+		numArgs = 3;
 	}
 	else
 	{
-		argv[2] = cfgInfo.path.c_str();
+		argv[0] = appName;
+		argv[1] = "--eq-client";
+		sprintf(buf, "--eq-listen %s", SystemManager::instance()->getMasterHostname().c_str());
+		argv[2] = buf;
+		printf("HEY %s\n", SystemManager::instance()->getMasterHostname().c_str());
+		//argv[3] = SystemManager::instance()->getMasterHostname().c_str();
+		numArgs = 3;
 	}
 
 	myNodeFactory = new EqualizerNodeFactory();
 
 	omsg(":: Equalizer Initialization ::");
-	if( !eq::init( 3, (char**)argv, myNodeFactory ))
+	if( !eq::init( numArgs, (char**)argv, myNodeFactory ))
 	{
 		oerror("Equalizer init failed");
 	}
