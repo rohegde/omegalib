@@ -459,7 +459,7 @@ void Nightfield::updateSelection(const Ray& ray)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<Nightfield> app;
+	OmegaToolkitApplication<Nightfield> app("nightfeld");
 	omain(
 		app, 
 		"nightfield.cfg", 

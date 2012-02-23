@@ -33,6 +33,13 @@
 
 #include "eqinternal/eqinternal.h"
 
+#ifdef WIN32
+#include <windows.h> // needed for Sleep 
+#else
+#include <unistd.h>
+#define Sleep(x) usleep((x)*1000)
+#endif
+
 using namespace omega;
 using namespace co::base;
 using namespace std;
@@ -75,6 +82,9 @@ struct EqualizerConfig
 	NodeConfig nodes[MaxNodes];
 	bool interleaved;
 	bool fullscreen;
+
+	String nodeLauncher;
+	int nodePort;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +104,9 @@ void parseConfig(const Setting& scfg, EqualizerConfig& cfg)
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
 	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
+
+	cfg.nodeLauncher = Config::getStringValue("nodeLauncher", scfg);
+	cfg.nodePort = Config::getIntValue("nodePort", scfg);
 
 	const Setting& sTiles = scfg["tiles"];
 	cfg.numNodes = 0;
@@ -120,6 +133,7 @@ void parseConfig(const Setting& scfg, EqualizerConfig& cfg)
 			Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
 			TileConfig& tc = cfg.tiles[index[0]][index[1]];
+			tc.index = index;
 			//tc.interleaved = Config::getBoolValue("interleaved", sTile);
 			tc.device = Config::getIntValue("device", sTile);
 			ncfg.tiles[ncfg.numTiles] = &tc;
@@ -176,8 +190,8 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 			START_BLOCK(result, "connection");
 			result +=
 				L("type TCPIP") +
-				//L("hostname \"" + nc.hostname + "\"") +
-				L("port 24000");
+				L("hostname \"" + nc.hostname + "\"") +
+				L(ostr("port %1%", %eqcfg.nodePort));
 			END_BLOCK(result);
 			START_BLOCK(result, "attributes");
 			result +=
@@ -195,39 +209,36 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 		int winY = eqcfg.windowOffset[1];
 
 		// Write pipes section
-		for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		for(int i = 0; i < nc.numTiles; i++)
 		{
-			for(int y = 0; y < eqcfg.numTiles[0]; y++)
+			TileConfig& tc = *nc.tiles[i];
+			if(eqcfg.autoOffsetWindows)
 			{
-				TileConfig& tc = eqcfg.tiles[x][y];
-				if(eqcfg.autoOffsetWindows)
-				{
-					winX = x * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
-					winY = y * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
-				}
-			
-				String tileName = ostr("%1%x%2%", %x %y);
-				String viewport = ostr("viewport [%1% %2% %3% %4%]", %winX %winY %eqcfg.tileResolution[0] %eqcfg.tileResolution[1]);
-
-				String tileCfg = "";
-				START_BLOCK(tileCfg, "pipe");
-				START_BLOCK(tileCfg, "window");
-				tileCfg +=
-					L("name \"" + tileName + "\"") +
-					L(viewport) +
-					L("channel { name \"" + tileName + "\"}");
-				if(eqcfg.fullscreen)
-				{
-					START_BLOCK(tileCfg, "attributes");
-					tileCfg +=
-						L("hint_fullscreen ON") +
-						L("hint_decoration OFF");
-					END_BLOCK(tileCfg);
-				}
-				END_BLOCK(tileCfg)
-				END_BLOCK(tileCfg)
-				result += tileCfg;
+				winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
+				winY = tc.index[1] * eqcfg.tileResolution[1] + eqcfg.windowOffset[1];
 			}
+			
+			String tileName = ostr("%1%x%2%", %tc.index[0] %tc.index[1]);
+			String viewport = ostr("viewport [%1% %2% %3% %4%]", %winX %winY %eqcfg.tileResolution[0] %eqcfg.tileResolution[1]);
+
+			String tileCfg = "";
+			START_BLOCK(tileCfg, "pipe");
+			START_BLOCK(tileCfg, "window");
+			tileCfg +=
+				L("name \"" + tileName + "\"") +
+				L(viewport) +
+				L("channel { name \"" + tileName + "\"}");
+			if(eqcfg.fullscreen)
+			{
+				START_BLOCK(tileCfg, "attributes");
+				tileCfg +=
+					L("hint_fullscreen ON") +
+					L("hint_decoration OFF");
+				END_BLOCK(tileCfg);
+			}
+			END_BLOCK(tileCfg)
+			END_BLOCK(tileCfg)
+			result += tileCfg;
 		}
 
 		// end of node
@@ -270,7 +281,7 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
-		for(int y = 0; y < eqcfg.numTiles[0]; y++)
+		for(int y = 0; y < eqcfg.numTiles[1]; y++)
 		{
 			TileConfig& tc = eqcfg.tiles[x][y];
 			String segmentName = ostr("%1%x%2%", %x %y);
@@ -312,7 +323,7 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
-		for(int y = 0; y < eqcfg.numTiles[0]; y++)
+		for(int y = 0; y < eqcfg.numTiles[1]; y++)
 		{
 			TileConfig& tc = eqcfg.tiles[x][y];
 			String segmentName = ostr("%1%x%2%", %x %y);
@@ -368,6 +379,21 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	FILE* f = fopen("./_eqcfg.eqc", "w");
 	fputs(result.c_str(), f);
 	fclose(f);
+
+	// SUPAMEGAHACK!!
+	for(int n = 0; n < eqcfg.numNodes; n++)
+	{
+		NodeConfig& nc = eqcfg.nodes[n];
+
+		if(nc.hostname != "local")
+		{
+			String executable = StringUtils::replaceAll(eqcfg.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
+			String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %eqcfg.nodePort);
+			olaunch(cmd);
+			Sleep(2000);
+		}
+	}
+
 
 	return "./_eqcfg.eqc";
 }

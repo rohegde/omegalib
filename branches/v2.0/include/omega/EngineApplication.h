@@ -105,6 +105,8 @@ namespace omega {
 	class EngineApplication: public Application
 	{
 	public:
+		EngineApplication(const String& name): myAppName(name) {}
+		virtual const char* getName() { return myAppName.c_str(); }
 		virtual void initialize() 
 		{ registerPortholeTabletService(); }
 		virtual ApplicationClient* createClient(ApplicationServer* server) 
@@ -113,6 +115,7 @@ namespace omega {
 		{ return new T(this); }
 
 	private:
+		String myAppName;
 	};
 }; // namespace omega
 

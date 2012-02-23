@@ -42,6 +42,7 @@ public:
 class HelloApplication: public Application
 {
 public:
+	virtual const char* getName() { return "ohello"; }
 	virtual ApplicationClient* createClient(ApplicationServer* server) { return new HelloClient(server); }
 };
 
@@ -78,17 +79,17 @@ int main(int argc, char** argv)
 {
 	HelloApplication app;
 	
-	if(argc == 1)
-	{
-		// for(int i = 1; i <= 1; i++)
-		// {
-			// char buf[256];
-			// sprintf(buf, "ssh -n orion-%d ~/omegalib/build-v2.0-release/bin/ohello system/desktop.cfg@orion-%d:24001", i);
-			// olaunch(buf);
-		// }
-		olaunch("ssh -n orion-2 ~/omegalib/build-v2.0-release/bin/ohello system/desktop.cfg@orion-2:24001");
-		sleep(1);
-	}
+	//if(argc == 1)
+	//{
+	//	// for(int i = 1; i <= 1; i++)
+	//	// {
+	//		// char buf[256];
+	//		// sprintf(buf, "ssh -n orion-%d ~/omegalib/build-v2.0-release/bin/ohello system/desktop.cfg@orion-%d:24001", i);
+	//		// olaunch(buf);
+	//	// }
+	//	olaunch("ssh -n orion-2 ~/omegalib/build-v2.0-release/bin/ohello system/desktop.cfg@orion-2:24001");
+	//	sleep(1);
+	//}
 
 	// Read config file name from command line or use default one.
 	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 

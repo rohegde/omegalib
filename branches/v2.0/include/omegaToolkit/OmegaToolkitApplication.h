@@ -74,7 +74,7 @@ namespace omegaToolkit {
 	class OmegaToolkitApplication: public EngineApplication<T>
 	{
 	public:
-		OmegaToolkitApplication()
+		OmegaToolkitApplication(const String& name): EngineApplication(name)
 		{EngineModuleServices::addModule(new OmegaToolkitEngineModule());}
 		virtual ApplicationServer* createServer() 
 		{ return new T(this); }

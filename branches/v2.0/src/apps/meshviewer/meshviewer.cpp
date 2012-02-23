@@ -411,7 +411,7 @@ void MeshViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<MeshViewer> app;
+	OmegaToolkitApplication<MeshViewer> app("meshviewer");
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";
