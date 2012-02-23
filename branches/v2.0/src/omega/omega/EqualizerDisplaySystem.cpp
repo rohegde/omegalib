@@ -396,26 +396,19 @@ void EqualizerDisplaySystem::setup(Setting& setting)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::initialize(SystemManager* sys)
+void EqualizerDisplaySystem::setupEqInitArgs(int& numArgs, const char** argv)
 {
-	glewInit();
+	SystemManager* sys = SystemManager::instance();
+	const char* appName = sys->getApplication()->getName();
 
-	Log::level = LOG_WARN;
-
-	mySys = sys;
-	const char* appName = mySys->getApplication()->getName();
-
-	DataManager* dm = mySys->getDataManager();
+	DataManager* dm = sys->getDataManager();
 	DataInfo cfgInfo = dm->getInfo(myDisplayConfig);
 
 	oassert(!cfgInfo.isNull())
 	oassert(cfgInfo.local);
 
-	const char* argv[4];
-	int numArgs = 0;
-	
 	String cfgPath;
-	if(!SystemManager::instance()->isRemote())
+	if(SystemManager::instance()->isMaster())
 	{
 		argv[0] = appName;
 		argv[1] = "--eq-config";
@@ -423,11 +416,13 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 		if(StringUtils::endsWith(cfgInfo.path, ".cfg"))
 		{
 			cfgPath = generateEqConfig(cfgInfo.path);
-			argv[2] = cfgPath.c_str();
+			// argh, strdup
+			argv[2] = strdup(cfgPath.c_str());
 		}
 		else
 		{
-			argv[2] = cfgInfo.path.c_str();
+			// argh, strdup
+			argv[2] = strdup(cfgInfo.path.c_str());
 		}
 		numArgs = 3;
 	}
@@ -436,21 +431,20 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 		argv[0] = appName;
 		argv[1] = "--eq-client";
 		argv[2] = "--eq-listen";
-		argv[3] = SystemManager::instance()->getMasterHostname().c_str();
+		argv[3] = SystemManager::instance()->getHostname().c_str();
 		numArgs = 4;
 	}
+}
 
-	myNodeFactory = new EqualizerNodeFactory();
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::initialize(SystemManager* sys)
+{
+	glewInit();
+	Log::level = LOG_WARN;
+	//Log::level = LOG_INFO;
+	mySys = sys;
 
-	omsg(":: Equalizer Initialization ::");
-	if( !eq::init( numArgs, (char**)argv, myNodeFactory ))
-	{
-		oerror("Equalizer init failed");
-	}
-
-	bool error  = false;
-	ConfigImpl* cfg = static_cast<ConfigImpl*>(eq::getConfig( numArgs, (char**)argv ));
-	finishInitialize(cfg);
+	//finishInitialize(cfg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -523,7 +517,19 @@ void EqualizerDisplaySystem::initLayers()
 void EqualizerDisplaySystem::run()
 {
 	bool error = false;
-	if( myConfig )
+	const char* argv[4];
+	int numArgs = 0;
+	setupEqInitArgs(numArgs, (const char**)argv);
+	myNodeFactory = new EqualizerNodeFactory();
+	if( !eq::init( numArgs, (char**)argv, myNodeFactory ))
+	{
+		oerror("Equalizer init failed");
+	}
+	
+	myConfig = static_cast<ConfigImpl*>(eq::getConfig( numArgs, (char**)argv ));
+	
+	// If this is the master node, run the master loop.
+	if(myConfig && mySys->isMaster())
 	{
 		omsg(":: Equalizer display system startup ::");
 		if( myConfig->init( 0 ))

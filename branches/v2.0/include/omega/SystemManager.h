@@ -89,8 +89,8 @@ namespace omega
 
 		bool isInitialized();
 		
-		bool isRemote() { return myIsRemote; }
-		const String& getMasterHostname() { return myMasterHostname; }
+		bool isMaster() { return myIsMaster; }
+		const String& getHostname() { return myHostname; }
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
@@ -116,8 +116,10 @@ namespace omega
 		bool			myExitRequested;
 		String			myExitReason;
 		PythonInterpreter* myInterpreter;
-		bool myIsRemote;
-		String myMasterHostname;
+		
+		bool myIsMaster;
+		String myHostname;
+		String myProgramName;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -43,6 +43,15 @@
 #include "eq/../../../equalizer/libs/fabric/layout.ipp"
 #endif
 
+// Define to enable debugging of equalizer flow.
+#define OMEGA_DEBUG_EQ_FLOW
+#ifdef OMEGA_DEBUG_EQ_FLOW
+	#define DEBUG_EQ_FLOW(msg, id) ofmsg("EQ_FLOW " msg, id);
+#else
+	#define DEBUG_EQ_FLOW(msg, id)
+#endif 
+
+
 using namespace omega;
 using namespace co::base;
 using namespace std;

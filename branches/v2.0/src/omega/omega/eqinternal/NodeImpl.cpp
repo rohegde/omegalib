@@ -37,6 +37,8 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 	myServer(NULL),
 	myInitialized(NULL)
 {
+	DEBUG_EQ_FLOW("NodeImpl::NodeImpl %1%", %parent);
+
 	Application* app = SystemManager::instance()->getApplication();
 	myServer = app->createServer();
 }
@@ -44,6 +46,8 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
+	DEBUG_EQ_FLOW("NodeImpl::configInit %1%", %initID);
+
 	if(!Node::configInit(initID)) return false;
 
 	// Map the frame data object.
@@ -61,6 +65,8 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configExit()
 {
+	DEBUG_EQ_FLOW("NodeImpl::configExit %1%", %"NOINFO");
+
 	eq::Config* config = getConfig();
 	//config->unmapObject( &myFrameData );
 
@@ -73,6 +79,8 @@ bool NodeImpl::configExit()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
 {
+	DEBUG_EQ_FLOW("NodeImpl::frameStart %1% %2%", %frameID %frameNumber);
+
 	Node::frameStart(frameID, frameNumber);
 
 	// Skip the first frame to give time to the channels to initialize

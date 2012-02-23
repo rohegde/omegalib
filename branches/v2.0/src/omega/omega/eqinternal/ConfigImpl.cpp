@@ -91,11 +91,14 @@ void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent): 
 	eq::Config(parent) 
 {
+	DEBUG_EQ_FLOW("ConfigImpl::ConfigImpl %1%", %parent);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::init(const uint128_t& initID)
 {
+	DEBUG_EQ_FLOW("ConfigImpl::init %1%", %initID);
+
 	omsg("ConfigImpl::init - registering frame data object...");
 	//registerObject(&myFrameData);
 	return eq::Config::init(initID);

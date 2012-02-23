@@ -100,6 +100,7 @@ private:
 	void initLayers();
 	void initObservers();
 	String generateEqConfig(const String& cfgPath);
+	void setupEqInitArgs(int& numArgs, const char** argv);
 
 private:
 	SystemManager* mySys;
