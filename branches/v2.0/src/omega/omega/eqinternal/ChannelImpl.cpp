@@ -292,12 +292,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-omega::Vector2i ChannelImpl::windowToCanvas(const omega::Vector2i& point)
-{
-    return point + myChannelInfo.offset;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 const omega::DrawContext& ChannelImpl::getLastDrawContext()
 {
     //ofmsg("DC viewport: %1% %2%", %myDC.viewport.max %myDC.viewport.min);

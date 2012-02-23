@@ -155,6 +155,7 @@ endif(OMEGA_USE_OPENCL)
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
+source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers

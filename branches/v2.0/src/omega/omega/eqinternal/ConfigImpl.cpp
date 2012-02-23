@@ -123,43 +123,8 @@ uint ConfigImpl::processMouseButtons(uint btns)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray)
-{
-    WindowImpl* wi = (WindowImpl*)source;
-    if(wi->isInitialized())
-    {
-        int channelX = wi->getIndex()[0];
-        int channelY = wi->getIndex()[1];
-        ChannelImpl* sch = sCanvasChannelPointers[channelX][channelY];
-
-        if(sch != NULL)
-        {
-            Vector2i mousePosition(x, y);
-
-            outPosition = sch->windowToCanvas(mousePosition);
-            EqualizerDisplaySystem* eds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-            if(eds->isDebugMouseEnabled())
-            {
-                const DrawContext& dc = sch->getLastDrawContext();
-                ofmsg("MOUSE  Channel=%1%  ChannelVP=%2%,%3%,%4%,%5%  ChannelPos=%6%,%7%  GlobalPos=%8%", 
-                    %sch->getName() 
-                    %dc.viewport.x() %dc.viewport.y() %dc.viewport.width() %dc.viewport.height()
-                    %x %y
-                    %outPosition
-                    );
-            }
-
-            ray = eds->getViewRay(mousePosition, channelX, channelY);
-        }
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 {
-    static int x;
-    static int y;
-
     switch( event->data.type )
     {
         case eq::Event::KEY_PRESS:
@@ -174,57 +139,26 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
         }
     case eq::Event::WINDOW_POINTER_MOTION:
         {
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerMotion.x,
-                event->data.pointerMotion.y,
-                pos, ray);
-            MouseService::mouseMotionCallback(pos[0], pos[1]);
-            MouseService::instance()->setPointerRay(ray);
+            MouseService::mouseMotionCallback(event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
         {
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerButtonPress.x,
-                event->data.pointerButtonPress.y,
-                pos, ray);
             uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-            MouseService::mouseButtonCallback(buttons, 1, pos[0], pos[1]);
-            MouseService::instance()->setPointerRay(ray);
+            MouseService::mouseButtonCallback(buttons, 1, event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
         {
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerButtonPress.x,
-                event->data.pointerButtonPress.y,
-                pos, ray);
             uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-            MouseService::mouseButtonCallback(buttons, 0, pos[0], pos[1]);
-            MouseService::instance()->setPointerRay(ray);
+            MouseService::mouseButtonCallback(buttons, 0, event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     case eq::Event::WINDOW_POINTER_WHEEL:
         {
             int wheel = event->data.pointerWheel.xAxis;
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerWheel.x,
-                event->data.pointerWheel.y,
-                pos, ray);
             uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-            MouseService::mouseWheelCallback(buttons, wheel, pos[0], pos[1]);
+            MouseService::mouseWheelCallback(buttons, wheel, event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     }

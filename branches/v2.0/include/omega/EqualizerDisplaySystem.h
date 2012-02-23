@@ -51,6 +51,7 @@ struct DisplayNodeConfig
 	static const int MaxTiles = 64;
 	int numTiles;
 	String hostname;
+	int port;
 	bool isRemote;
 	DisplayTileConfig* tiles[MaxTiles];
 };
@@ -77,7 +78,7 @@ struct DisplayConfig
 	bool fullscreen;
 
 	String nodeLauncher;
-	int nodePort;
+	int basePort;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,8 +132,8 @@ public:
 	virtual Vector2i getCanvasSize();
 	//! Returns a view ray given a global (canvas) pointer position in pixel coordinates
 	virtual Ray getViewRay(Vector2i position);
-	//! Returns a view ray given a loal pointer positon and a channel index.
-	Ray	getViewRay(Vector2i position, int channelX, int channelY);
+	//! Returns a view ray given a local pointer positon and a tile index.
+	Ray	getViewRay(Vector2i position, int tileX, int tileY);
 
 	const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
 

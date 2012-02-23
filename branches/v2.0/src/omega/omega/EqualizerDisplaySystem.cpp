@@ -87,12 +87,13 @@ void EqualizerDisplaySystem::generateEqConfig()
 		DisplayNodeConfig& nc = eqcfg.nodes[n];
 		if(nc.isRemote)
 		{
+			int port = eqcfg.basePort + nc.port;
 			START_BLOCK(result, "node");
 			START_BLOCK(result, "connection");
 			result +=
 				L("type TCPIP") +
 				L("hostname \"" + nc.hostname + "\"") +
-				L(ostr("port %1%", %eqcfg.nodePort));
+				L(ostr("port %1%", %port));
 			END_BLOCK(result);
 			START_BLOCK(result, "attributes");
 			result +=
@@ -319,7 +320,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 
 	cfg.nodeLauncher = Config::getStringValue("nodeLauncher", scfg);
-	cfg.nodePort = Config::getIntValue("nodePort", scfg);
+	cfg.basePort = Config::getIntValue("basePort", scfg);
 
 	const Setting& sTiles = scfg["tiles"];
 	cfg.numNodes = 0;
@@ -328,6 +329,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 		const Setting& sTileHost = sTiles[i];
 		DisplayNodeConfig& ncfg = cfg.nodes[cfg.numNodes];
 		ncfg.hostname = sTileHost.getName();
+		String alternHostname = Config::getStringValue("hostname", sTileHost);
+		if(alternHostname != "") ncfg.hostname = alternHostname;
 		ncfg.numTiles = 0;
 		if(ncfg.hostname != "local")
 		{
@@ -337,20 +340,24 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 		{
 			ncfg.isRemote = false;
 		}
+		ncfg.port = Config::getIntValue("port", sTileHost);
 
 		for(int j = 0; j < sTileHost.getLength(); j++)
 		{
 			const Setting& sTile = sTileHost[j];
-			// Parse tile index.
-			std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
-			Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+			if(sTile.getType() == Setting::TypeGroup)
+			{
+				// Parse tile index.
+				std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
+				Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
-			DisplayTileConfig& tc = cfg.tiles[index[0]][index[1]];
-			tc.index = index;
-			//tc.interleaved = Config::getBoolValue("interleaved", sTile);
-			tc.device = Config::getIntValue("device", sTile);
-			ncfg.tiles[ncfg.numTiles] = &tc;
-			ncfg.numTiles++;
+				DisplayTileConfig& tc = cfg.tiles[index[0]][index[1]];
+				tc.index = index;
+				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
+				tc.device = Config::getIntValue("device", sTile);
+				ncfg.tiles[ncfg.numTiles] = &tc;
+				ncfg.numTiles++;
+			}
 		}
 		cfg.numNodes++;
 	}
@@ -397,7 +404,8 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 			if(nc.hostname != "local")
 			{
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
-				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %myDisplayConfig.nodePort);
+				int port = myDisplayConfig.basePort + nc.port;
+				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
 				Sleep(OMEGA_LAUNCHER_INTERVAL);
 			}
