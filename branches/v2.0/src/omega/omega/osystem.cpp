@@ -123,7 +123,7 @@ namespace omega
 #else
 		std::vector<std::string> commandLine = StringUtils::split(command, " ");
 
-		signal( SIGCHLD, sigChildHandler );
+		//signal( SIGCHLD, sigChildHandler );
 		const int result = fork();
 		switch( result )
 		{
@@ -152,8 +152,8 @@ namespace omega
 		while( nTries-- )
 		{
 			execvp( argv[0], argv );
-			EQWARN << "Error executing '" << argv[0] << "': " << sysError
-				   << std::endl;
+			// EQWARN << "Error executing '" << argv[0] << "': " << sysError
+				   // << std::endl;
 			if( errno != ETXTBSY )
 				break;
 		}
