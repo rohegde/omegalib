@@ -48,117 +48,18 @@ extern omega::Vector2i sCanvasSize;
 extern omega::Vector2i sCanvasChannels;
 extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
-struct TileConfig
-{
-	Vector2i index;
-	int device;
-};
-
-struct NodeConfig
-{
-	static const int MaxTiles = 64;
-	int numTiles;
-	String hostname;
-	bool isRemote;
-	TileConfig* tiles[MaxTiles];
-};
-
-struct EqualizerConfig
-{
-	static const int MaxTiles = 64;
-	static const int MaxNodes = 64;
-	enum ConfigType {ConfigPlanar, ConfigCylindrical};
-	ConfigType type;
-	Vector2i numTiles;
-	Vector2i referenceTile;
-	Vector3f referenceOffset;
-	Vector2f tileSize;
-	float columnYawIncrement;
-	bool autoOffsetWindows;
-	Vector2i tileResolution;
-	Vector2i windowOffset;
-	TileConfig tiles[MaxTiles][MaxTiles];
-	int numNodes;
-	NodeConfig nodes[MaxNodes];
-	bool interleaved;
-	bool fullscreen;
-
-	String nodeLauncher;
-	int nodePort;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void parseConfig(const Setting& scfg, EqualizerConfig& cfg)
-{
-	String cfgType = Config::getStringValue("type", scfg, "ConfigPlanar");
-	if(cfgType == "ConfigPlanar") cfg.type = EqualizerConfig::ConfigPlanar;
-	else cfg.type = EqualizerConfig::ConfigCylindrical;
-
-	cfg.numTiles = Config::getVector2iValue("numTiles", scfg);
-	cfg.referenceTile = Config::getVector2iValue("referenceTile", scfg);
-	cfg.referenceOffset = Config::getVector3fValue("referenceOffset", scfg);
-	cfg.tileSize = Config::getVector2fValue("tileSize", scfg);
-	cfg.columnYawIncrement = Config::getFloatValue("columnYawIncrement", scfg);
-	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
-	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
-	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
-	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
-	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
-
-	cfg.nodeLauncher = Config::getStringValue("nodeLauncher", scfg);
-	cfg.nodePort = Config::getIntValue("nodePort", scfg);
-
-	const Setting& sTiles = scfg["tiles"];
-	cfg.numNodes = 0;
-	for(int i = 0; i < sTiles.getLength(); i++)
-	{
-		const Setting& sTileHost = sTiles[i];
-		NodeConfig& ncfg = cfg.nodes[cfg.numNodes];
-		ncfg.hostname = sTileHost.getName();
-		ncfg.numTiles = 0;
-		if(ncfg.hostname != "local")
-		{
-			ncfg.isRemote = true;
-		}
-		else
-		{
-			ncfg.isRemote = false;
-		}
-
-		for(int j = 0; j < sTileHost.getLength(); j++)
-		{
-			const Setting& sTile = sTileHost[j];
-			// Parse tile index.
-			std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
-			Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
-
-			TileConfig& tc = cfg.tiles[index[0]][index[1]];
-			tc.index = index;
-			//tc.interleaved = Config::getBoolValue("interleaved", sTile);
-			tc.device = Config::getIntValue("device", sTile);
-			ncfg.tiles[ncfg.numTiles] = &tc;
-			ncfg.numTiles++;
-		}
-		cfg.numNodes++;
-	}
-}
+#define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
+#define OMEGA_LAUNCHER_INTERVAL 500
 
 #define L(line) indent + line + "\n"
 #define START_BLOCK(string, name) string += indent + name + "\n" + indent + "{\n"; indent += "\t";
 #define END_BLOCK(string) indent = indent.substr(0, indent.length() - 1); string += indent + "}\n";
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
+void EqualizerDisplaySystem::generateEqConfig()
 {
-	EqualizerConfig eqcfg;
-
+	DisplayConfig& eqcfg = myDisplayConfig;
 	String indent = "";
-
-
-	Config* cfg = new Config(cfgPath);
-	cfg->load();
-	parseConfig(cfg->getRootSetting()["config"], eqcfg);
 
 	String result = L("#Equalizer 1.0 ascii");
 
@@ -183,7 +84,7 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
-		NodeConfig& nc = eqcfg.nodes[n];
+		DisplayNodeConfig& nc = eqcfg.nodes[n];
 		if(nc.isRemote)
 		{
 			START_BLOCK(result, "node");
@@ -211,7 +112,7 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 		// Write pipes section
 		for(int i = 0; i < nc.numTiles; i++)
 		{
-			TileConfig& tc = *nc.tiles[i];
+			DisplayTileConfig& tc = *nc.tiles[i];
 			if(eqcfg.autoOffsetWindows)
 			{
 				winX = tc.index[0] * eqcfg.tileResolution[0] + eqcfg.windowOffset[0];
@@ -283,7 +184,7 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	{
 		for(int y = 0; y < eqcfg.numTiles[1]; y++)
 		{
-			TileConfig& tc = eqcfg.tiles[x][y];
+			DisplayTileConfig& tc = eqcfg.tiles[x][y];
 			String segmentName = ostr("%1%x%2%", %x %y);
 			String viewport = ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight);
 
@@ -325,7 +226,7 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	{
 		for(int y = 0; y < eqcfg.numTiles[1]; y++)
 		{
-			TileConfig& tc = eqcfg.tiles[x][y];
+			DisplayTileConfig& tc = eqcfg.tiles[x][y];
 			String segmentName = ostr("%1%x%2%", %x %y);
 
 			if(eqcfg.interleaved)
@@ -376,26 +277,9 @@ String EqualizerDisplaySystem::generateEqConfig(const String& cfgPath)
 	// end server
 	END_BLOCK(result)
 
-	FILE* f = fopen("./_eqcfg.eqc", "w");
+	FILE* f = fopen(OMEGA_EQ_TMP_FILE, "w");
 	fputs(result.c_str(), f);
 	fclose(f);
-
-	// SUPAMEGAHACK!!
-	for(int n = 0; n < eqcfg.numNodes; n++)
-	{
-		NodeConfig& nc = eqcfg.nodes[n];
-
-		if(nc.hostname != "local")
-		{
-			String executable = StringUtils::replaceAll(eqcfg.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
-			String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %eqcfg.nodePort);
-			olaunch(cmd);
-			Sleep(2000);
-		}
-	}
-
-
-	return "./_eqcfg.eqc";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -414,11 +298,64 @@ EqualizerDisplaySystem::~EqualizerDisplaySystem()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::setup(Setting& setting) 
+void EqualizerDisplaySystem::setup(Setting& scfg) 
 {
-	myDebugMouse = Config::getBoolValue("debugMouse", setting, false);
-	myDisplayConfig = Config::getStringValue("config", setting);
-	mySetting = &setting;
+	mySetting = &scfg;
+	DisplayConfig& cfg = myDisplayConfig;
+
+	String cfgType = Config::getStringValue("geometry", scfg, "ConfigPlanar");
+	if(cfgType == "ConfigPlanar") cfg.type = DisplayConfig::ConfigPlanar;
+	else cfg.type = DisplayConfig::ConfigCylindrical;
+
+	cfg.numTiles = Config::getVector2iValue("numTiles", scfg);
+	cfg.referenceTile = Config::getVector2iValue("referenceTile", scfg);
+	cfg.referenceOffset = Config::getVector3fValue("referenceOffset", scfg);
+	cfg.tileSize = Config::getVector2fValue("tileSize", scfg);
+	cfg.columnYawIncrement = Config::getFloatValue("columnYawIncrement", scfg);
+	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
+	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
+	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
+	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
+	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
+
+	cfg.nodeLauncher = Config::getStringValue("nodeLauncher", scfg);
+	cfg.nodePort = Config::getIntValue("nodePort", scfg);
+
+	const Setting& sTiles = scfg["tiles"];
+	cfg.numNodes = 0;
+	for(int i = 0; i < sTiles.getLength(); i++)
+	{
+		const Setting& sTileHost = sTiles[i];
+		DisplayNodeConfig& ncfg = cfg.nodes[cfg.numNodes];
+		ncfg.hostname = sTileHost.getName();
+		ncfg.numTiles = 0;
+		if(ncfg.hostname != "local")
+		{
+			ncfg.isRemote = true;
+		}
+		else
+		{
+			ncfg.isRemote = false;
+		}
+
+		for(int j = 0; j < sTileHost.getLength(); j++)
+		{
+			const Setting& sTile = sTileHost[j];
+			// Parse tile index.
+			std::vector<std::string> args = StringUtils::split(String(sTile.getName()), "xt");
+			Vector2i index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+
+			DisplayTileConfig& tc = cfg.tiles[index[0]][index[1]];
+			tc.index = index;
+			//tc.interleaved = Config::getBoolValue("interleaved", sTile);
+			tc.device = Config::getIntValue("device", sTile);
+			ncfg.tiles[ncfg.numTiles] = &tc;
+			ncfg.numTiles++;
+		}
+		cfg.numNodes++;
+	}
+
+	generateEqConfig();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -426,30 +363,11 @@ void EqualizerDisplaySystem::setupEqInitArgs(int& numArgs, const char** argv)
 {
 	SystemManager* sys = SystemManager::instance();
 	const char* appName = sys->getApplication()->getName();
-
-	DataManager* dm = sys->getDataManager();
-	DataInfo cfgInfo = dm->getInfo(myDisplayConfig);
-
-	oassert(!cfgInfo.isNull())
-	oassert(cfgInfo.local);
-
-	String cfgPath;
 	if(SystemManager::instance()->isMaster())
 	{
 		argv[0] = appName;
 		argv[1] = "--eq-config";
-
-		if(StringUtils::endsWith(cfgInfo.path, ".cfg"))
-		{
-			cfgPath = generateEqConfig(cfgInfo.path);
-			// argh, strdup
-			argv[2] = strdup(cfgPath.c_str());
-		}
-		else
-		{
-			// argh, strdup
-			argv[2] = strdup(cfgInfo.path.c_str());
-		}
+		argv[2] = OMEGA_EQ_TMP_FILE;
 		numArgs = 3;
 	}
 	else
@@ -467,10 +385,24 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 {
 	glewInit();
 	Log::level = LOG_WARN;
-	//Log::level = LOG_INFO;
 	mySys = sys;
 
-	//finishInitialize(cfg);
+	// Launch application instances on secondary nodes.
+	if(SystemManager::instance()->isMaster())
+	{
+		for(int n = 0; n < myDisplayConfig.numNodes; n++)
+		{
+			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
+
+			if(nc.hostname != "local")
+			{
+				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
+				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %myDisplayConfig.nodePort);
+				olaunch(cmd);
+				Sleep(OMEGA_LAUNCHER_INTERVAL);
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

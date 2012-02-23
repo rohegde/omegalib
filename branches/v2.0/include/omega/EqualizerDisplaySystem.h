@@ -39,6 +39,48 @@ class ViewImpl;
 class ConfigImpl;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct DisplayTileConfig
+{
+	Vector2i index;
+	int device;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct DisplayNodeConfig
+{
+	static const int MaxTiles = 64;
+	int numTiles;
+	String hostname;
+	bool isRemote;
+	DisplayTileConfig* tiles[MaxTiles];
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct DisplayConfig
+{
+	static const int MaxTiles = 64;
+	static const int MaxNodes = 64;
+	enum ConfigType {ConfigPlanar, ConfigCylindrical};
+	ConfigType type;
+	Vector2i numTiles;
+	Vector2i referenceTile;
+	Vector3f referenceOffset;
+	Vector2f tileSize;
+	float columnYawIncrement;
+	bool autoOffsetWindows;
+	Vector2i tileResolution;
+	Vector2i windowOffset;
+	DisplayTileConfig tiles[MaxTiles][MaxTiles];
+	int numNodes;
+	DisplayNodeConfig nodes[MaxNodes];
+	bool interleaved;
+	bool fullscreen;
+
+	String nodeLauncher;
+	int nodePort;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This class is used to route equalizer log into the omega log system.
 class EqualizerLogStreamBuf: public std::streambuf
 {
@@ -57,7 +99,7 @@ protected:
 		return 0;
 	}
 private:
-    std::ostringstream myStringStream;
+	std::ostringstream myStringStream;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,9 +115,6 @@ public:
 	void initialize(SystemManager* sys); 
 	void run(); 
 	void cleanup(); 
-
-	String getDisplayConfig() { return myDisplayConfig; }
-	void setDisplayConfig(const String& value) { myDisplayConfig = value; }
 
 	Observer* getObserver(int observerId);
 
@@ -95,22 +134,24 @@ public:
 	//! Returns a view ray given a loal pointer positon and a channel index.
 	Ray	getViewRay(Vector2i position, int channelX, int channelY);
 
+	const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
+
 	void finishInitialize(ConfigImpl* config);
 private:
 	void initLayers();
 	void initObservers();
-	String generateEqConfig(const String& cfgPath);
+	void generateEqConfig();
 	void setupEqInitArgs(int& numArgs, const char** argv);
 
 private:
 	SystemManager* mySys;
 
-	// Display config
+	// Configuration
 	Setting* mySetting;
-	String myDisplayConfig;
+	DisplayConfig myDisplayConfig;
 
 	// Equalizer stuff.
-    EqualizerNodeFactory* myNodeFactory;
+	EqualizerNodeFactory* myNodeFactory;
 	ConfigImpl* myConfig;
 
 	// Observers.
