@@ -320,6 +320,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 
 	cfg.nodeLauncher = Config::getStringValue("nodeLauncher", scfg);
+	cfg.nodeKiller = Config::getStringValue("nodeKiller", scfg);
 	cfg.basePort = Config::getIntValue("basePort", scfg);
 
 	const Setting& sTiles = scfg["tiles"];
@@ -403,6 +404,14 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 
 			if(nc.hostname != "local")
 			{
+				if(myDisplayConfig.nodeKiller != "")
+				{
+					String executable = StringUtils::replaceAll(myDisplayConfig.nodeKiller, "%c", SystemManager::instance()->getApplication()->getName());
+					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
+					olaunch(executable);
+					Sleep(OMEGA_LAUNCHER_INTERVAL);
+				}
+			
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
 				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 				int port = myDisplayConfig.basePort + nc.port;

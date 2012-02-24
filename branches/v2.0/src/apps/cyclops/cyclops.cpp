@@ -116,7 +116,7 @@ void Cyclops::handleEvent(const Event& evt)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<Cyclops> app;
+	EngineApplication<Cyclops> app("cyclops");
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "cyclops.cfg";

@@ -101,7 +101,7 @@ void OsgViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<OsgViewer> app;
+	EngineApplication<OsgViewer> app("osgviewer");
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "osgviewer.cfg";
