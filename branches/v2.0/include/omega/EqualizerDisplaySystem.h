@@ -78,6 +78,7 @@ struct DisplayConfig
 	bool fullscreen;
 
 	String nodeLauncher;
+	String nodeKiller;
 	int basePort;
 };
 
