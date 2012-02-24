@@ -404,6 +404,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 			if(nc.hostname != "local")
 			{
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
+				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 				int port = myDisplayConfig.basePort + nc.port;
 				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
