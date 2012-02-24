@@ -29,7 +29,7 @@
 
 #include "osystem.h"
 #include "Renderable.h"
-#include "EngineClient.h"
+#include "Renderer.h"
 #include "EngineServer.h"
 #include "omega/Application.h"
 #include "omega/SystemManager.h"
@@ -109,9 +109,9 @@ namespace omega {
 		virtual const char* getName() { return myAppName.c_str(); }
 		virtual void initialize() 
 		{ registerPortholeTabletService(); }
-		virtual ApplicationClient* createClient(ApplicationServer* server) 
-		{ return new EngineClient(server); }
-		virtual ApplicationServer* createServer() 
+		virtual RendererBase* createClient(ServerBase* server) 
+		{ return new Renderer(server); }
+		virtual ServerBase* createServer() 
 		{ return new T(this); }
 
 	private:

@@ -25,388 +25,187 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Renderer.h"
+#include "omega/EngineServer.h"
+#include "omega/PortholeTabletService.h"
+
+#include "omega/DisplaySystem.h"
+#include "omega/GpuManager.h"
 #include "omega/Texture.h"
 #include "omega/glheaders.h"
-#include "omega/SystemManager.h"
 
-#include "FTGL/ftgl.h"
+// Uncomment to print debug messages about client flow.
+//#define OMEGA_DEBUG_FLOW
 
 using namespace omega;
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderer::Renderer():
-	myTargetTexture(NULL),
-	myDrawing(false),
-	myDefaultFont(NULL),
-	myForceDiffuseColor(false)
+Renderer::Renderer(ServerBase* server):
+	RendererBase(server)
 {
+	myRenderer = new DrawInterface();
+	myServer = (EngineServer*)server;
+	myServer->addClient(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::beginDraw3D(const DrawContext& context)
+void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 {
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-	glLoadMatrixf(context.modelview.data());
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-	glLoadMatrixf(context.projection.data());
-
-    glMatrixMode(GL_MODELVIEW);
-
-	glViewport(context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height());
-
-	glPushAttrib(GL_ENABLE_BIT);
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-
-	myDrawing = true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::beginDraw2D(const DrawContext& context)
-{
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    //glTranslatef(0, context.globalViewport.height() + context.globalViewport.y() - 1, 0.0);
-    //glScalef(1.0, 0.5, 1.0);
-
-	int left = context.channel->offset[0];
-	int right = left + context.channel->size[0];
-	int top = context.channel->offset[1];
-	int bottom = top + context.channel->size[1];
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(left, right, bottom, top, -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
-
-	glPushAttrib(GL_ENABLE_BIT);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
-	//glEnable(GL_TEXTURE_2D);
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	myDrawing = true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::endDraw()
-{
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-	glPopAttrib();
-	myDrawing = false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::pushTransform(const AffineTransform3& transform)
-{
-    glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glMultMatrixf(transform.data());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::popTransform()
-{
-    glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
-	Color startColor, Color endColor, float pc)
-{
-	int x = pos[0];
-	int y = pos[1];
-	int width = size[0];
-	int height = size[1];
-
-	float s = 0;
-
-	glColor4fv(startColor.data());
-	if(orientation == Horizontal)
+	if(addToFront)
 	{
-		// draw full color portion
-		s = int(height * pc);
-		glRecti(x, y, x + width, y + s);
-		y += s;
-		height -= s;
-		// draw gradient portion
-		glBegin(GL_QUADS);
-		glVertex2i(x, y);
-		glVertex2i(x + width, y);
-		glColor4fv(endColor.data());
-		glVertex2i(x + width, y + height);
-		glVertex2i(x, y + height);
-		glEnd(); 
+		myRenderPassList.push_front(pass);
 	}
 	else
 	{
-		// draw full color portion
-		s = int(width * pc);
-		glRecti(x, y, x + s, y + height);
-		x += s;
-		width -= s;
-		// draw gradient portion
-		glBegin(GL_QUADS);
-		glVertex2i(x, y + height);
-		glVertex2i(x, y);
-		glColor4fv(endColor.data());
-		glVertex2i(x + width, y);
-		glVertex2i(x + width, y + height);
-		glEnd();
+		myRenderPassList.push_back(pass);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawRect(Vector2f pos, Vector2f size, Color color)
+void Renderer::removeRenderPass(RenderPass* pass)
 {
-	int x = pos[0];
-	int y = pos[1];
-	int width = size[0];
-	int height = size[1];
-
-	glColor4fv(color.data());
-	glRecti(x, y, x + width, y + height);
+	myRenderPassList.remove(pass);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawRectOutline(Vector2f pos, Vector2f size, Color color)
+void Renderer::removeAllRenderPasses()
 {
-	int x = pos[0];
-	int y = pos[1];
-	int width = size[0];
-	int height = size[1];
-
-	glColor4fv(color.data());
-
-	glBegin(GL_LINES);
-
-	glVertex2f(x, y);
-	glVertex2f(x + width, y);
-
-	glVertex2f(x, y + height);
-	glVertex2f(x + width, y + height);
-
-	glVertex2f(x, y);
-	glVertex2f(x, y + height);
-
-	glVertex2f(x + width, y);
-	glVertex2f(x + width, y + height);
-
-	glEnd();
+	myRenderPassList.clear();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawText(const String& text, Font* font, const Vector2f& position, unsigned int align) 
-{ 
-	Vector2f rect = font->computeSize(text);
-	float x, y;
-
-	if(align & Font::HALeft) x = position[0];
-	else if(align & Font::HARight) x = position[0] - rect[0];
-	else x = position[0] - rect[0] / 2;
-
-	if(align & Font::VATop) y = -position[1] - rect[1];
-	else if(align & Font::VABottom) y = -position[1];
-	else y = -position[1] - rect[1] / 2;
-
-	font->render(text, x, y); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags, const Vector2f& minUV, const Vector2f& maxUV)
+RenderPass* Renderer::getRenderPass(const String& name)
 {
-	glEnable(GL_TEXTURE_2D);
-	texture->bind(GpuManager::TextureUnit0);
-
-	float x = position[0];
-	float y = position[1];
-
-	float width = size[0];
-	float height = size[1];
-
-	float minx = minUV.x();
-	float miny = minUV.y();
-	float maxx = maxUV.x();
-	float maxy = maxUV.y();
-
-	if((flipFlags & FlipX) == FlipX)
+	foreach(RenderPass* rp, myRenderPassList)
 	{
-		minx = 1;
-		maxx = 0;
+		if(rp->getName() == name) return rp;
 	}
-	if((flipFlags & FlipY) == FlipY)
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::initialize()
+{
+	ofmsg("@Renderer::Initialize: id = %1%", %getGpuContext()->getId());
+
+	// Create the default font.
+	const FontInfo& fi = myServer->getDefaultFont();
+	if(fi.size != 0)
 	{
-		miny = 1;
-		maxy = 0;
+		Font* fnt = myRenderer->createFont(fi.name, fi.filename, fi.size);
+		myRenderer->setDefaultFont(fnt);
 	}
 
-	glColor4ub(255, 255, 255, 255);
-
-	glBegin(GL_TRIANGLE_STRIP);
-
-	glTexCoord2f(minx, miny);
-	glVertex2f(x, y);
-
-	glTexCoord2f(maxx, miny);
-	glVertex2f(x + width, y);
-
-	glTexCoord2f(minx, maxy);
-	glVertex2f(x, y + height);
-
-	glTexCoord2f(maxx, maxy);
-	glVertex2f(x + width, y + height);
-
-	glEnd();
-
-	texture->unbind();
-	glDisable(GL_TEXTURE_2D);
+	myServer->clientInitialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawCircleOutline(Vector2f position, float radius, const Color& color, int segments)
+void Renderer::queueRenderableCommand(RenderableCommand& cmd)
 {
-	glPushAttrib(GL_ENABLE_BIT);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_BLEND);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4fv(color.data());
+	myRenderableCommands.push(cmd);
+}
 
-	float stp = Math::Pi * 2 / segments;
-	glBegin(GL_LINE_LOOP);
-	for(float t = 0; t < 2 * Math::Pi; t+= stp)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::startFrame(const FrameInfo& frame)
+{
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("Renderer::startFrame %1%", %frame.frameNum);
+#endif
+
+	foreach(Camera* cam, myServer->getCameras())
 	{
-		float ptx = Math::sin(t) * radius + position[0];
-		float pty = Math::cos(t) * radius + position[1];
-		glVertex2f(ptx, pty);
+		cam->startFrame(frame);
 	}
-	glEnd();
-	glPopAttrib();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawWireSphere(const Color& color, int segments, int slices)
+void Renderer::finishFrame(const FrameInfo& frame)
 {
-	glPushAttrib(GL_ENABLE_BIT);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_BLEND);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4fv(color.data());
+#ifdef OMEGA_DEBUG_FLOW
+	ofmsg("Renderer::finishFrame %1%", %frame.frameNum);
+#endif
 
-	float stp = Math::Pi * 2 / segments;
-	float stp2 = Math::Pi / (slices + 1);
-	for(float g = 0; g <= Math::Pi; g+= stp2)
+	foreach(Camera* cam, myServer->getCameras())
 	{
-		glBegin(GL_LINE_LOOP);
-		for(float t = 0; t < 2 * Math::Pi; t+= stp)
+		cam->finishFrame(frame);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Renderer::draw(const DrawContext& context)
+{
+#ifdef OMEGA_DEBUG_FLOW
+	String eyeName = "Cyclops";
+	if(context.eye == DrawContext::EyeLeft) eyeName = "EyeLeft";
+	else if(context.eye == DrawContext::EyeRight) eyeName = "EyeRight";
+	String task = "Scene";
+	if(context.task == DrawContext::OverlayDrawTask) task = "Overlay";
+	ofmsg("Renderer::draw frame=%1% task=%2% eye=%3%", %context.frameNum %task %eyeName);
+#endif
+
+	// First of all make sure all render passes are initialized.
+	foreach(RenderPass* rp, myRenderPassList)
+	{
+		if(!rp->isInitialized()) rp->initialize();
+	}
+
+	// Execute renderable commands.
+	while(!myRenderableCommands.empty())
+	{
+		myRenderableCommands.front().execute();
+		if(myRenderableCommands.front().command == RenderableCommand::Dispose)
 		{
-			float ptx = Math::sin(t) * Math::sin(g);
-			float pty = Math::cos(t) * Math::sin(g);
-			float ptz = Math::cos(g);
-			glVertex3f(ptx, pty, ptz);
+			//ofmsg("Client %1% deleting renderable", %getId());
+			delete myRenderableCommands.front().renderable;
 		}
-		glEnd();
-		glBegin(GL_LINE_LOOP);
-		for(float t = 0; t < 2 * Math::Pi; t+= stp)
+		myRenderableCommands.pop();
+	}
+
+	// Perform draw for the additional enabled cameras.
+	foreach(Camera* cam, myServer->getCameras())
+	{
+		// See if camera is enabled for the current client and draw context.
+		if(cam->isEnabled(context))
 		{
-			float ptz = Math::sin(t) * Math::sin(g);
-			float pty = Math::cos(t) * Math::sin(g);
-			float ptx = Math::cos(g);
-			glVertex3f(ptx, pty, ptz);
+			// Begin drawing with the camera: get the camera draw context.
+			const DrawContext& cameraContext = cam->beginDraw(context);
+			innerDraw(cameraContext);
+			cam->endDraw(context);
 		}
-		glEnd();
 	}
 
-	glPopAttrib();
+	// Draw once for the default camera (using the passed main draw context).
+	innerDraw(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
+void Renderer::innerDraw(const DrawContext& context)
 {
-	GLenum mode = GL_POINTS;
-	switch(type)
+	// Execute all render passes in order. 
+	foreach(RenderPass* pass, myRenderPassList)
 	{
-	case DrawPoints: mode = GL_POINTS; break;
-	case DrawTriangles: mode = GL_TRIANGLES; break;
-	case DrawTriangleStrip: mode = GL_TRIANGLE_STRIP; break;
-	case DrawLines: mode = GL_LINES; break;
+		pass->render(this, context);
 	}
 
-	vertices->bind();
+	// Draw the pointers and console
+	if(context.task == DrawContext::OverlayDrawTask && 
+		context.eye == DrawContext::EyeCyclop)
+	{
+		RenderState state;
+		state.pass = NULL;
+		state.flags = RenderPass::RenderOverlay;
+		state.client = this;
+		state.context = &context;
 
-	// HACK: vertex buffer may reset the color array flag, so make sure we override it
-	// if forced diffuse color is enabled.
-	if(myForceDiffuseColor)
-	{
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		getRenderer()->beginDraw2D(context);
+
+		if(myServer->isConsoleEnabled())
+		{
+			myServer->getConsole()->getRenderable(this)->draw(&state);
+		}
+		myServer->drawPointers(this, &state);
+	
+		getRenderer()->endDraw();
 	}
-	if(indices != NULL)
-	{
-		glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
-	}
-	else
-	{
-		glDrawArrays(mode, 0, size);
-	}
-	vertices->unbind();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Font* Renderer::createFont(omega::String fontName, omega::String filename, int size)
-{
-	Font::lock();
-	if(getFont(fontName))
-	{
-		ofwarn("FontManager::createFont: font '%1%' already existing.", %fontName);
-		return getFont(fontName);
-	}
 
-	DataManager* dm = SystemManager::instance()->getDataManager();
-	DataInfo info = dm->getInfo(filename);
-	oassert(!info.isNull());
-	oassert(info.local);
-
-
-	FTFont* fontImpl = new FTTextureFont(info.path.c_str());
-
-	//delete data;
-
-	if(fontImpl->Error())
-	{
-		ofwarn("Font %1% failed to open", %filename);
-		delete fontImpl;
-		return NULL;
-	}
-
-	if(!fontImpl->FaceSize(size))
-	{
-		ofwarn("Font %1% failed to set size %2%", %filename %size);
-		delete fontImpl;
-	}
-
-	Font* font = new Font(fontImpl);
-
-	myFonts[fontName] = font;
-	Font::unlock();
-	return font;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Font* Renderer::getFont(omega::String fontName)
-{
-	return myFonts[fontName];
-}

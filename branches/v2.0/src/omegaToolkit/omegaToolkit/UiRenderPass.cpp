@@ -25,9 +25,9 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/UiRenderPass.h"
-#include "omega/EngineClient.h"
-#include "omega/EngineServer.h"
 #include "omega/Renderer.h"
+#include "omega/EngineServer.h"
+#include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/UiModule.h"
@@ -37,7 +37,7 @@ using namespace omega;
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiRenderPass::render(EngineClient* client, const DrawContext& context)
+void UiRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::OverlayDrawTask)
 	{

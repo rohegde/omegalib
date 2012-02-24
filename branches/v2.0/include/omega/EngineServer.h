@@ -28,7 +28,7 @@
 #define __ENGINE_SERVER_H__
 
 #include "osystem.h"
-#include "EngineClient.h"
+#include "Renderer.h"
 #include "SceneNode.h"
 #include "Pointer.h"
 #include "Renderable.h"
@@ -40,23 +40,23 @@
 
 namespace omega {
 
-	typedef List<EngineClient*> EngineClientList;
+	typedef List<Renderer*> EngineClientList;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	template<typename T> class ClientObject
 	{
 	public:
-		T& operator[](EngineClient* c) { return myObjs[c]; }
+		T& operator[](Renderer* c) { return myObjs[c]; }
 	private:
-		Dictionary<EngineClient*, T> myObjs;
+		Dictionary<Renderer*, T> myObjs;
 	};
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API EngineServer: public ApplicationServer
+	class OMEGA_API EngineServer: public ServerBase
 	{
-	friend class EngineClient;
+	friend class Renderer;
 	public:
-		typedef RenderPass* (*RenderPassFactory)(EngineClient*);
+		typedef RenderPass* (*RenderPassFactory)(Renderer*);
 		typedef List<Camera*> CameraCollection;
 
 	public:
@@ -69,7 +69,7 @@ namespace omega {
 
 		ServiceManager* getServiceManager();
 
-		void addClient(EngineClient* client);
+		void addClient(Renderer* client);
 		EngineClientList& getClients();
 
 		//! Render pass management
@@ -120,7 +120,7 @@ namespace omega {
 		//! @remarks when reimplementing initalize, user code must call Engine::initialize() explicitly.
 		virtual void initialize();
 		//! Internal method.
-		void clientInitialize(EngineClient* client);
+		void clientInitialize(Renderer* client);
 
 		virtual void finalize();
 		virtual void handleEvent(const Event& evt);
@@ -130,11 +130,11 @@ namespace omega {
 		virtual void onInitialize() {}
 		//! Called once after each engine client (that is, local render thread) initialization.
 		//! @remarks This method is guaranteed to be invoked after onInitialize
-		virtual void onClientInitialize(EngineClient* client) {}
+		virtual void onClientInitialize(Renderer* client) {}
 
 	private:
 		//! Draw pointer objects inside a specific client context.
-		void drawPointers(EngineClient* client, RenderState* state);
+		void drawPointers(Renderer* client, RenderState* state);
 
 	private:
 		static EngineServer* mysInstance;
@@ -142,7 +142,7 @@ namespace omega {
 		// Engine lock, used when client / server thread synchronization is needed.
 		Lock myLock;
 
-		List<EngineClient*> myClients;
+		List<Renderer*> myClients;
 
 		Dictionary<String, RenderPassFactory> myRenderPassFactories;
 

@@ -31,10 +31,10 @@ using namespace omega;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloClient: public ApplicationClient
+class HelloClient: public RendererBase
 {
 public:
-	HelloClient(ApplicationServer* server): ApplicationClient(server) {}
+	HelloClient(ServerBase* server): RendererBase(server) {}
 	virtual void draw(const DrawContext& context);
 };
 
@@ -43,7 +43,7 @@ class HelloApplication: public Application
 {
 public:
 	virtual const char* getName() { return "ohello"; }
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new HelloClient(server); }
+	virtual RendererBase* createClient(ServerBase* server) { return new HelloClient(server); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

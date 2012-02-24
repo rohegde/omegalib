@@ -132,16 +132,16 @@ namespace omega
 		GpuContext* gpuContext;
 	};
 
-	class ApplicationServer;
+	class ServerBase;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationClient: public ReferenceType
+	class OMEGA_API RendererBase: public ReferenceType
 	{
 	friend class DisplaySystem;
-	friend class ApplicationServer;
+	friend class ServerBase;
 	public:
-		ApplicationClient(ApplicationServer* app);
-		virtual ~ApplicationClient(); 
+		RendererBase(ServerBase* app);
+		virtual ~RendererBase(); 
 
 		GpuContext* getGpuContext() { return myGpuContext; } 
 		void setGpuContext(GpuContext* ctx) { myGpuContext = ctx; } 
@@ -153,23 +153,23 @@ namespace omega
 		virtual void startFrame(const FrameInfo& context) {}
 		virtual void finishFrame(const FrameInfo& context) {}
 
-		ApplicationServer* getServer() { return myServer; }
+		ServerBase* getServer() { return myServer; }
 		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
 		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
 		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
 
 	private:
-		ApplicationServer* myServer;
+		ServerBase* myServer;
 		GpuContext* myGpuContext;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationServer: public ReferenceType, public IEventListener
+	class OMEGA_API ServerBase: public ReferenceType, public IEventListener
 	{
-	friend class ApplicationClient;
+	friend class RendererBase;
 	public:
-		ApplicationServer(Application* app): myApplication(app) {}
-		virtual ~ApplicationServer() {}
+		ServerBase(Application* app): myApplication(app) {}
+		virtual ~ServerBase() {}
 
 		virtual void initialize() {}
 		virtual void finalize() {}
@@ -183,11 +183,11 @@ namespace omega
 		int getCanvasHeight();
 
 	private:
-		void addClient(ApplicationClient* cli);
+		void addClient(RendererBase* cli);
 
 	private:
 		Application* myApplication;
-		List<ApplicationClient*> myClients;
+		List<RendererBase*> myClients;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,8 +202,8 @@ namespace omega
 		//! Instantiates a new Channel instance.
 		//! Users redefine this method to create instances of their own Channel objects.
 		//! @param impl - the internal DisplaySystem-dependent channel implementation.
-		virtual ApplicationServer* createServer() { return new ApplicationServer(this); };
-		virtual ApplicationClient* createClient(ApplicationServer* server) { return new ApplicationClient(server); };
+		virtual ServerBase* createServer() { return new ServerBase(this); };
+		virtual RendererBase* createClient(ServerBase* server) { return new RendererBase(server); };
 
 		//! Called once for entire application initialization tasks.
 		virtual void initialize() {}

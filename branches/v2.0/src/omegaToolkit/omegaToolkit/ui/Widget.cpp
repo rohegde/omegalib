@@ -27,7 +27,7 @@
 #include "omegaToolkit/ui/Widget.h"
 #include "omegaToolkit/ui/Container.h"
 //#include "omegaToolkit/ui/DefaultSkin.h"
-#include "omega/Renderer.h"
+#include "omega/DrawInterface.h"
 
 #include "omega/glheaders.h"
 

@@ -25,16 +25,16 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/OverlayRenderPass.h"
-#include "omega/EngineClient.h"
-#include "omega/EngineServer.h"
 #include "omega/Renderer.h"
+#include "omega/EngineServer.h"
+#include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 
 using namespace omega;
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OverlayRenderPass::render(EngineClient* client, const DrawContext& context)
+void OverlayRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{

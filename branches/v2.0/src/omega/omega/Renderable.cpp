@@ -37,7 +37,7 @@ Renderable::Renderable():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-Renderer* Renderable::getRenderer()
+DrawInterface* Renderable::getRenderer()
 { 
 	return myClient->getRenderer(); 
 }
@@ -56,7 +56,7 @@ RenderableFactory::~RenderableFactory()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* RenderableFactory::addRenderable(EngineClient* cli)
+Renderable* RenderableFactory::addRenderable(Renderer* cli)
 {
 	Renderable* r = createRenderable();
 	r->setClient(cli);
@@ -73,7 +73,7 @@ void RenderableFactory::initialize(EngineServer* srv)
 	{
 		//ofmsg("Initializing renderable factory: %1%", %toString());
 		myServer = srv;
-		foreach(EngineClient* client, srv->getClients())
+		foreach(Renderer* client, srv->getClients())
 		{
 			addRenderable(client);
 		}
@@ -112,7 +112,7 @@ void RenderableFactory::refresh()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* RenderableFactory::getRenderable(EngineClient* client)
+Renderable* RenderableFactory::getRenderable(Renderer* client)
 {
 	foreach(Renderable* r, myRenderables)
 	{

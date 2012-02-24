@@ -216,7 +216,7 @@ public:
     NodeImpl( eq::Config* parent );
 
     //! Returns the application server instance running on this node.
-    ApplicationServer* getApplicationServer();
+    ServerBase* getApplicationServer();
 
 protected:
     virtual bool configInit( const eq::uint128_t& initID );
@@ -225,12 +225,12 @@ protected:
 
 private:
     bool myInitialized;
-    ApplicationServer* myServer;
+    ServerBase* myServer;
     //FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-inline ApplicationServer* NodeImpl::getApplicationServer()
+inline ServerBase* NodeImpl::getApplicationServer()
 { return myServer; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +241,7 @@ public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
     PipeImpl(eq::Node* parent);
-    ApplicationClient* getClient();
+    RendererBase* getClient();
     bool isReady() { return myInitialized && !myChannelsInitialized; }
     void signalChannelInitialized(ChannelImpl* ch);
     GpuContext* getGpuContext() { return myGpuContext; }
@@ -254,7 +254,7 @@ protected:
 private:
     bool myInitialized;
     bool myChannelsInitialized;
-    ApplicationClient* myClient;
+    RendererBase* myClient;
     GpuManager* myGpu;
     GpuContext* myGpuContext;
 };
@@ -310,7 +310,7 @@ protected:
     virtual void frameAssemble( const uint128_t& );
 
     virtual bool configInit(const uint128_t& initID);
-    omega::ApplicationClient* getClient();
+    omega::RendererBase* getClient();
     unsigned int getLayers();
     bool isDrawStatisticsEnabled();
     bool isDrawFpsEnabled();

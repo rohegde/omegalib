@@ -28,7 +28,7 @@
 #define __CONSOLE_H__
 
 #include "Renderable.h"
-#include "Renderer.h"
+#include "DrawInterface.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////

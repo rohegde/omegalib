@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/EngineClient.h"
+#include "omega/Renderer.h"
 #include "omega/EngineServer.h"
 #include "omegaToolkit/LightingPass.h"
 #include "omegaToolkit/Light.h"
@@ -37,7 +37,7 @@ Light Light::mysLights[MaxLights];
 Color Light::mysAmbientColor;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void LightingPass::render(EngineClient* client, const DrawContext& context)
+void LightingPass::render(Renderer* client, const DrawContext& context)
 {
 	glPushMatrix();
 	//glLoadMatrixf(mng->getViewTransform().data());

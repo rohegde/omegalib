@@ -131,7 +131,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 {
     ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    ApplicationClient* client = pipe->getClient();
+    RendererBase* client = pipe->getClient();
     DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 
     eq::PixelViewport pvp = getPixelViewport();
@@ -226,7 +226,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
     ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    ApplicationClient* client = pipe->getClient();
+    RendererBase* client = pipe->getClient();
 
     // If the pipe has not been initialized yet, return now.
     if(!pipe->isReady()) return;
@@ -299,7 +299,7 @@ const omega::DrawContext& ChannelImpl::getLastDrawContext()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-omega::ApplicationClient* ChannelImpl::getClient()
+omega::RendererBase* ChannelImpl::getClient()
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     return pipe->getClient();

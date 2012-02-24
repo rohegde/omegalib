@@ -39,7 +39,7 @@ SET( srcs
 		omega/Application.cpp
 		omega/Camera.cpp
 		omega/Console.cpp
-		omega/EngineClient.cpp
+		omega/DrawInterface.cpp
 		omega/EngineServer.cpp
 		omega/Font.cpp
 		omega/GpuBuffer.cpp
@@ -57,8 +57,8 @@ SET( srcs
 		omega/PortholeTabletService.cpp
 		omega/PythonInterpreter.cpp
 		omega/omegaPythonApi.cpp
-		omega/Renderable.cpp
 		omega/Renderer.cpp
+		omega/Renderable.cpp
 		omega/RenderTarget.cpp
 		omega/SagePointerService.cpp
 		omega/SceneNode.cpp
@@ -78,8 +78,8 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
+		${OmegaLib_SOURCE_DIR}/include/omega/DrawInterface.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EngineApplication.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineClient.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EngineServer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Font.h
 		${OmegaLib_SOURCE_DIR}/include/omega/glheaders.h
@@ -100,9 +100,9 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/PortholeTabletService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneQuery.h

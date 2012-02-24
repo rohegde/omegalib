@@ -54,31 +54,31 @@ Layer::Enum Layer::fromString(const String& str)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ApplicationServer::addClient(ApplicationClient* cli)
+void ServerBase::addClient(RendererBase* cli)
 {
 	myClients.push_back(cli);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasWidth() 
+int ServerBase::getCanvasWidth() 
 {
 	return getDisplaySystem()->getCanvasSize().x(); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int ApplicationServer::getCanvasHeight()
+int ServerBase::getCanvasHeight()
 {
 	return getDisplaySystem()->getCanvasSize().y(); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::ApplicationClient(ApplicationServer* server): myServer(server), myGpuContext(NULL)
+RendererBase::RendererBase(ServerBase* server): myServer(server), myGpuContext(NULL)
 {
 	myServer->addClient(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ApplicationClient::~ApplicationClient() 
+RendererBase::~RendererBase() 
 {
 }
 

@@ -39,9 +39,9 @@ namespace omega {
 	public:
 		Renderable();
 
-		void setClient(EngineClient* client);
-		EngineClient* getClient();
-		Renderer* getRenderer();
+		void setClient(Renderer* client);
+		Renderer* getClient();
+		DrawInterface* getRenderer();
 
 		virtual void initialize() {}
 		virtual void dispose() {}
@@ -49,7 +49,7 @@ namespace omega {
 		virtual void draw(RenderState* state) = 0;
 
 	private:
-		EngineClient* myClient;
+		Renderer* myClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,13 +83,13 @@ namespace omega {
 		void dispose();
 		void refresh();
 		virtual bool isInitialized();
-		Renderable* getRenderable(EngineClient* client);
+		Renderable* getRenderable(Renderer* client);
 		Renderable* getFirstRenderable();
 		EngineServer* getServer();
 		List<Renderable*>::ConstRange getRenderables() const;
 
 	protected:
-		Renderable* addRenderable(EngineClient* cli);
+		Renderable* addRenderable(Renderer* cli);
 
 	private:
 		bool myInitialized;
@@ -98,11 +98,11 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Renderable::setClient(EngineClient* value)
+	inline void Renderable::setClient(Renderer* value)
 	{ myClient = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClient* Renderable::getClient()
+	inline Renderer* Renderable::getClient()
 	{ return myClient; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

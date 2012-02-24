@@ -25,9 +25,9 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/GpuManager.h"
-#include "omega/EngineClient.h"
-#include "omegaToolkit/ui/Image.h"
 #include "omega/Renderer.h"
+#include "omegaToolkit/ui/Image.h"
+#include "omega/DrawInterface.h"
 
 using namespace omega;
 using namespace omegaToolkit;
@@ -86,16 +86,16 @@ void ImageRenderable::drawContent()
 			DrawContext::Eye eye = getRenderState()->context->eye;
 			if(eye == DrawContext::EyeLeft)
 			{
-				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), Renderer::FlipY, Vector2f(0, 0), Vector2f(0.5f, 1.0f));
+				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY, Vector2f(0, 0), Vector2f(0.5f, 1.0f));
 			}
 			else if(eye == DrawContext::EyeRight)
 			{
-				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), Renderer::FlipY, Vector2f(0.5f, 0), Vector2f(1.0f, 1.0f));
+				getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY, Vector2f(0.5f, 0), Vector2f(1.0f, 1.0f));
 			}
 		}
 		else
 		{
-			getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), Renderer::FlipY);
+			getRenderer()->drawRectTexture(myTexture, Vector2f::Zero(), myOwner->getSize(), DrawInterface::FlipY);
 		}
 	}
 	else
