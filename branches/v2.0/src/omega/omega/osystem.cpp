@@ -46,7 +46,7 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void omain(Application& app, const char* configFile, const char* logFile, DataSource* dataSource)
+	void omain(ApplicationBase& app, const char* configFile, const char* logFile, DataSource* dataSource)
 	{
 		ologopen(logFile);
 

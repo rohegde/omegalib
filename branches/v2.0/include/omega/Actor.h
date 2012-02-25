@@ -28,7 +28,7 @@
 #define __ACTOR_H__
 
 #include "osystem.h"
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 #include "omega/SceneNode.h"
 
 namespace omega {

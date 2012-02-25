@@ -145,7 +145,7 @@ void SceneEditorModule::updateSelection(const Ray& ray)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::initialize(EngineServer* server)
+void SceneEditorModule::initialize(ServerEngine* server)
 {
 	omsg("SceneEditorModule initializing...");
 

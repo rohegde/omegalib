@@ -29,12 +29,12 @@
 
 #include "osystem.h"
 #include "Renderable.h"
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 
 namespace omega {
 	class RenderPass;
-	class EngineServer;
+	class ServerEngine;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Renderer: public RendererBase
@@ -42,7 +42,7 @@ namespace omega {
 	public:
 		Renderer(ServerBase* server);
 
-		EngineServer* getServer();
+		ServerEngine* getServer();
 
 		void addRenderPass(RenderPass* pass, bool addToFront);
 		void removeRenderPass(RenderPass* pass);
@@ -63,7 +63,7 @@ namespace omega {
 		void innerDraw(const DrawContext& context);
 
 	private:
-		EngineServer* myServer;
+		ServerEngine* myServer;
 		DrawInterface* myRenderer;
 		List<RenderPass*> myRenderPassList;
 		Queue<RenderableCommand> myRenderableCommands;
@@ -74,7 +74,7 @@ namespace omega {
 	{ return myRenderer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* Renderer::getServer()
+	inline ServerEngine* Renderer::getServer()
 	{ return myServer; }
 }; // namespace omega
 

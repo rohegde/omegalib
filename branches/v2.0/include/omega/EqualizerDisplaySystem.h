@@ -26,7 +26,7 @@
 #define __EQUALIZER_DISPLAY_SYSTEM_H__
 
 #include "DisplaySystem.h"
-#include "Application.h"
+#include "ApplicationBase.h"
 
 namespace omega
 {

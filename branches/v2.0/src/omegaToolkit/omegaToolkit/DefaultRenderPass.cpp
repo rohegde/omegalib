@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omegaToolkit/DefaultRenderPass.h"
 #include "omega/Renderer.h"
-#include "omega/EngineServer.h"
+#include "omega/ServerEngine.h"
 #include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 

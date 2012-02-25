@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 #include "omega/GlutDisplaySystem.h"
 
@@ -208,7 +208,7 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 	myGpuContext = new GpuContext(myGpu);
 
 	// Setup and initialize the application server and client.
-	Application* app = SystemManager::instance()->getApplication();
+	ApplicationBase* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
 		myAppServer = app->createServer();

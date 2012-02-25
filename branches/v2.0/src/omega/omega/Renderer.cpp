@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Renderer.h"
-#include "omega/EngineServer.h"
+#include "omega/ServerEngine.h"
 #include "omega/PortholeTabletService.h"
 
 #include "omega/DisplaySystem.h"
@@ -43,7 +43,7 @@ Renderer::Renderer(ServerBase* server):
 	RendererBase(server)
 {
 	myRenderer = new DrawInterface();
-	myServer = (EngineServer*)server;
+	myServer = (ServerEngine*)server;
 	myServer->addClient(this);
 }
 

@@ -47,7 +47,7 @@ UiModule::~UiModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiModule::initialize(EngineServer* server)
+void UiModule::initialize(ServerEngine* server)
 {
 	omsg("UiModule initializing...");
 
@@ -59,7 +59,7 @@ void UiModule::initialize(EngineServer* server)
 		myUi[i]->setLayout(ui::Container::LayoutFree);
 		myUi[i]->setUIEventHandler(myEngine);
 	}
-	myEngine->registerRenderPassClass("UiRenderPass", (EngineServer::RenderPassFactory)UiRenderPass::createInstance);
+	myEngine->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
 	myEngine->addRenderPass("UiRenderPass");
 
 	omsg("UiModule initialization OK");

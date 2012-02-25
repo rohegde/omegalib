@@ -39,7 +39,7 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public Application
+class HelloApplication: public ApplicationBase
 {
 public:
 	virtual const char* getName() { return "ohello"; }
@@ -74,7 +74,7 @@ void HelloClient::draw(const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Application entry point
+// ApplicationBase entry point
 int main(int argc, char** argv)
 {
 	HelloApplication app;

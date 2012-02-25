@@ -28,7 +28,7 @@
 #define __RENDER_PASS_H__
 
 #include "osystem.h"
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 #include "DrawInterface.h"
 
 namespace omega {

@@ -24,189 +24,107 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+#ifndef __ENGINE_APPLICATION_H__
+#define __ENGINE_APPLICATION_H__
 
 #include "osystem.h"
-#include "SystemManager.h"
-//#include "IEventListener.h"
+#include "Renderable.h"
+#include "Renderer.h"
+#include "ServerEngine.h"
+#include "omega/ApplicationBase.h"
+#include "omega/SystemManager.h"
 
-namespace omega
-{
+namespace omega {
+	class RenderPass;
+	class ServerEngine;
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	// Forward declarations
-	class SystemManager;
-	class DisplaySystem;
-	class RenderTarget;
-	class Application;
-	class ChannelImpl;
-	class GpuContext;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! The Layer class contains enumerated values representing drawing layers.
-	class Layer
+	class OMEGA_API ServerModule
 	{
 	public:
-		enum Enum
+		ServerModule(): myInitialized(false) {}
+
+		virtual void initialize(ServerEngine* engine) {}
+		virtual void update(const UpdateContext& context) = 0;
+		virtual void handleEvent(const Event& evt) = 0;
+
+		void doInitialize(ServerEngine* server) { myEngine = server; if(!myInitialized) initialize(server); myInitialized = true; }
+		virtual bool isInitialized() { return myInitialized; }
+
+		ServerEngine* getServer() { return myEngine; }
+
+	private:
+		bool myInitialized;
+		ServerEngine* myEngine;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API ModuleServices
+	{
+	public:
+		static void addModule(ServerModule* module)
+		{ 
+			mysModules.push_back(module); 
+		}
+
+		static List<ServerModule*>::ConstRange getModules() 
+		{ 
+			return List<ServerModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
+		}
+
+		static void initialize(ServerEngine* engine)
 		{
-			Null = 0,
-			Scene0 = 1,
-			Scene1 = 2,
-			Scene2 = 3,
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(engine);
+			}
+		}
 
-			Overlay0 = 4,
-			Scene0Overlay0 = 5,
-			Scene1Overlay0 = 6,
-			Scene2Overlay0 = 7,
+		static void update(ServerEngine* srv, const UpdateContext& context)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->update(context);
+			}
+		}
 
-			Overlay1 = 8,
-			Scene0Overlay1 = 9,
-			Scene1Overlay1 = 10,
-			Scene2Overlay1 = 11,
-
-			Overlay2 = 12,
-			Scene0Overlay2 = 13,
-			Scene1Overlay2 = 14,
-			Scene2Overlay2 = 15
-		};
-
-		static Enum fromString(const String& str);
-
+		static void handleEvent(ServerEngine* srv, const Event& evt)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->handleEvent(evt);
+			}
+		}
 	private:
-		Layer() {}
+		static List<ServerModule*> mysModules;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Contains information about the context in which an update operation is taking place
-	struct UpdateContext
-	{
-		uint64 frameNum;
-		float time;
-		float dt;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Contains information about the current frame.
-	struct FrameInfo
-	{
-		FrameInfo(uint64 frame, GpuContext* context): frameNum(frame), gpuContext(context) {}
-		uint64 frameNum;
-		GpuContext* gpuContext;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Contains information about a drawing channel.
-	struct ChannelInfo
-	{
-		//! The index of this channel inside the view.
-		Vector2i index;
-		//! The width and height in pixels of the channel
-		Vector2i size;
-		//! The pixel offset of the channel inside the view
-		Vector2i offset;
-		//! The total size of the canvas in pixels
-		Vector2i* canvasSize;
-		//! The number of horizontal and vertical channels composing the canvas.
-		Vector2i* canvasChannels;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Contains information about the context in which a drawing operation is taking place
-	struct DrawContext
-	{
-		enum Eye { EyeLeft , EyeRight, EyeCyclop };
-		enum Task { SceneDrawTask, OverlayDrawTask };
-		uint64 frameNum; // TODO: Substitute with frameinfo
-		unsigned int layer; // turn to content ID.
-		AffineTransform3 modelview;
-		Transform3 projection;
-		//! The pixel viewport coordinates of this context with respect to the owner window of the context.
-		Rect viewport;
-		//! The eye being rendered for this context.
-		Eye eye;
-		//! The current draw task.
-		Task task;
-		//! Information about the drawing channel associated with this context.
-		ChannelInfo* channel;
-		RenderTarget* drawBuffer;
-		GpuContext* gpuContext;
-	};
-
-	class ServerBase;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API RendererBase: public ReferenceType
-	{
-	friend class DisplaySystem;
-	friend class ServerBase;
-	public:
-		RendererBase(ServerBase* app);
-		virtual ~RendererBase(); 
-
-		GpuContext* getGpuContext() { return myGpuContext; } 
-		void setGpuContext(GpuContext* ctx) { myGpuContext = ctx; } 
-
-		virtual void initialize() {}
-		virtual void finalize() {}
-
-		virtual void draw(const DrawContext& context) {}
-		virtual void startFrame(const FrameInfo& context) {}
-		virtual void finishFrame(const FrameInfo& context) {}
-
-		ServerBase* getServer() { return myServer; }
-		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-		ServiceManager*   getServiceManager()   { return SystemManager::instance()->getServiceManager(); }
-		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-
-	private:
-		ServerBase* myServer;
-		GpuContext* myGpuContext;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ServerBase: public ReferenceType, public IEventListener
-	{
-	friend class RendererBase;
-	public:
-		ServerBase(Application* app): myApplication(app) {}
-		virtual ~ServerBase() {}
-
-		virtual void initialize() {}
-		virtual void finalize() {}
-		virtual void update(const UpdateContext& context) {}
-		virtual void handleEvent(const Event& evt) { }
-
-		SystemManager*  getSystemManager()  { return SystemManager::instance(); }
-		Application* getApplication() { return myApplication; }
-		DisplaySystem*  getDisplaySystem() { return SystemManager::instance()->getDisplaySystem(); }
-		int getCanvasWidth(); 
-		int getCanvasHeight();
-
-	private:
-		void addClient(RendererBase* cli);
-
-	private:
-		Application* myApplication;
-		List<RendererBase*> myClients;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Application
+	//! a convenience application class to create omegaToolkit applications
+	void OMEGA_API registerPortholeTabletService();
+	template<typename T> 
+	class Application: public ApplicationBase
 	{
 	public:
-		static const int MaxLayers = 16;
+		Application(const String& name): myAppName(name) 
+		{}
 
-	public:
-		virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
+		virtual const char* getName() 
+		{ return myAppName.c_str(); }
 
-		//! Instantiates a new Channel instance.
-		//! Users redefine this method to create instances of their own Channel objects.
-		//! @param impl - the internal DisplaySystem-dependent channel implementation.
-		virtual ServerBase* createServer() { return new ServerBase(this); };
-		virtual RendererBase* createClient(ServerBase* server) { return new RendererBase(server); };
+		virtual void initialize() 
+		{ registerPortholeTabletService(); }
 
-		//! Called once for entire application initialization tasks.
-		virtual void initialize() {}
+		virtual RendererBase* createClient(ServerBase* server) 
+		{ return new Renderer(server); }
+
+		virtual ServerBase* createServer() 
+		{ return new ServerEngine(this); }
+
+	private:
+		String myAppName;
 	};
 }; // namespace omega
 

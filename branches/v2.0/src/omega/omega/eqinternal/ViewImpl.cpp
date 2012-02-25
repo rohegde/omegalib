@@ -36,7 +36,7 @@ void ViewProxy::serialize( co::DataOStream& os, const uint64_t dirtyBits )
 {
 	if( dirtyBits & DIRTY_LAYER )
 	{
-		for(int i = 0; i < Application::MaxLayers; i++)
+		for(int i = 0; i < ApplicationBase::MaxLayers; i++)
 		{
 			os << myView->myLayer;
 		}
@@ -56,7 +56,7 @@ void ViewProxy::deserialize( co::DataIStream& is, const uint64_t dirtyBits )
 {
 	if( dirtyBits & DIRTY_LAYER )
 	{
-		for(int i = 0; i < Application::MaxLayers; i++)
+		for(int i = 0; i < ApplicationBase::MaxLayers; i++)
 		{
 			is >> myView->myLayer;
 		}

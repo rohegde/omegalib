@@ -214,11 +214,11 @@ uint32_t ConfigImpl::finishFrame()
         const char* ereason = SystemManager::instance()->getExitReason().c_str();
         if(this->exit())
         {
-            ofmsg("Application exit request (reason: %1%) successful", %ereason);
+            ofmsg("ApplicationBase exit request (reason: %1%) successful", %ereason);
         }
         else
         {
-            oferror("Application exit request (reason: %1%) FAILED!", %ereason);
+            oferror("ApplicationBase exit request (reason: %1%) FAILED!", %ereason);
         }
     }
     return eq::Config::finishFrame();

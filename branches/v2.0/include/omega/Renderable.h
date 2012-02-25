@@ -31,7 +31,7 @@
 #include "RenderPass.h"
 
 namespace omega {
-	class EngineServer;
+	class ServerEngine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Renderable: public ReferenceType
@@ -79,13 +79,13 @@ namespace omega {
 		RenderableFactory();
 		virtual ~RenderableFactory();
 		virtual Renderable* createRenderable() = 0;
-		virtual void initialize(EngineServer* srv);
+		virtual void initialize(ServerEngine* srv);
 		void dispose();
 		void refresh();
 		virtual bool isInitialized();
 		Renderable* getRenderable(Renderer* client);
 		Renderable* getFirstRenderable();
-		EngineServer* getServer();
+		ServerEngine* getServer();
 		List<Renderable*>::ConstRange getRenderables() const;
 
 	protected:
@@ -93,7 +93,7 @@ namespace omega {
 
 	private:
 		bool myInitialized;
-		EngineServer* myServer;
+		ServerEngine* myServer;
 		List<Renderable*> myRenderables;
 	};
 
@@ -110,7 +110,7 @@ namespace omega {
 	{ return myInitialized; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* RenderableFactory::getServer()
+	inline ServerEngine* RenderableFactory::getServer()
 	{ return myServer; }
 
 }; // namespace omega

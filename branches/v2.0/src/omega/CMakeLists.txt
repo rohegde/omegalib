@@ -36,11 +36,11 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 ###################################################################################################
 # Source files
 SET( srcs 
-		omega/Application.cpp
+		omega/ApplicationBase.cpp
 		omega/Camera.cpp
 		omega/Console.cpp
 		omega/DrawInterface.cpp
-		omega/EngineServer.cpp
+		omega/ServerEngine.cpp
 		omega/Font.cpp
 		omega/GpuBuffer.cpp
 		omega/GpuManager.cpp
@@ -73,14 +73,14 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ApplicationBase.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawInterface.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineApplication.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineServer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ServerEngine.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Font.h
 		${OmegaLib_SOURCE_DIR}/include/omega/glheaders.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h

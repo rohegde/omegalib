@@ -34,7 +34,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Image::Image(EngineServer* srv):
+Image::Image(ServerEngine* srv):
 	Widget(srv),
 	myAutoRefresh(false),
 	myData(NULL)

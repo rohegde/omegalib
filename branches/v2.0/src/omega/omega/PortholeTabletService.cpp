@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/PortholeTabletService.h"
 #include "omega/Camera.h"
-#include "omega/EngineApplication.h"
+#include "omega/Application.h"
 #include "omega/ImageUtils.h"
 
 using namespace omega;
@@ -115,11 +115,11 @@ void PortholeTabletService::setup(Setting& settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeTabletService::initialize()
 {
-	EngineModuleServices::addModule(this);
+	ModuleServices::addModule(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeTabletService::initialize(EngineServer* engine)
+void PortholeTabletService::initialize(ServerEngine* engine)
 {
 	myEngine = engine;
 

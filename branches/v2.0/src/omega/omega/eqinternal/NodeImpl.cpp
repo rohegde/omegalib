@@ -39,7 +39,7 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 {
 	DEBUG_EQ_FLOW("NodeImpl::NodeImpl %1%", %parent);
 
-	Application* app = SystemManager::instance()->getApplication();
+	ApplicationBase* app = SystemManager::instance()->getApplication();
 	myServer = app->createServer();
 }
 

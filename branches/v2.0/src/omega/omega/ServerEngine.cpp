@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/EngineServer.h"
-#include "omega/EngineApplication.h"
+#include "omega/ServerEngine.h"
+#include "omega/Application.h"
 #include "omega/Renderable.h"
 #include "omega/Observer.h"
 #include "omega/SystemManager.h"
@@ -35,11 +35,11 @@
 using namespace omega;
 
 
-List<IEngineModule*> EngineModuleServices::mysModules;
-EngineServer* EngineServer::mysInstance = NULL;
+List<ServerModule*> ModuleServices::mysModules;
+ServerEngine* ServerEngine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EngineServer::EngineServer(Application* app):
+ServerEngine::ServerEngine(ApplicationBase* app):
     ServerBase(app),
     myActivePointerTimeout(2.0f),
     myDefaultCamera(NULL),
@@ -49,7 +49,7 @@ EngineServer::EngineServer(Application* app):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::initialize()
+void ServerEngine::initialize()
 {
     myLock.lock();
     ImageUtils::internalInitialize();
@@ -97,14 +97,14 @@ void EngineServer::initialize()
     }
 
     // Initialize modules
-    EngineModuleServices::initialize(this);
+    ModuleServices::initialize(this);
 
     onInitialize();
     myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::clientInitialize(Renderer* client)
+void ServerEngine::clientInitialize(Renderer* client)
 {
     // Make sure onClientInitialize is always called after onInitialize;
     myLock.lock();
@@ -113,13 +113,13 @@ void EngineServer::clientInitialize(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::finalize()
+void ServerEngine::finalize()
 {
     ImageUtils::internalDispose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera* EngineServer::createCamera(uint flags)
+Camera* ServerEngine::createCamera(uint flags)
 {
     Camera* cam = new Camera(flags);
     myCameras.push_back(cam);
@@ -127,7 +127,7 @@ Camera* EngineServer::createCamera(uint flags)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::destroyCamera(Camera* cam)
+void ServerEngine::destroyCamera(Camera* cam)
 {
     oassert(cam != NULL);
     myCameras.remove(cam);
@@ -135,24 +135,24 @@ void EngineServer::destroyCamera(Camera* cam)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EngineServer::CameraCollection::Range EngineServer::getCameras()
+ServerEngine::CameraCollection::Range ServerEngine::getCameras()
 {
     return CameraCollection::Range(myCameras.begin(), myCameras.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EngineServer::CameraCollection::ConstRange EngineServer::getCameras() const
+ServerEngine::CameraCollection::ConstRange ServerEngine::getCameras() const
 {
     return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFront)
+void ServerEngine::addRenderPass(String renderPass, void* userData, bool addToFront)
 {
     RenderPassFactory rpNew = myRenderPassFactories[renderPass];
     if(rpNew != NULL)
     {
-        ofmsg("EngineServer: adding render pass %1%", %renderPass);
+        ofmsg("ServerEngine: adding render pass %1%", %renderPass);
         foreach(Renderer* client, myClients)
         {
             RenderPass* rp = rpNew(client);
@@ -162,12 +162,12 @@ void EngineServer::addRenderPass(String renderPass, void* userData, bool addToFr
     }
     else
     {
-        ofwarn("EngineServer::addRenderPass - render pass not found: %1%", %renderPass);
+        ofwarn("ServerEngine::addRenderPass - render pass not found: %1%", %renderPass);
     }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::removeAllRenderPasses()
+void ServerEngine::removeAllRenderPasses()
 {
     foreach(Renderer* client, myClients)
     {
@@ -176,32 +176,32 @@ void EngineServer::removeAllRenderPasses()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::removeRenderPass(String renderPass)
+void ServerEngine::removeRenderPass(String renderPass)
 {
     oassert(false); // Not implemented.
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::addClient(Renderer* client)
+void ServerEngine::addClient(Renderer* client)
 {
     oassert(client != NULL);
     myClients.push_back(client);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::addActor(Actor* actor)
+void ServerEngine::addActor(Actor* actor)
 {
     myActors.push_back(actor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::removeActor(Actor* actor)
+void ServerEngine::removeActor(Actor* actor)
 {
     myActors.remove(actor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-Pointer* EngineServer::createPointer()
+Pointer* ServerEngine::createPointer()
 {
     Pointer* p = new Pointer();
     p->initialize(this);
@@ -210,7 +210,7 @@ Pointer* EngineServer::createPointer()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::destroyPointer(Pointer* p)
+void ServerEngine::destroyPointer(Pointer* p)
 {
     myPointers.remove(p);
     p->dispose();
@@ -218,16 +218,16 @@ void EngineServer::destroyPointer(Pointer* p)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-SceneNode* EngineServer::getScene(int id)
+SceneNode* ServerEngine::getScene(int id)
 {
-    oassert(id >= 0 && id < EngineServer::MaxScenes);
+    oassert(id >= 0 && id < ServerEngine::MaxScenes);
     return myScene[id];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::update(const UpdateContext& context)
+void ServerEngine::update(const UpdateContext& context)
 {
-    EngineModuleServices::update(this, context);
+    ModuleServices::update(this, context);
 
     // Update pointers
     for(int i = 0; i < MaxActivePointers; i++)
@@ -263,7 +263,7 @@ void EngineServer::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::handleEvent(const Event& evt)
+void ServerEngine::handleEvent(const Event& evt)
 {
     if( evt.getServiceType() == Service::Keyboard )
     {
@@ -276,7 +276,7 @@ void EngineServer::handleEvent(const Event& evt)
         }
     }
 
-    EngineModuleServices::handleEvent(this, evt);
+    ModuleServices::handleEvent(this, evt);
     if(evt.isProcessed()) return;
 
     foreach(Actor* a, myActors)
@@ -311,7 +311,7 @@ void EngineServer::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const SceneQueryResultList& EngineServer::querySceneRay(int sceneId, const Ray& ray, uint flags)
+const SceneQueryResultList& ServerEngine::querySceneRay(int sceneId, const Ray& ray, uint flags)
 {
     myRaySceneQuery.clearResults();
     myRaySceneQuery.setSceneNode(myScene[sceneId]);
@@ -320,7 +320,7 @@ const SceneQueryResultList& EngineServer::querySceneRay(int sceneId, const Ray& 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EngineServer::drawPointers(Renderer* client, RenderState* state)
+void ServerEngine::drawPointers(Renderer* client, RenderState* state)
 {
     foreach(Pointer* p, myPointers)
     {

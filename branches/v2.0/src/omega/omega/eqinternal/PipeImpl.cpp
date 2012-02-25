@@ -38,7 +38,7 @@ PipeImpl::PipeImpl(eq::Node* parent):
 	eq::Pipe(parent), myGpu(NULL), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
 {
 	NodeImpl* ni = (NodeImpl*)parent;
-	Application* app = SystemManager::instance()->getApplication();
+	ApplicationBase* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
 		myClient = app->createClient(ni->getApplicationServer());

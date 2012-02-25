@@ -65,7 +65,7 @@ namespace omega
 	// Function definitions.
 	OMEGA_API GLEWContext* glewGetContext();
 	OMEGA_API void glewSetContext(const GLEWContext* context);
-	OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+	OMEGA_API void omain(omega::ApplicationBase& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
 	OMEGA_API void olaunch(const String& command);
 };
 

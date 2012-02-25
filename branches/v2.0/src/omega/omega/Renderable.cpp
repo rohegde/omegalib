@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Renderable.h"
-#include "omega/EngineServer.h"
+#include "omega/ServerEngine.h"
 
 using namespace omega;
 
@@ -67,7 +67,7 @@ Renderable* RenderableFactory::addRenderable(Renderer* cli)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderableFactory::initialize(EngineServer* srv)
+void RenderableFactory::initialize(ServerEngine* srv)
 {
 	if(!myInitialized)
 	{

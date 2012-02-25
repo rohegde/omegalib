@@ -29,7 +29,7 @@
 
 #include "osystem.h"
 #include "omega/Font.h"
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 
 #include "omega/Texture.h"
 #include "omega/GpuBuffer.h"

@@ -27,8 +27,8 @@
 #ifndef __UI_MODULE_H__
 #define __UI_MODULE_H__
 
-#include "omega/EngineServer.h"
-#include "omega/EngineApplication.h"
+#include "omega/ServerEngine.h"
+#include "omega/Application.h"
 #include "omegaToolkit/BoundingSphere.h"
 #include "ui/Container.h"
 #include "ui/WidgetFactory.h"
@@ -36,7 +36,7 @@
 namespace omegaToolkit
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API UiModule: public IEngineModule
+	class OTK_API UiModule: public ServerModule
 	{
 	public:
 		static const int MaxUis = 3;
@@ -46,11 +46,11 @@ namespace omegaToolkit
 		UiModule();
 		~UiModule();
 
-		void initialize(EngineServer* server);
+		void initialize(ServerEngine* server);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
-		EngineServer* getEngine() { return myEngine; }
+		ServerEngine* getEngine() { return myEngine; }
 
 		ui::Container* getUi(int id);
 		ui::WidgetFactory* getWidgetFactory();
@@ -58,7 +58,7 @@ namespace omegaToolkit
 	private:
 		static UiModule* mysInstance;
 
-		EngineServer* myEngine;
+		ServerEngine* myEngine;
 		ui::Container* myUi[MaxUis];
 		ui::WidgetFactory* myWidgetFactory;
 	};

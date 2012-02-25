@@ -28,8 +28,8 @@
 #define __OSG_MODULE_H__
 
 #include "omegaOsg/oosgbase.h"
-#include "omega/EngineServer.h"
-#include "omega/EngineApplication.h"
+#include "omega/ServerEngine.h"
+#include "omega/Application.h"
 
 //! Vector conversion macros
 #define OOSG_VEC3(v) osg::Vec3(v[0], v[1], v[2])
@@ -49,7 +49,7 @@ namespace omegaOsg
 	class OsgSceneObject;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgModule: public IEngineModule
+	class OOSG_API OsgModule: public ServerModule
 	{
 	public:
 		static OsgModule* instance() { return mysInstance; }
@@ -61,7 +61,7 @@ namespace omegaOsg
 		float getRepresentationSize();
 		void setRepresentationSize(float value);
 
-		virtual void initialize(EngineServer* server);
+		virtual void initialize(ServerEngine* server);
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt) {}
 		//void loadScene(const String& filename);
@@ -74,7 +74,7 @@ namespace omegaOsg
 	private:
 		static OsgModule* mysInstance;
 
-		EngineServer* myServer;
+		ServerEngine* myServer;
 		float myRepresentationSize;
 
 		//OsgSceneObject* myRootSceneObject;

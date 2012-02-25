@@ -39,7 +39,7 @@ using namespace omegaToolkit::ui;
 class Entity: public ReferenceType
 {
 public:
-	Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label);
+	Entity(MeshData* data, ServerEngine* server, Actor* interactor, const String& name, const String& label);
 	~Entity();
 
 	void show();
@@ -57,7 +57,7 @@ public:
 	MultipassEffect* myFx;
 	
 private:
-	EngineServer* myServer;
+	ServerEngine* myServer;
 	SceneNode* mySceneNode;
 	Mesh* myMesh;
 	MeshData* myMeshData;
@@ -68,10 +68,10 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewer: public EngineServer
+class MeshViewer: public ServerEngine
 {
 public:
-	MeshViewer(Application* app);
+	MeshViewer(ApplicationBase* app);
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);

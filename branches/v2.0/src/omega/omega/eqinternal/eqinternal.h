@@ -28,7 +28,7 @@
 #define EQ_INTERNAL
 
 #include "omega/osystem.h"
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 #include "omega/RenderTarget.h"
 #include "omega/EqualizerDisplaySystem.h"
 

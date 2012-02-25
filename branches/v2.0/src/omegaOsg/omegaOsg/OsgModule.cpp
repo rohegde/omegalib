@@ -71,12 +71,12 @@ OsgModule::~OsgModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgModule::initialize(EngineServer* server)
+void OsgModule::initialize(ServerEngine* server)
 {
 	omsg("OsgModule initializing...");
 
 	myServer = server;
-	myServer->registerRenderPassClass("OsgRenderPass", (EngineServer::RenderPassFactory)OsgRenderPass::createInstance);
+	myServer->registerRenderPassClass("OsgRenderPass", (ServerEngine::RenderPassFactory)OsgRenderPass::createInstance);
 	myServer->addRenderPass("OsgRenderPass", this, true);
 
 	omsg("OsgModule initialization OK");

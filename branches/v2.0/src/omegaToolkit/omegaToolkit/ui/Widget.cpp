@@ -40,7 +40,7 @@ using namespace omegaToolkit::ui;
 NameGenerator Widget::mysNameGenerator("Widget_");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Widget::Widget(EngineServer* server):
+Widget::Widget(ServerEngine* server):
 	myStereo(false),
 	myInitialized(false),
 	myServer(server),
