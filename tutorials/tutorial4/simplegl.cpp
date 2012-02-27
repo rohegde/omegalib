@@ -23,7 +23,6 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
 #include <omega.h>
-#include <omegaGl.h>
 
 using namespace omega;
 

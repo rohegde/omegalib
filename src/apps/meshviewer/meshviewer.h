@@ -28,15 +28,15 @@
 #define __MESHVIEWER_H__
 
 #include <omega.h>
-#include <omegaToolkit.h>
-#include "omega/PortholeTabletService.h"
+#include <oengine.h>
+#include "oengine/TabletManagerModule.h"
 
 using namespace omega;
-using namespace omegaToolkit;
-using namespace omegaToolkit::ui;
+using namespace oengine;
+using namespace oengine::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Entity: public ReferenceType
+class Entity: public DynamicObject
 {
 public:
 	Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label);
@@ -49,12 +49,6 @@ public:
 	Mesh* getMesh() { return myMesh; }
 	const String& getName() { return myName; }
 	const String& getLabel() { return myLabel; }
-
-public:
-	float yaw;
-	float pitch;
-	float roll;
-	MultipassEffect* myFx;
 	
 private:
 	EngineServer* myServer;
@@ -64,14 +58,13 @@ private:
 	Actor* myInteractor;
 	String myName;
 	String myLabel;
-	
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class MeshViewer: public EngineServer
 {
 public:
-	MeshViewer(Application* app);
+	MeshViewer(Application* app): EngineServer(app) {}
 
 	virtual void initialize();
 	virtual void handleEvent(const Event& evt);
@@ -86,7 +79,7 @@ private:
 	Vector<Entity*> myEntities;
 	Entity* mySelectedEntity;
 
-	PortholeTabletService* myTabletManager;
+	TabletManagerModule* myTabletManager;
 
 	// Scene
 	ReferenceBox* myReferenceBox;

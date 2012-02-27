@@ -28,7 +28,7 @@
 #include "osystem.h"
 #include "Observer.h"
 #include "Application.h"
-//#include "Color.h"
+#include "Color.h"
 
 namespace omega
 {
@@ -37,7 +37,7 @@ namespace omega
 class SystemManager;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OMEGA_API DisplaySystem: public ReferenceType
+class OMEGA_API DisplaySystem: public DynamicObject
 {
 public:
 	enum DisplaySystemType { Invalid, Equalizer, Glut };

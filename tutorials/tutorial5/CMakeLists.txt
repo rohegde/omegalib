@@ -31,7 +31,7 @@ include(${CMAKE_SOURCE_DIR}/../../CMakeModules/FindOmegalib.cmake)
 
 include_directories(${OMEGA_INCLUDE_DIRS})
 add_executable(simpleScene simpleScene.cpp)
-target_link_libraries(simpleScene ${OMEGA_LIB} ${OMEGA_TOOLKIT_LIB})
+target_link_libraries(simpleScene ${OMEGA_LIB} ${OENGINE_LIB})
 
 
 

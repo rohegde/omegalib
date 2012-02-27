@@ -29,18 +29,20 @@
 
 #include "osystem.h"
 #include "SystemManager.h"
-//#include "IEventListener.h"
+#include "IEventListener.h"
 
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class SystemManager;
+	class ServiceManager;
 	class DisplaySystem;
 	class RenderTarget;
 	class Application;
 	class ChannelImpl;
 	class GpuContext;
+	class Event;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! The Layer class contains enumerated values representing drawing layers.
@@ -135,7 +137,7 @@ namespace omega
 	class ApplicationServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationClient: public ReferenceType
+	class OMEGA_API ApplicationClient: public DynamicObject
 	{
 	friend class DisplaySystem;
 	friend class ApplicationServer;
@@ -164,7 +166,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ApplicationServer: public ReferenceType, public IEventListener
+	class OMEGA_API ApplicationServer: public DynamicObject, public IEventListener
 	{
 	friend class ApplicationClient;
 	public:
@@ -191,7 +193,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Application
+	class Application
 	{
 	public:
 		static const int MaxLayers = 16;

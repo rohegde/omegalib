@@ -25,8 +25,13 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Application.h"
+#include "omega/ServiceManager.h"
 #include "omega/SystemManager.h"
+#include "omega/Config.h"
 #include "omega/GlutDisplaySystem.h"
+#include "omega/StringUtils.h"
+
+#include "libconfig/ArgumentHelper.h"
 
 #define GLEW_MX
 #include "GL/glew.h"
@@ -65,24 +70,13 @@ void displayCallback(void)
 
 	// setup the context viewport.
 	DrawContext dc;
-	ChannelInfo ci;
-	Vector2i canvasChannels(1, 1);
-	Vector2i canvasSize(1, 1);
-
-	ci.canvasChannels = &canvasChannels;
-	ci.canvasSize = &ds->getCanvasSize();
-	ci.index = Vector2i(0, 0);
-	ci.offset = Vector2i(0, 0);
-	ci.size = ds->getCanvasSize();
 	dc.frameNum = frame++;
-	dc.channel = &ci;
-	dc.gpuContext = ds->getGpuContext();
 
 	ds->updateProjectionMatrix();
 
 	// Push observer matrix.
 	glPushMatrix();
-	AffineTransform3 mat = ds->getObserver(0)->getViewTransform();
+	AffineTransform3 mat = ds->getObserver().getViewTransform();
 	glLoadIdentity();
 	glLoadMatrixf(mat.data());
 
@@ -97,7 +91,7 @@ void displayCallback(void)
 	int av = im->getAvailableEvents();
 	if(av != 0)
 	{
-		Event evts[OMICRON_MAX_EVENTS];
+		Event evts[OMEGA_MAX_EVENTS];
 		im->getEvents(evts, ServiceManager::MaxEvents);
 
 		// Dispatch events to application server.
@@ -108,10 +102,6 @@ void displayCallback(void)
 	}
 
 	dc.layer = ds->getLayer(NULL);
-	dc.eye = DrawContext::EyeCyclop;
-	dc.task = DrawContext::SceneDrawTask;
-	ac->draw(dc);
-	dc.task = DrawContext::OverlayDrawTask;
 	ac->draw(dc);
 
 	glPopMatrix();

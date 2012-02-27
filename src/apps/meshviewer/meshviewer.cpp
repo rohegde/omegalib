@@ -26,8 +26,6 @@
  *************************************************************************************************/
 #include "meshviewer.h"
 
-#define EVL_DEMO
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const String& name, const String& label):
 	myMeshData(data),
@@ -43,29 +41,6 @@ Entity::Entity(MeshData* data, EngineServer* server, Actor* interactor, const St
 	server->getScene(0)->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
 	myMesh->setData(myMeshData);
-
-	// Create the rendering effect for this entity.
-	//MultipassEffect* mpfx = new MultipassEffect();
-	//myMesh->setEffect(mpfx);
-
-	//Effect* wirefx = new Effect();
-	//wirefx->setDrawMode(Effect::DrawWireframe);
-	//wirefx->setLightingEnabled(false);
-	//wirefx->setColor(Color(1,1,1,0.03f));
-	//wirefx->setForcedDiffuseColor(true);
-	//wirefx->setBlendMode(Effect::BlendAdditive);
-	//wirefx->setDepthTestMode(Effect::DepthTestDisabled);
-
-	//Effect* basefx = new Effect();
-	//basefx->setDrawMode(Effect::DrawSmooth);
-	//basefx->setLightingEnabled(true);
-	//basefx->setColor(Color(0.5f, 0.5f, 0.7f, 0.5f));
-	//basefx->setShininess(16.0f);
-	//basefx->setBlendMode(Effect::BlendAdditive);
-	//basefx->setForcedDiffuseColor(true);
-
-	//mpfx->addEffect(basefx);
-	//mpfx->addEffect(wirefx);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,30 +57,17 @@ Entity::~Entity()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::show()
 {
-#ifdef EVL_DEMO
-	mySceneNode->setPosition(0, 0, 0.0f);
-	mySceneNode->setScale( 3.0 , 3.0 , 3.0 );
-	mySceneNode->roll( Math::Pi / 2 );
-#else
 	mySceneNode->setPosition(0, 0, 0.0f);
 	mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
-#endif	
-	//mySceneNode->resetOrientation();
+	mySceneNode->resetOrientation();
 	mySceneNode->setVisible(true);
 	myInteractor->setSceneNode(mySceneNode);
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::hide()
 {
 	mySceneNode->setVisible(false);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-MeshViewer::MeshViewer(Application* app): 
-	EngineServer(app) 
-{
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,19 +105,11 @@ void MeshViewer::initialize()
 	EngineServer::initialize();
 
 	// Setup lighting
-	Light* light = Light::getLight(0);
+	Light* light = getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.5f, 0.5f, 0.5f));
 	light->setPosition(Vector3f(0, 3, 3));
-	//Light::setAmbientLightColor(Color(0.2f, 0.2f, 0.2f, 1.0f));
-	Light::setAmbientLightColor(Color::Black);
-	
-	// Setup lighting
-	light = Light::getLight(1);
-	light->setEnabled(true);
-	light->setColor(Color(0.5f, 0.5f, 0.8f));
-	light->setPosition(Vector3f(0, -3, 3));
-	Light::setAmbientLightColor(Color::Black);
+	setAmbientLightColor(Color::Black);
 	
 	// Create a reference box around the scene.
 	Config* cfg = getSystemManager()->getAppConfig();
@@ -199,7 +153,8 @@ void MeshViewer::initialize()
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
 
-	myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(this);
 
 	// Create and initialize the gui
 	initUi();
@@ -216,23 +171,20 @@ void MeshViewer::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::initUi()
 {
-	WidgetFactory* wf = UiModule::instance()->getWidgetFactory();
+	WidgetFactory* wf = getWidgetFactory();
 
 	int canvasWidth = getCanvasWidth();
 	int canvasHeight = getCanvasHeight();
 
-	Container* root = UiModule::instance()->getUi(0);
+	Container* root = getUi(0);
 
-	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutVertical);
+	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
 	//entityButtons->setDebugModeEnabled(true);
 
-	entityButtons->setPosition(Vector2f(500, 5));
-	entityButtons->setSize(Vector2f(300, 300));
+	entityButtons->setPosition(Vector2f(5, 5));
+	entityButtons->setSize(Vector2f(300, canvasHeight - 10));
 
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->beginGui();
-	}
+	myTabletManager->beginGui();
 
 	// Add buttons for each entity
 	for(int i = 0; i < myEntities.size(); i++)
@@ -242,61 +194,20 @@ void MeshViewer::initUi()
 		btn->setAutosize(true);
 		myEntityButtons.push_back(btn);
 
-		if(myTabletManager != NULL)
-		{
-			myTabletManager->addGuiElement(TabletGuiElement::createButton(btn->getId(), e->getName(), e->getLabel(), e->getName()));
-		}
+		myTabletManager->addGuiElement(TabletGuiElement::createButton(btn->getId(), e->getName(), e->getLabel(), e->getName()));
 	}
-	if(myTabletManager != NULL)
-	{
-		// Add autorotate button.
-		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(128, "Autorotate", "Autorotate", 1));
-		// Add scale slider.
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
-		myTabletManager->finishGui();
-	}
-
-	// Create a reference box around the scene.
-	Config* cfg = getSystemManager()->getAppConfig();
-	if(cfg->exists("config/images"))
-	{
-		Setting& images = cfg->lookup("config/images");
-		for(int i = 0; i < images.getLength(); i++)
-		{
-			Setting& imageSetting = images[i];
-
-			String fileName = Config::getStringValue("source", imageSetting, "");
-			if(fileName != "")
-			{
-				Image* img = wf->createImage("img", root);
-
-				bool stereo = Config::getBoolValue("stereo", imageSetting, false);
-
-				img->setStereo(stereo);
-				ImageData* imgData = ImageUtils::loadImage(fileName);
-				img->setData(imgData->getPixels());
-
-				Vector2f position = Config::getVector2fValue("position", imageSetting, Vector2f(0, 0));
-				Vector2f size = Config::getVector2fValue("size", imageSetting, 
-					Vector2f(imgData->getWidth() / (stereo ? 2 : 1), imgData->getHeight()));
-				float scale = Config::getFloatValue("scale", imageSetting, 1);
-
-				img->setPosition(position);
-				img->setSize(size * scale);
-				img->setUserMoveEnabled(true);
-			}
-		}
-	}
+	// Add autorotate button.
+	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(128, "Autorotate", "Autorotate", 1));
+	// Add scale slider.
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(129, "Scale", "Scale", 1, 10, 1));
+	myTabletManager->finishGui();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleEvent(const Event& evt)
 {
     EngineServer::handleEvent(evt);
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->handleEvent(evt);
-	}
+	myTabletManager->handleEvent(evt);
 	if(evt.getServiceType() == Service::Ui) 
 	{
 		handleUiEvent(evt);
@@ -329,41 +240,6 @@ void MeshViewer::handleUiEvent(const Event& evt)
 		int scale = evt.getExtraDataInt(0);
 		mySelectedEntity->getSceneNode()->setScale(scale, scale, scale);
 	}
-	else if(evt.getSourceId() == 130)
-	{
-		mySelectedEntity->yaw = (float)evt.getExtraDataInt(0) / 360 * Math::TwoPi;
-		mySelectedEntity->getSceneNode()->setOrientation(Quaternion::Identity());
-		mySelectedEntity->getSceneNode()->yaw(mySelectedEntity->yaw);
-		mySelectedEntity->getSceneNode()->pitch(mySelectedEntity->pitch);
-		mySelectedEntity->getSceneNode()->roll(mySelectedEntity->roll);
-	}
-	else if(evt.getSourceId() == 131)
-	{
-		mySelectedEntity->pitch = (float)evt.getExtraDataInt(0) / 360 * Math::TwoPi;
-		mySelectedEntity->getSceneNode()->setOrientation(Quaternion::Identity());
-		mySelectedEntity->getSceneNode()->yaw(mySelectedEntity->yaw);
-		mySelectedEntity->getSceneNode()->pitch(mySelectedEntity->pitch);
-		mySelectedEntity->getSceneNode()->roll(mySelectedEntity->roll);
-	}
-	else if(evt.getSourceId() == 132)
-	{
-		mySelectedEntity->roll = (float)evt.getExtraDataInt(0) / 360 * Math::TwoPi;
-		mySelectedEntity->getSceneNode()->setOrientation(Quaternion::Identity());
-		mySelectedEntity->getSceneNode()->yaw(mySelectedEntity->yaw);
-		mySelectedEntity->getSceneNode()->pitch(mySelectedEntity->pitch);
-		mySelectedEntity->getSceneNode()->roll(mySelectedEntity->roll);
-	}
-	else if(evt.getSourceId() == 133)
-	{
-		// if(evt.getExtraDataInt(0) == 1)
-		// {
-			// mySelectedEntity->getSceneNode()->setEffect(mySelectedEntity->myFx);
-		// }
-		// else
-		// {
-			// mySelectedEntity->getSceneNode()->setEffect(NULL);
-		// }
-	}
 	else
 	{
 		for(int i = 0; i < myEntityButtons.size(); i++)
@@ -383,18 +259,14 @@ void MeshViewer::handleUiEvent(const Event& evt)
 void MeshViewer::update(const UpdateContext& context)
 {
 	EngineServer::update(context);
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->update(context);
-	}
+	myTabletManager->update(context);
 
 	SceneNode* daSceneNode = myInteractor->getSceneNode();
 	if(daSceneNode != NULL)
 	{
 		if ( autoRotate )
 		{
-			daSceneNode->yaw( 0.1f * context.dt);
-			daSceneNode->pitch( 0.01f * context.dt);
+			daSceneNode->yaw( 0.01f );
 		}
 	
 		if( deltaScale != 0 )
@@ -411,7 +283,7 @@ void MeshViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<MeshViewer> app;
+	EngineApplication<MeshViewer> app;
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "meshviewer.cfg";

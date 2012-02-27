@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "omega/GpuManager.h"
+#include "omega/StringUtils.h"
 
 #include "eqinternal.h"
 

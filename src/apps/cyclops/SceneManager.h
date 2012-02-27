@@ -33,16 +33,16 @@
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <omegaToolkit.h>
-#include <omegaOsg.h>
+#include <oengine.h>
+#include <oosg.h>
 
-#include "omega/PortholeTabletService.h"
+#include "oengine/TabletManagerModule.h"
 
 
 namespace cyclops {
 	using namespace omega;
-	using namespace omegaToolkit;
-	using namespace omegaOsg;
+	using namespace oengine;
+	using namespace oosg;
 
 	class SceneLoader;
 	class SceneManager;
@@ -128,7 +128,7 @@ namespace cyclops {
 		EngineServer* myEngine;
 		OsgModule* myOsg;
 		SceneEditorModule* myEditor;
-		PortholeTabletService* myTabletManager;
+		TabletManagerModule* myTabletManager;
 
 		osg::Group* mySceneRoot;
 

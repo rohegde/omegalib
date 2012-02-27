@@ -27,7 +27,7 @@
 #include "TexturedQuad.h"
 
 using namespace omega;
-using namespace omegaToolkit;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class SimpleScene: public EngineServer
@@ -39,7 +39,7 @@ public:
 private:
 	SceneNode* mySceneNode;
 	TexturedQuad* myTexturedQuad;
-	ImageData* myImageData;
+	ImageData myImageData;
 	BoundingSphere* mySelectionSphere;
 	DefaultMouseInteractor* myMouseInteractor;
 };
@@ -73,10 +73,9 @@ void SimpleScene::initialize()
 		Setting& sCfg = cfg->lookup("config");
 		String imageName = sCfg["imageName"];
 		// Load the image to be used for texturing the quad
-		myImageData = ImageUtils::loadImage(imageName);
-		if(myImageData != NULL)
+		if(ImageUtils::loadImage(imageName, &myImageData))
 		{
-			myTexturedQuad->setImage(myImageData->getPixels());
+			myTexturedQuad->setImage(&myImageData);
 		}
 	}
 }
@@ -85,7 +84,7 @@ void SimpleScene::initialize()
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<SimpleScene> app;
+	EngineApplication<SimpleScene> app;
 	omain(
 		app, 
 		"../tutorials/tutorial6/customRenderable.cfg", 

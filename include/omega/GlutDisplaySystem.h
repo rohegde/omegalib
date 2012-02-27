@@ -54,7 +54,7 @@ namespace omega
 		virtual void setLayer(const char* viewName, Layer::Enum layer);
 		virtual Layer::Enum getLayer(const char* viewName);
 
-		virtual Observer* getObserver(int index) { return &myObserver; }
+		Observer& getObserver() { return myObserver; }
 
 		DisplaySystemType getId() { return DisplaySystem::Glut; }
 
@@ -65,7 +65,6 @@ namespace omega
 		virtual Ray getViewRay(Vector2i position) { return Ray(); }
 
 		RenderTarget* getFrameBuffer() { return myFrameBuffer; }
-		GpuContext* getGpuContext() { return myGpuContext; }
 
 	private:
 		void initLayers();

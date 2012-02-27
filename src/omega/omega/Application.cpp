@@ -26,6 +26,9 @@
  *************************************************************************************************/
 #include "omega/Application.h"
 #include "omega/DisplaySystem.h"
+#include "omega/Lock.h"
+
+#include "omega/StringUtils.h"
 
 using namespace omega;
 

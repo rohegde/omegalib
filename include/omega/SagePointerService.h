@@ -28,6 +28,7 @@
 #define __SAGE_POINTER_SERVICE_H__
 
 #include "omega/osystem.h"
+#include "omega/ServiceManager.h"
 
 namespace omega {
 	class SagePointerServer;

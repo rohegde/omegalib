@@ -27,11 +27,10 @@
 #ifndef __SCENE_SCRIPT_H__
 #define __SCENE_SCRIPT_H__
 
-#include <omega.h>
+#include "oengine/EngineServer.h"
 
 namespace cyclops
 {
-	using namespace omega;
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

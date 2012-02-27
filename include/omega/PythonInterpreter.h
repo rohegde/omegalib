@@ -23,44 +23,29 @@
  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *-------------------------------------------------------------------------------------------------
- * Original code Copyright (c) Kitware, Inc.
- * All rights reserved.
- * See Copyright.txt or http://www.paraview.org/HTML/Copyright.html for details.
  *************************************************************************************************/
 #ifndef __PYTHON_INTERPRETER_H__
 #define __PYTHON_INTERPRETER_H__
 
 #include "omega/osystem.h"
 
-struct PyMethodDef;
-class PythonInteractiveThread;
-
-namespace omega
-{
+namespace omega { 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class PythonInterpreter
 	{
-		friend struct PythonInterpreterWrapper;
 	public:
-		PythonInterpreter();
-		~PythonInterpreter();
+	  PythonInterpreter();
+	  ~PythonInterpreter();
 
-		void setup(const Setting& setting);
-		void initialize(const char* programName);
-		void addModule(const char* name, PyMethodDef* methods);
-		void eval(const String& script, const char* format = NULL, ...);
-		void runFile(const String& filename);
-		void addPythonPath(const char*);
-		bool isEnabled();
-		bool isShellEnabled() { return myShellEnabled; }
+	  virtual void initialize(const char* programName);
+	  //virtual void addModule(const char* name, ScriptModule* methods);
+ 	  virtual void eval(const String& script, const char* format = NULL, ...);
+	  virtual void runFile(const String& filename);
+	  virtual void addPath(const char*);
 
-	protected:
-		bool myEnabled;
-		bool myShellEnabled;
-		PythonInteractiveThread* myInteractiveThread;
-		//char* myExecutablePath;
+	private:
+	  char* myExecutablePath;
 	};
 };
-#endif
 
+#endif

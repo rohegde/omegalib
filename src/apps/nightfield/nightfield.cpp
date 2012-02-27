@@ -98,7 +98,7 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AffectorEntity::AffectorEntity(RenderableSceneObject* object, EngineServer* server):
+AffectorEntity::AffectorEntity(SceneObject* object, EngineServer* server):
 	myObject(object),
 	myServer(server),
 	myVisible(false),
@@ -119,7 +119,7 @@ AffectorEntity::AffectorEntity(RenderableSceneObject* object, EngineServer* serv
 
 	// Create the rendering effect for this entity.
 	MultipassEffect* mpfx = new MultipassEffect();
-	myObject->setEffect(mpfx);
+	mySceneNode->setEffect(mpfx);
 
 	Effect* wirefx = new Effect();
 	wirefx->setDrawMode(Effect::DrawWireframe);
@@ -259,11 +259,6 @@ void AffectorEntity::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Nightfield::Nightfield(Application* app): EngineServer(app)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::initialize()
 {
 	mySelectedEntity = NULL;
@@ -337,9 +332,9 @@ void Nightfield::initialize()
 			}
 		}
 	}
-	Light::setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
+	setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
 
-	Light* light = Light::getLight(0);
+	Light* light = getLight(0);
 	light->setEnabled(true);
 	light->setColor(Color(0.6f, 0.6f, 0.6f));
 	light->setPosition(Vector3f(0, 3, 3));
@@ -350,7 +345,8 @@ void Nightfield::initialize()
 	Camera* cam = getDefaultCamera();
 	cam->focusOn(getScene(0));
 
-	myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -459,7 +455,7 @@ void Nightfield::updateSelection(const Ray& ray)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<Nightfield> app;
+	EngineApplication<Nightfield> app;
 	omain(
 		app, 
 		"nightfield.cfg", 

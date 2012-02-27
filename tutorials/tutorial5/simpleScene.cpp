@@ -25,10 +25,10 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include <omega.h>
-#include <omegaToolkit.h>
+#include <oengine.h>
 
 using namespace omega;
-using namespace omegaToolkit;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SimpleScene: public EngineServer
@@ -39,7 +39,7 @@ public:
 
 private:
 	SceneNode* mySceneNode;
-	MeshData* myMeshData;
+	PlyDataReader* myMeshData;
 	Mesh* myMesh;
 	DefaultMouseInteractor* myMouseInteractor;
 };
@@ -55,7 +55,8 @@ void SimpleScene::initialize()
 	{
 		Setting& sCfg = cfg->lookup("config");
 
-		myMeshData = MeshUtils::load(sCfg["mesh"]);
+		myMeshData = new PlyDataReader();
+		myMeshData->readPlyFile(sCfg["mesh"]);
 		myMeshData->scale(0.8f);
 	}
 
@@ -67,7 +68,6 @@ void SimpleScene::initialize()
 	
 	scene->addChild(mySceneNode);
 	mySceneNode->addObject(myMesh);
-	mySceneNode->setPosition(Vector3f::Zero());
 
 	myMesh->setData(myMeshData);
 
@@ -80,7 +80,7 @@ void SimpleScene::initialize()
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<SimpleScene> app;
+	EngineApplication<SimpleScene> app;
 	omain(
 		app, 
 		"../tutorials/tutorial5/simpleScene.cfg", 

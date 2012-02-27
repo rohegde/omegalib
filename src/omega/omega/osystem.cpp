@@ -24,13 +24,18 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/osystem.h"
+#include "omega/Config.h"
+#include "omega/DataManager.h"
 #include "omega/SystemManager.h"
-#include "omicron/StringUtils.h"
+#include "omega/FilesystemDataSource.h"
+#include "omega/StringUtils.h"
 
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	FILE* sLogFile = NULL;
+	List<ILogListener*> sLogListeners;
+
 	GLEWContext* sGlewContext;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,28 +51,109 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologaddlistener(ILogListener* listener)
+	{
+		sLogListeners.push_back(listener);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologremlistener(ILogListener* listener)
+	{
+		sLogListeners.remove(listener);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologopen(const char* filename)
+	{
+		if(!filename) filename = "./log.txt";
+		sLogFile = fopen(filename, "w");
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void ologclose()
+	{
+		if(sLogFile)
+		{
+			fflush(sLogFile);
+			fclose(sLogFile);
+			sLogFile = NULL;
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void omsg(const String& str)
+	{
+		printf("%s\n", str.c_str());
+		if(sLogFile)
+		{
+			fprintf(sLogFile, "%s\n", str.c_str());
+			fflush(sLogFile);
+		}
+		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void owarn(const String& str)
+	{
+		printf("!!! %s\n", str.c_str());
+		if(sLogFile)
+		{
+			fprintf(sLogFile, "!!! %s\n", str.c_str());
+			fflush(sLogFile);
+		}
+		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void oerror(const String& str)
+	{
+		printf("*** %s\n", str.c_str());
+		if(sLogFile)
+		{
+			fprintf(sLogFile, "*** %s\n", str.c_str());
+			fflush(sLogFile);
+		}
+		foreach(ILogListener* ll, sLogListeners) ll->addLine(str);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void oabort(const char* file, int line, const char* reason)
+	{
+		String filename;
+		String path;
+
+		StringUtils::splitFilename(file, filename, path);
+
+		ofmsg("Assertion failed at %1%:%2% - %3%", %file %line %reason);
+
+		abort();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void oexit(int code)
+	{
+		exit(code);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	void omain(Application& app, const char* configFile, const char* logFile, DataSource* dataSource)
 	{
 		ologopen(logFile);
 
-		bool remote = false;
-		String masterHostname;
-		String configFilename;
-		
-		std::vector<std::string> args = StringUtils::split(configFile, "@");
-		configFilename = args[0];
-		if(args.size() == 2)
-		{
-			remote = true;
-			masterHostname = args[1];
-		}
-		
-		Config* cfg = new Config(configFilename);
-		
+		Config* cfg = new Config(configFile);
+
 		SystemManager* sys = SystemManager::instance();
 		DataManager* dm = sys->getDataManager();
 		// Add a default filesystem data source using current work dir.
 		dm->addSource(new FilesystemDataSource("./"));
+
+//		// Set the default data source for omega binary distributions.
+//		// This is a bit of a hack but it works fine for now.
+//#ifdef OMEGA_TOOL_GCC
+//		dm->addSource(new FilesystemDataSource("./../data/"));
+//#else
+//		dm->addSource(new FilesystemDataSource("./../../data"));
+//#endif
 
 		// Add optional data source.
 		if(dataSource != NULL)
@@ -75,15 +161,8 @@ namespace omega
 			dm->addSource(dataSource);
 		}
 
+		sys->setup(cfg);
 		sys->setApplication(&app);
-		if(remote)
-		{
-			sys->setupRemote(cfg, masterHostname);
-		}
-		else
-		{
-			sys->setup(cfg);
-		}
 		sys->initialize();
 		sys->run();
 

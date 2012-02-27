@@ -25,16 +25,35 @@
 #ifndef __OMEGA__
 #define __OMEGA__
 
-#include "omegaConfig.h"
+#include "osysdefs.h"
+#ifdef OMEGA_USE_DISPLAY
+#ifndef OMEGA_NO_GL_HEADERS
+	#include "omega/glheaders.h"
+#endif
+#endif
 #include "omega/Application.h"
+#include "omega/ByteArray.h"
+#include "omega/Color.h"
+#include "omega/Config.h"
+#include "omega/DataManager.h"
 #include "omega/DisplaySystem.h"
+#include "omega/Event.h"
+#include "omega/FileDataStream.h"
+#include "omega/FilesystemDataSource.h"
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
 #include "omega/GpuProgram.h"
+#include "omega/IEventListener.h"
+#include "omega/Lock.h"
 #include "omega/Observer.h"
 #include "omega/RenderTarget.h"
 #include "omega/RenderTarget.h"
+#include "omega/Service.h"
+#include "omega/ServiceManager.h"
+#include "omega/StringUtils.h"
 #include "omega/SystemManager.h"
 #include "omega/Texture.h"
+#include "omega/TypeInfo.h"
+#include "omega/xml/tinyxml.h"
 
 #endif

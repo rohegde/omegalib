@@ -59,30 +59,29 @@ SceneManager::SceneManager():
 	myOsg(NULL)
 {
 	mysInstance = this;
-	myOsg = new OsgModule();
-	myEditor = new SceneEditorModule();
-	EngineModuleServices::addModule(myOsg);
-	EngineModuleServices::addModule(myEditor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initialize(EngineServer* engine)
 {
 	myEngine = engine;
+	myOsg = new OsgModule();
+	myOsg->initialize(myEngine);
+
+	myEditor = new SceneEditorModule();
+	myEditor->initialize(myEngine);
 
 	mySceneRoot = new osg::Group();
 
-	myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+	myTabletManager = new TabletManagerModule();
+	myTabletManager->initialize(myEngine, true, false);
 
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->beginGui();
-		myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
-		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
-		myTabletManager->finishGui();
-	}
+	myTabletManager->beginGui();
+	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
+	myTabletManager->finishGui();
 
 	frontView = true;
 }
@@ -90,19 +89,16 @@ void SceneManager::initialize(EngineServer* engine)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::update(const UpdateContext& context) 
 {
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->update(context);
-	}
+	myOsg->update(context);
+	myEditor->update(context);
+	myTabletManager->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->handleEvent(evt);
-	}
+	myEditor->handleEvent(evt);
+	myTabletManager->handleEvent(evt);
 	if(evt.isKeyDown('l'))
     {
 		Vector3f pos = myEngine->getDefaultCamera()->getPosition();
@@ -484,7 +480,7 @@ void SceneManager::initShading()
 	sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
-	sm->setSoftnessWidth(0.005f);
+	sm->setSoftnessWidth(0.004f);
 	sm->setJitteringScale(32);
 
 	ss->addChild(mySceneRoot);

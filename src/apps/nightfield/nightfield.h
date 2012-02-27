@@ -28,18 +28,18 @@
 #define __NIGHTFIELD_H__
 
 #include <omega.h>
-#include <omegaToolkit.h>
+#include <oengine.h>
 #include "../common/Flock.h"
-#include "omega/PortholeTabletService.h"
+#include "oengine/TabletManagerModule.h"
 
 using namespace omega;
-using namespace omegaToolkit;
+using namespace oengine;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class AffectorEntity: public ReferenceType
+class AffectorEntity: public DynamicObject
 {
 public:
-	AffectorEntity(RenderableSceneObject* obj, EngineServer* server);
+	AffectorEntity(SceneObject* obj, EngineServer* server);
 	~AffectorEntity();
 
 	void resetTransform();
@@ -51,7 +51,7 @@ public:
 	void handleEvent(const Event& evt);
 
 	SceneNode* getSceneNode() { return mySceneNode; }
-	RenderableSceneObject* getObject() { return myObject; }
+	SceneObject* getObject() { return myObject; }
 
 	void updateFlockAffector(FlockAffector* af);
 	void setEnabled(bool value) { myEnabled = value; }
@@ -69,7 +69,7 @@ private:
 	EngineServer* myServer;
 
 	SceneNode* mySceneNode;
-	RenderableSceneObject* myObject;
+	SceneObject* myObject;
 
 	BoundingSphere* mySelectionSphere;
 	bool myVisible;
@@ -84,7 +84,7 @@ private:
 class Nightfield: public EngineServer
 {
 public:
-	Nightfield(Application* app);
+	Nightfield(Application* app): EngineServer(app) {}
 	virtual void initialize();
 	void update(const UpdateContext& context);
 	void handleEvent(const Event& evt);
@@ -102,7 +102,7 @@ private:
 	AffectorEntity* mySelectedEntity;
 	List<AffectorEntity*> myEntities;
 
-	PortholeTabletService* myTabletManager;
+	TabletManagerModule* myTabletManager;
 };
 
 #endif

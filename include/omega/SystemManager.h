@@ -34,7 +34,11 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
 	class Application;
+	class Config;
 	class DisplaySystem;
+	class ServiceManager;
+	class Service;
+	class DataManager;
 	class PythonInterpreter;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +51,6 @@ namespace omega
 
 		//! Initializes the system manager
 		void setup(Config* cfg);
-		void setupRemote(Config* cfg, const String& masterHostname);
 
 		void initialize();
 
@@ -88,9 +91,6 @@ namespace omega
 		const String& getExitReason();
 
 		bool isInitialized();
-		
-		bool isRemote() { return myIsRemote; }
-		const String& getMasterHostname() { return myMasterHostname; }
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
@@ -116,8 +116,6 @@ namespace omega
 		bool			myExitRequested;
 		String			myExitReason;
 		PythonInterpreter* myInterpreter;
-		bool myIsRemote;
-		String myMasterHostname;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

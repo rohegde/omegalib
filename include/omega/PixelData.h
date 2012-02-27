@@ -28,6 +28,7 @@
 #define __PIXEL_DATA_H__
 
 #include "osystem.h"
+#include "omega/Lock.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +64,6 @@ namespace omega {
 		size_t mySize;
 
 	};
-}; // namespace omega
+}; // namespace oengine
 
 #endif

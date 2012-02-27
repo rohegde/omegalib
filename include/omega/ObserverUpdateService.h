@@ -28,7 +28,7 @@
 #define __OBSERVER_UPDATE_SERVICE_H__
 
 #include "omega/osystem.h"
-#include "omega/SagePointerService.h"
+#include "omega/ServiceManager.h"
 
 namespace omega
 {

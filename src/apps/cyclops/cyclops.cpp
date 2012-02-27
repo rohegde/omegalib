@@ -26,14 +26,14 @@
  *************************************************************************************************/
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <omegaToolkit.h>
+#include <oengine.h>
 
 #include "SceneManager.h"
 #include "SceneLoader.h"
 
 using namespace omega;
-using namespace omegaToolkit;
-using namespace omegaOsg;
+using namespace oengine;
+using namespace oosg;
 using namespace osg;
 using namespace cyclops;
 

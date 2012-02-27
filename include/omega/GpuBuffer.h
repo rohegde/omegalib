@@ -35,7 +35,7 @@ namespace omega
 	class GpuManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API GpuData: public ReferenceType
+	class OMEGA_API GpuData: public DynamicObject
 	{
 	public:
 		virtual void bind(GpuProgram* prog, int index, GpuProgram::Stage stage) = 0;

@@ -26,6 +26,8 @@
  *************************************************************************************************/
 #include "Flock.h"
 
+OMEGA_DEFINE_TYPE(Flock, SceneObject)
+
 bool sUseOpenCL = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,6 +46,7 @@ void Flock::setup(Settings* settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Flock::initialize()
 {
+
 	myAgentImage = ImageUtils::loadImage(myCurrentPreset->flockImage);
 
 	// Setup the agent buffer.

@@ -27,6 +27,8 @@
 #include "omega/GpuManager.h"
 #include "omega/SystemManager.h"
 #include "omega/RenderTarget.h"
+#include "omega/StringUtils.h"
+#include "omega/DataManager.h"
 #include "omega/Texture.h"
 
 #include "omega/glheaders.h"
@@ -52,7 +54,7 @@ bool omega::__clSuccessOrDie(const char* file, int line, int status)
 {
 	if(status == CL_SUCCESS) return true;
 	
-	ofmsg("At %1%:%2% ", %file %line);
+	oferror("At %1%:%2% ", %file %line);
 	
 	switch(status)
 	{

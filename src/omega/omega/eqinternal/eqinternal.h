@@ -27,11 +27,11 @@
 #ifndef EQ_INTERNAL
 #define EQ_INTERNAL
 
-#include "omega/osystem.h"
+//#include "omega/osystem.h"
 #include "omega/Application.h"
+#include "omega/ServiceManager.h"
 #include "omega/RenderTarget.h"
-
-#define EQ_IGNORE_GLEW
+#include "omega/Event.h"
 
 // Equalizer includes
 #include "eq/eq.h"
@@ -47,19 +47,18 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-namespace omicron {
-	class EventUtils
+namespace omega {
+class RenderTarget;
+
+	class EqUtils
 	{
 	public:
 		static void serializeEvent(Event& evt, co::DataOStream& os);
 		static void deserializeEvent(Event& evt, co::DataIStream& is);
 	private:
-		EventUtils() {}
+		EqUtils() {}
 	};
-};
 
-namespace omega {
-	class RenderTarget;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 //!  Frame-specific data.
@@ -92,7 +91,7 @@ protected:
 			os << myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				EventUtils::serializeEvent(myEventBuffer[i], os);
+				EqUtils::serializeEvent(myEventBuffer[i], os);
 			}
 		}
 	}
@@ -106,7 +105,7 @@ protected:
 			is >> myNumEvents;
 			for(int i = 0; i < myNumEvents; i++)
 			{
-				EventUtils::deserializeEvent(myEventBuffer[i], is);
+				EqUtils::deserializeEvent(myEventBuffer[i], is);
 			}
 		}
 	}
@@ -118,7 +117,7 @@ protected:
 
 private:
 	int myNumEvents;
-	Event myEventBuffer[ OMICRON_MAX_EVENTS ];
+	Event myEventBuffer[ OMEGA_MAX_EVENTS ];
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +292,6 @@ protected:
 
 	virtual void frameViewFinish(const uint128_t& spin);
 	virtual void frameViewStart(const uint128_t& spin);
-	virtual void frameAssemble( const uint128_t& );
 
 	virtual bool configInit(const uint128_t& initID);
 	omega::ApplicationClient* getClient();
@@ -304,7 +302,7 @@ protected:
 private:
 	bool myInitialized;
 	eq::Window* myWindow;
-	omicron::Lock myLock;
+	Lock myLock;
 	ViewImpl* myView;
 	ChannelInfo myChannelInfo;
 	DrawContext myDC;

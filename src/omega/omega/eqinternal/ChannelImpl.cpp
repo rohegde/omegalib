@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "eqinternal.h"
 #include "omega/DisplaySystem.h"
+#include "omega/StringUtils.h"
 
 using namespace omega;
 using namespace co::base;
@@ -44,9 +45,6 @@ ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::M
 
 omega::Lock sLock;
 
-//! Comment do disable running of overlay render tasks.
-#define ENABLE_OVERLAY_TASK
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
 	:eq::Channel( parent ), myWindow(parent), myInitialized(false), myDrawBuffer(NULL)
@@ -54,8 +52,8 @@ ChannelImpl::ChannelImpl( eq::Window* parent )
 	sLock.lock();
 	if(!initStaticVars)
 	{
-		sCanvasChannels = omicron::Vector2i(0, 0);
-		sCanvasSize = omicron::Vector2i(0, 0);
+		sCanvasChannels = Vector2i(0, 0);
+		sCanvasSize = Vector2i(0, 0);
 		initStaticVars = true;
 	}
 	sLock.unlock();
@@ -86,7 +84,7 @@ void ChannelImpl::initialize()
 	String name = getName();
 
 	vector<String> args = StringUtils::split(name, "x,");
-	myChannelInfo.index = omicron::Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
+	myChannelInfo.index = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 	int ix = myChannelInfo.index[0];
 	int iy = myChannelInfo.index[1];
 
@@ -95,8 +93,8 @@ void ChannelImpl::initialize()
 	
 	ofmsg("@Channel %1% size: %2% %3%", %name %w %h);
 
-	myChannelInfo.offset = omicron::Vector2i(ix * w, iy * h);
-	myChannelInfo.size = omicron::Vector2i(w, h);
+	myChannelInfo.offset = Vector2i(ix * w, iy * h);
+	myChannelInfo.size = Vector2i(w, h);
 
 	sLock.lock();
 	// Refresh the number of channels in this view.
@@ -201,21 +199,6 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
-	if(frameID == 1)
-	{
-		String name = getName();
-		vector<String> args = StringUtils::split(name, "x,");
-		int cx = atoi(args[0].c_str());
-		int cy = atoi(args[1].c_str());
-
-		ChannelImpl* channel = sCanvasChannelPointers[cx][cy];
-		if(channel != this)
-		{
-			ofmsg("Initializing leaf channel for main channel %1%x%2%", %cx %cy);
-			myChannelInfo = channel->myChannelInfo;
-		}
-		return;
-	}
 
 	// Clear the frame buffer using the background color specified in display system.
 	DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -236,30 +219,25 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 	myDC.layer = view->getLayer();
 	myDC.task = DrawContext::SceneDrawTask;
 	client->draw(myDC);
-
-#ifdef ENABLE_OVERLAY_TASK
-	if(getEye() != eq::fabric::EYE_CYCLOP)
-	{
-		myDC.task = DrawContext::OverlayDrawTask;
-		getClient()->draw(myDC);
-	}
-#endif 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 {
 	eq::Channel::frameViewFinish( frameID );
-#ifdef ENABLE_OVERLAY_TASK
-	if(getEye() != eq::fabric::EYE_LAST && getEye() != eq::fabric::EYE_CYCLOP) return;
 
 	// Skip the first frame to give time to the channels to initialize
 	if(frameID == 0) return;
 
+	// In frame finish we just perform overlay draw operations, so always force the eye to be 
+	// Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
+	// Ignore the second call (Right Eye)
+	//if(getEye() == eq::fabric::EYE_RIGHT) return;
+
 	setupDrawContext(&myDC, frameID);
+	myDC.eye = DrawContext::EyeCyclop;
 	myDC.layer = getLayers();
 	myDC.task = DrawContext::OverlayDrawTask;
-	myDC.eye = DrawContext::EyeCyclop;
 
 	EQ_GL_CALL( applyBuffer( ));
 	EQ_GL_CALL( applyViewport( ));
@@ -288,7 +266,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 	}
 
 	EQ_GL_CALL( resetAssemblyState( ));
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -330,11 +307,4 @@ bool ChannelImpl::isDrawFpsEnabled()
 {
 	ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
 	return view->isDrawFpsEnabled();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameAssemble( const eq::uint128_t& spin)
-{
-	Channel::frameAssemble(spin);
-	//omsg("Channel::frameAssemble");
 }

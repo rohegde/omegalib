@@ -28,12 +28,13 @@
 #define __TEXTURED_QUAD_H__
 
 #include <omega.h>
-#include <omegaToolkit.h>
+#include <oengine.h>
 
-namespace omegaToolkit {
+namespace oengine {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class TexturedQuad: public RenderableSceneObject
+	class TexturedQuad: public SceneObject
 	{
+	OMEGA_DECLARE_TYPE(TexturedQuad)
 	public:
 		TexturedQuad();
 		~TexturedQuad();
@@ -42,17 +43,18 @@ namespace omegaToolkit {
 		const AlignedBox3* getBoundingBox();
 		bool hasBoundingBox();
 
-		PixelData* getImage();
-		void setImage(PixelData* value);
+		ImageData* getImage();
+		void setImage(ImageData* value);
 
 	private:
 		AlignedBox3 myBoundingBox;
-		PixelData* myImage;
+		ImageData* myImage;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class TexturedQuadRenderable: public SceneRenderable
 	{
+	OMEGA_DECLARE_TYPE(TexturedQuadRenderable)
 	public:
 		TexturedQuadRenderable(TexturedQuad* tq);
 		~TexturedQuadRenderable();
@@ -68,11 +70,11 @@ namespace omegaToolkit {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline PixelData* TexturedQuad::getImage() 
+	inline ImageData* TexturedQuad::getImage() 
 	{ return myImage; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void TexturedQuad::setImage(PixelData* value) 
+	inline void TexturedQuad::setImage(ImageData* value) 
 	{ myImage = value; refresh(); }
 }; // namespace oengine
 
