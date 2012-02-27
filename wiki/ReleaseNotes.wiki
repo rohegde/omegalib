@@ -2,7 +2,7 @@
 #sidebar Sidebar
 
 = omegalib v2.0 (*current developer version*) =
-*Initial Revision*: 1036
+*Initial Revision*: 1306
 == Summary ==
 == Change Log ==
 
