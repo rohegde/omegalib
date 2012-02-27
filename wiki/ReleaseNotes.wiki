@@ -1,7 +1,7 @@
-#summary This page contains release notes for omegalib starting from version 1.0
+#summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
-= omegalib v1.1 (*current developer version*) =
+= omegalib v2.0 (*current developer version*) =
 *Initial Revision*: 1036
 == Summary ==
 == Change Log ==
@@ -9,7 +9,7 @@
 ------------------------------------------------------------------------
 = omegalib v1.0 =
 *Initial Revision*: 965
-*Branch-out Revision*: 1035
+*Branch-out Revision*: 1302
 == Summary ==
 	This is the first "official" version of the omegalib (and omicron) APIs. The project has been deeply refactored into a set of well-separated modules:
 		* `omicron`: lives an external project, and contains all the event services code, input device support, plus various utility classes.
@@ -144,4 +144,21 @@
 	* FIX: Tcp connection now processed all available data on each poll call.
 	* FIXED: Adding missing meta files for Unity tutorial.
 	* FIX: interlaced stuff
+
 ------------------------------------------------------------------------
+= omegalib v0.9 =
+*Branch-out Revision*: 1248
+== Summary ==
+(*Internal release*) This is the last release before breaking changes in the Api for 1.0
+
+------------------------------------------------------------------------
+= omegalib v0.8.6 =
+*Branch-out Revision*: 1232
+== Summary ==
+(*Internal release*) This release has been created to mark the last working porthole release on venom
+
+------------------------------------------------------------------------
+= omegalib v0.8 =
+*Branch-out Revision*: 1151
+== Summary ==
+(*Internal release*) This release has been created to build side-by-side with the first release of omegadoom.
