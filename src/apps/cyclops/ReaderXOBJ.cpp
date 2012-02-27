@@ -41,7 +41,7 @@
  *************************************************************************************************/
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <oengine.h>
+//#include <omegaToolkit.h>
 
 #include <osg/Notify>
 #include <osg/Node>
@@ -399,14 +399,17 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
         obj::Material& material = itr->second;
        
 		// Get the material name using the name of the diffuse texture.
-		String materialName = material.maps[obj::Material::Map::DIFFUSE].name;
+		if(material.maps.size() != 0)
+		{
+			String materialName = material.maps[obj::Material::Map::DIFFUSE].name;
 
-		omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
+			omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
 
-		String materialPath;
-		materialName = StringUtils::replaceAll(materialName, ".dds", ".material");
-		materialName = StringUtils::replaceAll(materialName, ".tga", ".material");
-		em[material.name] = SceneManager::getInstance()->loadMaterial(materialName);
+			String materialPath;
+			materialName = StringUtils::replaceAll(materialName, ".dds", ".material");
+			materialName = StringUtils::replaceAll(materialName, ".tga", ".material");
+			em[material.name] = SceneManager::getInstance()->loadMaterial(materialName);
+		}
 	}
 }
 
