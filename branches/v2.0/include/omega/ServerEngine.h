@@ -105,6 +105,7 @@ namespace omega {
 		//@{
 		Pointer* createPointer();
 		void destroyPointer(Pointer* p);
+		void refreshPointer(int pointerId, int x, int y);
 		//@}
 
 		virtual void initialize();
@@ -112,7 +113,6 @@ namespace omega {
 		void clientInitialize(Renderer* client);
 
 		virtual void finalize();
-		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
 
 	private:

@@ -145,6 +145,27 @@ void ServerEngine::addClient(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+void ServerEngine::refreshPointer(int pointerId, int x, int y)
+{
+	if(myActivePointers[pointerId].first == NULL)
+	{
+		ofmsg("Creating pointer %1%", %pointerId);
+		myActivePointers[pointerId].first = createPointer();
+	}
+	myActivePointers[pointerId].second = myActivePointerTimeout;
+	//if(evt.getType() == Event::Update)
+	//{
+	//    myActivePointers[pointerId].first->setText(evt.getExtraDataString());
+	//    myActivePointers[pointerId].first->setColor(
+	//        Color(evt.getPosition()[0], evt.getPosition()[1], evt.getPosition()[2]));
+	//}
+	//else
+	//{
+		myActivePointers[pointerId].first->setPosition(x, y);
+	//}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 Pointer* ServerEngine::createPointer()
 {
     Pointer* p = new Pointer();
@@ -193,46 +214,6 @@ void ServerEngine::update(const UpdateContext& context)
     for(int i = 0; i < MaxScenes; i++)
     {
         myScene[i]->update(false, false);
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::handleEvent(const Event& evt)
-{
-    if( evt.getServiceType() == Service::Keyboard )
-    {
-        // Esc = force exit
-        if(evt.getSourceId() == 256) exit(0);
-        // Tab = toggle on-screen console.
-        if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
-        {
-            myConsoleEnabled = !myConsoleEnabled;
-        }
-    }
-
-    ModuleServices::handleEvent(this, evt);
-    if(evt.isProcessed()) return;
-
-    // Update pointers.
-    if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
-    {
-        int pointerId = evt.getSourceId() - 1;
-        if(myActivePointers[pointerId].first == NULL)
-        {
-            ofmsg("Creating pointer %1%", %pointerId);
-            myActivePointers[pointerId].first = createPointer();
-        }
-        myActivePointers[pointerId].second = myActivePointerTimeout;
-        if(evt.getType() == Event::Update)
-        {
-            myActivePointers[pointerId].first->setText(evt.getExtraDataString());
-            myActivePointers[pointerId].first->setColor(
-                Color(evt.getPosition()[0], evt.getPosition()[1], evt.getPosition()[2]));
-        }
-        else
-        {
-            myActivePointers[pointerId].first->setPosition(evt.getPosition().x(), evt.getPosition().y());
-        }
     }
 }
 

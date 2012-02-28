@@ -123,7 +123,23 @@ void MasterEngine::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MasterEngine::handleEvent(const Event& evt)
 {
-	ServerEngine::handleEvent(evt);
+    if( evt.getServiceType() == Service::Keyboard )
+    {
+        // Esc = force exit
+        if(evt.getSourceId() == 256) exit(0);
+        // Tab = toggle on-screen console.
+        if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
+        {
+			setConsoleEnabled(!isConsoleEnabled());
+        }
+    }
+
+    // Update pointers.
+    if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+    {
+        int pointerId = evt.getSourceId() - 1;
+		refreshPointer(pointerId, evt.getPosition().x(), evt.getPosition().y());
+    }
     if(evt.isProcessed()) return;
     myDefaultCamera->handleEvent(evt);
     if(evt.isProcessed()) return;

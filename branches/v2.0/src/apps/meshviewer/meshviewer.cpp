@@ -92,6 +92,7 @@ void Entity::show()
 #endif	
     //mySceneNode->resetOrientation();
     mySceneNode->setVisible(true);
+	mySceneNode->setBoundingBoxVisible(true);
     myInteractor->setSceneNode(mySceneNode);
 
 }

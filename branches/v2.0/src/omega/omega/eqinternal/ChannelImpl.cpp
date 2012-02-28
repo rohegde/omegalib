@@ -45,7 +45,7 @@ ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::M
 omega::Lock sLock;
 
 //! Comment do disable running of overlay render tasks.
-//#define ENABLE_OVERLAY_TASK
+#define ENABLE_OVERLAY_TASK
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
