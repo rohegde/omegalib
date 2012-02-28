@@ -46,11 +46,9 @@ namespace omegaToolkit
 		UiModule();
 		~UiModule();
 
-		void initialize(ServerEngine* server);
+		void initialize();
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
-
-		ServerEngine* getEngine() { return myEngine; }
 
 		ui::Container* getUi(int id);
 		ui::WidgetFactory* getWidgetFactory();
@@ -58,7 +56,6 @@ namespace omegaToolkit
 	private:
 		static UiModule* mysInstance;
 
-		ServerEngine* myEngine;
 		ui::Container* myUi[MaxUis];
 		ui::WidgetFactory* myWidgetFactory;
 	};

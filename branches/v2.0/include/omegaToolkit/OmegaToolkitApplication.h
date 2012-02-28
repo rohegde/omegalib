@@ -47,9 +47,11 @@ namespace omegaToolkit {
 			ModuleServices::addModule(new UiModule());
 		}
 
-		virtual void initialize(ServerEngine* engine) 
+		virtual void initialize() 
 		{
 			omsg("OmegaToolkitEngineModule initializing...");
+
+			ServerEngine* engine = getServer();
 
 			// Setup default render chain.
 			engine->registerRenderPassClass("LightingPass", (ServerEngine::RenderPassFactory)LightingPass::createInstance);
@@ -76,8 +78,8 @@ namespace omegaToolkit {
 	public:
 		OmegaToolkitApplication(const String& name): Application<T>(name)
 		{ModuleServices::addModule(new OmegaToolkitEngineModule());}
-		virtual ServerBase* createServer() 
-		{ return new T(this); }
+		//virtual ServerBase* createServer() 
+		//{ return new T(this); }
 
 	private:
 	};

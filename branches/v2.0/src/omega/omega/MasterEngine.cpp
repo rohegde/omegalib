@@ -24,152 +24,112 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omegaToolkit/SceneEditorModule.h"
-#include "omega/SceneQuery.h"
-#include "omegaToolkit/DefaultMouseInteractor.h"
-#include "omegaToolkit/ControllerManipulator.h"
-#include "omegaToolkit/BoundingSphere.h"
+#include "omega/MasterEngine.h"
+#include "omega/SystemManager.h"
+#include "omega/DisplaySYstem.h"
 
-using namespace omegaToolkit;
 using namespace omega;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
-	mySceneNode(node), myEditor(editor)
-{
-	mySceneNode = node;
+MasterEngine* MasterEngine::mysInstance = NULL;
 
-	mySelectionSphere = new BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(false);
-	mySelectionSphere->setVisible(true);
-	mySceneNode->addObject(mySelectionSphere);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MasterEngine::MasterEngine(ApplicationBase* app):
+    ServerEngine(app, true),
+    myDefaultCamera(NULL)
+{
+    mysInstance = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneEditorModule::SceneEditorModule():
-	myInteractor(NULL), mySelectedObject(NULL)
+Camera* MasterEngine::createCamera(uint flags)
 {
+    Camera* cam = new Camera(flags);
+    myCameras.push_back(cam);
+    return cam;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneEditorModule::~SceneEditorModule()
+void MasterEngine::destroyCamera(Camera* cam)
 {
+    oassert(cam != NULL);
+    myCameras.remove(cam);
+    delete cam;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EditableObject* SceneEditorModule::findEditableObject(SceneNode* node)
+MasterEngine::CameraCollection::Range MasterEngine::getCameras()
 {
-	foreach(EditableObject* eo, myObjects)
-	{
-		if(eo->getSceneNode() == node) return eo;
-	}
-	return NULL;
+    return CameraCollection::Range(myCameras.begin(), myCameras.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::addNode(SceneNode* node)
+MasterEngine::CameraCollection::ConstRange MasterEngine::getCameras() const
 {
-	EditableObject* eo = new EditableObject(node, this);
-	myObjects.push_back(eo);
+    return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::removeNode(SceneNode* node)
+void MasterEngine::addInteractive(InteractiveBase* ib)
 {
-	EditableObject* eo = findEditableObject(node); 
-	if(eo)
-	{
-		myObjects.remove(eo);
-		delete eo;
-	}
+    myInteractives.push_back(ib);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneNode* SceneEditorModule::getSelectedNode()
+void MasterEngine::removeInteractive(InteractiveBase* ib)
 {
-	if(mySelectedObject != NULL) return mySelectedObject->getSceneNode();
-	return NULL;
+    myInteractives.remove(ib);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::setInteractorStyle(InteractorStyle style)
+void MasterEngine::initialize()
 {
-	myInteractorStyle = style;
-	if(myInteractorStyle == MouseInteractorStyle)
-	{
-		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-		interactor->setMoveButtonFlag(Event::Left);
-		interactor->setRotateButtonFlag(Event::Right);
-		myInteractor = interactor;
-	}
-	else if(myInteractorStyle == ControllerInteractorStyle)
-	{
-		ControllerManipulator* interactor = new ControllerManipulator();
-		myInteractor = interactor;
-	}
-	
-	getMaster()->addInteractive(myInteractor);
+	ServerEngine::initialize();
+    myDefaultCamera = new Camera();
+    Config* cfg = getSystemManager()->getAppConfig();
+    if(cfg->exists("config/camera"))
+    {
+        Setting& s = cfg->lookup("config/camera");
+        if(Config::getBoolValue("enableNavigation", s, false))
+        {
+            myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
+        }
+        Vector3f camPos = cfg->getVector3fValue("position", s); 
+        myDefaultCamera->setPosition(camPos);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::updateSelection(const Ray& ray)
+void MasterEngine::finalize()
 {
-	const SceneQueryResultList& sqrl = getMaster()->querySceneRay(0, ray);
-	if(sqrl.size() != 0)
-	{
-		// The ray intersected with something.
-		SceneNode* sn = sqrl.front().node;
-		EditableObject* e = findEditableObject(sn);
-
-		if(mySelectedObject != e)
-		{
-			if(mySelectedObject != NULL)
-			{
-				mySelectedObject->getSceneNode()->setSelected(false);
-			}
-			// The selected entity changed.
-			myInteractor->setSceneNode(sn);
-			sn->setSelected(true);
-			mySelectedObject = e;
-		}
-	}
-	else
-	{
-		if(mySelectedObject != NULL)
-		{
-			mySelectedObject->getSceneNode()->setSelected(false);
-			mySelectedObject = NULL;
-			myInteractor->setSceneNode(NULL);
-		}
-	}
+	ServerEngine::finalize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::initialize(MasterEngine* master)
+void MasterEngine::update(const UpdateContext& context)
 {
-	omsg("SceneEditorModule initializing...");
-
-	setInteractorStyle(MouseInteractorStyle);
-
-	omsg("SceneEditorModule initialization OK");
+	ServerEngine::update(context);
+    // Update actors.
+    foreach(InteractiveBase* ib, myInteractives)
+    {
+		if(!ib->isInitialized()) ib->doInitialize(this);
+        ib->update(context);
+    }
+    // Update the default camera and use it to update the default omegalib observer.
+    myDefaultCamera->update(context);
+    Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
+    myDefaultCamera->updateObserver(obs);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::update(const UpdateContext& context)
+void MasterEngine::handleEvent(const Event& evt)
 {
+	ServerEngine::handleEvent(evt);
+    if(evt.isProcessed()) return;
+    myDefaultCamera->handleEvent(evt);
+    if(evt.isProcessed()) return;
+    foreach(InteractiveBase* ib, myInteractives)
+    {
+        ib->handleEvent(evt);
+    }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::handleEvent(const Event& evt)
-{
-	if(evt.getServiceType() == Service::Pointer) 
-	{
-		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
-		{
-			Ray ray;
-			ray.setOrigin(evt.getExtraDataVector3(0));
-			ray.setDirection(evt.getExtraDataVector3(1));
-			updateSelection(ray);
-		}
-	}
-}

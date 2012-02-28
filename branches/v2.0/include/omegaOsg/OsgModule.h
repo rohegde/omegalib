@@ -61,7 +61,7 @@ namespace omegaOsg
 		float getRepresentationSize();
 		void setRepresentationSize(float value);
 
-		virtual void initialize(ServerEngine* server);
+		virtual void initialize();
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt) {}
 		//void loadScene(const String& filename);
@@ -74,7 +74,6 @@ namespace omegaOsg
 	private:
 		static OsgModule* mysInstance;
 
-		ServerEngine* myServer;
 		float myRepresentationSize;
 
 		//OsgSceneObject* myRootSceneObject;

@@ -21,6 +21,11 @@
  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *---------------------------------------------------------------------------------------------------------------------
+ *	ohello
+ *		Implements the simplest possible omegalib application.  Just a synchronized renderer that performs some 
+ *		opengl drawing on one or multiple nodes. Since this applicaion has no update logic or event handling, it just
+ *		needs to reimplement the RendererBase class.
  *********************************************************************************************************************/
 #include <omega.h>
 #include <omegaGl.h>
@@ -31,10 +36,10 @@ using namespace omega;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloClient: public RendererBase
+class HelloRenderer: public RendererBase
 {
 public:
-	HelloClient(ServerBase* server): RendererBase(server) {}
+	HelloRenderer(ServerBase* server): RendererBase(server) {}
 	virtual void draw(const DrawContext& context);
 };
 
@@ -43,11 +48,11 @@ class HelloApplication: public ApplicationBase
 {
 public:
 	virtual const char* getName() { return "ohello"; }
-	virtual RendererBase* createClient(ServerBase* server) { return new HelloClient(server); }
+	virtual RendererBase* createClient(ServerBase* server) { return new HelloRenderer(server); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloClient::draw(const DrawContext& context)
+void HelloRenderer::draw(const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
@@ -79,18 +84,6 @@ int main(int argc, char** argv)
 {
 	HelloApplication app;
 	
-	//if(argc == 1)
-	//{
-	//	// for(int i = 1; i <= 1; i++)
-	//	// {
-	//		// char buf[256];
-	//		// sprintf(buf, "ssh -n orion-%d ~/omegalib/build-v2.0-release/bin/ohello system/desktop.cfg@orion-%d:24001", i);
-	//		// olaunch(buf);
-	//	// }
-	//	olaunch("ssh -n orion-2 ~/omegalib/build-v2.0-release/bin/ohello system/desktop.cfg@orion-2:24001");
-	//	sleep(1);
-	//}
-
 	// Read config file name from command line or use default one.
 	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 
 	// So, we are going to load directly a system configuration file.

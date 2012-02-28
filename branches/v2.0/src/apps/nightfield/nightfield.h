@@ -39,7 +39,7 @@ using namespace omegaToolkit;
 class AffectorEntity: public ReferenceType
 {
 public:
-	AffectorEntity(RenderableSceneObject* obj, EngineServer* server);
+	AffectorEntity(RenderableSceneObject* obj, ServerEngine* server);
 	~AffectorEntity();
 
 	void resetTransform();
@@ -66,7 +66,7 @@ public:
 	bool isSelected() { return mySelected; }
 
 private:
-	EngineServer* myServer;
+	ServerEngine* myServer;
 
 	SceneNode* mySceneNode;
 	RenderableSceneObject* myObject;
@@ -81,17 +81,18 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class Nightfield: public EngineServer
+class Nightfield: public InteractiveBase
 {
 public:
-	Nightfield(Application* app);
-	virtual void initialize();
+	Nightfield();
+	virtual void initialize(MasterEngine* engine);
 	void update(const UpdateContext& context);
 	void handleEvent(const Event& evt);
 	AffectorEntity* findEntity(SceneNode* node);
 	void updateSelection(const Ray& ray);
 
 private:
+	MasterEngine* myEngine;
 	Settings mySettings;
 
 	ReferenceBox* myReferenceBox;

@@ -39,6 +39,7 @@
 #include "Console.h"
 
 namespace omega {
+	class MasterEngine;
 
 	typedef List<Renderer*> EngineClientList;
 
@@ -57,7 +58,6 @@ namespace omega {
 	friend class Renderer;
 	public:
 		typedef RenderPass* (*RenderPassFactory)(Renderer*);
-		typedef List<Camera*> CameraCollection;
 
 	public:
 		static const int MaxScenes = 3;
@@ -65,9 +65,10 @@ namespace omega {
 		static ServerEngine* instance() { return mysInstance; }
 
 	public:
-		ServerEngine(ApplicationBase* app);
+		ServerEngine(ApplicationBase* app, bool master);
 
 		ServiceManager* getServiceManager();
+		MasterEngine* asMaster();
 
 		void addClient(Renderer* client);
 		EngineClientList& getClients();
@@ -93,16 +94,12 @@ namespace omega {
 
 		SceneNode* getScene(int id);
 
-		void addActor(Actor* actor);
-		void removeActor(Actor* actor);
-
-		//! Console management
+ 		//! Console management
 		//@{
 		Console* getConsole();
 		bool isConsoleEnabled();
 		void setConsoleEnabled(bool value);
 		//@}
-
 
 		//! Pointer Management
 		//@{
@@ -110,14 +107,6 @@ namespace omega {
 		void destroyPointer(Pointer* p);
 		//@}
 
-		Camera* getDefaultCamera();
-		Camera* createCamera(uint flags = Camera::DefaultFlags);
-		void destroyCamera(Camera* cam);
-		CameraCollection::Range getCameras();
-		CameraCollection::ConstRange getCameras() const;
-
-		//! Old initialization entry point. Deprecated now. use onInitalize instead.
-		//! @remarks when reimplementing initalize, user code must call Engine::initialize() explicitly.
 		virtual void initialize();
 		//! Internal method.
 		void clientInitialize(Renderer* client);
@@ -125,12 +114,6 @@ namespace omega {
 		virtual void finalize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
-
-		//! Called once after engine server initialization
-		virtual void onInitialize() {}
-		//! Called once after each engine client (that is, local render thread) initialization.
-		//! @remarks This method is guaranteed to be invoked after onInitialize
-		virtual void onClientInitialize(Renderer* client) {}
 
 	private:
 		//! Draw pointer objects inside a specific client context.
@@ -148,16 +131,10 @@ namespace omega {
 
 		SceneNode* myScene[MaxScenes];
 
-		// Cameras.
-		Camera* myDefaultCamera;
-		CameraCollection myCameras;
-
 		// Pointers
 		List<Pointer*> myPointers;
 		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
 		float myActivePointerTimeout;
-
-		List<Actor*> myActors;
 
 		// Resources
 		FontInfo myDefaultFont;
@@ -193,10 +170,6 @@ namespace omega {
 	{ return myDefaultFont; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Camera* ServerEngine::getDefaultCamera()
-	{ return myDefaultCamera; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Console* ServerEngine::getConsole()
 	{ return myConsole;	}
 
@@ -207,6 +180,11 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void ServerEngine::setConsoleEnabled(bool value)
 	{ myConsoleEnabled = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline MasterEngine* ServerEngine::asMaster()
+	{ return isMaster() ? (MasterEngine*)this : NULL; }
+
 }; // namespace omega
 
 #endif

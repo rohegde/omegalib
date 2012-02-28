@@ -176,27 +176,6 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 uint32_t ConfigImpl::finishFrame()
 {
     DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-    ServiceManager* im = SystemManager::instance()->getServiceManager();
-    im->poll();
-
-    // Process events.
-    //int av = im->getAvailableEvents();
-    //myFrameData.setNumEvents(av);
-    //myFrameData.setDirtyEvents();
-    //if(av != 0)
-    //{
-    //	im->lockEvents();
-    //	// Dispatch events to application server.
-    //	for( int evtNum = 0; evtNum < av; evtNum++)
-    //	{
-    //		Event* evt = im->getEvent(evtNum);
-    //		//myServer->handleEvent(*evt);
-    //		// Copy events to frame data.
-    //		myFrameData.getEvent(evtNum) = *evt;
-    //	}
-    //	im->unlockEvents();
-    //}
-    //im->clearEvents();
 
     // update observer head matrices.
     for( unsigned int i = 0; i < getObservers().size(); i++) 

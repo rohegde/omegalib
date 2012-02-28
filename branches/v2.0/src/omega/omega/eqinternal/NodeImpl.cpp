@@ -39,8 +39,19 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 {
 	DEBUG_EQ_FLOW("NodeImpl::NodeImpl %1%", %parent);
 
-	ApplicationBase* app = SystemManager::instance()->getApplication();
-	myServer = app->createServer();
+	SystemManager* sys = SystemManager::instance();
+
+	ApplicationBase* app = sys->getApplication();
+	if(sys->isMaster())
+	{
+		// This is the master node. Create the master server instance.
+		myServer = app->createMaster();
+	}
+	else
+	{
+		// This is the not master node. Create a standard server instance.
+		myServer = app->createServer();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,22 +116,26 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 	uc.frameNum = frameNumber;
 	lt = t;
 
-	// Syncronize frame data (containing input events and possibly other stuff)
-	//myFrameData.sync(frameID);
 
-	//// Dispatch received events events to application server.
-	//int av = myFrameData.getNumEvents();
-	//if(av != 0)
-	//{
-	//	for( int evtNum = 0; evtNum < av; evtNum++)
-	//	{
-	//		Event& evt = myFrameData.getEvent(evtNum);
-	//		if(!evt.isProcessed())
-	//		{
-	//			myServer->handleEvent(evt);
-	//		}
-	//	}
-	//}
+	SystemManager* sys = SystemManager::instance();
+	ServiceManager* im = SystemManager::instance()->getServiceManager();
+	im->poll();
+
+	// Process events.
+	int av = im->getAvailableEvents();
+	if(av != 0)
+	{
+    	im->lockEvents();
+    	// Dispatch events to application server.
+    	for( int evtNum = 0; evtNum < av; evtNum++)
+    	{
+    		Event* evt = im->getEvent(evtNum);
+    		myServer->handleEvent(*evt);
+    	}
+    	im->unlockEvents();
+	}
+	im->clearEvents();
+
 	myServer->update(uc);
 }
 

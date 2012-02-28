@@ -168,7 +168,7 @@ namespace omega
 	{
 	friend class RendererBase;
 	public:
-		ServerBase(ApplicationBase* app): myApplication(app) {}
+		ServerBase(ApplicationBase* app, bool master): myApplication(app), myIsMaster(master) {}
 		virtual ~ServerBase() {}
 
 		virtual void initialize() {}
@@ -182,10 +182,13 @@ namespace omega
 		int getCanvasWidth(); 
 		int getCanvasHeight();
 
+		bool isMaster() { return myIsMaster; }
+
 	private:
 		void addClient(RendererBase* cli);
 
 	private:
+		bool myIsMaster;
 		ApplicationBase* myApplication;
 		List<RendererBase*> myClients;
 	};
@@ -199,10 +202,8 @@ namespace omega
 	public:
 		virtual const char* getName() { return "OmegaLib " OMEGA_VERSION; }
 
-		//! Instantiates a new Channel instance.
-		//! Users redefine this method to create instances of their own Channel objects.
-		//! @param impl - the internal DisplaySystem-dependent channel implementation.
-		virtual ServerBase* createServer() { return new ServerBase(this); };
+		virtual ServerBase* createMaster() { return new ServerBase(this, true); };
+		virtual ServerBase* createServer() { return new ServerBase(this, false); };
 		virtual RendererBase* createClient(ServerBase* server) { return new RendererBase(server); };
 
 		//! Called once for entire application initialization tasks.

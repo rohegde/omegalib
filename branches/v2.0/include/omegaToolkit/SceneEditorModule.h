@@ -53,7 +53,7 @@ namespace omegaToolkit
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API SceneEditorModule: public ServerModule
+	class OTK_API SceneEditorModule: public InteractiveBase
 	{
 	public:
 		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
@@ -62,7 +62,7 @@ namespace omegaToolkit
 		SceneEditorModule();
 		~SceneEditorModule();
 
-		void initialize(ServerEngine* server);
+		void initialize(MasterEngine* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -74,15 +74,11 @@ namespace omegaToolkit
 
 		SceneNode* getSelectedNode();
 
-		ServerEngine* getEngine() { return myEngine; }
-
 	private:
 		EditableObject* findEditableObject(SceneNode* node);
 		void updateSelection(const Ray& ray);
 
 	private:
-		ServerEngine* myEngine;
-		
 		InteractorStyle myInteractorStyle;
 		Actor* myInteractor;
 

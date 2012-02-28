@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/Renderer.h"
 #include "omega/ServerEngine.h"
+#include "omega/MasterEngine.h"
 #include "omega/PortholeTabletService.h"
 
 #include "omega/DisplaySystem.h"
@@ -111,9 +112,13 @@ void Renderer::startFrame(const FrameInfo& frame)
 	ofmsg("Renderer::startFrame %1%", %frame.frameNum);
 #endif
 
-	foreach(Camera* cam, myServer->getCameras())
+	MasterEngine* master = myServer->asMaster();
+	if(master != NULL)
 	{
-		cam->startFrame(frame);
+		foreach(Camera* cam, master->getCameras())
+		{
+			cam->startFrame(frame);
+		}
 	}
 }
 
@@ -124,9 +129,13 @@ void Renderer::finishFrame(const FrameInfo& frame)
 	ofmsg("Renderer::finishFrame %1%", %frame.frameNum);
 #endif
 
-	foreach(Camera* cam, myServer->getCameras())
+	MasterEngine* master = myServer->asMaster();
+	if(master != NULL)
 	{
-		cam->finishFrame(frame);
+		foreach(Camera* cam, master->getCameras())
+		{
+			cam->finishFrame(frame);
+		}
 	}
 }
 
@@ -160,16 +169,20 @@ void Renderer::draw(const DrawContext& context)
 		myRenderableCommands.pop();
 	}
 
-	// Perform draw for the additional enabled cameras.
-	foreach(Camera* cam, myServer->getCameras())
+	MasterEngine* master = myServer->asMaster();
+	if(master != NULL)
 	{
-		// See if camera is enabled for the current client and draw context.
-		if(cam->isEnabled(context))
+		// On the master server, Perform draw for the additional enabled cameras.
+		foreach(Camera* cam, master->getCameras())
 		{
-			// Begin drawing with the camera: get the camera draw context.
-			const DrawContext& cameraContext = cam->beginDraw(context);
-			innerDraw(cameraContext);
-			cam->endDraw(context);
+			// See if camera is enabled for the current client and draw context.
+			if(cam->isEnabled(context))
+			{
+				// Begin drawing with the camera: get the camera draw context.
+				const DrawContext& cameraContext = cam->beginDraw(context);
+				innerDraw(cameraContext);
+				cam->endDraw(context);
+			}
 		}
 	}
 

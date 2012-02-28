@@ -68,12 +68,12 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class MeshViewer: public ServerEngine
+class MeshViewer: public InteractiveBase
 {
 public:
-	MeshViewer(ApplicationBase* app);
+	MeshViewer();
 
-	virtual void initialize();
+	virtual void initialize(MasterEngine* engine);
 	virtual void handleEvent(const Event& evt);
 	virtual void handleUiEvent(const Event& evt);
 	virtual void update(const UpdateContext& context);
@@ -83,6 +83,7 @@ private:
 	void initUi();
 
 private:
+	MasterEngine* myEngine;
 	Vector<Entity*> myEntities;
 	Entity* mySelectedEntity;
 

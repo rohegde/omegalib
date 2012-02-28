@@ -35,8 +35,7 @@ UiModule* UiModule::mysInstance = NULL;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
-	myWidgetFactory(NULL),
-	myEngine(NULL)
+	myWidgetFactory(NULL)
 {
 	mysInstance = this;
 }
@@ -47,20 +46,19 @@ UiModule::~UiModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiModule::initialize(ServerEngine* server)
+void UiModule::initialize()
 {
 	omsg("UiModule initializing...");
 
-	myEngine = server;
-	myWidgetFactory = new ui::DefaultWidgetFactory(myEngine);
+	myWidgetFactory = new ui::DefaultWidgetFactory(getServer());
 	for(int i = 0; i < MaxUis; i++)
 	{
-		myUi[i] = new ui::Container(myEngine);
+		myUi[i] = new ui::Container(getServer());
 		myUi[i]->setLayout(ui::Container::LayoutFree);
-		myUi[i]->setUIEventHandler(myEngine);
+		myUi[i]->setUIEventHandler(getServer());
 	}
-	myEngine->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
-	myEngine->addRenderPass("UiRenderPass");
+	getServer()->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
+	getServer()->addRenderPass("UiRenderPass");
 
 	omsg("UiModule initialization OK");
 }

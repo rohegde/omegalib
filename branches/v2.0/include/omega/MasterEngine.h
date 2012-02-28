@@ -24,54 +24,56 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ACTOR_H__
-#define __ACTOR_H__
+#ifndef __MASTER_ENGINE_H__
+#define __MASTER_ENGINE_H__
 
-#include "osystem.h"
-#include "omega/ApplicationBase.h"
-#include "omega/SceneNode.h"
+#include "ServerEngine.h"
 
 namespace omega {
-	class MasterEngine;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API InteractiveBase: public ReferenceType, IEventListener
+	class OMEGA_API MasterEngine: public ServerEngine
 	{
 	public:
-		InteractiveBase(): myMaster(NULL), myInitialized(false) {}
+		typedef List<Camera*> CameraCollection;
 
-		virtual void initialize(MasterEngine* server) {}
-		virtual void update(const UpdateContext& context) {}
-		virtual void handleEvent(const Event& evt) {}
+	public:
+		static const int MaxActivePointers = 128;
+		static MasterEngine* instance() { return mysInstance; }
 
-		void doInitialize(MasterEngine* server) { myMaster = server; if(!myInitialized) initialize(server); myInitialized = true; }
-		virtual bool isInitialized() { return myInitialized; }
-		MasterEngine* getMaster() { return myMaster; }
+	public:
+		MasterEngine(ApplicationBase* app);
+
+		void addInteractive(InteractiveBase* ib);
+		void removeInteractive(InteractiveBase* ib);
+
+		Camera* getDefaultCamera();
+		Camera* createCamera(uint flags = Camera::DefaultFlags);
+		void destroyCamera(Camera* cam);
+		CameraCollection::Range getCameras();
+		CameraCollection::ConstRange getCameras() const;
+
+		virtual void initialize();
+		//! Internal method.
+		void clientInitialize(Renderer* client);
+
+		virtual void finalize();
+		virtual void handleEvent(const Event& evt);
+		virtual void update(const UpdateContext& context);
 
 	private:
-		bool myInitialized;
-		MasterEngine* myMaster;
+		static MasterEngine* mysInstance;
+
+		// Actors
+		List<InteractiveBase*> myInteractives;
+
+		// Cameras.
+		Camera* myDefaultCamera;
+		CameraCollection myCameras;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Actor: public InteractiveBase
-	{
-	public:
-		Actor(): myNode(NULL)  {}
-
-		void setSceneNode(SceneNode* node);
-		SceneNode* getSceneNode();
-	protected:
-		SceneNode* myNode;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Actor::setSceneNode(SceneNode* node)
-	{ myNode = node; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* Actor::getSceneNode()
-	{ return myNode; }
+	inline Camera* MasterEngine::getDefaultCamera()
+	{ return myDefaultCamera; }
 }; // namespace omega
 
 #endif

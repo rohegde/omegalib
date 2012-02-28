@@ -103,8 +103,8 @@ void Entity::hide()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-MeshViewer::MeshViewer(ApplicationBase* app): 
-    ServerEngine(app) 
+MeshViewer::MeshViewer():
+	myEngine(NULL)
 {
 }
 
@@ -129,7 +129,7 @@ void MeshViewer::loadEntityLibrary()
                     mesh->scale(0.8f);	
                     String name = entitySetting.getName();
                     String label = String((const char*)entitySetting["label"]);
-                    Entity* e = new Entity(mesh, this, myInteractor, name, label);
+                    Entity* e = new Entity(mesh, myEngine, myInteractor, name, label);
                     myEntities.push_back(e);
                 }
             }
@@ -138,9 +138,9 @@ void MeshViewer::loadEntityLibrary()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::initialize()
+void MeshViewer::initialize(MasterEngine* engine)
 {
-    ServerEngine::initialize();
+	myEngine = engine;
 
     // Setup lighting
     Light* light = Light::getLight(0);
@@ -158,11 +158,11 @@ void MeshViewer::initialize()
     Light::setAmbientLightColor(Color::Black);
     
     // Create a reference box around the scene.
-    Config* cfg = getSystemManager()->getAppConfig();
+    Config* cfg = myEngine->getSystemManager()->getAppConfig();
     if(cfg->exists("config/referenceBox"))
     {
         myReferenceBox = new ReferenceBox();
-        getScene(0)->addObject(myReferenceBox);
+		myEngine->getScene(0)->addObject(myReferenceBox);
         // Default box size for meshviewer, if left unspecified by config
         myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
@@ -190,16 +190,16 @@ void MeshViewer::initialize()
         interactor->initialize("ObserverUpdateService");
         myInteractor = interactor;
     }
-    addActor(myInteractor);
+    myEngine->addInteractive(myInteractor);
     
     // Load the entities specified in the configuration file.
     loadEntityLibrary();
 
     // Get the default camera and focus in on the scene root
-    Camera* cam = getDefaultCamera();
-    cam->focusOn(getScene(0));
+    Camera* cam = myEngine->getDefaultCamera();
+    cam->focusOn(myEngine->getScene(0));
 
-    myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+    myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 
     // Create and initialize the gui
     initUi();
@@ -218,8 +218,8 @@ void MeshViewer::initUi()
 {
     WidgetFactory* wf = UiModule::instance()->getWidgetFactory();
 
-    int canvasWidth = getCanvasWidth();
-    int canvasHeight = getCanvasHeight();
+    int canvasWidth = myEngine->getCanvasWidth();
+    int canvasHeight = myEngine->getCanvasHeight();
 
     Container* root = UiModule::instance()->getUi(0);
 
@@ -257,7 +257,7 @@ void MeshViewer::initUi()
     }
 
     // Create a reference box around the scene.
-    Config* cfg = getSystemManager()->getAppConfig();
+    Config* cfg = myEngine->getSystemManager()->getAppConfig();
     if(cfg->exists("config/images"))
     {
         Setting& images = cfg->lookup("config/images");
@@ -292,7 +292,6 @@ void MeshViewer::initUi()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::handleEvent(const Event& evt)
 {
-    ServerEngine::handleEvent(evt);
     if(myTabletManager != NULL)
     {
         myTabletManager->handleEvent(evt);
@@ -382,7 +381,6 @@ void MeshViewer::handleUiEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshViewer::update(const UpdateContext& context)
 {
-    ServerEngine::update(context);
     if(myTabletManager != NULL)
     {
         myTabletManager->update(context);

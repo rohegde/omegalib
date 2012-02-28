@@ -42,13 +42,13 @@ namespace omega {
 	class OMEGA_API ServerModule
 	{
 	public:
-		ServerModule(): myInitialized(false) {}
+		ServerModule(): myInitialized(false), myEngine(NULL) {}
 
-		virtual void initialize(ServerEngine* engine) {}
-		virtual void update(const UpdateContext& context) = 0;
-		virtual void handleEvent(const Event& evt) = 0;
+		virtual void initialize() = 0;
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
 
-		void doInitialize(ServerEngine* server) { myEngine = server; if(!myInitialized) initialize(server); myInitialized = true; }
+		void doInitialize(ServerEngine* server) { myEngine = server; if(!myInitialized) initialize(); myInitialized = true; }
 		virtual bool isInitialized() { return myInitialized; }
 
 		ServerEngine* getServer() { return myEngine; }
@@ -64,7 +64,7 @@ namespace omega {
 	public:
 		static void addModule(ServerModule* module)
 		{ 
-			mysModules.push_back(module); 
+			mysModules.push_front(module); 
 		}
 
 		static List<ServerModule*>::ConstRange getModules() 
@@ -109,7 +109,7 @@ namespace omega {
 	{
 	public:
 		Application(const String& name): myAppName(name) 
-		{}
+		{ }
 
 		virtual const char* getName() 
 		{ return myAppName.c_str(); }
@@ -121,8 +121,14 @@ namespace omega {
 		{ return new Renderer(server); }
 
 		virtual ServerBase* createServer() 
-		{ return new ServerEngine(this); }
+		{ return new ServerEngine(this, false); }
 
+		virtual ServerBase* createMaster() 
+		{ 
+			MasterEngine* me = new MasterEngine(this); 
+			me->addInteractive(new T());
+			return me;
+		}
 	private:
 		String myAppName;
 	};

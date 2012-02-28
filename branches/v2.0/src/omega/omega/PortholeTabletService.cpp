@@ -115,11 +115,11 @@ void PortholeTabletService::setup(Setting& settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeTabletService::initialize()
 {
-	ModuleServices::addModule(this);
+	//ModuleServices::addModule(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeTabletService::initialize(ServerEngine* engine)
+void PortholeTabletService::initialize(MasterEngine* engine)
 {
 	myEngine = engine;
 

@@ -34,15 +34,13 @@
 
 using namespace omega;
 
-
 List<ServerModule*> ModuleServices::mysModules;
 ServerEngine* ServerEngine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::ServerEngine(ApplicationBase* app):
-    ServerBase(app),
+ServerEngine::ServerEngine(ApplicationBase* app, bool master):
+    ServerBase(app, master),
     myActivePointerTimeout(2.0f),
-    myDefaultCamera(NULL),
     myConsoleEnabled(false)
 {
     mysInstance = this;
@@ -59,26 +57,13 @@ void ServerEngine::initialize()
         myScene[i] = new SceneNode(this, "root");
     }
 
-    myDefaultCamera = new Camera();
-
-    Config* cfg = getSystemManager()->getAppConfig();
-    if(cfg->exists("config/camera"))
-    {
-        Setting& s = cfg->lookup("config/camera");
-        if(Config::getBoolValue("enableNavigation", s, false))
-        {
-            myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
-        }
-        Vector3f camPos = cfg->getVector3fValue("position", s); 
-        myDefaultCamera->setPosition(camPos);
-    }
-
     // Create console.
     myConsole = new Console();
     myConsole->initialize(this);
     ologaddlistener(myConsole);
 
     // Setup the console default font
+    Config* cfg = getSystemManager()->getAppConfig();
     if(cfg->exists("config/console/font"))
     {
         Setting& fontSetting = cfg->lookup("config/console/font");
@@ -99,7 +84,6 @@ void ServerEngine::initialize()
     // Initialize modules
     ModuleServices::initialize(this);
 
-    onInitialize();
     myLock.unlock();
 }
 
@@ -108,7 +92,7 @@ void ServerEngine::clientInitialize(Renderer* client)
 {
     // Make sure onClientInitialize is always called after onInitialize;
     myLock.lock();
-    onClientInitialize(client);
+    //onClientInitialize(client);
     myLock.unlock();
 }
 
@@ -116,34 +100,6 @@ void ServerEngine::clientInitialize(Renderer* client)
 void ServerEngine::finalize()
 {
     ImageUtils::internalDispose();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera* ServerEngine::createCamera(uint flags)
-{
-    Camera* cam = new Camera(flags);
-    myCameras.push_back(cam);
-    return cam;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::destroyCamera(Camera* cam)
-{
-    oassert(cam != NULL);
-    myCameras.remove(cam);
-    delete cam;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::CameraCollection::Range ServerEngine::getCameras()
-{
-    return CameraCollection::Range(myCameras.begin(), myCameras.end());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::CameraCollection::ConstRange ServerEngine::getCameras() const
-{
-    return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,18 +142,6 @@ void ServerEngine::addClient(Renderer* client)
 {
     oassert(client != NULL);
     myClients.push_back(client);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::addActor(Actor* actor)
-{
-    myActors.push_back(actor);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::removeActor(Actor* actor)
-{
-    myActors.remove(actor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,16 +188,6 @@ void ServerEngine::update(const UpdateContext& context)
         }
     }
 
-    // Update actors.
-    foreach(Actor* a, myActors)
-    {
-        a->update(context);
-    }
-
-    // Update the default camera and use it to update the default omegalib observer.
-    myDefaultCamera->update(context);
-    Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
-    myDefaultCamera->updateObserver(obs);
 
     // Update scene.
     for(int i = 0; i < MaxScenes; i++)
@@ -278,14 +212,6 @@ void ServerEngine::handleEvent(const Event& evt)
 
     ModuleServices::handleEvent(this, evt);
     if(evt.isProcessed()) return;
-
-    foreach(Actor* a, myActors)
-    {
-        a->handleEvent(evt);
-    }
-    if(evt.isProcessed()) return;
-
-    myDefaultCamera->handleEvent(evt);
 
     // Update pointers.
     if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)

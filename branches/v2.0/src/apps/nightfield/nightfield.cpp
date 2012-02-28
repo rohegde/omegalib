@@ -98,7 +98,7 @@ void Settings::loadPreset(Preset* p, const Setting& s)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AffectorEntity::AffectorEntity(RenderableSceneObject* object, EngineServer* server):
+AffectorEntity::AffectorEntity(RenderableSceneObject* object, ServerEngine* server):
     myObject(object),
     myServer(server),
     myVisible(false),
@@ -259,27 +259,27 @@ void AffectorEntity::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Nightfield::Nightfield(Application* app): EngineServer(app)
+Nightfield::Nightfield():
+	myEngine(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Nightfield::initialize()
+void Nightfield::initialize(MasterEngine* engine)
 {
+	myEngine = engine;
     mySelectedEntity = NULL;
 
-    EngineServer::initialize();
-
-    Config* cfg = getSystemManager()->getAppConfig();
+    Config* cfg = myEngine->getSystemManager()->getAppConfig();
     if(cfg->exists("config"))
     {
         Setting& sCfg = cfg->lookup("config");
         mySettings.load(sCfg);
     }
 
-    SceneNode* scene = getScene(0);
+    SceneNode* scene = myEngine->getScene(0);
 
-    mySceneNode = new SceneNode(this);
+    mySceneNode = new SceneNode(myEngine);
 
     myFlock = new Flock();
     
@@ -290,7 +290,7 @@ void Nightfield::initialize()
 
     myInteractor = new DefaultMouseInteractor();
     //myInteractor = new ControllerManipulator();
-    addActor(myInteractor);
+    myEngine->addInteractive(myInteractor);
 
     // Create a reference box around the scene.
     if(cfg->exists("config/referenceBox"))
@@ -328,7 +328,7 @@ void Nightfield::initialize()
                         {
                             reader->scale(entitySetting["scale"]);
                         }
-                        AffectorEntity* af = new AffectorEntity(m, this);
+                        AffectorEntity* af = new AffectorEntity(m, myEngine);
                         af->setup(entitySetting);
                         myEntities.push_back(af);
                         m->setData(reader);
@@ -344,19 +344,18 @@ void Nightfield::initialize()
     light->setColor(Color(0.6f, 0.6f, 0.6f));
     light->setPosition(Vector3f(0, 3, 3));
 
-    getDisplaySystem()->setBackgroundColor(Color::Black);
+    myEngine->getDisplaySystem()->setBackgroundColor(Color::Black);
 
     // Get the default camera and focus in on the scene root
-    Camera* cam = getDefaultCamera();
-    cam->focusOn(getScene(0));
+    Camera* cam = myEngine->getDefaultCamera();
+    cam->focusOn(myEngine->getScene(0));
 
-    myTabletManager = getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+    myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::update(const UpdateContext& context)
 {
-    EngineServer::update(context);
     myTabletManager->update(context);
     int i = 0;
     foreach(AffectorEntity* ae, myEntities)
@@ -376,7 +375,6 @@ void Nightfield::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::handleEvent(const Event& evt)
 {
-    EngineServer::handleEvent(evt);
     myTabletManager->handleEvent(evt);
     if(evt.getServiceType() == Service::Pointer)
     {
@@ -425,7 +423,7 @@ AffectorEntity* Nightfield::findEntity(SceneNode* node)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::updateSelection(const Ray& ray)
 {
-    const SceneQueryResultList& sqrl = querySceneRay(0, ray);
+    const SceneQueryResultList& sqrl = myEngine->querySceneRay(0, ray);
     if(sqrl.size() != 0)
     {
         // The ray intersected with something.
