@@ -44,10 +44,6 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-extern omega::Vector2i sCanvasSize;
-extern omega::Vector2i sCanvasChannels;
-extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
-
 #define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
 #define OMEGA_LAUNCHER_INTERVAL 500
 
@@ -195,7 +191,11 @@ void EqualizerDisplaySystem::generateEqConfig()
 			Vector3f topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
 			Vector3f bottomLeft = topLeft + Vector3f(0, -th, 0);
 			Vector3f bottomRight = topLeft + Vector3f(tw, -th, 0);
-			
+
+			tc.bottomLeft = bottomLeft;
+			tc.topLeft = topLeft;
+			tc.bottomRight = bottomRight;
+
 			String tileCfg = "";
 			START_BLOCK(tileCfg, "segment");
 			tileCfg +=
@@ -319,6 +319,9 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
 
+	cfg.displayResolution = cfg.tileResolution.cwiseProduct(cfg.numTiles);
+	ofmsg("Total display resolution: %1%", %cfg.displayResolution);
+
 	cfg.nodeLauncher = Config::getStringValue("nodeLauncher", scfg);
 	cfg.nodeKiller = Config::getStringValue("nodeKiller", scfg);
 	cfg.basePort = Config::getIntValue("basePort", scfg);
@@ -356,6 +359,10 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 				tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
 				tc.device = Config::getIntValue("device", sTile);
+
+				tc.resolution = cfg.tileResolution;
+				tc.offset = tc.index.cwiseProduct(tc.resolution);
+
 				ncfg.tiles[ncfg.numTiles] = &tc;
 				ncfg.numTiles++;
 			}
@@ -456,40 +463,6 @@ void EqualizerDisplaySystem::initObservers()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::initLayers()
-{
-	if(mySetting->exists("views"))
-	{
-		Setting& stViews = (*mySetting)["views"];
-		for(int i = 0; i < stViews.getLength(); i++)
-		{
-			Setting& stView = stViews[i];
-
-			// Set draw statistics flag
-			ViewImpl* view = myConfig->findView(stView.getName());
-			if(view != NULL)
-			{
-				if(stView.exists("drawStatistics"))
-					view->drawStatistics(stView["drawStatistics"]);
-				if(stView.exists("drawFps"))
-					view->drawFps(stView["drawFps"]);
-			}
-
-			// Set enabled layers
-			if(stView.exists("layer"))
-			{
-				String layer = stView["layer"];
-				setLayer(stView.getName(), Layer::fromString(layer));
-			}
-			else
-			{
-				ofwarn("Config: no layer section defined in config/views/%1%", %stView.getName());
-			}
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::run()
 {
 	bool error = false;
@@ -545,39 +518,6 @@ void EqualizerDisplaySystem::cleanup()
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::setLayer(const char* viewName, Layer::Enum layer) 
-{
-	if(!myConfig)
-	{
-		oerror("EqualizerDisplaySystem::setLayerEnabled - must be called AFTER EqualizerDisplaySystem::initialize");
-		return;
-	}
-
-	ViewImpl* view = myConfig->findView(viewName);
-	if(view != NULL)
-	{
-		view->setLayer(layer);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum EqualizerDisplaySystem::getLayer(const char* viewName) 
-{ 
-	if(!myConfig)
-	{
-		oerror("EqualizerDisplaySystem::GetLayerEnabled - must be called AFTER EqualizerDisplaySystem::initialize");
-		return Layer::Null;
-	}
-
-	ViewImpl* view = myConfig->findView(viewName);
-	if(view != NULL)
-	{
-		return view->getLayer();
-	}
-	return Layer::Null;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Observer* EqualizerDisplaySystem::getObserver(int observerId)
 {
@@ -588,16 +528,16 @@ Observer* EqualizerDisplaySystem::getObserver(int observerId)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Vector2i EqualizerDisplaySystem::getCanvasSize()
 {
-	return sCanvasSize;
+	return myDisplayConfig.displayResolution;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 {
-	int channelWidth = (sCanvasSize[0] / sCanvasChannels[0]);
-	int channelHeight = (sCanvasSize[1] / sCanvasChannels[1]);
+	int channelWidth = myDisplayConfig.tileResolution[0];
+	int channelHeight = myDisplayConfig.tileResolution[1];
 
-	int channelX = position[0] / channelWidth;
+	int channelX = position[0] /  channelWidth;
 	int channelY = position[1] / channelHeight;
 
 	int x = position[0] % channelWidth;
@@ -612,13 +552,10 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	int x = position[0];
 	int y = position[1];
 
-	ChannelImpl* ch = sCanvasChannelPointers[channelX][channelY];
-	if(ch != NULL)
-	{
-		const DrawContext& dc = ch->getLastDrawContext();
-	    //ofmsg("Channel pixel X,Y: %1% %2%", %x %y);
-		return Math::unproject(Vector2f(x, y), dc.modelview, dc.projection, dc.viewport);
-	}
+	DisplayTileConfig& dtc = myDisplayConfig.tiles[channelX][channelY];
+	Observer* o = myObservers.at(0);
+	Vector3f head = o->getWorldHeadPosition();
+
 	return Ray();
 }
 

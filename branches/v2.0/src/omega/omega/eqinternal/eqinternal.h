@@ -143,7 +143,6 @@ protected:
     /** The changed parts of the view. */
     enum DirtyBits
     {
-        DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
         DIRTY_DRAW_STATS       = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
         DIRTY_DRAW_FPS       = eq::fabric::Serializable::DIRTY_CUSTOM << 2,
     };
@@ -166,8 +165,6 @@ public:
     ViewImpl(eq::Layout* parent);
     ~ViewImpl();
 
-    Layer::Enum getLayer();
-    void setLayer(Layer::Enum layer);
     void drawStatistics(bool enable);
     bool isDrawStatisticsEnabled();
     void drawFps(bool enable);
@@ -176,7 +173,6 @@ public:
 private:
     bool myDrawStatistics;
     bool myDrawFps;
-    Layer::Enum myLayer;
     ViewProxy myProxy;
 };
 
@@ -195,7 +191,6 @@ public:
     virtual uint32_t startFrame( const uint128_t& version );
     virtual uint32_t finishFrame();
     ViewImpl* findView(const String& viewName);
-    void setLayerEnabled(const String& viewName, Layer::Enum layer);
     const FrameData& getFrameData();
 
 private:
@@ -271,20 +266,20 @@ public:
     WindowImpl(eq::Pipe* parent);
     virtual ~WindowImpl();
     const Vector2i& getIndex() { return myIndex; }
-    bool isInitialized() { return myInitialized; }
+    //bool isInitialized() { return myInitialized; }
 
 	EqualizerDisplaySystem* getDisplaySystem() { return (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem(); }
 
 protected:
     //virtual bool configInitGL(const uint128_t& initID);
+    virtual bool configInit(const uint128_t& initID);
     virtual void frameStart	(const uint128_t &frameID, const uint32_t frameNumber);
-    void initialize();
+    //void initialize();
 	bool processEvent(const eq::Event& event);
 
 private:
     Vector2i myIndex;
-    bool myInitialized;
-	const DisplayTileConfig* myTileConfig;
+    //bool myInitialized;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,29 +293,25 @@ public:
     virtual ~ChannelImpl();
 
     ViewImpl* getViewImpl();
-    const omega::DrawContext& getLastDrawContext();
 
 protected:
-    void initialize();
     void setupDrawContext(DrawContext* context, const uint128_t& spin);
-    virtual void frameDraw( const uint128_t& spin );
-
-    virtual void frameViewFinish(const uint128_t& spin);
-    virtual void frameViewStart(const uint128_t& spin);
-    virtual void frameAssemble( const uint128_t& );
 
     virtual bool configInit(const uint128_t& initID);
+    virtual void frameViewStart(const uint128_t& spin);
+    virtual void frameDraw( const uint128_t& spin );
+    virtual void frameViewFinish(const uint128_t& spin);
+
     omega::RendererBase* getClient();
-    unsigned int getLayers();
     bool isDrawStatisticsEnabled();
     bool isDrawFpsEnabled();
 
 private:
-    bool myInitialized;
+    //bool myInitialized;
     eq::Window* myWindow;
     omicron::Lock myLock;
     ViewImpl* myView;
-    ChannelInfo myChannelInfo;
+    //ChannelInfo myChannelInfo;
     DrawContext myDC;
     uint128_t myLastFrame;
     RenderTarget* myDrawBuffer;

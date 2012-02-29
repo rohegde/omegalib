@@ -35,10 +35,6 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-extern omega::Vector2i sCanvasSize;
-extern omega::Vector2i sCanvasChannels;
-extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
 {
@@ -210,16 +206,6 @@ ViewImpl* ConfigImpl::findView(const String& viewName)
     return static_cast< ViewImpl* >(layout->findView(viewName));
 }
     
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ConfigImpl::setLayerEnabled(const String& viewName, Layer::Enum layer)
-{
-    ViewImpl* view  = findView(viewName);
-    if(view != NULL)
-    {
-        view->setLayer(layer);
-    }
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const FrameData& ConfigImpl::getFrameData() 
 { 

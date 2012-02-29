@@ -56,10 +56,6 @@ public:
 	// exit request to the system manager.
 	virtual void run() = 0;
 
-	// Layer and view management.
-	virtual void setLayer(const char* viewName, Layer::Enum layer) = 0;
-	virtual Layer::Enum getLayer(const char* viewName) = 0;
-
 	virtual Observer* getObserver(int observerId) { return NULL; }
 	
 	virtual void cleanup() {}

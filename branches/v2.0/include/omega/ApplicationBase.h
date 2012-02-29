@@ -42,38 +42,54 @@ namespace omega
 	class ChannelImpl;
 	class GpuContext;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! The Layer class contains enumerated values representing drawing layers.
-	class Layer
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct DisplayTileConfig
 	{
-	public:
-		enum Enum
-		{
-			Null = 0,
-			Scene0 = 1,
-			Scene1 = 2,
-			Scene2 = 3,
+		Vector2i index;
+		Vector2i resolution;
+		Vector2i offset;
+		int device;
+		Vector3f topLeft;
+		Vector3f bottomLeft;
+		Vector3f bottomRight;
+	};
 
-			Overlay0 = 4,
-			Scene0Overlay0 = 5,
-			Scene1Overlay0 = 6,
-			Scene2Overlay0 = 7,
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct DisplayNodeConfig
+	{
+		static const int MaxTiles = 64;
+		int numTiles;
+		String hostname;
+		int port;
+		bool isRemote;
+		DisplayTileConfig* tiles[MaxTiles];
+	};
 
-			Overlay1 = 8,
-			Scene0Overlay1 = 9,
-			Scene1Overlay1 = 10,
-			Scene2Overlay1 = 11,
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	struct DisplayConfig
+	{
+		static const int MaxTiles = 64;
+		static const int MaxNodes = 64;
+		enum ConfigType {ConfigPlanar, ConfigCylindrical};
+		ConfigType type;
+		Vector2i numTiles;
+		Vector2i referenceTile;
+		Vector3f referenceOffset;
+		Vector2f tileSize;
+		float columnYawIncrement;
+		bool autoOffsetWindows;
+		Vector2i tileResolution;
+		Vector2i windowOffset;
+		Vector2i displayResolution;
+		DisplayTileConfig tiles[MaxTiles][MaxTiles];
+		int numNodes;
+		DisplayNodeConfig nodes[MaxNodes];
+		bool interleaved;
+		bool fullscreen;
 
-			Overlay2 = 12,
-			Scene0Overlay2 = 13,
-			Scene1Overlay2 = 14,
-			Scene2Overlay2 = 15
-		};
-
-		static Enum fromString(const String& str);
-
-	private:
-		Layer() {}
+		String nodeLauncher;
+		String nodeKiller;
+		int basePort;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,29 +111,12 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! Contains information about a drawing channel.
-	struct ChannelInfo
-	{
-		//! The index of this channel inside the view.
-		Vector2i index;
-		//! The width and height in pixels of the channel
-		Vector2i size;
-		//! The pixel offset of the channel inside the view
-		Vector2i offset;
-		//! The total size of the canvas in pixels
-		Vector2i* canvasSize;
-		//! The number of horizontal and vertical channels composing the canvas.
-		Vector2i* canvasChannels;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Contains information about the context in which a drawing operation is taking place
 	struct DrawContext
 	{
 		enum Eye { EyeLeft , EyeRight, EyeCyclop };
 		enum Task { SceneDrawTask, OverlayDrawTask };
 		uint64 frameNum; // TODO: Substitute with frameinfo
-		unsigned int layer; // turn to content ID.
 		AffineTransform3 modelview;
 		Transform3 projection;
 		//! The pixel viewport coordinates of this context with respect to the owner window of the context.
@@ -127,7 +126,8 @@ namespace omega
 		//! The current draw task.
 		Task task;
 		//! Information about the drawing channel associated with this context.
-		ChannelInfo* channel;
+		//ChannelInfo* channel;
+		const DisplayTileConfig* tile;
 		RenderTarget* drawBuffer;
 		GpuContext* gpuContext;
 	};

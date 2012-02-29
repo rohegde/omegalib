@@ -36,7 +36,7 @@ using namespace std;
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-    eq::Window(parent), myInitialized(false), myTileConfig(NULL)
+    eq::Window(parent) //, myInitialized(false)
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,24 +44,24 @@ WindowImpl::~WindowImpl()
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void WindowImpl::initialize()
+bool WindowImpl::configInit(const uint128_t& initID)
 {
     // Get the tile index from the window name.
     String name = getName();
     vector<String> args = StringUtils::split(name, "x,");
     myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
-    myTileConfig = &getDisplaySystem()->getDisplayConfig().tiles[myIndex[0]][myIndex[1]];
+	return Window::configInit(initID);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WindowImpl::frameStart(const uint128_t &frameID, const uint32_t frameNumber) 
 {
-    if(!myInitialized)
-    {
-        initialize();
-        myInitialized = true;
-    }
+    //if(!myInitialized)
+    //{
+    //    initialize();
+    //    myInitialized = true;
+    //}
     // Set the frame buffer for the client gpu to this window frame buffer.
     //myGpu->setFrameBuffer(myFrameBuffer);
 }
@@ -69,7 +69,7 @@ void WindowImpl::frameStart(const uint128_t &frameID, const uint32_t frameNumber
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool WindowImpl::processEvent(const eq::Event& event) 
 {
-    if(isInitialized())
+    //if(isInitialized())
     {
         // Pointer events: convert the mouse position from local (tile-based) to global (canvas-based)
         if(

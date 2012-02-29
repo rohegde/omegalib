@@ -34,13 +34,6 @@ ViewProxy::ViewProxy(ViewImpl* view):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ViewProxy::serialize( co::DataOStream& os, const uint64_t dirtyBits )
 {
-	if( dirtyBits & DIRTY_LAYER )
-	{
-		for(int i = 0; i < ApplicationBase::MaxLayers; i++)
-		{
-			os << myView->myLayer;
-		}
-	}
 	if( dirtyBits & DIRTY_DRAW_STATS )
 	{
 		os << myView->myDrawStatistics;
@@ -54,13 +47,6 @@ void ViewProxy::serialize( co::DataOStream& os, const uint64_t dirtyBits )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ViewProxy::deserialize( co::DataIStream& is, const uint64_t dirtyBits )
 {
-	if( dirtyBits & DIRTY_LAYER )
-	{
-		for(int i = 0; i < ApplicationBase::MaxLayers; i++)
-		{
-			is >> myView->myLayer;
-		}
-	}
 	if( dirtyBits & DIRTY_DRAW_STATS )
 	{
 		is >> myView->myDrawStatistics;
@@ -87,7 +73,6 @@ ViewImpl::ViewImpl(eq::Layout* parent):
 {
 	myDrawStatistics = false;
 	myDrawFps = false;
-	myLayer = Layer::Null;
 	setUserData(&myProxy);
 }
 
@@ -95,19 +80,6 @@ ViewImpl::ViewImpl(eq::Layout* parent):
 ViewImpl::~ViewImpl()
 {
 	this->setUserData(NULL);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum ViewImpl::getLayer() 
-{ 
-	return myLayer; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewImpl::setLayer(Layer::Enum layer) 
-{ 
-	myLayer = layer; 
-	myProxy.setDirty( ViewProxy::DIRTY_LAYER );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

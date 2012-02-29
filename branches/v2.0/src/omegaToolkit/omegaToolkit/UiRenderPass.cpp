@@ -49,8 +49,11 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 
 		client->getRenderer()->beginDraw2D(context);
 
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Vector2i displaySize = ds->getCanvasSize();
+
 		ui::Container* ui = UiModule::instance()->getUi(0);
-		const Rect& vp = Rect(0, 0, context.channel->canvasSize->x(), context.channel->canvasSize->y());
+		const Rect& vp = Rect(0, 0, displaySize[0], displaySize[1]);
 
 		// Update the root container size if necessary.
 		if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||

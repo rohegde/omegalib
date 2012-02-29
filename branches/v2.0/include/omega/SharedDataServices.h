@@ -24,37 +24,72 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ApplicationBase.h"
-#include "omega/DisplaySystem.h"
+#ifndef __OBSERVER_UPDATE_SERVICE_H__
+#define __OBSERVER_UPDATE_SERVICE_H__
 
-using namespace omega;
+#include "omega/osystem.h"
+#include "omega/SagePointerService.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerBase::addClient(RendererBase* cli)
+namespace omega
 {
-	myClients.push_back(cli);
-}
+	class Observer;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class ObserverUpdateService: public Service
+	{
+	public:
+		enum DynamicSourceTokenAttachPoint { AttachHead, AttachLeftHand, AttachRightHand };
+		// Allocator function
+		static ObserverUpdateService* New() { return new ObserverUpdateService(); }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int ServerBase::getCanvasWidth() 
-{
-	return getDisplaySystem()->getCanvasSize().x(); 
-}
+	public:
+		ObserverUpdateService();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int ServerBase::getCanvasHeight()
-{
-	return getDisplaySystem()->getCanvasSize().y(); 
-}
+		virtual void setup(Setting& settings);
+		virtual void initialize();
+		virtual void poll();
+		virtual void dispose();
+		int getSourceId(); 
+		void setSourceId(int value); 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-RendererBase::RendererBase(ServerBase* server): myServer(server), myGpuContext(NULL)
-{
-	myServer->addClient(this);
-}
+	private:
+		void updateDynamicSource(Event* evt);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-RendererBase::~RendererBase() 
-{
-}
+	private:
+		Observer* myObserver;
+		int mySourceId;
+		int myOrientationSourceId;
+		bool myEnableOrientationSource;
+		Quaternion myLastOrientation;
+		Vector3f myLastPosition;
+		Vector3f myLookAt;
+		bool myEnableLookAt;
+		bool myDebug;
+		bool myUseHeadPointId;
 
+		// Dynamic source stuff.
+		bool myUseDynamicSource;
+		int myDynamicSourceTokenId;
+		DynamicSourceTokenAttachPoint myDynamicSourceTokenAttachPoint;
+		float myDynamicSourceActivationDistance;
+		Vector3f myLastTokenPosition;
+
+		// Movement smoothing
+		float myCurrentMovementThreshold;
+		float myMovementThresholdTarget;
+		float myMovementThresholdCoeff;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int ObserverUpdateService::getSourceId()
+	{
+		return mySourceId;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void ObserverUpdateService::setSourceId(int value)
+	{
+		mySourceId = value;
+	}
+}; // namespace omega
+
+#endif

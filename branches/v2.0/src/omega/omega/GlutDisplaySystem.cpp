@@ -65,17 +65,14 @@ void displayCallback(void)
 
 	// setup the context viewport.
 	DrawContext dc;
-	ChannelInfo ci;
-	Vector2i canvasChannels(1, 1);
-	Vector2i canvasSize(1, 1);
+	DisplayTileConfig dtc;
+	dtc.device = 0;
+	dtc.index = Vector2i::Zero();
+	dtc.offset = Vector2i::Zero();
+	dtc.resolution = ds->getCanvasSize();
 
-	ci.canvasChannels = &canvasChannels;
-	ci.canvasSize = &ds->getCanvasSize();
-	ci.index = Vector2i(0, 0);
-	ci.offset = Vector2i(0, 0);
-	ci.size = ds->getCanvasSize();
 	dc.frameNum = frame++;
-	dc.channel = &ci;
+	dc.tile = &dtc;
 	dc.gpuContext = ds->getGpuContext();
 
 	ds->updateProjectionMatrix();
@@ -107,7 +104,6 @@ void displayCallback(void)
 		}
 	}
 
-	dc.layer = ds->getLayer(NULL);
 	dc.eye = DrawContext::EyeCyclop;
 	dc.task = DrawContext::SceneDrawTask;
 	ac->draw(dc);
@@ -133,7 +129,6 @@ GlutDisplaySystem::GlutDisplaySystem():
 	mySys(NULL),
 	myFrameBuffer(NULL)
 {
-	myLayer = Layer::Null;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,7 +178,6 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 {
 	mySys = sys;
 
-	initLayers();
 	initObservers();
 
 	char* argv = "";
@@ -236,29 +230,6 @@ void GlutDisplaySystem::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GlutDisplaySystem::initLayers()
-{
-	if(mySetting->exists("views"))
-	{
-		Setting& stViews = (*mySetting)["views"];
-		for(int i = 0; i < stViews.getLength(); i++)
-		{
-			Setting& stView = stViews[i];
-
-			if(stView.exists("layer"))
-			{
-				String layer = stView["layer"];
-				setLayer(stView.getName(), Layer::fromString(layer));
-			}
-			else
-			{
-				ofwarn("Config: no layer section defined in config/views/%1%", %stView.getName());
-			}
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void GlutDisplaySystem::initObservers()
 {
 	if(mySetting->exists("observers"))
@@ -270,17 +241,5 @@ void GlutDisplaySystem::initObservers()
 			myObserver.load(stObserver);
 		}
 	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GlutDisplaySystem::setLayer(const char* viewName, Layer::Enum layer)
-{
-	myLayer = layer;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum GlutDisplaySystem::getLayer(const char* viewName)
-{
-	return myLayer;
 }
 

@@ -71,13 +71,11 @@ void DrawInterface::beginDraw2D(const DrawContext& context)
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    //glTranslatef(0, context.globalViewport.height() + context.globalViewport.y() - 1, 0.0);
-    //glScalef(1.0, 0.5, 1.0);
 
-	int left = context.channel->offset[0];
-	int right = left + context.channel->size[0];
-	int top = context.channel->offset[1];
-	int bottom = top + context.channel->size[1];
+	int left = context.tile->offset[0];
+	int right = left + context.tile->resolution[0];
+	int top = context.tile->offset[1];
+	int bottom = top + context.tile->resolution[1];
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

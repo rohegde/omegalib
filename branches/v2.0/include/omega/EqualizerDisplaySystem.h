@@ -39,50 +39,6 @@ class ViewImpl;
 class ConfigImpl;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DisplayTileConfig
-{
-	Vector2i index;
-	int device;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DisplayNodeConfig
-{
-	static const int MaxTiles = 64;
-	int numTiles;
-	String hostname;
-	int port;
-	bool isRemote;
-	DisplayTileConfig* tiles[MaxTiles];
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct DisplayConfig
-{
-	static const int MaxTiles = 64;
-	static const int MaxNodes = 64;
-	enum ConfigType {ConfigPlanar, ConfigCylindrical};
-	ConfigType type;
-	Vector2i numTiles;
-	Vector2i referenceTile;
-	Vector3f referenceOffset;
-	Vector2f tileSize;
-	float columnYawIncrement;
-	bool autoOffsetWindows;
-	Vector2i tileResolution;
-	Vector2i windowOffset;
-	DisplayTileConfig tiles[MaxTiles][MaxTiles];
-	int numNodes;
-	DisplayNodeConfig nodes[MaxNodes];
-	bool interleaved;
-	bool fullscreen;
-
-	String nodeLauncher;
-	String nodeKiller;
-	int basePort;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This class is used to route equalizer log into the omega log system.
 class EqualizerLogStreamBuf: public std::streambuf
 {
@@ -120,12 +76,6 @@ public:
 
 	Observer* getObserver(int observerId);
 
-	//! Layer and view management.
-	//@{
-	void setLayer(const char* viewName, Layer::Enum layer);
-	Layer::Enum getLayer(const char* viewName);
-	//}@
-
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 	bool isDebugMouseEnabled() { return myDebugMouse; }
 
@@ -140,7 +90,6 @@ public:
 
 	void finishInitialize(ConfigImpl* config);
 private:
-	void initLayers();
 	void initObservers();
 	void generateEqConfig();
 	void setupEqInitArgs(int& numArgs, const char** argv);

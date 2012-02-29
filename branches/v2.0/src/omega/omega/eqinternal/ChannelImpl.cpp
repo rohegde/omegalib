@@ -33,32 +33,13 @@ using namespace std;
 
 using namespace eq;
 
-// Kinda hack.
-bool initStaticVars = false;
-omega::Vector2i sCanvasChannels;
-omega::Vector2i sCanvasSize;
-
-// TODO: modify to make it work with multiple channels.
-ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
-
-
-omega::Lock sLock;
-
 //! Comment do disable running of overlay render tasks.
 #define ENABLE_OVERLAY_TASK
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
-    :eq::Channel( parent ), myWindow(parent), myInitialized(false), myDrawBuffer(NULL)
+    :eq::Channel( parent ), myWindow(parent), myDrawBuffer(NULL) //, myInitialized(false)
 {
-    sLock.lock();
-    if(!initStaticVars)
-    {
-        sCanvasChannels = omicron::Vector2i(0, 0);
-        sCanvasSize = omicron::Vector2i(0, 0);
-        initStaticVars = true;
-    }
-    sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,54 +57,16 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 {
     eq::Channel::configInit(initID);
 
-    return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::initialize()
-{
-    PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+    EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
     String name = getName();
 
     vector<String> args = StringUtils::split(name, "x,");
-    myChannelInfo.index = omicron::Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
-    int ix = myChannelInfo.index[0];
-    int iy = myChannelInfo.index[1];
+	int ix = atoi(args[0].c_str());
+	int iy = atoi(args[1].c_str());
 
-    int w = getPixelViewport().w;
-    int h = getPixelViewport().h;
-    
-    ofmsg("@Channel %1% size: %2% %3%", %name %w %h);
+	myDC.tile = &ds->getDisplayConfig().tiles[ix][iy];
 
-    myChannelInfo.offset = omicron::Vector2i(ix * w, iy * h);
-    myChannelInfo.size = omicron::Vector2i(w, h);
-
-    sLock.lock();
-    // Refresh the number of channels in this view.
-    bool canvasChanged = false;
-    if(sCanvasChannels.x() <= ix) 
-    {
-        sCanvasChannels.x() = ix + 1;
-        canvasChanged = true;
-    }
-    if(sCanvasChannels.y() <= iy) 
-    {
-        sCanvasChannels.y() = iy + 1;
-        canvasChanged = true;
-    }
-    // If the number of channels in this view has been updated, refresh the view pixel size.
-    sCanvasChannelPointers[ix][iy] = this;
-    if(canvasChanged)
-    {
-        sCanvasSize.x() = sCanvasChannels.x() * w;
-        sCanvasSize.y() = sCanvasChannels.y() * h;
-    }
-
-    ofmsg("@Initializing channel. channels=%1%x%2% size=%3%x%4%",
-        %sCanvasChannels.x() %sCanvasChannels.y()
-        %sCanvasSize.x() %sCanvasSize.y());
-
-    sLock.unlock();
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,14 +75,12 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     RendererBase* client = pipe->getClient();
-    DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+    EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 
     eq::PixelViewport pvp = getPixelViewport();
     eq::PixelViewport gpvp = getWindow()->getPixelViewport();
 
     context->gpuContext = pipe->getGpuContext();
-
-    context->channel = &myChannelInfo;
 
     // setup the context viewport.
     // (spin is 128 bits, gets truncated to 64... do we really need 128 bits anyways!?)
@@ -166,9 +107,6 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 
     context->modelview = mw * ds->getObserver(0)->getViewTransform();
 
-    myChannelInfo.canvasChannels = &sCanvasChannels;
-    myChannelInfo.canvasSize = &sCanvasSize;
-
     // Setup draw buffer
     if(myDrawBuffer == NULL)
     {
@@ -181,12 +119,12 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
 {
     eq::Channel::frameViewStart( frameID );
-    if(!myInitialized) 
-    {
-        initialize();
-        myInitialized = true;
-        return;
-    }
+    //if(!myInitialized) 
+    //{
+    //    initialize();
+    //    myInitialized = true;
+    //    return;
+    //}
     
     // In frame finish we just perform overlay draw operations, so always force the eye to be 
     // Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
@@ -201,21 +139,21 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
     // Skip the first frame to give time to the channels to initialize
     if(frameID == 0) return;
-    if(frameID == 1)
-    {
-        String name = getName();
-        vector<String> args = StringUtils::split(name, "x,");
-        int cx = atoi(args[0].c_str());
-        int cy = atoi(args[1].c_str());
+    //if(frameID == 1)
+    //{
+    //    String name = getName();
+    //    vector<String> args = StringUtils::split(name, "x,");
+    //    int cx = atoi(args[0].c_str());
+    //    int cy = atoi(args[1].c_str());
 
-        ChannelImpl* channel = sCanvasChannelPointers[cx][cy];
-        if(channel != this)
-        {
-            ofmsg("Initializing leaf channel for main channel %1%x%2%", %cx %cy);
-            myChannelInfo = channel->myChannelInfo;
-        }
-        return;
-    }
+    //    ChannelImpl* channel = sCanvasChannelPointers[cx][cy];
+    //    if(channel != this)
+    //    {
+    //        ofmsg("Initializing leaf channel for main channel %1%x%2%", %cx %cy);
+    //        myChannelInfo = channel->myChannelInfo;
+    //    }
+    //    return;
+    //}
 
     // Clear the frame buffer using the background color specified in display system.
     DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -233,7 +171,6 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 
     setupDrawContext(&myDC, frameID);
 
-    myDC.layer = view->getLayer();
     myDC.task = DrawContext::SceneDrawTask;
     client->draw(myDC);
 
@@ -257,7 +194,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
     if(frameID == 0) return;
 
     setupDrawContext(&myDC, frameID);
-    myDC.layer = getLayers();
     myDC.task = DrawContext::OverlayDrawTask;
     myDC.eye = DrawContext::EyeCyclop;
 
@@ -292,24 +228,10 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const omega::DrawContext& ChannelImpl::getLastDrawContext()
-{
-    //ofmsg("DC viewport: %1% %2%", %myDC.viewport.max %myDC.viewport.min);
-    return myDC;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 omega::RendererBase* ChannelImpl::getClient()
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     return pipe->getClient();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-unsigned int ChannelImpl::getLayers()
-{
-    ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-    return view->getLayer();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -324,11 +246,4 @@ bool ChannelImpl::isDrawFpsEnabled()
 {
     ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
     return view->isDrawFpsEnabled();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameAssemble( const eq::uint128_t& spin)
-{
-    Channel::frameAssemble(spin);
-    //omsg("Channel::frameAssemble");
 }
