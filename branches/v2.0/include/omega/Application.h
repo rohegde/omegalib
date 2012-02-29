@@ -72,14 +72,6 @@ namespace omega {
 			return List<ServerModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
 		}
 
-		static void initialize(ServerEngine* engine)
-		{
-			foreach(ServerModule* module, mysModules)
-			{
-				module->doInitialize(engine);
-			}
-		}
-
 		static void update(ServerEngine* srv, const UpdateContext& context)
 		{
 			foreach(ServerModule* module, mysModules)

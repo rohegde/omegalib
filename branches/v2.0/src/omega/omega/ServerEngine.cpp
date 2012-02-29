@@ -81,9 +81,6 @@ void ServerEngine::initialize()
         setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
     }
 
-    // Initialize modules
-    ModuleServices::initialize(this);
-
     myLock.unlock();
 }
 

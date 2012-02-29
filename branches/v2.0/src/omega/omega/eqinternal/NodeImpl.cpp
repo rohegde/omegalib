@@ -34,8 +34,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 NodeImpl::NodeImpl( eq::Config* parent ):
 	Node(parent),
-	myServer(NULL),
-	myInitialized(NULL)
+	myServer(NULL)
 {
 	DEBUG_EQ_FLOW("NodeImpl::NodeImpl %1%", %parent);
 
@@ -68,6 +67,8 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 	eqds->finishInitialize(config);
 
+	myServer->initialize();
+
 	//const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
 	//oassert( mapped );
 	return true;
@@ -91,18 +92,6 @@ bool NodeImpl::configExit()
 void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
 {
 	DEBUG_EQ_FLOW("NodeImpl::frameStart %1% %2%", %frameID %frameNumber);
-
-	Node::frameStart(frameID, frameNumber);
-
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
-	// If server has not been initialized yet, do it now.
-	if(myInitialized == false)
-	{
-		myServer->initialize();
-		myInitialized = true;
-	}
 
 	static float lt = 0.0f;
 	static float tt = 0.0f;
@@ -137,5 +126,7 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 	im->clearEvents();
 
 	myServer->update(uc);
+
+	Node::frameStart(frameID, frameNumber);
 }
 

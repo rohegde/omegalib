@@ -57,13 +57,16 @@ void Label::autosize()
 	// objects. Since we expect all those objects to share the same properties, just get the first one
 	// and use its font to compute the label size.
 	LabelRenderable* lr = (LabelRenderable*)getFirstRenderable();
-	Font* font = lr->myFont;
-
-	if(font != NULL)
+	if(lr != NULL)
 	{
-		Vector2f size = font->computeSize(myText);
-		size += Vector2f(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
-		setSize(size);
+		Font* font = lr->myFont;
+
+		if(font != NULL)
+		{
+			Vector2f size = font->computeSize(myText);
+			size += Vector2f(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
+			setSize(size);
+		}
 	}
 }
 

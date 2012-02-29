@@ -219,7 +219,7 @@ protected:
     virtual void frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber );
 
 private:
-    bool myInitialized;
+    //bool myInitialized;
     ServerBase* myServer;
     //FrameData myFrameData;
 };
