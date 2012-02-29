@@ -35,14 +35,8 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::PipeImpl(eq::Node* parent): 
-	eq::Pipe(parent), myGpu(NULL), myClient(NULL), myInitialized(false), myChannelsInitialized(false)
+	eq::Pipe(parent), myGpu(NULL), myClient(NULL), myNode((NodeImpl*)parent)
 {
-	NodeImpl* ni = (NodeImpl*)parent;
-	ApplicationBase* app = SystemManager::instance()->getApplication();
-	if(app)
-	{
-		myClient = app->createClient(ni->getApplicationServer());
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,10 +47,23 @@ RendererBase* PipeImpl::getClient()
 PipeImpl::~PipeImpl() 
 {}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void PipeImpl::signalChannelInitialized(ChannelImpl* ch)
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+bool PipeImpl::configInit(const uint128_t& initID)
 {
-	myChannelsInitialized = true;
+	ApplicationBase* app = SystemManager::instance()->getApplication();
+	if(app)
+	{
+		myClient = app->createClient(myNode->getApplicationServer());
+		myGpu = new GpuManager();
+		myGpu->initialize();
+		myGpuContext = new GpuContext(myGpu);
+		myClient->setGpuContext(myGpuContext);
+		myClient->initialize();
+
+		return Pipe::configInit(initID);
+	}
+	// no application: fail initialization.
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,25 +75,12 @@ void PipeImpl::frameStart( const uint128_t& frameID, const uint32_t frameNumber 
 	ofmsg("PipeImpl::frameStart %1%", %frameNumber);
 #endif
 
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
 	// Activate the glew context for this pipe, so initialize and update client
 	// methods can handle openGL buffers associated with this Pipe.
 	// NOTE: getting the glew context from the first window is correct since all
 	// windows attached to the same pape share the same Glew (and OpenGL) contexts.
 	const GLEWContext* glewc = getWindows()[0]->glewGetContext();
 	glewSetContext(glewc);
-
-	// Initialize the client at the first frame.
-	if(!myInitialized && myClient != NULL)
-	{
-		myGpu = new GpuManager();
-		myGpu->initialize();
-		myGpuContext = new GpuContext(myGpu);
-		myClient->setGpuContext(myGpuContext);
-		myClient->initialize();
-	}
 
 	myClient->startFrame(FrameInfo(frameID.low(), getGpuContext()));
 }
@@ -99,14 +93,6 @@ void PipeImpl::frameFinish( const uint128_t& frameID, const uint32_t frameNumber
 #ifdef OMEGA_DEBUG_FLOW
 	ofmsg("PipeImpl::frameFinish %1%", %frameNumber);
 #endif
-
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
-
-	if(!myInitialized)
-	{
-		myInitialized = true;
-	}
 
 	myClient->finishFrame(FrameInfo(frameID.low(), getGpuContext()));
 }

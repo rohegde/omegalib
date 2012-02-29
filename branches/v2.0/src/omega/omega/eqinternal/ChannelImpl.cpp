@@ -38,7 +38,7 @@ using namespace eq;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ChannelImpl::ChannelImpl( eq::Window* parent ) 
-    :eq::Channel( parent ), myWindow(parent), myDrawBuffer(NULL) //, myInitialized(false)
+    :eq::Channel( parent ), myWindow(parent), myDrawBuffer(NULL) 
 {
 }
 
@@ -116,44 +116,9 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ChannelImpl::frameViewStart( const co::base::uint128_t& frameID )
-{
-    eq::Channel::frameViewStart( frameID );
-    //if(!myInitialized) 
-    //{
-    //    initialize();
-    //    myInitialized = true;
-    //    return;
-    //}
-    
-    // In frame finish we just perform overlay draw operations, so always force the eye to be 
-    // Cyclop. Also, if this method is called twice for the same frame (because of stereo rendering)
-    // Ignore the second call (Right Eye)
-    //if(getEye() == eq::fabric::EYE_RIGHT) return;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
 {
     eq::Channel::frameDraw( frameID );
-
-    // Skip the first frame to give time to the channels to initialize
-    if(frameID == 0) return;
-    //if(frameID == 1)
-    //{
-    //    String name = getName();
-    //    vector<String> args = StringUtils::split(name, "x,");
-    //    int cx = atoi(args[0].c_str());
-    //    int cy = atoi(args[1].c_str());
-
-    //    ChannelImpl* channel = sCanvasChannelPointers[cx][cy];
-    //    if(channel != this)
-    //    {
-    //        ofmsg("Initializing leaf channel for main channel %1%x%2%", %cx %cy);
-    //        myChannelInfo = channel->myChannelInfo;
-    //    }
-    //    return;
-    //}
 
     // Clear the frame buffer using the background color specified in display system.
     DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
@@ -167,7 +132,7 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
     RendererBase* client = pipe->getClient();
 
     // If the pipe has not been initialized yet, return now.
-    if(!pipe->isReady()) return;
+    //if(!pipe->isReady()) return;
 
     setupDrawContext(&myDC, frameID);
 
@@ -191,7 +156,7 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
     if(getEye() != eq::fabric::EYE_LAST && getEye() != eq::fabric::EYE_CYCLOP) return;
 
     // Skip the first frame to give time to the channels to initialize
-    if(frameID == 0) return;
+    //if(frameID == 0) return;
 
     setupDrawContext(&myDC, frameID);
     myDC.task = DrawContext::OverlayDrawTask;
@@ -202,8 +167,8 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
     EQ_GL_CALL( setupAssemblyState( ));
 
     // If the pipe has not been initialized yet, return now.
-    PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    if(!pipe->isReady()) return;
+    //PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
+    //if(!pipe->isReady()) return;
 
     getClient()->draw(myDC);
 

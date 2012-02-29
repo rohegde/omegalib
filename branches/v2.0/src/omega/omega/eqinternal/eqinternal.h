@@ -237,18 +237,16 @@ public:
 public:
     PipeImpl(eq::Node* parent);
     RendererBase* getClient();
-    bool isReady() { return myInitialized && !myChannelsInitialized; }
-    void signalChannelInitialized(ChannelImpl* ch);
     GpuContext* getGpuContext() { return myGpuContext; }
 
 protected:
     virtual ~PipeImpl();
+    virtual bool configInit(const uint128_t& initID);
     virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
     virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 
 private:
-    bool myInitialized;
-    bool myChannelsInitialized;
+	NodeImpl* myNode;
     RendererBase* myClient;
     GpuManager* myGpu;
     GpuContext* myGpuContext;
@@ -265,21 +263,15 @@ class WindowImpl: public eq::Window
 public:
     WindowImpl(eq::Pipe* parent);
     virtual ~WindowImpl();
-    const Vector2i& getIndex() { return myIndex; }
-    //bool isInitialized() { return myInitialized; }
 
 	EqualizerDisplaySystem* getDisplaySystem() { return (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem(); }
 
 protected:
-    //virtual bool configInitGL(const uint128_t& initID);
     virtual bool configInit(const uint128_t& initID);
-    virtual void frameStart	(const uint128_t &frameID, const uint32_t frameNumber);
-    //void initialize();
 	bool processEvent(const eq::Event& event);
 
 private:
     Vector2i myIndex;
-    //bool myInitialized;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,7 +290,6 @@ protected:
     void setupDrawContext(DrawContext* context, const uint128_t& spin);
 
     virtual bool configInit(const uint128_t& initID);
-    virtual void frameViewStart(const uint128_t& spin);
     virtual void frameDraw( const uint128_t& spin );
     virtual void frameViewFinish(const uint128_t& spin);
 
@@ -307,11 +298,9 @@ protected:
     bool isDrawFpsEnabled();
 
 private:
-    //bool myInitialized;
     eq::Window* myWindow;
     omicron::Lock myLock;
     ViewImpl* myView;
-    //ChannelInfo myChannelInfo;
     DrawContext myDC;
     uint128_t myLastFrame;
     RenderTarget* myDrawBuffer;
