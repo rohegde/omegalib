@@ -556,6 +556,18 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	Observer* o = myObservers.at(0);
 	Vector3f head = o->getWorldHeadPosition();
 
-	return Ray();
+	float px = (float)x / dtc.resolution[0];
+	float py = (float)y / dtc.resolution[1];
+
+	Vector3f& vb = dtc.bottomLeft;
+	Vector3f& va = dtc.topLeft;
+	Vector3f& vc = dtc.bottomRight;
+
+	Vector3f p = px * vc + py * va + (3 - px - py) * vb;
+
+	Vector3f direction = p - head;
+	direction.normalize();
+
+	return Ray(p, direction);
 }
 

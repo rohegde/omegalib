@@ -131,9 +131,6 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     RendererBase* client = pipe->getClient();
 
-    // If the pipe has not been initialized yet, return now.
-    //if(!pipe->isReady()) return;
-
     setupDrawContext(&myDC, frameID);
 
     myDC.task = DrawContext::SceneDrawTask;
@@ -155,9 +152,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 #ifdef ENABLE_OVERLAY_TASK
     if(getEye() != eq::fabric::EYE_LAST && getEye() != eq::fabric::EYE_CYCLOP) return;
 
-    // Skip the first frame to give time to the channels to initialize
-    //if(frameID == 0) return;
-
     setupDrawContext(&myDC, frameID);
     myDC.task = DrawContext::OverlayDrawTask;
     myDC.eye = DrawContext::EyeCyclop;
@@ -165,10 +159,6 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
     EQ_GL_CALL( applyBuffer( ));
     EQ_GL_CALL( applyViewport( ));
     EQ_GL_CALL( setupAssemblyState( ));
-
-    // If the pipe has not been initialized yet, return now.
-    //PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-    //if(!pipe->isReady()) return;
 
     getClient()->draw(myDC);
 
