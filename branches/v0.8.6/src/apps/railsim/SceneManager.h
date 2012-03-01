@@ -64,17 +64,19 @@ namespace cyclops {
 	class Entity
 	{
 	public:
-		Entity(SceneManager* mng, EntityAsset* asset);
+		Entity(SceneManager* mng, EntityAsset* asset, int id);
 
 		osg::Node* getOsgNode() { return myOsgNode; }
 		SceneNode* getSceneNode() { return mySceneNode; }
 		EntityAsset* getAsset() { return myAsset; }
+		int getId() { return myId; }
 
 	private:
 		SceneManager* mySceneManager;
 		osg::Node* myOsgNode;
 		SceneNode* mySceneNode;
 		EntityAsset* myAsset;
+		int myId;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,12 +108,13 @@ namespace cyclops {
 		void addNode(osg::Node* node);
 		void addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		void addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
-		void addEntity(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		void addEntity(int assetId, int entityId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		//@}
 
 		void addAsset(ModelAsset* asset, AssetType type);
 		ModelAsset* getModelAsset(int fileIndex);
 		EntityAsset* getEntityAsset(int fileIndex);
+		Entity* findEntity(int id);
 
 		osg::Texture2D* getTexture(const String& name);
 		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);

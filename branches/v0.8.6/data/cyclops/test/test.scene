@@ -12,8 +12,8 @@
             <StaticObjects>
            </StaticObjects>
             <Entities>
-                <Entity FileIndex="0" ID="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="-25 -2 0" />
-                <Entity FileIndex="1" ID="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="-2 0 0" /> 
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="-2 0 0" /> 
             </Entities>
             <Primitives>
             </Primitives>
