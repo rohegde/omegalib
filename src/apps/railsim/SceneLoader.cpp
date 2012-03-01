@@ -206,7 +206,8 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 		else if(objtype == "entity")
 		{
 			int fileIndex = atoi(xchild->Attribute("FileIndex"));
-			mySceneManager->addEntity(fileIndex, position, rotation, scale);
+			int id = atoi(xchild->Attribute("Id"));
+			mySceneManager->addEntity(fileIndex, id, position, rotation, scale);
 		}
 		else if(objtype == "plane")
 		{
