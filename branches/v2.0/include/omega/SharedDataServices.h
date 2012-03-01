@@ -24,72 +24,63 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OBSERVER_UPDATE_SERVICE_H__
-#define __OBSERVER_UPDATE_SERVICE_H__
+#ifndef __SHARED_DATA_SERVICES__
+#define __SHARED_DATA_SERVICES__
 
 #include "omega/osystem.h"
-#include "omega/SagePointerService.h"
+
+namespace co
+{
+    class DataOStream;
+    class DataIStream;
+};
 
 namespace omega
 {
-	class Observer;
+	class SharedData;
+	class ServerModule;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ObserverUpdateService: public Service
-	{
-	public:
-		enum DynamicSourceTokenAttachPoint { AttachHead, AttachLeftHand, AttachRightHand };
-		// Allocator function
-		static ObserverUpdateService* New() { return new ObserverUpdateService(); }
+    class OMEGA_API SharedOStream
+    {
+    public:
+		SharedOStream(co::DataOStream* stream): myStream(stream) {}
 
-	public:
-		ObserverUpdateService();
+        template< typename T > SharedOStream& operator << ( const T& value )
+        { write( &value, sizeof( value )); return *this; }
 
-		virtual void setup(Setting& settings);
-		virtual void initialize();
-		virtual void poll();
-		virtual void dispose();
-		int getSourceId(); 
-		void setSourceId(int value); 
-
+        void write( const void* data, uint64_t size );
+	
 	private:
-		void updateDynamicSource(Event* evt);
-
-	private:
-		Observer* myObserver;
-		int mySourceId;
-		int myOrientationSourceId;
-		bool myEnableOrientationSource;
-		Quaternion myLastOrientation;
-		Vector3f myLastPosition;
-		Vector3f myLookAt;
-		bool myEnableLookAt;
-		bool myDebug;
-		bool myUseHeadPointId;
-
-		// Dynamic source stuff.
-		bool myUseDynamicSource;
-		int myDynamicSourceTokenId;
-		DynamicSourceTokenAttachPoint myDynamicSourceTokenAttachPoint;
-		float myDynamicSourceActivationDistance;
-		Vector3f myLastTokenPosition;
-
-		// Movement smoothing
-		float myCurrentMovementThreshold;
-		float myMovementThresholdTarget;
-		float myMovementThresholdCoeff;
+		co::DataOStream* myStream;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int ObserverUpdateService::getSourceId()
-	{
-		return mySourceId;
-	}
+    class OMEGA_API SharedIStream
+    {
+    public:
+		SharedIStream(co::DataIStream* stream): myStream(stream) {}
+
+        template< typename T >
+        SharedIStream& operator >> ( T& value )
+            { read( &value, sizeof( value )); return *this; }
+
+        void read( void* data, uint64_t size );
+	
+	private:
+		co::DataIStream* myStream;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ObserverUpdateService::setSourceId(int value)
+	class SharedDataServices
 	{
-		mySourceId = value;
-	}
+	public:
+		static void setSharedData(SharedData* data);
+		static void registerModule(ServerModule*);
+
+	private:
+		static SharedData* mysSharedData;
+	};
 }; // namespace omega
 
 #endif

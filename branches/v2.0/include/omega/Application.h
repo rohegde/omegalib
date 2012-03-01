@@ -33,6 +33,7 @@
 #include "ServerEngine.h"
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
+#include "omega/SharedDataServices.h"
 
 namespace omega {
 	class RenderPass;
@@ -52,6 +53,9 @@ namespace omega {
 		virtual bool isInitialized() { return myInitialized; }
 
 		ServerEngine* getServer() { return myEngine; }
+
+		virtual void commitSharedData(SharedOStream& out) {}
+		virtual void updateSharedData(SharedIStream& in) {}
 
 	private:
 		bool myInitialized;

@@ -28,7 +28,7 @@
 #define EQ_INTERNAL
 
 #include "omega/osystem.h"
-#include "omega/ApplicationBase.h"
+#include "omega/Application.h"
 #include "omega/RenderTarget.h"
 #include "omega/EqualizerDisplaySystem.h"
 
@@ -70,6 +70,20 @@ namespace omicron {
 
 namespace omega {
     class RenderTarget;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class SharedData: public co::Object
+{
+public:
+	void registerModule(ServerModule* module);
+
+protected:
+	virtual void getInstanceData( co::DataOStream& os );
+	virtual void applyInstanceData( co::DataIStream& is );
+
+private:
+	List<ServerModule*> myModules;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal

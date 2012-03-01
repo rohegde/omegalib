@@ -64,6 +64,7 @@ SET( srcs
 		omega/SagePointerService.cpp
 		omega/SceneNode.cpp
 		omega/SceneQuery.cpp
+		omega/SharedDataServices.cpp
 		omega/SystemManager.cpp
 		omega/Texture.cpp
         )
@@ -108,6 +109,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneQuery.h
+		${OmegaLib_SOURCE_DIR}/include/omega/SharedDataServices.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
