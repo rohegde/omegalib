@@ -44,6 +44,10 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+// Uncomment to enable swap barrier on compounds (kinda buggy atm)
+//#define EQ_USE_SWAP_BARRIER
+
+
 #define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
 #define OMEGA_LAUNCHER_INTERVAL 500
 
@@ -222,11 +226,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	// compound
 	START_BLOCK(result, "compound")
+#ifdef EQ_USE_SWAP_BARRIER
 	START_BLOCK(result, "swapbarrier")
 	result +=
 		L("name \"defaultbarrier\"");
 	END_BLOCK(result)
-
+#endif
 
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
