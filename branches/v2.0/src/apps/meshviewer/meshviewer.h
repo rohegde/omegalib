@@ -73,7 +73,7 @@ class MeshViewer: public ServerModule
 public:
 	MeshViewer();
 
-	virtual void initialize(MasterEngine* engine);
+	void initialize();
 	virtual void handleEvent(const Event& evt);
 	virtual void handleUiEvent(const Event& evt);
 	virtual void update(const UpdateContext& context);
@@ -83,7 +83,6 @@ private:
 	void initUi();
 
 private:
-	MasterEngine* myEngine;
 	Vector<Entity*> myEntities;
 	Entity* mySelectedEntity;
 

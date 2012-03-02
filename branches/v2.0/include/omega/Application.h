@@ -79,7 +79,7 @@ namespace omega {
 	public:
 		static void addModule(ServerModule* module)
 		{ 
-			mysModules.push_front(module); 
+			mysModules.push_back(module); 
 		}
 
 		static List<ServerModule*>::ConstRange getModules() 

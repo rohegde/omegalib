@@ -26,8 +26,6 @@
  *************************************************************************************************/
 #include "meshviewer.h"
 
-#define EVL_DEMO
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(MeshData* data, ServerEngine* server, Actor* interactor, const String& name, const String& label):
     myMeshData(data),
@@ -82,14 +80,9 @@ Entity::~Entity()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Entity::show()
 {
-#ifdef EVL_DEMO
-    mySceneNode->setPosition(0, 0, 0.0f);
-    mySceneNode->setScale( 3.0 , 3.0 , 3.0 );
-    mySceneNode->roll( Math::Pi / 2 );
-#else
     mySceneNode->setPosition(0, 0, 0.0f);
     mySceneNode->setScale( 1.0 , 1.0 , 1.0 );
-#endif	
+
     //mySceneNode->resetOrientation();
     mySceneNode->setVisible(true);
 	mySceneNode->setBoundingBoxVisible(true);
@@ -105,7 +98,7 @@ void Entity::hide()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MeshViewer::MeshViewer():
-	myEngine(NULL)
+	myTabletManager(NULL)
 {
 }
 
@@ -130,7 +123,7 @@ void MeshViewer::loadEntityLibrary()
                     mesh->scale(0.8f);	
                     String name = entitySetting.getName();
                     String label = String((const char*)entitySetting["label"]);
-                    Entity* e = new Entity(mesh, myEngine, myInteractor, name, label);
+                    Entity* e = new Entity(mesh, getServer(), myInteractor, name, label);
                     myEntities.push_back(e);
                 }
             }
@@ -139,10 +132,8 @@ void MeshViewer::loadEntityLibrary()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MeshViewer::initialize(MasterEngine* engine)
+void MeshViewer::initialize()
 {
-	myEngine = engine;
-
     // Setup lighting
     Light* light = Light::getLight(0);
     light->setEnabled(true);
@@ -159,11 +150,11 @@ void MeshViewer::initialize(MasterEngine* engine)
     Light::setAmbientLightColor(Color::Black);
     
     // Create a reference box around the scene.
-    Config* cfg = myEngine->getSystemManager()->getAppConfig();
+	Config* cfg = getServer()->getSystemManager()->getAppConfig();
     if(cfg->exists("config/referenceBox"))
     {
         myReferenceBox = new ReferenceBox();
-		myEngine->getScene(0)->addObject(myReferenceBox);
+		getServer()->getScene(0)->addObject(myReferenceBox);
         // Default box size for meshviewer, if left unspecified by config
         myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
@@ -198,15 +189,18 @@ void MeshViewer::initialize(MasterEngine* engine)
     loadEntityLibrary();
 
     // Get the default camera and focus in on the scene root
-    Camera* cam = myEngine->getDefaultCamera();
-    cam->focusOn(myEngine->getScene(0));
-
-    myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+	if(getServer()->isMaster())
+	{
+		MasterEngine* master = getServer()->asMaster();
+		Camera* cam = master->getDefaultCamera();
+		cam->focusOn(master->getScene(0));
+		myTabletManager = master->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+	}
 
     // Create and initialize the gui
     initUi();
 
-    myShowUI = true;
+    myShowUI = false;
     autoRotate = true;
     deltaScale = 0;
     
@@ -220,8 +214,8 @@ void MeshViewer::initUi()
 {
     WidgetFactory* wf = UiModule::instance()->getWidgetFactory();
 
-    int canvasWidth = myEngine->getCanvasWidth();
-    int canvasHeight = myEngine->getCanvasHeight();
+    int canvasWidth = getServer()->getCanvasWidth();
+    int canvasHeight = getServer()->getCanvasHeight();
 
     Container* root = UiModule::instance()->getUi(0);
 
@@ -259,7 +253,7 @@ void MeshViewer::initUi()
     }
 
     // Create a reference box around the scene.
-    Config* cfg = myEngine->getSystemManager()->getAppConfig();
+    Config* cfg = getServer()->getSystemManager()->getAppConfig();
     if(cfg->exists("config/images"))
     {
         Setting& images = cfg->lookup("config/images");

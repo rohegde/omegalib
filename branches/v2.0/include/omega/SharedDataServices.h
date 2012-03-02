@@ -76,7 +76,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API SharedObject
+	class OMEGA_API SharedObject: public ReferenceType
 	{
 	public:
 		virtual void commitSharedData(SharedOStream& out) {}
