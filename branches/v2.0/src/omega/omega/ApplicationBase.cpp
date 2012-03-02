@@ -32,18 +32,6 @@
 using namespace omega;
 
 NameGenerator ServerModule::mysNameGenerator("Module_");
-
-template<typename T> 
-RendererBase* Application<T>::createClient(ServerBase* server) 
-{ return new Renderer(server); }
-
-template<typename T> 
-ServerBase* Application<T>::createServer() 
-{ return new ServerEngine(this, false); }
-
-template<typename T> 
-ServerBase* Application<T>::createMaster() 
-{ return new MasterEngine(this); }
 		
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerBase::addClient(RendererBase* cli)
