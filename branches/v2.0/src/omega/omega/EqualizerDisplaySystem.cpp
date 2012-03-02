@@ -77,6 +77,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	// END_BLOCK(result)
 
 	START_BLOCK(result, "config");
+	result += L("latency 0");
 
 	for(int n = 0; n < eqcfg.numNodes; n++)
 	{
@@ -221,6 +222,10 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 	// compound
 	START_BLOCK(result, "compound")
+	START_BLOCK(result, "swapbarrier")
+	result +=
+		L("name \"defaultbarrier\"");
+	END_BLOCK(result)
 
 
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
@@ -568,7 +573,7 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	Vector3f direction = p - head;
 	direction.normalize();
 
-	ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
+	//ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
 
 	return Ray(p, direction);
 }

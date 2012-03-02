@@ -179,17 +179,14 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::startFrame( const uint128_t& version )
 {
+	mySharedData.commit();
     return eq::Config::startFrame( version );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ConfigImpl::updateSharedData( )
 {
-	if(mySharedData.isMaster())
-	{
-		mySharedData.commit();
-	}
-	else
+	if(!mySharedData.isMaster())
 	{
 		mySharedData.sync();
 	}
