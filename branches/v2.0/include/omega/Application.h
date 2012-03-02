@@ -136,14 +136,10 @@ namespace omega {
 			ModuleServices::addModule(new T());
 		}
 
-		virtual RendererBase* createClient(ServerBase* server) 
-		{ return new Renderer(server); }
+		virtual RendererBase* createClient(ServerBase* server);
+		virtual ServerBase* createServer();
+		virtual ServerBase* createMaster();
 
-		virtual ServerBase* createServer() 
-		{ return new ServerEngine(this, false); }
-
-		virtual ServerBase* createMaster() 
-		{ return new MasterEngine(this); }
 	private:
 		String myAppName;
 	};
