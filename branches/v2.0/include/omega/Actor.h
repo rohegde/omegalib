@@ -29,30 +29,22 @@
 
 #include "osystem.h"
 #include "omega/Application.h"
-#include "omega/SceneNode.h"
 
 namespace omega {
-	class MasterEngine;
+	class SceneNode;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Actor: public ServerModule
 	{
 	public:
 		Actor(const String& name): ServerModule(name), myNode(NULL)  {}
+		Actor(): ServerModule(), myNode(NULL) {}
 
 		void setSceneNode(SceneNode* node);
 		SceneNode* getSceneNode();
 	protected:
 		SceneNode* myNode;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Actor::setSceneNode(SceneNode* node)
-	{ myNode = node; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneNode* Actor::getSceneNode()
-	{ return myNode; }
 }; // namespace omega
 
 #endif
