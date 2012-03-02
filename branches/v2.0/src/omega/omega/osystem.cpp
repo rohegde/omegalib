@@ -48,8 +48,6 @@ namespace omega
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	void omain(ApplicationBase& app, const char* configFile, const char* logFile, DataSource* dataSource)
 	{
-		ologopen(logFile);
-
 		bool remote = false;
 		String masterHostname;
 		String configFilename;
@@ -60,6 +58,13 @@ namespace omega
 		{
 			remote = true;
 			masterHostname = args[1];
+			
+			String hostLogFilename = masterHostname + "-" + logFile;
+			ologopen(hostLogFilename.c_str());
+		}
+		else
+		{
+			ologopen(logFile);
 		}
 		
 		Config* cfg = new Config(configFilename);
