@@ -31,6 +31,7 @@
 #include "omega/SceneNode.h"
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/UiModule.h"
+#include "omega/DisplaySystem.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
