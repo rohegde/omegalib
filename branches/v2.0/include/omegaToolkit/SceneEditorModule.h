@@ -29,6 +29,7 @@
 
 #include "omega/ServerEngine.h"
 #include "omega/Application.h"
+#include "omega/Actor.h"
 #include "omegaToolkit/BoundingSphere.h"
 
 namespace omegaToolkit

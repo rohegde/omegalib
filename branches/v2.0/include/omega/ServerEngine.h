@@ -33,7 +33,6 @@
 #include "Pointer.h"
 #include "Renderable.h"
 #include "SceneQuery.h"
-#include "Actor.h"
 #include "Camera.h"
 #include "Font.h"
 #include "Console.h"

@@ -29,7 +29,7 @@
 
 #include "osystem.h"
 #include "Renderer.h"
-//#include "ServerEngine.h"
+#include "MasterEngine.h"
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
@@ -136,9 +136,14 @@ namespace omega {
 			ModuleServices::addModule(new T());
 		}
 
-		virtual RendererBase* createClient(ServerBase* server);
-		virtual ServerBase* createServer();
-		virtual ServerBase* createMaster();
+		virtual RendererBase* createClient(ServerBase* server)
+		{ return new Renderer(server); }
+		
+		virtual ServerBase* createServer()
+		{ return new ServerEngine(this, false); }		
+		
+		virtual ServerBase* createMaster()
+		{ return new MasterEngine(this); }		
 
 	private:
 		String myAppName;
