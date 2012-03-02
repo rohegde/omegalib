@@ -58,7 +58,6 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
 	DEBUG_EQ_FLOW("NodeImpl::configInit %1%", %initID);
 
-	if(!Node::configInit(initID)) return false;
 
 	// Map the frame data object.
 	omsg("NodeImpl::configInit - registering shared data object...");
@@ -73,7 +72,8 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 
 	//const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
 	//oassert( mapped );
-	return true;
+	return Node::configInit(initID);
+	//return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

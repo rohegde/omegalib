@@ -380,7 +380,10 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 		cfg.numNodes++;
 	}
 
-	generateEqConfig();
+	if(SystemManager::instance()->isMaster())
+	{
+		generateEqConfig();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

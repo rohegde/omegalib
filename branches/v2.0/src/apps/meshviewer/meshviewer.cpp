@@ -38,9 +38,9 @@ Entity::Entity(MeshData* data, ServerEngine* server, Actor* interactor, const St
     mySceneNode = new SceneNode(server);
     mySceneNode->setSelectable(true);
     mySceneNode->setVisible(false);
-    server->getScene(0)->addChild(mySceneNode);
-    mySceneNode->addObject(myMesh);
-    myMesh->setData(myMeshData);
+    // server->getScene(0)->addChild(mySceneNode);
+    // mySceneNode->addObject(myMesh);
+    // myMesh->setData(myMeshData);
 
     // Create the rendering effect for this entity.
     //MultipassEffect* mpfx = new MultipassEffect();

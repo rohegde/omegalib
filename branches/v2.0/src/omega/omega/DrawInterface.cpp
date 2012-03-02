@@ -334,6 +334,12 @@ void DrawInterface::drawWireSphere(const Color& color, int segments, int slices)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type)
 {
+	if(vertices == NULL) 
+	{
+		oerror("DrawInterface::drawPrimitives: NULL vertex buffer specified");
+		return;
+	}
+	
 	GLenum mode = GL_POINTS;
 	switch(type)
 	{
@@ -343,6 +349,7 @@ void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint s
 	case DrawLines: mode = GL_LINES; break;
 	}
 
+		omsg("vertices->bind()");
 	vertices->bind();
 
 	// HACK: vertex buffer may reset the color array flag, so make sure we override it
@@ -354,12 +361,14 @@ void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint s
 	}
 	if(indices != NULL)
 	{
+		ofmsg("glDrawElements %1%", %size);
 		glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
 	}
 	else
 	{
 		glDrawArrays(mode, 0, size);
 	}
+		omsg("vertices->unbind()");
 	vertices->unbind();
 }
 
