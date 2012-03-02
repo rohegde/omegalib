@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/MasterEngine.h"
 #include "omega/SystemManager.h"
-#include "omega/DisplaySYstem.h"
+#include "omega/DisplaySystem.h"
 
 using namespace omega;
 
