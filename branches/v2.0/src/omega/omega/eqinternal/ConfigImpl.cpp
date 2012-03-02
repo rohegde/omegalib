@@ -87,7 +87,7 @@ void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent): 
     eq::Config(parent) 
 {
-    ofmsg("[EQ] ConfigImpl::ConfigImpl");
+    omsg("[EQ] ConfigImpl::ConfigImpl");
 	SharedDataServices::setSharedData(&mySharedData);
 }
 
