@@ -90,7 +90,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements an interface to tablet device applications using the Porthole protocol.
-	class OMEGA_API PortholeTabletService: public Service, InteractiveBase
+	class OMEGA_API PortholeTabletService: public Service, ServerModule
 	{
 	public:
 		static const int MaxGuiDefSize = 1024;

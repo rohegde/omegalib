@@ -49,7 +49,9 @@ namespace omega
         template< typename T > SharedOStream& operator << ( const T& value )
         { write( &value, sizeof( value )); return *this; }
 
-        void write( const void* data, uint64_t size );
+		SharedOStream& operator << ( const String& str );
+	
+		void write( const void* data, uint64_t size );
 	
 	private:
 		co::DataOStream* myStream;
@@ -65,18 +67,28 @@ namespace omega
         SharedIStream& operator >> ( T& value )
             { read( &value, sizeof( value )); return *this; }
 
-        void read( void* data, uint64_t size );
+		SharedIStream& operator >> ( String& str );
+	
+	void read( void* data, uint64_t size );
 	
 	private:
 		co::DataIStream* myStream;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class SharedDataServices
+	class OMEGA_API SharedObject
+	{
+	public:
+		virtual void commitSharedData(SharedOStream& out) {}
+		virtual void updateSharedData(SharedIStream& in) {}
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API SharedDataServices
 	{
 	public:
 		static void setSharedData(SharedData* data);
-		static void registerModule(ServerModule*);
+		static void registerObject(SharedObject*, const String& id);
 
 	private:
 		static SharedData* mysSharedData;

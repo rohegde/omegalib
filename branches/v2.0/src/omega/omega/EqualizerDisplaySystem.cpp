@@ -481,7 +481,7 @@ void EqualizerDisplaySystem::run()
 	if(myConfig && mySys->isMaster())
 	{
 		omsg(":: Equalizer display system startup ::");
-		if( myConfig->init( 0 ))
+		if( myConfig->init())
 		{
 			omsg(":: Equalizer display system startup DONE ::");
 

@@ -37,7 +37,7 @@ using namespace omegaToolkit;
 using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewer: public InteractiveBase
+class OsgViewer: public ServerModule
 {
 public:
 	OsgViewer(): myEngine(NULL) {}

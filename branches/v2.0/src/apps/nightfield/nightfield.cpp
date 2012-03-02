@@ -290,7 +290,7 @@ void Nightfield::initialize(MasterEngine* engine)
 
     myInteractor = new DefaultMouseInteractor();
     //myInteractor = new ControllerManipulator();
-    myEngine->addInteractive(myInteractor);
+	ModuleServices::addModule(myInteractor);
 
     // Create a reference box around the scene.
     if(cfg->exists("config/referenceBox"))

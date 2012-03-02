@@ -36,35 +36,83 @@ void SharedOStream::write( const void* data, uint64_t size )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+SharedOStream& SharedOStream::operator<< ( const String& str )
+{ 
+	const uint64_t nElems = str.length();
+	write( &nElems, sizeof( nElems ));
+	if ( nElems > 0 )
+		write( str.c_str(), nElems );
+
+	return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedIStream::read( void* data, uint64_t size )
 { 
 	myStream->read(data, size); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SharedData::registerModule(ServerModule* module)
+SharedIStream& SharedIStream::operator>> ( String& str )
+{ 
+	uint64_t nElems = 0;
+	read( &nElems, sizeof( nElems ));
+	oassert( nElems <= myStream->getRemainingBufferSize());
+	if( nElems == 0 )
+		str.clear();
+	else
+	{
+		str.assign( static_cast< const char* >( myStream->getRemainingBuffer( )), 
+					nElems );
+		myStream->advanceBuffer( nElems );
+	}
+	return *this; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SharedData::registerObject(SharedObject* module, const String& sharedId)
 {
-	myModules.push_back(module);
+	myObjects[sharedId] = module;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedData::getInstanceData( co::DataOStream& os )
 {
+	//omsg("#### SharedData::getInstanceData");
 	SharedOStream out(&os);
-	foreach(ServerModule* m, myModules)
+
+	int numObjects = myObjects.size();
+	out << numObjects;
+
+	foreach(SharedObjectItem obj, myObjects)
 	{
-		m->commitSharedData(out);
+		out << obj.getKey();
+		obj->commitSharedData(out);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedData::applyInstanceData( co::DataIStream& is )
 {
+	//omsg("#### SharedData::applyInstanceData");
 	SharedIStream in(&is);
-	foreach(ServerModule* m, myModules)
+
+	int numObjects;
+	in >> numObjects;
+
+	while(numObjects > 0)
 	{
-		m->updateSharedData(in);
-	}
+		String objId;
+		in >> objId;
+
+		SharedObject* obj = myObjects[objId];
+		if(obj != NULL)
+		{
+			obj->updateSharedData(in);
+		}
+
+		numObjects--;
+	};
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +122,14 @@ void SharedDataServices::setSharedData(SharedData* data)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SharedDataServices::registerModule(ServerModule* module)
+void SharedDataServices::registerObject(SharedObject* module, const String& sharedId)
 {
-	if(mysSharedData != NULL) mysSharedData->registerModule(module);
+	if(mysSharedData != NULL) 
+	{
+		mysSharedData->registerObject(module, sharedId);
+	}
+	else
+	{
+		owarn("SharedDataServices::registerObject: cannot register. Shared data stream service not available.");
+	}
 }

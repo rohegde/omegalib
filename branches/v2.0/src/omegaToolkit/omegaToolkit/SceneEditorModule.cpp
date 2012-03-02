@@ -47,6 +47,7 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneEditorModule::SceneEditorModule():
+	ServerModule("SceneEditorModule"),
 	myInteractor(NULL), mySelectedObject(NULL)
 {
 }
@@ -108,13 +109,13 @@ void SceneEditorModule::setInteractorStyle(InteractorStyle style)
 		myInteractor = interactor;
 	}
 	
-	getMaster()->addInteractive(myInteractor);
+	ModuleServices::addModule(myInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::updateSelection(const Ray& ray)
 {
-	const SceneQueryResultList& sqrl = getMaster()->querySceneRay(0, ray);
+	const SceneQueryResultList& sqrl = getServer()->querySceneRay(0, ray);
 	if(sqrl.size() != 0)
 	{
 		// The ray intersected with something.

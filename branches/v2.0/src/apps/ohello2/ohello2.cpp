@@ -22,10 +22,10 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------------------------------------------------
- *	ohello
- *		Implements the simplest possible omegalib application.  Just a synchronized renderer that performs some 
- *		opengl drawing on one or multiple nodes. Since this application has no update logic or event handling, it just
- *		needs to reimplement the RendererBase class.
+ *	ohello2
+ *		A slightly more complex version of ohello, implementing event handling and data sharing. ohello2 defines a 
+ *		new class, HelloServer, that reads mouse events and uses it to rotate the rendered object. 
+ *		HelloServer also implements SharedObject to synchronize rotation data across all nodes.
  *********************************************************************************************************************/
 #include <omega.h>
 #include <omegaGl.h>
@@ -36,20 +36,82 @@ using namespace omega;
 void teapot(GLint grid, GLdouble scale, GLenum type);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class HelloServer: public ServerBase, SharedObject
+{
+public:
+	HelloServer(ApplicationBase* app, bool master): 
+	  ServerBase(app, master),
+	  myYaw(0), myPitch(0) 
+	  {
+		  // Register this as a shared object.
+		  SharedDataServices::registerObject(this, "HelloServer");
+	  }
+
+	float getYaw() { return myYaw; }
+	float getPitch() { return myPitch; }
+
+	virtual void handleEvent(const Event& evt);
+	virtual void commitSharedData(SharedOStream& out);
+	virtual void updateSharedData(SharedIStream& in);
+
+private:
+	float myYaw;
+	float myPitch;
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class HelloRenderer: public RendererBase
 {
 public:
-	HelloRenderer(ServerBase* server): RendererBase(server) {}
+	HelloRenderer(ServerBase* server): 
+	  RendererBase(server), 
+	  myServer((HelloServer*)server) 
+	  { }
+
 	virtual void draw(const DrawContext& context);
+
+private:
+	HelloServer* myServer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class HelloApplication: public ApplicationBase
 {
 public:
-	virtual const char* getName() { return "ohello"; }
+	virtual const char* getName() { return "ohello2"; }
 	virtual RendererBase* createClient(ServerBase* server) { return new HelloRenderer(server); }
+	virtual ServerBase* createMaster() { return new HelloServer(this, true); };
+	virtual ServerBase* createServer() { return new HelloServer(this, false); };
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void HelloServer::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == Service::Pointer)
+	{
+		// Normalize the mouse position using the total display resolution.
+		Vector2i resolution = getDisplaySystem()->getCanvasSize();
+		myYaw = (evt.getPosition(0) / resolution[0]) * 180;
+		myPitch = (evt.getPosition(1) / resolution[1]) * 180;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void HelloServer::commitSharedData(SharedOStream& out)
+{
+	//omsg("HelloServer::commitSharedData");
+	out << myYaw;
+	out << myPitch;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void HelloServer::updateSharedData(SharedIStream& in)
+{
+	//omsg("HelloServer::updateSharedData");
+ 	in >> myYaw;
+	in >> myPitch;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloRenderer::draw(const DrawContext& context)
@@ -70,8 +132,8 @@ void HelloRenderer::draw(const DrawContext& context)
 
 		// Draw a rotating teapot.
 		glRotatef(10, 1, 0, 0);
-		glRotatef((float)context.frameNum * 0.2f, 0, 1, 0);
-		glRotatef((float)context.frameNum * 0.1f, 1, 0, 0);
+		glRotatef(myServer->getYaw(), 0, 1, 0);
+		glRotatef(myServer->getPitch(), 1, 0, 0);
 		teapot(14, 0.3f, GL_FILL);
 		glColor3f(0, 0, 0);
 		teapot(14, 0.3f, GL_LINE);

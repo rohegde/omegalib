@@ -87,17 +87,32 @@ void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent): 
     eq::Config(parent) 
 {
-    DEBUG_EQ_FLOW("ConfigImpl::ConfigImpl %1%", %parent);
+    ofmsg("[EQ] ConfigImpl::ConfigImpl");
+	SharedDataServices::setSharedData(&mySharedData);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ConfigImpl::init(const uint128_t& initID)
+bool ConfigImpl::init()
 {
-    DEBUG_EQ_FLOW("ConfigImpl::init %1%", %initID);
+    omsg("[EQ] ConfigImpl::init");
 
-    omsg("ConfigImpl::init - registering frame data object...");
-    //registerObject(&myFrameData);
-    return eq::Config::init(initID);
+	registerObject(&mySharedData);
+	//mySharedData.setAutoObsolete(getLatency());
+
+	return eq::Config::init(mySharedData.getID());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ConfigImpl::mapSharedData(const uint128_t& initID)
+{
+    omsg("[EQ] ConfigImpl::mapSharedData");
+    if(!mySharedData.isAttached( ))
+    {
+        if(!mapObject( &mySharedData, initID))
+		{
+			oferror("ConfigImpl::mapSharedData: maoPobject failed (object id = %1%)", %initID);
+		}
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,8 +179,20 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::startFrame( const uint128_t& version )
 {
-    //myFrameData.commit();
     return eq::Config::startFrame( version );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ConfigImpl::updateSharedData( )
+{
+	if(mySharedData.isMaster())
+	{
+		mySharedData.commit();
+	}
+	else
+	{
+		mySharedData.sync();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,8 +234,8 @@ ViewImpl* ConfigImpl::findView(const String& viewName)
 }
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const FrameData& ConfigImpl::getFrameData() 
-{ 
-    return myFrameData; 
-}
+//const FrameData& ConfigImpl::getFrameData() 
+//{ 
+//    return myFrameData; 
+//}
 

@@ -75,6 +75,7 @@ add_subdirectory(omega)
 
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
+add_subdirectory(apps/ohello2)
 if(OMEGA_BUILD_TUTORIALS)
 	omega_add_tutorial(tutorial4)
 endif(OMEGA_BUILD_TUTORIALS)

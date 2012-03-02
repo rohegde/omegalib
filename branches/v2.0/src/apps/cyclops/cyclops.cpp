@@ -38,7 +38,7 @@ using namespace osg;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Cyclops: public InteractiveBase
+class Cyclops: public ServerModule
 {
 public:
 	Cyclops(): myEngine(NULL) {}

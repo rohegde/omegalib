@@ -26,7 +26,7 @@
 #######################################################################################################################
 # Source files
 SET( srcs 
-        ohello.cpp
+        ohello2.cpp
 		../common/teapot.cpp
         )
     
@@ -37,9 +37,9 @@ SET( headers
         
 #######################################################################################################################
 # Setup compile info
-add_executable(ohello ${srcs} ${headers})
-set_target_properties(ohello PROPERTIES FOLDER apps)
-target_link_libraries(ohello
+add_executable(ohello2 ${srcs} ${headers})
+set_target_properties(ohello2 PROPERTIES FOLDER apps)
+target_link_libraries(ohello2
 	omega)
 
 

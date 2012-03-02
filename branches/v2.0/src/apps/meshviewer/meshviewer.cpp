@@ -191,7 +191,8 @@ void MeshViewer::initialize(MasterEngine* engine)
         interactor->initialize("ObserverUpdateService");
         myInteractor = interactor;
     }
-    myEngine->addInteractive(myInteractor);
+
+	ModuleServices::addModule(myInteractor);
     
     // Load the entities specified in the configuration file.
     loadEntityLibrary();

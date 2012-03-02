@@ -75,14 +75,16 @@ namespace omega {
 class SharedData: public co::Object
 {
 public:
-	void registerModule(ServerModule* module);
+	void registerObject(SharedObject* object, const String& id);
+	virtual ChangeType getChangeType() const { return INSTANCE; }
 
 protected:
 	virtual void getInstanceData( co::DataOStream& os );
 	virtual void applyInstanceData( co::DataIStream& is );
 
 private:
-	List<ServerModule*> myModules;
+	Dictionary<String, SharedObject*> myObjects;
+	typedef Dictionary<String, SharedObject*>::Item SharedObjectItem;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,20 +201,23 @@ public:
     static const int MaxCanvasChannels = 128;
 public:
     ConfigImpl( co::base::RefPtr< eq::Server > parent);
-    virtual bool init(const uint128_t& initID);
+    virtual bool init();
     virtual bool exit();
+	void mapSharedData(const uint128_t& initID);
+	void updateSharedData();
     virtual bool handleEvent(const eq::ConfigEvent* event);
     virtual uint32_t startFrame( const uint128_t& version );
     virtual uint32_t finishFrame();
     ViewImpl* findView(const String& viewName);
-    const FrameData& getFrameData();
+    //const FrameData& getFrameData();
 
 private:
     void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);
     uint processMouseButtons(uint btns); 
 
 private:
-    FrameData myFrameData;
+    //FrameData myFrameData;
+	SharedData mySharedData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

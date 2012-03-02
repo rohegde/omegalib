@@ -26,8 +26,11 @@
  *************************************************************************************************/
 #include "omega/ApplicationBase.h"
 #include "omega/DisplaySystem.h"
+#include "omega/Application.h"
 
 using namespace omega;
+
+NameGenerator ServerModule::mysNameGenerator("Module_");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerBase::addClient(RendererBase* cli)

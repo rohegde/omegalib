@@ -69,18 +69,6 @@ MasterEngine::CameraCollection::ConstRange MasterEngine::getCameras() const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void MasterEngine::addInteractive(InteractiveBase* ib)
-{
-    myInteractives.push_back(ib);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void MasterEngine::removeInteractive(InteractiveBase* ib)
-{
-    myInteractives.remove(ib);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void MasterEngine::initialize()
 {
 	ServerEngine::initialize();
@@ -108,12 +96,6 @@ void MasterEngine::finalize()
 void MasterEngine::update(const UpdateContext& context)
 {
 	ServerEngine::update(context);
-    // Update actors.
-    foreach(InteractiveBase* ib, myInteractives)
-    {
-		if(!ib->isInitialized()) ib->doInitialize(this);
-        ib->update(context);
-    }
     // Update the default camera and use it to update the default omegalib observer.
     myDefaultCamera->update(context);
     Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
@@ -143,9 +125,5 @@ void MasterEngine::handleEvent(const Event& evt)
     if(evt.isProcessed()) return;
     myDefaultCamera->handleEvent(evt);
     if(evt.isProcessed()) return;
-    foreach(InteractiveBase* ib, myInteractives)
-    {
-        ib->handleEvent(evt);
-    }
 }
 

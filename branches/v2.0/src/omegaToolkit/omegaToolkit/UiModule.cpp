@@ -35,6 +35,7 @@ UiModule* UiModule::mysInstance = NULL;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
+	ServerModule("UiModule"),
 	myWidgetFactory(NULL)
 {
 	mysInstance = this;

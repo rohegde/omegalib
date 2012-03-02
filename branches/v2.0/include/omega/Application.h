@@ -28,9 +28,8 @@
 #define __ENGINE_APPLICATION_H__
 
 #include "osystem.h"
-#include "Renderable.h"
 #include "Renderer.h"
-#include "ServerEngine.h"
+//#include "ServerEngine.h"
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
@@ -40,16 +39,27 @@ namespace omega {
 	class ServerEngine;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API ServerModule
+	class OMEGA_API ServerModule: public SharedObject
 	{
 	public:
-		ServerModule(): myInitialized(false), myEngine(NULL) {}
+		ServerModule(const String& name): myInitialized(false), myEngine(NULL), myName(name) {}
+		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()) {}
 
-		virtual void initialize() = 0;
+		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 
-		void doInitialize(ServerEngine* server) { myEngine = server; if(!myInitialized) initialize(); myInitialized = true; }
+		void doInitialize(ServerEngine* server) 
+		{ 
+			myEngine = server; 
+			if(!myInitialized) 
+			{
+				initialize(); 
+				SharedDataServices::registerObject(this, myName);
+				myInitialized = true; 
+			}
+		}
+
 		virtual bool isInitialized() { return myInitialized; }
 
 		ServerEngine* getServer() { return myEngine; }
@@ -58,8 +68,10 @@ namespace omega {
 		virtual void updateSharedData(SharedIStream& in) {}
 
 	private:
+		String myName;
 		bool myInitialized;
 		ServerEngine* myEngine;
+		static NameGenerator mysNameGenerator;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +110,14 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	class ApplicationNode: public ServerModule
+	{
+	public:
+		bool isMaster() { return SystemManager::instance()->isMaster(); }
+		//MasterEngine* getMaster() { return NULL; }
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! a convenience application class to create omegaToolkit applications
 	void OMEGA_API registerPortholeTabletService();
 	template<typename T> 
@@ -111,7 +131,10 @@ namespace omega {
 		{ return myAppName.c_str(); }
 
 		virtual void initialize() 
-		{ registerPortholeTabletService(); }
+		{ 
+			registerPortholeTabletService(); 
+			ModuleServices::addModule(new T());
+		}
 
 		virtual RendererBase* createClient(ServerBase* server) 
 		{ return new Renderer(server); }
@@ -120,11 +143,7 @@ namespace omega {
 		{ return new ServerEngine(this, false); }
 
 		virtual ServerBase* createMaster() 
-		{ 
-			MasterEngine* me = new MasterEngine(this); 
-			me->addInteractive(new T());
-			return me;
-		}
+		{ return new MasterEngine(this); }
 	private:
 		String myAppName;
 	};

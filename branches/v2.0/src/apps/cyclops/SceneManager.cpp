@@ -69,7 +69,7 @@ void SceneManager::initialize(MasterEngine* engine)
 	myEngine = engine;
 
 	myEditor = new SceneEditorModule();
-	myEngine->addInteractive(myEditor);
+	ModuleServices::addModule(myEditor);
 
 	mySceneRoot = new osg::Group();
 

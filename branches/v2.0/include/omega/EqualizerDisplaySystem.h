@@ -88,7 +88,10 @@ public:
 
 	const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
 
+	//! @internal Finish equalizer display system initialization.
+	//! This method is called from the node init function. Performs observer initialization.
 	void finishInitialize(ConfigImpl* config);
+
 private:
 	void initObservers();
 	void generateEqConfig();

@@ -43,9 +43,6 @@ namespace omega {
 	public:
 		MasterEngine(ApplicationBase* app);
 
-		void addInteractive(InteractiveBase* ib);
-		void removeInteractive(InteractiveBase* ib);
-
 		Camera* getDefaultCamera();
 		Camera* createCamera(uint flags = Camera::DefaultFlags);
 		void destroyCamera(Camera* cam);
@@ -62,9 +59,6 @@ namespace omega {
 
 	private:
 		static MasterEngine* mysInstance;
-
-		// Actors
-		List<InteractiveBase*> myInteractives;
 
 		// Cameras.
 		Camera* myDefaultCamera;

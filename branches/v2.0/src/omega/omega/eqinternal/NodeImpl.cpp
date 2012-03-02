@@ -61,9 +61,11 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 	if(!Node::configInit(initID)) return false;
 
 	// Map the frame data object.
-	omsg("NodeImpl::configInit - registering frame data object...");
+	omsg("NodeImpl::configInit - registering shared data object...");
 
 	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
+	config->mapSharedData(initID);
+	
 	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 	eqds->finishInitialize(config);
 
@@ -107,6 +109,11 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 
 
 	SystemManager* sys = SystemManager::instance();
+
+	ConfigImpl* config = (ConfigImpl*)getConfig();
+	config->updateSharedData();
+
+
 	ServiceManager* im = SystemManager::instance()->getServiceManager();
 	im->poll();
 

@@ -53,7 +53,7 @@ namespace omegaToolkit
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API SceneEditorModule: public InteractiveBase
+	class OTK_API SceneEditorModule: public ServerModule
 	{
 	public:
 		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };

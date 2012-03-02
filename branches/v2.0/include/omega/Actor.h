@@ -28,36 +28,17 @@
 #define __ACTOR_H__
 
 #include "osystem.h"
-#include "omega/ApplicationBase.h"
+#include "omega/Application.h"
 #include "omega/SceneNode.h"
 
 namespace omega {
 	class MasterEngine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API InteractiveBase: public ReferenceType, IEventListener
+	class OMEGA_API Actor: public ServerModule
 	{
 	public:
-		InteractiveBase(): myMaster(NULL), myInitialized(false) {}
-
-		virtual void initialize(MasterEngine* server) {}
-		virtual void update(const UpdateContext& context) {}
-		virtual void handleEvent(const Event& evt) {}
-
-		void doInitialize(MasterEngine* server) { myMaster = server; if(!myInitialized) initialize(server); myInitialized = true; }
-		virtual bool isInitialized() { return myInitialized; }
-		MasterEngine* getMaster() { return myMaster; }
-
-	private:
-		bool myInitialized;
-		MasterEngine* myMaster;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Actor: public InteractiveBase
-	{
-	public:
-		Actor(): myNode(NULL)  {}
+		Actor(const String& name): ServerModule(name), myNode(NULL)  {}
 
 		void setSceneNode(SceneNode* node);
 		SceneNode* getSceneNode();
