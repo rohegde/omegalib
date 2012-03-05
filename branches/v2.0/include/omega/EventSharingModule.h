@@ -24,72 +24,54 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OBSERVER_UPDATE_SERVICE_H__
-#define __OBSERVER_UPDATE_SERVICE_H__
+#ifndef __EVENT_SHARING_MODULE_H__
+#define __EVENT_SHARING_MODULE_H__
 
 #include "omega/osystem.h"
-#include "omega/SagePointerService.h"
+#include "omega/ModuleServices.h"
 
 namespace omega
 {
-	class Observer;
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ObserverUpdateService: public Service
+	class OMEGA_API EventSharingModule: public ServerModule
 	{
 	public:
-		enum DynamicSourceTokenAttachPoint { AttachHead, AttachLeftHand, AttachRightHand };
-		// Allocator function
-		static ObserverUpdateService* New() { return new ObserverUpdateService(); }
+		//! Max number of events.
+		static const int MaxSharedEventsQueue = 64;
+
+		//! Flag for local events.
+		static const uint LocalEventFlag = Event::User << 2;
 
 	public:
-		ObserverUpdateService();
+		static void markLocal(const Event& evt);
+		static bool isLocal(const Event& evt);
+		static void share(const Event& evt);
 
-		virtual void setup(Setting& settings);
-		virtual void initialize();
-		virtual void poll();
-		virtual void dispose();
-		int getSourceId(); 
-		void setSourceId(int value); 
+		EventSharingModule();
 
-	private:
-		void updateDynamicSource(Event* evt);
+		virtual void commitSharedData(SharedOStream& out);
+		virtual void updateSharedData(SharedIStream& in);
 
 	private:
-		Observer* myObserver;
-		int mySourceId;
-		int myOrientationSourceId;
-		bool myEnableOrientationSource;
-		Quaternion myLastOrientation;
-		Vector3f myLastPosition;
-		Vector3f myLookAt;
-		bool myEnableLookAt;
-		bool myDebug;
-		bool myUseHeadPointId;
+		static EventSharingModule* mysInstance;
 
-		// Dynamic source stuff.
-		bool myUseDynamicSource;
-		int myDynamicSourceTokenId;
-		DynamicSourceTokenAttachPoint myDynamicSourceTokenAttachPoint;
-		float myDynamicSourceActivationDistance;
-		Vector3f myLastTokenPosition;
-
-		// Movement smoothing
-		float myCurrentMovementThreshold;
-		float myMovementThresholdTarget;
-		float myMovementThresholdCoeff;
+		Lock myQueueLock;
+		Event myEventQueue[MaxSharedEventsQueue];
+		int myQueuedEvents;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int ObserverUpdateService::getSourceId()
+	inline void EventSharingModule::markLocal(const Event& evt)
 	{
-		return mySourceId;
+		evt.setFlags(LocalEventFlag);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ObserverUpdateService::setSourceId(int value)
+	inline bool EventSharingModule::isLocal(const Event& evt)
 	{
-		mySourceId = value;
+		return evt.isFlagSet(LocalEventFlag);
 	}
+
 }; // namespace omega
 
 #endif

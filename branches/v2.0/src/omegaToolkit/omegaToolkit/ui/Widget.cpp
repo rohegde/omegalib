@@ -24,10 +24,12 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/Widget.h"
 #include "omegaToolkit/ui/Container.h"
 //#include "omegaToolkit/ui/DefaultSkin.h"
 #include "omega/DrawInterface.h"
+#include "omega/EventSharingModule.h"
 
 #include "omega/glheaders.h"
 
@@ -211,9 +213,20 @@ Vector2f Widget::transformPoint(const Vector2f& point)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::dispatchUIEvent(const Event& evt)
 {
-	if(myEventHandler != NULL) myEventHandler->handleEvent(evt);
-	else if(myContainer != NULL) myContainer->dispatchUIEvent(evt);
-	//else myManager->dispatchUIEvent(evt);
+	if(myEventHandler != NULL) 
+	{
+		// If the local events option is set, mark ui events as local before dispatching them to
+		// the event listener. Local events do not get broadcast to other nodes in clustered systems.
+		if(UiModule::instance()->isLocalEventsEnabled())
+		{
+			EventSharingModule::markLocal(evt);
+		}
+		myEventHandler->handleEvent(evt);
+	}
+	else if(myContainer != NULL) 
+	{
+			myContainer->dispatchUIEvent(evt);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

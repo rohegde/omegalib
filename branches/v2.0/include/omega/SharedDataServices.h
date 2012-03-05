@@ -52,6 +52,8 @@ namespace omega
 		SharedOStream& operator << ( const String& str );
 	
 		void write( const void* data, uint64_t size );
+
+		co::DataOStream* getInternalStream() { return myStream; }
 	
 	private:
 		co::DataOStream* myStream;
@@ -69,8 +71,10 @@ namespace omega
 
 		SharedIStream& operator >> ( String& str );
 	
-	void read( void* data, uint64_t size );
+		void read( void* data, uint64_t size );
 	
+		co::DataIStream* getInternalStream() { return myStream; }
+
 	private:
 		co::DataIStream* myStream;
 	};

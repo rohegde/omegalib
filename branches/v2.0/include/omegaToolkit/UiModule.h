@@ -46,6 +46,8 @@ namespace omegaToolkit
 		UiModule();
 		~UiModule();
 
+		bool isLocalEventsEnabled() { return myLocalEventsEnabled; }
+
 		void initialize();
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
@@ -54,7 +56,12 @@ namespace omegaToolkit
 		ui::WidgetFactory* getWidgetFactory();
 
 	private:
+		void initImages(const Setting& images);
+
+	private:
 		static UiModule* mysInstance;
+
+		bool myLocalEventsEnabled;
 
 		ui::Container* myUi[MaxUis];
 		ui::WidgetFactory* myWidgetFactory;

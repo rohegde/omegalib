@@ -349,7 +349,7 @@ void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint s
 	case DrawLines: mode = GL_LINES; break;
 	}
 
-		omsg("vertices->bind()");
+		//omsg("vertices->bind()");
 	vertices->bind();
 
 	// HACK: vertex buffer may reset the color array flag, so make sure we override it
@@ -361,14 +361,14 @@ void DrawInterface::drawPrimitives(VertexBuffer* vertices, uint* indices, uint s
 	}
 	if(indices != NULL)
 	{
-		ofmsg("glDrawElements %1%", %size);
+		//ofmsg("glDrawElements %1%", %size);
 		glDrawElements(mode, size, GL_UNSIGNED_INT, indices);
 	}
 	else
 	{
 		glDrawArrays(mode, 0, size);
 	}
-		omsg("vertices->unbind()");
+		//omsg("vertices->unbind()");
 	vertices->unbind();
 }
 

@@ -90,7 +90,8 @@ void HelloServer::handleEvent(const Event& evt)
 {
 	if(evt.getServiceType() == Service::Pointer)
 	{
-		// Normalize the mouse position using the total display resolution.
+		// Normalize the mouse position using the total display resolution, 
+		// then multiply to get 180 degree rotations
 		Vector2i resolution = getDisplaySystem()->getCanvasSize();
 		myYaw = (evt.getPosition(0) / resolution[0]) * 180;
 		myPitch = (evt.getPosition(1) / resolution[1]) * 180;
@@ -100,17 +101,13 @@ void HelloServer::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloServer::commitSharedData(SharedOStream& out)
 {
-	//omsg("HelloServer::commitSharedData");
-	out << myYaw;
-	out << myPitch;
+	out << myYaw << myPitch;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void HelloServer::updateSharedData(SharedIStream& in)
 {
-	//omsg("HelloServer::updateSharedData");
- 	in >> myYaw;
-	in >> myPitch;
+ 	in >> myYaw >> myPitch;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

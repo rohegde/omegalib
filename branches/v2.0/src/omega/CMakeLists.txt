@@ -40,6 +40,7 @@ SET( srcs
 		omega/Camera.cpp
 		omega/Console.cpp
 		omega/DrawInterface.cpp
+		omega/EventSharingModule.cpp
 		omega/ServerEngine.cpp
 		omega/Font.cpp
 		omega/GpuBuffer.cpp
@@ -77,6 +78,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ApplicationBase.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EventSharingModule.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
@@ -92,6 +94,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MasterEngine.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h

@@ -24,54 +24,73 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __MASTER_ENGINE_H__
-#define __MASTER_ENGINE_H__
+#include "omega/EventSharingModule.h"
+#include "eqinternal/eqinternal.h"
 
-#include "ServerEngine.h"
+using namespace omega;
 
-namespace omega {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API MasterEngine: public ServerEngine
+EventSharingModule* EventSharingModule::mysInstance = NULL;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+EventSharingModule::EventSharingModule():
+	ServerModule("EventSharingModule"),
+	myQueuedEvents(0)
+{
+	mysInstance = this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EventSharingModule::share(const Event& evt)
+{
+	if(!mysInstance->getServer()->isMaster())
 	{
-	public:
-		typedef List<Camera*> CameraCollection;
+		owarn("EventSharingModule::share: can be caled only from master server. Ignoring call.");
+	}
+	else
+	{
+		if(mysInstance->myQueuedEvents >= MaxSharedEventsQueue)
+		{
+			ofwarn("EventSharingModule::share: cannot queue more than %1% events. Dropping event.", %MaxSharedEventsQueue);
+		}
+		else
+		{
+			mysInstance->myQueueLock.lock();
+			mysInstance->myEventQueue[mysInstance->myQueuedEvents++].copyFrom(evt);
+			mysInstance->myQueueLock.unlock();
+		}
+	}
+}
 
-	public:
-		static const int MaxActivePointers = 128;
-		static MasterEngine* instance() { return mysInstance; }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EventSharingModule::commitSharedData(SharedOStream& out)
+{
+	myQueueLock.lock();
+	out << myQueuedEvents;
+	while(myQueuedEvents)
+	{
+		EventUtils::serializeEvent(myEventQueue[myQueuedEvents - 1], *out.getInternalStream());
+		myQueuedEvents--;
+	}
+	myQueueLock.unlock();
+}
 
-	public:
-		MasterEngine(ApplicationBase* app);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EventSharingModule::updateSharedData(SharedIStream& in)
+{
+	myQueueLock.lock();
+	in >> myQueuedEvents;
+	if(myQueuedEvents != 0)
+	{
+		ServiceManager* sm = getServer()->getServiceManager();
+		sm->lockEvents();
+		while(myQueuedEvents)
+		{
+			Event* evtHead = sm->writeHead();
+			EventUtils::deserializeEvent(*evtHead, *in.getInternalStream());
 
-		Camera* getDefaultCamera();
-		Camera* createCamera(uint flags = Camera::DefaultFlags);
-		void destroyCamera(Camera* cam);
-		CameraCollection::Range getCameras();
-		CameraCollection::ConstRange getCameras() const;
-
-		bool isEventSharingEnabled() { return myEventSharingEnabled; }
-
-		virtual void initialize();
-		//! Internal method.
-		void clientInitialize(Renderer* client);
-
-		virtual void finalize();
-		virtual void handleEvent(const Event& evt);
-		virtual void update(const UpdateContext& context);
-
-	private:
-		static MasterEngine* mysInstance;
-
-		bool myEventSharingEnabled;
-
-		// Cameras.
-		Camera* myDefaultCamera;
-		CameraCollection myCameras;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Camera* MasterEngine::getDefaultCamera()
-	{ return myDefaultCamera; }
-}; // namespace omega
-
-#endif
+			myQueuedEvents--;
+		}
+		sm->unlockEvents();
+	}
+	myQueueLock.unlock();
+}

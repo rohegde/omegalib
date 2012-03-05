@@ -27,6 +27,7 @@
 #include "omega/MasterEngine.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
+#include "omega/EventSharingModule.h"
 
 using namespace omega;
 
@@ -74,6 +75,7 @@ void MasterEngine::initialize()
 	ServerEngine::initialize();
     myDefaultCamera = new Camera();
     Config* cfg = getSystemManager()->getAppConfig();
+	Setting& scfg = cfg->lookup("config");
     if(cfg->exists("config/camera"))
     {
         Setting& s = cfg->lookup("config/camera");
@@ -81,9 +83,11 @@ void MasterEngine::initialize()
         {
             myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
         }
-        Vector3f camPos = cfg->getVector3fValue("position", s); 
+        Vector3f camPos = Config::getVector3fValue("position", s); 
         myDefaultCamera->setPosition(camPos);
     }
+
+	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,25 +109,37 @@ void MasterEngine::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MasterEngine::handleEvent(const Event& evt)
 {
-    if( evt.getServiceType() == Service::Keyboard )
-    {
-        // Esc = force exit
-        if(evt.getSourceId() == 256) exit(0);
-        // Tab = toggle on-screen console.
-        if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
-        {
-			setConsoleEnabled(!isConsoleEnabled());
-        }
-    }
+	ServerEngine::handleEvent(evt);
+    if(!evt.isProcessed())
+	{
+		if( evt.getServiceType() == Service::Keyboard )
+		{
+			// Esc = force exit
+			if(evt.getSourceId() == 256) exit(0);
+			// Tab = toggle on-screen console.
+			if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
+			{
+				setConsoleEnabled(!isConsoleEnabled());
+			}
+		}
 
-    // Update pointers.
-    if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
-    {
-        int pointerId = evt.getSourceId() - 1;
-		refreshPointer(pointerId, evt.getPosition().x(), evt.getPosition().y());
-    }
-    if(evt.isProcessed()) return;
-    myDefaultCamera->handleEvent(evt);
-    if(evt.isProcessed()) return;
+		// Update pointers.
+		if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+		{
+			int pointerId = evt.getSourceId() - 1;
+			refreshPointer(pointerId, evt.getPosition().x(), evt.getPosition().y());
+		}
+		if(!evt.isProcessed()) 
+		{
+			myDefaultCamera->handleEvent(evt);
+		}
+	}
+
+	// If event sharing is enabled and the event is not marked as local, broadcast
+	// it to other nodes.
+	if(myEventSharingEnabled && !EventSharingModule::isLocal(evt))
+	{
+		EventSharingModule::share(evt);
+	}
 }
 

@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/DefaultSkin.h"
+#include "omegaToolkit/ui/Image.h"
 #include "omegaToolkit/UiRenderPass.h"
 
 using namespace omegaToolkit;
@@ -61,7 +62,45 @@ void UiModule::initialize()
 	getServer()->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
 	getServer()->addRenderPass("UiRenderPass");
 
+    Config* cfg = getServer()->getSystemManager()->getAppConfig();
+	myLocalEventsEnabled = cfg->getBoolValue("config/ui/enableLocalEvents", true);
+	if(cfg->exists("config/ui/images"))
+	{
+		const Setting& stImages = cfg->lookup("config/ui/images");
+		initImages(stImages);
+	}
+
 	omsg("UiModule initialization OK");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::initImages(const Setting& images)
+{
+	for(int i = 0; i < images.getLength(); i++)
+	{
+		Setting& imageSetting = images[i];
+
+		String fileName = Config::getStringValue("source", imageSetting, "");
+		if(fileName != "")
+		{
+			ui::Image* img = myWidgetFactory->createImage("img", myUi[0]);
+
+			bool stereo = Config::getBoolValue("stereo", imageSetting, false);
+
+			img->setStereo(stereo);
+			ImageData* imgData = ImageUtils::loadImage(fileName);
+			img->setData(imgData->getPixels());
+
+			Vector2f position = Config::getVector2fValue("position", imageSetting, Vector2f(0, 0));
+			Vector2f size = Config::getVector2fValue("size", imageSetting, 
+				Vector2f(imgData->getWidth() / (stereo ? 2 : 1), imgData->getHeight()));
+			float scale = Config::getFloatValue("scale", imageSetting, 1);
+
+			img->setPosition(position);
+			img->setSize(size * scale);
+			img->setUserMoveEnabled(true);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,60 +24,89 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ENGINE_APPLICATION_H__
-#define __ENGINE_APPLICATION_H__
+#ifndef __MODULE_SERVICES_H__
+#define __MODULE_SERVICES_H__
 
 #include "osystem.h"
-#include "Renderer.h"
-#include "MasterEngine.h"
-#include "omega/ApplicationBase.h"
-#include "omega/SystemManager.h"
+//#include "Renderer.h"
+#include "ServerEngine.h"
+//#include "omega/ApplicationBase.h"
+//#include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
-#include "omega/EventSharingModule.h"
 
 namespace omega {
 	class RenderPass;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationNode: public ServerModule
+	class OMEGA_API ServerModule: public SharedObject
 	{
 	public:
-		bool isMaster() { return SystemManager::instance()->isMaster(); }
-		//MasterEngine* getMaster() { return NULL; }
+		ServerModule(const String& name): myInitialized(false), myEngine(NULL), myName(name) {}
+		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()) {}
+
+		virtual void initialize() {}
+		virtual void update(const UpdateContext& context) {}
+		virtual void handleEvent(const Event& evt) {}
+		virtual void commitSharedData(SharedOStream& out) {}
+		virtual void updateSharedData(SharedIStream& in) {}
+
+		void doInitialize(ServerEngine* server) 
+		{ 
+			myEngine = server; 
+			if(!myInitialized) 
+			{
+				initialize(); 
+				SharedDataServices::registerObject(this, myName);
+				myInitialized = true; 
+			}
+		}
+
+		virtual bool isInitialized() { return myInitialized; }
+
+		ServerEngine* getServer() { return myEngine; }
+
+	private:
+		String myName;
+		bool myInitialized;
+		ServerEngine* myEngine;
+		static NameGenerator mysNameGenerator;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! a convenience application class to create omegaToolkit applications
-	void OMEGA_API registerPortholeTabletService();
-	template<typename T> 
-	class Application: public ApplicationBase
+	class OMEGA_API ModuleServices
 	{
 	public:
-		Application(const String& name): myAppName(name) 
-		{ }
-
-		virtual const char* getName() 
-		{ return myAppName.c_str(); }
-
-		virtual void initialize() 
+		static void addModule(ServerModule* module)
 		{ 
-			registerPortholeTabletService(); 
-			ModuleServices::addModule(new EventSharingModule());
-			ModuleServices::addModule(new T());
+			mysModules.push_back(module); 
 		}
 
-		virtual RendererBase* createClient(ServerBase* server)
-		{ return new Renderer(server); }
-		
-		virtual ServerBase* createServer()
-		{ return new ServerEngine(this, false); }		
-		
-		virtual ServerBase* createMaster()
-		{ return new MasterEngine(this); }		
+		static List<ServerModule*>::ConstRange getModules() 
+		{ 
+			return List<ServerModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
+		}
 
+		static void update(ServerEngine* srv, const UpdateContext& context)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->update(context);
+			}
+		}
+
+		static void handleEvent(ServerEngine* srv, const Event& evt)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->handleEvent(evt);
+			}
+		}
 	private:
-		String myAppName;
+		static List<ServerModule*> mysModules;
 	};
+
 }; // namespace omega
 
 #endif
