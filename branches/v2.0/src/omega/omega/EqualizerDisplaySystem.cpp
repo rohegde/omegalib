@@ -576,7 +576,12 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	Vector3f& va = dtc.topLeft;
 	Vector3f& vc = dtc.bottomRight;
 
-	Vector3f p = px * vc + py * va + (3 - px - py) * vb;
+	Vector3f vba = va - vb;
+	Vector3f vbc = vc - vb;
+
+	Vector3f p = vb + vba * py + vbc * px;
+
+	//Vector3f p = px * vc + py * va + (3 - px - py) * vb;
 
 	Vector3f direction = p - head;
 	direction.normalize();
