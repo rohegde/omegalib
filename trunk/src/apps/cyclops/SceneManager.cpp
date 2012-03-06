@@ -39,8 +39,8 @@ using namespace cyclops;
 SceneManager* SceneManager::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* mng, EntityAsset* asset):
-	mySceneManager(mng), myAsset(asset)
+Entity::Entity(SceneManager* mng, EntityAsset* asset, int id):
+	mySceneManager(mng), myAsset(asset), myId(id)
 {
 	ServerEngine* engine = mng->getEngine();
 
@@ -228,7 +228,7 @@ void SceneManager::addStaticObject(int assetId, const Vector3f& position, const 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
+void SceneManager::addEntity(int assetId, int entityId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
 {
 	EntityAsset* asset = getEntityAsset(assetId);
 	if(asset == NULL)
@@ -238,7 +238,7 @@ void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector
 	else
 	{
 		omsg("AddEntity");
-		Entity* e = new Entity(this, asset);
+		Entity* e = new Entity(this, asset, entityId);
 		addNode(e->getOsgNode());
 		e->getSceneNode()->setPosition(position);
 		e->getSceneNode()->yaw(rotation[0] * Math::DegToRad);
@@ -246,6 +246,7 @@ void SceneManager::addEntity(int assetId, const Vector3f& position, const Vector
 		e->getSceneNode()->roll(rotation[2] * Math::DegToRad);
 		e->getSceneNode()->setScale(scale);
 		myEditor->addNode(e->getSceneNode());
+		myEntities.push_back(e);
 	}
 }
 
@@ -372,7 +373,7 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 
 	osg::Material* mat = new osg::Material();
 	mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
-	mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(0.5f, 0.5f, 0.6f, 1.0f));
 
 	ss->setAttribute(mat, osg::StateAttribute::MATERIAL);
 
@@ -473,7 +474,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initShading()
 {
-	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.9f, 0.9f, 0.9f, 1.0f));
+	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.3f, 0.3f, 0.3f, 1.0f));
 
 
 	osgShadow::ShadowedScene* ss = new osgShadow::ShadowedScene();
@@ -485,7 +486,7 @@ void SceneManager::initShading()
 	sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
-	sm->setSoftnessWidth(0.005f);
+	sm->setSoftnessWidth(0.004f);
 	sm->setJitteringScale(32);
 
 	ss->addChild(mySceneRoot);
@@ -540,4 +541,14 @@ ModelAsset* SceneManager::getModelAsset(int fileIndex)
 EntityAsset* SceneManager::getEntityAsset(int fileIndex)
 {
 	return myEntityFiles[fileIndex];
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity* SceneManager::findEntity(int id)
+{
+	foreach(Entity* e, myEntities)
+	{
+		if(e->getId() == id) return e;
+	}
+	return NULL;
 }
