@@ -50,7 +50,7 @@ void EventSharingModule::share(const Event& evt)
 	{
 		if(mysInstance->myQueuedEvents >= MaxSharedEventsQueue)
 		{
-			ofwarn("EventSharingModule::share: cannot queue more than %1% events. Dropping event.", %MaxSharedEventsQueue);
+			ofwarn("EventSharingModule::share: cannot queue more than %1% events. Dropping event.", %((int)MaxSharedEventsQueue));
 		}
 		else
 		{
