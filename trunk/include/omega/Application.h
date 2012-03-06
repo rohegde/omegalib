@@ -29,7 +29,6 @@
 
 #include "osystem.h"
 #include "Renderer.h"
-#include "MasterEngine.h"
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
@@ -43,7 +42,6 @@ namespace omega {
 	{
 	public:
 		bool isMaster() { return SystemManager::instance()->isMaster(); }
-		//MasterEngine* getMaster() { return NULL; }
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,7 +71,7 @@ namespace omega {
 		{ return new ServerEngine(this, false); }		
 		
 		virtual ServerBase* createMaster()
-		{ return new MasterEngine(this); }		
+		{ return new ServerEngine(this, true); }		
 
 	private:
 		String myAppName;

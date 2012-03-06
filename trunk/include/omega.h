@@ -29,7 +29,6 @@
 #include "omega/ApplicationBase.h"
 #include "omega/DisplaySystem.h"
 #include "omega/EventSharingModule.h"
-#include "omega/MasterEngine.h"
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
 #include "omega/GpuProgram.h"

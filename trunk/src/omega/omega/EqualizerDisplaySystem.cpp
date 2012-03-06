@@ -55,6 +55,19 @@ using namespace std;
 #define END_BLOCK(string) indent = indent.substr(0, indent.length() - 1); string += indent + "}\n";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void exitConfig()
+{
+	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	ds->exitConfig();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::exitConfig()
+{
+	//myConfig->exit();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::generateEqConfig()
 {
 	DisplayConfig& eqcfg = myDisplayConfig;
@@ -418,6 +431,8 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	glewInit();
 	Log::level = LOG_WARN;
 	mySys = sys;
+
+	atexit(::exitConfig);
 
 	// Launch application instances on secondary nodes.
 	if(SystemManager::instance()->isMaster())

@@ -259,27 +259,25 @@ void AffectorEntity::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Nightfield::Nightfield():
-	myEngine(NULL)
+Nightfield::Nightfield()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Nightfield::initialize(MasterEngine* engine)
+void Nightfield::initialize()
 {
-	myEngine = engine;
     mySelectedEntity = NULL;
 
-    Config* cfg = myEngine->getSystemManager()->getAppConfig();
+    Config* cfg = getServer()->getSystemManager()->getAppConfig();
     if(cfg->exists("config"))
     {
         Setting& sCfg = cfg->lookup("config");
         mySettings.load(sCfg);
     }
 
-    SceneNode* scene = myEngine->getScene();
+    SceneNode* scene = getServer()->getScene();
 
-    mySceneNode = new SceneNode(myEngine);
+    mySceneNode = new SceneNode(getServer());
 
     myFlock = new Flock();
     
@@ -328,7 +326,7 @@ void Nightfield::initialize(MasterEngine* engine)
                         {
                             reader->scale(entitySetting["scale"]);
                         }
-                        AffectorEntity* af = new AffectorEntity(m, myEngine);
+                        AffectorEntity* af = new AffectorEntity(m, getServer());
                         af->setup(entitySetting);
                         myEntities.push_back(af);
                         m->setData(reader);
@@ -344,13 +342,13 @@ void Nightfield::initialize(MasterEngine* engine)
     light->setColor(Color(0.6f, 0.6f, 0.6f));
     light->setPosition(Vector3f(0, 3, 3));
 
-    myEngine->getDisplaySystem()->setBackgroundColor(Color::Black);
+    getServer()->getDisplaySystem()->setBackgroundColor(Color::Black);
 
     // Get the default camera and focus in on the scene root
-    Camera* cam = myEngine->getDefaultCamera();
-    cam->focusOn(myEngine->getScene());
+    Camera* cam = getServer()->getDefaultCamera();
+    cam->focusOn(getServer()->getScene());
 
-    myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+    myTabletManager = getServer()->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -423,7 +421,7 @@ AffectorEntity* Nightfield::findEntity(SceneNode* node)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::updateSelection(const Ray& ray)
 {
-    const SceneQueryResultList& sqrl = myEngine->querySceneRay(ray);
+    const SceneQueryResultList& sqrl = getServer()->querySceneRay(ray);
     if(sqrl.size() != 0)
     {
         // The ray intersected with something.

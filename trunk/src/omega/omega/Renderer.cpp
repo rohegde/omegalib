@@ -26,7 +26,6 @@
  *************************************************************************************************/
 #include "omega/Renderer.h"
 #include "omega/ServerEngine.h"
-#include "omega/MasterEngine.h"
 #include "omega/PortholeTabletService.h"
 
 #include "omega/DisplaySystem.h"
@@ -112,13 +111,9 @@ void Renderer::startFrame(const FrameInfo& frame)
 	ofmsg("Renderer::startFrame %1%", %frame.frameNum);
 #endif
 
-	MasterEngine* master = myServer->asMaster();
-	if(master != NULL)
+	foreach(Camera* cam, myServer->getCameras())
 	{
-		foreach(Camera* cam, master->getCameras())
-		{
-			cam->startFrame(frame);
-		}
+		cam->startFrame(frame);
 	}
 }
 
@@ -129,13 +124,9 @@ void Renderer::finishFrame(const FrameInfo& frame)
 	ofmsg("Renderer::finishFrame %1%", %frame.frameNum);
 #endif
 
-	MasterEngine* master = myServer->asMaster();
-	if(master != NULL)
+	foreach(Camera* cam, myServer->getCameras())
 	{
-		foreach(Camera* cam, master->getCameras())
-		{
-			cam->finishFrame(frame);
-		}
+		cam->finishFrame(frame);
 	}
 }
 
@@ -169,20 +160,15 @@ void Renderer::draw(const DrawContext& context)
 		myRenderableCommands.pop();
 	}
 
-	MasterEngine* master = myServer->asMaster();
-	if(master != NULL)
+	foreach(Camera* cam, myServer->getCameras())
 	{
-		// On the master server, Perform draw for the additional enabled cameras.
-		foreach(Camera* cam, master->getCameras())
+		// See if camera is enabled for the current client and draw context.
+		if(cam->isEnabled(context))
 		{
-			// See if camera is enabled for the current client and draw context.
-			if(cam->isEnabled(context))
-			{
-				// Begin drawing with the camera: get the camera draw context.
-				const DrawContext& cameraContext = cam->beginDraw(context);
-				innerDraw(cameraContext);
-				cam->endDraw(context);
-			}
+			// Begin drawing with the camera: get the camera draw context.
+			const DrawContext& cameraContext = cam->beginDraw(context);
+			innerDraw(cameraContext);
+			cam->endDraw(context);
 		}
 	}
 

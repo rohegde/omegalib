@@ -191,10 +191,9 @@ void MeshViewer::initialize()
     // Get the default camera and focus in on the scene root
 	if(getServer()->isMaster())
 	{
-		MasterEngine* master = getServer()->asMaster();
-		Camera* cam = master->getDefaultCamera();
-		cam->focusOn(master->getScene());
-		myTabletManager = master->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
+		Camera* cam = getServer()->getDefaultCamera();
+		cam->focusOn(getServer()->getScene());
+		myTabletManager = getServer()->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 	}
 
     // Create and initialize the gui

@@ -41,18 +41,18 @@ class OsgViewer: public ServerModule
 {
 public:
 	OsgViewer(): myEngine(NULL) {}
-	virtual void initialize(MasterEngine* engine);
+	virtual void initialize(ServerEngine* engine);
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt) {}
 
 private:
-	MasterEngine* myEngine;
+	ServerEngine* myEngine;
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgViewer::initialize(MasterEngine* engine)
+void OsgViewer::initialize(ServerEngine* engine)
 {
 	myEngine = engine;
 
