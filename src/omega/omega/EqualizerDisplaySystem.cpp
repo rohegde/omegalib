@@ -138,6 +138,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 			String tileCfg = "";
 			START_BLOCK(tileCfg, "pipe");
+				tileCfg +=
+					L("port = 0") +
+					L(ostr("device = %1%", %tc.device));
 			START_BLOCK(tileCfg, "window");
 			tileCfg +=
 				L("name \"" + tileName + "\"") +
