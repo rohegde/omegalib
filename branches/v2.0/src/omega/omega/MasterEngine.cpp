@@ -134,12 +134,5 @@ void MasterEngine::handleEvent(const Event& evt)
 			myDefaultCamera->handleEvent(evt);
 		}
 	}
-
-	// If event sharing is enabled and the event is not marked as local, broadcast
-	// it to other nodes.
-	if(myEventSharingEnabled && !EventSharingModule::isLocal(evt))
-	{
-		EventSharingModule::share(evt);
-	}
 }
 

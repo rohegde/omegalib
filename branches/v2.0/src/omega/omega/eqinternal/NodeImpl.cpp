@@ -95,27 +95,17 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 {
 	DEBUG_EQ_FLOW("NodeImpl::frameStart %1% %2%", %frameID %frameNumber);
 
-	static float lt = 0.0f;
-	static float tt = 0.0f;
-	// Compute dt.
-	float t = (float)((double)clock() / CLOCKS_PER_SEC);
-	if(lt == 0) lt = t;
-	UpdateContext uc;
-	uc.dt = t - lt;
-	tt += uc.dt;
-	uc.time = tt;
-	uc.frameNum = frameNumber;
-	lt = t;
 
 
 	SystemManager* sys = SystemManager::instance();
 
 	ConfigImpl* config = (ConfigImpl*)getConfig();
 	config->updateSharedData();
+	const UpdateContext& uc = config->getUpdateContext();
 
 
 	ServiceManager* im = SystemManager::instance()->getServiceManager();
-	im->poll();
+	if(!myServer->isMaster()) im->poll();
 
 	// Process events.
 	int av = im->getAvailableEvents();

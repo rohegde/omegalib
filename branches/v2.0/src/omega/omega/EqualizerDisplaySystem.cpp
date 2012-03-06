@@ -49,7 +49,6 @@ using namespace std;
 
 
 #define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
-#define OMEGA_LAUNCHER_INTERVAL 500
 
 #define L(line) indent + line + "\n"
 #define START_BLOCK(string, name) string += indent + name + "\n" + indent + "{\n"; indent += "\t";
@@ -336,6 +335,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.nodeKiller = Config::getStringValue("nodeKiller", scfg);
 	cfg.basePort = Config::getIntValue("basePort", scfg);
 
+	cfg.launcherInterval = Config::getIntValue("launcherInterval", scfg, 500);
+
 	const Setting& sTiles = scfg["tiles"];
 	cfg.numNodes = 0;
 	for(int i = 0; i < sTiles.getLength(); i++)
@@ -429,7 +430,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 					String executable = StringUtils::replaceAll(myDisplayConfig.nodeKiller, "%c", SystemManager::instance()->getApplication()->getName());
 					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 					olaunch(executable);
-					Sleep(OMEGA_LAUNCHER_INTERVAL);
+					Sleep(myDisplayConfig.launcherInterval);
 				}
 			
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
@@ -437,7 +438,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				int port = myDisplayConfig.basePort + nc.port;
 				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
-				Sleep(OMEGA_LAUNCHER_INTERVAL);
+				Sleep(myDisplayConfig.launcherInterval);
 			}
 		}
 	}

@@ -81,6 +81,9 @@ void SharedData::getInstanceData( co::DataOStream& os )
 	//omsg("#### SharedData::getInstanceData");
 	SharedOStream out(&os);
 
+	// Serialize update context.
+	out << myUpdateContext.frameNum << myUpdateContext.dt << myUpdateContext.time;
+
 	int numObjects = myObjects.size();
 	out << numObjects;
 
@@ -96,6 +99,9 @@ void SharedData::applyInstanceData( co::DataIStream& is )
 {
 	//omsg("#### SharedData::applyInstanceData");
 	SharedIStream in(&is);
+
+	// Desrialize update context.
+	in >> myUpdateContext.frameNum >> myUpdateContext.dt >> myUpdateContext.time;
 
 	int numObjects;
 	in >> numObjects;

@@ -77,6 +77,9 @@ class SharedData: public co::Object
 public:
 	void registerObject(SharedObject* object, const String& id);
 	virtual ChangeType getChangeType() const { return INSTANCE; }
+	void setUpdateContext(const UpdateContext& ctx) { myUpdateContext = ctx; }
+	const UpdateContext& getUpdateContext() { return myUpdateContext; }
+
 
 protected:
 	virtual void getInstanceData( co::DataOStream& os );
@@ -85,67 +88,7 @@ protected:
 private:
 	Dictionary<String, SharedObject*> myObjects;
 	typedef Dictionary<String, SharedObject*>::Item SharedObjectItem;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//! @internal
-//!  Frame-specific data.
-//!   The frame-specific data is used as a per-config distributed object and contains mutable, rendering-relevant data. 
-//!   Each rendering thread (pipe) keeps its own instance synchronized with the frame currently being rendered. The 
-//!   data is managed by the Config, which modifies it directly.
-class FrameData : public eq::fabric::Serializable
-{
-public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-public:
-    FrameData()	{ }
-
-    virtual ~FrameData() {};
-
-    int getNumEvents() { return myNumEvents; }
-    void setNumEvents(int value) { myNumEvents = value; }
-    Event& getEvent(int index) { return myEventBuffer[index]; }
-
-    void setDirtyEvents() { setDirty( DIRTY_EVENTS ); }
-
-
-protected:
-    //! Serialize an instance of this class.
-    virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
-    {
-        eq::fabric::Serializable::serialize( os, dirtyBits );
-        if( dirtyBits & DIRTY_EVENTS )
-        {
-            os << myNumEvents;
-            for(int i = 0; i < myNumEvents; i++)
-            {
-                EventUtils::serializeEvent(myEventBuffer[i], os);
-            }
-        }
-    }
-
-    //! Deserialize an instance of this class.
-    virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
-    {
-        eq::fabric::Serializable::deserialize( is, dirtyBits );
-        if( dirtyBits & DIRTY_EVENTS )
-        {
-            is >> myNumEvents;
-            for(int i = 0; i < myNumEvents; i++)
-            {
-                EventUtils::deserializeEvent(myEventBuffer[i], is);
-            }
-        }
-    }
-
-    enum DirtyBits
-    {
-        DIRTY_EVENTS   = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
-    };
-
-private:
-    int myNumEvents;
-    Event myEventBuffer[ OMICRON_MAX_EVENTS ];
+	UpdateContext myUpdateContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,14 +152,13 @@ public:
     virtual uint32_t startFrame( const uint128_t& version );
     virtual uint32_t finishFrame();
     ViewImpl* findView(const String& viewName);
-    //const FrameData& getFrameData();
+	const UpdateContext& getUpdateContext();
 
 private:
     void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);
     uint processMouseButtons(uint btns); 
 
 private:
-    //FrameData myFrameData;
 	SharedData mySharedData;
 };
 

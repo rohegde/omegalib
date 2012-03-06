@@ -66,9 +66,10 @@ void EventSharingModule::commitSharedData(SharedOStream& out)
 {
 	myQueueLock.lock();
 	out << myQueuedEvents;
+	int i = 0;
 	while(myQueuedEvents)
 	{
-		EventUtils::serializeEvent(myEventQueue[myQueuedEvents - 1], *out.getInternalStream());
+		EventUtils::serializeEvent(myEventQueue[i++], *out.getInternalStream());
 		myQueuedEvents--;
 	}
 	myQueueLock.unlock();
@@ -88,6 +89,10 @@ void EventSharingModule::updateSharedData(SharedIStream& in)
 			Event* evtHead = sm->writeHead();
 			EventUtils::deserializeEvent(*evtHead, *in.getInternalStream());
 
+			if(evtHead->isProcessed())
+			{
+				owarn("EventSharingModule::updateSharedData: received already-processed event.");
+			}
 			myQueuedEvents--;
 		}
 		sm->unlockEvents();

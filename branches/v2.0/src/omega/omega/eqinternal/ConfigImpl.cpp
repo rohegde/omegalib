@@ -28,6 +28,7 @@
 #include "omega/MouseService.h"
 #include "omega/KeyboardService.h"
 #include "omega/Observer.h"
+#include "omega/EventSharingModule.h"
 
 #include "eqinternal.h"
 
@@ -179,7 +180,46 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::startFrame( const uint128_t& version )
 {
+	static float lt = 0.0f;
+	static float tt = 0.0f;
+	// Compute dt.
+	float t = (float)((double)clock() / CLOCKS_PER_SEC);
+	if(lt == 0) lt = t;
+	UpdateContext uc;
+	uc.dt = t - lt;
+	tt += uc.dt;
+	uc.time = tt;
+	uc.frameNum = version.low();
+	lt = t;
+
+	mySharedData.setUpdateContext(uc);
+
+	// If enabled, broadcast events to other server nodes.
+	if(SystemManager::instance()->isMaster())
+	{
+		ServiceManager* im = SystemManager::instance()->getServiceManager();
+		im->poll();
+		int av = im->getAvailableEvents();
+		if(av != 0)
+		{
+    		im->lockEvents();
+    		// Dispatch events to application server.
+    		for( int evtNum = 0; evtNum < av; evtNum++)
+    		{
+    			Event* evt = im->getEvent(evtNum);
+
+				if(!EventSharingModule::isLocal(*evt))
+				{
+					EventSharingModule::share(*evt);
+				}
+    		}
+    		im->unlockEvents();
+		}
+	}
+
+	// Send shared data.
 	mySharedData.commit();
+
     return eq::Config::startFrame( version );
 }
 
@@ -190,6 +230,12 @@ void ConfigImpl::updateSharedData( )
 	{
 		mySharedData.sync();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const UpdateContext& ConfigImpl::getUpdateContext()
+{
+	return mySharedData.getUpdateContext();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +266,8 @@ uint32_t ConfigImpl::finishFrame()
             oferror("ApplicationBase exit request (reason: %1%) FAILED!", %ereason);
         }
     }
-    return eq::Config::finishFrame();
+
+	return eq::Config::finishFrame();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

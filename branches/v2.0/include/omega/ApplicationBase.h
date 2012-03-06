@@ -87,6 +87,7 @@ namespace omega
 		bool interleaved;
 		bool fullscreen;
 
+		int launcherInterval; 
 		String nodeLauncher;
 		String nodeKiller;
 		int basePort;

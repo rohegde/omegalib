@@ -198,7 +198,7 @@ void MeshViewer::initialize()
 	}
 
     // Create and initialize the gui
-    initUi();
+    //initUi();
 
     myShowUI = false;
     autoRotate = true;
@@ -355,8 +355,8 @@ void MeshViewer::update(const UpdateContext& context)
     {
         if ( autoRotate )
         {
-            daSceneNode->yaw( 0.1f * context.dt);
-            daSceneNode->pitch( 0.01f * context.dt);
+            //daSceneNode->yaw( 0.1f * context.dt);
+            //daSceneNode->pitch( 0.01f * context.dt);
         }
     
         if( deltaScale != 0 )
