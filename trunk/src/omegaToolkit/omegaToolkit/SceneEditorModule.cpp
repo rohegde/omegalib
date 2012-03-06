@@ -146,7 +146,7 @@ void SceneEditorModule::updateSelection(const Ray& ray)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::initialize(MasterEngine* master)
+void SceneEditorModule::initialize()
 {
 	omsg("SceneEditorModule initializing...");
 

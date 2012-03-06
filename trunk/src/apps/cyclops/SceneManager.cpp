@@ -64,7 +64,7 @@ SceneManager::SceneManager():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::initialize(MasterEngine* engine)
+void SceneManager::initialize(ServerEngine* engine)
 {
 	myEngine = engine;
 
@@ -106,12 +106,12 @@ void SceneManager::handleEvent(const Event& evt)
 	}
 	if(evt.isKeyDown('l'))
     {
-		Vector3f pos = myEngine->getDefaultCamera()->getPosition();
-		if(myLight2 != NULL)
-		{
-			myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
-			ofmsg("Light Position: %1%", %pos);
-		}
+		//Vector3f pos = myEngine->getDefaultCamera()->getPosition();
+		//if(myLight2 != NULL)
+		//{
+		//	myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
+		//	ofmsg("Light Position: %1%", %pos);
+		//}
 	}
 	if(evt.getServiceType() == Service::Ui)
 	{
@@ -146,7 +146,7 @@ void SceneManager::handleEvent(const Event& evt)
 		if(evt.getSourceId() == 2)
 		{
 			remoteZoom = (float)evt.getExtraDataInt(0) / 10;
-			myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
+			//myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
 		}
 		if(evt.getSourceId() == 3)
 		{

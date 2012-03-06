@@ -41,29 +41,26 @@ using namespace cyclops;
 class Cyclops: public ServerModule
 {
 public:
-	Cyclops(): myEngine(NULL) {}
-	virtual void initialize(MasterEngine* master);
+	Cyclops(): mySceneManager(NULL) {}
+	virtual void initialize();
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt);
 
 private:
-	MasterEngine* myEngine;
 	SceneManager* mySceneManager;
 
 	Vector3f myCenter;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Cyclops::initialize(MasterEngine* engine)
+void Cyclops::initialize()
 {
-	myEngine = engine;
+	Config* cfg = getServer()->getSystemManager()->getAppConfig();
 
-	Config* cfg = myEngine->getSystemManager()->getAppConfig();
-
-	myEngine->removeAllRenderPasses();
+	getServer()->removeAllRenderPasses();
 
 	mySceneManager = new SceneManager();
-	mySceneManager->initialize(myEngine);
+	mySceneManager->initialize(getServer());
 
 	myCenter = Vector3f::Zero();
 
@@ -116,7 +113,7 @@ void Cyclops::handleEvent(const Event& evt)
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<Cyclops> app("cyclops");
+	OmegaToolkitApplication<Cyclops> app("cyclops");
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "cyclops.cfg";

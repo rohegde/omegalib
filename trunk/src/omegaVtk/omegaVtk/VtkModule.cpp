@@ -52,19 +52,19 @@ VtkModule::~VtkModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::initialize(EngineServer* server)
+void VtkModule::initialize(ServerEngine* server)
 {
 	omsg("VtkModule initializing...");
 
 	myEngine = server;
-	myEngine->registerRenderPassClass("VtkRenderPass", (EngineServer::RenderPassFactory)VtkRenderPass::createInstance);
+	myEngine->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
 	myEngine->addRenderPass("VtkRenderPass", this, true);
 
 	omsg("VtkModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::beginClientInitialize(EngineClient* client)
+void VtkModule::beginClientInitialize(Renderer* client)
 {
 	oassert(myActiveClient == NULL);
 

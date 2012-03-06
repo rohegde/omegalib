@@ -52,14 +52,14 @@ namespace omegaVtk
 		enum QueueType { QueueOpaque, QueueTransparent, QueueVolume, QueueOverlay, NumQueues };
 		enum RenderFlags { RenderVtk = RenderPass::RenderCustom << 1 };
 		static const int MaxQueuedProps = 128;
-		static RenderPass* createInstance(EngineClient* client) { return new VtkRenderPass(client, "VtkRenderPass"); }
+		static RenderPass* createInstance(Renderer* client) { return new VtkRenderPass(client, "VtkRenderPass"); }
 
 	public:
-		VtkRenderPass(EngineClient* client, const String& name);
+		VtkRenderPass(Renderer* client, const String& name);
 		virtual ~VtkRenderPass();
 
 		void initialize();
-		virtual void render(EngineClient* client, const DrawContext& context);
+		virtual void render(Renderer* client, const DrawContext& context);
 		void queueProp(vtkProp* actor, QueueType queue);
 		void resetPropQueues();
 

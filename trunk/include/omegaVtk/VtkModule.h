@@ -31,9 +31,9 @@
 #include "omegaVtk/VtkRenderPass.h"
 
 #include "omega/osystem.h"
-#include "omega/EngineClient.h"
-#include "omega/EngineServer.h"
-#include "omega/EngineApplication.h"
+//#include "omega/Renderer.h"
+#include "omega/ServerEngine.h"
+#include "omega/Application.h"
 
 
 class vtkActor;
@@ -46,7 +46,7 @@ namespace omegaVtk
 	class VtkEntity;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkModule: public IEngineModule
+	class OVTK_API VtkModule: public ServerModule
 	{
 	friend class VtkSceneObject;
 	public:
@@ -55,15 +55,15 @@ namespace omegaVtk
 
 		static VtkModule* instance();
 
-		virtual void initialize(EngineServer* server);
+		virtual void initialize(ServerEngine* server);
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 
-		EngineServer* getEngine() { return myEngine; }
+		ServerEngine* getEngine() { return myEngine; }
 
 		//! Client-side API
 		//@{
-		void beginClientInitialize(EngineClient* client);
+		void beginClientInitialize(Renderer* client);
 		void endClientInitialize();
 		void attachActor(vtkActor* actor, VtkSceneObject* sceneObject);
 		//@}
@@ -79,10 +79,10 @@ namespace omegaVtk
 
 		Dictionary<String, VtkSceneObject*> mySceneObjects;
 
-		EngineServer* myEngine;
+		ServerEngine* myEngine;
 		Lock myClientLock;
 		VtkRenderPass* myActiveRenderPass;
-		EngineClient* myActiveClient;
+		Renderer* myActiveClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
