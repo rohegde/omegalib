@@ -32,7 +32,7 @@
 #include "omega/Node.h"
 
 namespace omega {
-	class EngineServer;
+	class ServerEngine;
 	class Renderable;
 	class SceneNode;
 	struct RenderState;
@@ -53,7 +53,7 @@ namespace omega {
 		enum HitType { HitBoundingSphere };
 
 	public:
-		SceneNode(EngineServer* server):
+		SceneNode(ServerEngine* server):
 			myServer(server),
 			myListener(NULL),
 			myBoundingBoxColor(1, 1, 1, 1),
@@ -64,7 +64,7 @@ namespace omega {
 			mySelected(false)
 			{}
 
-		SceneNode(EngineServer* server, const String& name):
+		SceneNode(ServerEngine* server, const String& name):
 			Node(name),
 			myServer(server),
 			myListener(NULL),
@@ -76,7 +76,7 @@ namespace omega {
 			mySelected(false)
 			{}
 
-		EngineServer* getServer();
+		ServerEngine* getServer();
 
 		// Object
 		//@{
@@ -123,7 +123,7 @@ namespace omega {
 		void updateBoundingBox();
 
 	private:
-		EngineServer* myServer;
+		ServerEngine* myServer;
 
 		SceneNodeListener* myListener;
 
@@ -167,7 +167,7 @@ namespace omega {
 	{ myBoundingBoxColor = color; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* SceneNode::getServer()
+	inline ServerEngine* SceneNode::getServer()
 	{ return myServer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

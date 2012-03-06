@@ -24,7 +24,7 @@
  *********************************************************************************************************************/
 #include "omegaToolkit/Effect.h"
 #include "omegaToolkit/SceneRenderable.h"
-#include "omega/EngineClient.h"
+#include "omega/Renderer.h"
 #include "omega/GpuManager.h"
 #include "omega/glheaders.h"
 

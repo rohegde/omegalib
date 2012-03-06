@@ -28,11 +28,11 @@
 #define __RENDER_PASS_H__
 
 #include "osystem.h"
-#include "omega/Application.h"
-#include "Renderer.h"
+#include "omega/ApplicationBase.h"
+#include "DrawInterface.h"
 
 namespace omega {
-	class EngineClient;
+	class Renderer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API RenderPass: public ReferenceType
@@ -45,9 +45,9 @@ namespace omega {
 			RenderCustom = 1 << 8 };
 
 	public:
-		RenderPass(EngineClient* client, const String& name): myInitialized(false), myClient(client), myName(name) {}
+		RenderPass(Renderer* client, const String& name): myInitialized(false), myClient(client), myName(name) {}
 		virtual void initialize() { myInitialized = true; }
-		virtual void render(EngineClient* client, const DrawContext& context) = 0;
+		virtual void render(Renderer* client, const DrawContext& context) = 0;
 
 		const String& getName() { return myName; }
 
@@ -56,13 +56,13 @@ namespace omega {
 
 		bool isInitialized() { return myInitialized; }
 
-		EngineClient* getClient() { return myClient; }
+		Renderer* getClient() { return myClient; }
 
 	private: 
 		bool myInitialized;
 		void* myUserData;
 		String myName;
-		EngineClient* myClient;
+		Renderer* myClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ namespace omega {
 	{
 		uint flags;
 		RenderPass* pass;
-		EngineClient* client;
+		Renderer* client;
 		const DrawContext* context;
 
 		bool isFlagSet(uint flag) const { return (flags & flag) == flag; }

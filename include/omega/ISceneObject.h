@@ -31,7 +31,7 @@
 
 namespace omega {
 	class SceneNode;
-	class EngineServer;
+	class ServerEngine;
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ namespace omega {
 		virtual const AlignedBox3* getBoundingBox() = 0;
 		virtual bool hasBoundingBox() = 0;
 		virtual bool isInitialized() = 0;
-		virtual void initialize(EngineServer* server) = 0;
+		virtual void initialize(ServerEngine* server) = 0;
 	};
 }; // namespace omega
 

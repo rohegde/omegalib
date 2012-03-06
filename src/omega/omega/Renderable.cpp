@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Renderable.h"
-#include "omega/EngineServer.h"
+#include "omega/ServerEngine.h"
 
 using namespace omega;
 
@@ -37,7 +37,7 @@ Renderable::Renderable():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-Renderer* Renderable::getRenderer()
+DrawInterface* Renderable::getRenderer()
 { 
 	return myClient->getRenderer(); 
 }
@@ -56,7 +56,7 @@ RenderableFactory::~RenderableFactory()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* RenderableFactory::addRenderable(EngineClient* cli)
+Renderable* RenderableFactory::addRenderable(Renderer* cli)
 {
 	Renderable* r = createRenderable();
 	r->setClient(cli);
@@ -67,13 +67,13 @@ Renderable* RenderableFactory::addRenderable(EngineClient* cli)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void RenderableFactory::initialize(EngineServer* srv)
+void RenderableFactory::initialize(ServerEngine* srv)
 {
 	if(!myInitialized)
 	{
 		//ofmsg("Initializing renderable factory: %1%", %toString());
 		myServer = srv;
-		foreach(EngineClient* client, srv->getClients())
+		foreach(Renderer* client, srv->getClients())
 		{
 			addRenderable(client);
 		}
@@ -112,7 +112,7 @@ void RenderableFactory::refresh()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* RenderableFactory::getRenderable(EngineClient* client)
+Renderable* RenderableFactory::getRenderable(Renderer* client)
 {
 	foreach(Renderable* r, myRenderables)
 	{

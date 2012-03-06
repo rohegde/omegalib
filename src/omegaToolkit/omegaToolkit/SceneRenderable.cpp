@@ -25,8 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/SceneRenderable.h"
-#include "omega/EngineClient.h"
 #include "omega/Renderer.h"
+#include "omega/DrawInterface.h"
 
 using namespace omegaToolkit;
 
@@ -44,13 +44,13 @@ SceneRenderable::~SceneRenderable()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneRenderable::pushNodeTransform()
 {
-	Renderer* r = getClient()->getRenderer();
+	DrawInterface* r = getClient()->getRenderer();
 	r->pushTransform(mySceneNode->getFullTransform());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneRenderable::popNodeTransform()
 {
-	Renderer* r = getClient()->getRenderer();
+	DrawInterface* r = getClient()->getRenderer();
 	r->popTransform();
 }

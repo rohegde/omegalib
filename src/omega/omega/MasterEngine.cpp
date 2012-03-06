@@ -24,114 +24,115 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "eqinternal.h"
+#include "omega/MasterEngine.h"
+#include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
+#include "omega/EventSharingModule.h"
+
+using namespace omega;
+
+MasterEngine* MasterEngine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ViewProxy::ViewProxy(ViewImpl* view): 
-	myView(view) 
-{}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewProxy::serialize( co::DataOStream& os, const uint64_t dirtyBits )
+MasterEngine::MasterEngine(ApplicationBase* app):
+    ServerEngine(app, true),
+    myDefaultCamera(NULL)
 {
-	if( dirtyBits & DIRTY_LAYER )
+    mysInstance = this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* MasterEngine::createCamera(uint flags)
+{
+    Camera* cam = new Camera(flags);
+    myCameras.push_back(cam);
+    return cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MasterEngine::destroyCamera(Camera* cam)
+{
+    oassert(cam != NULL);
+    myCameras.remove(cam);
+    delete cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MasterEngine::CameraCollection::Range MasterEngine::getCameras()
+{
+    return CameraCollection::Range(myCameras.begin(), myCameras.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MasterEngine::CameraCollection::ConstRange MasterEngine::getCameras() const
+{
+    return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MasterEngine::initialize()
+{
+	ServerEngine::initialize();
+    myDefaultCamera = new Camera();
+    Config* cfg = getSystemManager()->getAppConfig();
+	Setting& scfg = cfg->lookup("config");
+    if(cfg->exists("config/camera"))
+    {
+        Setting& s = cfg->lookup("config/camera");
+        if(Config::getBoolValue("enableNavigation", s, false))
+        {
+            myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
+        }
+        Vector3f camPos = Config::getVector3fValue("position", s); 
+        myDefaultCamera->setPosition(camPos);
+    }
+
+	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MasterEngine::finalize()
+{
+	ServerEngine::finalize();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MasterEngine::update(const UpdateContext& context)
+{
+	ServerEngine::update(context);
+    // Update the default camera and use it to update the default omegalib observer.
+    myDefaultCamera->update(context);
+    Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
+    myDefaultCamera->updateObserver(obs);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MasterEngine::handleEvent(const Event& evt)
+{
+	ServerEngine::handleEvent(evt);
+    if(!evt.isProcessed())
 	{
-		for(int i = 0; i < Application::MaxLayers; i++)
+		if( evt.getServiceType() == Service::Keyboard )
 		{
-			os << myView->myLayer;
+			// Esc = force exit
+			if(evt.getSourceId() == 256) exit(0);
+			// Tab = toggle on-screen console.
+			if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
+			{
+				setConsoleEnabled(!isConsoleEnabled());
+			}
+		}
+
+		// Update pointers.
+		if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+		{
+			int pointerId = evt.getSourceId() - 1;
+			refreshPointer(pointerId, evt.getPosition().x(), evt.getPosition().y());
+		}
+		if(!evt.isProcessed()) 
+		{
+			myDefaultCamera->handleEvent(evt);
 		}
 	}
-	if( dirtyBits & DIRTY_DRAW_STATS )
-	{
-		os << myView->myDrawStatistics;
-	}
-	if( dirtyBits & DIRTY_DRAW_FPS )
-	{
-		os << myView->myDrawFps;
-	}
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewProxy::deserialize( co::DataIStream& is, const uint64_t dirtyBits )
-{
-	if( dirtyBits & DIRTY_LAYER )
-	{
-		for(int i = 0; i < Application::MaxLayers; i++)
-		{
-			is >> myView->myLayer;
-		}
-	}
-	if( dirtyBits & DIRTY_DRAW_STATS )
-	{
-		is >> myView->myDrawStatistics;
-	}
-	if( dirtyBits & DIRTY_DRAW_FPS )
-	{
-		is >> myView->myDrawFps;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewProxy::notifyNewVersion() 
-{ 
-	sync(); 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ViewImpl::ViewImpl(eq::Layout* parent): 
-	eq::View(parent)
-#pragma warning( push )
-#pragma warning( disable : 4355 )
-	, myProxy( this )
-#pragma warning( pop )
-{
-	myDrawStatistics = false;
-	myDrawFps = false;
-	myLayer = Layer::Null;
-	setUserData(&myProxy);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ViewImpl::~ViewImpl()
-{
-	this->setUserData(NULL);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Layer::Enum ViewImpl::getLayer() 
-{ 
-	return myLayer; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewImpl::setLayer(Layer::Enum layer) 
-{ 
-	myLayer = layer; 
-	myProxy.setDirty( ViewProxy::DIRTY_LAYER );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewImpl::drawStatistics(bool enable)
-{
-	myDrawStatistics = enable;
-	myProxy.setDirty( ViewProxy::DIRTY_DRAW_STATS );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ViewImpl::isDrawStatisticsEnabled()
-{
-	return myDrawStatistics;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ViewImpl::drawFps(bool enable)
-{
-	myDrawFps = enable;
-	myProxy.setDirty( ViewProxy::DIRTY_DRAW_FPS );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ViewImpl::isDrawFpsEnabled()
-{
-	return myDrawFps;
-}

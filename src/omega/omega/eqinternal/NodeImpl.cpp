@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "eqinternal.h"
+#include "omega/EqualizerDisplaySystem.h"
 
 using namespace omega;
 using namespace co::base;
@@ -33,29 +34,55 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 NodeImpl::NodeImpl( eq::Config* parent ):
 	Node(parent),
-	myServer(NULL),
-	myInitialized(NULL)
+	myServer(NULL)
 {
-	Application* app = SystemManager::instance()->getApplication();
-	myServer = app->createServer();
+	DEBUG_EQ_FLOW("NodeImpl::NodeImpl %1%", %parent);
+
+	SystemManager* sys = SystemManager::instance();
+
+	ApplicationBase* app = sys->getApplication();
+	if(sys->isMaster())
+	{
+		// This is the master node. Create the master server instance.
+		myServer = app->createMaster();
+	}
+	else
+	{
+		// This is the not master node. Create a standard server instance.
+		myServer = app->createServer();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
-	// Map the frame data object.
-	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
-	const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
-	oassert( mapped );
+	DEBUG_EQ_FLOW("NodeImpl::configInit %1%", %initID);
 
+
+	// Map the frame data object.
+	omsg("NodeImpl::configInit - registering shared data object...");
+
+	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
+	config->mapSharedData(initID);
+	
+	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+	eqds->finishInitialize(config);
+
+	myServer->initialize();
+
+	//const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
+	//oassert( mapped );
 	return Node::configInit(initID);
+	//return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configExit()
 {
+	DEBUG_EQ_FLOW("NodeImpl::configExit %1%", %"NOINFO");
+
 	eq::Config* config = getConfig();
-	config->unmapObject( &myFrameData );
+	//config->unmapObject( &myFrameData );
 
 	delete myServer;
 	myServer = NULL;
@@ -66,46 +93,37 @@ bool NodeImpl::configExit()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
 {
-	Node::frameStart(frameID, frameNumber);
+	DEBUG_EQ_FLOW("NodeImpl::frameStart %1% %2%", %frameID %frameNumber);
 
-	// Skip the first frame to give time to the channels to initialize
-	if(frameID == 0) return;
 
-	// If server has not been initialized yet, do it now.
-	if(myInitialized == false)
-	{
-		myServer->initialize();
-		myInitialized = true;
-	}
 
-	static float lt = 0.0f;
-	static float tt = 0.0f;
-	// Compute dt.
-	float t = (float)((double)clock() / CLOCKS_PER_SEC);
-	if(lt == 0) lt = t;
-	UpdateContext uc;
-	uc.dt = t - lt;
-	tt += uc.dt;
-	uc.time = tt;
-	uc.frameNum = frameNumber;
-	lt = t;
+	SystemManager* sys = SystemManager::instance();
 
-	// Syncronize frame data (containing input events and possibly other stuff)
-	myFrameData.sync(frameID);
+	ConfigImpl* config = (ConfigImpl*)getConfig();
+	config->updateSharedData();
+	const UpdateContext& uc = config->getUpdateContext();
 
-	// Dispatch received events events to application server.
-	int av = myFrameData.getNumEvents();
+
+	ServiceManager* im = SystemManager::instance()->getServiceManager();
+	if(!myServer->isMaster()) im->poll();
+
+	// Process events.
+	int av = im->getAvailableEvents();
 	if(av != 0)
 	{
-		for( int evtNum = 0; evtNum < av; evtNum++)
-		{
-			Event& evt = myFrameData.getEvent(evtNum);
-			if(!evt.isProcessed())
-			{
-				myServer->handleEvent(evt);
-			}
-		}
+    	im->lockEvents();
+    	// Dispatch events to application server.
+    	for( int evtNum = 0; evtNum < av; evtNum++)
+    	{
+    		Event* evt = im->getEvent(evtNum);
+    		myServer->handleEvent(*evt);
+    	}
+    	im->unlockEvents();
 	}
+	im->clearEvents();
+
 	myServer->update(uc);
+
+	Node::frameStart(frameID, frameNumber);
 }
 

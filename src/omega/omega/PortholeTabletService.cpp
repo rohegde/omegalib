@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/PortholeTabletService.h"
 #include "omega/Camera.h"
-#include "omega/EngineApplication.h"
+#include "omega/Application.h"
 #include "omega/ImageUtils.h"
 
 using namespace omega;
@@ -93,6 +93,7 @@ const char* TabletGuiElement::getDef()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PortholeTabletService::PortholeTabletService():
+ServerModule("PortholeTabletService"),
 myAutoUpdateInterval(0.5f), myEngine(NULL), myEnabled(true), myTabletService(NULL), myEventFlags(Event::Left)
 {
 	setPollPriority(Service::PollLast);
@@ -115,11 +116,11 @@ void PortholeTabletService::setup(Setting& settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PortholeTabletService::initialize()
 {
-	EngineModuleServices::addModule(this);
+	//ModuleServices::addModule(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeTabletService::initialize(EngineServer* engine)
+void PortholeTabletService::initialize(MasterEngine* engine)
 {
 	myEngine = engine;
 

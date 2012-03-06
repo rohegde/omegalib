@@ -46,10 +46,8 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void omain(Application& app, const char* configFile, const char* logFile, DataSource* dataSource)
+	void omain(ApplicationBase& app, const char* configFile, const char* logFile, DataSource* dataSource)
 	{
-		ologopen(logFile);
-
 		bool remote = false;
 		String masterHostname;
 		String configFilename;
@@ -60,6 +58,13 @@ namespace omega
 		{
 			remote = true;
 			masterHostname = args[1];
+			
+			String hostLogFilename = masterHostname + "-" + logFile;
+			ologopen(hostLogFilename.c_str());
+		}
+		else
+		{
+			ologopen(logFile);
 		}
 		
 		Config* cfg = new Config(configFilename);
@@ -90,5 +95,73 @@ namespace omega
 		sys->cleanup();
 
 		ologclose();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void olaunch(const String& command)
+	{
+		if( command.empty( )) return;
+
+#ifdef OMEGA_OS_WIN
+		STARTUPINFO         startupInfo;
+		ZeroMemory(&startupInfo, sizeof(STARTUPINFO));
+
+		PROCESS_INFORMATION procInfo;
+		ZeroMemory(&procInfo, sizeof(PROCESS_INFORMATION));
+
+		const char*         cmdLine     = command.c_str();
+
+		startupInfo.cb = sizeof( STARTUPINFO );
+		const bool success = 
+			CreateProcess( 0, LPSTR( cmdLine ), // program, command line
+						   0, 0,                // process, thread attributes
+						   FALSE,               // inherit handles
+						   0,                   // creation flags
+						   0,                   // environment
+						   0,                   // current directory
+						   &startupInfo,
+						   &procInfo );
+
+		//WaitForInputIdle( procInfo.hProcess, 1000 );
+		CloseHandle( procInfo.hProcess );
+		CloseHandle( procInfo.hThread );
+#else
+		std::vector<std::string> commandLine = StringUtils::split(command, " ");
+
+		//signal( SIGCHLD, sigChildHandler );
+		const int result = fork();
+		switch( result )
+		{
+			case 0: // child
+				break;
+
+			case -1: // error
+			default: // parent
+				return;
+		}
+
+		// child
+		const size_t  argc         = commandLine.size();
+		char*         argv[argc+1];
+		std::ostringstream stringStream;
+
+		for( size_t i=0; i<argc; i++ )
+		{
+			argv[i] = (char*)commandLine[i].c_str();
+			stringStream << commandLine[i] << " ";
+		}
+
+		argv[argc] = 0;
+
+		int nTries = 10;
+		while( nTries-- )
+		{
+			execvp( argv[0], argv );
+			// EQWARN << "Error executing '" << argv[0] << "': " << sysError
+				   // << std::endl;
+			if( errno != ETXTBSY )
+				break;
+		}
+#endif
 	}
 }

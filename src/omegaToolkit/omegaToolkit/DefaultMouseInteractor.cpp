@@ -31,7 +31,11 @@ using namespace omegaToolkit;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultMouseInteractor::handleEvent(const Event& evt)
 {
-	if(evt.getServiceType() == Service::Pointer)
+	//if(evt.isProcessed())
+	//{
+	//	omsg("evt processed");
+	//}
+	if(evt.getServiceType() == Service::Pointer && !evt.isProcessed())
 	{
 		// If a node is assigned to this actor and is selected, we consider mouse events consumed
 		// by this actor.
@@ -68,6 +72,16 @@ void DefaultMouseInteractor::updateNode()
 	// interactor
 	if(!myPointerEventReceived || myNode == NULL) return;
 
+	//if(getServer()->isMaster())
+	//{
+	//	ofmsg("MST Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
+	//}
+	//else
+	//{
+	//	ofmsg("SRV Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
+	//}
+
+
 	if(myPointerEventType == Event::Down)
 	{
 		Vector3f handlePos;
@@ -78,8 +92,8 @@ void DefaultMouseInteractor::updateNode()
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
 			myHandleDistance = (myHandlePosition - myPointerRay.getOrigin()).norm();
-			ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 			myNode->setSelected(true);
+			//ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 		}
 	}
 	else if(myPointerEventType == Event::Up)

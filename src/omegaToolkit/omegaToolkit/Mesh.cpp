@@ -25,8 +25,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/Mesh.h"
+#include "omega/DrawInterface.h"
 #include "omega/Renderer.h"
-#include "omega/EngineClient.h"
 
 using namespace omega;
 using namespace omegaToolkit;
@@ -231,7 +231,7 @@ void MeshRenderable::draw(RenderState* state)
 				myVertexBuffer,
 				myIndexData,
 				myMesh->getData()->getNumTriangles() * 3,
-				Renderer::DrawTriangles);
+				DrawInterface::DrawTriangles);
 		}
 		popNodeTransform();
 	}

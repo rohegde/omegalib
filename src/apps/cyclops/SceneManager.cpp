@@ -42,11 +42,11 @@ SceneManager* SceneManager::mysInstance = NULL;
 Entity::Entity(SceneManager* mng, EntityAsset* asset):
 	mySceneManager(mng), myAsset(asset)
 {
-	EngineServer* engine = mng->getEngine();
+	ServerEngine* engine = mng->getEngine();
 
 	mySceneNode = new SceneNode(engine);
 	mySceneNode->setSelectable(true);
-	engine->getScene(0)->addChild(mySceneNode);
+	engine->getScene()->addChild(mySceneNode);
 	OsgSceneObject* oso = new OsgSceneObject(myAsset->node);
 
 	myOsgNode = oso->getTransformedNode();
@@ -60,15 +60,16 @@ SceneManager::SceneManager():
 {
 	mysInstance = this;
 	myOsg = new OsgModule();
-	myEditor = new SceneEditorModule();
-	EngineModuleServices::addModule(myOsg);
-	EngineModuleServices::addModule(myEditor);
+	ModuleServices::addModule(myOsg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::initialize(EngineServer* engine)
+void SceneManager::initialize(MasterEngine* engine)
 {
 	myEngine = engine;
+
+	myEditor = new SceneEditorModule();
+	ModuleServices::addModule(myEditor);
 
 	mySceneRoot = new osg::Group();
 

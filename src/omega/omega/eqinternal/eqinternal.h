@@ -30,6 +30,7 @@
 #include "omega/osystem.h"
 #include "omega/Application.h"
 #include "omega/RenderTarget.h"
+#include "omega/EqualizerDisplaySystem.h"
 
 #define EQ_IGNORE_GLEW
 
@@ -43,130 +44,51 @@
 #include "eq/../../../equalizer/libs/fabric/layout.ipp"
 #endif
 
+// Define to enable debugging of equalizer flow.
+//#define OMEGA_DEBUG_EQ_FLOW
+#ifdef OMEGA_DEBUG_EQ_FLOW
+    #define DEBUG_EQ_FLOW(msg, id) ofmsg("EQ_FLOW " msg, id);
+#else
+    #define DEBUG_EQ_FLOW(msg, id)
+#endif 
+
+
 using namespace omega;
 using namespace co::base;
 using namespace std;
 
 namespace omicron {
-	class EventUtils
-	{
-	public:
-		static void serializeEvent(Event& evt, co::DataOStream& os);
-		static void deserializeEvent(Event& evt, co::DataIStream& is);
-	private:
-		EventUtils() {}
-	};
+    class EventUtils
+    {
+    public:
+        static void serializeEvent(Event& evt, co::DataOStream& os);
+        static void deserializeEvent(Event& evt, co::DataIStream& is);
+    private:
+        EventUtils() {}
+    };
 };
 
 namespace omega {
-	class RenderTarget;
+    class RenderTarget;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//! @internal
-//!  Frame-specific data.
-//!   The frame-specific data is used as a per-config distributed object and contains mutable, rendering-relevant data. 
-//!   Each rendering thread (pipe) keeps its own instance synchronized with the frame currently being rendered. The 
-//!   data is managed by the Config, which modifies it directly.
-class FrameData : public eq::fabric::Serializable
+class SharedData: public co::Object
 {
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-public:
-	FrameData()	{ }
-
-	virtual ~FrameData() {};
-
-	int getNumEvents() { return myNumEvents; }
-	void setNumEvents(int value) { myNumEvents = value; }
-	Event& getEvent(int index) { return myEventBuffer[index]; }
-
-	void setDirtyEvents() { setDirty( DIRTY_EVENTS ); }
+	void registerObject(SharedObject* object, const String& id);
+	virtual ChangeType getChangeType() const { return INSTANCE; }
+	void setUpdateContext(const UpdateContext& ctx) { myUpdateContext = ctx; }
+	const UpdateContext& getUpdateContext() { return myUpdateContext; }
 
 
 protected:
-	//! Serialize an instance of this class.
-	virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits )
-	{
-		eq::fabric::Serializable::serialize( os, dirtyBits );
-		if( dirtyBits & DIRTY_EVENTS )
-		{
-			os << myNumEvents;
-			for(int i = 0; i < myNumEvents; i++)
-			{
-				EventUtils::serializeEvent(myEventBuffer[i], os);
-			}
-		}
-	}
-
-	//! Deserialize an instance of this class.
-	virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits )
-	{
-		eq::fabric::Serializable::deserialize( is, dirtyBits );
-		if( dirtyBits & DIRTY_EVENTS )
-		{
-			is >> myNumEvents;
-			for(int i = 0; i < myNumEvents; i++)
-			{
-				EventUtils::deserializeEvent(myEventBuffer[i], is);
-			}
-		}
-	}
-
-	enum DirtyBits
-	{
-		DIRTY_EVENTS   = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
-	};
+	virtual void getInstanceData( co::DataOStream& os );
+	virtual void applyInstanceData( co::DataIStream& is );
 
 private:
-	int myNumEvents;
-	Event myEventBuffer[ OMICRON_MAX_EVENTS ];
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class ViewImpl;
-class ViewProxy : public eq::fabric::Serializable
-{
-public:
-	ViewProxy(ViewImpl* view);
-
-protected:
-	/** The changed parts of the view. */
-	enum DirtyBits
-	{
-		DIRTY_LAYER       = eq::fabric::Serializable::DIRTY_CUSTOM << 0,
-		DIRTY_DRAW_STATS       = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
-		DIRTY_DRAW_FPS       = eq::fabric::Serializable::DIRTY_CUSTOM << 2,
-	};
-
-	virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits );
-	virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits );
-	virtual void notifyNewVersion();
-
-private:
-	ViewImpl* myView;
-	friend class ViewImpl;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//! @internal
-class ViewImpl: public eq::View
-{
-friend class ViewProxy;
-public:
-	ViewImpl(eq::Layout* parent);
-	~ViewImpl();
-
-	Layer::Enum getLayer();
-	void setLayer(Layer::Enum layer);
-	void drawStatistics(bool enable);
-	bool isDrawStatisticsEnabled();
-	void drawFps(bool enable);
-	bool isDrawFpsEnabled();
-
-private:
-	bool myDrawStatistics;
-	bool myDrawFps;
-	Layer::Enum myLayer;
-	ViewProxy myProxy;
+	Dictionary<String, SharedObject*> myObjects;
+	typedef Dictionary<String, SharedObject*>::Item SharedObjectItem;
+	UpdateContext myUpdateContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,25 +96,25 @@ private:
 class ConfigImpl: public eq::Config
 {
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-	static const int MaxCanvasChannels = 128;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    static const int MaxCanvasChannels = 128;
 public:
-	ConfigImpl( co::base::RefPtr< eq::Server > parent);
-	virtual bool init(const uint128_t& initID);
-	virtual bool exit();
-	virtual bool handleEvent(const eq::ConfigEvent* event);
-	virtual uint32_t startFrame( const uint128_t& version );
-	virtual uint32_t finishFrame();
-	ViewImpl* findView(const String& viewName);
-	void setLayerEnabled(const String& viewName, Layer::Enum layer);
-	const FrameData& getFrameData();
+    ConfigImpl( co::base::RefPtr< eq::Server > parent);
+    virtual bool init();
+    virtual bool exit();
+	void mapSharedData(const uint128_t& initID);
+	void updateSharedData();
+    virtual bool handleEvent(const eq::ConfigEvent* event);
+    virtual uint32_t startFrame( const uint128_t& version );
+    virtual uint32_t finishFrame();
+	const UpdateContext& getUpdateContext();
 
 private:
-	void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);
-	uint processMouseButtons(uint btns); 
+    void processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray);
+    uint processMouseButtons(uint btns); 
 
 private:
-	FrameData myFrameData;
+	SharedData mySharedData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,12 +122,12 @@ private:
 class NodeImpl: public eq::Node
 {
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
     NodeImpl( eq::Config* parent );
 
-	//! Returns the application server instance running on this node.
-	ApplicationServer* getApplicationServer();
+    //! Returns the application server instance running on this node.
+    ServerBase* getApplicationServer();
 
 protected:
     virtual bool configInit( const eq::uint128_t& initID );
@@ -213,13 +135,13 @@ protected:
     virtual void frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber );
 
 private:
-	bool myInitialized;
-	ApplicationServer* myServer;
-	FrameData myFrameData;
+    //bool myInitialized;
+    ServerBase* myServer;
+    //FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-inline ApplicationServer* NodeImpl::getApplicationServer()
+inline ServerBase* NodeImpl::getApplicationServer()
 { return myServer; }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,25 +149,23 @@ inline ApplicationServer* NodeImpl::getApplicationServer()
 class PipeImpl: public eq::Pipe
 {
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
-	PipeImpl(eq::Node* parent);
-	ApplicationClient* getClient();
-	bool isReady() { return myInitialized && !myChannelsInitialized; }
-	void signalChannelInitialized(ChannelImpl* ch);
-	GpuContext* getGpuContext() { return myGpuContext; }
+    PipeImpl(eq::Node* parent);
+    RendererBase* getClient();
+    GpuContext* getGpuContext() { return myGpuContext; }
 
 protected:
-	virtual ~PipeImpl();
-	virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
-	virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
+    virtual ~PipeImpl();
+    virtual bool configInit(const uint128_t& initID);
+    virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
+    virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 
 private:
-	bool myInitialized;
-	bool myChannelsInitialized;
-	ApplicationClient* myClient;
-	GpuManager* myGpu;
-	GpuContext* myGpuContext;
+	NodeImpl* myNode;
+    RendererBase* myClient;
+    GpuManager* myGpu;
+    GpuContext* myGpuContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,19 +177,17 @@ private:
 class WindowImpl: public eq::Window
 {
 public:
-	WindowImpl(eq::Pipe* parent);
-	virtual ~WindowImpl();
-	const Vector2i& getIndex() { return myIndex; }
-	bool isInitialized() { return myInitialized; }
+    WindowImpl(eq::Pipe* parent);
+    virtual ~WindowImpl();
+
+	EqualizerDisplaySystem* getDisplaySystem() { return (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem(); }
 
 protected:
-	virtual bool configInitGL(const uint128_t& initID);
-	virtual void frameStart	(const uint128_t &frameID, const uint32_t frameNumber);
-	void initialize();
+    virtual bool configInit(const uint128_t& initID);
+	bool processEvent(const eq::Event& event);
 
 private:
-	Vector2i myIndex;
-	bool myInitialized;
+    Vector2i myIndex;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -277,39 +195,28 @@ private:
 class ChannelImpl: public eq::Channel
 {
 public:
-	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
-	ChannelImpl( eq::Window* parent );
-	virtual ~ChannelImpl();
+    ChannelImpl( eq::Window* parent );
+    virtual ~ChannelImpl();
 
-	ViewImpl* getViewImpl();
-	omega::Vector2i windowToCanvas(const omega::Vector2i& point);
-	const omega::DrawContext& getLastDrawContext();
+    ViewImpl* getViewImpl();
 
 protected:
-	void initialize();
-	void setupDrawContext(DrawContext* context, const uint128_t& spin);
-	virtual void frameDraw( const uint128_t& spin );
+    void setupDrawContext(DrawContext* context, const uint128_t& spin);
 
-	virtual void frameViewFinish(const uint128_t& spin);
-	virtual void frameViewStart(const uint128_t& spin);
-	virtual void frameAssemble( const uint128_t& );
+    virtual bool configInit(const uint128_t& initID);
+    virtual void frameDraw( const uint128_t& spin );
+    virtual void frameViewFinish(const uint128_t& spin);
 
-	virtual bool configInit(const uint128_t& initID);
-	omega::ApplicationClient* getClient();
-	unsigned int getLayers();
-	bool isDrawStatisticsEnabled();
-	bool isDrawFpsEnabled();
+    omega::RendererBase* getClient();
 
 private:
-	bool myInitialized;
-	eq::Window* myWindow;
-	omicron::Lock myLock;
-	ViewImpl* myView;
-	ChannelInfo myChannelInfo;
-	DrawContext myDC;
-	uint128_t myLastFrame;
-	RenderTarget* myDrawBuffer;
+    eq::Window* myWindow;
+    omicron::Lock myLock;
+    DrawContext myDC;
+    uint128_t myLastFrame;
+    RenderTarget* myDrawBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,18 +224,18 @@ private:
 class EqualizerNodeFactory: public eq::NodeFactory
 {
 public:
-	EqualizerNodeFactory() {}
+    EqualizerNodeFactory() {}
 public:
-	virtual eq::Config*  createConfig( eq::ServerPtr parent )
-		{ return new ConfigImpl( parent ); }
-	virtual eq::Channel* createChannel(eq::Window* parent)
-		{ return new ChannelImpl( parent ); }
-	virtual eq::View* createView(eq::Layout* parent)
-		{ return new ViewImpl(parent); }
-	virtual eq::Window* createWindow(eq::Pipe* parent)
-		{ return new WindowImpl(parent); }
-	virtual eq::Pipe* createPipe(eq::Node* parent)
-		{ return new PipeImpl(parent); }
+    virtual eq::Config*  createConfig( eq::ServerPtr parent )
+        { return new ConfigImpl( parent ); }
+    virtual eq::Channel* createChannel(eq::Window* parent)
+        { return new ChannelImpl( parent ); }
+    //virtual eq::View* createView(eq::Layout* parent)
+    //    { return new ViewImpl(parent); }
+    virtual eq::Window* createWindow(eq::Pipe* parent)
+        { return new WindowImpl(parent); }
+    virtual eq::Pipe* createPipe(eq::Node* parent)
+        { return new PipeImpl(parent); }
     virtual eq::Node* createNode( eq::Config* parent )
        { return new NodeImpl( parent ); }
 };

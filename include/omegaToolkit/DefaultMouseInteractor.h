@@ -36,6 +36,7 @@ namespace omegaToolkit {
 	{
 	public:
 		DefaultMouseInteractor():
+		    Actor("DefaultMouseInteractor"),
 			myMoveButtonFlag(Event::Left),
 			myRotateButtonFlag(Event::Right){}
 

@@ -43,66 +43,66 @@ OsgModule* OsgModule::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():
-	myRepresentationSize(0.4)
+	ServerModule("OsgModule"),
+    myRepresentationSize(0.4)
 {
-	mysInstance = this;
+    mysInstance = this;
 
-	myRootNode = NULL;
-	//myRootSceneObject = NULL;
+    myRootNode = NULL;
+    //myRootSceneObject = NULL;
     myFrameStamp = new osg::FrameStamp;
     myUpdateVisitor = new osgUtil::UpdateVisitor;
     myUpdateVisitor->setFrameStamp( myFrameStamp );
 
-	osgDB::Registry::instance()->addReaderWriter(new ReaderWriterTGA());
+    osgDB::Registry::instance()->addReaderWriter(new ReaderWriterTGA());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::~OsgModule()
 {
-	if(myRootNode != NULL)
-	{
-		myRootNode->unref();
-		myRootNode = NULL;
-	}
+    if(myRootNode != NULL)
+    {
+        myRootNode->unref();
+        myRootNode = NULL;
+    }
     myFrameStamp->unref();
-	myFrameStamp = NULL;
+    myFrameStamp = NULL;
     myUpdateVisitor->unref();
-	myUpdateVisitor = NULL;
+    myUpdateVisitor = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgModule::initialize(EngineServer* server)
+void OsgModule::initialize()
 {
-	omsg("OsgModule initializing...");
+    omsg("OsgModule initializing...");
 
-	myServer = server;
-	myServer->registerRenderPassClass("OsgRenderPass", (EngineServer::RenderPassFactory)OsgRenderPass::createInstance);
-	myServer->addRenderPass("OsgRenderPass", this, true);
+    getServer()->registerRenderPassClass("OsgRenderPass", (ServerEngine::RenderPassFactory)OsgRenderPass::createInstance);
+    getServer()->addRenderPass("OsgRenderPass", this, true);
 
-	omsg("OsgModule initialization OK");
+    omsg("OsgModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgModule::setRootNode(osg::Node* value) 
 { 
-	myRootNode = value; 
-	//myRootSceneObject = new OsgSceneObject(myRootNode);
-	//myServer->getScene(0)->addObject(myRootSceneObject);
+    myRootNode = value; 
+    //myRootSceneObject = new OsgSceneObject(myRootNode);
+    //myServer->getScene()->addObject(myRootSceneObject);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgModule::update(const UpdateContext& context)
 {
-	myFrameStamp->setFrameNumber(context.frameNum);
+    myFrameStamp->setFrameNumber(context.frameNum);
     myFrameStamp->setReferenceTime(context.time);
     myFrameStamp->setSimulationTime(context.time);
 
-	myUpdateVisitor->reset();
-	myUpdateVisitor->setFrameStamp(myFrameStamp);
-	myUpdateVisitor->setTraversalNumber(context.frameNum);
-	if(myRootNode != NULL)
-	{
-		myRootNode->accept(*myUpdateVisitor);
-	}
+    myUpdateVisitor->reset();
+    myUpdateVisitor->setFrameStamp(myFrameStamp);
+    myUpdateVisitor->setTraversalNumber(context.frameNum);
+    if(myRootNode != NULL)
+    {
+        myRootNode->accept(*myUpdateVisitor);
+    }
 }
 

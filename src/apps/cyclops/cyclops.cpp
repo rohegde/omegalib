@@ -38,30 +38,32 @@ using namespace osg;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Cyclops: public EngineServer
+class Cyclops: public ServerModule
 {
 public:
-	Cyclops(Application* app): EngineServer(app) {}
-	virtual void initialize();
+	Cyclops(): myEngine(NULL) {}
+	virtual void initialize(MasterEngine* master);
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt);
 
 private:
+	MasterEngine* myEngine;
 	SceneManager* mySceneManager;
 
 	Vector3f myCenter;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Cyclops::initialize()
+void Cyclops::initialize(MasterEngine* engine)
 {
-	EngineServer::initialize();
-	Config* cfg = getSystemManager()->getAppConfig();
+	myEngine = engine;
 
-	removeAllRenderPasses();
+	Config* cfg = myEngine->getSystemManager()->getAppConfig();
+
+	myEngine->removeAllRenderPasses();
 
 	mySceneManager = new SceneManager();
-	mySceneManager->initialize(this);
+	mySceneManager->initialize(myEngine);
 
 	myCenter = Vector3f::Zero();
 
@@ -101,14 +103,12 @@ void Cyclops::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Cyclops::update(const UpdateContext& context) 
 {
-	EngineServer::update(context);
 	mySceneManager->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Cyclops::handleEvent(const Event& evt) 
 {
-	EngineServer::handleEvent(evt);
 	mySceneManager->handleEvent(evt);
 }
 
@@ -116,7 +116,7 @@ void Cyclops::handleEvent(const Event& evt)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<Cyclops> app;
+	Application<Cyclops> app("cyclops");
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "cyclops.cfg";

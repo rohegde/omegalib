@@ -31,7 +31,7 @@
 #include "RenderPass.h"
 
 namespace omega {
-	class EngineServer;
+	class ServerEngine;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Renderable: public ReferenceType
@@ -39,9 +39,9 @@ namespace omega {
 	public:
 		Renderable();
 
-		void setClient(EngineClient* client);
-		EngineClient* getClient();
-		Renderer* getRenderer();
+		void setClient(Renderer* client);
+		Renderer* getClient();
+		DrawInterface* getRenderer();
 
 		virtual void initialize() {}
 		virtual void dispose() {}
@@ -49,7 +49,7 @@ namespace omega {
 		virtual void draw(RenderState* state) = 0;
 
 	private:
-		EngineClient* myClient;
+		Renderer* myClient;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,30 +79,30 @@ namespace omega {
 		RenderableFactory();
 		virtual ~RenderableFactory();
 		virtual Renderable* createRenderable() = 0;
-		virtual void initialize(EngineServer* srv);
+		virtual void initialize(ServerEngine* srv);
 		void dispose();
 		void refresh();
 		virtual bool isInitialized();
-		Renderable* getRenderable(EngineClient* client);
+		Renderable* getRenderable(Renderer* client);
 		Renderable* getFirstRenderable();
-		EngineServer* getServer();
+		ServerEngine* getServer();
 		List<Renderable*>::ConstRange getRenderables() const;
 
 	protected:
-		Renderable* addRenderable(EngineClient* cli);
+		Renderable* addRenderable(Renderer* cli);
 
 	private:
 		bool myInitialized;
-		EngineServer* myServer;
+		ServerEngine* myServer;
 		List<Renderable*> myRenderables;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Renderable::setClient(EngineClient* value)
+	inline void Renderable::setClient(Renderer* value)
 	{ myClient = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClient* Renderable::getClient()
+	inline Renderer* Renderable::getClient()
 	{ return myClient; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ namespace omega {
 	{ return myInitialized; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* RenderableFactory::getServer()
+	inline ServerEngine* RenderableFactory::getServer()
 	{ return myServer; }
 
 }; // namespace omega

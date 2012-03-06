@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/ui/DefaultSkin.h"
-#include "omega/Renderer.h"
+#include "omega/DrawInterface.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -37,7 +37,7 @@ void DefaultButtonRenderable::drawContent()
 {
 	WidgetRenderable::drawContent();
 
-	Renderer* painter = getRenderer();
+	DrawInterface* painter = getRenderer();
 
 	painter->drawRect(Vector2f::Zero(), myOwner->getSize(), myOwner->getColor());
 	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
@@ -83,7 +83,7 @@ void DefaultSliderRenderable::drawContent()
 {
 	WidgetRenderable::drawContent();
 
-	Renderer* painter = getRenderer();
+	DrawInterface* painter = getRenderer();
 
 	Vector2f sliderPos = myOwner->getSliderPosition();
 	Vector2f sliderSize = myOwner->getSliderSize();

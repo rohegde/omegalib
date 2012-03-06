@@ -36,17 +36,19 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 ###################################################################################################
 # Source files
 SET( srcs 
-		omega/Application.cpp
+		omega/ApplicationBase.cpp
 		omega/Camera.cpp
 		omega/Console.cpp
-		omega/EngineClient.cpp
-		omega/EngineServer.cpp
+		omega/DrawInterface.cpp
+		omega/EventSharingModule.cpp
+		omega/ServerEngine.cpp
 		omega/Font.cpp
 		omega/GpuBuffer.cpp
 		omega/GpuManager.cpp
 		omega/GpuProgram.cpp
 		omega/ImageUtils.cpp
 		omega/KeyboardService.cpp
+		omega/MasterEngine.cpp
 		omega/MouseService.cpp
 		omega/Node.cpp
         omega/Observer.cpp
@@ -57,12 +59,13 @@ SET( srcs
 		omega/PortholeTabletService.cpp
 		omega/PythonInterpreter.cpp
 		omega/omegaPythonApi.cpp
-		omega/Renderable.cpp
 		omega/Renderer.cpp
+		omega/Renderable.cpp
 		omega/RenderTarget.cpp
 		omega/SagePointerService.cpp
 		omega/SceneNode.cpp
 		omega/SceneQuery.cpp
+		omega/SharedDataServices.cpp
 		omega/SystemManager.cpp
 		omega/Texture.cpp
         )
@@ -73,14 +76,15 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Actor.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ApplicationBase.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/omega/EventSharingModule.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineApplication.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineClient.h
-		${OmegaLib_SOURCE_DIR}/include/omega/EngineServer.h
+		${OmegaLib_SOURCE_DIR}/include/omega/DrawInterface.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ServerEngine.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Font.h
 		${OmegaLib_SOURCE_DIR}/include/omega/glheaders.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h
@@ -89,6 +93,8 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/MasterEngine.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
         ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
@@ -100,12 +106,13 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/PortholeTabletService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PythonInterpreter.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderable.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
+		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneQuery.h
+		${OmegaLib_SOURCE_DIR}/include/omega/SharedDataServices.h
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
@@ -123,7 +130,6 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 		omega/EqualizerDisplaySystem.cpp
 		omega/eqinternal/ChannelImpl.cpp
 		omega/eqinternal/ConfigImpl.cpp
-		omega/eqinternal/ViewImpl.cpp
 		omega/eqinternal/WindowImpl.cpp
 		omega/eqinternal/NodeImpl.cpp
 		omega/eqinternal/PipeImpl.cpp
@@ -155,6 +161,7 @@ endif(OMEGA_USE_OPENCL)
 ###################################################################################################
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
+source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers

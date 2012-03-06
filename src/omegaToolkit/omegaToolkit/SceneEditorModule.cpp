@@ -47,7 +47,8 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneEditorModule::SceneEditorModule():
-	myEngine(NULL), myInteractor(NULL), mySelectedObject(NULL)
+	ServerModule("SceneEditorModule"),
+	myInteractor(NULL), mySelectedObject(NULL)
 {
 }
 
@@ -108,13 +109,13 @@ void SceneEditorModule::setInteractorStyle(InteractorStyle style)
 		myInteractor = interactor;
 	}
 	
-	myEngine->addActor(myInteractor);
+	ModuleServices::addModule(myInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::updateSelection(const Ray& ray)
 {
-	const SceneQueryResultList& sqrl = myEngine->querySceneRay(0, ray);
+	const SceneQueryResultList& sqrl = getServer()->querySceneRay(ray);
 	if(sqrl.size() != 0)
 	{
 		// The ray intersected with something.
@@ -145,11 +146,10 @@ void SceneEditorModule::updateSelection(const Ray& ray)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::initialize(EngineServer* server)
+void SceneEditorModule::initialize(MasterEngine* master)
 {
 	omsg("SceneEditorModule initializing...");
 
-	myEngine = server;
 	setInteractorStyle(MouseInteractorStyle);
 
 	omsg("SceneEditorModule initialization OK");

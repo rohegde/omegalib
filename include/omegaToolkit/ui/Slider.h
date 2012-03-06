@@ -35,7 +35,7 @@ namespace omegaToolkit { namespace ui {
 	class Slider: public Widget
 	{
 	public:
-		Slider(EngineServer* srv);
+		Slider(ServerEngine* srv);
 		virtual ~Slider();
 
 		virtual void handleEvent(const omega::Event& evt);

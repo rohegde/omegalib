@@ -25,16 +25,16 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/TransparentRenderPass.h"
-#include "omega/EngineClient.h"
-#include "omega/EngineServer.h"
 #include "omega/Renderer.h"
+#include "omega/ServerEngine.h"
+#include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 
 using namespace omega;
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void TransparentRenderPass::render(EngineClient* client, const DrawContext& context)
+void TransparentRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
@@ -45,7 +45,7 @@ void TransparentRenderPass::render(EngineClient* client, const DrawContext& cont
 		state.context = &context;
 
 		client->getRenderer()->beginDraw3D(context);
-		SceneNode* node = client->getServer()->getScene(0);
+		SceneNode* node = client->getServer()->getScene();
 		node->draw(&state);
 		client->getRenderer()->endDraw();
 	}

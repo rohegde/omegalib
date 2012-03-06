@@ -68,7 +68,7 @@ void OsgRenderPass::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgRenderPass::render(EngineClient* client, const DrawContext& context)
+void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{

@@ -28,8 +28,8 @@
 #define __PORHOLE_TABLET_SERVICE_H__
 
 #include "osystem.h"
-#include "omega/EngineServer.h"
-#include "omega/EngineApplication.h"
+#include "omega/MasterEngine.h"
+#include "omega/Application.h"
 #include "omega/Camera.h"
 #include "omicron/BasicPortholeService.h"
 
@@ -90,7 +90,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements an interface to tablet device applications using the Porthole protocol.
-	class OMEGA_API PortholeTabletService: public Service, IEngineModule
+	class OMEGA_API PortholeTabletService: public Service, ServerModule
 	{
 	public:
 		static const int MaxGuiDefSize = 1024;
@@ -106,7 +106,7 @@ namespace omega {
 		void processEvent(Event* evt);
 
 		virtual void initialize();
-		virtual void initialize(EngineServer* engine);
+		virtual void initialize(MasterEngine* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -127,7 +127,7 @@ namespace omega {
 		void sendMessage(TabletConnection* conn, const char* header, void* data, int size);
 
 	private:
-		EngineServer* myEngine;
+		MasterEngine* myEngine;
 
 		// Config properties
 		bool myHires;

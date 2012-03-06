@@ -27,8 +27,9 @@
 #ifndef __SCENE_EDITOR_MODULE_H__
 #define __SCENE_EDITOR_MODULE_H__
 
-#include "omega/EngineServer.h"
-#include "omega/EngineApplication.h"
+#include "omega/ServerEngine.h"
+#include "omega/Application.h"
+#include "omega/Actor.h"
 #include "omegaToolkit/BoundingSphere.h"
 
 namespace omegaToolkit
@@ -53,7 +54,7 @@ namespace omegaToolkit
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API SceneEditorModule: public IEngineModule
+	class OTK_API SceneEditorModule: public ServerModule
 	{
 	public:
 		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
@@ -62,7 +63,7 @@ namespace omegaToolkit
 		SceneEditorModule();
 		~SceneEditorModule();
 
-		void initialize(EngineServer* server);
+		void initialize(MasterEngine* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -74,15 +75,11 @@ namespace omegaToolkit
 
 		SceneNode* getSelectedNode();
 
-		EngineServer* getEngine() { return myEngine; }
-
 	private:
 		EditableObject* findEditableObject(SceneNode* node);
 		void updateSelection(const Ray& ray);
 
 	private:
-		EngineServer* myEngine;
-		
 		InteractorStyle myInteractorStyle;
 		Actor* myInteractor;
 

@@ -26,16 +26,17 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "omega/GpuManager.h"
+#include "omega/EqualizerDisplaySystem.h"
 
 #include "eqinternal.h"
 
 using namespace omega;
 using namespace co::base;
 using namespace std;
-
+    
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 WindowImpl::WindowImpl(eq::Pipe* parent): 
-	eq::Window(parent), myInitialized(false)
+    eq::Window(parent)
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,36 +44,33 @@ WindowImpl::~WindowImpl()
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool WindowImpl::configInitGL(const uint128_t& initID)
+bool WindowImpl::configInit(const uint128_t& initID)
 {
-	// Initialize this window frame buffer.
-	return Window::configInitGL(initID);
-	//const eq::fabric::PixelViewport& pvp = getPixelViewport();
-	//myFrameBuffer = new RenderTarget();
-	//myFrameBuffer->initialize(RenderTarget::TypeFrameBuffer, pvp.w, pvp.h);
+    // Get the tile index from the window name.
+    String name = getName();
+    vector<String> args = StringUtils::split(name, "x,");
+    myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
 
-	//// Get the gpu manager from the client instance.
-	//PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
-	//ApplicationClient* client = pipe->getClient();
-	//myGpu = client->getGpu();
+	return Window::configInit(initID);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void WindowImpl::initialize()
+bool WindowImpl::processEvent(const eq::Event& event) 
 {
-	String name = getName();
-	vector<String> args = StringUtils::split(name, "x,");
-	myIndex = Vector2i(atoi(args[0].c_str()), atoi(args[1].c_str()));
-}
+    // Pointer events: convert the mouse position from local (tile-based) to global (canvas-based)
+    if(
+        event.type == eq::Event::WINDOW_POINTER_BUTTON_PRESS ||
+        event.type == eq::Event::WINDOW_POINTER_BUTTON_RELEASE ||
+        event.type == eq::Event::WINDOW_POINTER_MOTION ||
+        event.type == eq::Event::WINDOW_POINTER_WHEEL)
+    {
+        const Vector2i& ts = getDisplaySystem()->getDisplayConfig().tileResolution;
+        eq::Event newEvt = event;
+        newEvt.pointer.x = event.pointer.x + myIndex[0] * ts[0];
+        newEvt.pointer.y = event.pointer.y + myIndex[1] * ts[1];
+        return eq::Window::processEvent(newEvt);
+    }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void WindowImpl::frameStart(const uint128_t &frameID, const uint32_t frameNumber) 
-{
-	if(!myInitialized)
-	{
-		initialize();
-		myInitialized = true;
-	}
-	// Set the frame buffer for the client gpu to this window frame buffer.
-	//myGpu->setFrameBuffer(myFrameBuffer);
+    // Other events: just send to application node.
+    return eq::Window::processEvent(event);
 }
