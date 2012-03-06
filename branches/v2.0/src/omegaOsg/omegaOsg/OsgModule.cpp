@@ -87,7 +87,7 @@ void OsgModule::setRootNode(osg::Node* value)
 { 
     myRootNode = value; 
     //myRootSceneObject = new OsgSceneObject(myRootNode);
-    //myServer->getScene(0)->addObject(myRootSceneObject);
+    //myServer->getScene()->addObject(myRootSceneObject);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

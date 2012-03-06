@@ -42,7 +42,7 @@ using namespace omega;
 PyObject* nodeGetRoot(PyObject* self, PyObject* args)
 {
 	ServerEngine* engine = ServerEngine::instance();
-	SceneNode* root = engine->getScene(0);
+	SceneNode* root = engine->getScene();
 	PyObject* pyRoot = PyCapsule_New(root, "SceneNode", NULL);
 
 	return Py_BuildValue("O", pyRoot);

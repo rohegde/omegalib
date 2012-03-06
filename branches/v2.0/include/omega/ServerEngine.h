@@ -59,7 +59,6 @@ namespace omega {
 		typedef RenderPass* (*RenderPassFactory)(Renderer*);
 
 	public:
-		static const int MaxScenes = 3;
 		static const int MaxActivePointers = 128;
 		static ServerEngine* instance() { return mysInstance; }
 
@@ -88,10 +87,10 @@ namespace omega {
 
 		//! Scene query
 		//@{
-		const SceneQueryResultList& querySceneRay(int sceneId, const Ray& ray, uint flags = 0);
+		const SceneQueryResultList& querySceneRay(const Ray& ray, uint flags = 0);
 		//@}
 
-		SceneNode* getScene(int id);
+		SceneNode* getScene();
 
  		//! Console management
 		//@{
@@ -129,7 +128,7 @@ namespace omega {
 
 		Dictionary<String, RenderPassFactory> myRenderPassFactories;
 
-		SceneNode* myScene[MaxScenes];
+		SceneNode* myScene;
 
 		// Pointers
 		List<Pointer*> myPointers;

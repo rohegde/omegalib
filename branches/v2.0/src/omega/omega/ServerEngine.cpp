@@ -52,10 +52,7 @@ void ServerEngine::initialize()
     myLock.lock();
     ImageUtils::internalInitialize();
 
-    for(int i = 0; i < MaxScenes; i++)
-    {
-        myScene[i] = new SceneNode(this, "root");
-    }
+    myScene = new SceneNode(this, "root");
 
     // Create console.
     myConsole = new Console();
@@ -180,10 +177,9 @@ void ServerEngine::destroyPointer(Pointer* p)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-SceneNode* ServerEngine::getScene(int id)
+SceneNode* ServerEngine::getScene()
 {
-    oassert(id >= 0 && id < ServerEngine::MaxScenes);
-    return myScene[id];
+    return myScene;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,19 +208,14 @@ void ServerEngine::update(const UpdateContext& context)
         }
     }
 
-
-    // Update scene.
-    for(int i = 0; i < MaxScenes; i++)
-    {
-        myScene[i]->update(false, false);
-    }
+    myScene->update(false, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const SceneQueryResultList& ServerEngine::querySceneRay(int sceneId, const Ray& ray, uint flags)
+const SceneQueryResultList& ServerEngine::querySceneRay(const Ray& ray, uint flags)
 {
     myRaySceneQuery.clearResults();
-    myRaySceneQuery.setSceneNode(myScene[sceneId]);
+    myRaySceneQuery.setSceneNode(myScene);
     myRaySceneQuery.setRay(ray);
     return myRaySceneQuery.execute(flags);
 }

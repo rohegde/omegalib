@@ -38,7 +38,7 @@ Entity::Entity(MeshData* data, ServerEngine* server, Actor* interactor, const St
     mySceneNode = new SceneNode(server);
     mySceneNode->setSelectable(true);
     mySceneNode->setVisible(false);
-     server->getScene(0)->addChild(mySceneNode);
+     server->getScene()->addChild(mySceneNode);
      mySceneNode->addObject(myMesh);
      myMesh->setData(myMeshData);
 
@@ -69,7 +69,7 @@ Entity::Entity(MeshData* data, ServerEngine* server, Actor* interactor, const St
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::~Entity()
 {
-    myServer->getScene(0)->removeChild(mySceneNode);
+    myServer->getScene()->removeChild(mySceneNode);
     delete mySceneNode;
     mySceneNode = NULL;
 
@@ -154,7 +154,7 @@ void MeshViewer::initialize()
     if(cfg->exists("config/referenceBox"))
     {
         myReferenceBox = new ReferenceBox();
-		getServer()->getScene(0)->addObject(myReferenceBox);
+		getServer()->getScene()->addObject(myReferenceBox);
         // Default box size for meshviewer, if left unspecified by config
         myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
 
@@ -193,7 +193,7 @@ void MeshViewer::initialize()
 	{
 		MasterEngine* master = getServer()->asMaster();
 		Camera* cam = master->getDefaultCamera();
-		cam->focusOn(master->getScene(0));
+		cam->focusOn(master->getScene());
 		myTabletManager = master->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 	}
 
@@ -217,7 +217,7 @@ void MeshViewer::initUi()
     int canvasWidth = getServer()->getCanvasWidth();
     int canvasHeight = getServer()->getCanvasHeight();
 
-    Container* root = UiModule::instance()->getUi(0);
+    Container* root = UiModule::instance()->getUi();
 
     Container* entityButtons = wf->createContainer("entities", root, Container::LayoutVertical);
     //entityButtons->setDebugModeEnabled(true);

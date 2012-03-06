@@ -45,7 +45,7 @@ void TransparentRenderPass::render(Renderer* client, const DrawContext& context)
 		state.context = &context;
 
 		client->getRenderer()->beginDraw3D(context);
-		SceneNode* node = client->getServer()->getScene(0);
+		SceneNode* node = client->getServer()->getScene();
 		node->draw(&state);
 		client->getRenderer()->endDraw();
 	}

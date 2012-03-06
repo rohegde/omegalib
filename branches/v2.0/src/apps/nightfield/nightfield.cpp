@@ -113,7 +113,7 @@ AffectorEntity::AffectorEntity(RenderableSceneObject* object, ServerEngine* serv
 
     mySceneNode = new SceneNode(server);
     mySceneNode->setSelectable(true);
-    server->getScene(0)->addChild(mySceneNode);
+    server->getScene()->addChild(mySceneNode);
     mySceneNode->addObject(myObject);
     mySceneNode->addObject(mySelectionSphere);
 
@@ -144,7 +144,7 @@ AffectorEntity::AffectorEntity(RenderableSceneObject* object, ServerEngine* serv
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 AffectorEntity::~AffectorEntity()
 {
-    myServer->getScene(0)->removeChild(mySceneNode);
+    myServer->getScene()->removeChild(mySceneNode);
     delete mySceneNode;
     mySceneNode = NULL;
 
@@ -277,7 +277,7 @@ void Nightfield::initialize(MasterEngine* engine)
         mySettings.load(sCfg);
     }
 
-    SceneNode* scene = myEngine->getScene(0);
+    SceneNode* scene = myEngine->getScene();
 
     mySceneNode = new SceneNode(myEngine);
 
@@ -348,7 +348,7 @@ void Nightfield::initialize(MasterEngine* engine)
 
     // Get the default camera and focus in on the scene root
     Camera* cam = myEngine->getDefaultCamera();
-    cam->focusOn(myEngine->getScene(0));
+    cam->focusOn(myEngine->getScene());
 
     myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 }
@@ -423,7 +423,7 @@ AffectorEntity* Nightfield::findEntity(SceneNode* node)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Nightfield::updateSelection(const Ray& ray)
 {
-    const SceneQueryResultList& sqrl = myEngine->querySceneRay(0, ray);
+    const SceneQueryResultList& sqrl = myEngine->querySceneRay(ray);
     if(sqrl.size() != 0)
     {
         // The ray intersected with something.

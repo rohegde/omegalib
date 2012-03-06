@@ -83,7 +83,7 @@ void OsgViewer::initialize(MasterEngine* engine)
 				optOSGFile.optimize(node);
 
 				myOsg->setRootNode(node);
-				myEngine->getDefaultCamera()->focusOn(myEngine->getScene(0));
+				myEngine->getDefaultCamera()->focusOn(myEngine->getScene());
 			}
 		}
 		else

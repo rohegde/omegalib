@@ -39,7 +39,6 @@ namespace omegaToolkit
 	class OTK_API UiModule: public ServerModule
 	{
 	public:
-		static const int MaxUis = 3;
 		static UiModule* instance() { return mysInstance; }
 
 	public:
@@ -52,7 +51,7 @@ namespace omegaToolkit
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
-		ui::Container* getUi(int id);
+		ui::Container* getUi();
 		ui::WidgetFactory* getWidgetFactory();
 
 	private:
@@ -63,7 +62,7 @@ namespace omegaToolkit
 
 		bool myLocalEventsEnabled;
 
-		ui::Container* myUi[MaxUis];
+		ui::Container* myUi;
 		ui::WidgetFactory* myWidgetFactory;
 	};
 

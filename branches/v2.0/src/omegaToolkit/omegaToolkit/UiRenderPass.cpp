@@ -53,7 +53,7 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		Vector2i displaySize = ds->getCanvasSize();
 
-		ui::Container* ui = UiModule::instance()->getUi(0);
+		ui::Container* ui = UiModule::instance()->getUi();
 		const Rect& vp = Rect(0, 0, displaySize[0], displaySize[1]);
 
 		// Update the root container size if necessary.

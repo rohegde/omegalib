@@ -46,7 +46,7 @@ Entity::Entity(SceneManager* mng, EntityAsset* asset):
 
 	mySceneNode = new SceneNode(engine);
 	mySceneNode->setSelectable(true);
-	engine->getScene(0)->addChild(mySceneNode);
+	engine->getScene()->addChild(mySceneNode);
 	OsgSceneObject* oso = new OsgSceneObject(myAsset->node);
 
 	myOsgNode = oso->getTransformedNode();

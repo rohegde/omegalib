@@ -53,12 +53,10 @@ void UiModule::initialize()
 	omsg("UiModule initializing...");
 
 	myWidgetFactory = new ui::DefaultWidgetFactory(getServer());
-	for(int i = 0; i < MaxUis; i++)
-	{
-		myUi[i] = new ui::Container(getServer());
-		myUi[i]->setLayout(ui::Container::LayoutFree);
-		myUi[i]->setUIEventHandler(getServer());
-	}
+	myUi = new ui::Container(getServer());
+	myUi->setLayout(ui::Container::LayoutFree);
+	myUi->setUIEventHandler(getServer());
+
 	getServer()->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
 	getServer()->addRenderPass("UiRenderPass");
 
@@ -83,7 +81,7 @@ void UiModule::initImages(const Setting& images)
 		String fileName = Config::getStringValue("source", imageSetting, "");
 		if(fileName != "")
 		{
-			ui::Image* img = myWidgetFactory->createImage("img", myUi[0]);
+			ui::Image* img = myWidgetFactory->createImage("img", myUi);
 
 			bool stereo = Config::getBoolValue("stereo", imageSetting, false);
 
@@ -106,26 +104,18 @@ void UiModule::initImages(const Setting& images)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::update(const UpdateContext& context)
 {
-	// Update ui.
-	for(int i = 0; i < MaxUis; i++)
-	{
-		myUi[i]->update(context);
-	}
+	myUi->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::handleEvent(const Event& evt)
 {
-	for(int i = 0; i < MaxUis; i++)
-	{
-		myUi[i]->handleEvent(evt);
-	}
+	myUi->handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-ui::Container* UiModule::getUi(int id)
+ui::Container* UiModule::getUi()
 {
-	oassert(id >= 0 && id < MaxUis);
-	return myUi[id];
+	return myUi;
 }
 

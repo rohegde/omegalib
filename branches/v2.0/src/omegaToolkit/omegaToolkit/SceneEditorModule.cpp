@@ -115,7 +115,7 @@ void SceneEditorModule::setInteractorStyle(InteractorStyle style)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::updateSelection(const Ray& ray)
 {
-	const SceneQueryResultList& sqrl = getServer()->querySceneRay(0, ray);
+	const SceneQueryResultList& sqrl = getServer()->querySceneRay(ray);
 	if(sqrl.size() != 0)
 	{
 		// The ray intersected with something.
