@@ -26,6 +26,9 @@
  *************************************************************************************************/
 #include <osgUtil/Optimizer>
 #include <osgDB/ReadFile>
+#include <osg/PositionAttitudeTransform>
+#include <osg/MatrixTransform>
+#include <osg/Light>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -40,26 +43,29 @@ using namespace omegaOsg;
 class OsgViewer: public ServerModule
 {
 public:
-	OsgViewer(): myEngine(NULL) {}
-	virtual void initialize(ServerEngine* engine);
+	OsgViewer()
+	{
+		myOsg = new OsgModule();
+		ModuleServices::addModule(myOsg); 
+	}
+
+	virtual void initialize();
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt) {}
 
 private:
-	ServerEngine* myEngine;
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
+	Actor* myInteractor;
+	osg::Light* myLight;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgViewer::initialize(ServerEngine* engine)
+void OsgViewer::initialize()
 {
-	myEngine = engine;
+	Config* cfg = getServer()->getSystemManager()->getAppConfig();
 
-	Config* cfg = myEngine->getSystemManager()->getAppConfig();
-
-	myOsg = new OsgModule();
-	myOsg->doInitialize(myEngine);
+	osg::Node* node = NULL;
 
 	// Load osg object
 	if(cfg->exists("config/scene"))
@@ -71,7 +77,20 @@ void OsgViewer::initialize(ServerEngine* engine)
 		DataInfo cfgInfo = dm->getInfo(filename);
 		if(!cfgInfo.isNull())
 		{
-			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
+			node = osgDB::readNodeFile(cfgInfo.path);
+
+			// If config specifies size parameter, use it to resize the passed object.
+			if(sscene.exists("size"))
+			{
+				float size = Config::getFloatValue("size", sscene);
+				float r = node->getBound().radius() * 2;
+				float scale = size / r;
+				osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
+				pat->setScale(osg::Vec3(scale, scale, scale));
+				pat->addChild(node);
+				node = pat;
+			}
+
 			if (node == NULL) 
 			{
 				ofwarn("!Failed to load model: %1%", %filename);
@@ -81,9 +100,6 @@ void OsgViewer::initialize(ServerEngine* engine)
 				//Optimize scenegraph
 				osgUtil::Optimizer optOSGFile;
 				optOSGFile.optimize(node);
-
-				myOsg->setRootNode(node);
-				myEngine->getDefaultCamera()->focusOn(myEngine->getScene());
 			}
 		}
 		else
@@ -91,12 +107,59 @@ void OsgViewer::initialize(ServerEngine* engine)
 			ofwarn("!File not found: %1%", %filename);
 		}
 	}
+
+    // Set the interactor style used to manipulate meshes.
+    String interactorStyle = cfg->lookup("config/interactorStyle");
+    if(interactorStyle == "Mouse")
+    {
+        DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
+        interactor->setMoveButtonFlag(Event::Left);
+        interactor->setRotateButtonFlag(Event::Right);
+        myInteractor = interactor;
+    }
+    else if(interactorStyle == "Controller")
+    {
+        ControllerManipulator* interactor = new ControllerManipulator();
+        myInteractor = interactor;
+    }
+    else
+    {
+        DefaultTwoHandsInteractor* interactor =  new DefaultTwoHandsInteractor();
+        interactor->initialize("ObserverUpdateService");
+        myInteractor = interactor;
+    }
+	ModuleServices::addModule(myInteractor);
+
+	// Create an omegalib scene node and attach the osg node to it. This is used to interact with the 
+	// osg object through omegalib interactors.
+	OsgSceneObject* oso = new OsgSceneObject(node);
+	mySceneNode = new SceneNode(getServer());
+	mySceneNode->addObject(oso);
+	getServer()->getScene()->addChild(mySceneNode);
+	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
+	myInteractor->setSceneNode(mySceneNode);
+
+	// Set the osg node as the root node
+	myOsg->setRootNode(oso->getTransformedNode());
+
+	// Setup shading
+	myLight = new osg::Light;
+    myLight->setLightNum(0);
+    myLight->setPosition(osg::Vec4(100.0, 100, 0, 0.0));
+    myLight->setAmbient(osg::Vec4(0.4f,0.4f,0.4f,1.0f));
+    myLight->setDiffuse(osg::Vec4(0.4f,0.4f,0.4f,1.0f));
+	myLight->setSpotExponent(0);
+	myLight->setSpecular(osg::Vec4(0.0f,0.0f,0.0f,1.0f));
+
+
+
+	node->getOrCreateStateSet()->setAttribute(myLight);
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewer::update(const UpdateContext& context) 
 {
-	myOsg->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

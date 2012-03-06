@@ -182,7 +182,6 @@ void MeshViewer::initialize()
         interactor->initialize("ObserverUpdateService");
         myInteractor = interactor;
     }
-
 	ModuleServices::addModule(myInteractor);
     
     // Load the entities specified in the configuration file.

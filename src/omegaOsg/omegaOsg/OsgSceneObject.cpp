@@ -37,7 +37,7 @@ OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(fal
 {
     myTransform = new osg::MatrixTransform();
     myTransform->addChild( node );
-    myTransform->setDataVariance( osg::Object::STATIC );
+	myTransform->setDataVariance( osg::Object::DYNAMIC );
 
 	const osg::BoundingSphere& bs = node->getBound();
 	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
