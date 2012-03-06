@@ -100,6 +100,7 @@ public:
     static const int MaxCanvasChannels = 128;
 public:
     ConfigImpl( co::base::RefPtr< eq::Server > parent);
+	virtual ~ConfigImpl();
     virtual bool init();
     virtual bool exit();
 	void mapSharedData(const uint128_t& initID);

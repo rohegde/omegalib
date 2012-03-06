@@ -95,7 +95,7 @@ namespace cyclops {
 
 		ServerEngine* getEngine() { return myEngine; }
 
-		void initialize(MasterEngine* engine);
+		void initialize(ServerEngine* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -125,7 +125,7 @@ namespace cyclops {
 	private:
 		static SceneManager* mysInstance;
 
-		MasterEngine* myEngine;
+		ServerEngine* myEngine;
 
 		OsgModule* myOsg;
 		SceneEditorModule* myEditor;

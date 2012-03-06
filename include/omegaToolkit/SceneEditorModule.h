@@ -63,7 +63,7 @@ namespace omegaToolkit
 		SceneEditorModule();
 		~SceneEditorModule();
 
-		void initialize(MasterEngine* engine);
+		void initialize();
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 

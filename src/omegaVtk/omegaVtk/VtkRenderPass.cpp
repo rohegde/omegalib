@@ -40,7 +40,7 @@
 using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkRenderPass::VtkRenderPass(EngineClient* client, const String& name): RenderPass(client, name)
+VtkRenderPass::VtkRenderPass(Renderer* client, const String& name): RenderPass(client, name)
 {
 	resetPropQueues();
 }
@@ -89,7 +89,7 @@ void VtkRenderPass::resetPropQueues()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkRenderPass::render(EngineClient* mng, const DrawContext& context)
+void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{

@@ -93,6 +93,22 @@ ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+ConfigImpl::~ConfigImpl()
+{
+	if(mySharedData.isAttached())
+	{
+		if(mySharedData.isMaster())
+		{
+			deregisterObject(&mySharedData);
+		}
+		else
+		{
+			unmapObject(&mySharedData);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::init()
 {
     omsg("[EQ] ConfigImpl::init");

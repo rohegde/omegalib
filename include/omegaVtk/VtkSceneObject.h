@@ -57,7 +57,7 @@ namespace omegaVtk {
 		virtual bool hasBoundingBox();
 
 		virtual bool isInitialized() { return myInitialized; }
-		virtual void initialize(EngineServer* server) { myInitialized = true; }
+		virtual void initialize(ServerEngine* server) { myInitialized = true; }
 
 		const String& getName() { return myName; }
 
