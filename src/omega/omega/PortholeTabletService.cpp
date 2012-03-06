@@ -120,7 +120,7 @@ void PortholeTabletService::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeTabletService::initialize(MasterEngine* engine)
+void PortholeTabletService::initialize(ServerEngine* engine)
 {
 	myEngine = engine;
 

@@ -41,6 +41,7 @@ ServerEngine* ServerEngine::mysInstance = NULL;
 ServerEngine::ServerEngine(ApplicationBase* app, bool master):
     ServerBase(app, master),
     myActivePointerTimeout(2.0f),
+    myDefaultCamera(NULL),
     myConsoleEnabled(false)
 {
     mysInstance = this;
@@ -78,7 +79,22 @@ void ServerEngine::initialize()
         setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
     }
 
-    myLock.unlock();
+    myDefaultCamera = new Camera();
+	Setting& scfg = cfg->lookup("config");
+    if(cfg->exists("config/camera"))
+    {
+        Setting& s = cfg->lookup("config/camera");
+        if(Config::getBoolValue("enableNavigation", s, false))
+        {
+            myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
+        }
+        Vector3f camPos = Config::getVector3fValue("position", s); 
+        myDefaultCamera->setPosition(camPos);
+    }
+
+	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
+	
+	myLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +202,30 @@ SceneNode* ServerEngine::getScene()
 void ServerEngine::handleEvent(const Event& evt)
 {
     ModuleServices::handleEvent(this, evt);
+    if(!evt.isProcessed())
+	{
+		if( evt.getServiceType() == Service::Keyboard )
+		{
+			// Esc = force exit
+			if(evt.getSourceId() == 256) exit(0);
+			// Tab = toggle on-screen console.
+			if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
+			{
+				setConsoleEnabled(!isConsoleEnabled());
+			}
+		}
+
+		// Update pointers.
+		if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+		{
+			int pointerId = evt.getSourceId() - 1;
+			refreshPointer(pointerId, evt.getPosition().x(), evt.getPosition().y());
+		}
+		if(!evt.isProcessed()) 
+		{
+			myDefaultCamera->handleEvent(evt);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,7 +249,11 @@ void ServerEngine::update(const UpdateContext& context)
     }
 
     myScene->update(false, false);
-}
+
+    // Update the default camera and use it to update the default omegalib observer.
+    myDefaultCamera->update(context);
+    Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
+    myDefaultCamera->updateObserver(obs);}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const SceneQueryResultList& ServerEngine::querySceneRay(const Ray& ray, uint flags)
@@ -231,4 +275,32 @@ void ServerEngine::drawPointers(Renderer* client, RenderState* state)
             r->draw(state);
         }
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Camera* ServerEngine::createCamera(uint flags)
+{
+    Camera* cam = new Camera(flags);
+    myCameras.push_back(cam);
+    return cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerEngine::destroyCamera(Camera* cam)
+{
+    oassert(cam != NULL);
+    myCameras.remove(cam);
+    delete cam;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ServerEngine::CameraCollection::Range ServerEngine::getCameras()
+{
+    return CameraCollection::Range(myCameras.begin(), myCameras.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ServerEngine::CameraCollection::ConstRange ServerEngine::getCameras() const
+{
+    return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
 }

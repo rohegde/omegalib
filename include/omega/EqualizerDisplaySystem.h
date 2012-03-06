@@ -95,6 +95,8 @@ public:
 	bool isDrawFpsEnabled() { return myDrawFps; }
 	bool isDrawStatisticsEnabled() { return myDrawStatistics; }
 
+	void exitConfig();
+
 private:
 	void initObservers();
 	void generateEqConfig();

@@ -38,8 +38,6 @@
 #include "Console.h"
 
 namespace omega {
-	class MasterEngine;
-
 	typedef List<Renderer*> EngineClientList;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +52,9 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API ServerEngine: public ServerBase
 	{
+	public:
+		typedef List<Camera*> CameraCollection;
+
 	friend class Renderer;
 	public:
 		typedef RenderPass* (*RenderPassFactory)(Renderer*);
@@ -66,10 +67,18 @@ namespace omega {
 		ServerEngine(ApplicationBase* app, bool master);
 
 		ServiceManager* getServiceManager();
-		MasterEngine* asMaster();
 
 		void addClient(Renderer* client);
 		EngineClientList& getClients();
+
+		//! Render pass management
+		//@{
+		Camera* getDefaultCamera();
+		Camera* createCamera(uint flags = Camera::DefaultFlags);
+		void destroyCamera(Camera* cam);
+		CameraCollection::Range getCameras();
+		CameraCollection::ConstRange getCameras() const;
+		//@}
 
 		//! Render pass management
 		//@{
@@ -144,7 +153,17 @@ namespace omega {
 		// Console
 		Console* myConsole;
 		bool myConsoleEnabled;
+
+		bool myEventSharingEnabled;
+
+		// Cameras.
+		Camera* myDefaultCamera;
+		CameraCollection myCameras;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Camera* ServerEngine::getDefaultCamera()
+	{ return myDefaultCamera; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ServiceManager* ServerEngine::getServiceManager()
@@ -179,11 +198,6 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void ServerEngine::setConsoleEnabled(bool value)
 	{ myConsoleEnabled = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline MasterEngine* ServerEngine::asMaster()
-	{ return isMaster() ? (MasterEngine*)this : NULL; }
-
 }; // namespace omega
 
 #endif

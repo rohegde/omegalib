@@ -27,7 +27,6 @@
 #include "omega/ApplicationBase.h"
 #include "omega/DisplaySystem.h"
 #include "omega/Application.h"
-#include "omega/MasterEngine.h"
 #include "omega/Actor.h"
 
 using namespace omega;

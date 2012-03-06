@@ -28,7 +28,6 @@
 #define __PORHOLE_TABLET_SERVICE_H__
 
 #include "osystem.h"
-#include "omega/MasterEngine.h"
 #include "omega/Application.h"
 #include "omega/Camera.h"
 #include "omicron/BasicPortholeService.h"
@@ -106,7 +105,7 @@ namespace omega {
 		void processEvent(Event* evt);
 
 		virtual void initialize();
-		virtual void initialize(MasterEngine* engine);
+		virtual void initialize(ServerEngine* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -127,7 +126,7 @@ namespace omega {
 		void sendMessage(TabletConnection* conn, const char* header, void* data, int size);
 
 	private:
-		MasterEngine* myEngine;
+		ServerEngine* myEngine;
 
 		// Config properties
 		bool myHires;

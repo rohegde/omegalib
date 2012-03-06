@@ -85,14 +85,13 @@ class Nightfield: public ServerModule
 {
 public:
 	Nightfield();
-	virtual void initialize(MasterEngine* engine);
+	virtual void initialize();
 	void update(const UpdateContext& context);
 	void handleEvent(const Event& evt);
 	AffectorEntity* findEntity(SceneNode* node);
 	void updateSelection(const Ray& ray);
 
 private:
-	MasterEngine* myEngine;
 	Settings mySettings;
 
 	ReferenceBox* myReferenceBox;

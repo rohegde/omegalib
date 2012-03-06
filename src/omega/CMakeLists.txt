@@ -48,7 +48,6 @@ SET( srcs
 		omega/GpuProgram.cpp
 		omega/ImageUtils.cpp
 		omega/KeyboardService.cpp
-		omega/MasterEngine.cpp
 		omega/MouseService.cpp
 		omega/Node.cpp
         omega/Observer.cpp
@@ -93,7 +92,6 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
-		${OmegaLib_SOURCE_DIR}/include/omega/MasterEngine.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
