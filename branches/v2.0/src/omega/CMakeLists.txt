@@ -130,7 +130,6 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 		omega/EqualizerDisplaySystem.cpp
 		omega/eqinternal/ChannelImpl.cpp
 		omega/eqinternal/ConfigImpl.cpp
-		omega/eqinternal/ViewImpl.cpp
 		omega/eqinternal/WindowImpl.cpp
 		omega/eqinternal/NodeImpl.cpp
 		omega/eqinternal/PipeImpl.cpp

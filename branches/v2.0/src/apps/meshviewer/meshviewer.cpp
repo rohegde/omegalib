@@ -198,7 +198,7 @@ void MeshViewer::initialize()
 	}
 
     // Create and initialize the gui
-    //initUi();
+    initUi();
 
     myShowUI = false;
     autoRotate = true;

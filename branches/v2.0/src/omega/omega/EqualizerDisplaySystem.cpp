@@ -313,6 +313,9 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	mySetting = &scfg;
 	DisplayConfig& cfg = myDisplayConfig;
 
+	myDrawFps = Config::getBoolValue("drawFps", scfg);
+	myDrawStatistics = Config::getBoolValue("drawStatistics", scfg);
+
 	String cfgType = Config::getStringValue("geometry", scfg, "ConfigPlanar");
 	if(cfgType == "ConfigPlanar") cfg.type = DisplayConfig::ConfigPlanar;
 	else cfg.type = DisplayConfig::ConfigCylindrical;

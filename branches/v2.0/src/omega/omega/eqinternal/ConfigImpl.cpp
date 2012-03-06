@@ -270,12 +270,6 @@ uint32_t ConfigImpl::finishFrame()
 	return eq::Config::finishFrame();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ViewImpl* ConfigImpl::findView(const String& viewName)
-{
-    eq::Layout* layout = this->getLayouts()[0];
-    return static_cast< ViewImpl* >(layout->findView(viewName));
-}
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //const FrameData& ConfigImpl::getFrameData() 

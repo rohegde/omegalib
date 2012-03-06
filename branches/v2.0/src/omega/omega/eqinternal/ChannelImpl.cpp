@@ -47,12 +47,6 @@ ChannelImpl::~ChannelImpl()
 {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ViewImpl* ChannelImpl::getViewImpl() 
-{
-    return myView; 
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ChannelImpl::configInit(const eq::uint128_t& initID)
 {
     eq::Channel::configInit(initID);
@@ -72,7 +66,6 @@ bool ChannelImpl::configInit(const eq::uint128_t& initID)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128_t& spin)
 {
-    ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     RendererBase* client = pipe->getClient();
     EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
@@ -127,7 +120,6 @@ void ChannelImpl::frameDraw( const co::base::uint128_t& frameID )
     glClear(GL_COLOR_BUFFER_BIT);
 
     //ofmsg("frameDraw: channel %1% frame %2%", %this %frameID);
-    ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     RendererBase* client = pipe->getClient();
 
@@ -162,11 +154,13 @@ void ChannelImpl::frameViewFinish( const co::base::uint128_t& frameID )
 
     getClient()->draw(myDC);
 
-    if(isDrawStatisticsEnabled())
+	EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)getClient()->getDisplaySystem();
+
+    if(ds->isDrawStatisticsEnabled())
     {
         drawStatistics();
     }
-    else if(isDrawFpsEnabled())
+    else if(ds->isDrawFpsEnabled())
     {
         glMatrixMode( GL_PROJECTION );
         glLoadIdentity();
@@ -187,18 +181,4 @@ omega::RendererBase* ChannelImpl::getClient()
 {
     PipeImpl* pipe = static_cast<PipeImpl*>(getPipe());
     return pipe->getClient();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ChannelImpl::isDrawStatisticsEnabled()
-{
-    ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-    return view->isDrawStatisticsEnabled();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ChannelImpl::isDrawFpsEnabled()
-{
-    ViewImpl* view  = static_cast< ViewImpl* > (const_cast< eq::View* >( getView( )));
-    return view->isDrawFpsEnabled();
 }

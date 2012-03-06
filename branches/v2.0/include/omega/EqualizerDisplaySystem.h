@@ -92,6 +92,9 @@ public:
 	//! This method is called from the node init function. Performs observer initialization.
 	void finishInitialize(ConfigImpl* config);
 
+	bool isDrawFpsEnabled() { return myDrawFps; }
+	bool isDrawStatisticsEnabled() { return myDrawStatistics; }
+
 private:
 	void initObservers();
 	void generateEqConfig();
@@ -113,6 +116,8 @@ private:
 
 	// Debug
 	bool myDebugMouse;
+	bool myDrawFps;
+	bool myDrawStatistics;
 };
 
 }; // namespace omega

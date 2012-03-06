@@ -92,50 +92,6 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class ViewImpl;
-class ViewProxy : public eq::fabric::Serializable
-{
-public:
-    ViewProxy(ViewImpl* view);
-
-protected:
-    /** The changed parts of the view. */
-    enum DirtyBits
-    {
-        DIRTY_DRAW_STATS       = eq::fabric::Serializable::DIRTY_CUSTOM << 1,
-        DIRTY_DRAW_FPS       = eq::fabric::Serializable::DIRTY_CUSTOM << 2,
-    };
-
-    virtual void serialize( co::DataOStream& os, const uint64_t dirtyBits );
-    virtual void deserialize( co::DataIStream& is, const uint64_t dirtyBits );
-    virtual void notifyNewVersion();
-
-private:
-    ViewImpl* myView;
-    friend class ViewImpl;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//! @internal
-class ViewImpl: public eq::View
-{
-friend class ViewProxy;
-public:
-    ViewImpl(eq::Layout* parent);
-    ~ViewImpl();
-
-    void drawStatistics(bool enable);
-    bool isDrawStatisticsEnabled();
-    void drawFps(bool enable);
-    bool isDrawFpsEnabled();
-
-private:
-    bool myDrawStatistics;
-    bool myDrawFps;
-    ViewProxy myProxy;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class ConfigImpl: public eq::Config
 {
@@ -151,7 +107,6 @@ public:
     virtual bool handleEvent(const eq::ConfigEvent* event);
     virtual uint32_t startFrame( const uint128_t& version );
     virtual uint32_t finishFrame();
-    ViewImpl* findView(const String& viewName);
 	const UpdateContext& getUpdateContext();
 
 private:
@@ -255,13 +210,10 @@ protected:
     virtual void frameViewFinish(const uint128_t& spin);
 
     omega::RendererBase* getClient();
-    bool isDrawStatisticsEnabled();
-    bool isDrawFpsEnabled();
 
 private:
     eq::Window* myWindow;
     omicron::Lock myLock;
-    ViewImpl* myView;
     DrawContext myDC;
     uint128_t myLastFrame;
     RenderTarget* myDrawBuffer;
@@ -278,8 +230,8 @@ public:
         { return new ConfigImpl( parent ); }
     virtual eq::Channel* createChannel(eq::Window* parent)
         { return new ChannelImpl( parent ); }
-    virtual eq::View* createView(eq::Layout* parent)
-        { return new ViewImpl(parent); }
+    //virtual eq::View* createView(eq::Layout* parent)
+    //    { return new ViewImpl(parent); }
     virtual eq::Window* createWindow(eq::Pipe* parent)
         { return new WindowImpl(parent); }
     virtual eq::Pipe* createPipe(eq::Node* parent)
