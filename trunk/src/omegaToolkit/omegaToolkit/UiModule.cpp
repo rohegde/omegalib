@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/DefaultSkin.h"
+#include "omegaToolkit/ui/Image.h"
 #include "omegaToolkit/UiRenderPass.h"
 
 using namespace omegaToolkit;
@@ -35,8 +36,8 @@ UiModule* UiModule::mysInstance = NULL;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
-	myWidgetFactory(NULL),
-	myEngine(NULL)
+	ServerModule("UiModule"),
+	myWidgetFactory(NULL)
 {
 	mysInstance = this;
 }
@@ -47,47 +48,74 @@ UiModule::~UiModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiModule::initialize(EngineServer* server)
+void UiModule::initialize()
 {
 	omsg("UiModule initializing...");
 
-	myEngine = server;
-	myWidgetFactory = new ui::DefaultWidgetFactory(myEngine);
-	for(int i = 0; i < MaxUis; i++)
+	myWidgetFactory = new ui::DefaultWidgetFactory(getServer());
+	myUi = new ui::Container(getServer());
+	myUi->setLayout(ui::Container::LayoutFree);
+	myUi->setUIEventHandler(getServer());
+
+	getServer()->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
+	getServer()->addRenderPass("UiRenderPass");
+
+    Config* cfg = getServer()->getSystemManager()->getAppConfig();
+	myLocalEventsEnabled = cfg->getBoolValue("config/ui/enableLocalEvents", true);
+	if(cfg->exists("config/ui/images"))
 	{
-		myUi[i] = new ui::Container(myEngine);
-		myUi[i]->setLayout(ui::Container::LayoutFree);
-		myUi[i]->setUIEventHandler(myEngine);
+		const Setting& stImages = cfg->lookup("config/ui/images");
+		initImages(stImages);
 	}
-	myEngine->registerRenderPassClass("UiRenderPass", (EngineServer::RenderPassFactory)UiRenderPass::createInstance);
-	myEngine->addRenderPass("UiRenderPass");
 
 	omsg("UiModule initialization OK");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::initImages(const Setting& images)
+{
+	for(int i = 0; i < images.getLength(); i++)
+	{
+		Setting& imageSetting = images[i];
+
+		String fileName = Config::getStringValue("source", imageSetting, "");
+		if(fileName != "")
+		{
+			ui::Image* img = myWidgetFactory->createImage("img", myUi);
+
+			bool stereo = Config::getBoolValue("stereo", imageSetting, false);
+
+			img->setStereo(stereo);
+			ImageData* imgData = ImageUtils::loadImage(fileName);
+			img->setData(imgData->getPixels());
+
+			Vector2f position = Config::getVector2fValue("position", imageSetting, Vector2f(0, 0));
+			Vector2f size = Config::getVector2fValue("size", imageSetting, 
+				Vector2f(imgData->getWidth() / (stereo ? 2 : 1), imgData->getHeight()));
+			float scale = Config::getFloatValue("scale", imageSetting, 1);
+
+			img->setPosition(position);
+			img->setSize(size * scale);
+			img->setUserMoveEnabled(true);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::update(const UpdateContext& context)
 {
-	// Update ui.
-	for(int i = 0; i < MaxUis; i++)
-	{
-		myUi[i]->update(context);
-	}
+	myUi->update(context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::handleEvent(const Event& evt)
 {
-	for(int i = 0; i < MaxUis; i++)
-	{
-		myUi[i]->handleEvent(evt);
-	}
+	myUi->handleEvent(evt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-ui::Container* UiModule::getUi(int id)
+ui::Container* UiModule::getUi()
 {
-	oassert(id >= 0 && id < MaxUis);
-	return myUi[id];
+	return myUi;
 }
 

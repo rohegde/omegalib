@@ -25,19 +25,20 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/UiRenderPass.h"
-#include "omega/EngineClient.h"
-#include "omega/EngineServer.h"
 #include "omega/Renderer.h"
+#include "omega/ServerEngine.h"
+#include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/UiModule.h"
+#include "omega/DisplaySystem.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiRenderPass::render(EngineClient* client, const DrawContext& context)
+void UiRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::OverlayDrawTask)
 	{
@@ -49,8 +50,11 @@ void UiRenderPass::render(EngineClient* client, const DrawContext& context)
 
 		client->getRenderer()->beginDraw2D(context);
 
-		ui::Container* ui = UiModule::instance()->getUi(0);
-		const Rect& vp = Rect(0, 0, context.channel->canvasSize->x(), context.channel->canvasSize->y());
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Vector2i displaySize = ds->getCanvasSize();
+
+		ui::Container* ui = UiModule::instance()->getUi();
+		const Rect& vp = Rect(0, 0, displaySize[0], displaySize[1]);
 
 		// Update the root container size if necessary.
 		if((ui->getPosition().cwiseNotEqual(vp.min.cast<float>())).all() ||

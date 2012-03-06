@@ -24,104 +24,58 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __RENDERER_H__
-#define __RENDERER_H__
+#ifndef __ENGINE_CLIENT_H__
+#define __ENGINE_CLIENT_H__
 
 #include "osystem.h"
-#include "omega/Font.h"
-#include "omega/Application.h"
-
-#include "omega/Texture.h"
-#include "omega/GpuBuffer.h"
+#include "Renderable.h"
+#include "omega/ApplicationBase.h"
+#include "omega/SystemManager.h"
 
 namespace omega {
+	class RenderPass;
+	class ServerEngine;
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Renderer
+	class OMEGA_API Renderer: public RendererBase
 	{
 	public:
-		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };
-		enum DrawType { DrawTriangles, DrawLines, DrawPoints, DrawTriangleStrip };
+		Renderer(ServerBase* server);
 
-	public:
-		Renderer();
+		ServerEngine* getServer();
 
-		//! Renderer options
-		//@{
-		void setTargetTexture(Texture* texture);
-		Texture* getTargetTexture();
-		//@}
+		void addRenderPass(RenderPass* pass, bool addToFront);
+		void removeRenderPass(RenderPass* pass);
+		RenderPass* getRenderPass(const String& name);
+		void removeAllRenderPasses();
 
-		//! Drawing control
-		//@{
-		void beginDraw3D(const DrawContext& context);
-		void beginDraw2D(const DrawContext& context);
-		void endDraw();
-		bool isDrawing();
-		//@}
 
-		//! Drawing control
-		//@{
-		void pushTransform(const AffineTransform3& transform);
-		void popTransform();
-		//@}
+		void queueRenderableCommand(RenderableCommand& cmd);
 
-		//! 2D Drawing methods
-		//@{
-		void drawRectGradient(Vector2f pos, Vector2f size, Orientation orientation, 
-			Color startColor, Color endColor, float pc = 0.5f);
-		void drawRect(Vector2f pos, Vector2f size, Color color);
-		void drawRectOutline(Vector2f pos, Vector2f size, Color color);
-		void drawText(const String& text, Font* font, const Vector2f& position, unsigned int align);
-		void drawRectTexture(Texture* texture, const Vector2f& position, const Vector2f size, uint flipFlags = 0, const Vector2f& minUV = Vector2f::Zero(), const Vector2f& maxUV = Vector2f::Ones());
-		void drawCircleOutline(Vector2f position, float radius, const Color& color, int segments);
-		//@}
+		virtual void initialize();
+		virtual void draw(const DrawContext& context);
+		virtual void startFrame(const FrameInfo& frame);
+		virtual void finishFrame(const FrameInfo& frame);
 
-		//! 3D Drawing methods
-		//@{
-		void drawWireSphere(const Color& color, int segments, int slices);
-		void drawPrimitives(VertexBuffer* vertices, uint* indices, uint size, DrawType type);
-		//@}
-
-		//! Font management
-		//@{
-		Font* createFont(omega::String fontName, omega::String filename, int size);
-		Font* getFont(omega::String fontName);
-		Font* getDefaultFont();
-		void setDefaultFont(Font* value);
-		//@}
-
-		// Hack
-		void setForceDiffuseColor(bool value) { myForceDiffuseColor = value; }
+		DrawInterface* getRenderer();
 
 	private:
-		bool myDrawing;
-		Texture* myTargetTexture;
-		Dictionary<String, Font*> myFonts;
-		Font* myDefaultFont;
-		Lock myLock;
+		void innerDraw(const DrawContext& context);
 
-		bool myForceDiffuseColor;
+	private:
+		ServerEngine* myServer;
+		DrawInterface* myRenderer;
+		List<RenderPass*> myRenderPassList;
+		Queue<RenderableCommand> myRenderableCommands;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool Renderer::isDrawing()
-	{ return myDrawing; }
+	inline DrawInterface* Renderer::getRenderer()
+	{ return myRenderer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Renderer::setTargetTexture(Texture* texture)
-	{ myTargetTexture = texture; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Texture* Renderer::getTargetTexture()
-	{ return myTargetTexture; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Font* Renderer::getDefaultFont()
-	{ return myDefaultFont; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Renderer::setDefaultFont(Font* value)
-	{ myDefaultFont = value; }
+	inline ServerEngine* Renderer::getServer()
+	{ return myServer; }
 }; // namespace omega
 
 #endif

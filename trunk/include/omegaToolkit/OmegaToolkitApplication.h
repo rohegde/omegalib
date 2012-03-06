@@ -28,7 +28,7 @@
 #define __OMEGA_TOOLKIT_APPLICATION_H__
 
 #include "omegaToolkitConfig.h"
-#include "omega/EngineApplication.h"
+#include "omega/Application.h"
 #include "UiModule.h"
 #include "LightingPass.h"
 #include "DefaultRenderPass.h"
@@ -39,23 +39,25 @@ namespace omegaToolkit {
 	using namespace omega;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OmegaToolkitEngineModule: public IEngineModule
+	class OmegaToolkitEngineModule: public ServerModule
 	{
 	public:
 		OmegaToolkitEngineModule()
 		{
-			EngineModuleServices::addModule(new UiModule());
+			ModuleServices::addModule(new UiModule());
 		}
 
-		virtual void initialize(EngineServer* engine) 
+		virtual void initialize() 
 		{
 			omsg("OmegaToolkitEngineModule initializing...");
 
+			ServerEngine* engine = getServer();
+
 			// Setup default render chain.
-			engine->registerRenderPassClass("LightingPass", (EngineServer::RenderPassFactory)LightingPass::createInstance);
-			engine->registerRenderPassClass("DefaultRenderPass", (EngineServer::RenderPassFactory)DefaultRenderPass::createInstance);
-			engine->registerRenderPassClass("TransparentRenderPass", (EngineServer::RenderPassFactory)TransparentRenderPass::createInstance);
-			engine->registerRenderPassClass("OverlayRenderPass", (EngineServer::RenderPassFactory)OverlayRenderPass::createInstance);
+			engine->registerRenderPassClass("LightingPass", (ServerEngine::RenderPassFactory)LightingPass::createInstance);
+			engine->registerRenderPassClass("DefaultRenderPass", (ServerEngine::RenderPassFactory)DefaultRenderPass::createInstance);
+			engine->registerRenderPassClass("TransparentRenderPass", (ServerEngine::RenderPassFactory)TransparentRenderPass::createInstance);
+			engine->registerRenderPassClass("OverlayRenderPass", (ServerEngine::RenderPassFactory)OverlayRenderPass::createInstance);
 
 			engine->addRenderPass("LightingPass");
 			engine->addRenderPass("DefaultRenderPass");
@@ -71,13 +73,13 @@ namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! A convenience application class to create omegaToolkit applications
 	template<typename T> 
-	class OmegaToolkitApplication: public EngineApplication<T>
+	class OmegaToolkitApplication: public Application<T>
 	{
 	public:
-		OmegaToolkitApplication()
-		{EngineModuleServices::addModule(new OmegaToolkitEngineModule());}
-		virtual ApplicationServer* createServer() 
-		{ return new T(this); }
+		OmegaToolkitApplication(const String& name): Application<T>(name)
+		{ModuleServices::addModule(new OmegaToolkitEngineModule());}
+		//virtual ServerBase* createServer() 
+		//{ return new T(this); }
 
 	private:
 	};

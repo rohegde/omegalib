@@ -89,6 +89,9 @@ void MouseService::mouseMotionCallback(int x, int y)
 		evt->setPosition(x, y);
 		evt->setFlags(sButtonFlags);
 
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		mysInstance->myPointerRay = ds->getViewRay(Vector2i(x, y));
+
 		evt->setExtraDataType(Event::ExtraDataVector3Array);
 		evt->setExtraDataVector3(0, mysInstance->myPointerRay.getOrigin());
 		evt->setExtraDataVector3(1, mysInstance->myPointerRay.getDirection());

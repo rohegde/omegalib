@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/BoundingSphere.h"
-#include "omega/Renderer.h"
+#include "omega/DrawInterface.h"
 
 using namespace omega;
 using namespace omegaToolkit;

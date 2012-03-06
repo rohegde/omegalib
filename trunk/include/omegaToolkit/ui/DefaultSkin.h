@@ -61,7 +61,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class DefaultButtonRenderable;
 	public:
-		DefaultButton(EngineServer* srv): Button(srv) {}
+		DefaultButton(ServerEngine* srv): Button(srv) {}
 		virtual ~DefaultButton() {}
 		virtual Renderable* createRenderable()  { return new DefaultButtonRenderable(this); }
 	};
@@ -71,7 +71,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class DefaultSliderRenderable;
 	public:
-		DefaultSlider(EngineServer* srv): Slider(srv) {}
+		DefaultSlider(ServerEngine* srv): Slider(srv) {}
 		virtual ~DefaultSlider() {}
 		virtual Renderable* createRenderable() { return new DefaultSliderRenderable(this); }
 	};
@@ -80,7 +80,7 @@ namespace omegaToolkit { namespace ui {
 	class DefaultWidgetFactory: public WidgetFactory
 	{
 	public:
-		DefaultWidgetFactory(EngineServer* srv): WidgetFactory(srv) {}
+		DefaultWidgetFactory(ServerEngine* srv): WidgetFactory(srv) {}
 
 		virtual Button* createButton(const String& name, Container* container)
 		{

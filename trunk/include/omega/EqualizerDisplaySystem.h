@@ -26,7 +26,7 @@
 #define __EQUALIZER_DISPLAY_SYSTEM_H__
 
 #include "DisplaySystem.h"
-#include "Application.h"
+#include "ApplicationBase.h"
 
 namespace omega
 {
@@ -57,7 +57,7 @@ protected:
 		return 0;
 	}
 private:
-    std::ostringstream myStringStream;
+	std::ostringstream myStringStream;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,16 +74,7 @@ public:
 	void run(); 
 	void cleanup(); 
 
-	String getDisplayConfig() { return myDisplayConfig; }
-	void setDisplayConfig(const String& value) { myDisplayConfig = value; }
-
 	Observer* getObserver(int observerId);
-
-	//! Layer and view management.
-	//@{
-	void setLayer(const char* viewName, Layer::Enum layer);
-	Layer::Enum getLayer(const char* viewName);
-	//}@
 
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 	bool isDebugMouseEnabled() { return myDebugMouse; }
@@ -92,23 +83,32 @@ public:
 	virtual Vector2i getCanvasSize();
 	//! Returns a view ray given a global (canvas) pointer position in pixel coordinates
 	virtual Ray getViewRay(Vector2i position);
-	//! Returns a view ray given a loal pointer positon and a channel index.
-	Ray	getViewRay(Vector2i position, int channelX, int channelY);
+	//! Returns a view ray given a local pointer positon and a tile index.
+	Ray	getViewRay(Vector2i position, int tileX, int tileY);
+
+	const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
+
+	//! @internal Finish equalizer display system initialization.
+	//! This method is called from the node init function. Performs observer initialization.
+	void finishInitialize(ConfigImpl* config);
+
+	bool isDrawFpsEnabled() { return myDrawFps; }
+	bool isDrawStatisticsEnabled() { return myDrawStatistics; }
 
 private:
-	void initLayers();
 	void initObservers();
-	String generateEqConfig(const String& cfgPath);
+	void generateEqConfig();
+	void setupEqInitArgs(int& numArgs, const char** argv);
 
 private:
 	SystemManager* mySys;
 
-	// Display config
+	// Configuration
 	Setting* mySetting;
-	String myDisplayConfig;
+	DisplayConfig myDisplayConfig;
 
 	// Equalizer stuff.
-    EqualizerNodeFactory* myNodeFactory;
+	EqualizerNodeFactory* myNodeFactory;
 	ConfigImpl* myConfig;
 
 	// Observers.
@@ -116,6 +116,8 @@ private:
 
 	// Debug
 	bool myDebugMouse;
+	bool myDrawFps;
+	bool myDrawStatistics;
 };
 
 }; // namespace omega

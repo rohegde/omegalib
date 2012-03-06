@@ -37,26 +37,29 @@ using namespace omegaToolkit;
 using namespace omegaOsg;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewer: public EngineServer
+class OsgViewer: public ServerModule
 {
 public:
-	OsgViewer(Application* app): EngineServer(app) {}
-	virtual void initialize();
+	OsgViewer(): myEngine(NULL) {}
+	virtual void initialize(MasterEngine* engine);
 	virtual void update(const UpdateContext& context);
+	virtual void handleEvent(const Event& evt) {}
 
 private:
+	MasterEngine* myEngine;
 	OsgModule* myOsg;
 	SceneNode* mySceneNode;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgViewer::initialize()
+void OsgViewer::initialize(MasterEngine* engine)
 {
-	EngineServer::initialize();
-	Config* cfg = getSystemManager()->getAppConfig();
+	myEngine = engine;
+
+	Config* cfg = myEngine->getSystemManager()->getAppConfig();
 
 	myOsg = new OsgModule();
-	myOsg->initialize(this);
+	myOsg->doInitialize(myEngine);
 
 	// Load osg object
 	if(cfg->exists("config/scene"))
@@ -80,7 +83,7 @@ void OsgViewer::initialize()
 				optOSGFile.optimize(node);
 
 				myOsg->setRootNode(node);
-				getDefaultCamera()->focusOn(getScene(0));
+				myEngine->getDefaultCamera()->focusOn(myEngine->getScene());
 			}
 		}
 		else
@@ -93,7 +96,6 @@ void OsgViewer::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewer::update(const UpdateContext& context) 
 {
-	EngineServer::update(context);
 	myOsg->update(context);
 }
 
@@ -101,7 +103,7 @@ void OsgViewer::update(const UpdateContext& context)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<OsgViewer> app;
+	Application<OsgViewer> app("osgviewer");
 
 	// Read config file name from command line or use default one.
 	const char* cfgName = "osgviewer.cfg";

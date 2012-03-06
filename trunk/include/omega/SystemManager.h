@@ -33,7 +33,7 @@ namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Forward declarations
-	class Application;
+	class ApplicationBase;
 	class DisplaySystem;
 	class PythonInterpreter;
 
@@ -77,11 +77,11 @@ namespace omega
 		//! Sets the DisplaySystem object
 		void setDisplaySystem(DisplaySystem* value);
 
-		//! Gets the Application object
-		Application* getApplication();
+		//! Gets the ApplicationBase object
+		ApplicationBase* getApplication();
 
-		//! Sets the Application object
-		void setApplication(Application* value);
+		//! Sets the ApplicationBase object
+		void setApplication(ApplicationBase* value);
 
 		bool isExitRequested();
 
@@ -89,8 +89,8 @@ namespace omega
 
 		bool isInitialized();
 		
-		bool isRemote() { return myIsRemote; }
-		const String& getMasterHostname() { return myMasterHostname; }
+		bool isMaster() { return myIsMaster; }
+		const String& getHostname() { return myHostname; }
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
@@ -112,12 +112,14 @@ namespace omega
 		DataManager*    myDataManager;
 		DisplaySystem*	myDisplaySystem;
 		ServiceManager*	myServiceManager;
-		Application*	myApplication;
+		ApplicationBase*	myApplication;
 		bool			myExitRequested;
 		String			myExitReason;
 		PythonInterpreter* myInterpreter;
-		bool myIsRemote;
-		String myMasterHostname;
+		
+		bool myIsMaster;
+		String myHostname;
+		String myProgramName;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,11 +139,11 @@ namespace omega
 	{ myDisplaySystem = value; }
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Application* SystemManager::getApplication() 
+	inline ApplicationBase* SystemManager::getApplication() 
 	{ return myApplication; }
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void SystemManager::setApplication(Application* value) 
+	inline void SystemManager::setApplication(ApplicationBase* value) 
 	{ myApplication = value; }
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////

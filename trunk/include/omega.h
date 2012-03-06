@@ -26,8 +26,10 @@
 #define __OMEGA__
 
 #include "omegaConfig.h"
-#include "omega/Application.h"
+#include "omega/ApplicationBase.h"
 #include "omega/DisplaySystem.h"
+#include "omega/EventSharingModule.h"
+#include "omega/MasterEngine.h"
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
 #include "omega/GpuProgram.h"
@@ -35,6 +37,7 @@
 #include "omega/RenderTarget.h"
 #include "omega/RenderTarget.h"
 #include "omega/SystemManager.h"
+#include "omega/SharedDataServices.h"
 #include "omega/Texture.h"
 
 #endif

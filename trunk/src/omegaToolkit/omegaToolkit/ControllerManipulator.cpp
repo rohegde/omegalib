@@ -31,7 +31,8 @@ using namespace omegaToolkit;
 #define SET_BUTTON_STATE(btn, index) if(evt.getExtraDataFloat(index) > 0) { myButtonState[btn] = true; evt.setProcessed(); } else myButtonState[btn] = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ControllerManipulator::ControllerManipulator()
+ControllerManipulator::ControllerManipulator():
+	Actor("ControllerManipulator")
 {
 	memset(myButtonState, 0, sizeof(bool) * MaxButtons);
 	myAnalog1Position = Vector2f::Zero();

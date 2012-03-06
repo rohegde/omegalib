@@ -36,7 +36,7 @@ namespace omegaToolkit {
 	class OTK_API DefaultTwoHandsInteractor: public Actor
 	{
 	public:
-		DefaultTwoHandsInteractor() {}
+		DefaultTwoHandsInteractor(): Actor("DefaultTwoHandsInteractor") {}
 
 		void initialize(const String& observerUpdateServiceName);
 

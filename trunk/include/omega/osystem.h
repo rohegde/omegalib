@@ -31,7 +31,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // The current omegalib version string.
-#define OMEGA_VERSION "1.1.0"
+#define OMEGA_VERSION "2.0.0"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WIN32 Platform-specific includes & macros.
@@ -65,7 +65,8 @@ namespace omega
 	// Function definitions.
 	OMEGA_API GLEWContext* glewGetContext();
 	OMEGA_API void glewSetContext(const GLEWContext* context);
-	OMEGA_API void omain(omega::Application& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+	OMEGA_API void omain(omega::ApplicationBase& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+	OMEGA_API void olaunch(const String& command);
 };
 
 #endif

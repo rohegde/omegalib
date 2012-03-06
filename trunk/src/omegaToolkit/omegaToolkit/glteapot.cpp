@@ -73,7 +73,7 @@ OpenGL(TM) is a trademark of Silicon Graphics, Inc.
 #include <omegaGl.h>
 
 #ifdef WIN32
-	#pragma warning( disable : 4305)
+    #pragma warning( disable : 4305)
 #endif
 
 /* Rim, body, lid, and bottom data must be reflected in x and
@@ -233,19 +233,19 @@ using namespace omegaToolkit;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Teapot::render(SceneNode* node, RenderState* state)
 {
-	if(state->isFlagSet(RenderPass::RenderOpaque))
-	{
-		if(myEffect != NULL)
-		{
-			myEffect->activate();
-		}
+    if(state->isFlagSet(RenderPass::RenderOpaque))
+    {
+        if(myEffect != NULL)
+        {
+            myEffect->activate();
+        }
 
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		teapot(myResolution, mySize, GL_FILL);
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+        teapot(myResolution, mySize, GL_FILL);
 
-		if(myEffect != NULL)
-		{
-			myEffect->deactivate();
-		}
-	}
+        if(myEffect != NULL)
+        {
+            myEffect->deactivate();
+        }
+    }
 }

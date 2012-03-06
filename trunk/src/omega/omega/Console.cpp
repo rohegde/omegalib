@@ -27,6 +27,7 @@
 #include "omega/Console.h"
 #include "omega/Font.h"
 #include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 #include "omega/glheaders.h"
 
 using namespace omega;
@@ -85,7 +86,7 @@ void ConsoleRenderable::draw(RenderState* state)
 	float x = 0; 
 	float y = 0;
 	float lineHeight = fi.size + 4;
-	float lineWidth = state->context->channel->canvasSize->x(); 
+	float lineWidth = SystemManager::instance()->getDisplaySystem()->getCanvasSize().x(); 
 
 	getRenderer()->drawRect(Vector2f(0, 0), Vector2f(lineWidth, lineHeight * (myOwner->myLines + 1)), myOwner->myBackgroundColor);
 

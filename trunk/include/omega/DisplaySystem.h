@@ -27,11 +27,12 @@
 
 #include "osystem.h"
 #include "Observer.h"
-#include "Application.h"
+#include "ApplicationBase.h"
 //#include "Color.h"
 
 namespace omega
 {
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Forward declarations
 class SystemManager;
@@ -54,10 +55,6 @@ public:
 	// Starts display system rendering. This call does not return until the current omegalib application sends an
 	// exit request to the system manager.
 	virtual void run() = 0;
-
-	// Layer and view management.
-	virtual void setLayer(const char* viewName, Layer::Enum layer) = 0;
-	virtual Layer::Enum getLayer(const char* viewName) = 0;
 
 	virtual Observer* getObserver(int observerId) { return NULL; }
 	

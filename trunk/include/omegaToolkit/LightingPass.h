@@ -34,9 +34,9 @@ namespace omegaToolkit {
 	class OTK_API LightingPass: public RenderPass
 	{
 	public:
-		LightingPass(EngineClient* client, const String& name): RenderPass(client, name) {}
-		static RenderPass* createInstance(EngineClient* client) { return new LightingPass(client, "LightingPass"); }
-		virtual void render(EngineClient* client, const DrawContext& context);
+		LightingPass(Renderer* client, const String& name): RenderPass(client, name) {}
+		static RenderPass* createInstance(Renderer* client) { return new LightingPass(client, "LightingPass"); }
+		virtual void render(Renderer* client, const DrawContext& context);
 	};
 }; // namespace omegaToolkit
 

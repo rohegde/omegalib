@@ -50,16 +50,12 @@ namespace omega
 
 		void updateProjectionMatrix();
 
-		// Layer and view management.
-		virtual void setLayer(const char* viewName, Layer::Enum layer);
-		virtual Layer::Enum getLayer(const char* viewName);
-
 		virtual Observer* getObserver(int index) { return &myObserver; }
 
 		DisplaySystemType getId() { return DisplaySystem::Glut; }
 
-		ApplicationServer* getApplicationServer() { return myAppServer; }
-		ApplicationClient* getApplicationClient() { return myAppClient; }
+		ServerBase* getApplicationServer() { return myAppServer; }
+		RendererBase* getApplicationClient() { return myAppClient; }
 
 		virtual Vector2i getCanvasSize() { return myResolution; }
 		virtual Ray getViewRay(Vector2i position) { return Ray(); }
@@ -68,7 +64,6 @@ namespace omega
 		GpuContext* getGpuContext() { return myGpuContext; }
 
 	private:
-		void initLayers();
 		void initObservers();
 
 	private:
@@ -82,10 +77,9 @@ namespace omega
 		double myFarz;
 
 		SystemManager* mySys;
-		ApplicationClient* myAppClient;
-		ApplicationServer* myAppServer;
+		RendererBase* myAppClient;
+		ServerBase* myAppServer;
 		RenderTarget* myFrameBuffer;
-		Layer::Enum myLayer;
 
 		GpuManager* myGpu;
 		GpuContext* myGpuContext;

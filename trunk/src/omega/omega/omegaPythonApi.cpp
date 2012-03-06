@@ -30,7 +30,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
-#include "omega/EngineServer.h"
+#include "omega/ServerEngine.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -41,8 +41,8 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* nodeGetRoot(PyObject* self, PyObject* args)
 {
-	EngineServer* engine = EngineServer::instance();
-	SceneNode* root = engine->getScene(0);
+	ServerEngine* engine = ServerEngine::instance();
+	SceneNode* root = engine->getScene();
 	PyObject* pyRoot = PyCapsule_New(root, "SceneNode", NULL);
 
 	return Py_BuildValue("O", pyRoot);

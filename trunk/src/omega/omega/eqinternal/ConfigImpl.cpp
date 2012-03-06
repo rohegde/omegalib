@@ -28,16 +28,13 @@
 #include "omega/MouseService.h"
 #include "omega/KeyboardService.h"
 #include "omega/Observer.h"
+#include "omega/EventSharingModule.h"
 
 #include "eqinternal.h"
 
 using namespace omega;
 using namespace co::base;
 using namespace std;
-
-extern omega::Vector2i sCanvasSize;
-extern omega::Vector2i sCanvasChannels;
-extern ChannelImpl* sCanvasChannelPointers[ConfigImpl::MaxCanvasChannels][ConfigImpl::MaxCanvasChannels];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
@@ -91,19 +88,38 @@ void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 ConfigImpl::ConfigImpl( co::base::RefPtr< eq::Server > parent): 
     eq::Config(parent) 
 {
+    omsg("[EQ] ConfigImpl::ConfigImpl");
+	SharedDataServices::setSharedData(&mySharedData);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool ConfigImpl::init(const uint128_t& initID)
+bool ConfigImpl::init()
 {
-    registerObject(&myFrameData);
-    return eq::Config::init(initID);
+    omsg("[EQ] ConfigImpl::init");
+
+	registerObject(&mySharedData);
+	//mySharedData.setAutoObsolete(getLatency());
+
+	return eq::Config::init(mySharedData.getID());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ConfigImpl::mapSharedData(const uint128_t& initID)
+{
+    omsg("[EQ] ConfigImpl::mapSharedData");
+    if(!mySharedData.isAttached( ))
+    {
+        if(!mapObject( &mySharedData, initID))
+		{
+			oferror("ConfigImpl::mapSharedData: maoPobject failed (object id = %1%)", %initID);
+		}
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::exit()
 {
-    deregisterObject( &myFrameData );
+    //deregisterObject( &myFrameData );
     const bool ret = eq::Config::exit();
     return ret;
 }
@@ -119,43 +135,8 @@ uint ConfigImpl::processMouseButtons(uint btns)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ConfigImpl::processMousePosition(eq::Window* source, int x, int y, Vector2i& outPosition, Ray& ray)
-{
-    WindowImpl* wi = (WindowImpl*)source;
-    if(wi->isInitialized())
-    {
-        int channelX = wi->getIndex()[0];
-        int channelY = wi->getIndex()[1];
-        ChannelImpl* sch = sCanvasChannelPointers[channelX][channelY];
-
-        if(sch != NULL)
-        {
-            Vector2i mousePosition(x, y);
-
-            outPosition = sch->windowToCanvas(mousePosition);
-            EqualizerDisplaySystem* eds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-            if(eds->isDebugMouseEnabled())
-            {
-                const DrawContext& dc = sch->getLastDrawContext();
-                ofmsg("MOUSE  Channel=%1%  ChannelVP=%2%,%3%,%4%,%5%  ChannelPos=%6%,%7%  GlobalPos=%8%", 
-                    %sch->getName() 
-                    %dc.viewport.x() %dc.viewport.y() %dc.viewport.width() %dc.viewport.height()
-                    %x %y
-                    %outPosition
-                    );
-            }
-
-            ray = eds->getViewRay(mousePosition, channelX, channelY);
-        }
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 {
-    static int x;
-    static int y;
-
     switch( event->data.type )
     {
         case eq::Event::KEY_PRESS:
@@ -170,57 +151,26 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
         }
     case eq::Event::WINDOW_POINTER_MOTION:
         {
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerMotion.x,
-                event->data.pointerMotion.y,
-                pos, ray);
-            MouseService::mouseMotionCallback(pos[0], pos[1]);
-            MouseService::instance()->setPointerRay(ray);
+            MouseService::mouseMotionCallback(event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     case eq::Event::WINDOW_POINTER_BUTTON_PRESS:
         {
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerButtonPress.x,
-                event->data.pointerButtonPress.y,
-                pos, ray);
             uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-            MouseService::mouseButtonCallback(buttons, 1, pos[0], pos[1]);
-            MouseService::instance()->setPointerRay(ray);
+            MouseService::mouseButtonCallback(buttons, 1, event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     case eq::Event::WINDOW_POINTER_BUTTON_RELEASE:
         {
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerButtonPress.x,
-                event->data.pointerButtonPress.y,
-                pos, ray);
             uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-            MouseService::mouseButtonCallback(buttons, 0, pos[0], pos[1]);
-            MouseService::instance()->setPointerRay(ray);
+            MouseService::mouseButtonCallback(buttons, 0, event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     case eq::Event::WINDOW_POINTER_WHEEL:
         {
             int wheel = event->data.pointerWheel.xAxis;
-            Vector2i pos;
-            Ray ray;
-            processMousePosition(
-                this->find<eq::Window>(event->data.originator),
-                event->data.pointerWheel.x,
-                event->data.pointerWheel.y,
-                pos, ray);
             uint buttons = processMouseButtons(event->data.pointerButtonPress.buttons);
-            MouseService::mouseWheelCallback(buttons, wheel, pos[0], pos[1]);
+            MouseService::mouseWheelCallback(buttons, wheel, event->data.pointer.x, event->data.pointer.y);
             return true;
         }
     }
@@ -230,35 +180,68 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::startFrame( const uint128_t& version )
 {
-    myFrameData.commit();
+	static float lt = 0.0f;
+	static float tt = 0.0f;
+	// Compute dt.
+	float t = (float)((double)clock() / CLOCKS_PER_SEC);
+	if(lt == 0) lt = t;
+	UpdateContext uc;
+	uc.dt = t - lt;
+	tt += uc.dt;
+	uc.time = tt;
+	uc.frameNum = version.low();
+	lt = t;
+
+	mySharedData.setUpdateContext(uc);
+
+	// If enabled, broadcast events to other server nodes.
+	if(SystemManager::instance()->isMaster())
+	{
+		ServiceManager* im = SystemManager::instance()->getServiceManager();
+		im->poll();
+		int av = im->getAvailableEvents();
+		if(av != 0)
+		{
+    		im->lockEvents();
+    		// Dispatch events to application server.
+    		for( int evtNum = 0; evtNum < av; evtNum++)
+    		{
+    			Event* evt = im->getEvent(evtNum);
+
+				if(!EventSharingModule::isLocal(*evt))
+				{
+					EventSharingModule::share(*evt);
+				}
+    		}
+    		im->unlockEvents();
+		}
+	}
+
+	// Send shared data.
+	mySharedData.commit();
+
     return eq::Config::startFrame( version );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ConfigImpl::updateSharedData( )
+{
+	if(!mySharedData.isMaster())
+	{
+		mySharedData.sync();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const UpdateContext& ConfigImpl::getUpdateContext()
+{
+	return mySharedData.getUpdateContext();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::finishFrame()
 {
     DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-    ServiceManager* im = SystemManager::instance()->getServiceManager();
-    im->poll();
-
-    // Process events.
-    int av = im->getAvailableEvents();
-    myFrameData.setNumEvents(av);
-    myFrameData.setDirtyEvents();
-    if(av != 0)
-    {
-        im->lockEvents();
-        // Dispatch events to application server.
-        for( int evtNum = 0; evtNum < av; evtNum++)
-        {
-            Event* evt = im->getEvent(evtNum);
-            //myServer->handleEvent(*evt);
-            // Copy events to frame data.
-            myFrameData.getEvent(evtNum) = *evt;
-        }
-        im->unlockEvents();
-    }
-    im->clearEvents();
 
     // update observer head matrices.
     for( unsigned int i = 0; i < getObservers().size(); i++) 
@@ -276,36 +259,21 @@ uint32_t ConfigImpl::finishFrame()
         const char* ereason = SystemManager::instance()->getExitReason().c_str();
         if(this->exit())
         {
-            ofmsg("Application exit request (reason: %1%) successful", %ereason);
+            ofmsg("ApplicationBase exit request (reason: %1%) successful", %ereason);
         }
         else
         {
-            oferror("Application exit request (reason: %1%) FAILED!", %ereason);
+            oferror("ApplicationBase exit request (reason: %1%) FAILED!", %ereason);
         }
     }
+
     return eq::Config::finishFrame();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-ViewImpl* ConfigImpl::findView(const String& viewName)
-{
-    eq::Layout* layout = this->getLayouts()[0];
-    return static_cast< ViewImpl* >(layout->findView(viewName));
-}
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ConfigImpl::setLayerEnabled(const String& viewName, Layer::Enum layer)
-{
-    ViewImpl* view  = findView(viewName);
-    if(view != NULL)
-    {
-        view->setLayer(layer);
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-const FrameData& ConfigImpl::getFrameData() 
-{ 
-    return myFrameData; 
-}
+//const FrameData& ConfigImpl::getFrameData() 
+//{ 
+//    return myFrameData; 
+//}
 

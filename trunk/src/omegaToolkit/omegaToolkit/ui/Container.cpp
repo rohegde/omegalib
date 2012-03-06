@@ -31,7 +31,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Container::Container(EngineServer* server):
+Container::Container(ServerEngine* server):
 		Widget(server),
 		myPadding(5),
 		myMargin(5),

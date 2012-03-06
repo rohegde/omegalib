@@ -35,7 +35,7 @@ namespace omegaToolkit { namespace ui {
 	class OTK_API Button: public AbstractButton
 	{
 	public:
-		Button(EngineServer* srv);
+		Button(ServerEngine* srv);
 		virtual ~Button();
 
 		virtual void handleEvent(const omega::Event& evt);

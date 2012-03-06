@@ -34,7 +34,7 @@ namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API Container: public Widget
 	{
-	friend class EngineServer;
+	friend class ServerEngine;
 	friend class ContainerRenderable;
 	public:
 		enum Layout {LayoutFree, LayoutHorizontal, LayoutVertical, LayoutGridHorizontal, LayoutGridVertical};
@@ -42,7 +42,7 @@ namespace omegaToolkit { namespace ui {
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Container(EngineServer* server);
+		Container(ServerEngine* server);
 		virtual ~Container();
 
 		virtual Renderable* createRenderable();

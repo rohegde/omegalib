@@ -62,7 +62,7 @@ SystemManager::SystemManager():
 	myApplication(NULL),
 	myExitRequested(false),
 	myIsInitialized(false),
-	myIsRemote(false)
+	myIsMaster(true)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();
@@ -76,10 +76,10 @@ SystemManager::~SystemManager()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SystemManager::setupRemote(Config* cfg, const String& masterHostname)
+void SystemManager::setupRemote(Config* cfg, const String& hostname)
 {
-	myIsRemote = true;
-	myMasterHostname = masterHostname;
+	myIsMaster = false;
+	myHostname = hostname;
 	setup(cfg);
 }
 
@@ -143,19 +143,23 @@ void SystemManager::setupServiceManager()
 	// Initialize the application object (if present)
 	if(myApplication) myApplication->initialize();
 
-	// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
-	Setting& stRoot = mySystemConfig->getRootSetting()["config"];
-	if(stRoot.exists("input"))
+	// NOTE setup services only on master node.
+	if(isMaster())
 	{
-		myServiceManager->setup(stRoot["input"]);
-	}
-	else if(stRoot.exists("services"))
-	{
-		myServiceManager->setup(stRoot["services"]);
-	}
-	else
-	{
-		owarn("Config/InputServices section missing from config file: No services created.");
+		// Instantiate services (for compatibility reasons, look under'input' and 'services' sections
+		Setting& stRoot = mySystemConfig->getRootSetting()["config"];
+		if(stRoot.exists("input"))
+		{
+			myServiceManager->setup(stRoot["input"]);
+		}
+		else if(stRoot.exists("services"))
+		{
+			myServiceManager->setup(stRoot["services"]);
+		}
+		else
+		{
+			owarn("Config/InputServices section missing from config file: No services created.");
+		}
 	}
 }
 
