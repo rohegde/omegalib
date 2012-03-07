@@ -52,13 +52,12 @@ VtkModule::~VtkModule()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::initialize(ServerEngine* server)
+void VtkModule::initialize()
 {
 	omsg("VtkModule initializing...");
 
-	myEngine = server;
-	myEngine->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
-	myEngine->addRenderPass("VtkRenderPass", this, true);
+	getServer()->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
+	getServer()->addRenderPass("VtkRenderPass", this, true);
 
 	omsg("VtkModule initialization OK");
 }

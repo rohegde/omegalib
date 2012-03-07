@@ -55,7 +55,7 @@ namespace omegaVtk
 
 		static VtkModule* instance();
 
-		virtual void initialize(ServerEngine* server);
+		virtual void initialize();
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 

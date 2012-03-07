@@ -36,6 +36,7 @@
 
 namespace omega {
 	class RenderPass;
+	class Renderer;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API ServerModule: public SharedObject
@@ -45,6 +46,7 @@ namespace omega {
 		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()) {}
 
 		virtual void initialize() {}
+		virtual void initializeRenderer(Renderer*) {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 		virtual void commitSharedData(SharedOStream& out) {}
@@ -101,6 +103,15 @@ namespace omega {
 			{
 				module->doInitialize(srv);
 				module->handleEvent(evt);
+			}
+		}
+
+		static void initializeRenderer(ServerEngine* srv, Renderer* r)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->initializeRenderer(r);
 			}
 		}
 	private:
