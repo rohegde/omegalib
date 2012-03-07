@@ -100,9 +100,8 @@ void ServerEngine::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerEngine::clientInitialize(Renderer* client)
 {
-    // Make sure onClientInitialize is always called after onInitialize;
     myLock.lock();
-    //onClientInitialize(client);
+	ModuleServices::initializeRenderer(this, client);
     myLock.unlock();
 }
 

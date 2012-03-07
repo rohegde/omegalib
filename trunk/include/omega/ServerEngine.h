@@ -41,7 +41,7 @@ namespace omega {
 	typedef List<Renderer*> EngineClientList;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	template<typename T> class ClientObject
+	template<typename T> class RendererObject
 	{
 	public:
 		T& operator[](Renderer* c) { return myObjs[c]; }

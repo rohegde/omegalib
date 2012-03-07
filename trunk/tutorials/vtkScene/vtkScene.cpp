@@ -38,12 +38,12 @@ using namespace omegaToolkit;
 using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkScene: public EngineServer
+class VtkScene: public ServerModule
 {
 public:
-	VtkScene(Application* app);
-	virtual void onInitialize();
-	virtual void onClientInitialize(EngineClient* cli);
+	VtkScene();
+	virtual void initialize();
+	virtual void initializeRenderer(Renderer* r);
 
 private:
 	VtkModule* myVtkModule;
@@ -53,20 +53,19 @@ private:
 	vtkSphereSource* mySphere;
 
 	// Client objecs.
-	ClientObject<vtkPolyDataMapper*> myPolyDataMapper;
-	ClientObject<vtkActor*> myActor;
+	RendererObject<vtkPolyDataMapper*> myPolyDataMapper;
+	RendererObject<vtkActor*> myActor;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkScene::VtkScene(Application* app): 
-	EngineServer(app) 
+VtkScene::VtkScene() 
 {
 	myVtkModule = new VtkModule();
-	EngineModuleServices::addModule(myVtkModule);
+	ModuleServices::addModule(myVtkModule);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkScene::onInitialize()
+void VtkScene::initialize()
 {
 	// As simple as it gets: create a sphere in vtk.
 	mySphere = vtkSphereSource::New(); 
@@ -74,30 +73,30 @@ void VtkScene::onInitialize()
 	mySphere->SetThetaResolution(18); 
 	mySphere->SetPhiResolution(18);
 
-	mySceneNode = new SceneNode(this);
+	mySceneNode = new SceneNode(getServer());
 	mySceneNode->setBoundingBoxVisible(true);
-	getScene(0)->addChild(mySceneNode);
+	getServer()->getScene()->addChild(mySceneNode);
 
 	myVtkObject = new VtkSceneObject("vtk");
 	mySceneNode->addObject(myVtkObject);
 
 	myMouseInteractor = new DefaultMouseInteractor();
 	myMouseInteractor->setSceneNode(mySceneNode);
-	addActor(myMouseInteractor);
+	ModuleServices::addModule(myMouseInteractor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkScene::onClientInitialize(EngineClient* cli)
+void VtkScene::initializeRenderer(Renderer* r)
 {
-	myPolyDataMapper[cli] = vtkPolyDataMapper::New();
-	myPolyDataMapper[cli]->SetInput(mySphere->GetOutput());
-	myActor[cli] = vtkActor::New(); 
-	myActor[cli]->SetMapper(myPolyDataMapper[cli]); 
-	myActor[cli]->GetProperty()->SetColor(0,0,1);
-	myActor[cli]->SetPosition(0, 0, -1);
+	myPolyDataMapper[r] = vtkPolyDataMapper::New();
+	myPolyDataMapper[r]->SetInput(mySphere->GetOutput());
+	myActor[r] = vtkActor::New(); 
+	myActor[r]->SetMapper(myPolyDataMapper[r]); 
+	myActor[r]->GetProperty()->SetColor(0,0,1);
+	myActor[r]->SetPosition(0, 0, -1);
 
-	myVtkModule->beginClientInitialize(cli);
-	myVtkModule->attachActor(myActor[cli], myVtkObject);
+	myVtkModule->beginClientInitialize(r);
+	myVtkModule->attachActor(myActor[r], myVtkObject);
 	myVtkModule->endClientInitialize();
 }
 
@@ -105,15 +104,6 @@ void VtkScene::onClientInitialize(EngineClient* cli)
 // Application entry point
 int main(int argc, char** argv)
 {
-	EngineApplication<VtkScene> app;
-
-	// Read config file name from command line or use default one.
-	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 
-	// So, we are going to load directly a system configuration file.
-	const char* cfgName = "system/desktop.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "vtkScene.log", new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	return 0;
+	Application<VtkScene> app("vtkScene");
+	return omain(app, argc, argv);
 }
