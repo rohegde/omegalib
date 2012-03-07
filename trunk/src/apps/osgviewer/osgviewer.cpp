@@ -167,12 +167,5 @@ void OsgViewer::update(const UpdateContext& context)
 int main(int argc, char** argv)
 {
 	Application<OsgViewer> app("osgviewer");
-
-	// Read config file name from command line or use default one.
-	const char* cfgName = "osgviewer.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "osgviewer.log", new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	return 0;
+    return omain(app, argc, argv);
 }

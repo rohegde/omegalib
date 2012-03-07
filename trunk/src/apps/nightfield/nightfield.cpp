@@ -456,10 +456,5 @@ void Nightfield::updateSelection(const Ray& ray)
 int main(int argc, char** argv)
 {
     OmegaToolkitApplication<Nightfield> app("nightfeld");
-    omain(
-        app, 
-        "nightfield.cfg", 
-        "nightfield.log", 
-        new FilesystemDataSource(OMEGA_DATA_PATH));
-    return 0;
+    return omain(app, argc, argv);
 }

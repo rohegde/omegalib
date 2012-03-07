@@ -114,12 +114,5 @@ void Cyclops::handleEvent(const Event& evt)
 int main(int argc, char** argv)
 {
 	OmegaToolkitApplication<Cyclops> app("cyclops");
-
-	// Read config file name from command line or use default one.
-	const char* cfgName = "cyclops.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "cyclops.log", new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	return 0;
+	return omain(app, argc, argv);
 }

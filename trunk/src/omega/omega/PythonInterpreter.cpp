@@ -60,6 +60,8 @@ class PythonInteractiveThread: public Thread
 public:
 	virtual void threadProc()
 	{
+		// Not sure this is helping with safe init but let's try.
+		osleep(1000);
 		while(true)	PyRun_InteractiveLoop(stdin,  "<stdin>");
 	}
 };
@@ -164,7 +166,7 @@ void PythonInterpreter::initialize(const char* programName)
 	Py_DECREF(wrapperOut);
 	Py_DECREF(wrapperErr);
 
-	if(myShellEnabled)
+	if(myShellEnabled && SystemManager::instance()->isMaster())
 	{
 		omsg("PythonInterpreter: starting interactive shell thread.");
 		myInteractiveThread->start();
@@ -172,12 +174,16 @@ void PythonInterpreter::initialize(const char* programName)
 
 	// Initialize internal Apis
 	omegaPythonApiInit();
+
+	// Not sure this is helping with safe init but let's try.
+	//osleep(1000);
+	PyRun_SimpleString("from omega import *");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 {
-	//Py_InitModule(name, methods);
+	Py_InitModule(name, methods);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -154,7 +154,6 @@ void GlutDisplaySystem::setup(Setting& setting)
 	ah.newNamedInt('f', "fov", "fov", "field of view", myFov);
 	ah.newNamedDouble('z', "nearz", "nearZ", "near Z clipping plane", myNearz);
 	ah.newNamedDouble('Z', "farz", "farZ", "far Z clipping plane", myFarz);
-
 	ah.process(sCfg.c_str());
 
 	myResolution[0] = width;

@@ -56,17 +56,30 @@
 struct GLEWContextStruct;
 typedef struct GLEWContextStruct GLEWContext;
 
-
-
 // Forward declaration of DataSource, used for omain
 namespace omega 
 { 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// Function definitions.
+
+	//! Glew
+	//@{
+	//! @internal gets a glew context for the current thread, if present.
 	OMEGA_API GLEWContext* glewGetContext();
+	//! @internal sets a glew context for the current thread.
 	OMEGA_API void glewSetContext(const GLEWContext* context);
-	OMEGA_API void omain(omega::ApplicationBase& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+	//@}
+
+	OMEGA_API libconfig::ArgumentHelper& oargs();
+
+	//OMEGA_API void omain(omega::ApplicationBase& app, const char* configFile, const char* logFile, omega::DataSource* dataSource = NULL);
+	OMEGA_API int omain(omega::ApplicationBase& app, int argc, char** argv);
+
+	//! Runs the specified command in a separate process.
 	OMEGA_API void olaunch(const String& command);
+
+	//! Stops the current thread for the specified number of milliseconds.
+	OMEGA_API void osleep(uint msecs);
 };
 
 #endif

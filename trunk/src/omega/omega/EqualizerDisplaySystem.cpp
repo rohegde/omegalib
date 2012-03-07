@@ -33,13 +33,6 @@
 
 #include "eqinternal/eqinternal.h"
 
-#ifdef WIN32
-#include <windows.h> // needed for Sleep 
-#else
-#include <unistd.h>
-#define Sleep(x) usleep((x)*1000)
-#endif
-
 using namespace omega;
 using namespace co::base;
 using namespace std;
@@ -451,7 +444,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 					String executable = StringUtils::replaceAll(myDisplayConfig.nodeKiller, "%c", SystemManager::instance()->getApplication()->getName());
 					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 					olaunch(executable);
-					Sleep(myDisplayConfig.launcherInterval);
+					osleep(myDisplayConfig.launcherInterval);
 				}
 			
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
@@ -459,7 +452,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				int port = myDisplayConfig.basePort + nc.port;
 				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
-				Sleep(myDisplayConfig.launcherInterval);
+				osleep(myDisplayConfig.launcherInterval);
 			}
 		}
 	}
@@ -521,15 +514,19 @@ void EqualizerDisplaySystem::run()
 			omsg(":: Equalizer display system startup DONE ::");
 
 			uint32_t spin = 0;
+			bool exitRequestProcessed = false;
 			while( myConfig->isRunning( ))
 			{
 				myConfig->startFrame( spin );
 				myConfig->finishFrame();
 				spin++;
+				if(SystemManager::instance()->isExitRequested()
+					&& !exitRequestProcessed)
+				{
+					exitRequestProcessed = true;
+					myConfig->exit();
+				}
 			}
-		
-			// 5. exit config
-			myConfig->exit();
 		}
 		else
 		{

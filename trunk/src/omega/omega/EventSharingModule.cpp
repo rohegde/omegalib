@@ -42,6 +42,12 @@ EventSharingModule::EventSharingModule():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EventSharingModule::share(const Event& evt)
 {
+	if(mysInstance->getServer() == NULL) 
+	{
+		owarn("EventSharingModule::share: server not initialized yet. Ignoring call.");
+		return;
+	}
+	
 	if(!mysInstance->getServer()->isMaster())
 	{
 		owarn("EventSharingModule::share: can be caled only from master server. Ignoring call.");
