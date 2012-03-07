@@ -25,12 +25,24 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/osystem.h"
+#include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
 #include "omicron/StringUtils.h"
+
+#include <iostream>
+
+#ifdef WIN32
+#include <windows.h> // needed for Sleep 
+#else
+#include <unistd.h>
+#define Sleep(x) usleep((x)*1000)
+#endif
+
 
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	libconfig::ArgumentHelper sArgs;
 	GLEWContext* sGlewContext;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,25 +58,77 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void omain(ApplicationBase& app, const char* configFile, const char* logFile, DataSource* dataSource)
+	OMEGA_API libconfig::ArgumentHelper& oargs()
+	{
+		return sArgs;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
 		bool remote = false;
 		String masterHostname;
-		String configFilename;
+		String configFilename = ostr("%1%.cfg", %app.getName());
+		String dataPath = OMEGA_DATA_PATH;
+		String logFilename = ostr("%1%.log", %app.getName());
+
+		bool kill = false;
+		bool help = false;
+
+		sArgs.newOptionalString(
+			"config", 
+			ostr("configuration file to use with this application (default: %1%)", %configFilename).c_str(),
+			configFilename);
+
+		sArgs.newFlag(
+			'K',
+			"kill",
+			"Don't run the application, only run the nodeKiller command on all nodes in a clustered configuration",
+			kill);
+
+		sArgs.newFlag(
+			'?',
+			"help",
+			"Prints this application help screen",
+			help);
+
+		sArgs.newNamedString(
+			'D',
+			"data",
+			"Data path for this application (default: " OMEGA_DATA_PATH ")", "",
+			dataPath);
 		
-		std::vector<std::string> args = StringUtils::split(configFile, "@");
+		sArgs.newNamedString(
+			'L',
+			"log",
+			ostr("log file to use with this application (default: %1%)", %logFilename).c_str(), "",
+			logFilename);
+
+		sArgs.setName(app.getName());
+		sArgs.setAuthor("Alessandro Febretti");
+		sArgs.setDescription("An omegalib application");
+		sArgs.setVersion(OMEGA_VERSION);
+		sArgs.process(argc, argv);
+
+		if(help)
+		{
+			sArgs.writeUsage(std::cout);
+			return 0;
+		}
+
+		std::vector<std::string> args = StringUtils::split(configFilename, "@");
 		configFilename = args[0];
 		if(args.size() == 2)
 		{
 			remote = true;
 			masterHostname = args[1];
 			
-			String hostLogFilename = masterHostname + "-" + logFile;
+			String hostLogFilename = masterHostname + "-" + logFilename;
 			ologopen(hostLogFilename.c_str());
 		}
 		else
 		{
-			ologopen(logFile);
+			ologopen(logFilename.c_str());
 		}
 		
 		Config* cfg = new Config(configFilename);
@@ -73,12 +137,7 @@ namespace omega
 		DataManager* dm = sys->getDataManager();
 		// Add a default filesystem data source using current work dir.
 		dm->addSource(new FilesystemDataSource("./"));
-
-		// Add optional data source.
-		if(dataSource != NULL)
-		{
-			dm->addSource(dataSource);
-		}
+		dm->addSource(new FilesystemDataSource(dataPath));
 
 		sys->setApplication(&app);
 		if(remote)
@@ -95,6 +154,18 @@ namespace omega
 		sys->cleanup();
 
 		ologclose();
+
+		return 0;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	void osleep(uint msecs)
+	{
+#ifdef WIN32
+		Sleep(msecs);
+#else
+		usleep((msecs)*1000);
+#endif
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////

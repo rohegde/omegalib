@@ -39,6 +39,14 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* omegaExit(PyObject* self, PyObject* args)
+{
+	SystemManager::instance()->postExitRequest();
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* nodeGetRoot(PyObject* self, PyObject* args)
 {
 	ServerEngine* engine = ServerEngine::instance();
@@ -274,6 +282,7 @@ static PyMethodDef omegaMethods[] =
     {"nodeYaw", nodeYaw, METH_VARARGS, "NO INFO"},
     {"nodePitch", nodePitch, METH_VARARGS, "NO INFO"},
     {"nodeRoll", nodeRoll, METH_VARARGS, "NO INFO"},
+    {"oexit", omegaExit, METH_VARARGS, "NO INFO"},
     {NULL, NULL, 0, NULL}
 };
 

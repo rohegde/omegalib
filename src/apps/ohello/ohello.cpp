@@ -83,14 +83,5 @@ void HelloRenderer::draw(const DrawContext& context)
 int main(int argc, char** argv)
 {
 	HelloApplication app;
-	
-	// Read config file name from command line or use default one.
-	// NOTE: being a simple application, ohello does not have any application-specific configuration option. 
-	// So, we are going to load directly a system configuration file.
-	const char* cfgName = "system/desktop.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "ohello.log", new FilesystemDataSource(OMEGA_DATA_PATH));
-	
-	return 0;
+    return omain(app, argc, argv);
 }
