@@ -62,6 +62,8 @@ Renderable* VtkSceneObject::createRenderable()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkSceneObject::update(SceneNode* owner)
 {
+	omsg("VtkSceneObject::update");
+
 	const AffineTransform3& xform =  owner->getFullTransform();
 	const omega::math::matrix<4, 4>& m = xform.matrix();
 	for(int i = 0; i < 4; i++)
@@ -77,9 +79,16 @@ void VtkSceneObject::update(SceneNode* owner)
 		vtkProp3D* vtkProp = vtkr->getActor();
 		if(vtkProp != NULL)
 		{
+			omsg("VtkSceneObject::update matrix");
+			const Vector3f& pos = owner->getPosition();
+			const Vector3f& scale = owner->getScale();
+			//vtkProp->SetScale(scale[0], scale[1], scale[2]);
+			//vtkProp->SetPosition(pos[0], pos[1], pos[2]);
 			vtkProp->SetUserMatrix(myMatrix);
 		}
 	}
+
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,8 +118,8 @@ const AlignedBox3* VtkSceneObject::getBoundingBox()
 	{
 		// We have to make sure no transformation is applied to the actor, to get back the
 		// original bounding box.
-		myMatrix->Identity();
-		prop->SetUserMatrix(myMatrix);
+		//myMatrix->Identity();
+		//prop->SetUserMatrix(myMatrix);
 
 		double* bounds = prop->GetBounds();
 		float fbounds[6];
@@ -121,6 +130,7 @@ const AlignedBox3* VtkSceneObject::getBoundingBox()
 		fbounds[4] = bounds[4];
 		fbounds[5] = bounds[5];
 		myBBox.setExtents(fbounds[0], fbounds[2], fbounds[4], fbounds[1], fbounds[3], fbounds[5]);
+		ofmsg("bbox: %1%  -- %2%", %myBBox.getMinimum() %myBBox.getMaximum());
 		return &myBBox;
 	}
 	return NULL;

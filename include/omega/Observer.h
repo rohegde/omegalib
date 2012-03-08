@@ -52,7 +52,7 @@ namespace omega
 		void updateView(const Vector3f& position, const Quaternion& orientation);
 		void load(Setting& setting);
 
-		Vector3f getWorldHeadPosition() { return myHeadPosition + myViewPosition; }
+		Vector3f getWorldHeadPosition() { return myHeadPosition - myViewPosition; }
 
 	private:
 		//! Current view transform
