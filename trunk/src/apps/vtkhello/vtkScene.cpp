@@ -49,7 +49,6 @@ private:
 	VtkModule* myVtkModule;
 	SceneNode* mySceneNode;
 	DefaultMouseInteractor* myMouseInteractor;
-	VtkSceneObject* myVtkObject;
 	vtkSphereSource* mySphere;
 
 	// Client objecs.
@@ -60,6 +59,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkScene::VtkScene() 
 {
+	// Create and register the omegalib vtk module.
 	myVtkModule = new VtkModule();
 	ModuleServices::addModule(myVtkModule);
 }
@@ -73,31 +73,36 @@ void VtkScene::initialize()
 	mySphere->SetThetaResolution(18); 
 	mySphere->SetPhiResolution(18);
 
+	// Create an omegalib scene node. We will attach our vtk objects to it.
 	mySceneNode = new SceneNode(getServer());
-	mySceneNode->setBoundingBoxVisible(true);
 	mySceneNode->setPosition(0, 0, -1);
+	mySceneNode->setBoundingBoxVisible(true);
 	getServer()->getScene()->addChild(mySceneNode);
 
-	myVtkObject = new VtkSceneObject("vtk");
-	mySceneNode->addObject(myVtkObject);
-
+	// Create a mouse interactor and associate it with our scene node.
 	myMouseInteractor = new DefaultMouseInteractor();
 	myMouseInteractor->setSceneNode(mySceneNode);
 	ModuleServices::addModule(myMouseInteractor);
+
+	// Setup the camera
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkScene::initializeRenderer(Renderer* r)
 {
+	// For each omegalib renderer thread, create vtk polydata mappers and actors.
 	myPolyDataMapper[r] = vtkPolyDataMapper::New();
 	myPolyDataMapper[r]->SetInput(mySphere->GetOutput());
 	myActor[r] = vtkActor::New(); 
 	myActor[r]->SetMapper(myPolyDataMapper[r]); 
 	myActor[r]->GetProperty()->SetColor(0,0,1);
+	//myActor[r]->SetPosition(0,0,-1);
 
+	// Here is where the magic happens: use the omegalib vtk module to attach the vtk actor to the
+	// node we created in initialize. 
 	myVtkModule->beginClientInitialize(r);
-	myVtkModule->attachActor(myActor[r], myVtkObject);
+	myVtkModule->attachProp(myActor[r], mySceneNode);
 	myVtkModule->endClientInitialize();
 }
 
@@ -105,6 +110,6 @@ void VtkScene::initializeRenderer(Renderer* r)
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<VtkScene> app("vtkhello");
+	OmegaToolkitApplication<VtkScene> app("vtkhello");
 	return omain(app, argc, argv);
 }

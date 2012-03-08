@@ -27,5 +27,4 @@
 
 #include "omegaVtk/ovtkbase.h"
 #include "omegaVtk/VtkModule.h"
-#include "omegaVtk/VtkSceneObject.h"
 #endif

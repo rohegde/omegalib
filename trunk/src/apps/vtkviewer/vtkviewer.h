@@ -27,74 +27,27 @@
 #ifndef VTKVIEWER_H
 #define VTKVIEWER_H
 
-#include "ovtk/VtkModel.h"
-#include "ovtk/VtkModule.h"
-#include "omega.h"
-#include "omega/scene.h"
-#include "omega/ui.h"
-#include "omega/EngineClient.h"
-#include "omega/mvc/ViewManager.h"
-
+#include <omega.h>
+#include <omegaToolkit.h>
+#include <omegaVtk.h>
 
 using namespace omega;
-using namespace omega::scene;
-using namespace omega::ui;
-using namespace omega::mvc;
-using namespace ovtk;
+using namespace omegaToolkit;
+using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerServer: public ApplicationServer
+class VtkViewer: public ServerModule
 {
 public:
-	VtkViewerServer(Application* app);
-	virtual void initialize();
+	VtkViewer();
 
-	ViewManager* getViewManager() { return myViewManager; }
-	VtkModule* getVtkModule() { return myVtkModule; }
-	void setVisibleModel(int modelId);
+	virtual void initialize();
+	virtual void initializeRenderer(Renderer* r);
+	virtual void handleEvent(const Event& evt);
 
 private:
 	VtkModule* myVtkModule;
-	ViewManager* myViewManager;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerClient: public EngineClient
-{
-public:
-	VtkViewerClient(ApplicationServer* server): 
-		EngineClient(server),
-		myVisibleEntity(NULL)
-	  {}
-
-	virtual void initialize();
-	void initUI();
-	void handleEvent(const Event& evt);
-	void handleUIEvent(const Event& evt);
-
-private:
-	// Enabled entity
-	VtkEntity* myVisibleEntity;
-
-	// Entity info library
-	Vector<VtkModel*> myEntityLibrary;
-
-	// UI
-	Vector<Button*> myEntityButtons;
-
-	// Scene
-	ReferenceBox* myReferenceBox;
-
-	// Interactors.
-	Actor* myCurrentInteractor;
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkViewerApplication: public Application
-{
-public:
-	virtual ApplicationServer* createServer() { return new VtkViewerServer(this); }
-	virtual ApplicationClient* createClient(ApplicationServer* server) { return new VtkViewerClient(server); }
+	SceneNode* mySceneNode;
 };
 
 #endif

@@ -109,6 +109,7 @@ void VtkRenderPass::render(Renderer* mng, const DrawContext& context)
 		glEnable(GL_NORMALIZE);
 		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LIGHTING);
 
 		myRenderState->SetPropArrayAndCount(myPropQueue[QueueOpaque], myPropQueueSize[QueueOpaque]);
 		myOpaquePass->Render(myRenderState);

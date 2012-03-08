@@ -24,28 +24,13 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
+add_executable(vtkviewer 
+	vtkviewer.cpp 
+	vtkviewer.h)
 
-###################################################################################################
-FIND_PACKAGE(VTK)
-IF(NOT VTK_DIR)
-  MESSAGE(FATAL_ERROR "Please set VTK_DIR.")
-ENDIF(NOT VTK_DIR)
-INCLUDE(${VTK_USE_FILE})
-
-###################################################################################################
-# Source files
-set(SRCS 
-		vtkviewer.cpp)
-    
-###################################################################################################
-# Headers
-set(HEADERS 
-		vtkviewer.h) 
-        
-###################################################################################################
-add_executable(vtkviewer ${SRCS} ${HEADERS})
 set_target_properties(vtkviewer PROPERTIES FOLDER apps)
+
 target_link_libraries(vtkviewer
 	omega 
-	outils
-    ovtk)
+	omegaToolkit
+    omegaVtk)

@@ -26,11 +26,11 @@
 ###################################################################################################
 
 ###################################################################################################
-FIND_PACKAGE(VTK)
-IF(NOT VTK_DIR)
-  MESSAGE(FATAL_ERROR "Please set VTK_DIR.")
-ENDIF(NOT VTK_DIR)
-INCLUDE(${VTK_USE_FILE})
+#FIND_PACKAGE(VTK)
+#IF(NOT VTK_DIR)
+#  MESSAGE(FATAL_ERROR "Please set VTK_DIR.")
+#ENDIF(NOT VTK_DIR)
+#INCLUDE(${VTK_USE_FILE})
 
 ###################################################################################################
 add_executable(vtkhello vtkScene.cpp)

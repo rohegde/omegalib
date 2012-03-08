@@ -44,9 +44,18 @@ namespace omega {
 	template<typename T> class RendererObject
 	{
 	public:
+		typedef typename Dictionary<Renderer*, T>::Item Item;
+		typedef typename Dictionary<Renderer*, T>::Range Range;
+
+	public:
 		T& operator[](Renderer* c) { return myObjs[c]; }
+
+		Range getItems() { return Range(myObjs.begin(), myObjs.end()); }
+		int numItems() { return myObjs.size(); }
+		bool isEmpty() { return myObjs.empty(); }
+
 	private:
-		Dictionary<Renderer*, T> myObjs;
+		Dictionary<Renderer*, typename T> myObjs;
 	};
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////

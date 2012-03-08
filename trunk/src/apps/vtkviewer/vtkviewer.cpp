@@ -27,185 +27,40 @@
 #include "vtkviewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkViewerServer::VtkViewerServer(Application* app):
-	ApplicationServer(app),
-	myViewManager(NULL)
-{}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerServer::initialize()
+VtkViewer::VtkViewer()
 {
-	myViewManager = new ViewManager();
+	// Create and register the omegalib vtk module.
 	myVtkModule = new VtkModule();
-
-	myVtkModule->initialize(myViewManager);
+	ModuleServices::addModule(myVtkModule);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerServer::setVisibleModel(int modelId)
+void VtkViewer::initialize()
 {
-	//VtkModel* ei = myEntityLibrary[entityId];
+}
 
-	//if(myVisibleEntity != NULL)
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewer::initializeRenderer(Renderer* r)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkViewer::handleEvent(const Event& evt)
+{
+	//if(evt.getServiceType() == Service::UI) 
 	//{
-	//	myVtkModule->destroyEntity(myVisibleEntity);
-	//	myVisibleEntity = NULL;
+	//	handleUIEvent(evt);
 	//}
-
-	//myVisibleEntity = myVtkModule->createEntity();
-	//myVisibleEntity->loadScript(ei->getSource());
-
-	//myCurrentInteractor->setSceneNode(myVisibleEntity->getSceneNode());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::initialize()
-{
-	EngineClient::initialize();
-
-	// Register this client with the view manager.
-	VtkViewerServer* srv = (VtkViewerServer*)getServer();
-	srv->getViewManager()->addClient(this);
-	srv->getVtkModule()->initialize(this);
-
-	Config* cfg = getSystemManager()->getAppConfig();
-
-	// Setup the system font.
-	if(cfg->exists("config/defaultFont"))
-	{
-		Setting& fontSetting = cfg->lookup("config/defaultFont");
-		getFontManager()->createFont("default", fontSetting["filename"], fontSetting["size"]);
-	}
-
-	// Load entity library
-	MeshManager* mm = getMeshManager();
-	if(cfg->exists("config/entities"))
-	{
-		Setting& entities = cfg->lookup("config/entities");
-		for(int i = 0; i < entities.getLength(); i++)
-		{
-			VtkModel* e = onew(VtkModel)();
-			Setting& entitySetting = entities[i];
-			e->setName(entitySetting.getName());
-			e->setSource((String)((const char*)entitySetting["script"]));
-			e->setLabel((String)((const char*)entitySetting["label"]));
-
-			myEntityLibrary.push_back(e);
-		}
-	}
-
-	initUI();
-
-	// Create a reference box around the scene.
-	myReferenceBox = new ReferenceBox();
-	getSceneManager()->getRootNode()->addRenderable(myReferenceBox);
-	myReferenceBox->setSize(Vector3f(4.0f, 4.0f, 4.0f));
-
-	// Set the interactor style used to manipulate meshes.
-	String interactorStyle = cfg->lookup("config/interactorStyle");
-	if(interactorStyle == "Mouse")
-	{
-		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-		myCurrentInteractor = interactor;
-	}
-	else
-	{
-		DefaultTwoHandsInteractor* interactor = new DefaultTwoHandsInteractor();
-		interactor->initialize("ObserverUpdateService");
-		myCurrentInteractor = interactor;
-	}
-	getSceneManager()->addActor(myCurrentInteractor);
-
-	Light* light = getSceneManager()->getLight(0);
-	light->setEnabled(true);
-	light->setPosition(Vector3f(0, 3, 0));
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::initUI()
-{
-	UIManager* ui = getUIManager();
-	ui->setUIEventHandler(this);
-
-	//! Load and set default font.
-	FontManager* fm = getFontManager();
-	Font* defaultFont = fm->getFont("default");
-	ui->setDefaultFont(defaultFont);
-
-	WidgetFactory* wf = ui->getWidgetFactory();
-	Container* root = ui->getRootContainer(0);
-	root->setLayout(Container::LayoutVertical);
-
-	Container* entityButtons = wf->createContainer("entities", root, Container::LayoutHorizontal);
-
-	// Setup ui layout using from config file sections.
-	Config* cfg = SystemManager::instance()->getAppConfig();
-	if(cfg->exists("config/ui/entityButtons"))
-	{
-		entityButtons->load(cfg->lookup("config/ui/entityButtons"));
-	}
-	if(cfg->exists("config/ui/root"))
-	{
-		root->load(cfg->lookup("config/ui/root"));
-	}
-
-	// Add buttons for each entity
-	for(int i = 0; i < myEntityLibrary.size(); i++)
-	{
-		VtkModel* e = myEntityLibrary[i];
-		Button* btn = wf->createButton(e->getLabel(), entityButtons);
-		myEntityButtons.push_back(btn);
-	}
-
-	// If openNI service is available, add User manager panel to UI layer two (mapped to omegadesk control window)
-	if(getServiceManager()->findService<Service>("OpenNIService") != NULL)
-	{
-		root = ui->getRootContainer(1);
-		root->setLayout(Container::LayoutVertical);
-		UserManagerPanel* ump = new UserManagerPanel(ui);
-		ump->initialize(root, "OpenNIService", "ObserverUpdateService");
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::handleEvent(const Event& evt)
-{
-	if(evt.getServiceType() == Service::UI) 
-	{
-		handleUIEvent(evt);
-	}
-	else
-	{
-		EngineClient::handleEvent(evt);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewerClient::handleUIEvent(const Event& evt)
-{
-	for(int i = 0; i < myEntityLibrary.size(); i++)
-	{
-		if(myEntityButtons[i]->getId() == evt.getSourceId())
-		{
-			VtkViewerServer* srv = (VtkViewerServer*)getServer();
-			srv->setVisibleModel(i);
-			return;
-		}
-	}
+	//else
+	//{
+	//	EngineClient::handleEvent(evt);
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
 {
-	VtkViewerApplication app;
-
-	// Read config file name from command line or use default one.
-	const char* cfgName = "vtkviewer.cfg";
-	if(argc == 2) cfgName = argv[1];
-
-	omain(app, cfgName, "vtkviewer.log", new FilesystemDataSource(OMEGA_DATA_PATH));
-
-	return 0;
+	Application<VtkViewer> app("vtkviewer");
+	return omain(app, argc, argv);
 }

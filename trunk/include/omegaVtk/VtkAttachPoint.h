@@ -24,10 +24,10 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __VTK_VIEW_CLIENT_H__
-#define __VTK_VIEW_CLIENT_H__
+#ifndef __VTK_ATTACH_POINT_H__
+#define __VTK_ATTACH_POINT_H__
 
-#include "omegaToolkit/RenderableSceneObject.h"
+#include "omega/ISceneObject.h"
 
 #include "ovtkbase.h"
 
@@ -36,17 +36,14 @@ class vtkMatrix4x4;
 namespace omegaVtk {
 
 	using namespace omega;
-	using namespace omegaToolkit;
+	//using namespace omegaToolkit;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkSceneObject: public RenderableSceneObject
+	class OVTK_API VtkAttachPoint: public ISceneObject
 	{
 	public:
-		VtkSceneObject();
-		VtkSceneObject(const String& name);
-		~VtkSceneObject();
-
-		virtual Renderable* createRenderable();
+		VtkAttachPoint();
+		~VtkAttachPoint();
 
 		float getRepresentationSize();
 		void setRepresentationSize(float value);
@@ -59,7 +56,8 @@ namespace omegaVtk {
 		virtual bool isInitialized() { return myInitialized; }
 		virtual void initialize(ServerEngine* server) { myInitialized = true; }
 
-		const String& getName() { return myName; }
+		void attachProp(vtkProp3D* prop);
+		void detachProp(vtkProp3D* prop);
 
 	private:
 		//! Gets the first available vtk prop from the attached renderables.
@@ -70,38 +68,16 @@ namespace omegaVtk {
 		AlignedBox3 myBBox;
 		float myRepresentationSize;
 		bool myInitialized;
-		String myName;
-	};
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkRenderable: public Renderable
-	{
-	public:
-		VtkRenderable(): myActor(NULL) {}
-
-		virtual void draw(RenderState* state) {}
-
-		void setActor(vtkProp3D* value);
-		vtkProp3D* getActor();
-
-	private:
-		vtkProp3D* myActor;
+		List<vtkProp3D*> myProps;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline float VtkSceneObject::getRepresentationSize()
+	inline float VtkAttachPoint::getRepresentationSize()
 	{ return myRepresentationSize; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	inline void VtkSceneObject::setRepresentationSize(float value)
+	inline void VtkAttachPoint::setRepresentationSize(float value)
 	{ myRepresentationSize = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void VtkRenderable::setActor(vtkProp3D* value)
-	{ myActor = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline vtkProp3D* VtkRenderable::getActor()
-	{ return myActor; }
 };
 #endif
