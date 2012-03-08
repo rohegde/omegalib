@@ -29,26 +29,21 @@
 
 #include "omegaVtk/ovtkbase.h"
 #include "omegaVtk/VtkRenderPass.h"
+#include "omegaVtk/VtkAttachPoint.h"
 
 #include "omega/osystem.h"
 //#include "omega/Renderer.h"
 #include "omega/ServerEngine.h"
 #include "omega/Application.h"
 
-
-class vtkActor;
 namespace omegaVtk
 {
 	using namespace omega;
 
-	class PythonInterpreter;
-	class VtkDrawable;
-	class VtkEntity;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OVTK_API VtkModule: public ServerModule
 	{
-	friend class VtkSceneObject;
+	friend class VtkAttachPoint;
 	public:
 		VtkModule();
 		~VtkModule();
@@ -65,19 +60,13 @@ namespace omegaVtk
 		//@{
 		void beginClientInitialize(Renderer* client);
 		void endClientInitialize();
-		void attachActor(vtkActor* actor, VtkSceneObject* sceneObject);
+		void attachProp(vtkProp3D* actor, SceneNode* node);
 		//@}
-
-		VtkSceneObject* getSceneObject(const String& name);
-
-	private:
-		void registerSceneObject(VtkSceneObject* sceneObject);
-		void unregisterSceneObject(VtkSceneObject* sceneObject);
 
 	private:
 		static VtkModule* myInstance;
 
-		Dictionary<String, VtkSceneObject*> mySceneObjects;
+		Dictionary<SceneNode*, VtkAttachPoint*> myAttachPoints;
 
 		ServerEngine* myEngine;
 		Lock myClientLock;

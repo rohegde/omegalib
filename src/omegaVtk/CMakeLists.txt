@@ -37,7 +37,7 @@ SET( srcs
 		omegaVtk/vtkGenericOpenGLRenderWindow.cpp
 		omegaVtk/VtkModule.cpp
 		omegaVtk/VtkRenderPass.cpp
-		omegaVtk/VtkSceneObject.cpp
+		omegaVtk/VtkAttachPoint.cpp
 		omegaVtk/omegaVtkPythonApi.cpp
         )
 		
@@ -51,7 +51,7 @@ SET( headers
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/vtkGenericOpenGLRenderWindow.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkRenderPass.h
-		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkSceneObject.h
+		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkAttachPoint.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/omegaVtkPythonApi.h
         ) 
         

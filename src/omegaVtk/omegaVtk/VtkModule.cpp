@@ -27,7 +27,7 @@
 //#include "omegaVtk/PyVtk.h"
 #include "omegaVtk/VtkModule.h"
 #include "omegaVtk/VtkRenderPass.h"
-#include "omegaVtk/VtkSceneObject.h"
+#include "omegaVtk/VtkAttachPoint.h"
 
 
 #include <vtkActor.h>
@@ -88,7 +88,7 @@ void VtkModule::endClientInitialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::attachActor(vtkActor* actor, VtkSceneObject* sceneObject)
+void VtkModule::attachProp(vtkProp3D* actor, SceneNode* node)
 {
 	if(myActiveClient != NULL)
 	{
@@ -101,37 +101,19 @@ void VtkModule::attachActor(vtkActor* actor, VtkSceneObject* sceneObject)
 			myActiveRenderPass->queueProp(actor, VtkRenderPass::QueueOpaque);
 		}
 
-		VtkRenderable* renderable = dynamic_cast<VtkRenderable*>(sceneObject->getRenderable(myActiveClient));
-		renderable->setActor(actor);
+		VtkAttachPoint* vtkap = myAttachPoints[node];
+		if(vtkap == NULL)
+		{
+			ofmsg("VtkModule::attachProp: creating attach point for node %1%", %node->getName());
+			vtkap = new VtkAttachPoint();
+			myAttachPoints[node] = vtkap;
+			node->addObject(vtkap);
+		}
+		vtkap->attachProp(actor);
 	}
 	else
 	{
 		owarn("VtkModule::addActor: beginClientInitialize has not been called. Returning");
 	}
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::registerSceneObject(VtkSceneObject* sceneObject)
-{
-	if(sceneObject != NULL)
-	{
-		mySceneObjects[sceneObject->getName()] = sceneObject;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkModule::unregisterSceneObject(VtkSceneObject* sceneObject)
-{
-	if(sceneObject != NULL)
-	{
-		mySceneObjects[sceneObject->getName()] = NULL;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject* VtkModule::getSceneObject(const String& name)
-{
-	return mySceneObjects[name];
 }
 

@@ -59,7 +59,7 @@ namespace omegaToolkit {
 			engine->registerRenderPassClass("TransparentRenderPass", (ServerEngine::RenderPassFactory)TransparentRenderPass::createInstance);
 			engine->registerRenderPassClass("OverlayRenderPass", (ServerEngine::RenderPassFactory)OverlayRenderPass::createInstance);
 
-			engine->addRenderPass("LightingPass");
+			//engine->addRenderPass("LightingPass");
 			engine->addRenderPass("DefaultRenderPass");
 			engine->addRenderPass("TransparentRenderPass");
 			engine->addRenderPass("OverlayRenderPass");
@@ -77,7 +77,9 @@ namespace omegaToolkit {
 	{
 	public:
 		OmegaToolkitApplication(const String& name): Application<T>(name)
-		{ModuleServices::addModule(new OmegaToolkitEngineModule());}
+		{
+			ModuleServices::addModule(new OmegaToolkitEngineModule());
+		}
 		//virtual ServerBase* createServer() 
 		//{ return new T(this); }
 

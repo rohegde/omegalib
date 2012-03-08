@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaVtk/VtkModule.h"
-#include "omegaVtk/VtkSceneObject.h"
+#include "omegaVtk/VtkAttachPoint.h"
 
 #include <vtkMatrix4x4.h>
 #include <vtkActor.h>
@@ -34,36 +34,31 @@ using namespace omega;
 using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject::VtkSceneObject(): myName("VtkSceneObject")
+VtkAttachPoint::VtkAttachPoint()
 {
-	VtkModule::instance()->registerSceneObject(this);
 	myMatrix = vtkMatrix4x4::New();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject::VtkSceneObject(const String& name): myName(name)
+VtkAttachPoint::~VtkAttachPoint()
 {
-	VtkModule::instance()->registerSceneObject(this);
-	myMatrix = vtkMatrix4x4::New();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkSceneObject::~VtkSceneObject()
+void VtkAttachPoint::attachProp(vtkProp3D* prop)
 {
-	VtkModule::instance()->unregisterSceneObject(this);
+	myProps.push_back(prop);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* VtkSceneObject::createRenderable()
+void VtkAttachPoint::detachProp(vtkProp3D* prop)
 {
-	return new VtkRenderable();
+	myProps.remove(prop);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkSceneObject::update(SceneNode* owner)
+void VtkAttachPoint::update(SceneNode* owner)
 {
-	omsg("VtkSceneObject::update");
-
 	const AffineTransform3& xform =  owner->getFullTransform();
 	const omega::math::matrix<4, 4>& m = xform.matrix();
 	for(int i = 0; i < 4; i++)
@@ -73,45 +68,36 @@ void VtkSceneObject::update(SceneNode* owner)
 			myMatrix->SetElement(i, j, m(i, j));
 		}
 	}
-	foreach(Renderable* r, getRenderables())
+	foreach(vtkProp3D* vtkProp, myProps)
 	{
-		VtkRenderable* vtkr = dynamic_cast<VtkRenderable*>(r);
-		vtkProp3D* vtkProp = vtkr->getActor();
 		if(vtkProp != NULL)
 		{
-			omsg("VtkSceneObject::update matrix");
-			const Vector3f& pos = owner->getPosition();
-			const Vector3f& scale = owner->getScale();
+			omsg("VtkAttachPoint::update matrix");
+			//const Vector3f& pos = owner->getPosition();
+			//const Vector3f& scale = owner->getScale();
 			//vtkProp->SetScale(scale[0], scale[1], scale[2]);
 			//vtkProp->SetPosition(pos[0], pos[1], pos[2]);
 			vtkProp->SetUserMatrix(myMatrix);
 		}
 	}
-
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-vtkProp3D* VtkSceneObject::getFirstProp()
+vtkProp3D* VtkAttachPoint::getFirstProp()
 {
-	Renderable* r = getFirstRenderable();
-	if(r != NULL)
-	{
-		VtkRenderable* vtkr = dynamic_cast<VtkRenderable*>(r);
-		return vtkr->getActor();
-	}
-	return NULL; 
+	if(myProps.empty()) return NULL;
+	return *myProps.begin();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-bool VtkSceneObject::hasBoundingBox() 
+bool VtkAttachPoint::hasBoundingBox() 
 { 
 	vtkProp3D* p = getFirstProp();
 	return (p != NULL);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-const AlignedBox3* VtkSceneObject::getBoundingBox()
+const AlignedBox3* VtkAttachPoint::getBoundingBox()
 {
 	vtkProp3D* prop = getFirstProp();
 	if(prop != NULL)
