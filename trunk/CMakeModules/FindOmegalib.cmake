@@ -33,9 +33,9 @@ set(OMEGA_BINARY_DIR CACHE PATH "Path of the omegalib bin directory (the one con
 if(OMEGA_BINARY_DIR)
 	include(${OMEGA_BINARY_DIR}/UseOmegalib.cmake)
 
-	set(OMICRON_BINARY_DIR ${OMEGA_BINARY_DIR}/omicron/omicron)
-	set(OMICRON_BIN_DIR ${OMEGA_BINARY_DIR}/bin)
-	set(OMICRON_LIB_DIR ${OMEGA_BINARY_DIR}/lib)
+	set(OMICRON_DEFAULT_BINARY_DIR ${OMEGA_BINARY_DIR}/omicron/omicron)
+	#set(OMICRON_BIN_DIR ${OMEGA_BINARY_DIR}/bin)
+	#set(OMICRON_LIB_DIR ${OMEGA_BINARY_DIR}/lib)
 	include(${CMAKE_CURRENT_SOURCE_DIR}/../../external/omicron/CMakeModules/FindOmicron.cmake)
 
 	# the following are the include directories needed to build a 3rd party omegalib application.

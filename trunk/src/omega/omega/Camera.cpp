@@ -120,7 +120,6 @@ Camera::Camera(uint flags):
 	myControllerMoveVector = Vector3f::Zero();
 	myControllerRotateVector = Vector2f::Zero();
 
-	// Set a standard focal offset of 1 meter away from camera.
 	myProjectionOffset = -Vector3f::UnitZ();
 
 	for(int i = 0; i < GpuContext::MaxContexts; i++)

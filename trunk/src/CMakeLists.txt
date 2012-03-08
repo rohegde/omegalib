@@ -125,6 +125,7 @@ if(OMEGA_BUILD_VTK_LIB)
 	include(${VTK_USE_FILE})
 	
 	add_subdirectory(omegaVtk)
+	add_subdirectory(apps/vtkhello)
 	#if(OMEGA_BUILD_APPS)
 		#add_subdirectory(apps/vtkviewer)
 	#endif(OMEGA_BUILD_APPS)

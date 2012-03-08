@@ -75,6 +75,7 @@ void VtkScene::initialize()
 
 	mySceneNode = new SceneNode(getServer());
 	mySceneNode->setBoundingBoxVisible(true);
+	mySceneNode->setPosition(0, 0, -1);
 	getServer()->getScene()->addChild(mySceneNode);
 
 	myVtkObject = new VtkSceneObject("vtk");
@@ -83,6 +84,7 @@ void VtkScene::initialize()
 	myMouseInteractor = new DefaultMouseInteractor();
 	myMouseInteractor->setSceneNode(mySceneNode);
 	ModuleServices::addModule(myMouseInteractor);
+	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +95,6 @@ void VtkScene::initializeRenderer(Renderer* r)
 	myActor[r] = vtkActor::New(); 
 	myActor[r]->SetMapper(myPolyDataMapper[r]); 
 	myActor[r]->GetProperty()->SetColor(0,0,1);
-	myActor[r]->SetPosition(0.1, 0, -1);
 
 	myVtkModule->beginClientInitialize(r);
 	myVtkModule->attachActor(myActor[r], myVtkObject);
@@ -104,6 +105,6 @@ void VtkScene::initializeRenderer(Renderer* r)
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<VtkScene> app("vtkScene");
+	Application<VtkScene> app("vtkhello");
 	return omain(app, argc, argv);
 }
