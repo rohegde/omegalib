@@ -55,7 +55,7 @@ namespace omega {
 		//bool isEmpty() { return myObjs.empty(); }
 
 	private:
-		Dictionary<Renderer*, typename T> myObjs;
+		Dictionary<Renderer*, T> myObjs;
 	};
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
