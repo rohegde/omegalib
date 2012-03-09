@@ -54,15 +54,30 @@ using namespace omega;
 
 void omegaPythonApiInit();
 
+PyThreadState* sMainThreadState;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class PythonInteractiveThread: public Thread
 {
 public:
 	virtual void threadProc()
 	{
+		PyEval_AcquireLock();
+		PyInterpreterState* interpState = sMainThreadState->interp;
+		PyThreadState* threadState = PyThreadState_New(interpState);
+		PyEval_ReleaseLock();
+
 		// Not sure this is helping with safe init but let's try.
-		osleep(1000);
-		while(true)	PyRun_InteractiveLoop(stdin,  "<stdin>");
+		while(true)	
+		{
+			PyEval_AcquireLock();
+			PyThreadState_Swap(threadState);
+
+			PyRun_InteractiveOne(stdin,  "<stdin>");
+
+			PyThreadState_Swap(NULL);
+			PyEval_ReleaseLock();
+		}
 	}
 };
 
@@ -121,6 +136,10 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize interpreter.
 	Py_Initialize();
 
+	PyEval_InitThreads();
+	sMainThreadState = PyThreadState_Get();
+	PyEval_ReleaseLock();
+
 	// The following code will hack in the path for running VTK/Python
 	// from the build tree. Do not try this at home. We are
 	// professionals.
@@ -175,9 +194,14 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize internal Apis
 	omegaPythonApiInit();
 
+	PyEval_AcquireLock();
+	PyThreadState_Swap(sMainThreadState);
+
 	// Not sure this is helping with safe init but let's try.
 	//osleep(1000);
 	PyRun_SimpleString("from omega import *");
+	PyThreadState_Swap(NULL);
+	PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,6 +257,54 @@ void PythonInterpreter::runFile(const String& filename)
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::registerCallback(void* callback, CallbackType type)
+{
+	// BLAGH
+	PyObject* pyCallback =(PyObject*)callback;
+	if(callback != NULL)
+	{
+		Py_INCREF(callback);
+		switch(type)
+		{
+		case CallbackUpdate:
+			myUpdateCallbacks.push_back(callback);
+			return;
+		case CallbackPointerEvent:
+			myPointerEventCallbacks.push_back(callback);
+			return;
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::update(const UpdateContext& context) 
+{
+	PyObject *arglist;
+	arglist = Py_BuildValue("(iff)", context.frameNum, context.time, context.dt);
+
+	PyEval_AcquireLock();
+	PyThreadState_Swap(sMainThreadState);
+
+	foreach(void* cb, myUpdateCallbacks)
+	{
+		// BLAGH
+		PyObject* pyCallback =(PyObject*)cb;
+		PyObject_CallObject(pyCallback, arglist);
+
+	}
+
+	PyThreadState_Swap(NULL);
+	PyEval_ReleaseLock();
+
+	Py_DECREF(arglist);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::handleEvent(const Event& evt) 
+{
+}
+
 #else
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,5 +336,14 @@ void PythonInterpreter::eval(const String& script, const char* format, ...) { }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::runFile(const String& filename) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::registerCallback(PyObject* callback, CallbackType type) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::update(const UpdateContext& context) { }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::handleEvent(const Event& evt) { }
 
 #endif

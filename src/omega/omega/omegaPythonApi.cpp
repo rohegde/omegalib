@@ -46,6 +46,60 @@ PyObject* omegaExit(PyObject* self, PyObject* args)
 	return Py_None;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* omegaFindFile(PyObject* self, PyObject* args)
+{
+	const char* name;
+	if(!PyArg_ParseTuple(args, "s", &name)) return NULL;
+
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo info = dm->getInfo(name);
+
+	if(info.isNull())
+	{
+		return Py_BuildValue("s", "");
+	}
+
+	return Py_BuildValue("s", info.path.c_str());
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* omegaRun(PyObject* self, PyObject* args)
+{
+	const char* name;
+	if(!PyArg_ParseTuple(args, "s", &name)) return NULL;
+
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->runFile(name);
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* omegaUpdateCallback(PyObject *dummy, PyObject *args)
+{
+    PyObject *result = NULL;
+    PyObject *temp;
+
+    if (PyArg_ParseTuple(args, "O", &temp)) 
+	{
+        if (!PyCallable_Check(temp)) 
+		{
+            PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+            return NULL;
+        }
+
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->registerCallback(temp, PythonInterpreter::CallbackUpdate);
+
+        /* Boilerplate to return "None" */
+        Py_INCREF(Py_None);
+        result = Py_None;
+    }
+    return result;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* nodeGetRoot(PyObject* self, PyObject* args)
 {
@@ -283,6 +337,9 @@ static PyMethodDef omegaMethods[] =
     {"nodePitch", nodePitch, METH_VARARGS, "NO INFO"},
     {"nodeRoll", nodeRoll, METH_VARARGS, "NO INFO"},
     {"oexit", omegaExit, METH_VARARGS, "NO INFO"},
+    {"ofindFile", omegaFindFile, METH_VARARGS, "NO INFO"},
+    {"orun", omegaRun, METH_VARARGS, "NO INFO"},
+    {"ofuncUpdate", omegaUpdateCallback, METH_VARARGS, "NO INFO"},
     {NULL, NULL, 0, NULL}
 };
 
