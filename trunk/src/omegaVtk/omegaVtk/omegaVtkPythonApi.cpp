@@ -46,22 +46,7 @@ using namespace omegaVtk;
 //	return Py_BuildValue("s", "ok");
 //}
 //
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyObject* ovtk_findFile(PyObject* self, PyObject* args)
-//{
-//	const char* name;
-//	if(!PyArg_ParseTuple(args, "s", &name)) return NULL;
-//
-//	DataManager* dm = SystemManager::instance()->getDataManager();
-//	DataInfo info = dm->getInfo(name);
-//
-//	if(info.isNull())
-//	{
-//		return Py_BuildValue("s", "");
-//	}
-//
-//	return Py_BuildValue("s", info.path.c_str());
-//}
+
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //static PyObject* ovtk_addButton(PyObject* self, PyObject* args)

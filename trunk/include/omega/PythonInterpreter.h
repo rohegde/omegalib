@@ -32,6 +32,7 @@
 #define __PYTHON_INTERPRETER_H__
 
 #include "omega/osystem.h"
+#include "omega/ApplicationBase.h"
 
 struct PyMethodDef;
 class PythonInteractiveThread;
@@ -43,6 +44,12 @@ namespace omega
 	{
 		friend struct PythonInterpreterWrapper;
 	public:
+		enum CallbackType
+		{
+			CallbackUpdate, CallbackPointerEvent
+		};
+
+	public:
 		PythonInterpreter();
 		~PythonInterpreter();
 
@@ -51,14 +58,25 @@ namespace omega
 		void addModule(const char* name, PyMethodDef* methods);
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
+
+		void registerCallback(void* callback, CallbackType type);
+
 		void addPythonPath(const char*);
+
 		bool isEnabled();
 		bool isShellEnabled() { return myShellEnabled; }
+
+		// invoke python callbacks.
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
 
 	protected:
 		bool myEnabled;
 		bool myShellEnabled;
 		PythonInteractiveThread* myInteractiveThread;
+
+		List<void*> myUpdateCallbacks;
+		List<void*> myPointerEventCallbacks;
 		//char* myExecutablePath;
 	};
 };

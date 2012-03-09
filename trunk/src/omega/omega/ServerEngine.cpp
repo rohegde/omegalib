@@ -31,6 +31,8 @@
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 #include "omega/ImageUtils.h"
+#include "omega/SystemManager.h"
+#include "omega/PythonInterpreter.h"
 
 using namespace omega;
 
@@ -201,6 +203,9 @@ SceneNode* ServerEngine::getScene()
 void ServerEngine::handleEvent(const Event& evt)
 {
     ModuleServices::handleEvent(this, evt);
+
+	getSystemManager()->getScriptInterpreter()->handleEvent(evt);
+
     if(!evt.isProcessed())
 	{
 		if( evt.getServiceType() == Service::Keyboard )
@@ -231,6 +236,8 @@ void ServerEngine::handleEvent(const Event& evt)
 void ServerEngine::update(const UpdateContext& context)
 {
     ModuleServices::update(this, context);
+
+	getSystemManager()->getScriptInterpreter()->update(context);
 
     // Update pointers
     for(int i = 0; i < MaxActivePointers; i++)
