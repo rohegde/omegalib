@@ -37,6 +37,7 @@
 #include "omega/RenderTarget.h"
 #include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
+#include "omega/PythonInterpreter.h"
 #include "omega/Texture.h"
 
 #endif

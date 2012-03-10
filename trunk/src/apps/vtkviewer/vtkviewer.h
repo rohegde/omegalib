@@ -42,12 +42,13 @@ public:
 	VtkViewer();
 
 	virtual void initialize();
-	virtual void initializeRenderer(Renderer* r);
+	virtual void preDraw(Renderer* r, const DrawContext& context);
 	virtual void handleEvent(const Event& evt);
 
 private:
 	VtkModule* myVtkModule;
 	SceneNode* mySceneNode;
+	DefaultMouseInteractor* myMouseInteractor;
 };
 
 #endif

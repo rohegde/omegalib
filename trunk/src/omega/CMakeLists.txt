@@ -90,6 +90,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuProgram.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ImageUtils.h
+		${OmegaLib_SOURCE_DIR}/include/omega/IRendererCommand.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h

@@ -37,11 +37,30 @@ VtkViewer::VtkViewer()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkViewer::initialize()
 {
+	// Create an omegalib scene node. We will attach our vtk objects to it.
+	mySceneNode = new SceneNode(getServer(), "vtkRoot");
+	mySceneNode->setPosition(0, 0, -1);
+	mySceneNode->setBoundingBoxVisible(true);
+	getServer()->getScene()->addChild(mySceneNode);
+
+	// Create a mouse interactor and associate it with our scene node.
+	myMouseInteractor = new DefaultMouseInteractor();
+	myMouseInteractor->setSceneNode(mySceneNode);
+	ModuleServices::addModule(myMouseInteractor);
+
+	// Setup the camera
+	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewer::initializeRenderer(Renderer* r)
+void VtkViewer::preDraw(Renderer* r, const DrawContext& context)
 {
+	// Here is where the magic happens: use the omegalib vtk module to attach the vtk actor to the
+	// node we created in initialize. 
+	myVtkModule->beginClientInitialize(r);
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->eval("initializeRenderer()");
+	myVtkModule->endClientInitialize();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

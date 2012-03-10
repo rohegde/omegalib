@@ -46,11 +46,14 @@ namespace omega {
 		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()) {}
 
 		virtual void initialize() {}
-		virtual void initializeRenderer(Renderer*) {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 		virtual void commitSharedData(SharedOStream& out) {}
 		virtual void updateSharedData(SharedIStream& in) {}
+
+		virtual void initializeRenderer(Renderer*) {}
+		virtual void preDraw(Renderer*, const DrawContext& context) {}
+		virtual void postDraw(Renderer*, const DrawContext& context) {}
 
 		void doInitialize(ServerEngine* server) 
 		{ 
@@ -114,6 +117,25 @@ namespace omega {
 				module->initializeRenderer(r);
 			}
 		}
+
+		static void preDraw(ServerEngine* srv, Renderer* r, const DrawContext& context)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->preDraw(r, context);
+			}
+		}
+
+		static void postDraw(ServerEngine* srv, Renderer* r, const DrawContext& context)
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				module->doInitialize(srv);
+				module->postDraw(r, context);
+			}
+		}
+
 	private:
 		static List<ServerModule*> mysModules;
 	};

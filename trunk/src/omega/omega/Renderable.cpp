@@ -31,9 +31,61 @@ using namespace omega;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable::Renderable():
-	myClient(NULL)
+void RenderableCommand::execute(Renderer* r)
 {
+	switch(command)
+	{
+	case Initialize: renderable->initialize(); break;
+	case Dispose: renderable->dispose(); delete renderable; break;
+	case Refresh: renderable->refresh(); break;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable::Renderable():
+	myClient(NULL),
+	myDisposeCommand(NULL),
+	myInitializeCommand(NULL),
+	myRefreshCommand(NULL)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Renderable::~Renderable()
+{
+	if(myDisposeCommand) delete myDisposeCommand;
+	if(myInitializeCommand) delete myInitializeCommand;
+	if(myRefreshCommand) delete myRefreshCommand;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void Renderable::postDisposeCommand()
+{
+	if(myDisposeCommand == NULL)
+	{
+		myDisposeCommand = new RenderableCommand(this, RenderableCommand::Dispose);
+	}
+	myClient->queueCommand(myDisposeCommand);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void Renderable::postInitializeCommand()
+{
+	if(myInitializeCommand == NULL)
+	{
+		myInitializeCommand = new RenderableCommand(this, RenderableCommand::Initialize);
+	}
+	myClient->queueCommand(myInitializeCommand);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+void Renderable::postRefreshCommand()
+{
+	if(myRefreshCommand == NULL)
+	{
+		myRefreshCommand = new RenderableCommand(this, RenderableCommand::Refresh);
+	}
+	myClient->queueCommand(myRefreshCommand);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,8 +113,7 @@ Renderable* RenderableFactory::addRenderable(Renderer* cli)
 	Renderable* r = createRenderable();
 	r->setClient(cli);
 	myRenderables.push_back(r);
-	RenderableCommand rc(r, RenderableCommand::Initialize);
-	cli->queueRenderableCommand(rc);
+	r->postInitializeCommand();
 	return r;
 }
 
@@ -93,8 +144,7 @@ void RenderableFactory::dispose()
 		//ofmsg("Disposing renderable factory: %1%", %toString());
 		foreach(Renderable* r, myRenderables)
 		{
-			RenderableCommand rc(r, RenderableCommand::Dispose);
-			r->getClient()->queueRenderableCommand(rc);
+			r->postDisposeCommand();
 		}
 		myRenderables.empty();
 		myInitialized = false;
@@ -106,8 +156,7 @@ void RenderableFactory::refresh()
 {
 	foreach(Renderable* r, myRenderables)
 	{
-		RenderableCommand rc(r, RenderableCommand::Refresh);
-		r->getClient()->queueRenderableCommand(rc);
+		r->postRefreshCommand();
 	}
 }
 

@@ -24,58 +24,21 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __ENGINE_CLIENT_H__
-#define __ENGINE_CLIENT_H__
+#ifndef __RENDERER_COMMAND_H__
+#define __RENDERER_COMMAND_H__
 
 #include "osystem.h"
-#include "Renderable.h"
-#include "omega/ApplicationBase.h"
-#include "omega/SystemManager.h"
 
 namespace omega {
-	class RenderPass;
-	class ServerEngine;
+	class Renderer;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Renderer: public RendererBase
+	class IRendererCommand
 	{
 	public:
-		Renderer(ServerBase* server);
-
-		ServerEngine* getServer();
-
-		void addRenderPass(RenderPass* pass, bool addToFront);
-		void removeRenderPass(RenderPass* pass);
-		RenderPass* getRenderPass(const String& name);
-		void removeAllRenderPasses();
-
-
-		void queueCommand(IRendererCommand* cmd);
-
-		virtual void initialize();
-		virtual void draw(const DrawContext& context);
-		virtual void startFrame(const FrameInfo& frame);
-		virtual void finishFrame(const FrameInfo& frame);
-
-		DrawInterface* getRenderer();
-
-	private:
-		void innerDraw(const DrawContext& context);
-
-	private:
-		ServerEngine* myServer;
-		DrawInterface* myRenderer;
-		List<RenderPass*> myRenderPassList;
-		Queue<IRendererCommand*> myRenderableCommands;
+		virtual void execute(Renderer*) = 0;
 	};
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline DrawInterface* Renderer::getRenderer()
-	{ return myRenderer; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ServerEngine* Renderer::getServer()
-	{ return myServer; }
 }; // namespace omega
 
 #endif

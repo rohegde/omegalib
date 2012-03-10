@@ -29,19 +29,37 @@
 
 #include "osystem.h"
 #include "RenderPass.h"
+#include "IRendererCommand.h"
 
 namespace omega {
 	class ServerEngine;
+	class Renderable;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct OMEGA_API RenderableCommand: IRendererCommand
+	{
+		enum Command { Initialize, Dispose, Refresh };
+		Renderable* renderable;
+		Command command;
+
+		RenderableCommand(Renderable* r, Command c): renderable(r), command(c) {}
+		virtual void execute(Renderer* r);
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Renderable: public ReferenceType
 	{
 	public:
 		Renderable();
+		virtual ~Renderable();
 
 		void setClient(Renderer* client);
 		Renderer* getClient();
 		DrawInterface* getRenderer();
+
+		void postDisposeCommand();
+		void postInitializeCommand();
+		void postRefreshCommand();
 
 		virtual void initialize() {}
 		virtual void dispose() {}
@@ -50,25 +68,10 @@ namespace omega {
 
 	private:
 		Renderer* myClient;
-	};
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct RenderableCommand
-	{
-		enum Command { Initialize, Dispose, Refresh };
-		Renderable* renderable;
-		Command command;
-
-		RenderableCommand(Renderable* r, Command c): renderable(r), command(c) {}
-		void execute()
-		{
-			switch(command)
-			{
-			case Initialize: renderable->initialize(); break;
-			case Dispose: renderable->dispose(); break;
-			case Refresh: renderable->refresh(); break;
-			}
-		}
+		RenderableCommand* myDisposeCommand;
+		RenderableCommand* myRefreshCommand;
+		RenderableCommand* myInitializeCommand;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

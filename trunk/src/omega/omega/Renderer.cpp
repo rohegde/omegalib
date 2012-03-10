@@ -99,7 +99,7 @@ void Renderer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Renderer::queueRenderableCommand(RenderableCommand& cmd)
+void Renderer::queueCommand(IRendererCommand* cmd)
 {
 	myRenderableCommands.push(cmd);
 }
@@ -151,12 +151,7 @@ void Renderer::draw(const DrawContext& context)
 	// Execute renderable commands.
 	while(!myRenderableCommands.empty())
 	{
-		myRenderableCommands.front().execute();
-		if(myRenderableCommands.front().command == RenderableCommand::Dispose)
-		{
-			//ofmsg("Client %1% deleting renderable", %getId());
-			delete myRenderableCommands.front().renderable;
-		}
+		myRenderableCommands.front()->execute(this);
 		myRenderableCommands.pop();
 	}
 
@@ -179,6 +174,7 @@ void Renderer::draw(const DrawContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::innerDraw(const DrawContext& context)
 {
+	
 	// Execute all render passes in order. 
 	foreach(RenderPass* pass, myRenderPassList)
 	{
