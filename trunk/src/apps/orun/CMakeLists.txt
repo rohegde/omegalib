@@ -24,13 +24,13 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-add_executable(vtkviewer 
-	vtkviewer.cpp 
-	vtkviewer.h)
+add_executable(orun 
+	orun.cpp)
 
-set_target_properties(vtkviewer PROPERTIES FOLDER apps)
+set_target_properties(orun PROPERTIES FOLDER apps)
 
-target_link_libraries(vtkviewer
+target_link_libraries(orun
 	omega 
 	omegaToolkit
+	omegaOsg
     omegaVtk)
