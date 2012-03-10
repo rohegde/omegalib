@@ -42,7 +42,6 @@ public:
 	VtkViewer();
 
 	virtual void initialize();
-	virtual void preDraw(Renderer* r, const DrawContext& context);
 	virtual void handleEvent(const Event& evt);
 
 private:

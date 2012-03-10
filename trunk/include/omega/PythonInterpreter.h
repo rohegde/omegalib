@@ -34,6 +34,7 @@
 #include "omega/osystem.h"
 #include "omega/ApplicationBase.h"
 #include "omega/IRendererCommand.h"
+#include "omega/SharedDataServices.h"
 
 struct PyMethodDef;
 class PythonInteractiveThread;
@@ -41,7 +42,7 @@ class PythonInteractiveThread;
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API PythonInterpreter
+	class OMEGA_API PythonInterpreter: public SharedObject
 	{
 		friend struct PythonInterpreterWrapper;
 	public:
@@ -59,6 +60,7 @@ namespace omega
 		void addModule(const char* name, PyMethodDef* methods);
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
+		void queueInteractiveCommand(const String& command);
 
 		void registerCallback(void* callback, CallbackType type);
 
@@ -71,10 +73,19 @@ namespace omega
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
+		// Shared data
+		virtual void commitSharedData(SharedOStream& out);
+		virtual void updateSharedData(SharedIStream& in);
+
 	protected:
 		bool myEnabled;
 		bool myShellEnabled;
 		PythonInteractiveThread* myInteractiveThread;
+
+		Lock myInteractiveCommandLock;
+		String myInteractiveCommand;
+		bool myInteractiveCommandNeedsExecute;
+		bool myInteractiveCommandNeedsSend;
 
 		List<void*> myUpdateCallbacks;
 		List<void*> myPointerEventCallbacks;
