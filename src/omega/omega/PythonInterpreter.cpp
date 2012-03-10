@@ -40,12 +40,6 @@ using namespace omega;
 
 #include<iostream>
 
-//#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
-//#define VTK_LIBRARY_DIR_POSTFIX "/Release"
-//#else
-//#define VTK_LIBRARY_DIR_POSTFIX 
-//#endif
-
 //struct vtkPythonMessage
 //{
 //  vtkStdString Message;
@@ -104,17 +98,23 @@ PythonInterpreter::~PythonInterpreter()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addPythonPath(const char* dir)
 {
-  // Convert slashes for this platform.
-  String out_dir = dir ? dir : "";
+	PyEval_AcquireLock();
+	PyThreadState_Swap(sMainThreadState);
+
+	// Convert slashes for this platform.
+	String out_dir = dir ? dir : "";
 #ifdef OMEGA_OS_WIN
-  out_dir = StringUtils::replaceAll(out_dir, "/", "\\");
+	out_dir = StringUtils::replaceAll(out_dir, "/", "\\");
 #endif
 
-  // Append the path to the python sys.path object.
-  PyObject* opath = PySys_GetObject(const_cast<char*>("path"));
-  PyObject* newpath = PyString_FromString(out_dir.c_str());
-  PyList_Insert(opath, 0, newpath);
-  Py_DECREF(newpath);
+	// Append the path to the python sys.path object.
+	PyObject* opath = PySys_GetObject(const_cast<char*>("path"));
+	PyObject* newpath = PyString_FromString(out_dir.c_str());
+	PyList_Insert(opath, 0, newpath);
+	Py_DECREF(newpath);
+
+	PyThreadState_Swap(NULL);
+	PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,30 +139,6 @@ void PythonInterpreter::initialize(const char* programName)
 	PyEval_InitThreads();
 	sMainThreadState = PyThreadState_Get();
 	PyEval_ReleaseLock();
-
-	// The following code will hack in the path for running VTK/Python
-	// from the build tree. Do not try this at home. We are
-	// professionals.
-
-	// Compute the directory containing this executable.  The python
-	// sys.executable variable contains the full path to the interpreter
-	// executable.
-	//if (!myExecutablePath)
-	//{
-	//	PyObject* executable = PySys_GetObject(const_cast<char*>("executable"));
-	//	char* exe_str = PyString_AsString(executable);
-	//	if (exe_str)
-	//	{
-	//		// Use the executable location to try to set sys.path to include
-	//		// the VTK python modules.
-	//		vtkstd::string self_dir;
-	//		vtkstd::string self_name;
-	//		omega::StringUtils::splitFilename(exe_str, self_name, self_dir);
-	//		addPythonPath(self_dir.c_str());
-	//		addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
-	//		addPythonPath(VTK_PYTHON_DIR);
-	//	}
-	//}
 
 	// HACK: Calling PyRun_SimpleString for the first time for some reason results in
 	// a "\n" message being generated which is causing the error dialog to
@@ -207,12 +183,21 @@ void PythonInterpreter::initialize(const char* programName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 {
+	PyEval_AcquireLock();
+	PyThreadState_Swap(sMainThreadState);
+
 	Py_InitModule(name, methods);
+
+	PyThreadState_Swap(NULL);
+	PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
 {
+	PyEval_AcquireLock();
+	PyThreadState_Swap(sMainThreadState);
+
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
 	{
@@ -238,6 +223,9 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			va_end(args);
 		}
 	}
+
+	PyThreadState_Swap(NULL);
+	PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,7 +326,7 @@ void PythonInterpreter::eval(const String& script, const char* format, ...) { }
 void PythonInterpreter::runFile(const String& filename) { }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::registerCallback(PyObject* callback, CallbackType type) { }
+void PythonInterpreter::registerCallback(void* callback, CallbackType type) { }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::update(const UpdateContext& context) { }

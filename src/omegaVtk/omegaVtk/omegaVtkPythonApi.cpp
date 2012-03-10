@@ -32,20 +32,58 @@
 
 using namespace omegaVtk;
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+class InitializeViewCommand: public IRendererCommand
+{
+public:
+	void execute(Renderer* r)
+	{
+		VtkModule* vtk = VtkModule::instance();
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		vtk->beginClientInitialize(r);
+		interp->eval("initializeView()");
+		vtk->endClientInitialize();
+	}
+};
+
+InitializeViewCommand* sInitializeViewCommand = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyObject* ovtk_addActor(PyObject* self, PyObject* args)
-//{
-//	PyObject* pyactor = NULL;
-//	PyArg_ParseTuple(args, "O", &pyactor);
-//
-//	PyVTKObject* pyvtkactor = (PyVTKObject *)pyactor;
-//	vtkProp3D* vtkactor = (vtkActor*)pyvtkactor->vtk_ptr;
-//
-//	VtkModule::instance()->getActiveClient()->addActor(vtkactor);
-//
-//	return Py_BuildValue("s", "ok");
-//}
-//
+static PyObject* queueInitializeView(PyObject* self, PyObject* args)
+{
+	if(sInitializeViewCommand == NULL) 
+	{
+		sInitializeViewCommand = new InitializeViewCommand();
+	}
+	ServerEngine* engine = ServerEngine::instance();
+	foreach(Renderer* r, engine->getClients())
+	{
+		r->queueCommand(sInitializeViewCommand);
+	}
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* attachProp(PyObject* self, PyObject* args)
+{
+	PyObject* pyactor = NULL;
+	PyObject* pynode = NULL;
+	PyArg_ParseTuple(args, "OO", &pyactor, &pynode);
+
+	if(pyactor != NULL && pynode != NULL)
+	{
+		PyVTKObject* pyvtkactor = (PyVTKObject *)pyactor;
+		vtkProp3D* vtkactor = (vtkProp3D*)pyvtkactor->vtk_ptr;
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pynode, "SceneNode");
+		Py_INCREF(pyactor);
+		VtkModule::instance()->attachProp(vtkactor, node);
+	}
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,20 +128,18 @@ using namespace omegaVtk;
 //}
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//static PyMethodDef ovtkMethods[] = 
-//{
-//    {"addActor", ovtk_addActor, METH_VARARGS, "Adds an actor."},
-//    {"findFile", ovtk_findFile, METH_VARARGS, "Finds a file given a partial path using the omegalib data manager."},
-//    {"addButton", ovtk_addButton, METH_VARARGS, "Add button."},
-//    {"addCheckButton", ovtk_addCheckButton, METH_VARARGS, "Add check button."},
-//    {"addSlider", ovtk_addSlider, METH_VARARGS, "Add slider."},
-//    {NULL, NULL, 0, NULL}
-//};
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//void omegaVtkPythonApiInit()
-//{
-//	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-//	interp->addModule("omegaVtk", ovtkMethods);
-//}
-//
+static PyMethodDef ovtkMethods[] = 
+{
+    {"attachProp", attachProp, METH_VARARGS, "Attaches a vtk 3d prop to an omegalib scene node."},
+    {"queueInitializeView", queueInitializeView, METH_VARARGS, "queues a call to initializeView(). Must be called after creation of vtk objects to finish vtk scene initialization."},
+    {NULL, NULL, 0, NULL}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void omegaVtkPythonApiInit()
+{
+	omsg("omegaVtkPythonApiInit()");
+	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->addModule("omegaVtk", ovtkMethods);
+}
+

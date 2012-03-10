@@ -74,7 +74,7 @@ void VtkScene::initialize()
 	mySphere->SetPhiResolution(18);
 
 	// Create an omegalib scene node. We will attach our vtk objects to it.
-	mySceneNode = new SceneNode(getServer());
+	mySceneNode = new SceneNode(getServer(), "vtkRoot");
 	mySceneNode->setPosition(0, 0, -1);
 	mySceneNode->setBoundingBoxVisible(true);
 	getServer()->getScene()->addChild(mySceneNode);

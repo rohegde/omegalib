@@ -38,6 +38,9 @@
 
 using namespace omega;
 
+//! Static instance of ScriptRendererCommand, used by rendererQueueCommand
+ScriptRendererCommand* sScriptRendererCommand = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* omegaExit(PyObject* self, PyObject* args)
 {
@@ -72,6 +75,26 @@ static PyObject* omegaRun(PyObject* self, PyObject* args)
 	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 	interp->runFile(name);
 
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* rendererQueueCommand(PyObject* self, PyObject* args)
+{
+	const char* statement;
+	if(!PyArg_ParseTuple(args, "s", &statement)) return NULL;
+
+	if(sScriptRendererCommand == NULL) 
+	{
+		sScriptRendererCommand = new ScriptRendererCommand();
+	}
+	sScriptRendererCommand->setStatement(statement);
+	ServerEngine* engine = ServerEngine::instance();
+	foreach(Renderer* r, engine->getClients())
+	{
+		r->queueCommand(sScriptRendererCommand);
+	}
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -336,7 +359,10 @@ static PyMethodDef omegaMethods[] =
     {"nodeYaw", nodeYaw, METH_VARARGS, "NO INFO"},
     {"nodePitch", nodePitch, METH_VARARGS, "NO INFO"},
     {"nodeRoll", nodeRoll, METH_VARARGS, "NO INFO"},
-    {"oexit", omegaExit, METH_VARARGS, "NO INFO"},
+
+    {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, "NO INFO"},
+
+	{"oexit", omegaExit, METH_VARARGS, "NO INFO"},
     {"ofindFile", omegaFindFile, METH_VARARGS, "NO INFO"},
     {"orun", omegaRun, METH_VARARGS, "NO INFO"},
     {"ofuncUpdate", omegaUpdateCallback, METH_VARARGS, "NO INFO"},

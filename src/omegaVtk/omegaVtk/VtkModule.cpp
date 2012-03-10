@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 //#include "omegaVtk/PyVtk.h"
+#include "omega/PythonInterpreter.h"
 #include "omegaVtk/VtkModule.h"
 #include "omegaVtk/VtkRenderPass.h"
 #include "omegaVtk/VtkAttachPoint.h"
@@ -37,6 +38,14 @@ using namespace omega;
 using namespace omegaVtk;
 
 VtkModule* VtkModule::myInstance = NULL;
+
+#if defined(OMEGA_TOOL_VS10) || defined(OMEGA_TOOL_VS9)
+#define VTK_LIBRARY_DIR_POSTFIX "/Release"
+#else
+#define VTK_LIBRARY_DIR_POSTFIX 
+#endif
+
+void omegaVtkPythonApiInit();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkModule::VtkModule()
@@ -58,6 +67,12 @@ void VtkModule::initialize()
 
 	getServer()->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
 	getServer()->addRenderPass("VtkRenderPass", this, true);
+
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
+	interp->addPythonPath(VTK_PYTHON_DIR);
+
+	omegaVtkPythonApiInit();
 
 	omsg("VtkModule initialization OK");
 }

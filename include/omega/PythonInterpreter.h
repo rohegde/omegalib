@@ -33,6 +33,7 @@
 
 #include "omega/osystem.h"
 #include "omega/ApplicationBase.h"
+#include "omega/IRendererCommand.h"
 
 struct PyMethodDef;
 class PythonInteractiveThread;
@@ -40,7 +41,7 @@ class PythonInteractiveThread;
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class PythonInterpreter
+	class OMEGA_API PythonInterpreter
 	{
 		friend struct PythonInterpreterWrapper;
 	public:
@@ -67,8 +68,8 @@ namespace omega
 		bool isShellEnabled() { return myShellEnabled; }
 
 		// invoke python callbacks.
-		virtual void update(const UpdateContext& context);
-		virtual void handleEvent(const Event& evt);
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
 
 	protected:
 		bool myEnabled;
@@ -78,6 +79,29 @@ namespace omega
 		List<void*> myUpdateCallbacks;
 		List<void*> myPointerEventCallbacks;
 		//char* myExecutablePath;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Implements a renderer command that runs a python statement when executed.
+	class ScriptRendererCommand: public IRendererCommand
+	{
+	public:
+		ScriptRendererCommand()
+		{
+			myInterp = SystemManager::instance()->getScriptInterpreter();
+			myStatement = "";
+		}
+
+		void setStatement(const String& value) { myStatement = value; }
+
+		void execute(Renderer* r)
+		{
+			myInterp->eval(myStatement);
+		}
+
+	private:
+		String myStatement;
+		PythonInterpreter* myInterp;
 	};
 };
 #endif

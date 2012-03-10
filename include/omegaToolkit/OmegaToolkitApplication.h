@@ -59,7 +59,7 @@ namespace omegaToolkit {
 			engine->registerRenderPassClass("TransparentRenderPass", (ServerEngine::RenderPassFactory)TransparentRenderPass::createInstance);
 			engine->registerRenderPassClass("OverlayRenderPass", (ServerEngine::RenderPassFactory)OverlayRenderPass::createInstance);
 
-			//engine->addRenderPass("LightingPass");
+			engine->addRenderPass("LightingPass");
 			engine->addRenderPass("DefaultRenderPass");
 			engine->addRenderPass("TransparentRenderPass");
 			engine->addRenderPass("OverlayRenderPass");

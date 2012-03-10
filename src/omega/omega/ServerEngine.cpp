@@ -108,6 +108,22 @@ void ServerEngine::clientInitialize(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerEngine::preDraw(Renderer* r, const DrawContext& context)
+{
+    myLock.lock();
+	ModuleServices::preDraw(this, r, context);
+    myLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void ServerEngine::postDraw(Renderer* r, const DrawContext& context)
+{
+    myLock.lock();
+	ModuleServices::postDraw(this, r, context);
+    myLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerEngine::finalize()
 {
     ImageUtils::internalDispose();
