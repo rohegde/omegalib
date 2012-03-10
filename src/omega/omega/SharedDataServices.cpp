@@ -28,6 +28,7 @@
 using namespace omega;
 
 SharedData* SharedDataServices::mysSharedData = NULL;
+Dictionary<String, SharedObject*> SharedDataServices::mysRegistrationQueue;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SharedOStream::write( const void* data, uint64_t size )
@@ -125,6 +126,11 @@ void SharedData::applyInstanceData( co::DataIStream& is )
 void SharedDataServices::setSharedData(SharedData* data)
 {
 	mysSharedData = data;
+	typedef Dictionary<String, SharedObject*>::Item SharedObjectEntry;
+	foreach(SharedObjectEntry item, mysRegistrationQueue)
+	{
+		registerObject(item.getValue(), item.getKey());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,6 +142,7 @@ void SharedDataServices::registerObject(SharedObject* module, const String& shar
 	}
 	else
 	{
-		owarn("SharedDataServices::registerObject: cannot register. Shared data stream service not available.");
+		// QUEUE
+		mysRegistrationQueue[sharedId] = module;
 	}
 }

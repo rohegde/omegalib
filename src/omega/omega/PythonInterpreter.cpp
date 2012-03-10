@@ -56,21 +56,28 @@ class PythonInteractiveThread: public Thread
 public:
 	virtual void threadProc()
 	{
-		PyEval_AcquireLock();
-		PyInterpreterState* interpState = sMainThreadState->interp;
-		PyThreadState* threadState = PyThreadState_New(interpState);
-		PyEval_ReleaseLock();
+		//PyEval_AcquireLock();
+		//PyInterpreterState* interpState = sMainThreadState->interp;
+		//PyThreadState* threadState = PyThreadState_New(interpState);
+		//PyEval_ReleaseLock();
+
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 
 		// Not sure this is helping with safe init but let's try.
 		while(true)	
 		{
-			PyEval_AcquireLock();
-			PyThreadState_Swap(threadState);
+			char buf[65000];
+			std::cin.getline(buf, 65000);
 
-			PyRun_InteractiveOne(stdin,  "<stdin>");
+			interp->queueInteractiveCommand(buf);
 
-			PyThreadState_Swap(NULL);
-			PyEval_ReleaseLock();
+			//PyEval_AcquireLock();
+			//PyThreadState_Swap(threadState);
+
+			//PyRun_SimpleString(buf);
+
+			//PyThreadState_Swap(NULL);
+			//PyEval_ReleaseLock();
 		}
 	}
 };
@@ -126,6 +133,13 @@ void PythonInterpreter::setup(const Setting& setting)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::initialize(const char* programName)
 {
+	// Reset interactive command flags
+	myInteractiveCommandNeedsExecute = false;
+	myInteractiveCommandNeedsSend = false;
+
+	// Register self as shared object
+	SharedDataServices::registerObject(this, "interp");
+
 	// Set the program name, so that we can ask python to provide us
 	// full path.
 	Py_SetProgramName((char*)programName);
@@ -268,11 +282,19 @@ void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::update(const UpdateContext& context) 
 {
+	PyEval_AcquireLock();
+	PyThreadState_Swap(sMainThreadState);
+
+	// Execute queued interactive commands first
+	if(myInteractiveCommandNeedsExecute)
+	{
+		PyRun_SimpleString(myInteractiveCommand.c_str());
+		myInteractiveCommandNeedsExecute = false;
+	}
+	
 	PyObject *arglist;
 	arglist = Py_BuildValue("(iff)", context.frameNum, context.time, context.dt);
 
-	PyEval_AcquireLock();
-	PyThreadState_Swap(sMainThreadState);
 
 	foreach(void* cb, myUpdateCallbacks)
 	{
@@ -286,6 +308,37 @@ void PythonInterpreter::update(const UpdateContext& context)
 	PyEval_ReleaseLock();
 
 	Py_DECREF(arglist);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::queueInteractiveCommand(const String& command)
+{
+	//oassert(!myInteractiveCommandNeedsExecute && 
+	//	!myInteractiveCommandNeedsSend);
+
+	myInteractiveCommandLock.lock();
+	myInteractiveCommandNeedsExecute = true;
+	myInteractiveCommandNeedsSend = true;
+	myInteractiveCommand = command;
+	myInteractiveCommandLock.unlock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::commitSharedData(SharedOStream& out)
+{
+	out << myInteractiveCommandNeedsSend;
+	if(myInteractiveCommandNeedsSend) out << myInteractiveCommand;
+	myInteractiveCommandNeedsSend = false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::updateSharedData(SharedIStream& in)
+{
+	in >> myInteractiveCommandNeedsExecute;
+	if(myInteractiveCommandNeedsExecute)
+	{
+		in >> myInteractiveCommand;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,4 +387,12 @@ void PythonInterpreter::update(const UpdateContext& context) { }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::handleEvent(const Event& evt) { }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::commitSharedData(SharedOStream& out) {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::updateSharedData(SharedIStream& in) {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::queueInteractiveCommand(const String& command) {}
 #endif

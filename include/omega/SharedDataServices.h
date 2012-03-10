@@ -96,6 +96,7 @@ namespace omega
 
 	private:
 		static SharedData* mysSharedData;
+		static Dictionary<String, SharedObject*> mysRegistrationQueue;
 	};
 }; // namespace omega
 

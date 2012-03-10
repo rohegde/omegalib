@@ -53,17 +53,6 @@ void VtkViewer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewer::preDraw(Renderer* r, const DrawContext& context)
-{
-	// Here is where the magic happens: use the omegalib vtk module to attach the vtk actor to the
-	// node we created in initialize. 
-	myVtkModule->beginClientInitialize(r);
-	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->eval("initializeRenderer()");
-	myVtkModule->endClientInitialize();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkViewer::handleEvent(const Event& evt)
 {
 	//if(evt.getServiceType() == Service::UI) 
