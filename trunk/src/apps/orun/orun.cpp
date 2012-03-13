@@ -24,36 +24,42 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "vtkviewer.h"
+#include <omega.h>
+#include <omegaToolkit.h>
+#include <omegaVtk.h>
+
+using namespace omega;
+using namespace omegaToolkit;
+using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-VtkViewer::VtkViewer()
+class OmegaViewer: public ServerModule
 {
-	// Create and register the omegalib vtk module.
-	myVtkModule = new VtkModule();
-	ModuleServices::addModule(myVtkModule);
+public:
+	OmegaViewer();
+
+	virtual void initialize();
+	virtual void handleEvent(const Event& evt);
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+OmegaViewer::OmegaViewer()
+{
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewer::initialize()
+void OmegaViewer::initialize()
 {
-	// Create an omegalib scene node. We will attach our vtk objects to it.
-	mySceneNode = new SceneNode(getServer(), "vtkRoot");
-	mySceneNode->setPosition(0, 0, -1);
-	mySceneNode->setBoundingBoxVisible(true);
-	getServer()->getScene()->addChild(mySceneNode);
-
-	// Create a mouse interactor and associate it with our scene node.
-	myMouseInteractor = new DefaultMouseInteractor();
-	myMouseInteractor->setSceneNode(mySceneNode);
-	ModuleServices::addModule(myMouseInteractor);
+	omegaVtkPythonApiInit();
+	omegaToolkitPythonApiInit();
 
 	// Setup the camera
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void VtkViewer::handleEvent(const Event& evt)
+void OmegaViewer::handleEvent(const Event& evt)
 {
 	//if(evt.getServiceType() == Service::UI) 
 	//{
@@ -69,6 +75,6 @@ void VtkViewer::handleEvent(const Event& evt)
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<VtkViewer> app("vtkviewer");
+	Application<OmegaViewer> app("orun");
 	return omain(app, argc, argv);
 }

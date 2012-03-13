@@ -49,6 +49,7 @@ set( srcs
 		omegaToolkit/Mesh.cpp
 		omegaToolkit/MeshData.cpp
 		omegaToolkit/OverlayRenderPass.cpp
+		omegaToolkit/omegaToolkitPythonApi.cpp
 		omegaToolkit/ReferenceBox.cpp
 		omegaToolkit/RenderableSceneObject.cpp
 		omegaToolkit/SceneEditorModule.cpp

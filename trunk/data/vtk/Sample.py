@@ -1,5 +1,16 @@
+from omegaToolkit import *
+from omegaVtk import *
+
+moduleEnableVtk()
+
 import vtk
-import omegaVtk
+
+vtkNode = nodeCreate(nodeGetRoot())
+
+mouse = interactorCreateMouse()
+interactorAttach(mouse, vtkNode)
+
+nodeSetPosition(vtkNode, (0, 0, -1))
 
 quadric = vtk.vtkQuadric()
 quadric.SetCoefficients(.5,1,.2,0,.1,0,0,.2,0,0)
@@ -16,7 +27,7 @@ normals = vtk.vtkPolyDataNormals()
 normals.SetInputConnection(contours.GetOutputPort())
 normals.SetFeatureAngle(270.0)
 
-omegaVtk.queueInitializeView()
+queueInitializeView()
 
 def initializeView():
     contMapper = vtk.vtkPolyDataMapper()
@@ -25,8 +36,7 @@ def initializeView():
     contMapper.SetScalarVisibility(1)
     actor = vtk.vtkActor()
     actor.SetMapper(contMapper)
-    vtkRoot = nodeGetChildByName(nodeGetRoot(), "vtkRoot")
-    omegaVtk.attachProp(actor, vtkRoot)
+    attachProp(actor, vtkNode)
 	#ovtk.addCheckButton("testButton", 'contMapper.GetScalarVisibility()', 'contMapper.SetScalarVisibility(${value})')
 	#ovtk.addSlider("slider", 1, 10, 1, '6', 'contours.GenerateValues(${value}, 0, 2)')
 

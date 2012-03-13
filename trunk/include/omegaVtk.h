@@ -27,4 +27,7 @@
 
 #include "omegaVtk/ovtkbase.h"
 #include "omegaVtk/VtkModule.h"
+
+void OVTK_API omegaVtkPythonApiInit();
+
 #endif

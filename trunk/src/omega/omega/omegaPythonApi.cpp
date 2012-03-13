@@ -36,6 +36,8 @@
 
 #include "omega/PythonInterpreterWrapper.h"
 
+#define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
+
 using namespace omega;
 
 //! Static instance of ScriptRendererCommand, used by rendererQueueCommand
@@ -131,6 +133,25 @@ PyObject* nodeGetRoot(PyObject* self, PyObject* args)
 	PyObject* pyRoot = PyCapsule_New(root, "SceneNode", NULL);
 
 	return Py_BuildValue("O", pyRoot);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* nodeCreate(PyObject* self, PyObject* args)
+{
+	PyObject* pyParent = NULL;
+	PyArg_ParseTuple(args, "O", &pyParent);
+
+	SceneNode* parent = PYCAP_GET(pyParent, SceneNode);
+	if(parent != NULL)
+	{
+		SceneNode* node = new SceneNode(ServerEngine::instance());
+		parent->addChild(node);
+
+		PyObject* pyNode = PyCapsule_New(node, "SceneNode", NULL);
+		return Py_BuildValue("O", pyNode);
+	}
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,6 +366,10 @@ PyObject* nodeRoll(PyObject* self, PyObject* args)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef omegaMethods[] = 
 {
+    {"nodeCreate", nodeCreate, METH_VARARGS, 
+		"nodeCreate(parent)\n"
+		"creates a new scene node and sets its parent."},
+
     {"nodeGetRoot", nodeGetRoot, METH_VARARGS, "NO INFO"},
     {"nodeGetName", nodeGetName, METH_VARARGS, "NO INFO"},
     {"nodeNumChildren", nodeGetNumChildren, METH_VARARGS, "NO INFO"},
