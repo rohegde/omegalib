@@ -1,8 +1,7 @@
 #summary Omegalib Concept And Design Basics
 #sidebar Sidebar
 
-*omegalib Version:* 0.5
-*<font color=#ff0000> Deprecated </font></br>*
+<p>*omegalib Version:* 0.5 *<font color=#ff0000> (The contents of this document are deprecated and / or need revision.</font></p>*
 
 This page offers a general overview of the omegalib structure, presenting some of its main functionality.
 <wiki:toc max_depth="2" />
