@@ -1,0 +1,22 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
+  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
+  rankdir=LR;
+  Node1 [label="omega::ISceneObject",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="omegaOsg::OsgSceneObject",height=0.2,width=0.4,color="black",URL="$classomega_osg_1_1_osg_scene_object.html"];
+  Node1 -> Node3 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="omegaToolkit::RenderableSceneObject",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_renderable_scene_object.html"];
+  Node3 -> Node4 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="omegaToolkit::BoundingSphere",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_bounding_sphere.html"];
+  Node3 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node5 [label="omegaToolkit::Box",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_box.html"];
+  Node3 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="omegaToolkit::Mesh",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_mesh.html"];
+  Node3 -> Node7 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node7 [label="omegaToolkit::ReferenceBox",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_reference_box.html"];
+  Node1 -> Node8 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node8 [label="omegaVtk::VtkAttachPoint",height=0.2,width=0.4,color="black",URL="$classomega_vtk_1_1_vtk_attach_point.html"];
+}

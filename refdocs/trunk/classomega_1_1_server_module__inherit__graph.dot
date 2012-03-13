@@ -1,0 +1,36 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
+  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
+  rankdir=LR;
+  Node1 [label="omega::ServerModule",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="omega::SharedObject",height=0.2,width=0.4,color="black",URL="$classomega_1_1_shared_object.html"];
+  Node3 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="ReferenceType",height=0.2,width=0.4,color="black",URL="$class_reference_type.html"];
+  Node1 -> Node4 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="omega::Actor",height=0.2,width=0.4,color="black",URL="$classomega_1_1_actor.html"];
+  Node4 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node5 [label="omegaToolkit::ControllerManipulator",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_controller_manipulator.html"];
+  Node4 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="omegaToolkit::DefaultMouseInteractor",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_default_mouse_interactor.html"];
+  Node4 -> Node7 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node7 [label="omegaToolkit::DefaultTwoHandsInteractor",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_default_two_hands_interactor.html"];
+  Node1 -> Node8 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node8 [label="omega::ApplicationNode",height=0.2,width=0.4,color="black",URL="$classomega_1_1_application_node.html"];
+  Node1 -> Node9 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node9 [label="omega::EventSharingModule",height=0.2,width=0.4,color="black",URL="$classomega_1_1_event_sharing_module.html"];
+  Node1 -> Node10 [dir=back,color="firebrick4",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node10 [label="omega::PortholeTabletService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_porthole_tablet_service.html",tooltip="Implements an interface to tablet device applications using the Porthole protocol."];
+  Node1 -> Node11 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node11 [label="omegaOsg::OsgModule",height=0.2,width=0.4,color="black",URL="$classomega_osg_1_1_osg_module.html"];
+  Node1 -> Node12 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node12 [label="omegaToolkit::OmegaToolkitEngineModule",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_omega_toolkit_engine_module.html"];
+  Node1 -> Node13 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node13 [label="omegaToolkit::SceneEditorModule",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_scene_editor_module.html"];
+  Node1 -> Node14 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node14 [label="omegaToolkit::UiModule",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_ui_module.html"];
+  Node1 -> Node15 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node15 [label="omegaVtk::VtkModule",height=0.2,width=0.4,color="black",URL="$classomega_vtk_1_1_vtk_module.html"];
+}

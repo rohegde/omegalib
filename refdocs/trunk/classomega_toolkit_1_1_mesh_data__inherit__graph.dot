@@ -1,0 +1,11 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
+  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
+  Node1 [label="omegaToolkit::MeshData",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="omegaToolkit::ObjDataReader",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_obj_data_reader.html"];
+  Node1 -> Node3 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="omegaToolkit::PlyDataReader",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_ply_data_reader.html"];
+}

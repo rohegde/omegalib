@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1" href="$classoengine_1_1_mesh_data.html" title="Used to store mesh data loaded from a file in a common format, before transfering it to vertex and in..." alt="" coords="7,32,140,61"/>
-<area shape="rect" id="node3" href="$classoengine_1_1_obj_data_reader.html" title="oengine::ObjDataReader" alt="" coords="189,5,352,35"/>
-<area shape="rect" id="node5" href="$classoengine_1_1_ply_data_reader.html" title="oengine::PlyDataReader" alt="" coords="189,59,352,88"/>
-</map>

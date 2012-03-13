@@ -1,0 +1,13 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
+  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
+  Node1 [label="omega::ServerBase",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="ReferenceType",height=0.2,width=0.4,color="black",URL="$class_reference_type.html"];
+  Node3 -> Node1 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="IEventListener",height=0.2,width=0.4,color="black",URL="$class_i_event_listener.html"];
+  Node1 -> Node4 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="omega::ServerEngine",height=0.2,width=0.4,color="black",URL="$classomega_1_1_server_engine.html"];
+}

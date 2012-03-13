@@ -1,0 +1,12 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
+  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
+  rankdir=LR;
+  Node1 [label="omega::IRendererCommand",height=0.2,width=0.4,color="black",URL="$classomega_1_1_i_renderer_command.html"];
+  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="omega::RenderableCommand",height=0.2,width=0.4,color="black",URL="$structomega_1_1_renderable_command.html"];
+  Node1 -> Node3 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="omega::ScriptRendererCommand",height=0.2,width=0.4,color="black",URL="$classomega_1_1_script_renderer_command.html",tooltip="Implements a renderer command that runs a python statement when executed."];
+}

@@ -1,0 +1,18 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
+  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
+  rankdir=LR;
+  Node1 [label="Service",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="omega::KeyboardService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_keyboard_service.html"];
+  Node1 -> Node3 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="omega::MouseService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_mouse_service.html"];
+  Node1 -> Node4 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="omega::ObserverUpdateService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_observer_update_service.html"];
+  Node1 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node5 [label="omega::PortholeTabletService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_porthole_tablet_service.html",tooltip="Implements an interface to tablet device applications using the Porthole protocol."];
+  Node1 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="omega::SagePointerService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_sage_pointer_service.html",tooltip="Implements a service able to receive pointer updates from the SAGE pointer application."];
+}
