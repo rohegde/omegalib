@@ -1,3 +1,5 @@
+<p>*Last revision:* ver. 0.8.6<font color=#ff0000> (Internal document)</font></p>*
+
 #summary Developement proposal and design for omegaviewer
 #sidebar Sidebar
 This document contains the omegaviewer application concept, timeline and developement notes.

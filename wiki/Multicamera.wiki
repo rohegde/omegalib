@@ -1,3 +1,5 @@
+<p>*Last revision:* ver. 0.8.6</p>
+
 #summary oengine Multi camera support
 #sidebar Sidebar
 

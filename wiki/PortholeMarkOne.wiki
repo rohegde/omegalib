@@ -1,3 +1,5 @@
+<p>*omegalib Version:* 0.8.6 *<font color=#ff0000> (This document is for internal use)</font></p>*
+
 #summary Developement proposal and design for Porthole, the iOS implementation of OmegaViewer
 #sidebar Sidebar
 This document contains the Porthole application concept, timeline and developement notes.
