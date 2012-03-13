@@ -45,14 +45,16 @@ VtkModule* VtkModule::myInstance = NULL;
 #define VTK_LIBRARY_DIR_POSTFIX 
 #endif
 
-void omegaVtkPythonApiInit();
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 VtkModule::VtkModule()
 {
 	myInstance = this;
 	myActiveClient = NULL;
 	myActiveRenderPass = NULL;
+
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
+	interp->addPythonPath(VTK_PYTHON_DIR);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,12 +69,6 @@ void VtkModule::initialize()
 
 	getServer()->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
 	getServer()->addRenderPass("VtkRenderPass", this, true);
-
-	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
-	interp->addPythonPath(VTK_PYTHON_DIR);
-
-	omegaVtkPythonApiInit();
 
 	omsg("VtkModule initialization OK");
 }

@@ -49,6 +49,20 @@ public:
 InitializeViewCommand* sInitializeViewCommand = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* moduleEnableVtk(PyObject* self, PyObject* args)
+{
+	// Create and register the omegalib vtk module.
+	VtkModule* mod = new VtkModule();
+	ModuleServices::addModule(mod);
+
+	// Force module initialization.
+	mod->doInitialize(ServerEngine::instance());
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyObject* queueInitializeView(PyObject* self, PyObject* args)
 {
 	if(sInitializeViewCommand == NULL) 
@@ -130,13 +144,23 @@ static PyObject* attachProp(PyObject* self, PyObject* args)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef ovtkMethods[] = 
 {
-    {"attachProp", attachProp, METH_VARARGS, "Attaches a vtk 3d prop to an omegalib scene node."},
-    {"queueInitializeView", queueInitializeView, METH_VARARGS, "queues a call to initializeView(). Must be called after creation of vtk objects to finish vtk scene initialization."},
+    {"moduleEnableVtk", moduleEnableVtk, METH_VARARGS, 
+		"moduleEnableVtk()\n" 
+		"Enables omegalib vtk support."},
+
+    {"attachProp", attachProp, METH_VARARGS, 
+		"attachProp(actor, sceneNode)\n"
+			"Attaches a vtk 3d prop to an omegalib scene node."},
+
+    {"queueInitializeView", queueInitializeView, METH_VARARGS, 
+	"queueInitializeView()\n"
+		"queues a call to initializeView(). Must be called after creation of vtk objects to finish vtk scene initialization."},
+
     {NULL, NULL, 0, NULL}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void omegaVtkPythonApiInit()
+void OVTK_API omegaVtkPythonApiInit()
 {
 	omsg("omegaVtkPythonApiInit()");
 	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();

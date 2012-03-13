@@ -105,8 +105,8 @@ PythonInterpreter::~PythonInterpreter()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addPythonPath(const char* dir)
 {
-	PyEval_AcquireLock();
-	PyThreadState_Swap(sMainThreadState);
+	//PyEval_AcquireLock();
+	//PyThreadState_Swap(sMainThreadState);
 
 	// Convert slashes for this platform.
 	String out_dir = dir ? dir : "";
@@ -120,8 +120,8 @@ void PythonInterpreter::addPythonPath(const char* dir)
 	PyList_Insert(opath, 0, newpath);
 	Py_DECREF(newpath);
 
-	PyThreadState_Swap(NULL);
-	PyEval_ReleaseLock();
+	//PyThreadState_Swap(NULL);
+	//PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

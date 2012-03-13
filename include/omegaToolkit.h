@@ -60,4 +60,6 @@
 #include "omegaToolkit/ui/WidgetFactory.h"
 #include "omegaToolkit/ui/UserManagerPanel.h"
 
+OTK_API void omegaToolkitPythonApiInit();
+
 #endif
