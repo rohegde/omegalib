@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include <omega.h>
-#include <cyclops.h>
+//#include <cyclops.h>
 #include <omegaToolkit.h>
 #include <omegaVtk.h>
 
@@ -49,12 +49,15 @@ OmegaViewer::OmegaViewer()
 {
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OmegaViewer::initialize()
 {
+#ifdef OMEGA_USE_PYTHON
 	omegaVtkPythonApiInit();
 	omegaToolkitPythonApiInit();
-	cyclopsPythonApiInit();
+	//cyclopsPythonApiInit();
+#endif
 
 	// Setup the camera
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());

@@ -33,12 +33,18 @@ include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
 
 ###################################################################################################
 # See if we can setup Python support for this build
-find_package(PythonLibs)
-if(PYTHONLIBS_FOUND)
-	set(OMEGA_USE_PYTHON true)
-	include_directories(${PYTHON_INCLUDE_DIRS})
+set(OMEGA_ENABLE_PYTHON true CACHE BOOL "Enables python support if available.")
+
+if(OMEGA_ENABLE_PYTHON)
+	find_package(PythonLibs)
+	if(PYTHONLIBS_FOUND)
+		set(OMEGA_USE_PYTHON true)
+		include_directories(${PYTHON_INCLUDE_DIRS})
+	else()
+		message("Python libraries not found on this system. Omegalib Python support will be disabled")
+	endif()
 else()
-	message("Python libraries not found on this system. Omegalib Python support will be disabled")
+	set(OMEGA_USE_PYTHON false)
 endif()
 
 ###################################################################################################
@@ -108,7 +114,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	include(${OmegaLib_SOURCE_DIR}/external/UseOpenSceneGraph.cmake)
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(omegaOsg)
-	add_subdirectory(cyclops)
+	#add_subdirectory(cyclops)
 	add_subdirectory(apps/osgviewer)
 	
 	if(OMEGA_BUILD_TUTORIALS)

@@ -234,7 +234,7 @@ namespace omega
 
 		argv[argc] = 0;
 
-		int nTries = 10;
+		int nTries = 1;
 		while( nTries-- )
 		{
 			execvp( argv[0], argv );
