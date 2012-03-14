@@ -62,6 +62,8 @@ public:
 
 	virtual DisplaySystemType getId() { return Invalid; }
 
+	virtual void killCluster() {}
+
 	//! Returns the size of the display canvas.
 	virtual Vector2i getCanvasSize() = 0;
 	//! Returns a view ray given a pointer position in pixel coordinates
