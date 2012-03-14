@@ -22,8 +22,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************************************************************/
-#ifndef __OOSG__
-#define __OOSG__
+#ifndef __OVTK__
+#define __OVTK__
 
 #include "omegaVtk/ovtkbase.h"
 #include "omegaVtk/VtkModule.h"

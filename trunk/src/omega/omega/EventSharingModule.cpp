@@ -42,27 +42,30 @@ EventSharingModule::EventSharingModule():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EventSharingModule::share(const Event& evt)
 {
-	if(mysInstance->getServer() == NULL) 
+	if(mysInstance != NULL)
 	{
-		owarn("EventSharingModule::share: server not initialized yet. Ignoring call.");
-		return;
-	}
-	
-	if(!mysInstance->getServer()->isMaster())
-	{
-		owarn("EventSharingModule::share: can be caled only from master server. Ignoring call.");
-	}
-	else
-	{
-		if(mysInstance->myQueuedEvents >= MaxSharedEventsQueue)
+		if(mysInstance->getServer() == NULL) 
 		{
-			ofwarn("EventSharingModule::share: cannot queue more than %1% events. Dropping event.", %((int)MaxSharedEventsQueue));
+			owarn("EventSharingModule::share: server not initialized yet. Ignoring call.");
+			return;
+		}
+	
+		if(!mysInstance->getServer()->isMaster())
+		{
+			owarn("EventSharingModule::share: can be caled only from master server. Ignoring call.");
 		}
 		else
 		{
-			mysInstance->myQueueLock.lock();
-			mysInstance->myEventQueue[mysInstance->myQueuedEvents++].copyFrom(evt);
-			mysInstance->myQueueLock.unlock();
+			if(mysInstance->myQueuedEvents >= MaxSharedEventsQueue)
+			{
+				ofwarn("EventSharingModule::share: cannot queue more than %1% events. Dropping event.", %((int)MaxSharedEventsQueue));
+			}
+			else
+			{
+				mysInstance->myQueueLock.lock();
+				mysInstance->myEventQueue[mysInstance->myQueuedEvents++].copyFrom(evt);
+				mysInstance->myQueueLock.unlock();
+			}
 		}
 	}
 }
