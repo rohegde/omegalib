@@ -123,30 +123,39 @@ void Railsim::initialize()
 	}
 
 	// Load the data sets
+	string data;
 	bool gotAllData = true;
-	ofmsg("Loading data sets: " , %NULL);
-
-	gotAllData = loadDataSets( "config/wheelPos" , wheel_PVec , true);
+	
+	data = "config/wheelPos";
+	gotAllData = loadDataSets( data , wheel_PVec , true);
 	numTimeSteps = (int) ((wheel_PVec.size() - 1) / 4.0);
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 
-	gotAllData = loadDataSets( "config/wheelRot" , wheel_RVec , false);
+	data = "config/wheelRot";
+	gotAllData = loadDataSets( data , wheel_RVec , false);
 	numTimeSteps = min( numTimeSteps , (int) ((wheel_RVec.size() - 1) / 4.0) );
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 
-	gotAllData = loadDataSets( "config/framePos" , frame_PVec, true);
+	data = "config/framePos";
+	gotAllData = loadDataSets( data , frame_PVec, true);
 	numTimeSteps = min( numTimeSteps , (int) ((frame_PVec.size() - 1) / 4.0) );
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 
-	gotAllData = loadDataSets( "config/frameRot" , frame_RVec , false);
+	data = "config/frameRot";
+	gotAllData = loadDataSets( data , frame_RVec , false);
 	numTimeSteps = min( numTimeSteps , (int) ((frame_RVec.size() - 1) / 4.0) );
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 
-	gotAllData = loadDataSets( "config/railFailPos" , railFail_PVec, true);
+	data = "config/railFailPos";
+	gotAllData = loadDataSets( data , railFail_PVec, true);
 	numTimeSteps = min( numTimeSteps , (int) ((railFail_PVec.size() - 1) / 4.0) );
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 
-	gotAllData = loadDataSets( "config/railFailRot" , railFail_RVec, false);
+	data = "config/railFailRot";
+	gotAllData = loadDataSets( data , railFail_RVec, false);
 	numTimeSteps = min( numTimeSteps , (int) ((railFail_RVec.size() - 1) / 4.0) );
-
-	if(!gotAllData ) ofwarn("!Some data failed to load" , %NULL);
-	else ofmsg("Data loaded fine." , %NULL);
-
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
+	
 	curTime = 0;
 	animationTimer = 5.0;
 	rotation = true;
@@ -206,7 +215,6 @@ bool Railsim::loadDataSets( String configAttr , vector<float> &dataVector , bool
 			ofwarn("!File not found: %1%", %mapName);
 			return false;
 		}
-		ofmsg("\t Loaded." , %NULL);
 		return true;
 	}
 	else
