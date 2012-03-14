@@ -155,7 +155,7 @@ void Railsim::initialize()
 	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 	
 	curTime = 0;
-	animationTimer = 10.0;
+	animationTimer = 20.0;
 	rotation = true;
 	
 	//printf( "numTimeSteps: %d\n" , numTimeSteps );
