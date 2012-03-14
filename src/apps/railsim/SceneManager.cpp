@@ -81,13 +81,16 @@ void SceneManager::initialize(EngineServer* engine)
 	//send the GUI msgs to the tablet
 	myTabletManager->beginGui();
 	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
-	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
-	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 25, 100, 30));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 25, 500, 25));
+	myTabletManager->addGuiElement(TabletGuiElement::createSlider(3, "Remote Pan", "Select the pan along the x-axis on the main view", 0, 300, 150));
+	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(4, "Animate", "Toggle to enable object animation", 1));
+	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(5, "End", "Toggle to end of the animation", 0));
 	myTabletManager->finishGui();
 
 	frontView = true;
-
+	myEnd = 0;
+	myAnimate = 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,13 +106,8 @@ void SceneManager::update(const UpdateContext& context )
 	//{
 	//	wheel->getSceneNode()->yaw(0.5f * context.dt);
 	//}
-
 	//oengine::Camera* theCamera = myEngine->getDefaultCamera();
 	//theCamera->setPosition( Vector3f( 0 , 0 , 5) );
-
-	Quaternion q = Quaternion( AngleAxis( 45*Math::DegToRad , Vector3f::UnitX() ) );
-	oengine::Camera* theCamera = myEngine->getDefaultCamera();
-	theCamera->setOrientation( q );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,26 +181,40 @@ void SceneManager::handleEvent(const Event& evt)
 		if(evt.getSourceId() == 2)
 		{
 			remoteZoom = (float)evt.getExtraDataInt(0) / 10;
-			myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
+			oengine::Camera *curCam = myEngine->getDefaultCamera();
+			Vector3f pos = curCam->getPosition();
+			myEngine->getDefaultCamera()->setPosition(Vector3f( pos[0], pos[1], remoteZoom));
 		}
 		if(evt.getSourceId() == 3)
 		{
-			myRotate = evt.getExtraDataInt(0);
-			if(myRotate == 1)
-			{
-				myTabletManager->setEventFlags(Event::Right);
-			}
-			else
-			{
-				myTabletManager->setEventFlags(Event::Left);
-			}
+			remotePan = (float)evt.getExtraDataInt(0) / 10;
+			oengine::Camera *curCam = myEngine->getDefaultCamera();
+			Vector3f pos = curCam->getPosition();
+			myEngine->getDefaultCamera()->setPosition(Vector3f(remotePan, pos[1], pos[2]));
 		}
-
+		if(evt.getSourceId() == 4)
+		{
+			myAnimate = evt.getExtraDataInt(0);
+		}
+		if(evt.getSourceId() == 5)
+		{
+			myEnd = evt.getExtraDataInt(0);
+			if( myEnd )
+			{
+				myAnimate = 0;
+				remotePan = 30;
+				remoteZoom = 15;
+				myEngine->getDefaultCamera()->setPosition(Vector3f(remotePan , 0, remoteZoom));
+			}
+			else myEngine->getDefaultCamera()->setPosition(Vector3f(15 , 0, 25));
+		}
 		myTabletManager->beginGui();
 		myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, (int)(localZoom * 10)));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, (int)(remoteZoom * 10)));
-		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", myRotate));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 25, 100, (int)(localZoom * 10)));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 25, 500, (int)(remoteZoom * 10)));
+		myTabletManager->addGuiElement(TabletGuiElement::createSlider(3, "Remote Pan", "Select the pan along the x-axis on the main view", 0, 300, (int)(remotePan * 10)));
+		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(4, "Animate", "Toggle to enable object animation", myAnimate));
+		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(5, "End", "Toggle to end of the animation", myEnd));
 		myTabletManager->finishGui();
 	}
 }
@@ -587,4 +599,16 @@ Entity* SceneManager::findEntity(int id)
 		if(e->getId() == id) return e;
 	}
 	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int SceneManager::getAnimate()
+{
+	return myAnimate;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int SceneManager::getEnd()
+{
+	return myEnd;
 }

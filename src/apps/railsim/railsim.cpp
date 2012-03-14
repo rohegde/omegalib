@@ -60,8 +60,6 @@ private:
 	float curTime;
 
 	bool rotation;
-	bool animation;
-	bool ending;
 
 	//general animation info
 	int numTimeSteps;
@@ -157,11 +155,9 @@ void Railsim::initialize()
 	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
 	
 	curTime = 0;
-	animationTimer = 5.0;
+	animationTimer = 10.0;
 	rotation = true;
-	animation = true;
-	ending = false;
-
+	
 	//printf( "numTimeSteps: %d\n" , numTimeSteps );
 	//for( int x = 0 ; x < numTimeSteps ; x ++ )
 	//{
@@ -230,7 +226,10 @@ void Railsim::update(const UpdateContext& context)
 	EngineServer::update(context);
 	mySceneManager->update(context);
 
-	if( (curTime < animationTimer && animation) || ending )
+	bool isEnd = mySceneManager->getEnd();
+	bool isAnimate = mySceneManager->getAnimate();
+
+	if( (curTime < animationTimer && isAnimate) || isEnd )
 	{
 		vector<float> pos;
 		vector<float> rot;
@@ -239,7 +238,7 @@ void Railsim::update(const UpdateContext& context)
 		
 		//printf("\n\n %d : " , curTimeStep );
 
-		if( ending ) curTimeStep = numTimeSteps;
+		if( isEnd ) curTimeStep = numTimeSteps;
 
 		updateEntity ( 0 , railFail_PVec , railFail_RVec, curTimeStep );
 		updateEntity ( 1 , wheel_PVec , wheel_RVec, curTimeStep ); 
@@ -278,15 +277,6 @@ void Railsim::handleEvent(const Event& evt)
 	if(evt.isKeyDown('R'))
     {
 		rotation = !rotation;
-	}
-
-	else if ( evt.isKeyDown('A'))
-	{
-		animation = !animation;
-	}
-	else if ( evt.isKeyDown('E'))
-	{
-		ending = !ending;
 	}
 	EngineServer::handleEvent(evt);
 	mySceneManager->handleEvent(evt);
