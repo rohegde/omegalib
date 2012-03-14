@@ -43,6 +43,7 @@ namespace cyclops {
 	using namespace omega;
 	using namespace oengine;
 	using namespace oosg;
+	using namespace std;
 
 	class SceneLoader;
 	class SceneManager;
@@ -98,7 +99,9 @@ namespace cyclops {
 		EngineServer* getEngine() { return myEngine; }
 
 		void initialize(EngineServer* engine);
-		void update(const UpdateContext& context);
+		void update(const UpdateContext& context );
+		void updateEntityPos( int entityNo , vector<float> pos); 
+		void updateEntityRot( int entityNo , vector<float> rot); 
 		void handleEvent(const Event& evt);
 
 		void load(SceneLoader* loader);
