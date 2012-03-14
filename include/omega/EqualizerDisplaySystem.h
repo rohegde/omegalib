@@ -76,6 +76,7 @@ public:
 
 	Observer* getObserver(int observerId);
 
+	virtual void killCluster();
 	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
 	bool isDebugMouseEnabled() { return myDebugMouse; }
 
