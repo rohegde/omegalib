@@ -113,6 +113,8 @@ namespace cyclops {
 		void addEntity(int assetId, int entityId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		//@}
 
+		void setLightPosition(float x, float y, float z, float w);
+
 		void addAsset(ModelAsset* asset, AssetType type);
 		ModelAsset* getModelAsset(int fileIndex);
 		EntityAsset* getEntityAsset(int fileIndex);

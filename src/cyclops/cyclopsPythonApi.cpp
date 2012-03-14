@@ -78,6 +78,35 @@ static PyObject* sceneLoad(PyObject* self, PyObject* args)
 	return Py_None;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightSetPosition(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	float x, y, z, w;
+	PyArg_ParseTuple(args, "ffff", &x, &y, &z, &w);
+
+	SceneManager::instance()->setLightPosition(x, y, z, w);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* entitySetPosition(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	int id;
+	float x, y, z;
+	PyArg_ParseTuple(args, "ifff", &id, &x, &y, &z);
+
+	Entity* e = SceneManager::instance()->findEntity(id);
+	if(e != NULL)
+	{
+		e->getSceneNode()->setPosition(x, y, z);
+	}
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef cyMethods[] = 
 {
@@ -86,6 +115,14 @@ static PyMethodDef cyMethods[] =
 		"Enables cyclops scene manager support."},
 
     {"sceneLoad", sceneLoad, METH_VARARGS, 
+		"sceneLoad(path)\n" 
+		"Loads a cyclops xml scene file."},
+
+    {"lightSetPosition", lightSetPosition, METH_VARARGS, 
+		"sceneLoad(path)\n" 
+		"Loads a cyclops xml scene file."},
+
+    {"entitySetPosition", entitySetPosition, METH_VARARGS, 
 		"sceneLoad(path)\n" 
 		"Loads a cyclops xml scene file."},
 

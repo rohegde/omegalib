@@ -1,0 +1,21 @@
+<Level>
+    <MapData>
+        <MapContents>
+            <FileIndex_StaticObjects>
+            </FileIndex_StaticObjects>
+			
+            <FileIndex_Entities>
+                <File Id="0" Path="meshes/walker.ply" Material="cyclops/test/VertexColor.material" Size="1"/>
+            </FileIndex_Entities>
+			
+            <StaticObjects>
+           </StaticObjects>
+            <Entities>
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 -6" />
+            </Entities>
+            <Primitives>
+				<Plane Active="true" Corner1UV="1 0" Corner2UV="1 1" Corner3UV="0 0" Corner4UV="0 1" EndCorner="1 0 1" ID="1" Material="cyclops/test/Solid.material" Name="Plane_1" Rotation="0 0 0" Scale="10 1 10" StartCorner="-1 0 -1" WorldPos="-2 -2 -2" />            
+			</Primitives>
+        </MapContents>
+    </MapData>
+</Level>
