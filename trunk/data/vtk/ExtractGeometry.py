@@ -1,7 +1,11 @@
 # This example reads a volume dataset, extracts an isosurface that
 # represents the skin and displays it.
+from omegaToolkit import *
+from omegaVtk import *
+
+# Enable omegalib vtk suppot
+moduleEnableVtk()
 import vtk
-import ovtk
 
 # The following reader is used to read a series of 2D slices (images)
 # that compose the volume. The slice dimensions are set, and the
@@ -13,7 +17,7 @@ v16 = vtk.vtkVolume16Reader()
 v16.SetDataDimensions(64, 64)
 v16.SetDataByteOrderToLittleEndian()
 
-fileFormat = ovtk.findFile("vtk/data/headsq/quarter.1")
+fileFormat = ofindFile("vtk/data/headsq/quarter.1")
 fileFormat = fileFormat.rstrip(".1");
 
 v16.SetFilePrefix(fileFormat)
@@ -31,23 +35,30 @@ skinExtractor.SetValue(0, 500)
 skinNormals = vtk.vtkPolyDataNormals()
 skinNormals.SetInputConnection(skinExtractor.GetOutputPort())
 skinNormals.SetFeatureAngle(320.0)
-skinMapper = vtk.vtkPolyDataMapper()
-skinMapper.SetInputConnection(skinNormals.GetOutputPort())
-skinMapper.ScalarVisibilityOff()
-skin = vtk.vtkActor()
-skin.SetMapper(skinMapper)
 
 # An outline provides context around the data.
 outlineData = vtk.vtkOutlineFilter()
 outlineData.SetInputConnection(v16.GetOutputPort())
-mapOutline = vtk.vtkPolyDataMapper()
-mapOutline.SetInputConnection(outlineData.GetOutputPort())
-outline = vtk.vtkActor()
-outline.SetMapper(mapOutline)
-outline.GetProperty().SetColor(0, 0, 0)
 
-# Actors are added to the renderer. An initial camera view is created.
-# The Dolly() method moves the camera towards the FocalPoint,
-# thereby enlarging the image.
-#ovtk.addActor(outline)
-ovtk.addActor(skin)
+vtkNode = nodeCreate(nodeGetRoot())
+mouse = interactorCreateMouse()
+interactorAttach(mouse, vtkNode)
+nodeSetPosition(vtkNode, (0, 0, -1))
+
+queueInitializeView()
+
+def initializeView():
+    mapOutline = vtk.vtkPolyDataMapper()
+    mapOutline.SetInputConnection(outlineData.GetOutputPort())
+    outline = vtk.vtkActor()
+    outline.SetMapper(mapOutline)
+    outline.GetProperty().SetColor(0, 0, 0)
+
+    skinMapper = vtk.vtkPolyDataMapper()
+    skinMapper.SetInputConnection(skinNormals.GetOutputPort())
+    skinMapper.ScalarVisibilityOff()
+    skin = vtk.vtkActor()
+    skin.SetMapper(skinMapper)
+    attachProp(outline, vtkNode)
+    attachProp(skin, vtkNode)
+

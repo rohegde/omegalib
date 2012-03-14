@@ -36,7 +36,7 @@
 #include <osgDB/ReadFile>
 #include <osgwTools/Shapes.h>
 
-#include "SceneLoader.h"
+#include "cyclops/SceneLoader.h"
 
 using namespace cyclops;
 

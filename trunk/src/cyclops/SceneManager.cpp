@@ -31,8 +31,8 @@
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
 
-#include "SceneManager.h"
-#include "SceneLoader.h"
+#include "cyclops/SceneManager.h"
+#include "cyclops/SceneLoader.h"
 
 using namespace cyclops;
 

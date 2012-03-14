@@ -27,6 +27,7 @@
 #include "omega/osystem.h"
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
+#include "omega/DisplaySystem.h"
 #include "omicron/StringUtils.h"
 
 #include <iostream>
@@ -149,7 +150,16 @@ namespace omega
 			sys->setup(cfg);
 		}
 		sys->initialize();
-		sys->run();
+
+		if(kill)
+		{
+			DisplaySystem* ds = sys->getDisplaySystem();
+			ds->killCluster();
+		}
+		else
+		{
+			sys->run();
+		}
 
 		sys->cleanup();
 

@@ -56,6 +56,7 @@
 
 using namespace obj;
 
+
 static std::string strip( const std::string& ss )
 {
     std::string result;
