@@ -433,6 +433,31 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	// Launch application instances on secondary nodes.
 	if(SystemManager::instance()->isMaster())
 	{
+		// Make sure to kill previous instances on all nodes.
+		killCluster();
+
+		for(int n = 0; n < myDisplayConfig.numNodes; n++)
+		{
+			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
+
+			if(nc.hostname != "local")
+			{
+				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
+				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
+				int port = myDisplayConfig.basePort + nc.port;
+				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
+				olaunch(cmd);
+				osleep(myDisplayConfig.launcherInterval);
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void EqualizerDisplaySystem::killCluster() 
+{
+	if(SystemManager::instance()->isMaster())
+	{
 		for(int n = 0; n < myDisplayConfig.numNodes; n++)
 		{
 			DisplayNodeConfig& nc = myDisplayConfig.nodes[n];
@@ -444,15 +469,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 					String executable = StringUtils::replaceAll(myDisplayConfig.nodeKiller, "%c", SystemManager::instance()->getApplication()->getName());
 					executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 					olaunch(executable);
-					osleep(myDisplayConfig.launcherInterval);
 				}
-			
-				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
-				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
-				int port = myDisplayConfig.basePort + nc.port;
-				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
-				olaunch(cmd);
-				osleep(myDisplayConfig.launcherInterval);
 			}
 		}
 	}

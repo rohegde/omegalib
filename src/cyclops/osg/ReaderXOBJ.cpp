@@ -69,7 +69,7 @@
 #include <osg/PolygonMode>
 
 
-#include "SceneManager.h"
+#include "cyclops/SceneManager.h"
 #include "obj.h"
 
 using namespace cyclops;

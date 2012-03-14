@@ -33,4 +33,5 @@ target_link_libraries(orun
 	omega 
 	omegaToolkit
 	omegaOsg
-    omegaVtk)
+    omegaVtk
+	cyclops)
