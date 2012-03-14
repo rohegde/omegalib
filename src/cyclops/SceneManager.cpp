@@ -64,9 +64,9 @@ SceneManager::SceneManager():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::initialize(ServerEngine* engine)
+void SceneManager::initialize()
 {
-	myEngine = engine;
+	myEngine = getServer();
 
 	myEditor = new SceneEditorModule();
 	ModuleServices::addModule(myEditor);

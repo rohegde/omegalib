@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "cyclops/SceneManager.h"
+#include "cyclops/SceneLoader.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -35,9 +36,59 @@
 
 using namespace cyclops;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* moduleEnableCyclops(PyObject* self, PyObject* args)
+{
+	// Create and register the omegalib vtk module.
+	SceneManager* mod = new SceneManager();
+	ModuleServices::addModule(mod);
+
+	// Force module initialization.
+	mod->doInitialize(ServerEngine::instance());
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+static PyObject* sceneLoad(PyObject* self, PyObject* args)
+{
+	const char* mapName;
+	if(!PyArg_ParseTuple(args, "s", &mapName)) return NULL;
+
+	DataManager* dm = SystemManager::instance()->getDataManager();
+	DataInfo cfgInfo = dm->getInfo(mapName);
+	if(!cfgInfo.isNull())
+	{
+		TiXmlDocument doc(cfgInfo.path.c_str());
+		if(doc.LoadFile())
+		{
+			ofmsg("Loading map: %1%...", %mapName);
+
+			SceneLoader* sl = new SceneLoader(doc);
+			SceneManager::instance()->load(sl);
+		}
+	}
+	else
+	{
+		ofwarn("!File not found: %1%", %mapName);
+	}
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef cyMethods[] = 
 {
+    {"moduleEnableCyclops", moduleEnableCyclops, METH_VARARGS, 
+		"moduleEnableVtk()\n" 
+		"Enables cyclops scene manager support."},
+
+    {"sceneLoad", sceneLoad, METH_VARARGS, 
+		"sceneLoad(path)\n" 
+		"Loads a cyclops xml scene file."},
+
     {NULL, NULL, 0, NULL}
 };
 

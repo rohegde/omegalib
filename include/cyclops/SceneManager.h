@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __SCENE_MANAGER__
-#define __SCENE_MANAGER__
+#ifndef __CY_SCENE_MANAGER__
+#define __CY_SCENE_MANAGER__
 
 #include "cyclopsConfig.h"
 
@@ -35,8 +35,8 @@
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <omegaToolkit.h>
 #include <omegaOsg.h>
+#include <omegaToolkit.h>
 
 #include "omega/PortholeTabletService.h"
 
@@ -82,7 +82,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API SceneManager
+	class CY_API SceneManager: public ServerModule
 	{
 	public:
 		enum AssetType { ModelAssetType, EntityAssetType };
@@ -94,14 +94,14 @@ namespace cyclops {
 		static bool findResource(const String& name, String& outPath);
 
 	public:
-		static SceneManager* getInstance();
+		static SceneManager* instance();
 		SceneManager();
 
 		ServerEngine* getEngine() { return myEngine; }
 
-		void initialize(ServerEngine* engine);
-		void update(const UpdateContext& context);
-		void handleEvent(const Event& evt);
+		virtual void initialize();
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
 
 		void load(SceneLoader* loader);
 
@@ -155,7 +155,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* SceneManager::getInstance() 
+	inline SceneManager* SceneManager::instance() 
 	{ return mysInstance; }
 };
 
