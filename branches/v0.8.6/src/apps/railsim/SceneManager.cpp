@@ -35,6 +35,7 @@
 #include "SceneLoader.h"
 
 using namespace cyclops;
+using namespace std;
 
 SceneManager* SceneManager::mysInstance = NULL;
 
@@ -73,9 +74,11 @@ void SceneManager::initialize(EngineServer* engine)
 
 	mySceneRoot = new osg::Group();
 
+	// ***** Setup the TabletManager ***** // 
 	myTabletManager = new TabletManagerModule();
 	myTabletManager->initialize(myEngine, true, false);
 
+	//send the GUI msgs to the tablet
 	myTabletManager->beginGui();
 	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
 	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
@@ -84,21 +87,53 @@ void SceneManager::initialize(EngineServer* engine)
 	myTabletManager->finishGui();
 
 	frontView = true;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::update(const UpdateContext& context) 
+void SceneManager::update(const UpdateContext& context ) 
 {
 	myOsg->update(context);
 	myEditor->update(context);
 	myTabletManager->update(context);
 
 	// Just for test
-	Entity* wheel = findEntity(0);
-	if(wheel != NULL)
+	//Entity* wheel = findEntity(0);
+	//if(wheel != NULL)
+	//{
+	//	wheel->getSceneNode()->yaw(0.5f * context.dt);
+	//}
+
+	//oengine::Camera* theCamera = myEngine->getDefaultCamera();
+	//theCamera->setPosition( Vector3f( 0 , 0 , 5) );
+
+	Quaternion q = Quaternion( AngleAxis( 45*Math::DegToRad , Vector3f::UnitX() ) );
+	oengine::Camera* theCamera = myEngine->getDefaultCamera();
+	theCamera->setOrientation( q );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::updateEntityPos( int entityNo , vector<float> pos) 
+{
+	// Just for test
+	Entity* theEntity = findEntity( entityNo );
+	if(theEntity != NULL)
 	{
-		wheel->getSceneNode()->yaw(0.5f * context.dt);
+		theEntity->getSceneNode()->setPosition( pos[0] , pos[1] , pos[2] );
 	}
+	//printf("%f , %f , %f\n\n" , pos[0] , pos[1] , pos[2] );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::updateEntityRot( int entityNo , vector<float> rot) 
+{
+	// Just for test
+	Entity* theEntity = findEntity( entityNo );
+	if(theEntity != NULL)
+	{
+		theEntity->getSceneNode()->setOrientation( rot[3] , rot[0] , rot[1] , rot[2] );
+	}
+	//printf("entityNo : % d : %f , %f , %f , %f \n\n" , entityNo , rot[0] , rot[1] , rot[2] , rot[3] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -498,7 +533,6 @@ void SceneManager::initShading()
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
-    myLight2->setPosition(osg::Vec4(0.0, 10, 0, 1.0));
     myLight2->setAmbient(osg::Vec4(0.2f,0.2f,0.2f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
@@ -509,7 +543,7 @@ void SceneManager::initShading()
 
     osg::LightSource* lightS2 = new osg::LightSource;  
 
-	myLight2->setPosition(Vec4(0, 10.0f, 0, 1.0f));
+	myLight2->setPosition(Vec4(20.0, -4.0f, 56, 1.0f));
 
     lightS2->setLight(myLight2);
     lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
