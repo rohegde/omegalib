@@ -71,7 +71,7 @@ public:
 			String line;
 			getline(std::cin, line);
 			
-			//ofmsg("line read: %1%", %line);
+			ofmsg("line read: %1%", %line);
 
 			interp->queueInteractiveCommand(line);
 
@@ -109,6 +109,8 @@ PythonInterpreter::~PythonInterpreter()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addPythonPath(const char* dir)
 {
+	ofmsg("PythonInterpreter::addPythonPath: %1%", %dir);
+	
 	//PyEval_AcquireLock();
 	//PyThreadState_Swap(sMainThreadState);
 
@@ -322,6 +324,8 @@ void PythonInterpreter::queueInteractiveCommand(const String& command)
 {
 	//oassert(!myInteractiveCommandNeedsExecute && 
 	//	!myInteractiveCommandNeedsSend);
+	
+	ofmsg("Queuing command %1%", %command);
 
 	myInteractiveCommandLock.lock();
 	myInteractiveCommandNeedsExecute = true;

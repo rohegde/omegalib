@@ -114,7 +114,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	include(${OmegaLib_SOURCE_DIR}/external/UseOpenSceneGraph.cmake)
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(omegaOsg)
-	#add_subdirectory(cyclops)
+	add_subdirectory(cyclops)
 	add_subdirectory(apps/osgviewer)
 	
 	if(OMEGA_BUILD_TUTORIALS)
