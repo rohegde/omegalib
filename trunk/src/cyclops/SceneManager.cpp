@@ -496,7 +496,7 @@ void SceneManager::initShading()
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
-    myLight2->setPosition(osg::Vec4(0.0, 10, 0, 1.0));
+    myLight2->setPosition(osg::Vec4(-1.0, -1, 0, 0.0));
     myLight2->setAmbient(osg::Vec4(0.2f,0.2f,0.2f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
@@ -507,7 +507,7 @@ void SceneManager::initShading()
 
     osg::LightSource* lightS2 = new osg::LightSource;  
 
-	myLight2->setPosition(Vec4(0, 10.0f, 0, 1.0f));
+	//myLight2->setPosition(Vec4(0, 10.0f, 0, 1.0f));
 
     lightS2->setLight(myLight2);
     lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
@@ -516,6 +516,12 @@ void SceneManager::initShading()
 	ss->addChild(lightS2);
 
 	mySceneRoot = ss;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setLightPosition(float x, float y, float z, float w)
+{
+	myLight2->setPosition(osg::Vec4(x, y, z, w));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
