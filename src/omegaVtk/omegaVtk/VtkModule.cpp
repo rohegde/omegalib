@@ -51,10 +51,6 @@ VtkModule::VtkModule()
 	myInstance = this;
 	myActiveClient = NULL;
 	myActiveRenderPass = NULL;
-
-	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
-	interp->addPythonPath(VTK_PYTHON_DIR);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +63,10 @@ void VtkModule::initialize()
 {
 	omsg("VtkModule initializing...");
 
+	PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+	interp->addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
+	interp->addPythonPath(VTK_PYTHON_DIR);
+	
 	getServer()->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
 	getServer()->addRenderPass("VtkRenderPass", this, true);
 

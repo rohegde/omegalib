@@ -434,7 +434,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	if(SystemManager::instance()->isMaster())
 	{
 		// Make sure to kill previous instances on all nodes.
-		killCluster();
+		//killCluster();
 
 		for(int n = 0; n < myDisplayConfig.numNodes; n++)
 		{

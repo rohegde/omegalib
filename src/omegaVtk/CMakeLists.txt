@@ -32,14 +32,19 @@ ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS -DOVTK_EXPORTING -DVTK_LIBRARY_DIR="$
 ###################################################################################################
 # Source files
 SET( srcs 
-		omegaVtk/PythonUIEventHandler.cpp
-		omegaVtk/PyVtk.cpp
 		omegaVtk/vtkGenericOpenGLRenderWindow.cpp
 		omegaVtk/VtkModule.cpp
 		omegaVtk/VtkRenderPass.cpp
 		omegaVtk/VtkAttachPoint.cpp
+        )
+		
+if(OMEGA_USE_PYTHON)
+SET( srcs ${srcs}
+		omegaVtk/PythonUIEventHandler.cpp
+		omegaVtk/PyVtk.cpp
 		omegaVtk/omegaVtkPythonApi.cpp
         )
+endif()
 		
 ###################################################################################################
 # Headers

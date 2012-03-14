@@ -964,7 +964,14 @@ PyObject *PyVTKClass_New(vtknewfunc constructor,
     
     class_self->vtk_methods = methods;
     class_self->vtk_new = constructor;
-    class_self->vtk_doc = vtkBuildDocString(docstring);
+	if(docstring != NULL)
+	{
+		class_self->vtk_doc = vtkBuildDocString(docstring);
+	}
+	else
+	{
+		class_self->vtk_doc = NULL;
+	}
 
     // intern the module string
     for (i = 0; i < nmodulestr; i++)

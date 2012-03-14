@@ -48,7 +48,7 @@ using namespace omega;
 
 void omegaPythonApiInit();
 
-PyThreadState* sMainThreadState;
+//PyThreadState* sMainThreadState;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class PythonInteractiveThread: public Thread
@@ -66,10 +66,14 @@ public:
 		// Not sure this is helping with safe init but let's try.
 		while(true)	
 		{
-			char buf[65000];
-			std::cin.getline(buf, 65000);
+			osleep(100);
+			//char buf[65000];
+			String line;
+			getline(std::cin, line);
+			
+			//ofmsg("line read: %1%", %line);
 
-			interp->queueInteractiveCommand(buf);
+			interp->queueInteractiveCommand(line);
 
 			//PyEval_AcquireLock();
 			//PyThreadState_Swap(threadState);
@@ -115,7 +119,7 @@ void PythonInterpreter::addPythonPath(const char* dir)
 #endif
 
 	// Append the path to the python sys.path object.
-	PyObject* opath = PySys_GetObject(const_cast<char*>("path"));
+	PyObject* opath = PySys_GetObject("path");
 	PyObject* newpath = PyString_FromString(out_dir.c_str());
 	PyList_Insert(opath, 0, newpath);
 	Py_DECREF(newpath);
@@ -150,9 +154,9 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize interpreter.
 	Py_Initialize();
 
-	PyEval_InitThreads();
-	sMainThreadState = PyThreadState_Get();
-	PyEval_ReleaseLock();
+	//PyEval_InitThreads();
+	//sMainThreadState = PyThreadState_Get();
+	//PyEval_ReleaseLock();
 
 	// HACK: Calling PyRun_SimpleString for the first time for some reason results in
 	// a "\n" message being generated which is causing the error dialog to
@@ -184,33 +188,35 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize internal Apis
 	omegaPythonApiInit();
 
-	PyEval_AcquireLock();
-	PyThreadState_Swap(sMainThreadState);
+	//PyEval_AcquireLock();
+	//PyThreadState_Swap(sMainThreadState);
 
 	// Not sure this is helping with safe init but let's try.
 	//osleep(1000);
 	PyRun_SimpleString("from omega import *");
-	PyThreadState_Swap(NULL);
-	PyEval_ReleaseLock();
+	//PyThreadState_Swap(NULL);
+	//PyEval_ReleaseLock();
+	
+	omsg("Python Interpreter initialized.");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 {
-	PyEval_AcquireLock();
-	PyThreadState_Swap(sMainThreadState);
+	//PyEval_AcquireLock();
+	//PyThreadState_Swap(sMainThreadState);
 
 	Py_InitModule(name, methods);
 
-	PyThreadState_Swap(NULL);
-	PyEval_ReleaseLock();
+	//PyThreadState_Swap(NULL);
+	//PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
 {
-	PyEval_AcquireLock();
-	PyThreadState_Swap(sMainThreadState);
+	//PyEval_AcquireLock();
+	//PyThreadState_Swap(sMainThreadState);
 
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
@@ -238,8 +244,8 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 		}
 	}
 
-	PyThreadState_Swap(NULL);
-	PyEval_ReleaseLock();
+	//PyThreadState_Swap(NULL);
+	//PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,12 +288,13 @@ void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::update(const UpdateContext& context) 
 {
-	PyEval_AcquireLock();
-	PyThreadState_Swap(sMainThreadState);
+	//PyEval_AcquireLock();
+	//PyThreadState_Swap(sMainThreadState);
 
 	// Execute queued interactive commands first
 	if(myInteractiveCommandNeedsExecute)
 	{
+		ofmsg("running %1%", %myInteractiveCommand);
 		PyRun_SimpleString(myInteractiveCommand.c_str());
 		myInteractiveCommandNeedsExecute = false;
 	}
@@ -304,8 +311,8 @@ void PythonInterpreter::update(const UpdateContext& context)
 
 	}
 
-	PyThreadState_Swap(NULL);
-	PyEval_ReleaseLock();
+	//PyThreadState_Swap(NULL);
+	//PyEval_ReleaseLock();
 
 	Py_DECREF(arglist);
 }
