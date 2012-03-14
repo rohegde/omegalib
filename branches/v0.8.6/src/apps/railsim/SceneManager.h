@@ -124,6 +124,8 @@ namespace cyclops {
 		osg::StateSet* loadMaterial(const String& filename);
 		void initShading();
 
+		int getAnimate();
+		int getEnd();
 	private:
 		void loadShader(osg::Shader* shader, const String& name);
 		osg::StateSet* createMaterial(TiXmlElement* xdata, const String& type);
@@ -151,7 +153,9 @@ namespace cyclops {
 		bool frontView;
 		float localZoom;
 		float remoteZoom;
-		int myRotate;
+		float remotePan;
+		int myAnimate;
+		int myEnd;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
