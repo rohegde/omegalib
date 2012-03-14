@@ -124,7 +124,7 @@ void Railsim::initialize()
 
 	// Load the data sets
 	bool gotAllData = true;
-	ofmsg("Loading data sets: ");
+	ofmsg("Loading data sets: " , %NULL);
 
 	gotAllData = loadDataSets( "config/wheelPos" , wheel_PVec , true);
 	numTimeSteps = (int) ((wheel_PVec.size() - 1) / 4.0);
@@ -144,8 +144,8 @@ void Railsim::initialize()
 	gotAllData = loadDataSets( "config/railFailRot" , railFail_RVec, false);
 	numTimeSteps = min( numTimeSteps , (int) ((railFail_RVec.size() - 1) / 4.0) );
 
-	if(!gotAllData ) ofwarn("!Some data failed to load");
-	else ofmsg("Data loaded fine.");
+	if(!gotAllData ) ofwarn("!Some data failed to load" , %NULL);
+	else ofmsg("Data loaded fine." , %NULL);
 
 	curTime = 0;
 	animationTimer = 5.0;
@@ -206,7 +206,7 @@ bool Railsim::loadDataSets( String configAttr , vector<float> &dataVector , bool
 			ofwarn("!File not found: %1%", %mapName);
 			return false;
 		}
-		ofmsg("\t Loaded.");
+		ofmsg("\t Loaded." , %NULL);
 		return true;
 	}
 	else
