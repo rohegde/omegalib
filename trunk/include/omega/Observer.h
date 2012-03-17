@@ -35,7 +35,7 @@ namespace omega
 	class OMEGA_API Observer: public ReferenceType
 	{
 	public:
-		EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+		//EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 	public:
 		Observer();
 

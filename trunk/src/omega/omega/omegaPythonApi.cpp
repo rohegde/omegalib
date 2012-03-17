@@ -126,6 +126,97 @@ static PyObject* omegaUpdateCallback(PyObject *dummy, PyObject *args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* cameraGetDefault(PyObject* self, PyObject* args)
+{
+	ServerEngine* engine = ServerEngine::instance();
+	Camera* cam = engine->getDefaultCamera();
+	PyObject* pyCam = PyCapsule_New(cam, "Camera", NULL);
+
+	return Py_BuildValue("O", pyCam);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* cameraEnableFreeFly(PyObject* self, PyObject* args)
+{
+	PyObject* pyCam = NULL;
+	PyArg_ParseTuple(args, "O", &pyCam);
+
+	Camera* cam = PYCAP_GET(pyCam, Camera);
+	if(cam != NULL)
+	{
+		cam->setNavigationMode(Camera::NavFreeFly);
+	}
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* cameraDisableFreeFly(PyObject* self, PyObject* args)
+{
+	PyObject* pyCam = NULL;
+	PyArg_ParseTuple(args, "O", &pyCam);
+
+	Camera* cam= PYCAP_GET(pyCam, Camera);
+	if(cam != NULL)
+	{
+		cam->setNavigationMode(Camera::NavDisabled);
+	}
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* cameraSetPosition(PyObject* self, PyObject* args)
+{
+	PyObject* pyCam = NULL;
+	float x, y, z;
+	PyArg_ParseTuple(args, "Offf", &pyCam, &x, &y, &z);
+
+	Camera* cam= PYCAP_GET(pyCam, Camera);
+	if(cam != NULL)
+	{
+		cam->setPosition(Vector3f(x, y, z));
+	}
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* cameraGetPosition(PyObject* self, PyObject* args)
+{
+	PyObject* pyCam = NULL;
+	PyArg_ParseTuple(args, "O");
+
+	Camera* cam= PYCAP_GET(pyCam, Camera);
+	if(cam != NULL)
+	{
+		const Vector3f& pos = cam->getPosition();
+		return Py_BuildValue("(fff)", pos[0], pos[1], pos[2]);
+	}
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* cameraSetOrientation(PyObject* self, PyObject* args)
+{
+	PyObject* pyCam = NULL;
+	float yaw, pitch, roll;
+	PyArg_ParseTuple(args, "Offf", &pyCam, &yaw, &pitch, &roll);
+
+	Camera* cam= PYCAP_GET(pyCam, Camera);
+	if(cam != NULL)
+	{
+		Quaternion qyaw = Quaternion(AngleAxis(yaw * Math::DegToRad, Vector3f::UnitY()));
+		Quaternion qpitch = Quaternion(AngleAxis(pitch * Math::DegToRad, Vector3f::UnitX()));
+		Quaternion qroll = Quaternion(AngleAxis(roll * Math::DegToRad, Vector3f::UnitZ()));
+		cam->setOrientation(qyaw * qpitch * qroll);
+	}
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* nodeGetRoot(PyObject* self, PyObject* args)
 {
 	ServerEngine* engine = ServerEngine::instance();
@@ -242,7 +333,7 @@ PyObject* nodeGetPosition(PyObject* self, PyObject* args)
 	{
 		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
 		const Vector3f& pos = node->getPosition();
-		return Py_BuildValue("(fff)", pos[0], pos[1], pos[2]);
+		return Py_BuildValue("fff", pos[0], pos[1], pos[2]);
 	}
 	return NULL;
 }
@@ -252,7 +343,7 @@ PyObject* nodeSetPosition(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	Vector3f pos;
-	PyArg_ParseTuple(args, "O(fff)", &pyNode, &pos[0], &pos[1], &pos[2]);
+	PyArg_ParseTuple(args, "Offf", &pyNode, &pos[0], &pos[1], &pos[2]);
 
 	if(pyNode != NULL)
 	{
@@ -366,10 +457,15 @@ PyObject* nodeRoll(PyObject* self, PyObject* args)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef omegaMethods[] = 
 {
+	// Camera API
+    {"cameraGetDefault", cameraGetDefault, METH_VARARGS, "NO INFO"},
+    {"cameraEnableFreeFly", cameraEnableFreeFly, METH_VARARGS, "NO INFO"},
+    {"cameraDisableFreeFly", cameraDisableFreeFly, METH_VARARGS, "NO INFO"},
+
+	// Node API
     {"nodeCreate", nodeCreate, METH_VARARGS, 
 		"nodeCreate(parent)\n"
 		"creates a new scene node and sets its parent."},
-
     {"nodeGetRoot", nodeGetRoot, METH_VARARGS, "NO INFO"},
     {"nodeGetName", nodeGetName, METH_VARARGS, "NO INFO"},
     {"nodeNumChildren", nodeGetNumChildren, METH_VARARGS, "NO INFO"},
@@ -385,8 +481,10 @@ static PyMethodDef omegaMethods[] =
     {"nodePitch", nodePitch, METH_VARARGS, "NO INFO"},
     {"nodeRoll", nodeRoll, METH_VARARGS, "NO INFO"},
 
+	// Renderer API
     {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, "NO INFO"},
 
+	// Base omegalib API
 	{"oexit", omegaExit, METH_VARARGS, "NO INFO"},
     {"ofindFile", omegaFindFile, METH_VARARGS, "NO INFO"},
     {"orun", omegaRun, METH_VARARGS, "NO INFO"},

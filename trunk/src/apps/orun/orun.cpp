@@ -33,6 +33,9 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaVtk;
 
+// The name of the script to launch automatically at startup
+String sDefaultScript = "";
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class OmegaViewer: public ServerModule
 {
@@ -59,6 +62,12 @@ void OmegaViewer::initialize()
 	cyclopsPythonApiInit();
 #endif
 
+	if(sDefaultScript != "")
+	{
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		interp->runFile(sDefaultScript);
+	}
+
 	// Setup the camera
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
 }
@@ -81,5 +90,6 @@ void OmegaViewer::handleEvent(const Event& evt)
 int main(int argc, char** argv)
 {
 	Application<OmegaViewer> app("orun");
+	//oargs().newOptionalString("script", "script to launch at startup", sDefaultScript);
 	return omain(app, argc, argv);
 }

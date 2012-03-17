@@ -173,7 +173,6 @@ namespace omega
 		virtual ~ServerBase() {}
 
 		virtual void initialize() {}
-		virtual void finalize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) { }
 

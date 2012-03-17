@@ -41,7 +41,7 @@ PipeImpl::PipeImpl(eq::Node* parent):
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 RendererBase* PipeImpl::getClient() 
-{ return myClient; }
+{ return myClient.get(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PipeImpl::~PipeImpl() 
@@ -56,8 +56,8 @@ bool PipeImpl::configInit(const uint128_t& initID)
 		myClient = app->createClient(myNode->getApplicationServer());
 		myGpu = new GpuManager();
 		myGpu->initialize();
-		myGpuContext = new GpuContext(myGpu);
-		myClient->setGpuContext(myGpuContext);
+		myGpuContext = new GpuContext(myGpu.get());
+		myClient->setGpuContext(myGpuContext.get());
 		myClient->initialize();
 
 		return Pipe::configInit(initID);

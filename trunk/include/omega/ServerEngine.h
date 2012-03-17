@@ -74,6 +74,7 @@ namespace omega {
 
 	public:
 		ServerEngine(ApplicationBase* app, bool master);
+		virtual ~ServerEngine();
 
 		ServiceManager* getServiceManager();
 
@@ -130,7 +131,6 @@ namespace omega {
 		void preDraw(Renderer* r, const DrawContext& context);
 		void postDraw(Renderer* r, const DrawContext& context);
 
-		virtual void finalize();
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
 
@@ -148,7 +148,7 @@ namespace omega {
 
 		Dictionary<String, RenderPassFactory> myRenderPassFactories;
 
-		SceneNode* myScene;
+		Ref<SceneNode> myScene;
 
 		// Pointers
 		List<Pointer*> myPointers;
@@ -162,7 +162,7 @@ namespace omega {
 		RaySceneQuery myRaySceneQuery;
 
 		// Console
-		Console* myConsole;
+		Ref<Console> myConsole;
 		bool myConsoleEnabled;
 
 		bool myEventSharingEnabled;
@@ -200,7 +200,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Console* ServerEngine::getConsole()
-	{ return myConsole;	}
+	{ return myConsole.get();	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool ServerEngine::isConsoleEnabled()

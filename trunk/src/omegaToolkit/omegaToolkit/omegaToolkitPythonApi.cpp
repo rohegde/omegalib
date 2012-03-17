@@ -32,6 +32,7 @@
 #include "omega/SystemManager.h"
 #include "omega/ServerEngine.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
+#include "omegaToolkit/UiModule.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -41,6 +42,39 @@ using namespace omega;
 using namespace omegaToolkit;
 
 #define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* moduleEnableUi(PyObject* self, PyObject* args)
+{
+	// Create and register the omegalib ui module.
+	UiModule* mod = new UiModule();
+	ModuleServices::addModule(mod);
+
+	// Force module initialization.
+	mod->doInitialize(ServerEngine::instance());
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//PyObject* uiImageLoad(PyObject* self, PyObject* args)
+//{
+//	// Create a mouse interactor and associate it with our scene node.
+//	Actor* actor = new DefaultMouseInteractor();
+//	ModuleServices::addModule(actor);
+//
+//	ui::Image* img = myWidgetFactory->createImage("img", UiModule::instance()->getUi());
+//
+//	bool stereo = Config::getBoolValue("stereo", imageSetting, false);
+//
+//	img->setStereo(stereo);
+//	ImageData* imgData = ImageUtils::loadImage(fileName);
+//	img->setData(imgData->getPixels());
+//
+//	PyObject* pyImage = PyCapsule_New(actor, "Widget", NULL);
+//	return Py_BuildValue("O", pyImage);
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* interactorCreateMouse(PyObject* self, PyObject* args)
@@ -75,6 +109,10 @@ PyObject* interactorAttach(PyObject* self, PyObject* args)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef omegaToolkitMethods[] = 
 {
+    {"moduleEnableUi", interactorCreateMouse, METH_VARARGS, 
+		"moduleEnableUi()\n" 
+		"Enables the omegalib ui module."},
+
     {"interactorCreateMouse", interactorCreateMouse, METH_VARARGS, 
 		"interactorCreateMouse()\n" 
 		"Creates a mouse interactor."},

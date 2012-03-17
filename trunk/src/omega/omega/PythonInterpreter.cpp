@@ -67,11 +67,10 @@ public:
 		while(true)	
 		{
 			osleep(100);
-			//char buf[65000];
 			String line;
 			getline(std::cin, line);
 			
-			ofmsg("line read: %1%", %line);
+			//ofmsg("line read: %1%", %line);
 
 			interp->queueInteractiveCommand(line);
 
@@ -102,6 +101,7 @@ PythonInterpreter::PythonInterpreter()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PythonInterpreter::~PythonInterpreter()
 {
+	//myInteractiveThread->stop();
 	delete myInteractiveThread;
 	myInteractiveThread = NULL;
 }
@@ -325,7 +325,7 @@ void PythonInterpreter::queueInteractiveCommand(const String& command)
 	//oassert(!myInteractiveCommandNeedsExecute && 
 	//	!myInteractiveCommandNeedsSend);
 	
-	ofmsg("Queuing command %1%", %command);
+	//ofmsg("Queuing command %1%", %command);
 
 	myInteractiveCommandLock.lock();
 	myInteractiveCommandNeedsExecute = true;

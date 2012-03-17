@@ -84,9 +84,6 @@ bool NodeImpl::configExit()
 	eq::Config* config = getConfig();
 	//config->unmapObject( &myFrameData );
 
-	delete myServer;
-	myServer = NULL;
-
 	return Node::configExit();
 }
 

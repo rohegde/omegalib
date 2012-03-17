@@ -63,19 +63,19 @@ namespace omega {
 		void innerDraw(const DrawContext& context);
 
 	private:
-		ServerEngine* myServer;
-		DrawInterface* myRenderer;
+		Ref<ServerEngine> myServer;
+		Ref<DrawInterface> myRenderer;
 		List<RenderPass*> myRenderPassList;
 		Queue<IRendererCommand*> myRenderableCommands;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline DrawInterface* Renderer::getRenderer()
-	{ return myRenderer; }
+	{ return myRenderer.get(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ServerEngine* Renderer::getServer()
-	{ return myServer; }
+	{ return myServer.get(); }
 }; // namespace omega
 
 #endif

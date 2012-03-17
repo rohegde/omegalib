@@ -53,6 +53,13 @@
 
 #include "otypes.h"
 
+#ifdef OMEGA_OS_WIN
+	// Visual leak detector
+	#ifdef OMEGA_ENABLE_VLD
+	#include <vld.h>
+	#endif
+#endif
+
 struct GLEWContextStruct;
 typedef struct GLEWContextStruct GLEWContext;
 

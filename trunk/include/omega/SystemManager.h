@@ -107,9 +107,10 @@ namespace omega
 
 		bool myIsInitialized;
 
+		// NOTE; We can't use Ref<> for a few types because they are forward-declared.
 		Config*			myAppConfig;
 		Config*			mySystemConfig;
-		DataManager*    myDataManager;
+		Ref<DataManager>    myDataManager;
 		DisplaySystem*	myDisplaySystem;
 		ServiceManager*	myServiceManager;
 		ApplicationBase*	myApplication;
@@ -124,7 +125,7 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline DataManager* SystemManager::getDataManager()
-	{ return myDataManager; }
+	{ return myDataManager.get(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ServiceManager* SystemManager::getServiceManager() 

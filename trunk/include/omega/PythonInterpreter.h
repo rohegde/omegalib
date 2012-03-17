@@ -53,7 +53,7 @@ namespace omega
 
 	public:
 		PythonInterpreter();
-		~PythonInterpreter();
+		virtual ~PythonInterpreter();
 
 		void setup(const Setting& setting);
 		void initialize(const char* programName);
