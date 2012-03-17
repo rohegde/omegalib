@@ -36,7 +36,7 @@
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API DrawInterface
+	class OMEGA_API DrawInterface: public ReferenceType
 	{
 	public:
 		enum FlipFlags { FlipX = 1 << 1, FlipY = 1 << 2 };

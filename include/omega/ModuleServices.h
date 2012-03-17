@@ -136,6 +136,15 @@ namespace omega {
 			}
 		}
 
+		static void cleanup()
+		{
+			foreach(ServerModule* module, mysModules)
+			{
+				delete module;
+			}
+			mysModules.clear();
+		}
+
 	private:
 		static List<ServerModule*> mysModules;
 	};

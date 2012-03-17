@@ -96,7 +96,7 @@ private:
 class ConfigImpl: public eq::Config
 {
 public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     static const int MaxCanvasChannels = 128;
 public:
     ConfigImpl( co::base::RefPtr< eq::Server > parent);
@@ -123,7 +123,7 @@ private:
 class NodeImpl: public eq::Node
 {
 public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
     NodeImpl( eq::Config* parent );
 
@@ -137,36 +137,35 @@ protected:
 
 private:
     //bool myInitialized;
-    ServerBase* myServer;
+    Ref<ServerBase> myServer;
     //FrameData myFrameData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 inline ServerBase* NodeImpl::getApplicationServer()
-{ return myServer; }
+{ return myServer.get(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class PipeImpl: public eq::Pipe
 {
 public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 public:
     PipeImpl(eq::Node* parent);
     RendererBase* getClient();
-    GpuContext* getGpuContext() { return myGpuContext; }
+    GpuContext* getGpuContext() { return myGpuContext.get(); }
 
 protected:
     virtual ~PipeImpl();
     virtual bool configInit(const uint128_t& initID);
     virtual void frameStart( const uint128_t& frameID, const uint32_t frameNumber );
     virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
-
 private:
 	NodeImpl* myNode;
-    RendererBase* myClient;
-    GpuManager* myGpu;
-    GpuContext* myGpuContext;
+    Ref<RendererBase> myClient;
+    Ref<GpuManager> myGpu;
+    Ref<GpuContext> myGpuContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -217,7 +216,7 @@ private:
     omicron::Lock myLock;
     DrawContext myDC;
     uint128_t myLastFrame;
-    RenderTarget* myDrawBuffer;
+    Ref<RenderTarget> myDrawBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

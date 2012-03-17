@@ -41,8 +41,10 @@ namespace omega {
 	{
 	public:
 		ChildNode(const String& k, Node* v): std::pair<String, T*>(k, v) {}
+		ChildNode(std::pair<String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
 		ChildNode(std::pair<String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
 		ChildNode(std::pair<const String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
+		ChildNode(std::pair<const String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
 		const String& getName() { return this->first; }
 		T* getNode() { return this->second; }
 		T* operator->() { return this->second; }
@@ -73,7 +75,7 @@ namespace omega {
             TransformWorld
         };
 
-        typedef Dictionary<String, Node*> ChildNodeMap;
+        typedef Dictionary<String, Ref<Node> > ChildNodeMap;
 		typedef ChildNode<Node> Child;
 		typedef std::pair< ChildNodeMap::iterator, ChildNodeMap::iterator> ChildNodeRange;
 		typedef std::pair< ChildNodeMap::const_iterator, ChildNodeMap::const_iterator> ConstChildNodeRange;

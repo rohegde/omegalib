@@ -32,6 +32,12 @@ include(UsePch)
 include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
 
 ###################################################################################################
+# Visual Leak Detector Support
+if(OMEGA_OS_WIN)
+	set(OMEGA_ENABLE_VLD false CACHE BOOL "Enables Visual Leak Detector support for this build.")
+endif()
+
+###################################################################################################
 # See if we can setup Python support for this build
 set(OMEGA_ENABLE_PYTHON true CACHE BOOL "Enables python support if available.")
 

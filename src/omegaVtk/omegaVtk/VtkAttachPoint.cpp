@@ -24,11 +24,12 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
+#include <vtkMatrix4x4.h>
+#include <vtkActor.h>
+
 #include "omegaVtk/VtkModule.h"
 #include "omegaVtk/VtkAttachPoint.h"
 
-#include <vtkMatrix4x4.h>
-#include <vtkActor.h>
 
 using namespace omega;
 using namespace omegaVtk;

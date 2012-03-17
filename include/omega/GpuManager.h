@@ -60,7 +60,7 @@ namespace omega
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads images and manages OpenGL textures.
-	class OMEGA_API GpuManager
+	class OMEGA_API GpuManager: public ReferenceType
 	{
 	public:
 		enum InitFlags { InitCL = 1 << 1, InitGL = 1 << 2};
@@ -132,7 +132,7 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API GpuContext
+	class OMEGA_API GpuContext: public ReferenceType
 	{
 	public:
 		static const unsigned int MaxContexts = 64;

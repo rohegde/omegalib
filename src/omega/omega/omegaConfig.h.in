@@ -45,4 +45,7 @@
 #cmakedefine OMEGA_USE_OPENCL
 #cmakedefine OMEGA_USE_PYTHON
 
+// Visual leak detector support
+#cmakedefine OMEGA_ENABLE_VLD
+
 #define OMEGA_DATA_PATH "${OMEGA_DATA_PATH}"

@@ -146,3 +146,10 @@ void SharedDataServices::registerObject(SharedObject* module, const String& shar
 		mysRegistrationQueue[sharedId] = module;
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SharedDataServices::cleanup()
+{
+	// Shared data should take care of cleanup internally, here we just clean up the queue.
+	mysRegistrationQueue.clear();
+}

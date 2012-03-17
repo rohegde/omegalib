@@ -65,7 +65,7 @@ class OMEGA_API EqualizerDisplaySystem: public DisplaySystem
 {
 public:
 	EqualizerDisplaySystem();
-	~EqualizerDisplaySystem();
+	virtual ~EqualizerDisplaySystem();
 
 	// sets up the display system. Called before initalize.
 	void setup(Setting& setting);

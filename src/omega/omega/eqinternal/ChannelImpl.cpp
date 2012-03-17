@@ -105,7 +105,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     {
         myDrawBuffer = new RenderTarget(pipe->getGpuContext(), RenderTarget::RenderOnscreen, getDrawable());
     }
-    context->drawBuffer = myDrawBuffer;
+    context->drawBuffer = myDrawBuffer.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

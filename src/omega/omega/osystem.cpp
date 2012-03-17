@@ -39,7 +39,6 @@
 #define Sleep(x) usleep((x)*1000)
 #endif
 
-
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,103 +66,115 @@ namespace omega
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
-		bool remote = false;
-		String masterHostname;
-		String configFilename = ostr("%1%.cfg", %app.getName());
-		String dataPath = OMEGA_DATA_PATH;
-		String logFilename = ostr("%1%.log", %app.getName());
+#ifdef OMEGA_ENABLE_VLD
+		// Mark everything before this point as already reported to avoid reporting static global objects as leaks.
+		// This makes the report less precise but gets rid of a lot of noise.
+		VLDMarkAllLeaksAsReported();
+#endif
+		{
+			bool remote = false;
+			String masterHostname;
+			String configFilename = ostr("%1%.cfg", %app.getName());
+			String dataPath = OMEGA_DATA_PATH;
+			String logFilename = ostr("%1%.log", %app.getName());
 
-		bool kill = false;
-		bool help = false;
+			bool kill = false;
+			bool help = false;
 
-		sArgs.newOptionalString(
-			"config", 
-			ostr("configuration file to use with this application (default: %1%)", %configFilename).c_str(),
-			configFilename);
+			sArgs.newOptionalString(
+				"config", 
+				ostr("configuration file to use with this application (default: %1%)", %configFilename).c_str(),
+				configFilename);
 
-		sArgs.newFlag(
-			'K',
-			"kill",
-			"Don't run the application, only run the nodeKiller command on all nodes in a clustered configuration",
-			kill);
+			sArgs.newFlag(
+				'K',
+				"kill",
+				"Don't run the application, only run the nodeKiller command on all nodes in a clustered configuration",
+				kill);
 
-		sArgs.newFlag(
-			'?',
-			"help",
-			"Prints this application help screen",
-			help);
+			sArgs.newFlag(
+				'?',
+				"help",
+				"Prints this application help screen",
+				help);
 
-		sArgs.newNamedString(
-			'D',
-			"data",
-			"Data path for this application (default: " OMEGA_DATA_PATH ")", "",
-			dataPath);
+			sArgs.newNamedString(
+				'D',
+				"data",
+				"Data path for this application (default: " OMEGA_DATA_PATH ")", "",
+				dataPath);
 		
-		sArgs.newNamedString(
-			'L',
-			"log",
-			ostr("log file to use with this application (default: %1%)", %logFilename).c_str(), "",
-			logFilename);
+			sArgs.newNamedString(
+				'L',
+				"log",
+				ostr("log file to use with this application (default: %1%)", %logFilename).c_str(), "",
+				logFilename);
 
-		sArgs.setName(app.getName());
-		sArgs.setAuthor("Alessandro Febretti");
-		sArgs.setDescription("An omegalib application");
-		sArgs.setVersion(OMEGA_VERSION);
-		sArgs.process(argc, argv);
+			sArgs.setName(app.getName());
+			sArgs.setAuthor("Alessandro Febretti");
+			sArgs.setDescription("An omegalib application");
+			sArgs.setVersion(OMEGA_VERSION);
+			sArgs.process(argc, argv);
 
-		if(help)
-		{
-			sArgs.writeUsage(std::cout);
-			return 0;
-		}
+			if(help)
+			{
+				sArgs.writeUsage(std::cout);
+				return 0;
+			}
 
-		std::vector<std::string> args = StringUtils::split(configFilename, "@");
-		configFilename = args[0];
-		if(args.size() == 2)
-		{
-			remote = true;
-			masterHostname = args[1];
+			std::vector<std::string> args = StringUtils::split(configFilename, "@");
+			configFilename = args[0];
+			if(args.size() == 2)
+			{
+				remote = true;
+				masterHostname = args[1];
 			
-			String hostLogFilename = masterHostname + "-" + logFilename;
-			ologopen(hostLogFilename.c_str());
-		}
-		else
-		{
-			ologopen(logFilename.c_str());
-		}
+				String hostLogFilename = masterHostname + "-" + logFilename;
+				ologopen(hostLogFilename.c_str());
+			}
+			else
+			{
+				ologopen(logFilename.c_str());
+			}
 		
-		Config* cfg = new Config(configFilename);
+			Config* cfg = new Config(configFilename);
 		
-		SystemManager* sys = SystemManager::instance();
-		DataManager* dm = sys->getDataManager();
-		// Add a default filesystem data source using current work dir.
-		dm->addSource(new FilesystemDataSource("./"));
-		dm->addSource(new FilesystemDataSource(dataPath));
+			SystemManager* sys = SystemManager::instance();
+			DataManager* dm = sys->getDataManager();
+			// Add a default filesystem data source using current work dir.
+			dm->addSource(new FilesystemDataSource("./"));
+			dm->addSource(new FilesystemDataSource(dataPath));
 
-		sys->setApplication(&app);
-		if(remote)
-		{
-			sys->setupRemote(cfg, masterHostname);
-		}
-		else
-		{
-			sys->setup(cfg);
-		}
-		sys->initialize();
+			sys->setApplication(&app);
+			if(remote)
+			{
+				sys->setupRemote(cfg, masterHostname);
+			}
+			else
+			{
+				sys->setup(cfg);
+			}
+			sys->initialize();
 
-		if(kill)
-		{
-			DisplaySystem* ds = sys->getDisplaySystem();
-			ds->killCluster();
-		}
-		else
-		{
-			sys->run();
+			if(kill)
+			{
+				DisplaySystem* ds = sys->getDisplaySystem();
+				ds->killCluster();
+			}
+			else
+			{
+				sys->run();
+			}
+
+			sys->cleanup();
+
+			ologclose();
 		}
 
-		sys->cleanup();
-
-		ologclose();
+#ifdef OMEGA_ENABLE_VLD
+		_cexit();
+		VLDReportLeaks();
+#endif
 
 		return 0;
 	}

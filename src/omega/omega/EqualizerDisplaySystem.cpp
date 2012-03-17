@@ -26,12 +26,12 @@
  *************************************************************************************************/
 #include <omegaGl.h>
 
+#include "eqinternal/eqinternal.h"
+
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/SystemManager.h"
 #include "omega/MouseService.h"
 #include "omega/GpuManager.h"
-
-#include "eqinternal/eqinternal.h"
 
 using namespace omega;
 using namespace co::base;
@@ -54,6 +54,20 @@ void exitConfig()
 	ds->exitConfig();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+EqualizerDisplaySystem::EqualizerDisplaySystem():
+	mySys(NULL),
+	myConfig(NULL),
+	myNodeFactory(NULL),
+	mySetting(NULL),
+	myDebugMouse(false)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+EqualizerDisplaySystem::~EqualizerDisplaySystem()
+{
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::exitConfig()
 {
@@ -302,21 +316,6 @@ void EqualizerDisplaySystem::generateEqConfig()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-EqualizerDisplaySystem::EqualizerDisplaySystem():
-	mySys(NULL),
-	myConfig(NULL),
-	myNodeFactory(NULL),
-	mySetting(NULL),
-	myDebugMouse(false)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-EqualizerDisplaySystem::~EqualizerDisplaySystem()
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::setup(Setting& scfg) 
 {
 	mySetting = &scfg;
@@ -428,7 +427,7 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 	Log::level = LOG_WARN;
 	mySys = sys;
 
-	atexit(::exitConfig);
+	//atexit(::exitConfig);
 
 	// Launch application instances on secondary nodes.
 	if(SystemManager::instance()->isMaster())
@@ -565,6 +564,8 @@ void EqualizerDisplaySystem::run()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EqualizerDisplaySystem::cleanup()
 {
+	delete myNodeFactory;
+	SharedDataServices::cleanup();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

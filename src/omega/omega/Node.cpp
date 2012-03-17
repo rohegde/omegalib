@@ -151,8 +151,7 @@ void Node::update(bool updateChildren, bool parentHasChanged)
 		itend = mChildren.end();
         for (it = mChildren.begin(); it != itend; ++it)
         {
-            Node* child = it->second;
-            child->update(true, true);
+			it->second->update(true, true);
         }
         mChildrenToUpdate.clear();
     }
@@ -252,7 +251,7 @@ Node* Node::getChild(unsigned short index) const
     {
         ChildNodeMap::const_iterator i = mChildren.begin();
         while (index--) ++i;
-        return i->second;
+        return i->second.get();
     }
     else
         return NULL;
@@ -266,7 +265,7 @@ Node* Node::removeChild(unsigned short index)
     {
         ChildNodeMap::iterator i = mChildren.begin();
         while (index--) ++i;
-        ret = i->second;
+        ret = i->second.get();
         // cancel any pending update
         cancelUpdate(ret);
 
@@ -645,7 +644,7 @@ Node* Node::getChild(const String& name) const
     {
         owarn(String("Child node named " + name + " does not exist.").c_str());
     }
-    return i->second;
+    return i->second.get();
 
 }
 
@@ -659,7 +658,7 @@ Node* Node::removeChild(const String& name)
 		owarn(String("Child node named " + name + " does not exist.").c_str());
     }
 
-    Node* ret = i->second;
+    Node* ret = i->second.get();
     // Cancel any pending update
     cancelUpdate(ret);
 

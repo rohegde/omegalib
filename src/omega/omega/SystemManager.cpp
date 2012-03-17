@@ -71,7 +71,21 @@ SystemManager::SystemManager():
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager::~SystemManager()
 {
-	delete myInterpreter;
+	if(myAppConfig != NULL) 
+	{
+		delete myAppConfig;
+		if(myAppConfig == mySystemConfig) mySystemConfig = NULL;
+		myAppConfig = NULL;
+	}
+	if(mySystemConfig != NULL) delete mySystemConfig;
+	if(myServiceManager != NULL) delete myServiceManager;
+	if(myDisplaySystem != NULL) delete myDisplaySystem;
+	if(myInterpreter != NULL) delete myInterpreter;
+
+
+	myAppConfig = NULL;
+	mySystemConfig = NULL;
+	myDisplaySystem = NULL;
 	myInterpreter = NULL;
 }
 
@@ -234,7 +248,14 @@ void SystemManager::run()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SystemManager::cleanup()
 {
-	if(myDisplaySystem) myDisplaySystem->cleanup();
+	if(myDisplaySystem) 
+	{
+		myDisplaySystem->cleanup();
+		delete myDisplaySystem;
+		myDisplaySystem = NULL;
+	}
+	delete mysInstance;
+	mysInstance = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

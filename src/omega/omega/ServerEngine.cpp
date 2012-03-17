@@ -50,6 +50,13 @@ ServerEngine::ServerEngine(ApplicationBase* app, bool master):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+ServerEngine::~ServerEngine()
+{
+    ImageUtils::internalDispose();
+	ModuleServices::cleanup();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerEngine::initialize()
 {
     myLock.lock();
@@ -60,7 +67,7 @@ void ServerEngine::initialize()
     // Create console.
     myConsole = new Console();
     myConsole->initialize(this);
-    ologaddlistener(myConsole);
+    ologaddlistener(myConsole.get());
 
     // Setup the console default font
     Config* cfg = getSystemManager()->getAppConfig();
@@ -121,12 +128,6 @@ void ServerEngine::postDraw(Renderer* r, const DrawContext& context)
     myLock.lock();
 	ModuleServices::postDraw(this, r, context);
     myLock.unlock();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::finalize()
-{
-    ImageUtils::internalDispose();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +213,7 @@ void ServerEngine::destroyPointer(Pointer* p)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 SceneNode* ServerEngine::getScene()
 {
-    return myScene;
+    return myScene.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,7 +282,7 @@ void ServerEngine::update(const UpdateContext& context)
 const SceneQueryResultList& ServerEngine::querySceneRay(const Ray& ray, uint flags)
 {
     myRaySceneQuery.clearResults();
-    myRaySceneQuery.setSceneNode(myScene);
+	myRaySceneQuery.setSceneNode(myScene.get());
     myRaySceneQuery.setRay(ray);
     return myRaySceneQuery.execute(flags);
 }
