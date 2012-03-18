@@ -54,6 +54,8 @@ VtkRenderPass::~VtkRenderPass()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void VtkRenderPass::initialize()
 {
+	RenderPass::initialize();
+
 	// Setup renderer and render window
 	myRenderer = vtkRenderer::New();
 

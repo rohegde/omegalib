@@ -111,7 +111,7 @@ void Renderer::startFrame(const FrameInfo& frame)
 	ofmsg("Renderer::startFrame %1%", %frame.frameNum);
 #endif
 
-	foreach(Camera* cam, myServer->getCameras())
+	foreach(Ref<Camera> cam, myServer->getCameras())
 	{
 		cam->startFrame(frame);
 	}
@@ -124,7 +124,7 @@ void Renderer::finishFrame(const FrameInfo& frame)
 	ofmsg("Renderer::finishFrame %1%", %frame.frameNum);
 #endif
 
-	foreach(Camera* cam, myServer->getCameras())
+	foreach(Ref<Camera> cam, myServer->getCameras())
 	{
 		cam->finishFrame(frame);
 	}
@@ -155,7 +155,7 @@ void Renderer::draw(const DrawContext& context)
 		myRenderableCommands.pop();
 	}
 
-	foreach(Camera* cam, myServer->getCameras())
+	foreach(Ref<Camera> cam, myServer->getCameras())
 	{
 		// See if camera is enabled for the current client and draw context.
 		if(cam->isEnabled(context))
