@@ -35,7 +35,7 @@
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API CameraOutput
+	class OMEGA_API CameraOutput: public ReferenceType
 	{
 	public:
 		CameraOutput(bool offscreen = false): myEnabled(false), myRenderTarget(NULL), myOffscreen(offscreen),
@@ -181,7 +181,7 @@ namespace omega {
 
 		// Offscren rendering stuff
 		uint myFlags;
-		CameraOutput* myOutput[GpuContext::MaxContexts];
+		Ref<CameraOutput> myOutput[GpuContext::MaxContexts];
 		DrawContext myDrawContext[GpuContext::MaxContexts];
 
 		// Navigation stuff.

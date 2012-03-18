@@ -62,7 +62,7 @@ namespace omega {
 	class OMEGA_API ServerEngine: public ServerBase
 	{
 	public:
-		typedef List<Camera*> CameraCollection;
+		typedef List< Ref<Camera> > CameraCollection;
 
 	friend class Renderer;
 	public:
@@ -168,13 +168,13 @@ namespace omega {
 		bool myEventSharingEnabled;
 
 		// Cameras.
-		Camera* myDefaultCamera;
+		Ref<Camera> myDefaultCamera;
 		CameraCollection myCameras;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Camera* ServerEngine::getDefaultCamera()
-	{ return myDefaultCamera; }
+	{ return myDefaultCamera.get(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ServiceManager* ServerEngine::getServiceManager()

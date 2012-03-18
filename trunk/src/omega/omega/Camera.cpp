@@ -265,7 +265,7 @@ void Camera::updateObserver(Observer* obs)
 CameraOutput* Camera::getOutput(uint contextId)
 {
 	oassert(contextId < GpuContext::MaxContexts);
-	return myOutput[contextId];
+	return myOutput[contextId].get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
