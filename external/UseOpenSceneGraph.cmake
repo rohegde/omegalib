@@ -1,5 +1,14 @@
 include(ExternalProject)
 
+set(OMEGA_USE_EXTERNAL_OSG false CACHE BOOL "Enable to use an external osg build instead of the built-in one.")
+if(OMEGA_USE_EXTERNAL_OSG)
+	# When using external osg builds, for now you need to make sure manually the OSG binary
+	# include dir is in the compiler include search, paths otherwise osgWorks won't compile.
+	# I may find a better solution for this in the future but it's not really high priority.
+	set(OMEGA_EXTERNAL_OSG_BINARY_PATH CACHE PATH "The external osg build path")
+	set(OMEGA_EXTERNAL_OSG_SOURCE_PATH CACHE PATH "The external osg source path")
+endif()
+
 if(OMEGA_OS_WIN)
 	set(EXTLIB_NAME OpenSceneGraph-3.0.1-VS10-x86)
 elseif(OMEGA_OS_LINUX)
@@ -28,21 +37,39 @@ if(NOT EXISTS ${EXTLIB_DIR})
     ${EXTLIB_TGZ} WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 endif(NOT EXISTS ${EXTLIB_DIR})
 
-set(OSG_INCLUDES ${EXTLIB_DIR}/include)
+if(OMEGA_USE_EXTERNAL_OSG)
+	set(OSG_INCLUDES ${OMEGA_EXTERNAL_OSG_BINARY_PATH}/include ${OMEGA_EXTERNAL_OSG_SOURCE_PATH}/include)
+else()
+	set(OSG_INCLUDES ${EXTLIB_DIR}/include)
+endif()
 
 set(OSG_COMPONENTS osg osgAnimation osgDB osgFX osgGA osgManipulator osgShadow osgSim osgTerrain osgText osgUtil osgVolume osgViewer osgWidget OpenThreads)
 
 if(OMEGA_OS_WIN)
-    foreach( C ${OSG_COMPONENTS} )
-		set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/${C}.lib)
-		set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/${C}d.lib)
-		set(${C}_INCLUDE_DIR ${OSG_INCLUDES})
-		set(OSG_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
-	endforeach()
+	if(OMEGA_USE_EXTERNAL_OSG)
+		foreach( C ${OSG_COMPONENTS} )
+			set(${C}_LIBRARY ${OMEGA_EXTERNAL_OSG_BINARY_PATH}/lib/${C}.lib)
+			set(${C}_LIBRARY_DEBUG ${OMEGA_EXTERNAL_OSG_BINARY_PATH}/lib/${C}d.lib)
+			set(${C}_INCLUDE_DIR ${OMEGA_EXTERNAL_OSG_SOURCE_PATH}/include)
+			set(OSG_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+		endforeach()
 
-	# Copy the dlls into the target directories
-	file(COPY ${EXTLIB_DIR}/bin/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} PATTERN "*.dll")
-	file(COPY ${EXTLIB_DIR}/bin/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} PATTERN "*.dll")
+		# Copy the dlls into the target directories
+		file(COPY ${OMEGA_EXTERNAL_OSG_BINARY_PATH}/bin/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} PATTERN "*.dll")
+		file(COPY ${OMEGA_EXTERNAL_OSG_BINARY_PATH}/bin/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} PATTERN "*.dll")
+	else()
+		foreach( C ${OSG_COMPONENTS} )
+			set(${C}_LIBRARY ${EXTLIB_DIR}/lib/release/${C}.lib)
+			set(${C}_LIBRARY_DEBUG ${EXTLIB_DIR}/lib/debug/${C}d.lib)
+			set(${C}_INCLUDE_DIR ${EXTLIB_DIR}/include)
+			set(OSG_LIBS ${OSG_LIBS} optimized ${${C}_LIBRARY} debug ${${C}_LIBRARY_DEBUG})
+		endforeach()
+
+		# Copy the dlls into the target directories
+		file(COPY ${EXTLIB_DIR}/bin/debug/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG} PATTERN "*.dll")
+		file(COPY ${EXTLIB_DIR}/bin/release/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE} PATTERN "*.dll")
+	endif()
+	
 
 elseif(OMEGA_OS_LINUX)
     foreach( C ${OSG_COMPONENTS} )
