@@ -43,11 +43,11 @@ SceneManager* SceneManager::mysInstance = NULL;
 Entity::Entity(SceneManager* mng, EntityAsset* asset, int id):
 	mySceneManager(mng), myAsset(asset), myId(id)
 {
-	EngineServer* engine = mng->getEngine();
+	ServerEngine* engine = mng->getEngine();
 
 	mySceneNode = new SceneNode(engine);
 	mySceneNode->setSelectable(true);
-	engine->getScene(0)->addChild(mySceneNode);
+	engine->getScene()->addChild(mySceneNode);
 	OsgSceneObject* oso = new OsgSceneObject(myAsset->node);
 
 	myOsgNode = oso->getTransformedNode();
@@ -60,23 +60,21 @@ SceneManager::SceneManager():
 	myOsg(NULL)
 {
 	mysInstance = this;
+	myOsg = new OsgModule();
+	ModuleServices::addModule(myOsg);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::initialize(EngineServer* engine)
+void SceneManager::initialize()
 {
-	myEngine = engine;
-	myOsg = new OsgModule();
-	myOsg->initialize(myEngine);
+	myEngine = getServer();
 
 	myEditor = new SceneEditorModule();
-	myEditor->initialize(myEngine);
+	ModuleServices::addModule(myEditor);
 
 	mySceneRoot = new osg::Group();
 
-	// ***** Setup the TabletManager ***** // 
-	myTabletManager = new TabletManagerModule();
-	myTabletManager->initialize(myEngine, true, false);
+	myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 
 	//send the GUI msgs to the tablet
 	myTabletManager->beginGui();
@@ -94,12 +92,12 @@ void SceneManager::initialize(EngineServer* engine)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::update(const UpdateContext& context ) 
+void SceneManager::update(const UpdateContext& context) 
 {
-	myOsg->update(context);
-	myEditor->update(context);
-	myTabletManager->update(context);
-
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->update(context);
+	}
 	// Just for test
 	//Entity* wheel = findEntity(0);
 	//if(wheel != NULL)
@@ -111,42 +109,20 @@ void SceneManager::update(const UpdateContext& context )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::updateEntityPos( int entityNo , vector<float> pos) 
-{
-	// Just for test
-	Entity* theEntity = findEntity( entityNo );
-	if(theEntity != NULL)
-	{
-		theEntity->getSceneNode()->setPosition( pos[0] , pos[1] , pos[2] );
-	}
-	//printf("%f , %f , %f\n\n" , pos[0] , pos[1] , pos[2] );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::updateEntityRot( int entityNo , vector<float> rot) 
-{
-	// Just for test
-	Entity* theEntity = findEntity( entityNo );
-	if(theEntity != NULL)
-	{
-		theEntity->getSceneNode()->setOrientation( rot[3] , rot[0] , rot[1] , rot[2] );
-	}
-	//printf("entityNo : % d : %f , %f , %f , %f \n\n" , entityNo , rot[0] , rot[1] , rot[2] , rot[3] );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
-	myEditor->handleEvent(evt);
-	myTabletManager->handleEvent(evt);
+	if(myTabletManager != NULL)
+	{
+		myTabletManager->handleEvent(evt);
+	}
 	if(evt.isKeyDown('l'))
     {
-		Vector3f pos = myEngine->getDefaultCamera()->getPosition();
-		if(myLight2 != NULL)
-		{
-			myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
-			ofmsg("Light Position: %1%", %pos);
-		}
+		//Vector3f pos = myEngine->getDefaultCamera()->getPosition();
+		//if(myLight2 != NULL)
+		//{
+		//	myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
+		//	ofmsg("Light Position: %1%", %pos);
+		//}
 	}
 	if(evt.getServiceType() == Service::Ui)
 	{
@@ -531,7 +507,7 @@ void SceneManager::initShading()
 	ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
 	osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
-	sm->setTextureSize(osg::Vec2s(1024, 1024));
+	sm->setTextureSize(osg::Vec2s(512, 512));
 	sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
 	sm->setTextureUnit(4);
 	sm->setJitterTextureUnit(5);
@@ -545,6 +521,7 @@ void SceneManager::initShading()
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
+    myLight2->setPosition(osg::Vec4(-1.0, -1, 0, 0.0));
     myLight2->setAmbient(osg::Vec4(0.2f,0.2f,0.2f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
@@ -555,7 +532,7 @@ void SceneManager::initShading()
 
     osg::LightSource* lightS2 = new osg::LightSource;  
 
-	myLight2->setPosition(Vec4(20.0, -4.0f, 56, 1.0f));
+	//myLight2->setPosition(Vec4(0, 10.0f, 0, 1.0f));
 
     lightS2->setLight(myLight2);
     lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
@@ -611,4 +588,28 @@ int SceneManager::getAnimate()
 int SceneManager::getEnd()
 {
 	return myEnd;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::updateEntityPos( int entityNo , vector<float> pos) 
+{
+	// Just for test
+	Entity* theEntity = findEntity( entityNo );
+	if(theEntity != NULL)
+	{
+		theEntity->getSceneNode()->setPosition( pos[0] , pos[1] , pos[2] );
+	}
+	//printf("%f , %f , %f\n\n" , pos[0] , pos[1] , pos[2] );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::updateEntityRot( int entityNo , vector<float> rot) 
+{
+	// Just for test
+	Entity* theEntity = findEntity( entityNo );
+	if(theEntity != NULL)
+	{
+		theEntity->getSceneNode()->setOrientation( rot[3] , rot[0] , rot[1] , rot[2] );
+	}
+	//printf("entityNo : % d : %f , %f , %f , %f \n\n" , entityNo , rot[0] , rot[1] , rot[2] , rot[3] );
 }
