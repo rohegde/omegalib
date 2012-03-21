@@ -33,17 +33,16 @@
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
-#include <oengine.h>
-#include <oosg.h>
+#include <omegaOsg.h>
+#include <omegaToolkit.h>
 
-#include "oengine/TabletManagerModule.h"
+#include "omega/PortholeTabletService.h"
 
 
 namespace cyclops {
 	using namespace omega;
-	using namespace oengine;
-	using namespace oosg;
-	using namespace std;
+	using namespace omegaToolkit;
+	using namespace omegaOsg;
 
 	class SceneLoader;
 	class SceneManager;
@@ -81,7 +80,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class SceneManager
+	class SceneManager: public ServerModule
 	{
 	public:
 		enum AssetType { ModelAssetType, EntityAssetType };
@@ -93,18 +92,19 @@ namespace cyclops {
 		static bool findResource(const String& name, String& outPath);
 
 	public:
-		static SceneManager* getInstance();
+		static SceneManager* instance();
 		SceneManager();
 
-		EngineServer* getEngine() { return myEngine; }
+		ServerEngine* getEngine() { return myEngine; }
 
-		void initialize(EngineServer* engine);
-		void update(const UpdateContext& context );
-		void updateEntityPos( int entityNo , vector<float> pos); 
-		void updateEntityRot( int entityNo , vector<float> rot); 
-		void handleEvent(const Event& evt);
+		virtual void initialize();
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
 
 		void load(SceneLoader* loader);
+
+		void updateEntityPos( int entityNo , vector<float> pos); 
+		void updateEntityRot( int entityNo , vector<float> rot); 
 
 		//! Scene creation API
 		//@{
@@ -133,10 +133,11 @@ namespace cyclops {
 	private:
 		static SceneManager* mysInstance;
 
-		EngineServer* myEngine;
+		ServerEngine* myEngine;
+
 		OsgModule* myOsg;
 		SceneEditorModule* myEditor;
-		TabletManagerModule* myTabletManager;
+		PortholeTabletService* myTabletManager;
 
 		osg::Group* mySceneRoot;
 
