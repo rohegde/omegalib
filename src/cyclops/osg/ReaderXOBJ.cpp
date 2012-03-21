@@ -107,7 +107,7 @@ protected:
 };
 
 // register with Registry to instantiate the above reader/writer.
-REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
+//REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Geometry* ReaderXOBJ::convertElementListToGeometry(obj::Model& model, obj::Model::ElementList& elementList, ObjOptionsStruct& localOptions) const
@@ -437,11 +437,11 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
         if (geometry)
         {
             // tesseleate any large polygons
-            if (!localOptions.noTesselateLargePolygons)
-            {
-                osgUtil::Tessellator tessellator;
-                tessellator.retessellatePolygons(*geometry);
-            }
+            //if (!localOptions.noTesselateLargePolygons)
+            //{
+            //    osgUtil::Tessellator tessellator;
+            //    tessellator.retessellatePolygons(*geometry);
+            //}
             
             // tri strip polygons to improve graphics peformance
             //if (!localOptions.noTriStripPolygons)
@@ -571,6 +571,7 @@ osgDB::ReaderWriter::ReadResult ReaderXOBJ::readNode(const std::string& file, co
         ObjOptionsStruct localOptions = parseOptions(options);
 
         osg::Node* node = convertModelToSceneGraph(model, localOptions, options);
+		node->computeBound();
         return node;
     }
     

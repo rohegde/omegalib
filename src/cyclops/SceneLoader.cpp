@@ -135,8 +135,11 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		DataManager* dm = SystemManager::instance()->getDataManager();
 		DataInfo cfgInfo = dm->getInfo(String(filePath));
 		if(!cfgInfo.isNull())
-		{
-			osg::Node* node = osgDB::readNodeFile(cfgInfo.path);
+		{ 
+			osgDB::Options* options = new osgDB::Options; 
+			options->setOptionString("noTesselateLargePolygons noTriStripPolygons"); 
+
+			osg::Node* node = osgDB::readNodeFile(cfgInfo.path, options);
 			if(node != NULL)
 			{
 				if(xchild->Attribute("Material") != NULL)

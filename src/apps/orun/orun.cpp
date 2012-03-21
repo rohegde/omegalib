@@ -90,6 +90,6 @@ void OmegaViewer::handleEvent(const Event& evt)
 int main(int argc, char** argv)
 {
 	Application<OmegaViewer> app("orun");
-	//oargs().newOptionalString("script", "script to launch at startup", sDefaultScript);
+	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
 	return omain(app, argc, argv);
 }
