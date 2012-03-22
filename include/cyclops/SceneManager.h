@@ -85,6 +85,7 @@ namespace cyclops {
 	class CY_API SceneManager: public ServerModule
 	{
 	public:
+		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType, EntityAssetType };
 
 	public:
@@ -125,6 +126,9 @@ namespace cyclops {
 		osg::StateSet* loadMaterial(const String& filename);
 		void initShading();
 
+		void setShaderMacroToString(const String& macroName, const String& macroString);
+		void setShaderMacroToFile(const String& macroName, const String& path);
+
 	private:
 		void loadShader(osg::Shader* shader, const String& name);
 		osg::StateSet* createMaterial(TiXmlElement* xdata, const String& type);
@@ -146,6 +150,8 @@ namespace cyclops {
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, osg::Program*> myPrograms;
 		Dictionary<String, osg::StateSet*> myMaterials;
+
+		ShaderMacroDictionary myShaderMacros;
 
 		List<Entity*> myEntities;
 

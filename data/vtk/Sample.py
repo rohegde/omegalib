@@ -10,7 +10,7 @@ vtkNode = nodeCreate(nodeGetRoot())
 mouse = interactorCreateMouse()
 interactorAttach(mouse, vtkNode)
 
-nodeSetPosition(vtkNode, (0, 0, -1))
+nodeSetPosition(vtkNode, 0, 0, -1)
 
 quadric = vtk.vtkQuadric()
 quadric.SetCoefficients(.5,1,.2,0,.1,0,0,.2,0,0)
@@ -26,6 +26,10 @@ contours.GenerateValues(6, 0.0, 2)
 normals = vtk.vtkPolyDataNormals()
 normals.SetInputConnection(contours.GetOutputPort())
 normals.SetFeatureAngle(270.0)
+
+# Enable camera free fly
+camera = cameraGetDefault()
+cameraEnableFreeFly(camera)
 
 queueInitializeView()
 
