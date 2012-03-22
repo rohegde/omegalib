@@ -74,7 +74,7 @@ void DefaultMouseInteractor::updateNode()
 
 	//if(getServer()->isMaster())
 	//{
-	ofmsg("MST Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
+	//ofmsg("MST Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
 	//}
 	//else
 	//{

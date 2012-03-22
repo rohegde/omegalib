@@ -68,6 +68,10 @@ static PyObject* sceneLoad(PyObject* self, PyObject* args)
 			SceneLoader* sl = new SceneLoader(doc);
 			SceneManager::instance()->load(sl);
 		}
+		else
+		{
+			ofwarn("sceneLoad Xml error at %1%:%2%.%3%: %4%", %mapName %doc.ErrorRow() %doc.ErrorCol() %doc.ErrorDesc());
+		}
 	}
 	else
 	{

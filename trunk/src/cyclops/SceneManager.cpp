@@ -85,6 +85,11 @@ void SceneManager::initialize()
 		myTabletManager->finishGui();
 	}
 
+	//setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
+	//setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
+	setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
+	setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+
 	frontView = true;
 }
 
@@ -308,13 +313,48 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setShaderMacroToString(const String& macroName, const String& macroString)
+{
+	myShaderMacros[macroName] = macroString;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setShaderMacroToFile(const String& macroName, const String& name)
+{
+	String path;
+	if(DataManager::findFile(name, path))
+	{
+		std::ifstream t(path);
+		std::stringstream buffer;
+		buffer << t.rdbuf();
+		setShaderMacroToString(macroName, buffer.str());
+	}
+	else
+	{
+		ofwarn("SceneManager::setShaderMacroToFile: could not find file %1%", %name);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::loadShader(osg::Shader* shader, const String& name)
 {
 	String path;
 	if(DataManager::findFile(name, path))
 	{
+		std::ifstream t(path);
+		std::stringstream buffer;
+		buffer << t.rdbuf();
+
+		// Replace shader macros.
+		String shaderSrc = buffer.str();
+		foreach(ShaderMacroDictionary::Item macro, myShaderMacros)
+		{
+			String macroName = ostr("@%1%", %macro.getKey());
+			shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+		}
+
 		//ofmsg("Loading shader file %1%", %name);
-	    shader->loadShaderSourceFromFile(path);
+		shader->setShaderSource(shaderSrc);
 	}
 	else
 	{
@@ -357,25 +397,25 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 
 	if(type == "solid")
 	{
-		prog = getProgram("solid", "cyclops/shaders/Solid.vert", "cyclops/shaders/Solid.frag");
+		prog = getProgram("solid", "cyclops/common/Solid.vert", "cyclops/common/Solid.frag");
 		prog->addBindAttribLocation ("Tangent", 6);
 	}
 	else if(type == "simple")
 	{
-		prog = getProgram("simple", "cyclops/shaders/Solid.vert", "cyclops/shaders/Simple.frag");
+		prog = getProgram("simple", "cyclops/common/Solid.vert", "cyclops/common/Simple.frag");
 	}
 	else if(type == "vertexcolor")
 	{
-		prog = getProgram("vertexcolor", "cyclops/shaders/VertexColor.vert", "cyclops/shaders/VertexColor.frag");
+		prog = getProgram("vertexcolor", "cyclops/common/VertexColor.vert", "cyclops/common/VertexColor.frag");
 	}
 
 	ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
 
-	osg::Material* mat = new osg::Material();
-	mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
-	mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(0.5f, 0.5f, 0.6f, 1.0f));
+	//osg::Material* mat = new osg::Material();
+	//mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
+	//mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(0.5f, 0.5f, 0.6f, 1.0f));
 
-	ss->setAttribute(mat, osg::StateAttribute::MATERIAL);
+	//ss->setAttribute(mat, osg::StateAttribute::MATERIAL);
 
 	TiXmlElement* xtextures = xdata->FirstChildElement("TextureUnits");
 	if(xtextures != NULL)
@@ -474,25 +514,9 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initShading()
 {
-	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.3f, 0.3f, 0.3f, 1.0f));
+	myEngine->getDisplaySystem()->setBackgroundColor(Color(1.0f, 0.3f, 0.3f, 1.0f));
 
-
-	osgShadow::ShadowedScene* ss = new osgShadow::ShadowedScene();
-	ss->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
-	ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
-
-	osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
-	sm->setTextureSize(osg::Vec2s(512, 512));
-	sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
-	sm->setTextureUnit(4);
-	sm->setJitterTextureUnit(5);
-	sm->setSoftnessWidth(0.004f);
-	sm->setJitteringScale(32);
-
-	ss->addChild(mySceneRoot);
-	ss->setShadowTechnique(sm.get());
-
-	osg::StateSet *sState = ss->getOrCreateStateSet();
+	bool myShadingEnabled = true;
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
@@ -512,10 +536,30 @@ void SceneManager::initShading()
     lightS2->setLight(myLight2);
     lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
 
-    lightS2->setStateSetModes(*sState,osg::StateAttribute::ON);
-	ss->addChild(lightS2);
 
-	mySceneRoot = ss;
+	if(myShadingEnabled)
+	{
+		osgShadow::ShadowedScene* ss = new osgShadow::ShadowedScene();
+		ss->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
+		ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
+
+		osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
+		sm->setTextureSize(osg::Vec2s(512, 512));
+		sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
+		sm->setTextureUnit(4);
+		sm->setJitterTextureUnit(5);
+		sm->setSoftnessWidth(0.002);
+		sm->setJitteringScale(8);
+
+		ss->addChild(mySceneRoot);
+		ss->setShadowTechnique(sm.get());
+		
+		mySceneRoot = ss;
+	}
+
+	osg::StateSet* sState = mySceneRoot->getOrCreateStateSet();
+    lightS2->setStateSetModes(*sState,osg::StateAttribute::ON);
+	mySceneRoot->addChild(lightS2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
