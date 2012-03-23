@@ -1,5 +1,7 @@
 @use setupShadow
 
+uniform vec2 unif_TextureTiling;
+
 varying vec3 lightVec;/*!< Light direction vector.*/
 varying vec3 viewVec;/*!< View vector passed to the fragment program.*/
 varying vec2 texCoord;/*!< Texture coordinates passed to the fragment program.*/
@@ -13,7 +15,7 @@ attribute vec4 Tangent;/*!< Tangent space vector.*/
 void main(void)
 {
 	gl_Position = ftransform();
-	texCoord = gl_MultiTexCoord0.xy*vec2(1.0, 1.0);
+	texCoord = gl_MultiTexCoord0.xy * unif_TextureTiling;
 		
 	vec3 n = normalize(gl_NormalMatrix * gl_Normal);
 	vec3 t = normalize(gl_NormalMatrix * Tangent.xyz);

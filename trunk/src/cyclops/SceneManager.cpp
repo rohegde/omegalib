@@ -39,7 +39,7 @@ using namespace cyclops;
 SceneManager* SceneManager::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* mng, EntityAsset* asset, int id):
+Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
 	mySceneManager(mng), myAsset(asset), myId(id)
 {
 	ServerEngine* engine = mng->getEngine();
@@ -85,10 +85,10 @@ void SceneManager::initialize()
 		myTabletManager->finishGui();
 	}
 
-	//setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
-	//setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
-	setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
-	setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+	setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
+	setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
+	//setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
+	//setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
 
 	frontView = true;
 }
@@ -235,7 +235,7 @@ void SceneManager::addStaticObject(int assetId, const Vector3f& position, const 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::addEntity(int assetId, int entityId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
 {
-	EntityAsset* asset = getEntityAsset(assetId);
+	ModelAsset* asset = getModelAsset(assetId);
 	if(asset == NULL)
 	{
 		ofwarn("SceneManager::addEntity: could not locate entity asset %1%", %assetId);
@@ -402,7 +402,7 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 	}
 	else if(type == "simple")
 	{
-		prog = getProgram("simple", "cyclops/common/Solid.vert", "cyclops/common/Simple.frag");
+		prog = getProgram("simple", "cyclops/common/VertexColor.vert", "cyclops/common/Simple.frag");
 	}
 	else if(type == "vertexcolor")
 	{
@@ -411,11 +411,16 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 
 	ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
 
-	//osg::Material* mat = new osg::Material();
-	//mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
-	//mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(0.5f, 0.5f, 0.6f, 1.0f));
+	TiXmlElement* xmain = xdata->FirstChildElement("Colors");
+	if(xmain != NULL)
+	{
+		Vector4f diffuse = SceneLoader::readVector4f(xmain, "Diffuse");
 
-	//ss->setAttribute(mat, osg::StateAttribute::MATERIAL);
+		osg::Material* mat = new osg::Material();
+		mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
+		mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
+		ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+	}
 
 	TiXmlElement* xtextures = xdata->FirstChildElement("TextureUnits");
 	if(xtextures != NULL)
@@ -548,8 +553,8 @@ void SceneManager::initShading()
 		sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
 		sm->setTextureUnit(4);
 		sm->setJitterTextureUnit(5);
-		sm->setSoftnessWidth(0.002);
-		sm->setJitteringScale(8);
+		sm->setSoftnessWidth(0.004);
+		sm->setJitteringScale(32);
 
 		ss->addChild(mySceneRoot);
 		ss->setShadowTechnique(sm.get());
@@ -573,24 +578,14 @@ void SceneManager::addAsset(ModelAsset* asset, AssetType type)
 {
 	if(type == ModelAssetType)
 	{
-		myStaticObjectFiles.push_back(asset);
-	}
-	else
-	{
-		myEntityFiles.push_back((EntityAsset*)asset);
+		myModelFiles.push_back(asset);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ModelAsset* SceneManager::getModelAsset(int fileIndex)
 {
-	return myStaticObjectFiles[fileIndex];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-EntityAsset* SceneManager::getEntityAsset(int fileIndex)
-{
-	return myEntityFiles[fileIndex];
+	return myModelFiles[fileIndex];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

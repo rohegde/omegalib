@@ -11,7 +11,7 @@ uniform sampler2D heightMap;/*!< Height map sampler.*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
-	float shadow = compteShadow();
+	float shadow = computeShadow();
 	
 	vec3 lVec = normalize(lightVec);
 	vec3 vVec = normalize(viewVec);

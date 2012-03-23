@@ -1,3 +1,4 @@
 <Material>
     <Main Type="Simple" />
+	<Colors Diffuse="1 0 0 1"/>
 </Material>

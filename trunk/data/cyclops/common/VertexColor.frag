@@ -12,7 +12,7 @@ void main (void)
 
 	vec3 n,halfV,viewV,ldir;
 	float NdotL,NdotHV;
-	vec4 color = gl_Color;
+	vec4 color = vec4(0, 0, 0, 1);
 	float att;
 	
 	n = normalize(normal);
@@ -24,12 +24,12 @@ void main (void)
 			// gl_LightSource[0].linearAttenuation * dist +
 			// gl_LightSource[0].quadraticAttenuation * dist * dist);
 		att = 1.0;
-		color += att * NdotL * gl_Color;
+		color += att * NdotL * gl_FrontMaterial.diffuse;
 		halfV = normalize(halfVector);
 
 		NdotHV = max(dot(n,halfV),0.0);
-		color += att * gl_FrontMaterial.specular * gl_LightSource[0].specular *
-					pow(NdotHV,gl_FrontMaterial.shininess);
+		// color += att * gl_FrontMaterial.specular * gl_LightSource[0].specular *
+					// pow(NdotHV,gl_FrontMaterial.shininess);
 	}
 
     // apply shadow, modulo the ambient bias
