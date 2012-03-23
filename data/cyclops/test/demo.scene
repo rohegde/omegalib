@@ -2,7 +2,7 @@
     <MapData>
         <MapContents>
             <Files>
-                <File Id="0" Path="cyclops/test/T1_Block_01A_One_Quarter_wPiles_StructSteel03.obj" Material="cyclops/test/VertexColor.material" Size="5"/>
+                <File Id="0" Path="cyclops/test/T1_Block_01A_One_Quarter_wPiles_StructSteel03.obj" Material="cyclops/common/materials/Default.material" Size="5"/>
             </Files>
 			
             <StaticObjects>
@@ -11,7 +11,7 @@
             <Entities>
             </Entities>
 			<Primitives>
-                <Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="cyclops/test/VertexColor.material" Name="Plane_1" Rotation="0 0 0" Scale="40 1 40" Tiling="80 80" WorldPos="-2 -2 -2" />
+                <Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="cyclops/common/materials/Rockwall.material" Name="Plane_1" Rotation="0 0 0" Scale="10 1 10" Tiling="40 40" WorldPos="-2 -2 -2" />
             </Primitives>
 			</MapContents>
     </MapData>

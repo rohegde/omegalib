@@ -395,18 +395,14 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 
 	osg::Program* prog = NULL;
 
-	if(type == "solid")
+	if(type == "textured")
 	{
-		prog = getProgram("solid", "cyclops/common/Solid.vert", "cyclops/common/Solid.frag");
+		prog = getProgram("solid", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
 		prog->addBindAttribLocation ("Tangent", 6);
 	}
-	else if(type == "simple")
+	else if(type == "colored")
 	{
-		prog = getProgram("simple", "cyclops/common/VertexColor.vert", "cyclops/common/Simple.frag");
-	}
-	else if(type == "vertexcolor")
-	{
-		prog = getProgram("vertexcolor", "cyclops/common/VertexColor.vert", "cyclops/common/VertexColor.frag");
+		prog = getProgram("vertexcolor", "cyclops/common/Colored.vert", "cyclops/common/Colored.frag");
 	}
 
 	ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
@@ -419,7 +415,10 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 		osg::Material* mat = new osg::Material();
 		mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
 		mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
-		ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+		mat->setAmbient(Material::FRONT_AND_BACK, Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
+		mat->setEmission(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
+		mat->setSpecular(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
+		ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
 	}
 
 	TiXmlElement* xtextures = xdata->FirstChildElement("TextureUnits");
@@ -435,15 +434,13 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 			{
 				if(type == "Diffuse")
 				{
-					ss->addUniform( new osg::Uniform("colorMap", 0) );
+					ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
 					ss->setTextureAttribute(0, getTexture(file));
-					//ss->setTextureAttribute(0, getTexture("rockwall.tga"));
 				}
 				else if(type == "NMap")
 				{
-					ss->addUniform( new osg::Uniform("normalMap", 1) );
+					ss->addUniform( new osg::Uniform("unif_NormalMap", 1) );
 					ss->setTextureAttribute(1, getTexture(file));
-					//ss->setTextureAttribute(1, getTexture("rockwall_normal.tga"));
 				}
 				else if(type == "Specular")
 				{
@@ -451,9 +448,8 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 				}
 				else if(type == "Height")
 				{
-					ss->addUniform( new osg::Uniform("heightMap", 2) );
+					ss->addUniform( new osg::Uniform("unif_HeightMap", 2) );
 					ss->setTextureAttribute(2, getTexture(file));
-					//ss->setTextureAttribute(2, getTexture("rockwall_height.tga"));
 				}
 			}
 			xchild = xchild->NextSiblingElement();
@@ -487,22 +483,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 
 			String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
 			StringUtils::toLowerCase(type);
-			if(type == "soliddiffuse" || type == "solid")
-			{
-				return createMaterial(doc.RootElement(), "solid");
-			}
-			else if(type == "simple")
-			{
-				return createMaterial(doc.RootElement(), "simple");
-			}
-			else if(type == "vertexcolor")
-			{
-				return createMaterial(doc.RootElement(), "vertexcolor");
-			}
-			else
-			{
-				ofwarn("Unknown material type %1%", %type);
-			}
+			return createMaterial(doc.RootElement(), type);
 		}
 		else
 		{

@@ -24,7 +24,7 @@ void main (void)
 			// gl_LightSource[0].linearAttenuation * dist +
 			// gl_LightSource[0].quadraticAttenuation * dist * dist);
 		att = 1.0;
-		color += att * NdotL * gl_FrontMaterial.diffuse;
+		color += att * NdotL * gl_Color;
 		halfV = normalize(halfVector);
 
 		NdotHV = max(dot(n,halfV),0.0);

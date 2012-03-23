@@ -1,8 +1,0 @@
-<Material>
-    <Main DepthTest="True" HeightMapScale="0.05" Type="Solid" />
-    <TextureUnits>
-        <Diffuse File="soil0.png"/>
-        <NMap File="soil0DOT3.png"/>
-        <Height File="soil0Bump.png"/>
-    </TextureUnits>
-</Material>

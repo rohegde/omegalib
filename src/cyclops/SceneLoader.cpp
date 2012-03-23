@@ -250,6 +250,8 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 		OOSG_VEC3(startCorner), 
 		OOSG_VEC3(u), 
 		OOSG_VEC3(v));
+	plane->setColorArray(NULL);
+	plane->setColorBinding(osg::Geometry::BIND_OFF);
 
 	osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
 	tsg->generate(plane, 0);
@@ -260,9 +262,9 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	osg::StateSet* fx = mySceneManager->loadMaterial(material);
 	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
 
-	node->setStateSet(fx);
-
 	node->addDrawable(plane);
+	plane->setStateSet(fx);
+
 
 	tsg->unref();
 
