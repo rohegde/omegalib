@@ -450,6 +450,8 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 			}
 		}
 	}
+
+	myObservers.push_back(new Observer());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -481,7 +483,6 @@ void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 	//int numObservers = myConfig->getObservers().size();
 	//for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
 
-	myObservers.push_back(new Observer());
 
 	//initLayers();
 	initObservers();
