@@ -324,7 +324,7 @@ void SceneManager::setShaderMacroToFile(const String& macroName, const String& n
 	String path;
 	if(DataManager::findFile(name, path))
 	{
-		std::ifstream t(path);
+		std::ifstream t(path.c_str());
 		std::stringstream buffer;
 		buffer << t.rdbuf();
 		setShaderMacroToString(macroName, buffer.str());
@@ -341,7 +341,7 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 	String path;
 	if(DataManager::findFile(name, path))
 	{
-		std::ifstream t(path);
+		std::ifstream t(path.c_str());
 		std::stringstream buffer;
 		buffer << t.rdbuf();
 
