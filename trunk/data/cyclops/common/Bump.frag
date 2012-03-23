@@ -7,7 +7,6 @@ varying vec2 texCoord;/*!< Texture coordinates passed from the vertex program.*/
 uniform sampler2D colorMap;/*!< Diffuse texture sampler.*/
 uniform sampler2D normalMap;/*!< Normal texture sampler.*/
 uniform sampler2D heightMap;/*!< Height map sampler.*/
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
@@ -32,11 +31,13 @@ void main(void)
 	
 	vec4 vAmbient = gl_LightSource[0].ambient * gl_FrontMaterial.ambient;
 	vec4 vDiffuse = gl_LightSource[0].diffuse * gl_FrontMaterial.diffuse * diffuse;	
+	//vec4 vDiffuse = gl_Color;	
 	vec4 vSpecular = gl_LightSource[0].specular * gl_FrontMaterial.specular *specular;	
 	//gl_FragColor = vAmbient*base + (vDiffuse*base + vSpecular);	
 	
 	
     // apply shadow, modulo the ambient bias
     gl_FragColor = (vAmbient*base + (vDiffuse*base + vSpecular)) * shadow; 
+    //gl_FragColor = vDiffuse * shadow; 
     // gl_FragColor = vec4(diffuse, diffuse, diffuse, diffuse) * (osgShadow_ambientBias.x + shadow * osgShadow_ambientBias.y); 
 }

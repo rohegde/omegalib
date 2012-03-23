@@ -6,7 +6,6 @@ varying vec3 lightVec;/*!< Light direction vector.*/
 varying vec3 viewVec;/*!< View vector passed to the fragment program.*/
 varying vec2 texCoord;/*!< Texture coordinates passed to the fragment program.*/
 attribute vec4 Tangent;/*!< Tangent space vector.*/
-	                     
 //!Main function.
 /*!
    Calculates the necessary data to use in the fragment shader, light position, eye vector,
