@@ -65,7 +65,7 @@ void OmegaViewer::initialize()
 	if(sDefaultScript != "")
 	{
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		interp->runFile(sDefaultScript);
+		interp->queueInteractiveCommand(ostr("orun(\"%1%\")", %sDefaultScript));
 	}
 
 	// Setup the camera
