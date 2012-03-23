@@ -61,6 +61,11 @@ namespace omega {
 			if(!myInitialized) 
 			{
 				initialize(); 
+				foreach(Renderer* r, server->getClients())
+				{
+					initializeRenderer(r);
+				}
+
 				SharedDataServices::registerObject(this, myName);
 				myInitialized = true; 
 			}
@@ -113,8 +118,8 @@ namespace omega {
 		{
 			foreach(ServerModule* module, mysModules)
 			{
-				module->doInitialize(srv);
-				module->initializeRenderer(r);
+				//module->doInitialize(srv);
+				//module->initializeRenderer(r);
 			}
 		}
 
