@@ -47,24 +47,18 @@ namespace omegaToolkit {
 			ModuleServices::addModule(new UiModule());
 		}
 
-		virtual void initialize() 
+		virtual void initializeRenderer(Renderer* r)
 		{
-			omsg("OmegaToolkitEngineModule initializing...");
-
-			ServerEngine* engine = getServer();
-
 			// Setup default render chain.
-			engine->registerRenderPassClass("LightingPass", (ServerEngine::RenderPassFactory)LightingPass::createInstance);
-			engine->registerRenderPassClass("DefaultRenderPass", (ServerEngine::RenderPassFactory)DefaultRenderPass::createInstance);
-			engine->registerRenderPassClass("TransparentRenderPass", (ServerEngine::RenderPassFactory)TransparentRenderPass::createInstance);
-			engine->registerRenderPassClass("OverlayRenderPass", (ServerEngine::RenderPassFactory)OverlayRenderPass::createInstance);
+			LightingPass* lp = new LightingPass(r, "LightingPass");
+			DefaultRenderPass* drp = new DefaultRenderPass(r, "DefaultRenderPass");
+			TransparentRenderPass* trp = new TransparentRenderPass(r, "TransparentRenderPass");
+			OverlayRenderPass* orp = new OverlayRenderPass(r, "OverlayRenderPass");
 
-			engine->addRenderPass("LightingPass");
-			engine->addRenderPass("DefaultRenderPass");
-			engine->addRenderPass("TransparentRenderPass");
-			engine->addRenderPass("OverlayRenderPass");
-
-			omsg("OmegaToolkitEngineModule initialization OK");
+			r->addRenderPass(lp, false);
+			r->addRenderPass(drp, false);
+			r->addRenderPass(trp, false);
+			r->addRenderPass(orp, false);
 		}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {};

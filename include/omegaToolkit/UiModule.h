@@ -47,9 +47,10 @@ namespace omegaToolkit
 
 		bool isLocalEventsEnabled() { return myLocalEventsEnabled; }
 
-		void initialize();
-		void update(const UpdateContext& context);
-		void handleEvent(const Event& evt);
+		virtual void initialize();
+		virtual void initializeRenderer(Renderer* r);
+		virtual void update(const UpdateContext& context);
+		virtual void handleEvent(const Event& evt);
 
 		ui::Container* getUi();
 		ui::WidgetFactory* getWidgetFactory();

@@ -74,12 +74,14 @@ OsgModule::~OsgModule()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgModule::initialize()
 {
-    omsg("OsgModule initializing...");
+}
 
-    getServer()->registerRenderPassClass("OsgRenderPass", (ServerEngine::RenderPassFactory)OsgRenderPass::createInstance);
-    getServer()->addRenderPass("OsgRenderPass", this, true);
-
-    omsg("OsgModule initialization OK");
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgModule::initializeRenderer(Renderer* r)
+{
+	OsgRenderPass* osgrp = new OsgRenderPass(r, "OsgRenderPass");
+	osgrp->setUserData(this);
+	r->addRenderPass(osgrp, true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

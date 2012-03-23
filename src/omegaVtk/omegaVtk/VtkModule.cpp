@@ -66,10 +66,15 @@ void VtkModule::initialize()
 	interp->addPythonPath(VTK_LIBRARY_DIR VTK_LIBRARY_DIR_POSTFIX);
 	interp->addPythonPath(VTK_PYTHON_DIR);
 	
-	getServer()->registerRenderPassClass("VtkRenderPass", (ServerEngine::RenderPassFactory)VtkRenderPass::createInstance);
-	getServer()->addRenderPass("VtkRenderPass", this, true);
-
 	omsg("VtkModule initialization OK");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void VtkModule::initializeRenderer(Renderer* r)
+{
+	VtkRenderPass* vtkrp = new VtkRenderPass(r, "VtkRenderPass");
+	vtkrp->setUserData(this);
+	r->addRenderPass(vtkrp, true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

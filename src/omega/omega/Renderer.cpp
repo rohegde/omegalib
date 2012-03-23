@@ -50,6 +50,7 @@ Renderer::Renderer(ServerBase* server):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::addRenderPass(RenderPass* pass, bool addToFront)
 {
+	ofmsg("Renderer(%1%): adding render pass %2%", %getGpuContext()->getId() %pass->getName());
 	if(addToFront)
 	{
 		myRenderPassList.push_front(pass);
