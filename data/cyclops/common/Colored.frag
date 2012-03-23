@@ -12,7 +12,7 @@ void main (void)
 
 	vec3 n,halfV,viewV,ldir;
 	float NdotL,NdotHV;
-	vec4 color = vec4(0, 0, 0, 1);
+	vec4 color = gl_FrontMaterial.ambient;
 	float att;
 	
 	n = normalize(normal);
