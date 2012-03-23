@@ -66,9 +66,6 @@ namespace omega {
 
 	friend class Renderer;
 	public:
-		typedef RenderPass* (*RenderPassFactory)(Renderer*);
-
-	public:
 		static const int MaxActivePointers = 128;
 		static ServerEngine* instance() { return mysInstance; }
 
@@ -88,14 +85,6 @@ namespace omega {
 		void destroyCamera(Camera* cam);
 		CameraCollection::Range getCameras();
 		CameraCollection::ConstRange getCameras() const;
-		//@}
-
-		//! Render pass management
-		//@{
-		void registerRenderPassClass(const String& name, RenderPassFactory factory);
-		void addRenderPass(String renderPass, void* userData = NULL, bool addToFront = false);
-		void removeRenderPass(String renderPass);
-		void removeAllRenderPasses();
 		//@}
 
 		//! Font management
@@ -146,8 +135,6 @@ namespace omega {
 
 		List<Renderer*> myClients;
 
-		Dictionary<String, RenderPassFactory> myRenderPassFactories;
-
 		Ref<SceneNode> myScene;
 
 		// Pointers
@@ -179,12 +166,6 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline ServiceManager* ServerEngine::getServiceManager()
 	{ return SystemManager::instance()->getServiceManager(); }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ServerEngine::registerRenderPassClass(const String& name, RenderPassFactory factory)
-	{
-		myRenderPassFactories[name] = factory;
-	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline EngineClientList& ServerEngine::getClients()

@@ -57,9 +57,6 @@ void UiModule::initialize()
 	myUi->setLayout(ui::Container::LayoutFree);
 	myUi->setUIEventHandler(getServer());
 
-	getServer()->registerRenderPassClass("UiRenderPass", (ServerEngine::RenderPassFactory)UiRenderPass::createInstance);
-	getServer()->addRenderPass("UiRenderPass");
-
     Config* cfg = getServer()->getSystemManager()->getAppConfig();
 	myLocalEventsEnabled = cfg->getBoolValue("config/ui/enableLocalEvents", true);
 	if(cfg->exists("config/ui/images"))
@@ -69,6 +66,13 @@ void UiModule::initialize()
 	}
 
 	omsg("UiModule initialization OK");
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::initializeRenderer(Renderer* r)
+{
+	UiRenderPass* uirp = new UiRenderPass(r, "UiRenderPass");
+	r->addRenderPass(uirp, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

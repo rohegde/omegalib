@@ -51,6 +51,7 @@ namespace omegaVtk
 		static VtkModule* instance();
 
 		virtual void initialize();
+		virtual void initializeRenderer(Renderer* r);
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 

@@ -130,40 +130,6 @@ void ServerEngine::postDraw(Renderer* r, const DrawContext& context)
     myLock.unlock();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::addRenderPass(String renderPass, void* userData, bool addToFront)
-{
-    RenderPassFactory rpNew = myRenderPassFactories[renderPass];
-    if(rpNew != NULL)
-    {
-        ofmsg("ServerEngine: adding render pass %1%", %renderPass);
-        foreach(Renderer* client, myClients)
-        {
-            RenderPass* rp = rpNew(client);
-            rp->setUserData(userData);
-            client->addRenderPass(rp, addToFront);
-        }
-    }
-    else
-    {
-        ofwarn("ServerEngine::addRenderPass - render pass not found: %1%", %renderPass);
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::removeAllRenderPasses()
-{
-    foreach(Renderer* client, myClients)
-    {
-        client->removeAllRenderPasses();
-    }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::removeRenderPass(String renderPass)
-{
-    oassert(false); // Not implemented.
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerEngine::addClient(Renderer* client)
