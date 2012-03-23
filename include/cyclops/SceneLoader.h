@@ -49,6 +49,11 @@ namespace cyclops {
 	class CY_API SceneLoader
 	{
 	public:
+		static Vector4f readVector4f(TiXmlElement* elem, const String& attributeName);
+		static Vector3f readVector3f(TiXmlElement* elem, const String& attributeName);
+		static Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
+
+	public:
 		SceneLoader(TiXmlDocument& doc);
 
 		// Loader interface
@@ -61,9 +66,6 @@ namespace cyclops {
 
 		void createObjects(osg::Group* root, TiXmlElement* xStaticObjectFiles);
 		void createPrimitives(osg::Group* root, TiXmlElement* xStaticObjectFiles);
-
-		Vector3f readVector3f(TiXmlElement* elem, const String& attributeName);
-		Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
 
 		void initShading();
 

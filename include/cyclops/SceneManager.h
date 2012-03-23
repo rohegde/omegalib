@@ -58,26 +58,21 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct EntityAsset: public ModelAsset
-	{
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API Entity
 	{
 	public:
-		Entity(SceneManager* mng, EntityAsset* asset, int id);
+		Entity(SceneManager* mng, ModelAsset* asset, int id);
 
 		osg::Node* getOsgNode() { return myOsgNode; }
 		SceneNode* getSceneNode() { return mySceneNode; }
-		EntityAsset* getAsset() { return myAsset; }
+		ModelAsset* getAsset() { return myAsset; }
 		int getId() { return myId; }
 
 	private:
 		SceneManager* mySceneManager;
 		osg::Node* myOsgNode;
 		SceneNode* mySceneNode;
-		EntityAsset* myAsset;
+		ModelAsset* myAsset;
 		int myId;
 	};
 
@@ -86,7 +81,7 @@ namespace cyclops {
 	{
 	public:
 		typedef Dictionary<String, String> ShaderMacroDictionary;
-		enum AssetType { ModelAssetType, EntityAssetType };
+		enum AssetType { ModelAssetType };
 
 	public:
 		static const int ReceivesShadowTraversalMask = 0x1;
@@ -118,7 +113,6 @@ namespace cyclops {
 
 		void addAsset(ModelAsset* asset, AssetType type);
 		ModelAsset* getModelAsset(int fileIndex);
-		EntityAsset* getEntityAsset(int fileIndex);
 		Entity* findEntity(int id);
 
 		osg::Texture2D* getTexture(const String& name);
@@ -144,8 +138,7 @@ namespace cyclops {
 
 		osg::Group* mySceneRoot;
 
-		Vector<ModelAsset*> myStaticObjectFiles;
-		Vector<EntityAsset*> myEntityFiles;
+		Vector<ModelAsset*> myModelFiles;
 
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, osg::Program*> myPrograms;

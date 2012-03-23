@@ -58,16 +58,10 @@ void SceneLoader::startLoading(SceneManager* sm)
 	TiXmlElement* xMapContents = xlevel->FirstChildElement("MapContents");
 	if(xMapContents != NULL)
 	{
-		TiXmlElement* xStaticObjectFiles = xMapContents->FirstChildElement("FileIndex_StaticObjects");
-		if(xStaticObjectFiles != NULL)
-		{
-			loadAssets(xStaticObjectFiles, SceneManager::ModelAssetType);
-		}
-
-		TiXmlElement* xEntityFiles = xMapContents->FirstChildElement("FileIndex_Entities");
+		TiXmlElement* xEntityFiles = xMapContents->FirstChildElement("Files");
 		if(xEntityFiles != NULL)
 		{
-			loadAssets(xEntityFiles, SceneManager::EntityAssetType);
+			loadAssets(xEntityFiles, SceneManager::ModelAssetType);
 		}
 
 		TiXmlElement* xStaticObjects = xMapContents->FirstChildElement("StaticObjects");
@@ -108,19 +102,42 @@ void SceneLoader::loadStep()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+Vector4f SceneLoader::readVector4f(TiXmlElement* elem, const String& attributeName)
+{
+	const char* cstr = elem->Attribute(attributeName.c_str());
+	if(cstr != NULL)
+	{
+		String str(cstr);
+		std::vector<String> args = StringUtils::split(str, " ");
+		return Vector4f(atof(args[0].c_str()), atof(args[1].c_str()), atof(args[2].c_str()), atof(args[3].c_str()));
+	}
+	return Vector4f::Zero();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector3f SceneLoader::readVector3f(TiXmlElement* elem, const String& attributeName)
 {
-	String str(elem->Attribute(attributeName.c_str()));
-	std::vector<String> args = StringUtils::split(str, " ");
-	return Vector3f(atof(args[0].c_str()), atof(args[1].c_str()), atof(args[2].c_str()));
+	const char* cstr = elem->Attribute(attributeName.c_str());
+	if(cstr != NULL)
+	{
+		String str(cstr);
+		std::vector<String> args = StringUtils::split(str, " ");
+		return Vector3f(atof(args[0].c_str()), atof(args[1].c_str()), atof(args[2].c_str()));
+	}
+	return Vector3f::Zero();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Vector2f SceneLoader::readVector2f(TiXmlElement* elem, const String& attributeName)
 {
-	String str(elem->Attribute(attributeName.c_str()));
-	std::vector<String> args = StringUtils::split(str, " ");
-	return Vector2f(atof(args[0].c_str()), atof(args[1].c_str()));
+	const char* cstr = elem->Attribute(attributeName.c_str());
+	if(cstr != NULL)
+	{
+		String str(cstr);
+		std::vector<String> args = StringUtils::split(str, " ");
+		return Vector2f(atof(args[0].c_str()), atof(args[1].c_str()));
+	}
+	return Vector2f::Zero();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,15 +181,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 					node = pat;
 				}
 
-				ModelAsset* asset = NULL;
-				if(type == SceneManager::ModelAssetType)
-				{
-					asset = new ModelAsset();
-				}
-				else
-				{
-					asset = new EntityAsset();
-				}
+				ModelAsset* asset = new ModelAsset();
 				asset->id = index;
 				asset->filename = filePath;
 				asset->node = node;
@@ -229,6 +238,7 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 
 	Vector3f startCorner = readVector3f(xchild, "StartCorner");
 	Vector3f endCorner = readVector3f(xchild, "EndCorner");
+	Vector2f tiling = readVector2f(xchild, "Tiling");
 	String material = xchild->Attribute("Material");
 
 	Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
@@ -248,6 +258,8 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	plane->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
 	osg::StateSet* fx = mySceneManager->loadMaterial(material);
+	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
+
 	node->setStateSet(fx);
 
 	node->addDrawable(plane);
