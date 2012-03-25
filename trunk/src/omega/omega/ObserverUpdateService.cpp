@@ -115,6 +115,7 @@ void ObserverUpdateService::poll()
 {
 	lockEvents();
 	int numEvts = getManager()->getAvailableEvents();
+	myObserver->updateHead(myLastPosition, Quaternion::Identity());
 	for(int i = 0; i < numEvts; i++)
 	{
 		Event* evt = getEvent(i);
@@ -129,6 +130,7 @@ void ObserverUpdateService::poll()
 			if(evt->getSourceId() == mySourceId)
 			{
 				Vector3f pos = evt->getPosition();
+				myLastPosition = pos;
 #ifdef OMEGA_SIMPLE_OBSERVER_UPDATE
 				myObserver->updateHead(pos, evt->getOrientation());
 				if(myDebug)
