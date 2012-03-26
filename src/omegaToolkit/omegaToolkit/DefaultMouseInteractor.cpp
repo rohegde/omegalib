@@ -31,10 +31,6 @@ using namespace omegaToolkit;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultMouseInteractor::handleEvent(const Event& evt)
 {
-	//if(evt.isProcessed())
-	//{
-	//	omsg("evt processed");
-	//}
 	if(evt.getServiceType() == Service::Pointer && !evt.isProcessed())
 	{
 		// If a node is assigned to this actor and is selected, we consider mouse events consumed
