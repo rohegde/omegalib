@@ -134,6 +134,7 @@ void PythonInterpreter::addPythonPath(const char* dir)
 void PythonInterpreter::setup(const Setting& setting)
 {
 	myShellEnabled = Config::getBoolValue("pythonShellEnabled", setting, false);
+	myDebugShell = Config::getBoolValue("pythonShellDebug", setting, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,7 +297,10 @@ void PythonInterpreter::update(const UpdateContext& context)
 	// Execute queued interactive commands first
 	if(myInteractiveCommandNeedsExecute)
 	{
-		ofmsg("running %1%", %myInteractiveCommand);
+		if(myDebugShell)
+		{
+			ofmsg("running %1%", %myInteractiveCommand);
+		}
 		PyRun_SimpleString(myInteractiveCommand.c_str());
 		myInteractiveCommandNeedsExecute = false;
 	}

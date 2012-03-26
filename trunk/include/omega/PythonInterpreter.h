@@ -80,6 +80,7 @@ namespace omega
 	protected:
 		bool myEnabled;
 		bool myShellEnabled;
+		bool myDebugShell;
 		PythonInteractiveThread* myInteractiveThread;
 
 		Lock myInteractiveCommandLock;
