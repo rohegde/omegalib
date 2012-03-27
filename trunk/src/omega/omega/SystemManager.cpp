@@ -29,7 +29,7 @@
 // Display system
 #include "omega/DisplaySystem.h"
 #include "omega/ObserverUpdateService.h"
-#include "omega/SagePointerService.h"
+#include "omega/ViewRayService.h"
 #include "omega/PythonInterpreter.h"
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
@@ -150,7 +150,7 @@ void SystemManager::setupServiceManager()
 	myServiceManager->registerService("MouseService", (ServiceAllocator)MouseService::New);
 	myServiceManager->registerService("KeyboardService", (ServiceAllocator)KeyboardService::New);
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
-	myServiceManager->registerService("SagePointerService", (ServiceAllocator)SagePointerService::New);
+	myServiceManager->registerService("ViewRayService", (ServiceAllocator)ViewRayService::New);
 
 	// Kinda hack: run application initialize here because for now it is used to register services from
 	// external libraries, so it needs to run before setting up services from the config file.
