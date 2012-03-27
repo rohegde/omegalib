@@ -61,7 +61,7 @@ SET( srcs
 		omega/Renderer.cpp
 		omega/Renderable.cpp
 		omega/RenderTarget.cpp
-		omega/SagePointerService.cpp
+		omega/ViewRayService.cpp
 		omega/SceneNode.cpp
 		omega/SceneQuery.cpp
 		omega/SharedDataServices.cpp
@@ -108,7 +108,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderPass.h
 		${OmegaLib_SOURCE_DIR}/include/omega/RenderTarget.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Renderer.h
-		${OmegaLib_SOURCE_DIR}/include/omega/SagePointerService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ViewRayService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneNode.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SceneQuery.h
 		${OmegaLib_SOURCE_DIR}/include/omega/SharedDataServices.h
