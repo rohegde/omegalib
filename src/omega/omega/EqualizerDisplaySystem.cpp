@@ -587,8 +587,11 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 {
 	int channelWidth = myDisplayConfig.tileResolution[0];
 	int channelHeight = myDisplayConfig.tileResolution[1];
+	int displayWidth = myDisplayConfig.displayResolution[0];
+	int displayHeight = myDisplayConfig.displayResolution[1];
 
-	if(position[0] > channelWidth || position[1] > channelHeight)
+	if(position[0] < 0 || position[0] > displayWidth || 
+		position[1] < 0 || position[1] > displayHeight)
 	{
 		ofwarn("EqualizerDisplaySystem::getViewRay: position out of bounds (%1%)", %position);
 		return Ray();
