@@ -44,7 +44,8 @@ ServerEngine::ServerEngine(ApplicationBase* app, bool master):
     ServerBase(app, master),
     myActivePointerTimeout(2.0f),
     myDefaultCamera(NULL),
-    myConsoleEnabled(false)
+    myConsoleEnabled(false),
+	myPointerMode(PointerModeDynamic)
 {
     mysInstance = this;
 }
@@ -139,7 +140,7 @@ void ServerEngine::addClient(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::refreshPointer(int pointerId, int x, int y)
+void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 {
 	if(myActivePointers[pointerId].first == NULL)
 	{
@@ -155,8 +156,38 @@ void ServerEngine::refreshPointer(int pointerId, int x, int y)
 	//}
 	//else
 	//{
-		myActivePointers[pointerId].first->setPosition(x, y);
+	//	myActivePointers[pointerId].first->setPosition(x, y);
 	//}
+
+	Pointer* ptr = myActivePointers[pointerId].first;
+
+	// Set pointer mode.
+	if(myPointerMode == PointerModeMouse) ptr->setPointerMode(Pointer::ModeMouse);
+	else if(myPointerMode == PointerModeWand) ptr->setPointerMode(Pointer::ModeWand);
+	else
+	{
+		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
+		{
+			if(ptr->getPointerMode() == Pointer::ModeMouse)
+			{
+				ofmsg("Pointer %1%: switching to wand mode", %pointerId);
+				ptr->setPointerMode(Pointer::ModeWand);
+			}
+			else
+			{
+				ofmsg("Pointer %1%: switching to mouse mode", %pointerId);
+				ptr->setPointerMode(Pointer::ModeMouse);
+			}
+		}
+	}
+
+	ptr->setPosition(evt.getPosition(0), evt.getPosition(1));
+	// If pointer contains ray information, pass it to the pointer.
+	if(evt.getExtraDataLength() == 2 && 
+		evt.getExtraDataType() == Event::ExtraDataVector3Array)
+	{
+		ptr->setRay(Ray(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1)));
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,10 +234,11 @@ void ServerEngine::handleEvent(const Event& evt)
 		}
 
 		// Update pointers.
+		// NOTE: 0 is reserved for the local mouse pointer.
 		if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
 		{
 			int pointerId = evt.getSourceId() - 1;
-			refreshPointer(pointerId, evt.getPosition().x(), evt.getPosition().y());
+			refreshPointer(pointerId, evt);
 		}
 		if(!evt.isProcessed()) 
 		{

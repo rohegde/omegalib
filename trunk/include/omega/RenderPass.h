@@ -68,6 +68,7 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct RenderState
 	{
+		// Is this field used?
 		uint flags;
 		RenderPass* pass;
 		Renderer* client;

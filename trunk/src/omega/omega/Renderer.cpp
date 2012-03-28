@@ -202,6 +202,16 @@ void Renderer::innerDraw(const DrawContext& context)
 	
 		getRenderer()->endDraw();
 	}
+	else if(context.task == DrawContext::SceneDrawTask)
+	{
+		// We call drawPointers for scene draw tasks too because we may be drawing pointers in wand mode 
+		RenderState state;
+		state.pass = NULL;
+		state.flags = RenderPass::RenderOpaque;
+		state.client = this;
+		state.context = &context;
+		myServer->drawPointers(this, &state);
+	}
 }
 
 

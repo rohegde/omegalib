@@ -594,7 +594,7 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 		return Ray();
 	}
 
-	int channelX = position[0] /  channelWidth;
+	int channelX = position[0] / channelWidth;
 	int channelY = position[1] / channelHeight;
 
 	int x = position[0] % channelWidth;

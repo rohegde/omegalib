@@ -63,6 +63,7 @@ namespace omega {
 	{
 	public:
 		typedef List< Ref<Camera> > CameraCollection;
+		enum PointerMode { PointerModeMouse, PointerModeWand, PointerModeDynamic };
 
 	friend class Renderer;
 	public:
@@ -100,18 +101,17 @@ namespace omega {
 
 		SceneNode* getScene();
 
+ 		//! Pointer mode management
+		//@{
+		PointerMode getPointerMode() { return myPointerMode; }
+		void setPointerMode(PointerMode value) { myPointerMode = value; }
+		//@}
+
  		//! Console management
 		//@{
 		Console* getConsole();
 		bool isConsoleEnabled();
 		void setConsoleEnabled(bool value);
-		//@}
-
-		//! Pointer Management
-		//@{
-		Pointer* createPointer();
-		void destroyPointer(Pointer* p);
-		void refreshPointer(int pointerId, int x, int y);
 		//@}
 
 		virtual void initialize();
@@ -124,8 +124,14 @@ namespace omega {
 		virtual void update(const UpdateContext& context);
 
 	private:
+		//! Pointer Management
+		//@{
 		//! Draw pointer objects inside a specific client context.
 		void drawPointers(Renderer* client, RenderState* state);
+		Pointer* createPointer();
+		void destroyPointer(Pointer* p);
+		void refreshPointer(int pointerId, const Event& evt);
+		//@}
 
 	private:
 		static ServerEngine* mysInstance;
@@ -141,6 +147,7 @@ namespace omega {
 		List<Pointer*> myPointers;
 		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
 		float myActivePointerTimeout;
+		PointerMode myPointerMode;
 
 		// Resources
 		FontInfo myDefaultFont;
