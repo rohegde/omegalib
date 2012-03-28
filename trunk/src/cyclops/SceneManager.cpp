@@ -500,7 +500,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initShading()
 {
-	myEngine->getDisplaySystem()->setBackgroundColor(Color(1.0f, 0.3f, 0.3f, 1.0f));
+	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.3f, 0.3f, 0.8f, 1.0f));
 
 	bool myShadingEnabled = true;
 

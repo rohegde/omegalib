@@ -35,6 +35,10 @@ using namespace omega;
 
 #ifdef OMEGA_USE_PYTHON
 
+#ifdef OMEGA_OS_LINUX
+	#include<readline/readline.h>
+	#include<readline/history.h>
+#endif
 #include <signal.h>  // for signal
 #include "omega/PythonInterpreterWrapper.h"
 
@@ -68,7 +72,18 @@ public:
 		{
 			osleep(100);
 			String line;
+#ifdef OMEGA_OS_LINUX
+			String prompt = ostr("%1%>>", %SystemManager::instance()->getApplication()->getName());
+			char *inp_c = readline(prompt.c_str()); //Instead of getline()
+			line = (const char *)(inp_c); //Because C strings stink
+			if(strlen(inp_c) != 0)
+			{
+				add_history(inp_c);
+			}
+			free(inp_c);
+#else
 			getline(std::cin, line);
+#endif
 			
 			//ofmsg("line read: %1%", %line);
 
@@ -211,6 +226,14 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 
 	Py_InitModule(name, methods);
 
+#ifdef OMEGA_OS_LINUX
+	PyMethodDef* cur = methods;
+	while(cur->ml_name != NULL)
+	{
+		add_history(cur->ml_name);
+		cur++;
+	}
+#endif
 	//PyThreadState_Swap(NULL);
 	//PyEval_ReleaseLock();
 }
