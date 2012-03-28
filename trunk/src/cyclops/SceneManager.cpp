@@ -56,7 +56,8 @@ Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
-	myOsg(NULL)
+	myOsg(NULL),
+	myEditor(NULL)
 {
 	mysInstance = this;
 	myOsg = new OsgModule();
@@ -68,8 +69,8 @@ void SceneManager::initialize()
 {
 	myEngine = getServer();
 
-	myEditor = new SceneEditorModule();
-	ModuleServices::addModule(myEditor);
+	//myEditor = new SceneEditorModule();
+	//ModuleServices::addModule(myEditor);
 
 	mySceneRoot = new osg::Group();
 
@@ -250,7 +251,10 @@ void SceneManager::addEntity(int assetId, int entityId, const Vector3f& position
 		e->getSceneNode()->pitch(rotation[1] * Math::DegToRad);
 		e->getSceneNode()->roll(rotation[2] * Math::DegToRad);
 		e->getSceneNode()->setScale(scale);
-		myEditor->addNode(e->getSceneNode());
+		if(myEditor != NULL)
+		{
+			myEditor->addNode(e->getSceneNode());
+		}
 		myEntities.push_back(e);
 	}
 }

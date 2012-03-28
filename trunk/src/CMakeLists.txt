@@ -121,7 +121,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	include_directories(${OSG_INCLUDES})
 	add_subdirectory(omegaOsg)
 	add_subdirectory(cyclops)
-	#add_subdirectory(apps/railsim)
+	add_subdirectory(apps/railSim)
 	add_subdirectory(apps/osgviewer)
 	
 	if(OMEGA_BUILD_TUTORIALS)

@@ -24,14 +24,13 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-add_executable(orun 
-	orun.cpp)
+add_executable(railSim 
+	railSim.cpp)
 
-set_target_properties(orun PROPERTIES FOLDER apps)
+set_target_properties(railSim PROPERTIES FOLDER apps)
 
-target_link_libraries(orun
+target_link_libraries(railSim
 	omega 
 	omegaToolkit
 	omegaOsg
-    omegaVtk
 	cyclops)
