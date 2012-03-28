@@ -35,15 +35,25 @@ namespace omega {
 	{
 	friend class PointerRenderable;
 	public:
+		enum PointerMode { ModeMouse, ModeWand };
+
+	public:
 		Pointer(): 
  		  myVisible(true),
 		  myColor(0.5f, 0.4f, 1.0f, 1.0f),
+		  myMode(ModeMouse),
 		  myText("Pointer") {}
 
 		virtual Renderable* createRenderable();
 
 		void setVisible(bool value);
 		bool getVisible();
+
+		void setRay(const Ray& value);
+		const Ray& getRay();
+
+		PointerMode getPointerMode();
+		void setPointerMode(PointerMode value);
 
 		void setPosition(const Vector2i& position);
 		void setPosition(int x, int y);
@@ -59,7 +69,9 @@ namespace omega {
 		bool myVisible;
 		Color myColor;
 		Vector2i myPosition;
+		Ray myRay;
 		String myText;
+		PointerMode myMode;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +122,22 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Pointer::setText(const String& value)
 	{ myText = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setRay(const Ray& value)
+	{ myRay = value; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const Ray& Pointer::getRay()
+	{ return myRay; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Pointer::PointerMode Pointer::getPointerMode()
+	{ return myMode; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Pointer::setPointerMode(Pointer::PointerMode value)
+	{ myMode = value; }
 }; // namespace omega
 
 #endif

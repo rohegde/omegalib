@@ -61,6 +61,8 @@ void ViewRayService::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ViewRayService::poll()
 {
+	if(myInputService == NULL) return;
+
 	// Can this be moved to initialize?
 	myCanvasSize = myDisplay->getCanvasSize();
 
