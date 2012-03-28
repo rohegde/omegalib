@@ -210,7 +210,9 @@ void Renderer::innerDraw(const DrawContext& context)
 		state.flags = RenderPass::RenderOpaque;
 		state.client = this;
 		state.context = &context;
+		getRenderer()->beginDraw3D(context);
 		myServer->drawPointers(this, &state);
+		getRenderer()->endDraw();
 	}
 }
 
