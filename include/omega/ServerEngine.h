@@ -64,6 +64,7 @@ namespace omega {
 	public:
 		typedef List< Ref<Camera> > CameraCollection;
 		enum PointerMode { PointerModeMouse, PointerModeWand, PointerModeDynamic };
+		static const int MaxPointers = 4;
 
 	friend class Renderer;
 	public:
@@ -128,8 +129,6 @@ namespace omega {
 		//@{
 		//! Draw pointer objects inside a specific client context.
 		void drawPointers(Renderer* client, RenderState* state);
-		Pointer* createPointer();
-		void destroyPointer(Pointer* p);
 		void refreshPointer(int pointerId, const Event& evt);
 		//@}
 
@@ -144,8 +143,7 @@ namespace omega {
 		Ref<SceneNode> myScene;
 
 		// Pointers
-		List<Pointer*> myPointers;
-		std::pair<Pointer*, float> myActivePointers[MaxActivePointers];
+		Pointer* myPointers[MaxPointers];
 		float myActivePointerTimeout;
 		PointerMode myPointerMode;
 

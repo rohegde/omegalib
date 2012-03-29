@@ -66,7 +66,6 @@ OmegaViewer::OmegaViewer()
 void OmegaViewer::initialize()
 {
 #ifdef OMEGA_USE_PYTHON
-	omegaVtkPythonApiInit();
 	omegaToolkitPythonApiInit();
 	cyclopsPythonApiInit();
 #endif
