@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_SCENE_MANAGER__
-#define __CY_SCENE_MANAGER__
+#ifndef __CY_MENU_MANAGER__
+#define __CY_MENU_MANAGER__
 
 #include "cyclopsConfig.h"
 
@@ -92,6 +92,9 @@ namespace cyclops {
 		String myText;
 		String myDescription;
 		int myValue;
+
+		omegaToolkit::ui::Container* myContainer;
+		omegaToolkit::ui::Button* myButton;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +104,7 @@ namespace cyclops {
 		Menu(const String& name, MenuManager* manager);
 
 		MenuManager* getManager() { return myManager; }
+		MenuItem* getRoot() { return myRootItem; }
 
 	private:
 		MenuManager* myManager;

@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "cyclops/MenuManager.h"
 
+using namespace omegaToolkit::ui;
 using namespace cyclops;
 
 MenuManager* MenuManager::mysInstance = NULL;
@@ -34,9 +35,28 @@ MenuManager* MenuManager::mysInstance = NULL;
 MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 	myMenu(owner),
 	myType(type),
-	myParent(parent)
+	myParent(parent),
+	myContainer(NULL),
+	myButton(NULL)
 {
 	UiModule* ui = owner->getManager()->getUiModule();
+	WidgetFactory* wf = ui->getWidgetFactory();
+
+	if(type == MenuItem::SubMenu)
+	{
+		myContainer = wf->createContainer("container", ui->getUi(), Container::LayoutVertical);
+		myContainer->setWidth(200);
+		myContainer->setHeight(200);
+		myContainer->setPosition(Vector2f(10, 10));
+	}
+	else if(parent != NULL)
+	{
+		if(type == MenuItem::Button)
+		{
+			myButton = wf->createButton("button", parent->myContainer);
+			myButton->setText("Hello World");
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +83,7 @@ Menu::Menu(const String& name, MenuManager* manager):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager()
 {
+	mysInstance = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +98,8 @@ void MenuManager::initialize()
 	{
 		myUiModule = new UiModule();
 		ModuleServices::addModule(myUiModule);
+		// Force uimodule init.
+		myUiModule->doInitialize(getServer());
 	}
 }
 

@@ -83,6 +83,8 @@ namespace cyclops {
 		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType };
 
+		enum ShadowMode { ShadowsDisabled, ShadowsSoft };
+
 	public:
 		static const int ReceivesShadowTraversalMask = 0x1;
 		static const int CastsShadowTraversalMask = 0x2;
@@ -124,11 +126,18 @@ namespace cyclops {
 		void setShaderMacroToFile(const String& macroName, const String& path);
 
 	private:
+		void loadConfiguration();
+
+	private:
 		void loadShader(osg::Shader* shader, const String& name);
 		osg::StateSet* createMaterial(TiXmlElement* xdata, const String& type);
 
 	private:
 		static SceneManager* mysInstance;
+
+		// Initialization options
+		ShadowMode myShadowMode;
+		bool myEditorEnabled;
 
 		ServerEngine* myEngine;
 
