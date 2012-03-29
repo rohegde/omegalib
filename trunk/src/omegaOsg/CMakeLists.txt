@@ -37,6 +37,7 @@ SET( srcs
 		omegaOsg/OsgSceneObject.cpp
 		omegaOsg/SceneView.cpp
 		omegaOsg/ReaderWriterTGA.cpp
+		omegaOsg/ReaderFreeImage.cpp
 		)
 		
 ###################################################################################################
@@ -48,6 +49,7 @@ SET( headers
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/SceneView.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/ReaderFreeImage.h
         ) 
         
 ###################################################################################################
