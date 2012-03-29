@@ -191,7 +191,7 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 
 	ptr->setPosition(evt.getPosition(0), evt.getPosition(1));
 	// If pointer contains ray information, pass it to the pointer.
-	if(evt.getExtraDataLength() == 2 && 
+	if(evt.getExtraDataItems() == 2 && 
 		evt.getExtraDataType() == Event::ExtraDataVector3Array)
 	{
 		ptr->setRay(Ray(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1)));

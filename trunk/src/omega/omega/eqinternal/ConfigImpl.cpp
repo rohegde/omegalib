@@ -50,7 +50,7 @@ void EventUtils::serializeEvent(Event& evt, co::DataOStream& os)
 
     // Serialize extra data
     os << evt.myExtraDataType;
-    os << evt.myExtraDataLength;
+    os << evt.myExtraDataItems;
     if(evt.myExtraDataType != Event::ExtraDataNull)
     {
         os << evt.myExtraDataValidMask;
@@ -72,7 +72,7 @@ void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
 
     // Deserialize extra data
     is >> evt.myExtraDataType;
-    is >> evt.myExtraDataLength;
+    is >> evt.myExtraDataItems;
     if(evt.myExtraDataType != Event::ExtraDataNull)
     {
         is >> evt.myExtraDataValidMask;
@@ -80,7 +80,7 @@ void EventUtils::deserializeEvent(Event& evt, co::DataIStream& is)
     }
     if(evt.myExtraDataType == Event::ExtraDataString)
     {
-        evt.myExtraData[evt.myExtraDataLength] = '\0';
+        evt.myExtraData[evt.getExtraDataSize()] = '\0';
     }
 }
 
