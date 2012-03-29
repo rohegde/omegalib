@@ -107,8 +107,8 @@ Camera::Camera(uint flags):
 	myNavigationMode(NavDisabled),
 	myNavigationSpeed(2.0f),
 	myNavigationStrafeMultiplier(1.0f),
-	myNavigationYawMultiplier(0.002f),
-	myNavigationPitchMultiplier(0.002f),
+	myNavigationYawMultiplier(0.2f),
+	myNavigationPitchMultiplier(0.2f),
 	myNavigationMoveFlags(0),
 	myPosition(Vector3f::Zero()),
 	myOrientation(Quaternion::Identity())
@@ -169,6 +169,8 @@ void Camera::handleEvent(const Event& evt)
 				myPitch += dpos.y() * myNavigationPitchMultiplier;
 			}
 			myLastPointerPosition = evt.getPosition();
+			
+			myNavigationMoveFlags = evt.getFlags();
 		}
 		else if(evt.getServiceType() == Service::Controller)
 		{
@@ -183,6 +185,7 @@ void Camera::handleEvent(const Event& evt)
 			if(x < tresh && x > -tresh) x = 0;
 			if(y < tresh && y > -tresh) y = 0;
 			if(z < tresh && z > -tresh) z = 0;
+			
 			if(yaw < tresh && yaw > -tresh) yaw = 0;
 			if(pitch < tresh && pitch > -tresh) pitch = 0;
 
