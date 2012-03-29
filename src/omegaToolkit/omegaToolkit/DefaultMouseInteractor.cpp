@@ -50,7 +50,7 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		if(evt.isFlagSet(myMoveButtonFlag)) myPointerButton1Pressed = true;
 		if(evt.isFlagSet(myRotateButtonFlag)) myPointerButton2Pressed = true;
 
-		if(evt.getExtraDataLength() == 2)
+		if(evt.getExtraDataItems() == 2)
 		{
 			myPointerRay.setOrigin(evt.getExtraDataVector3(0));
 			myPointerRay.setDirection(evt.getExtraDataVector3(1));

@@ -165,7 +165,7 @@ void SceneEditorModule::handleEvent(const Event& evt)
 {
 	if(evt.getServiceType() == Service::Pointer) 
 	{
-		if(evt.getType() == Event::Down && evt.getExtraDataLength() == 2)
+		if(evt.getType() == Event::Down && evt.getExtraDataItems() == 2)
 		{
 			Ray ray;
 			ray.setOrigin(evt.getExtraDataVector3(0));
