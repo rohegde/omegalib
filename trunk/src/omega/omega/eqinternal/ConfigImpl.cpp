@@ -216,6 +216,7 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 		ServiceManager* im = SystemManager::instance()->getServiceManager();
 		im->poll();
 		int av = im->getAvailableEvents();
+		ofmsg("Events: %1%", %av);
 		if(av != 0)
 		{
     		im->lockEvents();

@@ -52,7 +52,7 @@ void EventSharingModule::share(const Event& evt)
 	
 		if(!mysInstance->getServer()->isMaster())
 		{
-			owarn("EventSharingModule::share: can be caled only from master server. Ignoring call.");
+			owarn("EventSharingModule::share: can be called only from master server. Ignoring call.");
 		}
 		else
 		{

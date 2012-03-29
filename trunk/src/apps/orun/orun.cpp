@@ -32,6 +32,7 @@
 using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaVtk;
+using namespace cyclops;
 
 // The name of the script to launch automatically at startup
 String sDefaultScript = "";
@@ -67,6 +68,14 @@ void OmegaViewer::initialize()
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 		interp->queueInteractiveCommand(ostr("orun(\"%1%\")", %sDefaultScript));
 	}
+
+	MenuManager* menuMng = new MenuManager();
+	ModuleServices::addModule(menuMng);
+	menuMng->doInitialize(getServer());
+	Menu* menu = MenuManager::instance()->createMenu("menu");
+	MenuItem* btn = menu->getRoot()->addItem(MenuItem::Button);
+	btn = menu->getRoot()->addItem(MenuItem::Button);
+
 
 	// Setup the camera
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());

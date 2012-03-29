@@ -65,12 +65,30 @@ SceneManager::SceneManager():
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::loadConfiguration()
+{
+	Config* cfg = SystemManager::instance()->getAppConfig();
+	Setting& s = cfg->lookup("config");
+	myEditorEnabled = Config::getBoolValue("editorEnabled", s, false);
+
+	String shadowMode = Config::getStringValue("shadowMode", s, "noshadows");
+	StringUtils::toLowerCase(shadowMode);
+	if(shadowMode == "noshadows") myShadowMode = ShadowsDisabled;
+	else if(shadowMode == "softshadows") myShadowMode = ShadowsSoft;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initialize()
 {
 	myEngine = getServer();
 
-	//myEditor = new SceneEditorModule();
-	//ModuleServices::addModule(myEditor);
+	loadConfiguration();
+
+	if(myEditorEnabled)
+	{
+		myEditor = new SceneEditorModule();
+		ModuleServices::addModule(myEditor);
+	}
 
 	mySceneRoot = new osg::Group();
 
@@ -86,10 +104,16 @@ void SceneManager::initialize()
 		myTabletManager->finishGui();
 	}
 
-	setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
-	setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
-	//setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
-	//setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+	if(myShadowMode == ShadowsSoft)
+	{
+		setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
+		setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
+	}
+	else
+	{
+		setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
+		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+	}
 
 	frontView = true;
 }
@@ -506,7 +530,7 @@ void SceneManager::initShading()
 {
 	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.3f, 0.3f, 0.8f, 1.0f));
 
-	bool myShadingEnabled = true;
+	bool myShadingEnabled = (myShadowMode == ShadowsSoft);
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
