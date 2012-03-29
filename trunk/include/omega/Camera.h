@@ -73,12 +73,12 @@ namespace omega {
 	public:
 		enum NavigationMode { NavDisabled, NavFollow, NavFreeFly };
 		enum MoveFlags { 
-			MoveLeft = 1 << 1,
-			MoveRight = 1 << 2,
-			MoveUp = 1 << 3,
-			MoveDown = 1 << 4,
-			MoveForward = 1 << 5,
-			MoveBackward = 1 << 6,
+			MoveLeft = Event::ButtonLeft,
+			MoveRight = Event::ButtonRight,
+			MoveUp = Event::Button5,
+			MoveDown = Event::Button6,
+			MoveForward = Event::ButtonUp,
+			MoveBackward = Event::ButtonDown,
 
 			FocusLeft = 1 << 7,
 			FocusRight = 1 << 8,
