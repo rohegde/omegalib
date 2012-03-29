@@ -45,7 +45,7 @@ ServerEngine::ServerEngine(ApplicationBase* app, bool master):
     myActivePointerTimeout(2.0f),
     myDefaultCamera(NULL),
     myConsoleEnabled(false),
-	myPointerMode(PointerModeDynamic)
+	myPointerMode(PointerModeWand)
 {
     mysInstance = this;
 }

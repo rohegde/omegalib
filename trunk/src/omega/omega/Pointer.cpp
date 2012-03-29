@@ -46,6 +46,7 @@ void PointerRenderable::draw(RenderState* state)
 		if(state->context->task == DrawContext::OverlayDrawTask && 
 			myPointer->getPointerMode() == Pointer::ModeMouse)
 		{
+		//omsg("drawpot");
 			int size = 30;
 			int x = myPointer->myPosition[0];
 			int y = myPointer->myPosition[1];
@@ -73,10 +74,11 @@ void PointerRenderable::draw(RenderState* state)
 		if(state->context->task == DrawContext::SceneDrawTask && 
 			myPointer->getPointerMode() == Pointer::ModeWand)
 		{
+		//omsg("drawwand");
 			glDisable(GL_LIGHTING);
 
-			float size = 0.3f;
-			float length = -4;
+			float size = 0.05f;
+			float length = 3;
 			float px = myPointer->myRay.getOrigin().x();
 			float py = myPointer->myRay.getOrigin().y();
 			float pz = myPointer->myRay.getOrigin().z();
