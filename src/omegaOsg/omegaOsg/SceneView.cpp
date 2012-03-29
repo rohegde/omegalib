@@ -404,7 +404,8 @@ bool SceneView::cullStage(const osg::Matrixd& projection,const osg::Matrixd& mod
     cullVisitor->pushViewport(viewport);
     cullVisitor->pushProjectionMatrix(proj.get());
 
-    // traverse the scene graph to generate the rendergraph.        cullVisitor->pushModelViewMatrix(mv.get(),osg::Transform::ABSOLUTE_RF);
+    // traverse the scene graph to generate the rendergraph.        
+	cullVisitor->pushModelViewMatrix(mv.get(),osg::Transform::ABSOLUTE_RF);
 
     // If the camera has a cullCallback execute the callback which has the  
     // requirement that it must traverse the camera's children.
