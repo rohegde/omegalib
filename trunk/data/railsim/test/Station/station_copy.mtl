@@ -1,0 +1,147 @@
+newmtl acmat_0
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture0.tga
+newmtl acmat_1
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture2.tga
+newmtl acmat_2
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture1.tga
+newmtl acmat_3
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture3.tga
+newmtl acmat_4
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture6.tga
+newmtl acmat_5
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture8.tga
+newmtl acmat_6
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture5.tga
+newmtl acmat_7
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture7.tga
+newmtl acmat_8
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture4.tga
+newmtl acmat_9
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture10.tga
+newmtl acmat_10
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture9.tga
+newmtl acmat_11
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture11.tga
+newmtl acmat_12
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texturegravel.tga
+newmtl acmat_13
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture0.tga
+newmtl acmat_14
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture6.tga
+newmtl acmat_15
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture12.tga
+newmtl acmat_16
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture13.tga
+newmtl acmat_17
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture14.tga
+newmtl acmat_18
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture15.tga
+newmtl acmat_19
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd texture15.tga
+newmtl acmat_20
+Kd 1 1 1
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 128
+Tr 0
+map_Kd stair.tga

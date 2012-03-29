@@ -69,8 +69,8 @@ void SceneManager::initialize()
 {
 	myEngine = getServer();
 
-	myEditor = new SceneEditorModule();
-	ModuleServices::addModule(myEditor);
+	//myEditor = new SceneEditorModule();
+	//ModuleServices::addModule(myEditor);
 
 	mySceneRoot = new osg::Group();
 
