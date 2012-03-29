@@ -103,6 +103,12 @@ void ServerEngine::initialize()
     }
 
 	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
+
+	for(int i = 0; i < MaxPointers; i++)
+	{
+		myPointers[i] = new Pointer();
+		myPointers[i]->initialize(this);
+	}
 	
 	myLock.unlock();
 }
@@ -142,12 +148,16 @@ void ServerEngine::addClient(Renderer* client)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 {
-	if(myActivePointers[pointerId].first == NULL)
-	{
-		ofmsg("Creating pointer %1%", %pointerId);
-		myActivePointers[pointerId].first = createPointer();
-	}
-	myActivePointers[pointerId].second = myActivePointerTimeout;
+	Pointer* ptr = myPointers[pointerId];
+
+	ptr->setVisible(true);
+
+	//if(myActivePointers[pointerId].first == NULL)
+	//{
+	//	ofmsg("Creating pointer %1%", %pointerId);
+	//	myActivePointers[pointerId].first = createPointer();
+	//}
+	//myActivePointers[pointerId].second = myActivePointerTimeout;
 	//if(evt.getType() == Event::Update)
 	//{
 	//    myActivePointers[pointerId].first->setText(evt.getExtraDataString());
@@ -158,8 +168,6 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 	//{
 	//	myActivePointers[pointerId].first->setPosition(x, y);
 	//}
-
-	Pointer* ptr = myActivePointers[pointerId].first;
 
 	// Set pointer mode.
 	if(myPointerMode == PointerModeMouse) ptr->setPointerMode(Pointer::ModeMouse);
@@ -188,23 +196,6 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 	{
 		ptr->setRay(Ray(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1)));
 	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-Pointer* ServerEngine::createPointer()
-{
-    Pointer* p = new Pointer();
-    p->initialize(this);
-    myPointers.push_back(p);
-    return p;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::destroyPointer(Pointer* p)
-{
-    myPointers.remove(p);
-    p->dispose();
-    delete p;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,21 +244,6 @@ void ServerEngine::update(const UpdateContext& context)
     ModuleServices::update(this, context);
 
 	getSystemManager()->getScriptInterpreter()->update(context);
-
-    // Update pointers
-    for(int i = 0; i < MaxActivePointers; i++)
-    {
-        if(myActivePointers[i].first != NULL)
-        {
-            myActivePointers[i].second -= context.dt;
-            if(myActivePointers[i].second <= 0)
-            {
-                ofmsg("Destroying pointer %1%", %i);
-                destroyPointer(myActivePointers[i].first);
-                myActivePointers[i].first = 0;
-            }
-        }
-    }
 
     myScene->update(false, false);
 
