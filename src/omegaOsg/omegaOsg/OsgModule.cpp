@@ -35,7 +35,7 @@
 #include <osg/Node>
 #include <osg/FrameStamp>
 
-#include "omegaOsg/ReaderWriterTGA.h"
+#include "omegaOsg/ReaderFreeImage.h"
 
 using namespace omegaOsg;
 
@@ -54,7 +54,7 @@ OsgModule::OsgModule():
     myUpdateVisitor = new osgUtil::UpdateVisitor;
     myUpdateVisitor->setFrameStamp( myFrameStamp );
 
-    osgDB::Registry::instance()->addReaderWriter(new ReaderWriterTGA());
+    osgDB::Registry::instance()->addReaderWriter(new ReaderFreeImage());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

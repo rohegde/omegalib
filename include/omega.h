@@ -39,5 +39,6 @@
 #include "omega/SharedDataServices.h"
 #include "omega/PythonInterpreter.h"
 #include "omega/Texture.h"
+#include "omega/ImageUtils.h"
 
 #endif
