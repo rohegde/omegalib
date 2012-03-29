@@ -107,8 +107,8 @@ Camera::Camera(uint flags):
 	myNavigationMode(NavDisabled),
 	myNavigationSpeed(2.0f),
 	myNavigationStrafeMultiplier(1.0f),
-	myNavigationYawMultiplier(0.2f),
-	myNavigationPitchMultiplier(0.2f),
+	myNavigationYawMultiplier(0.002f),
+	myNavigationPitchMultiplier(0.002f),
 	myNavigationMoveFlags(0),
 	myPosition(Vector3f::Zero()),
 	myOrientation(Quaternion::Identity())
