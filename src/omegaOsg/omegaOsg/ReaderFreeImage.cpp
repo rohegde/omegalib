@@ -45,7 +45,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     std::string fileName = osgDB::findDataFile( file, options );
     if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
-	omega::ImageData* img = omega::ImageUtils::loadImage(file);
+	omega::ImageData* img = omega::ImageUtils::loadImage(file, true);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
 
     //unsigned char *imageData = NULL;
@@ -77,7 +77,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
         pixelFormat,
         dataType,
 		img->getPixels()->lockData(),
-        osg::Image::USE_NEW_DELETE);
+        osg::Image::NO_DELETE);
 	img->getPixels()->unlockData();
 
     ReadResult rr(pOsgImage);
