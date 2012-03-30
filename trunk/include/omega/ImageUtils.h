@@ -58,7 +58,7 @@ namespace omega {
 		enum ImageFormat { FormatPng };
 	public:
 		//! Load an image from a file.
-		static ImageData* loadImage(const String& filename);
+		static ImageData* loadImage(const String& filename, bool hasFullPath = false);
 		static ByteArray* encode(PixelData* data, ImageFormat format);
 
 		static void internalInitialize();

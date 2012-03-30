@@ -79,7 +79,7 @@ void OmegaViewer::initialize()
 	//Holds the full path
 	String fullPath;		
 	//Holds the relative path
-	String relativePath = "railsim/test/railSim.scene";
+	String relativePath = "railsim/test/railSimTest.scene";
 	
 	//If able to get full path
 	if(DataManager::findFile( relativePath , fullPath))

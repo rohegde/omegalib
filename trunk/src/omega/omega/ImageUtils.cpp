@@ -67,18 +67,28 @@ void ImageUtils::internalDispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ImageData* ImageUtils::loadImage(const String& filename)
+ImageData* ImageUtils::loadImage(const String& filename, bool hasFullPath)
 {
-	DataManager* dm = SystemManager::instance()->getDataManager();
-	DataInfo info = dm->getInfo(filename);
-
-	if(info.isNull())
+	String path;
+	if(!hasFullPath)
 	{
-		return NULL;
+		DataManager* dm = SystemManager::instance()->getDataManager();
+		DataInfo info = dm->getInfo(filename);
+
+		if(info.isNull())
+		{
+			return NULL;
+		}
+		path = info.path;
+	}
+	else
+	{
+		path = filename;
 	}
 
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(info.path.c_str(), 0);
-	FIBITMAP* image = FreeImage_Load(format, info.path.c_str());
+
+	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
+	FIBITMAP* image = FreeImage_Load(format, path.c_str());
 	
 	FIBITMAP* temp = image;
 	image = FreeImage_ConvertTo32Bits(image);
@@ -104,7 +114,7 @@ ImageData* ImageUtils::loadImage(const String& filename)
 	
 	FreeImage_Unload(image);
 
-	imageData->setPixels(new PixelData(PixelData::FormatRgb, width, height, data));
+	imageData->setPixels(new PixelData(PixelData::FormatRgba, width, height, data));
 
 	return imageData;
 }
