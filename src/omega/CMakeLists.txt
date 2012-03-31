@@ -38,6 +38,7 @@ add_definitions(-DOMEGA_EXPORTING -DGLEW_STATIC -DEQ_FABRIC_STATIC -DFREEGLUT_ST
 SET( srcs 
 		omega/ApplicationBase.cpp
 		omega/Camera.cpp
+		omega/CameraController.cpp
 		omega/Console.cpp
 		omega/DrawInterface.cpp
 		omega/EventSharingModule.cpp
@@ -77,6 +78,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/Application.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ApplicationBase.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
+		${OmegaLib_SOURCE_DIR}/include/omega/CameraController.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EventSharingModule.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h

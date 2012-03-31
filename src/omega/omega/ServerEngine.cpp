@@ -33,6 +33,7 @@
 #include "omega/ImageUtils.h"
 #include "omega/SystemManager.h"
 #include "omega/PythonInterpreter.h"
+#include "omega/CameraController.h"
 
 using namespace omega;
 
@@ -96,7 +97,7 @@ void ServerEngine::initialize()
         Setting& s = cfg->lookup("config/camera");
         if(Config::getBoolValue("enableNavigation", s, false))
         {
-            myDefaultCamera->setNavigationMode(Camera::NavFreeFly);
+            myDefaultCamera->setController(new KeyboardMouseCameraController());
         }
         Vector3f camPos = Config::getVector3fValue("position", s); 
         myDefaultCamera->setPosition(camPos);
