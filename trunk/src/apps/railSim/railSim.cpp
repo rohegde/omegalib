@@ -116,9 +116,6 @@ void OmegaViewer::initialize()
 	// Each server controls a set of renderers for different displays  
 	// getServer returns the engine server, which is a local instance of OmegaLib
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
-
-	//Setup free fly camera inside the scene
-	getServer()->getDefaultCamera()->setNavigationMode( omega::Camera::NavFreeFly );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@
 #include "omega/SceneNode.h"
 #include "omega/RenderTarget.h"
 #include "omega/Observer.h"
+#include "omega/CameraController.h"
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,23 +72,6 @@ namespace omega {
 	class OMEGA_API Camera: public ReferenceType
 	{
 	public:
-		enum NavigationMode { NavDisabled, NavFollow, NavFreeFly };
-		enum MoveFlags { 
-			MoveLeft = Event::ButtonLeft,
-			MoveRight = Event::ButtonRight,
-			MoveUp = Event::Button5,
-			MoveDown = Event::Button6,
-			MoveForward = Event::ButtonUp,
-			MoveBackward = Event::ButtonDown,
-
-			FocusLeft = 1 << 7,
-			FocusRight = 1 << 8,
-			FocusForward = 1 << 9,
-			FocusBackward = 1 << 10,
-			FocusUp = 1 << 11,
-			FocusDown = 1 << 12
-			};
-
 		enum CameraFlags
 		{
 			ForceMono = 1 << 1,
@@ -96,7 +80,6 @@ namespace omega {
 			Offscreen = 1 << 4,
 			DefaultFlags = DrawScene | DrawOverlay
 		};
-
 	public:
 		Camera(uint flags = DefaultFlags);
 
@@ -104,6 +87,7 @@ namespace omega {
 
 		CameraOutput* getOutput(uint contextId);
 
+		void setup(Setting& s);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -133,11 +117,10 @@ namespace omega {
 
 		//! Navigation management
 		//@{
-		void setNavigationMode(NavigationMode value) { myNavigationMode = value; }
-		NavigationMode getNavigationMode() { return myNavigationMode; }
-		//! Set the target node that will be used when in NavFollow navigation mode.
-		void setTargetNode(SceneNode* n) { myTargetNode = n; }
-		SceneNode* getTargetNode() { return myTargetNode; }
+		void setController(CameraController* value) { myController = value; if(myController != NULL) myController->setCamera(this); }
+		CameraController* getController() { return myController; }
+		bool isControllerEnabled() { return myController != NULL && myControllerEnabled; }
+		void setControllerEnabled(bool value) { myControllerEnabled = value; }
 		//@}
 
 		void focusOn(SceneNode* node);
@@ -185,19 +168,8 @@ namespace omega {
 		DrawContext myDrawContext[GpuContext::MaxContexts];
 
 		// Navigation stuff.
-		NavigationMode myNavigationMode;
-		SceneNode* myTargetNode;
-		float myNavigationSpeed;
-		float myNavigationStrafeMultiplier;
-		float myNavigationYawMultiplier;
-		float myNavigationPitchMultiplier;
-		uint myNavigationMoveFlags;
-		float myYaw;
-		float myPitch;
-		Vector3f myLastPointerPosition;
-		bool myRotating;
-		Vector3f myControllerMoveVector;
-		Vector2f myControllerRotateVector;
+		CameraController* myController;
+		bool myControllerEnabled;
 	};
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////

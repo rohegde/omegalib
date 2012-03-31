@@ -136,7 +136,7 @@ PyObject* cameraGetDefault(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* cameraEnableFreeFly(PyObject* self, PyObject* args)
+PyObject* cameraEnableNavigation(PyObject* self, PyObject* args)
 {
 	PyObject* pyCam = NULL;
 	PyArg_ParseTuple(args, "O", &pyCam);
@@ -144,14 +144,14 @@ PyObject* cameraEnableFreeFly(PyObject* self, PyObject* args)
 	Camera* cam = PYCAP_GET(pyCam, Camera);
 	if(cam != NULL)
 	{
-		cam->setNavigationMode(Camera::NavFreeFly);
+		cam->setControllerEnabled(true);
 	}
     Py_INCREF(Py_None);
     return Py_None;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* cameraDisableFreeFly(PyObject* self, PyObject* args)
+PyObject* cameraDisableNavigation(PyObject* self, PyObject* args)
 {
 	PyObject* pyCam = NULL;
 	PyArg_ParseTuple(args, "O", &pyCam);
@@ -159,7 +159,7 @@ PyObject* cameraDisableFreeFly(PyObject* self, PyObject* args)
 	Camera* cam= PYCAP_GET(pyCam, Camera);
 	if(cam != NULL)
 	{
-		cam->setNavigationMode(Camera::NavDisabled);
+		cam->setControllerEnabled(false);
 	}
     Py_INCREF(Py_None);
     return Py_None;
@@ -459,8 +459,8 @@ static PyMethodDef omegaMethods[] =
 {
 	// Camera API
     {"cameraGetDefault", cameraGetDefault, METH_VARARGS, "NO INFO"},
-    {"cameraEnableFreeFly", cameraEnableFreeFly, METH_VARARGS, "NO INFO"},
-    {"cameraDisableFreeFly", cameraDisableFreeFly, METH_VARARGS, "NO INFO"},
+    {"cameraEnableNavigation", cameraEnableNavigation, METH_VARARGS, "NO INFO"},
+    {"cameraDisableNavigation", cameraDisableNavigation, METH_VARARGS, "NO INFO"},
 
 	// Node API
     {"nodeCreate", nodeCreate, METH_VARARGS, 
