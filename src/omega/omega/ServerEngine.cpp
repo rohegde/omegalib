@@ -95,12 +95,7 @@ void ServerEngine::initialize()
     if(cfg->exists("config/camera"))
     {
         Setting& s = cfg->lookup("config/camera");
-        if(Config::getBoolValue("enableNavigation", s, false))
-        {
-            myDefaultCamera->setController(new KeyboardMouseCameraController());
-        }
-        Vector3f camPos = Config::getVector3fValue("position", s); 
-        myDefaultCamera->setPosition(camPos);
+		myDefaultCamera->setup(s);
     }
 
 	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);

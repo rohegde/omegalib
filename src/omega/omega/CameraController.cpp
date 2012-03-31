@@ -103,6 +103,15 @@ void KeyboardMouseCameraController::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+GamepadCameraController::GamepadCameraController():
+	mySpeed(2.0f),
+	myStrafeMultiplier(1.0f),
+	myYawMultiplier(0.002f),
+	myPitchMultiplier(0.002f)
+{
+}
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void GamepadCameraController::handleEvent(const Event& evt)
 {
 	if(evt.getServiceType() == Service::Controller)
@@ -132,6 +141,16 @@ void GamepadCameraController::update(const UpdateContext& context)
 	updateCamera(mySpeedVector, myYaw, myPitch, 0, context.dt);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+WandCameraController::WandCameraController():
+	mySpeed(2.0f),
+	myStrafeMultiplier(1.0f),
+	myYawMultiplier(0.002f),
+	myPitchMultiplier(0.002f),
+	myMoveFlags(0)
+{
+}
+	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::handleEvent(const Event& evt)
 {
