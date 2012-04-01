@@ -1,0 +1,17 @@
+<Level>
+    <MapData>
+        <MapContents>
+		<Files>
+            <File Id="0" Path="hospital/hospital_room.obj" Size="20"/>
+
+		</Files>
+
+            <StaticObjects>
+              <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+            </StaticObjects>
+          
+             <Primitives>
+			</Primitives>
+        </MapContents>
+    </MapData>
+</Level>
