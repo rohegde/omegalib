@@ -129,7 +129,11 @@ void Camera::setup(Setting& s)
 	if(controllerName == "gamepad") myController = new GamepadCameraController();
 
 	setController(myController);
-	if(myController != NULL) myController->setup(s);
+	if(myController != NULL) 
+	{
+		myController->setup(s);
+		setControllerEnabled(true);
+	}
 
 	if(myController == NULL)
 	{
@@ -137,6 +141,7 @@ void Camera::setup(Setting& s)
 		if(Config::getBoolValue("enableNavigation", s, false))
 		{
 			setController(new KeyboardMouseCameraController());
+			setControllerEnabled(true);
 		}
 	}
 
