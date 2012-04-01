@@ -75,6 +75,14 @@ void SceneManager::loadConfiguration()
 	StringUtils::toLowerCase(shadowMode);
 	if(shadowMode == "noshadows") myShadowMode = ShadowsDisabled;
 	else if(shadowMode == "softshadows") myShadowMode = ShadowsSoft;
+
+	mySceneFilename = Config::getStringValue("scene", s, "");
+
+	omsg("SceneManager configuration loaded");
+	ofmsg("::    Shadow mode: %1%", %shadowMode);
+	ofmsg(":: Editor enabled: %1%", %myEditorEnabled);
+	ofmsg("::  Default scene: %1%", %mySceneFilename);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +123,13 @@ void SceneManager::initialize()
 		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
 	}
 
-	frontView = true;
+	// If a default scene file has been specified, load it.
+	if(mySceneFilename != "")
+	{
+		load(mySceneFilename);
+	}
+
+	//frontView = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,58 +159,58 @@ void SceneManager::handleEvent(const Event& evt)
 	}
 	if(evt.getServiceType() == Service::Ui)
 	{
-		if(evt.getSourceId() == 0)
-		{
-			frontView = !frontView;
-			if(frontView)
-			{
-				myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
-				myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
-			}
-			else
-			{
-				myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
-				myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
-			}
-		}
-		if(evt.getSourceId() == 1)
-		{
-			localZoom = (float)evt.getExtraDataInt(0) / 10;
-			if(frontView)
-			{
-				myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
-				myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
-			}
-			else
-			{
-				myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
-				myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
-			}
-		}
-		if(evt.getSourceId() == 2)
-		{
-			remoteZoom = (float)evt.getExtraDataInt(0) / 10;
-			//myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
-		}
-		if(evt.getSourceId() == 3)
-		{
-			myRotate = evt.getExtraDataInt(0);
-			if(myRotate == 1)
-			{
-				myTabletManager->setEventFlags(Event::Right);
-			}
-			else
-			{
-				myTabletManager->setEventFlags(Event::Left);
-			}
-		}
+		//if(evt.getSourceId() == 0)
+		//{
+		//	frontView = !frontView;
+		//	if(frontView)
+		//	{
+		//		myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
+		//		myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
+		//	}
+		//	else
+		//	{
+		//		myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
+		//		myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
+		//	}
+		//}
+		//if(evt.getSourceId() == 1)
+		//{
+		//	localZoom = (float)evt.getExtraDataInt(0) / 10;
+		//	if(frontView)
+		//	{
+		//		myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
+		//		myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
+		//	}
+		//	else
+		//	{
+		//		myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
+		//		myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
+		//	}
+		//}
+		//if(evt.getSourceId() == 2)
+		//{
+		//	remoteZoom = (float)evt.getExtraDataInt(0) / 10;
+		//	//myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
+		//}
+		//if(evt.getSourceId() == 3)
+		//{
+		//	myRotate = evt.getExtraDataInt(0);
+		//	if(myRotate == 1)
+		//	{
+		//		myTabletManager->setEventFlags(Event::Right);
+		//	}
+		//	else
+		//	{
+		//		myTabletManager->setEventFlags(Event::Left);
+		//	}
+		//}
 
-		myTabletManager->beginGui();
-		myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, (int)(localZoom * 10)));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, (int)(remoteZoom * 10)));
-		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", myRotate));
-		myTabletManager->finishGui();
+		//myTabletManager->beginGui();
+		//myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
+		//myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, (int)(localZoom * 10)));
+		//myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, (int)(remoteZoom * 10)));
+		//myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", myRotate));
+		//myTabletManager->finishGui();
 	}
 }
 
@@ -217,6 +231,42 @@ void SceneManager::load(SceneLoader* loader)
 		initShading();
 
 		myOsg->setRootNode(mySceneRoot);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::load(const String& relativePath)
+{
+	String fullPath;
+	//If able to get full path
+	if(DataManager::findFile( relativePath , fullPath))
+	{
+		//Stores the XML file to be parsed
+		TiXmlDocument doc(fullPath.c_str());
+
+		//Loads the XML file
+		if(doc.LoadFile())
+		{
+			ofmsg("Loading scene: %1%...", %relativePath);
+
+			//Instantiate a sceneLoader to load the entites in the XML file
+			SceneLoader* sl = new SceneLoader(doc);
+
+			//SceneManager::instance()
+			//	Gets the sceneManager if you do not have a pointer to the singleton sceneManager
+			//Load the scene into the SceneManager via the SceneLoader
+			load(sl);
+		}
+		else
+		{
+			//Error loading the XML
+			ofwarn("sceneLoad Xml error at %1%:%2%.%3%: %4%", %relativePath %doc.ErrorRow() %doc.ErrorCol() %doc.ErrorDesc());
+		}
+	}
+	else
+	{
+		//Error loacation the file
+		ofwarn("!File not found: %1%", %relativePath);
 	}
 }
 

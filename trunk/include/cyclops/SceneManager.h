@@ -102,6 +102,8 @@ namespace cyclops {
 		virtual void handleEvent(const Event& evt);
 
 		void load(SceneLoader* loader);
+		//! Utility method: loads a scene file using the standard cyclops scene loader.
+		void load(const String& file);
 
 		//! Scene creation API
 		//@{
@@ -138,6 +140,7 @@ namespace cyclops {
 		// Initialization options
 		ShadowMode myShadowMode;
 		bool myEditorEnabled;
+		String mySceneFilename;
 
 		ServerEngine* myEngine;
 
@@ -158,10 +161,10 @@ namespace cyclops {
 		List<Entity*> myEntities;
 
 		osg::Light* myLight2;
-		bool frontView;
-		float localZoom;
-		float remoteZoom;
-		int myRotate;
+		//bool frontView;
+		//float localZoom;
+		//float remoteZoom;
+		//int myRotate;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

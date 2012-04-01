@@ -70,54 +70,10 @@ void OmegaViewer::initialize()
 	cyclopsPythonApiInit();
 #endif
 
-	if(sDefaultScript != "")
-	{
-		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		interp->queueInteractiveCommand(ostr("orun(\"%1%\")", %sDefaultScript));
-	}
-
-	//Holds the full path
-	String fullPath;		
-	//Holds the relative path
-	String relativePath = "railsim/test/railSim.scene";
-	
-	//If able to get full path
-	if(DataManager::findFile( relativePath , fullPath))
-	{
-		//Stores the XML file to be parsed
-		TiXmlDocument doc(fullPath.c_str());
-
-		//Loads the XML file
-		if(doc.LoadFile())
-		{
-			ofmsg("Loading map: %1%...", %relativePath);
-
-			//Instantiate a sceneLoader to load the entites in the XML file
-			SceneLoader* sl = new SceneLoader(doc);
-
-			//SceneManager::instance()
-			//	Gets the sceneManager if you do not have a pointer to the singleton sceneManager
-			//Load the scene into the SceneManager via the SceneLoader
-			SceneManager::instance()->load(sl);
-		}
-		else
-		{
-			//Error loading the XML
-			ofwarn("sceneLoad Xml error at %1%:%2%.%3%: %4%", %relativePath %doc.ErrorRow() %doc.ErrorCol() %doc.ErrorDesc());
-		}
-	}
-	else
-	{
-		//Error loacation the file
-		ofwarn("!File not found: %1%", %relativePath);
-	}
-
 	// Setup the camera
 	// Each server controls a set of renderers for different displays  
 	// getServer returns the engine server, which is a local instance of OmegaLib
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
-	getServer()->getDefaultCamera()->setController(new KeyboardMouseCameraController());
-	getServer()->getDefaultCamera()->setControllerEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

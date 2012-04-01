@@ -63,6 +63,8 @@ KeyboardMouseCameraController::KeyboardMouseCameraController():
 	myStrafeMultiplier(1.0f),
 	myYawMultiplier(0.002f),
 	myPitchMultiplier(0.002f),
+	myYaw(0),
+	myPitch(0),
 	myMoveFlags(0)
 {
 }

@@ -69,6 +69,15 @@ void OmegaViewer::initialize()
 		interp->queueInteractiveCommand(ostr("orun(\"%1%\")", %sDefaultScript));
 	}
 
+	Setting& base = SystemManager::instance()->getAppConfig()->lookup("config");
+	if(Config::getBoolValue("cyclopsEnabled", base, false))
+	{
+		SceneManager* sm = new SceneManager();
+		ModuleServices::addModule(sm);
+		sm->doInitialize(getServer());
+	}
+
+
 	MenuManager* menuMng = new MenuManager();
 	ModuleServices::addModule(menuMng);
 	menuMng->doInitialize(getServer());
