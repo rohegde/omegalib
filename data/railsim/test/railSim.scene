@@ -28,7 +28,7 @@
 
               
 				<!-- This is the railstation -->
-				<staticobject FileIndex="3" Id="-1" Rotation="-90 90 0" Scale="1 1 1" Tag="" WorldPos="25 -0.64 -16" />
+				<staticobject FileIndex="3" Id="-1" Rotation="0 90 0" Scale="1 1 1" Tag="" WorldPos="25 -0.64 -16" />
 			  
             </StaticObjects>
           
@@ -44,7 +44,7 @@
                
             </Entities>
              <Primitives>
-				<Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="cyclops/common/materials/Rockwall.material" Name="Plane_1" Rotation="0 0 0" Scale="10 1 10" Tiling="40 40" WorldPos="10 -0.64 -2" />
+				<Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="railsim/test/materials/ground.material" Name="Plane_1" Rotation="0 0 0" Scale="10 1 10" Tiling="10 10" WorldPos="10 -0.64 -2" />
 				</Primitives>
         </MapContents>
     </MapData>

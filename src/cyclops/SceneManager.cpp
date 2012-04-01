@@ -123,6 +123,9 @@ void SceneManager::initialize()
 		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
 	}
 
+	setShaderMacroToFile("use setupStandardShading", "cyclops/common/standardShading/setupStandardShading.vert");
+	setShaderMacroToFile("use computeStandardShading", "cyclops/common/standardShading/computeStandardShading.frag");
+
 	// If a default scene file has been specified, load it.
 	if(mySceneFilename != "")
 	{
@@ -476,6 +479,10 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 	if(type == "textured")
 	{
 		prog = getProgram("solid", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
+	}
+	if(type == "bump")
+	{
+		prog = getProgram("solid", "cyclops/common/Bump.vert", "cyclops/common/Bump.frag");
 		prog->addBindAttribLocation ("Tangent", 6);
 	}
 	else if(type == "colored")
@@ -546,31 +553,74 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 		return myMaterials[materialName];
 	}
 
-	String materialPath;
-	if(findResource(materialName, materialPath))
+	if(StringUtils::endsWith(materialName, ".material"))
 	{
-		// Open the material XML file.
-		TiXmlDocument doc(materialPath.c_str());
-		if(doc.LoadFile())
+		String materialPath;
+		if(findResource(materialName, materialPath))
 		{
-			// Update the current path to the material path for texture loading
-			String filename;
-			String path;
-			StringUtils::splitFilename(materialPath, filename, path);
-			omega::DataManager::getInstance()->setCurrentPath(path);
+			// Open the material XML file.
+			TiXmlDocument doc(materialPath.c_str());
+			if(doc.LoadFile())
+			{
+				// Update the current path to the material path for texture loading
+				String filename;
+				String path;
+				StringUtils::splitFilename(materialPath, filename, path);
+				omega::DataManager::getInstance()->setCurrentPath(path);
 
-			String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
-			StringUtils::toLowerCase(type);
-			return createMaterial(doc.RootElement(), type);
+				String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
+				StringUtils::toLowerCase(type);
+				osg::StateSet* ss = createMaterial(doc.RootElement(), type);
+				myMaterials[materialName] = ss;
+				return ss;
+			}
+			else
+			{
+				ofwarn("Could not open material file %1%", %materialName);
+			}
 		}
 		else
 		{
-			ofwarn("Could not open material file %1%", %materialName);
+			//ofwarn("Could not find material file %1%", %materialName);
 		}
 	}
 	else
 	{
-		ofwarn("Could not find material file %1%", %materialName);
+		// We are loading something with a different extension, let's assume it's an image file.
+		// First, lets try to substitute the extension with .material, and load the corresponding file.
+		String newMaterialName = StringUtils::replaceAll(materialName, ".dds", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".tga", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".TGA", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".jpg", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".JPG", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".jpeg", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".JPEG", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".png", ".material");
+		newMaterialName = StringUtils::replaceAll(newMaterialName, ".PNG", ".material");
+
+		osg::StateSet* material = loadMaterial(newMaterialName);
+		if(material == NULL)
+		{
+			// We could not load a material: just create a basic textured material
+			// and put the texture as its diffuse map.
+			osg::StateSet* ss = new osg::StateSet();
+			osg::Program* prog = getProgram("solid", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
+			ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
+			ss->setTextureAttribute(0, getTexture(materialName));
+			ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+
+			osg::Material* mat = new osg::Material();
+			mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
+			mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(1, 1, 1, 1));
+			mat->setAmbient(Material::FRONT_AND_BACK, Vec4(1, 1,1, 1));
+			mat->setEmission(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
+			mat->setSpecular(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
+			ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
+
+			myMaterials[materialName] = ss;
+			return ss;
+		}
 	}
 	return NULL;
 }
@@ -584,7 +634,7 @@ void SceneManager::initShading()
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
-    myLight2->setPosition(osg::Vec4(-1.0, -1, 0, 0.0));
+    myLight2->setPosition(osg::Vec4(20.0, 20, 0, 1.0));
     myLight2->setAmbient(osg::Vec4(0.2f,0.2f,0.2f,1.0f));
     myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));

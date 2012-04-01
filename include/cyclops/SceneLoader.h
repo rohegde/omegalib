@@ -52,6 +52,8 @@ namespace cyclops {
 		static Vector4f readVector4f(TiXmlElement* elem, const String& attributeName);
 		static Vector3f readVector3f(TiXmlElement* elem, const String& attributeName);
 		static Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
+		static float readFloat(TiXmlElement* elem, const String& attributeName, float defaultValue = 0.0f);
+		static int readInt(TiXmlElement* elem, const String& attributeName, int defaultValue = 0);
 
 	public:
 		SceneLoader(TiXmlDocument& doc);
@@ -71,6 +73,7 @@ namespace cyclops {
 
 	private:
 		osg::Node* createPlane(TiXmlElement* xPlane);
+		osg::Node* createSphere(TiXmlElement* xchild);
 
 	private:
 		TiXmlDocument& myDoc;

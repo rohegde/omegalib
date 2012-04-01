@@ -36,7 +36,6 @@ SET( srcs
 		omegaOsg/OsgRenderPass.cpp
 		omegaOsg/OsgSceneObject.cpp
 		omegaOsg/SceneView.cpp
-		omegaOsg/ReaderWriterTGA.cpp
 		omegaOsg/ReaderFreeImage.cpp
 		)
 		

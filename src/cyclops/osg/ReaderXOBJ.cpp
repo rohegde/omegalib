@@ -107,7 +107,7 @@ protected:
 };
 
 // register with Registry to instantiate the above reader/writer.
-//REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
+REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Geometry* ReaderXOBJ::convertElementListToGeometry(obj::Model& model, obj::Model::ElementList& elementList, ObjOptionsStruct& localOptions) const
@@ -398,16 +398,13 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
     {
         obj::Material& material = itr->second;
        
-		// Get the material name using the name of the diffuse texture.
+		// Get the material name using the name of the dirffuse texture.
 		if(material.maps.size() != 0)
 		{
 			String materialName = material.maps[obj::Material::Map::DIFFUSE].name;
 
 			omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
 
-			String materialPath;
-			materialName = StringUtils::replaceAll(materialName, ".dds", ".material");
-			materialName = StringUtils::replaceAll(materialName, ".tga", ".material");
 			em[material.name] = SceneManager::instance()->loadMaterial(materialName);
 		}
 	}

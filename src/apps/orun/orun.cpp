@@ -84,10 +84,6 @@ void OmegaViewer::initialize()
 	Menu* menu = MenuManager::instance()->createMenu("menu");
 	MenuItem* btn = menu->getRoot()->addItem(MenuItem::Button);
 	btn = menu->getRoot()->addItem(MenuItem::Button);
-
-
-	// Setup the camera
-	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

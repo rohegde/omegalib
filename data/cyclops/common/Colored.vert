@@ -1,28 +1,14 @@
 @use setupShadow
-
-//varying vec3 lightVec;/*!< Light direction vector.*/
-//varying vec3 viewVec;/*!< View vector passed to the fragment program.*/
-varying vec3 normal,lightDir,halfVector;
-varying float dist;
+@use setupStandardShading
 	                     
-//!Main function.
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
 	gl_Position = ftransform();
-	
-	vec4 ecPosition;
-	vec3 aux;
-	normal = normalize(gl_NormalMatrix * gl_Normal);
+	vec4 eyeSpacePosition = gl_ModelViewMatrix * gl_Vertex;
 		
-	/* these are the new lines of code to compute the light's direction */
-	ecPosition = gl_ModelViewMatrix * gl_Vertex;
-	aux = vec3(gl_LightSource[0].position-ecPosition);
-	lightDir = normalize(aux);
-	dist = length(aux);
-	halfVector = normalize(gl_LightSource[0].halfVector.xyz);
-	
-	setupShadow(ecPosition);
+	setupShadow(eyeSpacePosition);
+	setupStandardShading(eyeSpacePosition);
 	
 	gl_FrontColor = gl_Color;
-	
 }
