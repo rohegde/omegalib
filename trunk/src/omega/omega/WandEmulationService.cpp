@@ -59,23 +59,25 @@ bool WandEmulationService::processKey(const Event* evt, const char key, Event::F
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool WandEmulationService::processMouseButton(const Event* evt, Event::Flags flag)
+bool WandEmulationService::processMouseButton(const Event* evt)
 {
 	Event* newEvent;
-	if(evt->getType() == Event::Down && evt->isFlagSet(flag))
+	if(evt->getType() == Event::Down && evt->getServiceType() == Service::Pointer)
 	{
-		myEventFlags |= flag;
+		myEventFlags = evt->getFlags();
 		newEvent = writeHead();
 		newEvent->reset(Event::Down, Service::Wand, 0);
 		newEvent->setFlags(myEventFlags);
+		evt->setProcessed();
 		return true;
 	}
-	if(evt->getType() == Event::Up && evt->isFlagSet(flag))
+	if(evt->getType() == Event::Up && evt->getServiceType() == Service::Pointer)
 	{
-		myEventFlags &= ~flag;
+		myEventFlags = evt->getFlags();
 		newEvent = writeHead();
-		newEvent->reset(Event::Down, Service::Wand, 0);
+		newEvent->reset(Event::Up, Service::Wand, 0);
 		newEvent->setFlags(myEventFlags);
+		evt->setProcessed();
 		return true;
 	}
 	return false;
@@ -100,8 +102,7 @@ void WandEmulationService::poll()
 		eventWasKeyUpDown |= processKey(evt, 'r', Event::Button5);
 		eventWasKeyUpDown |= processKey(evt, 'f', Event::Button6);
 
-		eventWasKeyUpDown |= processMouseButton(evt, Event::Button1);
-		eventWasKeyUpDown |= processMouseButton(evt, Event::Button2);
+		eventWasKeyUpDown |= processMouseButton(evt);
 	}
 
 	if(!eventWasKeyUpDown)

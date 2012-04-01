@@ -81,6 +81,8 @@ namespace cyclops {
 		MenuItem* addItem(MenuItem::Type type);
 		//@}
 
+		omegaToolkit::ui::Container* getContainerWidget();
+
 	private:
 		Menu* myMenu;
 		MenuItem* myParent;
@@ -105,6 +107,10 @@ namespace cyclops {
 
 		MenuManager* getManager() { return myManager; }
 		MenuItem* getRoot() { return myRootItem; }
+		void show();
+		void hide();
+		void toggle();
+		bool isVisible();
 
 	private:
 		MenuManager* myManager;
@@ -129,11 +135,15 @@ namespace cyclops {
 		Menu* createMenu(const String& name);
 		Menu* getMenu(const String& name);
 
+		void setMainMenu(Menu* menu) { myMainMenu = menu; }
+		Menu* getMainMenu() { return myMainMenu; }
+
 	private:
 		static MenuManager* mysInstance;
 
 		UiModule* myUiModule;
 		Dictionary<String, Menu*> myMenuDictionary;
+		Menu* myMainMenu;
 
 		ServerEngine* myEngine;
 	};
