@@ -396,28 +396,31 @@ Renderable* Container::createRenderable()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::draw(RenderState* state)
 {
-	preDraw();
+	if(myOwner->isVisible())
+	{
+		preDraw();
 
-    // draw myself.
-	if(myOwner->isStereo())
-	{
-		if(state->context->eye != DrawContext::EyeCyclop) drawContent();
-	}
-	else
-	{
-		if(state->context->eye == DrawContext::EyeCyclop) drawContent();
-	}
-
-	// draw children.
-	foreach(Widget* w, myOwner->myChildren)
-	{
-		Renderable* childRenderable = w->getRenderable(getClient()); 
-		if(childRenderable != NULL) 
+		// draw myself.
+		if(myOwner->isStereo())
 		{
-			childRenderable->draw(state);
+			if(state->context->eye != DrawContext::EyeCyclop) drawContent();
 		}
-	}
+		else
+		{
+			if(state->context->eye == DrawContext::EyeCyclop) drawContent();
+		}
 
-	postDraw();
+		// draw children.
+		foreach(Widget* w, myOwner->myChildren)
+		{
+			Renderable* childRenderable = w->getRenderable(getClient()); 
+			if(childRenderable != NULL) 
+			{
+				childRenderable->draw(state);
+			}
+		}
+
+		postDraw();
+	}
 }
 

@@ -45,7 +45,7 @@ namespace omega {
 
 	private:
 		bool processKey(const Event* evt, const char key, Event::Flags flag);
-		bool processMouseButton(const Event* evt, Event::Flags flag);
+		bool processMouseButton(const Event* evt);
 
 	private:
 		uint myEventFlags;
