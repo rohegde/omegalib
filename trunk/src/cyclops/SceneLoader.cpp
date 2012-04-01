@@ -141,6 +141,28 @@ Vector2f SceneLoader::readVector2f(TiXmlElement* elem, const String& attributeNa
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+float SceneLoader::readFloat(TiXmlElement* elem, const String& attributeName, float defaultValue)
+{
+	const char* cstr = elem->Attribute(attributeName.c_str());
+	if(cstr != NULL)
+	{
+		return atof(cstr);
+	}
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+int SceneLoader::readInt(TiXmlElement* elem, const String& attributeName, int defaultValue)
+{
+	const char* cstr = elem->Attribute(attributeName.c_str());
+	if(cstr != NULL)
+	{
+		return atoi(cstr);
+	}
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::AssetType type)
 {
 	TiXmlElement* xchild = xStaticObjectFiles->FirstChildElement();
@@ -226,6 +248,11 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			osg::Node* node = createPlane(xchild);
 			mySceneManager->addNode(node, position, rotation, scale);
 		}
+		else if(objtype == "sphere")
+		{
+			osg::Node* node = createSphere(xchild);
+			mySceneManager->addNode(node, position, rotation, scale);
+		}
 		
 		xchild = xchild->NextSiblingElement();
 	}
@@ -271,6 +298,36 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	return node;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Node* SceneLoader::createSphere(TiXmlElement* xchild)
+{
+	osg::Geode* node = new osg::Geode();
+
+	float radius = readFloat(xchild, "Radius", 1.0);
+	int subdivisions = readInt(xchild, "Subdivisions", 4);
+	Vector2f tiling = readVector2f(xchild, "Tiling");
+	String material = xchild->Attribute("Material");
+
+	osg::Geometry* sphere = osgwTools::makeGeodesicSphere(radius, subdivisions);
+	sphere->setColorArray(NULL);
+	sphere->setColorBinding(osg::Geometry::BIND_OFF);
+
+	osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+	tsg->generate(sphere, 0);
+	osg::Vec4Array* a_tangent = tsg->getTangentArray();
+	sphere->setVertexAttribArray (6, a_tangent);
+	sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+
+	osg::StateSet* fx = mySceneManager->loadMaterial(material);
+	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
+
+	node->addDrawable(sphere);
+	sphere->setStateSet(fx);
+
+	tsg->unref();
+
+	return node;
+}
 
 
 

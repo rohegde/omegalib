@@ -16,6 +16,9 @@ ReaderFreeImage::ReaderFreeImage()
     supportsExtension("tga","Tga Image format");
     supportsExtension("png","Png Image format");
     supportsExtension("jpg","Jpg Image format");
+    supportsExtension("JPG","Jpg Image format");
+    supportsExtension("GIF","Jpg Image format");
+    supportsExtension("PNG","Jpg Image format");
 }
         
 ///////////////////////////////////////////////////////////////////////////////////////////////////

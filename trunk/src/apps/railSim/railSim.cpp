@@ -299,7 +299,7 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 	{
 		//!!!!! HACK !!!!!//	Data set has a weird rotation
 		//Quaternion for a 90 deg X-axis rotation
-		Quaternion newAxis = AngleAxis(Math::HalfPi, Vector3f::UnitX()) ;
+		Quaternion newAxis = AngleAxis(-Math::HalfPi, Vector3f::UnitX()) ;
 		Quaternion rotation;
 		rotation.x() = rot[actualVecIndex+0];
 		rotation.y() = rot[actualVecIndex+1];
@@ -307,9 +307,7 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 		rotation.w() = rot[actualVecIndex+3];
 		
 		//90 degree rotation will turn the object side ways
-		//Apply the rotation
-		//rotate back -90 do it looks correct
-		rotation = newAxis.inverse() * rotation * newAxis;
+		rotation = newAxis * rotation;
 		
 		entity->getSceneNode()->setOrientation( rotation );
 
