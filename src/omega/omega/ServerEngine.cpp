@@ -84,11 +84,27 @@ void ServerEngine::initialize()
     }
 
     // Setup the system font.
+	// Look in the app config first
     if(cfg->exists("config/defaultFont"))
     {
         Setting& fontSetting = cfg->lookup("config/defaultFont");
         setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
     }
+	else
+	{
+		// Then in the system config
+		Config* syscfg = getSystemManager()->getSystemConfig();
+		if(cfg->exists("config/defaultFont"))
+		{
+			Setting& fontSetting = syscfg->lookup("config/defaultFont");
+			setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
+		}
+		else
+		{
+			// If all else fails, set a default fallback font.
+			setDefaultFont(FontInfo("console", "fonts/arial.ttf", 12));
+		}
+	}
 
     myDefaultCamera = new Camera();
 	Setting& scfg = cfg->lookup("config");
