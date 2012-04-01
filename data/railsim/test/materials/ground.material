@@ -1,0 +1,9 @@
+<Material>
+    <Main DepthTest="True" HeightMapScale="0.05" Type="Textured" />
+	<Colors Diffuse="1 0 0 1"/>
+    <TextureUnits>
+        <Diffuse File="ground.jpg"/>
+        <NMap File="ground_normal.jpg"/>
+        <Height File="ground_height.jpg"/>
+    </TextureUnits>
+</Material>
