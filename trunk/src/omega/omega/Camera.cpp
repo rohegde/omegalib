@@ -123,29 +123,22 @@ void Camera::setup(Setting& s)
 	controllerName = Config::getStringValue("controller", s);
 	StringUtils::toLowerCase(controllerName);
 
-	myController = NULL;
-	if(controllerName == "keyboardmouse") myController = new KeyboardMouseCameraController();
-	if(controllerName == "wand") myController = new WandCameraController();
-	if(controllerName == "gamepad") myController = new GamepadCameraController();
-
-	setController(myController);
-	if(myController != NULL) 
+	if(controllerName != "")
 	{
-		myController->setup(s);
-		setControllerEnabled(true);
-	}
+		myController = NULL;
+		if(controllerName == "keyboardmouse") myController = new KeyboardMouseCameraController();
+		if(controllerName == "wand") myController = new WandCameraController();
+		if(controllerName == "gamepad") myController = new GamepadCameraController();
 
-	if(myController == NULL)
-	{
-		// Process the old-style enableNavigation parameter, for compatibility.
-		if(Config::getBoolValue("enableNavigation", s, false))
+		setController(myController);
+		if(myController != NULL) 
 		{
-			setController(new KeyboardMouseCameraController());
+			myController->setup(s);
 			setControllerEnabled(true);
 		}
 	}
 
-    Vector3f camPos = Config::getVector3fValue("position", s); 
+    Vector3f camPos = Config::getVector3fValue("position", s, getPosition()); 
     setPosition(camPos);
 }
 
