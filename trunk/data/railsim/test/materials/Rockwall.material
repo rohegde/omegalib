@@ -1,0 +1,9 @@
+<Material>
+    <Main DepthTest="True" HeightMapScale="0.05" Type="Textured" />
+	<Colors Diffuse="1 0 0 1"/>
+    <TextureUnits>
+        <Diffuse File="rockwall.tga"/>
+        <NMap File="rockwall_normal.tga"/>
+        <Height File="rockwall_height.tga"/>
+    </TextureUnits>
+</Material>
