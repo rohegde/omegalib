@@ -131,7 +131,7 @@ void Camera::setup(Setting& s)
 	setController(myController);
 	if(myController != NULL) myController->setup(s);
 
-	if(myController)
+	if(myController == NULL)
 	{
 		// Process the old-style enableNavigation parameter, for compatibility.
 		if(Config::getBoolValue("enableNavigation", s, false))
