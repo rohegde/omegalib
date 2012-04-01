@@ -107,7 +107,7 @@ protected:
 };
 
 // register with Registry to instantiate the above reader/writer.
-REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
+//REGISTER_OSGPLUGIN(obj, ReaderXOBJ)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Geometry* ReaderXOBJ::convertElementListToGeometry(obj::Model& model, obj::Model::ElementList& elementList, ObjOptionsStruct& localOptions) const

@@ -116,6 +116,8 @@ void OmegaViewer::initialize()
 	// Each server controls a set of renderers for different displays  
 	// getServer returns the engine server, which is a local instance of OmegaLib
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
+	getServer()->getDefaultCamera()->setController(new KeyboardMouseCameraController());
+	getServer()->getDefaultCamera()->setControllerEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
