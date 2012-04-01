@@ -31,8 +31,7 @@
               <staticobject FileIndex="0" Id="-1" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.9114 -0.093" />
               
 				<!-- This is the railstation -->
-				<staticobject FileIndex="3" Id="-1" Rotation="90 90 0" Scale="1 1 1" Tag="" WorldPos="0 0 -2" />
-
+				<staticobject FileIndex="3" Id="-1" Rotation="-90 90 0" Scale="1 1 1" Tag="" WorldPos="0 0 -2" />
 			  
             </StaticObjects>
           
