@@ -71,8 +71,11 @@ void ServerEngine::initialize()
     myConsole->initialize(this);
     ologaddlistener(myConsole.get());
 
+	// Then in the system config
+	Config* syscfg = getSystemManager()->getSystemConfig();
     // Setup the console default font
     Config* cfg = getSystemManager()->getAppConfig();
+
     if(cfg->exists("config/console/font"))
     {
         Setting& fontSetting = cfg->lookup("config/console/font");
@@ -92,8 +95,6 @@ void ServerEngine::initialize()
     }
 	else
 	{
-		// Then in the system config
-		Config* syscfg = getSystemManager()->getSystemConfig();
 		if(cfg->exists("config/defaultFont"))
 		{
 			Setting& fontSetting = syscfg->lookup("config/defaultFont");
@@ -107,13 +108,22 @@ void ServerEngine::initialize()
 	}
 
     myDefaultCamera = new Camera();
-	Setting& scfg = cfg->lookup("config");
+
+	// Load camera config form system config file
+	if(syscfg->exists("config/camera"))
+	{
+        Setting& s = syscfg->lookup("config/camera");
+		myDefaultCamera->setup(s);
+	}
+
+	// Load camera config form application config file
     if(cfg->exists("config/camera"))
     {
         Setting& s = cfg->lookup("config/camera");
 		myDefaultCamera->setup(s);
     }
 
+	Setting& scfg = cfg->lookup("config");
 	myEventSharingEnabled = Config::getBoolValue("enableEventSharing", scfg, true);
 
 	for(int i = 0; i < MaxPointers; i++)

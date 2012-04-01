@@ -68,6 +68,7 @@ SET( srcs
 		omega/SharedDataServices.cpp
 		omega/SystemManager.cpp
 		omega/Texture.cpp
+		omega/WandEmulationService.cpp
         )
 		
 ###################################################################################################
@@ -117,6 +118,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
+		${OmegaLib_SOURCE_DIR}/include/omega/WandEmulationService.h
 		)
         
 ###################################################################################################

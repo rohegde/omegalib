@@ -149,6 +149,8 @@ WandCameraController::WandCameraController():
 	myStrafeMultiplier(1.0f),
 	myYawMultiplier(0.002f),
 	myPitchMultiplier(0.002f),
+	myYaw(0),
+	myPitch(0),
 	myMoveFlags(0)
 {
 }
@@ -156,8 +158,9 @@ WandCameraController::WandCameraController():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void WandCameraController::handleEvent(const Event& evt)
 {
-	if(evt.getServiceType() == Service::Pointer)
+	if(evt.getServiceType() == Service::Wand)
 	{
+		myMoveFlags = evt.getFlags();
 		if(evt.isFlagSet(Event::Left)) myRotating = true;
 		else myRotating = false;
 			
