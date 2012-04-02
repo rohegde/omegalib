@@ -52,19 +52,21 @@ void AbstractButton::update(const omega::UpdateContext& context)
 	Widget::update(context);
 	if(myPressedStateChanged)
 	{
-		if(myPressed)
+		// Button was pressed, and now it's not (that is, it has been clicked). Generate a click event.
+		if(!myPressed)
 		{
-			Event evt;
-			evt.reset(Event::Click, Service::Ui, getId());
-
-			dispatchUIEvent(evt);
-
 			// If button is checkable, toggle check state.
 			if(myCheckable)
 			{
 				myChecked = !myChecked;
 				Event evt;
 				evt.reset(Event::Toggle, Service::Ui, getId());
+				dispatchUIEvent(evt);
+			}
+			else
+			{
+				Event evt;
+				evt.reset(Event::Click, Service::Ui, getId());
 				dispatchUIEvent(evt);
 			}
 		}

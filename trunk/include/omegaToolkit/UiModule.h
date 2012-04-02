@@ -38,6 +38,9 @@ namespace omegaToolkit
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API UiModule: public ServerModule
 	{
+	friend class ui::Widget;
+	public:
+		static const int MaxWidgets = 16384;
 	public:
 		static UiModule* instance() { return mysInstance; }
 
@@ -55,13 +58,38 @@ namespace omegaToolkit
 		ui::Container* getUi();
 		ui::WidgetFactory* getWidgetFactory();
 
+		void setGamepadInteractionEnabled(bool value) { myGamepadInteractionEnabled = value; }
+		bool getGamepadInteractionEnabled() { return myGamepadInteractionEnabled; }
+
+		void setPointerInteractionEnabled(bool value) { myPointerInteractionEnabled = value; }
+		bool getPointerInteractionEnabled() { return myPointerInteractionEnabled; }
+
+		void activateWidget(ui::Widget* w);
+
+		template<typename W> W* getSource(const Event& evt)
+		{
+			if(evt.getServiceType() == Service::Ui)
+			{
+				W* w = dynamic_cast<W*>(myWidgets[evt.getSourceId()]);
+				return w;
+			}
+			return NULL;
+		}
+
 	private:
 		void initImages(const Setting& images);
 
 	private:
 		static UiModule* mysInstance;
 
+		bool myGamepadInteractionEnabled;
+		bool myPointerInteractionEnabled;
+
 		bool myLocalEventsEnabled;
+
+		ui::Widget* myWidgets[MaxWidgets];
+
+		ui::Widget* myActiveWidget;
 
 		ui::Container* myUi;
 		ui::WidgetFactory* myWidgetFactory;

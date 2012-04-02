@@ -57,10 +57,15 @@ Widget::Widget(ServerEngine* server):
 	myMoving(false),
 	myMaximumSize(FLT_MAX, FLT_MAX),
 	myMinimumSize(0, 0),
-	myActive(false)
+	myActive(false),
+	myHorizontalNextWidget(NULL),
+	myHorizontalPrevWidget(NULL),
+	myVerticalNextWidget(NULL),
+	myVerticalPrevWidget(NULL)
 {
 	myId = mysNameGenerator.getNext();
 	myName = mysNameGenerator.generate();
+	UiModule::instance()->myWidgets[myId] = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +75,19 @@ Widget::~Widget()
 	{
 		dispose();
 	}
+	UiModule::instance()->myWidgets[myId] = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::isGamepadInteractionEnabled()
+{
+	return UiModule::instance()->getGamepadInteractionEnabled();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Widget::isPointerInteractionEnabled()
+{
+	return UiModule::instance()->getPointerInteractionEnabled();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,6 +104,37 @@ void Widget::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::handleEvent(const Event& evt) 
 {
+	if(isGamepadInteractionEnabled())
+	{
+		if(myActive)
+		{
+			if(evt.isButtonDown(Event::ButtonDown))
+			{
+				evt.setProcessed();
+				if(myVerticalNextWidget != NULL) 
+					UiModule::instance()->activateWidget(myVerticalNextWidget);
+			}
+			else if(evt.isButtonDown(Event::ButtonUp))
+			{
+				evt.setProcessed();
+				if(myVerticalPrevWidget != NULL) 
+					UiModule::instance()->activateWidget(myVerticalPrevWidget);
+			}
+			else if(evt.isButtonDown(Event::ButtonLeft))
+			{
+				evt.setProcessed();
+				if(myHorizontalPrevWidget != NULL) 
+					UiModule::instance()->activateWidget(myHorizontalPrevWidget);
+			}
+			else if(evt.isButtonDown(Event::ButtonRight))
+			{
+				evt.setProcessed();
+				if(myHorizontalNextWidget != NULL) 
+					UiModule::instance()->activateWidget(myHorizontalNextWidget);
+			}
+		}
+	}
+
 	Vector2f pos2d = vector3to2(evt.getPosition());
 	if(myActive)
 	{
@@ -132,18 +181,13 @@ void Widget::handleEvent(const Event& evt)
 					myActive = false;
 					evt.setProcessed();
 				}
-				//if(evt.getType() == Event::Rotate)
-				//{
-				//	myRotation += evt.rotation[0];
-				//	evt.setProcessed();
-				//}
 			}
 		}
 	}
 	else
 	{
 		myMoving = false;
-		myActive = false;
+		//myActive = false;
 	}
 }
 

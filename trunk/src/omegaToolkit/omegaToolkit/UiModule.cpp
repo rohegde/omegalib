@@ -37,9 +37,15 @@ UiModule* UiModule::mysInstance = NULL;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
 	ServerModule("UiModule"),
-	myWidgetFactory(NULL)
+	myWidgetFactory(NULL),
+	myPointerInteractionEnabled(true),
+	myGamepadInteractionEnabled(false),
+	myActiveWidget(NULL)
 {
 	mysInstance = this;
+
+	// Clean the widget table
+	memset(myWidgets, 0, MaxWidgets * sizeof(void*));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +120,15 @@ void UiModule::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::handleEvent(const Event& evt)
 {
-	myUi->handleEvent(evt);
+	// If we have an active widget, it always gets the first chance of processing the event.
+	if(myActiveWidget != NULL)
+	{
+		myActiveWidget->handleEvent(evt);
+	}
+	if(!evt.isProcessed())
+	{
+		myUi->handleEvent(evt);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,3 +137,18 @@ ui::Container* UiModule::getUi()
 	return myUi;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+void UiModule::activateWidget(ui::Widget* w)
+{
+	if(myActiveWidget != NULL)
+	{
+		ofmsg("Deactivating widget %1% (%2%)", %myActiveWidget->getId() %myActiveWidget->getName());
+		myActiveWidget->setActive(false);
+	}
+	myActiveWidget = w;
+	if(myActiveWidget != NULL)
+	{
+		ofmsg("Activating widget %1% (%2%)", %w->getId() %w->getName());
+		myActiveWidget->setActive(true);
+	}
+}
