@@ -37,7 +37,9 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 	myType(type),
 	myParent(parent),
 	myContainer(NULL),
-	myButton(NULL)
+	myButton(NULL),
+	myCommand(NULL),
+	myWidget(NULL)
 {
 	UiModule* ui = owner->getManager()->getUiModule();
 	WidgetFactory* wf = ui->getWidgetFactory();
@@ -48,6 +50,8 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 		myContainer->setWidth(200);
 		myContainer->setHeight(200);
 		myContainer->setPosition(Vector2f(10, 10));
+
+		myWidget = myContainer;
 	}
 	else if(parent != NULL)
 	{
@@ -55,8 +59,40 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 		{
 			myButton = wf->createButton("button", parent->myContainer);
 			myButton->setText("Hello World");
+			myWidget = myButton;
+		}
+		if(type == MenuItem::Checkbox)
+		{
+			myButton = wf->createButton("button", parent->myContainer);
+			myButton->setText("Hello Checkbox");
+			myButton->setCheckable(true);
+			myWidget = myButton;
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuItem::setCommand(const String& command)
+{
+	if(myCommand == NULL)
+	{
+		myCommand = new UiScriptCommand(command);
+		myWidget->setUIEventHandler(myCommand);
+	}
+	else
+	{
+		myCommand->setCommand(command);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const String& MenuItem::getCommand()
+{
+	if(myCommand != NULL)
+	{
+		return myCommand->getCommand();
+	}
+	return "";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +129,9 @@ void Menu::show()
 	omsg("Menu show");
 	Container* c = myRootItem->getContainerWidget();
 	c->setVisible(true);
+	UiModule::instance()->activateWidget(c);
+	UiModule::instance()->setGamepadInteractionEnabled(true);
+	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +140,9 @@ void Menu::hide()
 	omsg("Menu hide");
 	Container* c = myRootItem->getContainerWidget();
 	c->setVisible(false);
+	UiModule::instance()->activateWidget(NULL);
+	UiModule::instance()->setGamepadInteractionEnabled(false);
+	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,6 +208,8 @@ Menu* MenuManager::createMenu(const String& name)
 {
 	Menu* menu = new Menu(name, this);
 	myMenuDictionary[name] = menu;
+	// Set not visible by default.
+	menu->hide();
 	return menu;
 }
 

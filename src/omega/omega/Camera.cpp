@@ -124,8 +124,15 @@ void Camera::setup(Setting& s)
     setPosition(camPos);
 
 	//set orientation of camera
-	Vector3f camOri = Config::getVector3fValue("orientation", s); 
-    setOrientation(camOri);
+	// NOTE: we want to either read orientation from the config or keep the default one.
+	// Since orientation is expressed in yaw, pitch roll in the config file but there is no
+	// way to get that from the camera (rotation is only as a quaternion) we cannot use the default
+	// value in the Config::getVector3fValue.
+	if(s.exists("orientation"))
+	{
+		Vector3f camOri = Config::getVector3fValue("orientation", s); 
+		setOrientation(camOri);
+	}
 
 	//setup camera controller.  The camera needs to be setup before this otherwise its values will be rewritten/
 	String controllerName;

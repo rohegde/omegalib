@@ -411,10 +411,16 @@ void PythonInterpreter::initialize(const char* programName) { }
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods) { }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::eval(const String& script, const char* format, ...) { }
+void PythonInterpreter::eval(const String& script, const char* format, ...) 
+{ 
+	ofwarn("PythonInterpreter::eval: Python interpreter not available on this system. (%1%)", %script);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PythonInterpreter::runFile(const String& filename) { }
+void PythonInterpreter::runFile(const String& filename) 
+{ 
+	ofwarn("PythonInterpreter::runFile: Python interpreter not available on this system. (%1%)", %fileName);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::registerCallback(void* callback, CallbackType type) { }

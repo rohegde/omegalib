@@ -123,6 +123,18 @@ namespace omegaToolkit { namespace ui {
         bool isVisible();
         void setVisible(bool value);
 
+		bool isActive() { return myActive; }
+		void setActive(bool value) 
+		{
+			myActive = value; 
+			//if(myActive != value)
+			{
+				if(value) activate();
+				else deactivate();
+			}
+			//ofmsg("Widget %1% active: %2%", %myId %value);
+		} 
+
         bool isUserMoveEnabled() { return myUserMoveEnabled; }
         void setUserMoveEnabled(bool value) { myUserMoveEnabled = value; }
         
@@ -135,7 +147,26 @@ namespace omegaToolkit { namespace ui {
 
         void setStereo(bool value) { myStereo = value; }
         bool isStereo() { return myStereo; }
+
+		bool isGamepadInteractionEnabled();
+		bool isPointerInteractionEnabled();
+
+		void setHorizontalNextWidget(Widget* value) { myHorizontalNextWidget = value; }
+		Widget* getHorizontalNextWidget() { return myHorizontalNextWidget; }
+
+		void setHorizontalPrevWidget(Widget* value) { myHorizontalPrevWidget = value; }
+		Widget* getHorizontalPrevWidget() { return myHorizontalPrevWidget; }
+
+		void setVerticalNextWidget(Widget* value) { myVerticalNextWidget = value; }
+		Widget* getVerticalNextWidget() { return myVerticalNextWidget; }
+
+		void setVerticalPrevWidget(Widget* value) { myVerticalPrevWidget = value; }
+		Widget* getVerticalPrevWidget() { return myVerticalPrevWidget; }
+
     protected:
+		virtual void activate() { }
+		virtual void deactivate() {}
+
         //! internal layout management
         //@{
         void requestLayoutRefresh();
@@ -144,6 +175,7 @@ namespace omegaToolkit { namespace ui {
         //@}
 
         void setContainer(Container* value);
+		Container* getContainer() { return myContainer; }
         Vector2f transformPoint(const omega::Vector2f& point);
         void dispatchUIEvent(const Event& evt);
 
@@ -162,6 +194,11 @@ namespace omegaToolkit { namespace ui {
         static NameGenerator mysNameGenerator;
 
         unsigned int myId;
+		// Widget links for button-based navigation
+		Widget* myHorizontalNextWidget;
+		Widget* myHorizontalPrevWidget;
+		Widget* myVerticalPrevWidget;
+		Widget* myVerticalNextWidget;
 
         omega::String myName;
         Container* myContainer;

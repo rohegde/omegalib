@@ -64,6 +64,8 @@ namespace omegaToolkit { namespace ui {
 		//! Find a child by its name
 		Widget* getChildByName(const String& name);
 		Widget* getChildByIndex(int index);
+		Widget* getChildBefore(const Widget* w);
+		Widget* getChildAfter(const Widget* w);
 		//@}
 
 		//!Layout options
@@ -87,6 +89,9 @@ namespace omegaToolkit { namespace ui {
 		virtual void updateSize();
 		virtual void layout();
 
+	protected:
+		virtual void activate();
+
 	private:
 		int expandStep(int childSpace, Orientation orientation);
 		void updateChildrenLayoutPosition(Orientation orientation);
@@ -94,6 +99,7 @@ namespace omegaToolkit { namespace ui {
 		void resetChildrenSize(Orientation orientation);
 		void computeLinearLayout(Orientation orientation);
 		void computeGridLayout(Orientation orientation);
+		void updateChildrenNavigation();
 
 	private:
 		List<Widget*> myChildren;

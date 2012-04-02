@@ -76,6 +76,9 @@ namespace cyclops {
 		const String& getDescription() { return myDescription; }
 		void setDescription(const String& value) { myDescription = value; }
 
+		void setCommand(const String& command);
+		const String& getCommand();
+
 		//! Submenu methods.
 		//@{
 		MenuItem* addItem(MenuItem::Type type);
@@ -88,6 +91,8 @@ namespace cyclops {
 		MenuItem* myParent;
 		Type myType;
 
+		UiScriptCommand* myCommand;
+
 		List<MenuItem*> mySubMenuItems;
 
 		IMenuListener* myListener;
@@ -95,6 +100,7 @@ namespace cyclops {
 		String myDescription;
 		int myValue;
 
+		omegaToolkit::ui::Widget* myWidget;
 		omegaToolkit::ui::Container* myContainer;
 		omegaToolkit::ui::Button* myButton;
 	};
@@ -107,6 +113,7 @@ namespace cyclops {
 
 		MenuManager* getManager() { return myManager; }
 		MenuItem* getRoot() { return myRootItem; }
+
 		void show();
 		void hide();
 		void toggle();

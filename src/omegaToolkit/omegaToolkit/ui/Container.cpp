@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/ui/Container.h"
+#include "omegaToolkit/UiModule.h"
 
 using namespace omega;
 using namespace omegaToolkit;
@@ -121,6 +122,7 @@ void Container::addChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.push_back(child);
 	child->setContainer(this);
+	updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,16 +131,19 @@ void Container::removeChild(Widget* child)
 	requestLayoutRefresh();
 	myChildren.remove(child);
 	child->setContainer(NULL);
+	updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::removeChild(const String& name)
 {
+	requestLayoutRefresh();
 	Widget* w = getChildByName(name);
 	if(w != NULL)
 	{
 		myChildren.remove(w);
 	}
+	updateChildrenNavigation();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,6 +152,30 @@ Widget* Container::getChildByName(const String& name)
 	foreach(Widget* w, myChildren)
 	{
 		if(w->getName() == name) return w;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Widget* Container::getChildBefore(const Widget* child)
+{
+	Widget* prev = NULL;
+	foreach(Widget* w, myChildren)
+	{
+		if(child == w) return prev;
+		prev = w;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Widget* Container::getChildAfter(const Widget* child)
+{
+	bool found = false;
+	foreach(Widget* w, myChildren)
+	{
+		if(found) return w;
+		if(child == w) found = true;
 	}
 	return NULL;
 }
@@ -173,6 +202,36 @@ void Container::updateSize()
 		w->updateSize();
 	}
 	Widget::autosize();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::updateChildrenNavigation()
+{
+	foreach(Widget* w, myChildren)
+	{
+		if(myLayout == LayoutHorizontal)
+		{
+			w->setHorizontalNextWidget(getChildAfter(w));
+			w->setHorizontalPrevWidget(getChildBefore(w));
+			Container* parent = getContainer();
+			if(parent = NULL)
+			{
+				w->setVerticalNextWidget(parent->getChildAfter(this));
+				w->setVerticalPrevWidget(parent->getChildBefore(this));
+			}
+		}
+		else
+		{
+			w->setVerticalNextWidget(getChildAfter(w));
+			w->setVerticalPrevWidget(getChildBefore(w));
+			Container* parent = getContainer();
+			if(parent = NULL)
+			{
+				w->setHorizontalNextWidget(parent->getChildAfter(this));
+				w->setHorizontalPrevWidget(parent->getChildBefore(this));
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -377,14 +436,29 @@ void Container::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::handleEvent(const Event& evt)
 {
-	Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
+	//Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	
-	transformPoint(point);
+	//transformPoint(point);
 
-	foreach(Widget* w, myChildren)
+	if(isPointerInteractionEnabled())
 	{
-		w->handleEvent(evt);
+		// For pointer interaction, just dispatch the event to all children
+		foreach(Widget* w, myChildren)
+		{
+			w->handleEvent(evt);
+		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::activate()
+{
+	// Activate is rerouted by default to first child. If this container has no children,
+	// mark no widget as active.
+	Widget* child = getChildByIndex(0);
+	if(child != NULL) UiModule::instance()->activateWidget(child);
+	else UiModule::instance()->activateWidget(NULL);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

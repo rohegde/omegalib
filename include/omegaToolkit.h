@@ -48,6 +48,7 @@
 #include "omegaToolkit/SceneEditorModule.h"
 #include "omegaToolkit/Teapot.h"
 #include "omegaToolkit/UiModule.h"
+#include "omegaToolkit/UiScriptCommand.h"
 
 #include "omegaToolkit/ui/AbstractButton.h"
 #include "omegaToolkit/ui/Button.h"

@@ -40,7 +40,6 @@ SET( srcs
 		
 if(OMEGA_USE_PYTHON)
 SET( srcs ${srcs}
-		omegaVtk/PythonUIEventHandler.cpp
 		omegaVtk/PyVtk.cpp
 		omegaVtk/omegaVtkPythonApi.cpp
         )
@@ -51,7 +50,6 @@ endif()
 SET( headers 
 		# omega
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/ovtkbase.h
-		${CMAKE_SOURCE_DIR}/include/omegaVtk/PythonUIEventHandler.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/PyVtk.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/VtkModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaVtk/vtkGenericOpenGLRenderWindow.h

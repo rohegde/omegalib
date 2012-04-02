@@ -207,10 +207,7 @@ PyObject* cameraSetOrientation(PyObject* self, PyObject* args)
 	Camera* cam= PYCAP_GET(pyCam, Camera);
 	if(cam != NULL)
 	{
-		Quaternion qyaw = Quaternion(AngleAxis(yaw * Math::DegToRad, Vector3f::UnitY()));
-		Quaternion qpitch = Quaternion(AngleAxis(pitch * Math::DegToRad, Vector3f::UnitX()));
-		Quaternion qroll = Quaternion(AngleAxis(roll * Math::DegToRad, Vector3f::UnitZ()));
-		cam->setOrientation(qyaw * qpitch * qroll);
+		cam->setOrientation(Vector3f(yaw, pitch, roll));
 	}
     Py_INCREF(Py_None);
     return Py_None;

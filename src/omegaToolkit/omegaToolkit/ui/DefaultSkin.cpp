@@ -39,7 +39,12 @@ void DefaultButtonRenderable::drawContent()
 
 	DrawInterface* painter = getRenderer();
 
-	painter->drawRect(Vector2f::Zero(), myOwner->getSize(), myOwner->getColor());
+	Color& col = myOwner->getColor();
+	if(myOwner->isActive())
+	{
+		col = col.scale(1.8f);
+	}
+	painter->drawRect(Vector2f::Zero(), myOwner->getSize(), col);
 	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
 
 	Vector2f size = myOwner->getSize();
