@@ -1,7 +1,7 @@
 # Blender v2.62 (sub 0) OBJ File: ''
 # www.blender.org
 mtllib RailAltered.mtl
-o Mesh_Rail
+o Mesh_Mesh_Rail
 v 2.500000 -0.037950 -0.054100
 v -2.500000 -0.037950 -0.054100
 v -2.500000 -0.035950 -0.084000

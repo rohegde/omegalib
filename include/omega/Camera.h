@@ -95,8 +95,9 @@ namespace omega {
 		void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
 		const Quaternion& getOrientation();
-		void setOrientation(const Quaternion& value);
-
+		void setOrientation(const Quaternion& value, bool resetController=true);
+		void setOrientation(const Vector3f& yawPitchRoll);
+				
 		const Vector3f& getPosition();
 		void setPosition(const Vector3f& value);
 
@@ -201,8 +202,13 @@ namespace omega {
 	{ return myOrientation; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setOrientation(const Quaternion& value) 
-	{ myOrientation = value; setModelView(myPosition, myOrientation);}
+	inline void Camera::setOrientation(const Quaternion& value, bool resetController)
+	{ 
+		myOrientation = value; 
+		setModelView(myPosition, myOrientation);
+
+		if( resetController && myController != NULL) myController->reset();
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline const Vector3f& Camera::getPosition() 
@@ -211,6 +217,12 @@ namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setPosition(const Vector3f& value) 
 	{ myPosition = value; setModelView(myPosition, myOrientation); }
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void Camera::setOrientation(const Vector3f& yawPitchRoll) 
+	{ 
+		Quaternion orientation =   AngleAxis(yawPitchRoll[0]*Math::DegToRad, Vector3f::UnitX()) * AngleAxis(yawPitchRoll[1]*Math::DegToRad, Vector3f::UnitY()) * AngleAxis(yawPitchRoll[2]*Math::DegToRad, Vector3f::UnitZ());
+		setOrientation(orientation);
+	}
 }; // namespace omega
 
 #endif
