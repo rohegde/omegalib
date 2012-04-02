@@ -60,13 +60,19 @@ public:
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt);
-	
+
+	//setup methods for camera behavior
+	void setupCameraBehavior( );
+	void camTrans( Vector3f pos );
+	void camRot( Vector3f pitchYawRoll );
+
 	//the data sets
 	void initializeData();
 	bool loadData( String configAttr , Vector<float> &dataVector , bool pos );
-	
+
 	//updating a specific entity
 	void updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep );
+	void updateCamera( vector<float> pos , vector<float> rot, int curTimeStep );
 
 	//animation info data structure
 	Vector<float> wheel_PVec;
@@ -83,10 +89,11 @@ public:
 	int numTimeSteps;
 
 	//scene flags
-	bool rotation;
 	bool isAnimating;
-};
+	bool isFreeFly;
+	bool isFollowing;
 
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OmegaViewer::OmegaViewer()
@@ -197,7 +204,6 @@ bool OmegaViewer::loadData( String configAttr , Vector<float> &dataVector , bool
 	return successful;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OmegaViewer::initialize()
 {
@@ -205,15 +211,11 @@ void OmegaViewer::initialize()
 	omegaToolkitPythonApiInit();
 	cyclopsPythonApiInit();
 #endif
+	//~~~~~~ Setup the camera stuff 
+	isFreeFly = true;
+	setupCameraBehavior( );
 
-
-	// Setup the camera
-	// Each server controls a set of renderers for different displays  
-	// getServer returns the engine server, which is a local instance of OmegaLib
-	//getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
-	//getServer()->getDefaultCamera()->setController(new KeyboardMouseCameraController());
-	//getServer()->getDefaultCamera()->setControllerEnabled(true);
-
+	//~~~~~~ Form context to scene nodes that represent the .objs
 	railFailEntity = sceneMngr->findEntity( 0 );
 	if(!railFailEntity) owarn("Rail not loaded");
 	else omsg("Rail loaded");
@@ -228,11 +230,10 @@ void OmegaViewer::initialize()
 
 	initializeData();
 
-	isAnimating = true;
-	rotation = true;
 	curTime = 0;
-	animationTimer = 20.0;
-
+	animationTimer = 10.0;
+	isAnimating = true;
+	isFollowing = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,20 +248,38 @@ void OmegaViewer::handleEvent(const Event& evt)
 	//	EngineClient::handleEvent(evt);
 	//}
 
-	if(evt.isKeyDown('R'))
-    {
-		owarn("The R key was hit");
-	}
-	else if(evt.isKeyDown('A'))
+	if(evt.isKeyDown('A'))
     {
 		isAnimating = !isAnimating;
-		ofwarn("Animation set to ::  %1%", %isAnimating);
+		ofwarn("Animation set to :: %1%", %isAnimating);
 	}
 
-		
+	else if(evt.isKeyDown('c'))
+    {
+		isFreeFly = !isFreeFly;
+		setupCameraBehavior( );
+	}
+	
+	//Set to the Hardcoded origin
+	else if(evt.isKeyDown('h'))
+    {
+		camTrans( Vector3f( 15.0 , 8.0 , 27.0 ) );
+		camRot( Vector3f( 25.0 , 0.0 , 0.0 ) );
+		isFreeFly = true;
+		isFollowing = false;
+	}
+
+	//Set to the Hardcoded origin
+	else if(evt.isKeyDown('t'))
+    {
+		//isFreeFly = false;
+		isFollowing = true;
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
 void OmegaViewer::update(const UpdateContext& context) 
 {
 	if( (curTime < animationTimer && isAnimating) )
@@ -280,11 +299,19 @@ void OmegaViewer::update(const UpdateContext& context)
 		updateEntity ( wheelSetEntity , wheel_PVec , wheel_RVec, curTimeStep ); 
 		updateEntity ( frameEntity , frame_PVec , frame_RVec, curTimeStep ); 
 		curTime += context.dt;
+
+		if( isFollowing )
+		{
+			setupCameraBehavior( );	//will turn off freeFly assuming flag set
+			updateCamera( wheel_PVec , wheel_RVec, curTimeStep );
+		}
 	}
-	else curTime = 0;
+	else if( curTime >= animationTimer ) curTime = 0;	//reset the timer
+	else if( !isAnimating ) return;						//do nothing cause animation has paused
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
 void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep ) 
 {
 	int actualVecIndex = curTimeStep * 4;
@@ -295,28 +322,62 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 	position.push_back( pos[actualVecIndex+3]);
 	entity->getSceneNode()->setPosition( position[0] , position[1] , position[2] );
 
-	if( rotation)
-	{
-		//!!!!! HACK !!!!!//	Data set has a weird rotation
-		//Quaternion for a 90 deg X-axis rotation
-		Quaternion newAxis = AngleAxis(-Math::HalfPi, Vector3f::UnitX()) ;
-		Quaternion rotation;
-		rotation.x() = rot[actualVecIndex+0];
-		rotation.y() = rot[actualVecIndex+1];
-		rotation.z() = rot[actualVecIndex+2];
-		rotation.w() = rot[actualVecIndex+3];
+	//!!!!! HACK !!!!!//	Data set has a weird rotation
+	//Quaternion for a 90 deg X-axis rotation
+	Quaternion newAxis = AngleAxis(-Math::HalfPi, Vector3f::UnitX()) ;
+	Quaternion rotation;
+	rotation.x() = rot[actualVecIndex+0];
+	rotation.y() = rot[actualVecIndex+1];
+	rotation.z() = rot[actualVecIndex+2];
+	rotation.w() = rot[actualVecIndex+3];
 		
-		//90 degree rotation will turn the object side ways
-		rotation = newAxis * rotation;
-		
-		entity->getSceneNode()->setOrientation( rotation );
+	//90 degree rotation will turn the object side ways
+	//Apply the rotation
+	rotation = newAxis * rotation;
+	entity->getSceneNode()->setOrientation( rotation );
 
-	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//if ( entity->getId() == 1)
-	//{
-	//	printf("%d :: wheel :: %f :: %f :: %f\n" , curTimeStep, position[0], position[1], position[2] );
-	//}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTimeStep )
+{
+	//Hardcoded :: the following location
+	int actualVecIndex = curTimeStep * 4;
+	Vector<float> position;
+	position.push_back( pos[actualVecIndex+0] - 5);
+	position.push_back( -0.5 );
+	position.push_back( -0.22 );
+	camTrans( Vector3f( position[0] , position[1] , position[2] ) );
+
+	//Hardcoded :: the following orientation
+	camRot( Vector3f( 0.0, 90.0, 0.0 ) );
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+void OmegaViewer::camRot( Vector3f pitchYawRoll )
+{
+	ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
+	getServer()->getDefaultCamera()->setOrientation(pitchYawRoll);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+void OmegaViewer::camTrans( Vector3f pos)
+{
+	ofwarn("Moving Camera to :: %1%", %pos);
+	getServer()->getDefaultCamera()->setPosition(pos);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+void OmegaViewer::setupCameraBehavior( )
+{
+	//enable/disable the free fly
+	getServer()->getDefaultCamera()->setControllerEnabled(isFreeFly);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -119,6 +119,15 @@ Camera::Camera(uint flags):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::setup(Setting& s)
 {
+	//set position of camera
+    Vector3f camPos = Config::getVector3fValue("position", s, getPosition()); 
+    setPosition(camPos);
+
+	//set orientation of camera
+	Vector3f camOri = Config::getVector3fValue("orientation", s); 
+    setOrientation(camOri);
+
+	//setup camera controller.  The camera needs to be setup before this otherwise its values will be rewritten/
 	String controllerName;
 	controllerName = Config::getStringValue("controller", s);
 	StringUtils::toLowerCase(controllerName);
@@ -137,9 +146,6 @@ void Camera::setup(Setting& s)
 			setControllerEnabled(true);
 		}
 	}
-
-    Vector3f camPos = Config::getVector3fValue("position", s, getPosition()); 
-    setPosition(camPos);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

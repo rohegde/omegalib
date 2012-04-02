@@ -48,13 +48,13 @@ namespace omega {
 			};
 
 	public:
-		CameraController(): myCamera(NULL) {}
+		CameraController(): myCamera(NULL), myOriginalOrientation( Quaternion::Identity() ) {}
 
 		virtual void setup(Setting& s) {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
-
-		void setCamera(Camera* value) { myCamera = value; }
+		virtual void reset(); 
+		void setCamera(Camera* value) { myCamera = value; reset();}
 		Camera* getCamera() { return myCamera; }
 
 		//! Utility method: updates the camera position using speed, yaw pich roll, and a time step.
@@ -66,6 +66,7 @@ namespace omega {
 
 	private:
 		Camera* myCamera;
+		Quaternion myOriginalOrientation;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,7 +74,6 @@ namespace omega {
 	{
 	public:
 		KeyboardMouseCameraController();
-
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
