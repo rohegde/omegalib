@@ -42,7 +42,7 @@
                
             </Entities>
              <Primitives>
-				<Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="railsim/test/materials/ground.material" Name="Plane_1" Rotation="0 0 0" Scale="50 1 50" Tiling="5 5" WorldPos="10 -0.64 -2" />
+				<Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="railsim/test/materials/ground.material" Name="Plane_1" Rotation="0 0 0" Scale="50 1 50" Tiling="15 15" WorldPos="10 -0.64 -2" />
 				</Primitives>
         </MapContents>
     </MapData>
