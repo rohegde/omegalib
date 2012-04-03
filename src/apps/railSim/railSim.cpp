@@ -261,7 +261,7 @@ void OmegaViewer::handleEvent(const Event& evt)
 	}
 	
 	//Set to the Hardcoded origin
-	else if(evt.isKeyDown('h'))
+	else if(evt.isKeyDown('h') || evt.isButtonDown(Event::Button3))
     {
 		camTrans( Vector3f( 15.0 , 8.0 , 27.0 ) );
 		camRot( Vector3f( 25.0 , 0.0 , 0.0 ) );
@@ -270,7 +270,7 @@ void OmegaViewer::handleEvent(const Event& evt)
 	}
 
 	//Set to the Hardcoded origin
-	else if(evt.isKeyDown('t'))
+	else if(evt.isKeyDown('t') || evt.isButtonDown(Event::Button4))
     {
 		//isFreeFly = false;
 		isFollowing = true;
@@ -384,7 +384,7 @@ void OmegaViewer::setupCameraBehavior( )
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<OmegaViewer> app("orun");
+	Application<OmegaViewer> app("railSim");
 	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
 	return omain(app, argc, argv);
 }

@@ -39,7 +39,7 @@ void DefaultButtonRenderable::drawContent()
 
 	DrawInterface* painter = getRenderer();
 
-	Color& col = myOwner->getColor();
+	Color col = myOwner->getColor();
 	if(myOwner->isActive())
 	{
 		col = col.scale(1.8f);
