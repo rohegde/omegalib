@@ -406,6 +406,10 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 			omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
 
 			em[material.name] = SceneManager::instance()->loadMaterial(materialName);
+			if(em[material.name] != NULL)
+			{
+				em[material.name]->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+			}
 		}
 	}
 }
@@ -459,15 +463,15 @@ osg::Node* ReaderXOBJ::convertModelToSceneGraph(obj::Model& model, ObjOptionsStr
             geode->addDrawable(geometry);
 
 			// Set geometry texture coords
-			//geometry->setTexCoordArray(1, geometry->getTexCoordArray(0));
-			//geometry->setTexCoordArray(2, geometry->getTexCoordArray(0));
+			geometry->setTexCoordArray(1, geometry->getTexCoordArray(0));
+			geometry->setTexCoordArray(2, geometry->getTexCoordArray(0));
             
 			// Generate tangent space for geometry
-			//osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-			//tsg->generate(geometry, 0);
-			//osg::Vec4Array* a_tangent = tsg->getTangentArray();
-			//geometry->setVertexAttribArray (6, a_tangent);
-			//geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+			osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+			tsg->generate(geometry, 0);
+			osg::Vec4Array* a_tangent = tsg->getTangentArray();
+			geometry->setVertexAttribArray (6, a_tangent);
+			geometry->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
 			// Set geometry material
 			osg::StateSet* mat = fxs[es.materialName];
