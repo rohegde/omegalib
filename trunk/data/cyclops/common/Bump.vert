@@ -30,7 +30,7 @@ void main(void)
 	v.z = dot(vVec, n);
 	viewVec = v;
 
-	vec3 lVec = normalize(vec3(gl_LightSource[0].position));
+	vec3 lVec = normalize(vec3(gl_LightSource[0].position.xyz - vVertex));
 	
 	v.x = dot(lVec, t);
 	v.y = dot(lVec, b);
