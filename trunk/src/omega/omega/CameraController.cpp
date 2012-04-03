@@ -148,8 +148,8 @@ void GamepadCameraController::update(const UpdateContext& context)
 WandCameraController::WandCameraController():
 	mySpeed(2.0f),
 	myStrafeMultiplier(1.0f),
-	myYawMultiplier(0.002f),
-	myPitchMultiplier(0.002f),
+	myYawMultiplier(1.00f),
+	myPitchMultiplier(-1.0f),
 	myYaw(0),
 	myPitch(0),
 	myMoveFlags(0)
@@ -171,10 +171,12 @@ void WandCameraController::handleEvent(const Event& evt)
 		myMoveFlags = evt.getFlags();
 		if(evt.isFlagSet(Event::Left)) myRotating = true;
 		else myRotating = false;
-			
+	
+	
 		if(myRotating)
 		{
 			Vector3f dpos = evt.getPosition() - myLastPointerPosition;
+			ofmsg("pos %1%, dpos: %2%", %evt.getPosition() %dpos);
 			myYaw += dpos.x() * myYawMultiplier;
 			myPitch += dpos.y() * myPitchMultiplier;
 		}

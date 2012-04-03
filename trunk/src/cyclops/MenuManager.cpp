@@ -86,7 +86,7 @@ void MenuItem::setCommand(const String& command)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const String& MenuItem::getCommand()
+String MenuItem::getCommand()
 {
 	if(myCommand != NULL)
 	{
