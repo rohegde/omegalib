@@ -1,7 +1,7 @@
 # Blender v2.62 (sub 0) OBJ File: ''
 # www.blender.org
 mtllib theWheelSet.mtl
-o Mesh_WheelsetOriginal
+o Mesh_Mesh_Mesh_WheelsetOriginal
 v 0.056200 0.778200 0.055050
 v 0.068800 0.794700 0.039350
 v 0.068601 0.778200 0.039450
@@ -16153,7 +16153,7 @@ vt 0.059292 0.722192
 vt 0.080863 0.599618
 vt 0.072178 0.732522
 vt 0.153413 0.755730
-usemtl material_0_rustPitted.jpg
+usemtl material_0_rustPitted.jpg_rustPitted.jpg.001_rustPitted.jpg.001
 s off
 f 1/1 2/2 3/3
 f 1/4 3/5 4/6
