@@ -98,7 +98,7 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     memcpy(mw.data(), getHeadTransform().begin(), 16 * sizeof(float));
     memcpy(context->projection.data(), getFrustum().compute_matrix().begin(), 16 * sizeof(float));
 
-    context->modelview = ds->getObserver(0)->getViewTransform() * mw;
+    context->modelview = m * ds->getObserver(0)->getViewTransform();
 
     // Setup draw buffer
     if(myDrawBuffer == NULL)
