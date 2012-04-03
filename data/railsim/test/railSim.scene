@@ -11,19 +11,19 @@
 
 		<StaticObjects>
         <!-- Left Rail Positions :: there are 6 of them -->
-			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="27.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="27.5 -0.55 1.19" />
 
 			<!-- Right Rail Positions :: there are 5 of them -->
-            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 -0.28" />	
+            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 -0.28" />	
               
 			<!-- This is the railstation -->
 			<staticobject FileIndex="3" Id="-1" Rotation="0 90 0" Scale="1 1 1" Tag="" WorldPos="17 -0.64 -16" />

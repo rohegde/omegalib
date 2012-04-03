@@ -37,6 +37,7 @@ void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitc
 		Quaternion navOrientation = AngleAxis(roll, Vector3f::UnitZ()) * AngleAxis(-yaw, Vector3f::UnitY()) * AngleAxis(-pitch, Vector3f::UnitX());
 		Quaternion orientation =   AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(roll, Vector3f::UnitZ());
 		orientation = orientation * myOriginalOrientation;
+		navOrientation = navOrientation * myOriginalOrientation.inverse();
 		Vector3f ns = navOrientation * speed;
 		Vector3f position = myCamera->getPosition() + (ns * dt);
 		myCamera->setPosition(position);
