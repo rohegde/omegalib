@@ -77,7 +77,8 @@ namespace cyclops {
 		void setDescription(const String& value) { myDescription = value; }
 
 		void setCommand(const String& command);
-		const String& getCommand();
+		String getCommand();
+		
 
 		//! Submenu methods.
 		//@{
