@@ -1,5 +1,5 @@
 <Material>
-    <Main DepthTest="True" HeightMapScale="0.05" Type="Textured" />
+    <Main DepthTest="True" HeightMapScale="0.05" Type="Bump" />
 	<Colors Diffuse="1 0 0 1"/>
     <TextureUnits>
         <Diffuse File="rockwall.tga"/>

@@ -1,6 +1,6 @@
 <Material>
-    <Main DepthTest="True" HeightMapScale="0.05" Type="Textured" />
-	<Colors Diffuse="1 0 0 1"/>
+    <Main DepthTest="True" HeightMapScale="0.05" Type="Bump" />
+	<Colors Diffuse="0.2 0.2 0.2 1"/>
     <TextureUnits>
         <Diffuse File="ground.jpg"/>
         <NMap File="ground_normal.jpg"/>
