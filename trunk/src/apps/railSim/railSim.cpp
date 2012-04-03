@@ -377,13 +377,17 @@ void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTi
 	//Hardcoded :: the following location
 	int actualVecIndex = curTimeStep * 4;
 	Vector<float> position;
-	position.push_back( pos[actualVecIndex+0] - 5);
-	position.push_back( -0.45 );
-	position.push_back( -0.32 );
+	//position.push_back( pos[actualVecIndex+0] - 5);
+	//position.push_back( -0.25 );
+	//position.push_back( -0.25 );
+
+	position.push_back( pos[actualVecIndex+0] - 3);
+	position.push_back( -0.25 );
+	position.push_back( -0.25 );
 	camTrans( Vector3f( position[0] , position[1] , position[2] ) );
 
 	//Hardcoded :: the following orientation
-	camRot( Vector3f( 0.0, 90.0, 0.0 ) );
+	camRot( Vector3f( 10.0, 75.0, 0.0 ) );
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -391,7 +395,7 @@ void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTi
 // 
 void OmegaViewer::camRot( Vector3f pitchYawRoll )
 {
-	ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
+	//ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
 	getServer()->getDefaultCamera()->setOrientation(pitchYawRoll);
 }
 
@@ -399,7 +403,7 @@ void OmegaViewer::camRot( Vector3f pitchYawRoll )
 // 
 void OmegaViewer::camTrans( Vector3f pos)
 {
-	ofwarn("Moving Camera to :: %1%", %pos);
+	//ofwarn("Moving Camera to :: %1%", %pos);
 	getServer()->getDefaultCamera()->setPosition(pos);
 }
 
