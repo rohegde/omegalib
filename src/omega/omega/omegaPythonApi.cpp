@@ -456,6 +456,9 @@ static PyMethodDef omegaMethods[] =
 {
 	// Camera API
     {"cameraGetDefault", cameraGetDefault, METH_VARARGS, "NO INFO"},
+    {"cameraSetPosition", cameraSetPosition, METH_VARARGS, "NO INFO"},
+    {"cameraGetPosition", cameraGetPosition, METH_VARARGS, "NO INFO"},
+    {"cameraSetOrientation", cameraSetOrientation, METH_VARARGS, "NO INFO"},
     {"cameraEnableNavigation", cameraEnableNavigation, METH_VARARGS, "NO INFO"},
     {"cameraDisableNavigation", cameraDisableNavigation, METH_VARARGS, "NO INFO"},
 
