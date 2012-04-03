@@ -62,9 +62,10 @@ public:
 	virtual void handleEvent(const Event& evt);
 
 	//setup methods for camera behavior
-	void setupCameraBehavior( );
+	void toggleCameraController( );
 	void camTrans( Vector3f pos );
 	void camRot( Vector3f pitchYawRoll );
+	void camDefault();
 
 	//the data sets
 	void initializeData();
@@ -85,14 +86,17 @@ public:
 
 	//animation varaibles
 	float animationTimer;
+	float animationPadding;
 	float curTime;
 	int numTimeSteps;
+	int curTimeStep;
+	int prevTimeStep;
 
 	//scene flags
 	bool isAnimating;
+	bool isKeyFraming;
 	bool isFreeFly;
 	bool isFollowing;
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,10 +215,6 @@ void OmegaViewer::initialize()
 	omegaToolkitPythonApiInit();
 	cyclopsPythonApiInit();
 #endif
-	//~~~~~~ Setup the camera stuff 
-	isFreeFly = true;
-	setupCameraBehavior( );
-
 	//~~~~~~ Form context to scene nodes that represent the .objs
 	railFailEntity = sceneMngr->findEntity( 0 );
 	if(!railFailEntity) owarn("Rail not loaded");
@@ -232,8 +232,12 @@ void OmegaViewer::initialize()
 
 	curTime = 0;
 	animationTimer = 10.0;
-	isAnimating = true;
-	isFollowing = false;
+	animationPadding = 1.5;
+	
+	prevTimeStep = 0;
+	curTimeStep = 0;
+
+	camDefault();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -250,70 +254,97 @@ void OmegaViewer::handleEvent(const Event& evt)
 
 	if(evt.isKeyDown('A'))
     {
-		isAnimating = !isAnimating;
-		ofwarn("Animation set to :: %1%", %isAnimating);
+		//isAnimating = !isAnimating;
+		//ofwarn("Animation set to :: %1%", %isAnimating);
+
+		isKeyFraming = false;
+		//reverse math to figure out where the keyFrame is time wise
+		float curRatio = (float)curTimeStep / (float)numTimeSteps;
+		curTime = (curRatio * animationTimer) - animationPadding; 
 	}
 
 	else if(evt.isKeyDown('c'))
     {
 		isFreeFly = !isFreeFly;
-		setupCameraBehavior( );
 	}
 	
 	//Set to the Hardcoded origin
 	else if(evt.isKeyDown('h') || evt.isButtonDown(Event::Button3))
     {
-		camTrans( Vector3f( 15.0 , 8.0 , 27.0 ) );
-		camRot( Vector3f( 25.0 , 0.0 , 0.0 ) );
-		isFreeFly = true;
-		isFollowing = false;
+		camTrans( Vector3f( 15.0 , 15.0 , 27.0 ) );
+		camRot( Vector3f( 15.0 , 0.0 , 0.0 ) );
+		camDefault();
 	}
 
-	//Set to the Hardcoded origin
-	else if(evt.isKeyDown('t') || evt.isButtonDown(Event::Button4))
+	//Set to the ride the rail
+	else if(evt.isKeyDown('1') || evt.isButtonDown(Event::Button3))
     {
-		//isFreeFly = false;
+		isFreeFly = true;
 		isFollowing = true;
 	}
 
+	//Set to the ride the rail
+	else if(evt.isKeyDown('2') || evt.isButtonDown(Event::Button4))
+    {
+		isFreeFly = true;
+		isFollowing = false;
+		camTrans( Vector3f( 32.0 , -.25 , .45 ) );
+		camRot( Vector3f( 0.0 , -90.0 , 0.0 ) );
+	}
+
+	//Enable Keyframing 
+	//Set to the Hardcoded origin
+	else if(evt.isKeyDown('o') || evt.isButtonDown(Event::Button5))
+    {
+		isKeyFraming = true;
+		prevTimeStep = curTimeStep-=1; 
+	}
+	//Enable Keyframing 
+	else if(evt.isKeyDown('p') || evt.isButtonDown(Event::Button6))
+    {
+		isKeyFraming = true;
+		prevTimeStep = curTimeStep+=1; 
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 void OmegaViewer::update(const UpdateContext& context) 
 {
+	toggleCameraController( );
+
 	if( (curTime < animationTimer && isAnimating) )
 	{
-		vector<float> pos;
-		vector<float> rot;
-		float ratio = curTime / (animationTimer );
-		int curTimeStep = (int)(numTimeSteps * ratio);		
-		
+		if( !isKeyFraming )
+		{
+			float ratio = ( curTime + animationPadding) / (animationTimer );
+			curTimeStep = (int)(numTimeSteps * ratio);	
+			curTime += context.dt;
+		}
+		if( curTimeStep > numTimeSteps) curTimeStep = numTimeSteps;
+
 		//printf("\n");
 		//printf("\n Time        :: %f " , curTime );
 		//printf("\n dt          :: %f " , context.dt );
 		//printf("\n curTimeStep :: %d " , curTimeStep );
-		//if( isEnd ) curTimeStep = numTimeSteps;
 
 		updateEntity ( railFailEntity , railFail_PVec , railFail_RVec, curTimeStep );
 		updateEntity ( wheelSetEntity , wheel_PVec , wheel_RVec, curTimeStep ); 
 		updateEntity ( frameEntity , frame_PVec , frame_RVec, curTimeStep ); 
-		curTime += context.dt;
 
-		if( isFollowing )
-		{
-			setupCameraBehavior( );	//will turn off freeFly assuming flag set
-			updateCamera( wheel_PVec , wheel_RVec, curTimeStep );
-		}
+		if( isFollowing ) updateCamera( wheel_PVec , wheel_RVec, curTimeStep );
 	}
 	else if( curTime >= animationTimer ) curTime = 0;	//reset the timer
 	else if( !isAnimating ) return;						//do nothing cause animation has paused
+
+	prevTimeStep = curTimeStep;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep ) 
 {
+	//Hardcoded :: the following location
 	int actualVecIndex = curTimeStep * 4;
 	Vector<float> position;
 	position.push_back( pos[actualVecIndex+0]);
@@ -347,8 +378,8 @@ void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTi
 	int actualVecIndex = curTimeStep * 4;
 	Vector<float> position;
 	position.push_back( pos[actualVecIndex+0] - 5);
-	position.push_back( -0.5 );
-	position.push_back( -0.22 );
+	position.push_back( -0.45 );
+	position.push_back( -0.32 );
 	camTrans( Vector3f( position[0] , position[1] , position[2] ) );
 
 	//Hardcoded :: the following orientation
@@ -374,7 +405,18 @@ void OmegaViewer::camTrans( Vector3f pos)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
-void OmegaViewer::setupCameraBehavior( )
+void OmegaViewer::camDefault()
+{
+	isAnimating = true;
+	isKeyFraming = false;
+	isFollowing = false;
+
+	//~~~~~~ Setup the camera stuff 
+	isFreeFly = true;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+void OmegaViewer::toggleCameraController( )
 {
 	//enable/disable the free fly
 	getServer()->getDefaultCamera()->setControllerEnabled(isFreeFly);

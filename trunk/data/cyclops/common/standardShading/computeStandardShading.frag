@@ -8,7 +8,7 @@ vec4 computeStandardShading()
 {
 	vec3 n,halfV,viewV,ldir;
 	float NdotL,NdotHV;
-	vec4 color = vec4(0, 0, 0, 1);
+	vec4 color = gl_LightSource[0].ambient;
 	float att;
 	
 	vec3 N = normalize(var_Normal);
@@ -21,7 +21,7 @@ vec4 computeStandardShading()
 			// gl_LightSource[0].linearAttenuation * dist +
 			// gl_LightSource[0].quadraticAttenuation * dist * dist);
 		att = 1.0;
-		color = diffuseTerm * att * gl_LightSource[0].diffuse;
+		color =  diffuseTerm * att * gl_LightSource[0].diffuse;
 		
 		//halfV = normalize(var_HalfVector);
 
