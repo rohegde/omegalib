@@ -482,7 +482,7 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 	}
 	if(type == "bump")
 	{
-		prog = getProgram("solid", "cyclops/common/Bump.vert", "cyclops/common/Bump.frag");
+		prog = getProgram("bump", "cyclops/common/Bump.vert", "cyclops/common/Bump.frag");
 		prog->addBindAttribLocation ("Tangent", 6);
 	}
 	else if(type == "colored")
@@ -608,7 +608,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 			ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
 			ss->setTextureAttribute(0, getTexture(materialName));
 			ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
-			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+			//ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
 
 			osg::Material* mat = new osg::Material();
 			mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
@@ -621,6 +621,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 			myMaterials[materialName] = ss;
 			return ss;
 		}
+		return material;
 	}
 	return NULL;
 }
@@ -634,9 +635,9 @@ void SceneManager::initShading()
 
 	myLight2 = new osg::Light;
     myLight2->setLightNum(0);
-    myLight2->setPosition(osg::Vec4(20.0, 20, 0, 1.0));
-    myLight2->setAmbient(osg::Vec4(0.2f,0.2f,0.2f,1.0f));
-    myLight2->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+    myLight2->setPosition(osg::Vec4(0.0, 20, -20, 1.0));
+    myLight2->setAmbient(osg::Vec4(1.0f,0.0f,0.0f,1.0f));
+    myLight2->setDiffuse(osg::Vec4(0.5f,0.5f,0.6f,1.0f));
 	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
     myLight2->setLinearAttenuation(1.0f);
     /*myLight2->setConstantAttenuation(1.0f);
@@ -658,11 +659,11 @@ void SceneManager::initShading()
 		ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
 		osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
-		sm->setTextureSize(osg::Vec2s(512, 512));
-		sm->setAmbientBias(osg::Vec2(0.4f, 0.9f));
+		sm->setTextureSize(osg::Vec2s(2048, 2048));
+		sm->setAmbientBias(osg::Vec2(0.4f, 0.8f));
 		sm->setTextureUnit(4);
 		sm->setJitterTextureUnit(5);
-		sm->setSoftnessWidth(0.004);
+		sm->setSoftnessWidth(0.001);
 		sm->setJitteringScale(32);
 
 		ss->addChild(mySceneRoot);
