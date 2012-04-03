@@ -419,7 +419,7 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::runFile(const String& filename) 
 { 
-	ofwarn("PythonInterpreter::runFile: Python interpreter not available on this system. (%1%)", %fileName);
+	ofwarn("PythonInterpreter::runFile: Python interpreter not available on this system. (%1%)", %filename);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
