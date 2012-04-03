@@ -102,11 +102,6 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OmegaViewer::OmegaViewer()
 {
-	//Instanciate an instance of ScenenManager
-	sceneMngr = new SceneManager();
-
-	//Registed the sceneMngr module
-	ModuleServices::addModule(sceneMngr);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,6 +210,11 @@ void OmegaViewer::initialize()
 	omegaToolkitPythonApiInit();
 	cyclopsPythonApiInit();
 #endif
+	//Instanciate an instance of ScenenManager
+	sceneMngr = new SceneManager();
+	sceneMngr->doInitialize(getServer());
+	ModuleServices::addModule(sceneMngr);
+
 	//~~~~~~ Form context to scene nodes that represent the .objs
 	railFailEntity = sceneMngr->findEntity( 0 );
 	if(!railFailEntity) owarn("Rail not loaded");
