@@ -141,8 +141,11 @@ namespace omega
 		
 			SystemManager* sys = SystemManager::instance();
 			DataManager* dm = sys->getDataManager();
-			// Add a default filesystem data source using current work dir.
+			
+			// Add some default filesystem search paths: the default omegalib data path, an empty search path for absolute paths, and the
+			// current program directory path.
 			dm->addSource(new FilesystemDataSource("./"));
+			dm->addSource(new FilesystemDataSource(""));
 			dm->addSource(new FilesystemDataSource(dataPath));
 
 			sys->setApplication(&app);

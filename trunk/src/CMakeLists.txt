@@ -123,6 +123,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	add_subdirectory(cyclops)
 	add_subdirectory(apps/railSim)
 	add_subdirectory(apps/osgviewer)
+	add_subdirectory(apps/structure)
 	
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(tutorial7) 

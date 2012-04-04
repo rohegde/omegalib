@@ -24,101 +24,76 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/PythonInterpreter.h"
-#include "cyclops/SceneManager.h"
-#include "cyclops/SceneLoader.h"
+#include <omega.h>
+#include <cyclops.h>
+#include <omegaToolkit.h>
 
-#ifdef OMEGA_USE_PYTHON
-
-#include "omega/PythonInterpreterWrapper.h"
-
-#define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
-
+using namespace omega;
+using namespace omegaToolkit;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* moduleEnableCyclops(PyObject* self, PyObject* args)
+class StructureViewer: public ServerModule
 {
-	// Create and register the omegalib vtk module.
-	SceneManager* mod = new SceneManager();
-	ModuleServices::addModule(mod);
+public:
+	StructureViewer();
 
-	// Force module initialization.
-	mod->doInitialize(ServerEngine::instance());
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* sceneLoad(PyObject* self, PyObject* args)
-{
-	const char* mapName;
-	if(!PyArg_ParseTuple(args, "s", &mapName)) return NULL;
-
-	SceneManager::instance()->load(mapName);
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* lightSetPosition(PyObject* self, PyObject* args)
-{
-	PyObject* pyNode = NULL;
-	float x, y, z, w;
-	PyArg_ParseTuple(args, "ffff", &x, &y, &z, &w);
-
-	SceneManager::instance()->setLightPosition(x, y, z, w);
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* entitySetPosition(PyObject* self, PyObject* args)
-{
-	PyObject* pyNode = NULL;
-	int id;
-	float x, y, z;
-	PyArg_ParseTuple(args, "ifff", &id, &x, &y, &z);
-
-	Entity* e = SceneManager::instance()->findEntity(id);
-	if(e != NULL)
-	{
-		e->getSceneNode()->setPosition(x, y, z);
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-static PyMethodDef cyMethods[] = 
-{
-    {"moduleEnableCyclops", moduleEnableCyclops, METH_VARARGS, 
-		"moduleEnableVtk()\n" 
-		"Enables cyclops scene manager support."},
-
-    {"sceneLoad", sceneLoad, METH_VARARGS, 
-		"sceneLoad(path)\n" 
-		"Loads a cyclops xml scene file."},
-
-    {"lightSetPosition", lightSetPosition, METH_VARARGS, 
-		"sceneLoad(path)\n" 
-		"Loads a cyclops xml scene file."},
-
-    {"entitySetPosition", entitySetPosition, METH_VARARGS, 
-		"sceneLoad(path)\n" 
-		"Loads a cyclops xml scene file."},
-
-    {NULL, NULL, 0, NULL}
+	virtual void initialize();
+	virtual void handleEvent(const Event& evt);
 };
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-CY_API void cyclopsPythonApiInit()
+StructureViewer::StructureViewer()
 {
-	omsg("cyclopsPythonApiInit()");
-	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-	interp->addModule("cyclops", cyMethods);
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void StructureViewer::initialize()
+{
+#ifdef OMEGA_USE_PYTHON
+	omegaToolkitPythonApiInit();
+	cyclopsPythonApiInit();
 #endif
+
+	// Create and initialize the cyclops scene manager.
+	// If a scene file is specified in the application config file, the scene manager will
+	// load it during initialization.
+	SceneManager* sm = new SceneManager();
+	ModuleServices::addModule(sm);
+	sm->doInitialize(getServer());
+
+	MenuManager* menuMng = new MenuManager();
+	ModuleServices::addModule(menuMng);
+	menuMng->doInitialize(getServer());
+
+	Menu* menu = MenuManager::instance()->createMenu("menu");
+	MenuItem* btn = menu->getRoot()->addItem(MenuItem::Button);
+	btn = menu->getRoot()->addItem(MenuItem::Button);
+	
+	btn = menu->getRoot()->addItem(MenuItem::Checkbox);
+
+	menuMng->setMainMenu(menu);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void StructureViewer::handleEvent(const Event& evt)
+{
+	//if(evt.getServiceType() == Service::UI) 
+	//{
+	//	handleUIEvent(evt);
+	//}
+	//else
+	//{
+	//	EngineClient::handleEvent(evt);
+	//}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Application entry point
+int main(int argc, char** argv)
+{
+	Application<StructureViewer> app("structure");
+	return omain(app, argc, argv);
+}

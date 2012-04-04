@@ -151,70 +151,6 @@ void SceneManager::handleEvent(const Event& evt)
 	{
 		myTabletManager->handleEvent(evt);
 	}
-	if(evt.isKeyDown('l'))
-    {
-		//Vector3f pos = myEngine->getDefaultCamera()->getPosition();
-		//if(myLight2 != NULL)
-		//{
-		//	myLight2->setPosition(Vec4(pos[0], pos[1], pos[2], 1.0f));
-		//	ofmsg("Light Position: %1%", %pos);
-		//}
-	}
-	if(evt.getServiceType() == Service::Ui)
-	{
-		//if(evt.getSourceId() == 0)
-		//{
-		//	frontView = !frontView;
-		//	if(frontView)
-		//	{
-		//		myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
-		//		myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
-		//	}
-		//	else
-		//	{
-		//		myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
-		//		myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
-		//	}
-		//}
-		//if(evt.getSourceId() == 1)
-		//{
-		//	localZoom = (float)evt.getExtraDataInt(0) / 10;
-		//	if(frontView)
-		//	{
-		//		myTabletManager->getCamera()->setPosition(Vector3f(0, 0, localZoom));
-		//		myTabletManager->getCamera()->setOrientation(Quaternion::Identity());
-		//	}
-		//	else
-		//	{
-		//		myTabletManager->getCamera()->setPosition(Vector3f(0, localZoom, 0));
-		//		myTabletManager->getCamera()->setOrientation(AngleAxis(-Math::HalfPi, Vector3f::UnitX()));
-		//	}
-		//}
-		//if(evt.getSourceId() == 2)
-		//{
-		//	remoteZoom = (float)evt.getExtraDataInt(0) / 10;
-		//	//myEngine->getDefaultCamera()->setPosition(Vector3f(0, 0, remoteZoom));
-		//}
-		//if(evt.getSourceId() == 3)
-		//{
-		//	myRotate = evt.getExtraDataInt(0);
-		//	if(myRotate == 1)
-		//	{
-		//		myTabletManager->setEventFlags(Event::Right);
-		//	}
-		//	else
-		//	{
-		//		myTabletManager->setEventFlags(Event::Left);
-		//	}
-		//}
-
-		//myTabletManager->beginGui();
-		//myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-		//myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, (int)(localZoom * 10)));
-		//myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, (int)(remoteZoom * 10)));
-		//myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", myRotate));
-		//myTabletManager->finishGui();
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,7 +189,7 @@ void SceneManager::load(const String& relativePath)
 			ofmsg("Loading scene: %1%...", %relativePath);
 
 			//Instantiate a sceneLoader to load the entites in the XML file
-			SceneLoader* sl = new SceneLoader(doc);
+			SceneLoader* sl = new SceneLoader(doc, fullPath);
 
 			//SceneManager::instance()
 			//	Gets the sceneManager if you do not have a pointer to the singleton sceneManager
@@ -320,7 +256,6 @@ void SceneManager::addEntity(int assetId, int entityId, const Vector3f& position
 	}
 	else
 	{
-		omsg("AddEntity");
 		Entity* e = new Entity(this, asset, entityId);
 		addNode(e->getOsgNode());
 		e->getSceneNode()->setPosition(position);
@@ -470,7 +405,7 @@ osg::Program* SceneManager::getProgram(const String& name, const String& vertexS
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& type)
+osg::StateSet* SceneManager::createMaterialPass(TiXmlElement* xdata, const String& type)
 {
 	osg::StateSet* ss = new osg::StateSet();
 
@@ -545,12 +480,12 @@ osg::StateSet* SceneManager::createMaterial(TiXmlElement* xdata, const String& t
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-osg::StateSet* SceneManager::loadMaterial(const String& materialName)
+osg::StateSet* SceneManager::loadMaterialPass(const String& materialName)
 {
 	// If material has been loaded already return it.
-	if(myMaterials.find(materialName) != myMaterials.end())
+	if(myMaterialPasses.find(materialName) != myMaterialPasses.end())
 	{
-		return myMaterials[materialName];
+		return myMaterialPasses[materialName];
 	}
 
 	if(StringUtils::endsWith(materialName, ".material"))
@@ -570,8 +505,8 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 
 				String type = doc.RootElement()->FirstChildElement("Main")->Attribute("Type");
 				StringUtils::toLowerCase(type);
-				osg::StateSet* ss = createMaterial(doc.RootElement(), type);
-				myMaterials[materialName] = ss;
+				osg::StateSet* ss = createMaterialPass(doc.RootElement(), type);
+				myMaterialPasses[materialName] = ss;
 				return ss;
 			}
 			else
@@ -598,7 +533,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 		newMaterialName = StringUtils::replaceAll(newMaterialName, ".png", ".material");
 		newMaterialName = StringUtils::replaceAll(newMaterialName, ".PNG", ".material");
 
-		osg::StateSet* material = loadMaterial(newMaterialName);
+		osg::StateSet* material = loadMaterialPass(newMaterialName);
 		if(material == NULL)
 		{
 			// We could not load a material: just create a basic textured material
@@ -618,7 +553,7 @@ osg::StateSet* SceneManager::loadMaterial(const String& materialName)
 			mat->setSpecular(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
 
-			myMaterials[materialName] = ss;
+			myMaterialPasses[materialName] = ss;
 			return ss;
 		}
 		return material;
