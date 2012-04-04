@@ -402,13 +402,37 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 		if(material.maps.size() != 0)
 		{
 			String materialName = material.maps[obj::Material::Map::DIFFUSE].name;
-
 			omega::DataManager::getInstance()->setCurrentPath(model.getDatabasePath());
-
-			em[material.name] = SceneManager::instance()->loadMaterial(materialName);
+			em[material.name] = SceneManager::instance()->loadMaterialPass(materialName);
 			if(em[material.name] != NULL)
 			{
 				em[material.name]->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+			}
+		}
+		else
+		{
+			// No map: Load the default material and set colors accordingly.
+			osg::StateSet* ss = new osg::StateSet();
+			osg::Program* prog = SceneManager::instance()->getProgram("vertexcolor", "cyclops/common/Colored.vert", "cyclops/common/Colored.frag");
+			ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+			if(ss != NULL)
+			{
+				osg::Material* mat = new osg::Material();
+				mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+				mat->setDiffuse(osg::Material::FRONT_AND_BACK, material.diffuse);
+				mat->setAmbient(osg::Material::FRONT_AND_BACK, material.diffuse);
+				mat->setEmission(osg::Material::FRONT_AND_BACK, material.emissive);
+				mat->setSpecular(osg::Material::FRONT_AND_BACK, material.specular);
+				mat->setShininess(osg::Material::FRONT_AND_BACK, material.sharpness);
+				ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
+				
+				em[material.name] = ss;
+			}
+			else
+			{
+				ofwarn("ReaderXOBJ::buildEffectMap: could not load default material cyclops/common/materials/Default.material");
+				osg::StateSet* ss = new osg::StateSet();
+				em[material.name] = ss;
 			}
 		}
 	}

@@ -172,7 +172,7 @@ void WandCameraController::handleEvent(const Event& evt)
 		myMoveFlags = evt.getFlags();
 		if(evt.isFlagSet(Event::Left)) myRotating = true;
 		else myRotating = false;
-	
+			
 	
 		if(myRotating)
 		{

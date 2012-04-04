@@ -41,8 +41,9 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneLoader::SceneLoader(TiXmlDocument& doc):
+SceneLoader::SceneLoader(TiXmlDocument& doc, const String& path):
 	myDoc(doc),
+	myPath(path),
 	mySceneManager(NULL)
 {
 }
@@ -64,22 +65,21 @@ void SceneLoader::startLoading(SceneManager* sm)
 			loadAssets(xEntityFiles, SceneManager::ModelAssetType);
 		}
 
-		TiXmlElement* xStaticObjects = xMapContents->FirstChildElement("StaticObjects");
-		if(xStaticObjects != NULL)
-		{
-			createObjects(root, xStaticObjects);
-		}
+		// We are looking for objects under variousy-named tags, for compatibility reasons.
+		const char* sectionNames[] = {
+			"Objects",
+			"StaticObjects",
+			"Primitives",
+			"Entities"
+		};
 
-		TiXmlElement* xPrimitives = xMapContents->FirstChildElement("Primitives");
-		if(xPrimitives != NULL)
+		foreach(const char* sectionName, sectionNames)
 		{
-			createObjects(root, xPrimitives);
-		}
-
-		TiXmlElement* xEntities = xMapContents->FirstChildElement("Entities");
-		if(xEntities != NULL)
-		{
-			createObjects(root, xEntities);
+			TiXmlElement* xObjects = xMapContents->FirstChildElement(sectionName);
+			if(xObjects != NULL)
+			{
+				createObjects(root, xObjects);
+			}
 		}
 	}
 }
@@ -168,9 +168,19 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 	TiXmlElement* xchild = xStaticObjectFiles->FirstChildElement();
 	while(xchild)
 	{
-		const char* filePath = xchild->Attribute("Path");
+		String filePath = xchild->Attribute("Path");
+
+		// In the path, substitute ./ occurrences with the path of the xml scene file, so assets
+		// in the local directory can be correctly referenced.
+		// Split the path and get the file name.
+		String path;
+		String filename;
+		String extension;
+		StringUtils::splitFullFilename(myPath, filename, extension, path);
+		filePath = StringUtils::replaceAll(filePath, "./", path);
+
 		int index = atoi(xchild->Attribute("Id"));
-		//ofmsg("Loading static object %1%", %index);
+		ofmsg("Loading static object %1%", %index);
 		DataManager* dm = SystemManager::instance()->getDataManager();
 		DataInfo cfgInfo = dm->getInfo(String(filePath));
 		if(!cfgInfo.isNull())
@@ -184,7 +194,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 				if(xchild->Attribute("Material") != NULL)
 				{
 					String material = xchild->Attribute("Material");
-					osg::StateSet* fx = mySceneManager->loadMaterial(material);
+					osg::StateSet* fx = mySceneManager->loadMaterialPass(material);
 					node->setStateSet(fx);
 				}
 
@@ -213,6 +223,10 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 			{
 				ofwarn("loading failed: %1%", %cfgInfo.path);
 			}
+		}
+		else
+		{
+			ofwarn("could not find file: %1%", %filePath);
 		}
 
 		xchild = xchild->NextSiblingElement();
@@ -286,7 +300,7 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	plane->setVertexAttribArray (6, a_tangent);
 	plane->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
-	osg::StateSet* fx = mySceneManager->loadMaterial(material);
+	osg::StateSet* fx = mySceneManager->loadMaterialPass(material);
 	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
 
 	node->addDrawable(plane);
@@ -318,7 +332,7 @@ osg::Node* SceneLoader::createSphere(TiXmlElement* xchild)
 	sphere->setVertexAttribArray (6, a_tangent);
 	sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
-	osg::StateSet* fx = mySceneManager->loadMaterial(material);
+	osg::StateSet* fx = mySceneManager->loadMaterialPass(material);
 	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
 
 	node->addDrawable(sphere);

@@ -56,7 +56,7 @@ namespace cyclops {
 		static int readInt(TiXmlElement* elem, const String& attributeName, int defaultValue = 0);
 
 	public:
-		SceneLoader(TiXmlDocument& doc);
+		SceneLoader(TiXmlDocument& doc, const String& path);
 
 		// Loader interface
 		void startLoading(SceneManager* sm);
@@ -76,6 +76,7 @@ namespace cyclops {
 		osg::Node* createSphere(TiXmlElement* xchild);
 
 	private:
+		String myPath;
 		TiXmlDocument& myDoc;
 		SceneManager* mySceneManager;
 	};
