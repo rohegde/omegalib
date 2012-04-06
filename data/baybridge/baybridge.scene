@@ -1,0 +1,36 @@
+<Level>
+    <MapData>
+        <MapContents>
+            <Files>
+                <File Id="0" Path="./T1Block11_One_Quarter_Drainage.fbx"/>
+                <File Id="1" Path="./T1Block02_OneQuarter_TopSlabRebar.fbx"/>
+                <File Id="2" Path="./T1Block03_OneQuarter_BotSlabRebar.fbx"/>
+                <File Id="3" Path="./T1Block01A_OneQuarter_StructSteel_noPiles.fbx"/>
+                <File Id="4" Path="./T1Block04_One_Quarter_CutOutRebar.fbx"/>
+                <File Id="5" Path="./T1Block05_OneQuarter_Walls.fbx"/>
+                <File Id="6" Path="./T1Block06_One_Quarter_FendersRebars.fbx"/>
+                <File Id="7" Path="./T1Block07_OneQuarter_SkirtRebar.fbx"/>
+                <File Id="8" Path="./T1Block08_One_Quarter_SkirtABLayout.fbx"/>
+                <File Id="9" Path="./T1Block09_OneQuarter_PileRebar.fbx"/>
+                <File Id="10" Path="./T1Block10_One_Quarter_WWF.fbx"/>
+            </Files>
+			
+           <Objects>
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="1" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="2" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="3" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="4" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="5" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="6" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="7" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="8" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="9" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+                <Entity FileIndex="10" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0"/>
+           </Objects>
+			<Primitives>
+                <Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="cyclops/common/materials/Default.material" Name="Plane_1" Rotation="0 0 0" Scale="10 1 10" Tiling="40 40" WorldPos="0 -10 0" />
+            </Primitives>
+			</MapContents>
+    </MapData>
+</Level>
