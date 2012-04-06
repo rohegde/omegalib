@@ -50,6 +50,36 @@ using namespace omega;
 SystemManager* SystemManager::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool SystemManager::settingExists(const String& name)
+{
+	if(mysInstance != NULL)
+	{
+		Config* appCfg = mysInstance->getAppConfig();
+		Config* sysCfg = mysInstance->getSystemConfig();
+		if(appCfg->exists(name)) return true;
+		if(sysCfg->exists(name)) return true;
+		return false;
+	}
+	owarn("SystemManager::settingExists: cannot search for settings before System Manager initialization");
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Setting& SystemManager::settingLookup(const String& name)
+{
+	if(mysInstance != NULL)
+	{
+		Config* appCfg = mysInstance->getAppConfig();
+		Config* sysCfg = mysInstance->getSystemConfig();
+		if(appCfg->exists(name)) return appCfg->lookup(name);
+		if(sysCfg->exists(name)) return sysCfg->lookup(name);;
+		oferror("FATAL SystemManager::settingLookup: could not find setting", %name);
+	}
+	oerror("FATAL SystemManager::settingLookup: cannot search for settings before System Manager initialization");
+	return Setting(NULL);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SystemManager* SystemManager::instance()
 {
 	if(!mysInstance) mysInstance = new SystemManager();

@@ -42,6 +42,14 @@ namespace omega
 	class OMEGA_API SystemManager
 	{
 	public:
+		//! Utility method: searches for setting in application and system configuration file,
+		// returns true if it exists
+		static bool settingExists(const String& name);
+		//! Utility method: searches for setting in application and system configuration file,
+		// returns a reference to it if it exists.
+		static Setting& settingLookup(const String& name);
+
+	public:
 		// Get the singleton instance of the system manager.
 		static SystemManager* instance();
 
