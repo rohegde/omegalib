@@ -40,6 +40,7 @@
 using namespace omegaOsg;
 
 OsgModule* OsgModule::mysInstance = NULL;
+bool OsgModule::mysAmbientOverrideHack = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():

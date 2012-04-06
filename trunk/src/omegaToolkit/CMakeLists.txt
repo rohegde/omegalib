@@ -37,6 +37,7 @@ set(OTK_USE_PLY true)
 ###################################################################################################
 # Source files
 set( srcs 
+		omegaToolkit/ToolkitUtils.cpp
 		omegaToolkit/BoundingSphere.cpp
 		omegaToolkit/Box.cpp
 		omegaToolkit/ControllerManipulator.cpp
@@ -76,6 +77,7 @@ set( srcs
 set( headers 
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit.h
 		
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ToolkitUtils.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/BoundingSphere.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Box.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ControllerManipulator.h

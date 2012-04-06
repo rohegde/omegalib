@@ -3,28 +3,47 @@
         <MapContents>
 		<Files>
 
-            <File Id="0" Path="railsim/test/RailFailure/Rail.obj" />
-            <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
-            <File Id="2" Path="railsim/test/Frame/Frame.obj" />	
-            <File Id="3" Path="railsim/test/Station/station.obj" Size="10"/>
-
+            <File Id="0" Path="railsim/test/RailFailure/RailAltered.obj"/>
+            <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj"/>
+            <File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
+            <File Id="3" Path="railsim/test/Station/station.obj" Size="40"/>
 		</Files>
 
-            <StaticObjects>
-				<!-- This is the railstation -->
-				<staticobject FileIndex="3" Id="-1" Rotation="0 90 0" Scale="1 1 1" Tag="" WorldPos="0 0 -5" />
+		<StaticObjects>
+        <!-- Left Rail Positions :: there are 6 of them -->
+			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 1.19" />
+			<staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="27.5 -0.55 1.19" />
+
+			<!-- Right Rail Positions :: there are 5 of them -->
+            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 -0.28" />
+            <staticobject FileIndex="0" Id="-1" Rotation="90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 -0.28" />	
+              
+			<!-- This is the railstation -->
+			<staticobject FileIndex="3" Id="-1" Rotation="0 90 0" Scale="1 1 1" Tag="" WorldPos="17 -0.64 -16" />
 			  
-            </StaticObjects>
+		</StaticObjects>
           
             <Entities>
+				<!-- This is the messed up rail -->
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="27.5 -0.55 -0.28" />                 
+				
 				<!-- This is the wheel -->  
-                <Entity FileIndex="1" Id="1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="0 1 0" />
+                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+                
+				<!-- This is the frame -->
+                <Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
                
             </Entities>
              <Primitives>
-				<Plane StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="cyclops/common/materials/Rockwall.material" Rotation="0 0 0" Scale="10 1 10" Tiling="40 40" WorldPos="-2 0 -2" />
-				<Sphere Radius="1" Subdivisions="10" Material="cyclops/common/materials/Blue.material" Scale="1 1 1" Tiling="5 5" WorldPos="2 2 -2" />
-			</Primitives>
+				<Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Material="railsim/test/materials/ground.material" Name="Plane_1" Rotation="0 0 0" Scale="50 1 50" Tiling="5 5" WorldPos="10 -0.64 -2" />
+				</Primitives>
         </MapContents>
     </MapData>
 </Level>

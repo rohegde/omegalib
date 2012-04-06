@@ -24,6 +24,7 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
+include(${CMAKE_SOURCE_DIR}/external/UseFbx.cmake)
 
 ###################################################################################################
 # Compile definitions
@@ -37,6 +38,16 @@ SET( srcs
 		omegaOsg/OsgSceneObject.cpp
 		omegaOsg/SceneView.cpp
 		omegaOsg/ReaderFreeImage.cpp
+		
+		omegaOsg/fbx/fbxRAnimation.cpp
+		omegaOsg/fbx/fbxRCamera.cpp
+		omegaOsg/fbx/fbxRLight.cpp
+		omegaOsg/fbx/fbxRMesh.cpp
+		omegaOsg/fbx/fbxRNode.cpp
+		omegaOsg/fbx/ReaderWriterFBX.cpp
+		omegaOsg/fbx/WriterCompareTriangle.cpp
+		omegaOsg/fbx/WriterNodeVisitor.cpp
+		omegaOsg/fbx/fbxMaterialToOsgStateSet.cpp
 		)
 		
 ###################################################################################################
@@ -49,10 +60,27 @@ SET( headers
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/OsgSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/SceneView.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/ReaderFreeImage.h
+		
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/fbxMaterialToOsgStateSet.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/fbxReader.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/ReaderWriterFBX.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/WriterCompareTriangle.h
+		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/WriterNodeVisitor.h
         ) 
         
 ###################################################################################################
 source_group(omegaOsg REGULAR_EXPRESSION omegaOsg/)		
+source_group(fbx REGULAR_EXPRESSION omegaOsg/fbx/)		
+
+IF(WIN32)
+    SET(TARGET_EXTERNAL_LIBRARIES wininet)
+endif(WIN32)
+
+IF(APPLE)
+    FIND_LIBRARY(SYS_CONFIG_LIBRARY SystemConfiguration )
+    MARK_AS_ADVANCED(SYS_CONFIG_LIBRARY)
+    SET(TARGET_EXTERNAL_LIBRARIES iconv ${SYS_CONFIG_LIBRARY})
+endif(APPLE)
 
 ###################################################################################################
 # Setup compile info
@@ -65,4 +93,4 @@ endif(OMEGA_BUILD_STATIC)
 ###################################################################################################
 # Setup link info.
 target_link_libraries(omegaOsg 
-	omega ${OSG_LIBS})
+	omega ${OSG_LIBS} ${FBX_LIBNAME} ${TARGET_EXTERNAL_LIBRARIES})

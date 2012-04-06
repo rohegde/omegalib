@@ -29,6 +29,8 @@
 #include <osg/PositionAttitudeTransform>
 #include <osg/MatrixTransform>
 #include <osg/Light>
+#include <osg/LightSource>
+#include <osg/Material>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -38,6 +40,9 @@
 using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaOsg;
+
+String sModelName;
+float sModelSize = 1.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class OsgViewer: public ServerModule
@@ -63,99 +68,97 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewer::initialize()
 {
-	Config* cfg = getServer()->getSystemManager()->getAppConfig();
-
+	// The node containing the scene
 	osg::Node* node = NULL;
 
+	// The root node (we attach lights and other global state properties here)
+	// Set the root to be a lightsource to attach a light to it to illuminate the scene
+	osg::Group* root = new osg::Group();
+
 	// Load osg object
-	if(cfg->exists("config/scene"))
+	if(SystemManager::settingExists("config/scene"))
 	{
-		Setting& sscene = cfg->lookup("config/scene");
-		String filename = String((const char*)sscene["filename"]);
-
-		DataManager* dm = SystemManager::instance()->getDataManager();
-		DataInfo cfgInfo = dm->getInfo(filename);
-		if(!cfgInfo.isNull())
-		{
-			node = osgDB::readNodeFile(cfgInfo.path);
-
-			// If config specifies size parameter, use it to resize the passed object.
-			if(sscene.exists("size"))
-			{
-				float size = Config::getFloatValue("size", sscene);
-				float r = node->getBound().radius() * 2;
-				float scale = size / r;
-				osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
-				pat->setScale(osg::Vec3(scale, scale, scale));
-				pat->addChild(node);
-				node = pat;
-			}
-
-			if (node == NULL) 
-			{
-				ofwarn("!Failed to load model: %1%", %filename);
-			}
-			else
-			{
-				//Optimize scenegraph
-				osgUtil::Optimizer optOSGFile;
-				optOSGFile.optimize(node);
-			}
-		}
-		else
-		{
-			ofwarn("!File not found: %1%", %filename);
-		}
+		Setting& sscene = SystemManager::settingLookup("config/scene");
+		sModelName = Config::getStringValue("filename", sscene, sModelName);
+		sModelSize = Config::getFloatValue("size", sscene, sModelSize);
 	}
 
-    // Set the interactor style used to manipulate meshes.
-    String interactorStyle = cfg->lookup("config/interactorStyle");
-    if(interactorStyle == "Mouse")
-    {
-        DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-        interactor->setMoveButtonFlag(Event::Left);
-        interactor->setRotateButtonFlag(Event::Right);
-        myInteractor = interactor;
-    }
-    else if(interactorStyle == "Controller")
-    {
-        ControllerManipulator* interactor = new ControllerManipulator();
-        myInteractor = interactor;
-    }
-    else
-    {
-        DefaultTwoHandsInteractor* interactor =  new DefaultTwoHandsInteractor();
-        interactor->initialize("ObserverUpdateService");
-        myInteractor = interactor;
-    }
-	ModuleServices::addModule(myInteractor);
+	if(sModelName == "")
+	{
+		ofwarn("No model specified!!");
+		return;
+	}
+
+	String path;
+	if(DataManager::findFile(sModelName, path))
+	{
+		node = osgDB::readNodeFile(path);
+
+		if (node == NULL) 
+		{
+			ofwarn("!Failed to load model: %1% (unsupported file format or corrupted data)", %path);
+			return;
+		}
+
+		// Resize the model to make it sModelSize meters big.
+		float r = node->getBound().radius() * 2;
+		float scale = sModelSize / r;
+		osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
+		pat->setScale(osg::Vec3(scale, scale, scale));
+		pat->addChild(node);
+		node = pat;
+
+		root->addChild(node);
+
+		//Optimize scenegraph
+		osgUtil::Optimizer optOSGFile;
+		optOSGFile.optimize(node);
+	}
+	else
+	{
+		ofwarn("!File not found: %1%", %sModelName);
+	}
 
 	// Create an omegalib scene node and attach the osg node to it. This is used to interact with the 
 	// osg object through omegalib interactors.
 	OsgSceneObject* oso = new OsgSceneObject(node);
 	mySceneNode = new SceneNode(getServer());
 	mySceneNode->addObject(oso);
+	mySceneNode->setBoundingBoxVisible(true);
 	getServer()->getScene()->addChild(mySceneNode);
 	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
-	myInteractor->setSceneNode(mySceneNode);
+
+    // Set the interactor style used to manipulate meshes.
+	if(SystemManager::settingExists("config/interactor"))
+	{
+		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
+		myInteractor = ToolkitUtils::createInteractor(sinteractor);
+		if(myInteractor == NULL)
+		{
+			ModuleServices::addModule(myInteractor);
+			myInteractor->setSceneNode(mySceneNode);
+		}
+	}
 
 	// Set the osg node as the root node
-	myOsg->setRootNode(oso->getTransformedNode());
+	myOsg->setRootNode(root);
 
 	// Setup shading
 	myLight = new osg::Light;
     myLight->setLightNum(0);
-    myLight->setPosition(osg::Vec4(100.0, 100, 0, 0.0));
-    myLight->setAmbient(osg::Vec4(0.4f,0.4f,0.4f,1.0f));
-    myLight->setDiffuse(osg::Vec4(0.4f,0.4f,0.4f,1.0f));
-	myLight->setSpotExponent(0);
-	myLight->setSpecular(osg::Vec4(0.0f,0.0f,0.0f,1.0f));
+    myLight->setPosition(osg::Vec4(0.0, 2, 1, 1.0));
+    myLight->setAmbient(osg::Vec4(0.1f,0.1f,0.1f,1.0f));
+    myLight->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	myLight->setSpotExponent(1);
+	myLight->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 
+	osg::LightSource* ls = new osg::LightSource();
+	ls->setLight(myLight);
+	//ls->setLocalStateSetModes(osg::StateAttribute::ON);
+	ls->setStateSetModes(*root->getOrCreateStateSet(), osg::StateAttribute::ON);
 
-
-	node->getOrCreateStateSet()->setAttribute(myLight);
+	root->addChild(ls);
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgViewer::update(const UpdateContext& context) 
@@ -167,5 +170,7 @@ void OsgViewer::update(const UpdateContext& context)
 int main(int argc, char** argv)
 {
 	Application<OsgViewer> app("osgviewer");
+	oargs().newNamedString('m', "model", "model", "The osg model to load", sModelName);
+	oargs().newNamedString('s', "size", "size", "The screen size of the model in meters (default: 1)", sModelName);
     return omain(app, argc, argv);
 }

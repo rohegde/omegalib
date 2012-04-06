@@ -83,7 +83,7 @@ namespace omega
 
 			sArgs.newOptionalString(
 				"config", 
-				ostr("configuration file to use with this application (default: %1%)", %configFilename).c_str(),
+				ostr("configuration file to use with this application (default: %1% or default.cfg if the previous is not found)", %configFilename).c_str(),
 				configFilename);
 
 			sArgs.newFlag(
@@ -137,8 +137,6 @@ namespace omega
 				ologopen(logFilename.c_str());
 			}
 		
-			Config* cfg = new Config(configFilename);
-		
 			SystemManager* sys = SystemManager::instance();
 			DataManager* dm = sys->getDataManager();
 			
@@ -148,6 +146,20 @@ namespace omega
 			dm->addSource(new FilesystemDataSource(""));
 			dm->addSource(new FilesystemDataSource(dataPath));
 
+			String path;
+			if(!DataManager::findFile(configFilename, path))
+			{
+				ofmsg("Could not find %1%, trying to load default.cfg", %configFilename);
+				configFilename = "default.cfg";
+				if(!DataManager::findFile(configFilename, path))
+				{
+					oerror("FATAL: Could not load default.cfg. Aplication will exit now.");
+					return -1;
+				}
+			}
+
+			Config* cfg = new Config(configFilename);
+		
 			sys->setApplication(&app);
 			if(remote)
 			{

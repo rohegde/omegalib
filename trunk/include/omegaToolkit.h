@@ -47,6 +47,7 @@
 #include "omegaToolkit/ReferenceBox.h"
 #include "omegaToolkit/SceneEditorModule.h"
 #include "omegaToolkit/Teapot.h"
+#include "omegaToolkit/ToolkitUtils.h"
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/UiScriptCommand.h"
 
