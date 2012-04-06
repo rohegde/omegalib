@@ -826,6 +826,8 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
         }
     }
 
+	//VLDReportLeaks();
+
     for (unsigned i = 0; i < pGeode->getNumDrawables(); ++i)
     {
         osg::Geometry* pGeometry = pGeode->getDrawable(i)->asGeometry();

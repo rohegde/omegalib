@@ -235,7 +235,7 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
             return std::string(lImporter->GetLastErrorString());
         }
 
-        if (!lImporter->IsFBX())
+		if (lImporter->GetFileFormat() == -1)
         {
             return ReadResult::ERROR_IN_READING_FILE;
         }
