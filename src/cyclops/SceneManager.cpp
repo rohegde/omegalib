@@ -40,18 +40,56 @@ SceneManager* SceneManager::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
-	mySceneManager(mng), myAsset(asset), myId(id)
+mySceneManager(mng), myAsset(asset), myId(id), myOsgSwitch(NULL), myCurrentModelIndex(0)
 {
 	ServerEngine* engine = mng->getEngine();
 
 	mySceneNode = new SceneNode(engine);
 	mySceneNode->setSelectable(true);
 	engine->getScene()->addChild(mySceneNode);
-	OsgSceneObject* oso = new OsgSceneObject(myAsset->node);
 
-	myOsgNode = oso->getTransformedNode();
+	OsgSceneObject* oso = NULL;
+	if(asset->numNodes == 1)
+	{
+		// Single model asset
+		oso = new OsgSceneObject(myAsset->nodes[0]);
+		myOsgNode = oso->getTransformedNode();
+	}
+	else
+	{
+		// Multi model asset
+		myOsgSwitch = new osg::Switch();
+		int i = 0;
+		foreach(osg::Node* n, myAsset->nodes)
+		{
+			myOsgSwitch->addChild(n);
+			myOsgSwitch->setChildValue(n, i++);
+		}
+		oso = new OsgSceneObject(myOsgSwitch);
+		myOsgNode = oso->getTransformedNode();
+	}
 
 	mySceneNode->addObject(oso);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setCurrentModelIndex(int index)
+{
+	if(myOsgSwitch != NULL && index < getNumModels())
+	{
+		myCurrentModelIndex = index;
+		myOsgSwitch->setSingleChildOn(index);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int Entity::getCurrentModelIndex()
+{
+	if(myOsgSwitch != NULL)
+	{
+		return myCurrentModelIndex;
+	}
+	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,7 +280,11 @@ void SceneManager::addStaticObject(int assetId, const Vector3f& position, const 
 	}
 	else
 	{
-		addNode(asset->node, position, rotation, scale);
+		if(asset->numNodes > 1)
+		{
+			ofwarn("SceneManager::addStaticObject: asset %1% has multiple models. Adding model 0 by default", %assetId);
+		}
+		addNode(asset->nodes[0], position, rotation, scale);
 	}
 }
 

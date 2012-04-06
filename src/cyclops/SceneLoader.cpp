@@ -180,15 +180,15 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		filePath = StringUtils::replaceAll(filePath, "./", path);
 
 		int index = atoi(xchild->Attribute("Id"));
-		ofmsg("Loading static object %1%", %index);
-		DataManager* dm = SystemManager::instance()->getDataManager();
-		DataInfo cfgInfo = dm->getInfo(String(filePath));
-		if(!cfgInfo.isNull())
+		ofmsg("Loading asset %1%", %index);
+
+		String assetPath;
+		if(DataManager::findFile(filePath, assetPath))
 		{ 
 			osgDB::Options* options = new osgDB::Options; 
 			options->setOptionString("noTesselateLargePolygons noTriStripPolygons"); 
 
-			osg::Node* node = osgDB::readNodeFile(cfgInfo.path, options);
+			osg::Node* node = osgDB::readNodeFile(assetPath, options);
 			if(node != NULL)
 			{
 				if(xchild->Attribute("Material") != NULL)
@@ -216,12 +216,13 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 				ModelAsset* asset = new ModelAsset();
 				asset->id = index;
 				asset->filename = filePath;
-				asset->node = node;
+				asset->nodes.push_back(node);
+				asset->numNodes = 1;
 				mySceneManager->addAsset(asset, type);
 			}
 			else
 			{
-				ofwarn("loading failed: %1%", %cfgInfo.path);
+				ofwarn("loading failed: %1%", %assetPath);
 			}
 		}
 		else

@@ -32,6 +32,7 @@
 #include <osg/Texture2D>
 #include <osg/Light>
 #include <osg/Group>
+#include <osg/Switch>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -52,8 +53,12 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelAsset
 	{
+		ModelAsset(): id(0), numNodes(0) {}
+
 		String filename;
-		osg::Node* node;
+		Vector<osg::Node*> nodes;
+		//! Number of nodes in this model (used for multimodel assets)
+		int numNodes;
 		int id;
 	};
 
@@ -68,9 +73,17 @@ namespace cyclops {
 		ModelAsset* getAsset() { return myAsset; }
 		int getId() { return myId; }
 
+		int getNumModels() { return myAsset->numNodes; }
+		void setCurrentModelIndex(int index);
+		int getCurrentModelIndex();
+
 	private:
 		SceneManager* mySceneManager;
+
 		osg::Node* myOsgNode;
+		osg::Switch* myOsgSwitch;
+		int myCurrentModelIndex;
+
 		SceneNode* mySceneNode;
 		ModelAsset* myAsset;
 		int myId;
