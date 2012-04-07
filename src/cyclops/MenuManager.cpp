@@ -39,7 +39,8 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 	myContainer(NULL),
 	myButton(NULL),
 	myCommand(NULL),
-	myWidget(NULL)
+	myWidget(NULL),
+	myUserData(NULL)
 {
 	UiModule* ui = owner->getManager()->getUiModule();
 	WidgetFactory* wf = ui->getWidgetFactory();
@@ -47,8 +48,8 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 	if(type == MenuItem::SubMenu)
 	{
 		myContainer = wf->createContainer("container", ui->getUi(), Container::LayoutVertical);
-		myContainer->setWidth(200);
-		myContainer->setHeight(200);
+		myContainer->setWidth(400);
+		myContainer->setHeight(SystemManager::instance()->getDisplaySystem()->getCanvasSize().y());
 		myContainer->setPosition(Vector2f(10, 10));
 
 		myWidget = myContainer;
@@ -58,17 +59,62 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 		if(type == MenuItem::Button)
 		{
 			myButton = wf->createButton("button", parent->myContainer);
-			myButton->setText("Hello World");
+			myButton->setText("Button");
 			myWidget = myButton;
 		}
 		if(type == MenuItem::Checkbox)
 		{
 			myButton = wf->createButton("button", parent->myContainer);
-			myButton->setText("Hello Checkbox");
+			myButton->setText("Checkbox");
 			myButton->setCheckable(true);
 			myWidget = myButton;
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuItem::setText(const String& value) 
+{ 
+	myText = value; 
+	switch(myType)
+	{
+	case MenuItem::Button:
+	case MenuItem::Checkbox:
+		myButton->setText(myText);
+		break;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuItem::setDescription(const String& value) 
+{ 
+	myDescription = value; 
+	switch(myType)
+	{
+	case MenuItem::Button:
+	case MenuItem::Checkbox:
+		// Do nothing.
+		break;
+	}
+}
+		
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuItem::setChecked(bool value)
+{
+	if(myType == MenuItem::Checkbox)
+	{
+		myButton->setChecked(value);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool MenuItem::isChecked()
+{
+	if(myType == MenuItem::Checkbox)
+	{
+		return myButton->isChecked();
+	}
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +139,25 @@ String MenuItem::getCommand()
 		return myCommand->getCommand();
 	}
 	return "";
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuItem::setListener(IMenuItemListener* value) 
+{
+	myListener = value; 
+	if(myListener != NULL)
+	{
+		myWidget->setUIEventHandler(this);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuItem::handleEvent(const Event& evt)
+{
+	if(evt.isFrom(Service::Ui, myWidget->getId()))
+	{
+		if(myListener != NULL) myListener->onMenuItemEvent(this);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

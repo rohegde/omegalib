@@ -58,6 +58,7 @@ OsgSceneObject::~OsgSceneObject()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgSceneObject::update(SceneNode* node)
 {
+	node->setListener(this);
 	const AffineTransform3& xform =  node->getFullTransform();
 	const omega::math::matrix<4, 4>& m = xform.matrix();
 	osg::Matrix oxform;
@@ -71,3 +72,12 @@ const AlignedBox3* OsgSceneObject::getBoundingBox()
 	return &myBBox;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgSceneObject::onVisibleChanged(SceneNode* source, bool value) 
+{
+	myNode->setNodeMask(value ? ~0 : 0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void OsgSceneObject::onSelectedChanged(SceneNode* source, bool value) 
+{}

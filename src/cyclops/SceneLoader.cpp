@@ -219,6 +219,15 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 				asset->nodes.push_back(node);
 				asset->numNodes = 1;
 				mySceneManager->addAsset(asset, type);
+
+				if(xchild->Attribute("Description") != NULL)
+				{
+					asset->description = xchild->Attribute("Description");
+				}
+				else
+				{
+					asset->description = asset->filename;
+				}
 			}
 			else
 			{

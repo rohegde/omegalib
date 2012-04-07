@@ -684,3 +684,9 @@ Entity* SceneManager::findEntity(int id)
 	}
 	return NULL;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+List<Entity*>::Range SceneManager::getEntities()
+{
+	return List<Entity*>::Range(myEntities.begin(), myEntities.end());
+}

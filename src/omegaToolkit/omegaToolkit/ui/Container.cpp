@@ -436,16 +436,20 @@ void Container::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::handleEvent(const Event& evt)
 {
-	//Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
-	
-	//transformPoint(point);
-
-	if(isPointerInteractionEnabled())
+	// Only handle events if the container is visible.
+	if(isVisible())
 	{
-		// For pointer interaction, just dispatch the event to all children
-		foreach(Widget* w, myChildren)
+		//Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
+	
+		//transformPoint(point);
+
+		if(isPointerInteractionEnabled())
 		{
-			w->handleEvent(evt);
+			// For pointer interaction, just dispatch the event to all children
+			foreach(Widget* w, myChildren)
+			{
+				w->handleEvent(evt);
+			}
 		}
 	}
 }

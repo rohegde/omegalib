@@ -66,8 +66,6 @@ void Button::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Button::handleEvent(const Event& evt)
 {
-	AbstractButton::handleEvent(evt);
-
 	if(isPointerInteractionEnabled())
 	{
 		Vector2f point  = Vector2f(evt.getPosition(0), evt.getPosition(1));
@@ -78,16 +76,17 @@ void Button::handleEvent(const Event& evt)
 			{
 				myPressed = true;
 				myPressedStateChanged = true;
+				evt.setProcessed();
 			}
 			else if(evt.getType() == Event::Up)
 			{
 				myPressed = false;
 				myPressedStateChanged = true;
+				evt.setProcessed();
 			}
-			evt.setProcessed();
 		}
 	}
-	if(isGamepadInteractionEnabled())
+	if(!evt.isProcessed() && isGamepadInteractionEnabled())
 	{
 		if(isActive())
 		{
@@ -98,5 +97,6 @@ void Button::handleEvent(const Event& evt)
 			}
 		}
 	}
+	AbstractButton::handleEvent(evt);
 }
 

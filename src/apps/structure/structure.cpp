@@ -33,13 +33,17 @@ using namespace omegaToolkit;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class StructureViewer: public ServerModule
+class StructureViewer: public ServerModule, IMenuItemListener
 {
 public:
 	StructureViewer();
 
 	virtual void initialize();
-	virtual void handleEvent(const Event& evt);
+	virtual void onMenuItemEvent(MenuItem* mi);
+
+private:
+	SceneManager* mySceneManager;
+	MenuManager* myMenuManager;
 };
 
 
@@ -60,34 +64,41 @@ void StructureViewer::initialize()
 	// Create and initialize the cyclops scene manager.
 	// If a scene file is specified in the application config file, the scene manager will
 	// load it during initialization.
-	SceneManager* sm = new SceneManager();
-	ModuleServices::addModule(sm);
-	sm->doInitialize(getServer());
+	mySceneManager = new SceneManager();
+	ModuleServices::addModule(mySceneManager);
+	mySceneManager->doInitialize(getServer());
 
-	MenuManager* menuMng = new MenuManager();
-	ModuleServices::addModule(menuMng);
-	menuMng->doInitialize(getServer());
+	// Create the menu manager and a main menu.
+	myMenuManager = new MenuManager();
+	ModuleServices::addModule(myMenuManager);
+	myMenuManager->doInitialize(getServer());
+	Menu* menu = myMenuManager->createMenu("menu");
+	myMenuManager->setMainMenu(menu);
 
-	Menu* menu = MenuManager::instance()->createMenu("menu");
-	MenuItem* btn = menu->getRoot()->addItem(MenuItem::Button);
-	btn = menu->getRoot()->addItem(MenuItem::Button);
-	
-	btn = menu->getRoot()->addItem(MenuItem::Checkbox);
+	// For each entity in the scene, add a checkbox to the menu, that will be used
+	// to toggle the entity visibility.
+	foreach(Entity* e, mySceneManager->getEntities())
+	{
+		MenuItem* mi = menu->getRoot()->addItem(MenuItem::Checkbox);
+		mi->setChecked(false);
+		e->getSceneNode()->setVisible(false);
+		mi->setText(e->getAsset()->description);
+		mi->setUserData(e);
+		mi->setListener(this);
+		mi->setUserTag("visibilityToggle");
+	}
 
-	menuMng->setMainMenu(menu);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void StructureViewer::handleEvent(const Event& evt)
+void StructureViewer::onMenuItemEvent(MenuItem* mi)
 {
-	//if(evt.getServiceType() == Service::UI) 
-	//{
-	//	handleUIEvent(evt);
-	//}
-	//else
-	//{
-	//	EngineClient::handleEvent(evt);
-	//}
+	if(mi->getUserTag() == "visibilityToggle")
+	{
+		// Get the entity associated with the button and toggle its visibility.
+		Entity* e = (Entity*)mi->getUserData();
+		e->getSceneNode()->setVisible(mi->isChecked());
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
