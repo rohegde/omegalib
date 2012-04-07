@@ -38,7 +38,7 @@ namespace omega {
 	struct RenderState;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class SceneNodeListener
+	class OMEGA_API SceneNodeListener
 	{
 	public:
 		virtual void onVisibleChanged(SceneNode* source, bool value) {}

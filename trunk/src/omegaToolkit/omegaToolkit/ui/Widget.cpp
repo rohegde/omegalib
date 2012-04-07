@@ -104,6 +104,7 @@ void Widget::update(const omega::UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Widget::handleEvent(const Event& evt) 
 {
+	UiModule* ui = UiModule::instance();
 	if(isGamepadInteractionEnabled())
 	{
 		if(myActive)
@@ -112,25 +113,25 @@ void Widget::handleEvent(const Event& evt)
 			{
 				evt.setProcessed();
 				if(myVerticalNextWidget != NULL) 
-					UiModule::instance()->activateWidget(myVerticalNextWidget);
+					ui->activateWidget(myVerticalNextWidget);
 			}
 			else if(evt.isButtonDown(Event::ButtonUp))
 			{
 				evt.setProcessed();
 				if(myVerticalPrevWidget != NULL) 
-					UiModule::instance()->activateWidget(myVerticalPrevWidget);
+					ui->activateWidget(myVerticalPrevWidget);
 			}
 			else if(evt.isButtonDown(Event::ButtonLeft))
 			{
 				evt.setProcessed();
 				if(myHorizontalPrevWidget != NULL) 
-					UiModule::instance()->activateWidget(myHorizontalPrevWidget);
+					ui->activateWidget(myHorizontalPrevWidget);
 			}
 			else if(evt.isButtonDown(Event::ButtonRight))
 			{
 				evt.setProcessed();
 				if(myHorizontalNextWidget != NULL) 
-					UiModule::instance()->activateWidget(myHorizontalNextWidget);
+					ui->activateWidget(myHorizontalNextWidget);
 			}
 		}
 	}
@@ -158,6 +159,12 @@ void Widget::handleEvent(const Event& evt)
 	{
 		if(!evt.isProcessed())
 		{
+			// Some kind of pointer event happened over this widget: make it active.
+			if(!isActive())
+			{
+				ui->activateWidget(this);
+			}
+
 			if(myUserMoveEnabled)
 			{
 				if(evt.getType() == Event::Down)

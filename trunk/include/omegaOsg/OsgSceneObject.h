@@ -29,6 +29,7 @@
 
 #include "omegaOsg/oosgbase.h"
 #include "omega/ISceneObject.h"
+#include "omega/SceneNode.h"
 
 namespace osg
 {
@@ -41,13 +42,16 @@ namespace omegaOsg
 	using namespace omega;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgSceneObject: public ISceneObject
+	class OOSG_API OsgSceneObject: public ISceneObject, SceneNodeListener
 	{
 	public:
 		OsgSceneObject(osg::Node* node);
 		~OsgSceneObject();
 
 		virtual void update(SceneNode* owner);
+
+		virtual void onVisibleChanged(SceneNode* source, bool value);
+		virtual void onSelectedChanged(SceneNode* source, bool value);
 
 		virtual const AlignedBox3* getBoundingBox();
 		virtual bool hasBoundingBox() { return true; }

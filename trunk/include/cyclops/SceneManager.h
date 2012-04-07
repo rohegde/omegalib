@@ -54,7 +54,7 @@ namespace cyclops {
 	struct ModelAsset
 	{
 		ModelAsset(): id(0), numNodes(0) {}
-
+		String description;
 		String filename;
 		Vector<osg::Node*> nodes;
 		//! Number of nodes in this model (used for multimodel assets)
@@ -131,6 +131,8 @@ namespace cyclops {
 		void addAsset(ModelAsset* asset, AssetType type);
 		ModelAsset* getModelAsset(int fileIndex);
 		Entity* findEntity(int id);
+		int getNumEntities() { return myEntities.size(); }
+		List<Entity*>::Range getEntities();
 
 		osg::Texture2D* getTexture(const String& name);
 		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);

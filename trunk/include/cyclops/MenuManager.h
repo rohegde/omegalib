@@ -47,18 +47,18 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	class Menu;
+	class MenuItem;
 	class MenuManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class IMenuListener
+	class IMenuItemListener
 	{
 	public:
-		virtual void execute() = 0;
-		virtual void execute(int value) = 0;
+		virtual void onMenuItemEvent(MenuItem* mi) = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API MenuItem
+	class CY_API MenuItem: public IEventListener
 	{
 	public:
 		enum Type { Button, Checkbox, Slider, SubMenu };
@@ -66,19 +66,33 @@ namespace cyclops {
 	public:
 		MenuItem(Type type, Menu* owner, MenuItem* parent);
 
+		virtual void handleEvent(const Event& evt);
 		Type getType() { return myType; }
 
-		void setListener(IMenuListener* value) { myListener = value; }
-		IMenuListener* setListener() { return myListener; }
+		void setListener(IMenuItemListener* value);
+		IMenuItemListener* getListener() { return myListener; }
 
 		const String& getText() { return myText; }
-		void setText(const String& value) { myText = value; }
+		void setText(const String& value);
 		const String& getDescription() { return myDescription; }
-		void setDescription(const String& value) { myDescription = value; }
+		void setDescription(const String& value);
 
 		void setCommand(const String& command);
 		String getCommand();
-		
+
+		//! Checkbox methods
+		//@{
+		void setChecked(bool value);
+		bool isChecked();
+		//@}
+
+		//! User data management
+		//@{
+		void setUserTag(const String& value) { myUserTag = value; }
+		String getUserTag() { return myUserTag; }
+		void* getUserData() { return myUserData; }
+		void setUserData(void* value) { myUserData = value; }
+		//@}
 
 		//! Submenu methods.
 		//@{
@@ -93,13 +107,16 @@ namespace cyclops {
 		Type myType;
 
 		UiScriptCommand* myCommand;
+		IMenuItemListener* myListener;
 
 		List<MenuItem*> mySubMenuItems;
 
-		IMenuListener* myListener;
 		String myText;
 		String myDescription;
 		int myValue;
+
+		String myUserTag;
+		void* myUserData;
 
 		omegaToolkit::ui::Widget* myWidget;
 		omegaToolkit::ui::Container* myContainer;
