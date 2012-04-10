@@ -27,6 +27,8 @@
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/UiModule.h"
 
+#include "omegaGl.h"
+
 using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
@@ -474,31 +476,109 @@ Renderable* Container::createRenderable()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::draw(RenderState* state)
 {
-	if(myOwner->isVisible())
+	//if(myOwner->isVisible())
 	{
-		preDraw();
-
-		// draw myself.
-		if(myOwner->isStereo())
+		if(state->context->task == DrawContext::SceneDrawTask)
 		{
-			if(state->context->eye != DrawContext::EyeCyclop) drawContent();
+			if(myOwner->get3dSettings().enable3d)
+			{
+				if(myTexture != NULL)
+				{
+					glDisable(GL_COLOR_MATERIAL);
+					glDisable(GL_LIGHTING);
+					glEnable(GL_TEXTURE_2D);
+					myTexture->bind(GpuManager::TextureUnit0);
+					glEnable (GL_BLEND);
+					glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+					glColor4ub(255, 255, 255, 255);
+
+					glTranslatef(0, 5, 0);
+					glScalef(1.0f, 1.0f, 1.0f);
+		
+					glBegin(GL_TRIANGLE_STRIP);
+					glTexCoord2f(0, 0);
+					glVertex3f(0, 0, 0);
+
+					glTexCoord2f(1, 0);
+					glVertex3f(1, 0, 0);
+
+					glTexCoord2f(0, 1);
+					glVertex3f(0, 1, 0);
+
+					glTexCoord2f(1, 1);
+					glVertex3f(1, 1, 0);
+
+					glEnd();
+
+					myTexture->unbind();
+				}
+			}
+			else
+			{
+				// draw children.
+				foreach(Widget* w, myOwner->myChildren)
+				{
+					ContainerRenderable* childRenderable = dynamic_cast<ContainerRenderable*>(w->getRenderable(getClient())); 
+					if(childRenderable != NULL) 
+					{
+						childRenderable->draw(state);
+					}
+				}
+			}
 		}
 		else
 		{
-			if(state->context->eye == DrawContext::EyeCyclop) drawContent();
-		}
-
-		// draw children.
-		foreach(Widget* w, myOwner->myChildren)
-		{
-			Renderable* childRenderable = w->getRenderable(getClient()); 
-			if(childRenderable != NULL) 
+			if(myOwner->get3dSettings().enable3d)
 			{
-				childRenderable->draw(state);
+				if(myRenderTarget == NULL)
+				{
+					myTexture = new Texture(state->context->gpuContext);
+					myTexture->initialize(myOwner->getWidth(), myOwner->getHeight());
+					myRenderTarget = new RenderTarget(state->context->gpuContext, RenderTarget::RenderToTexture);
+					myRenderTarget->setTextureTarget(myTexture);
+				}
+			}
+			else
+			{
+				preDraw();
+			}
+
+			if(myOwner->get3dSettings().enable3d)
+			{
+				myRenderTarget->bind();
+			}
+
+			// draw myself.
+			if(myOwner->isStereo())
+			{
+				if(state->context->eye != DrawContext::EyeCyclop) drawContent();
+			}
+			else
+			{
+				if(state->context->eye == DrawContext::EyeCyclop) drawContent();
+			}
+
+			// draw children.
+			foreach(Widget* w, myOwner->myChildren)
+			{
+				Renderable* childRenderable = w->getRenderable(getClient()); 
+				if(childRenderable != NULL) 
+				{
+					childRenderable->draw(state);
+				}
+			}
+
+			if(myOwner->get3dSettings().enable3d)
+			{
+				myRenderTarget->unbind();
+			}
+
+			if(!myOwner->get3dSettings().enable3d)
+			{
+				postDraw();
 			}
 		}
-
-		postDraw();
 	}
 }
 
