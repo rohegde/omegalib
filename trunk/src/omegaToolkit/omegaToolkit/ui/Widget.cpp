@@ -139,21 +139,21 @@ void Widget::handleEvent(const Event& evt)
 	Vector2f pos2d = vector3to2(evt.getPosition());
 	if(myActive)
 	{
-		if(evt.getType() == Event::Zoom)
-		{
-			float val = evt.getExtraDataInt(0);
-			if(val != 0)
-			{
-				float sc = 0.0f;
-				if(val < 0) sc = 0.9f;
-				else sc = 1.1f;
+		//if(evt.getType() == Event::Zoom)
+		//{
+		//	float val = evt.getExtraDataInt(0);
+		//	if(val != 0)
+		//	{
+		//		float sc = 0.0f;
+		//		if(val < 0) sc = 0.9f;
+		//		else sc = 1.1f;
 
-				float width = mySize[0] * sc;
-				float height = mySize[1] * sc;
+		//		float width = mySize[0] * sc;
+		//		float height = mySize[1] * sc;
 
-				setSize(Vector2f(width, height));
-			}
-		}
+		//		setSize(Vector2f(width, height));
+		//	}
+		//}
 	}
 	if(hitTest(transformPoint(pos2d)))
 	{

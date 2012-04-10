@@ -40,7 +40,24 @@ using namespace omegaToolkit;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiRenderPass::render(Renderer* client, const DrawContext& context)
 {
-	if(context.task == DrawContext::OverlayDrawTask)
+	if(context.task == DrawContext::SceneDrawTask)
+	{
+		RenderState state;
+		state.pass = this;
+		state.flags = RenderPass::RenderOpaque;
+		state.client = client;
+		state.context = &context;
+
+		client->getRenderer()->beginDraw3D(context);
+		ui::Container* ui = UiModule::instance()->getUi();
+		Renderable* uiRenderable = ui->getRenderable(client);
+		if(uiRenderable != NULL)
+		{
+			uiRenderable->draw(&state);
+		}
+		client->getRenderer()->endDraw();
+	}
+	else if(context.task == DrawContext::OverlayDrawTask)
 	{
 		RenderState state;
 		state.pass = this;
