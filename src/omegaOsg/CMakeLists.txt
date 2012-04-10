@@ -61,11 +61,11 @@ SET( headers
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/SceneView.h
 		${CMAKE_SOURCE_DIR}/include/omegaOsg/ReaderFreeImage.h
 		
-		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/fbxMaterialToOsgStateSet.h
-		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/fbxReader.h
-		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/ReaderWriterFBX.h
-		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/WriterCompareTriangle.h
-		${CMAKE_SOURCE_DIR}/include/omegaOsg/fbx/WriterNodeVisitor.h
+		omegaOsg/fbx/fbxMaterialToOsgStateSet.h
+		omegaOsg/fbx/fbxReader.h
+		omegaOsg/fbx/ReaderWriterFBX.h
+		omegaOsg/fbx/WriterCompareTriangle.h
+		omegaOsg/fbx/WriterNodeVisitor.h
         ) 
         
 ###################################################################################################
