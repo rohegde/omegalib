@@ -31,6 +31,13 @@ set(SRCS
 		MenuManager.cpp
 		cyclopsPythonApi.cpp)
     
+set(OSG_SRCS 
+		osg/obj.cpp
+		osg/plyfile.cpp
+		osg/ReaderWriterPLY.cpp
+		osg/vertexData.cpp
+		osg/ReaderXOBJ.cpp)
+		
 set(HEADERS 
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h
@@ -40,9 +47,9 @@ set(HEADERS
 ###################################################################################################
 # Setup compile info
 if(OMEGA_BUILD_STATIC)
-	add_library( cyclops ${SRCS} ${HEADERS})
+	add_library( cyclops ${SRCS} ${OSG_SRCS} ${HEADERS})
 else(OMEGA_BUILD_STATIC)
-	add_library( cyclops SHARED ${SRCS} ${HEADERS})
+	add_library( cyclops SHARED ${SRCS} ${OSG_SRCS} ${HEADERS})
 endif(OMEGA_BUILD_STATIC)
 
 source_group(osg REGULAR_EXPRESSION osg/)		
