@@ -35,7 +35,7 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::setListener(SceneNodeListener* listener)
 {
-	if(listener != NULL && myListener != NULL)
+	if(listener != NULL && myListener != NULL && myListener != listener)
 	{
 		owarn("Node switched listener: old listener won't receive notification anymore.");
 	}
