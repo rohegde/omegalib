@@ -492,22 +492,26 @@ void ContainerRenderable::draw3d(RenderState* state)
 		float height = myOwner->getHeight() * c3ds.scale;
 
 		glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
-		glRotatef(c3ds.pitch, 1, 0, 0);
-		glRotatef(c3ds.yaw, 0, 1, 0);
-		glRotatef(c3ds.roll, 0, 0, 1);
-		
+
+		Vector3f downLeft = c3ds.up;
+		Vector3f topRight = downLeft.cross(c3ds.normal);
+		downLeft *= height;
+		topRight *= width;
+
+		Vector3f downRight = topRight + downLeft;
+
 		glBegin(GL_TRIANGLE_STRIP);
 		glTexCoord2f(0, 0);
 		glVertex3f(0, 0, 0);
 
 		glTexCoord2f(1, 0);
-		glVertex3f(width, 0, 0);
+		glVertex3f(topRight.x(), topRight.y(), topRight.z());
 
 		glTexCoord2f(0, 1);
-		glVertex3f(0, height, 0);
+		glVertex3f(downLeft.x(), downLeft.y(), downLeft.z());
 
 		glTexCoord2f(1, 1);
-		glVertex3f(width, height, 0);
+		glVertex3f(downRight.x(), downRight.y(), downRight.z());
 
 		glEnd();
 

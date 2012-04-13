@@ -646,7 +646,7 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	direction = o->getWorldOrientation() * direction;
 	direction.normalize();
 
-	ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
+	//ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
 
 	return Ray(p, direction);
 }
