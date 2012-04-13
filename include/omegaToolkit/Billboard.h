@@ -24,65 +24,56 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OBSERVER_H__
-#define __OBSERVER_H__
+#ifndef __TEXTURED_QUAD_H__
+#define __TEXTURED_QUAD_H__
 
-#include "osystem.h"
+#include <omega.h>
+#include <omegaToolkit.h>
 
-namespace omega
-{
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Observer: public ReferenceType
+	class TexturedQuad: public RenderableSceneObject
 	{
 	public:
-		Observer();
+		TexturedQuad();
+		~TexturedQuad();
+		virtual Renderable* createRenderable();
 
-		void setWorldPosition(const Vector3f& value);
-		Vector3f getWorldPosition();
-		const Quaternion& getWorldOrientation() { return myWorldOrientation; }
+		const AlignedBox3* getBoundingBox();
+		bool hasBoundingBox();
 
-		AffineTransform3 getWorldTransform();
-		const AffineTransform3& getHeadTransform();
-
-		void updateHead(const Vector3f& position, const Quaternion& orientation);
-		void updateWorld(const Vector3f& position, const Quaternion& orientation);
-		void load(Setting& setting);
-
-		Vector3f getWorldHeadPosition() { return myHeadPosition + myWorldPosition; }
-		Vector3f getHeadPosition() { return myHeadPosition; }
+		PixelData* getImage();
+		void setImage(PixelData* value);
 
 	private:
-		//! Current view transform
-		AffineTransform3 myWorldTransform;
-		AffineTransform3 myHeadTransform;
-		
-		//Vector3f myReferencePosition;
-
-		//! Observer current position.
-		Vector3f myHeadPosition;
-		//! Observer current rotation.
-		Quaternion myHeadOrientation;
-
-		//! Position of observer reference frame wrt world origin.
-		Vector3f myWorldPosition;
-		Quaternion myWorldOrientation;
+		AlignedBox3 myBoundingBox;
+		PixelData* myImage;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Observer::setWorldPosition(const Vector3f& value) 
-	{ myWorldPosition = value; }
+	class TexturedQuadRenderable: public SceneRenderable
+	{
+	public:
+		TexturedQuadRenderable(TexturedQuad* tq);
+		~TexturedQuadRenderable();
+		virtual void initialize();
+		virtual void dispose();
+		void draw(RenderState* state);
+		void refresh();
+
+	private:
+		TexturedQuad* myTexturedQuad;
+		VertexBuffer* myVertexBuffer;
+		Texture* myTexture;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Vector3f Observer::getWorldPosition() 
-	{ return myWorldPosition; }
+	inline PixelData* TexturedQuad::getImage() 
+	{ return myImage; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline AffineTransform3 Observer::getWorldTransform() 
-	{ return myWorldTransform; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& Observer::getHeadTransform() 
-	{ return myHeadTransform; }
-}; // namespace omega
+	inline void TexturedQuad::setImage(PixelData* value) 
+	{ myImage = value; refresh(); }
+}; // namespace oengine
 
 #endif

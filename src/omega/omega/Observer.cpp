@@ -31,21 +31,21 @@ using namespace omega;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Observer::Observer()
 {
-	myViewPosition = Vector3f::Zero();
-	myReferencePosition = Vector3f::Zero();
-	myViewTransform = AffineTransform3::Identity();
+	myWorldPosition = Vector3f::Zero();
+	//myReferencePosition = Vector3f::Zero();
+	myWorldTransform = AffineTransform3::Identity();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Observer::load(Setting& setting)
 {
-	if(setting.exists("referencePosition"))
-	{
-		Setting& st = setting["referencePosition"];
-		myReferencePosition.x() = (float)st[0];
-		myReferencePosition.y() = (float)st[1];
-		myReferencePosition.z() = (float)st[2];
-	}
+	//if(setting.exists("referencePosition"))
+	//{
+	//	Setting& st = setting["referencePosition"];
+	//	myReferencePosition.x() = (float)st[0];
+	//	myReferencePosition.y() = (float)st[1];
+	//	myReferencePosition.z() = (float)st[2];
+	//}
 
 	Vector3f position = Vector3f::Zero();
 	if(setting.exists("position"))
@@ -70,21 +70,23 @@ void Observer::updateHead(const Vector3f& position, const Quaternion& orientatio
 
 	myHeadTransform.translate(position);
 	myHeadTransform.rotate(orientation);
-	AffineTransform3 w2e = AffineTransform3::Identity();
-	w2e.translate(myReferencePosition);
-	myHeadTransform = w2e * myHeadTransform;
+	//AffineTransform3 w2e = AffineTransform3::Identity();
+	//w2e.translate(myReferencePosition);
+	//myHeadTransform = w2e * myHeadTransform;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::updateView(const Vector3f& position, const Quaternion& orientation)
+void Observer::updateWorld(const Vector3f& position, const Quaternion& orientation)
 {
-	myViewPosition = position;
-	myViewOrientation = orientation;
-	myViewTransform = AffineTransform3::Identity();
-	Vector3f pivot = myHeadPosition + myReferencePosition;
-	myViewTransform.translate(pivot);
-	myViewTransform.rotate(orientation);
-	myViewTransform.translate(-pivot);
-	myViewTransform.translate(-position);
+	myWorldPosition = position;
+	myWorldOrientation = orientation;
+	myWorldTransform = Math::makeViewMatrix(myWorldPosition, myWorldOrientation);
+	//myWorldTransform.translate(position);
+	//myWorldTransform.rotate(orientation);
+	//Vector3f pivot = myHeadPosition + myReferencePosition;
+	//myWorldTransform.translate(pivot);
+	//myWorldTransform.rotate(orientation);
+	//myWorldTransform.translate(-pivot);
+	//myWorldTransform.translate(-position);
 	//myViewTransform = myViewTransform.inverse();
 }

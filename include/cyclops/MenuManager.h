@@ -29,10 +29,6 @@
 
 #include "cyclopsConfig.h"
 
-#include <osg/Texture2D>
-#include <osg/Light>
-#include <osg/Group>
-
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
 #include <omegaOsg.h>
@@ -60,6 +56,7 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API MenuItem: public IEventListener
 	{
+	friend class Menu;
 	public:
 		enum Type { Button, Checkbox, Slider, SubMenu };
 
@@ -101,6 +98,8 @@ namespace cyclops {
 
 		omegaToolkit::ui::Container* getContainerWidget();
 
+		omegaToolkit::ui::Widget* getWidget() { return myWidget; }
+
 	private:
 		Menu* myMenu;
 		MenuItem* myParent;
@@ -137,6 +136,8 @@ namespace cyclops {
 		void toggle();
 		bool isVisible();
 
+		omegaToolkit::ui::Container3dSettings& get3dSettings() { return myRootItem->myContainer->get3dSettings(); }
+
 	private:
 		MenuManager* myManager;
 		MenuItem* myRootItem;
@@ -163,12 +164,25 @@ namespace cyclops {
 		void setMainMenu(Menu* menu) { myMainMenu = menu; }
 		Menu* getMainMenu() { return myMainMenu; }
 
+		bool isAutoPlaceEnabled() { return myAutoPlaceEnabled; }
+		void setAutoPlaceEnabled(bool value) { myAutoPlaceEnabled = value; }
+
+		float getAutoPlaceDistance() { return myAutoPlaceDistance; }
+		void setAutoPlaceDistance(float value) { myAutoPlaceDistance = value; }
+
+
+	private:
+		void autoPlaceMenu(Menu* menu, const Event& evt);
+
 	private:
 		static MenuManager* mysInstance;
 
 		UiModule* myUiModule;
 		Dictionary<String, Menu*> myMenuDictionary;
 		Menu* myMainMenu;
+
+		bool myAutoPlaceEnabled;
+		float myAutoPlaceDistance;
 
 		ServerEngine* myEngine;
 	};

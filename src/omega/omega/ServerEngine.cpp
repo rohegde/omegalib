@@ -43,10 +43,11 @@ ServerEngine* ServerEngine::mysInstance = NULL;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ServerEngine::ServerEngine(ApplicationBase* app, bool master):
     ServerBase(app, master),
-    myActivePointerTimeout(2.0f),
+    //myActivePointerTimeout(2.0f),
     myDefaultCamera(NULL),
     myConsoleEnabled(false),
-	myPointerMode(PointerModeWand)
+	//myPointerMode(PointerModeWand)
+	myDrawPointers(false)
 {
     mysInstance = this;
 }
@@ -95,7 +96,7 @@ void ServerEngine::initialize()
     }
 	else
 	{
-		if(cfg->exists("config/defaultFont"))
+		if(syscfg->exists("config/defaultFont"))
 		{
 			Setting& fontSetting = syscfg->lookup("config/defaultFont");
 			setDefaultFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
@@ -106,6 +107,10 @@ void ServerEngine::initialize()
 			setDefaultFont(FontInfo("console", "fonts/arial.ttf", 12));
 		}
 	}
+
+	// Read draw pointers option.
+	myDrawPointers = syscfg->getBoolValue("config/drawPointers", myDrawPointers);
+	myDrawPointers = cfg->getBoolValue("config/drawPointers", myDrawPointers);
 
     myDefaultCamera = new Camera();
 
@@ -192,25 +197,26 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 	//}
 
 	// Set pointer mode.
-	if(myPointerMode == PointerModeMouse) ptr->setPointerMode(Pointer::ModeMouse);
-	else if(myPointerMode == PointerModeWand) ptr->setPointerMode(Pointer::ModeWand);
-	else
-	{
-		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
-		{
-			if(ptr->getPointerMode() == Pointer::ModeMouse)
-			{
-				ofmsg("Pointer %1%: switching to wand mode", %pointerId);
-				ptr->setPointerMode(Pointer::ModeWand);
-			}
-			else
-			{
-				ofmsg("Pointer %1%: switching to mouse mode", %pointerId);
-				ptr->setPointerMode(Pointer::ModeMouse);
-			}
-		}
-	}
+	//if(myPointerMode == PointerModeMouse) ptr->setPointerMode(Pointer::ModeMouse);
+	//else if(myPointerMode == PointerModeWand) ptr->setPointerMode(Pointer::ModeWand);
+	//else
+	//{
+	//	if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
+	//	{
+	//		if(ptr->getPointerMode() == Pointer::ModeMouse)
+	//		{
+	//			ofmsg("Pointer %1%: switching to wand mode", %pointerId);
+	//			ptr->setPointerMode(Pointer::ModeWand);
+	//		}
+	//		else
+	//		{
+	//			ofmsg("Pointer %1%: switching to mouse mode", %pointerId);
+	//			ptr->setPointerMode(Pointer::ModeMouse);
+	//		}
+	//	}
+	//}
 
+	ptr->setPointerMode(Pointer::ModeWand);
 	ptr->setPosition(evt.getPosition(0), evt.getPosition(1));
 	// If pointer contains ray information, pass it to the pointer.
 	if(evt.getExtraDataItems() == 2 && 
@@ -248,9 +254,9 @@ void ServerEngine::handleEvent(const Event& evt)
 
 		// Update pointers.
 		// NOTE: 0 is reserved for the local mouse pointer.
-		if(evt.getServiceType() == Service::Pointer && evt.getSourceId() > 0)
+		if(evt.getServiceType() == Service::Pointer /*&& evt.getSourceId() > 0*/)
 		{
-			int pointerId = evt.getSourceId() - 1;
+			int pointerId = evt.getSourceId();
 			refreshPointer(pointerId, evt);
 		}
 		if(!evt.isProcessed()) 

@@ -104,8 +104,10 @@ namespace omega {
 
  		//! Pointer mode management
 		//@{
-		PointerMode getPointerMode() { return myPointerMode; }
-		void setPointerMode(PointerMode value) { myPointerMode = value; }
+		//PointerMode getPointerMode() { return myPointerMode; }
+		//void setPointerMode(PointerMode value) { myPointerMode = value; }
+		bool getDrawPointers() { return myDrawPointers; }
+		void setDrawPointers(bool value) { myDrawPointers = value; }
 		//@}
 
  		//! Console management
@@ -144,8 +146,9 @@ namespace omega {
 
 		// Pointers
 		Pointer* myPointers[MaxPointers];
-		float myActivePointerTimeout;
-		PointerMode myPointerMode;
+		bool myDrawPointers;
+		//float myActivePointerTimeout;
+		//PointerMode myPointerMode;
 
 		// Resources
 		FontInfo myDefaultFont;
