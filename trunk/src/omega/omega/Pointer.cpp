@@ -77,7 +77,7 @@ void PointerRenderable::draw(RenderState* state)
 		//omsg("drawwand");
 			glDisable(GL_LIGHTING);
 
-			float size = 0.05f;
+			float size = 0.4f;
 			float length = 3;
 			float px = myPointer->myRay.getOrigin().x();
 			float py = myPointer->myRay.getOrigin().y();

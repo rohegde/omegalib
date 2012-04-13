@@ -50,7 +50,10 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 		myContainer = wf->createContainer("container", ui->getUi(), Container::LayoutVertical);
 		myContainer->setWidth(400);
 		myContainer->setHeight(SystemManager::instance()->getDisplaySystem()->getCanvasSize().y());
+		//myContainer->setAutosize(true);
 		myContainer->setPosition(Vector2f(10, 10));
+
+		myContainer->get3dSettings().enable3d = true;
 
 		myWidget = myContainer;
 	}
@@ -226,7 +229,9 @@ bool Menu::isVisible()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
-	myMainMenu(NULL)
+	myMainMenu(NULL),
+	myAutoPlaceDistance(0.1f),
+	myAutoPlaceEnabled(true)
 {
 	mysInstance = this;
 }
@@ -263,9 +268,52 @@ void MenuManager::handleEvent(const Event& evt)
 			if(myMainMenu != NULL)
 			{
 				myMainMenu->toggle();
+
+				// If menu autoplace is enabled, place menu along the pointer or wand ray, at
+				// the distance specified by myAutoPlaceDistance.
+				if(myAutoPlaceEnabled)
+				{
+					autoPlaceMenu(myMainMenu, evt);
+				}
 			}
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
+{
+	// Extract the pointer / wand ray from the event.
+	// NOTE: if the event does not contain this information, the default is
+	// a ray starting at the origin and pointing in the negative Z direction.
+	Ray ray(Vector3f::Zero(), -Vector3f::UnitZ());
+	if(evt.getServiceType() == Service::Pointer && 
+		evt.getExtraDataType() == Event::ExtraDataVector3Array &&
+		evt.getExtraDataItems() == 2)
+	{
+		// Pointer event: ray information is in the extra data section of the event.
+		ray.setOrigin(evt.getExtraDataVector3(0));
+		ray.setDirection(evt.getExtraDataVector3(1));
+	}
+	else if(evt.getServiceType() == Service::Wand)
+	{
+		// Wand event: generate a ray using the wand position and orientation.
+		ray.setOrigin(evt.getPosition());
+		ray.setDirection(evt.getOrientation() * -Vector3f::UnitZ());
+	}
+
+	Vector3f pos = ray.getPoint(myAutoPlaceDistance);
+	Quaternion q = Math::buildRotation(-Vector3f::UnitZ(), ray.getDirection(), Vector3f::UnitY());
+
+	Container3dSettings& c3ds = menu->get3dSettings();
+	Widget* menuWidget = menu->getRoot()->getWidget();
+	Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
+	c3ds.position = pos - offset;
+	//c3ds.yaw = q.getYaw() * Math::RadToDeg;
+	//c3ds.pitch = q.getPitch() * Math::RadToDeg;
+	//c3ds.roll = q.getRoll() * Math::RadToDeg;
+
+	ofmsg("MenuManager::autoPlaceMenu: pos=%1% pitch=%2% yaw=%3% roll=%4%", %c3ds.position %c3ds.pitch %c3ds.yaw %c3ds.roll);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

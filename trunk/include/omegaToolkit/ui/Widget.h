@@ -233,8 +233,8 @@ namespace omegaToolkit { namespace ui {
         virtual void drawContent();
 
     protected:
-        void preDraw();
-        void postDraw();
+        virtual void preDraw();
+        virtual void postDraw();
 
         //! Gets the current renderstate (accessible inside drawContent)
         RenderState* getRenderState() { return myRenderState; }

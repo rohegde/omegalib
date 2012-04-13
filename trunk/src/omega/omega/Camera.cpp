@@ -108,7 +108,7 @@ Camera::Camera(uint flags):
 	myPosition(Vector3f::Zero()),
 	myOrientation(Quaternion::Identity())
 {
-	myProjectionOffset = -Vector3f::UnitZ();
+	//myProjectionOffset = -Vector3f::UnitZ();
 
 	for(int i = 0; i < GpuContext::MaxContexts; i++)
 	{
@@ -185,8 +185,8 @@ void Camera::focusOn(SceneNode* node)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::updateObserver(Observer* obs)
 {
-	obs->updateHead(-myProjectionOffset, Quaternion::Identity());
-	obs->updateView(myPosition + myProjectionOffset, myOrientation);
+	//obs->updateHead(-myProjectionOffset, Quaternion::Identity());
+	obs->updateWorld(myPosition, myOrientation);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

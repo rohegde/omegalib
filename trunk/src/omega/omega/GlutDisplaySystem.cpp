@@ -79,7 +79,7 @@ void displayCallback(void)
 
 	// Push observer matrix.
 	glPushMatrix();
-	AffineTransform3 mat = ds->getObserver(0)->getViewTransform();
+	AffineTransform3 mat = ds->getObserver(0)->getWorldTransform();
 	glLoadIdentity();
 	glLoadMatrixf(mat.data());
 

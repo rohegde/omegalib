@@ -91,8 +91,8 @@ namespace omega {
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
-		const Vector3f& getProjectionOffset() { return myProjectionOffset; }
-		void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
+		//const Vector3f& getProjectionOffset() { return myProjectionOffset; }
+		//void setProjectionOffset(const Vector3f& value) { myProjectionOffset = value; }
 
 		const Quaternion& getOrientation();
 		void setOrientation(const Quaternion& value, bool resetController=true);
@@ -158,7 +158,7 @@ namespace omega {
 		//! When omegalib is using head tracking, usually the observer update service takes care of setting this value
 		//! directly in the Observer class, so this value is ignored. On desktop system, the user can set this value
 		//! manually to test off-axis projection.
-		Vector3f myProjectionOffset;
+		//Vector3f myProjectionOffset;
 
 		//! When set to true, the aspect is computed depending on the height & width of the camera render target.
 		bool myAutoAspect;

@@ -34,11 +34,11 @@ void CameraController::updateCamera(const Vector3f& speed, float yaw, float pitc
 {
 	if(myCamera != NULL)
 	{
-		Quaternion navOrientation = AngleAxis(roll, Vector3f::UnitZ()) * AngleAxis(-yaw, Vector3f::UnitY()) * AngleAxis(-pitch, Vector3f::UnitX());
-		Quaternion orientation =   AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(roll, Vector3f::UnitZ());
-		orientation = orientation * myOriginalOrientation;
-		navOrientation = navOrientation * myOriginalOrientation.inverse();
-		Vector3f ns = navOrientation * speed;
+		//Quaternion navOrientation = AngleAxis(roll, Vector3f::UnitZ()) * AngleAxis(-yaw, Vector3f::UnitY()) * AngleAxis(-pitch, Vector3f::UnitX());
+		Quaternion orientation =   AngleAxis(yaw, Vector3f::UnitY()) * AngleAxis(pitch, Vector3f::UnitX()) * AngleAxis(roll, Vector3f::UnitZ());
+		orientation = myOriginalOrientation * orientation;
+		//navOrientation = navOrientation * myOriginalOrientation.inverse();
+		Vector3f ns = orientation * speed;
 		Vector3f position = myCamera->getPosition() + (ns * dt);
 		myCamera->setPosition(position);
 		myCamera->setOrientation(orientation , false);
@@ -92,8 +92,8 @@ void KeyboardMouseCameraController::handleEvent(const Event& evt)
 		if(myRotating)
 		{
 			Vector3f dpos = evt.getPosition() - myLastPointerPosition;
-			myYaw += dpos.x() * myYawMultiplier;
-			myPitch += dpos.y() * myPitchMultiplier;
+			myYaw -= dpos.x() * myYawMultiplier;
+			myPitch -= dpos.y() * myPitchMultiplier;
 		}
 		myLastPointerPosition = evt.getPosition();
 	}

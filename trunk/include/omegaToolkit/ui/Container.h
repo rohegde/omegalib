@@ -31,6 +31,30 @@
 #include "omegaToolkit/UiRenderPass.h"
 
 namespace omegaToolkit { namespace ui {
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct Container3dSettings
+	{
+		Container3dSettings():
+			enable3d(false),
+			position(Vector3f::Zero()),
+			yaw(0), pitch(0), roll(0), 
+			// The default scale is based on common display dot pitch, so that 3d uis drawn on 
+			// display plane will be about the same size of corresponding 2d ui.
+			scale(0.002f) {}
+
+		bool enable3d;
+		Vector3f position;
+		float yaw;
+		float pitch;
+		float roll;
+
+		//! The 3d scale is the conversion factor between pixel sizes and world units.
+		//! For example, a 100x300 pixel container with a scale of 0.01 will be drawn as a 
+		// billboard 1x3 meters big in 3d mode.
+		float scale;
+	};
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API Container: public Widget
 	{
@@ -89,6 +113,9 @@ namespace omegaToolkit { namespace ui {
 		virtual void updateSize();
 		virtual void layout();
 
+		//! Gets the container 3d settings.
+		Container3dSettings& get3dSettings() { return my3dSettings; }
+
 	protected:
 		virtual void activate();
 
@@ -110,17 +137,26 @@ namespace omegaToolkit { namespace ui {
 		int myGridColumns;
 		HorizontalAlign myHorizontalAlign;
 		VerticalAlign myVerticalAlign;
+
+		Container3dSettings my3dSettings;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API ContainerRenderable: public WidgetRenderable
 	{
 	public:
-		ContainerRenderable(Container* owner): WidgetRenderable(owner), myOwner(owner) {}
+		ContainerRenderable(Container* owner): WidgetRenderable(owner), myOwner(owner), myRenderTarget(NULL), myTexture(NULL) {}
 		virtual void draw(RenderState* state);
+
+    protected:
+        void draw3d(RenderState* state);
 
 	private:
 		Container* myOwner;
+
+		// Stuff used for 3d ui rendering.
+		RenderTarget* myRenderTarget;
+		Texture* myTexture;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -474,6 +474,48 @@ Renderable* Container::createRenderable()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void ContainerRenderable::draw3d(RenderState* state)
+{
+	if(myTexture != NULL)
+	{
+		glDisable(GL_COLOR_MATERIAL);
+		glDisable(GL_LIGHTING);
+		glEnable(GL_TEXTURE_2D);
+		myTexture->bind(GpuManager::TextureUnit0);
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glColor4ub(255, 255, 255, 255);
+
+		Container3dSettings& c3ds = myOwner->get3dSettings();
+		float width = myOwner->getWidth() * c3ds.scale;
+		float height = myOwner->getHeight() * c3ds.scale;
+
+		glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
+		glRotatef(c3ds.pitch, 1, 0, 0);
+		glRotatef(c3ds.yaw, 0, 1, 0);
+		glRotatef(c3ds.roll, 0, 0, 1);
+		
+		glBegin(GL_TRIANGLE_STRIP);
+		glTexCoord2f(0, 0);
+		glVertex3f(0, 0, 0);
+
+		glTexCoord2f(1, 0);
+		glVertex3f(width, 0, 0);
+
+		glTexCoord2f(0, 1);
+		glVertex3f(0, height, 0);
+
+		glTexCoord2f(1, 1);
+		glVertex3f(width, height, 0);
+
+		glEnd();
+
+		myTexture->unbind();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::draw(RenderState* state)
 {
 	//if(myOwner->isVisible())
@@ -482,37 +524,7 @@ void ContainerRenderable::draw(RenderState* state)
 		{
 			if(myOwner->get3dSettings().enable3d)
 			{
-				if(myTexture != NULL)
-				{
-					glDisable(GL_COLOR_MATERIAL);
-					glDisable(GL_LIGHTING);
-					glEnable(GL_TEXTURE_2D);
-					myTexture->bind(GpuManager::TextureUnit0);
-					glEnable (GL_BLEND);
-					glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-					glColor4ub(255, 255, 255, 255);
-
-					glTranslatef(0, 5, 0);
-					glScalef(1.0f, 1.0f, 1.0f);
-		
-					glBegin(GL_TRIANGLE_STRIP);
-					glTexCoord2f(0, 0);
-					glVertex3f(0, 0, 0);
-
-					glTexCoord2f(1, 0);
-					glVertex3f(1, 0, 0);
-
-					glTexCoord2f(0, 1);
-					glVertex3f(0, 1, 0);
-
-					glTexCoord2f(1, 1);
-					glVertex3f(1, 1, 0);
-
-					glEnd();
-
-					myTexture->unbind();
-				}
+				draw3d(state);
 			}
 			else
 			{
@@ -538,15 +550,11 @@ void ContainerRenderable::draw(RenderState* state)
 					myRenderTarget = new RenderTarget(state->context->gpuContext, RenderTarget::RenderToTexture);
 					myRenderTarget->setTextureTarget(myTexture);
 				}
+				myRenderTarget->bind();
 			}
 			else
 			{
 				preDraw();
-			}
-
-			if(myOwner->get3dSettings().enable3d)
-			{
-				myRenderTarget->bind();
 			}
 
 			// draw myself.
@@ -573,8 +581,7 @@ void ContainerRenderable::draw(RenderState* state)
 			{
 				myRenderTarget->unbind();
 			}
-
-			if(!myOwner->get3dSettings().enable3d)
+			else
 			{
 				postDraw();
 			}

@@ -215,6 +215,8 @@ void OmegaViewer::initialize()
 	sceneMngr->doInitialize(getServer());
 	ModuleServices::addModule(sceneMngr);
 
+	OsgModule::setAmbientOverrideHack(false);
+
 	//~~~~~~ Form context to scene nodes that represent the .objs
 	railFailEntity = sceneMngr->findEntity( 0 );
 	if(!railFailEntity) owarn("Rail not loaded");

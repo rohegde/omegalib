@@ -614,7 +614,7 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 
 	DisplayTileConfig& dtc = myDisplayConfig.tiles[channelX][channelY];
 	Observer* o = myObservers.at(0);
-	Vector3f head = o->getWorldHeadPosition();
+	Vector3f head = o->getHeadPosition();
 
 	float px = (float)x / dtc.resolution[0];
 	float py = 1 - (float)y / dtc.resolution[1];
@@ -631,9 +631,22 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	//Vector3f p = px * vc + py * va + (3 - px - py) * vb;
 
 	Vector3f direction = p - head;
+
+	//AffineTransform3 t = AffineTransform3::Identity();
+	//t.rotate(o->getWorldOrientation());
+	//t.translate(-o->getHeadPosition());
+	//t.translate(o->getWorldPosition());
+
+
+	//p = p + o->getWorldPosition() - head;
+	p -= o->getHeadPosition();
+	p = o->getWorldOrientation() * p;
+	p += o->getWorldPosition();
+	//p = p - head;
+	direction = o->getWorldOrientation() * direction;
 	direction.normalize();
 
-	//ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
+	ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
 
 	return Ray(p, direction);
 }
