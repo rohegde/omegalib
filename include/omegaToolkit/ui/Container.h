@@ -38,16 +38,16 @@ namespace omegaToolkit { namespace ui {
 		Container3dSettings():
 			enable3d(false),
 			position(Vector3f::Zero()),
-			yaw(0), pitch(0), roll(0), 
+			normal(Vector3f::UnitZ()), 
+			up(Vector3f::UnitY()),
 			// The default scale is based on common display dot pitch, so that 3d uis drawn on 
 			// display plane will be about the same size of corresponding 2d ui.
 			scale(0.002f) {}
 
 		bool enable3d;
 		Vector3f position;
-		float yaw;
-		float pitch;
-		float roll;
+		Vector3f normal;
+		Vector3f up;
 
 		//! The 3d scale is the conversion factor between pixel sizes and world units.
 		//! For example, a 100x300 pixel container with a scale of 0.01 will be drawn as a 

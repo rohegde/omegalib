@@ -303,17 +303,18 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 	}
 
 	Vector3f pos = ray.getPoint(myAutoPlaceDistance);
-	Quaternion q = Math::buildRotation(-Vector3f::UnitZ(), ray.getDirection(), Vector3f::UnitY());
 
 	Container3dSettings& c3ds = menu->get3dSettings();
 	Widget* menuWidget = menu->getRoot()->getWidget();
 	Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
 	c3ds.position = pos - offset;
+	c3ds.normal = -ray.getDirection();
+
 	//c3ds.yaw = q.getYaw() * Math::RadToDeg;
 	//c3ds.pitch = q.getPitch() * Math::RadToDeg;
 	//c3ds.roll = q.getRoll() * Math::RadToDeg;
 
-	ofmsg("MenuManager::autoPlaceMenu: pos=%1% pitch=%2% yaw=%3% roll=%4%", %c3ds.position %c3ds.pitch %c3ds.yaw %c3ds.roll);
+	//ofmsg("MenuManager::autoPlaceMenu: pos=%1% pitch=%2% yaw=%3% roll=%4%", %c3ds.position %c3ds.pitch %c3ds.yaw %c3ds.roll);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
