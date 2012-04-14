@@ -164,6 +164,8 @@ namespace cyclops {
 		void setMainMenu(Menu* menu) { myMainMenu = menu; }
 		Menu* getMainMenu() { return myMainMenu; }
 
+		bool isMenu3dEnabled() { return myMenu3dEnabled; }
+
 		bool isAutoPlaceEnabled() { return myAutoPlaceEnabled; }
 		void setAutoPlaceEnabled(bool value) { myAutoPlaceEnabled = value; }
 
@@ -181,6 +183,7 @@ namespace cyclops {
 		Dictionary<String, Menu*> myMenuDictionary;
 		Menu* myMainMenu;
 
+		bool myMenu3dEnabled;
 		bool myAutoPlaceEnabled;
 		float myAutoPlaceDistance;
 

@@ -436,21 +436,88 @@ void Container::update(const omega::UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
+{
+	Ray r;
+	if(inEvt.getServiceType() == Service::Pointer)
+	{
+		if(inEvt.getExtraDataType() == Event::ExtraDataVector3Array && inEvt.getExtraDataItems() >= 2)
+		{
+			r.setOrigin(inEvt.getExtraDataVector3(0));
+			r.setDirection(inEvt.getExtraDataVector3(1));
+		}
+	}
+	else if(inEvt.getServiceType() == Service::Wand)
+	{
+		r.setOrigin(inEvt.getPosition());
+		r.setDirection(inEvt.getOrientation() * Vector3f::UnitZ());
+	}
+	else
+	{
+		// we did not generate a pointer event. return false.
+		return false;
+	}
+
+	// Intersect the pointer ray with the container 3d plane.
+	Plane plane(my3dSettings.normal, my3dSettings.position);
+	std::pair<bool, float> result = Math::intersects(r, plane);
+	if(result.first)
+	{
+		// An intersection exists: find the point.
+		Vector3f intersection = r.getPoint(result.second);
+
+		// Turn the intersection point from world coordinates to pixel, ui coordinates.
+		intersection = my3dSettings.position - intersection;
+		
+		Vector3f widthVector = -my3dSettings.up.cross(my3dSettings.normal);
+		Vector3f heightVector = -my3dSettings.up;
+
+		widthVector.normalize();
+		heightVector.normalize();
+
+		float x = intersection.dot(widthVector);
+		float y = intersection.dot(heightVector);
+
+		Vector3f pointerPosition(x / my3dSettings.scale, getHeight() - (y / my3dSettings.scale), 0);
+		outEvt.reset(inEvt.getType(), Service::Pointer);
+		outEvt.setPosition(pointerPosition);
+
+		ofmsg("intersection: %1%    ui pos: %2%", %intersection %pointerPosition);
+
+		return true;
+	}
+
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Container::handleEvent(const Event& evt)
 {
 	// Only handle events if the container is visible.
 	if(isVisible())
 	{
-		//Vector2f point = Vector2f(evt.getPosition(0), evt.getPosition(1));
-	
-		//transformPoint(point);
-
-		if(isPointerInteractionEnabled())
+		// Container is displayed in 3d mode. Convert pointer rays and wand rays into 
+		// standard pointer events.
+		if(my3dSettings.enable3d && isPointerInteractionEnabled())
 		{
-			// For pointer interaction, just dispatch the event to all children
-			foreach(Widget* w, myChildren)
+			Event newEvt;
+			if(rayToPointerEvent(evt, newEvt))
 			{
-				w->handleEvent(evt);
+				foreach(Widget* w, myChildren)
+				{
+					w->handleEvent(newEvt);
+				}
+			}
+		}
+		else
+		{
+			if(isPointerInteractionEnabled())
+			{
+				// For pointer interaction, just dispatch the event to all children
+				foreach(Widget* w, myChildren)
+				{
+					w->handleEvent(evt);
+				}
 			}
 		}
 	}
