@@ -53,7 +53,7 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 		//myContainer->setAutosize(true);
 		myContainer->setPosition(Vector2f(10, 10));
 
-		myContainer->get3dSettings().enable3d = true;
+		myContainer->get3dSettings().enable3d = MenuManager::instance()->isMenu3dEnabled();
 
 		myWidget = myContainer;
 	}
@@ -230,7 +230,7 @@ bool Menu::isVisible()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
 	myMainMenu(NULL),
-	myAutoPlaceDistance(0.1f),
+	myAutoPlaceDistance(0.5f),
 	myAutoPlaceEnabled(true)
 {
 	mysInstance = this;
@@ -250,6 +250,15 @@ void MenuManager::initialize()
 		ModuleServices::addModule(myUiModule);
 		// Force uimodule init.
 		myUiModule->doInitialize(getServer());
+	}
+
+	// Read configuration parameters from system config
+	Setting& sSysCfg = SystemManager::instance()->getSystemConfig()->lookup("config");
+	myMenu3dEnabled = Config::getBoolValue("menu3dEnabled", sSysCfg, false);
+	if(myMenu3dEnabled)
+	{
+		myAutoPlaceEnabled = true;
+		myAutoPlaceDistance = Config::getFloatValue("menu3dDistance", sSysCfg, myAutoPlaceDistance);
 	}
 }
 

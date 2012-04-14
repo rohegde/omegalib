@@ -127,6 +127,7 @@ namespace omegaToolkit { namespace ui {
 		void computeLinearLayout(Orientation orientation);
 		void computeGridLayout(Orientation orientation);
 		void updateChildrenNavigation();
+		bool rayToPointerEvent(const Event& inEvt, Event& outEvt);
 
 	private:
 		List<Widget*> myChildren;
