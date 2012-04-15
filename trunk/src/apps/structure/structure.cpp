@@ -82,7 +82,7 @@ void StructureViewer::initialize()
 		MenuItem* mi = menu->getRoot()->addItem(MenuItem::Checkbox);
 		mi->setChecked(false);
 		e->getSceneNode()->setVisible(false);
-		mi->setText(e->getAsset()->description);
+		mi->setText(e->getTag());
 		mi->setUserData(e);
 		mi->setListener(this);
 		mi->setUserTag("visibilityToggle");

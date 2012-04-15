@@ -52,6 +52,7 @@
 #include "omegaToolkit/UiScriptCommand.h"
 
 #include "omegaToolkit/ui/AbstractButton.h"
+#include "omegaToolkit/ui/BareboneSkin.h"
 #include "omegaToolkit/ui/Button.h"
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/ui/Image.h"

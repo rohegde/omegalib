@@ -180,7 +180,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		filePath = StringUtils::replaceAll(filePath, "./", path);
 
 		int index = atoi(xchild->Attribute("Id"));
-		ofmsg("Loading asset %1%", %index);
+		ofmsg("Loading asset %1%", %filePath);
 
 		String assetPath;
 		if(DataManager::findFile(filePath, assetPath))
@@ -265,7 +265,11 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 		{
 			int fileIndex = atoi(xchild->Attribute("FileIndex"));
 			int id = atoi(xchild->Attribute("Id"));
-			mySceneManager->addEntity(fileIndex, id, position, rotation, scale);
+			const char* tag = xchild->Attribute("Tag");
+			String sTag;
+			if(tag != NULL) sTag = tag;
+
+			mySceneManager->addEntity(fileIndex, id, sTag, position, rotation, scale);
 		}
 		else if(objtype == "plane")
 		{

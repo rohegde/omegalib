@@ -140,15 +140,15 @@ void SceneManager::initialize()
 
 	myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->beginGui();
-		myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
-		myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
-		myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
-		myTabletManager->finishGui();
-	}
+	//if(myTabletManager != NULL)
+	//{
+	//	myTabletManager->beginGui();
+	//	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
+	//	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
+	//	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
+	//	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
+	//	myTabletManager->finishGui();
+	//}
 
 	if(myShadowMode == ShadowsSoft)
 	{
@@ -289,7 +289,7 @@ void SceneManager::addStaticObject(int assetId, const Vector3f& position, const 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addEntity(int assetId, int entityId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
+void SceneManager::addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
 {
 	ModelAsset* asset = getModelAsset(assetId);
 	if(asset == NULL)
@@ -299,6 +299,7 @@ void SceneManager::addEntity(int assetId, int entityId, const Vector3f& position
 	else
 	{
 		Entity* e = new Entity(this, asset, entityId);
+		e->setTag(tag);
 		addNode(e->getOsgNode());
 		e->getSceneNode()->setPosition(position);
 		e->getSceneNode()->yaw(rotation[0] * Math::DegToRad);

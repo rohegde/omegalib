@@ -37,7 +37,7 @@ namespace omegaToolkit { namespace ui {
 		DefaultButtonRenderable(Button* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~DefaultButtonRenderable() {}
 	protected:
-		void drawContent();
+		virtual void drawContent();
 	private:
 		Button* myOwner;
 		float myAnim;
@@ -50,10 +50,22 @@ namespace omegaToolkit { namespace ui {
 		DefaultSliderRenderable(Slider* owner): WidgetRenderable(owner), myOwner(owner) {}
 		virtual ~DefaultSliderRenderable() {}
 	protected:
-		void drawContent();
+		virtual void drawContent();
 	private:
 		Slider* myOwner;
 		float myAnim;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class OTK_API DefaultPanelRenderable: public ContainerRenderable
+	{
+	public:
+		DefaultPanelRenderable(Container* owner): ContainerRenderable(owner), myOwner(owner) {}
+		virtual ~DefaultPanelRenderable() {}
+	protected:
+		virtual void drawContent();
+	private:
+		Container* myOwner;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +89,16 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	class DefaultPanel: public Container
+	{
+	friend class DefaultPanelRenderable;
+	public:
+		DefaultPanel(ServerEngine* srv): Container(srv) {}
+		virtual ~DefaultPanel() {}
+		virtual Renderable* createRenderable() { return new DefaultPanelRenderable(this); }
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	class DefaultWidgetFactory: public WidgetFactory
 	{
 	public:
@@ -96,6 +118,14 @@ namespace omegaToolkit { namespace ui {
 			Slider* slider = new DefaultSlider(getServer());
 			container->addChild(slider);
 			return slider;
+		}
+
+		virtual Container* createPanel(String name, Container* container)
+		{
+			Container* panel = new DefaultPanel(getServer());
+			panel->setLayout(Container::LayoutVertical);
+			container->addChild(panel);
+			return panel;
 		}
 	};
 };};

@@ -47,7 +47,7 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 
 	if(type == MenuItem::SubMenu)
 	{
-		myContainer = wf->createContainer("container", ui->getUi(), Container::LayoutVertical);
+		myContainer = wf->createPanel("container", ui->getUi());
 		myContainer->setWidth(400);
 		myContainer->setHeight(SystemManager::instance()->getDisplaySystem()->getCanvasSize().y());
 		//myContainer->setAutosize(true);

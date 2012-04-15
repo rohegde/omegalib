@@ -77,6 +77,9 @@ namespace cyclops {
 		void setCurrentModelIndex(int index);
 		int getCurrentModelIndex();
 
+		void setTag(const String& value) { myTag = value; }
+		const String& getTag() { return myTag; } 
+
 	private:
 		SceneManager* mySceneManager;
 
@@ -87,6 +90,7 @@ namespace cyclops {
 		SceneNode* mySceneNode;
 		ModelAsset* myAsset;
 		int myId;
+		String myTag;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +127,7 @@ namespace cyclops {
 		void addNode(osg::Node* node);
 		void addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		void addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
-		void addEntity(int assetId, int entityId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		void addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		//@}
 
 		void setLightPosition(float x, float y, float z, float w);
