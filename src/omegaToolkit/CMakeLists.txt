@@ -63,6 +63,7 @@ set( srcs
 		
 		# omega::ui
 		omegaToolkit/ui/AbstractButton.cpp
+		omegaToolkit/ui/BareboneSkin.cpp
 		omegaToolkit/ui/Button.cpp
 		omegaToolkit/ui/Container.cpp
 		omegaToolkit/ui/Image.cpp
@@ -108,6 +109,7 @@ set( headers
 		
 		# omega::ui
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/AbstractButton.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/BareboneSkin.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Button.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Container.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Image.h

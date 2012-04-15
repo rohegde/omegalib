@@ -40,7 +40,7 @@ Button::Button(ServerEngine* srv):
 	//myLabel.setText(name);
 	setMaximumHeight(22);
 	myColor = Color(0.2f, 0.2f, 0.2f);
-	setDebugModeEnabled(true);
+	//setDebugModeEnabled(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

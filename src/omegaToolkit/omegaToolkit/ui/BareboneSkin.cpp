@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omegaToolkit/ui/DefaultSkin.h"
+#include "omegaToolkit/ui/BareboneSkin.h"
 #include "omega/DrawInterface.h"
 #include "omega/glheaders.h"
 
@@ -33,19 +33,19 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultButtonRenderable::drawContent()
+void BareboneButtonRenderable::drawContent()
 {
 	WidgetRenderable::drawContent();
 
 	DrawInterface* painter = getRenderer();
 
-	Color col = Color::White;
+	Color col = myOwner->getColor();
 	if(myOwner->isActive())
 	{
-		col = Color::Lime;
+		col = col.scale(1.8f);
 	}
-	//painter->drawRect(Vector2f::Zero(), myOwner->getSize(), col);
-	//painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
+	painter->drawRect(Vector2f::Zero(), myOwner->getSize(), col);
+	painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
 
 	Vector2f size = myOwner->getSize();
 
@@ -68,7 +68,6 @@ void DefaultButtonRenderable::drawContent()
 	myOwner->getLabel()->setPosition(Vector2f::Zero());
 	myOwner->getLabel()->setSize(size);
 
-	myOwner->getLabel()->setColor(col);
 	LabelRenderable* lr = (LabelRenderable*)myOwner->getLabel()->getRenderable(getClient());
 	if(lr)
 	{
@@ -80,12 +79,12 @@ void DefaultButtonRenderable::drawContent()
 
 	//GfxUtils::drawVGradient(myPosition, mySize, Color(80, 80, 100, 100 + myAnim * 100), Color(80, 80, 100, 100 + myAnim * 100));
 
-	//glColor4ub(255, 255, 255, 255);
+	glColor4ub(255, 255, 255, 255);
 	//GfxUtils::drawDRect(myPosition, mySize, 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultSliderRenderable::drawContent()
+void BareboneSliderRenderable::drawContent()
 {
 	WidgetRenderable::drawContent();
 
@@ -99,24 +98,3 @@ void DefaultSliderRenderable::drawContent()
 	painter->drawRectOutline(sliderPos, sliderSize, Color::White);
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void DefaultPanelRenderable::drawContent()
-{
-	ContainerRenderable::drawContent();
-
-	DrawInterface* painter = getRenderer();
-
-	//Vector2f sliderPos = myOwner->getSliderPosition();
-	//Vector2f sliderSize = myOwner->getSliderSize();
-
-	Vector2f borderSize = Vector2f(4.0f, 4.0f);
-	Vector2f size = myOwner->getSize();
-
-	//painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
-
-	painter->drawRect(Vector2f::Zero(), size, Color::White);
-	painter->drawRect(borderSize / 2, size - borderSize, Color::Black);
-
-	//painter->drawRectOutline(sliderPos, sliderSize, Color::White);
-}
