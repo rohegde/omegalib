@@ -589,7 +589,7 @@ void ContainerRenderable::draw3d(RenderState* state)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ContainerRenderable::draw(RenderState* state)
 {
-	//if(myOwner->isVisible())
+	if(myOwner->isVisible())
 	{
 		if(state->context->task == DrawContext::SceneDrawTask)
 		{
