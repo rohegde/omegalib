@@ -37,6 +37,7 @@
 #include <osgwTools/Shapes.h>
 
 #include "cyclops/SceneLoader.h"
+#include "cyclops/EffectNode.h"
 
 using namespace cyclops;
 
@@ -198,6 +199,15 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 					node->setStateSet(fx);
 				}
 
+				if(xchild->Attribute("Effect") != NULL)
+				{
+					String fxDef = xchild->Attribute("Effect");
+					EffectNode* fx = new EffectNode();
+					fx->setDefinition(fxDef);
+					fx->addChild(node);
+					node = fx;
+				}
+
 				if(xchild->Attribute("Size") != NULL)
 				{
 					float size = atof(xchild->Attribute("Size"));
@@ -294,7 +304,7 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	Vector3f startCorner = readVector3f(xchild, "StartCorner");
 	Vector3f endCorner = readVector3f(xchild, "EndCorner");
 	Vector2f tiling = readVector2f(xchild, "Tiling");
-	String material = xchild->Attribute("Material");
+	//String material = xchild->Attribute("Material");
 
 	Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
 	Vector3f c2(endCorner[0], startCorner[1], startCorner[2]);
@@ -314,14 +324,20 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	plane->setVertexAttribArray (6, a_tangent);
 	plane->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
-	osg::StateSet* fx = mySceneManager->loadMaterialPass(material);
+	osg::StateSet* fx = node->getOrCreateStateSet();
 	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
-
-	node->addDrawable(plane);
 	plane->setStateSet(fx);
-
-
+	node->addDrawable(plane);
 	tsg->unref();
+
+	if(xchild->Attribute("Effect") != NULL)
+	{
+		String fxDef = xchild->Attribute("Effect");
+		EffectNode* fx = new EffectNode();
+		fx->setDefinition(fxDef);
+		fx->addChild(node);
+		return fx;
+	}
 
 	return node;
 }
