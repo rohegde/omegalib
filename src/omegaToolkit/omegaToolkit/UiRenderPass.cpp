@@ -49,12 +49,16 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		state.context = &context;
 
 		client->getRenderer()->beginDraw3D(context);
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+
 		ui::Container* ui = UiModule::instance()->getUi();
 		Renderable* uiRenderable = ui->getRenderable(client);
 		if(uiRenderable != NULL)
 		{
 			uiRenderable->draw(&state);
 		}
+
+		glPopAttrib();
 		client->getRenderer()->endDraw();
 	}
 	else if(context.task == DrawContext::OverlayDrawTask)

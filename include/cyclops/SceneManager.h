@@ -33,6 +33,8 @@
 #include <osg/Light>
 #include <osg/Group>
 #include <osg/Switch>
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/SoftShadowMap>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -44,11 +46,35 @@
 
 namespace cyclops {
 	using namespace omega;
-	using namespace omegaToolkit;
 	using namespace omegaOsg;
 
 	class SceneLoader;
 	class SceneManager;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct Light
+	{
+		Light():
+			position(Vector3f::Zero()),
+			color(Color::White),
+			ambient(Color::Gray),
+			constAttenuation(0), linearAttenuation(0), quadAttenuation(0),
+			enabled(false),
+			osgLight(NULL), osgLightSource(NULL)
+			{}
+
+		Vector3f position;
+		Color color;
+		Color ambient;
+		bool enabled;
+		float constAttenuation;
+		float linearAttenuation;
+		float quadAttenuation;
+
+		// osg light stuff.
+		osg::Light* osgLight;
+		osg::LightSource* osgLightSource;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelAsset
@@ -102,6 +128,8 @@ namespace cyclops {
 
 		enum ShadowMode { ShadowsDisabled, ShadowsSoft };
 
+		static const int MaxLights = 16;
+
 	public:
 		static const int ReceivesShadowTraversalMask = 0x1;
 		static const int CastsShadowTraversalMask = 0x2;
@@ -122,7 +150,7 @@ namespace cyclops {
 		//! Utility method: loads a scene file using the standard cyclops scene loader.
 		void load(const String& file);
 
-		//! Scene creation API
+		//! Scene creation methods
 		//@{
 		void addNode(osg::Node* node);
 		void addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
@@ -130,7 +158,12 @@ namespace cyclops {
 		void addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		//@}
 
-		void setLightPosition(float x, float y, float z, float w);
+		//! Light management methods
+		//@{
+		Light* getLight(int id);
+		Light* getMainLight() { return myMainLight; }
+		void setMainLight(Light* light) { myMainLight = light; }
+		//@}
 
 		void addAsset(ModelAsset* asset, AssetType type);
 		ModelAsset* getModelAsset(int fileIndex);
@@ -147,6 +180,7 @@ namespace cyclops {
 		void setShaderMacroToFile(const String& macroName, const String& path);
 
 	private:
+		void updateLights();
 		void loadConfiguration();
 
 	private:
@@ -164,7 +198,7 @@ namespace cyclops {
 		ServerEngine* myEngine;
 
 		OsgModule* myOsg;
-		SceneEditorModule* myEditor;
+		omegaToolkit::SceneEditorModule* myEditor;
 		PortholeTabletService* myTabletManager;
 
 		osg::Group* mySceneRoot;
@@ -179,7 +213,11 @@ namespace cyclops {
 
 		List<Entity*> myEntities;
 
-		osg::Light* myLight2;
+		// Lights and shadows
+		Light myLights[MaxLights];
+		Light* myMainLight;
+		osgShadow::ShadowedScene* myShadowedScene;
+		osgShadow::SoftShadowMap* mySoftShadowMap;
 		//bool frontView;
 		//float localZoom;
 		//float remoteZoom;

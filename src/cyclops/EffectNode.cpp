@@ -27,6 +27,7 @@
 #include "cyclops/EffectNode.h"
 #include "cyclops/SceneManager.h"
 
+#include <osg/Material>
 #include <osgFX/Technique>
 
 using namespace cyclops;
@@ -50,11 +51,35 @@ protected:
 
 	void define_passes_colored()
 	{
+		String effectName;
+		String diffuse;
+		libconfig::ArgumentHelper ah;
+		ah.newString("effectName", "the effect name", effectName);
+		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color color", diffuse);
+		ah.process(myDefinition.c_str());
+
+
+
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
 		prog = sm->getProgram("colored", "cyclops/common/Colored.vert", "cyclops/common/Colored.frag");
+
 		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+
+		// If we have colors, add material attribute
+		if(diffuse != "")
+		{
+			Color diffuseColor(diffuse);
+			osg::Material* mat = new osg::Material();
+			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+			mat->setDiffuse(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
+			mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
+			mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
+			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
+			ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
+		}
+
 		addPass(ss);
 	}
 

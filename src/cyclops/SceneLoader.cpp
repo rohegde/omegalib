@@ -265,6 +265,7 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 		Vector3f rotation = readVector3f(xchild, "Rotation");
 		Vector3f position = readVector3f(xchild, "WorldPos");
 		Vector3f scale = readVector3f(xchild, "Scale");
+		if(scale.x() == 0 && scale.y() == 0 && scale.z() == 0) scale = Vector3f::Ones();
 
 		if(objtype == "staticobject")
 		{
@@ -339,6 +340,14 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 		return fx;
 	}
 
+	// TEMPORARY
+	if(xchild->Attribute("Material") != NULL)
+	{
+		String fxDef = xchild->Attribute("Material");
+		osg::StateSet* ss = mySceneManager->loadMaterialPass(fxDef);
+		node->setStateSet(ss);
+	}
+
 	return node;
 }
 
@@ -350,7 +359,7 @@ osg::Node* SceneLoader::createSphere(TiXmlElement* xchild)
 	float radius = readFloat(xchild, "Radius", 1.0);
 	int subdivisions = readInt(xchild, "Subdivisions", 4);
 	Vector2f tiling = readVector2f(xchild, "Tiling");
-	String material = xchild->Attribute("Material");
+	//String material = xchild->Attribute("Material");
 
 	osg::Geometry* sphere = osgwTools::makeGeodesicSphere(radius, subdivisions);
 	sphere->setColorArray(NULL);
@@ -362,13 +371,22 @@ osg::Node* SceneLoader::createSphere(TiXmlElement* xchild)
 	sphere->setVertexAttribArray (6, a_tangent);
 	sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
 
-	osg::StateSet* fx = mySceneManager->loadMaterialPass(material);
+	osg::StateSet* fx = node->getOrCreateStateSet();
 	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
 
 	node->addDrawable(sphere);
 	sphere->setStateSet(fx);
 
 	tsg->unref();
+
+	if(xchild->Attribute("Effect") != NULL)
+	{
+		String fxDef = xchild->Attribute("Effect");
+		EffectNode* fx = new EffectNode();
+		fx->setDefinition(fxDef);
+		fx->addChild(node);
+		return fx;
+	}
 
 	return node;
 }
