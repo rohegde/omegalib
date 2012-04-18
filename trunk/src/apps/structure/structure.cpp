@@ -88,6 +88,12 @@ void StructureViewer::initialize()
 		mi->setUserTag("visibilityToggle");
 	}
 
+	cyclops::Light* l = mySceneManager->getLight(0);
+	l->enabled = true;
+	l->position = Vector3f(0, 20, 1);
+	l->color = Color(1.0f, 1.0f, 0.7f);
+	l->ambient = Color(0.2f, 0.2f, 0.3f);
+	mySceneManager->setMainLight(l);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

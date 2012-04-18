@@ -29,4 +29,6 @@
 #include "omegaOsg/OsgModule.h"
 #include "omegaOsg/OsgSceneObject.h"
 #include "omegaOsg/OsgRenderPass.h"
+
+#define COLOR_TO_OSG(col) osg::Vec4(col[0], col[1], col[2], col[3])
 #endif

@@ -24,8 +24,6 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include <osgShadow/ShadowedScene>
-#include <osgShadow/SoftShadowMap>
 #include <osgUtil/Optimizer>
 #include <osgDB/Archive>
 #include <osgDB/ReadFile>
@@ -126,13 +124,15 @@ void SceneManager::loadConfiguration()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initialize()
 {
+	myMainLight = NULL;
+
 	myEngine = getServer();
 
 	loadConfiguration();
 
 	if(myEditorEnabled)
 	{
-		myEditor = new SceneEditorModule();
+		myEditor = new omegaToolkit::SceneEditorModule();
 		ModuleServices::addModule(myEditor);
 	}
 
@@ -180,6 +180,66 @@ void SceneManager::update(const UpdateContext& context)
 	{
 		myTabletManager->update(context);
 	}
+	updateLights();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::updateLights()
+{
+	for(int i = 0; i < MaxLights; i++)
+	{
+		Light& l = myLights[i];
+		if(l.enabled)
+		{
+			if(l.osgLight == NULL)
+			{
+				l.osgLight = new osg::Light();
+				l.osgLightSource = new osg::LightSource();
+				mySceneRoot->addChild(l.osgLightSource);
+			}
+
+			l.osgLight->setLightNum(i);
+			l.osgLight->setPosition(osg::Vec4(l.position[0], l.position[1], l.position[2], 1.0));
+			l.osgLight->setAmbient(COLOR_TO_OSG(l.ambient));
+			l.osgLight->setDiffuse(COLOR_TO_OSG(l.color));
+			l.osgLight->setSpecular(COLOR_TO_OSG(l.color));
+			l.osgLight->setConstantAttenuation(l.constAttenuation);
+			l.osgLight->setLinearAttenuation(l.linearAttenuation);
+			l.osgLight->setQuadraticAttenuation(l.quadAttenuation);
+
+			l.osgLightSource->setLight(l.osgLight);
+
+			osg::StateSet* sState = mySceneRoot->getOrCreateStateSet();
+			l.osgLightSource->setStateSetModes(*sState,osg::StateAttribute::ON);
+		}
+		else
+		{
+			if(l.osgLightSource != NULL)
+			{
+				l.osgLightSource->setLocalStateSetModes(osg::StateAttribute::OFF); 
+			}
+		}
+	}
+
+	if(myMainLight != NULL)
+	{
+		if(mySoftShadowMap != NULL)
+		{
+			mySoftShadowMap->setLight(myMainLight->osgLight);
+		}
+
+		// Set ambient light uniform.
+		osg::Uniform* unifAmbient = mySceneRoot->getOrCreateStateSet()->getUniform("unif_Ambient");
+		if(unifAmbient == NULL)
+		{
+			unifAmbient = new osg::Uniform("unif_Ambient", COLOR_TO_OSG(myMainLight->ambient));
+			mySceneRoot->getStateSet()->addUniform(unifAmbient, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+		}
+		else
+		{
+			unifAmbient->set(COLOR_TO_OSG(myMainLight->ambient));
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,12 +258,12 @@ void SceneManager::load(SceneLoader* loader)
 	while(!loader->isLoadingComplete()) loader->loadStep();
 	if (mySceneRoot != NULL) 
 	{
-		osg::setNotifyLevel(INFO);
+		osg::setNotifyLevel(osg::INFO);
 		omsg("Optimizing scene graph...");
 		// Optimize scenegraph
 		osgUtil::Optimizer optOSGFile;
 		//optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
-		osg::setNotifyLevel(WARN);
+		osg::setNotifyLevel(osg::WARN);
 
 		initShading();
 
@@ -476,11 +536,11 @@ osg::StateSet* SceneManager::createMaterialPass(TiXmlElement* xdata, const Strin
 		Vector4f diffuse = SceneLoader::readVector4f(xmain, "Diffuse");
 
 		osg::Material* mat = new osg::Material();
-		mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
-		mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
-		mat->setAmbient(Material::FRONT_AND_BACK, Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
-		mat->setEmission(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
-		mat->setSpecular(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
+		mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+		mat->setDiffuse(osg::Material::FRONT_AND_BACK, osg::Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
+		mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(diffuse[0], diffuse[1], diffuse[2], diffuse[3]));
+		mat->setEmission(osg::Material::FRONT_AND_BACK, osg::Vec4(0, 0, 0, 1));
+		mat->setSpecular(osg::Material::FRONT_AND_BACK, osg::Vec4(0, 0, 0, 1));
 		ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
 	}
 
@@ -589,11 +649,11 @@ osg::StateSet* SceneManager::loadMaterialPass(const String& materialName)
 			//ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
 
 			osg::Material* mat = new osg::Material();
-			mat->setColorMode(Material::AMBIENT_AND_DIFFUSE);
-			mat->setDiffuse(Material::FRONT_AND_BACK, Vec4(1, 1, 1, 1));
-			mat->setAmbient(Material::FRONT_AND_BACK, Vec4(1, 1,1, 1));
-			mat->setEmission(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
-			mat->setSpecular(Material::FRONT_AND_BACK, Vec4(0, 0, 0, 1));
+			mat->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+			mat->setDiffuse(osg::Material::FRONT_AND_BACK, osg::Vec4(1, 1, 1, 1));
+			mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(1, 1,1, 1));
+			mat->setEmission(osg::Material::FRONT_AND_BACK, osg::Vec4(0, 0, 0, 1));
+			mat->setSpecular(osg::Material::FRONT_AND_BACK, osg::Vec4(0, 0, 0, 1));
 			ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
 
 			myMaterialPasses[materialName] = ss;
@@ -607,58 +667,32 @@ osg::StateSet* SceneManager::loadMaterialPass(const String& materialName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initShading()
 {
+	myShadowedScene = NULL;
+	mySoftShadowMap = NULL;
+
 	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.3f, 0.3f, 0.8f, 1.0f));
 
 	bool myShadingEnabled = (myShadowMode == ShadowsSoft);
 
-	myLight2 = new osg::Light;
-    myLight2->setLightNum(0);
-    myLight2->setPosition(osg::Vec4(0.0, 20, -20, 1.0));
-    myLight2->setAmbient(osg::Vec4(1.0f,0.0f,0.0f,1.0f));
-    myLight2->setDiffuse(osg::Vec4(0.5f,0.5f,0.6f,1.0f));
-	myLight2->setSpecular(osg::Vec4(0.8f,0.8f,0.8f,1.0f));
-    myLight2->setLinearAttenuation(1.0f);
-    /*myLight2->setConstantAttenuation(1.0f);
-    myLight2->setLinearAttenuation(2.0f/70.0f);
-    myLight2->setQuadraticAttenuation(2.0f/osg::square(70.0f));*/
-
-    osg::LightSource* lightS2 = new osg::LightSource;  
-
-	//myLight2->setPosition(Vec4(0, 10.0f, 0, 1.0f));
-
-    lightS2->setLight(myLight2);
-    lightS2->setLocalStateSetModes(osg::StateAttribute::ON); 
-
-
 	if(myShadingEnabled)
 	{
-		osgShadow::ShadowedScene* ss = new osgShadow::ShadowedScene();
-		ss->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
-		ss->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
+		myShadowedScene = new osgShadow::ShadowedScene();
+		myShadowedScene->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
+		myShadowedScene->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
-		osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
-		sm->setTextureSize(osg::Vec2s(2048, 2048));
-		sm->setAmbientBias(osg::Vec2(0.4f, 0.8f));
-		sm->setTextureUnit(4);
-		sm->setJitterTextureUnit(5);
-		sm->setSoftnessWidth(0.001);
-		sm->setJitteringScale(32);
+		mySoftShadowMap = new osgShadow::SoftShadowMap;
+		mySoftShadowMap->setTextureSize(osg::Vec2s(2048, 2048));
+		mySoftShadowMap->setAmbientBias(osg::Vec2(0.0f, 1.0f));
+		mySoftShadowMap->setTextureUnit(4);
+		mySoftShadowMap->setJitterTextureUnit(5);
+		mySoftShadowMap->setSoftnessWidth(0.001);
+		mySoftShadowMap->setJitteringScale(32);
 
-		ss->addChild(mySceneRoot);
-		ss->setShadowTechnique(sm.get());
+		myShadowedScene->addChild(mySceneRoot);
+		myShadowedScene->setShadowTechnique(mySoftShadowMap);
 		
-		mySceneRoot = ss;
+		mySceneRoot = myShadowedScene;
 	}
-
-	osg::StateSet* sState = mySceneRoot->getOrCreateStateSet();
-    lightS2->setStateSetModes(*sState,osg::StateAttribute::ON);
-	mySceneRoot->addChild(lightS2);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::setLightPosition(float x, float y, float z, float w)
-{
-	myLight2->setPosition(osg::Vec4(x, y, z, w));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -690,4 +724,16 @@ Entity* SceneManager::findEntity(int id)
 List<Entity*>::Range SceneManager::getEntities()
 {
 	return List<Entity*>::Range(myEntities.begin(), myEntities.end());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Light* SceneManager::getLight(int id)
+{
+	if(id >= 0 && id < MaxLights)
+	{
+		return &myLights[id];
+	}
+
+	oferror("SceneManager::getLight: id > MaxLights (%1% > %2%)", %id %MaxLights);
+	return NULL;
 }

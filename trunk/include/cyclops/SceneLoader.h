@@ -39,12 +39,11 @@
 #include "SceneManager.h"
 
 
-using namespace omega;
-using namespace omegaToolkit;
-using namespace omegaOsg;
-using namespace osg;
 
 namespace cyclops {
+	using namespace omega;
+	using namespace omegaOsg;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API SceneLoader
 	{

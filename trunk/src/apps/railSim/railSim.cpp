@@ -197,7 +197,7 @@ bool OmegaViewer::loadData( String configAttr , Vector<float> &dataVector , bool
 	if ( successful )
 	{
 		//the data set with the smallest number of timesteps determines the scope of the animation
-		numTimeSteps = minimum( numTimeSteps , (int) ((dataVector.size() - 1) / 4.0) );
+		numTimeSteps = min( numTimeSteps , (int) ((dataVector.size() - 1) / 4.0) );
 		ofmsg("Loading data: %1% ... Success!!!", %configAttr);
 	}
 	return successful;
@@ -240,6 +240,13 @@ void OmegaViewer::initialize()
 	curTimeStep = 0;
 
 	camDefault();
+
+	cyclops::Light* l = sceneMngr->getLight(0);
+	l->enabled = true;
+	l->position = Vector3f(15, 15, 27);
+	l->color = Color(1.0f, 1.0f, 0.7f);
+	l->ambient = Color(0.2f, 0.2f, 0.3f);
+	sceneMngr->setMainLight(l);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
