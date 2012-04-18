@@ -85,7 +85,7 @@ void OsgViewer::initialize()
 
 	if(sModelName == "")
 	{
-		ofwarn("No model specified!!");
+		owarn("No model specified!!");
 		return;
 	}
 

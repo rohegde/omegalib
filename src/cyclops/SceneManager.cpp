@@ -35,6 +35,7 @@
 using namespace cyclops;
 
 SceneManager* SceneManager::mysInstance = NULL;
+const int SceneManager::MaxLights;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
