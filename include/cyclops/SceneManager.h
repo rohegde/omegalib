@@ -139,7 +139,7 @@ namespace cyclops {
 	public:
 		static SceneManager* instance();
 		SceneManager();
-
+		
 		ServerEngine* getEngine() { return myEngine; }
 
 		virtual void initialize();
