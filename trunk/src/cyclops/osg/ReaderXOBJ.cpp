@@ -430,7 +430,7 @@ void ReaderXOBJ::buildEffectMap(obj::Model& model, EffectMap& em, ObjOptionsStru
 			}
 			else
 			{
-				ofwarn("ReaderXOBJ::buildEffectMap: could not load default material cyclops/common/materials/Default.material");
+				owarn("ReaderXOBJ::buildEffectMap: could not load default material cyclops/common/materials/Default.material");
 				osg::StateSet* ss = new osg::StateSet();
 				em[material.name] = ss;
 			}
