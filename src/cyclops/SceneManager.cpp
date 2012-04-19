@@ -35,7 +35,10 @@
 using namespace cyclops;
 
 SceneManager* SceneManager::mysInstance = NULL;
-const int SceneManager::MaxLights;
+
+#ifdef OMEGA_OS_LINUX
+	const int SceneManager::MaxLights;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
@@ -94,7 +97,9 @@ int Entity::getCurrentModelIndex()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
 	myOsg(NULL),
-	myEditor(NULL)
+	myEditor(NULL),
+	myShadowedScene(NULL),
+	mySoftShadowMap(NULL)
 {
 	mysInstance = this;
 	myOsg = new OsgModule();

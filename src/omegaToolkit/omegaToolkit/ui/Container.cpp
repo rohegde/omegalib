@@ -482,7 +482,10 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 		outEvt.reset(inEvt.getType(), Service::Pointer);
 		outEvt.setPosition(pointerPosition);
 
-		ofmsg("intersection: %1%    ui pos: %2%", %intersection %pointerPosition);
+		if(isDebugModeEnabled())
+		{
+			ofmsg("intersection: %1%    ui pos: %2%", %intersection %pointerPosition);
+		}
 
 		return true;
 	}
