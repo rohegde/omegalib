@@ -36,7 +36,7 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 	Node(parent),
 	myServer(NULL)
 {
-	DEBUG_EQ_FLOW("NodeImpl::NodeImpl %1%", %parent);
+	omsg("[EQ] NodeImpl::NodeImpl");
 
 	SystemManager* sys = SystemManager::instance();
 
@@ -56,7 +56,7 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
-	DEBUG_EQ_FLOW("NodeImpl::configInit %1%", %initID);
+	ofmsg("[EQ] NodeImpl::configInit %1%", %initID);
 
 
 	// Map the frame data object.
@@ -79,7 +79,7 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configExit()
 {
-	DEBUG_EQ_FLOW("NodeImpl::configExit %1%", %"NOINFO");
+	omsg("[EQ] NodeImpl::configExit");
 
 	eq::Config* config = getConfig();
 	//config->unmapObject( &myFrameData );
@@ -91,8 +91,6 @@ bool NodeImpl::configExit()
 void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNumber )
 {
 	DEBUG_EQ_FLOW("NodeImpl::frameStart %1% %2%", %frameID %frameNumber);
-
-
 
 	SystemManager* sys = SystemManager::instance();
 

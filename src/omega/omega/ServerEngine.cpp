@@ -224,6 +224,11 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 	{
 		ptr->setRay(Ray(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1)));
 	}
+	else
+	{
+		Vector3f direction = evt.getOrientation() * (-Vector3f::UnitZ());
+		ptr->setRay(Ray(evt.getPosition(), direction));
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,7 +257,7 @@ void ServerEngine::handleEvent(const Event& evt)
 
 		// Update pointers.
 		// NOTE: 0 is reserved for the local mouse pointer.
-		if(evt.getServiceType() == Service::Pointer /*&& evt.getSourceId() > 0*/)
+		if(evt.getServiceType() == Service::Pointer  || evt.getServiceType() == Service::Wand/*&& evt.getSourceId() > 0*/)
 		{
 			int pointerId = evt.getSourceId();
 			refreshPointer(pointerId, evt);

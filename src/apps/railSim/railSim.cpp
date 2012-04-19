@@ -278,7 +278,7 @@ void OmegaViewer::handleEvent(const Event& evt)
 	}
 	
 	//Set to the Hardcoded origin
-	else if(evt.isKeyDown('h') || evt.isButtonDown(Event::Button3))
+	else if(evt.isKeyDown('h'))
     {
 		camTrans( Vector3f( 15.0 , 15.0 , 27.0 ) );
 		camRot( Vector3f( 15.0 , 0.0 , 0.0 ) );
@@ -303,13 +303,13 @@ void OmegaViewer::handleEvent(const Event& evt)
 
 	//Enable Keyframing 
 	//Set to the Hardcoded origin
-	else if(evt.isKeyDown('o') || evt.isButtonDown(Event::Button5))
+	else if(evt.isKeyDown('o') || evt.isButtonDown(Event::SpecialButton1))
     {
 		isKeyFraming = true;
 		prevTimeStep = curTimeStep-=1; 
 	}
 	//Enable Keyframing 
-	else if(evt.isKeyDown('p') || evt.isButtonDown(Event::Button6))
+	else if(evt.isKeyDown('p') || evt.isButtonDown(Event::SpecialButton2))
     {
 		isKeyFraming = true;
 		prevTimeStep = curTimeStep+=1; 
