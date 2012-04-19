@@ -80,7 +80,10 @@ void Observer::updateWorld(const Vector3f& position, const Quaternion& orientati
 {
 	myWorldPosition = position;
 	myWorldOrientation = orientation;
+	
 	myWorldTransform = Math::makeViewMatrix(myWorldPosition, myWorldOrientation);
+	//myWorldTransform = AffineTransform3::Identity();
+	
 	//myWorldTransform.translate(position);
 	//myWorldTransform.rotate(orientation);
 	//Vector3f pivot = myHeadPosition + myReferencePosition;
