@@ -44,11 +44,15 @@ public:
 private:
 	SceneManager* mySceneManager;
 	MenuManager* myMenuManager;
+	Actor* myInteractor;
 };
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-StructureViewer::StructureViewer()
+StructureViewer::StructureViewer():
+	mySceneManager(NULL),
+	myMenuManager(NULL),
+	myInteractor(NULL)
 {
 }
 
@@ -60,6 +64,17 @@ void StructureViewer::initialize()
 	omegaToolkitPythonApiInit();
 	cyclopsPythonApiInit();
 #endif
+
+    // Set the interactor style used to manipulate meshes.
+	if(SystemManager::settingExists("config/interactor"))
+	{
+		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
+		myInteractor = ToolkitUtils::createInteractor(sinteractor);
+		if(myInteractor == NULL)
+		{
+			ModuleServices::addModule(myInteractor);
+		}
+	}
 
 	// Create and initialize the cyclops scene manager.
 	// If a scene file is specified in the application config file, the scene manager will
@@ -90,7 +105,7 @@ void StructureViewer::initialize()
 
 	cyclops::Light* l = mySceneManager->getLight(0);
 	l->enabled = true;
-	l->position = Vector3f(0, 20, 1);
+	l->position = Vector3f(0, 50, 1);
 	l->color = Color(1.0f, 1.0f, 0.7f);
 	l->ambient = Color(0.2f, 0.2f, 0.3f);
 	mySceneManager->setMainLight(l);
@@ -104,6 +119,11 @@ void StructureViewer::onMenuItemEvent(MenuItem* mi)
 		// Get the entity associated with the button and toggle its visibility.
 		Entity* e = (Entity*)mi->getUserData();
 		e->getSceneNode()->setVisible(mi->isChecked());
+
+		if(myInteractor != NULL && mi->isChecked())
+		{
+			myInteractor->setSceneNode(e->getSceneNode());
+		}
 	}
 }
 

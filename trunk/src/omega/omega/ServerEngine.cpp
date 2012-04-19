@@ -243,8 +243,6 @@ void ServerEngine::handleEvent(const Event& evt)
 	{
 		if( evt.getServiceType() == Service::Keyboard )
 		{
-			// Esc = force exit
-			if(evt.getSourceId() == 256) exit(0);
 			// Tab = toggle on-screen console.
 			if(evt.getSourceId() == 259 && evt.getType() == Event::Down) 
 			{
@@ -292,14 +290,17 @@ const SceneQueryResultList& ServerEngine::querySceneRay(const Ray& ray, uint fla
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void ServerEngine::drawPointers(Renderer* client, RenderState* state)
 {
-    foreach(Pointer* p, myPointers)
-    {
-        if(p->getVisible())
-        {
-            Renderable* r = p->getRenderable(client);
-            r->draw(state);
-        }
-    }
+	if(myDrawPointers)
+	{
+		foreach(Pointer* p, myPointers)
+		{
+			if(p->getVisible())
+			{
+				Renderable* r = p->getRenderable(client);
+				r->draw(state);
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -157,7 +157,16 @@ bool ConfigImpl::handleEvent(const eq::ConfigEvent* event)
     {
         case eq::Event::KEY_PRESS:
         {
-            KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Down);
+			// BEHOLD THE MIGHTY KILL BUTTON:
+			// Esc key press always posts an exit request.
+			if(event->data.key.key == 256) 	
+			{
+					SystemManager::instance()->postExitRequest();
+			}
+			else
+			{
+				KeyboardService::keyboardButtonCallback( event->data.key.key , Event::Down);
+			}
             return true;   
         }
         case eq::Event::KEY_RELEASE:
