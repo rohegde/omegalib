@@ -57,6 +57,7 @@
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/ui/Image.h"
 #include "omegaToolkit/ui/Label.h"
+#include "omegaToolkit/ui/MenuManager.h"
 #include "omegaToolkit/ui/DefaultSkin.h"
 #include "omegaToolkit/ui/Slider.h"
 #include "omegaToolkit/ui/Widget.h"

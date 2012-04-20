@@ -33,17 +33,17 @@ using namespace omegaToolkit;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class StructureViewer: public ServerModule, IMenuItemListener
+class StructureViewer: public ServerModule, ui::IMenuItemListener
 {
 public:
 	StructureViewer();
 
 	virtual void initialize();
-	virtual void onMenuItemEvent(MenuItem* mi);
+	virtual void onMenuItemEvent(ui::MenuItem* mi);
 
 private:
 	SceneManager* mySceneManager;
-	MenuManager* myMenuManager;
+	ui::MenuManager* myMenuManager;
 	Actor* myInteractor;
 };
 
@@ -84,17 +84,17 @@ void StructureViewer::initialize()
 	mySceneManager->doInitialize(getServer());
 
 	// Create the menu manager and a main menu.
-	myMenuManager = new MenuManager();
+	myMenuManager = new ui::MenuManager();
 	ModuleServices::addModule(myMenuManager);
 	myMenuManager->doInitialize(getServer());
-	Menu* menu = myMenuManager->createMenu("menu");
+	ui::Menu* menu = myMenuManager->createMenu("menu");
 	myMenuManager->setMainMenu(menu);
 
 	// For each entity in the scene, add a checkbox to the menu, that will be used
 	// to toggle the entity visibility.
 	foreach(Entity* e, mySceneManager->getEntities())
 	{
-		MenuItem* mi = menu->getRoot()->addItem(MenuItem::Checkbox);
+		ui::MenuItem* mi = menu->getRoot()->addItem(ui::MenuItem::Checkbox);
 		mi->setChecked(false);
 		e->getSceneNode()->setVisible(false);
 		mi->setText(e->getTag());
@@ -112,7 +112,7 @@ void StructureViewer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void StructureViewer::onMenuItemEvent(MenuItem* mi)
+void StructureViewer::onMenuItemEvent(ui::MenuItem* mi)
 {
 	if(mi->getUserTag() == "visibilityToggle")
 	{

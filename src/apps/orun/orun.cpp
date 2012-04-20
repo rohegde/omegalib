@@ -31,6 +31,7 @@
 
 using namespace omega;
 using namespace omegaToolkit;
+using namespace omegaToolkit::ui;
 using namespace omegaVtk;
 using namespace cyclops;
 

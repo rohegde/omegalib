@@ -134,7 +134,8 @@ void Camera::setup(Setting& s)
 		setOrientation(camOri);
 	}
 
-	//setup camera controller.  The camera needs to be setup before this otherwise its values will be rewritten/
+	//setup camera controller.  The camera needs to be setup before this otherwise its values will be rewritten
+
 	String controllerName;
 	controllerName = Config::getStringValue("controller", s);
 	StringUtils::toLowerCase(controllerName);
