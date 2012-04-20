@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/ui/MenuManager.h"
+#include "omega/DisplaySystem.h"
 
 using namespace omegaToolkit::ui;
 
