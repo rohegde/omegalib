@@ -627,26 +627,12 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	Vector3f vbc = vc - vb;
 
 	Vector3f p = vb + vba * py + vbc * px;
-
-	//Vector3f p = px * vc + py * va + (3 - px - py) * vb;
-
 	Vector3f direction = p - head;
 
-	//AffineTransform3 t = AffineTransform3::Identity();
-	//t.rotate(o->getWorldOrientation());
-	//t.translate(-o->getHeadPosition());
-	//t.translate(o->getWorldPosition());
-
-	//p = p + o->getWorldPosition() - head;
-	
-	//p -= o->getHeadPosition();
 	
 	p = o->getWorldOrientation() * p;
-	//p = o->getWorldTransform() * p;
 	p += o->getWorldPosition();
-	//p += o->getHeadPosition();
 	
-	//p = p - head;
 	direction = o->getWorldOrientation() * direction;
 	direction.normalize();
 
