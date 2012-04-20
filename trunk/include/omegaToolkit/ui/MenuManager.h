@@ -24,23 +24,17 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_MENU_MANAGER__
-#define __CY_MENU_MANAGER__
+#ifndef __OTK_MENU_MANAGER__
+#define __OTK_MENU_MANAGER__
 
-#include "cyclopsConfig.h"
+#include "omegaToolkit/omegaToolkitConfig.h"
+#include "omegaToolkit/ui/Widget.h"
+#include "omegaToolkit/ui/Button.h"
+#include "omegaToolkit/ui/Container.h"
+#include "omegaToolkit/UiScriptCommand.h"
 
-#define OMEGA_NO_GL_HEADERS
-#include <omega.h>
-#include <omegaOsg.h>
-#include <omegaToolkit.h>
-
-#include "omega/PortholeTabletService.h"
-
-
-namespace cyclops {
+namespace omegaToolkit { namespace ui {
 	using namespace omega;
-	using namespace omegaToolkit;
-	using namespace omegaOsg;
 
 	class Menu;
 	class MenuItem;
@@ -54,7 +48,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API MenuItem: public IEventListener
+	class OTK_API MenuItem: public IEventListener
 	{
 	friend class Menu;
 	public:
@@ -123,7 +117,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Menu
+	class OTK_API Menu
 	{
 	public:
 		Menu(const String& name, MenuManager* manager);
@@ -145,7 +139,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API MenuManager: public ServerModule
+	class OTK_API MenuManager: public ServerModule
 	{
 	public:
 		static MenuManager* instance();
@@ -193,6 +187,6 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline MenuManager* MenuManager::instance() 
 	{ return mysInstance; }
-};
+}; };
 
 #endif

@@ -637,11 +637,15 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	//t.translate(-o->getHeadPosition());
 	//t.translate(o->getWorldPosition());
 
-
 	//p = p + o->getWorldPosition() - head;
-	p -= o->getHeadPosition();
+	
+	//p -= o->getHeadPosition();
+	
 	p = o->getWorldOrientation() * p;
+	//p = o->getWorldTransform() * p;
 	p += o->getWorldPosition();
+	//p += o->getHeadPosition();
+	
 	//p = p - head;
 	direction = o->getWorldOrientation() * direction;
 	direction.normalize();

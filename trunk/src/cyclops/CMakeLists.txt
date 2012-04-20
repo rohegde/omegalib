@@ -29,7 +29,6 @@ set(SRCS
 		EffectNode.cpp
 		SceneLoader.cpp
 		SceneManager.cpp
-		MenuManager.cpp
 		cyclopsPythonApi.cpp)
     
 set(OSG_SRCS 
@@ -40,7 +39,6 @@ set(HEADERS
 		${CMAKE_SOURCE_DIR}/include/cyclops/EffectNode.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/MenuManager.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneManager.h)
 		
 ###################################################################################################

@@ -68,6 +68,7 @@ set( srcs
 		omegaToolkit/ui/Container.cpp
 		omegaToolkit/ui/Image.cpp
 		omegaToolkit/ui/Label.cpp
+		omegaToolkit/ui/MenuManager.cpp
 		omegaToolkit/ui/DefaultSkin.cpp
 		omegaToolkit/ui/Slider.cpp
 		omegaToolkit/ui/Widget.cpp
@@ -114,6 +115,7 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Container.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Image.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Label.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/MenuManager.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/DefaultSkin.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Slider.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ui/Widget.h
