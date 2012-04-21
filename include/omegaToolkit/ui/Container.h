@@ -111,6 +111,7 @@ namespace omegaToolkit { namespace ui {
 		//@}
 
 		virtual void updateSize();
+        virtual void autosize();
 		virtual void layout();
 
 		//! Gets the container 3d settings.

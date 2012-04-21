@@ -203,7 +203,42 @@ void Container::updateSize()
 	{
 		w->updateSize();
 	}
-	Widget::autosize();
+	Widget::updateSize();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Container::autosize()
+{
+	int width = 0;
+	int height = 0;
+	foreach(Widget* w, myChildren)
+	{
+		if(w->getSize(Horizontal) > width) width = w->getSize(Horizontal);
+		if(w->getSize(Vertical) > height) height = w->getSize(Vertical);
+	}
+	if(myLayout == LayoutHorizontal)
+	{
+		width += myPadding;
+		width *= getNumChildren();
+		foreach(Widget* w, myChildren)
+		{
+			w->setHeight(height);
+		}
+	}
+	else if(myLayout == LayoutVertical)
+	{
+		height += myPadding;
+		height *= getNumChildren();
+		foreach(Widget* w, myChildren)
+		{
+			w->setWidth(width);
+		}
+	}
+
+	width += myMargin * 2;
+	height += myMargin * 2;
+
+	setSize(Vector2f(width, height));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -571,16 +606,16 @@ void ContainerRenderable::draw3d(RenderState* state)
 		Vector3f downRight = topRight + downLeft;
 
 		glBegin(GL_TRIANGLE_STRIP);
-		glTexCoord2f(0, 0);
+		glTexCoord2f(0, 1);
 		glVertex3f(0, 0, 0);
 
-		glTexCoord2f(1, 0);
+		glTexCoord2f(1, 1);
 		glVertex3f(topRight.x(), topRight.y(), topRight.z());
 
-		glTexCoord2f(0, 1);
+		glTexCoord2f(0, 0);
 		glVertex3f(downLeft.x(), downLeft.y(), downLeft.z());
 
-		glTexCoord2f(1, 1);
+		glTexCoord2f(1, 0);
 		glVertex3f(downRight.x(), downRight.y(), downRight.z());
 
 		glEnd();
@@ -624,6 +659,10 @@ void ContainerRenderable::draw(RenderState* state)
 					myRenderTarget = new RenderTarget(state->context->gpuContext, RenderTarget::RenderToTexture);
 					myRenderTarget->setTextureTarget(myTexture);
 				}
+				
+				glScalef(1, -1, 1);
+				glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
+
 				myRenderTarget->bind();
 			}
 			else

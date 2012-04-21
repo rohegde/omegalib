@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/DrawInterface.h"
+#include "omega/DisplaySystem.h"
 #include "omega/Texture.h"
 #include "omega/glheaders.h"
 #include "omega/SystemManager.h"

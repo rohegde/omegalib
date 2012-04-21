@@ -48,8 +48,8 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 	if(type == MenuItem::SubMenu)
 	{
 		myContainer = wf->createPanel("container", ui->getUi());
-		myContainer->setWidth(400);
-		myContainer->setHeight(SystemManager::instance()->getDisplaySystem()->getCanvasSize().y());
+		//myContainer->setWidth(400);
+		//myContainer->setHeight(SystemManager::instance()->getDisplaySystem()->getCanvasSize().y());
 		//myContainer->setAutosize(true);
 		myContainer->setPosition(Vector2f(10, 10));
 
@@ -73,6 +73,8 @@ MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
 			myWidget = myButton;
 		}
 	}
+
+	myWidget->setAutosize(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +232,7 @@ bool Menu::isVisible()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
 	myMainMenu(NULL),
-	myAutoPlaceDistance(0.5f),
+	myAutoPlaceDistance(1.0f),
 	myAutoPlaceEnabled(true)
 {
 	mysInstance = this;
