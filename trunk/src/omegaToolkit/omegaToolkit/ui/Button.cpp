@@ -53,7 +53,18 @@ Button::~Button()
 void Button::autosize()
 {
 	myLabel.autosize();
-	setSize(myLabel.getSize());
+	// HACK: we add some default margin to the label.
+	Vector2f size = myLabel.getSize();
+	if(myCheckable)
+	{
+		size += Vector2f(20, 4);
+	}
+	else
+	{
+		size += Vector2f(10, 4);
+	}
+
+	setSize(size);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

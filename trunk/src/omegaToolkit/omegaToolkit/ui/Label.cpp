@@ -60,6 +60,7 @@ void Label::autosize()
 	if(lr != NULL)
 	{
 		Font* font = lr->myFont;
+		if(!font) font = lr->getRenderer()->getDefaultFont();
 
 		if(font != NULL)
 		{
