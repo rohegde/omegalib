@@ -55,7 +55,7 @@ namespace omegaToolkit { namespace ui {
 		enum Type { Button, Checkbox, Slider, SubMenu };
 
 	public:
-		MenuItem(Type type, Menu* owner, MenuItem* parent);
+		MenuItem(Type type, Menu* owner);
 
 		virtual void handleEvent(const Event& evt);
 		Type getType() { return myType; }
@@ -90,9 +90,11 @@ namespace omegaToolkit { namespace ui {
 		MenuItem* addItem(MenuItem::Type type);
 		//@}
 
-		omegaToolkit::ui::Container* getContainerWidget();
+		//omegaToolkit::ui::Container* getContainerWidget();
 
 		omegaToolkit::ui::Widget* getWidget() { return myWidget; }
+
+		Menu* getSubMenu() { return mySubMenu; }
 
 	private:
 		Menu* myMenu;
@@ -102,7 +104,6 @@ namespace omegaToolkit { namespace ui {
 		UiScriptCommand* myCommand;
 		IMenuItemListener* myListener;
 
-		List<MenuItem*> mySubMenuItems;
 
 		String myText;
 		String myDescription;
@@ -110,32 +111,40 @@ namespace omegaToolkit { namespace ui {
 
 		String myUserTag;
 		void* myUserData;
+		Menu* mySubMenu;
 
 		omegaToolkit::ui::Widget* myWidget;
-		omegaToolkit::ui::Container* myContainer;
 		omegaToolkit::ui::Button* myButton;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API Menu
 	{
+	friend class MenuItem;
 	public:
 		Menu(const String& name, MenuManager* manager);
 
 		MenuManager* getManager() { return myManager; }
-		MenuItem* getRoot() { return myRootItem; }
+
+		MenuItem* addItem(MenuItem::Type type);
 
 		void show();
 		void hide();
 		void toggle();
 		bool isVisible();
 
-		omegaToolkit::ui::Container3dSettings& get3dSettings() { return myRootItem->myContainer->get3dSettings(); }
+		omegaToolkit::ui::Container* getContainer() { return myContainer; }
+		omegaToolkit::ui::Container3dSettings& get3dSettings() { return myContainer->get3dSettings(); }
 
 	private:
 		MenuManager* myManager;
 		MenuItem* myRootItem;
 		String myName;
+
+		List<MenuItem*> myMenuItems;
+		Menu* myActiveSubMenu;
+
+		omegaToolkit::ui::Container* myContainer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +162,6 @@ namespace omegaToolkit { namespace ui {
 		virtual void handleEvent(const Event& evt);
 
 		Menu* createMenu(const String& name);
-		Menu* getMenu(const String& name);
 
 		void setMainMenu(Menu* menu) { myMainMenu = menu; }
 		Menu* getMainMenu() { return myMainMenu; }
@@ -174,7 +182,7 @@ namespace omegaToolkit { namespace ui {
 		static MenuManager* mysInstance;
 
 		UiModule* myUiModule;
-		Dictionary<String, Menu*> myMenuDictionary;
+		List<Menu*> myMenuList;
 		Menu* myMainMenu;
 
 		bool myMenu3dEnabled;

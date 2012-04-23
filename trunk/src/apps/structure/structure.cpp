@@ -94,7 +94,7 @@ void StructureViewer::initialize()
 	// to toggle the entity visibility.
 	foreach(Entity* e, mySceneManager->getEntities())
 	{
-		ui::MenuItem* mi = menu->getRoot()->addItem(ui::MenuItem::Checkbox);
+		ui::MenuItem* mi = menu->addItem(ui::MenuItem::Checkbox);
 		mi->setChecked(false);
 		e->getSceneNode()->setVisible(false);
 		mi->setText(e->getTag());

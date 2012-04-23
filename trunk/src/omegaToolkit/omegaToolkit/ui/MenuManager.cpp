@@ -32,46 +32,40 @@ using namespace omegaToolkit::ui;
 MenuManager* MenuManager::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-MenuItem::MenuItem(Type type, Menu* owner, MenuItem* parent):
+MenuItem::MenuItem(Type type, Menu* owner):
 	myMenu(owner),
 	myType(type),
-	myParent(parent),
-	myContainer(NULL),
+	myListener(NULL),
 	myButton(NULL),
 	myCommand(NULL),
 	myWidget(NULL),
-	myUserData(NULL)
+	myUserData(NULL),
+	mySubMenu(NULL)
 {
 	UiModule* ui = owner->getManager()->getUiModule();
 	WidgetFactory* wf = ui->getWidgetFactory();
 
 	if(type == MenuItem::SubMenu)
 	{
-		myContainer = wf->createPanel("container", ui->getUi());
-		//myContainer->setWidth(400);
-		//myContainer->setHeight(SystemManager::instance()->getDisplaySystem()->getCanvasSize().y());
-		//myContainer->setAutosize(true);
-		myContainer->setPosition(Vector2f(10, 10));
+		myButton = wf->createButton("subMenu_button", myMenu->myContainer);
+		myButton->setText("Button");
+		myWidget = myButton;
+		myWidget->setUIEventHandler(this);
 
-		myContainer->get3dSettings().enable3d = MenuManager::instance()->isMenu3dEnabled();
-
-		myWidget = myContainer;
+		mySubMenu = myMenu->getManager()->createMenu("Submenu");
 	}
-	else if(parent != NULL)
+	else if(type == MenuItem::Button)
 	{
-		if(type == MenuItem::Button)
-		{
-			myButton = wf->createButton("button", parent->myContainer);
-			myButton->setText("Button");
-			myWidget = myButton;
-		}
-		if(type == MenuItem::Checkbox)
-		{
-			myButton = wf->createButton("button", parent->myContainer);
-			myButton->setText("Checkbox");
-			myButton->setCheckable(true);
-			myWidget = myButton;
-		}
+		myButton = wf->createButton("button", myMenu->myContainer);
+		myButton->setText("Button");
+		myWidget = myButton;
+	}
+	else if(type == MenuItem::Checkbox)
+	{
+		myButton = wf->createButton("button", myMenu->myContainer);
+		myButton->setText("Checkbox");
+		myButton->setCheckable(true);
+		myWidget = myButton;
 	}
 
 	myWidget->setAutosize(true);
@@ -85,6 +79,7 @@ void MenuItem::setText(const String& value)
 	{
 	case MenuItem::Button:
 	case MenuItem::Checkbox:
+	case MenuItem::SubMenu:
 		myButton->setText(myText);
 		break;
 	}
@@ -162,44 +157,59 @@ void MenuItem::handleEvent(const Event& evt)
 	if(evt.isFrom(Service::Ui, myWidget->getId()))
 	{
 		if(myListener != NULL) myListener->onMenuItemEvent(this);
-	}
-}
+		if(myType == SubMenu && evt.getType() == Event::Click)
+		{
+			mySubMenu->get3dSettings() = myMenu->get3dSettings();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-MenuItem* MenuItem::addItem(MenuItem::Type type)
-{
-	if(myType == SubMenu)
-	{
-		MenuItem* item = new MenuItem(type, myMenu, this);
-		mySubMenuItems.push_back(item);
-		return item;
-	}
-	owarn("MenuItem::addItem: menu items can be added only to sub menus");
-	return NULL;
-}
+			// Compute the submenu position (place it at the side of the main menu).
+			Vector3f normal = mySubMenu->get3dSettings().normal;
+			Vector3f up = -mySubMenu->get3dSettings().up;
+			Vector3f size = normal.cross(up);
+			Vector3f menuPos = mySubMenu->get3dSettings().position;
+			menuPos += size * myWidget->getWidth() * mySubMenu->get3dSettings().scale;
+			mySubMenu->get3dSettings().position = menuPos;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Container* MenuItem::getContainerWidget()
-{
-	if(myType == SubMenu) return myContainer;
-	return NULL;
+			mySubMenu->show();
+
+			if(myMenu->myActiveSubMenu != NULL)
+			{
+				myMenu->myActiveSubMenu->hide();
+				myMenu->myActiveSubMenu = NULL;
+			}
+			myMenu->myActiveSubMenu = mySubMenu;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Menu::Menu(const String& name, MenuManager* manager): 
 	myName(name),
-	myManager(manager)
+	myManager(manager),
+	myActiveSubMenu(NULL)
 {
-	myRootItem = new MenuItem(MenuItem::SubMenu, this, NULL);
+	UiModule* ui = UiModule::instance();
+	WidgetFactory* wf = ui->getWidgetFactory();
+	myContainer = wf->createPanel("container", ui->getUi());
+	myContainer->setPosition(Vector2f(10, 10));
+
+	myContainer->get3dSettings().enable3d = MenuManager::instance()->isMenu3dEnabled();
+	myContainer->setAutosize(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MenuItem* Menu::addItem(MenuItem::Type type)
+{
+	MenuItem* item = new MenuItem(type, this);
+	myMenuItems.push_back(item);
+	return item;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Menu::show()
 {
 	omsg("Menu show");
-	Container* c = myRootItem->getContainerWidget();
-	c->setVisible(true);
-	UiModule::instance()->activateWidget(c);
+	myContainer->setVisible(true);
+	UiModule::instance()->activateWidget(myContainer);
 	UiModule::instance()->setGamepadInteractionEnabled(true);
 	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(false);
 }
@@ -208,25 +218,29 @@ void Menu::show()
 void Menu::hide()
 {
 	omsg("Menu hide");
-	Container* c = myRootItem->getContainerWidget();
-	c->setVisible(false);
+	myContainer->setVisible(false);
 	UiModule::instance()->activateWidget(NULL);
 	UiModule::instance()->setGamepadInteractionEnabled(false);
 	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(true);
+
+	if(myActiveSubMenu != NULL)
+	{
+		myActiveSubMenu->hide();
+		myActiveSubMenu = NULL;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Menu::toggle()
 {
-	Container* c = myRootItem->getContainerWidget();
-	if(c->isVisible()) hide();
+	if(myContainer->isVisible()) hide();
 	else show();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Menu::isVisible()
 {
-	return myRootItem->getContainerWidget()->isVisible();
+	return myContainer->isVisible();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,30 +330,18 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 	Vector3f pos = ray.getPoint(myAutoPlaceDistance);
 
 	Container3dSettings& c3ds = menu->get3dSettings();
-	Widget* menuWidget = menu->getRoot()->getWidget();
+	Widget* menuWidget = menu->getContainer();
 	Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
 	c3ds.position = pos - offset;
 	c3ds.normal = -ray.getDirection();
-
-	//c3ds.yaw = q.getYaw() * Math::RadToDeg;
-	//c3ds.pitch = q.getPitch() * Math::RadToDeg;
-	//c3ds.roll = q.getRoll() * Math::RadToDeg;
-
-	//ofmsg("MenuManager::autoPlaceMenu: pos=%1% pitch=%2% yaw=%3% roll=%4%", %c3ds.position %c3ds.pitch %c3ds.yaw %c3ds.roll);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Menu* MenuManager::createMenu(const String& name)
 {
 	Menu* menu = new Menu(name, this);
-	myMenuDictionary[name] = menu;
+	myMenuList.push_back(menu);
 	// Set not visible by default.
 	menu->hide();
 	return menu;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Menu* MenuManager::getMenu(const String& name)
-{
-	return myMenuDictionary[name];
 }

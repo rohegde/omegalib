@@ -77,21 +77,6 @@ void OmegaViewer::initialize()
 		ModuleServices::addModule(sm);
 		sm->doInitialize(getServer());
 	}
-
-
-	MenuManager* menuMng = new MenuManager();
-	ModuleServices::addModule(menuMng);
-	menuMng->doInitialize(getServer());
-
-	Menu* menu = MenuManager::instance()->createMenu("menu");
-	MenuItem* btn = menu->getRoot()->addItem(MenuItem::Button);
-	btn = menu->getRoot()->addItem(MenuItem::Button);
-	btn->setCommand("print(\"hey clicked\")");
-	
-	btn = menu->getRoot()->addItem(MenuItem::Checkbox);
-	btn->setCommand("print(\"hey changed %value%\")");
-
-	menuMng->setMainMenu(menu);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
