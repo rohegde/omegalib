@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omegaToolkit/ui/Container.h"
 #include "omegaToolkit/UiModule.h"
+#include "omega/DisplaySystem.h"
 
 #include "omegaGl.h"
 
@@ -596,6 +597,7 @@ void ContainerRenderable::draw3d(RenderState* state)
 		float width = myOwner->getWidth() * c3ds.scale;
 		float height = myOwner->getHeight() * c3ds.scale;
 
+		glPushMatrix();
 		glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
 
 		Vector3f downLeft = c3ds.up;
@@ -619,6 +621,7 @@ void ContainerRenderable::draw3d(RenderState* state)
 		glVertex3f(downRight.x(), downRight.y(), downRight.z());
 
 		glEnd();
+		glPopMatrix();
 
 		myTexture->unbind();
 	}
@@ -660,6 +663,7 @@ void ContainerRenderable::draw(RenderState* state)
 					myRenderTarget->setTextureTarget(myTexture);
 				}
 				
+				glPushMatrix();
 				glScalef(1, -1, 1);
 				glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
 
@@ -692,6 +696,7 @@ void ContainerRenderable::draw(RenderState* state)
 
 			if(myOwner->get3dSettings().enable3d)
 			{
+				glPopMatrix();
 				myRenderTarget->unbind();
 			}
 			else
