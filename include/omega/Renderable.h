@@ -87,7 +87,6 @@ namespace omega {
 		void refresh();
 		virtual bool isInitialized();
 		Renderable* getRenderable(Renderer* client);
-		Renderable* getFirstRenderable();
 		ServerEngine* getServer();
 		List<Renderable*>::ConstRange getRenderables() const;
 
