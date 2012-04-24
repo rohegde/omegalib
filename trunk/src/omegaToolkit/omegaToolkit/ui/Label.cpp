@@ -51,12 +51,9 @@ Label::~Label()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Label::autosize()
+void Label::autosize(Renderer* r)
 {
-	// Kindof hack. To compute the label size we need a Font pointer. Fonts are stored inside LabelRenderable
-	// objects. Since we expect all those objects to share the same properties, just get the first one
-	// and use its font to compute the label size.
-	LabelRenderable* lr = (LabelRenderable*)getFirstRenderable();
+	LabelRenderable* lr = (LabelRenderable*)getRenderable(r);
 	if(lr != NULL)
 	{
 		Font* font = lr->myFont;
@@ -67,8 +64,12 @@ void Label::autosize()
 			Vector2f size = font->computeSize(myText);
 			size += Vector2f(myAutosizeHorizontalPadding, myAutosizeVerticalPadding);
 			setSize(size);
+
+			//ofmsg("Label size %1%", %size);
 		}
 	}
+
+	//setSize(Vector2f(200, 30));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

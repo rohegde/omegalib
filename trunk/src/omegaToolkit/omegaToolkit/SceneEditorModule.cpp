@@ -42,7 +42,8 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 	mySelectionSphere = new BoundingSphere();
 	mySelectionSphere->setDrawOnSelected(false);
 	mySelectionSphere->setVisible(true);
-	mySceneNode->addObject(mySelectionSphere);
+	//mySceneNode->addObject(mySelectionSphere);
+	//mySceneNode->setBoundingBoxVisible(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

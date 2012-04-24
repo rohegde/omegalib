@@ -77,10 +77,10 @@ void ServerEngine::initialize()
     // Setup the console default font
     Config* cfg = getSystemManager()->getAppConfig();
 
-    if(cfg->exists("config/console/font"))
+    if(syscfg->exists("config/console/font"))
     {
-        Setting& fontSetting = cfg->lookup("config/console/font");
-        myConsole->setFont(FontInfo("default", fontSetting["filename"], fontSetting["size"]));
+        Setting& fontSetting = syscfg->lookup("config/console/font");
+        myConsole->setFont(FontInfo("console", fontSetting["filename"], fontSetting["size"]));
     }
     else
     {

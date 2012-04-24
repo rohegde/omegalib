@@ -46,10 +46,11 @@ namespace omegaToolkit { namespace ui {
 
 		// Gets the label subobject used by the button.
 		Label* getLabel() { return &myLabel; }
-		virtual void autosize();
 
 		Color getColor();
 		void setColor(Color value);
+
+		virtual void autosize(Renderer* r);
 
 	protected:
 		Label myLabel;
