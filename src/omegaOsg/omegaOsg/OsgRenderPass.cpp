@@ -70,9 +70,10 @@ void OsgRenderPass::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 {
+	sInitLock.lock();
 	if(context.task == DrawContext::SceneDrawTask)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
 		mySceneView->setProjectionMatrix(buildOsgMatrix(context.projection.matrix()));
@@ -92,4 +93,5 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 		mySceneView->draw();
 		glPopAttrib();
 	}
+	sInitLock.unlock();
 }

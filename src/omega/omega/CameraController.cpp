@@ -177,7 +177,7 @@ void WandCameraController::handleEvent(const Event& evt)
 		if(myRotating)
 		{
 			Vector3f dpos = evt.getPosition() - myLastPointerPosition;
-			ofmsg("pos %1%, dpos: %2%", %evt.getPosition() %dpos);
+			//ofmsg("pos %1%, dpos: %2%", %evt.getPosition() %dpos);
 			myYaw += dpos.x() * myYawMultiplier;
 			myPitch += dpos.y() * myPitchMultiplier;
 		}
