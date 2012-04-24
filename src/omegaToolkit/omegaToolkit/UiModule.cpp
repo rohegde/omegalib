@@ -145,13 +145,13 @@ void UiModule::activateWidget(ui::Widget* w)
 {
 	if(myActiveWidget != NULL)
 	{
-		ofmsg("Deactivating widget %1% (%2%)", %myActiveWidget->getId() %myActiveWidget->getName());
+		//ofmsg("Deactivating widget %1% (%2%)", %myActiveWidget->getId() %myActiveWidget->getName());
 		myActiveWidget->setActive(false);
 	}
 	myActiveWidget = w;
 	if(myActiveWidget != NULL)
 	{
-		ofmsg("Activating widget %1% (%2%)", %w->getId() %w->getName());
+		//ofmsg("Activating widget %1% (%2%)", %w->getId() %w->getName());
 		myActiveWidget->setActive(true);
 	}
 }

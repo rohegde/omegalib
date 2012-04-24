@@ -194,7 +194,7 @@ Menu::Menu(const String& name, MenuManager* manager):
 	myContainer = wf->createPanel("container", ui->getUi());
 	myContainer->setPosition(Vector2f(10, 10));
 
-	myContainer->get3dSettings().enable3d = MenuManager::instance()->isMenu3dEnabled();
+	my3dSettings.enable3d = MenuManager::instance()->isMenu3dEnabled();
 	myContainer->setAutosize(true);
 }
 
@@ -207,23 +207,69 @@ MenuItem* Menu::addItem(MenuItem::Type type)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::update(const UpdateContext& context)
+{
+	float speed = context.dt * 10;
+
+	ui::Container3dSettings& c3ds = myContainer->get3dSettings();
+	c3ds.enable3d = my3dSettings.enable3d;
+	c3ds.normal = my3dSettings.normal;
+	c3ds.up = my3dSettings.up;
+	c3ds.position += (my3dSettings.position - c3ds.position) * speed;
+	c3ds.scale += (my3dSettings.scale - c3ds.scale) * speed;
+	//c3ds.position = my3dSettings.position;
+	//c3ds.scale = my3dSettings.scale;
+	c3ds.alpha += (my3dSettings.alpha - c3ds.alpha) * speed;
+	//c3ds.alpha = my3dSettings.alpha;
+
+	if(myContainer->isVisible())
+	{
+		if(c3ds.alpha <= 0.1f)
+		{
+			myContainer->setVisible(false);
+		}
+	}
+	else
+	{
+		if(c3ds.alpha > 0.1f)
+		{
+			myContainer->setVisible(true);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Menu::show()
 {
-	omsg("Menu show");
-	myContainer->setVisible(true);
+	//omsg("Menu show");
+
+	myVisible = true;
+
+	//myContainer->setVisible(true);
 	UiModule::instance()->activateWidget(myContainer);
 	UiModule::instance()->setGamepadInteractionEnabled(true);
 	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(false);
+
+	myContainer->get3dSettings().alpha = 0.0f;
+	my3dSettings.alpha = 1.0f;
+
+	myContainer->get3dSettings().scale = 0.001f;
+	my3dSettings.scale = 0.002f;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Menu::hide()
 {
-	omsg("Menu hide");
-	myContainer->setVisible(false);
+	//omsg("Menu hide");
+
+	myVisible = false;
+
 	UiModule::instance()->activateWidget(NULL);
 	UiModule::instance()->setGamepadInteractionEnabled(false);
 	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(true);
+
+	my3dSettings.alpha = 0.0f;
+	my3dSettings.scale = 0.001f;
 
 	if(myActiveSubMenu != NULL)
 	{
@@ -242,14 +288,15 @@ void Menu::toggle()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool Menu::isVisible()
 {
-	return myContainer->isVisible();
+	return myVisible;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
 	myMainMenu(NULL),
 	myAutoPlaceDistance(0.5f),
-	myAutoPlaceEnabled(true)
+	myAutoPlaceEnabled(true),
+	myMenu3dScale(0.002f)
 {
 	mysInstance = this;
 }
@@ -277,12 +324,17 @@ void MenuManager::initialize()
 	{
 		myAutoPlaceEnabled = true;
 		myAutoPlaceDistance = Config::getFloatValue("menu3dDistance", sSysCfg, myAutoPlaceDistance);
+		myMenu3dScale = Config::getFloatValue("menu3dScale", sSysCfg, myMenu3dScale);
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MenuManager::update(const UpdateContext& context)
 {
+	foreach(Menu* m, myMenuList)
+	{
+		m->update(context);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,7 +350,7 @@ void MenuManager::handleEvent(const Event& evt)
 
 				// If menu autoplace is enabled, place menu along the pointer or wand ray, at
 				// the distance specified by myAutoPlaceDistance.
-				if(myAutoPlaceEnabled)
+				if(myMainMenu->isVisible() && myAutoPlaceEnabled)
 				{
 					autoPlaceMenu(myMainMenu, evt);
 				}
@@ -336,6 +388,7 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 	Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
 	c3ds.position = pos - offset;
 	c3ds.normal = -ray.getDirection();
+	c3ds.scale = myMenu3dScale;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

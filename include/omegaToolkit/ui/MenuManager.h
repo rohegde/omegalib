@@ -133,8 +133,10 @@ namespace omegaToolkit { namespace ui {
 		void toggle();
 		bool isVisible();
 
+		void update(const UpdateContext& context);
+
 		omegaToolkit::ui::Container* getContainer() { return myContainer; }
-		omegaToolkit::ui::Container3dSettings& get3dSettings() { return myContainer->get3dSettings(); }
+		omegaToolkit::ui::Container3dSettings& get3dSettings() { return my3dSettings; }
 
 	private:
 		MenuManager* myManager;
@@ -144,7 +146,10 @@ namespace omegaToolkit { namespace ui {
 		List<MenuItem*> myMenuItems;
 		Menu* myActiveSubMenu;
 
+		bool myVisible;
+
 		omegaToolkit::ui::Container* myContainer;
+		omegaToolkit::ui::Container3dSettings my3dSettings;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +179,6 @@ namespace omegaToolkit { namespace ui {
 		float getAutoPlaceDistance() { return myAutoPlaceDistance; }
 		void setAutoPlaceDistance(float value) { myAutoPlaceDistance = value; }
 
-
 	private:
 		void autoPlaceMenu(Menu* menu, const Event& evt);
 
@@ -188,6 +192,7 @@ namespace omegaToolkit { namespace ui {
 		bool myMenu3dEnabled;
 		bool myAutoPlaceEnabled;
 		float myAutoPlaceDistance;
+		float myMenu3dScale;
 
 		ServerEngine* myEngine;
 	};
