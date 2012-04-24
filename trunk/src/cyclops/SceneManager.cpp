@@ -97,7 +97,6 @@ int Entity::getCurrentModelIndex()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
 	myOsg(NULL),
-	myEditor(NULL),
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL)
 {
@@ -111,7 +110,6 @@ void SceneManager::loadConfiguration()
 {
 	Config* cfg = SystemManager::instance()->getAppConfig();
 	Setting& s = cfg->lookup("config");
-	myEditorEnabled = Config::getBoolValue("editorEnabled", s, false);
 
 	String shadowMode = Config::getStringValue("shadowMode", s, "noshadows");
 	StringUtils::toLowerCase(shadowMode);
@@ -122,7 +120,6 @@ void SceneManager::loadConfiguration()
 
 	omsg("SceneManager configuration loaded");
 	ofmsg("::    Shadow mode: %1%", %shadowMode);
-	ofmsg(":: Editor enabled: %1%", %myEditorEnabled);
 	ofmsg("::  Default scene: %1%", %mySceneFilename);
 
 }
@@ -135,12 +132,6 @@ void SceneManager::initialize()
 	myEngine = getServer();
 
 	loadConfiguration();
-
-	if(myEditorEnabled)
-	{
-		myEditor = new omegaToolkit::SceneEditorModule();
-		ModuleServices::addModule(myEditor);
-	}
 
 	mySceneRoot = new osg::Group();
 
@@ -372,10 +363,6 @@ void SceneManager::addEntity(int assetId, int entityId, const String& tag, const
 		e->getSceneNode()->pitch(rotation[1] * Math::DegToRad);
 		e->getSceneNode()->roll(rotation[2] * Math::DegToRad);
 		e->getSceneNode()->setScale(scale);
-		if(myEditor != NULL)
-		{
-			myEditor->addNode(e->getSceneNode());
-		}
 		myEntities.push_back(e);
 	}
 }

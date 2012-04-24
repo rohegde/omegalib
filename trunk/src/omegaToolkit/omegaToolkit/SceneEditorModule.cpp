@@ -48,7 +48,7 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneEditorModule::SceneEditorModule():
 	ServerModule("SceneEditorModule"),
-	myInteractor(NULL), mySelectedObject(NULL)
+	myInteractor(NULL), mySelectedObject(NULL), myEnabled(true)
 {
 }
 
@@ -93,26 +93,6 @@ SceneNode* SceneEditorModule::getSelectedNode()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneEditorModule::setInteractorStyle(InteractorStyle style)
-{
-	myInteractorStyle = style;
-	if(myInteractorStyle == MouseInteractorStyle)
-	{
-		DefaultMouseInteractor* interactor = new DefaultMouseInteractor();
-		interactor->setMoveButtonFlag(Event::Left);
-		interactor->setRotateButtonFlag(Event::Right);
-		myInteractor = interactor;
-	}
-	else if(myInteractorStyle == ControllerInteractorStyle)
-	{
-		ControllerManipulator* interactor = new ControllerManipulator();
-		myInteractor = interactor;
-	}
-	
-	ModuleServices::addModule(myInteractor);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::updateSelection(const Ray& ray)
 {
 	const SceneQueryResultList& sqrl = getServer()->querySceneRay(ray);
@@ -150,8 +130,6 @@ void SceneEditorModule::initialize()
 {
 	omsg("SceneEditorModule initializing...");
 
-	setInteractorStyle(MouseInteractorStyle);
-
 	omsg("SceneEditorModule initialization OK");
 }
 
@@ -163,14 +141,17 @@ void SceneEditorModule::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::handleEvent(const Event& evt)
 {
-	if(evt.getServiceType() == Service::Pointer) 
+	if(myEnabled && myInteractor != NULL)
 	{
-		if(evt.getType() == Event::Down && evt.getExtraDataItems() == 2)
+		if(evt.getServiceType() == Service::Pointer) 
 		{
-			Ray ray;
-			ray.setOrigin(evt.getExtraDataVector3(0));
-			ray.setDirection(evt.getExtraDataVector3(1));
-			updateSelection(ray);
+			if(evt.getType() == Event::Down && evt.getExtraDataItems() == 2)
+			{
+				Ray ray;
+				ray.setOrigin(evt.getExtraDataVector3(0));
+				ray.setDirection(evt.getExtraDataVector3(1));
+				updateSelection(ray);
+			}
 		}
 	}
 }

@@ -79,8 +79,10 @@ void MenuItem::setText(const String& value)
 	{
 	case MenuItem::Button:
 	case MenuItem::Checkbox:
-	case MenuItem::SubMenu:
 		myButton->setText(myText);
+		break;
+	case MenuItem::SubMenu:
+		myButton->setText(myText + "  >");
 		break;
 	}
 }
@@ -288,7 +290,7 @@ void MenuManager::handleEvent(const Event& evt)
 {
 	if(!evt.isProcessed())
 	{
-		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Button2))
+		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Button3))
 		{
 			if(myMainMenu != NULL)
 			{

@@ -335,12 +335,12 @@ void Nightfield::initialize()
             }
         }
     }
-    Light::setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
+    //Light::setAmbientLightColor(Color(0.3f, 0.3f, 0.3f));
 
-    Light* light = Light::getLight(0);
-    light->setEnabled(true);
-    light->setColor(Color(0.6f, 0.6f, 0.6f));
-    light->setPosition(Vector3f(0, 3, 3));
+    //Light* light = Light::getLight(0);
+    //light->setEnabled(true);
+    //light->setColor(Color(0.6f, 0.6f, 0.6f));
+    //light->setPosition(Vector3f(0, 3, 3));
 
     getServer()->getDisplaySystem()->setBackgroundColor(Color::Black);
 
@@ -455,6 +455,6 @@ void Nightfield::updateSelection(const Ray& ray)
 // Application entry point
 int main(int argc, char** argv)
 {
-    OmegaToolkitApplication<Nightfield> app("nightfeld");
+    Application<Nightfield> app("nightfeld");
     return omain(app, argc, argv);
 }

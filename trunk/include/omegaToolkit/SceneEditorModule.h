@@ -67,20 +67,23 @@ namespace omegaToolkit
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
-		void setInteractorStyle(InteractorStyle style);
-		InteractorStyle getInteractorStyle() { return myInteractorStyle; }
+		void setInteractor(Actor* interactor) { myInteractor = interactor; }
+		Actor* getInteractor() { return myInteractor; }
 
 		void addNode(SceneNode* node);
 		void removeNode(SceneNode* node);
 
 		SceneNode* getSelectedNode();
 
+		bool isEnabled() { return myEnabled; }
+		void setEnabled(bool value) { myEnabled = value; }
+
 	private:
 		EditableObject* findEditableObject(SceneNode* node);
 		void updateSelection(const Ray& ray);
 
 	private:
-		InteractorStyle myInteractorStyle;
+		bool myEnabled;
 		Actor* myInteractor;
 
 		EditableObject* mySelectedObject;

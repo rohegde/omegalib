@@ -110,6 +110,6 @@ void VtkScene::initializeRenderer(Renderer* r)
 // Application entry point
 int main(int argc, char** argv)
 {
-	OmegaToolkitApplication<VtkScene> app("vtkhello");
+	Application<VtkScene> app("vtkhello");
 	return omain(app, argc, argv);
 }
