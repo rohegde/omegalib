@@ -42,8 +42,11 @@ namespace omega {
 	class OMEGA_API ServerModule: public SharedObject
 	{
 	public:
-		ServerModule(const String& name): myInitialized(false), myEngine(NULL), myName(name) {}
-		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()) {}
+		enum Priority { PriorityLow = 0, PriorityNormal = 1, PriorityHigh = 2 };
+
+	public:
+		ServerModule(const String& name): myInitialized(false), myEngine(NULL), myName(name), myPriority(PriorityNormal) {}
+		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()), myPriority(PriorityNormal) {}
 
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
@@ -75,8 +78,12 @@ namespace omega {
 
 		ServerEngine* getServer() { return myEngine; }
 
+		Priority getPriority() { return myPriority; }
+		void setPriority(Priority value) { myPriority = value; }
+
 	private:
 		String myName;
+		Priority myPriority;
 		bool myInitialized;
 		ServerEngine* myEngine;
 		static NameGenerator mysNameGenerator;
@@ -107,10 +114,16 @@ namespace omega {
 
 		static void handleEvent(ServerEngine* srv, const Event& evt)
 		{
-			foreach(ServerModule* module, mysModules)
+			for(int i = ServerModule::PriorityHigh; i >= ServerModule::PriorityLow; i--)
 			{
-				module->doInitialize(srv);
-				module->handleEvent(evt);
+				foreach(ServerModule* module, mysModules)
+				{
+					if(module->getPriority() == i)
+					{
+						module->doInitialize(srv);
+						module->handleEvent(evt);
+					}
+				}
 			}
 		}
 

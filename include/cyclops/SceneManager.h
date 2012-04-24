@@ -192,13 +192,11 @@ namespace cyclops {
 
 		// Initialization options
 		ShadowMode myShadowMode;
-		bool myEditorEnabled;
 		String mySceneFilename;
 
 		ServerEngine* myEngine;
 
 		OsgModule* myOsg;
-		omegaToolkit::SceneEditorModule* myEditor;
 		PortholeTabletService* myTabletManager;
 
 		osg::Group* mySceneRoot;

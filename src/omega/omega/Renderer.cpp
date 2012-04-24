@@ -204,14 +204,24 @@ void Renderer::innerDraw(const DrawContext& context)
 	}
 	else if(context.task == DrawContext::SceneDrawTask)
 	{
+		
 		// We call drawPointers for scene draw tasks too because we may be drawing pointers in wand mode 
 		RenderState state;
 		state.pass = NULL;
 		state.flags = RenderPass::RenderOpaque;
 		state.client = this;
 		state.context = &context;
+
+
 		getRenderer()->beginDraw3D(context);
+
+		// Run the draw method on scene nodes (was previously in DefaultRenderPass)
+		SceneNode* node = getServer()->getScene();
+		node->draw(&state);
+
+		// Draw 3d pointers.
 		myServer->drawPointers(this, &state);
+
 		getRenderer()->endDraw();
 	}
 }

@@ -36,6 +36,9 @@ using namespace cyclops;
 class StructureViewer: public ServerModule, ui::IMenuItemListener
 {
 public:
+	enum ControlMode { ControlEntity, ControlCamera, ControlLight };
+
+public:
 	StructureViewer();
 
 	virtual void initialize();
@@ -44,7 +47,15 @@ public:
 private:
 	SceneManager* mySceneManager;
 	ui::MenuManager* myMenuManager;
-	Actor* myInteractor;
+
+	SceneEditorModule* myEditor;
+
+	ControlMode myControlMode;
+
+	// User interface stuff.
+	ui::MenuItem* myControlEntityButton;
+	ui::MenuItem* myControlLightButton;
+	ui::MenuItem* myControlCameraButton;
 };
 
 
@@ -52,7 +63,7 @@ private:
 StructureViewer::StructureViewer():
 	mySceneManager(NULL),
 	myMenuManager(NULL),
-	myInteractor(NULL)
+	myEditor(NULL)
 {
 }
 
@@ -65,15 +76,24 @@ void StructureViewer::initialize()
 	cyclopsPythonApiInit();
 #endif
 
-    // Set the interactor style used to manipulate meshes.
+	// Set the interactor style used to manipulate meshes.
+	myEditor = new SceneEditorModule();
+	ModuleServices::addModule(myEditor);
+	myEditor->doInitialize(getServer());
+	myEditor->setEnabled(false);
 	if(SystemManager::settingExists("config/interactor"))
 	{
 		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
-		myInteractor = ToolkitUtils::createInteractor(sinteractor);
-		if(myInteractor == NULL)
+		Actor* interactor = ToolkitUtils::createInteractor(sinteractor);
+		if(interactor != NULL)
 		{
-			ModuleServices::addModule(myInteractor);
+			ModuleServices::addModule(interactor);
+			myEditor->setInteractor(interactor);
 		}
+	}
+	else
+	{
+		owarn("No interactor specified in configuration: Entity manipulation will be disabled");
 	}
 
 	// Create and initialize the cyclops scene manager.
@@ -90,18 +110,53 @@ void StructureViewer::initialize()
 	ui::Menu* menu = myMenuManager->createMenu("menu");
 	myMenuManager->setMainMenu(menu);
 
+	ui::MenuItem* viewMenu = menu->addItem(ui::MenuItem::SubMenu);
+	viewMenu->setText("View");
+
 	// For each entity in the scene, add a checkbox to the menu, that will be used
 	// to toggle the entity visibility.
 	foreach(Entity* e, mySceneManager->getEntities())
 	{
-		ui::MenuItem* mi = menu->addItem(ui::MenuItem::Checkbox);
+		ui::MenuItem* mi = viewMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
 		mi->setChecked(false);
 		e->getSceneNode()->setVisible(false);
 		mi->setText(e->getTag());
 		mi->setUserData(e);
 		mi->setListener(this);
 		mi->setUserTag("visibilityToggle");
+
+		// Register the entity to the node editor, so it can be manipulated by the user.
+		myEditor->addNode(e->getSceneNode());
 	}
+
+	// Create the control submenu
+	ui::MenuItem* optionsMenu = menu->addItem(ui::MenuItem::SubMenu);
+	optionsMenu->setText("Control");
+	// control camera button
+	myControlCameraButton = optionsMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
+	myControlCameraButton->setText("Control Camera");
+	myControlCameraButton->setChecked(true);
+	myControlCameraButton->setListener(this);
+	myControlCameraButton->setUserTag("control");
+	// control entity button
+	myControlEntityButton = optionsMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
+	myControlEntityButton->setText("Control Entity");
+	myControlEntityButton->setChecked(false);
+	myControlEntityButton->setListener(this);
+	myControlEntityButton->setUserTag("control");
+	// control light button
+	myControlLightButton = optionsMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
+	myControlLightButton->setText("Control Light");
+	myControlLightButton->setChecked(false);
+	myControlLightButton->setListener(this);
+	myControlLightButton->setUserTag("control");
+
+	myControlMode = ControlCamera;
+
+	// Add the 'quit' menu item.
+	ui::MenuItem* quitMenuItem = menu->addItem(ui::MenuItem::Button);
+	quitMenuItem->setText("Quit Structure");
+	quitMenuItem->setCommand("oexit()");
 
 	cyclops::Light* l = mySceneManager->getLight(0);
 	l->enabled = true;
@@ -119,10 +174,30 @@ void StructureViewer::onMenuItemEvent(ui::MenuItem* mi)
 		// Get the entity associated with the button and toggle its visibility.
 		Entity* e = (Entity*)mi->getUserData();
 		e->getSceneNode()->setVisible(mi->isChecked());
-
-		if(myInteractor != NULL && mi->isChecked())
+	}
+	else if(mi->getUserTag() == "control")
+	{
+		if(mi->isChecked())
 		{
-			myInteractor->setSceneNode(e->getSceneNode());
+			if(mi == myControlCameraButton)
+			{
+				myControlLightButton->setChecked(false);
+				myControlEntityButton->setChecked(false);
+				myControlMode = ControlCamera;
+			}
+			else if(mi == myControlLightButton)
+			{
+				myControlCameraButton->setChecked(false);
+				myControlEntityButton->setChecked(false);
+				myControlMode = ControlLight;
+			}
+			else if(mi == myControlEntityButton)
+			{
+				myControlLightButton->setChecked(false);
+				myControlCameraButton->setChecked(false);
+				myControlMode = ControlEntity;
+				myEditor->setEnabled(true);
+			}
 		}
 	}
 }
@@ -134,3 +209,4 @@ int main(int argc, char** argv)
 	Application<StructureViewer> app("structure");
 	return omain(app, argc, argv);
 }
+

@@ -42,6 +42,9 @@ UiModule::UiModule():
 	myGamepadInteractionEnabled(false),
 	myActiveWidget(NULL)
 {
+	// This kodule has high priority. It will receive events before modules with lower priority.
+	setPriority(ServerModule::PriorityHigh);
+
 	mysInstance = this;
 
 	// Clean the widget table
