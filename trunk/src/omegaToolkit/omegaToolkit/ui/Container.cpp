@@ -580,11 +580,11 @@ void ContainerRenderable::draw3d(RenderState* state)
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glColor4ub(255, 255, 255, 255);
-
 		Container3dSettings& c3ds = myOwner->get3dSettings();
 		float width = myOwner->getWidth() * c3ds.scale;
 		float height = myOwner->getHeight() * c3ds.scale;
+
+		glColor4ub(255, 255, 255, (GLubyte)(c3ds.alpha * 255));
 
 		glPushMatrix();
 		glTranslatef(c3ds.position[0], c3ds.position[1], c3ds.position[2]);
