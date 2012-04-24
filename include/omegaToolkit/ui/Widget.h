@@ -37,6 +37,7 @@ namespace omegaToolkit { namespace ui {
     class OTK_API Widget: public RenderableFactory, IEventListener
     {
     friend class UiManager;
+    friend class UiRenderPass;
     friend class Container;
     friend class WidgetRenderable;
     public:
@@ -116,8 +117,6 @@ namespace omegaToolkit { namespace ui {
         void clearSizeConstaints();
         void setAutosize(bool value);
         bool getAutosize();
-        virtual void autosize() {}
-        virtual void updateSize();
         //@}
 
         bool isVisible();
@@ -162,6 +161,9 @@ namespace omegaToolkit { namespace ui {
 
 		void setVerticalPrevWidget(Widget* value) { myVerticalPrevWidget = value; }
 		Widget* getVerticalPrevWidget() { return myVerticalPrevWidget; }
+
+        virtual void autosize(Renderer* r) {}
+        virtual void updateSize(Renderer* r);
 
     protected:
 		virtual void activate() { }

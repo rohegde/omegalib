@@ -198,17 +198,17 @@ Widget* Container::getChildByIndex(int index)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Container::updateSize()
+void Container::updateSize(Renderer* r)
 {
 	foreach(Widget* w, myChildren)
 	{
-		w->updateSize();
+		w->updateSize(r);
 	}
-	Widget::updateSize();
+	Widget::updateSize(r);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Container::autosize()
+void Container::autosize(Renderer* r)
 {
 	int width = 0;
 	int height = 0;
@@ -662,10 +662,20 @@ void ContainerRenderable::draw(RenderState* state)
 					myRenderTarget = new RenderTarget(state->context->gpuContext, RenderTarget::RenderToTexture);
 					myRenderTarget->setTextureTarget(myTexture);
 				}
+
+				glPushAttrib(GL_VIEWPORT_BIT);
+				glViewport(0, 0, myOwner->getWidth(), myOwner->getHeight());
 				
+				glMatrixMode(GL_PROJECTION);
 				glPushMatrix();
-				glScalef(1, -1, 1);
-				glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
+				glLoadIdentity();
+				glOrtho(0, myOwner->getWidth(), 0, myOwner->getHeight(), 0, 1);
+
+				glMatrixMode(GL_MODELVIEW);
+				glPushMatrix();
+				glLoadIdentity();
+				//glScalef(0.05f, 0.05f, 1);
+				//glTranslatef(0, -SystemManager::instance()->getDisplaySystem()->getCanvasSize().y(), 0);
 
 				myRenderTarget->bind();
 			}
@@ -696,7 +706,11 @@ void ContainerRenderable::draw(RenderState* state)
 
 			if(myOwner->get3dSettings().enable3d)
 			{
+				glMatrixMode(GL_PROJECTION);
 				glPopMatrix();
+				glMatrixMode(GL_MODELVIEW);
+				glPopMatrix();
+				glPopAttrib();
 				myRenderTarget->unbind();
 			}
 			else

@@ -38,6 +38,8 @@
 
 using namespace omega;
 
+Lock sLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Renderer::Renderer(ServerBase* server):
 	RendererBase(server)
@@ -134,6 +136,8 @@ void Renderer::finishFrame(const FrameInfo& frame)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::draw(const DrawContext& context)
 {
+	//sLock.lock();
+
 #ifdef OMEGA_DEBUG_FLOW
 	String eyeName = "Cyclops";
 	if(context.eye == DrawContext::EyeLeft) eyeName = "EyeLeft";
@@ -170,12 +174,12 @@ void Renderer::draw(const DrawContext& context)
 
 	// Draw once for the default camera (using the passed main draw context).
 	innerDraw(context);
+	//sLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Renderer::innerDraw(const DrawContext& context)
 {
-	
 	// Execute all render passes in order. 
 	foreach(RenderPass* pass, myRenderPassList)
 	{

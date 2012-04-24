@@ -58,8 +58,9 @@ namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API Container: public Widget
 	{
-	friend class ServerEngine;
+	//friend class ServerEngine;
 	friend class ContainerRenderable;
+	friend class UiRenderPass;
 	public:
 		enum Layout {LayoutFree, LayoutHorizontal, LayoutVertical, LayoutGridHorizontal, LayoutGridVertical};
 		enum HorizontalAlign { AlignRight, AlignLeft, AlignCenter};
@@ -110,12 +111,13 @@ namespace omegaToolkit { namespace ui {
 		void setGridColumns(int value);
 		//@}
 
-		virtual void updateSize();
-        virtual void autosize();
 		virtual void layout();
 
 		//! Gets the container 3d settings.
 		Container3dSettings& get3dSettings() { return my3dSettings; }
+
+		virtual void updateSize(Renderer* r);
+        virtual void autosize(Renderer* r);
 
 	protected:
 		virtual void activate();

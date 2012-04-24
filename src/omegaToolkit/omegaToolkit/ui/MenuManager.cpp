@@ -248,7 +248,7 @@ bool Menu::isVisible()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
 	myMainMenu(NULL),
-	myAutoPlaceDistance(1.0f),
+	myAutoPlaceDistance(0.5f),
 	myAutoPlaceEnabled(true)
 {
 	mysInstance = this;

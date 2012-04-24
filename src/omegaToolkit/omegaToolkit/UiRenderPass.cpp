@@ -37,9 +37,13 @@
 using namespace omega;
 using namespace omegaToolkit;
 
+Lock sLock;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiRenderPass::render(Renderer* client, const DrawContext& context)
 {
+	sLock.lock();
+
 	if(context.task == DrawContext::SceneDrawTask)
 	{
 		RenderState state;
@@ -69,10 +73,10 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		state.client = client;
 		state.context = &context;
 
-		client->getRenderer()->beginDraw2D(context);
-
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		Vector2i displaySize = ds->getCanvasSize();
+
+		client->getRenderer()->beginDraw2D(context);
 
 		ui::Container* ui = UiModule::instance()->getUi();
 		const Rect& vp = Rect(0, 0, displaySize[0], displaySize[1]);
@@ -88,7 +92,7 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		}
 
 		// Make sure all widget sizes are up to date (and perform autosize where necessary).
-		ui->updateSize();
+		ui->updateSize(client);
 
 		// Layout ui.
 		ui->layout();
@@ -101,4 +105,6 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 
 		client->getRenderer()->endDraw();
 	}
+
+	sLock.unlock();
 }

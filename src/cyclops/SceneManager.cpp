@@ -131,6 +131,9 @@ void SceneManager::initialize()
 
 	myEngine = getServer();
 
+	// Make sure the osg module is initialized.
+	if(!myOsg->isInitialized()) myOsg->initialize();
+
 	loadConfiguration();
 
 	mySceneRoot = new osg::Group();
@@ -674,7 +677,7 @@ void SceneManager::initShading()
 		myShadowedScene->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
 		mySoftShadowMap = new osgShadow::SoftShadowMap;
-		mySoftShadowMap->setTextureSize(osg::Vec2s(2048, 2048));
+		mySoftShadowMap->setTextureSize(osg::Vec2s(1024, 1024));
 		mySoftShadowMap->setAmbientBias(osg::Vec2(0.0f, 1.0f));
 		mySoftShadowMap->setTextureUnit(4);
 		mySoftShadowMap->setJitterTextureUnit(5);
