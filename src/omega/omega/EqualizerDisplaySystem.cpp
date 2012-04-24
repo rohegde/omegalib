@@ -641,3 +641,40 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	return Ray(p, direction);
 }
 
+bool EqualizerDisplaySystem::getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords)
+{
+	if(evt.getServiceType() == Service::Wand)
+	{
+		Observer* o = myObservers.at(0);
+		Vector3f pos = evt.getPosition() + o->getWorldPosition();
+		Vector3f dir = evt.getOrientation() * Vector3f::UnitZ();
+		ray.setOrigin(pos);
+
+		return true;
+	}
+	else if(evt.getServiceType() == Service::Pointer)
+	{
+		// If the pointer already contains ray information just return it.
+		if(evt.getExtraDataType() == Event::ExtraDataVector3Array &&
+			evt.getExtraDataItems() >= 2)
+		{
+			ray.setOrigin(evt.getExtraDataVector3(0));
+			ray.setDirection(evt.getExtraDataVector3(1));
+		}
+		else
+		{
+			Vector3f pos = evt.getPosition();
+			// The pointer did not contain ray information: generate a ray now.
+			if(normalizedPointerCoords)
+			{
+				pos[0] = pos[0] *  myDisplayConfig.displayResolution[0];
+				pos[1] = pos[1] *  myDisplayConfig.displayResolution[1];
+			}
+
+			ray = getViewRay(Vector2i(pos[0], pos[1]));
+		}
+		return true;
+	}
+	return false;
+}
+
