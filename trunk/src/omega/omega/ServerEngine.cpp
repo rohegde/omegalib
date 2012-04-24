@@ -178,56 +178,14 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 	Pointer* ptr = myPointers[pointerId];
 
 	ptr->setVisible(true);
-
-	//if(myActivePointers[pointerId].first == NULL)
-	//{
-	//	ofmsg("Creating pointer %1%", %pointerId);
-	//	myActivePointers[pointerId].first = createPointer();
-	//}
-	//myActivePointers[pointerId].second = myActivePointerTimeout;
-	//if(evt.getType() == Event::Update)
-	//{
-	//    myActivePointers[pointerId].first->setText(evt.getExtraDataString());
-	//    myActivePointers[pointerId].first->setColor(
-	//        Color(evt.getPosition()[0], evt.getPosition()[1], evt.getPosition()[2]));
-	//}
-	//else
-	//{
-	//	myActivePointers[pointerId].first->setPosition(x, y);
-	//}
-
-	// Set pointer mode.
-	//if(myPointerMode == PointerModeMouse) ptr->setPointerMode(Pointer::ModeMouse);
-	//else if(myPointerMode == PointerModeWand) ptr->setPointerMode(Pointer::ModeWand);
-	//else
-	//{
-	//	if(evt.getType() == Event::Down && evt.isFlagSet(Event::Middle))
-	//	{
-	//		if(ptr->getPointerMode() == Pointer::ModeMouse)
-	//		{
-	//			ofmsg("Pointer %1%: switching to wand mode", %pointerId);
-	//			ptr->setPointerMode(Pointer::ModeWand);
-	//		}
-	//		else
-	//		{
-	//			ofmsg("Pointer %1%: switching to mouse mode", %pointerId);
-	//			ptr->setPointerMode(Pointer::ModeMouse);
-	//		}
-	//	}
-	//}
-
 	ptr->setPointerMode(Pointer::ModeWand);
 	ptr->setPosition(evt.getPosition(0), evt.getPosition(1));
-	// If pointer contains ray information, pass it to the pointer.
-	if(evt.getExtraDataItems() == 2 && 
-		evt.getExtraDataType() == Event::ExtraDataVector3Array)
+
+	// Generate a view ray for the event.
+	Ray ray;
+	if(getDisplaySystem()->getViewRayFromEvent(evt, ray))
 	{
-		ptr->setRay(Ray(evt.getExtraDataVector3(0), evt.getExtraDataVector3(1)));
-	}
-	else
-	{
-		Vector3f direction = evt.getOrientation() * (-Vector3f::UnitZ());
-		ptr->setRay(Ray(evt.getPosition(), direction));
+		ptr->setRay(ray);
 	}
 }
 

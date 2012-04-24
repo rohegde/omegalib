@@ -68,6 +68,9 @@ public:
 	virtual Vector2i getCanvasSize() = 0;
 	//! Returns a view ray given a pointer position in pixel coordinates
 	virtual Ray getViewRay(Vector2i position) = 0;
+	//! Computes a view ray from a pointer or wand event. Returns true if the ray has been generated succesfully, 
+	//! false otherwise (i.e. because the event is not a wand or pointer event)
+	virtual bool getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords = false) { return false; }
 
 	const Color& getBackgroundColor() { return myBackgroundColor; }
 	void setBackgroundColor(const Color& value) { myBackgroundColor = value; }

@@ -28,6 +28,8 @@
 #include "omegaToolkit/UiModule.h"
 #include "omega/DisplaySystem.h"
 
+#include "omega/DisplaySystem.h"
+
 #include "omegaGl.h"
 
 using namespace omega;
@@ -475,22 +477,9 @@ void Container::update(const omega::UpdateContext& context)
 bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 {
 	Ray r;
-	if(inEvt.getServiceType() == Service::Pointer)
+	if(!SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(inEvt, r))
 	{
-		if(inEvt.getExtraDataType() == Event::ExtraDataVector3Array && inEvt.getExtraDataItems() >= 2)
-		{
-			r.setOrigin(inEvt.getExtraDataVector3(0));
-			r.setDirection(inEvt.getExtraDataVector3(1));
-		}
-	}
-	else if(inEvt.getServiceType() == Service::Wand)
-	{
-		r.setOrigin(inEvt.getPosition());
-		r.setDirection(inEvt.getOrientation() * Vector3f::UnitZ());
-	}
-	else
-	{
-		// we did not generate a pointer event. return false.
+		// we could not generate a ray from the input event, return.
 		return false;
 	}
 
