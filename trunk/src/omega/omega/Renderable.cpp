@@ -172,13 +172,6 @@ Renderable* RenderableFactory::getRenderable(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Renderable* RenderableFactory::getFirstRenderable()
-{
-	if(myRenderables.size() != 0) return myRenderables.front();
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 List<Renderable*>::ConstRange RenderableFactory::getRenderables() const
 {
 	return List<Renderable*>::ConstRange(myRenderables.begin(), myRenderables.end());
