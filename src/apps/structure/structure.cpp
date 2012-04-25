@@ -42,6 +42,7 @@ public:
 	StructureViewer();
 
 	virtual void initialize();
+	virtual void handleEvent(const Event& evt);
 	virtual void onMenuItemEvent(ui::MenuItem* mi);
 
 private:
@@ -51,6 +52,9 @@ private:
 	SceneEditorModule* myEditor;
 
 	ControlMode myControlMode;
+
+	cyclops::Light* myLight;
+	float myLightDistance;
 
 	// User interface stuff.
 	ui::MenuItem* myControlEntityButton;
@@ -63,7 +67,9 @@ private:
 StructureViewer::StructureViewer():
 	mySceneManager(NULL),
 	myMenuManager(NULL),
-	myEditor(NULL)
+	myEditor(NULL),
+	myLight(NULL),
+	myLightDistance(5.0f)
 {
 }
 
@@ -158,12 +164,12 @@ void StructureViewer::initialize()
 	quitMenuItem->setText("Quit Structure");
 	quitMenuItem->setCommand("oexit()");
 
-	cyclops::Light* l = mySceneManager->getLight(0);
-	l->enabled = true;
-	l->position = Vector3f(0, 50, 1);
-	l->color = Color(1.0f, 1.0f, 0.7f);
-	l->ambient = Color(0.2f, 0.2f, 0.3f);
-	mySceneManager->setMainLight(l);
+	myLight = mySceneManager->getLight(0);
+	myLight->enabled = true;
+	myLight->position = Vector3f(0, 50, 1);
+	myLight->color = Color(1.0f, 1.0f, 0.7f);
+	myLight->ambient = Color(0.2f, 0.2f, 0.3f);
+	mySceneManager->setMainLight(myLight);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,6 +203,39 @@ void StructureViewer::onMenuItemEvent(ui::MenuItem* mi)
 				myControlCameraButton->setChecked(false);
 				myControlMode = ControlEntity;
 				myEditor->setEnabled(true);
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void StructureViewer::handleEvent(const Event& evt)
+{
+	if(myControlMode == ControlLight)
+	{
+		if(evt.getServiceType() == Service::Pointer ||
+			evt.getServiceType() == Service::Controller ||
+			evt.getServiceType() == Service::Wand)
+		{
+			if(evt.isFlagSet(Event::Button1))
+			{
+				Ray r;
+				if(getServer()->getDisplaySystem()->getViewRayFromEvent(evt, r))
+				{
+					myLight->position = r.getPoint(myLightDistance);
+				}
+				evt.setProcessed();
+			}
+			// If the event has a floating point extra data field (usualy mapped to a controller axis)
+			// use it to change the light distance.
+			if(evt.getExtraDataType() == Event::ExtraDataFloatArray && evt.getExtraDataItems() >= 1)
+			{
+				float v = evt.getExtraDataFloat(0) / 10;
+				if(abs(v) > 0.01f)
+				{
+					myLightDistance += v;
+					evt.setProcessed();
+				}
 			}
 		}
 	}
