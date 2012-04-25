@@ -40,9 +40,11 @@ namespace omega {
 	public:
 		Pointer(): 
  		  myVisible(true),
-		  myColor(0.5f, 0.4f, 1.0f, 1.0f),
+		  myColor(0.1f, 0.1f, 0.2f, 0.95f),
 		  myMode(ModeMouse),
-		  myText("Pointer") {}
+		  myText("Pointer"),
+		  myPointerSize(0.01f),
+		  myPointerLength(4.0f) {}
 
 		virtual Renderable* createRenderable();
 
@@ -64,6 +66,9 @@ namespace omega {
 
 		String getText();
 		void setText(const String& value);
+		
+		void setLength(float value) { myPointerLength = value; }
+		void setSize(float value) { myPointerSize = value; }
 
 	private:
 		bool myVisible;
@@ -72,6 +77,9 @@ namespace omega {
 		Ray myRay;
 		String myText;
 		PointerMode myMode;
+		
+		float myPointerLength;
+		float myPointerSize;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

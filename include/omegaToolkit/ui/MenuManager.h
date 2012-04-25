@@ -178,6 +178,8 @@ namespace omegaToolkit { namespace ui {
 
 		float getAutoPlaceDistance() { return myAutoPlaceDistance; }
 		void setAutoPlaceDistance(float value) { myAutoPlaceDistance = value; }
+		
+		float getMenu3dScale() { return myMenu3dScale; }
 
 	private:
 		void autoPlaceMenu(Menu* menu, const Event& evt);
