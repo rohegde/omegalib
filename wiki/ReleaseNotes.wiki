@@ -6,9 +6,9 @@
 == Summary ==
 == Change Log ==
 
-= omegalib v2.0 (*current developer version*) =
+= omegalib v2.0 =
 *Initial Revision*: 1306
-*Branch-out Revision*:
+*Branch-out Revision*: 1627
 == Summary ==
 	Omegalib 2.0 is a big improvement over 1.0, both feature and API-wise. This is the first version thoroughly tested on a clustered display system. OpenSceneGraph support has been deeply improved, and the Cyclops toolkit is now offered as a library, allowing simplified developement of omegalib/osg applications. Other changes include:
 	  * *a revision of Vtk support* (now integrated in the omegVtk library). Vtk integration works correctly in a clustered environment
