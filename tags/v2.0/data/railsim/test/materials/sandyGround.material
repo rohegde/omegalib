@@ -1,0 +1,9 @@
+<Material>
+    <Main DepthTest="True" HeightMapScale="0.05" Type="Bump" />
+	<Colors Diffuse="1 0 0 1"/>
+    <TextureUnits>
+        <Diffuse File="sandyGround.jpg"/>
+        <NMap File="sandyGround_normal.jpg"/>
+        <Height File="sandyGround_height.jpg"/>
+    </TextureUnits>
+</Material>

@@ -1,0 +1,36 @@
+<Level>
+    <MapData>
+        <MapContents>
+            <Files>
+                <File Id="0" Path="./T1Block11_One_Quarter_Drainage.fbx" Effect="colored"/>
+                <File Id="1" Path="./T1Block02_OneQuarter_TopSlabRebar.fbx" Effect="colored"/>
+                <File Id="2" Path="./T1Block03_OneQuarter_BotSlabRebar.fbx" Effect="colored"/>
+                <File Id="3" Path="./T1Block01A_OneQuarter_StructSteel_noPiles.fbx" Effect="colored"/>
+                <File Id="4" Path="./T1Block04_One_Quarter_CutOutRebar.fbx" Effect="colored"/>
+                <File Id="5" Path="./T1Block05_OneQuarter_Walls.fbx" Effect="colored"/>
+                <File Id="6" Path="./T1Block06_One_Quarter_FendersRebars.fbx" Effect="colored"/>
+                <File Id="7" Path="./T1Block07_OneQuarter_SkirtRebar.fbx" Effect="colored"/>
+                <File Id="8" Path="./T1Block08_One_Quarter_SkirtABLayout.fbx" Effect="colored"/>
+                <File Id="9" Path="./T1Block09_OneQuarter_PileRebar.fbx" Effect="colored"/>
+                <File Id="10" Path="./T1Block10_One_Quarter_WWF.fbx" Effect="colored"/>
+            </Files>
+			
+           <Objects>
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Drainage"/>
+                <Entity FileIndex="1" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Top Slab Rebar"/>
+                <Entity FileIndex="2" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Bottom Slab Rebar"/>
+                <Entity FileIndex="3" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Structure"/>
+                <Entity FileIndex="4" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Cutout Rebar"/>
+                <Entity FileIndex="5" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Walls"/>
+                <Entity FileIndex="6" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Fenders Rebars"/>
+                <Entity FileIndex="7" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Skirt Rebar"/>
+                <Entity FileIndex="8" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Skirt AB Layout"/>
+                <Entity FileIndex="9" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="Pile Rebar"/>
+                <Entity FileIndex="10" Id="0" Rotation="0 0 0" Scale="0.001 0.001 0.001" WorldPos="0 0 0" Tag="WWF"/>
+           </Objects>
+			<Primitives>
+                <Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Effect="colored -d white" Name="Plane_1" Rotation="0 0 0" Scale="100 1 100" Tiling="40 40" WorldPos="0 -10 0" />
+            </Primitives>
+			</MapContents>
+    </MapData>
+</Level>
