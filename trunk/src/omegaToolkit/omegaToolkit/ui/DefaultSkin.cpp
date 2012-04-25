@@ -116,7 +116,7 @@ void DefaultPanelRenderable::drawContent()
 	//painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
 
 	painter->drawRect(Vector2f::Zero(), size, Color::White);
-	painter->drawRect(borderSize / 2, size - borderSize, Color(0, 0, 0, 0.8f));
+	painter->drawRect(borderSize / 2, size - borderSize, Color(0, 0, 0, 0.9f));
 
 	//painter->drawRectOutline(sliderPos, sliderSize, Color::White);
 }
