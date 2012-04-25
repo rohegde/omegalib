@@ -25,13 +25,15 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/DefaultMouseInteractor.h"
+#include "omega/DisplaySystem.h"
 
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultMouseInteractor::handleEvent(const Event& evt)
 {
-	if(evt.getServiceType() == Service::Pointer && !evt.isProcessed())
+	if((evt.getServiceType() == Service::Pointer 
+	|| evt.getServiceType() == Service::Wand) && !evt.isProcessed())
 	{
 		// If a node is assigned to this actor and is selected, we consider mouse events consumed
 		// by this actor.
@@ -49,12 +51,14 @@ void DefaultMouseInteractor::handleEvent(const Event& evt)
 		}
 		if(evt.isFlagSet(myMoveButtonFlag)) myPointerButton1Pressed = true;
 		if(evt.isFlagSet(myRotateButtonFlag)) myPointerButton2Pressed = true;
+		
+		SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, myPointerRay);
 
-		if(evt.getExtraDataItems() == 2)
-		{
-			myPointerRay.setOrigin(evt.getExtraDataVector3(0));
-			myPointerRay.setDirection(evt.getExtraDataVector3(1));
-		}
+		// if(evt.getExtraDataItems() == 2)
+		// {
+			// myPointerRay.setOrigin(evt.getExtraDataVector3(0));
+			// myPointerRay.setDirection(evt.getExtraDataVector3(1));
+		// }
 		//if(evt.getType() == Event::Zoom) myPointerEventData = evt.getExtraDataInt(0);
 
 		updateNode();
