@@ -1,7 +1,9 @@
 #summary omegalib Future plans for omegalib
 #sidebar Sidebar
 
-= omegalib 2.0 =
+= omegalib 2.1 =
+
+= omegalib 2.2 =
 
 == Library Refactoring ==
 === Revise Equalizer display system ===
