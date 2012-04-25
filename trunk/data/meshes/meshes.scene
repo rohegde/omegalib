@@ -2,7 +2,7 @@
     <MapData>
         <MapContents>
             <Files>
-                <File Id="0" Path="meshes/DNA_fromDataset_THINv004.obj" Effect="colored" Size="5"/>
+                <File Id="0" Path="fbx_tests/simple_fbx.fbx" Size="5"/>
                 <File Id="1" Path="meshes/walker.obj" Effect="colored" Size="5"/>
             </Files>
 			
