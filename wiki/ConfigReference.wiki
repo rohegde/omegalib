@@ -1,15 +1,11 @@
-#summary Building omegalib and omegalib projects
+#summary Omegalib configuration file reference
 #sidebar Sidebar
 
-= Dependencies =
-Omegalib libraries and basic can be compiled out of the box without needing any external libraries. Optionally, support for external graphic libraries and toolkits can be added by enabling the specific options inside CMake, and configuring the libraries accordingly.
-== Python ==
-Omegalib has been tested with Python 2.7
-== Open Scene Graph ==
-*todo*
-== The Visualization Toolkit ==
-*todo*
-== Qt ==
+= Configuration file types =
+Omegalib applications are usually based on two distincs configuation files: the *system configuration file* and the *application configuration file*.
+  * The system configuration file determines the properties of the system the application will run on such as:
+    * What input devices are available and how they are to be set up
+	* winscp
 
 = CMake variables =
  * `OMEGA_USE_DISPLAY` Enable if you want to write applications that use omegalib to handle graphics.

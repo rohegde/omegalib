@@ -1,10 +1,129 @@
 #summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
-= omegalib v2.0 (*current developer version*) =
-*Initial Revision*: 1306
+= omegalib v2.1 (*current developer version*) =
+*Initial Revision*: 
 == Summary ==
 == Change Log ==
+
+= omegalib v2.0 (*current developer version*) =
+*Initial Revision*: 1306
+*Branch-out Revision*:
+== Summary ==
+	Omegalib 2.0 is a big improvement over 1.0, both feature and API-wise. This is the first version thoroughly tested on a clustered display system. OpenSceneGraph support has been deeply improved, and the Cyclops toolkit is now offered as a library, allowing simplified developement of omegalib/osg applications. Other changes include:
+	  * *a revision of Vtk support* (now integrated in the omegVtk library). Vtk integration works correctly in a clustered environment
+	  * Improved support for gamepad / wand camera navigation and object control
+	  * Support for *3d user interfaces*
+	  * The *Cyclops toolkit* support for:
+	     * Loading of custom scenes from XML files
+		 * Animated models
+		 * Customized shader-based materials and effects
+		 * osg-based soft shadowing
+	  * OpenScenegraph support for *all major image formats* (through a custom FreeImage plugin) and the industry standard *Fbx format*.
+	  * A *menu-based user interface API* (`MenuManager`, `Menu`, `MenuItem`)
+	  * A *python interactive console* and support for *python ui event handlers*
+	  * *Simplified definition of display configs* though an automated Equalizer configuration generator: Users can now define the display configuration using a simpler format inside system config files. omegalib will parse and convert the configuration to the Equalizer format, removing a lot of redundant and error-prone manual steps.
+== Change Log ==
+	NEW: structure demo light control
+	NEW: Animated menus
+	NEW: wand ray fixes and generation code
+	NEW: Menu supports submenus
+	NEW: transparent panel background
+	NEW: auto-extractable linux fbx sdk
+	NEW: global kill switch, optional pointer drawing
+	NEW: big revision of shading and effect system in cyclops, plus some fixes in osg support.
+	NEW: cyclops Effect (WIP)
+	FIX: container visible flag
+	NEW: 3d ui stuff and new skin
+	NEW: meshviewer in old folder.
+	NEW: 3d ui basic support, and deep changes / fixes to pointer and wand math
+	NEW: Structure working, MenuManager working, several ui fixes.
+	NEW: Fbx / Obj loader in omegaOsg
+	NEW: baybridge dataset
+	NEW: Multimodel entities and assets in cyclops
+	NEW: fbx support
+	NEW: Started working on structure app
+	NEW: Camera position / orientation scripting
+	NEW: RailSim application
+	NEW: Basic Menu system working, python scripting for ui events, gamepad ui navigation.
+	NEW: updated desktop file and emulation-vr-generic added
+	New camera orientation code to allow for default loading of from the cfg file.
+	NEW cyclops menu toggling
+	NEW: Wand emulation service
+	NEW: Revised material and shading support in cyclops. Some slight changes in railsim to keep code in line with changes.
+	NEW: Hospital room dataset
+	NEW: SceneManager code cleanup
+	NEW: CameraController
+	NEW: FreeImage-based image loader for osg
+	NEW: osg freeImage loader
+	NEW: Additional work on menus and configurable shadowing and editing in scenemanager
+	NEW: Camera wiimote navigation
+	NEW: advanced interactive terminal support on linux (using readline)
+	NEW: wand support (WIP)
+	NEW: Pointer functionality revision
+	NEW: cyclops: started revision of material support
+	NEW: Support for external OSG build
+	NEW: Visual Leak detector installer
+	NEW: revision cyclops, support for killing display clusters
+	NEW: vtk demo + python interactive command clustered execution
+	NEW: python vtk scripting works
+	NEW: Python scripting and callbacks support
+	NEW: Equalizer tile device from config
+	NEW: started working on cluster support
+	NEW: metaconfig support for remote nodes (wip)
+	NEW: equalizer meta-config (wip)
+	NEW: python node API (wip)
+	NEW: multigpu vtk rendering support.
+	NEW: Movable and resizable widgets
+	NEW: overlay draw tasks can be disabled in equalizer renderer through define.
+	NEW: configurable image overlay support
+	NEW: sample images in meshviewer cfg script
+	NEW: support for stereo ui image rendering
+	NEW: EVL_DEMO
+	NEW: python interactive shell now needs to be enabled explicitly in the config file.
+	NEW: Basic python console support
+	CHANGE: Removed getFirstRenderable
+	CHANGE: cleanup, removed old render passes from omegaToolkit, and started working on structure entity editor.
+	CHANGE: Moved MenuManager to omegaToolkit, fixes to mouse ray generation
+	CHANGE: fbx reader does not handle obj files anymore 
+	REVERT: re-added obj loader to cyclops (the one included in the FBX SDK does not work as well)
+	CHANGE: system configuration files cleanup
+	CHANGE: engine looks for default font in both system and application config file.
+	CHANGE: v2.0 compile changes 
+	CHANGE: general project cleanup
+	CHANGE: omegaVtk (simplified prop attaching to omegalib nodes)
+	REMOVED: MasterEngine
+	REMOVED: old tracking files
+	REMOVED: unity tutorial (moved to omicron SDK)
+	CHANGE: ovtk >> omegaVtk
+	REMOVED: evl-specific config files
+	CHANGE: refactored engine modules
+== Bugfixes ==
+	FIX: race condition in osg render pass (temporary fix using sInitLock) 
+	FIX: ui rendering (fonts and 3d ui)
+	FIX: 3d ui now working correctly
+	FIX: container 3d orientation
+	FIX: to avoid useless warnings when setting Node listener multiple times
+	FIX: Header location of fbx headers
+	FIX: SceneManager initialization
+	FIX: camera controller set in system file instead of app file
+	FIX: Event ExtraData read incorrectly over network connection
+	FIX: pointer ray stuff
+	FIX: pointer out of bounds check
+	FIX: EqualizerDisplaySystem::getViewRay crashed on invalid position
+	FIX: tracked observer flickering
+	FIX: multipipe rendering isse (needed refactoring of renderpass Api)
+	FIX: observer initialization
+	FIX Obj loader fixes for cyclops
+	FIX: memleaks
+	FIX: vtk support and camera manipulation
+	FIX: omegaVtk
+	FIX: python interpreter NEW: graceful exit command
+	FIX: cyclops obj loader for materials with no texture
+	FIX: stereo images
+	FIX: Glut support
+	FIX: python interactive console
+	FIX: setting custom output directories
 
 ------------------------------------------------------------------------
 = omegalib v1.0 =
