@@ -1,23 +1,12 @@
- * General
+ * [GettingStarted Geting Started with omegalib]
    * [Concept introduction and design]
-   * [ReleaseNotes Release Notes]
-     * [OmegaProgress omegalib pre 1.0 history]
- * Help & Reference
-   * [HowTos How-tos & FAQ]
-   * [BuildSystemReference CMake reference]
-   * [OInputServerReference oinputserver protocol reference]
-   * Tutorials
-     * [Tutorial1]
-     * [Tutorial2]
-     * [Tutorial3]
-     * [Tutorial4]
-     * [Tutorial5]
-     * [Tutorial6]
-     * [Tutorial8]
- * Porthole
+ * [BuildSystemReference Compiling omegalib]
+ * [ConfigReference Understanding configuration files]
+ * [HowTos Other How-tos & FAQ]
+ * [ReleaseNotes Release Notes]
+   * [OmegaProgress omegalib pre 1.0 history]
+ * Internal docs
    * [OmegaViewer CS528 VR Project Concept]
    * [PortholeMarkOne Porthole Mark 1]
- * Internal docs
    * [PackagingChecklist Packaging checklist]
-   * [MeetingNotes notes from omegalib meetings]
    * [Future Future plans]
