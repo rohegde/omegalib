@@ -647,8 +647,9 @@ bool EqualizerDisplaySystem::getViewRayFromEvent(const Event& evt, Ray& ray, boo
 	{
 		Observer* o = myObservers.at(0);
 		Vector3f pos = evt.getPosition() + o->getWorldPosition();
-		Vector3f dir = evt.getOrientation() * Vector3f::UnitZ();
+		Vector3f dir = evt.getOrientation() * (-Vector3f::UnitZ());
 		ray.setOrigin(pos);
+		ray.setDirection(dir);
 
 		return true;
 	}
