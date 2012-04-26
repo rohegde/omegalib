@@ -29,11 +29,6 @@
 # Compile definitions
 add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOTK_EXPORTING -DEQ_FABRIC_STATIC -DFREEGLUT_STATIC )
 
-#set(omegaToolkit_USE_OBJ false CACHE BOOL "Enable support for obj format inside omegaToolkit.")
-#set(omegaToolkit_USE_PLY true CACHE BOOL "Enable support for ply format inside omegaToolkit.")
-set(OTK_USE_OBJ false)
-set(OTK_USE_PLY true)
-
 ###################################################################################################
 # Source files
 set( srcs 
@@ -45,7 +40,6 @@ set( srcs
 		omegaToolkit/DefaultMouseInteractor.cpp
 		omegaToolkit/DefaultTwoHandsInteractor.cpp
 		omegaToolkit/Effect.cpp
-		omegaToolkit/glteapot.cpp
 		omegaToolkit/Mesh.cpp
 		omegaToolkit/MeshData.cpp
 		omegaToolkit/omegaToolkitPythonApi.cpp
@@ -87,13 +81,10 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/glteapot.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Mesh.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MeshData.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ply.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/PlyDataReader.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ReferenceBox.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/RenderableSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneEditorModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneRenderable.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Teapot.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiScriptCommand.h
@@ -114,32 +105,8 @@ set( headers
         ) 
 
 ###################################################################################################
-if(OTK_USE_OBJ)
-	set( srcs ${srcs}
-		omegaToolkit/ObjDataReader.cpp
-		omegaToolkit/obj/obj.cpp
-		omegaToolkit/obj/obj.hpp
-		omegaToolkit/obj/obj_config.hpp
-		omegaToolkit/obj/obj_parser.cpp
-		omegaToolkit/obj/obj_parser.hpp	)
-	set( headers ${headers}
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ObjDataReader.h)
-	add_definitions(-DOTK_USE_OBJ)
-endif(OTK_USE_OBJ)
-
-if(OTK_USE_PLY)
-	set( srcs ${srcs}
-		omegaToolkit/PlyDataReader.cpp
-		omegaToolkit/plyfile.cpp)
-	set( headers ${headers}
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/PlyDataReader.h)
-	add_definitions(-DOTK_USE_PLY)
-endif(OTK_USE_PLY)
-
-###################################################################################################
 source_group(omegaToolkit REGULAR_EXPRESSION omegaToolkit/)		
 source_group(omegaToolkit::ui REGULAR_EXPRESSION omegaToolkit/ui/)		
-source_group(omegaToolkit::mvc REGULAR_EXPRESSION omegaToolkit/mvc/)		
 
 ###################################################################################################
 # Setup compile info

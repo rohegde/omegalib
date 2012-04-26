@@ -102,7 +102,7 @@ namespace omegaToolkit {
 	class OTK_API MeshUtils
 	{
 	public:
-		static MeshData* load(const String& file);
+		//static MeshData* load(const String& file);
 	private:
 		MeshUtils() {}
 	};
