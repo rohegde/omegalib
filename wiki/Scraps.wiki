@@ -1,0 +1,114 @@
+#summary omegalib General notes / plans for omegalib developement
+#sidebar Sidebar
+
+= New Features =
+== Cyclops improvements ==
+	* scene Lights / Light / MainLight
+	* scene BackgroundColor
+	* add lighting customization options
+	* fix bump shaders
+
+== ENDURANCE Demo ==
+ * use image widget to navigate data & ROI selection!
+`ImageInteractionWidget`
+ * point selection
+ * rubberband selection
+ 
+== SAGE Integration ==
+Send pixels to SAGE through SAIL. Options:
+	* Integrate as separate display system (I would have to take care of doing off-axis projection and a bunch of other stuff) *NO*
+	* Integrate on top of display system at:
+		* omega/DisplaySystem level (more generic) 
+		* oengine level (allows me to use Camera / RenderPass functionality)
+		
+Create `IFrameListener` interface.
+Called by display system whenever a frame has finished rendering (per-client.) Gives back to the implementer enough info (i.e. a RenderTarget?) to
+capture the framebuffer contents and do whatever with them.
+
+DisplaySystem supports attaching a `IFrameListener`, but the same can be done on a camera *MOST FLEXIBLE SOLUTION*
+
+Implement a `SailService` service class, deriving from `IFrameListener` as well. `SailService` can connect to SAGE through Sail, receive SAGE messages
+and (if the application is a graphical application) register itself to the display system (or to a camera) to send pixel output to SAGE.
+
+Starting / Stopping the service connects/disconnects to SAGE, so the application has control over the streaming.
+
+Multiple sail service instances can create multiple windows on SAGE from the same omegalib application (i.e a Vtk app displaying multiple plots on a SAGE display)
+
+Sail UI capabilities can be used to create a view + control panel on a SAGE display
+
+== Cave2 Simulator ==
+CaveSim
+Requirement
+	* draw geometry of screens
+	* draw output of just one screen?
+	* let user navigate around in environment
+What's needed:
+	* appli needs to know about real thing geometry and tile config
+	* needs to support output to secondary 'observer' view
+	* this observer view may be running even on actual CAVE installation. Or it can run alone when in simulation mode.
+	* Deadlines for this?
+	* simulation of tracking hardware
+		* head tracking
+		* wands and other rigid bodies.
+		* (Simulation of wand already kinda done through mouse controller).
+		
+== Other New Features ==
+	* omegalib OSC integration (Arthur working on this)
+	* omegalib postprocessing support (not a priority)
+
+= Changes =
+== Revise Event class ==
+(This task should be moved to omicron)
+	* Zoom -> Scale
+	* split: convert to Scale
+	* Remove SplitStart / SplitEnd, RotateStart, RotateEnd
+	* Remove DoubleClick
+	* Remove MoveUp, Down, Etc. events?
+== Refactor Event class, generic messaging support ==
+== Memory management and statistics support ==
+Add a way to collect info about memory leaks, allocations and timing statistics in the application. 
+	* Allow those statistics to be viewed as an OSD (like the console)
+== Other Changes ==
+	* move autoplace code from menu widget to Container
+	* Create shaders through new, not GpuManager
+	* BaseEffect >> IEffect (not that important anymore...)
+
+
+= Bugs =
+== Other Bugs ==
+	* fix weird menu behavior on desktop version of omegalib
+	* vtkObject bounding box rescaling issues
+	* Thinkgear not compiling in release mode?
+	* FIx GLUT support camera
+	* if OPENCL_INCLUDE_DIR is not found, set it automatically to internal ext/windows/include dir
+	* 2.0 tutorials are broken and need to be renamed.
+
+= Wishlist =
+== add support for synchronized scene nodes ==
+	* SceneNodeSynchronizer: SharedObject
+	i.e.
+	SceneNodeSynchronizer sync(mySceneNode);
+	SharedDataServices::registerObject(&sync, mySceneNode->getName());
+	(simplified utility call)
+	SharedDataServices::registerSceneNode(mySceneNode)
+== Other Stuff ==
+	* create custom FrameBufferObject class for osg.
+	* need support for
+		* overriding system cfg with another one through command line.
+		* OArgs::parse(argc, argv)
+		* omain(Application& app, OArgs& args)
+	* in win32 download binary python package for repo. (not that important, python can be easiy installed by user... Also, warning messages in apps clearly state when something depends on python scripting)
+
+= Other Notes =
+	* RenderableSceneObject needs to be in omegaToolkit only because of Effect. think about solutions
+	* create wireframe multipass effect for cyclops
+	* Simplify service nesting?
+	* tar/.gz freeglut and glew, remove from src and put in external folder
+	* Notes on clustered systems in	!from http://www.cs.ucl.ac.uk/staff/a.steed/cluster-solutions-with-figures.htm! !ClusterJuggler!
+	* (Since I removed Light / LightingPass from omegaToolkit) omegaToolkit Lights can be implemented as sceneobjects if needed in the future.
+
+	
+
+
+
+

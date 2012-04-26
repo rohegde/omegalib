@@ -1,0 +1,31 @@
+#summary omegalib Old omegalib notes
+#sidebar Sidebar
+
+= New Features =
+== NGCave / eqc autoconfig tool (done in 2.0) ==
+ * `HorzontalTiles, VerticalTiles` tile count
+ * `ReferenceTile(RT)[ix, iy]` index of tile whose center is reference point R
+	* NOTE: ReferenceTile normal is always +Z in global reference frame
+ * `ReferenceOffset(RO)` offser of R wrt origin of system
+ * `TileSize(TS)[w, h]` tile width, height
+
+NOTE, RT corners easy to find.
+	(i.e. `RTtl = RO - <-TSw/2, -TSh/2, 0>`)
+	
+ * `ConfigurationType` [Planar, Cylindrical]
+ * `ColumnYawIncrement` angle variation on Y axis between one tile column and next.	Columns left of RT column have positive increment, right have negative.
+
+Output text file:
+	`TileIndex[ix, iy] TileCorners[tl, tr, bl, br]`
+
+= Changes =
+=== Revise Equalizer display system (done in 2.0) ===
+	* There is probably a lot of redundancy in the initialization flow - inefficiency in the current way the Equalizer / application init flow works. Revise it.
+	* *?* Render interlaced & side by side directly inside channel render function without relying on equalizer config and multiple equalizer draw calls
+		* Would allow to work around some problems with equalizer
+		* Would this lead to better performance?
+	* create autogenerator of eq configurations using libconfig
+
+= Bugs =
+= Wishlist =
+= Other Notes =

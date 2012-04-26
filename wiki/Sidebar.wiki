@@ -9,4 +9,5 @@
    * [OmegaViewer CS528 VR Project Concept]
    * [PortholeMarkOne Porthole Mark 1]
    * [PackagingChecklist Packaging checklist]
-   * [Future Future plans]
+   * [Scraps General Notes]
+     * [OldScraps Old Notes Archive]   
