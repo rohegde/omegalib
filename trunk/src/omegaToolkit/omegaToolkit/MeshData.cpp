@@ -25,7 +25,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/MeshData.h"
-#include "omegaToolkit/PlyDataReader.h"
 //#include <cstdlib>
 //#include <math.h>
 
@@ -41,39 +40,39 @@ using namespace omega;
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-MeshData* MeshUtils::load(const String& file)
-{
-	if(StringUtils::endsWith(file, "ply"))
-	{
-		PlyDataReader* reader = new PlyDataReader();
-		if(!reader->readPlyFile(file))
-		{
-			ofwarn("Could not load mesh file %1%.", %file);
-		}
-		else
-		{
-			return reader;
-		}
-	}
-	else if(StringUtils::endsWith(file, "obj"))
-	{
-		// ObjDataReader* reader = new ObjDataReader();
-		// if(!reader->readFile(meshFilename))
-		// {
-			// ofwarn("Could not load mesh file %1%.", %meshFilename);
-		// }
-		// else
-		// {
-			// reader->scale(0.8f);
-			// ed->meshData = reader;
-		// }
-	}
-	else
-	{
-		ofwarn("%1%: unsupported file format.", %file);
-	}
-	return NULL;
-}
+//MeshData* MeshUtils::load(const String& file)
+//{
+//	if(StringUtils::endsWith(file, "ply"))
+//	{
+//		PlyDataReader* reader = new PlyDataReader();
+//		if(!reader->readPlyFile(file))
+//		{
+//			ofwarn("Could not load mesh file %1%.", %file);
+//		}
+//		else
+//		{
+//			return reader;
+//		}
+//	}
+//	else if(StringUtils::endsWith(file, "obj"))
+//	{
+//		// ObjDataReader* reader = new ObjDataReader();
+//		// if(!reader->readFile(meshFilename))
+//		// {
+//			// ofwarn("Could not load mesh file %1%.", %meshFilename);
+//		// }
+//		// else
+//		// {
+//			// reader->scale(0.8f);
+//			// ed->meshData = reader;
+//		// }
+//	}
+//	else
+//	{
+//		ofwarn("%1%: unsupported file format.", %file);
+//	}
+//	return NULL;
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MeshData::clear() 

@@ -94,7 +94,8 @@ endif(OMEGA_BUILD_TUTORIALS)
 
 add_subdirectory(omegaToolkit)
 
-add_subdirectory(apps/nightfield)
+# Now working now that ply support has been removed.
+#add_subdirectory(apps/nightfield)
 
 # Add a couple of applications that require OpenNI support.
 if(OMICRON_USE_OPENNI)
