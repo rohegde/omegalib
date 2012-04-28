@@ -1,6 +1,19 @@
 #summary omegalib General notes / plans for omegalib developement
 #sidebar Sidebar
 
+= Priorities =
+(Some more details about the priority list may be found in the following sections)
+== High Priority ==
+  * Equalizer support for cylidrical display configs (for Cave2)
+  * Fix and improve ray picking and manipulation support (may be a problem in the bounding sphere generation now)
+  * ENDURANCE vtk demo
+  * Re-add Porthole support
+== Low Priority ==
+  * Strucure can load / switch to different scenes
+  * Cyclops support for threaded loading using the osg PagedLoader
+  * Slider bar support in menu
+  * `ImageInteractionWidget`
+
 = New Features =
 == Cyclops improvements ==
 	* scene Lights / Light / MainLight
