@@ -1,0 +1,17 @@
+<Level>
+    <MapData>
+        <MapContents>
+            <Files>
+                <File Id="0" Path="flock/sphere.ply" Effect="colored" Size="0.2"/>
+            </Files>
+			
+            <Objects>
+           </Objects>
+            <Entities>
+            </Entities>
+			<Primitives>
+                <Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Effect="colored -d red" Name="Plane_1" Rotation="0 0 0" Scale="40 1 40" Tiling="40 40" WorldPos="0 -1 0" />
+            </Primitives>
+			</MapContents>
+    </MapData>
+</Level>
