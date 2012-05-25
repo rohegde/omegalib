@@ -677,11 +677,11 @@ void SceneManager::initShading()
 		myShadowedScene->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
 		mySoftShadowMap = new osgShadow::SoftShadowMap;
-		mySoftShadowMap->setTextureSize(osg::Vec2s(1024, 1024));
+		mySoftShadowMap->setTextureSize(osg::Vec2s(2048, 2048));
 		mySoftShadowMap->setAmbientBias(osg::Vec2(0.0f, 1.0f));
 		mySoftShadowMap->setTextureUnit(4);
 		mySoftShadowMap->setJitterTextureUnit(5);
-		mySoftShadowMap->setSoftnessWidth(0.001);
+		mySoftShadowMap->setSoftnessWidth(0.005);
 		mySoftShadowMap->setJitteringScale(32);
 
 		myShadowedScene->addChild(mySceneRoot);

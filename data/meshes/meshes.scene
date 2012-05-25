@@ -2,13 +2,13 @@
     <MapData>
         <MapContents>
             <Files>
-                <File Id="0" Path="fbx_tests/simple_fbx.fbx" Size="5"/>
+                <File Id="0" Path="fbx_tests/simple_fbx_multitexture.fbx" Size="2"/>
                 <File Id="1" Path="meshes/walker.obj" Effect="colored" Size="5"/>
             </Files>
 			
             <Objects>
-                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" WorldPos="0 0 0" Tag="DNA"/>
-                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" WorldPos="0 0 0" Tag="T600 Arm"/>
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" WorldPos="0 1 0" Tag="Fbx test"/>
+                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" WorldPos="0 0 0" Tag="Walker"/>
            </Objects>
             <Entities>
             </Entities>
