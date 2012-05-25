@@ -36,7 +36,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 using namespace cyclops;
 
-bool sUseOpenCL = false;
+bool sUseOpenCL = true;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Preset
