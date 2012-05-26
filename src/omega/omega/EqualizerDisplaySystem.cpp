@@ -215,13 +215,43 @@ void EqualizerDisplaySystem::generateEqConfig()
 			float tw = eqcfg.tileSize[0];
 			float th = eqcfg.tileSize[1];
 
-			Vector3f topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
-			Vector3f bottomLeft = topLeft + Vector3f(0, -th, 0);
-			Vector3f bottomRight = topLeft + Vector3f(tw, -th, 0);
+			Vector3f topLeft;
+			Vector3f bottomLeft;
+			Vector3f bottomRight;
+			Vector3f center;
 
+			if(eqcfg.type == DisplayConfig::ConfigPlanar)
+			{
+				// Compute the display corners for a planar display configuration
+				Vector3f topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
+				Vector3f bottomLeft = topLeft + Vector3f(0, -th, 0);
+				Vector3f bottomRight = topLeft + Vector3f(tw, -th, 0);
+
+				center = (topLeft + bottomRight) / 2;
+			}
+			else
+			{
+				// Compute the display corners for custom display geometries
+				center = tc.center;
+				Quaternion orientation = AngleAxis(tc.yaw, Vector3f::UnitY()) * AngleAxis(tc.pitch, Vector3f::UnitX());
+				// Define the default display up and right vectors
+				Vector3f up = Vector3f::UnitY();
+				Vector3f right = Vector3f::UnitX();
+
+				// Compute the tile corners using the display center and oriented normal.
+				up = orientation * up;
+				right = orientation * right;
+
+				topLeft = center + (up * th / 2) - (right * tw / 2);
+				bottomLeft = center - (up * th / 2) - (right * tw / 2);
+				bottomRight = center - (up * th / 2) + (right * tw / 2);
+			}
+
+			// Save the corners back to the tile display config structure.
 			tc.bottomLeft = bottomLeft;
 			tc.topLeft = topLeft;
 			tc.bottomRight = bottomRight;
+			tc.center = bottomRight;
 
 			String tileCfg = "";
 			START_BLOCK(tileCfg, "segment");
@@ -326,13 +356,13 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 
 	String cfgType = Config::getStringValue("geometry", scfg, "ConfigPlanar");
 	if(cfgType == "ConfigPlanar") cfg.type = DisplayConfig::ConfigPlanar;
-	else cfg.type = DisplayConfig::ConfigCylindrical;
+	else cfg.type = DisplayConfig::ConfigCustom;
 
 	cfg.numTiles = Config::getVector2iValue("numTiles", scfg);
 	cfg.referenceTile = Config::getVector2iValue("referenceTile", scfg);
 	cfg.referenceOffset = Config::getVector3fValue("referenceOffset", scfg);
 	cfg.tileSize = Config::getVector2fValue("tileSize", scfg);
-	cfg.columnYawIncrement = Config::getFloatValue("columnYawIncrement", scfg);
+	//cfg.columnYawIncrement = Config::getFloatValue("columnYawIncrement", scfg);
 	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
@@ -381,6 +411,10 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 				tc.index = index;
 				//tc.interleaved = Config::getBoolValue("interleaved", sTile);
 				tc.device = Config::getIntValue("device", sTile);
+
+				tc.center = Config::getVector3fValue("center", sTile, Vector3f::Zero());
+				tc.yaw = Config::getFloatValue("yaw", sTile, 0);
+				tc.pitch = Config::getFloatValue("pitch", sTile, 0);
 
 				tc.resolution = cfg.tileResolution;
 				tc.offset = tc.index.cwiseProduct(tc.resolution);

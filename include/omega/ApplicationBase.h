@@ -52,6 +52,9 @@ namespace omega
 		Vector3f topLeft;
 		Vector3f bottomLeft;
 		Vector3f bottomRight;
+		Vector3f center;
+		float yaw;
+		float pitch;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,13 +73,12 @@ namespace omega
 	{
 		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
-		enum ConfigType {ConfigPlanar, ConfigCylindrical};
+		enum ConfigType {ConfigPlanar, ConfigCustom};
 		ConfigType type;
 		Vector2i numTiles;
 		Vector2i referenceTile;
 		Vector3f referenceOffset;
 		Vector2f tileSize;
-		float columnYawIncrement;
 		bool autoOffsetWindows;
 		Vector2i tileResolution;
 		Vector2i windowOffset;
