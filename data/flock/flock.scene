@@ -2,7 +2,7 @@
     <MapData>
         <MapContents>
             <Files>
-                <File Id="0" Path="flock/sphere.ply" Effect="colored" Size="0.2"/>
+                <File Id="0" Path="flock/ambly.fbx" Size="0.2"/>
             </Files>
 			
             <Objects>
