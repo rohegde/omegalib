@@ -371,7 +371,7 @@ void Flock::updateAgentsGPU(const UpdateContext& context)
 	myNumInteractors->setIntValue(myActiveAffectors);
 	myInteractorBuffer->write(myAffectorData, 0, MaxAffectors * sizeof(FlockAffector));
 
-	myDt->setFloatValue(0.01f);
+	myDt->setFloatValue(context.dt);
 
 	// Set simulation parameters.
 	myCoordinationDist->setFloatValue(myCurrentPreset->coordinationDist);
@@ -392,7 +392,7 @@ void Flock::updateAgentsGPU(const UpdateContext& context)
 // Fallback code to simulate the flock on the cpu.
 void Flock::updateAgentsCPU(const UpdateContext& context)
 {
-	float scale = 0.1f;
+	float scale = 0.5f;
 	Vector3f center = Vector3f::Zero();
 	// Compute behavior
 	for(int i = 0; i < mySettings->numAgents; i++)
@@ -497,7 +497,7 @@ void FlockApplication::initialize()
 	l->enabled = true;
 	l->position = Vector3f(0, 10, 0);
 	l->color = Color(1.0f, 1.0f, 0.7f);
-	l->ambient = Color(0.2f, 0.2f, 0.3f);
+	l->ambient = Color(0.1f, 0.1f, 0.1f);
 	mySceneManager->setMainLight(l);
 }
 
@@ -509,6 +509,8 @@ void FlockApplication::update(const UpdateContext& context)
 	for(int i = 0; i < mySettings.numAgents; i++)
 	{
 		myAgentNodes[i]->setPosition(osg::Vec3d(agent[i].x, agent[i].y, agent[i].z));
+		Quaternion q = Math::buildRotation(-Vector3f::UnitX(), Vector3f(agent[i].vx, agent[i].vy, agent[i].vz), Vector3f::UnitY());
+		myAgentNodes[i]->setAttitude(osg::Quat(q.x(), q.y(), q.z(), q.w()));
 	}
 }
 

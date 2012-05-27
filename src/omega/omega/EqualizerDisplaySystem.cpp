@@ -223,9 +223,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 			if(eqcfg.type == DisplayConfig::ConfigPlanar)
 			{
 				// Compute the display corners for a planar display configuration
-				Vector3f topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
-				Vector3f bottomLeft = topLeft + Vector3f(0, -th, 0);
-				Vector3f bottomRight = topLeft + Vector3f(tw, -th, 0);
+				topLeft = canvasTopLeft + Vector3f(x * tw, -(y * th), 0);
+				bottomLeft = topLeft + Vector3f(0, -th, 0);
+				bottomRight = topLeft + Vector3f(tw, -th, 0);
 
 				center = (topLeft + bottomRight) / 2;
 			}

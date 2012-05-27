@@ -26,7 +26,7 @@
 ###################################################################################################
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 include(ExternalProject)
-include(OmegaAddTutorial)
+#include(OmegaAddTutorial)
 include(UsePch)
 
 include(${OmegaLib_SOURCE_DIR}/external/UseOmicron.cmake)
@@ -93,20 +93,6 @@ if(OMEGA_BUILD_TUTORIALS)
 endif(OMEGA_BUILD_TUTORIALS)
 
 add_subdirectory(omegaToolkit)
-
-# Now working now that ply support has been removed.
-#add_subdirectory(apps/nightfield)
-
-# Add a couple of applications that require OpenNI support.
-if(OMICRON_USE_OPENNI)
-	add_subdirectory(apps/kinectdemo)
-	add_subdirectory(apps/mocalib)
-endif()
-
-if(OMEGA_BUILD_TUTORIALS)
-	omega_add_tutorial(tutorial5)
-	omega_add_tutorial(tutorial6)
-endif()
 
 # OSX uses its own glut, do not compile it internally (Should we do the same under linux?)
 if(OMEGA_USE_DISPLAY_GLUT) 
