@@ -65,7 +65,6 @@ static PyObject* sceneLoad(PyObject* self, PyObject* args)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* entitySetPosition(PyObject* self, PyObject* args)
 {
-	PyObject* pyNode = NULL;
 	int id;
 	float x, y, z;
 	PyArg_ParseTuple(args, "ifff", &id, &x, &y, &z);
@@ -79,6 +78,121 @@ PyObject* entitySetPosition(PyObject* self, PyObject* args)
 	return Py_None;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightEnable(PyObject* self, PyObject* args)
+{
+	int id;
+	PyArg_ParseTuple(args, "i", &id);
+
+	Light* l = SceneManager::instance()->getLight(id);
+	if(l != NULL) l->enabled = true;
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightDisable(PyObject* self, PyObject* args)
+{
+	int id;
+	PyArg_ParseTuple(args, "i", &id);
+
+	Light* l = SceneManager::instance()->getLight(id);
+	if(l != NULL) l->enabled = false;
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightSetColor(PyObject* self, PyObject* args)
+{
+	int id;
+	const char* colorStr;
+	PyArg_ParseTuple(args, "is", &id, &colorStr);
+
+	if(colorStr != NULL)
+	{
+		Color& col = Color::Color(colorStr);
+		Light* l = SceneManager::instance()->getLight(id);
+		if(l != NULL)
+		{
+			l->color = col;
+		}
+	}
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightSetAmbient(PyObject* self, PyObject* args)
+{
+	int id;
+	const char* colorStr;
+	PyArg_ParseTuple(args, "is", &id, &colorStr);
+
+	if(colorStr != NULL)
+	{
+		Color& col = Color::Color(colorStr);
+		Light* l = SceneManager::instance()->getLight(id);
+		if(l != NULL)
+		{
+			l->ambient = col;
+		}
+	}
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightSetShadow(PyObject* self, PyObject* args)
+{
+	int id;
+	float soft;
+	int jitter;
+	PyArg_ParseTuple(args, "ifi", &id, &soft, &jitter);
+
+	Light* l = SceneManager::instance()->getLight(id);
+	if(l != NULL)
+	{
+		l->softShadowJitter = jitter;
+		l->softShadowWidth = soft;
+	}
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightSetPosition(PyObject* self, PyObject* args)
+{
+	int id;
+	float x, y, z;
+	PyArg_ParseTuple(args, "ifff", &id, &x, &y, &z);
+
+	Light* l = SceneManager::instance()->getLight(id);
+	if(l != NULL)
+	{
+		l->position[0] = x;
+		l->position[1] = y;
+		l->position[2] = z;
+	}
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* lightGetPosition(PyObject* self, PyObject* args)
+{
+	int id;
+	PyArg_ParseTuple(args, "i", &id);
+
+	Light* l = SceneManager::instance()->getLight(id);
+	if(l != NULL)
+	{
+		return Py_BuildValue("(fff)", l->position[0], l->position[1], l->position[2]);
+	}
+	return NULL;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef cyMethods[] = 
 {
@@ -89,6 +203,34 @@ static PyMethodDef cyMethods[] =
     {"sceneLoad", sceneLoad, METH_VARARGS, 
 		"sceneLoad(path)\n" 
 		"Loads a cyclops xml scene file."},
+
+    {"lightGetPosition", lightGetPosition, METH_VARARGS, 
+		"lightGetPosition(id)\n" 
+		"Gets the position for the specified light."},
+
+    {"lightSetPosition", lightSetPosition, METH_VARARGS, 
+		"lightSetPosition(id, x, y, z)\n" 
+		"Sets the position for the specified light."},
+
+    {"lightSetColor", lightSetColor, METH_VARARGS, 
+		"lightSetColor(id, colorString)\n" 
+		"Sets the color for the specified light."},
+
+    {"lightSetAmbient", lightSetAmbient, METH_VARARGS, 
+		"lightSetAmbient(id, colorString)\n" 
+		"Sets the color for the specified light."},
+
+    {"lightSetShadow", lightSetShadow, METH_VARARGS, 
+		"lightSetAmbient(id, softnessWidth, softnessJitter)\n" 
+		"Sets the shadow parameters for the specified light."},
+
+    {"lightEnable", lightEnable, METH_VARARGS, 
+		"lightEnable(id)\n" 
+		"Enables the specified light."},
+
+    {"lightDisable", lightDisable, METH_VARARGS, 
+		"lightDisable(id)\n" 
+		"Disable the specified light."},
 
     {"entitySetPosition", entitySetPosition, METH_VARARGS, 
 		"sceneLoad(path)\n" 
