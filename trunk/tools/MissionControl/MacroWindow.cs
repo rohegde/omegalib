@@ -79,5 +79,12 @@ namespace MissionControl
             Connection conn = MainWindow.Instance.Connection;
             conn.SendCommand(myScriptBox.Text);
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        private void myScriptBox_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
+        {
+            Macro macro = (Macro)myMacroList.SelectedItem;
+            macro.Script = myScriptBox.Text;
+        }
     }
 }
