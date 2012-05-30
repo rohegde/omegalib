@@ -1,0 +1,13 @@
+D:\Workspace\omegalib\trunk\tools\MissionControl\bin\Debug\MissionControl.exe
+D:\Workspace\omegalib\trunk\tools\MissionControl\bin\Debug\MissionControl.pdb
+D:\Workspace\omegalib\trunk\tools\MissionControl\bin\Debug\FastColoredTextBox.dll
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.Properties.Resources.resources
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.exe
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.pdb
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.ConnectWindow.resources
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.MacroWindow.resources
+D:\Workspace\omegalib\trunk\tools\MissionControl\bin\Debug\MissionControl.exe.config
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.MainWindow.resources
