@@ -95,6 +95,7 @@
             this.myScriptBox.ShowLineNumbers = false;
             this.myScriptBox.Size = new System.Drawing.Size(248, 240);
             this.myScriptBox.TabIndex = 4;
+            this.myScriptBox.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.myScriptBox_TextChanged);
             // 
             // mySaveButton
             // 
