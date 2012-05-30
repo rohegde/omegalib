@@ -77,7 +77,17 @@ namespace MissionControl
         private void myRunButton_Click(object sender, EventArgs e)
         {
             Connection conn = MainWindow.Instance.Connection;
-            conn.SendCommand(myScriptBox.Text);
+            string script = myScriptBox.Text;
+
+            if(script.StartsWith("%%"))
+            {
+                ScriptControlWindow scw = new ScriptControlWindow(script);
+                scw.Show();
+            }
+            else
+            {
+                conn.SendCommand(myScriptBox.Text);
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////

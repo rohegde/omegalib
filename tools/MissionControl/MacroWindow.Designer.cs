@@ -64,7 +64,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.myShortcutBox.Location = new System.Drawing.Point(148, 30);
             this.myShortcutBox.Name = "myShortcutBox";
-            this.myShortcutBox.Size = new System.Drawing.Size(249, 22);
+            this.myShortcutBox.Size = new System.Drawing.Size(403, 22);
             this.myShortcutBox.TabIndex = 2;
             this.myShortcutBox.TextChanged += new System.EventHandler(this.myShortcutBox_TextChanged);
             // 
@@ -93,7 +93,7 @@
             this.myScriptBox.Paddings = new System.Windows.Forms.Padding(0);
             this.myScriptBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.myScriptBox.ShowLineNumbers = false;
-            this.myScriptBox.Size = new System.Drawing.Size(248, 240);
+            this.myScriptBox.Size = new System.Drawing.Size(402, 269);
             this.myScriptBox.TabIndex = 4;
             this.myScriptBox.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.myScriptBox_TextChanged);
             // 
@@ -122,9 +122,9 @@
             // myRunButton
             // 
             this.myRunButton.Enabled = false;
-            this.myRunButton.Location = new System.Drawing.Point(149, 341);
+            this.myRunButton.Location = new System.Drawing.Point(403, 370);
             this.myRunButton.Name = "myRunButton";
-            this.myRunButton.Size = new System.Drawing.Size(248, 23);
+            this.myRunButton.Size = new System.Drawing.Size(149, 23);
             this.myRunButton.TabIndex = 7;
             this.myRunButton.Text = "Run macro";
             this.myRunButton.UseVisualStyleBackColor = true;
@@ -135,7 +135,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(409, 405);
+            this.ClientSize = new System.Drawing.Size(563, 405);
             this.Controls.Add(this.myRunButton);
             this.Controls.Add(this.myDeleteButton);
             this.Controls.Add(this.mySaveButton);
