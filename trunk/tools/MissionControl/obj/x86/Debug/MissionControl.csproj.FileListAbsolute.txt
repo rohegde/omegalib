@@ -11,3 +11,4 @@ D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.Co
 D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.MacroWindow.resources
 D:\Workspace\omegalib\trunk\tools\MissionControl\bin\Debug\MissionControl.exe.config
 D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.MainWindow.resources
+D:\Workspace\omegalib\trunk\tools\MissionControl\obj\x86\Debug\MissionControl.ScriptControlWindow.resources

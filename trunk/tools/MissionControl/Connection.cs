@@ -34,7 +34,7 @@ namespace MissionControl
         public void Poll()
         {
             // See if some data is available.
-            if(myClient.Available != 0)
+            while(myClient.Available != 0)
             {
                 // Read message header.
                 myClient.GetStream().Read(myBuffer, 0, 4);
@@ -57,8 +57,12 @@ namespace MissionControl
                 if(header == "smsg")
                 {
                     String message = Encoding.UTF8.GetString(myBuffer, 0, size);
-                    message += System.Environment.NewLine;
-                    MainWindow.Instance.PrintMessage(message);
+                    // Ignore messages containing only a newline)
+                    if(message != "\n")
+                    {
+                        message += System.Environment.NewLine;
+                        MainWindow.Instance.PrintMessage(message);
+                    }
                 }
             }
         }
@@ -68,12 +72,19 @@ namespace MissionControl
         {
             if(myClient != null && myClient.Connected)
             {
-                byte[] header = Encoding.UTF8.GetBytes("scmd");
-                myClient.GetStream().Write(header, 0, 4);
-                byte[] cmdBytes = Encoding.UTF8.GetBytes(cmd);
-                byte[] cmdLengthBytes = BitConverter.GetBytes(cmdBytes.Length);
-                myClient.GetStream().Write(cmdLengthBytes, 0, cmdLengthBytes.Length);
-                myClient.GetStream().Write(cmdBytes, 0, cmdBytes.Length);
+                try
+                {
+                    byte[] header = Encoding.UTF8.GetBytes("scmd");
+                    myClient.GetStream().Write(header, 0, 4);
+                    byte[] cmdBytes = Encoding.UTF8.GetBytes(cmd);
+                    byte[] cmdLengthBytes = BitConverter.GetBytes(cmdBytes.Length);
+                    myClient.GetStream().Write(cmdLengthBytes, 0, cmdLengthBytes.Length);
+                    myClient.GetStream().Write(cmdBytes, 0, cmdBytes.Length);
+                }
+                catch(System.IO.IOException e)
+                {
+                    MainWindow.Instance.PrintMessage("Connection closed.");
+                }
             }
         }
 
