@@ -56,7 +56,9 @@ namespace omega
 
 		void Write(const char* string)
 		{
+			ologaddnewline(false);
 			omsg(string);
+			ologaddnewline(true);
 		}
 
 		String Read()
