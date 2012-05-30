@@ -98,7 +98,8 @@ int Entity::getCurrentModelIndex()
 SceneManager::SceneManager():
 	myOsg(NULL),
 	myShadowedScene(NULL),
-	mySoftShadowMap(NULL)
+	mySoftShadowMap(NULL),
+	myShadowMapQuality(3)
 {
 	mysInstance = this;
 	myOsg = new OsgModule();
@@ -116,10 +117,13 @@ void SceneManager::loadConfiguration()
 	if(shadowMode == "noshadows") myShadowMode = ShadowsDisabled;
 	else if(shadowMode == "softshadows") myShadowMode = ShadowsSoft;
 
+	myShadowMapQuality = Config::getIntValue("shadowQuality", s, myShadowMapQuality);
+
 	mySceneFilename = Config::getStringValue("scene", s, "");
 
 	omsg("SceneManager configuration loaded");
 	ofmsg("::    Shadow mode: %1%", %shadowMode);
+	ofmsg(":: Shadow quality: %1%", %myShadowMapQuality);
 	ofmsg("::  Default scene: %1%", %mySceneFilename);
 
 }
@@ -226,6 +230,8 @@ void SceneManager::updateLights()
 		if(mySoftShadowMap != NULL)
 		{
 			mySoftShadowMap->setLight(myMainLight->osgLight);
+			mySoftShadowMap->setSoftnessWidth(myMainLight->softShadowWidth);
+			mySoftShadowMap->setJitteringScale(myMainLight->softShadowJitter);
 		}
 
 		// Set ambient light uniform.
@@ -672,17 +678,30 @@ void SceneManager::initShading()
 
 	if(myShadingEnabled)
 	{
+		// compute the shadow map resolution. (trivial method: use shadow map quality index to
+		// compute the size of a square, power-of-two texture)
+		// We assume shadow map quality index is in the range [1, 10]
+		// Shadow map size is in the range [16, 16384]
+		int smHeight = 1 << (4 + myShadowMapQuality);
+		int smWidth = smHeight;
+
+		ofmsg("SceneManager::initShading: Shadow map size = (%1%x%2%)", %smWidth %smHeight);
+
 		myShadowedScene = new osgShadow::ShadowedScene();
 		myShadowedScene->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
 		myShadowedScene->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
 
 		mySoftShadowMap = new osgShadow::SoftShadowMap;
-		mySoftShadowMap->setTextureSize(osg::Vec2s(2048, 2048));
+		mySoftShadowMap->setTextureSize(osg::Vec2s(smWidth, smHeight));
+		// Hardcoded ambient bias for shadow map. Shadowed areas receive zero light. 
+		// Unshadowed areas receive full light.
 		mySoftShadowMap->setAmbientBias(osg::Vec2(0.0f, 1.0f));
+		// Hardcoded texture unit arguments for shadow map.
 		mySoftShadowMap->setTextureUnit(4);
 		mySoftShadowMap->setJitterTextureUnit(5);
-		mySoftShadowMap->setSoftnessWidth(0.005);
-		mySoftShadowMap->setJitteringScale(32);
+
+		//mySoftShadowMap->setSoftnessWidth(0.005);
+		//mySoftShadowMap->setJitteringScale(32);
 
 		myShadowedScene->addChild(mySceneRoot);
 		myShadowedScene->setShadowTechnique(mySoftShadowMap);

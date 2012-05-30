@@ -43,7 +43,6 @@
 
 #include "omega/PortholeTabletService.h"
 
-
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
@@ -60,6 +59,8 @@ namespace cyclops {
 			ambient(Color::Gray),
 			constAttenuation(0), linearAttenuation(0), quadAttenuation(0),
 			enabled(false),
+			softShadowWidth(0.005f),
+			softShadowJitter(32),
 			osgLight(NULL), osgLightSource(NULL)
 			{}
 
@@ -70,6 +71,8 @@ namespace cyclops {
 		float constAttenuation;
 		float linearAttenuation;
 		float quadAttenuation;
+		float softShadowWidth;
+		int softShadowJitter;
 
 		// osg light stuff.
 		osg::Light* osgLight;
@@ -176,6 +179,11 @@ namespace cyclops {
 		osg::StateSet* loadMaterialPass(const String& filename);
 		void initShading();
 
+		//! Shadow map control
+		//@{
+		int getShadowMapQuality() { return myShadowMapQuality; }
+		//@}
+
 		void setShaderMacroToString(const String& macroName, const String& macroString);
 		void setShaderMacroToFile(const String& macroName, const String& path);
 
@@ -216,6 +224,7 @@ namespace cyclops {
 		Light* myMainLight;
 		osgShadow::ShadowedScene* myShadowedScene;
 		osgShadow::SoftShadowMap* mySoftShadowMap;
+		int myShadowMapQuality;
 		//bool frontView;
 		//float localZoom;
 		//float remoteZoom;
