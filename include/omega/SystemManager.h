@@ -36,6 +36,7 @@ namespace omega
 	class ApplicationBase;
 	class DisplaySystem;
 	class PythonInterpreter;
+	class MissionControlServer;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// The SystemManager class is the root object of the omegalib architecture.
@@ -102,6 +103,8 @@ namespace omega
 
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
+		MissionControlServer* getMissionControlServer() { return myMissionControlServer; }
+
 	private:
 		SystemManager();
 		~SystemManager();
@@ -129,6 +132,11 @@ namespace omega
 		bool myIsMaster;
 		String myHostname;
 		String myProgramName;
+
+		// Mission control server
+		bool myMissionControlEnabled;
+		int myMissionControlPort;
+		MissionControlServer* myMissionControlServer;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@
 #include "omega/ViewRayService.h"
 #include "omega/WandEmulationService.h"
 #include "omega/PythonInterpreter.h"
+#include "omega/MissionControl.h"
 
 #ifdef OMEGA_USE_DISPLAY_EQUALIZER
 	#include "omega/EqualizerDisplaySystem.h"
@@ -95,7 +96,10 @@ SystemManager::SystemManager():
 	myApplication(NULL),
 	myExitRequested(false),
 	myIsInitialized(false),
-	myIsMaster(true)
+	myIsMaster(true),
+	myMissionControlServer(NULL),
+	myMissionControlEnabled(false),
+	myMissionControlPort(22500)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();
@@ -166,6 +170,10 @@ void SystemManager::setup(Config* appcfg)
 			{
 				const Setting& sConfig = mySystemConfig->lookup("config");
 				myInterpreter->setup(sConfig);
+
+				// See if mission control is enabled.
+				myMissionControlEnabled = Config::getBoolValue("missionControlEnabled", sConfig, false);
+				myMissionControlPort = Config::getIntValue("missionControlPort", sConfig, myMissionControlPort);
 			}
 		}
 	}
@@ -258,6 +266,22 @@ void SystemManager::initialize()
 	myServiceManager->initialize();
 
 	myInterpreter->initialize("omegalib");
+
+	// Initialize mission control server if we are on the master node and mission control is enabled.
+	if(isMaster() && myMissionControlEnabled)
+	{
+		omsg("Initializing mission control server...");
+		myMissionControlServer = new MissionControlServer();
+		myMissionControlServer->setPort(myMissionControlPort);
+
+		// Register the mission control server as a log listener
+		ologaddlistener(myMissionControlServer);
+
+		// Register the mission control server. The service manager will take care of polling the server
+		// periodically to check for new connections.
+		myServiceManager->addService(myMissionControlServer);
+		myMissionControlServer->start();
+	}
 
 	myIsInitialized = true;
 }

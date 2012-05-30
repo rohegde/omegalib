@@ -50,6 +50,7 @@ SET( srcs
 		omega/ImageUtils.cpp
 		omega/KeyboardService.cpp
 		omega/MouseService.cpp
+		omega/MissionControl.cpp
 		omega/Node.cpp
         omega/Observer.cpp
 		omega/ObserverUpdateService.cpp
@@ -96,6 +97,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/IRendererCommand.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ISceneObject.h
 		${OmegaLib_SOURCE_DIR}/include/omega/KeyboardService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/MissionControl.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
