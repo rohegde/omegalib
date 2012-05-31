@@ -7,8 +7,6 @@
             <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
             <File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
             <File Id="3" Path="railsim/test/Station/station.obj" Size="40"/>
-		 <File Id="4" 
-Path="railsim/test/apc/Chasis.obj"/>
 		</Files>
 
 		<StaticObjects>
@@ -41,9 +39,7 @@ Path="railsim/test/apc/Chasis.obj"/>
                 
 				<!-- This is the frame -->
                 <Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
-			
-			<Entity FileIndex="4" Id="3" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
-			
+				
                
             </Entities>
              <Primitives>
