@@ -226,6 +226,18 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 
 	Py_InitModule(name, methods);
 
+	PyMethodDef* cur = methods;
+	while(cur->ml_name != NULL)
+	{
+		CommandHelpEntry* help = new CommandHelpEntry();
+		String syntax = StringUtils::split(cur->ml_doc, "\n")[0];
+		help->syntax = syntax;
+		help->info = cur->ml_doc;
+
+		cur++;
+		myHelpData.push_back(help);
+	}
+
 #ifdef OMEGA_OS_LINUX
 	PyMethodDef* cur = methods;
 	while(cur->ml_name != NULL)
@@ -384,6 +396,24 @@ void PythonInterpreter::handleEvent(const Event& evt)
 {
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+String PythonInterpreter::getHelpString(const String& filter)
+{
+	String result = "";
+	foreach(CommandHelpEntry* item, myHelpData)
+	{
+		if(filter == "" || StringUtils::startsWith(item->syntax, filter))
+		{
+			result.append(item->syntax);
+			result.append("|");
+			result.append(item->info);
+			result.append("|");
+		}
+	}
+	return result;
+}
+
+
 #else
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -439,4 +469,8 @@ void PythonInterpreter::updateSharedData(SharedIStream& in) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::queueInteractiveCommand(const String& command) {}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+String PythonInterpreter::getHelpString(const String& filter) { return ""; }
+
 #endif

@@ -188,7 +188,85 @@ PyObject* lightGetPosition(PyObject* self, PyObject* args)
 	Light* l = SceneManager::instance()->getLight(id);
 	if(l != NULL)
 	{
-		return Py_BuildValue("(fff)", l->position[0], l->position[1], l->position[2]);
+		return Py_BuildValue("fff", l->position[0], l->position[1], l->position[2]);
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* animationCount(PyObject* self, PyObject* args)
+{
+	int id;
+	PyArg_ParseTuple(args, "i", &id);
+
+	Entity* e = SceneManager::instance()->findEntity(id);
+	if(e != NULL)
+	{
+		return Py_BuildValue("i", e->getNumAnimations());
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* animationPlay(PyObject* self, PyObject* args)
+{
+	int id, animationId;
+	PyArg_ParseTuple(args, "ii", &id, &animationId);
+
+	Entity* e = SceneManager::instance()->findEntity(id);
+	if(e != NULL)
+	{
+		e->playAnimation(animationId);
+		Py_INCREF(Py_None);
+		return Py_None;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* animationLoop(PyObject* self, PyObject* args)
+{
+	int id, animationId;
+	PyArg_ParseTuple(args, "i", &id, &animationId);
+
+	Entity* e = SceneManager::instance()->findEntity(id);
+	if(e != NULL)
+	{
+		e->loopAnimation(animationId);
+		Py_INCREF(Py_None);
+		return Py_None;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* animationStop(PyObject* self, PyObject* args)
+{
+	int id, animationId;
+	PyArg_ParseTuple(args, "ii", &id, &animationId);
+
+	Entity* e = SceneManager::instance()->findEntity(id);
+	if(e != NULL)
+	{
+		e->pauseAnimation(animationId);
+		Py_INCREF(Py_None);
+		return Py_None;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* animationStopAll(PyObject* self, PyObject* args)
+{
+	int id;
+	PyArg_ParseTuple(args, "i", &id);
+
+	Entity* e = SceneManager::instance()->findEntity(id);
+	if(e != NULL)
+	{
+		e->stopAllAnimations();
+		Py_INCREF(Py_None);
+		return Py_None;
 	}
 	return NULL;
 }
@@ -197,7 +275,7 @@ PyObject* lightGetPosition(PyObject* self, PyObject* args)
 static PyMethodDef cyMethods[] = 
 {
     {"moduleEnableCyclops", moduleEnableCyclops, METH_VARARGS, 
-		"moduleEnableVtk()\n" 
+		"moduleEnableCyclops()\n" 
 		"Enables cyclops scene manager support."},
 
     {"sceneLoad", sceneLoad, METH_VARARGS, 
@@ -231,6 +309,26 @@ static PyMethodDef cyMethods[] =
     {"lightDisable", lightDisable, METH_VARARGS, 
 		"lightDisable(id)\n" 
 		"Disable the specified light."},
+
+	{"animationCount", animationCount, METH_VARARGS, 
+		"animationCount(entityId)\n" 
+		"Gets the number of animations supported by the specified entity."},
+
+    {"animationPlay", animationPlay, METH_VARARGS, 
+		"animationPlay(entityId, animationId)\n" 
+		"Plays the specified animation for the specified entity."},
+
+    {"animationLoop", animationLoop, METH_VARARGS, 
+		"animationLoop(entityId, animationId)\n" 
+		"Loops the specified animation for the specified entity."},
+
+    {"animationStop", animationStop, METH_VARARGS, 
+		"animationStop(entityId, animationId)\n" 
+		"Stops the specified animation for the specified entity."},
+
+    {"animationStopAll", animationStopAll, METH_VARARGS, 
+		"animationStopAll(entityId)\n" 
+		"Stops all animations for the specified entity."},
 
     {"entitySetPosition", entitySetPosition, METH_VARARGS, 
 		"sceneLoad(path)\n" 
