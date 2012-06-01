@@ -53,8 +53,6 @@ namespace MissionControl
                 m.Script = Properties.Settings.Default.MacroScripts[i++];
                 myMacros.Add(m);
             }
-
-            myMacroWindow = new MacroWindow();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +70,25 @@ namespace MissionControl
             get
             {
                 return myConnection;
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        public List<string> AutocompletionList
+        {
+            get
+            {
+                return myAutocompletionList;
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        public void AddAutocompletionItem(string item)
+        {
+            if(!myAutocompletionList.Contains(item))
+            {
+                myAutocompletionList.Add(item);
+                myPromptPopupMenu.Items.SetAutocompleteItems(myAutocompletionList);
             }
         }
 
@@ -116,6 +133,10 @@ namespace MissionControl
         {
             ConnectWindow connectWindow = new ConnectWindow(myConnection);
             connectWindow.ShowDialog(this);
+            if(myConnection.Connected)
+            {
+                myConnection.SendMessage("help");
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -148,6 +169,10 @@ namespace MissionControl
         ///////////////////////////////////////////////////////////////////////////////////////////
         private void macroEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(myMacroWindow == null)
+            {
+                myMacroWindow = new MacroWindow();
+            }
             if(!myMacroWindow.Visible)
             {
                 myMacroWindow.Show(this);
