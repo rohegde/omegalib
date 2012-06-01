@@ -28,6 +28,7 @@
 #include <osgDB/Archive>
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
+#include <osgAnimation/Animation>
 
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
@@ -41,8 +42,35 @@ SceneManager* SceneManager::mysInstance = NULL;
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+struct AnimationManagerFinder : public osg::NodeVisitor 
+{ 
+    osgAnimation::BasicAnimationManager* am; 
+    
+    AnimationManagerFinder(): am(NULL) {setTraversalMode(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN); } 
+    
+    void apply(osg::Node& node) { 
+    
+        if (am != NULL) 
+            return; 
+    
+        if (node.getUpdateCallback()) {        
+            am = dynamic_cast<osgAnimation::BasicAnimationManager*>(node.getUpdateCallback()); 
+            return; 
+        } 
+        
+        traverse(node); 
+    } 
+}; 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
-mySceneManager(mng), myAsset(asset), myId(id), myOsgSwitch(NULL), myCurrentModelIndex(0)
+	mySceneManager(mng), 
+	myAsset(asset), 
+	myId(id), 
+	myOsgSwitch(NULL), 
+	myCurrentModelIndex(0),
+	myAnimationManager(NULL),
+	myAnimations(NULL)
 {
 	ServerEngine* engine = mng->getEngine();
 
@@ -71,6 +99,17 @@ mySceneManager(mng), myAsset(asset), myId(id), myOsgSwitch(NULL), myCurrentModel
 		myOsgNode = oso->getTransformedNode();
 	}
 
+	AnimationManagerFinder amf;
+	myOsgNode->accept(amf);
+	if(amf.am != NULL)
+	{
+		myAnimationManager = amf.am;
+		myAnimations = &myAnimationManager->getAnimationList();
+		ofmsg("Entity id %1%: found %2% animations.", %myId %getNumAnimations());
+
+		loopAnimation(0);
+	}
+
 	mySceneNode->addObject(oso);
 }
 
@@ -92,6 +131,72 @@ int Entity::getCurrentModelIndex()
 		return myCurrentModelIndex;
 	}
 	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool Entity::hasAnimations()
+{
+	return myAnimationManager != NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int Entity::getNumAnimations()
+{
+	if(hasAnimations())
+	{
+		return myAnimations->size();
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::playAnimation(int id)
+{
+	if(hasAnimations())
+	{
+		if(id < getNumAnimations())
+		{
+			osgAnimation::Animation* anim = myAnimations->at(id);
+			anim->setPlayMode(osgAnimation::Animation::ONCE);
+			myAnimationManager->playAnimation(anim);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::loopAnimation(int id)
+{
+	if(hasAnimations())
+	{
+		if(id < getNumAnimations())
+		{
+			osgAnimation::Animation* anim = myAnimations->at(id);
+			anim->setPlayMode(osgAnimation::Animation::LOOP);
+			myAnimationManager->playAnimation(anim);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::pauseAnimation(int id)
+{
+	if(hasAnimations())
+	{
+		if(id < getNumAnimations())
+		{
+			osgAnimation::Animation* anim = myAnimations->at(id);
+			myAnimationManager->stopAnimation(anim);
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::stopAllAnimations()
+{
+	if(hasAnimations())
+	{
+		myAnimationManager->stopAll();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

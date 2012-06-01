@@ -63,6 +63,17 @@ void MissionControlConnection::handleData()
 			interp->queueInteractiveCommand(command);
 		}
 	}
+	if(!strncmp(header, "help", 4)) 
+	{
+		// Request for help string.
+		String command(myBuffer);
+		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		if(interp != NULL)
+		{
+			String helpString = interp->getHelpString("");
+			sendMessage("help", (void*)helpString.c_str(), helpString.size());
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

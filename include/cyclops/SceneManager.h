@@ -35,6 +35,7 @@
 #include <osg/Switch>
 #include <osgShadow/ShadowedScene>
 #include <osgShadow/SoftShadowMap>
+#include <osgAnimation/BasicAnimationManager>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -109,6 +110,16 @@ namespace cyclops {
 		void setTag(const String& value) { myTag = value; }
 		const String& getTag() { return myTag; } 
 
+		//! Animation support
+		//@{
+		bool hasAnimations();
+		int getNumAnimations();
+		void playAnimation(int id);
+		void loopAnimation(int id);
+		void pauseAnimation(int id);
+		void stopAllAnimations();
+		//@}
+
 	private:
 		SceneManager* mySceneManager;
 
@@ -120,6 +131,10 @@ namespace cyclops {
 		ModelAsset* myAsset;
 		int myId;
 		String myTag;
+
+		// osg animation stuff
+		osgAnimation::BasicAnimationManager* myAnimationManager;
+		const osgAnimation::AnimationList* myAnimations;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

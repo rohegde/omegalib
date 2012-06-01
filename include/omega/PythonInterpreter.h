@@ -42,6 +42,13 @@ class PythonInteractiveThread;
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct CommandHelpEntry
+	{
+		String syntax;
+		String info;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API PythonInterpreter: public SharedObject
 	{
 		friend struct PythonInterpreterWrapper;
@@ -77,6 +84,8 @@ namespace omega
 		virtual void commitSharedData(SharedOStream& out);
 		virtual void updateSharedData(SharedIStream& in);
 
+		String getHelpString(const String& filter);
+
 	protected:
 		bool myEnabled;
 		bool myShellEnabled;
@@ -91,6 +100,8 @@ namespace omega
 		List<void*> myUpdateCallbacks;
 		List<void*> myPointerEventCallbacks;
 		//char* myExecutablePath;
+
+		List<CommandHelpEntry*> myHelpData;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

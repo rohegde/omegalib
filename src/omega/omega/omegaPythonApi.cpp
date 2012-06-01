@@ -191,7 +191,7 @@ PyObject* cameraGetPosition(PyObject* self, PyObject* args)
 	if(cam != NULL)
 	{
 		const Vector3f& pos = cam->getPosition();
-		return Py_BuildValue("(fff)", pos[0], pos[1], pos[2]);
+		return Py_BuildValue("fff", pos[0], pos[1], pos[2]);
 	}
     Py_INCREF(Py_None);
     return Py_None;
@@ -362,7 +362,7 @@ PyObject* nodeGetScale(PyObject* self, PyObject* args)
 	{
 		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
 		const Vector3f& pos = node->getScale();
-		return Py_BuildValue("(fff)", pos[0], pos[1], pos[2]);
+		return Py_BuildValue("fff", pos[0], pos[1], pos[2]);
 	}
 	return NULL;
 }
@@ -372,7 +372,7 @@ PyObject* nodeSetScale(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	Vector3f pos;
-	PyArg_ParseTuple(args, "O(fff)", &pyNode, &pos[0], &pos[1], &pos[2]);
+	PyArg_ParseTuple(args, "Offf", &pyNode, &pos[0], &pos[1], &pos[2]);
 
 	if(pyNode != NULL)
 	{
@@ -455,40 +455,113 @@ PyObject* nodeRoll(PyObject* self, PyObject* args)
 static PyMethodDef omegaMethods[] = 
 {
 	// Camera API
-    {"cameraGetDefault", cameraGetDefault, METH_VARARGS, "NO INFO"},
-    {"cameraSetPosition", cameraSetPosition, METH_VARARGS, "NO INFO"},
-    {"cameraGetPosition", cameraGetPosition, METH_VARARGS, "NO INFO"},
-    {"cameraSetOrientation", cameraSetOrientation, METH_VARARGS, "NO INFO"},
-    {"cameraEnableNavigation", cameraEnableNavigation, METH_VARARGS, "NO INFO"},
-    {"cameraDisableNavigation", cameraDisableNavigation, METH_VARARGS, "NO INFO"},
+    {"cameraGetDefault", cameraGetDefault, METH_VARARGS,
+		"cameraGetDefault()\n"
+		"Returns a reference to the main camera."},
+
+    {"cameraSetPosition", cameraSetPosition, METH_VARARGS,
+		"cameraSetPosition(camerRef, x, y, z)\n"
+		"Sets the camera position."},
+
+    {"cameraGetPosition", cameraGetPosition, METH_VARARGS,
+		"cameraGetPosition(cameraRef)\n"
+		"Gets the camera position."},
+
+    {"cameraSetOrientation", cameraSetOrientation, METH_VARARGS, 
+		"cameraSetOrientation(cameraRef, yaw, pitch, roll)\n"
+		"Sets the camera orientation."},
+
+    {"cameraEnableNavigation", cameraEnableNavigation, METH_VARARGS,
+		"cameraEnableNavigation(cameraRef)\n"
+		"Enables camera navigation for the specified camera."},
+
+    {"cameraDisableNavigation", cameraDisableNavigation, METH_VARARGS,
+		"cameraDisableNavigation(cameraRef)\n"
+		"Disables camera navigation for the specified camera."},
 
 	// Node API
     {"nodeCreate", nodeCreate, METH_VARARGS, 
 		"nodeCreate(parent)\n"
 		"creates a new scene node and sets its parent."},
-    {"nodeGetRoot", nodeGetRoot, METH_VARARGS, "NO INFO"},
-    {"nodeGetName", nodeGetName, METH_VARARGS, "NO INFO"},
-    {"nodeNumChildren", nodeGetNumChildren, METH_VARARGS, "NO INFO"},
-    {"nodeGetParent", nodeGetParent, METH_VARARGS, "NO INFO"},
-    {"nodeGetChildByName", nodeGetChildByName, METH_VARARGS, "NO INFO"},
-    {"nodeGetChildByIndex", nodeGetChildByIndex, METH_VARARGS, "NO INFO"},
-    {"nodeGetPosition", nodeGetPosition, METH_VARARGS, "NO INFO"},
-    {"nodeSetPosition", nodeSetPosition, METH_VARARGS, "NO INFO"},
-    {"nodeGetScale", nodeGetScale, METH_VARARGS, "NO INFO"},
-    {"nodeSetScale", nodeSetScale, METH_VARARGS, "NO INFO"},
-    {"nodeResetOrientation", nodeResetOrientation, METH_VARARGS, "NO INFO"},
-    {"nodeYaw", nodeYaw, METH_VARARGS, "NO INFO"},
-    {"nodePitch", nodePitch, METH_VARARGS, "NO INFO"},
-    {"nodeRoll", nodeRoll, METH_VARARGS, "NO INFO"},
+    
+	{"nodeGetRoot", nodeGetRoot, METH_VARARGS, 
+		"nodeGetRoot()\n"
+		"Return the scene root node"},
+
+    {"nodeGetName", nodeGetName, METH_VARARGS, 
+		"nodeGetName(nodeRef)\n"
+		"Gets the node name"},
+
+    {"nodeNumChildren", nodeGetNumChildren, METH_VARARGS, 
+		"nodeNumChildren(nodeRef)\n"
+		"Gets the node number of children"},
+
+    {"nodeGetParent", nodeGetParent, METH_VARARGS, 
+		"nodeGetParent(nodeRef)\n"
+		"Gets the node parent"},
+
+    {"nodeGetChildByName", nodeGetChildByName, METH_VARARGS, 
+		"nodeGetChildByName(nodeRef, name)\n"
+		"Finds a child of the specified node by name"},
+
+    {"nodeGetChildByIndex", nodeGetChildByIndex, METH_VARARGS, 
+		"nodeGetChildByIndex(nodeRef, index)\n"
+		"Finds a child of the specified node by index"},
+
+    {"nodeGetPosition", nodeGetPosition, METH_VARARGS, 
+		"nodeGetPosition(nodeRef)\n"
+		"Gets the node position"},
+
+    {"nodeSetPosition", nodeSetPosition, METH_VARARGS, 
+		"nodeSetPosition(nodeRef, x, y, z)\n"
+		"Sets the node position"},
+
+    {"nodeGetScale", nodeGetScale, METH_VARARGS, 
+		"nodeGetScale(nodeRef)\n"
+		"Gets the node scale"},
+
+    {"nodeSetScale", nodeSetScale, METH_VARARGS, 
+		"nodeSetScale(nodeRef, x, y, z)\n"
+		"Sets the node scale"},
+
+    {"nodeResetOrientation", nodeResetOrientation, METH_VARARGS,
+		"nodeResetOrientation(nodeRef)\n"
+		"Resets the node orientation"},
+
+    {"nodeYaw", nodeYaw, METH_VARARGS, 
+		"nodeYaw(nodeRef, yaw)\n"
+		"Sets the node yaw"},
+
+    {"nodePitch", nodePitch, METH_VARARGS,
+		"nodePitch(nodeRef, pitch)\n"
+		"Sets the node position"},
+
+    {"nodeRoll", nodeRoll, METH_VARARGS, 
+		"nodeRoll(nodeRef, roll)\n"
+		"Sets the node roll"},
 
 	// Renderer API
-    {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, "NO INFO"},
+    {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
+		"rendererQueueCommand(funcRef)\n"
+		"Queues a script fuction to be executed once on all running rendering threads"},
 
 	// Base omegalib API
-	{"oexit", omegaExit, METH_VARARGS, "NO INFO"},
-    {"ofindFile", omegaFindFile, METH_VARARGS, "NO INFO"},
-    {"orun", omegaRun, METH_VARARGS, "NO INFO"},
-    {"ofuncUpdate", omegaUpdateCallback, METH_VARARGS, "NO INFO"},
+	{"oexit", omegaExit, METH_VARARGS, 
+		"oexit()\n"
+		"Terminates the current omegalib program"},
+
+    {"ofindFile", omegaFindFile, METH_VARARGS, 
+		"ofindFile(name)\n"
+		"Searches for a file in the application data filesystems and returns a full path if found"},
+
+    {"orun", omegaRun, METH_VARARGS, 
+		"ofindFile(fileName)\n"
+		"Runs an external script"},
+
+    {"ofuncUpdate", omegaUpdateCallback, METH_VARARGS, 
+		"ofuncUpdate(funcRef)\n"
+		"Registers a script function to be called before each frame is rendered"},
+
     {NULL, NULL, 0, NULL}
 };
 
