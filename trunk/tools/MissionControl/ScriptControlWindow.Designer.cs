@@ -34,6 +34,8 @@
             // 
             // myLayout
             // 
+            this.myLayout.AutoSize = true;
+            this.myLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.myLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.myLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.myLayout.Location = new System.Drawing.Point(0, 0);
@@ -45,12 +47,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(423, 372);
             this.Controls.Add(this.myLayout);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ScriptControlWindow";
             this.Text = "ScriptControlWindow";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

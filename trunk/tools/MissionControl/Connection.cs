@@ -64,6 +64,15 @@ namespace MissionControl
                         MainWindow.Instance.PrintMessage(message);
                     }
                 }
+                if(header == "help")
+                {
+                    String message = Encoding.UTF8.GetString(myBuffer, 0, size);
+                    string[] items = message.Split('|');
+                    for(int i = 0; i < items.Length; i += 2)
+                    {
+                        MainWindow.Instance.AddAutocompletionItem(items[i]);
+                    }
+                }
             }
         }
 
@@ -80,6 +89,27 @@ namespace MissionControl
                     byte[] cmdLengthBytes = BitConverter.GetBytes(cmdBytes.Length);
                     myClient.GetStream().Write(cmdLengthBytes, 0, cmdLengthBytes.Length);
                     myClient.GetStream().Write(cmdBytes, 0, cmdBytes.Length);
+                }
+                catch(System.IO.IOException e)
+                {
+                    MainWindow.Instance.PrintMessage("Connection closed.");
+                }
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        public void SendMessage(string headerString)
+        {
+            if(myClient != null && myClient.Connected)
+            {
+                try
+                {
+                    byte[] header = Encoding.UTF8.GetBytes(headerString);
+                    myClient.GetStream().Write(header, 0, 4);
+                    //byte[] cmdBytes = Encoding.UTF8.GetBytes(cmd);
+                    byte[] cmdLengthBytes = BitConverter.GetBytes(0);
+                    myClient.GetStream().Write(cmdLengthBytes, 0, cmdLengthBytes.Length);
+                    //myClient.GetStream().Write(cmdBytes, 0, cmdBytes.Length);
                 }
                 catch(System.IO.IOException e)
                 {

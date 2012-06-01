@@ -45,7 +45,7 @@
             this.myMacroList.ItemHeight = 16;
             this.myMacroList.Location = new System.Drawing.Point(0, 0);
             this.myMacroList.Name = "myMacroList";
-            this.myMacroList.Size = new System.Drawing.Size(139, 405);
+            this.myMacroList.Size = new System.Drawing.Size(139, 554);
             this.myMacroList.TabIndex = 0;
             this.myMacroList.SelectedIndexChanged += new System.EventHandler(this.myMacroList_SelectedIndexChanged);
             // 
@@ -64,7 +64,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.myShortcutBox.Location = new System.Drawing.Point(148, 30);
             this.myShortcutBox.Name = "myShortcutBox";
-            this.myShortcutBox.Size = new System.Drawing.Size(403, 22);
+            this.myShortcutBox.Size = new System.Drawing.Size(698, 22);
             this.myShortcutBox.TabIndex = 2;
             this.myShortcutBox.TextChanged += new System.EventHandler(this.myShortcutBox_TextChanged);
             // 
@@ -80,7 +80,8 @@
             // myScriptBox
             // 
             this.myScriptBox.AllowDrop = true;
-            this.myScriptBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.myScriptBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.myScriptBox.AutoScrollMinSize = new System.Drawing.Size(2, 17);
             this.myScriptBox.BackBrush = null;
@@ -88,19 +89,20 @@
             this.myScriptBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.myScriptBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.myScriptBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.myScriptBox.Location = new System.Drawing.Point(149, 95);
+            this.myScriptBox.Location = new System.Drawing.Point(149, 96);
             this.myScriptBox.Name = "myScriptBox";
             this.myScriptBox.Paddings = new System.Windows.Forms.Padding(0);
             this.myScriptBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.myScriptBox.ShowLineNumbers = false;
-            this.myScriptBox.Size = new System.Drawing.Size(402, 269);
+            this.myScriptBox.Size = new System.Drawing.Size(697, 423);
             this.myScriptBox.TabIndex = 4;
             this.myScriptBox.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.myScriptBox_TextChanged);
             // 
             // mySaveButton
             // 
+            this.mySaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mySaveButton.Enabled = false;
-            this.mySaveButton.Location = new System.Drawing.Point(149, 370);
+            this.mySaveButton.Location = new System.Drawing.Point(445, 525);
             this.mySaveButton.Name = "mySaveButton";
             this.mySaveButton.Size = new System.Drawing.Size(114, 23);
             this.mySaveButton.TabIndex = 5;
@@ -110,8 +112,9 @@
             // 
             // myDeleteButton
             // 
+            this.myDeleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.myDeleteButton.Enabled = false;
-            this.myDeleteButton.Location = new System.Drawing.Point(270, 370);
+            this.myDeleteButton.Location = new System.Drawing.Point(566, 525);
             this.myDeleteButton.Name = "myDeleteButton";
             this.myDeleteButton.Size = new System.Drawing.Size(127, 23);
             this.myDeleteButton.TabIndex = 6;
@@ -121,8 +124,9 @@
             // 
             // myRunButton
             // 
+            this.myRunButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.myRunButton.Enabled = false;
-            this.myRunButton.Location = new System.Drawing.Point(403, 370);
+            this.myRunButton.Location = new System.Drawing.Point(699, 525);
             this.myRunButton.Name = "myRunButton";
             this.myRunButton.Size = new System.Drawing.Size(149, 23);
             this.myRunButton.TabIndex = 7;
@@ -135,7 +139,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(563, 405);
+            this.ClientSize = new System.Drawing.Size(858, 554);
             this.Controls.Add(this.myRunButton);
             this.Controls.Add(this.myDeleteButton);
             this.Controls.Add(this.mySaveButton);
@@ -144,7 +148,6 @@
             this.Controls.Add(this.myShortcutBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.myMacroList);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MacroWindow";
             this.Text = "MacroWindow";
             this.Load += new System.EventHandler(this.MacroWindow_Load);

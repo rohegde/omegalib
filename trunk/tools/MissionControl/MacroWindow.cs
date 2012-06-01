@@ -6,15 +6,42 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FastColoredTextBoxNS;
 
 namespace MissionControl
 {
     public partial class MacroWindow: Form
     {
+        TextStyle preprocessorStyle = new TextStyle(Brushes.DarkOrange, null, FontStyle.Bold);
+        TextStyle keywordStyle = new TextStyle(Brushes.DarkBlue, null, FontStyle.Bold);
+        string keywordList;
+        string preprocessorList;
+
         ///////////////////////////////////////////////////////////////////////////////////////////
         public MacroWindow()
         {
             InitializeComponent();
+
+            //create autocomplete popup menu
+            AutocompleteMenu popupMenu = new AutocompleteMenu(myScriptBox);
+            popupMenu.MinFragmentLength = 1;
+            //size of popupmenu
+            popupMenu.Items.MaximumSize = new System.Drawing.Size(300, 400);
+            popupMenu.Items.Width = 300;
+            popupMenu.Items.SetAutocompleteItems(MainWindow.Instance.AutocompletionList);
+
+
+            List<string> autocompletionList = MainWindow.Instance.AutocompletionList;
+            keywordList = "";
+            foreach(string item in autocompletionList)
+            {
+                string[] tokens = item.Split('(');
+                keywordList += tokens[0] + "|";
+            }
+            keywordList = keywordList.Trim('|');
+            keywordList = @"\b(" + keywordList + @")\b";
+
+            preprocessorList = @"(%%|%slider|%color|%button)";
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +122,11 @@ namespace MissionControl
         {
             Macro macro = (Macro)myMacroList.SelectedItem;
             macro.Script = myScriptBox.Text;
+
+            //clear old styles of chars
+            e.ChangedRange.ClearStyle(keywordStyle, preprocessorStyle);
+            e.ChangedRange.SetStyle(keywordStyle, keywordList, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            e.ChangedRange.SetStyle(preprocessorStyle, preprocessorList, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
     }
 }
