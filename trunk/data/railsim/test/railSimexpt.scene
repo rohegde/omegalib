@@ -7,7 +7,7 @@
             <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
             <File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
             <File Id="3" Path="railsim/test/Station/station.obj" Size="40"/>
-		 <File Id="4" Path="railsim/test/modeshapesimple/shape*.obj" Objcount="5"/>	
+		 <File Id="4" Path="railsim/test/modeshapesimple/shape*.fbx" Objcount="5"/>	
 		</Files>
 
 		<StaticObjects>
