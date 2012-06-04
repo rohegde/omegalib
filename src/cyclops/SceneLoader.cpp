@@ -170,6 +170,16 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 	while(xchild)
 	{
 		String filePath = xchild->Attribute("Path");
+		int objcount=1;
+		if(filePath.find("*")!=-1){
+			if(xchild->Attribute("Objcount") != NULL){
+				objcount = atoi(xchild->Attribute("Objcount"));
+			} else {
+			  ofwarn("object count not available for:  %1%", %filePath);
+			}	
+		}
+
+
 
 		// In the path, substitute ./ occurrences with the path of the xml scene file, so assets
 		// in the local directory can be correctly referenced.
@@ -179,8 +189,24 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		String extension;
 		StringUtils::splitFullFilename(myPath, filename, extension, path);
 		filePath = StringUtils::replaceAll(filePath, "./", path);
-
+		
 		int index = atoi(xchild->Attribute("Id"));
+		
+		ModelAsset* asset = new ModelAsset();
+				asset->id = index;
+				asset->filename = filename; /// changed filepath to filename (confirm from alassandro).
+				asset->numNodes = objcount;
+       
+
+		char orfp[100]; 
+		strcpy(orfp,filePath.c_str());
+
+		for(int iterator=1;iterator<=objcount;iterator++){
+
+		char buffer[10];
+		filePath = StringUtils::replaceAll(orfp, "*", itoa (iterator,buffer,10));
+
+		
 		ofmsg("Loading asset %1%", %filePath);
 
 		String assetPath;
@@ -223,12 +249,10 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 					node = pat;
 				}
 
-				ModelAsset* asset = new ModelAsset();
-				asset->id = index;
-				asset->filename = filePath;
 				asset->nodes.push_back(node);
-				asset->numNodes = 1;
-				mySceneManager->addAsset(asset, type);
+
+
+				
 
 				if(xchild->Attribute("Description") != NULL)
 				{
@@ -249,7 +273,13 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 			ofwarn("could not find file: %1%", %filePath);
 		}
 
+		}
+
+		mySceneManager->addAsset(asset, type);
+		
 		xchild = xchild->NextSiblingElement();
+		
+
 	}
 }
 
