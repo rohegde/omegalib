@@ -28,6 +28,7 @@
 #define __CY_SCENE_MANAGER__
 
 #include "cyclopsConfig.h"
+#include "SkyBox.h"
 
 #include <osg/Texture2D>
 #include <osg/Light>
@@ -93,6 +94,13 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct EntityEventCallbacks
+	{
+		String onAdd;
+		String onUpdate;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API Entity
 	{
 	public:
@@ -120,6 +128,8 @@ namespace cyclops {
 		void stopAllAnimations();
 		//@}
 
+		void setEventCallbacks(const EntityEventCallbacks& eec);
+
 	private:
 		SceneManager* mySceneManager;
 
@@ -135,6 +145,9 @@ namespace cyclops {
 		// osg animation stuff
 		osgAnimation::BasicAnimationManager* myAnimationManager;
 		const osgAnimation::AnimationList* myAnimations;
+
+		// Callbacks
+		EntityEventCallbacks myCallbacks;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,7 +186,8 @@ namespace cyclops {
 		void addNode(osg::Node* node);
 		void addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
 		void addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
-		void addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		Entity* addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		void createSkyBox(const String& cubeMapDir, const String& cubeMapExt);
 		//@}
 
 		//! Light management methods
@@ -233,6 +247,8 @@ namespace cyclops {
 		ShaderMacroDictionary myShaderMacros;
 
 		List<Entity*> myEntities;
+		
+		SkyBox* mySkyBox;
 
 		// Lights and shadows
 		Light myLights[MaxLights];

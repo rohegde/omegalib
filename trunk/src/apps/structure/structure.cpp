@@ -107,6 +107,8 @@ void StructureViewer::initialize()
 	// load it during initialization.
 	mySceneManager = new SceneManager();
 	ModuleServices::addModule(mySceneManager);
+
+	//mySceneManager->createSkyBox("cubemaps/grid", "png");
 	mySceneManager->doInitialize(getServer());
 
 	// Create the menu manager and a main menu.

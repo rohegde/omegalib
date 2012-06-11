@@ -45,10 +45,10 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     std::string ext = osgDB::getLowerCaseFileExtension(file);
     if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
 
-    std::string fileName = osgDB::findDataFile( file, options );
-    if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+    //std::string fileName = osgDB::findDataFile( file, options );
+    //if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
-	omega::ImageData* img = omega::ImageUtils::loadImage(file, true);
+	omega::ImageData* img = omega::ImageUtils::loadImage(file, false);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
 
     //unsigned char *imageData = NULL;

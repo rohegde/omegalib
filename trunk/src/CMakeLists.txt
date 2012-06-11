@@ -127,6 +127,7 @@ if(OMEGA_BUILD_VTK_LIB)
 	
 	add_subdirectory(omegaVtk)
 	add_subdirectory(apps/vtkhello)
+	add_subdirectory(apps/geoView)
 	add_subdirectory(apps/orun)
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(vtkScene) 

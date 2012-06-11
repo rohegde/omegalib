@@ -200,10 +200,21 @@ void Entity::stopAllAnimations()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Entity::setEventCallbacks(const EntityEventCallbacks& eec)
+{
+	//myCallbacks = eec;
+	//if(eec.onAdd != "")
+	//{
+	//	eec.onAdd = ostr(eec.onAdd, %myId);
+	//}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
 	myOsg(NULL),
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL),
+	mySkyBox(NULL),
 	myShadowMapQuality(3)
 {
 	mysInstance = this;
@@ -231,6 +242,7 @@ void SceneManager::loadConfiguration()
 	ofmsg(":: Shadow quality: %1%", %myShadowMapQuality);
 	ofmsg("::  Default scene: %1%", %mySceneFilename);
 
+	mySceneRoot = new osg::Group();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,8 +256,6 @@ void SceneManager::initialize()
 	if(!myOsg->isInitialized()) myOsg->initialize();
 
 	loadConfiguration();
-
-	mySceneRoot = new osg::Group();
 
 	myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
 
@@ -263,11 +273,28 @@ void SceneManager::initialize()
 	{
 		setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
 		setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
+		omsg("Soft shadow shaders enabled");
 	}
 	else
 	{
 		setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
 		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+		omsg("Soft shadow shaders disabled");
+	}
+
+	if(mySkyBox != NULL)
+	{
+		setShaderMacroToFile("use setupEnvMap", "cyclops/common/cubeEnvMap/setupEnvMap.vert");
+		setShaderMacroToFile("use computeEnvMap", "cyclops/common/cubeEnvMap/computeEnvMap.frag");
+		omsg("Environment cube map shaders enabled");
+		mySkyBox->initialize(mySceneRoot->getOrCreateStateSet());
+		mySceneRoot->addChild(mySkyBox->getNode());
+	}
+	else
+	{
+		setShaderMacroToFile("use setupEnvMap", "cyclops/common/noEnvMap/setupEnvMap.vert");
+		setShaderMacroToFile("use computeEnvMap", "cyclops/common/noEnvMap/computeEnvMap.frag");
+		omsg("Environment cube map shaders disabled");
 	}
 
 	setShaderMacroToFile("use setupStandardShading", "cyclops/common/standardShading/setupStandardShading.vert");
@@ -460,7 +487,7 @@ void SceneManager::addStaticObject(int assetId, const Vector3f& position, const 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
+Entity* SceneManager::addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
 {
 	ModelAsset* asset = getModelAsset(assetId);
 	if(asset == NULL)
@@ -478,7 +505,9 @@ void SceneManager::addEntity(int assetId, int entityId, const String& tag, const
 		e->getSceneNode()->roll(rotation[2] * Math::DegToRad);
 		e->getSceneNode()->setScale(scale);
 		myEntities.push_back(e);
+		return e;
 	}
+	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -857,3 +886,17 @@ Light* SceneManager::getLight(int id)
 	oferror("SceneManager::getLight: id > MaxLights (%1% > %2%)", %id %MaxLights);
 	return NULL;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapExt)
+{
+	if(mySkyBox == NULL)
+	{
+		mySkyBox = new SkyBox();
+		if(!mySkyBox->loadCubeMap(cubeMapDir, cubeMapExt))
+		{
+			ofwarn("SceneManager::createSkyBox: could not create skybox %1% (ext: %2%)", %cubeMapDir %cubeMapExt);
+		}
+	}
+}
+
