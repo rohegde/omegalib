@@ -77,7 +77,7 @@ protected:
 			mat->setAmbient(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(diffuseColor));
 			mat->setEmission(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
 			mat->setSpecular(osg::Material::FRONT_AND_BACK, COLOR_TO_OSG(Color::Black));
-			ss->setAttributeAndModes(mat, osg::StateAttribute::ON);
+			ss->setAttributeAndModes(mat, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		}
 
 		addPass(ss);
@@ -85,6 +85,14 @@ protected:
 
 	void define_passes_textured()
 	{
+		SceneManager* sm = SceneManager::instance();
+		osg::StateSet* ss = new osg::StateSet();
+		osg::Program* prog = NULL;
+		prog = sm->getProgram("colored", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
+
+		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+
+		addPass(ss);
 	}
 
 	void define_passes_bump()

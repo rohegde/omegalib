@@ -24,35 +24,19 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
-add_definitions( -D_CRT_SECURE_NO_WARNINGS -DCY_EXPORTING)
-set(SRCS 
-		EffectNode.cpp
-		SceneLoader.cpp
-		SceneManager.cpp
-		SkyBox.cpp
-		cyclopsPythonApi.cpp)
-    
-set(OSG_SRCS 
-		osg/obj.cpp
-		osg/ReaderXOBJ.cpp)
-		
-set(HEADERS 
-		${CMAKE_SOURCE_DIR}/include/cyclops/EffectNode.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/SkyBox.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/SceneManager.h)
-		
-###################################################################################################
-# Setup compile info
-if(OMEGA_BUILD_STATIC)
-	add_library( cyclops ${SRCS} ${OSG_SRCS} ${HEADERS})
-else(OMEGA_BUILD_STATIC)
-	add_library( cyclops SHARED ${SRCS} ${OSG_SRCS} ${HEADERS})
-endif(OMEGA_BUILD_STATIC)
 
-source_group(osg REGULAR_EXPRESSION osg/)		
-target_link_libraries(cyclops
+###################################################################################################
+#FIND_PACKAGE(VTK)
+#IF(NOT VTK_DIR)
+#  MESSAGE(FATAL_ERROR "Please set VTK_DIR.")
+#ENDIF(NOT VTK_DIR)
+#INCLUDE(${VTK_USE_FILE})
+
+###################################################################################################
+add_executable(geoView geoView.cpp)
+set_target_properties(geoView PROPERTIES FOLDER apps)
+target_link_libraries(geoView
 	omega 
 	omegaToolkit
-    omegaOsg)
+    omegaVtk
+	vtkRendering)

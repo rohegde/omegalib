@@ -249,6 +249,8 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 			osg::Node* node = osgDB::readNodeFile(assetPath, options);
 			if(node != NULL)
 			{
+				// DEPRECATED: Attribute material. Process for compatibility with old scene xml, 
+				// but avoid using in new scenes.
 				if(xchild->Attribute("Material") != NULL)
 				{
 					String material = xchild->Attribute("Material");
@@ -341,7 +343,11 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			String sTag;
 			if(tag != NULL) sTag = tag;
 
-			mySceneManager->addEntity(fileIndex, id, sTag, position, rotation, scale);
+			EntityEventCallbacks eec;
+			//const char*
+
+			Entity* e = mySceneManager->addEntity(fileIndex, id, sTag, position, rotation, scale);
+			
 		}
 		else if(objtype == "plane")
 		{
