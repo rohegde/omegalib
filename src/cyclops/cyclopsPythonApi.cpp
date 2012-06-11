@@ -111,7 +111,7 @@ PyObject* lightSetColor(PyObject* self, PyObject* args)
 
 	if(colorStr != NULL)
 	{
-		Color& col = Color::Color(colorStr);
+		Color col = Color(colorStr);
 		Light* l = SceneManager::instance()->getLight(id);
 		if(l != NULL)
 		{
@@ -131,7 +131,7 @@ PyObject* lightSetAmbient(PyObject* self, PyObject* args)
 
 	if(colorStr != NULL)
 	{
-		Color& col = Color::Color(colorStr);
+		Color col = Color(colorStr);
 		Light* l = SceneManager::instance()->getLight(id);
 		if(l != NULL)
 		{
