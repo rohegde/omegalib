@@ -1,5 +1,6 @@
 @use setupShadow
 @use setupStandardShading
+@use setupEnvMap
 	                     
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void main(void)
@@ -9,6 +10,7 @@ void main(void)
 		
 	setupShadow(eyeSpacePosition);
 	setupStandardShading(eyeSpacePosition);
+	setupEnvMap(eyeSpacePosition);
 	
 	gl_FrontColor = gl_Color;
 }
