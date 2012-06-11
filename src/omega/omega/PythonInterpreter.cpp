@@ -239,7 +239,7 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 	}
 
 #ifdef OMEGA_OS_LINUX
-	PyMethodDef* cur = methods;
+	cur = methods;
 	while(cur->ml_name != NULL)
 	{
 		add_history(cur->ml_name);
