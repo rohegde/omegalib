@@ -1,7 +1,8 @@
 	* [GettingStarted Geting Started with omegalib]
-	* [BuildSystemReference Compiling omegalib]
-	* [ConfigReference Understanding configuration files]
-	* [HowTos Other How-tos & FAQ]
+	* [BuildSystemReference Building omegalib]
+	* [ConfigReference Configuration files]
+	* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/index.html API reference (trunk)]
+	* [How-tos & FAQ]
 	* [ReleaseNotes Release Notes]
 		* [OmegaProgress omegalib pre 1.0 history]
 	* Internal docs
