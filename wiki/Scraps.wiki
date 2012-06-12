@@ -1,8 +1,6 @@
 #summary omegalib General notes / plans for omegalib developement
 #sidebar Sidebar
 
-<iframe src="https://docs.google.com/document/pub?id=1DHKHlHZoXKkgnG1hAGNgZvb8HnGk3vC3HNXc5ZmZPqs&amp;embedded=true"></iframe>
-
 = Priorities =
 (Some more details about the priority list may be found in the following sections)
 == High Priority ==
@@ -123,4 +121,3 @@ Add a way to collect info about memory leaks, allocations and timing statistics 
 	* (Since I removed Light / LightingPass from omegaToolkit) omegaToolkit Lights can be implemented as sceneobjects if needed in the future.
 
 	
-
