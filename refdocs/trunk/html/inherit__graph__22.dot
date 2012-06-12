@@ -4,5 +4,7 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="omega::ComputeShader",height=0.2,width=0.4,color="black",URL="$classomega_1_1_compute_shader.html"];
+  Node1 [label="Node",height=0.2,width=0.4,color="black",URL="$class_node.html"];
+  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="oengine::SceneNode",height=0.2,width=0.4,color="black",URL="$classoengine_1_1_scene_node.html"];
 }

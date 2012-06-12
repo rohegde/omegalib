@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -46,7 +47,7 @@
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a2e7a0a5eb92f7c0b408bc2aa61e95791">ConfigType</a> { <a class="el" href="structomega_1_1_display_config.html#a2e7a0a5eb92f7c0b408bc2aa61e95791a2688bf405ea7376ebd4a3363d6cd1aea">ConfigPlanar</a>, 
-<a class="el" href="structomega_1_1_display_config.html#a2e7a0a5eb92f7c0b408bc2aa61e95791a1c3dedb947508375e176dbf3e7b60f1d">ConfigCylindrical</a>
+<a class="el" href="structomega_1_1_display_config.html#a2e7a0a5eb92f7c0b408bc2aa61e95791a8304d236b4c8552565eea9f7f196aaa1">ConfigCustom</a>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -55,7 +56,6 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2i&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a975dc79ddf364479e0a71f06d490cc64">referenceTile</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector3f&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a99247f43c5e16819e6bd2fdd82f45f92">referenceOffset</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2f&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a36b5294e0d3d87dbe901711dba132a42">tileSize</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#ad0d097b095cf0e3bea5f2f229f1022a5">columnYawIncrement</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#a14e0ba75513f135a7becade3c93cf73f">autoOffsetWindows</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2i&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#aad7e318bd538c8b0467607758273c186">tileResolution</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2i&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="structomega_1_1_display_config.html#ac9c1378897e9e83f1771a4f9320000e0">windowOffset</a></td></tr>
@@ -88,7 +88,7 @@ Static Public Attributes</h2></td></tr>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="a2e7a0a5eb92f7c0b408bc2aa61e95791a2688bf405ea7376ebd4a3363d6cd1aea"></a><!-- doxytag: member="ConfigPlanar" ref="a2e7a0a5eb92f7c0b408bc2aa61e95791a2688bf405ea7376ebd4a3363d6cd1aea" args="" -->ConfigPlanar</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a2e7a0a5eb92f7c0b408bc2aa61e95791a1c3dedb947508375e176dbf3e7b60f1d"></a><!-- doxytag: member="ConfigCylindrical" ref="a2e7a0a5eb92f7c0b408bc2aa61e95791a1c3dedb947508375e176dbf3e7b60f1d" args="" -->ConfigCylindrical</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" id="a2e7a0a5eb92f7c0b408bc2aa61e95791a8304d236b4c8552565eea9f7f196aaa1"></a><!-- doxytag: member="ConfigCustom" ref="a2e7a0a5eb92f7c0b408bc2aa61e95791a8304d236b4c8552565eea9f7f196aaa1" args="" -->ConfigCustom</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -116,19 +116,6 @@ Static Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int <a class="el" href="structomega_1_1_display_config.html#a648b1fc4caa94f69ba7e2d0eeff18cc4">omega::DisplayConfig::basePort</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad0d097b095cf0e3bea5f2f229f1022a5"></a><!-- doxytag: member="omega::DisplayConfig::columnYawIncrement" ref="ad0d097b095cf0e3bea5f2f229f1022a5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float <a class="el" href="structomega_1_1_display_config.html#ad0d097b095cf0e3bea5f2f229f1022a5">omega::DisplayConfig::columnYawIncrement</a></td>
         </tr>
       </table>
 </div>

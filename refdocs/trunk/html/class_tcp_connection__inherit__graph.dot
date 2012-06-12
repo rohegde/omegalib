@@ -5,5 +5,5 @@ digraph G
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   Node1 [label="TcpConnection",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
   Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node2 [label="omega::SagePointerConnection",height=0.2,width=0.4,color="black",URL="$classomega_1_1_sage_pointer_connection.html"];
+  Node2 [label="omega::MissionControlConnection",height=0.2,width=0.4,color="black",URL="$classomega_1_1_mission_control_connection.html"];
 }

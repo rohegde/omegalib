@@ -4,5 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="GLXHyperpipeConfigSGIX",height=0.2,width=0.4,color="black",URL="$struct_g_l_x_hyperpipe_config_s_g_i_x.html"];
+  Node1 [label="cyclops::Entity",height=0.2,width=0.4,color="black",URL="$classcyclops_1_1_entity.html"];
 }

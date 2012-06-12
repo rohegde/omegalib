@@ -8,5 +8,4 @@ digraph G
   Node2 [label="omega::Renderable",height=0.2,width=0.4,color="black",URL="$classomega_1_1_renderable.html"];
   Node3 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node3 [label="ReferenceType",height=0.2,width=0.4,color="black",URL="$class_reference_type.html"];
-  Node2 -> Node1 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
 }

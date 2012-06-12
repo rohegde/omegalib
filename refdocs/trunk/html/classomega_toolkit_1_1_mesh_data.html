@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -42,13 +43,6 @@
 <!-- doxytag: class="omegaToolkit::MeshData" -->
 <p>Used to store mesh data loaded from a file in a common format, before transfering it to vertex and index buffers and material specifications.  
 <a href="#_details">More...</a></p>
-<div class="dynheader">
-Inheritance diagram for omegaToolkit::MeshData:</div>
-<div class="dyncontent">
-<div class="center"><img src="classomega_toolkit_1_1_mesh_data__inherit__graph.png" border="0" usemap="#omega_toolkit_1_1_mesh_data_inherit__map" alt="Inheritance graph"/></div>
-<map name="omega_toolkit_1_1_mesh_data_inherit__map" id="omega_toolkit_1_1_mesh_data_inherit__map">
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classomega_toolkit_1_1_mesh_data-members.html">List of all members.</a></p>
 <table class="memberdecls">
@@ -60,12 +54,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector3f &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#ada18eb4f13dcbf4051745972f5afdb96">getVertexPosition</a> (int i)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Color &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a7acb1b6391d54b3d07b436076637b215">getVertexColor</a> (int i)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector3f &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a3f4d32e4f028cd442da3bafc3bba2c1a">getVertexNormal</a> (int i)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Triangle &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a15583d0271f282d0f3d2d1dafe36615e">getTriangle</a> (int i)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_triangle.html">Triangle</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a15583d0271f282d0f3d2d1dafe36615e">getTriangle</a> (int i)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2f &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a6e4ab35d683d4c72e4f46af5c1839faf">getTexCoords0</a> (int i)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2f &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a7ee095853eb83e00abdb9b926213760f">getTexCoords1</a> (int i)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2f &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#ac91110ca5b4352eb2c015c98e53e98c5">getTexCoords2</a> (int i)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector2f &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#abced13df515161b1eae5279b9b3b784b">getTexCoords3</a> (int i)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#ad9ebeb7ef71b9af3ee0ec44caccd5310">addTriangle</a> (const Triangle &amp;tri)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#ad9ebeb7ef71b9af3ee0ec44caccd5310">addTriangle</a> (const <a class="el" href="struct_triangle.html">Triangle</a> &amp;tri)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#ac2794d9a6bc3636520ce7c5b8cc65456">addVertex</a> (const Vector3f &amp;pos)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a978062d89db096020c9515f8aa841ec0">addVertex</a> (const Vector3f &amp;pos, const Vector3f &amp;normal)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a66a20fce3c37bc54b515bc478e771172">addVertex</a> (const Vector3f &amp;pos, const Vector3f &amp;normal, const Color &amp;color)</td></tr>
@@ -91,7 +85,7 @@ Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Vector3f &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a673a305c1ba190c8d3387e695feb7dbb">vertices</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Color &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a312e33dfeb13fd2db9ef4668a77ba57c">colors</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Vector3f &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a5274c25ed2e3b6aef5c7938280549c9e">normals</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Triangle &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a20bb126530c1c1bc1d63dc554e97b2d0">triangles</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Vector&lt; <a class="el" href="struct_triangle.html">Triangle</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a20bb126530c1c1bc1d63dc554e97b2d0">triangles</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Vector2f &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a6b1f6900d52a8d6c82fed6e95125b08a">texCoords0</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Vector2f &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#a1ff65b836e735b03f54b00e3fcd498bf">texCoords1</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Vector&lt; Vector2f &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_mesh_data.html#adfbc435db2bf66ee5faca52b12b915ff">texCoords2</a></td></tr>
@@ -134,7 +128,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void omegaToolkit::MeshData::addTriangle </td>
           <td>(</td>
-          <td class="paramtype">const Triangle &amp;&nbsp;</td>
+          <td class="paramtype">const <a class="el" href="struct_triangle.html">Triangle</a> &amp;&nbsp;</td>
           <td class="paramname"> <em>tri</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
@@ -463,7 +457,7 @@ Protected Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Triangle &amp; omegaToolkit::MeshData::getTriangle </td>
+          <td class="memname"><a class="el" href="struct_triangle.html">Triangle</a> &amp; omegaToolkit::MeshData::getTriangle </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>i</em></td>
@@ -840,7 +834,7 @@ Protected Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Vector&lt; Triangle &gt; <a class="el" href="classomega_toolkit_1_1_mesh_data.html#a20bb126530c1c1bc1d63dc554e97b2d0">omegaToolkit::MeshData::triangles</a><code> [protected]</code></td>
+          <td class="memname">Vector&lt; <a class="el" href="struct_triangle.html">Triangle</a> &gt; <a class="el" href="classomega_toolkit_1_1_mesh_data.html#a20bb126530c1c1bc1d63dc554e97b2d0">omegaToolkit::MeshData::triangles</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>

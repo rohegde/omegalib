@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -60,6 +61,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_toolkit_1_1ui_1_1_image.html">Image</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_factory.html#a832e26e326b2e783f0184135af65db2e">createImage</a> (const String &amp;name, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *container)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_toolkit_1_1ui_1_1_label.html">Label</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_factory.html#ac782a30b0b39729a6aa1374344adb145">createLabel</a> (const String &amp;name, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *container, const String &amp;text=&quot;&quot;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_factory.html#a2e793c3c6499b289ab1de8227d2e4c99">createContainer</a> (String name, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *container, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a7c47216852f6ad3747bec5f112bd4f0c">Container::Layout</a> layout=Container::LayoutHorizontal)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_factory.html#adb416b79756434a7e268ffe28aa99fa5">createPanel</a> (String name, <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *container)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa30911b57ecf54d40476ac313910474a"></a><!-- doxytag: member="omegaToolkit::ui::WidgetFactory::WidgetFactory" ref="aa30911b57ecf54d40476ac313910474a" args="(ServerEngine *server)" -->
@@ -106,7 +108,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Implemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_default_widget_factory.html#a0947e8ca647a232f5441746d91dedee4">omegaToolkit::ui::DefaultWidgetFactory</a>.</p>
+<p>Implemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_barebone_widget_factory.html#ace0a2ba47f0acac98d2a847c3010bd42">omegaToolkit::ui::BareboneWidgetFactory</a>, and <a class="el" href="classomega_toolkit_1_1ui_1_1_default_widget_factory.html#a0947e8ca647a232f5441746d91dedee4">omegaToolkit::ui::DefaultWidgetFactory</a>.</p>
 
 </div>
 </div>
@@ -230,6 +232,35 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="adb416b79756434a7e268ffe28aa99fa5"></a><!-- doxytag: member="omegaToolkit::ui::WidgetFactory::createPanel" ref="adb416b79756434a7e268ffe28aa99fa5" args="(String name, Container *container)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a>* omegaToolkit::ui::WidgetFactory::createPanel </td>
+          <td>(</td>
+          <td class="paramtype">String&nbsp;</td>
+          <td class="paramname"> <em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">Container</a> *&nbsp;</td>
+          <td class="paramname"> <em>container</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_default_widget_factory.html#a6d6786311f0ef7410fa7698bb22afb14">omegaToolkit::ui::DefaultWidgetFactory</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a6fb7177aaf64db60f74be66c6a26ee8c"></a><!-- doxytag: member="omegaToolkit::ui::WidgetFactory::createSlider" ref="a6fb7177aaf64db60f74be66c6a26ee8c" args="(const String &amp;name, Container *container)=0" -->
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +286,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Implemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_default_widget_factory.html#a0b615ae4ecd5466d636d2f2aa9d2fc66">omegaToolkit::ui::DefaultWidgetFactory</a>.</p>
+<p>Implemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_barebone_widget_factory.html#ad0f5107d17688382dc742bf6e80680fd">omegaToolkit::ui::BareboneWidgetFactory</a>, and <a class="el" href="classomega_toolkit_1_1ui_1_1_default_widget_factory.html#a0b615ae4ecd5466d636d2f2aa9d2fc66">omegaToolkit::ui::DefaultWidgetFactory</a>.</p>
 
 </div>
 </div>

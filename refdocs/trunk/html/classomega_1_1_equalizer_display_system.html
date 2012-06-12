@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -60,12 +61,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#afb2f77a5fb508f81c99699a6032761f1">setDisplayConfig</a> (const String &amp;value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_observer.html">Observer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#aef5cdd66cebeb7b7e0c09a9142876b52">getObserver</a> (int observerId)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a6e9c14365dcc93c57452d23bb3138ac7">EqualizerDisplaySystem</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#ac66de5662e7bb2ae192f42733c3aae26">~EqualizerDisplaySystem</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a7e7181acd24d036415f92b561369590a">~EqualizerDisplaySystem</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a34fd14c822dd93a3f3ffdb065844f130">setup</a> (Setting &amp;setting)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a0f25a37139f6bea3664665c090f4a236">initialize</a> (<a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *sys)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">run</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a5a130d47d2edbf6ffd27b4e6cdb8e017">cleanup</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_observer.html">Observer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#af0305e67745d02db6c2f809add031cf2">getObserver</a> (int observerId)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#ada7531fb26fd9357d390bfbc64bfcc70">killCluster</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268">DisplaySystemType</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a8b6a900dd80617b352a1825cb738d466">getId</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#aaca4eeff35eb338fdccb668e87af8ecd">isDebugMouseEnabled</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual Vector2i&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a1897257d1cf90e8a6b8dd540edea1622">getCanvasSize</a> ()</td></tr>
@@ -74,6 +76,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a global (canvas) pointer position in pixel coordinates.  <a href="#ae30d249256e99a1b951b4e8c5fcf481c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Ray&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a318f20e0598d98e07377dc611dd6b5c1">getViewRay</a> (Vector2i position, int tileX, int tileY)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Returns a view ray given a local pointer positon and a tile index.  <a href="#a318f20e0598d98e07377dc611dd6b5c1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a14cb488f79e74ad037c2bb6f76ad6ba6">getViewRayFromEvent</a> (const Event &amp;evt, Ray &amp;ray, bool normalizedPointerCoords=false)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Computes a view ray from a pointer or wand event.  <a href="#a14cb488f79e74ad037c2bb6f76ad6ba6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structomega_1_1_display_config.html">DisplayConfig</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a86baccbe8b4fb09665462807f3ed7ac2">getDisplayConfig</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a7e0aa6af110ba797a183e4c60fdce084">finishInitialize</a> (<a class="el" href="classomega_1_1_config_impl.html">ConfigImpl</a> *config)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_equalizer_display_system.html#a0ddc0638dc0b767b7d18d3ee754c91c6">isDrawFpsEnabled</a> ()</td></tr>
@@ -145,16 +149,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac66de5662e7bb2ae192f42733c3aae26"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::~EqualizerDisplaySystem" ref="ac66de5662e7bb2ae192f42733c3aae26" args="()" -->
+<a class="anchor" id="a7e7181acd24d036415f92b561369590a"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::~EqualizerDisplaySystem" ref="a7e7181acd24d036415f92b561369590a" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">omega::EqualizerDisplaySystem::~EqualizerDisplaySystem </td>
+          <td class="memname">virtual omega::EqualizerDisplaySystem::~EqualizerDisplaySystem </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td></td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -410,28 +414,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae30d249256e99a1b951b4e8c5fcf481c"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::getViewRay" ref="ae30d249256e99a1b951b4e8c5fcf481c" args="(Vector2i position)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual Ray omega::EqualizerDisplaySystem::getViewRay </td>
-          <td>(</td>
-          <td class="paramtype">Vector2i&nbsp;</td>
-          <td class="paramname"> <em>position</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns a view ray given a global (canvas) pointer position in pixel coordinates. </p>
-
-<p>Implements <a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">omega::DisplaySystem</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a318f20e0598d98e07377dc611dd6b5c1"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::getViewRay" ref="a318f20e0598d98e07377dc611dd6b5c1" args="(Vector2i position, int tileX, int tileY)" -->
 <div class="memitem">
 <div class="memproto">
@@ -464,6 +446,28 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Returns a view ray given a local pointer positon and a tile index. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae30d249256e99a1b951b4e8c5fcf481c"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::getViewRay" ref="ae30d249256e99a1b951b4e8c5fcf481c" args="(Vector2i position)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Ray omega::EqualizerDisplaySystem::getViewRay </td>
+          <td>(</td>
+          <td class="paramtype">Vector2i&nbsp;</td>
+          <td class="paramname"> <em>position</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns a view ray given a global (canvas) pointer position in pixel coordinates. </p>
+
+<p>Implements <a class="el" href="classomega_1_1_display_system.html#a24a713b287d7efb437318abb073dc931">omega::DisplaySystem</a>.</p>
 
 </div>
 </div>
@@ -521,6 +525,44 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Returns a view ray given a loal pointer positon and a channel index. </p>
+
+</div>
+</div>
+<a class="anchor" id="a14cb488f79e74ad037c2bb6f76ad6ba6"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::getViewRayFromEvent" ref="a14cb488f79e74ad037c2bb6f76ad6ba6" args="(const Event &amp;evt, Ray &amp;ray, bool normalizedPointerCoords=false)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EqualizerDisplaySystem::getViewRayFromEvent </td>
+          <td>(</td>
+          <td class="paramtype">const Event &amp;&nbsp;</td>
+          <td class="paramname"> <em>evt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Ray &amp;&nbsp;</td>
+          <td class="paramname"> <em>ray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>normalizedPointerCoords</em> = <code>false</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Computes a view ray from a pointer or wand event. </p>
+<p>Returns true if the ray has been generated succesfully, false otherwise (i.e. because the event is not a wand or pointer event) </p>
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_display_system.html#a68cb7eba0397d0437701a9ab1498096f">omega::DisplaySystem</a>.</p>
 
 </div>
 </div>
@@ -632,12 +674,31 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8b92b31d02114926597892e649d2a7ab"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::run" ref="a8b92b31d02114926597892e649d2a7ab" args="()" -->
+<a class="anchor" id="ada7531fb26fd9357d390bfbc64bfcc70"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::killCluster" ref="ada7531fb26fd9357d390bfbc64bfcc70" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::EqualizerDisplaySystem::run </td>
+          <td class="memname">void EqualizerDisplaySystem::killCluster </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_display_system.html#ad6fa7a49e0d6952439956c1b57ef3f98">omega::DisplaySystem</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a41e4103460f536d2f6dca8464f642824"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::run" ref="a41e4103460f536d2f6dca8464f642824" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EqualizerDisplaySystem::run </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -651,12 +712,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a41e4103460f536d2f6dca8464f642824"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::run" ref="a41e4103460f536d2f6dca8464f642824" args="()" -->
+<a class="anchor" id="a8b92b31d02114926597892e649d2a7ab"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::run" ref="a8b92b31d02114926597892e649d2a7ab" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void EqualizerDisplaySystem::run </td>
+          <td class="memname">void omega::EqualizerDisplaySystem::run </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -717,12 +778,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a34fd14c822dd93a3f3ffdb065844f130"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::setup" ref="a34fd14c822dd93a3f3ffdb065844f130" args="(Setting &amp;setting)" -->
+<a class="anchor" id="a67484e80ae2b297e0bd9cced900f35a1"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::setup" ref="a67484e80ae2b297e0bd9cced900f35a1" args="(Setting &amp;setting)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void omega::EqualizerDisplaySystem::setup </td>
+          <td class="memname">void EqualizerDisplaySystem::setup </td>
           <td>(</td>
           <td class="paramtype">Setting &amp;&nbsp;</td>
           <td class="paramname"> <em>setting</em></td>
@@ -737,12 +798,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a67484e80ae2b297e0bd9cced900f35a1"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::setup" ref="a67484e80ae2b297e0bd9cced900f35a1" args="(Setting &amp;setting)" -->
+<a class="anchor" id="a34fd14c822dd93a3f3ffdb065844f130"></a><!-- doxytag: member="omega::EqualizerDisplaySystem::setup" ref="a34fd14c822dd93a3f3ffdb065844f130" args="(Setting &amp;setting)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void EqualizerDisplaySystem::setup </td>
+          <td class="memname">void omega::EqualizerDisplaySystem::setup </td>
           <td>(</td>
           <td class="paramtype">Setting &amp;&nbsp;</td>
           <td class="paramname"> <em>setting</em></td>

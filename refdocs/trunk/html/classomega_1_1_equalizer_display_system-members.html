@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -54,6 +55,7 @@ This is the complete list of members for <a class="el" href="classomega_1_1_equa
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#af493adc68c8793d49e21b5447037b8b6">getViewRay</a>(Vector2i position, int channelX, int channelY)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#ae30d249256e99a1b951b4e8c5fcf481c">getViewRay</a>(Vector2i position)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a318f20e0598d98e07377dc611dd6b5c1">getViewRay</a>(Vector2i position, int tileX, int tileY)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a14cb488f79e74ad037c2bb6f76ad6ba6">getViewRayFromEvent</a>(const Event &amp;evt, Ray &amp;ray, bool normalizedPointerCoords=false)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_display_system.html#af4f12048c7d637be88b17733a9d85268a796852e5aa416554006fdfba274ce6e8">Glut</a> enum value</td><td><a class="el" href="classomega_1_1_display_system.html">omega::DisplaySystem</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#afd6e10a86131ee255ce8ce9a2b6c41de">initialize</a>(SystemManager *sys)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a0f25a37139f6bea3664665c090f4a236">initialize</a>(SystemManager *sys)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
@@ -62,6 +64,7 @@ This is the complete list of members for <a class="el" href="classomega_1_1_equa
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#aaca4eeff35eb338fdccb668e87af8ecd">isDebugMouseEnabled</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a0ddc0638dc0b767b7d18d3ee754c91c6">isDrawFpsEnabled</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#ae4c10b7fd8bd36bff9dafd3e4c46775d">isDrawStatisticsEnabled</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#ada7531fb26fd9357d390bfbc64bfcc70">killCluster</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a41e4103460f536d2f6dca8464f642824">run</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a8b92b31d02114926597892e649d2a7ab">run</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_display_system.html#afa1d3fbb7f8fbdd22b64747191265b20">setBackgroundColor</a>(const Color &amp;value)</td><td><a class="el" href="classomega_1_1_display_system.html">omega::DisplaySystem</a></td><td><code> [inline]</code></td></tr>
@@ -71,7 +74,7 @@ This is the complete list of members for <a class="el" href="classomega_1_1_equa
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a34fd14c822dd93a3f3ffdb065844f130">setup</a>(Setting &amp;setting)</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_display_system.html#a36167a209b6bc8b1be53769c8d9acc6e">~DisplaySystem</a>()</td><td><a class="el" href="classomega_1_1_display_system.html">omega::DisplaySystem</a></td><td><code> [inline, virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a7511bd45e8d2aebc6bf22ba49f5f0c72">~EqualizerDisplaySystem</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#ac66de5662e7bb2ae192f42733c3aae26">~EqualizerDisplaySystem</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classomega_1_1_equalizer_display_system.html#a7e7181acd24d036415f92b561369590a">~EqualizerDisplaySystem</a>()</td><td><a class="el" href="classomega_1_1_equalizer_display_system.html">omega::EqualizerDisplaySystem</a></td><td><code> [virtual]</code></td></tr>
 </table></div>
 <hr class="footer"/><address class="footer"><small>Generated by&nbsp;
 <a href="http://www.doxygen.org/index.html">

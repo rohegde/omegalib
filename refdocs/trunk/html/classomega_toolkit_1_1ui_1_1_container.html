@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -36,6 +37,7 @@
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>omegaToolkit::ui::Container Class Reference</h1>  </div>
@@ -78,8 +80,11 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a1b519816fb2a0fbb8bb6207962a517a7">handleEvent</a> (const omega::Event &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a386ed695ebe3c9dd4d267512da5900f8">update</a> (const <a class="el" href="structomega_1_1_update_context.html">omega::UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a952760074c1616a1e374555d19c3acec">load</a> (Setting &amp;setting)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#af2805885c23dd063746a7c0ecfb8245d">updateSize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a52af1f47df823d44cd2a857b21e201f4">layout</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structomega_toolkit_1_1ui_1_1_container3d_settings.html">Container3dSettings</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a5ff4b90b5cde6174916314e3392b08ad">get3dSettings</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gets the container 3d settings.  <a href="#a5ff4b90b5cde6174916314e3392b08ad"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ad470ed763f69ceba7b288bb15e035d90">updateSize</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#aabcf2ff508ecb811692d01c32708626e">autosize</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -93,6 +98,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#aa89925625f2057f73d82a1676e1a8b9a">getChildByName</a> (const String &amp;name)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Find a child by its name.  <a href="#aa89925625f2057f73d82a1676e1a8b9a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ae5c45a3bec769ecf6d96766d3627411a">getChildByIndex</a> (int index)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#aed86898a6eccff9fa146a309e86626f5">getChildBefore</a> (const <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *w)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#aaf101153a38b6918b4816696710f6340">getChildAfter</a> (const <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *w)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
@@ -111,10 +118,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a2ba9783fdf311662a6a3e827b38a67a4">getGridColumns</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a0c67ab3b2fadfc0fd492568f7650da18">setGridRows</a> (int value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a219450eb671970b71958cee9233ae8f4">setGridColumns</a> (int value)</td></tr>
+<tr><td colspan="2"><h2><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a77a497e9f7b15129ce91b4021a0eb040">activate</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a8d2c8b87f34217023a8373786ed41417">ServerEngine</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#ac3a1271de4f2e896afe4539f240db19b">ContainerRenderable</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html#a11fdcd43ee6d3980bcc0f491bf5994d5">UiRenderPass</a></td></tr>
 </table>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="a136df0270d0e028ada4352c896d6f886"></a><!-- doxytag: member="omegaToolkit::ui::Container::HorizontalAlign" ref="a136df0270d0e028ada4352c896d6f886" args="" -->
@@ -227,6 +237,25 @@ Friends</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a77a497e9f7b15129ce91b4021a0eb040"></a><!-- doxytag: member="omegaToolkit::ui::Container::activate" ref="a77a497e9f7b15129ce91b4021a0eb040" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Container::activate </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [protected, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#aea554e2da9f8e29fa6c11439286d108c">omegaToolkit::ui::Widget</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a08c623a4617b198da3a777ff64379c9c"></a><!-- doxytag: member="omegaToolkit::ui::Container::addChild" ref="a08c623a4617b198da3a777ff64379c9c" args="(Widget *child)" -->
 <div class="memitem">
 <div class="memproto">
@@ -248,6 +277,26 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aabcf2ff508ecb811692d01c32708626e"></a><!-- doxytag: member="omegaToolkit::ui::Container::autosize" ref="aabcf2ff508ecb811692d01c32708626e" args="(Renderer *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Container::autosize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#adbc260cce48d4c728a9ebfbfb1546957">omegaToolkit::ui::Widget</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a0afd91ea1b6e4429292cc9c68338cb60"></a><!-- doxytag: member="omegaToolkit::ui::Container::createRenderable" ref="a0afd91ea1b6e4429292cc9c68338cb60" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -264,6 +313,63 @@ Friends</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a17cdfaf94546ede04126b9d47245a347">omegaToolkit::ui::Widget</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classomega_toolkit_1_1ui_1_1_default_panel.html#afd4f46837a7d4f00e0e66d799dcd21f2">omegaToolkit::ui::DefaultPanel</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5ff4b90b5cde6174916314e3392b08ad"></a><!-- doxytag: member="omegaToolkit::ui::Container::get3dSettings" ref="a5ff4b90b5cde6174916314e3392b08ad" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structomega_toolkit_1_1ui_1_1_container3d_settings.html">Container3dSettings</a>&amp; omegaToolkit::ui::Container::get3dSettings </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Gets the container 3d settings. </p>
+
+</div>
+</div>
+<a class="anchor" id="aaf101153a38b6918b4816696710f6340"></a><!-- doxytag: member="omegaToolkit::ui::Container::getChildAfter" ref="aaf101153a38b6918b4816696710f6340" args="(const Widget *w)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> * Container::getChildAfter </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td>
+          <td class="paramname"> <em>w</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aed86898a6eccff9fa146a309e86626f5"></a><!-- doxytag: member="omegaToolkit::ui::Container::getChildBefore" ref="aed86898a6eccff9fa146a309e86626f5" args="(const Widget *w)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> * Container::getChildBefore </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">Widget</a> *&nbsp;</td>
+          <td class="paramname"> <em>w</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -686,14 +792,15 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af2805885c23dd063746a7c0ecfb8245d"></a><!-- doxytag: member="omegaToolkit::ui::Container::updateSize" ref="af2805885c23dd063746a7c0ecfb8245d" args="()" -->
+<a class="anchor" id="ad470ed763f69ceba7b288bb15e035d90"></a><!-- doxytag: member="omegaToolkit::ui::Container::updateSize" ref="ad470ed763f69ceba7b288bb15e035d90" args="(Renderer *r)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void Container::updateSize </td>
           <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [virtual]</code></td>
         </tr>
@@ -701,7 +808,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a9d0190baa3e8de1e1278616586f9fde8">omegaToolkit::ui::Widget</a>.</p>
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a1b63258dc754bf70948a8e5d39fa296a">omegaToolkit::ui::Widget</a>.</p>
 
 </div>
 </div>
@@ -719,16 +826,18 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8d2c8b87f34217023a8373786ed41417"></a><!-- doxytag: member="omegaToolkit::ui::Container::ServerEngine" ref="a8d2c8b87f34217023a8373786ed41417" args="" -->
+<a class="anchor" id="a11fdcd43ee6d3980bcc0f491bf5994d5"></a><!-- doxytag: member="omegaToolkit::ui::Container::UiRenderPass" ref="a11fdcd43ee6d3980bcc0f491bf5994d5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">friend class <a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a><code> [friend]</code></td>
+          <td class="memname">friend class <a class="el" href="classomega_toolkit_1_1_ui_render_pass.html">UiRenderPass</a><code> [friend]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html#a11fdcd43ee6d3980bcc0f491bf5994d5">omegaToolkit::ui::Widget</a>.</p>
 
 </div>
 </div>

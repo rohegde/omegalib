@@ -4,7 +4,7 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="Node",height=0.2,width=0.4,color="black",URL="$class_node.html"];
+  Node1 [label="Effect",height=0.2,width=0.4,color="black",URL="$classosg_f_x_1_1_effect.html"];
   Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node2 [label="oengine::SceneNode",height=0.2,width=0.4,color="black",URL="$classoengine_1_1_scene_node.html"];
+  Node2 [label="cyclops::EffectNode",height=0.2,width=0.4,color="black",URL="$classcyclops_1_1_effect_node.html"];
 }

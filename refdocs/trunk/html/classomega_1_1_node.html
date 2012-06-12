@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -65,7 +66,7 @@ Public Types</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Enumeration denoting the spaces which a transform can be relative to. </p>
  <a href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef Dictionary&lt; String, <br class="typebreak"/>
-<a class="el" href="classomega_1_1_node.html">Node</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#aefc88b01fd5e093af57154b4af898307">ChildNodeMap</a></td></tr>
+Ref&lt; <a class="el" href="classomega_1_1_node.html">Node</a> &gt; &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a5cb41b3575c5ffc1b681d8a021386609">ChildNodeMap</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_child_node.html">ChildNode</a>&lt; <a class="el" href="classomega_1_1_node.html">Node</a> &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a89d8a0d0ecbac2ed53f3586014b6b1d6">Child</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef std::pair<br class="typebreak"/>
 &lt; ChildNodeMap::iterator, <br class="typebreak"/>
@@ -199,7 +200,7 @@ Protected Member Functions</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_node.html">Node</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a57b356ddb1064f676c943fecf0a3aa8a">mParent</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_pointer.html">Pointer</a> to parent node.  <a href="#a57b356ddb1064f676c943fecf0a3aa8a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_node.html#aefc88b01fd5e093af57154b4af898307">ChildNodeMap</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a855431f890239357e417f12676af351d">mChildren</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_node.html#a5cb41b3575c5ffc1b681d8a021386609">ChildNodeMap</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a855431f890239357e417f12676af351d">mChildren</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Collection of pointers to direct children; hashmap for efficiency.  <a href="#a855431f890239357e417f12676af351d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_node.html#ab0850c08e1d9cafb238135f24185420d">ChildUpdateSet</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a94fcd8c91bb588e872272900142f2a0b">mChildrenToUpdate</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">List of children which need updating, used if self is not out of date but children are.  <a href="#a94fcd8c91bb588e872272900142f2a0b"></a><br/></td></tr>
@@ -258,12 +259,12 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aefc88b01fd5e093af57154b4af898307"></a><!-- doxytag: member="omega::Node::ChildNodeMap" ref="aefc88b01fd5e093af57154b4af898307" args="" -->
+<a class="anchor" id="a5cb41b3575c5ffc1b681d8a021386609"></a><!-- doxytag: member="omega::Node::ChildNodeMap" ref="a5cb41b3575c5ffc1b681d8a021386609" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef Dictionary&lt;String, <a class="el" href="classomega_1_1_node.html">Node</a>*&gt; <a class="el" href="classomega_1_1_node.html#aefc88b01fd5e093af57154b4af898307">omega::Node::ChildNodeMap</a></td>
+          <td class="memname">typedef Dictionary&lt;String, Ref&lt;<a class="el" href="classomega_1_1_node.html">Node</a>&gt; &gt; <a class="el" href="classomega_1_1_node.html#a5cb41b3575c5ffc1b681d8a021386609">omega::Node::ChildNodeMap</a></td>
         </tr>
       </table>
 </div>
@@ -1873,7 +1874,7 @@ See setInheritOrientation for more info. </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_node.html#aefc88b01fd5e093af57154b4af898307">ChildNodeMap</a> <a class="el" href="classomega_1_1_node.html#a855431f890239357e417f12676af351d">omega::Node::mChildren</a><code> [protected]</code></td>
+          <td class="memname"><a class="el" href="classomega_1_1_node.html#a5cb41b3575c5ffc1b681d8a021386609">ChildNodeMap</a> <a class="el" href="classomega_1_1_node.html#a855431f890239357e417f12676af351d">omega::Node::mChildren</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>

@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -54,11 +55,15 @@ Inheritance diagram for omega::ServerEngine:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef List&lt; <a class="el" href="classomega_1_1_camera.html">Camera</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a051aa7b27e8d2c3719b4e9e4d12e867c">CameraCollection</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classomega_1_1_render_pass.html">RenderPass</a> *(*&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a56a56580cf57e15c76c8be6ffdee5ba0">RenderPassFactory</a> )(<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a154c3e09a01413dcab3b62224a7420c1">PointerMode</a> { <a class="el" href="classomega_1_1_server_engine.html#a154c3e09a01413dcab3b62224a7420c1afa6ef76469f147fb6f64fc0ffae49b6c">PointerModeMouse</a>, 
+<a class="el" href="classomega_1_1_server_engine.html#a154c3e09a01413dcab3b62224a7420c1a247721222fa73b389debd739487b3671">PointerModeWand</a>, 
+<a class="el" href="classomega_1_1_server_engine.html#a154c3e09a01413dcab3b62224a7420c1a94380e0dbf46d53ce126a3011911fa82">PointerModeDynamic</a>
+ }</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef List&lt; Ref&lt; <a class="el" href="classomega_1_1_camera.html">Camera</a> &gt; &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a3d14bbfb02605b87bcba48ffd0b31334">CameraCollection</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#aab65556ed47ae4651c2dc1fcf6583948">ServerEngine</a> (<a class="el" href="classomega_1_1_application_base.html">ApplicationBase</a> *app, bool master)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a68b6437ab37a4c518dcce1621483120f">~ServerEngine</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">ServiceManager *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#ae8feac18371bbfe3f151a2cf4ce8e957">getServiceManager</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a72733ba69b782e917e72247252186176">addClient</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *client)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceomega.html#afa311ac51aacccff6a51f302a3328537">EngineClientList</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a9076ae593fa013a54b9214ace6688e86">getClients</a> ()</td></tr>
@@ -68,7 +73,6 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Internal method.  <a href="#ac62357fd5c3d5ba09bc80e4aa057c2f3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a000e9322f1e49d137724020de018ff06">preDraw</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a146cdea4ce4c0e4579ab108b266285d1">postDraw</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r, const <a class="el" href="structomega_1_1_draw_context.html">DrawContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#abcde6ad9c7bece89feb76f34af34694a">finalize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a3347d22a60d370b08b2f712634eea393">handleEvent</a> (const Event &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a26c0b00b31b3b4e6c0e9f60d56a928a3">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
@@ -83,14 +87,6 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a69ae7d587d59d04b8f966ade34c084ae">registerRenderPassClass</a> (const String &amp;name, <a class="el" href="classomega_1_1_server_engine.html#a56a56580cf57e15c76c8be6ffdee5ba0">RenderPassFactory</a> factory)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Render pass management.  <a href="#a69ae7d587d59d04b8f966ade34c084ae"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#adb11a03f4ec0956d3affb73f5e283d70">addRenderPass</a> (String renderPass, void *userData=NULL, bool addToFront=false)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a5d1730f0898253542a8e20b0236fc7cf">removeRenderPass</a> (String renderPass)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#ad5a34ad0e93551aeb78ac016262953f1">removeAllRenderPasses</a> ()</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
-</div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a12e02458d1aa4b20959ce9d1b74c8fcd">setDefaultFont</a> (const <a class="el" href="structomega_1_1_font_info.html">FontInfo</a> &amp;font)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_font.html">Font</a> management.  <a href="#a12e02458d1aa4b20959ce9d1b74c8fcd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structomega_1_1_font_info.html">FontInfo</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#ab862b1cb634b554540ce6652ed8ef41b">getDefaultFont</a> ()</td></tr>
@@ -102,34 +98,34 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
 </div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#af05480b5b573f122c3245f120b296db8">getDrawPointers</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_pointer.html">Pointer</a> mode management.  <a href="#af05480b5b573f122c3245f120b296db8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a764589bdf9e5c4509f3806a973e8dd6f">setDrawPointers</a> (bool value)</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
+</div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_console.html">Console</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#aea81879cbbafc5391666195db97eb68c">getConsole</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_console.html">Console</a> management.  <a href="#aea81879cbbafc5391666195db97eb68c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#afd40fa87ef786a366b829bde40634a5a">isConsoleEnabled</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#ac48a8805217277786b977001b75e5749">setConsoleEnabled</a> (bool value)</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="amgrpd41d8cd98f00b204e9800998ecf8427e"></a> </p>
-</div></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_pointer.html">Pointer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#abe9c3820090860511f370c02781164b9">createPointer</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classomega_1_1_pointer.html">Pointer</a> Management.  <a href="#abe9c3820090860511f370c02781164b9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#aa0afe25fee1fb57cc79dc50ed684b147">destroyPointer</a> (<a class="el" href="classomega_1_1_pointer.html">Pointer</a> *p)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a4cd215f7e1c0d22ae3d2f0976921815e">refreshPointer</a> (int pointerId, int x, int y)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#ac60d47eb4e382bc3d5287c9e27ff4862">instance</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#ae36c3e3ae429e554b27f333d4bede799">MaxPointers</a> = 4</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a35ca58c0c1297b388f54a6ea9ebafb7e">MaxActivePointers</a> = 128</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_engine.html#a70538530bc36e033e360880ef311df61">Renderer</a></td></tr>
 </table>
 <hr/><h2>Member Typedef Documentation</h2>
-<a class="anchor" id="a051aa7b27e8d2c3719b4e9e4d12e867c"></a><!-- doxytag: member="omega::ServerEngine::CameraCollection" ref="a051aa7b27e8d2c3719b4e9e4d12e867c" args="" -->
+<a class="anchor" id="a3d14bbfb02605b87bcba48ffd0b31334"></a><!-- doxytag: member="omega::ServerEngine::CameraCollection" ref="a3d14bbfb02605b87bcba48ffd0b31334" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef List&lt;<a class="el" href="classomega_1_1_camera.html">Camera</a>*&gt; <a class="el" href="classomega_1_1_server_engine.html#a051aa7b27e8d2c3719b4e9e4d12e867c">omega::ServerEngine::CameraCollection</a></td>
+          <td class="memname">typedef List&lt; Ref&lt;<a class="el" href="classomega_1_1_camera.html">Camera</a>&gt; &gt; <a class="el" href="classomega_1_1_server_engine.html#a3d14bbfb02605b87bcba48ffd0b31334">omega::ServerEngine::CameraCollection</a></td>
         </tr>
       </table>
 </div>
@@ -137,16 +133,27 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a56a56580cf57e15c76c8be6ffdee5ba0"></a><!-- doxytag: member="omega::ServerEngine::RenderPassFactory" ref="a56a56580cf57e15c76c8be6ffdee5ba0" args=")(Renderer *)" -->
+<hr/><h2>Member Enumeration Documentation</h2>
+<a class="anchor" id="a154c3e09a01413dcab3b62224a7420c1"></a><!-- doxytag: member="omega::ServerEngine::PointerMode" ref="a154c3e09a01413dcab3b62224a7420c1" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classomega_1_1_render_pass.html">RenderPass</a>*(* <a class="el" href="classomega_1_1_server_engine.html#a56a56580cf57e15c76c8be6ffdee5ba0">omega::ServerEngine::RenderPassFactory</a>)(<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *)</td>
+          <td class="memname">enum <a class="el" href="classomega_1_1_server_engine.html#a154c3e09a01413dcab3b62224a7420c1">omega::ServerEngine::PointerMode</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a154c3e09a01413dcab3b62224a7420c1afa6ef76469f147fb6f64fc0ffae49b6c"></a><!-- doxytag: member="PointerModeMouse" ref="a154c3e09a01413dcab3b62224a7420c1afa6ef76469f147fb6f64fc0ffae49b6c" args="" -->PointerModeMouse</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a154c3e09a01413dcab3b62224a7420c1a247721222fa73b389debd739487b3671"></a><!-- doxytag: member="PointerModeWand" ref="a154c3e09a01413dcab3b62224a7420c1a247721222fa73b389debd739487b3671" args="" -->PointerModeWand</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a154c3e09a01413dcab3b62224a7420c1a94380e0dbf46d53ce126a3011911fa82"></a><!-- doxytag: member="PointerModeDynamic" ref="a154c3e09a01413dcab3b62224a7420c1a94380e0dbf46d53ce126a3011911fa82" args="" -->PointerModeDynamic</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
 
 </div>
 </div>
@@ -178,6 +185,23 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a68b6437ab37a4c518dcce1621483120f"></a><!-- doxytag: member="omega::ServerEngine::~ServerEngine" ref="a68b6437ab37a4c518dcce1621483120f" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ServerEngine::~ServerEngine </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a72733ba69b782e917e72247252186176"></a><!-- doxytag: member="omega::ServerEngine::addClient" ref="a72733ba69b782e917e72247252186176" args="(Renderer *client)" -->
 <div class="memitem">
@@ -190,39 +214,6 @@ Friends</h2></td></tr>
           <td class="paramname"> <em>client</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="adb11a03f4ec0956d3affb73f5e283d70"></a><!-- doxytag: member="omega::ServerEngine::addRenderPass" ref="adb11a03f4ec0956d3affb73f5e283d70" args="(String renderPass, void *userData=NULL, bool addToFront=false)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ServerEngine::addRenderPass </td>
-          <td>(</td>
-          <td class="paramtype">String&nbsp;</td>
-          <td class="paramname"> <em>renderPass</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&nbsp;</td>
-          <td class="paramname"> <em>userData</em> = <code>NULL</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&nbsp;</td>
-          <td class="paramname"> <em>addToFront</em> = <code>false</code></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
         </tr>
       </table>
 </div>
@@ -268,25 +259,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abe9c3820090860511f370c02781164b9"></a><!-- doxytag: member="omega::ServerEngine::createPointer" ref="abe9c3820090860511f370c02781164b9" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomega_1_1_pointer.html">Pointer</a> * ServerEngine::createPointer </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p><a class="el" href="classomega_1_1_pointer.html">Pointer</a> Management. </p>
-
-</div>
-</div>
 <a class="anchor" id="a3377c4d66cbf71e0009f90529e9620f6"></a><!-- doxytag: member="omega::ServerEngine::destroyCamera" ref="a3377c4d66cbf71e0009f90529e9620f6" args="(Camera *cam)" -->
 <div class="memitem">
 <div class="memproto">
@@ -302,43 +274,6 @@ Friends</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aa0afe25fee1fb57cc79dc50ed684b147"></a><!-- doxytag: member="omega::ServerEngine::destroyPointer" ref="aa0afe25fee1fb57cc79dc50ed684b147" args="(Pointer *p)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ServerEngine::destroyPointer </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_pointer.html">Pointer</a> *&nbsp;</td>
-          <td class="paramname"> <em>p</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="abcde6ad9c7bece89feb76f34af34694a"></a><!-- doxytag: member="omega::ServerEngine::finalize" ref="abcde6ad9c7bece89feb76f34af34694a" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ServerEngine::finalize </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_server_base.html#a3f90ee6eb7249a2a997943af24439806">omega::ServerBase</a>.</p>
 
 </div>
 </div>
@@ -445,6 +380,25 @@ Friends</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af05480b5b573f122c3245f120b296db8"></a><!-- doxytag: member="omega::ServerEngine::getDrawPointers" ref="af05480b5b573f122c3245f120b296db8" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omega::ServerEngine::getDrawPointers </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p><a class="el" href="classomega_1_1_pointer.html">Pointer</a> mode management. </p>
 
 </div>
 </div>
@@ -638,103 +592,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4cd215f7e1c0d22ae3d2f0976921815e"></a><!-- doxytag: member="omega::ServerEngine::refreshPointer" ref="a4cd215f7e1c0d22ae3d2f0976921815e" args="(int pointerId, int x, int y)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ServerEngine::refreshPointer </td>
-          <td>(</td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>pointerId</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>y</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a69ae7d587d59d04b8f966ade34c084ae"></a><!-- doxytag: member="omega::ServerEngine::registerRenderPassClass" ref="a69ae7d587d59d04b8f966ade34c084ae" args="(const String &amp;name, RenderPassFactory factory)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void omega::ServerEngine::registerRenderPassClass </td>
-          <td>(</td>
-          <td class="paramtype">const String &amp;&nbsp;</td>
-          <td class="paramname"> <em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_server_engine.html#a56a56580cf57e15c76c8be6ffdee5ba0">RenderPassFactory</a>&nbsp;</td>
-          <td class="paramname"> <em>factory</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Render pass management. </p>
-
-</div>
-</div>
-<a class="anchor" id="ad5a34ad0e93551aeb78ac016262953f1"></a><!-- doxytag: member="omega::ServerEngine::removeAllRenderPasses" ref="ad5a34ad0e93551aeb78ac016262953f1" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ServerEngine::removeAllRenderPasses </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5d1730f0898253542a8e20b0236fc7cf"></a><!-- doxytag: member="omega::ServerEngine::removeRenderPass" ref="a5d1730f0898253542a8e20b0236fc7cf" args="(String renderPass)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ServerEngine::removeRenderPass </td>
-          <td>(</td>
-          <td class="paramtype">String&nbsp;</td>
-          <td class="paramname"> <em>renderPass</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="ac48a8805217277786b977001b75e5749"></a><!-- doxytag: member="omega::ServerEngine::setConsoleEnabled" ref="ac48a8805217277786b977001b75e5749" args="(bool value)" -->
 <div class="memitem">
 <div class="memproto">
@@ -770,6 +627,24 @@ Friends</h2></td></tr>
 <div class="memdoc">
 
 <p><a class="el" href="classomega_1_1_font.html">Font</a> management. </p>
+
+</div>
+</div>
+<a class="anchor" id="a764589bdf9e5c4509f3806a973e8dd6f"></a><!-- doxytag: member="omega::ServerEngine::setDrawPointers" ref="a764589bdf9e5c4509f3806a973e8dd6f" args="(bool value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::ServerEngine::setDrawPointers </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>
@@ -814,6 +689,19 @@ Friends</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">const int <a class="el" href="classomega_1_1_server_engine.html#a35ca58c0c1297b388f54a6ea9ebafb7e">omega::ServerEngine::MaxActivePointers</a> = 128<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae36c3e3ae429e554b27f333d4bede799"></a><!-- doxytag: member="omega::ServerEngine::MaxPointers" ref="ae36c3e3ae429e554b27f333d4bede799" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int <a class="el" href="classomega_1_1_server_engine.html#ae36c3e3ae429e554b27f333d4bede799">omega::ServerEngine::MaxPointers</a> = 4<code> [static]</code></td>
         </tr>
       </table>
 </div>

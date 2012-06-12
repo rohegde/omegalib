@@ -4,5 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="obj::obj_parser",height=0.2,width=0.4,color="black",URL="$classobj_1_1obj__parser.html"];
+  Node1 [label="GLXBufferClobberEventSGIX",height=0.2,width=0.4,color="black",URL="$struct_g_l_x_buffer_clobber_event_s_g_i_x.html"];
 }

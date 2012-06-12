@@ -13,5 +13,7 @@ digraph G
   Node1 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node5 [label="omegaToolkit::ui::Button",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_button.html"];
   Node5 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node6 [label="omegaToolkit::ui::DefaultButton",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_default_button.html"];
+  Node6 [label="omegaToolkit::ui::BareboneButton",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_barebone_button.html"];
+  Node5 -> Node7 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node7 [label="omegaToolkit::ui::DefaultButton",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_default_button.html"];
 }

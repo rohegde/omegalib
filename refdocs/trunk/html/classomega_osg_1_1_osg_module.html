@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -56,6 +57,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a2240863025fc594aa18a5e8c42a14d23">getRepresentationSize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#adb87b16fff81ee14bec19805db0555f5">setRepresentationSize</a> (float value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#ada487cc5fdfcc8c8a5860e8514d95fea">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#abf8a2c3f768af344e6baef24c11594e7">initializeRenderer</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a6ac8b18a8ca65db03c08d8edbc6f79c4">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a80a035013435d2dd15b459267198fe0d">handleEvent</a> (const Event &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">osg::FrameStamp *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a5231cd132de2a3fc9e2135608ebde6ea">getFrameStamp</a> ()</td></tr>
@@ -64,6 +66,8 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_osg_1_1_osg_module.html">OsgModule</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a2bb5f49632968e256ab77ed8299254ed">instance</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a21776d76479d6e1c04b8e0e980a3186e">getAmbientOverrideHack</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_osg_1_1_osg_module.html#a1331668b9630c33d7b160c086062c1b8">setAmbientOverrideHack</a> (bool value)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a00c9456ccb5a720436649e1badce97a3"></a><!-- doxytag: member="omegaOsg::OsgModule::OsgModule" ref="a00c9456ccb5a720436649e1badce97a3" args="()" -->
@@ -101,6 +105,23 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a21776d76479d6e1c04b8e0e980a3186e"></a><!-- doxytag: member="omegaOsg::OsgModule::getAmbientOverrideHack" ref="a21776d76479d6e1c04b8e0e980a3186e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool omegaOsg::OsgModule::getAmbientOverrideHack </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a5231cd132de2a3fc9e2135608ebde6ea"></a><!-- doxytag: member="omegaOsg::OsgModule::getFrameStamp" ref="a5231cd132de2a3fc9e2135608ebde6ea" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -191,6 +212,26 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abf8a2c3f768af344e6baef24c11594e7"></a><!-- doxytag: member="omegaOsg::OsgModule::initializeRenderer" ref="abf8a2c3f768af344e6baef24c11594e7" args="(Renderer *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OsgModule::initializeRenderer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_server_module.html#a7008dad8d7dd750e2c3c81898c135180">omega::ServerModule</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a2bb5f49632968e256ab77ed8299254ed"></a><!-- doxytag: member="omegaOsg::OsgModule::instance" ref="a2bb5f49632968e256ab77ed8299254ed" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -199,6 +240,24 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">static <a class="el" href="classomega_osg_1_1_osg_module.html">OsgModule</a>* omegaOsg::OsgModule::instance </td>
           <td>(</td>
           <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a1331668b9630c33d7b160c086062c1b8"></a><!-- doxytag: member="omegaOsg::OsgModule::setAmbientOverrideHack" ref="a1331668b9630c33d7b160c086062c1b8" args="(bool value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void omegaOsg::OsgModule::setAmbientOverrideHack </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline, static]</code></td>
         </tr>

@@ -4,5 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="PlyFile",height=0.2,width=0.4,color="black",URL="$struct_ply_file.html"];
+  Node1 [label="omegaToolkit::MeshData",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_mesh_data.html",tooltip="Used to store mesh data loaded from a file in a common format, before transfering it to vertex and in..."];
 }

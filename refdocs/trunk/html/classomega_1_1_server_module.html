@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -33,6 +34,7 @@
 </div>
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <h1>omega::ServerModule Class Reference</h1>  </div>
@@ -48,6 +50,12 @@ Inheritance diagram for omega::ServerModule:</div>
 
 <p><a href="classomega_1_1_server_module-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204">Priority</a> { <a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204ac00a210d8f887d6996aacdb260613eb6">PriorityLow</a> =  0, 
+<a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204a9f106bb24e9b929a3eafec10fa38c2ad">PriorityNormal</a> =  1, 
+<a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204ab269d2a0d1f982512d2962e393bd91a5">PriorityHigh</a> =  2
+ }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#aed28d7558d244425c2b62c87de1a080f">ServerModule</a> (const String &amp;name)</td></tr>
@@ -63,7 +71,33 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#ae2b96d680d2a15a30148c7897d86aaae">doInitialize</a> (<a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a> *server)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#ae6193dd5e6e1e24ad417a3738f7872cb">isInitialized</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#a25c2620e31096e211008ff102bf2c192">getServer</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204">Priority</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#a3bdcdec3d1ff2c4492d69ba96d39260a">getPriority</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_server_module.html#acbf501687aeca922dbfa2a5f2fcc1f70">setPriority</a> (<a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204">Priority</a> value)</td></tr>
 </table>
+<hr/><h2>Member Enumeration Documentation</h2>
+<a class="anchor" id="a14837f41a00c0a435bfbe5fcbd3e7204"></a><!-- doxytag: member="omega::ServerModule::Priority" ref="a14837f41a00c0a435bfbe5fcbd3e7204" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204">omega::ServerModule::Priority</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em><a class="anchor" id="a14837f41a00c0a435bfbe5fcbd3e7204ac00a210d8f887d6996aacdb260613eb6"></a><!-- doxytag: member="PriorityLow" ref="a14837f41a00c0a435bfbe5fcbd3e7204ac00a210d8f887d6996aacdb260613eb6" args="" -->PriorityLow</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a14837f41a00c0a435bfbe5fcbd3e7204a9f106bb24e9b929a3eafec10fa38c2ad"></a><!-- doxytag: member="PriorityNormal" ref="a14837f41a00c0a435bfbe5fcbd3e7204a9f106bb24e9b929a3eafec10fa38c2ad" args="" -->PriorityNormal</em>&nbsp;</td><td>
+</td></tr>
+<tr><td valign="top"><em><a class="anchor" id="a14837f41a00c0a435bfbe5fcbd3e7204ab269d2a0d1f982512d2962e393bd91a5"></a><!-- doxytag: member="PriorityHigh" ref="a14837f41a00c0a435bfbe5fcbd3e7204ab269d2a0d1f982512d2962e393bd91a5" args="" -->PriorityHigh</em>&nbsp;</td><td>
+</td></tr>
+</table>
+</dd>
+</dl>
+
+</div>
+</div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aed28d7558d244425c2b62c87de1a080f"></a><!-- doxytag: member="omega::ServerModule::ServerModule" ref="aed28d7558d244425c2b62c87de1a080f" args="(const String &amp;name)" -->
 <div class="memitem">
@@ -141,6 +175,23 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3bdcdec3d1ff2c4492d69ba96d39260a"></a><!-- doxytag: member="omega::ServerModule::getPriority" ref="a3bdcdec3d1ff2c4492d69ba96d39260a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204">Priority</a> omega::ServerModule::getPriority </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a25c2620e31096e211008ff102bf2c192"></a><!-- doxytag: member="omega::ServerModule::getServer" ref="a25c2620e31096e211008ff102bf2c192" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +225,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_porthole_tablet_service.html#a506cc792de45c287ea99caf45d420aa4">omega::PortholeTabletService</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#a80a035013435d2dd15b459267198fe0d">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#aaffe3225061a99b6ad2916c0824d7ff3">omegaToolkit::ControllerManipulator</a>, <a class="el" href="classomega_toolkit_1_1_default_mouse_interactor.html#a6e35265a2b644d2a4b85757b07c64cde">omegaToolkit::DefaultMouseInteractor</a>, <a class="el" href="classomega_toolkit_1_1_default_two_hands_interactor.html#a95961643d261c5240af2ddcaed6d5767">omegaToolkit::DefaultTwoHandsInteractor</a>, <a class="el" href="classomega_toolkit_1_1_omega_toolkit_engine_module.html#a2caba22c207f43c56fcf82ee3bbd82e8">omegaToolkit::OmegaToolkitEngineModule</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ab4fe4e53445163aca2455360fcd2efb6">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#a23c7d8ca93cadcea6cbcbe668a1397dc">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#a9b214041bb6a0a1e82aad4c6d0a7cecd">omegaVtk::VtkModule</a>.</p>
+<p>Reimplemented in <a class="el" href="class_cyclops.html#a02e89df275e3abb96b5a75c0041c9208">Cyclops</a>, <a class="el" href="classcyclops_1_1_scene_manager.html#a388db3d97cac8dd660b834dd87688265">cyclops::SceneManager</a>, <a class="el" href="classomega_1_1_porthole_tablet_service.html#a506cc792de45c287ea99caf45d420aa4">omega::PortholeTabletService</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#a80a035013435d2dd15b459267198fe0d">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#aaffe3225061a99b6ad2916c0824d7ff3">omegaToolkit::ControllerManipulator</a>, <a class="el" href="classomega_toolkit_1_1_default_mouse_interactor.html#a6e35265a2b644d2a4b85757b07c64cde">omegaToolkit::DefaultMouseInteractor</a>, <a class="el" href="classomega_toolkit_1_1_default_two_hands_interactor.html#a95961643d261c5240af2ddcaed6d5767">omegaToolkit::DefaultTwoHandsInteractor</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ab4fe4e53445163aca2455360fcd2efb6">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#ae69a7bf803362842c8acb73e6df096c3">omegaToolkit::ui::MenuManager</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#a23c7d8ca93cadcea6cbcbe668a1397dc">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#a9b214041bb6a0a1e82aad4c6d0a7cecd">omegaVtk::VtkModule</a>.</p>
 
 </div>
 </div>
@@ -193,7 +244,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_porthole_tablet_service.html#ae89fa6985f9305801586abcc8689fa9a">omega::PortholeTabletService</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#ada487cc5fdfcc8c8a5860e8514d95fea">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_omega_toolkit_engine_module.html#aa1d352f8d9bb3bd965192b54b13c019e">omegaToolkit::OmegaToolkitEngineModule</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a100c0286f3a7a5639fa7b54489c9ea20">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#acbd92f9df22dc2a3dea879328525c8ac">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#a74e1e1319d59cec42ff42bf0012b0763">omegaVtk::VtkModule</a>.</p>
+<p>Reimplemented in <a class="el" href="class_cyclops.html#abcd36d15a8e099a19146888b2168eec5">Cyclops</a>, <a class="el" href="classcyclops_1_1_scene_manager.html#adbce1645b569940b70a252504593403c">cyclops::SceneManager</a>, <a class="el" href="classomega_1_1_porthole_tablet_service.html#ae89fa6985f9305801586abcc8689fa9a">omega::PortholeTabletService</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#ada487cc5fdfcc8c8a5860e8514d95fea">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a100c0286f3a7a5639fa7b54489c9ea20">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#acbcf32e7611ad92d338e2aa954c6b0cd">omegaToolkit::ui::MenuManager</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#acbd92f9df22dc2a3dea879328525c8ac">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#a74e1e1319d59cec42ff42bf0012b0763">omegaVtk::VtkModule</a>.</p>
 
 </div>
 </div>
@@ -212,6 +263,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classomega_osg_1_1_osg_module.html#abf8a2c3f768af344e6baef24c11594e7">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#af22e29554dc5ae59edac4264ccde0bf4">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#abf415e61974a17250e654b573543c42a">omegaVtk::VtkModule</a>.</p>
 
 </div>
 </div>
@@ -286,6 +339,24 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="acbf501687aeca922dbfa2a5f2fcc1f70"></a><!-- doxytag: member="omega::ServerModule::setPriority" ref="acbf501687aeca922dbfa2a5f2fcc1f70" args="(Priority value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omega::ServerModule::setPriority </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_server_module.html#a14837f41a00c0a435bfbe5fcbd3e7204">Priority</a>&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a154843257d6e83705eb505f734424a5d"></a><!-- doxytag: member="omega::ServerModule::update" ref="a154843257d6e83705eb505f734424a5d" args="(const UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
@@ -302,7 +373,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classomega_1_1_porthole_tablet_service.html#a3e81c81397ba381006f27647e446cfca">omega::PortholeTabletService</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#a6ac8b18a8ca65db03c08d8edbc6f79c4">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#a654cfdf68a0e0bb0d90f1321b1829aae">omegaToolkit::ControllerManipulator</a>, <a class="el" href="classomega_toolkit_1_1_omega_toolkit_engine_module.html#a80f327e4707e79f91f1434e03b343f67">omegaToolkit::OmegaToolkitEngineModule</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a7fa494c5f968aac2077e2d1be5f55447">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#a5a66a4920a9a00967d9f36e87ee7a252">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#a09445297f3d53545ebf9fce72bf9bbb6">omegaVtk::VtkModule</a>.</p>
+<p>Reimplemented in <a class="el" href="class_cyclops.html#a8fa52ed7dfc688c0c5036ad7abbe7568">Cyclops</a>, <a class="el" href="classcyclops_1_1_scene_manager.html#a79a2af07c478aecda3d63f92bc14117c">cyclops::SceneManager</a>, <a class="el" href="classomega_1_1_porthole_tablet_service.html#a3e81c81397ba381006f27647e446cfca">omega::PortholeTabletService</a>, <a class="el" href="classomega_osg_1_1_osg_module.html#a6ac8b18a8ca65db03c08d8edbc6f79c4">omegaOsg::OsgModule</a>, <a class="el" href="classomega_toolkit_1_1_controller_manipulator.html#a654cfdf68a0e0bb0d90f1321b1829aae">omegaToolkit::ControllerManipulator</a>, <a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a7fa494c5f968aac2077e2d1be5f55447">omegaToolkit::SceneEditorModule</a>, <a class="el" href="classomega_toolkit_1_1ui_1_1_menu_manager.html#a1e7fcae54c6d4630a4c890f9177bab87">omegaToolkit::ui::MenuManager</a>, <a class="el" href="classomega_toolkit_1_1_ui_module.html#a5a66a4920a9a00967d9f36e87ee7a252">omegaToolkit::UiModule</a>, and <a class="el" href="classomega_vtk_1_1_vtk_module.html#a09445297f3d53545ebf9fce72bf9bbb6">omegaVtk::VtkModule</a>.</p>
 
 </div>
 </div>

@@ -4,5 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="PyVTKClass",height=0.2,width=0.4,color="black",URL="$struct_py_v_t_k_class.html"];
+  Node1 [label="omegaToolkit::ui::IMenuItemListener",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_i_menu_item_listener.html"];
 }

@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -34,7 +35,9 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <h1>omegaToolkit::UiModule Class Reference</h1>  </div>
 </div>
@@ -54,14 +57,28 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#adde87aaa1b7755aa19ceb00324c3938d">UiModule</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a03f9300c5ddf5a2918cb0846fcd74a7d">~UiModule</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a44891d6c92055ea8902a9adc8a80947e">isLocalEventsEnabled</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#acbd92f9df22dc2a3dea879328525c8ac">initialize</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a5a66a4920a9a00967d9f36e87ee7a252">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a23c7d8ca93cadcea6cbcbe668a1397dc">handleEvent</a> (const Event &amp;evt)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#acbd92f9df22dc2a3dea879328525c8ac">initialize</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#af22e29554dc5ae59edac4264ccde0bf4">initializeRenderer</a> (<a class="el" href="classomega_1_1_renderer.html">Renderer</a> *r)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a5a66a4920a9a00967d9f36e87ee7a252">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a23c7d8ca93cadcea6cbcbe668a1397dc">handleEvent</a> (const Event &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_container.html">ui::Container</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a687974255ae53dcc6bb916c115108291">getUi</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget_factory.html">ui::WidgetFactory</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a593a5b0415230854d30339d991cf0b79">getWidgetFactory</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#adbd6c3d60d7a68676c2a53d478989b91">setGamepadInteractionEnabled</a> (bool value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#af9418800786e654fa91d836de8181c1e">getGamepadInteractionEnabled</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a517cb984faedc281d862438713dbbded">setPointerInteractionEnabled</a> (bool value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a3ca750c46898c79532896af558a50832">getPointerInteractionEnabled</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#afd79ed962ddb9d1809a4347e7b4b99f4">activateWidget</a> (<a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">ui::Widget</a> *w)</td></tr>
+<tr><td class="memTemplParams" colspan="2">template&lt;typename W &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">W *&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a174fe1383d2a7d8f8f4eb27bafd00b59">getSource</a> (const Event &amp;evt)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_toolkit_1_1_ui_module.html">UiModule</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a5e267295aedf4e4bdc961928d4e65b1a">instance</a> ()</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static const int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a551e8989dede1ee028195962bb374d99">MaxWidgets</a> = 16384</td></tr>
+<tr><td colspan="2"><h2><a name="friends"></a>
+Friends</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_ui_module.html#a8a1b3100954681b96907c2dc7581b95f">ui::Widget</a></td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="adde87aaa1b7755aa19ceb00324c3938d"></a><!-- doxytag: member="omegaToolkit::UiModule::UiModule" ref="adde87aaa1b7755aa19ceb00324c3938d" args="()" -->
@@ -99,6 +116,78 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="afd79ed962ddb9d1809a4347e7b4b99f4"></a><!-- doxytag: member="omegaToolkit::UiModule::activateWidget" ref="afd79ed962ddb9d1809a4347e7b4b99f4" args="(ui::Widget *w)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UiModule::activateWidget </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">ui::Widget</a> *&nbsp;</td>
+          <td class="paramname"> <em>w</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af9418800786e654fa91d836de8181c1e"></a><!-- doxytag: member="omegaToolkit::UiModule::getGamepadInteractionEnabled" ref="af9418800786e654fa91d836de8181c1e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omegaToolkit::UiModule::getGamepadInteractionEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a3ca750c46898c79532896af558a50832"></a><!-- doxytag: member="omegaToolkit::UiModule::getPointerInteractionEnabled" ref="a3ca750c46898c79532896af558a50832" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omegaToolkit::UiModule::getPointerInteractionEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a174fe1383d2a7d8f8f4eb27bafd00b59"></a><!-- doxytag: member="omegaToolkit::UiModule::getSource" ref="a174fe1383d2a7d8f8f4eb27bafd00b59" args="(const Event &amp;evt)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename W &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">W* omegaToolkit::UiModule::getSource </td>
+          <td>(</td>
+          <td class="paramtype">const Event &amp;&nbsp;</td>
+          <td class="paramname"> <em>evt</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a687974255ae53dcc6bb916c115108291"></a><!-- doxytag: member="omegaToolkit::UiModule::getUi" ref="a687974255ae53dcc6bb916c115108291" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -172,6 +261,26 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af22e29554dc5ae59edac4264ccde0bf4"></a><!-- doxytag: member="omegaToolkit::UiModule::initializeRenderer" ref="af22e29554dc5ae59edac4264ccde0bf4" args="(Renderer *r)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UiModule::initializeRenderer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_renderer.html">Renderer</a> *&nbsp;</td>
+          <td class="paramname"> <em>r</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classomega_1_1_server_module.html#a7008dad8d7dd750e2c3c81898c135180">omega::ServerModule</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a5e267295aedf4e4bdc961928d4e65b1a"></a><!-- doxytag: member="omegaToolkit::UiModule::instance" ref="a5e267295aedf4e4bdc961928d4e65b1a" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -206,6 +315,42 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="adbd6c3d60d7a68676c2a53d478989b91"></a><!-- doxytag: member="omegaToolkit::UiModule::setGamepadInteractionEnabled" ref="adbd6c3d60d7a68676c2a53d478989b91" args="(bool value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omegaToolkit::UiModule::setGamepadInteractionEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a517cb984faedc281d862438713dbbded"></a><!-- doxytag: member="omegaToolkit::UiModule::setPointerInteractionEnabled" ref="a517cb984faedc281d862438713dbbded" args="(bool value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omegaToolkit::UiModule::setPointerInteractionEnabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a5a66a4920a9a00967d9f36e87ee7a252"></a><!-- doxytag: member="omegaToolkit::UiModule::update" ref="a5a66a4920a9a00967d9f36e87ee7a252" args="(const UpdateContext &amp;context)" -->
 <div class="memitem">
 <div class="memproto">
@@ -223,6 +368,34 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classomega_1_1_server_module.html#a154843257d6e83705eb505f734424a5d">omega::ServerModule</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Friends And Related Function Documentation</h2>
+<a class="anchor" id="a8a1b3100954681b96907c2dc7581b95f"></a><!-- doxytag: member="omegaToolkit::UiModule::ui::Widget" ref="a8a1b3100954681b96907c2dc7581b95f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classomega_toolkit_1_1ui_1_1_widget.html">ui::Widget</a><code> [friend]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a551e8989dede1ee028195962bb374d99"></a><!-- doxytag: member="omegaToolkit::UiModule::MaxWidgets" ref="a551e8989dede1ee028195962bb374d99" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int <a class="el" href="classomega_toolkit_1_1_ui_module.html#a551e8989dede1ee028195962bb374d99">omegaToolkit::UiModule::MaxWidgets</a> = 16384<code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
 </div>
 </div>

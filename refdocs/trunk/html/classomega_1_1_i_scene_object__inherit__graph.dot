@@ -10,13 +10,17 @@ digraph G
   Node1 -> Node3 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node3 [label="omegaToolkit::RenderableSceneObject",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_renderable_scene_object.html"];
   Node3 -> Node4 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node4 [label="omegaToolkit::BoundingSphere",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_bounding_sphere.html"];
+  Node4 [label="omegaToolkit::Billboard",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_billboard.html"];
   Node3 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node5 [label="omegaToolkit::Box",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_box.html"];
+  Node5 [label="omegaToolkit::BoundingSphere",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_bounding_sphere.html"];
   Node3 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node6 [label="omegaToolkit::Mesh",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_mesh.html"];
+  Node6 [label="omegaToolkit::Box",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_box.html"];
   Node3 -> Node7 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node7 [label="omegaToolkit::ReferenceBox",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_reference_box.html"];
-  Node1 -> Node8 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node8 [label="omegaVtk::VtkAttachPoint",height=0.2,width=0.4,color="black",URL="$classomega_vtk_1_1_vtk_attach_point.html"];
+  Node7 [label="omegaToolkit::Mesh",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_mesh.html"];
+  Node3 -> Node8 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node8 [label="omegaToolkit::ReferenceBox",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_reference_box.html"];
+  Node3 -> Node9 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node9 [label="omegaToolkit::TexturedQuad",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1_textured_quad.html"];
+  Node1 -> Node10 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node10 [label="omegaVtk::VtkAttachPoint",height=0.2,width=0.4,color="black",URL="$classomega_vtk_1_1_vtk_attach_point.html"];
 }

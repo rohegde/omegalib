@@ -4,7 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="vtkOpenGLRenderWindow",height=0.2,width=0.4,color="black",URL="$classvtk_open_g_l_render_window.html"];
-  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node2 [label="vtkGenericOpenGLRenderWindow",height=0.2,width=0.4,color="black",URL="$classvtk_generic_open_g_l_render_window.html"];
+  Node1 [label="pluginfbx::WriterNodeVisitor::Material",height=0.2,width=0.4,color="black",URL="$classpluginfbx_1_1_writer_node_visitor_1_1_material.html"];
 }

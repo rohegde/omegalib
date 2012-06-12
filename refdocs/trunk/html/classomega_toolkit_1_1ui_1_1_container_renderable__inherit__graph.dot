@@ -8,4 +8,6 @@ digraph G
   Node2 [label="omegaToolkit::ui::WidgetRenderable",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_widget_renderable.html"];
   Node3 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node3 [label="omega::Renderable",height=0.2,width=0.4,color="red",URL="$classomega_1_1_renderable.html"];
+  Node1 -> Node4 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="omegaToolkit::ui::DefaultPanelRenderable",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_default_panel_renderable.html"];
 }

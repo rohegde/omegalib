@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -61,11 +62,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a100c0286f3a7a5639fa7b54489c9ea20">initialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a7fa494c5f968aac2077e2d1be5f55447">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ab4fe4e53445163aca2455360fcd2efb6">handleEvent</a> (const Event &amp;evt)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a265d4844c372bb036823c7dc3ee86b95">setInteractorStyle</a> (<a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ae30cce9218ece22a6ae62a18720b5420">InteractorStyle</a> style)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ae30cce9218ece22a6ae62a18720b5420">InteractorStyle</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#acf18819d1ff616810496a49b48ddf120">getInteractorStyle</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a6d8d3914b0ec65df2d23d794c1998ab0">setInteractor</a> (<a class="el" href="classomega_1_1_actor.html">Actor</a> *interactor)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_actor.html">Actor</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#accf594e96b7827cd3e0d06f5e5a6d98f">getInteractor</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a4fd30fb5f0b8d201b86149b218d20d36">addNode</a> (<a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *node)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#af6cf27114a61878ab18bfb333f4a2ce3">removeNode</a> (<a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *node)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_scene_node.html">SceneNode</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a234761a32e446ff1d959f093c2fc77b8">getSelectedNode</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a255a12c8096a07b4ee265b6bcdb93e0d">isEnabled</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#a91d8f2bb0350afbfcda6f9ffa2439052">setEnabled</a> (bool value)</td></tr>
 </table>
 <hr/><h2>Member Enumeration Documentation</h2>
 <a class="anchor" id="ae30cce9218ece22a6ae62a18720b5420"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::InteractorStyle" ref="ae30cce9218ece22a6ae62a18720b5420" args="" -->
@@ -143,12 +146,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acf18819d1ff616810496a49b48ddf120"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::getInteractorStyle" ref="acf18819d1ff616810496a49b48ddf120" args="()" -->
+<a class="anchor" id="accf594e96b7827cd3e0d06f5e5a6d98f"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::getInteractor" ref="accf594e96b7827cd3e0d06f5e5a6d98f" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ae30cce9218ece22a6ae62a18720b5420">InteractorStyle</a> omegaToolkit::SceneEditorModule::getInteractorStyle </td>
+          <td class="memname"><a class="el" href="classomega_1_1_actor.html">Actor</a>* omegaToolkit::SceneEditorModule::getInteractor </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -216,6 +219,23 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a255a12c8096a07b4ee265b6bcdb93e0d"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::isEnabled" ref="a255a12c8096a07b4ee265b6bcdb93e0d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool omegaToolkit::SceneEditorModule::isEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="af6cf27114a61878ab18bfb333f4a2ce3"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::removeNode" ref="af6cf27114a61878ab18bfb333f4a2ce3" args="(SceneNode *node)" -->
 <div class="memitem">
 <div class="memproto">
@@ -234,17 +254,35 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a265d4844c372bb036823c7dc3ee86b95"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::setInteractorStyle" ref="a265d4844c372bb036823c7dc3ee86b95" args="(InteractorStyle style)" -->
+<a class="anchor" id="a91d8f2bb0350afbfcda6f9ffa2439052"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::setEnabled" ref="a91d8f2bb0350afbfcda6f9ffa2439052" args="(bool value)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SceneEditorModule::setInteractorStyle </td>
+          <td class="memname">void omegaToolkit::SceneEditorModule::setEnabled </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_toolkit_1_1_scene_editor_module.html#ae30cce9218ece22a6ae62a18720b5420">InteractorStyle</a>&nbsp;</td>
-          <td class="paramname"> <em>style</em></td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>value</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td></td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6d8d3914b0ec65df2d23d794c1998ab0"></a><!-- doxytag: member="omegaToolkit::SceneEditorModule::setInteractor" ref="a6d8d3914b0ec65df2d23d794c1998ab0" args="(Actor *interactor)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void omegaToolkit::SceneEditorModule::setInteractor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classomega_1_1_actor.html">Actor</a> *&nbsp;</td>
+          <td class="paramname"> <em>interactor</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>

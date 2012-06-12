@@ -4,5 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="omicron::EventUtils",height=0.2,width=0.4,color="black",URL="$classomicron_1_1_event_utils.html"];
+  Node1 [label="omega::TabletGuiElement",height=0.2,width=0.4,color="black",URL="$structomega_1_1_tablet_gui_element.html"];
 }

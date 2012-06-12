@@ -4,9 +4,5 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="CullSettings",height=0.2,width=0.4,color="black",URL="$classosg_1_1_cull_settings.html"];
-  Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node2 [label="SceneView",height=0.2,width=0.4,color="black",URL="$class_scene_view.html"];
-  Node3 [label="Object",height=0.2,width=0.4,color="black",URL="$classosg_1_1_object.html"];
-  Node3 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node1 [label="GLXHyperpipeConfigSGIX",height=0.2,width=0.4,color="black",URL="$struct_g_l_x_hyperpipe_config_s_g_i_x.html"];
 }

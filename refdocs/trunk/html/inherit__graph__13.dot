@@ -4,7 +4,7 @@ digraph G
   edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
   node [fontname="FreeSans.ttf",fontsize="8",shape=record];
   rankdir=LR;
-  Node1 [label="Node",height=0.2,width=0.4,color="black",URL="$classeq_1_1_node.html"];
+  Node1 [label="exception",height=0.2,width=0.4,color="black",URL="$classstd_1_1exception.html"];
   Node1 -> Node2 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node2 [label="omega::NodeImpl",height=0.2,width=0.4,color="black",URL="$classomega_1_1_node_impl.html"];
+  Node2 [label="ply::MeshException",height=0.2,width=0.4,color="black",URL="$structply_1_1_mesh_exception.html"];
 }

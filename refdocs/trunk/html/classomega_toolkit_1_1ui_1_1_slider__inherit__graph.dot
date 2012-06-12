@@ -11,5 +11,7 @@ digraph G
   Node4 -> Node2 [dir=back,color="firebrick4",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node4 [label="IEventListener",height=0.2,width=0.4,color="black",URL="$class_i_event_listener.html"];
   Node1 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node5 [label="omegaToolkit::ui::DefaultSlider",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_default_slider.html"];
+  Node5 [label="omegaToolkit::ui::BareboneSlider",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_barebone_slider.html"];
+  Node1 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="omegaToolkit::ui::DefaultSlider",height=0.2,width=0.4,color="black",URL="$classomega_toolkit_1_1ui_1_1_default_slider.html"];
 }

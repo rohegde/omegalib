@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -51,8 +52,8 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_image_data.html">ImageData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a05131a8f893e621eabc373519575b057">loadImage</a> (const String &amp;filename)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Load an image from a file.  <a href="#a05131a8f893e621eabc373519575b057"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_image_data.html">ImageData</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#ab033aeb26d7d12380724603399d4c3d0">loadImage</a> (const String &amp;filename, bool hasFullPath=false)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Load an image from a file.  <a href="#ab033aeb26d7d12380724603399d4c3d0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static ByteArray *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#abf0dee73ad2ee17169c11fb1797b31af">encode</a> (<a class="el" href="structomega_1_1_pixel_data.html">PixelData</a> *data, <a class="el" href="classomega_1_1_image_utils.html#a3adea18d896812a9499e62290793f35c">ImageFormat</a> format)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#a2fa94e6047770e5383a8e47783b70bbb">internalInitialize</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_image_utils.html#aff53aa5f29908ae61515349430562917">internalDispose</a> ()</td></tr>
@@ -141,7 +142,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a05131a8f893e621eabc373519575b057"></a><!-- doxytag: member="omega::ImageUtils::loadImage" ref="a05131a8f893e621eabc373519575b057" args="(const String &amp;filename)" -->
+<a class="anchor" id="ab033aeb26d7d12380724603399d4c3d0"></a><!-- doxytag: member="omega::ImageUtils::loadImage" ref="ab033aeb26d7d12380724603399d4c3d0" args="(const String &amp;filename, bool hasFullPath=false)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -149,9 +150,18 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname"><a class="el" href="classomega_1_1_image_data.html">ImageData</a> * ImageUtils::loadImage </td>
           <td>(</td>
           <td class="paramtype">const String &amp;&nbsp;</td>
-          <td class="paramname"> <em>filename</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [static]</code></td>
+          <td class="paramname"> <em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>hasFullPath</em> = <code>false</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
         </tr>
       </table>
 </div>

@@ -14,5 +14,7 @@ digraph G
   Node1 -> Node5 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
   Node5 [label="omega::PortholeTabletService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_porthole_tablet_service.html",tooltip="Implements an interface to tablet device applications using the Porthole protocol."];
   Node1 -> Node6 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
-  Node6 [label="omega::SagePointerService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_sage_pointer_service.html",tooltip="Implements a service able to receive pointer updates from the SAGE pointer application."];
+  Node6 [label="omega::ViewRayService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_view_ray_service.html",tooltip="Processes pointer events, converting their position to pixel coordinates and adding a view ray based ..."];
+  Node1 -> Node7 [dir=back,color="midnightblue",fontsize="8",style="solid",fontname="FreeSans.ttf"];
+  Node7 [label="omega::WandEmulationService",height=0.2,width=0.4,color="black",URL="$classomega_1_1_wand_emulation_service.html",tooltip="Processes pointer events, converting their position to pixel coordinates and adding a view ray based ..."];
 }

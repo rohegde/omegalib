@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -75,8 +76,13 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aa3c7095ea4401a7cfe072f4b37ed8328">isMaster</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const String &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aad6cd3d4650b272732f3a4bec557f99f">getHostname</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_python_interpreter.html">PythonInterpreter</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a1e7258d2d18910da157d430dda002f97">getScriptInterpreter</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_mission_control_server.html">MissionControlServer</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a9b207c233e3223bbde41c0d76ff7f9e6">getMissionControlServer</a> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#a1474eae51b79acc60149a0dae46731c8">settingExists</a> (const String &amp;name)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Utility method: searches for setting in application and system configuration file,.  <a href="#a1474eae51b79acc60149a0dae46731c8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static Setting &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aaea6f55c34bb27b19656c94b179d7998">settingLookup</a> (const String &amp;name)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Utility method: searches for setting in application and system configuration file,.  <a href="#aaea6f55c34bb27b19656c94b179d7998"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomega_1_1_system_manager.html">SystemManager</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_system_manager.html#aefb1daba6a0ea15ba4ef97f0e2428b35">instance</a> ()</td></tr>
 </table>
 <hr/><h2>Member Function Documentation</h2>
@@ -196,6 +202,23 @@ Static Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">const String&amp; omega::SystemManager::getHostname </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9b207c233e3223bbde41c0d76ff7f9e6"></a><!-- doxytag: member="omega::SystemManager::getMissionControlServer" ref="a9b207c233e3223bbde41c0d76ff7f9e6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomega_1_1_mission_control_server.html">MissionControlServer</a>* omega::SystemManager::getMissionControlServer </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
@@ -424,6 +447,46 @@ Static Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Sets the <a class="el" href="classomega_1_1_display_system.html">DisplaySystem</a> object. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1474eae51b79acc60149a0dae46731c8"></a><!-- doxytag: member="omega::SystemManager::settingExists" ref="a1474eae51b79acc60149a0dae46731c8" args="(const String &amp;name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SystemManager::settingExists </td>
+          <td>(</td>
+          <td class="paramtype">const String &amp;&nbsp;</td>
+          <td class="paramname"> <em>name</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Utility method: searches for setting in application and system configuration file,. </p>
+
+</div>
+</div>
+<a class="anchor" id="aaea6f55c34bb27b19656c94b179d7998"></a><!-- doxytag: member="omega::SystemManager::settingLookup" ref="aaea6f55c34bb27b19656c94b179d7998" args="(const String &amp;name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Setting &amp; SystemManager::settingLookup </td>
+          <td>(</td>
+          <td class="paramtype">const String &amp;&nbsp;</td>
+          <td class="paramname"> <em>name</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Utility method: searches for setting in application and system configuration file,. </p>
 
 </div>
 </div>

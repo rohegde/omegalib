@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -59,7 +60,7 @@ Public Types</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac014169f0f768b7a43254143e7bc6822">PythonInterpreter</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a5a35b0aebf424e66b11751e84c6419bf">~PythonInterpreter</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a5a35b0aebf424e66b11751e84c6419bf">~PythonInterpreter</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a08076e3c751f9f0e81ff0b4b81b78146">setup</a> (const Setting &amp;setting)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a8865144f0410afb5b8c1ba9553b4e1bb">initialize</a> (const char *programName)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a32ad91ade198e6551132ae42a7211400">addModule</a> (const char *name, PyMethodDef *methods)</td></tr>
@@ -74,10 +75,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#afdd6814295e9189271ca2a947e20b4fb">handleEvent</a> (const Event &amp;evt)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa5c2074644ca757eb57d080ad3dbb7be">commitSharedData</a> (<a class="el" href="classomega_1_1_shared_o_stream.html">SharedOStream</a> &amp;out)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa3ee596e25f0a318cd1c4e99aef111ce">updateSharedData</a> (<a class="el" href="classomega_1_1_shared_i_stream.html">SharedIStream</a> &amp;in)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">String&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a241d2e662c4f90e88a96d0d311b6a0fe">getHelpString</a> (const String &amp;filter)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aa0a152fc77b2afeb682d37a27e24ec35">myEnabled</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#af691416859554570f480d00c43e9b04c">myShellEnabled</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a6258e75f790fc8e3951979404b835380">myDebugShell</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">PythonInteractiveThread *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a7d21dc817b5391750bb80a06d7e23621">myInteractiveThread</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Lock&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#adfbe90b7af80f6717fa6e9e350ee26e2">myInteractiveCommandLock</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">String&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aab4b7bc980146442bf040d2ccf478356">myInteractiveCommand</a></td></tr>
@@ -85,6 +88,7 @@ Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aded53566dfe724e8dbe5bac58494fc99">myInteractiveCommandNeedsSend</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">List&lt; void * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac3eebb0980e552d354d2502de485d4b9">myUpdateCallbacks</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">List&lt; void * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aadee3a5728d2e299d1d8be35723f9814">myPointerEventCallbacks</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="structomega_1_1_command_help_entry.html">CommandHelpEntry</a> * &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#adb2a9478b72ff8b8527c844c21d93b72">myHelpData</a></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">struct&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a64c0808c7300e509f0393d0946237445">PythonInterpreterWrapper</a></td></tr>
@@ -138,7 +142,7 @@ Friends</h2></td></tr>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td></td>
+          <td><code> [virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -238,6 +242,24 @@ Friends</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a241d2e662c4f90e88a96d0d311b6a0fe"></a><!-- doxytag: member="omega::PythonInterpreter::getHelpString" ref="a241d2e662c4f90e88a96d0d311b6a0fe" args="(const String &amp;filter)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">String PythonInterpreter::getHelpString </td>
+          <td>(</td>
+          <td class="paramtype">const String &amp;&nbsp;</td>
+          <td class="paramname"> <em>filter</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -449,12 +471,38 @@ Friends</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a6258e75f790fc8e3951979404b835380"></a><!-- doxytag: member="omega::PythonInterpreter::myDebugShell" ref="a6258e75f790fc8e3951979404b835380" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classomega_1_1_python_interpreter.html#a6258e75f790fc8e3951979404b835380">omega::PythonInterpreter::myDebugShell</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="aa0a152fc77b2afeb682d37a27e24ec35"></a><!-- doxytag: member="omega::PythonInterpreter::myEnabled" ref="aa0a152fc77b2afeb682d37a27e24ec35" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool <a class="el" href="classomega_1_1_python_interpreter.html#aa0a152fc77b2afeb682d37a27e24ec35">omega::PythonInterpreter::myEnabled</a><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="adb2a9478b72ff8b8527c844c21d93b72"></a><!-- doxytag: member="omega::PythonInterpreter::myHelpData" ref="adb2a9478b72ff8b8527c844c21d93b72" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="structomega_1_1_command_help_entry.html">CommandHelpEntry</a>*&gt; <a class="el" href="classomega_1_1_python_interpreter.html#adb2a9478b72ff8b8527c844c21d93b72">omega::PythonInterpreter::myHelpData</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>
