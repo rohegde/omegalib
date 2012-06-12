@@ -7,7 +7,7 @@
             <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
             <File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
             <File Id="3" Path="railsim/test/Station/station.obj" Size="40"/>
-		 <File Id="4" Path="railsim/test/modeshapesimple/shape*.fbx" Objcount="5"/>	
+		 <File Id="4" Path="railsim/test/modeshapesimple/shape0.obj" Effect="colored -d red"/>
 		</Files>
 
 		<StaticObjects>
@@ -33,15 +33,15 @@
           
             <Entities>
 				<!-- This is the messed up rail -->
-                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="27.5 -0.55 -0.28" />                 
+                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="bentrail" WorldPos="27.5 -0.55 -0.28" />                 
 				
 				<!-- This is the wheel -->  
-                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="wheel" WorldPos="0 0 0" />
                 
 				<!-- This is the frame -->
-                <Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
-  			 
-			<Entity FileIndex="4" Id="3" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+                <Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="frame" WorldPos="0 0 0" />
+			
+			<Entity FileIndex="4" Id="3" Rotation="0 0 0" Scale="1 1 1" Tag="modeshape" WorldPos="0 0 0" />
 
 				
                
