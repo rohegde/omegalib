@@ -1,3 +1,4 @@
+ * [https://docs.google.com/document/pub?id=1DHKHlHZoXKkgnG1hAGNgZvb8HnGk3vC3HNXc5ZmZPqs Test Doc Link]
  * [GettingStarted Geting Started with omegalib]
    * [Concept introduction and design]
  * [BuildSystemReference Compiling omegalib]

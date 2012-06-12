@@ -16,9 +16,6 @@
 
 = New Features =
 == Cyclops improvements ==
-	* scene Lights / Light / MainLight
-	* scene BackgroundColor
-	* add lighting customization options
 	* fix bump shaders
 
 == ENDURANCE Demo ==
