@@ -2,7 +2,7 @@
 #sidebar Sidebar
 
 = Getting started with omegalb Developement =
-This page offers basic information on how to develop applications for omegalib.
+This page offers basic information on how to develop applications for omegalib. This material integrates what presented in [https://docs.google.com/document/pub?id=1-4qjugWuHnWgBEwGXNCGmCrhZ05p19nwLlOU2pDQzyY this guide]
 
 == Building omegalib ==
 omegalib currently ships as a source-only toolkit. Users and developers can easily build an omegalib binary distribution using the CMake build system. For more information on how to build omegalib go to [this page].

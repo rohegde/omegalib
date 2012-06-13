@@ -1,4 +1,5 @@
-	* [GettingStarted Geting Started with omegalib]
+	* [GettingStarted Getting Started with omegalib]
+		* [[https://docs.google.com/document/pub?id=1-4qjugWuHnWgBEwGXNCGmCrhZ05p19nwLlOU2pDQzyY Note for an omegalib tutorial]
 	* [BuildSystemReference Building omegalib]
 	* [ConfigReference Configuration files]
 	* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/index.html API reference (trunk)]
