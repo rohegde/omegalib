@@ -60,6 +60,52 @@ Vector3f CameraController::computeSpeedVector(uint moveFlags, float speed, float
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+MouseCameraController::MouseCameraController():
+	mySpeed(2.0f),
+	myStrafeMultiplier(1.0f),
+	myYawMultiplier(0.002f),
+	myPitchMultiplier(0.002f),
+	myYaw(0),
+	myPitch(0),
+	myMoving(false)
+{
+	myMoveDir = Vector3f::Zero();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MouseCameraController::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == Service::Pointer)
+	{
+		if(evt.isFlagSet(Event::Left))
+		{
+			Vector3f dpos = evt.getPosition() - myLastPointerPosition;
+			myYaw -= dpos.x() * myYawMultiplier;
+			myPitch -= dpos.y() * myPitchMultiplier;
+		}
+		if(evt.isFlagSet(Event::Right))
+		{
+			Vector3f dpos = evt.getPosition() - myLastPointerPosition;
+			myMoveDir = Vector3f(dpos.x(), 0, dpos.y()) * mySpeed;
+		}
+		// Mouse wheel.
+		if(evt.getType() == Event::Zoom)
+		{
+			int wheel = evt.getExtraDataInt(0);
+			myMoveDir += Vector3f(0, wheel * mySpeed, 0);
+		}
+		myLastPointerPosition = evt.getPosition();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void MouseCameraController::update(const UpdateContext& context)
+{
+	updateCamera(myMoveDir, myYaw, myPitch, 0, context.dt);
+	myMoveDir = Vector3f::Zero();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 KeyboardMouseCameraController::KeyboardMouseCameraController():
 	mySpeed(2.0f),
 	myStrafeMultiplier(1.0f),

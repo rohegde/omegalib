@@ -145,6 +145,7 @@ void Camera::setup(Setting& s)
 		myController = NULL;
 		ofmsg("Camera controller: %1%", %controllerName);
 		if(controllerName == "keyboardmouse") myController = new KeyboardMouseCameraController();
+		if(controllerName == "mouse") myController = new MouseCameraController();
 		if(controllerName == "wand") myController = new WandCameraController();
 		if(controllerName == "gamepad") myController = new GamepadCameraController();
 

@@ -70,6 +70,28 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API MouseCameraController: public CameraController
+	{
+	public:
+		MouseCameraController();
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
+
+	private:
+		// Navigation stuff.
+		float mySpeed;
+		float myStrafeMultiplier;
+		float myYawMultiplier;
+		float myPitchMultiplier;
+		bool myMoving;
+		bool myRotating;
+		Vector3f myLastPointerPosition;
+		float myYaw;
+		float myPitch;
+		Vector3f myMoveDir;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API KeyboardMouseCameraController: public CameraController
 	{
 	public:
