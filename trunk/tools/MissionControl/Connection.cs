@@ -73,6 +73,21 @@ namespace MissionControl
                         MainWindow.Instance.AddAutocompletionItem(items[i]);
                     }
                 }
+                // Stats message: contains a string of stat names. Pass it to the stats
+                // window, so it can initialize the stats list.
+                if(header == "strq")
+                {
+                    String message = Encoding.UTF8.GetString(myBuffer, 0, size);
+                    string[] items = message.Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+                    MainWindow.Instance.StatsWindow.SetStats(items);
+                }
+                // Stats update: contains a string of stat ids followed by current, min, max and average values (as strings). 
+                if(header == "stup")
+                {
+                    String message = Encoding.UTF8.GetString(myBuffer, 0, size);
+                    string[] items = message.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    MainWindow.Instance.StatsWindow.UpdateStats(items);
+                }
             }
         }
 
@@ -100,16 +115,22 @@ namespace MissionControl
         ///////////////////////////////////////////////////////////////////////////////////////////
         public void SendMessage(string headerString)
         {
+            SendMessage(headerString, "");
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        public void SendMessage(string headerString, string messagePayload)
+        {
             if(myClient != null && myClient.Connected)
             {
                 try
                 {
                     byte[] header = Encoding.UTF8.GetBytes(headerString);
                     myClient.GetStream().Write(header, 0, 4);
-                    //byte[] cmdBytes = Encoding.UTF8.GetBytes(cmd);
-                    byte[] cmdLengthBytes = BitConverter.GetBytes(0);
+                    byte[] cmdBytes = Encoding.UTF8.GetBytes(messagePayload);
+                    byte[] cmdLengthBytes = BitConverter.GetBytes(cmdBytes.Length);
                     myClient.GetStream().Write(cmdLengthBytes, 0, cmdLengthBytes.Length);
-                    //myClient.GetStream().Write(cmdBytes, 0, cmdBytes.Length);
+                    myClient.GetStream().Write(cmdBytes, 0, cmdBytes.Length);
                 }
                 catch(System.IO.IOException e)
                 {

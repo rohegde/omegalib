@@ -74,6 +74,15 @@ namespace MissionControl
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////
+        public StatsWindow StatsWindow
+        {
+            get
+            {
+                return myStatsWindow;
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
         public List<string> AutocompletionList
         {
             get
@@ -127,6 +136,7 @@ namespace MissionControl
 
         private List<Macro> myMacros;
         private MacroWindow myMacroWindow;
+        private StatsWindow myStatsWindow;
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -191,6 +201,19 @@ namespace MissionControl
                 Properties.Settings.Default.MacroScripts.Add(m.Script);
             }
             Properties.Settings.Default.Save();
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        private void statsViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(myStatsWindow == null)
+            {
+                myStatsWindow = new StatsWindow();
+            }
+            if(!myStatsWindow.Visible)
+            {
+                myStatsWindow.Show(this);
+            }
         }
     }
 
