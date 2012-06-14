@@ -39,6 +39,7 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.macroEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myConnectionPoller = new System.Windows.Forms.Timer(this.components);
+            this.statsViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -128,7 +129,8 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.macroEditorToolStripMenuItem});
+            this.macroEditorToolStripMenuItem,
+            this.statsViewerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -144,6 +146,13 @@
             // 
             this.myConnectionPoller.Enabled = true;
             this.myConnectionPoller.Tick += new System.EventHandler(this.myConnectionPoller_Tick);
+            // 
+            // statsViewerToolStripMenuItem
+            // 
+            this.statsViewerToolStripMenuItem.Name = "statsViewerToolStripMenuItem";
+            this.statsViewerToolStripMenuItem.Size = new System.Drawing.Size(164, 24);
+            this.statsViewerToolStripMenuItem.Text = "Stats Viewer";
+            this.statsViewerToolStripMenuItem.Click += new System.EventHandler(this.statsViewerToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -176,6 +185,7 @@
         private System.Windows.Forms.Timer myConnectionPoller;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem macroEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statsViewerToolStripMenuItem;
     }
 }
 
