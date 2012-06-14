@@ -272,20 +272,11 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		if(DataManager::findFile(filePath, assetPath))
 		{ 
 			osgDB::Options* options = new osgDB::Options; 
-			options->setOptionString("noTesselateLargePolygons noTriStripPolygons"); 
+			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotation"); 
 
 			osg::Node* node = osgDB::readNodeFile(assetPath, options);
 			if(node != NULL)
 			{
-				// DEPRECATED: Attribute material. Process for compatibility with old scene xml, 
-				// but avoid using in new scenes.
-				if(xchild->Attribute("Material") != NULL)
-				{
-					String material = xchild->Attribute("Material");
-					osg::StateSet* fx = mySceneManager->loadMaterialPass(material);
-					node->setStateSet(fx);
-				}
-
 				if(xchild->Attribute("Effect") != NULL)
 				{
 					String fxDef = xchild->Attribute("Effect");
@@ -371,7 +362,7 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			String sTag;
 			if(tag != NULL) sTag = tag;
 
-			EntityEventCallbacks eec;
+			//EntityEventCallbacks eec;
 			//const char*
 
 			Entity* e = mySceneManager->addEntity(fileIndex, id, sTag, position, rotation, scale);
@@ -400,7 +391,6 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 	Vector3f startCorner = readVector3f(xchild, "StartCorner");
 	Vector3f endCorner = readVector3f(xchild, "EndCorner");
 	Vector2f tiling = readVector2f(xchild, "Tiling");
-	//String material = xchild->Attribute("Material");
 
 	Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
 	Vector3f c2(endCorner[0], startCorner[1], startCorner[2]);
@@ -434,15 +424,6 @@ osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
 		fx->addChild(node);
 		return fx;
 	}
-
-	// TEMPORARY
-	if(xchild->Attribute("Material") != NULL)
-	{
-		String fxDef = xchild->Attribute("Material");
-		osg::StateSet* ss = mySceneManager->loadMaterialPass(fxDef);
-		node->setStateSet(ss);
-	}
-
 	return node;
 }
 

@@ -147,7 +147,6 @@ namespace cyclops {
 
 		osg::Texture2D* getTexture(const String& name);
 		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
-		osg::StateSet* loadMaterialPass(const String& filename);
 		void initShading();
 
 		//! Shadow map control
@@ -164,7 +163,6 @@ namespace cyclops {
 
 	private:
 		void loadShader(osg::Shader* shader, const String& name);
-		osg::StateSet* createMaterialPass(TiXmlElement* xdata, const String& type);
 
 	private:
 		static SceneManager* mysInstance;
@@ -183,7 +181,6 @@ namespace cyclops {
 
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, osg::Program*> myPrograms;
-		Dictionary<String, osg::StateSet*> myMaterialPasses;
 
 		ShaderMacroDictionary myShaderMacros;
 
