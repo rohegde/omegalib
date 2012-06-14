@@ -30,6 +30,7 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgAnimation/Animation>
 
+#include "cyclops/Entity.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
 
@@ -38,6 +39,7 @@ using namespace cyclops;
 SceneManager* SceneManager::mysInstance = NULL;
 
 #ifdef OMEGA_OS_LINUX
+	// On linux we need to define all static variables, even if they have been assigned in the header file.
 	const int SceneManager::MaxLights;
 #endif
 
@@ -61,153 +63,6 @@ struct AnimationManagerFinder : public osg::NodeVisitor
         traverse(node); 
     } 
 }; 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
-	mySceneManager(mng), 
-	myAsset(asset), 
-	myId(id), 
-	myOsgSwitch(NULL), 
-	myCurrentModelIndex(0),
-	myAnimationManager(NULL),
-	myAnimations(NULL)
-{
-	ServerEngine* engine = mng->getEngine();
-
-	mySceneNode = new SceneNode(engine);
-	mySceneNode->setSelectable(true);
-	engine->getScene()->addChild(mySceneNode);
-
-	OsgSceneObject* oso = NULL;
-	if(asset->numNodes == 1)
-	{
-		// Single model asset
-		oso = new OsgSceneObject(myAsset->nodes[0]);
-		myOsgNode = oso->getTransformedNode();
-	}
-	else
-	{
-		// Multi model asset
-		myOsgSwitch = new osg::Switch();
-		int i = 0;
-		foreach(osg::Node* n, myAsset->nodes)
-		{
-			myOsgSwitch->addChild(n);
-			myOsgSwitch->setChildValue(n, i++);
-		}
-		oso = new OsgSceneObject(myOsgSwitch);
-		myOsgNode = oso->getTransformedNode();
-	}
-
-	AnimationManagerFinder amf;
-	myOsgNode->accept(amf);
-	if(amf.am != NULL)
-	{
-		myAnimationManager = amf.am;
-		myAnimations = &myAnimationManager->getAnimationList();
-		ofmsg("Entity id %1%: found %2% animations.", %myId %getNumAnimations());
-
-		loopAnimation(0);
-	}
-
-	mySceneNode->addObject(oso);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setCurrentModelIndex(int index)
-{
-	if(myOsgSwitch != NULL && index < getNumModels())
-	{
-		myCurrentModelIndex = index;
-		myOsgSwitch->setSingleChildOn(index);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int Entity::getCurrentModelIndex()
-{
-	if(myOsgSwitch != NULL)
-	{
-		return myCurrentModelIndex;
-	}
-	return 0;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Entity::hasAnimations()
-{
-	return myAnimationManager != NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int Entity::getNumAnimations()
-{
-	if(hasAnimations())
-	{
-		return myAnimations->size();
-	}
-	return 0;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::playAnimation(int id)
-{
-	if(hasAnimations())
-	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			anim->setPlayMode(osgAnimation::Animation::ONCE);
-			myAnimationManager->playAnimation(anim);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::loopAnimation(int id)
-{
-	if(hasAnimations())
-	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			anim->setPlayMode(osgAnimation::Animation::LOOP);
-			myAnimationManager->playAnimation(anim);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::pauseAnimation(int id)
-{
-	if(hasAnimations())
-	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			myAnimationManager->stopAnimation(anim);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::stopAllAnimations()
-{
-	if(hasAnimations())
-	{
-		myAnimationManager->stopAll();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setEventCallbacks(const EntityEventCallbacks& eec)
-{
-	//myCallbacks = eec;
-	//if(eec.onAdd != "")
-	//{
-	//	eec.onAdd = ostr(eec.onAdd, %myId);
-	//}
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
@@ -257,17 +112,11 @@ void SceneManager::initialize()
 
 	loadConfiguration();
 
-	myTabletManager = myEngine->getServiceManager()->findService<PortholeTabletService>("PortholeTabletService");
-
-	//if(myTabletManager != NULL)
-	//{
-	//	myTabletManager->beginGui();
-	//	myTabletManager->addGuiElement(TabletGuiElement::createButton(0, "View", "Click to switch view", "View"));
-	//	myTabletManager->addGuiElement(TabletGuiElement::createSlider(1, "Local Zoom", "Select the zoom level of the tablet view", 0, 100, 30));
-	//	myTabletManager->addGuiElement(TabletGuiElement::createSlider(2, "Remote Zoom", "Select the zoom level of the main view", 10, 200, 30));
-	//	myTabletManager->addGuiElement(TabletGuiElement::createSwitch(3, "Rotate", "Toggle to enable object rotation", 0));
-	//	myTabletManager->finishGui();
-	//}
+	// If a default scene file has been specified, load it.
+	if(mySceneFilename != "")
+	{
+		load(mySceneFilename);
+	}
 
 	if(myShadowMode == ShadowsSoft)
 	{
@@ -300,22 +149,12 @@ void SceneManager::initialize()
 	setShaderMacroToFile("use setupStandardShading", "cyclops/common/standardShading/setupStandardShading.vert");
 	setShaderMacroToFile("use computeStandardShading", "cyclops/common/standardShading/computeStandardShading.frag");
 
-	// If a default scene file has been specified, load it.
-	if(mySceneFilename != "")
-	{
-		load(mySceneFilename);
-	}
-
 	//frontView = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::update(const UpdateContext& context) 
 {
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->update(context);
-	}
 	updateLights();
 }
 
@@ -383,10 +222,6 @@ void SceneManager::updateLights()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::handleEvent(const Event& evt) 
 {
-	if(myTabletManager != NULL)
-	{
-		myTabletManager->handleEvent(evt);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

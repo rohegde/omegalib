@@ -29,10 +29,11 @@
 
 #include <osg/Material>
 #include <osgFX/Technique>
+#include <osg/PolygonMode>
 
 using namespace cyclops;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 class Technique: public osgFX::Technique
 {
 public:
@@ -42,13 +43,16 @@ public:
     /// Validate.
     bool validate(osg::State&) const { return true; }
 protected:
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void define_passes()
 	{
 		if(StringUtils::startsWith(myDefinition, "colored")) define_passes_colored();
 		if(StringUtils::startsWith(myDefinition, "textured")) define_passes_textured();
 		if(StringUtils::startsWith(myDefinition, "bump")) define_passes_bump();
+		if(StringUtils::startsWith(myDefinition, "blueprint")) define_passes_blueprint();
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	void define_passes_colored()
 	{
 		String effectName;
@@ -83,20 +87,38 @@ protected:
 		addPass(ss);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	void define_passes_textured()
 	{
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
-		prog = sm->getProgram("colored", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
-
+		prog = sm->getProgram("textured", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
+		ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
+		ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
 		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
 
 		addPass(ss);
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	void define_passes_bump()
 	{
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	void define_passes_blueprint()
+	{
+		String tempDef = myDefinition;
+		myDefinition = "colored -d blue";
+		define_passes_colored();
+		myDefinition = tempDef;
+		osg::StateSet* ss = new osg::StateSet();
+		osg::PolygonMode* pm = new osg::PolygonMode();
+		pm->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
+		ss->setAttribute(pm);
+		ss->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+		addPass(ss);
 	}
 
 private:

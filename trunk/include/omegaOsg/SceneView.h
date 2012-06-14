@@ -263,6 +263,8 @@ class SceneView : public osg::Object, public osg::CullSettings
         /** Extract stats for current draw list. */
         bool getStats(osgUtil::Statistics& primStats); 
 
+		unsigned int getTriangleCount();
+
     protected:
 
         virtual ~SceneView();
@@ -305,6 +307,8 @@ class SceneView : public osg::Object, public osg::CullSettings
         double                                      _previousSimulationTime;
         
         unsigned int                                _dynamicObjectCount;        
+
+		int _triangleCount;
 };
 
 #endif

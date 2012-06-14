@@ -38,6 +38,7 @@
 
 #include "cyclops/SceneLoader.h"
 #include "cyclops/EffectNode.h"
+#include "cyclops/Entity.h"
 
 using namespace cyclops;
 
@@ -87,8 +88,19 @@ void SceneLoader::startLoading(SceneManager* sm)
 
 	osg::Group* root = new osg::Group();
 	TiXmlElement* xroot = myDoc.RootElement();
+
+	TiXmlElement* xMapContents = NULL;
+	// For compatibility reasons, read scene files containing scene data under /MapData/MapContent
+	// tags, if they exist.
 	TiXmlElement* xlevel = xroot->FirstChildElement("MapData");
-	TiXmlElement* xMapContents = xlevel->FirstChildElement("MapContents");
+	if(xlevel != NULL)
+	{
+		xMapContents = xlevel->FirstChildElement("MapContents");
+	}
+	else
+	{
+		xMapContents = xroot;
+	}
 	if(xMapContents != NULL)
 	{
 		TiXmlElement* xEntityFiles = xMapContents->FirstChildElement("Files");
@@ -111,6 +123,22 @@ void SceneLoader::startLoading(SceneManager* sm)
 			if(xObjects != NULL)
 			{
 				createObjects(root, xObjects);
+			}
+		}
+
+		// If a skybox tag exist, create a skybox for the scene.
+		TiXmlElement* xSkyBox = xMapContents->FirstChildElement("SkyBox");
+		if(xSkyBox != NULL)
+		{
+			const char* dir = xSkyBox->Attribute("Path");
+			const char* ext = xSkyBox->Attribute("Extension");
+			if(dir == NULL || ext == NULL)
+			{
+				owarn("SceneLoader: scene SkyBox tag missing Path or Extension attribute. No skybox will be created");
+			}
+			else
+			{
+				mySceneManager->createSkyBox(dir, ext);
 			}
 		}
 	}

@@ -48,7 +48,7 @@ namespace omegaOsg
 	class OOSG_API OsgRenderPass: public RenderPass
 	{
 	public:
-		OsgRenderPass(Renderer* client, const String& name): RenderPass(client, name) {}
+		OsgRenderPass(Renderer* client, const String& name);
 		static RenderPass* createInstance(Renderer* client) { return new OsgRenderPass(client, "OsgRenderPass"); }
 	public:
 		~OsgRenderPass();
@@ -59,6 +59,12 @@ namespace omegaOsg
 	private:
 		OsgModule* myModule;
 		SceneView* mySceneView;
+		
+		// Statistics
+		Stat* myTriangleCountStat;
+		Stat* myCullTimeStat;
+		Stat* myDrawTimeStat;
+		Timer myTimer;
 	};
 };
 #endif

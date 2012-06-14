@@ -1,5 +1,5 @@
 /**************************************************************************************************
-* THE OMICRON PROJECT
+ * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
@@ -28,6 +28,7 @@
 #define __TABLET_SERVICE_H__
 
 #include "omega/osystem.h"
+#include "omega/StatsManager.h"
 #include "omicron/Tcp.h"
 
 namespace omega {
@@ -50,6 +51,7 @@ namespace omega {
 		static const int BufferSize = 1024;
 		char myBuffer[BufferSize];
 		MissionControlServer* myServer;
+		List<Stat*> myEnabledStats;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

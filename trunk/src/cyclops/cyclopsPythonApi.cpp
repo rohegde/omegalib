@@ -26,6 +26,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "cyclops/SceneManager.h"
+#include "cyclops/Entity.h"
 #include "cyclops/SceneLoader.h"
 
 #ifdef OMEGA_USE_PYTHON

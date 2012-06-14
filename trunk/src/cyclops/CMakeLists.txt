@@ -27,6 +27,7 @@
 add_definitions( -D_CRT_SECURE_NO_WARNINGS -DCY_EXPORTING)
 set(SRCS 
 		EffectNode.cpp
+		Entity.cpp
 		SceneLoader.cpp
 		SceneManager.cpp
 		SkyBox.cpp
@@ -38,6 +39,7 @@ set(OSG_SRCS
 		
 set(HEADERS 
 		${CMAKE_SOURCE_DIR}/include/cyclops/EffectNode.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/Entity.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SkyBox.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h

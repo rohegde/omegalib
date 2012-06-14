@@ -94,6 +94,7 @@ SystemManager::SystemManager():
 	mySystemConfig(NULL),
 	myDisplaySystem(NULL),
 	myApplication(NULL),
+	myStatsManager(NULL),
 	myExitRequested(false),
 	myIsInitialized(false),
 	myIsMaster(true),
@@ -118,8 +119,8 @@ SystemManager::~SystemManager()
 	if(myServiceManager != NULL) delete myServiceManager;
 	if(myDisplaySystem != NULL) delete myDisplaySystem;
 	if(myInterpreter != NULL) delete myInterpreter;
-
-
+	if(myStatsManager != NULL) delete myStatsManager;
+	
 	myAppConfig = NULL;
 	mySystemConfig = NULL;
 	myDisplaySystem = NULL;
@@ -267,20 +268,24 @@ void SystemManager::initialize()
 
 	myInterpreter->initialize("omegalib");
 
-	// Initialize mission control server if we are on the master node and mission control is enabled.
-	if(isMaster() && myMissionControlEnabled)
+	myStatsManager = new StatsManager();
+	if(isMaster())
 	{
-		omsg("Initializing mission control server...");
-		myMissionControlServer = new MissionControlServer();
-		myMissionControlServer->setPort(myMissionControlPort);
+		// Initialize mission control server if we are on the master node and mission control is enabled.
+		if(myMissionControlEnabled)
+		{
+			omsg("Initializing mission control server...");
+			myMissionControlServer = new MissionControlServer();
+			myMissionControlServer->setPort(myMissionControlPort);
 
-		// Register the mission control server as a log listener
-		ologaddlistener(myMissionControlServer);
+			// Register the mission control server as a log listener
+			ologaddlistener(myMissionControlServer);
 
-		// Register the mission control server. The service manager will take care of polling the server
-		// periodically to check for new connections.
-		myServiceManager->addService(myMissionControlServer);
-		myMissionControlServer->start();
+			// Register the mission control server. The service manager will take care of polling the server
+			// periodically to check for new connections.
+			myServiceManager->addService(myMissionControlServer);
+			myMissionControlServer->start();
+		}
 	}
 
 	myIsInitialized = true;

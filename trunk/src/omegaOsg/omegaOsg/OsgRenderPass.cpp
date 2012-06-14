@@ -46,6 +46,13 @@ inline osg::Matrix buildOsgMatrix( const omega::Matrix4f& matrix )
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+OsgRenderPass::OsgRenderPass(Renderer* client, const String& name): RenderPass(client, name), 
+		myTriangleCountStat(NULL),
+		myCullTimeStat(NULL),
+		myDrawTimeStat(NULL)
+{}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgRenderPass::~OsgRenderPass()
 {
 	mySceneView->unref();
@@ -73,6 +80,10 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 	sInitLock.lock();
 	if(context.task == DrawContext::SceneDrawTask)
 	{
+		bool getstats = false;
+		// Collect statistics every 10 frames
+		if(context.frameNum % 10 == 0) getstats = true;
+
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		mySceneView->setViewport( context.viewport.x(), context.viewport.y(), context.viewport.width(), context.viewport.height() );
@@ -87,11 +98,49 @@ void OsgRenderPass::render(Renderer* client, const DrawContext& context)
 		}
 		mySceneView->setFrameStamp(myModule->getFrameStamp());
 
+		if(getstats) myTimer.start();
 		mySceneView->cull();
+		if(getstats)
+		{
+			myTimer.stop();
+			if(myCullTimeStat == NULL)
+			{
+				StatsManager* sm = SystemManager::instance()->getStatsManager();
+				unsigned int pipeId = getClient()->getGpuContext()->getId();
+				myCullTimeStat = sm->createStat(ostr("osgCullP%1%", %pipeId));
+			}
+			myCullTimeStat->addSample(myTimer.getElapsedTime() * 1000);
+		}
 
+
+		if(getstats) myTimer.start();
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		mySceneView->draw();
 		glPopAttrib();
+		if(getstats)
+		{
+			myTimer.stop();
+			if(myDrawTimeStat == NULL)
+			{
+				StatsManager* sm = SystemManager::instance()->getStatsManager();
+				unsigned int pipeId = getClient()->getGpuContext()->getId();
+				myDrawTimeStat = sm->createStat(ostr("osgDrawP%1%", %pipeId));
+			}
+			float millis = myTimer.getElapsedTime() * 1000;
+			myDrawTimeStat->addSample(millis);
+		}
+
+		// Collect triangle count statistics (every 10 frames)
+		if(getstats)
+		{
+			if(myTriangleCountStat == NULL)
+			{
+				StatsManager* sm = SystemManager::instance()->getStatsManager();
+				unsigned int pipeId = getClient()->getGpuContext()->getId();
+				myTriangleCountStat = sm->createStat(ostr("osgTrisP%1%", %pipeId));
+			}
+			myTriangleCountStat->addSample((float)mySceneView->getTriangleCount());
+		}
 	}
 	sInitLock.unlock();
 }
