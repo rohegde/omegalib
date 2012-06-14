@@ -28,6 +28,7 @@
 #include "cyclops/cyclopsConfig.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
+#include "cyclops/Entity.h"
 
 CY_API void cyclopsPythonApiInit();
 

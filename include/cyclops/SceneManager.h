@@ -43,14 +43,13 @@
 #include <omegaOsg.h>
 #include <omegaToolkit.h>
 
-#include "omega/PortholeTabletService.h"
-
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
 
 	class SceneLoader;
 	class SceneManager;
+	class Entity;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct Light
@@ -91,63 +90,6 @@ namespace cyclops {
 		//! Number of nodes in this model (used for multimodel assets)
 		int numNodes;
 		int id;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct EntityEventCallbacks
-	{
-		String onAdd;
-		String onUpdate;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Entity
-	{
-	public:
-		Entity(SceneManager* mng, ModelAsset* asset, int id);
-
-		osg::Node* getOsgNode() { return myOsgNode; }
-		SceneNode* getSceneNode() { return mySceneNode; }
-		ModelAsset* getAsset() { return myAsset; }
-		int getId() { return myId; }
-
-		int getNumModels() { return myAsset->numNodes; }
-		void setCurrentModelIndex(int index);
-		int getCurrentModelIndex();
-
-		void setTag(const String& value) { myTag = value; }
-		const String& getTag() { return myTag; } 
-
-		//! Animation support
-		//@{
-		bool hasAnimations();
-		int getNumAnimations();
-		void playAnimation(int id);
-		void loopAnimation(int id);
-		void pauseAnimation(int id);
-		void stopAllAnimations();
-		//@}
-
-		void setEventCallbacks(const EntityEventCallbacks& eec);
-
-	private:
-		SceneManager* mySceneManager;
-
-		osg::Node* myOsgNode;
-		osg::Switch* myOsgSwitch;
-		int myCurrentModelIndex;
-
-		SceneNode* mySceneNode;
-		ModelAsset* myAsset;
-		int myId;
-		String myTag;
-
-		// osg animation stuff
-		osgAnimation::BasicAnimationManager* myAnimationManager;
-		const osgAnimation::AnimationList* myAnimations;
-
-		// Callbacks
-		EntityEventCallbacks myCallbacks;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +176,6 @@ namespace cyclops {
 		ServerEngine* myEngine;
 
 		OsgModule* myOsg;
-		PortholeTabletService* myTabletManager;
 
 		osg::Group* mySceneRoot;
 

@@ -116,6 +116,11 @@ bool ConfigImpl::init()
 	registerObject(&mySharedData);
 	//mySharedData.setAutoObsolete(getLatency());
 
+	StatsManager* sm = SystemManager::instance()->getStatsManager();
+	myFpsStat = sm->createStat("fps");
+
+	myGlobalTimer.start();
+
 	return eq::Config::init(mySharedData.getID());
 }
 
@@ -208,8 +213,9 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 	static float lt = 0.0f;
 	static float tt = 0.0f;
 	// Compute dt.
-	float t = (float)((double)clock() / CLOCKS_PER_SEC);
+	float t = (float)myGlobalTimer.getElapsedTimeInSec();
 	if(lt == 0) lt = t;
+	
 	UpdateContext uc;
 	uc.dt = t - lt;
 	tt += uc.dt;
@@ -218,6 +224,12 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 	lt = t;
 
 	mySharedData.setUpdateContext(uc);
+
+	// Update fps stats every 10 frames.
+	if(uc.frameNum % 10 == 0)
+	{
+		myFpsStat->addSample(1.0f / uc.dt);
+	}
 
 	// If enabled, broadcast events to other server nodes.
 	if(SystemManager::instance()->isMaster())

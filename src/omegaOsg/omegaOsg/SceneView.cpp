@@ -31,6 +31,7 @@
 #include "omegaOsg/SceneView.h"
 #include "omega/osystem.h"
 
+#include <osgUtil/Statistics>
 #include <osgUtil/UpdateVisitor>
 #include <osgUtil/GLObjectsVisitor>
 
@@ -55,7 +56,7 @@ using namespace osgUtil;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneView::SceneView( osg::DisplaySettings* ds)
 {
-    _displaySettings = ds;
+	_displaySettings = ds;
 
     _prioritizeTextures = false;
     
@@ -539,25 +540,16 @@ void SceneView::draw()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//void SceneView::clearArea(int x,int y,int width,int height,const osg::Vec4& color)
-//{
-//    osg::ref_ptr<osg::Viewport> viewport = new osg::Viewport;
-//    viewport->setViewport(x,y,width,height);
-//
-//    _renderInfo.getState()->applyAttribute(viewport.get());
-//    
-//    glScissor( x, y, width, height );
-//    glEnable( GL_SCISSOR_TEST );
-//    glClearColor( color[0], color[1], color[2], color[3]);
-//    glClear( GL_COLOR_BUFFER_BIT);
-//    glDisable( GL_SCISSOR_TEST );
-//}
-//
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneView::getStats(osgUtil::Statistics& stats)
-{
-    return _renderStage->getStats(stats);
+unsigned int SceneView::getTriangleCount()
+{ 
+	osgUtil::Statistics osgStats;
+	osgStats.setType(osgUtil::Statistics::STAT_PRIMS);
+	if(_renderStage->getStats(osgStats))
+	{
+		unsigned int count = osgStats.getPrimitiveCountMap()[GL_TRIANGLES];
+		_triangleCount = count;
+	}
+	return _triangleCount;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

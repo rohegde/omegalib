@@ -1,5 +1,5 @@
 /**************************************************************************************************
-* THE OMICRON PROJECT
+ * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
  * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
@@ -72,6 +72,53 @@ void MissionControlConnection::handleData()
 		{
 			String helpString = interp->getHelpString("");
 			sendMessage("help", (void*)helpString.c_str(), helpString.size());
+		}
+	}
+	if(!strncmp(header, "strq", 4)) 
+	{
+		// Request for stats names.
+		String statIds = "";
+		StatsManager* sm = SystemManager::instance()->getStatsManager();
+		if(sm != NULL)
+		{
+			foreach(Stat* s, sm->getStats())
+			{
+				statIds.append(s->getName());
+				statIds.append("|");
+			}
+			sendMessage("strq", (void*)statIds.c_str(), statIds.size());
+		}
+	}
+	if(!strncmp(header, "sten", 4)) 
+	{
+		StatsManager* sm = SystemManager::instance()->getStatsManager();
+		if(sm != NULL)
+		{
+			// Set enabled stats.
+			String stats(myBuffer);
+			myEnabledStats.clear();
+			std::vector<String> statVector = StringUtils::tokenise(stats, " ");
+			foreach(String statId, statVector)
+			{
+				Stat* s = sm->findStat(statId);
+				if(s != NULL)
+				{
+					myEnabledStats.push_back(s);
+				}
+			}
+		}
+	}
+	if(!strncmp(header, "stup", 4)) 
+	{
+		if(myEnabledStats.size() > 0)
+		{
+			// Request for stats update.
+			String statIds = "";
+			foreach(Stat* s, myEnabledStats)
+			{
+				statIds.append(ostr("%1% %2% %3% %4% %5% ", %s->getName() %(int)s->getCur() %(int)s->getMin() %(int)s->getMax() %(int)s->getAvg()));
+			}
+			sendMessage("stup", (void*)statIds.c_str(), statIds.size());
 		}
 	}
 }

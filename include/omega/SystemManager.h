@@ -28,6 +28,7 @@
 #define __SYSTEM_MANAGER_H__
 
 #include "osystem.h"
+#include "StatsManager.h"
 
 namespace omega
 {
@@ -77,6 +78,9 @@ namespace omega
 		Config* getSystemConfig();
 
 		DataManager* getDataManager();
+
+		//! Gets the stats manager instance. (on master node only)
+		StatsManager* getStatsManager();
 
 		//! Gets the ServiceManager object
 		ServiceManager* getServiceManager();
@@ -137,6 +141,9 @@ namespace omega
 		bool myMissionControlEnabled;
 		int myMissionControlPort;
 		MissionControlServer* myMissionControlServer;
+
+		// Stats manager.
+		StatsManager* myStatsManager;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,6 +189,10 @@ namespace omega
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Config* SystemManager::getSystemConfig() 
 	{ return mySystemConfig; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline StatsManager* SystemManager::getStatsManager() 
+	{ return myStatsManager; }
 }; // namespace omega
 
 #endif

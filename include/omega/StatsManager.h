@@ -36,9 +36,11 @@ namespace omega
 	{
 	friend class StatsManager;
 	public:
+		const String& getName();
 		bool isValid();
 		void addSample(float sample);
 		int getNumSamples();
+		float getCur();
 		float getMin();
 		float getMax();
 		float getAvg();
@@ -50,6 +52,7 @@ namespace omega
 	private:
 		bool myValid;
 		String myName;
+		float myCur;
 		float myMin;
 		float myMax;
 		float myAvg;
@@ -79,6 +82,7 @@ namespace omega
 		{
 			// First sample. Initialize the statistics
 			myAccumulator = sample;
+			myCur = sample;
 			myMin = sample;
 			myMax = sample;
 			myAvg = sample;
@@ -89,6 +93,7 @@ namespace omega
 		{
 			// Update the statistics.
 			myAccumulator += sample;
+			myCur = sample;
 			myNumSamples++;
 			if(sample < myMin) myMin = sample;
 			if(sample > myMax) myMax = sample;
@@ -97,12 +102,20 @@ namespace omega
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const String& Stat::getName()
+	{ return myName; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool Stat::isValid()
 	{ return myValid; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int Stat::getNumSamples()
 	{ return myNumSamples; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline float Stat::getCur()
+	{ oassert(myValid); return myCur; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline float Stat::getMin()
