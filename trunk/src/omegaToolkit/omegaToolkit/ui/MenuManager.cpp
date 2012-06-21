@@ -291,6 +291,28 @@ bool Menu::isVisible()
 	return myVisible;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+MenuManager* MenuManager::instance() 
+{ 
+	if(mysInstance == NULL)
+	{
+		createAndInitialize();
+	}
+	return mysInstance; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+MenuManager* MenuManager::createAndInitialize()
+{
+	if(mysInstance == NULL)
+	{
+		mysInstance = new MenuManager();
+		ModuleServices::addModule(mysInstance);
+		mysInstance->doInitialize(ServerEngine::instance());
+	}
+	return mysInstance;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
 	myMainMenu(NULL),

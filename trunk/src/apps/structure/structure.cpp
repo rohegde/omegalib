@@ -77,25 +77,9 @@ StructureViewer::StructureViewer():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void StructureViewer::initialize()
 {
-	// Set the interactor style used to manipulate meshes.
-	myEditor = new SceneEditorModule();
-	ModuleServices::addModule(myEditor);
-	myEditor->doInitialize(getServer());
+	// Create a scene editor to manipulate entities.
+	myEditor = SceneEditorModule::createAndInitialize();
 	myEditor->setEnabled(false);
-	if(SystemManager::settingExists("config/interactor"))
-	{
-		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
-		Actor* interactor = ToolkitUtils::createInteractor(sinteractor);
-		if(interactor != NULL)
-		{
-			ModuleServices::addModule(interactor);
-			myEditor->setInteractor(interactor);
-		}
-	}
-	else
-	{
-		owarn("No interactor specified in configuration: Entity manipulation will be disabled");
-	}
 
 	// Create and initialize the cyclops scene manager.
 	// If a scene file is specified in the application config file, the scene manager will
@@ -103,9 +87,7 @@ void StructureViewer::initialize()
 	mySceneManager = SceneManager::createAndInitialize();
 
 	// Create the menu manager and a main menu.
-	myMenuManager = new ui::MenuManager();
-	ModuleServices::addModule(myMenuManager);
-	myMenuManager->doInitialize(getServer());
+	myMenuManager = ui::MenuManager::createAndInitialize();
 	ui::Menu* menu = myMenuManager->createMenu("menu");
 	myMenuManager->setMainMenu(menu);
 

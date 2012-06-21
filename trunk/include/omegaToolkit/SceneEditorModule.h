@@ -58,10 +58,10 @@ namespace omegaToolkit
 	{
 	public:
 		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
-
+		
 	public:
-		SceneEditorModule();
-		~SceneEditorModule();
+		static SceneEditorModule* createAndInitialize();
+		virtual ~SceneEditorModule();
 
 		void initialize();
 		void update(const UpdateContext& context);
@@ -79,6 +79,7 @@ namespace omegaToolkit
 		void setEnabled(bool value) { myEnabled = value; }
 
 	private:
+		SceneEditorModule();
 		EditableObject* findEditableObject(SceneNode* node);
 		void updateSelection(const Ray& ray);
 

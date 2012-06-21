@@ -92,13 +92,13 @@ void DefaultMouseInteractor::updateNode()
 			myStartScale = myNode->getScale()[0];
 			myHandlePosition = handlePos; 
 			myHandleDistance = (myHandlePosition - myPointerRay.getOrigin()).norm();
-			myNode->setSelected(true);
+			//myNode->setSelected(true);
 			//ofmsg("Ray origin %1% Direction %2% Handle Distance: %3%", %myPointerRay.getOrigin() %myPointerRay.getDirection() %myHandleDistance);
 		}
 	}
 	else if(myPointerEventType == Event::Up)
 	{
-		myNode->setSelected(false);
+		//myNode->setSelected(false);
 	}
 	
 	//else if(myPointerEventType == Event::Move)

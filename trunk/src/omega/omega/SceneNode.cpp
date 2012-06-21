@@ -33,20 +33,15 @@ using namespace omega;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneNode::setListener(SceneNodeListener* listener)
+void SceneNode::addListener(SceneNodeListener* listener)
 {
-	if(listener != NULL && myListener != NULL && myListener != listener)
-	{
-		owarn("Node switched listener: old listener won't receive notification anymore.");
-	}
-
-	myListener = listener;
+	myListeners.push_back(listener);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-SceneNodeListener* SceneNode::getListener()
+void SceneNode::removeListener(SceneNodeListener* listener)
 {
-	return myListener;
+	myListeners.remove(listener);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,15 +53,27 @@ bool SceneNode::isVisible()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::setVisible(bool value)
 { 
-	if(myListener) myListener->onVisibleChanged(this, value);
+	if(myListeners.size() != 0)
+	{
+		foreach(SceneNodeListener* l, myListeners)
+		{
+			l->onVisibleChanged(this, value);
+		}
+	}
 	myVisible = value; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneNode::setSelected(bool value)
 {
-	if(myListener) myListener->onSelectedChanged(this, value);
 	mySelected = value;
+	if(myListeners.size() != 0)
+	{
+		foreach(SceneNodeListener* l, myListeners)
+		{
+			l->onSelectedChanged(this, value);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -522,7 +522,7 @@ bool SceneManager::loadModel(ModelInfo info)
 			if(node != NULL)
 			{
 
-				if(info.size != 1.0f)
+				if(info.size != 0.0f)
 				{
 					float r = node->getBound().radius() * 2;
 					float scale = info.size / r;

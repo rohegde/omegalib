@@ -55,7 +55,6 @@ namespace omega {
 	public:
 		SceneNode(ServerEngine* server):
 			myServer(server),
-			myListener(NULL),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
 			mySelectable(false),
@@ -67,7 +66,6 @@ namespace omega {
 		SceneNode(ServerEngine* server, const String& name):
 			Node(name),
 			myServer(server),
-			myListener(NULL),
 			myBoundingBoxColor(1, 1, 1, 1),
 			myBoundingBoxVisible(false),
 			mySelectable(false),
@@ -105,10 +103,10 @@ namespace omega {
 		void setBoundingBoxColor(const Color& color);
 		//@}
 
-		// Bounding box handling
+		// Listeners
 		//@{
-		void setListener(SceneNodeListener* listener);
-		SceneNodeListener* getListener();
+		void addListener(SceneNodeListener* listener);
+		void removeListener(SceneNodeListener* listener);
 		//@}
 
 		//! Hit test.
@@ -125,7 +123,7 @@ namespace omega {
 	private:
 		ServerEngine* myServer;
 
-		SceneNodeListener* myListener;
+		List<SceneNodeListener*> myListeners;
 
 		List<ISceneObject*> myObjects;
 
