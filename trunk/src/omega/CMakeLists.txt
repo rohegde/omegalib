@@ -121,7 +121,6 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/SystemManager.h
         ${OmegaLib_SOURCE_DIR}/include/omega/StatsManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
-		${OmegaLib_SOURCE_DIR}/include/omega/UpdateContext.h
 		${OmegaLib_SOURCE_DIR}/include/omega/WandEmulationService.h
 		)
         

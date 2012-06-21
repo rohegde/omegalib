@@ -75,8 +75,8 @@ public:
 	bool loadData( String configAttr , Vector<float> &dataVector , bool pos );
 
 	//updating a specific entity
-	void updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep );
-	void updateCamera( vector<float> pos , vector<float> rot, int curTimeStep );
+	void updateEntity( Entity* entity , const vector<float>& pos , const vector<float>& rot, int curTimeStep );
+	void updateCamera( const vector<float>& pos , const vector<float>& rot, int curTimeStep );
 
 	//Animation data that will be filled via files later on
 	Vector<float> wheel_PVec;
@@ -236,37 +236,29 @@ void OmegaViewer::initialize()
 {
 #ifdef OMEGA_USE_PYTHON
 	omegaToolkitPythonApiInit();
-	cyclopsPythonApiInit();
 #endif
 	//To deal with clustering
 	//Instanciate an instance of ScenenManager
-	sceneMngr = new SceneManager();
-	//Getting a connetion to the server
-	sceneMngr->doInitialize(getServer());
-	//Add the sceneManager to the server
-	ModuleServices::addModule(sceneMngr);
-
-	//idk
-	OsgModule::setAmbientOverrideHack(false);
+	sceneMngr = SceneManager::createAndInitialize();
 
 	//~~~~~~ Form context to scene nodes that represent the .objs
 	//go into the sceneMangr to find the entity 0 as defined by
 	// 	/omegalib/data/railsim/test/railSim.scene under the heading <Entities>
 	//  Assign the pointers to entities so you do not have to constantly look them up later
-	railFailEntity = sceneMngr->findEntity( 0 );
+	railFailEntity = sceneMngr->getObject<Entity>( "0" );
 	if(!railFailEntity) owarn("Rail not loaded");
 	else omsg("Rail loaded");
 
-	wheelSetEntity = sceneMngr->findEntity( 1 );
+	wheelSetEntity = sceneMngr->getObject<Entity>( "1" );
 	if(!wheelSetEntity) owarn("Wheel not loaded");
 	else omsg("Wheel loaded");
 
-	frameEntity = sceneMngr->findEntity( 2 );
+	frameEntity = sceneMngr->getObject<Entity>( "2" );
 	if(!frameEntity) owarn("Frame not loaded");
 	else omsg("Frame loaded");
 
 	//multimodel shape trial.
-	modeshape=sceneMngr->findEntity( 3 );
+	modeshape=sceneMngr->getObject<Entity>( "3" );
 	modeshape->setCurrentModelIndex(1);		
 
 
@@ -293,6 +285,11 @@ void OmegaViewer::initialize()
 	l->color = Color(1.0f, 1.0f, 0.7f);
 	l->ambient = Color(0.2f, 0.2f, 0.3f);
 	sceneMngr->setMainLight(l);
+
+	PlaneShape* ps = new PlaneShape(sceneMngr, 10, 10);
+	ps->setEffect("colored -d green");
+	ps->pitch(90 * Math::DegToRad);
+	ps->setPosition(0, 1, 0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -399,7 +396,6 @@ void OmegaViewer::update(const UpdateContext& context)
 		updateEntity ( frameEntity , frame_PVec , frame_RVec, curTimeStep ); 
 		
 		//modeshape->setCurrentModelIndex(1);		
-		 
 
 		if( isFollowing ) updateCamera( wheel_PVec , wheel_RVec, curTimeStep );
 	}
@@ -412,7 +408,7 @@ void OmegaViewer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 //  Updates a given entity based on the position and rot array and the desired index
-void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep ) 
+void OmegaViewer::updateEntity( Entity* entity , const vector<float>& pos , const vector<float>& rot, int curTimeStep ) 
 {
 	//getting the actual vector index bc ea. quad is x, y, z, w for a time step
 	int actualVecIndex = curTimeStep * 4;
@@ -425,7 +421,7 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 	position.push_back( pos[actualVecIndex+3]);
 
 	//setting the position of the entity
-	entity->getSceneNode()->setPosition( position[0] , position[1] , position[2] );
+	entity->setPosition( position[0] , position[1] , position[2] );
 
 	//!!!!! HACK !!!!!//	
 	//Data set has a weird rotation
@@ -440,13 +436,13 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 	//90 degree rotation will turn the object side ways
 	//Apply the rotation
 	rotation = newAxis * rotation;
-	entity->getSceneNode()->setOrientation( rotation );
+	entity->setOrientation( rotation );
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
-void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTimeStep )
+void OmegaViewer::updateCamera( const vector<float>& pos , const vector<float>& rot, int curTimeStep )
 {
 	//Hardcoded :: the following location
 	int actualVecIndex = curTimeStep * 4;

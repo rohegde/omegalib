@@ -25,6 +25,10 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###################################################################################################
 add_executable(flock 
+	FlockSimulator.cpp
+	FlockSimulator.h
+	FlockObject.h
+	FlockObject.cpp
 	flock.cpp)
 
 set_target_properties(flock PROPERTIES FOLDER apps)

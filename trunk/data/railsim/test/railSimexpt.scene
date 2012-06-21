@@ -1,53 +1,46 @@
-<Level>
-    <MapData>
-        <MapContents>
-		<Files>
+<Scene>
+	<Files>
+		<File Id="0" Path="railsim/test/RailFailure/RailAltered.obj"/>
+		<File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
+		<File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
+		<File Id="3" Path="railsim/test/Station/station.obj" Size="40"/>
+		<File Id="4" Path="railsim/test/modeshapesimple/shape0.obj"/>
+	</Files>
 
-            <File Id="0" Path="railsim/test/RailFailure/RailAltered.obj"/>
-            <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
-            <File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
-            <File Id="3" Path="railsim/test/Station/station.obj" Size="40"/>
-		 <File Id="4" Path="railsim/test/modeshapesimple/shape0.obj" Effect="colored -d red"/>
-		</Files>
+	<StaticObjects>
+	<!-- Left Rail Positions :: there are 6 of them -->
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="2.5 -0.55 1.19" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="7.5 -0.55 1.19" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="12.5 -0.55 1.19" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="17.5 -0.55 1.19" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="22.5 -0.55 1.19" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="27.5 -0.55 1.19" Effect="textured"/>
 
-		<StaticObjects>
-        <!-- Left Rail Positions :: there are 6 of them -->
-			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 1.19" />
-			<staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="27.5 -0.55 1.19" />
-
-			<!-- Right Rail Positions :: there are 5 of them -->
-            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="2.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="7.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="12.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="17.5 -0.55 -0.28" />
-            <staticobject FileIndex="0" Id="-1" Rotation="-90 0 0" Scale="1 1 1" Tag="" WorldPos="22.5 -0.55 -0.28" />	
-              
-			<!-- This is the railstation -->
-			<staticobject FileIndex="3" Id="-1" Rotation="0 90 0" Scale="1 1 1" Tag="" WorldPos="17 -0.64 -16" />
-			  
-		</StaticObjects>
-          
-            <Entities>
-				<!-- This is the messed up rail -->
-                <Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="bentrail" WorldPos="27.5 -0.55 -0.28" />                 
-				
-				<!-- This is the wheel -->  
-                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="wheel" WorldPos="0 0 0" />
-                
-				<!-- This is the frame -->
-                <Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="frame" WorldPos="0 0 0" />
-			
-			<Entity FileIndex="4" Id="3" Rotation="0 0 0" Scale="1 1 1" Tag="modeshape" WorldPos="0 0 0" />
-
-				
-               
-            </Entities>
-             <Primitives>
-		 </Primitives>
-        </MapContents>
-    </MapData>
-</Level>
+		<!-- Right Rail Positions :: there are 5 of them -->
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="2.5 -0.55 -0.28" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="7.5 -0.55 -0.28" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="12.5 -0.55 -0.28" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="17.5 -0.55 -0.28" Effect="textured"/>
+		<staticobject FileIndex="0" Rotation="-90 0 0" WorldPos="22.5 -0.55 -0.28" Effect="textured"/>	
+		  
+		<!-- This is the railstation -->
+		<staticobject FileIndex="3" Rotation="0 90 0" Tag="" WorldPos="17 -0.64 -16" Effect="textured"/>
+		  
+	</StaticObjects>
+	  
+	<Entities>
+		<!-- This is the messed up rail -->
+		<Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="bentrail" WorldPos="27.5 -0.55 -0.28" Effect="textured"/>                 
+		
+		<!-- This is the wheel -->  
+		<Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="wheel" WorldPos="0 0 0" Effect="textured"/>
+		
+		<!-- This is the frame -->
+		<Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="frame" WorldPos="0 0 0" Effect="textured"/>
+		
+		<Entity FileIndex="4" Id="3" Rotation="0 0 0" Scale="1 1 1" Tag="modeshape" WorldPos="0 0 0" Effect="textured"/>
+	</Entities>
+	
+	<Primitives>
+	</Primitives>
+</Scene>

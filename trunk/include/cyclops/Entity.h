@@ -27,9 +27,6 @@
 #ifndef __CY_ENTITY__
 #define __CY_ENTITY__
 
-#include "cyclopsConfig.h"
-#include "SkyBox.h"
-
 #include <osg/Texture2D>
 #include <osg/Light>
 #include <osg/Group>
@@ -43,8 +40,10 @@
 #include <omegaOsg.h>
 #include <omegaToolkit.h>
 
-#include "omega/PortholeTabletService.h"
+#include "cyclopsConfig.h"
+#include "SkyBox.h"
 #include "SceneManager.h"
+#include "DrawableObject.h"
 
 namespace cyclops {
 	using namespace omega;
@@ -60,17 +59,18 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Entity
+	class CY_API Entity: public DrawableObject
 	{
 	public:
-		Entity(SceneManager* mng, ModelAsset* asset, int id);
+		//! Tries to convert a drawable object instance into an entity instance. Returns null if the cast fails
+		static Entity* fromDrawableObject(DrawableObject* dobj);
 
-		osg::Node* getOsgNode() { return myOsgNode; }
-		SceneNode* getSceneNode() { return mySceneNode; }
-		ModelAsset* getAsset() { return myAsset; }
-		int getId() { return myId; }
+	public:
+		Entity(SceneManager* mng, const String& modelName, const String& entityName);
 
-		int getNumModels() { return myAsset->numNodes; }
+		ModelAsset* getModel();
+
+		int getNumModels() { return myModel->numNodes; }
 		void setCurrentModelIndex(int index);
 		int getCurrentModelIndex();
 
@@ -92,13 +92,10 @@ namespace cyclops {
 	private:
 		SceneManager* mySceneManager;
 
-		osg::Node* myOsgNode;
+		ModelAsset* myModel;
 		osg::Switch* myOsgSwitch;
 		int myCurrentModelIndex;
 
-		SceneNode* mySceneNode;
-		ModelAsset* myAsset;
-		int myId;
 		String myTag;
 
 		// osg animation stuff
@@ -108,6 +105,15 @@ namespace cyclops {
 		// Callbacks
 		EntityEventCallbacks myCallbacks;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ModelAsset* Entity::getModel()
+	{ return myModel; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Entity* Entity::fromDrawableObject(DrawableObject* dobj)
+	{ return dynamic_cast<Entity*>(dobj); }
+
 };
 
 #endif

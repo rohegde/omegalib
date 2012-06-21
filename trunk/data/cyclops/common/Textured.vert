@@ -1,5 +1,6 @@
 @use setupShadow
 @use setupStandardShading
+@use setupEnvMap
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uniform vec2 unif_TextureTiling;
@@ -14,4 +15,5 @@ void main(void)
 		
 	setupShadow(eyeSpacePosition);
 	setupStandardShading(eyeSpacePosition);
+	setupEnvMap(eyeSpacePosition);
 }

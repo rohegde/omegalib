@@ -36,6 +36,8 @@
 
 using namespace cyclops;
 
+void cyclopsPythonApiInit();
+
 SceneManager* SceneManager::mysInstance = NULL;
 
 #ifdef OMEGA_OS_LINUX
@@ -64,6 +66,29 @@ struct AnimationManagerFinder : public osg::NodeVisitor
     } 
 }; 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+SceneManager* SceneManager::instance() 
+{ 
+	if(mysInstance == NULL)
+	{
+		createAndInitialize();
+	}
+	return mysInstance; 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+SceneManager* SceneManager::createAndInitialize()
+{
+	if(mysInstance == NULL)
+	{
+		mysInstance = new SceneManager();
+		ModuleServices::addModule(mysInstance);
+		mysInstance->doInitialize(ServerEngine::instance());
+	}
+	return mysInstance;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager::SceneManager():
 	myOsg(NULL),
@@ -72,7 +97,10 @@ SceneManager::SceneManager():
 	mySkyBox(NULL),
 	myShadowMapQuality(3)
 {
-	mysInstance = this;
+#ifdef OMEGA_USE_PYTHON
+	cyclopsPythonApiInit();
+#endif
+
 	myOsg = new OsgModule();
 	ModuleServices::addModule(myOsg);
 }
@@ -117,6 +145,12 @@ void SceneManager::initialize()
 	{
 		load(mySceneFilename);
 	}
+	else
+	{
+		// No scene file specified: just initialize an empty scene.
+		initShading();
+		myOsg->setRootNode(mySceneRoot);
+	}
 
 	if(myShadowMode == ShadowsSoft)
 	{
@@ -150,6 +184,14 @@ void SceneManager::initialize()
 	setShaderMacroToFile("use computeStandardShading", "cyclops/common/standardShading/computeStandardShading.frag");
 
 	//frontView = true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addObject(DrawableObject* obj)
+{
+	myObjectList.push_back(obj);
+	myObjectDictionary[obj->getName()] = obj;
+	mySceneRoot->addChild(obj->getOsgNode());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,80 +323,6 @@ void SceneManager::load(const String& relativePath)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addNode(osg::Node* node)
-{
-	mySceneRoot->addChild(node);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
-{
-	osg::PositionAttitudeTransform* xf = new osg::PositionAttitudeTransform();
-	xf->addChild(node);
-
-	xf->setPosition(osg::Vec3d(position[0], position[1], position[2]));
-	xf->setAttitude(osg::Quat(
-		rotation[0] * Math::DegToRad, osg::Vec3d(1, 0, 0),
-		rotation[1] * Math::DegToRad, osg::Vec3d(0, 1, 0),
-		rotation[2] * Math::DegToRad, osg::Vec3d(0, 0, 1)
-		));
-	xf->setScale(osg::Vec3d(scale[0], scale[1], scale[2]));
-
-	addNode(xf);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
-{
-	ModelAsset* asset = getModelAsset(assetId);
-	if(asset == NULL)
-	{
-		ofwarn("SceneManager::addStaticObject: could not locate static object asset %1%", %assetId);
-	}
-	else
-	{
-		if(asset->numNodes > 1)
-		{
-			ofwarn("SceneManager::addStaticObject: asset %1% has multiple models. Adding model 0 by default", %assetId);
-		}
-		addNode(asset->nodes[0], position, rotation, scale);
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity* SceneManager::addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation, const Vector3f& scale)
-{
-	ModelAsset* asset = getModelAsset(assetId);
-	if(asset == NULL)
-	{
-		ofwarn("SceneManager::addEntity: could not locate entity asset %1%", %assetId);
-	}
-	else
-	{
-		Entity* e = new Entity(this, asset, entityId);
-		e->setTag(tag);
-		addNode(e->getOsgNode());
-		e->getSceneNode()->setPosition(position);
-		e->getSceneNode()->yaw(rotation[0] * Math::DegToRad);
-		e->getSceneNode()->pitch(rotation[1] * Math::DegToRad);
-		e->getSceneNode()->roll(rotation[2] * Math::DegToRad);
-		e->getSceneNode()->setScale(scale);
-		myEntities.push_back(e);
-		return e;
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::findResource(const String& name, String& outPath)
-{
-	if(DataManager::findFile(name, outPath)) return true;
-	//if(DataManager::findFile("images/" + name, outPath)) return true;
-	//if(DataManager::findFile("../" + name, outPath)) return true;
-	return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Texture2D* SceneManager::getTexture(const String& name)
 {
 	// If texture has been loaded already return it.
@@ -365,11 +333,11 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 
 	// Split the path and get the file name.
 	String path;
-	String filename;
-	String extension;
-	StringUtils::splitFullFilename(name, filename, extension, path);
+	//String filename;
+	//String extension;
+	//StringUtils::splitFullFilename(name, filename, extension, path);
 
-	if(findResource(filename + "." + extension, path))
+	if(DataManager::findFile(name, path))
 	{
 		//ofmsg("Loading texture file %1%", %filename);
 
@@ -392,12 +360,12 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
         }
 		else
 		{
-			ofwarn("Image not valid: %1%", %filename);
+			ofwarn("Image not valid: %1%", %path);
 		}
 	}
 	else
 	{
-		ofwarn("Could not find texture file %1%", %filename);
+		ofwarn("Could not find texture file %1%", %name);
 	}
 	return NULL;
 }
@@ -523,34 +491,78 @@ void SceneManager::initShading()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addAsset(ModelAsset* asset, AssetType type)
+bool SceneManager::loadModel(ModelInfo info)
 {
-	if(type == ModelAssetType)
+	ModelAsset* asset = new ModelAsset();
+	asset->filename = info.path; /// changed filepath to filename (confirm from alassandro).
+	asset->numNodes = info.numFiles;
+
+	myModelDictionary[info.name] = asset;
+	myModelList.push_back(asset);
+
+	// Replace * with %1% so we can use our string formatting routines to add a number to the path strings.
+	String orfp = StringUtils::replaceAll(info.path, "*", "%1%");
+	String filePath = info.path;
+
+	for(int iterator=1; iterator <= info.numFiles; iterator++)
 	{
-		myModelFiles.push_back(asset);
+		// If present in the string, this line will substitute %1% with the iterator number.
+		if(info.numFiles != 1)
+		{
+			filePath = ostr(orfp, %iterator);
+		}
+
+		String assetPath;
+		if(DataManager::findFile(filePath, assetPath))
+		{ 
+			osgDB::Options* options = new osgDB::Options; 
+			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotation"); 
+
+			osg::Node* node = osgDB::readNodeFile(assetPath, options);
+			if(node != NULL)
+			{
+
+				if(info.size != 1.0f)
+				{
+					float r = node->getBound().radius() * 2;
+					float scale = info.size / r;
+
+					osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
+					pat->setScale(osg::Vec3(scale, scale, scale));
+					pat->addChild(node);
+
+					node = pat;
+				}
+
+				asset->nodes.push_back(node);
+				asset->description = info.description;
+			}
+			else
+			{
+				ofwarn("loading failed: %1%", %assetPath);
+				// NEED TO CLEAN UP ASSET!
+			}
+		}
+		else
+		{
+			ofwarn("could not find file: %1%", %filePath);
+				// NEED TO CLEAN UP ASSET!
+		}
 	}
+
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ModelAsset* SceneManager::getModelAsset(int fileIndex)
+ModelAsset* SceneManager::getModel(const String& name)
 {
-	return myModelFiles[fileIndex];
+	return myModelDictionary[name];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity* SceneManager::findEntity(int id)
+const List<ModelAsset*>& SceneManager::getModels()
 {
-	foreach(Entity* e, myEntities)
-	{
-		if(e->getId() == id) return e;
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-List<Entity*>::Range SceneManager::getEntities()
-{
-	return List<Entity*>::Range(myEntities.begin(), myEntities.end());
+	return myModelList;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

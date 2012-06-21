@@ -57,54 +57,54 @@ struct AnimationManagerFinder : public osg::NodeVisitor
 }; 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* mng, ModelAsset* asset, int id):
-	mySceneManager(mng), 
-	myAsset(asset), 
-	myId(id), 
-	myOsgSwitch(NULL), 
-	myCurrentModelIndex(0),
-	myAnimationManager(NULL),
-	myAnimations(NULL)
+Entity::Entity(SceneManager* scene, const String& modelName, const String& entityName):
+	DrawableObject(scene),
+		mySceneManager(scene), 
+		myOsgSwitch(NULL), 
+		myCurrentModelIndex(0),
+		myAnimationManager(NULL),
+		myAnimations(NULL)
 {
-	ServerEngine* engine = mng->getEngine();
+	myModel = scene->getModel(modelName);
 
-	mySceneNode = new SceneNode(engine);
-	mySceneNode->setSelectable(true);
-	engine->getScene()->addChild(mySceneNode);
+	osg::Node* osgRoot = NULL;
 
-	OsgSceneObject* oso = NULL;
-	if(asset->numNodes == 1)
+	if(myModel != NULL)
 	{
-		// Single model asset
-		oso = new OsgSceneObject(myAsset->nodes[0]);
-		myOsgNode = oso->getTransformedNode();
-	}
-	else
-	{
-		// Multi model asset
-		myOsgSwitch = new osg::Switch();
-		int i = 0;
-		foreach(osg::Node* n, myAsset->nodes)
+		if(myModel->numNodes == 1)
 		{
-			myOsgSwitch->addChild(n);
-			myOsgSwitch->setChildValue(n, i++);
+			// Single model asset
+			osgRoot = myModel->nodes[0];
 		}
-		oso = new OsgSceneObject(myOsgSwitch);
-		myOsgNode = oso->getTransformedNode();
+		else
+		{
+			// Multi model asset
+			myOsgSwitch = new osg::Switch();
+			int i = 0;
+			foreach(osg::Node* n, myModel->nodes)
+			{
+				myOsgSwitch->addChild(n);
+				myOsgSwitch->setChildValue(n, i++);
+			}
+			osgRoot = myOsgSwitch;
+		}
+
+		if(entityName != "") setName(entityName);
+
+		initialize(osgRoot);
 	}
 
+	// Traverse this entity hierarchy to find animations.
 	AnimationManagerFinder amf;
-	myOsgNode->accept(amf);
+	osgRoot->accept(amf);
 	if(amf.am != NULL)
 	{
 		myAnimationManager = amf.am;
 		myAnimations = &myAnimationManager->getAnimationList();
-		ofmsg("Entity id %1%: found %2% animations.", %myId %getNumAnimations());
+		ofmsg("Entity %1%: found %2% animations.", %getName() %getNumAnimations());
 
 		loopAnimation(0);
 	}
-
-	mySceneNode->addObject(oso);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

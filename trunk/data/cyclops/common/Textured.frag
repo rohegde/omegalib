@@ -1,5 +1,6 @@
 @use computeShadow
 @use computeStandardShading
+@use computeEnvMap
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uniform sampler2D unif_ColorMap;
@@ -12,5 +13,5 @@ void main(void)
 	
 	vec4 diffuseTextureColor = texture2D(unif_ColorMap, var_TexCoord);
 	
-    gl_FragColor =  diffuseTextureColor * (lightAmbientContribution() + lightDiffuseContribution() * shadow); 
+    gl_FragColor =  diffuseTextureColor * (envMapAmbientContribution() * lightAmbientContribution() + lightDiffuseContribution() * shadow); 
 }

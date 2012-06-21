@@ -37,8 +37,9 @@
 #include <osg/Group>
 
 #include "SceneManager.h"
-
-
+#include "cyclops/Shapes.h"
+#include "cyclops/StaticObject.h"
+#include "cyclops/Entity.h"
 
 namespace cyclops {
 	using namespace omega;
@@ -71,8 +72,10 @@ namespace cyclops {
 		void initShading();
 
 	private:
-		osg::Node* createPlane(TiXmlElement* xPlane);
-		osg::Node* createSphere(TiXmlElement* xchild);
+		PlaneShape* createPlane(TiXmlElement* xPlane);
+		SphereShape* createSphere(TiXmlElement* xchild);
+		StaticObject* createStaticObject(TiXmlElement* xchild);
+		Entity* createEntity(TiXmlElement* xchild);
 
 	private:
 		String myPath;

@@ -77,11 +77,6 @@ StructureViewer::StructureViewer():
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void StructureViewer::initialize()
 {
-#ifdef OMEGA_USE_PYTHON
-	omegaToolkitPythonApiInit();
-	cyclopsPythonApiInit();
-#endif
-
 	// Set the interactor style used to manipulate meshes.
 	myEditor = new SceneEditorModule();
 	ModuleServices::addModule(myEditor);
@@ -105,10 +100,7 @@ void StructureViewer::initialize()
 	// Create and initialize the cyclops scene manager.
 	// If a scene file is specified in the application config file, the scene manager will
 	// load it during initialization.
-	mySceneManager = new SceneManager();
-	ModuleServices::addModule(mySceneManager);
-
-	mySceneManager->doInitialize(getServer());
+	mySceneManager = SceneManager::createAndInitialize();
 
 	// Create the menu manager and a main menu.
 	myMenuManager = new ui::MenuManager();
@@ -122,18 +114,19 @@ void StructureViewer::initialize()
 
 	// For each entity in the scene, add a checkbox to the menu, that will be used
 	// to toggle the entity visibility.
-	foreach(Entity* e, mySceneManager->getEntities())
+	foreach(DrawableObject* dobj, mySceneManager->getObjects())
 	{
+		Entity* e = Entity::fromDrawableObject(dobj);
 		ui::MenuItem* mi = viewMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
 		mi->setChecked(false);
-		e->getSceneNode()->setVisible(false);
+		e->setVisible(false);
 		mi->setText(e->getTag());
 		mi->setUserData(e);
 		mi->setListener(this);
 		mi->setUserTag("visibilityToggle");
 
 		// Register the entity to the node editor, so it can be manipulated by the user.
-		myEditor->addNode(e->getSceneNode());
+		myEditor->addNode(e);
 	}
 
 	// Create the control submenu
@@ -180,7 +173,7 @@ void StructureViewer::onMenuItemEvent(ui::MenuItem* mi)
 	{
 		// Get the entity associated with the button and toggle its visibility.
 		Entity* e = (Entity*)mi->getUserData();
-		e->getSceneNode()->setVisible(mi->isChecked());
+		e->setVisible(mi->isChecked());
 	}
 	else if(mi->getUserTag() == "control")
 	{
