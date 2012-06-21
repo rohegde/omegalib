@@ -61,7 +61,6 @@ void OmegaViewer::initialize()
 #ifdef OMEGA_USE_PYTHON
 	omegaVtkPythonApiInit();
 	omegaToolkitPythonApiInit();
-	cyclopsPythonApiInit();
 #endif
 
 	if(sDefaultScript != "")
@@ -73,9 +72,7 @@ void OmegaViewer::initialize()
 	Setting& base = SystemManager::instance()->getAppConfig()->lookup("config");
 	if(Config::getBoolValue("cyclopsEnabled", base, false))
 	{
-		SceneManager* sm = new SceneManager();
-		ModuleServices::addModule(sm);
-		sm->doInitialize(getServer());
+		SceneManager* sm = SceneManager::createAndInitialize();
 	}
 }
 

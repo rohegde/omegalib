@@ -54,9 +54,6 @@ namespace omegaOsg
 	public:
 		static OsgModule* instance() { return mysInstance; }
 
-		static bool getAmbientOverrideHack() { return mysAmbientOverrideHack; }
-		static void setAmbientOverrideHack(bool value) { mysAmbientOverrideHack = value; }
-
 	public:
 		OsgModule();
 		~OsgModule();
@@ -77,7 +74,6 @@ namespace omegaOsg
 
 	private:
 		static OsgModule* mysInstance;
-		static bool mysAmbientOverrideHack;
 
 		float myRepresentationSize;
 

@@ -130,11 +130,11 @@ FbxMaterialToOsgStateSet::convert(const KFbxSurfaceMaterial* pFbxMat)
 
 		// HACK: if the ambient overide hack is on, we use the fbx diffuse color as 
 		// ambient color for the loaded objects.
-		if(!omegaOsg::OsgModule::getAmbientOverrideHack())
-		{
-			color = pFbxLambert->Ambient.Get();
-			factor = pFbxLambert->AmbientFactor.Get();
-		}
+		//if(!omegaOsg::OsgModule::getAmbientOverrideHack())
+		//{
+		//	color = pFbxLambert->Ambient.Get();
+		//	factor = pFbxLambert->AmbientFactor.Get();
+		//}
 
         pOsgMat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(
             static_cast<float>(color[0] * factor),

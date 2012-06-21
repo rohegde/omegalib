@@ -38,6 +38,8 @@
 #include <osgShadow/SoftShadowMap>
 #include <osgAnimation/BasicAnimationManager>
 
+#include "cyclops/DrawableObject.h"
+
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
 #include <omegaOsg.h>
@@ -81,6 +83,27 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct ModelInfo
+	{
+		ModelInfo(): numFiles(1), size(1) 
+		{}
+
+		ModelInfo(const String name, const String path, float size = 1.0f, int numFiles = 1)
+		{
+			this->name = name;
+			this->path = path;
+			this->size = size;
+			this->numFiles = numFiles;
+		}
+
+		String name;
+		String path;
+		String description;
+		uint numFiles;
+		float size;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelAsset
 	{
 		ModelAsset(): id(0), numNodes(0) {}
@@ -90,11 +113,14 @@ namespace cyclops {
 		//! Number of nodes in this model (used for multimodel assets)
 		int numNodes;
 		int id;
+
+		ModelInfo info;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class CY_API SceneManager: public ServerModule
 	{
+	friend class DrawableObject;
 	public:
 		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType };
@@ -107,28 +133,33 @@ namespace cyclops {
 		static const int ReceivesShadowTraversalMask = 0x1;
 		static const int CastsShadowTraversalMask = 0x2;
 
-		static bool findResource(const String& name, String& outPath);
-
 	public:
+		//! Creates and initializes the scene manager singleton.
+		//! If called multiple times, subsequent calls will do nothing.
+		static SceneManager* createAndInitialize();
+		//! Returns an instance of the SceneManager singleton instance If no
+		// Scene manager exists before this call, createAndInitialize will be called internally.
 		static SceneManager* instance();
-		SceneManager();
-		
+
 		ServerEngine* getEngine() { return myEngine; }
 
 		virtual void initialize();
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
 
-		void load(SceneLoader* loader);
-		//! Utility method: loads a scene file using the standard cyclops scene loader.
-		void load(const String& file);
+		//! Model Management
+		//@{
+		bool loadModel(ModelInfo info);
+		ModelAsset* getModel(const String& name);
+		const List<ModelAsset*>& getModels();
+		//@}
+
 
 		//! Scene creation methods
 		//@{
-		void addNode(osg::Node* node);
-		void addNode(osg::Node* node, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
-		void addStaticObject(int assetId, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
-		Entity* addEntity(int assetId, int entityId, const String& tag, const Vector3f& position, const Vector3f& rotation = Vector3f::Zero(), const Vector3f& scale = Vector3f::Ones());
+		void load(SceneLoader* loader);
+		//! Utility method: loads a scene file using the standard cyclops scene loader.
+		void load(const String& file);
 		void createSkyBox(const String& cubeMapDir, const String& cubeMapExt);
 		//@}
 
@@ -137,31 +168,30 @@ namespace cyclops {
 		Light* getLight(int id);
 		Light* getMainLight() { return myMainLight; }
 		void setMainLight(Light* light) { myMainLight = light; }
+		//! Shadow map control
+		int getShadowMapQuality() { return myShadowMapQuality; }
 		//@}
 
-		void addAsset(ModelAsset* asset, AssetType type);
-		ModelAsset* getModelAsset(int fileIndex);
-		Entity* findEntity(int id);
-		int getNumEntities() { return myEntities.size(); }
-		List<Entity*>::Range getEntities();
+		//! Object management
+		//@{
+		template<typename T> T* getObject(const String& name);
+		int getNumObjects();
+		List<DrawableObject*>::Range getObjects();
+		//@}
 
 		osg::Texture2D* getTexture(const String& name);
 		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
 		void initShading();
 
-		//! Shadow map control
-		//@{
-		int getShadowMapQuality() { return myShadowMapQuality; }
-		//@}
-
 		void setShaderMacroToString(const String& macroName, const String& macroString);
 		void setShaderMacroToFile(const String& macroName, const String& path);
 
 	private:
+		SceneManager();
+
+		void addObject(DrawableObject* obj);
 		void updateLights();
 		void loadConfiguration();
-
-	private:
 		void loadShader(osg::Shader* shader, const String& name);
 
 	private:
@@ -177,14 +207,17 @@ namespace cyclops {
 
 		osg::Group* mySceneRoot;
 
-		Vector<ModelAsset*> myModelFiles;
+		// Model data (stored as dictionary and list for convenience)
+		Dictionary<String, ModelAsset*> myModelDictionary;
+		List<ModelAsset*> myModelList;
 
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, osg::Program*> myPrograms;
 
 		ShaderMacroDictionary myShaderMacros;
 
-		List<Entity*> myEntities;
+		Dictionary<String, DrawableObject*> myObjectDictionary;
+		List<DrawableObject*> myObjectList;
 		
 		SkyBox* mySkyBox;
 
@@ -194,15 +227,20 @@ namespace cyclops {
 		osgShadow::ShadowedScene* myShadowedScene;
 		osgShadow::SoftShadowMap* mySoftShadowMap;
 		int myShadowMapQuality;
-		//bool frontView;
-		//float localZoom;
-		//float remoteZoom;
-		//int myRotate;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline SceneManager* SceneManager::instance() 
-	{ return mysInstance; }
+	template<typename T> 
+	inline  T* SceneManager::getObject(const String& name)
+	{ return dynamic_cast<T*>(myObjectDictionary[name]); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int SceneManager::getNumObjects()
+	{ return myObjectList.size(); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline List<DrawableObject*>::Range SceneManager::getObjects()
+	{ return List<DrawableObject*>::Range(myObjectList.begin(), myObjectList.end()); }
 };
 
 #endif

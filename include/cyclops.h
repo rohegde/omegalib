@@ -26,10 +26,10 @@
 #define __CYCLOPS__
 
 #include "cyclops/cyclopsConfig.h"
+#include "cyclops/DrawableObject.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
 #include "cyclops/Entity.h"
-
-CY_API void cyclopsPythonApiInit();
+#include "cyclops/Shapes.h"
 
 #endif

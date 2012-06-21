@@ -24,54 +24,24 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include <osg/PositionAttitudeTransform>
-#include <osg/MatrixTransform>
-#include <osg/OcclusionQueryNode>
-#include <osg/Depth>
-#include <osg/ColorMask>
-#include <osg/PolygonMode>
-#include <osg/PolygonOffset>
-#include <osgUtil/TangentSpaceGenerator>
-#include <osgFX/Effect>
+//#include <osg/PositionAttitudeTransform>
+//#include <osg/MatrixTransform>
+//#include <osg/OcclusionQueryNode>
+//#include <osg/Depth>
+//#include <osg/ColorMask>
+//#include <osg/PolygonMode>
+//#include <osg/PolygonOffset>
+//#include <osgUtil/TangentSpaceGenerator>
+//#include <osgFX/Effect>
 #include <osgDB/ReadFile>
 #include <osgwTools/Shapes.h>
 
 #include "cyclops/SceneLoader.h"
 #include "cyclops/EffectNode.h"
 #include "cyclops/Entity.h"
+#include "cyclops/StaticObject.h"
 
 using namespace cyclops;
-
-#ifdef OMEGA_OS_LINUX
-/**
-	 * C++ version 0.4 char* style "itoa":
-	 * Written by Lukás Chmela
-	 * Released under GPLv3.
-	 */
-	char* itoa(int value, char* result, int base) {
-		// check that the base if valid
-		if (base < 2 || base > 36) { *result = '\0'; return result; }
-	
-		char* ptr = result, *ptr1 = result, tmp_char;
-		int tmp_value;
-	
-		do {
-			tmp_value = value;
-			value /= base;
-			*ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * base)];
-		} while ( value );
-	
-		// Apply negative sign
-		if (tmp_value < 0) *ptr++ = '-';
-		*ptr-- = '\0';
-		while(ptr1 < ptr) {
-			tmp_char = *ptr;
-			*ptr--= *ptr1;
-			*ptr1++ = tmp_char;
-		}
-		return result;
-}
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneLoader::SceneLoader(TiXmlDocument& doc, const String& path):
@@ -230,108 +200,31 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 	{
 		String filePath = xchild->Attribute("Path");
 		int objcount=1;
-		if(filePath.find("*")!=-1){
-			if(xchild->Attribute("Objcount") != NULL){
+		if(filePath.find("*") != -1)
+		{
+			if(xchild->Attribute("Objcount") != NULL)
+			{
 				objcount = atoi(xchild->Attribute("Objcount"));
-			} else {
+			} 
+			else 
+			{
 			  ofwarn("object count not available for:  %1%", %filePath);
 			}	
 		}
 
+		const char* id = xchild->Attribute("Id");
 
-
-		// In the path, substitute ./ occurrences with the path of the xml scene file, so assets
-		// in the local directory can be correctly referenced.
-		// Split the path and get the file name.
-		String path;
-		String filename;
-		String extension;
-		StringUtils::splitFullFilename(myPath, filename, extension, path);
-		filePath = StringUtils::replaceAll(filePath, "./", path);
+		ModelInfo mi;
+		mi.name = id;
+		mi.path = filePath;
+		mi.numFiles = objcount;
 		
-		int index = atoi(xchild->Attribute("Id"));
-		
-		ModelAsset* asset = new ModelAsset();
-				asset->id = index;
-				asset->filename = filename; /// changed filepath to filename (confirm from alassandro).
-				asset->numNodes = objcount;
-       
+		const char* attrSize = xchild->Attribute("Size");
+		if(attrSize != NULL) mi.size = atoi(attrSize);
 
-		char orfp[100]; 
-		strcpy(orfp,filePath.c_str());
-
-		for(int iterator=1;iterator<=objcount;iterator++){
-
-		char buffer[10];
-		filePath = StringUtils::replaceAll(orfp, "*", itoa (iterator,buffer,10));
-
-		
-		ofmsg("Loading asset %1%", %filePath);
-
-		String assetPath;
-		if(DataManager::findFile(filePath, assetPath))
-		{ 
-			osgDB::Options* options = new osgDB::Options; 
-			options->setOptionString("noTesselateLargePolygons noTriStripPolygons noRotation"); 
-
-			osg::Node* node = osgDB::readNodeFile(assetPath, options);
-			if(node != NULL)
-			{
-				if(xchild->Attribute("Effect") != NULL)
-				{
-					String fxDef = xchild->Attribute("Effect");
-					EffectNode* fx = new EffectNode();
-					fx->setDefinition(fxDef);
-					fx->addChild(node);
-					node = fx;
-				}
-
-				if(xchild->Attribute("Size") != NULL)
-				{
-					float size = atof(xchild->Attribute("Size"));
-
-					float r = node->getBound().radius() * 2;
-
-					float scale = size / r;
-
-					osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
-					pat->setScale(osg::Vec3(scale, scale, scale));
-					pat->addChild(node);
-
-					node = pat;
-				}
-
-				asset->nodes.push_back(node);
-
-
-				
-
-				if(xchild->Attribute("Description") != NULL)
-				{
-					asset->description = xchild->Attribute("Description");
-				}
-				else
-				{
-					asset->description = asset->filename;
-				}
-			}
-			else
-			{
-				ofwarn("loading failed: %1%", %assetPath);
-			}
-		}
-		else
-		{
-			ofwarn("could not find file: %1%", %filePath);
-		}
-
-		}
-
-		mySceneManager->addAsset(asset, type);
+		mySceneManager->loadModel(mi);
 		
 		xchild = xchild->NextSiblingElement();
-		
-
 	}
 }
 
@@ -344,39 +237,32 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 		String objtype = xchild->Value();
 		StringUtils::toLowerCase(objtype);
 
-		Vector3f rotation = readVector3f(xchild, "Rotation");
-		Vector3f position = readVector3f(xchild, "WorldPos");
-		Vector3f scale = readVector3f(xchild, "Scale");
-		if(scale.x() == 0 && scale.y() == 0 && scale.z() == 0) scale = Vector3f::Ones();
+		// Instantiate a drawable object depending on tag name
+		DrawableObject* obj = NULL;
+		if(objtype == "plane")	obj = createPlane(xchild);
+		else if(objtype == "sphere") obj = createSphere(xchild);
+		else if(objtype == "staticobject") obj = createStaticObject(xchild);
+		else if(objtype == "entity") obj = createEntity(xchild);
 
-		if(objtype == "staticobject")
+		if(obj != NULL)
 		{
-			int fileIndex = atoi(xchild->Attribute("FileIndex"));
-			mySceneManager->addStaticObject(fileIndex, position, rotation, scale);
-		}
-		else if(objtype == "entity")
-		{
-			int fileIndex = atoi(xchild->Attribute("FileIndex"));
-			int id = atoi(xchild->Attribute("Id"));
-			const char* tag = xchild->Attribute("Tag");
-			String sTag;
-			if(tag != NULL) sTag = tag;
+			Vector3f rotation = readVector3f(xchild, "Rotation");
+			Vector3f position = readVector3f(xchild, "WorldPos");
+			Vector3f scale = readVector3f(xchild, "Scale");
+			if(scale.x() == 0 && scale.y() == 0 && scale.z() == 0) scale = Vector3f::Ones();
 
-			//EntityEventCallbacks eec;
-			//const char*
+			// Apply transformation to object based on what has been read from its xml element.
+			obj->setPosition(position);
+			obj->pitch(rotation[0] * Math::DegToRad);
+			obj->yaw(rotation[1] * Math::DegToRad);
+			obj->roll(rotation[2] * Math::DegToRad);
 
-			Entity* e = mySceneManager->addEntity(fileIndex, id, sTag, position, rotation, scale);
-			
-		}
-		else if(objtype == "plane")
-		{
-			osg::Node* node = createPlane(xchild);
-			mySceneManager->addNode(node, position, rotation, scale);
-		}
-		else if(objtype == "sphere")
-		{
-			osg::Node* node = createSphere(xchild);
-			mySceneManager->addNode(node, position, rotation, scale);
+			// If the xml element specifies an effect, apply it.
+			const char* attrFx = xchild->Attribute("Effect");
+			if(attrFx != NULL)
+			{
+				obj->setEffect(attrFx);
+			}
 		}
 		
 		xchild = xchild->NextSiblingElement();
@@ -384,88 +270,54 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-osg::Node* SceneLoader::createPlane(TiXmlElement* xchild)
+PlaneShape* SceneLoader::createPlane(TiXmlElement* xchild)
 {
-	osg::Geode* node = new osg::Geode();
+	const char* attrHeight = xchild->Attribute("Height");
+	const char* attrWidth = xchild->Attribute("Width");
 
-	Vector3f startCorner = readVector3f(xchild, "StartCorner");
-	Vector3f endCorner = readVector3f(xchild, "EndCorner");
+	if(attrHeight == NULL || attrWidth == NULL)
+	{
+		owarn("SceneLoader::createPlane: xml tag is missing Width or Height attributes");
+		return NULL;
+	}
+
+	float height = atof(attrHeight);
+	float width = atof(attrWidth);
+
 	Vector2f tiling = readVector2f(xchild, "Tiling");
 
-	Vector3f c1(startCorner[0], startCorner[1], endCorner[2]);
-	Vector3f c2(endCorner[0], startCorner[1], startCorner[2]);
-	Vector3f u = (c1 - startCorner);
-	Vector3f v = (c2 - startCorner);
-
-	osg::Geometry* plane = osgwTools::makePlane(
-		OOSG_VEC3(startCorner), 
-		OOSG_VEC3(u), 
-		OOSG_VEC3(v));
-	plane->setColorArray(NULL);
-	plane->setColorBinding(osg::Geometry::BIND_OFF);
-
-	osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-	tsg->generate(plane, 0);
-	osg::Vec4Array* a_tangent = tsg->getTangentArray();
-	plane->setVertexAttribArray (6, a_tangent);
-	plane->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
-
-	osg::StateSet* fx = node->getOrCreateStateSet();
-	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
-	plane->setStateSet(fx);
-	node->addDrawable(plane);
-	tsg->unref();
-
-	if(xchild->Attribute("Effect") != NULL)
-	{
-		String fxDef = xchild->Attribute("Effect");
-		EffectNode* fx = new EffectNode();
-		fx->setDefinition(fxDef);
-		fx->addChild(node);
-		return fx;
-	}
-	return node;
+	return new PlaneShape(mySceneManager, width, height, tiling);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-osg::Node* SceneLoader::createSphere(TiXmlElement* xchild)
+SphereShape* SceneLoader::createSphere(TiXmlElement* xchild)
 {
-	osg::Geode* node = new osg::Geode();
-
 	float radius = readFloat(xchild, "Radius", 1.0);
 	int subdivisions = readInt(xchild, "Subdivisions", 4);
 	Vector2f tiling = readVector2f(xchild, "Tiling");
-	//String material = xchild->Attribute("Material");
 
-	osg::Geometry* sphere = osgwTools::makeGeodesicSphere(radius, subdivisions);
-	sphere->setColorArray(NULL);
-	sphere->setColorBinding(osg::Geometry::BIND_OFF);
-
-	osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
-	tsg->generate(sphere, 0);
-	osg::Vec4Array* a_tangent = tsg->getTangentArray();
-	sphere->setVertexAttribArray (6, a_tangent);
-	sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
-
-	osg::StateSet* fx = node->getOrCreateStateSet();
-	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
-
-	node->addDrawable(sphere);
-	sphere->setStateSet(fx);
-
-	tsg->unref();
-
-	if(xchild->Attribute("Effect") != NULL)
-	{
-		String fxDef = xchild->Attribute("Effect");
-		EffectNode* fx = new EffectNode();
-		fx->setDefinition(fxDef);
-		fx->addChild(node);
-		return fx;
-	}
-
-	return node;
+	return new SphereShape(mySceneManager, radius, subdivisions, tiling);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Entity* SceneLoader::createEntity(TiXmlElement* xchild)
+{
+	// Create a new entity
+	const char* fileIndex = xchild->Attribute("FileIndex");
+	const char* id = xchild->Attribute("Id");
+	if(fileIndex != NULL && id != NULL)
+	{
+		return new Entity(mySceneManager, fileIndex, id);
+		owarn("SceneLoader: Entity xml tag is missing FileIndex or Id attributes");
+	}
+	return NULL;
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+StaticObject* SceneLoader::createStaticObject(TiXmlElement* xchild)
+{
+	// Create a new static object
+	const char* fileIndex = xchild->Attribute("FileIndex");
+	return new StaticObject(mySceneManager, fileIndex);
+}
 

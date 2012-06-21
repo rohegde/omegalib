@@ -50,6 +50,10 @@ protected:
 		if(StringUtils::startsWith(myDefinition, "textured")) define_passes_textured();
 		if(StringUtils::startsWith(myDefinition, "bump")) define_passes_bump();
 		if(StringUtils::startsWith(myDefinition, "blueprint")) define_passes_blueprint();
+		else
+		{
+			addPass(new osg::StateSet());
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,8 +65,6 @@ protected:
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color color", diffuse);
 		ah.process(myDefinition.c_str());
-
-
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
@@ -90,6 +92,13 @@ protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	void define_passes_textured()
 	{
+		String effectName;
+		String diffuse;
+		libconfig::ArgumentHelper ah;
+		ah.newString("effectName", "the effect name", effectName);
+		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
+		ah.process(myDefinition.c_str());
+
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
@@ -97,6 +106,15 @@ protected:
 		ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
 		ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
 		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+
+		if(diffuse != "")
+		{
+			osg::Texture2D* tex = sm->getTexture(diffuse);
+			if(tex != NULL)
+			{
+				ss->setTextureAttribute(0, tex);
+			}
+		}
 
 		addPass(ss);
 	}
@@ -128,6 +146,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 EffectNode::EffectNode() 
 {
+	dirtyTechniques();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

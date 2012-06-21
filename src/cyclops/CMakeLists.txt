@@ -26,18 +26,24 @@
 ###################################################################################################
 add_definitions( -D_CRT_SECURE_NO_WARNINGS -DCY_EXPORTING)
 set(SRCS 
+		DrawableObject.cpp
 		EffectNode.cpp
 		Entity.cpp
+		Shapes.cpp
+		SkyBox.cpp
 		SceneLoader.cpp
 		SceneManager.cpp
-		SkyBox.cpp
+		StaticObject.cpp
 		cyclopsPythonApi.cpp)
     
 set(HEADERS 
+		${CMAKE_SOURCE_DIR}/include/cyclops/DrawableObject.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/EffectNode.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Entity.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/Shapes.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SkyBox.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/StaticObject.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneLoader.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/SceneManager.h)
 		
