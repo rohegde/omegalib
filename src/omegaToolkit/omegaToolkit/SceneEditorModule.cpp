@@ -29,6 +29,7 @@
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/ControllerManipulator.h"
 #include "omegaToolkit/BoundingSphere.h"
+#include "omegaToolkit/ToolkitUtils.h"
 
 using namespace omegaToolkit;
 using namespace omega;
@@ -42,8 +43,32 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 	mySelectionSphere = new BoundingSphere();
 	mySelectionSphere->setDrawOnSelected(false);
 	mySelectionSphere->setVisible(true);
+	mySceneNode->setSelectable(true);
 	//mySceneNode->addObject(mySelectionSphere);
 	//mySceneNode->setBoundingBoxVisible(true);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneEditorModule* SceneEditorModule::createAndInitialize()
+{
+	SceneEditorModule* instance = new SceneEditorModule();
+	ModuleServices::addModule(instance);
+	instance->doInitialize(ServerEngine::instance());
+	if(SystemManager::settingExists("config/interactor"))
+	{
+		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
+		Actor* interactor = ToolkitUtils::createInteractor(sinteractor);
+		if(interactor != NULL)
+		{
+			ModuleServices::addModule(interactor);
+			instance->setInteractor(interactor);
+		}
+	}
+	else
+	{
+		owarn("No interactor specified in configuration: Entity manipulation will be disabled");
+	}
+	return instance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

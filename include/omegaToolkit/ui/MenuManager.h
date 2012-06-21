@@ -156,8 +156,8 @@ namespace omegaToolkit { namespace ui {
 	class OTK_API MenuManager: public ServerModule
 	{
 	public:
+		static MenuManager* createAndInitialize();
 		static MenuManager* instance();
-		MenuManager();
 
 		ServerEngine* getEngine() { return myEngine; }
 		UiModule* getUiModule() { return myUiModule; }
@@ -182,6 +182,8 @@ namespace omegaToolkit { namespace ui {
 		float getMenu3dScale() { return myMenu3dScale; }
 
 	private:
+		MenuManager();
+
 		void autoPlaceMenu(Menu* menu, const Event& evt);
 
 	private:
@@ -198,10 +200,6 @@ namespace omegaToolkit { namespace ui {
 
 		ServerEngine* myEngine;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline MenuManager* MenuManager::instance() 
-	{ return mysInstance; }
 }; };
 
 #endif
