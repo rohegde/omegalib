@@ -328,7 +328,7 @@ PyObject* nodeGetPosition(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		const Vector3f& pos = node->getPosition();
 		return Py_BuildValue("fff", pos[0], pos[1], pos[2]);
 	}
@@ -344,7 +344,7 @@ PyObject* nodeSetPosition(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		node->setPosition(pos);
 		Py_INCREF(Py_None);
 		return Py_None;

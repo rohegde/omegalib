@@ -76,10 +76,10 @@ void FlockApplication::initialize()
 
 	// Setup lighting
 	cyclops::Light* l = mySceneManager->getLight(0);
-	l->enabled = true;
-	l->position = Vector3f(0, 10, 0);
-	l->color = Color(1.0f, 1.0f, 0.7f);
-	l->ambient = Color(0.1f, 0.1f, 0.1f);
+	l->setEnabled(true);
+	l->setPosition(Vector3f(0, 10, 0));
+	l->setColor(Color(1.0f, 1.0f, 0.7f));
+	l->setAmbient(Color(0.1f, 0.1f, 0.1f));
 	mySceneManager->setMainLight(l);
 }
 
