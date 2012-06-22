@@ -65,7 +65,7 @@ PyObject* lightEnable(PyObject* self, PyObject* args)
 	PyArg_ParseTuple(args, "i", &id);
 
 	Light* l = SceneManager::instance()->getLight(id);
-	if(l != NULL) l->enabled = true;
+	if(l != NULL) l->setEnabled(true);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -77,7 +77,7 @@ PyObject* lightDisable(PyObject* self, PyObject* args)
 	PyArg_ParseTuple(args, "i", &id);
 
 	Light* l = SceneManager::instance()->getLight(id);
-	if(l != NULL) l->enabled = false;
+	if(l != NULL) l->setEnabled(false);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -95,7 +95,7 @@ PyObject* lightSetColor(PyObject* self, PyObject* args)
 		Light* l = SceneManager::instance()->getLight(id);
 		if(l != NULL)
 		{
-			l->color = col;
+			l->setColor(col);
 		}
 	}
 	Py_INCREF(Py_None);
@@ -115,7 +115,7 @@ PyObject* lightSetAmbient(PyObject* self, PyObject* args)
 		Light* l = SceneManager::instance()->getLight(id);
 		if(l != NULL)
 		{
-			l->ambient = col;
+			l->setAmbient(col);
 		}
 	}
 	Py_INCREF(Py_None);
@@ -134,44 +134,44 @@ PyObject* lightSetShadow(PyObject* self, PyObject* args)
 	Light* l = SceneManager::instance()->getLight(id);
 	if(l != NULL)
 	{
-		l->softShadowJitter = jitter;
-		l->softShadowWidth = soft;
+		l->setSoftShadowJitter(jitter);
+		l->setSoftShadowWidth(soft);
 	}
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* lightSetPosition(PyObject* self, PyObject* args)
-{
-	int id;
-	float x, y, z;
-	PyArg_ParseTuple(args, "ifff", &id, &x, &y, &z);
-
-	Light* l = SceneManager::instance()->getLight(id);
-	if(l != NULL)
-	{
-		l->position[0] = x;
-		l->position[1] = y;
-		l->position[2] = z;
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
+//PyObject* lightSetPosition(PyObject* self, PyObject* args)
+//{
+//	int id;
+//	float x, y, z;
+//	PyArg_ParseTuple(args, "ifff", &id, &x, &y, &z);
+//
+//	Light* l = SceneManager::instance()->getLight(id);
+//	if(l != NULL)
+//	{
+//		l->position[0] = x;
+//		l->position[1] = y;
+//		l->position[2] = z;
+//	}
+//	Py_INCREF(Py_None);
+//	return Py_None;
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* lightGetPosition(PyObject* self, PyObject* args)
-{
-	int id;
-	PyArg_ParseTuple(args, "i", &id);
-
-	Light* l = SceneManager::instance()->getLight(id);
-	if(l != NULL)
-	{
-		return Py_BuildValue("fff", l->position[0], l->position[1], l->position[2]);
-	}
-	return NULL;
-}
+//PyObject* lightGetPosition(PyObject* self, PyObject* args)
+//{
+//	int id;
+//	PyArg_ParseTuple(args, "i", &id);
+//
+//	Light* l = SceneManager::instance()->getLight(id);
+//	if(l != NULL)
+//	{
+//		return Py_BuildValue("fff", l->position[0], l->position[1], l->position[2]);
+//	}
+//	return NULL;
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //PyObject* animationCount(PyObject* self, PyObject* args)
@@ -262,13 +262,13 @@ static PyMethodDef cyMethods[] =
 		"sceneLoad(path)\n" 
 		"Loads a cyclops xml scene file."},
 
-    {"lightGetPosition", lightGetPosition, METH_VARARGS, 
-		"lightGetPosition(id)\n" 
-		"Gets the position for the specified light."},
+  //  {"lightGetPosition", lightGetPosition, METH_VARARGS, 
+		//"lightGetPosition(id)\n" 
+		//"Gets the position for the specified light."},
 
-    {"lightSetPosition", lightSetPosition, METH_VARARGS, 
-		"lightSetPosition(id, x, y, z)\n" 
-		"Sets the position for the specified light."},
+  //  {"lightSetPosition", lightSetPosition, METH_VARARGS, 
+		//"lightSetPosition(id, x, y, z)\n" 
+		//"Sets the position for the specified light."},
 
     {"lightSetColor", lightSetColor, METH_VARARGS, 
 		"lightSetColor(id, colorString)\n" 

@@ -133,6 +133,12 @@ void SceneManager::initialize()
 {
 	myMainLight = NULL;
 
+	// Initialize lights
+	for(int i = 0; i < MaxLights; i++)
+	{
+		myLights[i] = new Light();
+	}
+
 	myEngine = getServer();
 
 	// Make sure the osg module is initialized.
@@ -205,35 +211,41 @@ void SceneManager::updateLights()
 {
 	for(int i = 0; i < MaxLights; i++)
 	{
-		Light& l = myLights[i];
-		if(l.enabled)
+		Light* l = myLights[i];
+		if(l->isEnabled())
 		{
-			if(l.osgLight == NULL)
+			if(l->myOsgLight == NULL)
 			{
-				l.osgLight = new osg::Light();
-				l.osgLightSource = new osg::LightSource();
-				mySceneRoot->addChild(l.osgLightSource);
+				l->myOsgLight = new osg::Light();
+				l->myOsgLightSource = new osg::LightSource();
+				mySceneRoot->addChild(l->myOsgLightSource);
 			}
 
-			l.osgLight->setLightNum(i);
-			l.osgLight->setPosition(osg::Vec4(l.position[0], l.position[1], l.position[2], 1.0));
-			l.osgLight->setAmbient(COLOR_TO_OSG(l.ambient));
-			l.osgLight->setDiffuse(COLOR_TO_OSG(l.color));
-			l.osgLight->setSpecular(COLOR_TO_OSG(l.color));
-			l.osgLight->setConstantAttenuation(l.constAttenuation);
-			l.osgLight->setLinearAttenuation(l.linearAttenuation);
-			l.osgLight->setQuadraticAttenuation(l.quadAttenuation);
+			osg::Light* ol = l->myOsgLight;
+			osg::LightSource* ols = l->myOsgLightSource;
 
-			l.osgLightSource->setLight(l.osgLight);
+			const Vector3f pos = l->getPosition();
+			const Vector3f& att = l->getAttenuation();
+
+			ol->setLightNum(i);
+			ol->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0));
+			ol->setAmbient(COLOR_TO_OSG(l->getAmbient()));
+			ol->setDiffuse(COLOR_TO_OSG(l->getColor()));
+			ol->setSpecular(COLOR_TO_OSG(l->getColor()));
+			ol->setConstantAttenuation(att[0]);
+			ol->setLinearAttenuation(att[1]);
+			ol->setQuadraticAttenuation(att[2]);
+
+			ols->setLight(ol);
 
 			osg::StateSet* sState = mySceneRoot->getOrCreateStateSet();
-			l.osgLightSource->setStateSetModes(*sState,osg::StateAttribute::ON);
+			ols->setStateSetModes(*sState,osg::StateAttribute::ON);
 		}
 		else
 		{
-			if(l.osgLightSource != NULL)
+			if(l->myOsgLightSource != NULL)
 			{
-				l.osgLightSource->setLocalStateSetModes(osg::StateAttribute::OFF); 
+				l->myOsgLightSource->setLocalStateSetModes(osg::StateAttribute::OFF); 
 			}
 		}
 	}
@@ -242,21 +254,21 @@ void SceneManager::updateLights()
 	{
 		if(mySoftShadowMap != NULL)
 		{
-			mySoftShadowMap->setLight(myMainLight->osgLight);
-			mySoftShadowMap->setSoftnessWidth(myMainLight->softShadowWidth);
-			mySoftShadowMap->setJitteringScale(myMainLight->softShadowJitter);
+			mySoftShadowMap->setLight(myMainLight->myOsgLight);
+			mySoftShadowMap->setSoftnessWidth(myMainLight->getSoftShadowWidth());
+			mySoftShadowMap->setJitteringScale(myMainLight->getSoftShadowJitter());
 		}
 
 		// Set ambient light uniform.
 		osg::Uniform* unifAmbient = mySceneRoot->getOrCreateStateSet()->getUniform("unif_Ambient");
 		if(unifAmbient == NULL)
 		{
-			unifAmbient = new osg::Uniform("unif_Ambient", COLOR_TO_OSG(myMainLight->ambient));
+			unifAmbient = new osg::Uniform("unif_Ambient", COLOR_TO_OSG(myMainLight->getAmbient()));
 			mySceneRoot->getStateSet()->addUniform(unifAmbient, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		}
 		else
 		{
-			unifAmbient->set(COLOR_TO_OSG(myMainLight->ambient));
+			unifAmbient->set(COLOR_TO_OSG(myMainLight->getAmbient()));
 		}
 	}
 }
@@ -570,7 +582,7 @@ Light* SceneManager::getLight(int id)
 {
 	if(id >= 0 && id < MaxLights)
 	{
-		return &myLights[id];
+		return myLights[id];
 	}
 
 	oferror("SceneManager::getLight: id > MaxLights (%1% > %2%)", %id %MaxLights);

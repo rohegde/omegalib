@@ -141,10 +141,10 @@ void StructureViewer::initialize()
 	quitMenuItem->setCommand("oexit()");
 
 	myLight = mySceneManager->getLight(0);
-	myLight->enabled = true;
-	myLight->position = Vector3f(0, 50, 1);
-	myLight->color = Color(1.0f, 1.0f, 0.7f);
-	myLight->ambient = Color(0.2f, 0.2f, 0.3f);
+	myLight->setEnabled(true);
+	myLight->setPosition(Vector3f(0, 50, 0));
+	myLight->setColor(Color(1.0f, 1.0f, 0.7f));
+	myLight->setAmbient(Color(0.1f, 0.1f, 0.1f));
 	mySceneManager->setMainLight(myLight);
 }
 
@@ -198,7 +198,7 @@ void StructureViewer::handleEvent(const Event& evt)
 				Ray r;
 				if(getServer()->getDisplaySystem()->getViewRayFromEvent(evt, r))
 				{
-					myLight->position = r.getPoint(myLightDistance);
+					myLight->setPosition(r.getPoint(myLightDistance));
 				}
 				evt.setProcessed();
 			}

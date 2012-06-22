@@ -98,10 +98,10 @@ void HelloApplication::initialize()
 
 	// Setup a light for the scene.
 	Light* light = mySceneManager->getLight(0);
-	light->enabled = true;
-	light->position = Vector3f(0, 50, 1);
-	light->color = Color(1.0f, 1.0f, 0.7f);
-	light->ambient = Color(0.2f, 0.2f, 0.3f);
+	light->setEnabled(true);
+	light->setPosition(Vector3f(0, 50, 0));
+	light->setColor(Color(1.0f, 1.0f, 0.7f));
+	light->setAmbient(Color(0.1f, 0.1f, 0.1f));
 
 	mySceneManager->setMainLight(light);
 	// Create and initialize the menu manager
