@@ -140,7 +140,7 @@ void StructureViewer::initialize()
 	quitMenuItem->setText("Quit Structure");
 	quitMenuItem->setCommand("oexit()");
 
-	myLight = mySceneManager->getLight(0);
+	myLight = new Light(mySceneManager);
 	myLight->setEnabled(true);
 	myLight->setPosition(Vector3f(0, 50, 0));
 	myLight->setColor(Color(1.0f, 1.0f, 0.7f));

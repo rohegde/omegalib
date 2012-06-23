@@ -48,7 +48,7 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API MenuItem: public IEventListener
+	class OTK_API MenuItem: public ReferenceType, IEventListener
 	{
 	friend class Menu;
 	public:
@@ -118,12 +118,11 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API Menu
+	class OTK_API Menu: public ReferenceType
 	{
 	friend class MenuItem;
+	friend class MenuManager;
 	public:
-		Menu(const String& name, MenuManager* manager);
-
 		MenuManager* getManager() { return myManager; }
 
 		MenuItem* addItem(MenuItem::Type type);
@@ -137,6 +136,9 @@ namespace omegaToolkit { namespace ui {
 
 		omegaToolkit::ui::Container* getContainer() { return myContainer; }
 		omegaToolkit::ui::Container3dSettings& get3dSettings() { return my3dSettings; }
+
+	private:
+		Menu(const String& name, MenuManager* manager);
 
 	private:
 		MenuManager* myManager;

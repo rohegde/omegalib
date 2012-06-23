@@ -279,7 +279,7 @@ void OmegaViewer::initialize()
 	camDefault();
 
 	//init the lighting
-	cyclops::Light* l = sceneMngr->getLight(0);
+	cyclops::Light* l = new Light(sceneMngr);
 	l->setEnabled(true);
 	l->setPosition(Vector3f(15, 15, 27));
 	l->setColor(Color(1.0f, 1.0f, 0.7f));

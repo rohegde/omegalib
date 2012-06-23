@@ -221,10 +221,30 @@ void PythonInterpreter::initialize(const char* programName)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 {
+	Dictionary<String, int> intConstants;
+	Dictionary<String, String> stringConstants;
+	addModule(name, methods, intConstants, stringConstants);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const Dictionary<String, int> intConstants, const Dictionary<String, String> stringConstants)
+{
 	//PyEval_AcquireLock();
 	//PyThreadState_Swap(sMainThreadState);
 
-	Py_InitModule(name, methods);
+	PyObject* module = Py_InitModule(name, methods);
+
+	typedef Dictionary<String, int>::Item IntConstantItem;
+	foreach(IntConstantItem item, intConstants)
+	{
+		PyModule_AddIntConstant(module, item.getKey().c_str(), item.getValue());
+	}
+
+	typedef Dictionary<String, String>::Item StringConstantItem;
+	foreach(StringConstantItem item, stringConstants)
+	{
+		PyModule_AddStringConstant(module, item.getKey().c_str(), item.getValue().c_str());
+	}
 
 	PyMethodDef* cur = methods;
 	while(cur->ml_name != NULL)
@@ -341,7 +361,7 @@ void PythonInterpreter::update(const UpdateContext& context)
 	}
 	
 	PyObject *arglist;
-	arglist = Py_BuildValue("(iff)", context.frameNum, context.time, context.dt);
+	arglist = Py_BuildValue("(lff)", (long int)context.frameNum, context.time, context.dt);
 
 
 	foreach(void* cb, myUpdateCallbacks)
@@ -439,6 +459,8 @@ void PythonInterpreter::initialize(const char* programName) { }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods) { }
+
+void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const Dictionary<String, int> intConstants, const Dictionary<String, String> stringConstants) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...) 

@@ -58,41 +58,36 @@ namespace cyclops {
 	{
 	friend class SceneManager;
 	public:
-		Light():
-			myColor(Color::White),
-			myAmbient(Color::Gray),
-			myAttenuation(Vector3f::Zero()),
-			myEnabled(false),
-			mySoftShadowWidth(0.005f),
-			mySoftShadowJitter(32),
-			myOsgLight(NULL), myOsgLightSource(NULL)
-			{}
+		Light(SceneManager* scene);
+		virtual ~Light();
 
-			void setColor(const Color& value) { myColor = value; }
-			const Color& getColor() { return myColor; }
+		void setColor(const Color& value) { myColor = value; }
+		const Color& getColor() { return myColor; }
 
-			void setAmbient(const Color& value) { myAmbient = value; }
-			const Color& getAmbient() { return myAmbient; }
+		void setAmbient(const Color& value) { myAmbient = value; }
+		const Color& getAmbient() { return myAmbient; }
 
-			void setEnabled(bool value) { myEnabled = value; }
-			bool isEnabled() { return myEnabled; }
+		void setEnabled(bool value) { myEnabled = value; }
+		bool isEnabled() { return myEnabled; }
 
-			void setAttenuation(const Vector3f value) { myAttenuation = value; }
-			void setAttenuation(float constant, float linear, float quadratic) 
-			{ 
-				myAttenuation[0] = constant; 
-				myAttenuation[1] = linear; 
-				myAttenuation[2] = quadratic; 
-			}
-			const Vector3f& getAttenuation() { return myAttenuation; }
+		void setAttenuation(const Vector3f value) { myAttenuation = value; }
+		void setAttenuation(float constant, float linear, float quadratic) 
+		{ 
+			myAttenuation[0] = constant; 
+			myAttenuation[1] = linear; 
+			myAttenuation[2] = quadratic; 
+		}
+		const Vector3f& getAttenuation() { return myAttenuation; }
 
-			void setSoftShadowWidth(float value) { mySoftShadowWidth = value; }
-			float getSoftShadowWidth() { return mySoftShadowWidth; }
+		void setSoftShadowWidth(float value) { mySoftShadowWidth = value; }
+		float getSoftShadowWidth() { return mySoftShadowWidth; }
 
-			void setSoftShadowJitter(int value) { mySoftShadowJitter = value; }
-			float getSoftShadowJitter() { return mySoftShadowJitter; }
+		void setSoftShadowJitter(int value) { mySoftShadowJitter = value; }
+		float getSoftShadowJitter() { return mySoftShadowJitter; }
 
 	private:
+		SceneManager* mySceneManager;
+
 		Color myColor;
 		Color myAmbient;
 		bool myEnabled;
@@ -144,6 +139,7 @@ namespace cyclops {
 	class CY_API SceneManager: public ServerModule
 	{
 	friend class DrawableObject;
+	friend class Light;
 	public:
 		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType };
@@ -188,7 +184,6 @@ namespace cyclops {
 
 		//! Light management methods
 		//@{
-		Light* getLight(int id);
 		Light* getMainLight() { return myMainLight; }
 		void setMainLight(Light* light) { myMainLight = light; }
 		//! Shadow map control
@@ -212,6 +207,8 @@ namespace cyclops {
 	private:
 		SceneManager();
 
+		void addLight(Light* l);
+		void removeLight(Light* l);
 		void addObject(DrawableObject* obj);
 		void updateLights();
 		void loadConfiguration();
@@ -245,7 +242,7 @@ namespace cyclops {
 		SkyBox* mySkyBox;
 
 		// Lights and shadows
-		Light* myLights[MaxLights];
+		List<Light*> myLights;
 		Light* myMainLight;
 		osgShadow::ShadowedScene* myShadowedScene;
 		osgShadow::SoftShadowMap* mySoftShadowMap;
@@ -264,6 +261,26 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline List<DrawableObject*>::Range SceneManager::getObjects()
 	{ return List<DrawableObject*>::Range(myObjectList.begin(), myObjectList.end()); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light::Light(SceneManager* scene):
+		mySceneManager(scene),
+		myColor(Color::White),
+		myAmbient(Color::Gray),
+		myAttenuation(Vector3f::Zero()),
+		myEnabled(false),
+		mySoftShadowWidth(0.005f),
+		mySoftShadowJitter(32),
+		myOsgLight(NULL), myOsgLightSource(NULL)
+	{
+		mySceneManager->addLight(this);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Light::~Light()
+	{
+		mySceneManager->removeLight(this);
+	}
 };
 
 #endif

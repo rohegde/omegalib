@@ -214,17 +214,17 @@ PyObject* cameraSetOrientation(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetRoot(PyObject* self, PyObject* args)
+PyObject* getRoot(PyObject* self, PyObject* args)
 {
 	ServerEngine* engine = ServerEngine::instance();
 	SceneNode* root = engine->getScene();
-	PyObject* pyRoot = PyCapsule_New(root, "SceneNode", NULL);
+	PyObject* pyRoot = PyCapsule_New(root, "node", NULL);
 
 	return Py_BuildValue("O", pyRoot);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeCreate(PyObject* self, PyObject* args)
+PyObject* newNode(PyObject* self, PyObject* args)
 {
 	PyObject* pyParent = NULL;
 	PyArg_ParseTuple(args, "O", &pyParent);
@@ -232,10 +232,10 @@ PyObject* nodeCreate(PyObject* self, PyObject* args)
 	SceneNode* parent = PYCAP_GET(pyParent, SceneNode);
 	if(parent != NULL)
 	{
-		SceneNode* node = new SceneNode(ServerEngine::instance());
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyParent, "node");
 		parent->addChild(node);
 
-		PyObject* pyNode = PyCapsule_New(node, "SceneNode", NULL);
+		PyObject* pyNode = PyCapsule_New(node, "node", NULL);
 		return Py_BuildValue("O", pyNode);
 	}
     Py_INCREF(Py_None);
@@ -243,51 +243,51 @@ PyObject* nodeCreate(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetName(PyObject* self, PyObject* args)
+PyObject* getName(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	PyArg_ParseTuple(args, "O", &pyNode);
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		return Py_BuildValue("s", node->getName().c_str());
 	}
 	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetNumChildren(PyObject* self, PyObject* args)
+PyObject* getChildCount(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	PyArg_ParseTuple(args, "O", &pyNode);
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		return Py_BuildValue("i", node->numChildren());
 	}
 	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetParent(PyObject* self, PyObject* args)
+PyObject* getParent(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	PyArg_ParseTuple(args, "O", &pyNode);
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		SceneNode* parent = (SceneNode*)node->getParent();
-		PyObject* pyParent = PyCapsule_New(parent, "SceneNode", NULL);
+		PyObject* pyParent = PyCapsule_New(parent, "node", NULL);
 		return Py_BuildValue("O", pyParent);
 	}
 	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetChildByName(PyObject* self, PyObject* args)
+PyObject* getChildByName(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	char* nodeName = NULL;
@@ -295,16 +295,52 @@ PyObject* nodeGetChildByName(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL && nodeName != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		SceneNode* child = (SceneNode*)node->getChild(String(nodeName));
-		PyObject* pyChild = PyCapsule_New(child, "SceneNode", NULL);
+		PyObject* pyChild = PyCapsule_New(child, "node", NULL);
 		return Py_BuildValue("O", pyChild);
 	}
 	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetChildByIndex(PyObject* self, PyObject* args)
+void printChildrenHelper(Node* n, int depth, const String& prefix, const String& indentString)
+{
+	if(depth != 0)
+	{
+		foreach(Node::Child child, n->getChildren())
+		{
+			omsg(prefix + child->getName());
+			if(child->numChildren() != 0)
+			{
+				printChildrenHelper(child.second, depth - 1, prefix + indentString, indentString);
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* printChildren(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	int depth = 0;
+	PyArg_ParseTuple(args, "Oi", &pyNode, &depth);
+
+	if(pyNode != NULL)
+	{
+		Node* node = (Node*)PyCapsule_GetPointer(pyNode, "node");
+		if(node != NULL)
+		{
+			printChildrenHelper(node, depth, " ", " ");
+		}
+		Py_INCREF(Py_None);
+		return Py_None;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* getChildByIndex(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	int index = 0;
@@ -312,7 +348,7 @@ PyObject* nodeGetChildByIndex(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		SceneNode* child = (SceneNode*)node->getChild(index);
 		PyObject* pyChild = PyCapsule_New(child, "SceneNode", NULL);
 		return Py_BuildValue("O", pyChild);
@@ -321,7 +357,7 @@ PyObject* nodeGetChildByIndex(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetPosition(PyObject* self, PyObject* args)
+PyObject* getPosition(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	PyArg_ParseTuple(args, "O", &pyNode);
@@ -336,7 +372,7 @@ PyObject* nodeGetPosition(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeSetPosition(PyObject* self, PyObject* args)
+PyObject* setPosition(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	Vector3f pos;
@@ -353,14 +389,14 @@ PyObject* nodeSetPosition(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeGetScale(PyObject* self, PyObject* args)
+PyObject* getScale(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	PyArg_ParseTuple(args, "O", &pyNode);
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		const Vector3f& pos = node->getScale();
 		return Py_BuildValue("fff", pos[0], pos[1], pos[2]);
 	}
@@ -368,7 +404,7 @@ PyObject* nodeGetScale(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeSetScale(PyObject* self, PyObject* args)
+PyObject* setScale(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	Vector3f pos;
@@ -376,7 +412,7 @@ PyObject* nodeSetScale(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		node->setScale(pos);
 		Py_INCREF(Py_None);
 		return Py_None;
@@ -385,14 +421,14 @@ PyObject* nodeSetScale(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeResetOrientation(PyObject* self, PyObject* args)
+PyObject* resetOrientation(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	PyArg_ParseTuple(args, "O", &pyNode);
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		node->setOrientation(Quaternion::Identity());
 		Py_INCREF(Py_None);
 		return Py_None;
@@ -401,7 +437,7 @@ PyObject* nodeResetOrientation(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeYaw(PyObject* self, PyObject* args)
+PyObject* yaw(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	float val;
@@ -409,7 +445,7 @@ PyObject* nodeYaw(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		node->yaw(val);
 		Py_INCREF(Py_None);
 		return Py_None;
@@ -418,7 +454,7 @@ PyObject* nodeYaw(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodePitch(PyObject* self, PyObject* args)
+PyObject* pitch(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	float val;
@@ -426,7 +462,7 @@ PyObject* nodePitch(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		node->pitch(val);
 		Py_INCREF(Py_None);
 		return Py_None;
@@ -435,7 +471,7 @@ PyObject* nodePitch(PyObject* self, PyObject* args)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* nodeRoll(PyObject* self, PyObject* args)
+PyObject* roll(PyObject* self, PyObject* args)
 {
 	PyObject* pyNode = NULL;
 	float val;
@@ -443,8 +479,114 @@ PyObject* nodeRoll(PyObject* self, PyObject* args)
 
 	if(pyNode != NULL)
 	{
-		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "SceneNode");
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
 		node->roll(val);
+		Py_INCREF(Py_None);
+		return Py_None;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* isVisible(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	PyArg_ParseTuple(args, "O", &pyNode);
+
+	if(pyNode != NULL)
+	{
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
+		return Py_BuildValue("b", node->isVisible());
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* isSelected(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	PyArg_ParseTuple(args, "O", &pyNode);
+
+	if(pyNode != NULL)
+	{
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
+		return Py_BuildValue("b", node->isSelected());
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class ScriptNodeListener: public SceneNodeListener
+{
+public:
+	enum Type { VisibleListener, SelectedListener };
+
+	Type type;
+	String command;
+
+	virtual void onVisibleChanged(SceneNode* source, bool value) 
+	{
+		if(type == VisibleListener)
+		{
+			PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+			if(interp != NULL)
+			{
+				interp->eval(command);
+			}
+		}
+	}
+
+	virtual void onSelectedChanged(SceneNode* source, bool value) 
+	{
+		if(type == SelectedListener)
+		{
+			PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+			if(interp != NULL)
+			{
+				interp->eval(command);
+			}
+		}
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* addVisibilityListener(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	const char* cmd;
+	PyArg_ParseTuple(args, "Os", &pyNode, &cmd);
+
+	if(pyNode != NULL && cmd != NULL)
+	{
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
+
+		ScriptNodeListener* listener = new ScriptNodeListener();
+		listener->type = ScriptNodeListener::VisibleListener;
+		listener->command = cmd;
+		node->addListener(listener);
+
+		Py_INCREF(Py_None);
+		return Py_None;
+	}
+	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PyObject* addSelectionListener(PyObject* self, PyObject* args)
+{
+	PyObject* pyNode = NULL;
+	const char* cmd;
+	PyArg_ParseTuple(args, "Os", &pyNode, &cmd);
+
+	if(pyNode != NULL && cmd != NULL)
+	{
+		SceneNode* node = (SceneNode*)PyCapsule_GetPointer(pyNode, "node");
+
+		ScriptNodeListener* listener = new ScriptNodeListener();
+		listener->type = ScriptNodeListener::SelectedListener;
+		listener->command = cmd;
+		node->addListener(listener);
+
 		Py_INCREF(Py_None);
 		return Py_None;
 	}
@@ -480,65 +622,85 @@ static PyMethodDef omegaMethods[] =
 		"Disables camera navigation for the specified camera."},
 
 	// Node API
-    {"nodeCreate", nodeCreate, METH_VARARGS, 
-		"nodeCreate(parent)\n"
+    {"newNode", newNode, METH_VARARGS, 
+		"newNode(parent)\n"
 		"creates a new scene node and sets its parent."},
     
-	{"nodeGetRoot", nodeGetRoot, METH_VARARGS, 
-		"nodeGetRoot()\n"
+	{"getRoot", getRoot, METH_VARARGS, 
+		"getRoot()\n"
 		"Return the scene root node"},
 
-    {"nodeGetName", nodeGetName, METH_VARARGS, 
-		"nodeGetName(nodeRef)\n"
+    {"getName", getName, METH_VARARGS, 
+		"getName(nodeRef)\n"
 		"Gets the node name"},
 
-    {"nodeNumChildren", nodeGetNumChildren, METH_VARARGS, 
-		"nodeNumChildren(nodeRef)\n"
+    {"getChildCount", getChildCount, METH_VARARGS, 
+		"getChildCount(nodeRef)\n"
 		"Gets the node number of children"},
 
-    {"nodeGetParent", nodeGetParent, METH_VARARGS, 
-		"nodeGetParent(nodeRef)\n"
+    {"getParent", getParent, METH_VARARGS, 
+		"getParent(nodeRef)\n"
 		"Gets the node parent"},
 
-    {"nodeGetChildByName", nodeGetChildByName, METH_VARARGS, 
-		"nodeGetChildByName(nodeRef, name)\n"
+    {"getChildByName", getChildByName, METH_VARARGS, 
+		"getChildByName(nodeRef, name)\n"
 		"Finds a child of the specified node by name"},
 
-    {"nodeGetChildByIndex", nodeGetChildByIndex, METH_VARARGS, 
-		"nodeGetChildByIndex(nodeRef, index)\n"
+    {"getChildByIndex", getChildByIndex, METH_VARARGS, 
+		"getChildByIndex(nodeRef, index)\n"
 		"Finds a child of the specified node by index"},
 
-    {"nodeGetPosition", nodeGetPosition, METH_VARARGS, 
-		"nodeGetPosition(nodeRef)\n"
+    {"getPosition", getPosition, METH_VARARGS, 
+		"getPosition(nodeRef)\n"
 		"Gets the node position"},
 
-    {"nodeSetPosition", nodeSetPosition, METH_VARARGS, 
-		"nodeSetPosition(nodeRef, x, y, z)\n"
+    {"setPosition", setPosition, METH_VARARGS, 
+		"setPosition(nodeRef, x, y, z)\n"
 		"Sets the node position"},
 
-    {"nodeGetScale", nodeGetScale, METH_VARARGS, 
-		"nodeGetScale(nodeRef)\n"
+    {"getScale", getScale, METH_VARARGS, 
+		"getScale(nodeRef)\n"
 		"Gets the node scale"},
 
-    {"nodeSetScale", nodeSetScale, METH_VARARGS, 
-		"nodeSetScale(nodeRef, x, y, z)\n"
+    {"setScale", setScale, METH_VARARGS, 
+		"setScale(nodeRef, x, y, z)\n"
 		"Sets the node scale"},
 
-    {"nodeResetOrientation", nodeResetOrientation, METH_VARARGS,
-		"nodeResetOrientation(nodeRef)\n"
+    {"resetOrientation", resetOrientation, METH_VARARGS,
+		"resetOrientation(nodeRef)\n"
 		"Resets the node orientation"},
 
-    {"nodeYaw", nodeYaw, METH_VARARGS, 
-		"nodeYaw(nodeRef, yaw)\n"
+    {"yaw", yaw, METH_VARARGS, 
+		"yaw(nodeRef, yaw)\n"
 		"Sets the node yaw"},
 
-    {"nodePitch", nodePitch, METH_VARARGS,
-		"nodePitch(nodeRef, pitch)\n"
+    {"pitch", pitch, METH_VARARGS,
+		"pitch(nodeRef, pitch)\n"
 		"Sets the node position"},
 
-    {"nodeRoll", nodeRoll, METH_VARARGS, 
-		"nodeRoll(nodeRef, roll)\n"
+    {"roll", roll, METH_VARARGS, 
+		"roll(nodeRef, roll)\n"
 		"Sets the node roll"},
+
+    {"isVisible", isVisible, METH_VARARGS, 
+		"isVisible(node)\n"
+		"Returns wether the node is visible or not"},
+
+    {"isSelected", isSelected, METH_VARARGS, 
+		"isSelected(node)\n"
+		"Returns wether the node is selected or not"},
+
+    {"addSelectionListener", addSelectionListener, METH_VARARGS, 
+		"addSelectionListener(node, cmd)\n"
+		"Attaches a command to be executed whenever the node selection state changes."},
+
+    {"addVisibilityListener", addVisibilityListener, METH_VARARGS, 
+		"addVisibilityListener(node, cmd)\n"
+		"Attaches a command to be executed whenever the node visibility changes."},
+
+    {"printChildren", printChildren, METH_VARARGS, 
+		"printChildren(node, maxDepth)\n"
+		"prints the node children tree up to maxDepth."},
 
 	// Renderer API
     {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
@@ -558,8 +720,8 @@ static PyMethodDef omegaMethods[] =
 		"ofindFile(fileName)\n"
 		"Runs an external script"},
 
-    {"ofuncUpdate", omegaUpdateCallback, METH_VARARGS, 
-		"ofuncUpdate(funcRef)\n"
+    {"setUpdateFunction", omegaUpdateCallback, METH_VARARGS, 
+		"setUpdateFunction(funcRef)\n"
 		"Registers a script function to be called before each frame is rendered"},
 
     {NULL, NULL, 0, NULL}

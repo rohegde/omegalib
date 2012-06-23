@@ -70,7 +70,7 @@ void HelloApplication::initialize()
 	plane->setPosition(0, -1, -2);
 
 	// Setup a light for the scene.
-	Light* light = mySceneManager->getLight(0);
+	Light* light = new Light(mySceneManager);
 	light->setEnabled(true);
 	light->setPosition(Vector3f(0, 50, 0));
 	light->setColor(Color(1.0f, 1.0f, 0.7f));
