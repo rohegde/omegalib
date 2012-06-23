@@ -510,9 +510,7 @@ namespace omega {
 		void* getUserData() { return myUserData; }
 		void setUserData(void* data) { myUserData = data; }
 
-    protected:
-		//! Changes the node name from the one assigned during construction. Only derived classes can do this.
-		void setName(const String& name) { mName = name; }
+		void setName(const String& name);
 
     protected:
         /// Pointer to parent node

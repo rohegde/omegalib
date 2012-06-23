@@ -133,12 +133,6 @@ void SceneManager::initialize()
 {
 	myMainLight = NULL;
 
-	// Initialize lights
-	for(int i = 0; i < MaxLights; i++)
-	{
-		myLights[i] = new Light();
-	}
-
 	myEngine = getServer();
 
 	// Make sure the osg module is initialized.
@@ -207,11 +201,23 @@ void SceneManager::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::addLight(Light* l)
+{
+	myLights.push_back(l);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::removeLight(Light* l)
+{
+	myLights.remove(l);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::updateLights()
 {
-	for(int i = 0; i < MaxLights; i++)
+	int i = 0;
+	foreach(Light* l, myLights)
 	{
-		Light* l = myLights[i];
 		if(l->isEnabled())
 		{
 			if(l->myOsgLight == NULL)
@@ -227,7 +233,7 @@ void SceneManager::updateLights()
 			const Vector3f pos = l->getPosition();
 			const Vector3f& att = l->getAttenuation();
 
-			ol->setLightNum(i);
+			ol->setLightNum(i++);
 			ol->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0));
 			ol->setAmbient(COLOR_TO_OSG(l->getAmbient()));
 			ol->setDiffuse(COLOR_TO_OSG(l->getColor()));
@@ -575,18 +581,6 @@ ModelAsset* SceneManager::getModel(const String& name)
 const List<ModelAsset*>& SceneManager::getModels()
 {
 	return myModelList;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Light* SceneManager::getLight(int id)
-{
-	if(id >= 0 && id < MaxLights)
-	{
-		return myLights[id];
-	}
-
-	oferror("SceneManager::getLight: id > MaxLights (%1% > %2%)", %id %MaxLights);
-	return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

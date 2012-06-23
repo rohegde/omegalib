@@ -65,6 +65,7 @@ namespace omega
 		void setup(const Setting& setting);
 		void initialize(const char* programName);
 		void addModule(const char* name, PyMethodDef* methods);
+		void addModule(const char* name, PyMethodDef* methods, const Dictionary<String, int> intConstants, const Dictionary<String, String> stringConstants);
 		void eval(const String& script, const char* format = NULL, ...);
 		void runFile(const String& filename);
 		void queueInteractiveCommand(const String& command);

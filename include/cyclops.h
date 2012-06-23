@@ -32,4 +32,6 @@
 #include "cyclops/Entity.h"
 #include "cyclops/Shapes.h"
 
+void CY_API cyclopsPythonApiInit();
+
 #endif

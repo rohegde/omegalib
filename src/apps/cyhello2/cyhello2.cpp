@@ -80,6 +80,7 @@ void HelloApplication::initialize()
 
 	// Create a new object using the loaded model (referenced using its name, 'simpleModel')
 	myObject = new StaticObject(mySceneManager, "simpleModel");
+	myObject->setName("object");
 	myObject->setEffect("colored -d gray");
 	// Add a selection listener to the object. HelloApplication::onSelectedChanged will be
 	// called whenever the object selection state changes.
@@ -92,18 +93,19 @@ void HelloApplication::initialize()
 
 	// Create a plane for reference.
 	PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
+	plane->setName("ground");
 	plane->setEffect("colored -d #88888888");
 	plane->pitch(-90 * Math::DegToRad);
 	plane->setPosition(0, -1, -2);
 
 	// Setup a light for the scene.
-	Light* light = mySceneManager->getLight(0);
+	Light* light = new Light(mySceneManager);
 	light->setEnabled(true);
 	light->setPosition(Vector3f(0, 50, 0));
 	light->setColor(Color(1.0f, 1.0f, 0.7f));
 	light->setAmbient(Color(0.1f, 0.1f, 0.1f));
-
 	mySceneManager->setMainLight(light);
+
 	// Create and initialize the menu manager
 	myMenuManager = MenuManager::createAndInitialize();
 

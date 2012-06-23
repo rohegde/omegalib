@@ -75,7 +75,7 @@ void FlockApplication::initialize()
 	myFlock = new FlockObject(mySceneManager, myFlockSimulator, "FlockAgent", "Flock");
 
 	// Setup lighting
-	cyclops::Light* l = mySceneManager->getLight(0);
+	cyclops::Light* l = new cyclops::Light(mySceneManager);
 	l->setEnabled(true);
 	l->setPosition(Vector3f(0, 10, 0));
 	l->setColor(Color(1.0f, 1.0f, 0.7f));
