@@ -12,7 +12,7 @@ Omegalib has been tested with Python 2.7
 == Qt ==
 
 = Picture =
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/cmake-ds.png" width="300"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/cmake-ds.PNG" width="400"/></p><p align="middle">
 _^The Windows CMake GUI. Versions on other operating systems have a similar layout.^_
 </p>
 
