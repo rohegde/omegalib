@@ -30,7 +30,7 @@ target_link_libraries(ohello omega)
 
 == Step 2: Adding application code ==
 To `myapp.cpp` add the following code:
-<code>
+{{{
 #include <omega.h>
 #include <omegaGl.h>
 
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 	Application<HelloApplication> app("myapp");
 	return omain(app, argc, argv);
 }
-</code>
+}}}
 *NOTE:* the `Application` object created in `main` takes one string parameter. This string parameter *must be the same as the application name*. If you specify anything different, your application won't work when run in cluster mode.
 
 The code above is the most basic omegalib application possible. It will do nothing more than initializing the various omegalib subsystems and open an empty render window. Creating an application that actually does something is covered in other wiki pages.
