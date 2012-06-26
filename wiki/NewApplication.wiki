@@ -17,4 +17,44 @@ When creating a new omegalib application, you have three options:
 This page only covers solutions 1 and 2.
 
 = Solution 1: Adding an application to the omegalib build =
+== Step 1: Create the application directory and CMake file ==
+Under omegaSource/src/apps create a new folder named as your application (we will be calling it `myapp` from now on). Create an empty source file `myapp.cpp` and a cmake build file, `CMakeList.txt`. Put the following in the CMake file:
+<code>
+	add_executable(myapp myapp.cpp)
+	set_target_properties(ohello PROPERTIES FOLDER apps)
+	target_link_libraries(ohello omega)
+</code>
+`add_executable` defines a new executable target with `myapp.cpp` as the only source file.
+`set_target_properties` is optional: it is only used when generating visual studio solutions, to put the executable in the apps solution folder.
+`target_link_libraries` specifies link targets for the executable. For this basic example we are only linking agains `omega` Depending on the application you are developing, you may want to link against additional libraries, i.e. `omegaToolkit`, `omegaOsg`, `omegaVtk`.
+
+== Step 2: Adding application code ==
+To `myapp.cpp` add the following code:
+<code language="c++">
+	#include <omega.h>
+	#include <omegaGl.h>
+
+	using namespace omega;
+
+	class HelloApplication: public ServerModule
+	{
+	public:
+		HelloApplication() {}
+		virtual ~HelloApplication() {}
+	};
+
+	int main(int argc, char** argv)
+	{
+		Application<HelloApplication> app("myapp");
+		return omain(app, argc, argv);
+	}
+</code>
+*NOTE:* the `Application` object created in `main` takes one string parameter. This string parameter *must be the same as the application name*. If you specify anything different, your application won't work when run in cluster mode.
+
+The code above is the most basic omegalib application possible. It will do nothing more than initializing the various omegalib subsystems and open an empty render window. Creating an application that actually does something is covered in other wiki pages.
+
+== Step 3: Adding the application to the omegalib build ==
+Now you need to make the main omegalib build aware of our new application. Go to omegaSource/src and open the `CMakeLists.txt` file you find there.
+
+
 = Solution 2: Building an external application =
