@@ -16,6 +16,7 @@ When creating a new omegalib application, you have three options:
 
 This page only covers solutions 1 and 2.
 
+---------------------------------------------------------------------
 == Solution 1: Adding an application to the omegalib build ==
 === Step 1: Create the application directory and CMake file ===
 Under omegaSource/src/apps create a new folder named as your application (we will be calling it `myapp` from now on). Create an empty source file `myapp.cpp` and a cmake build file, `CMakeList.txt`. Put the following in the CMake file:
@@ -64,6 +65,7 @@ if your application just uses openGL functionality, you can simply add this line
 You should be all set now. Just reopen the omegalib solution and build (or run `make` on linux). Your application binary should be created in the default omegalib bin directory.
 
 
+---------------------------------------------------------------------
 == Solution 2: Building an external application ==
 This second solution assumes you have minimal knowledge of the CMake build system. 
 
