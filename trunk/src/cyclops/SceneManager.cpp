@@ -148,6 +148,7 @@ void SceneManager::initialize()
 	else
 	{
 		// No scene file specified: just initialize an empty scene.
+		omsg("SceneManager::initialize: no scene loaded. Initializing empty scene.");
 		initShading();
 		myOsg->setRootNode(mySceneRoot);
 	}
