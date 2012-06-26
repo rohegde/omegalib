@@ -3,6 +3,9 @@
 
 <p>*Last revision:* ver. 2.1<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
+Omeglib applications use configuration files to learn about the the hardware they run on. Configuration files describe the capabilities and geometry of the display system, supported input devices, and network configurations for clustered systems. The omegalib distribution contains several configration files to test applications out of the box (i.e. to run them windowed on a standard PC). Programmers and system administrators can learn about configuration files to customize omegalib applications for other display and input systems.
+
+
 = Configuration file types =
 Omegalib applications are usually based on two distints configuation files: the *system configuration file* and the *application configuration file*.
 

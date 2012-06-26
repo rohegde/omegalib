@@ -2,13 +2,17 @@
 #sidebar Sidebar
 
 = Getting started with omegalb Developement =
-This page offers basic information on how to develop applications for omegalib. This material integrates what presented in [https://docs.google.com/document/pub?id=1-4qjugWuHnWgBEwGXNCGmCrhZ05p19nwLlOU2pDQzyY this guide]
+This page offers basic information on how to develop applications for omegalib. This material integrates what presented in raw form in [https://docs.google.com/document/pub?id=1-4qjugWuHnWgBEwGXNCGmCrhZ05p19nwLlOU2pDQzyY this guide]
 
-== Building omegalib ==
-omegalib currently ships as a source-only toolkit. Users and developers can easily build an omegalib binary distribution using the CMake build system. For more information on how to build omegalib go to [this page].
+== Basic Topics ==
+ * [Building Building omegalib].
+ * [NewApplication Setting up a new omegalib application].
+ * [BasicOpenGL OpenGL programming in omegalib].
+ * [BasicOSG OpenSceneGraph programming in omegalib].
+ * [BasicCyclops Cyclops programming in omegalib].
+ * [BasicVtk Vtk programming in omegalib].
 
 == Configuring hardware systems ==
-Omeglib applications use configuration files to learn about the the hardware they run on. Configuration files describe the capabilities and geometry of the display system, supported input devices, and network configurations for clustered systems. The omegalib distribution contains several configration files to test applications out of the box (i.e. to run them windowed on a standard PC). Programmers and system administrators can learn about configuration files to customize omegalib applications for other display and input systems.
 
 [TODO: ref to configuration page]
 
