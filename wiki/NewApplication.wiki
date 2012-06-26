@@ -30,7 +30,7 @@ target_link_libraries(ohello omega)
 
 == Step 2: Adding application code ==
 To `myapp.cpp` add the following code:
-<code language="c++">
+<code>
 #include <omega.h>
 #include <omegaGl.h>
 
