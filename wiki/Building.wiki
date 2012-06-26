@@ -1,7 +1,7 @@
 #summary Building omegalib
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 2.1 - 25 June 2012<font color=#ff0000></font></p>
+<p>*Last revision:* ver. 2.1 - 25 June 2012</p>
 
 Omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
 
