@@ -522,7 +522,7 @@ bool SceneManager::loadModel(ModelInfo info)
 	String orfp = StringUtils::replaceAll(info.path, "*", "%1%");
 	String filePath = info.path;
 
-	for(int iterator=1; iterator <= info.numFiles; iterator++)
+	for(int iterator=0; iterator <= info.numFiles; iterator++)
 	{
 		// If present in the string, this line will substitute %1% with the iterator number.
 		if(info.numFiles != 1)
