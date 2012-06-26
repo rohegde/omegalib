@@ -8,7 +8,7 @@ Omegalib is distributed as a source-only project. Users are responsible for crea
 = Operating system support =
 This is the current supported status of omegalib:
  * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds not tested regularly.
- * *Linux:* * 64bit builds and is regularly tested (SUSE). 32bit should build but is tested less often (Ubuntu).
+ * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit should build but is tested less often (Ubuntu).
  * *OSX, Intel:* * 64bit currently not supported (builds but fails to link), 32bit not supported
 
 = Building on Windows =
