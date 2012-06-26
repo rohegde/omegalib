@@ -1,7 +1,7 @@
 #summary Creating an omegalib application
 #sidebar Sidebar
 
-<p>*Last revision:* ver. 2.1</p>
+<p>*Last revision:* ver. 2.1 - 26 June 2012</p>
 
 This page explains how to set up the build environment for an empty omegalib application. When using *omegaSource* on this page, we refer to the root directory of your source copy of omegalib. *omegaBuild* will be the root directory of your build.
 
