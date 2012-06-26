@@ -1,7 +1,7 @@
 <Scene>
 	<Files>
 
-		<File Id="0" Path="railsim/test/modeshape/shape*.obj" Maxcount="2"/>
+		<File Id="0" Path="railsim/test/modeshape/shape*.obj" Maxcount="50"/>
 
 		</Files>
 
