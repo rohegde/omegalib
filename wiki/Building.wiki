@@ -48,7 +48,7 @@ You should now be able to open the generated Visual Studio solution and build ev
  
 == Step 4: running a demo ==
 You can run a demo by going on the output folder of your binary directory (`bin/debug` or `bin/release` depending on which configuration you built). A good basic demo to test is `ohello.exe`:
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/cmake-ds.PNG" width="500"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/ohello.png" width="500"/></p><p align="middle">
 _^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
 
 Another way to run an application is to right click on it inside visual studio (all applications are in the `apps` solution folder), select *Set as StartUp Project* and click on the run button.
