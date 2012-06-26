@@ -103,10 +103,10 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelInfo
 	{
-		ModelInfo(): numFiles(1), size(1) 
+		ModelInfo(): numFiles(1), size(0.0f) 
 		{}
 
-		ModelInfo(const String name, const String path, float size = 1.0f, int numFiles = 1)
+		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1)
 		{
 			this->name = name;
 			this->path = path;

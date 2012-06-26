@@ -200,11 +200,9 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 	{
 		String filePath = xchild->Attribute("Path");
 		int objcount=1;
-		if(filePath.find("*") != -1)
-		{
-			if(xchild->Attribute("Objcount") != NULL)
-			{
-				objcount = atoi(xchild->Attribute("Objcount"));
+		if(filePath.find("*")!=-1){		
+			if(xchild->Attribute("Maxcount") != NULL){
+				objcount = atoi(xchild->Attribute("Maxcount"));
 			} 
 			else 
 			{
