@@ -9,7 +9,8 @@ On this page you will learn how to put together a basic omegalib application to 
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicVtk/pipeline.png" width="500"/></p><p align="middle">
 _^The components of a vtk pipeline running inside omegalib.^_
 </p>
-In order to make vtk work inside an omegalib application, we need to split the vtk pipeline in two parts: the *CPU-bound part* and the *GPU-bound part*. The CPU buound part, mostly made up by vtk filters, runs unmodified inside your main application class. But GPU-bound objects like mappers and actors require a graphics context to run. For this reason, they need to be duplicated for each pipe used by your application. Most of this work is done automatically by the omegaVtk module, but you will need some minimal level of bookkeeping in your code.
+In order to make vtk work inside an omegalib application, we need to split the vtk pipeline in two parts: the *CPU-bound part* and the *GPU-bound part*. The CPU buound part, mostly made up by vtk filters, runs unmodified inside your main application class. 
+But GPU-bound objects like mappers and actors require a graphics context to run. For this reason, they need to be duplicated for each pipe used by your application. Most of this work is done automatically by the omegaVtk module, but you will need some minimal level of bookkeeping in your code.
 
 == The vtkhello application ==
 *NOTE:* the vtkhello application is build only if you enabled vtk support during the omegalib build, and you have a version of vtk installed. read the [Building Building] page for more information.
