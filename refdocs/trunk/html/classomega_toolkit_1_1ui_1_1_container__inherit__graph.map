@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_default_panel.html" title="omegaToolkit::ui::DefaultPanel" alt="" coords="5,221,176,245"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_user_manager_panel.html" title="omegaToolkit::ui::UserManagerPanel" alt="" coords="201,221,399,245"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="123,77,265,101"/>
+<area shape="rect" id="node4" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="32,5,187,29"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="211,5,348,29"/>
+</map>

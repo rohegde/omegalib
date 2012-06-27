@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classomicron_1_1_vector.html" title="omicron::Vector\&lt; T \&gt;" alt="" coords="139,5,266,29"/>
+<area shape="rect" id="node5" href="$classomicron_1_1_vector.html" title="Vector\&lt; Color \&gt;" alt="" coords="153,53,253,77"/>
+<area shape="rect" id="node9" href="$classomicron_1_1_vector.html" title="Vector\&lt; Trackable \&gt;" alt="" coords="142,149,263,173"/>
+<area shape="rect" id="node11" href="$classomicron_1_1_vector.html" title="Vector\&lt; TrackerInfo \&gt;" alt="" coords="137,197,268,221"/>
+<area shape="rect" id="node13" href="$classomicron_1_1_vector.html" title="Vector\&lt; Triangle \&gt;" alt="" coords="146,245,259,269"/>
+<area shape="rect" id="node15" href="$classomicron_1_1_vector.html" title="Vector\&lt; Vector2f \&gt;" alt="" coords="145,293,261,317"/>
+<area shape="rect" id="node17" href="$classomicron_1_1_vector.html" title="Vector\&lt; Vector3f \&gt;" alt="" coords="145,341,261,365"/>
+<area shape="rect" id="node19" href="$classomicron_1_1_vector.html" title="Vector\&lt; vrpn_Tracker_Remote * \&gt;" alt="" coords="107,389,298,413"/>
+<area shape="rect" id="node21" href="$classomicron_1_1_vector.html" title="Vector\&lt; xn::DepthGenerator \&gt;" alt="" coords="116,437,289,461"/>
+<area shape="rect" id="node23" href="$classomicron_1_1_vector.html" title="Vector\&lt; xn::UserGenerator \&gt;" alt="" coords="119,485,286,509"/>
+</map>
