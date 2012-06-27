@@ -1,76 +1,174 @@
-#summary Building omegalib
+#summary OpenSceneGraph programming in omegalib
 #sidebar Sidebar
+= OpenSceneGraph programming in omegalib =
+<p>*Last revision:* ver. 2.1 - 26 June 2012</p>
 
-<p>*Last revision:* ver. 2.1<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+This page explains the basics of OpenSceneGrph programming inside omegalib. [http://www.openscenegraph.org/projects/osg OpenSceneGraph] is an open source high performance 3D graphics toolkit, used by application developers in fields such as visual simulation, games, virtual reality, scientific visualization and modelling. Existing osg applications can be easily ported to omegalib, or users can develop their own omega/osg applications from scratch.
 
-Omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
+Altough osg is very powerful, it requires quite a lot of technical knowledge to be used effectively. In order to simplify the developement of omega/osg applications, omegalib integrates a wrapper library, called *cyclops*. If you are not sure you need the low-lever complexity and control of osg, check the [BasicCyclops Cyclops developement page] first.
 
-= Operating system support =
-This is the current supported status of omegalib:
- * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds not tested regularly.
- * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit should build but is tested less often (Ubuntu).
- * *OSX, Intel:* 64bit currently not supported (builds but fails to link), 32bit not supported
+== omega/osg application structure ==
+The general structure of an application using osg is similar to the one presented in the [BasicOpenGL basic openGL guide]. The major difference is that in this case we won't be creating a render pass explicitly, but we will let the osg support module (`OsgModule`) take care of this.
 
-= Building on Windows =
-This section explains how to build omegalib on Windows. The basic procedure and requirements are similar for all supported operating systems, so you can use this as a general guideline.
-== Requirements ==
- * An SVN client [http://tortoisesvn.net/ TortoiseSVN recommended]
- * Visual Studio 2010 (Visual C++ 2010 Express edition works too, [http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express Download it here])
- * CMake [http://www.cmake.org/cmake/resources/software.html Download it here]
- * (Optional) Vtk [http://www.vtk.org/VTK/resources/software.html Download here]. You need this only if you want to build *omegaVtk* and add vtk support.
- * (Optional, Recommended) A python distribution (Tested with the standard one, [http://www.python.org/getit/ Download here]
-  * *NOTE:* Altough python is not required for building omegalib, a few demo applications included with it won't work without python support. It is recommended to build omegalib with python support enabled.
-  
-== Step 1: download the code ==
- * Follow the instruction of your svn client of choice and checkout:
-   * https://omegalib.googlecode.com/svn/trunk/ if you are a *registered committer* for the project.
-   * http://omegalib.googlecode.com/svn/trunk/ if you are an anonymous user.
+=== A little side note: what are Modules? ===
+Modules are pluggable components that can enrich the functionality of omegalib applications. In a sense they are similar to render passes (see the [BasicOpenGL basic openGL guide]). The main difference with render passes is that while a render pass can only plug new rendering functionality into omegalib, a Module can:
+ * plug in code that is run at every frame update
+ * add its own handler for input events
+ * manage its own synchronized data in a cluster configuration
+omegalib ships with a bunch of pre-made modules, like the ones that add support for vtk and OpenSceneGraph. And each time you are implementing an omegalib application, you are actually *implementing a new module* (that's why your main application will always be a subclass of `ServerModule`). For more information on `ServerModule` see [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_server_module.html omega::ServerModule]
 
-== Step 2: running CMake ==
- * Run cmake-gui.
- * In the *where is the source code* field, specify the directory where you checked out the source code.
- * In the *where to build the binaries* field, specify a directory you will want your project files and binaries to be generated.
- * Hit *Configure*: The option table will look simlar to the following figure:
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/cmake-ds.PNG" width="500"/></p><p align="middle">
-_^The Windows CMake GUI. Versions on other operating systems have a similar layout.^_
+Now let's go back to the main topic and take a look at the basic omega/osg application structure:
+{{{
+	#include <osgDB/ReadFile>
+	
+	#define OMEGA_NO_GL_HEADERS
+	#include <omega.h>
+	#include <omegaToolkit.h>
+	#include <omegaOsg.h>
+
+	using namespace omega;
+	using namespace omegaOsg;
+
+	class OsgViewer: public ServerModule
+	{
+	public:
+		OsgViewer()
+		{
+			myOsg = new OsgModule();
+			ModuleServices::addModule(myOsg); 
+		}
+
+		virtual void initialize();
+
+	private:
+		OsgModule* myOsg;
+	};
+
+	void OsgViewer::initialize()
+	{
+		// The node containing the scene
+		osg::Node* node = NULL;
+
+		// The root node (we attach lights and other global state properties here)
+		// Set the root to be a lightsource to attach a light to it to illuminate the scene
+		osg::Group* root = new osg::Group();
+
+		if(sModelName == "")
+		{
+			owarn("No model specified!!");
+			return;
+		}
+
+		String path;
+		if(DataManager::findFile(sModelName, path))
+		{
+			node = osgDB::readNodeFile(path);
+			if (node == NULL) 
+			{
+				ofwarn("!Failed to load model: %1% (unsupported file format or corrupted data)", %path);
+				return;
+			}
+			root->addChild(node);
+		}
+		else
+		{
+			ofwarn("!File not found: %1%", %sModelName);
+		}
+
+		// Set the osg node as the root node
+		myOsg->setRootNode(root);
+		
+		// Setup shading
+		myLight = new osg::Light;
+		myLight->setLightNum(0);
+		myLight->setPosition(osg::Vec4(0.0, 2, 1, 1.0));
+		myLight->setAmbient(osg::Vec4(0.1f,0.1f,0.2f,1.0f));
+		myLight->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+		myLight->setSpotExponent(0);
+		myLight->setSpecular(osg::Vec4(0.0f,0.0f,0.0f,1.0f));
+
+		osg::LightSource* ls = new osg::LightSource();
+		ls->setLight(myLight);
+		ls->setStateSetModes(*root->getOrCreateStateSet(), osg::StateAttribute::ON);
+
+		root->addChild(ls);
+	}
+
+	int main(int argc, char** argv)
+	{
+		Application<OsgViewer> app("osgviewer");
+		oargs().newNamedString('m', "model", "model", "The osg model to load", sModelName);
+		return omain(app, argc, argv);
+	}
+}}}
+
+The code presented is a simplified version of the osgviewer demo (omegaSource/src/apps/osgviewer). The actual demo code is a little more complex than this, and does a few additional things like adding a bounding box around the model, loading a mesh from a configuration file and enabling object interaction through scene node attachments. We won't discuss these details in this page and just concentrate on the basic functionality of the application, step by step.
+
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicOsg/osgviewer.png" width="500"/></p><p align="middle">
+_^The osgviewer demo running (with arguments `-m meshes/walker.fbx`).^_
 </p>
- * Enable and disable desired options. For a guide on options go to the bottom of this page. *Note:* omegalib should build just fine if you leave everything to their default values.
- * If you changed any options, hit *configure* again. You may have to repeat this proces multiple times if new options appear.
- * Once you are done configuring all build options, hit *Generate*. If the process ends without errors, you will have Visual Studio solution files under your build directory. 
 
-*SUGGESTION:* Keep both directories under a single 'root' folder. For example you can have something like this
- * `omegalib`: your root folder
-  * `source`: the source code directory, checked out from http://omegalib.googlecode.com/svn/trunk/
-  * `build`: the build and binaries directory
-  
-== Step 3: building ==
-You should now be able to open the generated Visual Studio solution and build everything. If you encounter any problem take a look at [HowTos the How to guide].
- 
-== Step 4: running a demo ==
-You can run a demo by going on the output folder of your binary directory (`bin/debug` or `bin/release` depending on which configuration you built). A good basic demo to test is `ohello.exe`:
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/ohello.png" width="500"/></p><p align="middle">
-_^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
+== The header section ==
+You may have noticed that in the header section, right after the osg include we define `OMEGA_NO_GL_HEADERS`. This define, placed before the include to `omega.h`, prevents the inclusion of the omegalib opengl headers. Adding this line is recommended if you are not performing direct openGL calls in our code.
 
-Another way to run an application is to right click on it inside visual studio (all applications are in the `apps` solution folder), select *Set as StartUp Project* and click on the run button.
+== The main application class ==
+The application class basic code looks like this:
+{{{
+	class OsgViewer: public ServerModule
+	{
+	public:
+		OsgViewer()
+		{
+			myOsg = new OsgModule();
+			ModuleServices::addModule(myOsg); 
+		}
 
+		virtual void initialize();
 
-= Building on Linux =
-The basic instructions are the same as for the Windows guide. Under linux, you will use make as your build system. To summarize, the process will be:
- * Download the code
- * create a build directory
- * get in the build directory and run `cmake -i <path-to-source-dir>` or run `ccmake` or `cmake-gui`. The commands will respectively run an interactive shell version of cmake, a curses based version, and a gui version similar to the windows one. 
- * Follow the same steps as the one in windows to generate a makefile
- * run `make`
- * if the build succeeds, get in the `bin` directory and you should find your libraries and compiled demo applications.
+	private:
+		OsgModule* myOsg;
+	};
+}}}
+The basic structure is similar to the one presented in the OpenGL demo. But here, instead of redefining the `initializeRenderer` method and creating a render pass, we create an instance of `OsgModule` and register it using the `ModuleServices` class. This will make sure that the omegalib osg subsystem is initialized and ready to go when we start the application (*See Also:* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_osg_1_1_osg_module.html omegaOsg::OsgModule], [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_1_1_module_services.html omega::ModuleServices])
 
-= CMake options =
-This section is a quick guide to some build options ofered in cmake.
- * `OMEGA_BUILD_OSG_LIB`: Enable to build the omegaOsg library and enable OpenSceneGraph support. You need an internet connection when generating a project with this option selected. Cmake will download a binary version of osg from the omegalib repository.
- * `OMEGA_BUILD_VTK_LIB`: Enable to build the omegaVtk library and enable vtk support. You will need a source+binary version of vtk installed. Refer to the vtk website to learn how to build vtk. Enabling this option and generating will in turn enable:
-  * `VTK_ROOT`: use this to specify the path to the vtk build directory.
- * `OMEGA_ENABLE_VLD`: WIndows only, enabled a memory leak detector for debug builds of the library. Will significantly slow down omegalib applications.
- * `OMEGA_USE_DISPLAY_EQUALIZER`: Enables Equalizer display system support. You should leave this turned on.
- * `OMEGA_USE_DISPLAY_GLUT`: Enables GLUT display system support. GLUT support is not really tested and may be broken. By default, omegalib uses the Equalizer display system even if you leave this option on, so you should not need to change it.
- * `OMEGA_USE_EXTERNAL_OSG`: *Advanced* specifies an external osg build instead of the internal one. Used for debugging.
- * `OMEGA_USE_OPENCL`: Enables OpenCL support. You will need OpenCL-compatible hardware to select this option. omegalib will try to use an internal copy of the OpenCL SDK when enabled.
- 
+== The OsgViewer::initialize() method ==
+The OsgViewer::initialize() method does most of the work in this application. Let's look at a couple of interesting portions of code.
+{{{
+	String path;
+	if(DataManager::findFile(sModelName, path))
+	{
+		node = osgDB::readNodeFile(path);
+		if (node == NULL) 
+		{
+			ofwarn("!Failed to load model: %1% (unsupported file format or corrupted data)", %path);
+			return;
+		}
+		root->addChild(node);
+	}
+	else
+	{
+		ofwarn("!File not found: %1%", %sModelName);
+	}
+}}}
+This part of the code performs the actual loading of an osg model. we use the omegalib `DataManager::findFile` method to convert a relative file path into an absolute one. The DataManager class searches for files in a few default locations (the most important one is the data folder inside your omega source directory). So, a relative path like `meshes/walker.fbx` could be converted to something like `C:/Workspace/omegaSource/data/meshes/walker.fbx` Search paths for the data manager can be customized, but we won't discuss it in this page.
+
+The line `myOsg->setRootNode(root)` is the central point of the application: it passes the newly created osg node (put inside an `osg::Group`) to the omegalib osg module for rendering. This is equivalent to passing the rot node to an osg Viewer in a classic osg application.
+
+== The application entry point ==
+{{{
+	int main(int argc, char** argv)
+	{
+		Application<OsgViewer> app("osgviewer");
+		oargs().newNamedString('m', "model", "model", "The osg model to load", sModelName);
+		return omain(app, argc, argv);
+	}
+}}}
+The only new interesting piece of code here is the `newNamedString` method. It allows the application to read arguments passed to it and store the result into local or global variables. For this application, we are using it to read the path of the object we want to load
+
+== Side Note: osg supported formats ==
+Normally OpenScenegraph builds rely on plugins to read/write 3d and image file formats. The osg installation that comes with omegalib has already a default set of plugins installed. In particular it can read:
+ * most image file formats (jpg, png, tga, bmp, ...)
+ * Wavefront obj files
+ * Stanford ply files
+ * Autodesk fbx files
+The best supported 3d file format is fbx. It is therefore recommended that you convert your models to the fbx format (you can use [http://usa.autodesk.com/adsk/servlet/pc/item?id=10775855&siteID=123112 an excellent free tool by Autodesk] for this)
