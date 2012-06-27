@@ -1,76 +1,14 @@
-#summary Building omegalib
+#summary Cyclops programming in omegalib
 #sidebar Sidebar
+= Cyclops programming in omegalib =
+<p>*Last revision:* ver. 2.1 - 26 June 2012</p>
 
-<p>*Last revision:* ver. 2.1<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>
+The code presented is a simplified version of the osgviewer demo (omegaSource/src/apps/osgviewer). The actual demo code is a little more complex than this, and does a few additional things like adding a bounding box around the model, loading a mesh from a configuration file and enabling object interaction through scene node attachments. We won't discuss these details in this page and just concentrate on the basic functionality of the application, step by step.
 
-Omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
-
-= Operating system support =
-This is the current supported status of omegalib:
- * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds not tested regularly.
- * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit should build but is tested less often (Ubuntu).
- * *OSX, Intel:* 64bit currently not supported (builds but fails to link), 32bit not supported
-
-= Building on Windows =
-This section explains how to build omegalib on Windows. The basic procedure and requirements are similar for all supported operating systems, so you can use this as a general guideline.
-== Requirements ==
- * An SVN client [http://tortoisesvn.net/ TortoiseSVN recommended]
- * Visual Studio 2010 (Visual C++ 2010 Express edition works too, [http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express Download it here])
- * CMake [http://www.cmake.org/cmake/resources/software.html Download it here]
- * (Optional) Vtk [http://www.vtk.org/VTK/resources/software.html Download here]. You need this only if you want to build *omegaVtk* and add vtk support.
- * (Optional, Recommended) A python distribution (Tested with the standard one, [http://www.python.org/getit/ Download here]
-  * *NOTE:* Altough python is not required for building omegalib, a few demo applications included with it won't work without python support. It is recommended to build omegalib with python support enabled.
-  
-== Step 1: download the code ==
- * Follow the instruction of your svn client of choice and checkout:
-   * https://omegalib.googlecode.com/svn/trunk/ if you are a *registered committer* for the project.
-   * http://omegalib.googlecode.com/svn/trunk/ if you are an anonymous user.
-
-== Step 2: running CMake ==
- * Run cmake-gui.
- * In the *where is the source code* field, specify the directory where you checked out the source code.
- * In the *where to build the binaries* field, specify a directory you will want your project files and binaries to be generated.
- * Hit *Configure*: The option table will look simlar to the following figure:
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/cmake-ds.PNG" width="500"/></p><p align="middle">
-_^The Windows CMake GUI. Versions on other operating systems have a similar layout.^_
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello.png" width="500"/></p><p align="middle">
+_^The cyhello demo running.^_
 </p>
- * Enable and disable desired options. For a guide on options go to the bottom of this page. *Note:* omegalib should build just fine if you leave everything to their default values.
- * If you changed any options, hit *configure* again. You may have to repeat this proces multiple times if new options appear.
- * Once you are done configuring all build options, hit *Generate*. If the process ends without errors, you will have Visual Studio solution files under your build directory. 
 
-*SUGGESTION:* Keep both directories under a single 'root' folder. For example you can have something like this
- * `omegalib`: your root folder
-  * `source`: the source code directory, checked out from http://omegalib.googlecode.com/svn/trunk/
-  * `build`: the build and binaries directory
-  
-== Step 3: building ==
-You should now be able to open the generated Visual Studio solution and build everything. If you encounter any problem take a look at [HowTos the How to guide].
- 
-== Step 4: running a demo ==
-You can run a demo by going on the output folder of your binary directory (`bin/debug` or `bin/release` depending on which configuration you built). A good basic demo to test is `ohello.exe`:
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/ohello.png" width="500"/></p><p align="middle">
-_^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
-
-Another way to run an application is to right click on it inside visual studio (all applications are in the `apps` solution folder), select *Set as StartUp Project* and click on the run button.
-
-
-= Building on Linux =
-The basic instructions are the same as for the Windows guide. Under linux, you will use make as your build system. To summarize, the process will be:
- * Download the code
- * create a build directory
- * get in the build directory and run `cmake -i <path-to-source-dir>` or run `ccmake` or `cmake-gui`. The commands will respectively run an interactive shell version of cmake, a curses based version, and a gui version similar to the windows one. 
- * Follow the same steps as the one in windows to generate a makefile
- * run `make`
- * if the build succeeds, get in the `bin` directory and you should find your libraries and compiled demo applications.
-
-= CMake options =
-This section is a quick guide to some build options ofered in cmake.
- * `OMEGA_BUILD_OSG_LIB`: Enable to build the omegaOsg library and enable OpenSceneGraph support. You need an internet connection when generating a project with this option selected. Cmake will download a binary version of osg from the omegalib repository.
- * `OMEGA_BUILD_VTK_LIB`: Enable to build the omegaVtk library and enable vtk support. You will need a source+binary version of vtk installed. Refer to the vtk website to learn how to build vtk. Enabling this option and generating will in turn enable:
-  * `VTK_ROOT`: use this to specify the path to the vtk build directory.
- * `OMEGA_ENABLE_VLD`: WIndows only, enabled a memory leak detector for debug builds of the library. Will significantly slow down omegalib applications.
- * `OMEGA_USE_DISPLAY_EQUALIZER`: Enables Equalizer display system support. You should leave this turned on.
- * `OMEGA_USE_DISPLAY_GLUT`: Enables GLUT display system support. GLUT support is not really tested and may be broken. By default, omegalib uses the Equalizer display system even if you leave this option on, so you should not need to change it.
- * `OMEGA_USE_EXTERNAL_OSG`: *Advanced* specifies an external osg build instead of the internal one. Used for debugging.
- * `OMEGA_USE_OPENCL`: Enables OpenCL support. You will need OpenCL-compatible hardware to select this option. omegalib will try to use an internal copy of the OpenCL SDK when enabled.
- 
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello2.png" width="500"/></p><p align="middle">
+_^The cyhello2 demo running.^_
+</p>
