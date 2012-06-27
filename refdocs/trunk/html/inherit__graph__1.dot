@@ -1,8 +1,0 @@
-digraph G
-{
-  bgcolor="transparent";
-  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
-  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
-  rankdir=LR;
-  Node1 [label="_GPU_DEVICE",height=0.2,width=0.4,color="black",URL="$struct___g_p_u___d_e_v_i_c_e.html"];
-}

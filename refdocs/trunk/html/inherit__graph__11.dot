@@ -1,8 +1,0 @@
-digraph G
-{
-  bgcolor="transparent";
-  edge [fontname="FreeSans.ttf",fontsize="8",labelfontname="FreeSans.ttf",labelfontsize="8"];
-  node [fontname="FreeSans.ttf",fontsize="8",shape=record];
-  rankdir=LR;
-  Node1 [label="cyclops::SkyBox",height=0.2,width=0.4,color="black",URL="$classcyclops_1_1_sky_box.html"];
-}
