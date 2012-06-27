@@ -6,7 +6,7 @@
 On this page you will learn how to put together a basic omegalib application to render a visualization toolkit pipeline. [http://www.vtk.org The visualization toolkit (vtk)] is a standard open source framework for scientific and information visualization. If you have never heard of it yo can probably skip this page, unless you want to get some additional information on the inner workings of omegalib.
 
 == omega/vtk application structure ==
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicVtk/pipeline.png" width="600"/></p><p align="middle">
+<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicVtk/pipeline.png" width="500"/></p><p align="middle">
 _^The components of a vtk pipeline running inside omegalib.^_
 </p>
 In order to make vtk work inside an omegalib application, we need to split the vtk pipeline in two parts: the *CPU-bound part* and the *GPU-bound part*. The CPU buound part, mostly made up by vtk filters, runs unmodified inside your main application class. But GPU-bound objects like mappers and actors require a graphics context to run. For this reason, they need to be duplicated for each pipe used by your application. Most of this work is done automatically by the omegaVtk module, but you will need some minimal level of bookkeeping in your code.
@@ -115,5 +115,3 @@ If you read the other guides, The main application class (`VtkScene`) should be 
 	ModuleServices::addModule(myMouseInteractor);
 }}}
 The previous code creates an interactor to manipulate scene nodes using your mouse, and attaches the scene node to it. This way, we will be able to move and rotate our vtk object using our mouse. Omegalib ships with a few different interactor classes you can use. *See also:* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_controller_manipulator.html omegaToolkit::ControllerManipulator], [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_default_mouse_interactor.html omegaToolkit::DefaultMouseInteractor], [http://omegalib.googlecode.com/svn/refdocs/trunk/html/classomega_toolkit_1_1_default_two_hands_interactor.html omegaToolkit::DefaultTwoHandsInteractor].
-
-
