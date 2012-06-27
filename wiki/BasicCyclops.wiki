@@ -3,11 +3,98 @@
 = Cyclops programming in omegalib =
 <p>*Last revision:* ver. 2.1 - 26 June 2012</p>
 
-The code presented is a simplified version of the osgviewer demo (omegaSource/src/apps/osgviewer). The actual demo code is a little more complex than this, and does a few additional things like adding a bounding box around the model, loading a mesh from a configuration file and enabling object interaction through scene node attachments. We won't discuss these details in this page and just concentrate on the basic functionality of the application, step by step.
+In this page we will introduce omega/cyclops programming Cyclops is a utility library that sits on top of omegalib and OpenSceneGraph, and it is designed to simplify developement of applications that need to draw complex and visually pleasant scenes, without having to deal with the low-level details of osg. SOme of cyclops features are:
+ * Support for loading scenes defined in a simple xml format
+ * Easy creation of primitive shapes, like planes, spheres, cubes and so on
+ * Out-of-the-box support for soft shadows
+ * An expandable shaders and effects library
+ * Full support for scripting through a python interface
+
+In many ways, cyclops works as a basic game engine, letting users interact with entities, static objects, scenes lights and so on.
+
+If you are undecided whether to develop your omegalib application using osg or cyclops, go with cyclops. It will take you way less time to have a working code base, and you will still have the option of integrating your own osg code by subclassing the `DrawableObject` class. The only scenario in which it makes sense to stick with omega/osg is when porting already existing applications.
+
+== Cyclops Hello World ==
+The following code illustrates a basic cyclops application:
+{{{
+	#include <omega.h>
+	#include <cyclops.h>
+
+	using namespace omega;
+	using namespace cyclops;
+
+	class HelloApplication: public ServerModule
+	{
+	public:
+		HelloApplication(): mySceneManager(NULL) {}
+		virtual void initialize();
+
+	private:
+		SceneManager* mySceneManager;
+	};
+
+	void HelloApplication::initialize()
+	{
+		// Create and initialize the cyclops scene manager.
+		mySceneManager = SceneManager::createAndInitialize();
+
+		SphereShape* sphere = new SphereShape(mySceneManager, 0.5f);
+		sphere->setEffect("colored -d red");
+		sphere->setPosition(0, 0, -2);
+
+		PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
+		plane->setEffect("colored -d green");
+		plane->pitch(-90 * Math::DegToRad);
+		plane->setPosition(0, -1, -2);
+
+		// Setup a light for the scene.
+		Light* light = new Light(mySceneManager);
+		light->setEnabled(true);
+		light->setPosition(Vector3f(0, 50, 0));
+		light->setColor(Color(1.0f, 1.0f, 0.7f));
+		light->setAmbient(Color(0.1f, 0.1f, 0.1f));
+		mySceneManager->setMainLight(light);
+	}
+
+	int main(int argc, char** argv)
+	{
+		Application<HelloApplication> app("cyhello");
+		return omain(app, argc, argv);
+	}
+}}}
+
+For this simple example, all the logic is inside the application `initialize` function. First of all we create a cyclops scene manager using the `SceneManager::createAndInitialize()` static method. This method will setup the scene manager, and load a few configuration settings from the application configuration file. The supported settings are:
+ * `scene (string)`: if present, the scene manager will try to load the specified .scene file.
+ * `shadowMode (either "NoShadows" or "SoftShadows")`: will set the shadow mode for the application
+ * `shadowQuality (integer)`: will set the shadow quality for applications with shadows enabled. Should be an integer between 1 and 10.
 
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello.png" width="500"/></p><p align="middle">
 _^The cyhello demo running.^_
 </p>
+
+After creating the scene manager, the `initialize` method creates a few simple objects (a sphere and a plane), sets their position and rotation, and attaches an `effect` to them. Effects are used to specify the look of objects. They are always passed as strings (called *effect definitions*), and they can be switched at run time. A full description of the effect definition syntax will be presented elsewhere, but a few valid effect definitions are:
+ * `colored`: renders the object using per-face or per-vertex color information (depending on what's available for the object)
+ * `colored -d red`: forces the object diffuse color to red
+ * `colored -d #ffffff`: forces the object diffuse color to white (hex ffffff)
+ * `textured`: renders the object with its default diffuse texture if present
+ * `textured -d textures/dalbeton.jpg`: forces the diffuse texture of the object to the specified file
+ * `blueprint`: does a double-pass rendering of the object, wireframe on top of a flat color shading.
+
+== Cyclops Hello World, Take 2 ==
+under omegaSource/src/apps/cyhello2 you can find a slightly more complex cyclops demo. With respect to the first application, this one introduces a few additional features, like object manipulation and 3d menus.
+{{{
+	// Load some basic model from the omegalib meshes folder.
+	// Force the size of the object to be 0.8 meters
+	mySceneManager->loadModel(ModelInfo("simpleModel", "meshes/torus.fbx", 1.0f));
+
+	// Create a new object using the loaded model (referenced using its name, 'simpleModel')
+	myObject = new StaticObject(mySceneManager, "simpleModel");
+	myObject->setName("object");
+	myObject->setEffect("colored -d gray");
+	// Add a selection listener to the object. HelloApplication::onSelectedChanged will be
+	// called whenever the object selection state changes.
+	myObject->addListener(this);
+}}}
 
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/BasicCyclops/cyhello2.png" width="500"/></p><p align="middle">
 _^The cyhello2 demo running.^_
