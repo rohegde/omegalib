@@ -3,89 +3,130 @@
 
 <p>*Last revision:* ver. 2.1<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
-Omeglib applications use configuration files to learn about the the hardware they run on. Configuration files describe the capabilities and geometry of the display system, supported input devices, and network configurations for clustered systems. The omegalib distribution contains several configration files to test applications out of the box (i.e. to run them windowed on a standard PC). Programmers and system administrators can learn about configuration files to customize omegalib applications for other display and input systems.
+==  Camera API ==
+
+		=== cameraGetDefault() ===
+		"Returns a reference to the main camera."},
 
 
-= Configuration file types =
-Omegalib applications are usually based on two distints configuation files: the *system configuration file* and the *application configuration file*.
+		=== cameraSetPosition(camerRef, x, y, z) ===
+		"Sets the camera position."},
 
-The system configuration file determines the properties of the system the application will run on such as:
-    * What input devices are available and how they are to be set up
-	* The resolution of displays, their geometry, and network configuration for cluster systems
-	* The defaults for observer position, navigation styles and interaction keymappings
-Examples for several different system configuration files can be found in the `data/system` folder.
-	
-The application configuration file contains application-specific options, as determined by the application itself. See the `Config` class reference for more information on how to read configuration values. The simplest possible application configuration file is:
-<code language="c">
-	config:
-	{
-		systemConfig = "system/desktop.cfg";
-	};
-</code>
-This application configuration specifies no option other than which system configuration file to use (in this case, `system/desktop.cfg`)
 
-= Configuration file syntax =
-Configuration files follow the syntax of libconfig. Here is an example of a complete system configuration file for reference.
-<code language="c">
-	config:
-	{
-		display:
-		{
-			type = "Equalizer";
-			geometry = "ConfigPlanar";
-			numTiles = [1, 1];
-			referenceTile = [0, 0];
-			referenceOffset = [0.0, 0.0, 0.0];
-			tileSize = [1.2, 0.8];
-			autoOffsetWindows = true;
-			windowOffset = [200, 200];
-			tileResolution = [854, 480];
-			interleaved = false;
-			fullscreen = false;
-			tiles:
-			{
-				local:
-				{
-					t0x0: {};
-				};
-			};
-			observers:
-			{
-				observer0:
-				{
-					position = [ 0.0,  0.0,  1.0 ];
-				};
-			};
-		};
-		input:
-		{
-			MouseService: {};
-			KeyboardService: {};
-			ViewRayService:
-			{
-				inputService="MouseService";
-				//inputService="SagePointerService";
-				hasNormalizedInput = false;
-			};
-		};
-		defaultFont:
-		{
-			filename = "fonts/segoeuimod.ttf";
-			size = 24;
-		};
-		camera:
-		{
-			controller ="KeyboardMouse";
-		};
-		interactor:
-		{
-			style = "Mouse";
-		};
-		menu3dEnabled = true;
-		pythonShellEnabled = true;
-	};
-</code>
+		=== cameraGetPosition(cameraRef) ===
+		"Gets the camera position."},
 
-= Loading configuration files =
-By default, applications try to open an application configuration file with the application name and a `cfg` extension. If not found, the library will search for `default.cfg`. The default configuration file can be changed by passing a different file as the first argument to an omegalib application.
+ 
+		=== cameraSetOrientation(cameraRef, yaw, pitch, roll) ===
+		"Sets the camera orientation."},
 
+
+		=== cameraEnableNavigation(cameraRef) ===
+		"Enables camera navigation for the specified camera."},
+
+
+		=== cameraDisableNavigation(cameraRef) ===
+		"Disables camera navigation for the specified camera."},
+
+==  Node API ==
+ 
+		=== newNode(parent) ===
+		"creates a new scene node and sets its parent."},
+    
+ 
+		=== getRoot() ===
+		"Return the scene root node"},
+
+ 
+		=== getName(nodeRef) ===
+		"Gets the node name"},
+
+ 
+		=== getChildCount(nodeRef) ===
+		"Gets the node number of children"},
+
+ 
+		=== getParent(nodeRef) ===
+		"Gets the node parent"},
+
+ 
+		=== getChildByName(nodeRef, name) ===
+		"Finds a child of the specified node by name"},
+
+ 
+		=== getChildByIndex(nodeRef, index) ===
+		"Finds a child of the specified node by index"},
+
+ 
+		=== getPosition(nodeRef) ===
+		"Gets the node position"},
+
+ 
+		=== setPosition(nodeRef, x, y, z) ===
+		"Sets the node position"},
+
+ 
+		=== getScale(nodeRef) ===
+		"Gets the node scale"},
+
+ 
+		=== setScale(nodeRef, x, y, z) ===
+		"Sets the node scale"},
+
+
+		=== resetOrientation(nodeRef) ===
+		"Resets the node orientation"},
+
+ 
+		=== yaw(nodeRef, yaw) ===
+		"Sets the node yaw"},
+
+
+		=== pitch(nodeRef, pitch) ===
+		"Sets the node position"},
+
+ 
+		=== roll(nodeRef, roll) ===
+		"Sets the node roll"},
+
+ 
+		=== isVisible(node) ===
+		"Returns wether the node is visible or not"},
+
+ 
+		=== isSelected(node) ===
+		"Returns wether the node is selected or not"},
+
+ 
+		=== addSelectionListener(node, cmd) ===
+		"Attaches a command to be executed whenever the node selection state changes."},
+
+ 
+		=== addVisibilityListener(node, cmd) ===
+		"Attaches a command to be executed whenever the node visibility changes."},
+
+ 
+		=== printChildren(node, maxDepth) ===
+		"prints the node children tree up to maxDepth."},
+
+==  Renderer API ==
+ 
+		=== rendererQueueCommand(funcRef) ===
+		"Queues a script fuction to be executed once on all running rendering threads"},
+
+==  Base omegalib API ==
+ 
+		=== oexit() ===
+		"Terminates the current omegalib program"},
+
+ 
+		=== ofindFile(name) ===
+		"Searches for a file in the application data filesystems and returns a full path if found"},
+
+ 
+		=== ofindFile(fileName) ===
+		"Runs an external script"},
+
+ 
+		=== setUpdateFunction(funcRef) ===
+		"Registers a script function to be called before each frame is rendered"},
