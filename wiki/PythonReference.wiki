@@ -3,130 +3,220 @@
 
 <p>*Last revision:* ver. 2.1<font color=#ff0000> (This is a preliminary / work in progress document and may be incomplete)</font></p>*
 
-==  Camera API ==
+-------------------------------------------------------------------------------
+== omega Module ==
 
-==== cameraGetDefault() ====
-		"Returns a reference to the main camera."},
+===  Camera API ===
+
+  ==== cameraGetDefault() ====
+    Returns a reference to the main camera.
 
 
-		=== cameraSetPosition(camerRef, x, y, z) ===
-		"Sets the camera position."},
+  ==== cameraSetPosition(camerRef, x, y, z) ====
+    Sets the camera position.
 
 
-		=== cameraGetPosition(cameraRef) ===
-		"Gets the camera position."},
+  ==== cameraGetPosition(cameraRef) ====
+    Gets the camera position.
 
  
-		=== cameraSetOrientation(cameraRef, yaw, pitch, roll) ===
-		"Sets the camera orientation."},
+  ==== cameraSetOrientation(cameraRef, yaw, pitch, roll) ====
+    Sets the camera orientation.
 
 
-		=== cameraEnableNavigation(cameraRef) ===
-		"Enables camera navigation for the specified camera."},
+  ==== cameraEnableNavigation(cameraRef) ====
+    Enables camera navigation for the specified camera.
 
 
-		=== cameraDisableNavigation(cameraRef) ===
-		"Disables camera navigation for the specified camera."},
+  ==== cameraDisableNavigation(cameraRef) ====
+    Disables camera navigation for the specified camera.
 
-==  Node API ==
+===  Node API ===
  
-		=== newNode(parent) ===
-		"creates a new scene node and sets its parent."},
+  ==== newNode(parent) ====
+    creates a new scene node and sets its parent.
     
  
-		=== getRoot() ===
-		"Return the scene root node"},
+  ==== getRoot() ====
+    Return the scene root node
 
  
-		=== getName(nodeRef) ===
-		"Gets the node name"},
+  ==== getName(nodeRef) ====
+    Gets the node name
 
  
-		=== getChildCount(nodeRef) ===
-		"Gets the node number of children"},
+  ==== getChildCount(nodeRef) ====
+    Gets the node number of children
 
  
-		=== getParent(nodeRef) ===
-		"Gets the node parent"},
+  ==== getParent(nodeRef) ====
+    Gets the node parent
 
  
-		=== getChildByName(nodeRef, name) ===
-		"Finds a child of the specified node by name"},
+  ==== getChildByName(nodeRef, name) ====
+    Finds a child of the specified node by name
 
  
-		=== getChildByIndex(nodeRef, index) ===
-		"Finds a child of the specified node by index"},
+  ==== getChildByIndex(nodeRef, index) ====
+    Finds a child of the specified node by index
 
  
-		=== getPosition(nodeRef) ===
-		"Gets the node position"},
+  ==== getPosition(nodeRef) ====
+    Gets the node position
 
  
-		=== setPosition(nodeRef, x, y, z) ===
-		"Sets the node position"},
+  ==== setPosition(nodeRef, x, y, z) ====
+    Sets the node position
 
  
-		=== getScale(nodeRef) ===
-		"Gets the node scale"},
+  ==== getScale(nodeRef) ====
+    Gets the node scale
 
  
-		=== setScale(nodeRef, x, y, z) ===
-		"Sets the node scale"},
+  ==== setScale(nodeRef, x, y, z) ====
+    Sets the node scale
 
 
-		=== resetOrientation(nodeRef) ===
-		"Resets the node orientation"},
-
- 
-		=== yaw(nodeRef, yaw) ===
-		"Sets the node yaw"},
-
-
-		=== pitch(nodeRef, pitch) ===
-		"Sets the node position"},
+  ==== resetOrientation(nodeRef) ====
+    Resets the node orientation
 
  
-		=== roll(nodeRef, roll) ===
-		"Sets the node roll"},
+  ==== yaw(nodeRef, yaw) ====
+    Sets the node yaw
+
+
+  ==== pitch(nodeRef, pitch) ====
+    Sets the node position
 
  
-		=== isVisible(node) ===
-		"Returns wether the node is visible or not"},
+  ==== roll(nodeRef, roll) ====
+    Sets the node roll
 
  
-		=== isSelected(node) ===
-		"Returns wether the node is selected or not"},
+  ==== isVisible(node) ====
+    Returns wether the node is visible or not
 
  
-		=== addSelectionListener(node, cmd) ===
-		"Attaches a command to be executed whenever the node selection state changes."},
+  ==== isSelected(node) ====
+    Returns wether the node is selected or not
 
  
-		=== addVisibilityListener(node, cmd) ===
-		"Attaches a command to be executed whenever the node visibility changes."},
+  ==== addSelectionListener(node, cmd) ====
+    Attaches a command to be executed whenever the node selection state changes.
 
  
-		=== printChildren(node, maxDepth) ===
-		"prints the node children tree up to maxDepth."},
-
-==  Renderer API ==
- 
-		=== rendererQueueCommand(funcRef) ===
-		"Queues a script fuction to be executed once on all running rendering threads"},
-
-==  Base omegalib API ==
- 
-		=== oexit() ===
-		"Terminates the current omegalib program"},
+  ==== addVisibilityListener(node, cmd) ====
+    Attaches a command to be executed whenever the node visibility changes.
 
  
-		=== ofindFile(name) ===
-		"Searches for a file in the application data filesystems and returns a full path if found"},
+  ==== printChildren(node, maxDepth) ====
+    prints the node children tree up to maxDepth.
+
+===  Renderer API ===
+ 
+  ==== rendererQueueCommand(funcRef) ====
+    Queues a script fuction to be executed once on all running rendering threads
+
+===  Base omegalib API ===
+ 
+  ==== oexit() ====
+    Terminates the current omegalib program
 
  
-		=== ofindFile(fileName) ===
-		"Runs an external script"},
+  ==== ofindFile(name) ====
+    Searches for a file in the application data filesystems and returns a full path if found
 
  
-		=== setUpdateFunction(funcRef) ===
-		"Registers a script function to be called before each frame is rendered"},
+  ==== ofindFile(fileName) ====
+    Runs an external script
+
+ 
+  ==== setUpdateFunction(funcRef) ====
+    Registers a script function to be called before each frame is rendered
+
+-------------------------------------------------------------------------------
+== omegaToolkit Module ==
+ 
+  ==== addToEditor(node) ==== 
+    Adds the specified node to the scene editor.
+
+ 
+  ==== removeToEditor(node) ==== 
+    Removes the specified node from the scene editor.
+
+ 
+  ==== setEditorEnabled(enabled) ==== 
+    Enables or disables the scene node editor. When enabled the scene node editor allows manipulation of selected nodes through mouse, wand or other input devices
+
+ 
+  ==== newMenu(name) ==== 
+    Creates a new menu.
+
+ 
+  ==== setMainMenu(menu) ==== 
+    Sets the specified menu as the application main menu.
+
+ 
+  ==== addMenuItem(menu, type) ==== 
+    Adds a new menu item to the specified menu. type can be one of the following constants: Button, Checkbox.
+
+ 
+  ==== setMenuItemText(item, text) ==== 
+    Sets the label for the specified menu item.
+
+ 
+  ==== setMenuItemCommand(item, command) ==== 
+    Sets the command for the specified menu item. The command will be executed when the menu item is clicked (Button) or changes state (Checkbox)
+
+ 
+  ==== setMenuItemChecked(item, checked) ==== 
+    Sets the menu item checked state. Valid only for checkbox menu items
+
+ 
+  ==== isMenuItemChecked(item) ==== 
+    Gets the menu item checked state. Valid only for checkbox menu items
+
+-------------------------------------------------------------------------------
+== cyclops Module ==
+ 
+  ==== loadModel(name, path, size) ==== 
+    Loads mesh model.
+
+ 
+  ==== newStaticObject(modelName) ==== 
+    Creates a new static object using the specified mesh as a model.
+
+ 
+  ==== newPlaneShape(width, height, tilingX, tilingY) ==== 
+    Creates a new plane with the specified width and height, and with texturing coordinates repeating (tilingX, tilingY) times.
+
+ 
+  ==== newLight() ==== 
+    Creates a new light.
+
+ 
+  ==== setEffect(obj, effectDefinition) ==== 
+    Applies the specified effect to the passed drawable object.
+
+ 
+  ==== sceneLoad(path) ==== 
+    Loads a cyclops xml scene file.
+
+ 
+  ==== setLightColor(light, colorString) ==== 
+    Sets the color for the specified light.
+
+ 
+  ==== setLightAmbient(light, colorString) ==== 
+    Sets the color for the specified light.
+
+ 
+  ==== setMainLight(light) ==== 
+    Sets the specified light as the main scene light.
+
+ 
+  ==== setLightEnabled(light, enabled) ==== 
+    Enables or disables the specified light.
+
+
+		
