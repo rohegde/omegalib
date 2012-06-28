@@ -67,6 +67,7 @@ namespace cyclops {
 
 	public:
 		Entity(SceneManager* mng, const String& modelName, const String& entityName);
+		virtual ~Entity() {}
 
 		ModelAsset* getModel();
 
