@@ -1,0 +1,21 @@
+cd ${CMAKE_BINARY_DIR}
+md distro
+cd distro
+md system
+md scripts
+md osgPlugins-3.0.1
+
+cd ${CMAKE_BINARY_DIR}\bin\release
+copy *.dll ${CMAKE_BINARY_DIR}\distro
+cd osgPlugins-3.0.1
+copy *.dll ${CMAKE_BINARY_DIR}\distro\osgPlugins-3.0.1
+cd ..
+
+copy ohello.exe ${CMAKE_BINARY_DIR}\distro
+copy ohello2.exe ${CMAKE_BINARY_DIR}\distro
+
+cd ${CMAKE_SOURCE_DIR}\data
+copy default.cfg ${CMAKE_BINARY_DIR}\distro
+copy system\*.* ${CMAKE_BINARY_DIR}\distro\system
+copy scripts\*.* ${CMAKE_BINARY_DIR}\distro\scripts
+
