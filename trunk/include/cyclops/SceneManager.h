@@ -103,15 +103,16 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelInfo
 	{
-		ModelInfo(): numFiles(1), size(0.0f) 
+		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false)
 		{}
 
-		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1)
+		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false)
 		{
 			this->name = name;
 			this->path = path;
 			this->size = size;
 			this->numFiles = numFiles;
+			this->generateNormals = generateNormals;
 		}
 
 		String name;
@@ -119,6 +120,7 @@ namespace cyclops {
 		String description;
 		uint numFiles;
 		float size;
+		bool generateNormals;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

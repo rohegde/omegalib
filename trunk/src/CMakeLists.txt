@@ -138,4 +138,7 @@ if(OMEGA_BUILD_VTK_LIB)
 endif(OMEGA_BUILD_VTK_LIB)
 
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
+if(WIN32)
+	configure_file(${CMAKE_SOURCE_DIR}/MakeDistro.bat.in ${CMAKE_BINARY_DIR}/MakeDistro.bat)
+endif()
 

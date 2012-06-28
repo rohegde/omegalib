@@ -193,12 +193,27 @@ int SceneLoader::readInt(TiXmlElement* elem, const String& attributeName, int de
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+bool SceneLoader::readBool(TiXmlElement* elem, const String& attributeName, bool defaultValue)
+{
+	const char* cstr = elem->Attribute(attributeName.c_str());
+	if(cstr != NULL)
+	{
+		String val = cstr;
+		StringUtils::toLowerCase(val);
+		if(val == "true") return true;
+		return false;
+	}
+	return defaultValue;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::AssetType type)
 {
 	TiXmlElement* xchild = xStaticObjectFiles->FirstChildElement();
 	while(xchild)
 	{
 		String filePath = xchild->Attribute("Path");
+		bool generateNormals = readBool(xchild, "GenerateNormals");
 		int objcount=1;
 		if(filePath.find("*")!=-1){		
 			if(xchild->Attribute("Maxcount") != NULL){
@@ -225,6 +240,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		mi.name = id;
 		mi.path = filePath;
 		mi.numFiles = objcount;
+		mi.generateNormals = generateNormals;
 		
 		const char* attrSize = xchild->Attribute("Size");
 		if(attrSize != NULL) mi.size = atoi(attrSize);
