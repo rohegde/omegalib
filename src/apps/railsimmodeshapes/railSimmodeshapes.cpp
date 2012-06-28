@@ -222,9 +222,9 @@ void OmegaViewer::initialize()
 	//init the lighting
 	cyclops::Light* l = new Light(sceneMngr);
 	l->setEnabled(true);
-	l->setPosition(0, 0, -20);
+	l->setPosition(0, 20, -20);
 	l->setColor(Color(1.0f, 1.0f, 1.0f));
-	l->setAmbient(Color(0.8f, 0.8f, 0.8f));
+	l->setAmbient(Color(0.2f, 0.2f, 0.2f));
  	sceneMngr->setMainLight(l);
 
 }

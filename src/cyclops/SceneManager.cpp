@@ -29,6 +29,7 @@
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
 #include <osgAnimation/Animation>
+#include <osgUtil/SmoothingVisitor>
 
 #include "cyclops/Entity.h"
 #include "cyclops/SceneManager.h"
@@ -552,6 +553,13 @@ bool SceneManager::loadModel(ModelInfo info)
 					pat->addChild(node);
 
 					node = pat;
+				}
+
+				if(info.generateNormals)
+				{
+					omsg("Generating normals...");
+					osgUtil::SmoothingVisitor sv;
+					node->accept(sv);
 				}
 
 				asset->nodes.push_back(node);
