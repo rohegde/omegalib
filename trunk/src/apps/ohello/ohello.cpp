@@ -24,8 +24,7 @@
  *---------------------------------------------------------------------------------------------------------------------
  *	ohello
  *		Implements the simplest possible omegalib application.  Just a synchronized renderer that performs some 
- *		opengl drawing on one or multiple nodes. Since this application has no update logic or event handling, it just
- *		needs to reimplement the RendererBase class.
+ *		opengl drawing on one or multiple nodes. 
  *********************************************************************************************************************/
 #include <omega.h>
 #include <omegaGl.h>
@@ -33,12 +32,12 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloRenderer: public RendererBase
+class HelloRenderPass: public RenderPass
 {
 public:
-	HelloRenderer(ServerBase* server): RendererBase(server) {}
+	HelloRenderPass(Renderer* client): RenderPass(client, "HelloRenderPass") {}
 	virtual void initialize();
-	virtual void draw(const DrawContext& context);
+	virtual void render(Renderer* client, const DrawContext& context);
 
 private:
 	Vector3f myNormals[6];
@@ -48,16 +47,22 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public ApplicationBase
+class HelloApplication: public ServerModule
 {
 public:
-	virtual const char* getName() { return "ohello"; }
-	virtual RendererBase* createClient(ServerBase* server) { return new HelloRenderer(server); }
+	HelloApplication() {}
+
+	virtual void initializeRenderer(Renderer* r) 
+	{ 
+		r->addRenderPass(new HelloRenderPass(r), true);
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloRenderer::initialize()
+void HelloRenderPass::initialize()
 {
+	RenderPass::initialize();
+
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);
 	myNormals[1] = Vector3f(0, 1, 0);
@@ -93,7 +98,7 @@ void HelloRenderer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloRenderer::draw(const DrawContext& context)
+void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
@@ -131,6 +136,6 @@ void HelloRenderer::draw(const DrawContext& context)
 // ApplicationBase entry point
 int main(int argc, char** argv)
 {
-	HelloApplication app;
+	Application<HelloApplication> app("ohello");
     return omain(app, argc, argv);
 }

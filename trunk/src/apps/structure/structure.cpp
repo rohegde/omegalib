@@ -99,16 +99,19 @@ void StructureViewer::initialize()
 	foreach(DrawableObject* dobj, mySceneManager->getObjects())
 	{
 		Entity* e = Entity::fromDrawableObject(dobj);
-		ui::MenuItem* mi = viewMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
-		mi->setChecked(false);
-		e->setVisible(false);
-		mi->setText(e->getTag());
-		mi->setUserData(e);
-		mi->setListener(this);
-		mi->setUserTag("visibilityToggle");
+		if(e != NULL)
+		{
+			ui::MenuItem* mi = viewMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
+			mi->setChecked(false);
+			e->setVisible(false);
+			mi->setText(e->getTag());
+			mi->setUserData(e);
+			mi->setListener(this);
+			mi->setUserTag("visibilityToggle");
 
-		// Register the entity to the node editor, so it can be manipulated by the user.
-		myEditor->addNode(e);
+			// Register the entity to the node editor, so it can be manipulated by the user.
+			myEditor->addNode(e);
+		}
 	}
 
 	// Create the control submenu

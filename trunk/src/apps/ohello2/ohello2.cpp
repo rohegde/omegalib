@@ -32,17 +32,35 @@
 
 using namespace omega;
 
+class HelloApplication;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloServer: public ServerBase, SharedObject
+class HelloRenderPass: public RenderPass
 {
 public:
-	HelloServer(ApplicationBase* app, bool master): 
-	  ServerBase(app, master),
-	  myYaw(0), myPitch(0) 
-	  {
-		  // Register this as a shared object.
-		  SharedDataServices::registerObject(this, "HelloServer");
-	  }
+	HelloRenderPass(Renderer* client, HelloApplication* app): RenderPass(client, "HelloRenderPass"), myApplication(app) {}
+	virtual void initialize();
+	virtual void render(Renderer* client, const DrawContext& context);
+
+private:
+	HelloApplication* myApplication;
+
+	Vector3f myNormals[6];
+	Vector4i myFaces[6]; 
+	Vector3f myVertices[8];
+	Color myFaceColors[6];
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class HelloApplication: public ServerModule
+{
+public:
+	HelloApplication() {}
+
+	virtual void initializeRenderer(Renderer* r) 
+	{ 
+		r->addRenderPass(new HelloRenderPass(r, this), true);
+	}
 
 	float getYaw() { return myYaw; }
 	float getPitch() { return myPitch; }
@@ -56,66 +74,11 @@ private:
 	float myPitch;
 };
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloRenderer: public RendererBase
-{
-public:
-	HelloRenderer(ServerBase* server): 
-	  RendererBase(server), 
-	  myServer((HelloServer*)server) 
-	  { }
-
-	virtual void initialize();
-	virtual void draw(const DrawContext& context);
-
-private:
-	HelloServer* myServer;
-
-	Vector3f myNormals[6];
-	Vector4i myFaces[6]; 
-	Vector3f myVertices[8];
-	Color myFaceColors[6];
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public ApplicationBase
-{
-public:
-	virtual const char* getName() { return "ohello2"; }
-	virtual RendererBase* createClient(ServerBase* server) { return new HelloRenderer(server); }
-	virtual ServerBase* createMaster() { return new HelloServer(this, true); };
-	virtual ServerBase* createServer() { return new HelloServer(this, false); };
-};
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloServer::handleEvent(const Event& evt)
+void HelloRenderPass::initialize()
 {
-	if(evt.getServiceType() == Service::Pointer)
-	{
-		// Normalize the mouse position using the total display resolution, 
-		// then multiply to get 180 degree rotations
-		Vector2i resolution = getDisplaySystem()->getCanvasSize();
-		myYaw = (evt.getPosition(0) / resolution[0]) * 180;
-		myPitch = (evt.getPosition(1) / resolution[1]) * 180;
-	}
-}
+	RenderPass::initialize();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloServer::commitSharedData(SharedOStream& out)
-{
-	out << myYaw << myPitch;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloServer::updateSharedData(SharedIStream& in)
-{
- 	in >> myYaw >> myPitch;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloRenderer::initialize()
-{
 	// Initialize cube normals.
 	myNormals[0] = Vector3f(-1, 0, 0);
 	myNormals[1] = Vector3f(0, 1, 0);
@@ -151,7 +114,7 @@ void HelloRenderer::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void HelloRenderer::draw(const DrawContext& context)
+void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 {
 	if(context.task == DrawContext::SceneDrawTask)
 	{
@@ -167,8 +130,8 @@ void HelloRenderer::draw(const DrawContext& context)
 
 		// Draw a rotating teapot.
 		glRotatef(10, 1, 0, 0);
-		glRotatef(myServer->getYaw(), 0, 1, 0);
-		glRotatef(myServer->getPitch(), 1, 0, 0);
+		glRotatef(myApplication->getYaw(), 0, 1, 0);
+		glRotatef(myApplication->getPitch(), 1, 0, 0);
 
 		// Draw a box
 		for (int i = 0; i < 6; i++) 
@@ -185,10 +148,37 @@ void HelloRenderer::draw(const DrawContext& context)
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void HelloApplication::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == Service::Pointer)
+	{
+		// Normalize the mouse position using the total display resolution, 
+		// then multiply to get 180 degree rotations
+		DisplaySystem* ds = getServer()->getDisplaySystem();
+		Vector2i resolution = ds->getCanvasSize();
+		myYaw = (evt.getPosition(0) / resolution[0]) * 180;
+		myPitch = (evt.getPosition(1) / resolution[1]) * 180;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void HelloApplication::commitSharedData(SharedOStream& out)
+{
+	out << myYaw << myPitch;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void HelloApplication::updateSharedData(SharedIStream& in)
+{
+ 	in >> myYaw >> myPitch;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ApplicationBase entry point
 int main(int argc, char** argv)
 {
-	HelloApplication app;
+	Application<HelloApplication> app("ohello2");
     return omain(app, argc, argv);
 }

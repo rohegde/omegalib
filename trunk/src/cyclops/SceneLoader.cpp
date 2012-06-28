@@ -210,6 +210,15 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 			}	
 		}
 
+		// In the path, substitute ./ occurrences with the path of the xml scene file, so assets
+		// in the local directory can be correctly referenced.
+		// Split the path and get the file name.
+		String path;
+		String filename;
+		String extension;
+		StringUtils::splitFullFilename(myPath, filename, extension, path);
+		filePath = StringUtils::replaceAll(filePath, "./", path);
+
 		const char* id = xchild->Attribute("Id");
 
 		ModelInfo mi;
@@ -303,10 +312,25 @@ Entity* SceneLoader::createEntity(TiXmlElement* xchild)
 	// Create a new entity
 	const char* fileIndex = xchild->Attribute("FileIndex");
 	const char* id = xchild->Attribute("Id");
-	if(fileIndex != NULL && id != NULL)
+
+	static NameGenerator ng("Entity");
+
+	if(fileIndex != NULL)
 	{
-		return new Entity(mySceneManager, fileIndex, id);
-		owarn("SceneLoader: Entity xml tag is missing FileIndex or Id attributes");
+		Entity* e = NULL;
+		if(id == NULL) e = new Entity(mySceneManager, fileIndex, ng.generate());
+		else e = new Entity(mySceneManager, fileIndex, id);
+
+		const char* tag = xchild->Attribute("Tag");
+		if(tag != NULL)
+		{
+			e->setTag(tag);
+		}
+		return e;
+	}
+	else
+	{
+		owarn("SceneLoader: Entity xml tag is missing FileIndex attribute");
 	}
 	return NULL;
 }

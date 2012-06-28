@@ -22,7 +22,7 @@ vec4 lightDiffuseContribution()
 	vec3 N = normalize(var_Normal);
 	vec3 L = normalize(var_LightDir);
 	
-	float diffuseTerm = dot(N, L);
+	float diffuseTerm = dot(N, L) * 0.5 + 0.5;
 	if(diffuseTerm > 0.0) 
 	{
 		// att = 1.0 / (gl_LightSource[0].constantAttenuation +

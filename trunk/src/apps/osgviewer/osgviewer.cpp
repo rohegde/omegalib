@@ -147,10 +147,10 @@ void OsgViewer::initialize()
 	myLight = new osg::Light;
     myLight->setLightNum(0);
     myLight->setPosition(osg::Vec4(0.0, 2, 1, 1.0));
-    myLight->setAmbient(osg::Vec4(0.1f,0.1f,0.1f,1.0f));
+    myLight->setAmbient(osg::Vec4(0.1f,0.1f,0.2f,1.0f));
     myLight->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
-	myLight->setSpotExponent(1);
-	myLight->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	myLight->setSpotExponent(0);
+	myLight->setSpecular(osg::Vec4(0.0f,0.0f,0.0f,1.0f));
 
 	osg::LightSource* ls = new osg::LightSource();
 	ls->setLight(myLight);
