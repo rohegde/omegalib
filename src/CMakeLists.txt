@@ -82,9 +82,6 @@ include_directories(
   ${OmegaLib_BINARY_DIR}/FreeImage/Source/
 )
 
-# Add the core omega project
-add_subdirectory(omega)
-
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
@@ -131,11 +128,18 @@ if(OMEGA_BUILD_VTK_LIB)
 	add_subdirectory(omegaVtk)
 	add_subdirectory(apps/vtkhello)
 	add_subdirectory(apps/geoView)
-	add_subdirectory(apps/orun)
 	if(OMEGA_BUILD_TUTORIALS)
 		omega_add_tutorial(vtkScene) 
 	endif()
 endif(OMEGA_BUILD_VTK_LIB)
+
+# Add the core omega project
+add_subdirectory(omega)
+
+if(PYTHONLIBS_FOUND)
+	# We need to add orun here because its config file uses build options defined above
+	add_subdirectory(apps/orun)
+endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BINARY_DIR}/UseOmegalib.cmake)
 if(WIN32)

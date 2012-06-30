@@ -44,6 +44,9 @@
 #cmakedefine OMEGA_USE_DISPLAY_EQUALIZER
 #cmakedefine OMEGA_USE_OPENCL
 #cmakedefine OMEGA_USE_PYTHON
+#cmakedefine OMEGA_BUILD_VTK_LIB
+#cmakedefine OMEGA_BUILD_OSG_LIB
+
 
 // Visual leak detector support
 #cmakedefine OMEGA_ENABLE_VLD
