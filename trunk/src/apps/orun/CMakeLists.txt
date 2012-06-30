@@ -29,9 +29,16 @@ add_executable(orun
 
 set_target_properties(orun PROPERTIES FOLDER apps)
 
-target_link_libraries(orun
-	omega 
-	omegaToolkit
-	omegaOsg
-    omegaVtk
-	cyclops)
+set(LIBS omega omegaToolkit)
+
+# If we have vtk support link against vtk lib
+if(OMEGA_BUILD_VTK_LIB)
+	set(LIBS ${LIBS} omegaVtk)
+endif()
+
+# If we have osg support link against osg and cyclops lib
+if(OMEGA_BUILD_OSG_LIB)
+	set(LIBS ${LIBS} omegaOsg cyclops)
+endif()
+
+target_link_libraries(orun ${LIBS})

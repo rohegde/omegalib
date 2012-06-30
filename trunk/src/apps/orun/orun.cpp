@@ -25,14 +25,24 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include <omega.h>
-#include <cyclops.h>
 #include <omegaToolkit.h>
+
+#ifdef OMEGA_BUILD_VTK_LIB
 #include <omegaVtk.h>
+#endif
+
+#ifdef OMEGA_BUILD_OSG_LIB
+#include <cyclops.h>
+#endif
 
 using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
+
+#ifdef OMEGA_BUILD_VTK_LIB
 using namespace omegaVtk;
+#endif
+
 using namespace cyclops;
 
 // The name of the script to launch automatically at startup
@@ -58,9 +68,13 @@ OmegaViewer::OmegaViewer()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OmegaViewer::initialize()
 {
-#ifdef OMEGA_USE_PYTHON
+#ifdef OMEGA_BUILD_VTK_LIB
 	omegaVtkPythonApiInit();
+#endif
+
 	omegaToolkitPythonApiInit();
+
+#ifdef OMEGA_BUILD_OSG_LIB
 	cyclopsPythonApiInit();
 #endif
 
