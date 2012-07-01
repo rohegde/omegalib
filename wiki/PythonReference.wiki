@@ -8,11 +8,11 @@
 
 ===  Camera API ===
 
-  ==== cameraGetDefault() ====
+  ==== `cameraGetDefault()` ====
     Returns a reference to the main camera.
 
 
-  ==== cameraSetPosition(camerRef, x, y, z) ====
+  ==== `cameraSetPosition(camerRef, x, y, z)` ====
     Sets the camera position.
 
 
