@@ -53,6 +53,8 @@ namespace MissionControl
                 m.Script = Properties.Settings.Default.MacroScripts[i++];
                 myMacros.Add(m);
             }
+
+            myConnection.Connect("localhost", 22500);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////

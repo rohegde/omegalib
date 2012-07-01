@@ -38,8 +38,8 @@
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.macroEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.myConnectionPoller = new System.Windows.Forms.Timer(this.components);
             this.statsViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.myConnectionPoller = new System.Windows.Forms.Timer(this.components);
             this.myMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -142,17 +142,17 @@
             this.macroEditorToolStripMenuItem.Text = "Macro Editor";
             this.macroEditorToolStripMenuItem.Click += new System.EventHandler(this.macroEditorToolStripMenuItem_Click);
             // 
-            // myConnectionPoller
-            // 
-            this.myConnectionPoller.Enabled = true;
-            this.myConnectionPoller.Tick += new System.EventHandler(this.myConnectionPoller_Tick);
-            // 
             // statsViewerToolStripMenuItem
             // 
             this.statsViewerToolStripMenuItem.Name = "statsViewerToolStripMenuItem";
             this.statsViewerToolStripMenuItem.Size = new System.Drawing.Size(164, 24);
             this.statsViewerToolStripMenuItem.Text = "Stats Viewer";
             this.statsViewerToolStripMenuItem.Click += new System.EventHandler(this.statsViewerToolStripMenuItem_Click);
+            // 
+            // myConnectionPoller
+            // 
+            this.myConnectionPoller.Enabled = true;
+            this.myConnectionPoller.Tick += new System.EventHandler(this.myConnectionPoller_Tick);
             // 
             // MainWindow
             // 
