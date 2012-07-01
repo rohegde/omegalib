@@ -1,21 +1,23 @@
-cd ${CMAKE_BINARY_DIR}
-md distro
-cd distro
-md system
-md scripts
-md osgPlugins-3.0.1
+cd "${CMAKE_BINARY_DIR}\..\devbuild-win32"
 
-cd ${CMAKE_BINARY_DIR}\bin\release
-copy *.dll ${CMAKE_BINARY_DIR}\distro
-cd osgPlugins-3.0.1
-copy *.dll ${CMAKE_BINARY_DIR}\distro\osgPlugins-3.0.1
-cd ..
+copy "${CMAKE_BINARY_DIR}\bin\release\*.dll" .\bin /Y
+xcopy "${CMAKE_BINARY_DIR}\bin\release\osgPlugins-3.0.1" .\bin\osgPlugins-3.0.1\ /S /Y
 
-copy ohello.exe ${CMAKE_BINARY_DIR}\distro
-copy ohello2.exe ${CMAKE_BINARY_DIR}\distro
+copy "${CMAKE_BINARY_DIR}\bin\release\orun.exe" .\bin /Y
 
-cd ${CMAKE_SOURCE_DIR}\data
-copy default.cfg ${CMAKE_BINARY_DIR}\distro
-copy system\*.* ${CMAKE_BINARY_DIR}\distro\system
-copy scripts\*.* ${CMAKE_BINARY_DIR}\distro\scripts
+xcopy "${CMAKE_SOURCE_DIR}\data\cyclops" .\cyclops\ /S /Y
+xcopy "${CMAKE_SOURCE_DIR}\data\system" .\system\ /S /Y
+xcopy "${CMAKE_SOURCE_DIR}\data\fonts" .\fonts\ /S /Y
+
+copy "${CMAKE_SOURCE_DIR}\data\default.cfg" .\ /Y
+
+copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\FastColoredTextBox.dll" .\bin /Y
+copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\MissionControl.exe" .\bin /Y
+copy "${CMAKE_SOURCE_DIR}\tools\hstart.exe" .\bin /Y
+
+REM prepare the helloWorld demo application
+xcopy "${CMAKE_SOURCE_DIR}\data\helloWorld" .\helloWorld\ /S /Y
+
+echo bin\orun.exe -s helloWorld\helloWorld.py -D ./helloWorld/ > helloWorld.bat
+echo bin\hstart.exe /NOCONSOLE bin\MissionControl.exe > attachDebugger.bat
 
