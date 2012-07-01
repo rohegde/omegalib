@@ -143,9 +143,9 @@ Cyclops programs can also be implemented as *python scripts*. omegalib offers a 
 	setMenuItemCommand(quitMenuItem, "oexit()")
 }}}
 
-This program implements the same functionality as cyhello2. To run this python script you need to use the `orun` omegalib application. For instance, if you have a copy of the script in omegaSOurce/data/scripts, the command to run it would be:
+This program implements the same functionality as cyhello2. To run this python script you need to use the `orun` omegalib application. For instance, if you have a copy of the script in omegaSource/data/helloWorld, the command to run it would be:
 {{{
-	orun -s scripts/cyhello.py
+	orun -s helloWorld/helloWorld.py
 }}}
 You will find the orun application in your omegalib build binary directory.
 *NOTE:* orun requires python support. If python support was disabled for your build, orun will not be available.
