@@ -802,7 +802,7 @@ BOOST_PYTHON_MODULE(omega)
 	PYAPI_POINTER_LIST(Node, "NodeList")
 
 	// SceneNode
-	class_<SceneNode, bases<Node>>("SceneNode", no_init);
+	class_<SceneNode, bases<Node> >("SceneNode", no_init);
 	//	;
 
 	// Functions
