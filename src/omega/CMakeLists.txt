@@ -126,6 +126,39 @@ SET( headers
         
 ###################################################################################################
 # Enable / disable specific modules within omegalib
+if(OMEGA_USE_PYTHON)
+	add_definitions(-DBOOST_PYTHON_STATIC_LIB -DBOOST_PYTHON_NO_LIB)
+	set( srcs ${srcs}
+			omega/boostPython/dict.cpp
+			omega/boostPython/errors.cpp
+			omega/boostPython/exec.cpp
+			omega/boostPython/import.cpp
+			omega/boostPython/list.cpp
+			omega/boostPython/long.cpp
+			omega/boostPython/module.cpp
+			omega/boostPython/numeric.cpp
+			omega/boostPython/object_operators.cpp
+			omega/boostPython/object_protocol.cpp
+			omega/boostPython/slice.cpp
+			omega/boostPython/str.cpp
+			omega/boostPython/tuple.cpp
+			omega/boostPython/wrapper.cpp
+			omega/boostPython/converter/arg_to_python_base.cpp
+			omega/boostPython/converter/builtin_converters.cpp
+			omega/boostPython/converter/from_python.cpp
+			omega/boostPython/converter/registry.cpp
+			omega/boostPython/converter/type_id.cpp
+			omega/boostPython/object/class.cpp
+			omega/boostPython/object/enum.cpp
+			omega/boostPython/object/function.cpp
+			omega/boostPython/object/function_doc_signature.cpp
+			omega/boostPython/object/inheritance.cpp
+			omega/boostPython/object/iterator.cpp
+			omega/boostPython/object/life_support.cpp
+			omega/boostPython/object/pickle_support.cpp
+			omega/boostPython/object/stl_iterator.cpp
+	)
+endif()
 
 # Equalizer Display Module
 set(OMEGA_USE_DISPLAY_EQUALIZER true CACHE BOOL "Enable Equalizer display system support")
@@ -168,6 +201,7 @@ endif(OMEGA_USE_OPENCL)
 # Group source files into separate folders for visual studio project (this is just eye candy)
 source_group(omega REGULAR_EXPRESSION omega/)		
 source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
+source_group(boostPython REGULAR_EXPRESSION boostPython/)		
 
 ###################################################################################################
 # Create the library with the provided sources and headers

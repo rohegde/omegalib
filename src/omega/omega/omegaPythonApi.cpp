@@ -303,41 +303,6 @@ PyObject* getChildByName(PyObject* self, PyObject* args)
 	return NULL;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void printChildrenHelper(Node* n, int depth, const String& prefix, const String& indentString)
-{
-	if(depth != 0)
-	{
-		foreach(Node::Child child, n->getChildren())
-		{
-			omsg(prefix + child->getName());
-			if(child->numChildren() != 0)
-			{
-				printChildrenHelper(child.second, depth - 1, prefix + indentString, indentString);
-			}
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* printChildren(PyObject* self, PyObject* args)
-{
-	PyObject* pyNode = NULL;
-	int depth = 0;
-	PyArg_ParseTuple(args, "Oi", &pyNode, &depth);
-
-	if(pyNode != NULL)
-	{
-		Node* node = (Node*)PyCapsule_GetPointer(pyNode, "node");
-		if(node != NULL)
-		{
-			printChildrenHelper(node, depth, " ", " ");
-		}
-		Py_INCREF(Py_None);
-		return Py_None;
-	}
-	return NULL;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* getChildByIndex(PyObject* self, PyObject* args)
@@ -698,9 +663,9 @@ static PyMethodDef omegaMethods[] =
 		"addVisibilityListener(node, cmd)\n"
 		"Attaches a command to be executed whenever the node visibility changes."},
 
-    {"printChildren", printChildren, METH_VARARGS, 
-		"printChildren(node, maxDepth)\n"
-		"prints the node children tree up to maxDepth."},
+  //  {"printChildren", printChildren, METH_VARARGS, 
+		//"printChildren(node, maxDepth)\n"
+		//"prints the node children tree up to maxDepth."},
 
 	// Renderer API
     {"rendererQueueCommand", rendererQueueCommand, METH_VARARGS, 
@@ -728,8 +693,132 @@ static PyMethodDef omegaMethods[] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+ServerEngine* getServer() { return ServerEngine::instance(); }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void printChildrenHelper(Node* n, int depth, const String& prefix, const String& indentString)
+{
+	if(depth != 0)
+	{
+		foreach(Node* child, n->getChildren())
+		{
+			omsg(prefix + child->getName());
+			if(child->numChildren() != 0)
+			{
+				printChildrenHelper(child, depth - 1, prefix + indentString, indentString);
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void printChildren(Node* node, int depth)
+{
+	if(node != NULL)
+	{
+		printChildrenHelper(node, depth, " ", " ");
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//struct Node_to_tuple
+//{
+//    static PyObject* convert(Node* n)
+//      {
+//		 return incref(boost::python::object(n).ptr());
+//      }
+//
+//};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct Vector3f_to_tuple
+{
+    static PyObject* convert(Vector3f const& value)
+      {
+		 boost::python::tuple vec = boost::python::make_tuple(value[0], value[1], value[2]);
+		 return incref(vec.ptr());
+      }
+
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct Vector3f_from_tuple
+{
+	Vector3f_from_tuple()
+	{
+		converter::registry::push_back(&convertible, &construct, type_id<Vector3f>());
+	}
+
+	static void* convertible(PyObject* obj)
+	{
+		if(!PyTuple_Check(obj)) return 0;
+		return obj;
+	}
+
+	static void construct(PyObject* obj, converter::rvalue_from_python_stage1_data* data)
+	{
+		float x = extract<float>(PyTuple_GetItem(obj, 0));
+		float y = extract<float>(PyTuple_GetItem(obj, 1));
+		float z = extract<float>(PyTuple_GetItem(obj, 2));
+
+		void* storage = (
+			(converter::rvalue_from_python_storage<Vector3f>*)data)->storage.bytes;
+		new (storage) Vector3f(x, y, z);
+		data->convertible = storage;
+	}
+};
+
+BOOST_PYTHON_MODULE(omega)
+{
+	// ServerEngine 
+	class_<ServerEngine>("ServerEngine", no_init)
+		.def("isConsoleEnabled", &ServerEngine::isConsoleEnabled)
+		.def("setConsoleEnabled", &ServerEngine::setConsoleEnabled)
+		.def("getScene", &ServerEngine::getScene, PYAPI_RETURN_POINTER)
+		;
+
+	// Node
+	void (Node::*setPosition1)(const Vector3f&) = &Node::setPosition;
+	void (Node::*setScale1)(const Vector3f&) = &Node::setScale;
+	Node* (Node::*getChildByIndex)(unsigned short) const = &Node::getChild;
+	Node* (Node::*getChildByName)(const String&) const = &Node::getChild;
+	class_<Node>("Node", no_init)
+		.def("getPosition", &Node::getPosition, PYAPI_RETURN_VALUE)
+		.def("setPosition", setPosition1)
+		.def("getScale", &Node::getScale, PYAPI_RETURN_VALUE)
+		.def("setScale", setScale)
+
+		.def("numChildren", &Node::numChildren)
+		.def("getChildByName", getChildByName, PYAPI_RETURN_POINTER)
+		.def("getChildByIndex", getChildByIndex, PYAPI_RETURN_POINTER)
+
+
+		.def("resetOrientation", &Node::resetOrientation)
+		.def("getName", &Node::getName, PYAPI_RETURN_VALUE)
+		.def("getParent", &Node::getParent, PYAPI_RETURN_POINTER)
+		.def("getChildren", &Node::getChildren, PYAPI_RETURN_POINTER)
+		;
+
+	PYAPI_POINTER_LIST(Node, "NodeList")
+
+	// SceneNode
+	class_<SceneNode, bases<Node>>("SceneNode", no_init);
+	//	;
+
+	// Functions
+	def("getServer", getServer, PYAPI_RETURN_POINTER);
+	def("printChildren", &printChildren);
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void omegaPythonApiInit()
 {
+	boost::python::to_python_converter<Vector3f, Vector3f_to_tuple>();
+	//boost::python::to_python_converter<Node*, Node_to_tuple>();
+	Vector3f_from_tuple();
+	
+	initomega();
+
 	omsg("omegaPythonApiInit()");
 	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 	interp->addModule("omega", omegaMethods);

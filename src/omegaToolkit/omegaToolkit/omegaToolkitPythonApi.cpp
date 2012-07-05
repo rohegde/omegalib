@@ -332,6 +332,10 @@ static PyMethodDef omegaToolkitMethods[] =
 	{NULL, NULL, 0, NULL}
 };
 
+#define BOOST_PYTHON_NO_LIB
+#include <boost/python.hpp>
+using namespace boost::python;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void OTK_API omegaToolkitPythonApiInit()
 {

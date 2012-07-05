@@ -122,8 +122,9 @@ void SceneNode::draw(RenderState* state)
 		}
 
 		// Draw children nodes.
-		foreach(SceneNode::Child n, getChildren())
+		foreach(Node* child, getChildren())
 		{
+			SceneNode* n = dynamic_cast<SceneNode*>(child);
 			n->draw(state);
 		}
 	}
@@ -161,10 +162,14 @@ void SceneNode::updateBoundingBox()
 
 	myBBox.transformAffine(getFullTransform());
 
-	foreach(SceneNode::Child n, getChildren())
+	foreach(Node* child, getChildren())
 	{
-		const AlignedBox3& bbox = n->getBoundingBox();
-		myBBox.merge(bbox);
+		SceneNode* n = dynamic_cast<SceneNode*>(child);
+		if(n != NULL)
+		{
+			const AlignedBox3& bbox = n->getBoundingBox();
+			myBBox.merge(bbox);
+		}
 	}
 
 	if(!myBBox.isNull())
