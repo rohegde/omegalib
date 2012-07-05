@@ -1,10 +1,10 @@
 <map id="G" name="G">
-<area shape="rect" id="node7" href="$classomega_toolkit_1_1_billboard_renderable.html" title="omegaToolkit::BillboardRenderable" alt="" coords="606,5,794,29"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1_bounding_sphere_renderable.html" title="omegaToolkit::BoundingSphereRenderable" alt="" coords="587,53,813,77"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1_box_renderable.html" title="omegaToolkit::BoxRenderable" alt="" coords="617,101,783,125"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1_mesh_renderable.html" title="omegaToolkit::MeshRenderable" alt="" coords="613,149,787,173"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1_reference_box_renderable.html" title="omegaToolkit::ReferenceBoxRenderable" alt="" coords="592,197,808,221"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1_textured_quad_renderable.html" title="omegaToolkit::TexturedQuadRenderable" alt="" coords="591,245,809,269"/>
-<area shape="rect" id="node2" href="$classomega_1_1_renderable.html" title="omega::Renderable" alt="" coords="195,125,312,149"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,125,147,149"/>
+<area shape="rect" id="node7" href="$classomega_toolkit_1_1_billboard_renderable.html" title="omegaToolkit::BillboardRenderable" alt="" coords="587,5,775,29"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1_bounding_sphere_renderable.html" title="omegaToolkit::BoundingSphere\lRenderable" alt="" coords="596,54,767,90"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1_box_renderable.html" title="omegaToolkit::BoxRenderable" alt="" coords="598,115,765,139"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1_mesh_renderable.html" title="omegaToolkit::MeshRenderable" alt="" coords="595,163,768,187"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1_reference_box_renderable.html" title="omegaToolkit::ReferenceBox\lRenderable" alt="" coords="601,211,762,247"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1_textured_quad_renderable.html" title="omegaToolkit::TexturedQuad\lRenderable" alt="" coords="600,271,763,307"/>
+<area shape="rect" id="node2" href="$classomega_1_1_renderable.html" title="omega::Renderable" alt="" coords="195,139,312,163"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,139,147,163"/>
 </map>

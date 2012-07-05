@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node7" href="$classomega_toolkit_1_1ui_1_1_barebone_button.html" title="omegaToolkit::ui::BareboneButton" alt="" coords="5,221,192,245"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_default_button.html" title="omegaToolkit::ui::DefaultButton" alt="" coords="216,221,392,245"/>
-<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::AbstractButton" alt="" coords="110,77,292,101"/>
-<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="130,5,272,29"/>
+<area shape="rect" id="node7" href="$classomega_toolkit_1_1ui_1_1_barebone_button.html" title="omegaToolkit::ui::Barebone\lButton" alt="" coords="5,235,160,271"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_default_button.html" title="omegaToolkit::ui::Default\lButton" alt="" coords="184,235,328,271"/>
+<area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="94,78,244,114"/>
+<area shape="rect" id="node4" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="98,5,240,29"/>
 </map>

@@ -1,18 +1,18 @@
 <map id="G" name="G">
-<area shape="rect" id="node5" href="$classomega_1_1_console.html" title="omega::Console" alt="" coords="453,53,553,77"/>
-<area shape="rect" id="node7" href="$classomega_1_1_pointer.html" title="omega::Pointer" alt="" coords="455,101,551,125"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1_renderable_scene_object.html" title="omegaToolkit::RenderableSceneObject" alt="" coords="398,149,607,173"/>
-<area shape="rect" id="node23" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="431,365,574,389"/>
-<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,125,147,149"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1_billboard.html" title="omegaToolkit::Billboard" alt="" coords="681,5,815,29"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1_bounding_sphere.html" title="omegaToolkit::BoundingSphere" alt="" coords="663,53,833,77"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="693,101,803,125"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="689,149,807,173"/>
-<area shape="rect" id="node19" href="$classomega_toolkit_1_1_reference_box.html" title="omegaToolkit::ReferenceBox" alt="" coords="667,197,829,221"/>
-<area shape="rect" id="node21" href="$classomega_toolkit_1_1_textured_quad.html" title="omegaToolkit::TexturedQuad" alt="" coords="667,245,829,269"/>
-<area shape="rect" id="node25" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::AbstractButton" alt="" coords="657,293,839,317"/>
-<area shape="rect" id="node27" href="$classomega_toolkit_1_1ui_1_1_container.html" title="omegaToolkit::ui::Container" alt="" coords="670,341,826,365"/>
-<area shape="rect" id="node29" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="679,389,817,413"/>
-<area shape="rect" id="node31" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="681,437,815,461"/>
-<area shape="rect" id="node33" href="$classomega_toolkit_1_1ui_1_1_slider.html" title="omegaToolkit::ui::Slider" alt="" coords="681,485,815,509"/>
+<area shape="rect" id="node5" href="$classomega_1_1_console.html" title="omega::Console" alt="" coords="422,47,522,71"/>
+<area shape="rect" id="node7" href="$classomega_1_1_pointer.html" title="omega::Pointer" alt="" coords="424,95,520,119"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1_renderable_scene_object.html" title="omegaToolkit::Renderable\lSceneObject" alt="" coords="398,143,546,179"/>
+<area shape="rect" id="node23" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="401,379,543,403"/>
+<area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,123,147,147"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1_billboard.html" title="omegaToolkit::Billboard" alt="" coords="613,5,747,29"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1_bounding_sphere.html" title="omegaToolkit::BoundingSphere" alt="" coords="595,53,765,77"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="625,101,735,125"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="621,149,739,173"/>
+<area shape="rect" id="node19" href="$classomega_toolkit_1_1_reference_box.html" title="omegaToolkit::ReferenceBox" alt="" coords="599,197,761,221"/>
+<area shape="rect" id="node21" href="$classomega_toolkit_1_1_textured_quad.html" title="omegaToolkit::TexturedQuad" alt="" coords="599,245,761,269"/>
+<area shape="rect" id="node25" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="605,294,755,330"/>
+<area shape="rect" id="node27" href="$classomega_toolkit_1_1ui_1_1_container.html" title="omegaToolkit::ui::Container" alt="" coords="602,355,758,379"/>
+<area shape="rect" id="node29" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="611,403,749,427"/>
+<area shape="rect" id="node31" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="613,451,747,475"/>
+<area shape="rect" id="node33" href="$classomega_toolkit_1_1ui_1_1_slider.html" title="omegaToolkit::ui::Slider" alt="" coords="613,499,747,523"/>
 </map>

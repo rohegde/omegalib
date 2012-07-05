@@ -1,6 +1,6 @@
 <map id="G" name="G">
 <area shape="rect" id="node7" href="$classcyclops_1_1_drawable_object.html" title="cyclops::DrawableObject" alt="" coords="187,221,329,245"/>
-<area shape="rect" id="node2" href="$classomega_1_1_node.html" title="Class representing a general&#45;purpose node an articulated scene graph." alt="" coords="215,77,301,101"/>
+<area shape="rect" id="node2" href="$classomega_1_1_node.html" title="#PYAPI Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="215,77,301,101"/>
 <area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="188,5,329,29"/>
 <area shape="rect" id="node9" href="$classcyclops_1_1_entity.html" title="cyclops::Entity" alt="" coords="5,293,99,317"/>
 <area shape="rect" id="node11" href="$classcyclops_1_1_plane_shape.html" title="cyclops::PlaneShape" alt="" coords="123,293,244,317"/>

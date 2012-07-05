@@ -1,15 +1,15 @@
 <map id="G" name="G">
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::AbstractButton" alt="" coords="590,5,773,29"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1ui_1_1_container.html" title="omegaToolkit::ui::Container" alt="" coords="603,53,759,77"/>
-<area shape="rect" id="node19" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="612,101,751,125"/>
-<area shape="rect" id="node21" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="614,149,749,173"/>
-<area shape="rect" id="node23" href="$classomega_toolkit_1_1ui_1_1_slider.html" title="omegaToolkit::ui::Slider" alt="" coords="614,197,749,221"/>
-<area shape="rect" id="node2" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="195,77,349,101"/>
-<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,77,147,101"/>
-<area shape="rect" id="node6" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="203,125,341,149"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="851,5,992,29"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1ui_1_1_default_panel.html" title="omegaToolkit::ui::DefaultPanel" alt="" coords="836,53,1007,77"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1ui_1_1_user_manager_panel.html" title="omegaToolkit::ui::UserManagerPanel" alt="" coords="822,101,1021,125"/>
-<area shape="rect" id="node25" href="$classomega_toolkit_1_1ui_1_1_barebone_slider.html" title="omegaToolkit::ui::BareboneSlider" alt="" coords="831,173,1012,197"/>
-<area shape="rect" id="node27" href="$classomega_toolkit_1_1ui_1_1_default_slider.html" title="omegaToolkit::ui::DefaultSlider" alt="" coords="836,221,1007,245"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="593,6,743,42"/>
+<area shape="rect" id="node13" href="$classomega_toolkit_1_1ui_1_1_container.html" title="omegaToolkit::ui::Container" alt="" coords="590,67,746,91"/>
+<area shape="rect" id="node19" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="599,115,737,139"/>
+<area shape="rect" id="node21" href="$classomega_toolkit_1_1ui_1_1_label.html" title="omegaToolkit::ui::Label" alt="" coords="601,163,735,187"/>
+<area shape="rect" id="node23" href="$classomega_toolkit_1_1ui_1_1_slider.html" title="omegaToolkit::ui::Slider" alt="" coords="601,211,735,235"/>
+<area shape="rect" id="node2" href="$classomega_1_1_renderable_factory.html" title="Base class for objects that can create renderables." alt="" coords="195,91,349,115"/>
+<area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,91,147,115"/>
+<area shape="rect" id="node6" href="$classomicron_1_1_i_event_listener.html" title="The IEventListener interface is implemented by objects that can receive and process events..." alt="" coords="203,139,341,163"/>
+<area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_button.html" title="omegaToolkit::ui::Button" alt="" coords="811,12,952,36"/>
+<area shape="rect" id="node15" href="$classomega_toolkit_1_1ui_1_1_default_panel.html" title="omegaToolkit::ui::Default\lPanel" alt="" coords="809,61,953,97"/>
+<area shape="rect" id="node17" href="$classomega_toolkit_1_1ui_1_1_user_manager_panel.html" title="omegaToolkit::ui::UserManager\lPanel" alt="" coords="795,121,968,157"/>
+<area shape="rect" id="node25" href="$classomega_toolkit_1_1ui_1_1_barebone_slider.html" title="omegaToolkit::ui::Barebone\lSlider" alt="" coords="804,193,959,229"/>
+<area shape="rect" id="node27" href="$classomega_toolkit_1_1ui_1_1_default_slider.html" title="omegaToolkit::ui::Default\lSlider" alt="" coords="809,253,953,289"/>
 </map>

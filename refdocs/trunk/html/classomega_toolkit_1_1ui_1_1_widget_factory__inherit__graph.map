@@ -1,4 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$classomega_toolkit_1_1ui_1_1_barebone_widget_factory.html" title="omegaToolkit::ui::BareboneWidgetFactory" alt="" coords="5,77,232,101"/>
-<area shape="rect" id="node5" href="$classomega_toolkit_1_1ui_1_1_default_widget_factory.html" title="omegaToolkit::ui::DefaultWidgetFactory" alt="" coords="257,77,471,101"/>
+<area shape="rect" id="node3" href="$classomega_toolkit_1_1ui_1_1_barebone_widget_factory.html" title="omegaToolkit::ui::Barebone\lWidgetFactory" alt="" coords="5,91,160,127"/>
+<area shape="rect" id="node5" href="$classomega_toolkit_1_1ui_1_1_default_widget_factory.html" title="omegaToolkit::ui::Default\lWidgetFactory" alt="" coords="184,91,328,127"/>
 </map>

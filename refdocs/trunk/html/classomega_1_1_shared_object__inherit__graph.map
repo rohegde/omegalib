@@ -2,15 +2,15 @@
 <area shape="rect" id="node5" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="371,197,522,221"/>
 <area shape="rect" id="node7" href="$classomega_1_1_server_module.html" title="omega::ServerModule" alt="" coords="383,245,511,269"/>
 <area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,221,147,245"/>
-<area shape="rect" id="node9" href="$class_cyclops.html" title="Cyclops" alt="" coords="633,5,692,29"/>
-<area shape="rect" id="node11" href="$classcyclops_1_1_scene_manager.html" title="cyclops::SceneManager" alt="" coords="595,53,731,77"/>
-<area shape="rect" id="node13" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="619,101,707,125"/>
-<area shape="rect" id="node15" href="$classomega_1_1_application_node.html" title="omega::ApplicationNode" alt="" coords="593,149,732,173"/>
-<area shape="rect" id="node17" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="583,197,743,221"/>
-<area shape="rect" id="node19" href="$classomega_1_1_porthole_tablet_service.html" title="Implements an interface to tablet device applications using the Porthole protocol." alt="" coords="579,245,746,269"/>
-<area shape="rect" id="node21" href="$classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="595,293,730,317"/>
-<area shape="rect" id="node23" href="$classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditorModule" alt="" coords="571,341,755,365"/>
-<area shape="rect" id="node25" href="$classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="574,389,751,413"/>
-<area shape="rect" id="node27" href="$classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="595,437,731,461"/>
-<area shape="rect" id="node29" href="$classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="599,485,726,509"/>
+<area shape="rect" id="node9" href="$class_cyclops.html" title="Cyclops" alt="" coords="631,5,689,29"/>
+<area shape="rect" id="node11" href="$classcyclops_1_1_scene_manager.html" title="cyclops::SceneManager" alt="" coords="592,53,728,77"/>
+<area shape="rect" id="node13" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="616,101,704,125"/>
+<area shape="rect" id="node15" href="$classomega_1_1_application_node.html" title="omega::ApplicationNode" alt="" coords="591,149,729,173"/>
+<area shape="rect" id="node17" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="580,197,740,221"/>
+<area shape="rect" id="node19" href="$classomega_1_1_porthole_tablet_service.html" title="Implements an interface to tablet device applications using the Porthole protocol." alt="" coords="577,245,743,269"/>
+<area shape="rect" id="node21" href="$classomega_osg_1_1_osg_module.html" title="omegaOsg::OsgModule" alt="" coords="593,293,727,317"/>
+<area shape="rect" id="node23" href="$classomega_toolkit_1_1_scene_editor_module.html" title="omegaToolkit::SceneEditor\lModule" alt="" coords="585,342,735,378"/>
+<area shape="rect" id="node25" href="$classomega_toolkit_1_1ui_1_1_menu_manager.html" title="omegaToolkit::ui::MenuManager" alt="" coords="571,403,749,427"/>
+<area shape="rect" id="node27" href="$classomega_toolkit_1_1_ui_module.html" title="omegaToolkit::UiModule" alt="" coords="592,451,728,475"/>
+<area shape="rect" id="node29" href="$classomega_vtk_1_1_vtk_module.html" title="omegaVtk::VtkModule" alt="" coords="597,499,723,523"/>
 </map>
