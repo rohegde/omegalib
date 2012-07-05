@@ -16,8 +16,8 @@ copy "${CMAKE_SOURCE_DIR}\tools\MissionControl\bin\Release\MissionControl.exe" .
 copy "${CMAKE_SOURCE_DIR}\tools\hstart.exe" .\bin /Y
 
 REM prepare the helloWorld demo application
-xcopy "${CMAKE_SOURCE_DIR}\data\helloWorld" .\helloWorld\ /S /Y
+xcopy "${CMAKE_SOURCE_DIR}\data\demos" .\demos\ /S /Y
 
-echo bin\orun.exe -s helloWorld\helloWorld.py -D ./helloWorld/ > helloWorld.bat
+echo bin\orun.exe -s demos\helloWorld\helloWorld.py -D ./demos/ > helloWorld.bat
 echo bin\hstart.exe /NOCONSOLE bin\MissionControl.exe > attachDebugger.bat
 
