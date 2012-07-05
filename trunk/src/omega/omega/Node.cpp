@@ -245,6 +245,7 @@ void Node::addChild(Node* child)
     }
 
     mChildren.insert(ChildNodeMap::value_type(child->getName(), child));
+	mChildrenList.push_back(child);
     child->setParent(this);
 
 }
@@ -281,6 +282,7 @@ Node* Node::removeChild(unsigned short index)
         cancelUpdate(ret);
 
         mChildren.erase(i);
+		mChildrenList.remove(i->second.get());
         ret->setParent(NULL);
         return ret;
     }
@@ -304,6 +306,7 @@ Node* Node::removeChild(Node* child)
             cancelUpdate(child);
 
             mChildren.erase(i);
+			mChildrenList.remove(child);
             child->setParent(NULL);
         }
     }
@@ -682,16 +685,16 @@ Node* Node::removeChild(const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node::ChildNodeRange Node::getChildren(void)
-{
-    return ChildNodeRange(mChildren.begin(), mChildren.end());
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Node::ConstChildNodeRange Node::getChildren(void) const
-{
-	return ConstChildNodeRange(mChildren.begin(), mChildren.end());
-}
+//Node::ChildNodeRange Node::getChildren(void)
+//{
+//    return ChildNodeRange(mChildren.begin(), mChildren.end());
+//}
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Node::ConstChildNodeRange Node::getChildren(void) const
+//{
+//	return ConstChildNodeRange(mChildren.begin(), mChildren.end());
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::needUpdate(bool forceParentUpdate)

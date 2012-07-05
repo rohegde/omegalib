@@ -35,22 +35,24 @@
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class Node;
-	template<typename T>
-	class ChildNode: public std::pair<String, T*>
-	{
-	public:
-		ChildNode(const String& k, Node* v): std::pair<String, T*>(k, v) {}
-		ChildNode(std::pair<String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
-		ChildNode(std::pair<String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
-		ChildNode(std::pair<const String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
-		ChildNode(std::pair<const String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
-		const String& getName() { return this->first; }
-		T* getNode() { return this->second; }
-		T* operator->() { return this->second; }
-	};
+	//class Node;
+	//template<typename T>
+	//class ChildNode: public std::pair<String, T*>
+	//{
+	//public:
+	//	ChildNode(const String& k, Node* v): std::pair<String, T*>(k, v) {}
+	//	ChildNode(std::pair<String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
+	//	ChildNode(std::pair<String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
+	//	ChildNode(std::pair<const String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
+	//	ChildNode(std::pair<const String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
+	//	const String& getName() { return this->first; }
+	//	T* getNode() { return this->second; }
+	//	T* operator->() { return this->second; }
+	//};
 
-	/** Class representing a general-purpose node an articulated scene graph.
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	/** #PYAPI Class representing a general-purpose node in an articulated scene graph.
         @remarks
             A node in the scene graph is a node in a structured tree. A node contains
             information about the transformation which will apply to
@@ -76,9 +78,9 @@ namespace omega {
         };
 
         typedef Dictionary<String, Ref<Node> > ChildNodeMap;
-		typedef ChildNode<Node> Child;
-		typedef std::pair< ChildNodeMap::iterator, ChildNodeMap::iterator> ChildNodeRange;
-		typedef std::pair< ChildNodeMap::const_iterator, ChildNodeMap::const_iterator> ConstChildNodeRange;
+		//typedef ChildNode<Node> Child;
+		//typedef std::pair< ChildNodeMap::iterator, ChildNodeMap::iterator> ChildNodeRange;
+		//typedef std::pair< ChildNodeMap::const_iterator, ChildNodeMap::const_iterator> ConstChildNodeRange;
 
     public:
         /** Constructor, should only be called by parent, not directly.
@@ -94,10 +96,10 @@ namespace omega {
 
         virtual ~Node();  
 
-        /** Returns the name of the node. */
+        /** #PYAPI Returns the name of the node. */
         const String& getName(void) const;
 
-        /** Gets this node's parent (NULL if this is the root).
+        /** #PYAPI Gets this node's parent (NULL if this is the root).
         */
         virtual Node* getParent(void) const;
 
@@ -135,7 +137,7 @@ namespace omega {
         */
         virtual void setOrientation( float w, float x, float y, float z);
 
-        /** Resets the nodes orientation (local axes as world axes, no rotation).
+        /** #PYAPI Resets the nodes orientation (local axes as world axes, no rotation).
         @remarks
             Orientations, unlike other transforms, are not always inherited by child nodes.
             Whether or not orientations affect the orientation of the child nodes depends on
@@ -150,7 +152,7 @@ namespace omega {
         */
         virtual void resetOrientation(void);
 
-        /** Sets the position of the node relative to it's parent.
+        /** #PYAPI Sets the position of the node relative to it's parent.
         */
         virtual void setPosition(const Vector3f& pos);
 
@@ -158,11 +160,11 @@ namespace omega {
         */
         virtual void setPosition(float x, float y, float z);
 
-        /** Gets the position of the node relative to it's parent.
+        /** #PYAPI Gets the position of the node relative to it's parent.
         */
         virtual const Vector3f & getPosition(void) const;
 
-        /** Sets the scaling factor applied to this node.
+        /** #PYAPI Sets the scaling factor applied to this node.
         @remarks
             Scaling factors, unlike other transforms, are not always inherited by child nodes.
             Whether or not scalings affect the size of the child nodes depends on the setInheritScale
@@ -375,30 +377,6 @@ namespace omega {
         */
         virtual Node* getChild(const String& name) const;
 
-        /** Retrieves an iterator for efficiently looping through all children of this node.
-        @remarks
-            Using this is faster than repeatedly calling getChild if you want to go through
-            all (or most of) the children of this node.
-            Note that the returned iterator is only valid whilst no children are added or
-            removed from this node. Thus you should not store this returned iterator for
-            later use, nor should you add / remove children whilst iterating through it;
-            store up changes for later. Note that calling methods on returned items in 
-            the iterator IS allowed and does not invalidate the iterator.
-        */
-        virtual ChildNodeRange getChildren(void);
-
-        /** Retrieves an iterator for efficiently looping through all children of this node.
-        @remarks
-            Using this is faster than repeatedly calling getChild if you want to go through
-            all (or most of) the children of this node.
-            Note that the returned iterator is only valid whilst no children are added or
-            removed from this node. Thus you should not store this returned iterator for
-            later use, nor should you add / remove children whilst iterating through it;
-            store up changes for later. Note that calling methods on returned items in 
-            the iterator IS allowed and does not invalidate the iterator.
-        */
-		virtual ConstChildNodeRange getChildren(void) const;
-
         /** Drops the specified child from this node. 
         @remarks
             Does not delete the node, just detaches it from
@@ -427,6 +405,9 @@ namespace omega {
         */
         virtual void removeAllChildren(void);
 		
+		//! #PYPI Returns the list of children of this node
+		const List<Node*>& getChildren() const { return mChildrenList; }
+
 		/** Sets the final world position of the node directly.
 		@remarks 
 			It's advisable to use the local setPosition if possible
@@ -512,11 +493,19 @@ namespace omega {
 
 		void setName(const String& name);
 
+		//! Children begin iterator
+		//List<Node*>::iterator begin() { return mChildrenList.begin(); }
+		//List<Node*>::const_iterator begin() const { return mChildrenList.begin(); }
+		////! Children end iterator
+		//List<Node*>::const_iterator end() const { return mChildrenList.end(); }
+
     protected:
         /// Pointer to parent node
         Node* mParent;
         /// Collection of pointers to direct children; hashmap for efficiency
         ChildNodeMap mChildren;
+		// Children list, used to simplify iteration.
+		List<Node*> mChildrenList;
 
 		typedef std::set<Node*> ChildUpdateSet;
         /// List of children which need updating, used if self is not out of date but children are

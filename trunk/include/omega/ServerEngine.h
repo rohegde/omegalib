@@ -59,6 +59,7 @@ namespace omega {
 	};
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! #PYAPI
 	class OMEGA_API ServerEngine: public ServerBase
 	{
 	public:
@@ -100,6 +101,7 @@ namespace omega {
 		const SceneQueryResultList& querySceneRay(const Ray& ray, uint flags = 0);
 		//@}
 
+		//! #PYAPI
 		SceneNode* getScene();
 
  		//! Pointer mode management

@@ -49,7 +49,7 @@ namespace omega {
 	class OMEGA_API SceneNode: public Node
 	{
 	public:
-		typedef ChildNode<SceneNode> Child;
+//		typedef ChildNode<SceneNode> Child;
 		enum HitType { HitBoundingSphere };
 
 	public:
