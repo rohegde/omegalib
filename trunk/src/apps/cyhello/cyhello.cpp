@@ -62,12 +62,12 @@ void HelloApplication::initialize()
 
 	SphereShape* sphere = new SphereShape(mySceneManager, 0.5f);
 	sphere->setEffect("colored -d red");
-	sphere->setPosition(0, 0, -2);
+	sphere->setPosition(0, 2, -5);
 
 	PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
 	plane->setEffect("colored -d green");
 	plane->pitch(-90 * Math::DegToRad);
-	plane->setPosition(0, -1, -2);
+	plane->setPosition(0, 0, -5);
 
 	// Setup a light for the scene.
 	Light* light = new Light(mySceneManager);

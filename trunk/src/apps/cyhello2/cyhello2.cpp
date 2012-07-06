@@ -175,7 +175,7 @@ void HelloApplication::onSelectedChanged(SceneNode* source, bool value)
 // Application entry point
 int main(int argc, char** argv)
 {
-	Application<HelloApplication> app("cyhello");
+	Application<HelloApplication> app("cyhello2");
 	return omain(app, argc, argv);
 }
 
