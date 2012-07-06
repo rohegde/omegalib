@@ -47,6 +47,12 @@ SceneManager* SceneManager::mysInstance = NULL;
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Light* Light::create()
+{
+	return new Light(SceneManager::instance());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 struct AnimationManagerFinder : public osg::NodeVisitor 
 { 
     osgAnimation::BasicAnimationManager* am; 
@@ -511,7 +517,7 @@ void SceneManager::initShading()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool SceneManager::loadModel(ModelInfo info)
+bool SceneManager::loadModel(const ModelInfo& info)
 {
 	ModelAsset* asset = new ModelAsset();
 	asset->filename = info.path; /// changed filepath to filename (confirm from alassandro).

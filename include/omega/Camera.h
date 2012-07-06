@@ -96,9 +96,13 @@ namespace omega {
 
 		const Quaternion& getOrientation();
 		void setOrientation(const Quaternion& value, bool resetController=true);
-		void setOrientation(const Vector3f& yawPitchRoll);
+		
+		//! PYAPI
+		void setYawPitchRoll(const Vector3f& yawPitchRoll);
 				
+		//! PYAPI
 		const Vector3f& getPosition();
+		//! PYAPI
 		void setPosition(const Vector3f& value);
 
 		void setProjection(float fov, float aspect, float nearZ, float farZ);
@@ -218,7 +222,7 @@ namespace omega {
 	inline void Camera::setPosition(const Vector3f& value) 
 	{ myPosition = value; setModelView(myPosition, myOrientation); }
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Camera::setOrientation(const Vector3f& yawPitchRoll) 
+	inline void Camera::setYawPitchRoll(const Vector3f& yawPitchRoll) 
 	{ 
 		Quaternion orientation =   AngleAxis(yawPitchRoll[0]*Math::DegToRad, Vector3f::UnitX()) * AngleAxis(yawPitchRoll[1]*Math::DegToRad, Vector3f::UnitY()) * AngleAxis(yawPitchRoll[2]*Math::DegToRad, Vector3f::UnitZ());
 		setOrientation(orientation);

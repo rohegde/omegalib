@@ -131,7 +131,7 @@ void Camera::setup(Setting& s)
 	if(s.exists("orientation"))
 	{
 		Vector3f camOri = Config::getVector3fValue("orientation", s); 
-		setOrientation(camOri);
+		setYawPitchRoll(camOri);
 	}
 
 	//setup camera controller.  The camera needs to be setup before this otherwise its values will be rewritten

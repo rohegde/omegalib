@@ -83,6 +83,7 @@ namespace omega {
 
 		//! Render pass management
 		//@{
+		//! PYAPI
 		Camera* getDefaultCamera();
 		Camera* createCamera(uint flags = Camera::DefaultFlags);
 		void destroyCamera(Camera* cam);

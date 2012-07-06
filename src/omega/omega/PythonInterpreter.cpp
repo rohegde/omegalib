@@ -336,8 +336,8 @@ void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 		case CallbackUpdate:
 			myUpdateCallbacks.push_back(callback);
 			return;
-		case CallbackPointerEvent:
-			myPointerEventCallbacks.push_back(callback);
+		case CallbackEvent:
+			myEventCallbacks.push_back(callback);
 			return;
 		}
 	}
