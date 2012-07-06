@@ -76,7 +76,7 @@ void HelloApplication::initialize()
 
 	// Load some basic model from the omegalib meshes folder.
 	// Force the size of the object to be 0.8 meters
-	mySceneManager->loadModel(ModelInfo("simpleModel", "meshes/torus.fbx", 1.0f));
+	mySceneManager->loadModel(ModelInfo("simpleModel", "cyclops/test/torus.fbx", 1.0f));
 
 	// Create a new object using the loaded model (referenced using its name, 'simpleModel')
 	myObject = new StaticObject(mySceneManager, "simpleModel");

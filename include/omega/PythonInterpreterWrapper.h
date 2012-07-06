@@ -49,6 +49,7 @@
 	#define BOOST_PYTHON_NO_LIB
 #endif
 #include <boost/python.hpp>
+#include <boost/utility.hpp>
 using namespace boost::python;
 
 #define PYAPI_RETURN_VALUE return_value_policy<copy_const_reference>()

@@ -771,7 +771,7 @@ struct Vector3f_from_tuple
 BOOST_PYTHON_MODULE(omega)
 {
 	// ServerEngine 
-	class_<ServerEngine>("ServerEngine", no_init)
+	class_<ServerEngine, boost::noncopyable>("ServerEngine", no_init)
 		.def("isConsoleEnabled", &ServerEngine::isConsoleEnabled)
 		.def("setConsoleEnabled", &ServerEngine::setConsoleEnabled)
 		.def("getScene", &ServerEngine::getScene, PYAPI_RETURN_POINTER)
@@ -782,7 +782,7 @@ BOOST_PYTHON_MODULE(omega)
 	void (Node::*setScale1)(const Vector3f&) = &Node::setScale;
 	Node* (Node::*getChildByIndex)(unsigned short) const = &Node::getChild;
 	Node* (Node::*getChildByName)(const String&) const = &Node::getChild;
-	class_<Node>("Node", no_init)
+	class_<Node, boost::noncopyable>("Node", no_init)
 		.def("getPosition", &Node::getPosition, PYAPI_RETURN_VALUE)
 		.def("setPosition", setPosition1)
 		.def("getScale", &Node::getScale, PYAPI_RETURN_VALUE)
@@ -802,7 +802,7 @@ BOOST_PYTHON_MODULE(omega)
 	PYAPI_POINTER_LIST(Node, "NodeList")
 
 	// SceneNode
-	class_<SceneNode, bases<Node> >("SceneNode", no_init);
+	class_<SceneNode, bases<Node>, boost::noncopyable >("SceneNode", no_init);
 	//	;
 
 	// Functions

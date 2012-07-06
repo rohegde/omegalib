@@ -54,7 +54,7 @@ namespace cyclops {
 		static Vector2f readVector2f(TiXmlElement* elem, const String& attributeName);
 		static float readFloat(TiXmlElement* elem, const String& attributeName, float defaultValue = 0.0f);
 		static int readInt(TiXmlElement* elem, const String& attributeName, int defaultValue = 0);
-		static bool SceneLoader::readBool(TiXmlElement* elem, const String& attributeName, bool defaultValue = false);
+		static bool readBool(TiXmlElement* elem, const String& attributeName, bool defaultValue = false);
 
 	public:
 		SceneLoader(TiXmlDocument& doc, const String& path);
