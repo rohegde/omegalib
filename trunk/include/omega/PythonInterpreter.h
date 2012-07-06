@@ -55,7 +55,7 @@ namespace omega
 	public:
 		enum CallbackType
 		{
-			CallbackUpdate, CallbackPointerEvent
+			CallbackUpdate, CallbackEvent
 		};
 
 	public:
@@ -99,7 +99,7 @@ namespace omega
 		bool myInteractiveCommandNeedsSend;
 
 		List<void*> myUpdateCallbacks;
-		List<void*> myPointerEventCallbacks;
+		List<void*> myEventCallbacks;
 		//char* myExecutablePath;
 
 		List<CommandHelpEntry*> myHelpData;

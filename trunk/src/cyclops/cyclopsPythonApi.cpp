@@ -264,50 +264,6 @@ PyObject* newStaticObject(PyObject* self, PyObject* args)
 	return NULL;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* newPlaneShape(PyObject* self, PyObject* args)
-{
-	float width = 1;
-	float height = 1;
-	float tilingX = 1;
-	float tilingY = 1;
-	PyArg_ParseTuple(args, "ffff", &width, &height, &tilingX, &tilingY);
-
-	PlaneShape* obj = new PlaneShape(SceneManager::instance(), width, height, Vector2f(tilingX, tilingY));
-	if(obj != NULL)
-	{
-		return PyCapsule_New(obj, "node", NULL);
-	}
-	return NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* newLight(PyObject* self, PyObject* args)
-{
-	Light* l = new Light(SceneManager::instance());
-	return PyCapsule_New(l, "node", NULL);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* setEffect(PyObject* self, PyObject* args)
-{
-	const char* fxDef = NULL;
-	PyObject* pyDrawable = NULL;
-	PyArg_ParseTuple(args, "Os", &pyDrawable, &fxDef);
-
-	if(pyDrawable != NULL && fxDef != NULL)
-	{
-		DrawableObject* obj = dynamic_cast<DrawableObject*>((ReferenceType*)PyCapsule_GetPointer(pyDrawable, "node"));
-		if(obj != NULL)
-		{
-			obj->setEffect(fxDef);
-		}
-    Py_INCREF(Py_None);
-    return Py_None;
-	}
-    return NULL;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 static PyMethodDef cyMethods[] = 
 {
@@ -322,42 +278,6 @@ static PyMethodDef cyMethods[] =
     {"newStaticObject", newStaticObject, METH_VARARGS, 
 		"newStaticObject(modelName)\n" 
 		"Creates a new static object using the specified mesh as a model."},
-
-    {"newPlaneShape", newPlaneShape, METH_VARARGS, 
-		"newPlaneShape(width, height, tilingX, tilingY)\n" 
-		"Creates a new plane with the specified width and height, and with texturing coordinates repeating (tilingX, tilingY) times."},
-
-    {"newLight", newLight, METH_VARARGS, 
-		"newLight()\n" 
-		"Creates a new light."},
-
-    {"setEffect", setEffect, METH_VARARGS, 
-		"setEffect(obj, effectDefinition)\n" 
-		"Applies the specified effect to the passed drawable object."},
-
-    {"sceneLoad", sceneLoad, METH_VARARGS, 
-		"sceneLoad(path)\n" 
-		"Loads a cyclops xml scene file."},
-
-    {"setLightColor", lightSetColor, METH_VARARGS, 
-		"setLightColor(light, colorString)\n" 
-		"Sets the color for the specified light."},
-
-    {"setLightAmbient", lightSetAmbient, METH_VARARGS, 
-		"setLightAmbient(light, colorString)\n" 
-		"Sets the color for the specified light."},
-
-  //  {"lightSetShadow", lightSetShadow, METH_VARARGS, 
-		//"lightSetAmbient(id, softnessWidth, softnessJitter)\n" 
-		//"Sets the shadow parameters for the specified light."},
-
-    {"setMainLight", setMainLight, METH_VARARGS, 
-		"setMainLight(light)\n" 
-		"Sets the specified light as the main scene light."},
-
-    {"setLightEnabled", setLightEnabled, METH_VARARGS, 
-		"setLightEnabled(light, enabled)\n" 
-		"Enables or disables the specified light."},
 
 	//{"animationCount", animationCount, METH_VARARGS, 
 	//	"animationCount(entityId)\n" 
@@ -383,9 +303,68 @@ static PyMethodDef cyMethods[] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+SceneManager* getSceneManager() { return SceneManager::instance(); }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+BOOST_PYTHON_MODULE(cyclops)
+{
+	// SceneManager
+	class_<SceneManager, boost::noncopyable>("SceneManager", no_init)
+		.def("setMainLight", &SceneManager::setMainLight)
+		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
+		.def("loadModel", &SceneManager::loadModel)
+		;
+
+	// DrawableObject
+	class_<DrawableObject, bases<SceneNode>, boost::noncopyable >("DrawableObject", no_init)
+		.def("hasEffect", &DrawableObject::hasEffect)
+		.def("setEffect", &DrawableObject::setEffect)
+		;
+
+	// SphereShape
+	class_<SphereShape, bases<DrawableObject>, boost::noncopyable >("SphereShape", no_init)
+		.def("create", &SphereShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		;
+
+	// PlaneShape
+	class_<PlaneShape, bases<DrawableObject>, boost::noncopyable >("PlaneShape", no_init)
+		.def("create", &PlaneShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		;
+
+	// StaticObject
+	class_<StaticObject, bases<DrawableObject>, boost::noncopyable >("StaticObject", no_init)
+		.def("create", &StaticObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		;
+
+	// Light
+	class_<Light, bases<Node>, boost::noncopyable >("Light", no_init)
+		.def("create", &Light::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
+		.def("setColor", &Light::setColor)
+		.def("setAmbient", &Light::setAmbient)
+		.def("setEnabled", &Light::setEnabled)
+		.def("isEnabled", &Light::isEnabled)
+		;
+
+	class_<ModelInfo, boost::noncopyable>("ModelInfo")
+		.def_readwrite("name", &ModelInfo::name)
+		.def_readwrite("description", &ModelInfo::description)
+		.def_readwrite("generateNormals", &ModelInfo::generateNormals)
+		.def_readwrite("numFiles", &ModelInfo::numFiles)
+		.def_readwrite("path", &ModelInfo::path)
+		.def_readwrite("size", &ModelInfo::size)
+		;
+
+
+	// Free Functions
+	def("getSceneManager", getSceneManager, PYAPI_RETURN_POINTER);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 CY_API void cyclopsPythonApiInit()
 {
 	static bool sApiInitialized = false;
+
+	initcyclops();
 
 	if(!sApiInitialized)
 	{

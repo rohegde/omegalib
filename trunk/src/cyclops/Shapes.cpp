@@ -25,11 +25,18 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "cyclops/Shapes.h"
+#include "cyclops/SceneManager.h"
 
 #include <osgUtil/TangentSpaceGenerator>
 #include <osgwTools/Shapes.h>
 
 using namespace cyclops;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+SphereShape* SphereShape::create(float radius, int subdivisions)
+{
+	return new SphereShape(SceneManager::instance(), radius, subdivisions);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SphereShape::SphereShape(SceneManager* scene, float radius, int subdivisions, Vector2f tiling):
@@ -59,6 +66,12 @@ SphereShape::SphereShape(SceneManager* scene, float radius, int subdivisions, Ve
 	tsg->unref();
 
 	initialize(node);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+PlaneShape* PlaneShape::create(float width, float height)
+{
+	return new PlaneShape(SceneManager::instance(), width, height);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

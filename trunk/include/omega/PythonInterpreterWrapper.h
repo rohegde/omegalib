@@ -45,7 +45,7 @@
 #include "structmember.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_PYTHON_NO_LIB
+#ifndef BOOST_PYTHON_SOURCE
 	#define BOOST_PYTHON_NO_LIB
 #endif
 #include <boost/python.hpp>
@@ -54,6 +54,7 @@ using namespace boost::python;
 
 #define PYAPI_RETURN_VALUE return_value_policy<copy_const_reference>()
 #define PYAPI_RETURN_POINTER return_value_policy<reference_existing_object>()
+#define PYAPI_RETURN_NEW_INSTANCE return_value_policy<manage_new_object>()
 //#define PYAPI_RETURN_REFERENCE return_value_policy<copy_const_reference>()
 #define PYAPI_POINTER_LIST(itemName, className) class_< List<itemName*> > (className, no_init).def("__iter__", iterator< List<itemName*>, return_internal_reference<> >());
 

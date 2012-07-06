@@ -44,6 +44,7 @@ namespace cyclops {
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	class CY_API DrawableObject: public SceneNode
 	{
 	public:
@@ -52,7 +53,9 @@ namespace cyclops {
 		osg::Node* getOsgNode() { return myEffect; }
 		//SceneNode* getSceneNode() { return mySceneNode; }
 
+		//!PYAPI
 		bool hasEffect();
+		//! PYAPI
 		void setEffect(const String& effectDefinition);
 
 	protected:

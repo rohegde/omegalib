@@ -54,20 +54,29 @@ namespace cyclops {
 	class Entity;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	class Light: public Node
 	{
 	friend class SceneManager;
 	public:
+		//! PYAPI Convenience method for creating Light instances
+		static Light* create();
+	
+	public:
 		Light(SceneManager* scene);
 		virtual ~Light();
 
+		//! PYAPI
 		void setColor(const Color& value) { myColor = value; }
 		const Color& getColor() { return myColor; }
 
+		//! PYAPI
 		void setAmbient(const Color& value) { myAmbient = value; }
 		const Color& getAmbient() { return myAmbient; }
 
+		//!PYAPI
 		void setEnabled(bool value) { myEnabled = value; }
+		//! PYAPI
 		bool isEnabled() { return myEnabled; }
 
 		void setAttenuation(const Vector3f value) { myAttenuation = value; }
@@ -101,8 +110,10 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	struct ModelInfo
 	{
+		//! PYAPI
 		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false)
 		{}
 
@@ -115,11 +126,17 @@ namespace cyclops {
 			this->generateNormals = generateNormals;
 		}
 
+		//! PYAPI
 		String name;
+		//! PYAPI
 		String path;
+		//! PYAPI
 		String description;
+		//! PYAPI
 		uint numFiles;
+		//! PYAPI
 		float size;
+		//! PYAPI
 		bool generateNormals;
 	};
 
@@ -138,6 +155,7 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	class CY_API SceneManager: public ServerModule
 	{
 	friend class DrawableObject;
@@ -170,7 +188,7 @@ namespace cyclops {
 
 		//! Model Management
 		//@{
-		bool loadModel(ModelInfo info);
+		bool loadModel(const ModelInfo& info);
 		ModelAsset* getModel(const String& name);
 		const List<ModelAsset*>& getModels();
 		//@}

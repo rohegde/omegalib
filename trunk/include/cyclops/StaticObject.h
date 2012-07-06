@@ -35,8 +35,13 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	class CY_API StaticObject: public DrawableObject
 	{
+	public:
+		//! PYAPI Convenience method for creating SphereShape
+		static StaticObject* create(const String& modelName);
+
 	public:
 		StaticObject(SceneManager* scene, const String& modelName);
 

@@ -34,8 +34,13 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	class CY_API SphereShape: public DrawableObject
 	{
+	public:
+		//! PYAPI Convenience method for creating SphereShape
+		static SphereShape* create(float radius, int subdivisions);
+
 	public:
 		SphereShape(SceneManager* scene, float radius = 1.0f, int subdivisions = 4, Vector2f tiling = Vector2f::Ones());
 
@@ -46,8 +51,13 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
 	class CY_API PlaneShape: public DrawableObject
 	{
+	public:
+		//! PYAPI Convenience method for creating PlaneShape
+		static PlaneShape* create(float width, float height);
+
 	public:
 		PlaneShape(SceneManager* scene, float width = 1.0f, float height = 1.0f, Vector2f tiling = Vector2f::Ones());
 

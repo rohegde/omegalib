@@ -127,7 +127,7 @@ SET( headers
 ###################################################################################################
 # Enable / disable specific modules within omegalib
 if(OMEGA_USE_PYTHON)
-	add_definitions(-DBOOST_PYTHON_STATIC_LIB -DBOOST_PYTHON_NO_LIB)
+	add_definitions(-DBOOST_PYTHON_SOURCE)
 	set( srcs ${srcs}
 			omega/boostPython/dict.cpp
 			omega/boostPython/errors.cpp

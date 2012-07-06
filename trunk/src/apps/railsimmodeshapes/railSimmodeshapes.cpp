@@ -402,7 +402,7 @@ void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTi
 void OmegaViewer::camRot( Vector3f pitchYawRoll )
 {
 	//ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
-	getServer()->getDefaultCamera()->setOrientation(pitchYawRoll);
+	getServer()->getDefaultCamera()->setYawPitchRoll(pitchYawRoll);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
