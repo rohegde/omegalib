@@ -46,6 +46,14 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI Represents a node in the omegalib scene graph.
+	//! @remarks
+	//!		SceneNode instances add some functionality over the Node base class. Namely:
+	//!			- renderable objects can be attached to a scene node;
+	//!			- a scene node has a bounding box;
+	//!			- scene nodes have selection and visibility flags
+	//!			- it is possible to attach listeners to scene nodes, to handle visibility change,
+	//!				selection change and other events.
 	class OMEGA_API SceneNode: public Node
 	{
 	public:
@@ -85,11 +93,17 @@ namespace omega {
 
 		// Options
 		//@{
+		//! PYAPI
 		bool isSelectable();
+		//! PYAPI
 		void setSelectable(bool value);
+		//! PYAPI
 		bool isVisible();
+		//! PYAPI
 		void setVisible(bool value);
+		//! PYAPI
 		void setSelected(bool value);
+		//! PYAPI
 		bool isSelected();
 		//@}
 

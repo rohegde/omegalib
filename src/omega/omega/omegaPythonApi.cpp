@@ -623,26 +623,32 @@ static PyMethodDef omegaMethods[] =
 		"setPosition(nodeRef, x, y, z)\n"
 		"Sets the node position"},
 
+//#
     {"getScale", getScale, METH_VARARGS, 
 		"getScale(nodeRef)\n"
 		"Gets the node scale"},
 
+//#
     {"setScale", setScale, METH_VARARGS, 
 		"setScale(nodeRef, x, y, z)\n"
 		"Sets the node scale"},
 
+//#
     {"resetOrientation", resetOrientation, METH_VARARGS,
 		"resetOrientation(nodeRef)\n"
 		"Resets the node orientation"},
 
+//#
     {"yaw", yaw, METH_VARARGS, 
 		"yaw(nodeRef, yaw)\n"
 		"Sets the node yaw"},
 
+//#
     {"pitch", pitch, METH_VARARGS,
 		"pitch(nodeRef, pitch)\n"
 		"Sets the node position"},
 
+//#
     {"roll", roll, METH_VARARGS, 
 		"roll(nodeRef, roll)\n"
 		"Sets the node roll"},
@@ -787,6 +793,9 @@ BOOST_PYTHON_MODULE(omega)
 		.def("setPosition", setPosition1)
 		.def("getScale", &Node::getScale, PYAPI_RETURN_VALUE)
 		.def("setScale", setScale)
+		.def("yaw", &Node::yaw)
+		.def("pitch", &Node::yaw)
+		.def("roll", &Node::yaw)
 
 		.def("numChildren", &Node::numChildren)
 		.def("getChildByName", getChildByName, PYAPI_RETURN_POINTER)
@@ -799,13 +808,22 @@ BOOST_PYTHON_MODULE(omega)
 		.def("getChildren", &Node::getChildren, PYAPI_RETURN_POINTER)
 		;
 
+	// NodeList
 	PYAPI_POINTER_LIST(Node, "NodeList")
 
 	// SceneNode
-	class_<SceneNode, bases<Node>, boost::noncopyable >("SceneNode", no_init);
-	//	;
+	class_<SceneNode, bases<Node>, boost::noncopyable >("SceneNode", no_init)
+		.def("isVisible", &SceneNode::isVisible)
+		.def("setVisible", &SceneNode::setVisible)
+		.def("isSelected", &SceneNode::isSelected)
+		.def("setSelected", &SceneNode::setSelected)
+		.def("isSelectable", &SceneNode::isSelectable)
+		.def("setSelectable", &SceneNode::setSelectable)
+	;
 
-	// Functions
+
+
+	// Free Functions
 	def("getServer", getServer, PYAPI_RETURN_POINTER);
 	def("printChildren", &printChildren);
 };
