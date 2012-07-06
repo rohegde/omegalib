@@ -52,7 +52,7 @@ namespace omega {
 
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	/** #PYAPI Class representing a general-purpose node in an articulated scene graph.
+	/** PYAPI Class representing a general-purpose node in an articulated scene graph.
         @remarks
             A node in the scene graph is a node in a structured tree. A node contains
             information about the transformation which will apply to
@@ -96,10 +96,10 @@ namespace omega {
 
         virtual ~Node();  
 
-        /** #PYAPI Returns the name of the node. */
+        /** PYAPI Returns the name of the node. */
         const String& getName(void) const;
 
-        /** #PYAPI Gets this node's parent (NULL if this is the root).
+        /** PYAPI Gets this node's parent (NULL if this is the root).
         */
         virtual Node* getParent(void) const;
 
@@ -137,7 +137,7 @@ namespace omega {
         */
         virtual void setOrientation( float w, float x, float y, float z);
 
-        /** #PYAPI Resets the nodes orientation (local axes as world axes, no rotation).
+        /** PYAPI Resets the nodes orientation (local axes as world axes, no rotation).
         @remarks
             Orientations, unlike other transforms, are not always inherited by child nodes.
             Whether or not orientations affect the orientation of the child nodes depends on
@@ -152,7 +152,7 @@ namespace omega {
         */
         virtual void resetOrientation(void);
 
-        /** #PYAPI Sets the position of the node relative to it's parent.
+        /** PYAPI Sets the position of the node relative to it's parent.
         */
         virtual void setPosition(const Vector3f& pos);
 
@@ -160,11 +160,11 @@ namespace omega {
         */
         virtual void setPosition(float x, float y, float z);
 
-        /** #PYAPI Gets the position of the node relative to it's parent.
+        /** PYAPI Gets the position of the node relative to it's parent.
         */
         virtual const Vector3f & getPosition(void) const;
 
-        /** #PYAPI Sets the scaling factor applied to this node.
+        /** PYAPI Sets the scaling factor applied to this node.
         @remarks
             Scaling factors, unlike other transforms, are not always inherited by child nodes.
             Whether or not scalings affect the size of the child nodes depends on the setInheritScale
@@ -333,15 +333,15 @@ namespace omega {
         */
         virtual void translate(const Matrix3f& axes, float x, float y, float z, TransformSpace relativeTo = TransformParent);
 
-        /** Rotate the node around the Z-axis.
+        /** PYAPI Rotate the node around the Z-axis.
         */
         virtual void roll(const float& angle, TransformSpace relativeTo = TransformLocal);
 
-        /** Rotate the node around the X-axis.
+        /** PYAPI Rotate the node around the X-axis.
         */
         virtual void pitch(const float& angle, TransformSpace relativeTo = TransformLocal);
 
-        /** Rotate the node around the Y-axis.
+        /** PYAPI Rotate the node around the Y-axis.
         */
         virtual void yaw(const float& angle, TransformSpace relativeTo = TransformLocal);
 

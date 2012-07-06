@@ -159,7 +159,8 @@ String readTextFile(const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GpuManager::GpuManager():
 	myInitialized(false),
-	myCLManager(NULL)
+	myCLManager(NULL),
+	myInitFlags(GpuManager::InitGL)
 {
 }
 
