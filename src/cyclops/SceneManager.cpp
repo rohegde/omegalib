@@ -568,6 +568,11 @@ bool SceneManager::loadModel(const ModelInfo& info)
 					node->accept(sv);
 				}
 
+				if(info.normalizeNormals)
+				{
+					node->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON); 
+				}
+
 				asset->nodes.push_back(node);
 				asset->description = info.description;
 			}
