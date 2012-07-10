@@ -24,15 +24,6 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-//#include <osg/PositionAttitudeTransform>
-//#include <osg/MatrixTransform>
-//#include <osg/OcclusionQueryNode>
-//#include <osg/Depth>
-//#include <osg/ColorMask>
-//#include <osg/PolygonMode>
-//#include <osg/PolygonOffset>
-//#include <osgUtil/TangentSpaceGenerator>
-//#include <osgFX/Effect>
 #include <osgDB/ReadFile>
 #include <osgwTools/Shapes.h>
 
@@ -214,6 +205,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 	{
 		String filePath = xchild->Attribute("Path");
 		bool generateNormals = readBool(xchild, "GenerateNormals");
+		bool normalizeNormals = readBool(xchild, "NormalizeNormals");
 		int objcount=1;
 		if(filePath.find("*")!=-1){		
 			if(xchild->Attribute("Maxcount") != NULL){
@@ -241,6 +233,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		mi.path = filePath;
 		mi.numFiles = objcount;
 		mi.generateNormals = generateNormals;
+		mi.normalizeNormals = normalizeNormals;
 		
 		const char* attrSize = xchild->Attribute("Size");
 		if(attrSize != NULL) mi.size = atoi(attrSize);

@@ -88,10 +88,14 @@ namespace cyclops {
 		}
 		const Vector3f& getAttenuation() { return myAttenuation; }
 
+		//! PYAPI
 		void setSoftShadowWidth(float value) { mySoftShadowWidth = value; }
+		//! PYAPI
 		float getSoftShadowWidth() { return mySoftShadowWidth; }
 
+		//! PYAPI
 		void setSoftShadowJitter(int value) { mySoftShadowJitter = value; }
+		//! PYAPI
 		float getSoftShadowJitter() { return mySoftShadowJitter; }
 
 	private:
@@ -114,16 +118,17 @@ namespace cyclops {
 	struct ModelInfo
 	{
 		//! PYAPI
-		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false)
+		ModelInfo(): numFiles(1), size(0.0f), generateNormals(false), normalizeNormals(false)
 		{}
 
-		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false)
+		ModelInfo(const String name, const String path, float size = 0.0f, int numFiles = 1, bool generateNormals = false, bool normalizeNormals = false)
 		{
 			this->name = name;
 			this->path = path;
 			this->size = size;
 			this->numFiles = numFiles;
 			this->generateNormals = generateNormals;
+			this->normalizeNormals = normalizeNormals;
 		}
 
 		//! PYAPI
@@ -138,6 +143,8 @@ namespace cyclops {
 		float size;
 		//! PYAPI
 		bool generateNormals;
+		
+		bool normalizeNormals;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
