@@ -90,7 +90,14 @@ public:
 	bool isAnimating;		//toggle for if animations is happening or just still image
 	bool isKeyFraming;		//toggle that user is "stepping through" the time steps by presssing a key 
 	bool isFreeFly;			//Toggle to allow uses to move around using the d-pad and not locked down to a certain view 
-	bool isFollowing;		//Toogle that the user is locked down to a predefined view so movement with d-pad is not possible
+	
+	//camera control
+	int campos;				//camera position toggle
+	Vector3f currot;		//camera rotation
+	Vector3f curpos;		//camera postion
+
+	//Vector math
+	Vector3f OmegaViewer::Lerp(float t, Vector3f start,Vector3f end);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,13 +225,29 @@ void OmegaViewer::initialize()
 
 	//init the camera
 	camDefault();
+	curpos=Vector3f( 20,-10,20 );
+	currot=Vector3f( 20.0, 0.0 , 0.0 );
 
 	//init the lighting
 	cyclops::Light* l = new Light(sceneMngr);
 	l->setEnabled(true);
-	l->setPosition(0, 20, -20);
+
+	l->setPosition(18, 0, 8);
+
+//	l->setPosition(0, 20, -20);
 	l->setColor(Color(1.0f, 1.0f, 1.0f));
-	l->setAmbient(Color(0.2f, 0.2f, 0.2f));
+	l->setAmbient(Color(0.7f, 0.7f, 0.7f));
+/*
+	cyclops::Light* l1 = new Light(sceneMngr);
+	l->setEnabled(true);
+
+	l->setPosition(18, 0, -8);
+
+//	l->setPosition(0, 20, -20);
+	l->setColor(Color(1.0f, 1.0f, 1.0f));
+	l->setAmbient(Color(0.7f, 0.7f, 0.7f));
+
+	*/
  	sceneMngr->setMainLight(l);
 
 }
@@ -255,6 +278,7 @@ void OmegaViewer::handleEvent(const Event& evt)
 	else if(evt.isKeyDown('c'))
     {
 		isFreeFly = !isFreeFly;
+		isKeyFraming = false;
 	}
 	
 	//Set to the Hardcoded origin
@@ -266,19 +290,25 @@ void OmegaViewer::handleEvent(const Event& evt)
 	}
 
 	//Set to the ride the rail
-	else if(evt.isKeyDown('1') || evt.isButtonDown(Event::Button3))
+	else if(evt.isKeyDown('2') || evt.isButtonDown(Event::Button3))
     {
-		isFreeFly = true;
-		isFollowing = true;
+		campos=2;
+		sceneMngr->getMainLight()->setPosition(18,0,10.0);
 	}
 
 	//Set to the ride the rail
-	else if(evt.isKeyDown('2') || evt.isButtonDown(Event::Button4))
+	else if(evt.isKeyDown('3') || evt.isButtonDown(Event::Button4))
     {
-		isFreeFly = true;
-		isFollowing = false;
-		camTrans( Vector3f( 32.0 , -.25 , .45 ) );
-		camRot( Vector3f( 0.0 , -90.0 , 0.0 ) );
+		campos=3;
+		sceneMngr->getMainLight()->setPosition(32.0,0.0,2.0);
+		
+	}
+
+		else if(evt.isKeyDown('1') || evt.isButtonDown(Event::Button4))
+    {
+		campos=1;
+		sceneMngr->getMainLight()->setPosition(18,0,10.0);
+		
 	}
 
 	//Enable Keyframing 
@@ -287,12 +317,14 @@ void OmegaViewer::handleEvent(const Event& evt)
     {
 		isKeyFraming = true;
 		prevTimeStep = curTimeStep-=1; 
+		if(mcount>0){mcount--;} else {mcount=modeshape->getNumModels();}
 	}
 	//Enable Keyframing 
 	else if(evt.isKeyDown('p') || evt.isButtonDown(Event::SpecialButton2))
     {
 		isKeyFraming = true;
 		prevTimeStep = curTimeStep+=1; 
+		if(mcount<modeshape->getNumModels()){mcount++;} else {mcount=0;}
 	}
 }
 
@@ -301,11 +333,39 @@ void OmegaViewer::handleEvent(const Event& evt)
 //
 void OmegaViewer::update(const UpdateContext& context) 
 {
+//	sceneMngr->getMainLight()->setPosition(getServer()->getDefaultCamera()->getPosition());
 //	cout<<context.time<<endl;
+	if(!isFreeFly){
+	camTrans(curpos);
+	camRot(currot);
+	}
+	
+	switch(campos){
+	case 1:
+		curpos=Lerp(0.9,curpos,Vector3f( 20,0.0,20));
+		currot=Lerp(0.9,currot,  Vector3f( 0.0, 0.0 , 0.0));
+		
+		break;
+	case 2:
+		curpos=Lerp(0.9,curpos,Vector3f( 20,-10,20));
+		currot=Lerp(0.9,currot,  Vector3f( 20.0, 0.0 , 0.0));
+		
+		break;
+	
+	case 3:
+		curpos=Lerp(0.9,curpos,Vector3f( 32.0 , 0.0 , 2.0 ));
+		currot=Lerp(0.9,currot,  Vector3f( 0.0 , 90.0 , 0.0 ));
+		break;
+	}
+
+	if( !isKeyFraming ){
 	if(context.time>shapetime){
 			if(mcount<modeshape->getNumModels()){mcount++;} else {mcount=0;}
 			modeshape->setCurrentModelIndex(mcount);
 			shapetime=context.time+0.05;
+	}
+	} else {
+	    modeshape->setCurrentModelIndex(mcount);
 	}
 	//do camrea stuff
 	toggleCameraController( );
@@ -378,23 +438,6 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
-void OmegaViewer::updateCamera( vector<float> pos , vector<float> rot, int curTimeStep )
-{
-	//Hardcoded :: the following location
-	int actualVecIndex = curTimeStep * 4;
-	Vector<float> position;
-	//position.push_back( pos[actualVecIndex+0] - 5);
-	//position.push_back( -0.25 );
-	//position.push_back( -0.25 );
-
-	position.push_back( pos[actualVecIndex+0] - 3);
-	position.push_back( -0.25 );
-	position.push_back( -0.25 );
-	camTrans( Vector3f( position[0] , position[1] , position[2] ) );
-
-	//Hardcoded :: the following orientation
-	camRot( Vector3f( 10.0, 75.0, 0.0 ) );
-}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -419,7 +462,6 @@ void OmegaViewer::camDefault()
 {
 	isAnimating = true;
 	isKeyFraming = false;
-	isFollowing = false;
 
 	//~~~~~~ Setup the camera stuff 
 	isFreeFly = true;
@@ -432,6 +474,15 @@ void OmegaViewer::toggleCameraController( )
 	getServer()->getDefaultCamera()->setControllerEnabled(isFreeFly);
 }
 
+Vector3f  OmegaViewer::Lerp(float t, Vector3f start,Vector3f end)
+{
+	return start*t+end*(1-t);
+}
+
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Application entry point
 int main(int argc, char** argv)
@@ -440,4 +491,6 @@ int main(int argc, char** argv)
 	oargs().newNamedString('s', "script", "script", "script to launch at startup", sDefaultScript);
 	return omain(app, argc, argv);
 }
+
+
 
