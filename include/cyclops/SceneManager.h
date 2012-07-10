@@ -294,7 +294,7 @@ namespace cyclops {
 		mySceneManager(scene),
 		myColor(Color::White),
 		myAmbient(Color::Gray),
-		myAttenuation(Vector3f::Zero()),
+		myAttenuation(Vector3f(1.0, 0.0, 0.0)),
 		myEnabled(false),
 		mySoftShadowWidth(0.005f),
 		mySoftShadowJitter(32),
