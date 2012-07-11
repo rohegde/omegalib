@@ -33,125 +33,7 @@
 
 #include "omega/PythonInterpreterWrapper.h"
 
-#define PYCAP_GET(pyobj, className) pyobj != NULL ? (className*)PyCapsule_GetPointer(pyobj, #className) : NULL
-
 using namespace cyclops;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-/*static PyObject* moduleEnableCyclops(PyObject* self, PyObject* args)
-{
-	SceneManager::createAndInitialize();
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}*/
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-static PyObject* sceneLoad(PyObject* self, PyObject* args)
-{
-	const char* mapName;
-	if(!PyArg_ParseTuple(args, "s", &mapName)) return NULL;
-
-	SceneManager::instance()->load(mapName);
-
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* setLightEnabled(PyObject* self, PyObject* args)
-{
-	bool enabled = false;
-	PyObject* pyLight = NULL;
-	PyArg_ParseTuple(args, "Ob", &pyLight, &enabled);
-
-	if(pyLight != NULL)
-	{
-		Light* l = dynamic_cast<Light*>((ReferenceType*)PyCapsule_GetPointer(pyLight, "node"));
-		if(l != NULL)
-		{
-			l->setEnabled(enabled);
-		}
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* lightSetColor(PyObject* self, PyObject* args)
-{
-	const char* color = NULL;
-	PyObject* pyLight = NULL;
-	PyArg_ParseTuple(args, "Os", &pyLight, &color);
-
-	if(pyLight != NULL && color != NULL)
-	{
-		Light* l = dynamic_cast<Light*>((ReferenceType*)PyCapsule_GetPointer(pyLight, "node"));
-		if(l != NULL)
-		{
-			l->setColor(Color(color));
-		}
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* lightSetAmbient(PyObject* self, PyObject* args)
-{
-	const char* color = NULL;
-	PyObject* pyLight = NULL;
-	PyArg_ParseTuple(args, "Os", &pyLight, &color);
-
-	if(pyLight != NULL && color != NULL)
-	{
-		Light* l = dynamic_cast<Light*>((ReferenceType*)PyCapsule_GetPointer(pyLight, "node"));
-		if(l != NULL)
-		{
-			l->setAmbient(Color(color));
-		}
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* setMainLight(PyObject* self, PyObject* args)
-{
-	PyObject* pyLight = NULL;
-	PyArg_ParseTuple(args, "O", &pyLight);
-
-	if(pyLight != NULL)
-	{
-		Light* l = dynamic_cast<Light*>((ReferenceType*)PyCapsule_GetPointer(pyLight, "node"));
-		if(l != NULL)
-		{
-			SceneManager::instance()->setMainLight(l);
-		}
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//PyObject* lightSetShadow(PyObject* self, PyObject* args)
-//{
-//	int id;
-//	float soft;
-//	int jitter;
-//	PyArg_ParseTuple(args, "ifi", &id, &soft, &jitter);
-//
-//	Light* l = SceneManager::instance()->getLight(id);
-//	if(l != NULL)
-//	{
-//		l->setSoftShadowJitter(jitter);
-//		l->setSoftShadowWidth(soft);
-//	}
-//	Py_INCREF(Py_None);
-//	return Py_None;
-//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //PyObject* animationCount(PyObject* self, PyObject* args)
@@ -232,77 +114,6 @@ PyObject* setMainLight(PyObject* self, PyObject* args)
 //}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* loadModel(PyObject* self, PyObject* args)
-{
-	const char* name;
-	const char* path;
-	float size = 0;
-	PyArg_ParseTuple(args, "ssf", &name, &path, &size);
-
-	if(name != NULL && path != NULL)
-	{
-		SceneManager::instance()->loadModel(ModelInfo(name, path, size));
-	}
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-PyObject* newStaticObject(PyObject* self, PyObject* args)
-{
-	const char* modelName;
-	PyArg_ParseTuple(args, "s", &modelName);
-
-	if(modelName != NULL)
-	{
-		StaticObject* obj = new StaticObject(SceneManager::instance(), modelName);
-		if(obj != NULL)
-		{
-			return PyCapsule_New(obj, "node", NULL);
-		}
-	}
-	return NULL;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-static PyMethodDef cyMethods[] = 
-{
-  //  {"moduleEnableCyclops", moduleEnableCyclops, METH_VARARGS, 
-		//"moduleEnableCyclops()\n" 
-		//"Enables cyclops scene manager support."},
-
-    {"loadModel", loadModel, METH_VARARGS, 
-		"loadModel(name, path, size)\n" 
-		"Loads mesh model."},
-
-    {"newStaticObject", newStaticObject, METH_VARARGS, 
-		"newStaticObject(modelName)\n" 
-		"Creates a new static object using the specified mesh as a model."},
-
-	//{"animationCount", animationCount, METH_VARARGS, 
-	//	"animationCount(entityId)\n" 
-	//	"Gets the number of animations supported by the specified entity."},
-
- //   {"animationPlay", animationPlay, METH_VARARGS, 
-	//	"animationPlay(entityId, animationId)\n" 
-	//	"Plays the specified animation for the specified entity."},
-
- //   {"animationLoop", animationLoop, METH_VARARGS, 
-	//	"animationLoop(entityId, animationId)\n" 
-	//	"Loops the specified animation for the specified entity."},
-
- //   {"animationStop", animationStop, METH_VARARGS, 
-	//	"animationStop(entityId, animationId)\n" 
-	//	"Stops the specified animation for the specified entity."},
-
- //   {"animationStopAll", animationStopAll, METH_VARARGS, 
-	//	"animationStopAll(entityId)\n" 
-	//	"Stops all animations for the specified entity."},
-
-    {NULL, NULL, 0, NULL}
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneManager* getSceneManager() { return SceneManager::instance(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -343,6 +154,10 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("setAmbient", &Light::setAmbient)
 		.def("setEnabled", &Light::setEnabled)
 		.def("isEnabled", &Light::isEnabled)
+		.def("setSoftShadowJitter", &Light::setSoftShadowJitter)
+		.def("getSoftShadowJitter", &Light::getSoftShadowJitter)
+		.def("setSoftShadowWidth", &Light::setSoftShadowWidth)
+		.def("getSoftShadowWidth", &Light::getSoftShadowWidth)
 		;
 
 	class_<ModelInfo, boost::noncopyable>("ModelInfo")
@@ -364,14 +179,13 @@ CY_API void cyclopsPythonApiInit()
 {
 	static bool sApiInitialized = false;
 
-	initcyclops();
-
 	if(!sApiInitialized)
 	{
 		sApiInitialized = true;
 		omsg("cyclopsPythonApiInit()");
-		omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
-		interp->addModule("cyclops", cyMethods);
+		initcyclops();
+		//omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+		//interp->addModule("cyclops", cyMethods);
 	}
 }
 

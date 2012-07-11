@@ -272,14 +272,10 @@ void printChildren(Node* node, int depth)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//struct Node_to_tuple
-//{
-//    static PyObject* convert(Node* n)
-//      {
-//		 return incref(boost::python::object(n).ptr());
-//      }
-//
-//};
+void printObjCounts()
+{
+	ReferenceType::printObjCounts();
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Vector3f_to_tuple
@@ -385,6 +381,7 @@ BOOST_PYTHON_MODULE(omega)
 	// Free Functions
 	def("getServer", getServer, PYAPI_RETURN_POINTER);
 	def("printChildren", &printChildren);
+	def("printObjCounts", &printObjCounts);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
