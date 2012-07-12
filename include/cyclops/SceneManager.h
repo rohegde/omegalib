@@ -206,6 +206,7 @@ namespace cyclops {
 		void load(SceneLoader* loader);
 		//! Utility method: loads a scene file using the standard cyclops scene loader.
 		void load(const String& file);
+		//! #PYAPI
 		void createSkyBox(const String& cubeMapDir, const String& cubeMapExt);
 		//@}
 
@@ -234,6 +235,7 @@ namespace cyclops {
 	private:
 		SceneManager();
 
+		void initializeShaders();
 		void addLight(Light* l);
 		void removeLight(Light* l);
 		void addObject(DrawableObject* obj);
@@ -267,6 +269,7 @@ namespace cyclops {
 		List<DrawableObject*> myObjectList;
 		
 		SkyBox* mySkyBox;
+		bool myShadersInitialized;
 
 		// Lights and shadows
 		List<Light*> myLights;
