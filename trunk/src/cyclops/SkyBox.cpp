@@ -55,7 +55,7 @@ public:
         {
             const osg::Matrix& MV = *(cv->getModelViewMatrix());
             const osg::Matrix R = osg::Matrix::rotate( osg::DegreesToRadians(112.0f), 0.0f,0.0f,1.0f)*
-                                  osg::Matrix::rotate( osg::DegreesToRadians(90.0f), 1.0f,0.0f,0.0f);
+                                  osg::Matrix::rotate( osg::DegreesToRadians(0.0f), 1.0f,0.0f,0.0f);
 
             osg::Quat q = MV.getRotate();
             const osg::Matrix C = osg::Matrix::rotate( q.inverse() );
@@ -121,8 +121,8 @@ bool SkyBox::loadCubeMap(const String& cubemapDir, const String& extension)
 
     osg::Image* imagePosX = osgDB::readImageFile(cubemapDir + "/posx." + extension);
     osg::Image* imageNegX = osgDB::readImageFile(cubemapDir + "/negx." + extension);
-    osg::Image* imagePosY = osgDB::readImageFile(cubemapDir + "/posy." + extension);
-    osg::Image* imageNegY = osgDB::readImageFile(cubemapDir + "/negy." + extension);
+    osg::Image* imagePosY = osgDB::readImageFile(cubemapDir + "/negy." + extension);
+    osg::Image* imageNegY = osgDB::readImageFile(cubemapDir + "/posy." + extension);
     osg::Image* imagePosZ = osgDB::readImageFile(cubemapDir + "/posz." + extension);
     osg::Image* imageNegZ = osgDB::readImageFile(cubemapDir + "/negz." + extension);
 

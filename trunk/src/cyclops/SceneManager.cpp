@@ -139,7 +139,7 @@ void SceneManager::loadConfiguration()
 void SceneManager::initialize()
 {
 	myMainLight = NULL;
-
+	myShadersInitialized = false;
 	myEngine = getServer();
 
 	// Make sure the osg module is initialized.
@@ -159,7 +159,12 @@ void SceneManager::initialize()
 		initShading();
 		myOsg->setRootNode(mySceneRoot);
 	}
+	//frontView = true;
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::initializeShaders()
+{
 	if(myShadowMode == ShadowsSoft)
 	{
 		setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
@@ -191,7 +196,7 @@ void SceneManager::initialize()
 	setShaderMacroToFile("use setupStandardShading", "cyclops/common/standardShading/setupStandardShading.vert");
 	setShaderMacroToFile("use computeStandardShading", "cyclops/common/standardShading/computeStandardShading.frag");
 
-	//frontView = true;
+	myShadersInitialized = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,6 +210,7 @@ void SceneManager::addObject(DrawableObject* obj)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::update(const UpdateContext& context) 
 {
+	if(!myShadersInitialized) initializeShaders();
 	updateLights();
 }
 

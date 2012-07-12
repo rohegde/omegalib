@@ -43,6 +43,8 @@ using namespace omega;
 //! Static instance of ScriptRendererCommand, used by rendererQueueCommand
 ScriptRendererCommand* sScriptRendererCommand = NULL;
 
+PyObject* sEuclidModule = NULL;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PyObject* omegaExit(PyObject* self, PyObject* args)
 {
@@ -278,35 +280,49 @@ void printObjCounts()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-struct Vector3f_to_tuple
+struct Vector3f_to_python
 {
-    static PyObject* convert(Vector3f const& value)
-      {
-		 boost::python::tuple vec = boost::python::make_tuple(value[0], value[1], value[2]);
-		 return incref(vec.ptr());
-      }
+	static PyObject* convert(Vector3f const& value)
+	{
+		// If we haven't looked up for the Vector3 class, let's do it now.
+		static PyObject* sVector3Class = NULL;
+		if(sVector3Class == NULL)
+		{
+			PyObject* moduleDict = PyModule_GetDict(sEuclidModule);
+			sVector3Class = PyDict_GetItemString(moduleDict, "Vector3");
+		}
 
+		// Create a new euclid.Vector3 instance using the omega::Vector3f components
+		// as arguments.
+		boost::python::tuple vec = boost::python::make_tuple(value[0], value[1], value[2]);
+		PyObject* vector3obj = PyObject_CallObject(sVector3Class, vec.ptr());
+		return incref(vector3obj);
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-struct Vector3f_from_tuple
+struct Vector3f_from_python
 {
-	Vector3f_from_tuple()
+	Vector3f_from_python()
 	{
 		converter::registry::push_back(&convertible, &construct, type_id<Vector3f>());
 	}
 
 	static void* convertible(PyObject* obj)
 	{
-		if(!PyTuple_Check(obj)) return 0;
+		// We don't really care if the object is of type Vector3. We just require
+		// it to have x, y, z attributes.
+		if(!PyObject_HasAttrString(obj, "x") ||
+			!PyObject_HasAttrString(obj, "y") ||
+			!PyObject_HasAttrString(obj, "z")) return 0;
 		return obj;
 	}
 
 	static void construct(PyObject* obj, converter::rvalue_from_python_stage1_data* data)
 	{
-		float x = extract<float>(PyTuple_GetItem(obj, 0));
-		float y = extract<float>(PyTuple_GetItem(obj, 1));
-		float z = extract<float>(PyTuple_GetItem(obj, 2));
+		float x = extract<float>(PyObject_GetAttrString(obj, "x"));
+		float y = extract<float>(PyObject_GetAttrString(obj, "y"));
+		float z = extract<float>(PyObject_GetAttrString(obj, "z"));
 
 		void* storage = (
 			(converter::rvalue_from_python_storage<Vector3f>*)data)->storage.bytes;
@@ -315,6 +331,59 @@ struct Vector3f_from_tuple
 	}
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct Quaternion_to_python
+{
+	static PyObject* convert(Quaternion const& value)
+	{
+		// If we haven't looked up for the Quaternion class, let's do it now.
+		static PyObject* sQuaternionClass = NULL;
+		if(sQuaternionClass == NULL)
+		{
+			PyObject* moduleDict = PyModule_GetDict(sEuclidModule);
+			sQuaternionClass = PyDict_GetItemString(moduleDict, "Quaternion");
+		}
+
+		// Create a new euclid.Quaternion instance using the omega::Quaternion components
+		// as arguments.
+		boost::python::tuple vec = boost::python::make_tuple(value.x(), value.y(), value.z(), value.w());
+		PyObject* quatobj = PyObject_CallObject(sQuaternionClass, vec.ptr());
+		return incref(quatobj);
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+struct Quaternion_from_python
+{
+	Quaternion_from_python()
+	{
+		converter::registry::push_back(&convertible, &construct, type_id<Quaternion>());
+	}
+
+	static void* convertible(PyObject* obj)
+	{
+		// We don't really care if the object is of type Quaternion. We just require
+		// it to have x, y, z attributes.
+		if(!PyObject_HasAttrString(obj, "x") ||
+			!PyObject_HasAttrString(obj, "y") ||
+			!PyObject_HasAttrString(obj, "z") ||
+			!PyObject_HasAttrString(obj, "w")) return 0;
+		return obj;
+	}
+
+	static void construct(PyObject* obj, converter::rvalue_from_python_stage1_data* data)
+	{
+		float x = extract<float>(PyObject_GetAttrString(obj, "x"));
+		float y = extract<float>(PyObject_GetAttrString(obj, "y"));
+		float z = extract<float>(PyObject_GetAttrString(obj, "z"));
+		float w = extract<float>(PyObject_GetAttrString(obj, "w"));
+
+		void* storage = (
+			(converter::rvalue_from_python_storage<Quaternion>*)data)->storage.bytes;
+		new (storage) Quaternion(x, y, z, w);
+		data->convertible = storage;
+	}
+};
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeYawOverloads, yaw, 1, 2) 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodePitchOverloads, pitch, 1, 2) 
@@ -322,6 +391,93 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(NodeRollOverloads, roll, 1, 2)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOST_PYTHON_MODULE(omega)
 {
+	// Event type
+	enum_<EventBase::Type>("EventType")
+			PYAPI_ENUM_VALUE(EventBase, Select)
+			PYAPI_ENUM_VALUE(EventBase,Toggle)
+			PYAPI_ENUM_VALUE(EventBase,ChangeValue)
+			PYAPI_ENUM_VALUE(EventBase,Update)
+			PYAPI_ENUM_VALUE(EventBase,Move) 
+			PYAPI_ENUM_VALUE(EventBase,Down)
+			PYAPI_ENUM_VALUE(EventBase,Up)
+			PYAPI_ENUM_VALUE(EventBase,Trace)
+			PYAPI_ENUM_VALUE(EventBase,Connect)
+			PYAPI_ENUM_VALUE(EventBase,Untrace)
+			PYAPI_ENUM_VALUE(EventBase,Disconnect)
+			PYAPI_ENUM_VALUE(EventBase,Click)
+			PYAPI_ENUM_VALUE(EventBase,DoubleClick)
+			PYAPI_ENUM_VALUE(EventBase,MoveLeft)
+			PYAPI_ENUM_VALUE(EventBase,MoveRight)
+			PYAPI_ENUM_VALUE(EventBase,MoveUp)
+			PYAPI_ENUM_VALUE(EventBase,MoveDown)
+			PYAPI_ENUM_VALUE(EventBase,Zoom)
+			PYAPI_ENUM_VALUE(EventBase,SplitStart)
+			PYAPI_ENUM_VALUE(EventBase,SplitEnd)
+			PYAPI_ENUM_VALUE(EventBase,Split)
+			PYAPI_ENUM_VALUE(EventBase,RotateStart)
+			PYAPI_ENUM_VALUE(EventBase,RotateEnd)
+			PYAPI_ENUM_VALUE(EventBase,Rotate)
+			PYAPI_ENUM_VALUE(EventBase,Null)
+		;
+
+	// Event Flags
+	enum_<EventBase::Flags>("EventFlags")
+			PYAPI_ENUM_VALUE(EventBase, Left)
+			PYAPI_ENUM_VALUE(EventBase,Button1)
+			PYAPI_ENUM_VALUE(EventBase,Right)
+			PYAPI_ENUM_VALUE(EventBase,Button2)
+			PYAPI_ENUM_VALUE(EventBase,Middle)
+			PYAPI_ENUM_VALUE(EventBase,Button3)
+			PYAPI_ENUM_VALUE(EventBase,Ctrl)
+			PYAPI_ENUM_VALUE(EventBase,SpecialButton1)
+			PYAPI_ENUM_VALUE(EventBase,Alt)
+			PYAPI_ENUM_VALUE(EventBase,SpecialButton2)
+			PYAPI_ENUM_VALUE(EventBase,Shift)
+			PYAPI_ENUM_VALUE(EventBase,SpecialButton3)
+			PYAPI_ENUM_VALUE(EventBase,Button4)
+			PYAPI_ENUM_VALUE(EventBase,Button5)
+			PYAPI_ENUM_VALUE(EventBase,Button6)
+			PYAPI_ENUM_VALUE(EventBase,Button7)
+			PYAPI_ENUM_VALUE(EventBase,ButtonUp)
+			PYAPI_ENUM_VALUE(EventBase,ButtonDown)
+			PYAPI_ENUM_VALUE(EventBase,ButtonLeft)
+			PYAPI_ENUM_VALUE(EventBase,ButtonRight)
+			PYAPI_ENUM_VALUE(EventBase,Processed)
+			PYAPI_ENUM_VALUE(EventBase,User)
+		;
+	
+	// Event Extra Data Type
+	enum_<EventBase::ExtraDataType>("EventExtraDataType")
+			PYAPI_ENUM_VALUE(EventBase,ExtraDataNull)
+			PYAPI_ENUM_VALUE(EventBase,ExtraDataFloatArray)
+			PYAPI_ENUM_VALUE(EventBase,ExtraDataIntArray)
+			PYAPI_ENUM_VALUE(EventBase,ExtraDataVector3Array)
+			PYAPI_ENUM_VALUE(EventBase,ExtraDataString)
+		;
+
+	// Event Extra Data Type
+	enum_<EventBase::ServiceType>("ServiceType")
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypePointer)
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeMocap)
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeKeyboard) 
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeController)
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeUi) 
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeGeneric)
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeBrain)
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeWand) 
+			PYAPI_ENUM_VALUE(EventBase,ServiceTypeAudio)
+			;
+
+	// Event
+	const Vector3f& (Event::*getPosition1)() const = &Event::getPosition;
+	class_<Event, boost::noncopyable>("Event", no_init)
+		.def("getSourceId", &Event::getSourceId)
+		.def("getType", &Event::getType)
+		.def("getPosition", getPosition1, PYAPI_RETURN_VALUE)
+		.def("getOrientation", &Event::getOrientation, PYAPI_RETURN_VALUE)
+		.def("getServiceType", &Event::getServiceType)
+		;
+
 	// ServerEngine 
 	class_<ServerEngine, boost::noncopyable>("ServerEngine", no_init)
 		.def("isConsoleEnabled", &ServerEngine::isConsoleEnabled)
@@ -333,6 +489,7 @@ BOOST_PYTHON_MODULE(omega)
 	// Node
 	void (Node::*setPosition1)(const Vector3f&) = &Node::setPosition;
 	void (Node::*setScale1)(const Vector3f&) = &Node::setScale;
+	void (Node::*setOrientation1)(const Quaternion&) = &Node::setOrientation;
 	Node* (Node::*getChildByIndex)(unsigned short) const = &Node::getChild;
 	Node* (Node::*getChildByName)(const String&) const = &Node::getChild;
 	class_<Node, boost::noncopyable>("Node", no_init)
@@ -340,6 +497,8 @@ BOOST_PYTHON_MODULE(omega)
 		.def("setPosition", setPosition1)
 		.def("getScale", &Node::getScale, PYAPI_RETURN_VALUE)
 		.def("setScale", setScale1)
+		.def("setOrientation", setOrientation1)
+		.def("getOrientation", &Node::getOrientation, PYAPI_RETURN_VALUE)
 		.def("yaw", &Node::yaw, NodeYawOverloads())
 		.def("pitch", &Node::pitch, NodePitchOverloads())
 		.def("roll", &Node::roll, NodeRollOverloads())
@@ -384,17 +543,36 @@ BOOST_PYTHON_MODULE(omega)
 	def("printObjCounts", &printObjCounts);
 };
 
+// Black magic. Include the pyeuclid source code (saved as hex file using xdd -i)
+char euclid_source[] = { 
+	#include "euclid.xdd" 
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void omegaPythonApiInit()
 {
-	boost::python::to_python_converter<Vector3f, Vector3f_to_tuple>();
-	//boost::python::to_python_converter<Node*, Node_to_tuple>();
-	Vector3f_from_tuple();
-	
-	initomega();
-
 	omsg("omegaPythonApiInit()");
 	omega::PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
+
+	// Compile, load and import the euclid module.
+	PyObject* euclidModuleCode = Py_CompileString(euclid_source, "euclid", Py_file_input);
+	if(euclidModuleCode != NULL)
+	{
+		sEuclidModule = PyImport_ExecCodeModule("euclid", euclidModuleCode);
+		interp->eval("from euclid import *");
+	}
+
+	// Register omega::Vector3f <-> euclid.Vector3 converters
+	boost::python::to_python_converter<Vector3f, Vector3f_to_python>();
+	Vector3f_from_python();
+
+	// Register omega::Quaternion <-> euclid.Quaternion converters
+	boost::python::to_python_converter<Quaternion, Quaternion_to_python>();
+	Quaternion_from_python();
+
+	// Initialize the omega wrapper module
+	initomega();
+
 	interp->addModule("omega", omegaMethods);
 }
 

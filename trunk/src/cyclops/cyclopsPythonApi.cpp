@@ -124,6 +124,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("setMainLight", &SceneManager::setMainLight)
 		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
 		.def("loadModel", &SceneManager::loadModel)
+		.def("createSkyBox", &SceneManager::createSkyBox)
 		;
 
 	// DrawableObject

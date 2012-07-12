@@ -57,6 +57,7 @@ using namespace boost::python;
 #define PYAPI_RETURN_NEW_INSTANCE return_value_policy<manage_new_object>()
 //#define PYAPI_RETURN_REFERENCE return_value_policy<copy_const_reference>()
 #define PYAPI_POINTER_LIST(itemName, className) class_< List<itemName*> > (className, no_init).def("__iter__", iterator< List<itemName*>, return_internal_reference<> >());
+#define PYAPI_ENUM_VALUE(enumName, valueName) .value(#valueName, enumName::valueName)
 
 namespace omega
 {

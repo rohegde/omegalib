@@ -236,7 +236,7 @@ void SceneLoader::loadAssets(TiXmlElement* xStaticObjectFiles, SceneManager::Ass
 		mi.normalizeNormals = normalizeNormals;
 		
 		const char* attrSize = xchild->Attribute("Size");
-		if(attrSize != NULL) mi.size = atoi(attrSize);
+		if(attrSize != NULL) mi.size = atof(attrSize);
 
 		mySceneManager->loadModel(mi);
 		
