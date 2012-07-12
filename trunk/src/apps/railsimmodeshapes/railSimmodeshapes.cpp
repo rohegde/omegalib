@@ -97,7 +97,7 @@ public:
 	Vector3f curpos;		//camera postion
 
 	//Vector math
-	Vector3f OmegaViewer::Lerp(float t, Vector3f start,Vector3f end);
+	Vector3f Lerp(float t, Vector3f start,Vector3f end);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
