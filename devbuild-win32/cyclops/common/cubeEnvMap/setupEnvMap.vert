@@ -6,5 +6,5 @@ void setupEnvMap(vec4 eyeSpacePosition)
 {
 	vec3 normal    = normalize(gl_NormalMatrix*gl_Normal);
 	vec3 eyeDir    = eyeSpacePosition.xyz;
-	var_ReflectDir = reflect(eyeDir,normal);
+	var_ReflectDir = -reflect(eyeDir,normal);
 }

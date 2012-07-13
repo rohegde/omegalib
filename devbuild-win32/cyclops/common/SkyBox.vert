@@ -16,6 +16,6 @@ void main (void)
 	//vec4 pos       = gl_ModelViewMatrix*gl_Vertex;
 	//vec4 pos       = gl_ModelViewMatrix*gl_Vertex;
 	//vec3 eyeDir    = pos.xyz;
-	var_ReflectDir = gl_Normal; //reflect(gl_Vertex,normal);
+	var_ReflectDir = -gl_Normal; //reflect(gl_Vertex,normal);
 	//var_ReflectDir = normal;
 }
