@@ -1,3 +1,0 @@
-#summary Building A Basic Omegalib
-#sidebar Sidebar
-This tutorial will explain how to obtain and build a basic omegalib distribution, and launch a basic example. It will also give a brief introduction on how configuration files work.

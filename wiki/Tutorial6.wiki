@@ -1,6 +1,0 @@
-#summary Custom renderables
-#sidebar Sidebar
-
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/tutorial6.png" width="300"/></p><p align="middle">
-_^A screenshot from customRenderable.^_
-</p>

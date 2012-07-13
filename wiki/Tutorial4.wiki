@@ -1,8 +1,0 @@
-#summary Graphics Intro Part 1: A Basic OpenGL Application
-#sidebar Sidebar
-
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/tutorial4.png" width="300"/></p><p align="middle">
-_^A screenshot from simpleGl.^_
-</p>
-
-In this tutorial we will atart experimenting with graphics inside omegalib. We will start with a very basic OpenGL application.

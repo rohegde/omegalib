@@ -1,8 +1,0 @@
-#summary Using Omegalib Event Services Part 2: oinputserver
-#sidebar Sidebar
-
-<p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/tutorial2.png" width="300"/></p><p align="middle">
-_^A screenshot from remoteHeartbeat.^_
-</p>
-
-This tutorial will explain how to use omegalib input services through a remote connection to an omegalib input server application.

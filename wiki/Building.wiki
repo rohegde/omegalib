@@ -5,28 +5,29 @@
 
 Omegalib is distributed as a source-only project. Users are responsible for creating binaries for their operating system and architecture. The build process is kept as simple as possible and should require very little configuration effort by the user. Omegalib can build out-of-the-box and has no external dependencies, unless the user wants to activate advanced functionalities like vtk support and Python scripting.
 
-= Operating system support =
+== Operating system support ==
 This is the current supported status of omegalib:
  * *Windows XP/Vista/7:* VS2010 32bit builds and is regularly tested. VS2008 32bit deprecated and may not work. 64bit builds not tested regularly.
  * *Linux:* 64bit builds and is regularly tested (SUSE). 32bit should build but is tested less often (Ubuntu).
  * *OSX, Intel:* 64bit currently not supported (builds but fails to link), 32bit not supported
 
-= Building on Windows =
+== Building on Windows ==
 This section explains how to build omegalib on Windows. The basic procedure and requirements are similar for all supported operating systems, so you can use this as a general guideline.
-== Requirements ==
+=== Requirements ===
  * An SVN client [http://tortoisesvn.net/ TortoiseSVN recommended]
  * Visual Studio 2010 (Visual C++ 2010 Express edition works too, [http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express Download it here])
  * CMake [http://www.cmake.org/cmake/resources/software.html Download it here]
  * (Optional) Vtk [http://www.vtk.org/VTK/resources/software.html Download here]. You need this only if you want to build *omegaVtk* and add vtk support.
  * (Optional, Recommended) A python distribution (Tested with the standard one, [http://www.python.org/getit/ Download here]
   * *NOTE:* Altough python is not required for building omegalib, a few demo applications included with it won't work without python support. It is recommended to build omegalib with python support enabled.
+  * *IMPORTANT:* omegalib works with *Python 2.7*. As of version 2.1, Trying to build it against Python 3 will fails.
   
-== Step 1: download the code ==
+=== Step 1: download the code ===
  * Follow the instruction of your svn client of choice and checkout:
    * https://omegalib.googlecode.com/svn/trunk/ if you are a *registered committer* for the project.
    * http://omegalib.googlecode.com/svn/trunk/ if you are an anonymous user.
 
-== Step 2: running CMake ==
+=== Step 2: running CMake ===
  * Run cmake-gui.
  * In the *where is the source code* field, specify the directory where you checked out the source code.
  * In the *where to build the binaries* field, specify a directory you will want your project files and binaries to be generated.
@@ -43,10 +44,10 @@ _^The Windows CMake GUI. Versions on other operating systems have a similar layo
   * `source`: the source code directory, checked out from http://omegalib.googlecode.com/svn/trunk/
   * `build`: the build and binaries directory
   
-== Step 3: building ==
+=== Step 3: building ===
 You should now be able to open the generated Visual Studio solution and build everything. If you encounter any problem take a look at [HowTos the How to guide].
  
-== Step 4: running a demo ==
+=== Step 4: running a demo ===
 You can run a demo by going on the output folder of your binary directory (`bin/debug` or `bin/release` depending on which configuration you built). A good basic demo to test is `ohello.exe`:
 <p align="middle"><img src="http://omegalib.googlecode.com/svn/wiki/Building/ohello.png" width="500"/></p><p align="middle">
 _^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
@@ -54,7 +55,7 @@ _^If you see this, you have succesfully built omegalib. You deserve ice cream!^_
 Another way to run an application is to right click on it inside visual studio (all applications are in the `apps` solution folder), select *Set as StartUp Project* and click on the run button.
 
 
-= Building on Linux =
+== Building on Linux ==
 The basic instructions are the same as for the Windows guide. Under linux, you will use make as your build system. To summarize, the process will be:
  * Download the code
  * create a build directory
@@ -63,7 +64,7 @@ The basic instructions are the same as for the Windows guide. Under linux, you w
  * run `make`
  * if the build succeeds, get in the `bin` directory and you should find your libraries and compiled demo applications.
 
-= CMake options =
+== CMake options ==
 This section is a quick guide to some build options ofered in cmake.
  * `OMEGA_BUILD_OSG_LIB`: Enable to build the omegaOsg library and enable OpenSceneGraph support. You need an internet connection when generating a project with this option selected. Cmake will download a binary version of osg from the omegalib repository.
  * `OMEGA_BUILD_VTK_LIB`: Enable to build the omegaVtk library and enable vtk support. You will need a source+binary version of vtk installed. Refer to the vtk website to learn how to build vtk. Enabling this option and generating will in turn enable:
