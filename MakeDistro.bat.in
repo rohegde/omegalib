@@ -24,6 +24,8 @@ REM prepare the helloWorld demo application
 xcopy "${CMAKE_SOURCE_DIR}\data\demos" .\demos\ /S /Y
 
 echo bin\orun.exe -s demos\helloWorld\helloWorld.py -D ./demos/ > pythonHelloWorld.bat
+echo bin\orun.exe -s demos\showcase\showcase.py -D ./demos/ > showcase.bat
+
 echo bin\ohello.exe > glHelloWorld.bat
 echo bin\cyhello.exe > cyclopsHelloWorld.bat
 echo bin\cyhello2.exe > cyclopsHelloWorld2.bat
