@@ -1,0 +1,59 @@
+#Equalizer 1.0 ascii
+global
+{
+	EQ_CONFIG_FATTR_EYE_BASE 0.06
+	EQ_WINDOW_IATTR_PLANES_STENCIL ON
+}
+server
+{
+	config
+	{
+		latency 0
+		appNode
+		{
+			attributes { thread_model LOCAL_SYNC }
+			pipe
+			{
+				port = 0
+				device = 0
+				window
+				{
+					name "0x0"
+					viewport [200 200 854 480]
+					channel { name "0x0"}
+				}
+			}
+		}
+		observer { name "observer0" }
+		layout
+		{
+			name "layout"
+			view
+			{
+				name "main"
+				observer "observer0"
+				viewport [0 0 1 1]
+			}
+		}
+		canvas
+		{
+			layout "layout"
+			segment
+			{
+				name "0x0"
+				channel "0x0"
+				viewport [0 0 1 1]
+				wall
+				{
+					bottom_left [ -0.6 -0.4 0 ]
+					bottom_right [ 0.6 -0.4 0 ]
+					top_left [ -0.6 0.4 0 ]
+				}
+			}
+		}
+		compound
+		{
+		channel ( segment "0x0" layout "layout" view 0 )
+		}
+	}
+}
