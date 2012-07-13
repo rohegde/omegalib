@@ -125,7 +125,7 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
 		.def("loadModel", &SceneManager::loadModel)
 		.def("createSkyBox", &SceneManager::createSkyBox)
-		.def("setBakgroundColor", &SceneManager::setBackgroundColor)
+		.def("setBackgroundColor", &SceneManager::setBackgroundColor)
 		;
 
 	// DrawableObject
