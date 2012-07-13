@@ -37,6 +37,14 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+#ifdef WINDOWS
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+ #endif
+
 // Uncomment to enable swap barrier on compounds (kinda buggy atm)
 //#define EQ_USE_SWAP_BARRIER
 
@@ -477,6 +485,12 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 			{
 				String executable = StringUtils::replaceAll(myDisplayConfig.nodeLauncher, "%c", SystemManager::instance()->getApplication()->getName());
 				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
+				
+				// Substitute %d with current working directory
+				char cCurrentPath[FILENAME_MAX];
+				GetCurrentDir(cCurrentPath, sizeof(cCurrentPath));
+				executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
+				
 				int port = myDisplayConfig.basePort + nc.port;
 				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
