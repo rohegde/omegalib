@@ -198,7 +198,7 @@ void FlockSimulator::updateAgentsGPU(const UpdateContext& context)
 // Fallback code to simulate the flock on the cpu.
 void FlockSimulator::updateAgentsCPU(const UpdateContext& context)
 {
-	float scale = 0.5f;
+	float scale = 1.0f;
 	Vector3f center = Vector3f::Zero();
 	// Compute behavior
 	for(int i = 0; i < mySettings->numAgents; i++)
