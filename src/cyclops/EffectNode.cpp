@@ -44,14 +44,37 @@ public:
     bool validate(osg::State&) const { return true; }
 protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	osg::Program* getProgram(const String& name, const String& variant = "")
+	{
+		String shaderRoot = "cyclops/common";
+		String progName = name;
+
+		String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
+		String fragName;
+		if(variant != "")
+		{
+			fragName = ostr("%1%/%2%-%3%.frag", %shaderRoot %name %variant);
+			progName = ostr("%1%-%2%", %name %variant);
+		}
+		else
+		{
+			fragName = ostr("%1%/%2%.frag", %shaderRoot %name);
+		}
+
+		SceneManager* sm = SceneManager::instance();
+		return sm->getProgram(name, vertName, fragName);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void define_passes()
 	{
 		if(StringUtils::startsWith(myDefinition, "colored")) define_passes_colored();
-		if(StringUtils::startsWith(myDefinition, "textured")) define_passes_textured();
-		if(StringUtils::startsWith(myDefinition, "bump")) define_passes_bump();
-		if(StringUtils::startsWith(myDefinition, "blueprint")) define_passes_blueprint();
+		else if(StringUtils::startsWith(myDefinition, "textured")) define_passes_textured();
+		else if(StringUtils::startsWith(myDefinition, "bump")) define_passes_bump();
+		else if(StringUtils::startsWith(myDefinition, "blueprint")) define_passes_blueprint();
 		else
 		{
+			ofwarn("EffectNode: could not create effect with definition '%1%'", %myDefinition);
 			addPass(new osg::StateSet());
 		}
 	}
@@ -61,15 +84,17 @@ protected:
 	{
 		String effectName;
 		String diffuse;
+		String variant;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
-		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color color", diffuse);
+		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
+		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
 		ah.process(myDefinition.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
-		prog = sm->getProgram("colored", "cyclops/common/Colored.vert", "cyclops/common/Colored.frag");
+		prog = getProgram("Colored", variant);
 
 		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
 
@@ -94,15 +119,17 @@ protected:
 	{
 		String effectName;
 		String diffuse;
+		String variant;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
+		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
 		ah.process(myDefinition.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
-		prog = sm->getProgram("textured", "cyclops/common/Textured.vert", "cyclops/common/Textured.frag");
+		prog = getProgram("Textured", variant);
 		ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
 		ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
 		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);

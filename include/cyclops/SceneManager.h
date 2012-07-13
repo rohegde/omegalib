@@ -193,6 +193,9 @@ namespace cyclops {
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
 
+		//! #PYAPI sets the background color
+		void setBackgroundColor(const Color& color);
+
 		//! Model Management
 		//@{
 		bool loadModel(const ModelInfo& info);

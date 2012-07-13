@@ -479,12 +479,18 @@ osg::Program* SceneManager::getProgram(const String& name, const String& vertexS
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setBackgroundColor(const Color& color)
+{
+	myEngine->getDisplaySystem()->setBackgroundColor(color);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initShading()
 {
 	myShadowedScene = NULL;
 	mySoftShadowMap = NULL;
 
-	myEngine->getDisplaySystem()->setBackgroundColor(Color(0.3f, 0.3f, 0.8f, 1.0f));
+	setBackgroundColor(Color(0.3f, 0.3f, 0.8f, 1.0f));
 
 	bool myShadingEnabled = (myShadowMode == ShadowsSoft);
 
@@ -536,7 +542,7 @@ bool SceneManager::loadModel(const ModelInfo& info)
 	String orfp = StringUtils::replaceAll(info.path, "*", "%1%");
 	String filePath = info.path;
 
-	for(int iterator=0; iterator <= info.numFiles; iterator++)
+	for(int iterator=0; iterator < info.numFiles; iterator++)
 	{
 		// If present in the string, this line will substitute %1% with the iterator number.
 		if(info.numFiles != 1)

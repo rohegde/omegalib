@@ -40,6 +40,11 @@ using namespace cyclops;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 struct Preset
 {
+	Preset():
+		avoidanceDist(1.0f),
+		friction(1.0f),
+		coordinationDist(1.5f) {}
+
 	float avoidanceDist;
 	float friction;
 	float coordinationDist;
