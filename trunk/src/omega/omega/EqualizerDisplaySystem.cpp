@@ -37,7 +37,7 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
-#ifdef WINDOWS
+#ifdef OMEGA_OS_WIN
     #include <direct.h>
     #define GetCurrentDir _getcwd
 #else
