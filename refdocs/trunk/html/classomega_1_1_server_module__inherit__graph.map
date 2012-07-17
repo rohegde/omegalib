@@ -1,6 +1,6 @@
 <map id="G" name="G">
 <area shape="rect" id="node7" href="$class_cyclops.html" title="Cyclops" alt="" coords="607,5,665,29"/>
-<area shape="rect" id="node9" href="$classcyclops_1_1_scene_manager.html" title="cyclops::SceneManager" alt="" coords="568,53,704,77"/>
+<area shape="rect" id="node9" href="$classcyclops_1_1_scene_manager.html" title="PYAPI." alt="" coords="568,53,704,77"/>
 <area shape="rect" id="node11" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="592,101,680,125"/>
 <area shape="rect" id="node19" href="$classomega_1_1_application_node.html" title="omega::ApplicationNode" alt="" coords="567,149,705,173"/>
 <area shape="rect" id="node21" href="$classomega_1_1_event_sharing_module.html" title="omega::EventSharingModule" alt="" coords="556,197,716,221"/>

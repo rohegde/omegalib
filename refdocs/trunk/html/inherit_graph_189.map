@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$struct_tex_mat_callback.html" title="TexMatCallback" alt="" coords="142,5,239,29"/>
+<area shape="rect" id="node1" href="$classvrpn___connection.html" title="vrpn_Connection" alt="" coords="5,5,109,29"/>
+<area shape="rect" id="node3" href="$classvrpn___connection___i_p.html" title="vrpn_Connection_IP" alt="" coords="157,5,277,29"/>
 </map>

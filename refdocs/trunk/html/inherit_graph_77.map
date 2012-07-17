@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classfast__mutex__autolock.html" title="An acquistion&#45;on&#45;initialization lock class based on fast_mutex." alt="" coords="5,5,128,29"/>
+<area shape="rect" id="node1" href="$classeq_1_1_node.html" title="Node" alt="" coords="6,5,53,29"/>
+<area shape="rect" id="node3" href="$classomega_1_1_node_impl.html" title="omega::NodeImpl" alt="" coords="101,5,208,29"/>
 </map>

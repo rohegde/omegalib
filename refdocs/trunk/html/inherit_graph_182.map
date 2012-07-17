@@ -1,5 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classosg_d_b_1_1_reader_writer.html" title="ReaderWriter" alt="" coords="6,29,93,53"/>
-<area shape="rect" id="node3" href="$class_reader_free_image.html" title="ReaderFreeImage" alt="" coords="141,5,251,29"/>
-<area shape="rect" id="node5" href="$class_reader_writer_f_b_x.html" title="ReaderWriterFBX" alt="" coords="143,53,249,77"/>
+<area shape="rect" id="node1" href="$class_ti_xml_string.html" title="TiXmlString" alt="" coords="5,5,80,29"/>
+<area shape="rect" id="node3" href="$class_ti_xml_out_stream.html" title="TiXmlOutStream" alt="" coords="128,5,227,29"/>
 </map>

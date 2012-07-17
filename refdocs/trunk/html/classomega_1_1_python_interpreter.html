@@ -29,7 +29,6 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -72,7 +71,7 @@
 <tr class="heading"><td colspan="2"><h2><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a92dedd3bd1ab9ac69f29ce66e0efafb7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7">CallbackType</a> { <a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a265018537789583a80bab9669491f72a">CallbackUpdate</a>, 
-<a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a098cd63b646a123e1780d435ab9d3138">CallbackPointerEvent</a>
+<a class="el" href="classomega_1_1_python_interpreter.html#a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9">CallbackEvent</a>
  }</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
@@ -107,7 +106,7 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a841b2c30ef42baf5396e4cf9339d1495"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#a841b2c30ef42baf5396e4cf9339d1495">myInteractiveCommandNeedsExecute</a></td></tr>
 <tr class="memitem:aded53566dfe724e8dbe5bac58494fc99"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aded53566dfe724e8dbe5bac58494fc99">myInteractiveCommandNeedsSend</a></td></tr>
 <tr class="memitem:ac3eebb0980e552d354d2502de485d4b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#ac3eebb0980e552d354d2502de485d4b9">myUpdateCallbacks</a></td></tr>
-<tr class="memitem:aadee3a5728d2e299d1d8be35723f9814"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#aadee3a5728d2e299d1d8be35723f9814">myPointerEventCallbacks</a></td></tr>
+<tr class="memitem:abc5ca5481454e4f5e4df02bb5a5fc280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; void * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#abc5ca5481454e4f5e4df02bb5a5fc280">myEventCallbacks</a></td></tr>
 <tr class="memitem:adb2a9478b72ff8b8527c844c21d93b72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="structomega_1_1_command_help_entry.html">CommandHelpEntry</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_python_interpreter.html#adb2a9478b72ff8b8527c844c21d93b72">myHelpData</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="friends"></a>
@@ -127,7 +126,7 @@ Friends</h2></td></tr>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a265018537789583a80bab9669491f72a"></a>CallbackUpdate</em>&nbsp;</td><td>
 </td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a098cd63b646a123e1780d435ab9d3138"></a>CallbackPointerEvent</em>&nbsp;</td><td>
+<tr><td valign="top"><em><a class="anchor" id="a92dedd3bd1ab9ac69f29ce66e0efafb7a3c3721de97393d6381e6bbdfc808ace9"></a>CallbackEvent</em>&nbsp;</td><td>
 </td></tr>
 </table>
 </dd>
@@ -577,6 +576,26 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="abc5ca5481454e4f5e4df02bb5a5fc280"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;void*&gt; omega::PythonInterpreter::myEventCallbacks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="adb2a9478b72ff8b8527c844c21d93b72"></a>
 <div class="memitem">
 <div class="memproto">
@@ -686,26 +705,6 @@ Friends</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">PythonInteractiveThread* omega::PythonInterpreter::myInteractiveThread</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="aadee3a5728d2e299d1d8be35723f9814"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classomicron_1_1_list.html">List</a>&lt;void*&gt; omega::PythonInterpreter::myPointerEventCallbacks</td>
         </tr>
       </table>
   </td>

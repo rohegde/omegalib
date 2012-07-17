@@ -29,7 +29,6 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -77,7 +76,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e879e6fc8854a2119075bbb372b21a5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespaceomicron.html#ab045bd369ec535cf7d9df1e04adf2fff">Vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a2e879e6fc8854a2119075bbb372b21a5">readVector2f</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName)</td></tr>
 <tr class="memitem:a553fb6f748c8bf047176e1ddff2e9fb0"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#a553fb6f748c8bf047176e1ddff2e9fb0">readFloat</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, float defaultValue=0.0f)</td></tr>
 <tr class="memitem:add4a613bcb54775f59dc87123e95b122"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#add4a613bcb54775f59dc87123e95b122">readInt</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, int defaultValue=0)</td></tr>
-<tr class="memitem:ada026447e9a1e4f15bebe0df8660fa22"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#ada026447e9a1e4f15bebe0df8660fa22">SceneLoader::readBool</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, bool defaultValue=false)</td></tr>
+<tr class="memitem:aa1115f5fd06d0472bc8b5490a41daa53"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_loader.html#aa1115f5fd06d0472bc8b5490a41daa53">readBool</a> (<a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *elem, const String &amp;attributeName, bool defaultValue=false)</td></tr>
 </table>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a57d950999a2c14e79449be848b0b853b"></a>
@@ -241,6 +240,46 @@ Static Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa1115f5fd06d0472bc8b5490a41daa53"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SceneLoader::readBool </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *&#160;</td>
+          <td class="paramname"><em>elem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>attributeName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>defaultValue</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -411,46 +450,6 @@ Static Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">const String &amp;&#160;</td>
           <td class="paramname"><em>attributeName</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ada026447e9a1e4f15bebe0df8660fa22"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool cyclops::SceneLoader::SceneLoader::readBool </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_ti_xml_element.html">TiXmlElement</a> *&#160;</td>
-          <td class="paramname"><em>elem</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
-          <td class="paramname"><em>attributeName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>defaultValue</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

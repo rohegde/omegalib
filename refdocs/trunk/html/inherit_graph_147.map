@@ -1,4 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomicron_1_1_data_stream.html" title="omicron::DataStream" alt="" coords="6,5,130,29"/>
-<area shape="rect" id="node3" href="$classomicron_1_1_file_data_stream.html" title="omicron::FileDataStream" alt="" coords="179,5,319,29"/>
+<area shape="rect" id="node3" href="$classomicron_1_1math_1_1transform.html" title="omicron::math::transform\l\&lt; Dim, T, Mode, Options \&gt;" alt="" coords="126,5,277,41"/>
 </map>

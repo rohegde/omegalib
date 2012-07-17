@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomicron_1_1_thread.html" title="omicron::Thread" alt="" coords="5,5,107,29"/>
+<area shape="rect" id="node1" href="$classeq_1_1_pipe.html" title="Pipe" alt="" coords="5,5,48,29"/>
+<area shape="rect" id="node3" href="$classomega_1_1_pipe_impl.html" title="omega::PipeImpl" alt="" coords="97,5,199,29"/>
 </map>

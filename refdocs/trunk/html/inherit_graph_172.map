@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$classomicron_connector_1_1_omicron_connector_client.html" title="omicronConnector::Omicron\lConnectorClient\&lt; ListenerType \&gt;" alt="" coords="6,5,189,41"/>
+<area shape="rect" id="node1" href="$classosg_d_b_1_1_reader_writer.html" title="ReaderWriter" alt="" coords="6,29,93,53"/>
+<area shape="rect" id="node3" href="$class_reader_free_image.html" title="ReaderFreeImage" alt="" coords="141,5,251,29"/>
+<area shape="rect" id="node5" href="$class_reader_writer_f_b_x.html" title="ReaderWriterFBX" alt="" coords="143,53,249,77"/>
 </map>

@@ -29,7 +29,6 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
     </ul>
@@ -58,6 +57,9 @@
 <div class="title">cyclops::SceneManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  
+ <a href="classcyclops_1_1_scene_manager.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for cyclops::SceneManager:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -91,14 +93,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adbce1645b569940b70a252504593403c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#adbce1645b569940b70a252504593403c">initialize</a> ()</td></tr>
 <tr class="memitem:a79a2af07c478aecda3d63f92bc14117c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a79a2af07c478aecda3d63f92bc14117c">update</a> (const <a class="el" href="structomega_1_1_update_context.html">UpdateContext</a> &amp;context)</td></tr>
 <tr class="memitem:a388db3d97cac8dd660b834dd87688265"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a388db3d97cac8dd660b834dd87688265">handleEvent</a> (const Event &amp;evt)</td></tr>
+<tr class="memitem:a40d3254f55ff66da65ab58743420775e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a40d3254f55ff66da65ab58743420775e">setBackgroundColor</a> (const Color &amp;color)</td></tr>
+<tr class="memdesc:a40d3254f55ff66da65ab58743420775e"><td class="mdescLeft">&#160;</td><td class="mdescRight">#<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> sets the background color  <a href="#a40d3254f55ff66da65ab58743420775e"></a><br/></td></tr>
 <tr class="memitem:ac4a7ba7a9ba6bdc1830e0f5c41239644"><td class="memItemLeft" align="right" valign="top">osg::Texture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ac4a7ba7a9ba6bdc1830e0f5c41239644">getTexture</a> (const String &amp;name)</td></tr>
 <tr class="memitem:a8c4157eba2ba5d225ee58edd7e83d60f"><td class="memItemLeft" align="right" valign="top">osg::Program *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a8c4157eba2ba5d225ee58edd7e83d60f">getProgram</a> (const String &amp;name, const String &amp;vertexShaderName, const String &amp;fragmentShaderName)</td></tr>
 <tr class="memitem:a4fe99c1beb95ca87968a49a99bd5c403"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a4fe99c1beb95ca87968a49a99bd5c403">initShading</a> ()</td></tr>
 <tr class="memitem:acfe618e043dce5171e91ce4d05c71132"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#acfe618e043dce5171e91ce4d05c71132">setShaderMacroToString</a> (const String &amp;macroName, const String &amp;macroString)</td></tr>
 <tr class="memitem:ad550e161aa970f6c33aa5f28a0d5f00f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#ad550e161aa970f6c33aa5f28a0d5f00f">setShaderMacroToFile</a> (const String &amp;macroName, const String &amp;path)</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:af8b1dd4640203eaccfd602d5277696cc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#af8b1dd4640203eaccfd602d5277696cc">loadModel</a> (<a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> info)</td></tr>
-<tr class="memdesc:af8b1dd4640203eaccfd602d5277696cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model Management.  <a href="#af8b1dd4640203eaccfd602d5277696cc"></a><br/></td></tr>
+<tr class="memitem:adbe9a0520caad84ecbd0fdab40179778"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#adbe9a0520caad84ecbd0fdab40179778">loadModel</a> (const <a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> &amp;info)</td></tr>
+<tr class="memdesc:adbe9a0520caad84ecbd0fdab40179778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Model Management.  <a href="#adbe9a0520caad84ecbd0fdab40179778"></a><br/></td></tr>
 <tr class="memitem:a41aa2946957d4416225b6998ab744831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcyclops_1_1_model_asset.html">ModelAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a41aa2946957d4416225b6998ab744831">getModel</a> (const String &amp;name)</td></tr>
 <tr class="memitem:a6d1661e5765ce1ae9c38a59115be1f65"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomicron_1_1_list.html">List</a>&lt; <a class="el" href="structcyclops_1_1_model_asset.html">ModelAsset</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a6d1661e5765ce1ae9c38a59115be1f65">getModels</a> ()</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
@@ -107,9 +111,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4dc96de07561afc43e104ce035d66944"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a4dc96de07561afc43e104ce035d66944">load</a> (const String &amp;file)</td></tr>
 <tr class="memdesc:a4dc96de07561afc43e104ce035d66944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method: loads a scene file using the standard cyclops scene loader.  <a href="#a4dc96de07561afc43e104ce035d66944"></a><br/></td></tr>
 <tr class="memitem:a523a203914200767b71197dd26da87b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a523a203914200767b71197dd26da87b9">createSkyBox</a> (const String &amp;cubeMapDir, const String &amp;cubeMapExt)</td></tr>
+<tr class="memdesc:a523a203914200767b71197dd26da87b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">#<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>  <a href="#a523a203914200767b71197dd26da87b9"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a1f70016c4d7980d8380d42037ac90f08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcyclops_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a1f70016c4d7980d8380d42037ac90f08">getMainLight</a> ()</td></tr>
-<tr class="memdesc:a1f70016c4d7980d8380d42037ac90f08"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classcyclops_1_1_light.html">Light</a> management methods.  <a href="#a1f70016c4d7980d8380d42037ac90f08"></a><br/></td></tr>
+<tr class="memdesc:a1f70016c4d7980d8380d42037ac90f08"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classcyclops_1_1_light.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.">Light</a> management methods.  <a href="#a1f70016c4d7980d8380d42037ac90f08"></a><br/></td></tr>
 <tr class="memitem:afca358b5a5db47aec3685ab922acd3f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#afca358b5a5db47aec3685ab922acd3f3">setMainLight</a> (<a class="el" href="classcyclops_1_1_light.html">Light</a> *light)</td></tr>
 <tr class="memitem:a0dd07a2fdc74ff4e9444136c92a51c9e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a0dd07a2fdc74ff4e9444136c92a51c9e">getShadowMapQuality</a> ()</td></tr>
 <tr class="memdesc:a0dd07a2fdc74ff4e9444136c92a51c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map control.  <a href="#a0dd07a2fdc74ff4e9444136c92a51c9e"></a><br/></td></tr>
@@ -139,7 +144,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af1c5a560e64a996c1782ddde6ba81433"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#af1c5a560e64a996c1782ddde6ba81433">createAndInitialize</a> ()</td></tr>
 <tr class="memdesc:af1c5a560e64a996c1782ddde6ba81433"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and initializes the scene manager singleton.  <a href="#af1c5a560e64a996c1782ddde6ba81433"></a><br/></td></tr>
 <tr class="memitem:a4b597c83770eced37c85eda6a5664c89"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a4b597c83770eced37c85eda6a5664c89">instance</a> ()</td></tr>
-<tr class="memdesc:a4b597c83770eced37c85eda6a5664c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an instance of the <a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> singleton instance If no.  <a href="#a4b597c83770eced37c85eda6a5664c89"></a><br/></td></tr>
+<tr class="memdesc:a4b597c83770eced37c85eda6a5664c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an instance of the <a class="el" href="classcyclops_1_1_scene_manager.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.">SceneManager</a> singleton instance If no.  <a href="#a4b597c83770eced37c85eda6a5664c89"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -152,7 +157,9 @@ Friends</h2></td></tr>
 <tr class="memitem:a3dfaa219c06e14434620bbfd78a957b3"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a3dfaa219c06e14434620bbfd78a957b3">DrawableObject</a></td></tr>
 <tr class="memitem:a27862a9fe512b352f98ec1c054680edd"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_scene_manager.html#a27862a9fe512b352f98ec1c054680edd">Light</a></td></tr>
 </table>
-<hr/><h2>Member Typedef Documentation</h2>
+<hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>. </p>
+</div><hr/><h2>Member Typedef Documentation</h2>
 <a class="anchor" id="a053241ecf49754905b76f18c9f2189bf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -255,6 +262,8 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>#<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> </p>
+
 </div>
 </div>
 <a class="anchor" id="afa222650c4896572fc9c83712971ba38"></a>
@@ -301,7 +310,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classcyclops_1_1_light.html">Light</a> management methods. </p>
+<p><a class="el" href="classcyclops_1_1_light.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.">Light</a> management methods. </p>
 
 </div>
 </div>
@@ -568,7 +577,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns an instance of the <a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> singleton instance If no. </p>
+<p>Returns an instance of the <a class="el" href="classcyclops_1_1_scene_manager.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.">SceneManager</a> singleton instance If no. </p>
 
 </div>
 </div>
@@ -608,14 +617,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="af8b1dd4640203eaccfd602d5277696cc"></a>
+<a class="anchor" id="adbe9a0520caad84ecbd0fdab40179778"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool SceneManager::loadModel </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structcyclops_1_1_model_info.html">ModelInfo</a> &amp;&#160;</td>
           <td class="paramname"><em>info</em></td><td>)</td>
           <td></td>
         </tr>
@@ -624,6 +633,24 @@ template&lt;typename T &gt; </div>
 
 <p>Model Management. </p>
 <p>changed filepath to filename (confirm from alassandro). </p>
+
+</div>
+</div>
+<a class="anchor" id="a40d3254f55ff66da65ab58743420775e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SceneManager::setBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">const Color &amp;&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>#<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> sets the background color </p>
 
 </div>
 </div>

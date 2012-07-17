@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$structomega_1_1_display_config.html" title="omega::DisplayConfig" alt="" coords="6,5,133,29"/>
+<area shape="rect" id="node1" href="$classomega_1_1_i_renderer_command.html" title="omega::IRendererCommand" alt="" coords="6,29,165,53"/>
+<area shape="rect" id="node3" href="$structomega_1_1_renderable_command.html" title="omega::RenderableCommand" alt="" coords="222,5,386,29"/>
+<area shape="rect" id="node5" href="$classomega_1_1_script_renderer_command.html" title="Implements a renderer command that runs a python statement when executed." alt="" coords="213,53,395,77"/>
 </map>
