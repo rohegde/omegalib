@@ -62,7 +62,7 @@ protected:
 		}
 
 		SceneManager* sm = SceneManager::instance();
-		return sm->getProgram(name, vertName, fragName);
+		return sm->getProgram(progName, vertName, fragName);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
