@@ -21,11 +21,11 @@ newmtl blue
    
 
 newmtl sleepers
-        Ka  0.7 0.6 0.5
-        Kd  0.7 0.6 0.5
+        Ka  0.6 0.5 0.4
+        Kd  0.6 0.5 0.4
 
 
 newmtl rails
-	Ka  0.70 0.730 0.900
-        Kd  0.70 0.730 0.900
+	Ka  0.50 0.530 0.750
+        Kd  0.50 0.530 0.750
 
