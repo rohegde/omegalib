@@ -56,6 +56,8 @@ public:
 
 	//Pointers to the entities in the SceneManger.  These pointers will be assigned later for ease of use.	
 	Entity* modeshape;		
+	Entity* wheelSetEntity;	
+	Entity* frameEntity;
 
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
@@ -65,7 +67,10 @@ public:
 	void toggleCameraController( );
 	void camTrans( Vector3f pos );
 	void camRot( Vector3f pitchYawRoll );
+	void camRot( Quaternion orientation );
 	void camDefault();
+	Quaternion getcamRot();
+	Vector3f getcamTrans();
 
 	//the data sets
 	void initializeData();
@@ -75,8 +80,15 @@ public:
 	void updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep );
 	void updateCamera( vector<float> pos , vector<float> rot, int curTimeStep );
 
+	//animation data
+	Vector<float> wheel_PVec;
+	Vector<float> frame_PVec;
+	Vector<float> wheel_RVec;
+	Vector<float> frame_RVec;
+
 
 	//animation varaibles
+
 	float shapetime;
 	int mcount;
 	float animationTimer;	//the amount of time the animation will run for in milliseconds
@@ -93,11 +105,14 @@ public:
 	
 	//camera control
 	int campos;				//camera position toggle
-	Vector3f currot;		//camera rotation
+	Quaternion currot;		//camera rotation
 	Vector3f curpos;		//camera postion
 
 	//Vector math
 	Vector3f Lerp(float t, Vector3f start,Vector3f end);
+	Quaternion toquaternion(const Vector3f& yawPitchRoll); 
+	Quaternion Slerp(float t,Quaternion start,Quaternion end);
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +125,38 @@ OmegaViewer::OmegaViewer()
 //	This might be a custom func depending on the file formate given... over time the DSL should give a standard format
 void OmegaViewer::initializeData()
 {
+	String data;
+
+	//Flag to dertemine if you were able to get all the data you wanted.
+	bool gotAllData = true;
+
+	//Set the number of time steps to the max integar value ot begin with.
+	numTimeSteps = INT_MAX;
+	
+	//Look at /omegaLib/data/railsim.cfg, "wheelPos" should be present under teh config:{...} section
+	data = "config/wheelPos";
+	//call loadData by passing in:
+	//		the data string
+	//		array to store the data
+	//		flag to determine if it is position data.  Tuer:pos			False:rot
+	//returns whether it was successful or not
+	gotAllData = loadData( data , wheel_PVec , true);
+	//if not successful, use owarn to print out an error.
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
+
+	//Same all the way down for the other 5 data sets
+	data = "config/wheelRot";
+	gotAllData = loadData( data , wheel_RVec , false);
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
+
+	data = "config/framePos";
+	gotAllData = loadData( data , frame_PVec, true);
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
+
+	data = "config/frameRot";
+	gotAllData = loadData( data , frame_RVec , false);
+	if(!gotAllData ) ofwarn("!Some data failed to load %1%" , %data);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,6 +252,17 @@ void OmegaViewer::initialize()
 	// 	/omegalib/data/railsim/test/railSim.scene under the heading <Entities>
 	//  Assign the pointers to entities so you do not have to constantly look them up later
 
+
+	wheelSetEntity = sceneMngr->getObject<Entity>( "1" );
+	if(!wheelSetEntity) owarn("Wheel not loaded");
+	else omsg("Wheel loaded");
+
+	frameEntity = sceneMngr->getObject<Entity>( "2" );
+	if(!frameEntity) owarn("Frame not loaded");
+	else omsg("Frame loaded");
+
+
+
 //	multimodel shape trial.
 	modeshape=sceneMngr->getObject<Entity>("0");
 	modeshape->setCurrentModelIndex(0);		
@@ -219,35 +277,33 @@ void OmegaViewer::initialize()
 	curTime = 0;
 	animationTimer = 10.0;
 	animationPadding = 1.5;
-	
 	prevTimeStep = 0;
 	curTimeStep = 0;
 
 	//init the camera
 	camDefault();
 	curpos=Vector3f( 20,-10,20 );
-	currot=Vector3f( 20.0, 0.0 , 0.0 );
+	currot=toquaternion(Vector3f( 20.0, 0.0 , 0.0 ));
 
 	//init the lighting
 	cyclops::Light* l = new Light(sceneMngr);
 	l->setEnabled(true);
-
 	l->setPosition(18, 0, 8);
-
-//	l->setPosition(0, 20, -20);
 	l->setColor(Color(1.0f, 1.0f, 1.0f));
-	l->setAmbient(Color(0.7f, 0.7f, 0.7f));
-/*
+	l->setAmbient(Color(0.5f, 0.5f, 0.5f));
+
 	cyclops::Light* l1 = new Light(sceneMngr);
-	l->setEnabled(true);
+	l1->setEnabled(true);
+	l1->setPosition(18, 0, -8);
+	l1->setColor(Color(1.0f, 1.0f, 1.0f));
+	l1->setAmbient(Color(0.0f, 0.0f, 0.0f));
 
-	l->setPosition(18, 0, -8);
-
-//	l->setPosition(0, 20, -20);
-	l->setColor(Color(1.0f, 1.0f, 1.0f));
-	l->setAmbient(Color(0.7f, 0.7f, 0.7f));
-
-	*/
+	cyclops::Light* l2 = new Light(sceneMngr);
+	l2->setEnabled(true);
+	l2->setPosition(32.0,0.0,0.0);
+	l2->setColor(Color(1.0f, 1.0f, 1.0f));
+	l2->setAmbient(Color(0.0f, 0.0f, 0.0f));
+	
  	sceneMngr->setMainLight(l);
 
 }
@@ -279,6 +335,8 @@ void OmegaViewer::handleEvent(const Event& evt)
     {
 		isFreeFly = !isFreeFly;
 		isKeyFraming = false;
+		currot=getcamRot();
+		curpos=getcamTrans();
 	}
 	
 	//Set to the Hardcoded origin
@@ -288,26 +346,23 @@ void OmegaViewer::handleEvent(const Event& evt)
 		camRot( Vector3f( 15.0 , 0.0 , 0.0 ) );
 		camDefault();
 	}
+	
+	//view 1
+	else if(evt.isKeyDown('1') || evt.isButtonDown(Event::Button4))
+    {
+		campos=1;	
+	}
 
-	//Set to the ride the rail
+	//view 2
 	else if(evt.isKeyDown('2') || evt.isButtonDown(Event::Button3))
     {
 		campos=2;
-		sceneMngr->getMainLight()->setPosition(18,0,10.0);
 	}
 
-	//Set to the ride the rail
+	//view 3
 	else if(evt.isKeyDown('3') || evt.isButtonDown(Event::Button4))
     {
 		campos=3;
-		sceneMngr->getMainLight()->setPosition(32.0,0.0,2.0);
-		
-	}
-
-		else if(evt.isKeyDown('1') || evt.isButtonDown(Event::Button4))
-    {
-		campos=1;
-		sceneMngr->getMainLight()->setPosition(18,0,10.0);
 		
 	}
 
@@ -338,23 +393,23 @@ void OmegaViewer::update(const UpdateContext& context)
 	if(!isFreeFly){
 	camTrans(curpos);
 	camRot(currot);
-	}
-	
+	} 
 	switch(campos){
 	case 1:
-		curpos=Lerp(0.9,curpos,Vector3f( 20,0.0,20));
-		currot=Lerp(0.9,currot,  Vector3f( 0.0, 0.0 , 0.0));
+		
+		curpos=Lerp(0.1,curpos,Vector3f( 20,0.0,20));
+		currot=Slerp(0.1,currot,  toquaternion(Vector3f( 0.0, 0.0 , 0.0)));
 		
 		break;
 	case 2:
-		curpos=Lerp(0.9,curpos,Vector3f( 20,-10,20));
-		currot=Lerp(0.9,currot,  Vector3f( 20.0, 0.0 , 0.0));
+		curpos=Lerp(0.1,curpos,Vector3f( 20,-10,20));
+		currot=Slerp(0.1,currot, toquaternion( Vector3f( 20.0, 0.0 , 0.0)));
 		
 		break;
 	
 	case 3:
-		curpos=Lerp(0.9,curpos,Vector3f( 32.0 , 0.0 , 2.0 ));
-		currot=Lerp(0.9,currot,  Vector3f( 0.0 , 90.0 , 0.0 ));
+		curpos=Lerp(0.1,curpos,Vector3f( 32.0 , 0.0 , 2.0 ));
+		currot=Slerp(0.1,currot, toquaternion(  Vector3f( 90.0 , 90.0 , 0.0 )));
 		break;
 	}
 
@@ -389,10 +444,8 @@ void OmegaViewer::update(const UpdateContext& context)
 
 		if( curTimeStep > numTimeSteps) curTimeStep = numTimeSteps;
 
-		//printf("\n");
-		//printf("\n Time        :: %f " , curTime );
-		//printf("\n dt          :: %f " , context.dt );
-		//printf("\n curTimeStep :: %d " , curTimeStep );
+		updateEntity ( wheelSetEntity , wheel_PVec , wheel_RVec, curTimeStep ); 
+		updateEntity ( frameEntity , frame_PVec , frame_RVec, curTimeStep ); 
 		
 	}
 	else if( curTime >= animationTimer ) curTime = 0;	//reset the timer bc the animation should be done
@@ -422,7 +475,8 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 	//!!!!! HACK !!!!!//	
 	//Data set has a weird rotation
 	//Quaternion for a 90 deg X-axis rotation
-	Quaternion newAxis = AngleAxis(-Math::HalfPi, Vector3f::UnitX()) ;
+	
+//	Quaternion newAxis = AngleAxis(-Math::HalfPi, Vector3f::UnitX()) ;
 	Quaternion rotation;
 	rotation.x() = rot[actualVecIndex+0];
 	rotation.y() = rot[actualVecIndex+1];
@@ -431,7 +485,8 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 		
 	//90 degree rotation will turn the object side ways
 	//Apply the rotation
-	rotation = newAxis * rotation;
+//	rotation = newAxis * rotation;
+	
 	entity->setOrientation( rotation );
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -448,6 +503,20 @@ void OmegaViewer::camRot( Vector3f pitchYawRoll )
 	getServer()->getDefaultCamera()->setYawPitchRoll(pitchYawRoll);
 }
 
+void OmegaViewer::camRot( Quaternion orientation )
+{
+	//ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
+	getServer()->getDefaultCamera()->setOrientation(orientation);
+}
+
+Quaternion OmegaViewer::getcamRot(){
+	Quaternion q=getServer()->getDefaultCamera()->getOrientation();
+//	Vector3f rotation=Vector3f(q.getPitch(),q.getYaw(),q.getRoll());
+	return q;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 void OmegaViewer::camTrans( Vector3f pos)
@@ -456,6 +525,11 @@ void OmegaViewer::camTrans( Vector3f pos)
 	getServer()->getDefaultCamera()->setPosition(pos);
 }
 
+Vector3f OmegaViewer::getcamTrans()
+{
+	//ofwarn("Moving Camera to :: %1%", %pos);
+	return getServer()->getDefaultCamera()->getPosition();
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 void OmegaViewer::camDefault()
@@ -476,10 +550,54 @@ void OmegaViewer::toggleCameraController( )
 
 Vector3f  OmegaViewer::Lerp(float t, Vector3f start,Vector3f end)
 {
-	return start*t+end*(1-t);
+	return start*(1-t)+end*t;
 }
 
 
+Quaternion  OmegaViewer::Slerp(float t,Quaternion start,Quaternion end)
+{
+	if ( t <= 0.0f )
+        {
+            return start;
+        }
+   
+        if ( t >= 1.0f )
+        {
+            return end;
+        }
+
+		float coshalftheta = start.dot(end);
+		Quaternion c(end);
+		
+		if ( coshalftheta < 0.0f )
+        {
+            coshalftheta = -coshalftheta;
+            c = Quaternion(-c.w(),-c.x(),-c.y(),-c.z());
+        }
+
+
+		if ( coshalftheta > 0.99f )
+            {
+				Quaternion result(	(1-t)*start.w()+t*end.w()		,	(1-t)*start.x()+t*end.x()	,	(1-t)*start.y()+t*end.y()		,	(1-t)*start.z()+t*end.z());
+                    return result;
+            }
+		
+
+		float halftheta = acos (coshalftheta);
+        float sintheta = sin (halftheta);
+		float a=sin ((1.0f - t) * halftheta);
+		float b=sin (t * halftheta);
+		Quaternion result(	(a*start.w()+b*end.w())/sin (halftheta)		,	(a*start.x()+b*end.x())/sin (halftheta)	,	(a*start.y()+b*end.y())/sin (halftheta)		,	(a*start.z()+b*end.z())/sin (halftheta));
+		
+		return result;
+}
+
+
+Quaternion OmegaViewer::toquaternion(const Vector3f& yawPitchRoll) 
+{ 
+		Quaternion orientation =   AngleAxis(yawPitchRoll[0]*Math::DegToRad, Vector3f::UnitX()) * AngleAxis(yawPitchRoll[1]*Math::DegToRad, Vector3f::UnitY()) * AngleAxis(yawPitchRoll[2]*Math::DegToRad, Vector3f::UnitZ());
+		return orientation;
+}
 
 
 
