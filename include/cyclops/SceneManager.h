@@ -148,6 +148,16 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! PYAPI
+	struct ShadowSettings
+	{
+		//! PYAPI
+		bool shadowsEnabled;
+		//! PYAPI
+		float shadowResolutionRatio;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	struct ModelAsset
 	{
 		ModelAsset(): id(0), numNodes(0) {}
@@ -162,6 +172,21 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	struct ProgramAsset 
+	{
+		ProgramAsset():
+			program(NULL), vertexShader(NULL), fragmentShader(NULL)
+		{}
+	
+		String name;
+		String vertexShaderName;
+		String fragmentShaderName;
+		osg::Program* program;
+		osg::Shader* vertexShader;
+		osg::Shader* fragmentShader;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
 	class CY_API SceneManager: public ServerModule
 	{
@@ -170,8 +195,6 @@ namespace cyclops {
 	public:
 		typedef Dictionary<String, String> ShaderMacroDictionary;
 		enum AssetType { ModelAssetType };
-
-		enum ShadowMode { ShadowsDisabled, ShadowsSoft };
 
 		static const int MaxLights = 16;
 
@@ -217,8 +240,8 @@ namespace cyclops {
 		//@{
 		Light* getMainLight() { return myMainLight; }
 		void setMainLight(Light* light) { myMainLight = light; }
-		//! Shadow map control
-		int getShadowMapQuality() { return myShadowMapQuality; }
+		const ShadowSettings& getCurrentShadowSettings();
+		void resetShadowSettings(const ShadowSettings& settings);
 		//@}
 
 		//! Object management
@@ -229,7 +252,7 @@ namespace cyclops {
 		//@}
 
 		osg::Texture2D* getTexture(const String& name);
-		osg::Program* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
+		ProgramAsset* getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName);
 		void initShading();
 
 		void setShaderMacroToString(const String& macroName, const String& macroString);
@@ -245,26 +268,27 @@ namespace cyclops {
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
+		void recompileShaders(ProgramAsset* program);
+		void recompileShaders();
 
 	private:
 		static SceneManager* mysInstance;
-
-		// Initialization options
-		ShadowMode myShadowMode;
-		String mySceneFilename;
-
 		ServerEngine* myEngine;
-
 		OsgModule* myOsg;
 
-		osg::Group* mySceneRoot;
+		// Initialization options
+		String mySceneFilename;
+
+		// The scene root. This may be linked directly to myRoot or have some intermediate nodes inbetween
+		// (i.e. for shadow map management)
+		osg::Group* myScene;
 
 		// Model data (stored as dictionary and list for convenience)
 		Dictionary<String, ModelAsset*> myModelDictionary;
 		List<ModelAsset*> myModelList;
 
 		Dictionary<String, osg::Texture2D*> myTextures;
-		Dictionary<String, osg::Program*> myPrograms;
+		Dictionary<String, ProgramAsset*> myPrograms;
 
 		ShaderMacroDictionary myShaderMacros;
 
@@ -279,7 +303,7 @@ namespace cyclops {
 		Light* myMainLight;
 		osgShadow::ShadowedScene* myShadowedScene;
 		osgShadow::SoftShadowMap* mySoftShadowMap;
-		int myShadowMapQuality;
+		ShadowSettings myShadowSettings;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
