@@ -143,8 +143,7 @@ void SystemManager::setup(Config* appcfg)
 	if(!appcfg->isLoaded()) appcfg->load();
 	oassert(appcfg->isLoaded());
 
-	// If app config has a systemConfig entry, load a separate system configuration file, otherwise use
-	// the app configuration file as system configuration.
+	// If app config has a systemConfig entry, load the system configuration file specified there.
 	myAppConfig = appcfg;
 	if(appcfg->exists("config/systemConfig"))
 	{
@@ -153,7 +152,19 @@ void SystemManager::setup(Config* appcfg)
 	}
 	else
 	{
-		mySystemConfig = appcfg;
+		// LOGIC CHANGE: 24Jul2012
+		// App config has no systemConfig entry. 
+		// Open default.cfg and lookup systemConfig there.
+		Config* defaultCfg = new Config("default.cfg");
+		if(defaultCfg->load())
+		{
+			String systemCfgName = defaultCfg->lookup("config/systemConfig");
+			mySystemConfig = new Config(systemCfgName);
+		}
+		else
+		{
+			oerror("SystemManager::setup: FATAL - coult not load default.cfg");
+		}
 	}
 
 	// Make sure the configuration is loaded.
