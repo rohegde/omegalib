@@ -76,6 +76,10 @@ void HelloApplication::initialize()
 	light->setColor(Color(1.0f, 1.0f, 0.7f));
 	light->setAmbient(Color(0.1f, 0.1f, 0.1f));
 	mySceneManager->setMainLight(light);
+
+	ShadowSettings set;
+	set.shadowsEnabled = false;
+	//mySceneManager->resetShadowSettings(set);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

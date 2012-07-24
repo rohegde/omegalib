@@ -101,8 +101,7 @@ SceneManager::SceneManager():
 	myOsg(NULL),
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL),
-	mySkyBox(NULL),
-	myShadowMapQuality(3)
+	mySkyBox(NULL)
 {
 #ifdef OMEGA_USE_PYTHON
 	cyclopsPythonApiInit();
@@ -120,19 +119,19 @@ void SceneManager::loadConfiguration()
 
 	String shadowMode = Config::getStringValue("shadowMode", s, "noshadows");
 	StringUtils::toLowerCase(shadowMode);
-	if(shadowMode == "noshadows") myShadowMode = ShadowsDisabled;
-	else if(shadowMode == "softshadows") myShadowMode = ShadowsSoft;
+	if(shadowMode == "noshadows") myShadowSettings.shadowsEnabled = false;
+	else if(shadowMode == "softshadows") myShadowSettings.shadowsEnabled = true;
 
-	myShadowMapQuality = Config::getIntValue("shadowQuality", s, myShadowMapQuality);
+	myShadowSettings.shadowResolutionRatio = Config::getFloatValue("shadowResolutionRatio", s, 1.0f);
 
 	mySceneFilename = Config::getStringValue("scene", s, "");
 
 	omsg("SceneManager configuration loaded");
-	ofmsg("::    Shadow mode: %1%", %shadowMode);
-	ofmsg(":: Shadow quality: %1%", %myShadowMapQuality);
+	ofmsg("::    Shadows enabled: %1%", %myShadowSettings.shadowsEnabled);
+	ofmsg(":: Shadow resolution ratio: %1%", %myShadowSettings.shadowResolutionRatio);
 	ofmsg("::  Default scene: %1%", %mySceneFilename);
 
-	mySceneRoot = new osg::Group();
+	myScene = new osg::Group();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,8 +155,8 @@ void SceneManager::initialize()
 	{
 		// No scene file specified: just initialize an empty scene.
 		omsg("SceneManager::initialize: no scene loaded. Initializing empty scene.");
-		initShading();
-		myOsg->setRootNode(mySceneRoot);
+		resetShadowSettings(myShadowSettings);
+		//myOsg->setRootNode(myScene);
 	}
 	//frontView = true;
 }
@@ -165,26 +164,13 @@ void SceneManager::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::initializeShaders()
 {
-	if(myShadowMode == ShadowsSoft)
-	{
-		setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
-		setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
-		omsg("Soft shadow shaders enabled");
-	}
-	else
-	{
-		setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
-		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
-		omsg("Soft shadow shaders disabled");
-	}
-
 	if(mySkyBox != NULL)
 	{
 		setShaderMacroToFile("use setupEnvMap", "cyclops/common/cubeEnvMap/setupEnvMap.vert");
 		setShaderMacroToFile("use computeEnvMap", "cyclops/common/cubeEnvMap/computeEnvMap.frag");
 		omsg("Environment cube map shaders enabled");
-		mySkyBox->initialize(mySceneRoot->getOrCreateStateSet());
-		mySceneRoot->addChild(mySkyBox->getNode());
+		mySkyBox->initialize(myScene->getOrCreateStateSet());
+		myScene->addChild(mySkyBox->getNode());
 	}
 	else
 	{
@@ -204,7 +190,7 @@ void SceneManager::addObject(DrawableObject* obj)
 {
 	myObjectList.push_back(obj);
 	myObjectDictionary[obj->getName()] = obj;
-	mySceneRoot->addChild(obj->getOsgNode());
+	myScene->addChild(obj->getOsgNode());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +224,7 @@ void SceneManager::updateLights()
 			{
 				l->myOsgLight = new osg::Light();
 				l->myOsgLightSource = new osg::LightSource();
-				mySceneRoot->addChild(l->myOsgLightSource);
+				myScene->addChild(l->myOsgLightSource);
 			}
 
 			osg::Light* ol = l->myOsgLight;
@@ -258,7 +244,7 @@ void SceneManager::updateLights()
 
 			ols->setLight(ol);
 
-			osg::StateSet* sState = mySceneRoot->getOrCreateStateSet();
+			osg::StateSet* sState = myScene->getOrCreateStateSet();
 			ols->setStateSetModes(*sState,osg::StateAttribute::ON);
 		}
 		else
@@ -280,11 +266,11 @@ void SceneManager::updateLights()
 		}
 
 		// Set ambient light uniform.
-		osg::Uniform* unifAmbient = mySceneRoot->getOrCreateStateSet()->getUniform("unif_Ambient");
+		osg::Uniform* unifAmbient = myScene->getOrCreateStateSet()->getUniform("unif_Ambient");
 		if(unifAmbient == NULL)
 		{
 			unifAmbient = new osg::Uniform("unif_Ambient", COLOR_TO_OSG(myMainLight->getAmbient()));
-			mySceneRoot->getStateSet()->addUniform(unifAmbient, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+			myScene->getStateSet()->addUniform(unifAmbient, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		}
 		else
 		{
@@ -303,7 +289,7 @@ void SceneManager::load(SceneLoader* loader)
 {
 	loader->startLoading(this);
 	while(!loader->isLoadingComplete()) loader->loadStep();
-	if (mySceneRoot != NULL) 
+	if (myScene != NULL) 
 	{
 		osg::setNotifyLevel(osg::INFO);
 		omsg("Optimizing scene graph...");
@@ -312,9 +298,9 @@ void SceneManager::load(SceneLoader* loader)
 		//optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 		osg::setNotifyLevel(osg::WARN);
 
-		initShading();
+		resetShadowSettings(myShadowSettings);
 
-		myOsg->setRootNode(mySceneRoot);
+		myOsg->setRootNode(myScene);
 	}
 }
 
@@ -431,6 +417,8 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 	String path;
 	if(DataManager::findFile(name, path))
 	{
+		ofmsg("Loading shader: %1%", %name);
+
 		std::ifstream t(path.c_str());
 		std::stringstream buffer;
 		buffer << t.rdbuf();
@@ -453,7 +441,7 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-osg::Program* SceneManager::getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName)
+ProgramAsset* SceneManager::getProgram(const String& name, const String& vertexShaderName, const String& fragmentShaderName)
 {
 	// If program has been loaded already return it.
 	if(myPrograms.find(name) != myPrograms.end())
@@ -461,71 +449,40 @@ osg::Program* SceneManager::getProgram(const String& name, const String& vertexS
 		return myPrograms[name];
 	}
 
-	osg::Program* prog = new osg::Program();
-	prog->setName(name);
+	ProgramAsset* asset = new ProgramAsset();
+	asset->program = new osg::Program();
+	asset->name = name;
+	asset->program->setName(name);
+	asset->fragmentShaderName = fragmentShaderName;
+	asset->vertexShaderName = vertexShaderName;
 
-	osg::Shader* vs = new osg::Shader( osg::Shader::VERTEX );
-	osg::Shader* fs = new osg::Shader( osg::Shader::FRAGMENT );
-	prog->addShader(vs);
-	prog->addShader(fs);
+	myPrograms[name] = asset;
+
+	asset->vertexShader = new osg::Shader( osg::Shader::VERTEX );
+	asset->fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
+	asset->program->addShader(asset->vertexShader);
+	asset->program->addShader(asset->fragmentShader);
+
+	recompileShaders(asset);
+
+	return asset;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::recompileShaders(ProgramAsset* program)
+{
+	osg::Shader* vs = program->vertexShader;
+	osg::Shader* fs = program->fragmentShader;
 
 	// Load shader sources.
-	loadShader(vs, vertexShaderName);
-	loadShader(fs, fragmentShaderName);
-
-	myPrograms[name] = prog;
-
-	return prog;
+	loadShader(vs, program->vertexShaderName);
+	loadShader(fs, program->fragmentShaderName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::setBackgroundColor(const Color& color)
 {
 	myEngine->getDisplaySystem()->setBackgroundColor(color);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::initShading()
-{
-	myShadowedScene = NULL;
-	mySoftShadowMap = NULL;
-
-	setBackgroundColor(Color(0.3f, 0.3f, 0.8f, 1.0f));
-
-	bool myShadingEnabled = (myShadowMode == ShadowsSoft);
-
-	if(myShadingEnabled)
-	{
-		// compute the shadow map resolution. (trivial method: use shadow map quality index to
-		// compute the size of a square, power-of-two texture)
-		// We assume shadow map quality index is in the range [1, 10]
-		// Shadow map size is in the range [16, 16384]
-		int smHeight = 1 << (4 + myShadowMapQuality);
-		int smWidth = smHeight;
-
-		ofmsg("SceneManager::initShading: Shadow map size = (%1%x%2%)", %smWidth %smHeight);
-
-		myShadowedScene = new osgShadow::ShadowedScene();
-		myShadowedScene->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
-		myShadowedScene->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
-
-		mySoftShadowMap = new osgShadow::SoftShadowMap;
-		mySoftShadowMap->setTextureSize(osg::Vec2s(smWidth, smHeight));
-		// Hardcoded ambient bias for shadow map. Shadowed areas receive zero light. 
-		// Unshadowed areas receive full light.
-		mySoftShadowMap->setAmbientBias(osg::Vec2(0.0f, 1.0f));
-		// Hardcoded texture unit arguments for shadow map.
-		mySoftShadowMap->setTextureUnit(4);
-		mySoftShadowMap->setJitterTextureUnit(5);
-
-		//mySoftShadowMap->setSoftnessWidth(0.005);
-		//mySoftShadowMap->setJitteringScale(32);
-
-		myShadowedScene->addChild(mySceneRoot);
-		myShadowedScene->setShadowTechnique(mySoftShadowMap);
-		
-		mySceneRoot = myShadowedScene;
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -629,3 +586,68 @@ void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapE
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const ShadowSettings& SceneManager::getCurrentShadowSettings()
+{
+	return myShadowSettings;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::resetShadowSettings(const ShadowSettings& settings)
+{
+	myShadowSettings = settings;
+	if(myShadowedScene == NULL)
+	{
+		myShadowedScene = new osgShadow::ShadowedScene();
+		myShadowedScene->setReceivesShadowTraversalMask(SceneManager::ReceivesShadowTraversalMask);
+		myShadowedScene->setCastsShadowTraversalMask(SceneManager::CastsShadowTraversalMask);
+		myShadowedScene->addChild(myScene);
+	}
+	if(myShadowSettings.shadowsEnabled)
+	{
+		// compute the shadow map resolution. (trivial method: use shadow map quality index to
+		// compute the size of a square, power-of-two texture)
+		// We assume shadow map quality index is in the range [1, 10]
+		// Shadow map size is in the range [16, 16384]
+		int smHeight = 512;
+		int smWidth = 512;
+
+		ofmsg("SceneManager::resetShadowSettings: Shadow map size = (%1%x%2%)", %smWidth %smHeight);
+
+		if(mySoftShadowMap == NULL)
+		{
+			mySoftShadowMap = new osgShadow::SoftShadowMap;
+			// Hardcoded ambient bias for shadow map. Shadowed areas receive zero light. 
+			// Unshadowed areas receive full light.
+			mySoftShadowMap->setAmbientBias(osg::Vec2(0.0f, 1.0f));
+			// Hardcoded texture unit arguments for shadow map.
+			mySoftShadowMap->setTextureUnit(4);
+			mySoftShadowMap->setJitterTextureUnit(5);
+			myShadowedScene->setShadowTechnique(mySoftShadowMap);
+		}
+		mySoftShadowMap->setTextureSize(osg::Vec2s(smWidth, smHeight));
+
+		setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
+		setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
+
+		myOsg->setRootNode(myShadowedScene);
+	}
+	else
+	{
+		myOsg->setRootNode(myScene);
+		setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
+		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+	}
+
+	recompileShaders();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::recompileShaders()
+{
+	typedef Dictionary<String, ProgramAsset*>::Item ProgramAssetItem;
+	foreach(ProgramAssetItem item, myPrograms)
+	{
+		recompileShaders(item.getValue());
+	}
+}

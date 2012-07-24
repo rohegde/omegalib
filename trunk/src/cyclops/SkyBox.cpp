@@ -195,13 +195,16 @@ osg::Node* SkyBox::createSkyBox()
 		geode->setStateSet( stateset );
 		geode->addDrawable(drawable);
 
-		osg::Program* cubeMapProgram = SceneManager::instance()->getProgram(
+		ProgramAsset* cubeMapProgram = SceneManager::instance()->getProgram(
 			"skybox", 
 			"cyclops/common/SkyBox.vert", 
 			"cyclops/common/SkyBox.frag");
 
-		stateset->setAttributeAndModes(cubeMapProgram, osg::StateAttribute::ON);
-		//stateset->addUniform( new osg::Uniform("unif_CubeMap", 0) );
+		if(cubeMapProgram != NULL)
+		{
+			stateset->setAttributeAndModes(cubeMapProgram->program, osg::StateAttribute::ON);
+			//stateset->addUniform( new osg::Uniform("unif_CubeMap", 0) );
+		}
 
 		MoveSkyWithEyePointTransform* transform = new MoveSkyWithEyePointTransform;
 		//transform->_texMat = tm;

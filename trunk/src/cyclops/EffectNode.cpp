@@ -44,7 +44,7 @@ public:
     bool validate(osg::State&) const { return true; }
 protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	osg::Program* getProgram(const String& name, const String& variant = "")
+	ProgramAsset* getProgram(const String& name, const String& variant = "")
 	{
 		String shaderRoot = "cyclops/common";
 		String progName = name;
@@ -93,10 +93,12 @@ protected:
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		osg::Program* prog = NULL;
-		prog = getProgram("Colored", variant);
+		ProgramAsset* asset = getProgram("Colored", variant);
+		if(asset != NULL)
+		{
+			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+		}
 
-		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
 
 		// If we have colors, add material attribute
 		if(diffuse != "")
@@ -129,10 +131,14 @@ protected:
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
-		prog = getProgram("Textured", variant);
-		ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
-		ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
-		ss->setAttributeAndModes(prog, osg::StateAttribute::ON);
+		ProgramAsset* asset = getProgram("Colored", variant);
+		if(asset != NULL)
+		{
+			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+			ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
+			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+		}
 
 		if(diffuse != "")
 		{
