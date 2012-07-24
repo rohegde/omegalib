@@ -4,13 +4,13 @@ from cyclops import *
 from omegaToolkit import *
 
 ground = PlaneShape.create(10, 10)
-ground.setPosition((0, 0, -5))
+ground.setPosition(Vector3(0, 0, -5))
 ground.pitch(radians(-90))
 ground.setEffect("colored -d gray")
 
 light = Light.create()
 light.setColor(Color("white"))
-light.setPosition((0, 50, -5))
+light.setPosition(Vector3(0, 50, -5))
 light.setEnabled(True)
 
 scene = getSceneManager()
@@ -18,7 +18,7 @@ scene.setMainLight(light)
 
 planeModel = ModelInfo()
 planeModel.name = "plane"
-planeModel.path = "terrance/airplane.obj"
+planeModel.path = "terrance/data/airplane.obj"
 planeModel.size = 5.0
 scene.loadModel(planeModel)
 
@@ -27,8 +27,8 @@ scene.loadModel(planeModel)
 #sphere.setEffect("colored -d green")
 
 plane = StaticObject.create("plane")
-plane.setPosition((0, 2, -4))
-plane.setEffect("colored -d gray")
+plane.setPosition(Vector3(0, 2, -4))
+plane.setEffect("colored -d green")
 
 def onUpdate(frame, t, dt):
 	plane.yaw(dt)
