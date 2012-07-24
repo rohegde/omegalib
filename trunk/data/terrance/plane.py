@@ -16,11 +16,26 @@ light.setEnabled(True)
 scene = getSceneManager()
 scene.setMainLight(light)
 
+#light = Light.create()
+#light.setColor(Color("white"))
+#light.setPosition((0, 50, -5))
+#light.setEnabled(True)
+
 planeModel = ModelInfo()
 planeModel.name = "plane"
 planeModel.path = "terrance/data/airplane.obj"
 planeModel.size = 5.0
 scene.loadModel(planeModel)
+
+#planeModel = ModelInfo()
+#planeModel.name = "plane"
+#planeModel.path = "terrance/airplane.obj"
+#planeModel.size = 5.0
+#scene.loadModel(planeModel)
+
+#plane = StaticObject.create("plane")
+#plane.setPosition(Vector3(0, 4, -4.5))
+#plane.setEffect("colored -d blue")
 
 #sphere = SphereShape.create(3, 4)
 #sphere.setPosition((0, 2, -5))
@@ -30,7 +45,4 @@ plane = StaticObject.create("plane")
 plane.setPosition(Vector3(0, 2, -4))
 plane.setEffect("colored -d green")
 
-def onUpdate(frame, t, dt):
-	plane.yaw(dt)
-
-setUpdateFunction(onUpdate)
+#setUpdateFunction(onUpdate)
