@@ -273,6 +273,13 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			obj->yaw(rotation[1] * Math::DegToRad);
 			obj->roll(rotation[2] * Math::DegToRad);
 
+			// Add tag if there is one in the xml
+			const char* tag = xchild->Attribute("Tag");
+			if(tag != NULL)
+			{
+				obj->setTag(tag);
+			}
+
 			// If the xml element specifies an effect, apply it.
 			const char* attrFx = xchild->Attribute("Effect");
 			if(attrFx != NULL)
@@ -330,11 +337,6 @@ Entity* SceneLoader::createEntity(TiXmlElement* xchild)
 		if(id == NULL) e = new Entity(mySceneManager, fileIndex, ng.generate());
 		else e = new Entity(mySceneManager, fileIndex, id);
 
-		const char* tag = xchild->Attribute("Tag");
-		if(tag != NULL)
-		{
-			e->setTag(tag);
-		}
 		return e;
 	}
 	else

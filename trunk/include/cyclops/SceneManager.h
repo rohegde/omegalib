@@ -187,6 +187,21 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Interface for scene manager listeners
+	class SceneManagerListener
+	{
+	public: 
+		//! Called when an object is added to the scene manager. By reimplementing this method, 
+		//! users can modify the object before insertion in the scenegraph or insert intermediate osg
+		//! nodes.
+		virtual osg::Node* onObjectAdded(DrawableObject* obj)
+		{
+			return obj->getOsgNode();
+		}
+	};
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
 	class CY_API SceneManager: public ServerModule
 	{
@@ -209,6 +224,11 @@ namespace cyclops {
 		//! Returns an instance of the SceneManager singleton instance If no
 		// Scene manager exists before this call, createAndInitialize will be called internally.
 		static SceneManager* instance();
+
+		//! Sets the scene manager listener
+		void setListener(SceneManagerListener* listener);
+		//! Gets the scene manager listener
+		SceneManagerListener* getListener();
 
 		ServerEngine* getEngine() { return myEngine; }
 
@@ -276,8 +296,8 @@ namespace cyclops {
 		ServerEngine* myEngine;
 		OsgModule* myOsg;
 
-		// Initialization options
-		String mySceneFilename;
+		// Scene manager listener
+		SceneManagerListener* myListener;
 
 		// The scene root. This may be linked directly to myRoot or have some intermediate nodes inbetween
 		// (i.e. for shadow map management)
@@ -314,6 +334,18 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int SceneManager::getNumObjects()
 	{ return myObjectList.size(); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline void SceneManager::setListener(SceneManagerListener* listener)
+	{
+		myListener = listener;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline SceneManagerListener* SceneManager::getListener()
+	{
+		return myListener;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline List<DrawableObject*>::Range SceneManager::getObjects()

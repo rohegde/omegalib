@@ -53,6 +53,9 @@ namespace cyclops {
 		osg::Node* getOsgNode() { return myEffect; }
 		//SceneNode* getSceneNode() { return mySceneNode; }
 
+		void setTag(const String& value) { myTag = value; }
+		const String& getTag() { return myTag; } 
+
 		//!PYAPI
 		bool hasEffect();
 		//! PYAPI
@@ -63,6 +66,8 @@ namespace cyclops {
 
 	private:
 		SceneManager* mySceneManager;
+
+		String myTag;
 
 		osg::Node* myOsgNode;
 		//SceneNode* mySceneNode;
