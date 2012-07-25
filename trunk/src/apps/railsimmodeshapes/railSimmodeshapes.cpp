@@ -34,6 +34,8 @@
 #include <iostream>
 #include <fstream>
 
+#include<osg/PolygonMode>
+
 using namespace omega;
 using namespace omegaToolkit;
 using namespace cyclops;
@@ -45,7 +47,7 @@ String sDefaultScript = "";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class OmegaViewer: public ServerModule
+class OmegaViewer: public ServerModule, public SceneManagerListener
 {
 public:
 	//Constructor
@@ -62,6 +64,8 @@ public:
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt);
+
+	virtual osg::Node* onObjectAdded(DrawableObject* obj);
 
 	//setup methods for camera behavior
 	void toggleCameraController( );
@@ -246,6 +250,13 @@ void OmegaViewer::initialize()
 	//To deal with clustering
 	//Instanciate an instance of ScenenManager
 	sceneMngr = SceneManager::createAndInitialize();
+	sceneMngr->setListener(this);
+
+	// Load scene
+	Config* cfg = SystemManager::instance()->getAppConfig();
+	Setting& sCfg = cfg->lookup("config");
+	String sceneFileName = Config::getStringValue("scene", sCfg, "");
+	sceneMngr->load(sceneFileName);
 
 	//~~~~~~ Form context to scene nodes that represent the .objs
 	//go into the sceneMangr to find the entity 0 as defined by
@@ -592,13 +603,24 @@ Quaternion  OmegaViewer::Slerp(float t,Quaternion start,Quaternion end)
 		return result;
 }
 
-
 Quaternion OmegaViewer::toquaternion(const Vector3f& yawPitchRoll) 
 { 
 		Quaternion orientation =   AngleAxis(yawPitchRoll[0]*Math::DegToRad, Vector3f::UnitX()) * AngleAxis(yawPitchRoll[1]*Math::DegToRad, Vector3f::UnitY()) * AngleAxis(yawPitchRoll[2]*Math::DegToRad, Vector3f::UnitZ());
 		return orientation;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+osg::Node* OmegaViewer::onObjectAdded(DrawableObject* obj)
+{
+	// EXAMPLE: Add wireframe to object
+	omsg("Adding object");
+	osg::Node* node = obj->getOsgNode();
+	osg::StateSet* ss = node->getOrCreateStateSet();
+	osg::PolygonMode* pm = new osg::PolygonMode();
+	pm->setMode(  osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE );
+	ss->setAttribute(pm, osg::StateAttribute::OVERRIDE);
+	return node;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
