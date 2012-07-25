@@ -75,9 +75,6 @@ namespace cyclops {
 		void setCurrentModelIndex(int index);
 		int getCurrentModelIndex();
 
-		void setTag(const String& value) { myTag = value; }
-		const String& getTag() { return myTag; } 
-
 		//! Animation support
 		//@{
 		bool hasAnimations();
@@ -96,8 +93,6 @@ namespace cyclops {
 		ModelAsset* myModel;
 		osg::Switch* myOsgSwitch;
 		int myCurrentModelIndex;
-
-		String myTag;
 
 		// osg animation stuff
 		osgAnimation::BasicAnimationManager* myAnimationManager;

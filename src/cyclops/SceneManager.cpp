@@ -101,7 +101,8 @@ SceneManager::SceneManager():
 	myOsg(NULL),
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL),
-	mySkyBox(NULL)
+	mySkyBox(NULL),
+	myListener(NULL)
 {
 #ifdef OMEGA_USE_PYTHON
 	cyclopsPythonApiInit();
@@ -124,12 +125,9 @@ void SceneManager::loadConfiguration()
 
 	myShadowSettings.shadowResolutionRatio = Config::getFloatValue("shadowResolutionRatio", s, 1.0f);
 
-	mySceneFilename = Config::getStringValue("scene", s, "");
-
 	omsg("SceneManager configuration loaded");
 	ofmsg("::    Shadows enabled: %1%", %myShadowSettings.shadowsEnabled);
 	ofmsg(":: Shadow resolution ratio: %1%", %myShadowSettings.shadowResolutionRatio);
-	ofmsg("::  Default scene: %1%", %mySceneFilename);
 
 	myScene = new osg::Group();
 }
@@ -146,19 +144,7 @@ void SceneManager::initialize()
 
 	loadConfiguration();
 
-	// If a default scene file has been specified, load it.
-	if(mySceneFilename != "")
-	{
-		load(mySceneFilename);
-	}
-	else
-	{
-		// No scene file specified: just initialize an empty scene.
-		omsg("SceneManager::initialize: no scene loaded. Initializing empty scene.");
-		resetShadowSettings(myShadowSettings);
-		//myOsg->setRootNode(myScene);
-	}
-	//frontView = true;
+	resetShadowSettings(myShadowSettings);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,6 +176,15 @@ void SceneManager::addObject(DrawableObject* obj)
 {
 	myObjectList.push_back(obj);
 	myObjectDictionary[obj->getName()] = obj;
+
+	osg::Node* objNode = obj->getOsgNode();
+	// if we have a listener, invoke the add object callback and use its return
+	// value as the osg node.
+	if(myListener != NULL)
+	{
+		objNode = myListener->onObjectAdded(obj);
+	}
+
 	myScene->addChild(obj->getOsgNode());
 }
 
@@ -297,10 +292,6 @@ void SceneManager::load(SceneLoader* loader)
 		osgUtil::Optimizer optOSGFile;
 		//optOSGFile.optimize(node, osgUtil::Optimizer::ALL_OPTIMIZATIONS);
 		osg::setNotifyLevel(osg::WARN);
-
-		resetShadowSettings(myShadowSettings);
-
-		myOsg->setRootNode(myScene);
 	}
 }
 
