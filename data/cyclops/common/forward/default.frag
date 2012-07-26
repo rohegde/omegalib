@@ -1,5 +1,4 @@
 @fsinclude shadowMap
-@fsinclude envMap
 
 uniform vec4 unif_Ambient;
 
@@ -10,9 +9,9 @@ varying vec3 var_EyeVector;
 struct SurfaceData
 {
 	vec4 albedo;
+	vec4 emissive;
 	float shininess;
 	float gloss;
-	float emissive;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +53,9 @@ LitSurfaceData computeLighting(SurfaceData surf)
 		} 
 	} 	
 
-	ld.luminance += surf.albedo * getEnvMapColor() * surf.gloss;
+	// Add emissive surface component to final luminance.
+	ld.luminance += surf.emissive;
+	
 	return ld;
 }
 

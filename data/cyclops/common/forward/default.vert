@@ -4,6 +4,8 @@
 varying vec3 var_Normal;
 varying vec3 var_EyeVector;
 
+void setupSurfaceData(vec4 eyeSpacePosition);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
@@ -12,6 +14,7 @@ void main(void)
 	
 	setupShadowMap(eyeSpacePosition);
 	setupEnvMap(eyeSpacePosition.xyz);
+	setupSurfaceData(eyeSpacePosition);
 	
 	var_EyeVector = -eyeSpacePosition;
 	var_Normal = gl_NormalMatrix * gl_Normal;
