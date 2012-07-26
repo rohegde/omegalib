@@ -85,7 +85,7 @@ void HelloApplication::initialize()
 	// Create a new object using the loaded model (referenced using its name, 'simpleModel')
 	myObject = new StaticObject(mySceneManager, "simpleModel");
 	myObject->setName("object");
-	myObject->setEffect("colored -d #303030 -g 1.0 -s 20.0 -v envmap -t");
+	myObject->setEffect("colored -d #303030 -g 1.0 -s 20.0 -v envmap");
 	// Add a selection listener to the object. HelloApplication::onSelectedChanged will be
 	// called whenever the object selection state changes.
 	myObject->pitch(-90 * Math::DegToRad);
