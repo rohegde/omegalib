@@ -451,7 +451,7 @@ void Node::yaw(const float& angle, TransformSpace relativeTo)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Node::rotate(const Vector3f& axis, const float& angle, TransformSpace relativeTo)
 {
-    Quaternion q = AngleAxis(angle,axis);
+    Quaternion q(AngleAxis(angle,axis));
     rotate(q, relativeTo);
 }
 
