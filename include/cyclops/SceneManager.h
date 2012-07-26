@@ -262,6 +262,7 @@ namespace cyclops {
 		void setMainLight(Light* light) { myMainLight = light; }
 		const ShadowSettings& getCurrentShadowSettings();
 		void resetShadowSettings(const ShadowSettings& settings);
+		int getNumActiveLights();
 		//@}
 
 		//! Object management
@@ -281,14 +282,14 @@ namespace cyclops {
 	private:
 		SceneManager();
 
-		void initializeShaders();
+		void resetEnvMapSettings();
 		void addLight(Light* l);
 		void removeLight(Light* l);
 		void addObject(DrawableObject* obj);
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
-		void recompileShaders(ProgramAsset* program);
+		void recompileShaders(ProgramAsset* program, const String& variationName);
 		void recompileShaders();
 
 	private:
@@ -309,6 +310,7 @@ namespace cyclops {
 
 		Dictionary<String, osg::Texture2D*> myTextures;
 		Dictionary<String, ProgramAsset*> myPrograms;
+		Dictionary<String, osg::Shader*> myShaders;
 
 		ShaderMacroDictionary myShaderMacros;
 
@@ -316,7 +318,6 @@ namespace cyclops {
 		List<DrawableObject*> myObjectList;
 		
 		SkyBox* mySkyBox;
-		bool myShadersInitialized;
 
 		// Lights and shadows
 		List<Light*> myLights;
@@ -324,6 +325,8 @@ namespace cyclops {
 		osgShadow::ShadowedScene* myShadowedScene;
 		osgShadow::SoftShadowMap* mySoftShadowMap;
 		ShadowSettings myShadowSettings;
+		int myNumActiveLights;
+		String myShaderVariationName;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -350,6 +353,10 @@ namespace cyclops {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline List<DrawableObject*>::Range SceneManager::getObjects()
 	{ return List<DrawableObject*>::Range(myObjectList.begin(), myObjectList.end()); }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int SceneManager::getNumActiveLights()
+	{ return myNumActiveLights; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline Light::Light(SceneManager* scene):
