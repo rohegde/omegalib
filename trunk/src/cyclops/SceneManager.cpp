@@ -102,7 +102,8 @@ SceneManager::SceneManager():
 	myShadowedScene(NULL),
 	mySoftShadowMap(NULL),
 	mySkyBox(NULL),
-	myListener(NULL)
+	myListener(NULL),
+	myNumActiveLights(0)
 {
 #ifdef OMEGA_USE_PYTHON
 	cyclopsPythonApiInit();
@@ -136,7 +137,6 @@ void SceneManager::loadConfiguration()
 void SceneManager::initialize()
 {
 	myMainLight = NULL;
-	myShadersInitialized = false;
 	myEngine = getServer();
 
 	// Make sure the osg module is initialized.
@@ -144,31 +144,33 @@ void SceneManager::initialize()
 
 	loadConfiguration();
 
+		
+	setShaderMacroToFile("surfaceShader", "cyclops/common/forward/default.frag");
+	setShaderMacroToFile("vertexShader", "cyclops/common/forward/default.vert");
+
+	resetEnvMapSettings();
 	resetShadowSettings(myShadowSettings);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::initializeShaders()
+void SceneManager::resetEnvMapSettings()
 {
 	if(mySkyBox != NULL)
 	{
-		setShaderMacroToFile("use setupEnvMap", "cyclops/common/cubeEnvMap/setupEnvMap.vert");
-		setShaderMacroToFile("use computeEnvMap", "cyclops/common/cubeEnvMap/computeEnvMap.frag");
+		setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/cubeEnvMap.vert");
+		setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/cubeEnvMap.frag");
 		omsg("Environment cube map shaders enabled");
 		mySkyBox->initialize(myScene->getOrCreateStateSet());
 		myScene->addChild(mySkyBox->getNode());
 	}
 	else
 	{
-		setShaderMacroToFile("use setupEnvMap", "cyclops/common/noEnvMap/setupEnvMap.vert");
-		setShaderMacroToFile("use computeEnvMap", "cyclops/common/noEnvMap/computeEnvMap.frag");
+		setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
+		setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
 		omsg("Environment cube map shaders disabled");
 	}
 
-	setShaderMacroToFile("use setupStandardShading", "cyclops/common/standardShading/setupStandardShading.vert");
-	setShaderMacroToFile("use computeStandardShading", "cyclops/common/standardShading/computeStandardShading.frag");
-
-	myShadersInitialized = true;
+	recompileShaders();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +193,6 @@ void SceneManager::addObject(DrawableObject* obj)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::update(const UpdateContext& context) 
 {
-	if(!myShadersInitialized) initializeShaders();
 	updateLights();
 }
 
@@ -219,6 +220,7 @@ void SceneManager::updateLights()
 			{
 				l->myOsgLight = new osg::Light();
 				l->myOsgLightSource = new osg::LightSource();
+				//l->myOsgLightSource->setReferenceFrame(osg::LightSource::ABSOLUTE_RF);
 				myScene->addChild(l->myOsgLightSource);
 			}
 
@@ -228,7 +230,9 @@ void SceneManager::updateLights()
 			const Vector3f pos = l->getPosition();
 			const Vector3f& att = l->getAttenuation();
 
-			ol->setLightNum(i++);
+			int lightId = i++;
+
+			ol->setLightNum(lightId);
 			ol->setPosition(osg::Vec4(pos[0], pos[1], pos[2], 1.0));
 			ol->setAmbient(COLOR_TO_OSG(l->getAmbient()));
 			ol->setDiffuse(COLOR_TO_OSG(l->getColor()));
@@ -272,6 +276,18 @@ void SceneManager::updateLights()
 			unifAmbient->set(COLOR_TO_OSG(myMainLight->getAmbient()));
 		}
 	}
+
+	// If the number of lights changed, reset the shaders
+	if(i != myNumActiveLights)
+	{
+		ofmsg("Active lights changed (was %1%, is %2%)", %myNumActiveLights %i);
+
+		// Set the number of lights shader macro parameter.
+		myNumActiveLights = i;
+		String numLightsString = ostr("%1%", %myNumActiveLights);
+		setShaderMacroToString("numLights", numLightsString);
+		recompileShaders();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,7 +329,6 @@ void SceneManager::load(const String& relativePath)
 			//Instantiate a sceneLoader to load the entites in the XML file
 			SceneLoader* sl = new SceneLoader(doc, fullPath);
 
-			//SceneManager::instance()
 			//	Gets the sceneManager if you do not have a pointer to the singleton sceneManager
 			//Load the scene into the SceneManager via the SceneLoader
 			load(sl);
@@ -415,12 +430,18 @@ void SceneManager::loadShader(osg::Shader* shader, const String& name)
 		buffer << t.rdbuf();
 
 		// Replace shader macros.
+		// Do a multiple replacement passes to process macros-within macros.
 		String shaderSrc = buffer.str();
-		foreach(ShaderMacroDictionary::Item macro, myShaderMacros)
+		int replacementPasses = 3;
+		for(int i = 0; i < replacementPasses; i++)
 		{
-			String macroName = ostr("@%1%", %macro.getKey());
-			shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+			foreach(ShaderMacroDictionary::Item macro, myShaderMacros)
+			{
+				String macroName = ostr("@%1%", %macro.getKey());
+				shaderSrc = StringUtils::replaceAll(shaderSrc, macroName, macro.getValue());
+			}
 		}
+
 
 		//ofmsg("Loading shader file %1%", %name);
 		shader->setShaderSource(shaderSrc);
@@ -449,25 +470,50 @@ ProgramAsset* SceneManager::getProgram(const String& name, const String& vertexS
 
 	myPrograms[name] = asset;
 
-	asset->vertexShader = new osg::Shader( osg::Shader::VERTEX );
-	asset->fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
-	asset->program->addShader(asset->vertexShader);
-	asset->program->addShader(asset->fragmentShader);
-
-	recompileShaders(asset);
+	recompileShaders(asset, myShaderVariationName);
 
 	return asset;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::recompileShaders(ProgramAsset* program)
+void SceneManager::recompileShaders(ProgramAsset* program, const String& variationName)
 {
-	osg::Shader* vs = program->vertexShader;
-	osg::Shader* fs = program->fragmentShader;
+	osg::Program* osgProg = program->program;
 
-	// Load shader sources.
-	loadShader(vs, program->vertexShaderName);
-	loadShader(fs, program->fragmentShaderName);
+	// Remove current shaders from program
+	osgProg->removeShader(program->vertexShader);
+	osgProg->removeShader(program->fragmentShader);
+	//osgProg->releaseGLObjects();
+
+	String fullVertexShaderName = program->vertexShaderName + variationName;
+	osg::Shader* vertexShader = myShaders[fullVertexShaderName];
+	// If the shader does not exist in the shader registry, we need to create it now.
+	if(vertexShader == NULL)
+	{
+		ofmsg("Creating vertex shader %1%", %fullVertexShaderName);
+		vertexShader = new osg::Shader( osg::Shader::VERTEX );
+		// increase reference count to avoid being deallocated by osg program when deattached.
+		vertexShader->ref();
+		loadShader(vertexShader, program->vertexShaderName);
+		myShaders[fullVertexShaderName] = vertexShader;
+	}
+	program->vertexShader = vertexShader;
+	osgProg->addShader(vertexShader);
+
+	String fullFragmentShaderName = program->fragmentShaderName + variationName;
+	osg::Shader* fragmentShader = myShaders[fullFragmentShaderName];
+	// If the shader does not exist in the shader registry, we need to create it now.
+	if(fragmentShader == NULL)
+	{
+		ofmsg("Creating fragment shader %1%", %fullFragmentShaderName);
+		fragmentShader = new osg::Shader( osg::Shader::FRAGMENT );
+		// increase reference count to avoid being deallocated by osg program when deattached.
+		fragmentShader->ref();
+		loadShader(fragmentShader, program->fragmentShaderName);
+		myShaders[fullFragmentShaderName] = fragmentShader;
+	}
+	program->fragmentShader = fragmentShader;
+	osgProg->addShader(fragmentShader);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -574,6 +620,10 @@ void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapE
 		{
 			ofwarn("SceneManager::createSkyBox: could not create skybox %1% (ext: %2%)", %cubeMapDir %cubeMapExt);
 		}
+		else
+		{
+			resetEnvMapSettings();
+		}
 	}
 }
 
@@ -596,10 +646,7 @@ void SceneManager::resetShadowSettings(const ShadowSettings& settings)
 	}
 	if(myShadowSettings.shadowsEnabled)
 	{
-		// compute the shadow map resolution. (trivial method: use shadow map quality index to
-		// compute the size of a square, power-of-two texture)
-		// We assume shadow map quality index is in the range [1, 10]
-		// Shadow map size is in the range [16, 16384]
+		// compute the shadow map resolution. 
 		int smHeight = 512;
 		int smWidth = 512;
 
@@ -618,16 +665,16 @@ void SceneManager::resetShadowSettings(const ShadowSettings& settings)
 		}
 		mySoftShadowMap->setTextureSize(osg::Vec2s(smWidth, smHeight));
 
-		setShaderMacroToFile("use setupShadow", "cyclops/common/softShadows/setupShadow.vert");
-		setShaderMacroToFile("use computeShadow", "cyclops/common/softShadows/computeShadow.frag");
+		setShaderMacroToFile("vsinclude shadowMap", "cyclops/common/shadowMap/softShadowMap.vert");
+		setShaderMacroToFile("fsinclude shadowMap", "cyclops/common/shadowMap/softShadowMap.frag");
 
 		myOsg->setRootNode(myShadowedScene);
 	}
 	else
 	{
 		myOsg->setRootNode(myScene);
-		setShaderMacroToFile("use setupShadow", "cyclops/common/noShadows/setupShadow.vert");
-		setShaderMacroToFile("use computeShadow", "cyclops/common/noShadows/computeShadow.frag");
+		setShaderMacroToFile("vsinclude shadowMap", "cyclops/common/shadowMap/noShadowMap.vert");
+		setShaderMacroToFile("fsinclude shadowMap", "cyclops/common/shadowMap/noShadowMap.frag");
 	}
 
 	recompileShaders();
@@ -636,9 +683,14 @@ void SceneManager::resetShadowSettings(const ShadowSettings& settings)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::recompileShaders()
 {
+	// Update the shader variation name
+	myShaderVariationName = ostr(myShadowSettings.shadowsEnabled ? ".sm%1%" : ".%1%", %myNumActiveLights);
+
+	ofmsg("Recompiling shaders (variation: %1%)", %myShaderVariationName);
+
 	typedef Dictionary<String, ProgramAsset*>::Item ProgramAssetItem;
 	foreach(ProgramAssetItem item, myPrograms)
 	{
-		recompileShaders(item.getValue());
+		recompileShaders(item.getValue(), myShaderVariationName);
 	}
 }

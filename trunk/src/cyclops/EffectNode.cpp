@@ -49,7 +49,8 @@ protected:
 		String shaderRoot = "cyclops/common";
 		String progName = name;
 
-		String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
+		//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
+		String vertName = ostr("%1%/Default.vert", %shaderRoot);
 		String fragName;
 		if(variant != "")
 		{
@@ -71,7 +72,6 @@ protected:
 		if(StringUtils::startsWith(myDefinition, "colored")) define_passes_colored();
 		else if(StringUtils::startsWith(myDefinition, "textured")) define_passes_textured();
 		else if(StringUtils::startsWith(myDefinition, "bump")) define_passes_bump();
-		else if(StringUtils::startsWith(myDefinition, "blueprint")) define_passes_blueprint();
 		else
 		{
 			ofwarn("EffectNode: could not create effect with definition '%1%'", %myDefinition);
@@ -84,19 +84,23 @@ protected:
 	{
 		String effectName;
 		String diffuse;
-		String variant;
+		double shininess = 10;
+		double gloss = 0;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
-		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
+		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
+		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
 		ah.process(myDefinition.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		ProgramAsset* asset = getProgram("Colored", variant);
+		ProgramAsset* asset = getProgram("Colored", "");
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
+			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
 		}
 
 
@@ -155,21 +159,6 @@ protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	void define_passes_bump()
 	{
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_blueprint()
-	{
-		String tempDef = myDefinition;
-		myDefinition = "colored -d blue";
-		define_passes_colored();
-		myDefinition = tempDef;
-		osg::StateSet* ss = new osg::StateSet();
-		osg::PolygonMode* pm = new osg::PolygonMode();
-		pm->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
-		ss->setAttribute(pm);
-		ss->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		addPass(ss);
 	}
 
 private:
