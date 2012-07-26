@@ -12,7 +12,7 @@ uniform float osgShadow_softnessWidth;/*!< Width softness value.*/
 uniform float osgShadow_jitteringScale;/*!< Jittering scale value.*/
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-float computeShadow()
+float computeShadowMap()
 {
 	vec4 sceneShadowProj = gl_TexCoord[4]; 
 	float softFactor = osgShadow_softnessWidth * sceneShadowProj.w; 

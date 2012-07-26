@@ -2,7 +2,7 @@
 varying vec3 var_ReflectDir;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void setupEnvMap(vec4 eyeSpacePosition)
+void setupEnvMap(vec3 eyeSpacePosition)
 {
 	vec3 normal    = normalize(gl_NormalMatrix*gl_Normal);
 	vec3 eyeDir    = eyeSpacePosition.xyz;
