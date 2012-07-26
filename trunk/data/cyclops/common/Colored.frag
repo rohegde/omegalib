@@ -1,9 +1,15 @@
-@use computeShadow
-@use computeStandardShading
+@surfaceShader 
+
+uniform float unif_Shininess;
+uniform float unif_Gloss;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void main (void)
+SurfaceData getSurfaceData(void)
 {
-	float shadow = computeShadow();
-    gl_FragColor =  gl_Color * (lightAmbientContribution() + lightDiffuseContribution() * shadow); 
+	SurfaceData sd;
+    sd.albedo = gl_Color; 
+	sd.shininess = unif_Shininess;
+	sd.gloss = unif_Gloss;
+	
+	return sd;
 }

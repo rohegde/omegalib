@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void setupShadow(vec4 ecPosition)
+void setupShadowMap(vec4 ecPosition)
 {
 	//ShadowMap Texcoords
     gl_TexCoord[4].s = dot( ecPosition, gl_EyePlaneS[4] );
