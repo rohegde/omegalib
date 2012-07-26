@@ -137,7 +137,7 @@ void Widget::handleEvent(const Event& evt)
 		}
 	}
 
-	Vector2f pos2d = vector3to2(evt.getPosition());
+	Vector2f pos2d = Vector2f(evt.getPosition(0), evt.getPosition(1));
 	if(myActive)
 	{
 		//if(evt.getType() == Event::Zoom)

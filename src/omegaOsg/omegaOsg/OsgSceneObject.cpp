@@ -60,7 +60,7 @@ void OsgSceneObject::update(SceneNode* node)
 {
 	node->addListener(this);
 	const AffineTransform3& xform =  node->getFullTransform();
-	const omega::math::matrix<4, 4>& m = xform.matrix();
+	const Matrix4f& m = xform.matrix();
 	osg::Matrix oxform;
 	oxform.set(m.data());
 	myTransform->setMatrix( oxform );

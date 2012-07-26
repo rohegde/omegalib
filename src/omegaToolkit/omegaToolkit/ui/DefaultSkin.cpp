@@ -32,6 +32,8 @@ using namespace omega;
 using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
+Color sBaseColor = Color(0.9, 0.9, 1.0, 1.0);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void DefaultButtonRenderable::drawContent()
 {
@@ -39,7 +41,7 @@ void DefaultButtonRenderable::drawContent()
 
 	DrawInterface* painter = getRenderer();
 
-	Color col = Color::White;
+	Color col = sBaseColor;
 	if(myOwner->isActive())
 	{
 		col = Color::Lime;
@@ -55,7 +57,7 @@ void DefaultButtonRenderable::drawContent()
 		size[0] -= 18;
 		Vector2f checkBoxSize = Vector2f(14, 14);
 		Vector2f checkBoxPosition = Vector2f(size[0], 4);
-		painter->drawRectOutline(checkBoxPosition, checkBoxSize, Color::White);
+		painter->drawRectOutline(checkBoxPosition, checkBoxSize, sBaseColor);
 
 		if(myOwner->isChecked())
 		{
@@ -110,12 +112,17 @@ void DefaultPanelRenderable::drawContent()
 	//Vector2f sliderPos = myOwner->getSliderPosition();
 	//Vector2f sliderSize = myOwner->getSliderSize();
 
-	Vector2f borderSize = Vector2f(4.0f, 4.0f);
+	Vector2f borderSize = Vector2f(2.0f, 2.0f);
 	Vector2f size = myOwner->getSize();
 
 	//painter->drawRectOutline(Vector2f::Zero(), myOwner->getSize(), Color::White);
 
-	painter->drawRect(Vector2f::Zero(), size, Color::White);
+	//painter->drawRect(Vector2f::Zero(), size, Color::sBaseColor);
+	//for(float bsize = 5; bsize > 0; bsize -= 0.1f)
+	//{
+	//	borderSize = Vector2f(bsize, bsize);
+	//	painter->drawRect(borderSize / 2, size - borderSize, Color(0, 0, 0, bsize / 2));
+	//}
 	painter->drawRect(borderSize / 2, size - borderSize, Color(0, 0, 0, 0.9f));
 
 	//painter->drawRectOutline(sliderPos, sliderSize, Color::White);
