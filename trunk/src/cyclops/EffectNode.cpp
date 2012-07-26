@@ -50,7 +50,7 @@ protected:
 		String progName = name;
 
 		//String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
-		String vertName = ostr("%1%/Default.vert", %shaderRoot);
+		String vertName = ostr("%1%/%2%.vert", %shaderRoot %name);
 		String fragName;
 		if(variant != "")
 		{
@@ -86,21 +86,29 @@ protected:
 		String diffuse;
 		double shininess = 10;
 		double gloss = 0;
+		bool transparent = false;
+		String variation = "";
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse material", "diffuse material color", diffuse);
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
+		ah.newNamedString('v', "variation", "variation", "effect variation", variation);
+		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
 		ah.process(myDefinition.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		ProgramAsset* asset = getProgram("Colored", "");
+		ProgramAsset* asset = getProgram("Colored", variation);
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
 			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
 			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
+			if(transparent)
+			{
+				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+			}
 		}
 
 
@@ -126,22 +134,36 @@ protected:
 		String effectName;
 		String diffuse;
 		String variant;
+		double shininess = 10;
+		double gloss = 0;
+		bool transparent = false;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
 		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
+		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
+		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
+		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
 		ah.process(myDefinition.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
-		ProgramAsset* asset = getProgram("Colored", variant);
+		ProgramAsset* asset = getProgram("Textured", variant);
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
-			ss->addUniform( new osg::Uniform("unif_ColorMap", 0) );
+			ss->addUniform( new osg::Uniform("unif_DiffuseMap", 0) );
 			ss->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(1, 1)));
+			ss->addUniform( new osg::Uniform("unif_Shininess", (float)shininess) );
+			ss->addUniform( new osg::Uniform("unif_Gloss", (float)gloss) );
+
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
+
+			if(transparent)
+			{
+				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+			}
 		}
 
 		if(diffuse != "")

@@ -85,7 +85,7 @@ void HelloApplication::initialize()
 	// Create a new object using the loaded model (referenced using its name, 'simpleModel')
 	myObject = new StaticObject(mySceneManager, "simpleModel");
 	myObject->setName("object");
-	myObject->setEffect("colored -d #303030 -g 1.0 -s 20.0");
+	myObject->setEffect("colored -d #303030 -g 1.0 -s 20.0 -v envmap -t");
 	// Add a selection listener to the object. HelloApplication::onSelectedChanged will be
 	// called whenever the object selection state changes.
 	myObject->pitch(-90 * Math::DegToRad);
@@ -98,18 +98,18 @@ void HelloApplication::initialize()
 	myEditor->setEnabled(false);
 
 	// Create a plane for reference.
-	PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
-	//SphereShape* plane = new SphereShape(mySceneManager, 0.5, 4);
+	PlaneShape* plane = new PlaneShape(mySceneManager, 100, 100, Vector2f(50, 50));
 	plane->setName("ground");
-	plane->setEffect("colored -d #305050");
+	//plane->setEffect("textured -d cyclops/test/checker2.jpg -s 20 -g 1 -v envmap");
+	plane->setEffect("textured -d demos/common/brightday1/negy.png");
 	plane->pitch(-90 * Math::DegToRad);
 	plane->setPosition(0, -1, -2);
 
 	// Setup a light for the scene.
 	Light* light = new Light(mySceneManager);
 	light->setEnabled(true);
-	light->setPosition(Vector3f(0, 20, -2));
-	light->setColor(Color(1.0f, 1.0f, 0.0f));
+	light->setPosition(Vector3f(0, 5, -2));
+	light->setColor(Color(1.0f, 1.0f, 1.0f));
 	light->setAmbient(Color(0.1f, 0.1f, 0.1f));
 	//light->setSoftShadowWidth(0.01f);
 	mySceneManager->setMainLight(light);
@@ -117,13 +117,13 @@ void HelloApplication::initialize()
 	// Setup a light for the scene.
 	Light* light2 = new Light(mySceneManager);
 	light2->setEnabled(true);
-	light2->setPosition(Vector3f(10, 0, -2));
+	light2->setPosition(Vector3f(5, 0, -2));
 	light2->setColor(Color(0.0f, 1.0f, 0.0f));
 
 	// Setup a light for the scene.
 	Light* light3 = new Light(mySceneManager);
 	light3->setEnabled(true);
-	light3->setPosition(Vector3f(0, 0, 8));
+	light3->setPosition(Vector3f(0, 0, 3));
 	light3->setColor(Color(0.0f, 0.0f, 1.0f));
 
 	// Create and initialize the menu manager
