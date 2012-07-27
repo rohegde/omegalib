@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::Renderable" name="omega::Renderable">
 <area shape="rect" id="node5" href="$classomega_1_1_console_renderable.html" title="omega::ConsoleRenderable" alt="" coords="372,67,527,91"/>
 <area shape="rect" id="node7" href="$classomega_1_1_pointer_renderable.html" title="omega::PointerRenderable" alt="" coords="374,115,525,139"/>
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1_scene_renderable.html" title="omegaToolkit::SceneRenderable" alt="" coords="361,163,538,187"/>

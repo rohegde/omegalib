@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::SharedObject" name="omega::SharedObject">
 <area shape="rect" id="node5" href="$classomega_1_1_python_interpreter.html" title="omega::PythonInterpreter" alt="" coords="371,197,522,221"/>
 <area shape="rect" id="node7" href="$classomega_1_1_server_module.html" title="omega::ServerModule" alt="" coords="383,245,511,269"/>
 <area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="5,221,147,245"/>

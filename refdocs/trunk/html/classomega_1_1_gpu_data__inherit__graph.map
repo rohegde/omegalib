@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::GpuData" name="omega::GpuData">
 <area shape="rect" id="node5" href="$classomega_1_1_gpu_buffer.html" title="omega::GpuBuffer" alt="" coords="11,149,121,173"/>
 <area shape="rect" id="node9" href="$classomega_1_1_gpu_constant.html" title="omega::GpuConstant" alt="" coords="147,149,272,173"/>
 <area shape="rect" id="node2" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="67,5,208,29"/>

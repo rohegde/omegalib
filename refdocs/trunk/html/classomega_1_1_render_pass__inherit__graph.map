@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::RenderPass" name="omega::RenderPass">
 <area shape="rect" id="node5" href="$classomega_osg_1_1_osg_render_pass.html" title="omegaOsg::OsgRenderPass" alt="" coords="5,149,163,173"/>
 <area shape="rect" id="node7" href="$classomega_toolkit_1_1_ui_render_pass.html" title="omegaToolkit::UiRenderPass" alt="" coords="187,149,345,173"/>
 <area shape="rect" id="node9" href="$classomega_vtk_1_1_vtk_render_pass.html" title="omegaVtk::VtkRenderPass" alt="" coords="371,149,520,173"/>

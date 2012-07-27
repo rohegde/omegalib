@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omegaToolkit::ui::Slider" name="omegaToolkit::ui::Slider">
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_barebone_slider.html" title="omegaToolkit::ui::Barebone\lSlider" alt="" coords="5,222,160,258"/>
 <area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_default_slider.html" title="omegaToolkit::ui::Default\lSlider" alt="" coords="184,222,328,258"/>
 <area shape="rect" id="node2" href="$classomega_toolkit_1_1ui_1_1_widget.html" title="omegaToolkit::ui::Widget" alt="" coords="98,77,240,101"/>

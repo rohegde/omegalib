@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="TiXmlNode" name="TiXmlNode">
 <area shape="rect" id="node5" href="$class_ti_xml_comment.html" title="An XML comment." alt="" coords="5,149,96,173"/>
 <area shape="rect" id="node7" href="$class_ti_xml_declaration.html" title="In correct XML the declaration is the first entry in the file." alt="" coords="121,149,220,173"/>
 <area shape="rect" id="node9" href="$class_ti_xml_document.html" title="Always the top level node." alt="" coords="245,149,339,173"/>

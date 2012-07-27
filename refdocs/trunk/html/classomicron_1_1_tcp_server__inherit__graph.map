@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omicron::TcpServer" name="omicron::TcpServer">
 <area shape="rect" id="node7" href="$classomega_1_1_mission_control_server.html" title="omega::MissionControlServer" alt="" coords="5,221,168,245"/>
 <area shape="rect" id="node9" href="$classomicron_1_1_tablet_server.html" title="omicron::TabletServer" alt="" coords="193,221,321,245"/>
 <area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="121,77,223,101"/>

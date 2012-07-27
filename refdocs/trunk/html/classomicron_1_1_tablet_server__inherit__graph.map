@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omicron::TabletServer" name="omicron::TabletServer">
 <area shape="rect" id="node2" href="$classomicron_1_1_tcp_server.html" title="omicron::TcpServer" alt="" coords="11,77,127,101"/>
 <area shape="rect" id="node4" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="18,5,120,29"/>
 </map>

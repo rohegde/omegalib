@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::Actor" name="omega::Actor">
 <area shape="rect" id="node7" href="$classomega_toolkit_1_1_controller_manipulator.html" title="omegaToolkit::Controller\lManipulator" alt="" coords="503,5,643,41"/>
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1_default_mouse_interactor.html" title="omegaToolkit::DefaultMouse\lInteractor" alt="" coords="494,65,653,101"/>
 <area shape="rect" id="node11" href="$classomega_toolkit_1_1_default_two_hands_interactor.html" title="omegaToolkit::DefaultTwo\lHandsInteractor" alt="" coords="499,125,647,161"/>

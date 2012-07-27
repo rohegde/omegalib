@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::PortholeTabletService" name="omega::PortholeTabletService">
 <area shape="rect" id="node2" href="$classomicron_1_1_service.html" title="omicron::Service" alt="" coords="5,149,107,173"/>
 <area shape="rect" id="node4" href="$classomicron_1_1_reference_type.html" title="omicron::ReferenceType" alt="" coords="59,5,200,29"/>
 <area shape="rect" id="node8" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="121,77,249,101"/>

@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omegaToolkit::RenderableSceneObject" name="omegaToolkit::RenderableSceneObject">
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1_billboard.html" title="omegaToolkit::Billboard" alt="" coords="613,5,747,29"/>
 <area shape="rect" id="node11" href="$classomega_toolkit_1_1_bounding_sphere.html" title="omegaToolkit::BoundingSphere" alt="" coords="595,53,765,77"/>
 <area shape="rect" id="node13" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="625,101,735,125"/>

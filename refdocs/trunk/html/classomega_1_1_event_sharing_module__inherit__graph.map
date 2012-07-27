@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omega::EventSharingModule" name="omega::EventSharingModule">
 <area shape="rect" id="node2" href="$classomega_1_1_server_module.html" title="omega::ServerModule" alt="" coords="21,77,149,101"/>
 <area shape="rect" id="node4" href="$classomega_1_1_shared_object.html" title="omega::SharedObject" alt="" coords="21,5,149,29"/>
 </map>

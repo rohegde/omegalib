@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omegaToolkit::ui::Widget" name="omegaToolkit::ui::Widget">
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_abstract_button.html" title="omegaToolkit::ui::Abstract\lButton" alt="" coords="593,6,743,42"/>
 <area shape="rect" id="node13" href="$classomega_toolkit_1_1ui_1_1_container.html" title="omegaToolkit::ui::Container" alt="" coords="590,67,746,91"/>
 <area shape="rect" id="node19" href="$classomega_toolkit_1_1ui_1_1_image.html" title="omegaToolkit::ui::Image" alt="" coords="599,115,737,139"/>

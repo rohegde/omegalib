@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omicron::IEventListener" name="omicron::IEventListener">
 <area shape="rect" id="node3" href="$classomega_1_1_application_server.html" title="omega::ApplicationServer" alt="" coords="207,5,353,29"/>
 <area shape="rect" id="node5" href="$classomega_1_1_server_base.html" title="omega::ServerBase" alt="" coords="221,53,339,77"/>
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_menu_item.html" title="omegaToolkit::ui::MenuItem" alt="" coords="201,101,359,125"/>

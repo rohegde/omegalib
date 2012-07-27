@@ -1,4 +1,4 @@
-<map id="G" name="G">
+<map id="omegaToolkit::ui::WidgetRenderable" name="omegaToolkit::ui::WidgetRenderable">
 <area shape="rect" id="node7" href="$classomega_toolkit_1_1ui_1_1_barebone_button_renderable.html" title="omegaToolkit::ui::Barebone\lButtonRenderable" alt="" coords="572,6,727,42"/>
 <area shape="rect" id="node9" href="$classomega_toolkit_1_1ui_1_1_barebone_slider_renderable.html" title="omegaToolkit::ui::Barebone\lSliderRenderable" alt="" coords="572,66,727,102"/>
 <area shape="rect" id="node11" href="$classomega_toolkit_1_1ui_1_1_container_renderable.html" title="omegaToolkit::ui::Container\lRenderable" alt="" coords="571,126,727,162"/>
