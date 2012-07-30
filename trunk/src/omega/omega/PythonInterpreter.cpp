@@ -35,7 +35,7 @@ using namespace omega;
 
 #ifdef OMEGA_USE_PYTHON
 
-#ifdef OMEGA_OS_LINUX
+#ifdef OMEGA_READLINE_FOUND
 	#include<readline/readline.h>
 	#include<readline/history.h>
 #endif
@@ -72,7 +72,7 @@ public:
 		{
 			osleep(100);
 			String line;
-#ifdef OMEGA_OS_LINUX
+#ifdef OMEGA_READLINE_FOUND
 			String prompt = ostr("%1%>>", %SystemManager::instance()->getApplication()->getName());
 			char *inp_c = readline(prompt.c_str()); //Instead of getline()
 			line = (const char *)(inp_c); //Because C strings stink
@@ -258,7 +258,7 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const 
 		myHelpData.push_back(help);
 	}
 
-#ifdef OMEGA_OS_LINUX
+#ifdef OMEGA_READLINE_FOUND
 	cur = methods;
 	while(cur->ml_name != NULL)
 	{
