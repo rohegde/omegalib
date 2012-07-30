@@ -1,4 +1,4 @@
-# Doxyfile 1.8.1.1
+# Doxyfile 1.8.1.2
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project
@@ -730,7 +730,23 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = ..\src\3rdparty \
-                         ..\src\apps
+                         ..\src\apps \
+                         ../external/omicron/include/omicron/dinput.h \
+                         ../external/omicron/include/omicron/wiimote_common.h \
+                         ../external/omicron/include/omicron/wiimote_state.h \
+                         ../external/omicron/include/omicron/thinkgear.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Analog.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Analog_Output.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_BaseClass.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Button.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Configure.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Connection.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Serial.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Shared.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Tracker.h \
+                         ../external/omicron/include/omicron/vrpn/vrpn_Types.h \
+                         ../external/omicron/include/omicron/fast_mutex.h \
+                         ../external/omicron/include/omicron/static_assert.h
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 
@@ -745,7 +761,11 @@ EXCLUDE_SYMLINKS       = NO
 # for example use the pattern */test/*
 
 EXCLUDE_PATTERNS       = eq \
-                         libconfig
+                         libconfig \
+                         boost \
+                         co \
+                         boost::* \
+                         LP*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names 
 # (namespaces, classes, functions, etc.) that should be excluded from the 
@@ -762,7 +782,13 @@ EXCLUDE_SYMBOLS        = boost \
                          osg \
                          osgAnimation \
                          tthread \
-                         pluginfbx
+                         pluginfbx \
+                         LP* \
+                         vrpn_* \
+                         vtkCommand \
+                         vtkGeneric* \
+                         vtkPythonUtil \
+                         GLX*
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or 
 # directories that contain example code fragments that are included (see 
