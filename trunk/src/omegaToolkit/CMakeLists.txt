@@ -33,7 +33,7 @@ add_definitions( -D_CRT_SECURE_NO_WARNINGS -DOTK_EXPORTING -DEQ_FABRIC_STATIC -D
 # Source files
 set( srcs 
 		omegaToolkit/ToolkitUtils.cpp
-		omegaToolkit/BoundingSphere.cpp
+#		omegaToolkit/BoundingSphere.cpp
 		omegaToolkit/Box.cpp
 		omegaToolkit/ControllerManipulator.cpp
 		omegaToolkit/DefaultMouseInteractor.cpp
@@ -42,7 +42,7 @@ set( srcs
 		omegaToolkit/Mesh.cpp
 		omegaToolkit/MeshData.cpp
 		omegaToolkit/omegaToolkitPythonApi.cpp
-		omegaToolkit/ReferenceBox.cpp
+#		omegaToolkit/ReferenceBox.cpp
 		omegaToolkit/RenderableSceneObject.cpp
 		omegaToolkit/SceneEditorModule.cpp
 		omegaToolkit/SceneRenderable.cpp
@@ -70,16 +70,16 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit.h
 		
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ToolkitUtils.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/BoundingSphere.h
+#		${CMAKE_SOURCE_DIR}/include/omegaToolkit/BoundingSphere.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Box.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ControllerManipulator.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultMouseInteractor.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/DefaultTwoHandsInteractor.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Effect.h
+#		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Effect.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/glteapot.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/Mesh.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/MeshData.h
-		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ReferenceBox.h
+#		${CMAKE_SOURCE_DIR}/include/omegaToolkit/ReferenceBox.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/RenderableSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneEditorModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneRenderable.h

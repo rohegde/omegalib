@@ -29,7 +29,7 @@
 
 #include "omega/ServerEngine.h"
 #include "omega/Application.h"
-#include "omegaToolkit/BoundingSphere.h"
+//#include "omegaToolkit/BoundingSphere.h"
 #include "ui/Container.h"
 #include "ui/WidgetFactory.h"
 
