@@ -63,6 +63,11 @@ The basic instructions are the same as for the Windows guide. Under linux, you w
  * Follow the same steps as the one in windows to generate a makefile
  * run `make`
  * if the build succeeds, get in the `bin` directory and you should find your libraries and compiled demo applications.
+ 
+=== IMPORTANT: Solving missing `eq/eq.h` include ===
+On some linux distributions, the build may fail due to a missing `eq/eq.h` include. For some reason cmake won't compute project dependencies correctly and it will forget to build the Equalizer project before building omega. A quick solution to this problem is building equalizer manually: 
+
+run `make equalizer` and wait for equqlizer to build, then run `make`.
 
 == CMake options ==
 This section is a quick guide to some build options ofered in cmake.
