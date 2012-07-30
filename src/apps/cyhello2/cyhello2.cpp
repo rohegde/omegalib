@@ -149,6 +149,20 @@ void HelloApplication::initialize()
 	myQuitMenuItem = menu->addItem(MenuItem::Button);
 	myQuitMenuItem->setText("Quit");
 	myQuitMenuItem->setCommand("oexit()");
+
+	LineSet* ls = new LineSet(mySceneManager);
+	ls->setEffect("colored -d green -v plain | colored -d green -t -a -v lineglow -V -g 3.0 -s 50");
+
+	int num = 10;
+	float segmentLength = 2.0f / num;
+	for(int i = 0; i < num; i++)
+	{
+
+		LineSet::Line* l1 = ls->addLine();
+		l1->setStart(Vector3f(-1 + segmentLength * i, 0, -2));
+		l1->setEnd(Vector3f(-1 + segmentLength * (i + 1), 0, -2));
+		l1->setThickness(0.01f + (float)i * 0.005f);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

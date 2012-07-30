@@ -30,6 +30,7 @@
 #include <osg/Material>
 #include <osgFX/Technique>
 #include <osg/PolygonMode>
+#include<osg/BlendFunc>
 
 using namespace cyclops;
 
@@ -44,7 +45,7 @@ public:
     bool validate(osg::State&) const { return true; }
 protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	ProgramAsset* getProgram(const String& name, const String& variant = "")
+	ProgramAsset* getProgram(const String& name, const String& variant = "", bool vertexShaderVariant = false)
 	{
 		String shaderRoot = "cyclops/common";
 		String progName = name;
@@ -56,6 +57,10 @@ protected:
 		{
 			fragName = ostr("%1%/%2%-%3%.frag", %shaderRoot %name %variant);
 			progName = ostr("%1%-%2%", %name %variant);
+			if(vertexShaderVariant)
+			{
+				vertName = ostr("%1%/%2%-%3%.vert", %shaderRoot %name %variant);
+			}
 		}
 		else
 		{
@@ -69,24 +74,32 @@ protected:
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void define_passes()
 	{
-		if(StringUtils::startsWith(myDefinition, "colored")) define_passes_colored();
-		else if(StringUtils::startsWith(myDefinition, "textured")) define_passes_textured();
-		else if(StringUtils::startsWith(myDefinition, "bump")) define_passes_bump();
-		else
+		Vector<String> passes = StringUtils::split(myDefinition, "|");
+
+		for(auto iter = passes.begin(); iter != passes.end(); iter++)
 		{
-			ofwarn("EffectNode: could not create effect with definition '%1%'", %myDefinition);
-			addPass(new osg::StateSet());
+			StringUtils::trim(*iter);
+			if(StringUtils::startsWith(*iter, "colored")) define_passes_colored(*iter);
+			else if(StringUtils::startsWith(*iter, "textured")) define_passes_textured(*iter);
+			else if(StringUtils::startsWith(*iter, "bump")) define_passes_bump(*iter);
+			else
+			{
+				ofwarn("EffectNode: could not create effect with definition '%1%'", %myDefinition);
+				addPass(new osg::StateSet());
+			}
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_colored()
+	void define_passes_colored(const String& def)
 	{
 		String effectName;
 		String diffuse;
 		double shininess = 10;
 		double gloss = 0;
 		bool transparent = false;
+		bool vertexShaderVariant = false;
+		bool additive = false;
 		String variation = "";
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
@@ -94,12 +107,14 @@ protected:
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
 		ah.newNamedString('v', "variation", "variation", "effect variation", variation);
+		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
 		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.process(myDefinition.c_str());
+		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.process(def.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
-		ProgramAsset* asset = getProgram("Colored", variation);
+		ProgramAsset* asset = getProgram("Colored", variation, vertexShaderVariant);
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
@@ -108,6 +123,14 @@ protected:
 			if(transparent)
 			{
 				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+				ss->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF); 
+				ss->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+				if(additive)
+				{
+					osg::BlendFunc* bf = new osg::BlendFunc();
+					bf->setFunction(GL_SRC_ALPHA, GL_ONE);
+					ss->setAttribute(bf);
+				}
 			}
 		}
 
@@ -129,7 +152,7 @@ protected:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_textured()
+	void define_passes_textured(const String& def)
 	{
 		String effectName;
 		String diffuse;
@@ -137,19 +160,23 @@ protected:
 		double shininess = 10;
 		double gloss = 0;
 		bool transparent = false;
+		bool additive = false;
+		bool vertexShaderVariant = false;
 		libconfig::ArgumentHelper ah;
 		ah.newString("effectName", "the effect name", effectName);
 		ah.newNamedString('d', "diffuse", "diffuse texture", "diffuse texture file name", diffuse);
 		ah.newNamedString('v', "variant", "shader variant", "fragment shader variant", variant);
+		ah.newFlag('V', "Vertex", "enable vertex shader variant", vertexShaderVariant);
 		ah.newNamedDouble('s', "shininess", "shininess", "specular power - defines size of specular highlights", shininess);
 		ah.newNamedDouble('g', "gloss", "gloss", "gloss [0 - 1] - reflectivity of surface", gloss);
 		ah.newFlag('t', "transparent", "enable transparency for this effect", transparent);
-		ah.process(myDefinition.c_str());
+		ah.newFlag('a', "additive", "enable additive blending for this effect", additive);
+		ah.process(def.c_str());
 
 		SceneManager* sm = SceneManager::instance();
 		osg::StateSet* ss = new osg::StateSet();
 		osg::Program* prog = NULL;
-		ProgramAsset* asset = getProgram("Textured", variant);
+		ProgramAsset* asset = getProgram("Textured", variant, vertexShaderVariant);
 		if(asset != NULL)
 		{
 			ss->setAttributeAndModes(asset->program, osg::StateAttribute::ON);
@@ -163,6 +190,10 @@ protected:
 			if(transparent)
 			{
 				ss->setMode(GL_BLEND, osg::StateAttribute::ON);
+				if(additive)
+				{
+					
+				}
 			}
 		}
 
@@ -179,7 +210,7 @@ protected:
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	void define_passes_bump()
+	void define_passes_bump(const String& def)
 	{
 	}
 

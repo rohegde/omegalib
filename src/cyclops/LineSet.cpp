@@ -24,64 +24,91 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omegaOsg/OsgSceneObject.h"
-#include "omega/SceneNode.h"
+#include "cyclops/LineSet.h"
 
-#include <osg/Node>
-#include <osg/MatrixTransform>
+#include<osgwTools/Shapes.h>
 
-using namespace omegaOsg;
+using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false)
+LineSet::Line::Line():
+	myGeode(NULL),
+	myMaterial(NULL),
+	myStartPoint(Vector3f(-1, 0, 0)),
+	myEndPoint(Vector3f(1, 0, 0)),
+	myThickness(0.01f)
 {
-    myTransform = new osg::MatrixTransform();
-    myTransform->addChild( node );
-	myTransform->setDataVariance( osg::Object::DYNAMIC );
+	myGeode = new osg::Geode();
+	myTransform = new osg::PositionAttitudeTransform();
 
-	const osg::BoundingSphere& bs = node->getBound();
-	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
+	myTransform->addChild(myGeode);
 
-	float fradius = bs.radius();
-	if(fradius == -1) fradius = 0;
+	osg::Geometry* geome = new osg::Geometry();
+	myGeode->addDrawable(geome);
 
-	Vector3f radius(fradius, fradius, fradius);
+	osg::Vec2s subdiv(1, 8);
+	osgwTools::makeOpenCylinder(1.0f, 0.5f, 0.5f, subdiv, geome);
 
-	ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+	myThicknessUniform = new osg::Uniform("unif_Thickness", (float)myThickness);
 
-	myBBox.setExtents(center - radius, center + radius);
+	osg::StateSet* ss = myGeode->getOrCreateStateSet();
+	ss->addUniform( myThicknessUniform );
+
+	updateTransform();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::~OsgSceneObject()
+void LineSet::Line::updateTransform()
 {
-	myTransform->unref();
-	myTransform = NULL;
+	Vector3f dir = (myEndPoint - myStartPoint);
+	Vector3f midpoint = (myStartPoint + myEndPoint) / 2;
+	myLength = dir.norm();
+	dir = dir / myLength;
+	Quaternion o = Math::buildRotation(Vector3f(0, 0, 1), dir, Vector3f(0, 1, 0));
+	osg::Quat qo(o.x(), o.y(), o.z(), o.w());
+	myTransform->setAttitude(qo);
+	myTransform->setScale(osg::Vec3d(myThickness, myThickness, myLength));
+	myTransform->setPosition(osg::Vec3d(myStartPoint.x(), myStartPoint.y(), myStartPoint.z()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::update(SceneNode* node)
+void LineSet::Line::setThickness(float value)
 {
-	node->addListener(this);
-	const AffineTransform3& xform =  node->getFullTransform();
-	const Matrix4f& m = xform.matrix();
-	osg::Matrix oxform;
-	oxform.set(m.data());
-	myTransform->setMatrix( oxform );
- }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-const AlignedBox3* OsgSceneObject::getBoundingBox()
-{
-	return &myBBox;
+	myThickness = value;
+	myThicknessUniform->set(myThickness);
+	myTransform->setScale(osg::Vec3d(myThickness, myThickness, myLength));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::onVisibleChanged(SceneNode* source, bool value) 
+LineSet::LineSet(SceneManager* sm): DrawableObject(sm)
 {
-	myNode->setNodeMask(value ? ~0 : 0);
+	myLineGroup = new osg::Group();
+	initialize(myLineGroup);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::onSelectedChanged(SceneNode* source, bool value) 
-{}
+LineSet::Line* LineSet::addLine()
+{
+	Line* res = NULL;
+	if(!myDisposedLines.empty())
+	{
+		res = myDisposedLines.back();
+		myDisposedLines.pop_back();
+	}
+	else
+	{
+		res = new Line();
+	}
+	myActiveLines.push_back(res);
+	myLineGroup->addChild(res->getOsgNode());
+
+	return res;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void LineSet::removeLine(Line* line)
+{
+	myLineGroup->removeChild(line->getOsgNode());
+	myActiveLines.remove(line);
+	myDisposedLines.push_back(line);
+}

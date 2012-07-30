@@ -24,64 +24,60 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omegaOsg/OsgSceneObject.h"
-#include "omega/SceneNode.h"
+#ifndef __CY_LINE_SET__
+#define __CY_LINE_SET__
 
-#include <osg/Node>
-#include <osg/MatrixTransform>
+#include "cyclops/DrawableObject.h"
 
-using namespace omegaOsg;
+#include<osg/PositionAttitudeTransform>
+#include<osg/Material>
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::OsgSceneObject(osg::Node* node): myNode(node), myInitialized(false)
-{
-    myTransform = new osg::MatrixTransform();
-    myTransform->addChild( node );
-	myTransform->setDataVariance( osg::Object::DYNAMIC );
+namespace cyclops {
+	using namespace omega;
+	using namespace omegaOsg;
 
-	const osg::BoundingSphere& bs = node->getBound();
-	Vector3f center(bs.center()[0], bs.center()[1], bs.center()[2]);
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API LineSet: public DrawableObject
+	{
+	public:
+		class CY_API Line
+		{
+		public:
+			Line();
 
-	float fradius = bs.radius();
-	if(fradius == -1) fradius = 0;
+			void setStart(const Vector3f& value) { myStartPoint = value; updateTransform(); }
+			void setEnd(const Vector3f& value) { myEndPoint = value; updateTransform(); }
+			osg::Node* getOsgNode() { return myTransform; }
+			void setThickness(float value);
+			float getThickness() { return myThickness; }
 
-	Vector3f radius(fradius, fradius, fradius);
 
-	ofmsg("&OsgRenderable center: %1%, size: %2%", %center %bs.radius());
+		private:
+			Vector3f myStartPoint;
+			Vector3f myEndPoint;
+			osg::Geode* myGeode;
+			osg::PositionAttitudeTransform* myTransform;
+			osg::Material* myMaterial;
+			osg::Uniform* myThicknessUniform;
+			float myThickness;
+			float myLength;
 
-	myBBox.setExtents(center - radius, center + radius);
-}
+		private:
+			void updateTransform();
+		};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-OsgSceneObject::~OsgSceneObject()
-{
-	myTransform->unref();
-	myTransform = NULL;
-}
+	public:
+		LineSet(SceneManager* sm);
+		Line* addLine();
+		void removeLine(Line* line);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::update(SceneNode* node)
-{
-	node->addListener(this);
-	const AffineTransform3& xform =  node->getFullTransform();
-	const Matrix4f& m = xform.matrix();
-	osg::Matrix oxform;
-	oxform.set(m.data());
-	myTransform->setMatrix( oxform );
- }
+	private:
+		osg::Group* myLineGroup;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-const AlignedBox3* OsgSceneObject::getBoundingBox()
-{
-	return &myBBox;
-}
+		List<Line*> myActiveLines;
+		List<Line*> myDisposedLines;
+	};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::onVisibleChanged(SceneNode* source, bool value) 
-{
-	myNode->setNodeMask(value ? ~0 : 0);
-}
+};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void OsgSceneObject::onSelectedChanged(SceneNode* source, bool value) 
-{}
+#endif
