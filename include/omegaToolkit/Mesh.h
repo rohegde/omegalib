@@ -28,7 +28,7 @@
 #define __MESH_H__
 
 #include "omegaToolkitConfig.h"
-#include "Effect.h"
+//#include "Effect.h"
 #include "omega/Renderable.h"
 #include "MeshData.h"
 #include "omega/RenderPass.h"
@@ -52,7 +52,7 @@ namespace omegaToolkit {
 
 	private:
 		MeshData* myData;
-		Effect* myEffect;
+		//Effect* myEffect;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

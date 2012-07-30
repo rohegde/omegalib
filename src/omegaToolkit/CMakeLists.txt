@@ -38,7 +38,7 @@ set( srcs
 		omegaToolkit/ControllerManipulator.cpp
 		omegaToolkit/DefaultMouseInteractor.cpp
 		omegaToolkit/DefaultTwoHandsInteractor.cpp
-		omegaToolkit/Effect.cpp
+#		omegaToolkit/Effect.cpp
 		omegaToolkit/Mesh.cpp
 		omegaToolkit/MeshData.cpp
 		omegaToolkit/omegaToolkitPythonApi.cpp

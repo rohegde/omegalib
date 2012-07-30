@@ -30,7 +30,7 @@
 #include "omegaToolkitConfig.h"
 #include "SceneRenderable.h"
 #include "omega/ISceneObject.h"
-#include "omegaToolkit/Effect.h"
+//#include "omegaToolkit/Effect.h"
 
 namespace omegaToolkit {
 
@@ -51,13 +51,13 @@ namespace omegaToolkit {
 		virtual const AlignedBox3* getBoundingBox() { return NULL; }
 		virtual bool hasBoundingBox() { return false; }
 
-		void setEffect(BaseEffect* value) { myEffect = value; }
-		BaseEffect* getEffect() { return myEffect; }
+		//void setEffect(BaseEffect* value) { myEffect = value; }
+		//BaseEffect* getEffect() { return myEffect; }
 
 		virtual bool isInitialized() {return RenderableFactory::isInitialized(); }
 		virtual void initialize(ServerEngine* server) {RenderableFactory::initialize(server); }
 	private:
-		BaseEffect* myEffect;
+		//BaseEffect* myEffect;
 	};
 }; // namespace omegaToolkit
 
