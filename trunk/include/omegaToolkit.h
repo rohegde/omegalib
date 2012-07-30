@@ -33,7 +33,7 @@
 #include "omegaToolkit/ControllerManipulator.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/DefaultTwoHandsInteractor.h"
-#include "omegaToolkit/Effect.h"
+//#include "omegaToolkit/Effect.h"
 #include "omegaToolkit/Mesh.h"
 #include "omegaToolkit/MeshData.h"
 #include "omegaToolkit/ReferenceBox.h"

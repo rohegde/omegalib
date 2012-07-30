@@ -32,8 +32,7 @@ using namespace omega;
 using namespace omegaToolkit;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-RenderableSceneObject::RenderableSceneObject():
-	myEffect(NULL)
+RenderableSceneObject::RenderableSceneObject()
 {
 }
 
@@ -44,16 +43,7 @@ void RenderableSceneObject::draw(SceneNode* node, RenderState* state)
 	if(sr != NULL)
 	{
 		sr->setSceneNode(node);
-		// If this object has an associated effect use it to draw the renderable. 
-		// Otherwise, draw renderable directly
-		if(myEffect != NULL)
-		{
-			myEffect->draw(sr, state);
-		}
-		else
-		{
-			sr->draw(state);
-		}
+		sr->draw(state);
 	}
 }
 
