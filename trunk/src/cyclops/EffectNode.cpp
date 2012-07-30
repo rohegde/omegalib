@@ -76,7 +76,7 @@ protected:
 	{
 		Vector<String> passes = StringUtils::split(myDefinition, "|");
 
-		for(auto iter = passes.begin(); iter != passes.end(); iter++)
+		for(Vector<String>::iterator iter = passes.begin(); iter != passes.end(); iter++)
 		{
 			StringUtils::trim(*iter);
 			if(StringUtils::startsWith(*iter, "colored")) define_passes_colored(*iter);
