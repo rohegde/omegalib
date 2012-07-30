@@ -28,7 +28,7 @@
 #define __OTK_H__
 
 #include "omegaToolkit/omegaToolkitConfig.h"
-#include "omegaToolkit/BoundingSphere.h"
+//#include "omegaToolkit/BoundingSphere.h"
 //#include "omegaToolkit/Box.h"
 #include "omegaToolkit/ControllerManipulator.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
