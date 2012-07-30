@@ -63,11 +63,11 @@
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aae4653695260acaa977782b32ece3d48"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#aae4653695260acaa977782b32ece3d48">trim</a> (<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str, bool left=true, bool right=true)</td></tr>
 <tr class="memdesc:aae4653695260acaa977782b32ece3d48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes any whitespace characters, be it standard space or TABs and so on.  <a href="#aae4653695260acaa977782b32ece3d48"></a><br/></td></tr>
-<tr class="memitem:a12ff50a185da83d573eec337f82c2f76"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#a12ff50a185da83d573eec337f82c2f76">split</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;delims=&quot;\t\n &quot;, unsigned int maxSplits=0)</td></tr>
-<tr class="memdesc:a12ff50a185da83d573eec337f82c2f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a StringVector that contains all the substrings delimited by the characters in the passed <code>delims</code> argument.  <a href="#a12ff50a185da83d573eec337f82c2f76"></a><br/></td></tr>
-<tr class="memitem:a471db5b7ad18f685c90b005a2fdf775b"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#a471db5b7ad18f685c90b005a2fdf775b">tokenise</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;delims=&quot;\t\n &quot;, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;doubleDelims=&quot;\&quot;&quot;, unsigned int maxSplits=0)</td></tr>
-<tr class="memdesc:a471db5b7ad18f685c90b005a2fdf775b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><pre class="fragment">    Returns a StringVector that contains all the substrings delimited
-</pre><p> by the characters in the passed <code>delims</code> argument, or in the <code>doubleDelims</code> argument, which is used to include (normal) delimeters in the tokenised string.  <a href="#a471db5b7ad18f685c90b005a2fdf775b"></a><br/></td></tr>
+<tr class="memitem:a3a75e34852c584885e7517447be240a8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_vector.html">Vector</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#a3a75e34852c584885e7517447be240a8">split</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;delims=&quot;\t\n &quot;, unsigned int maxSplits=0)</td></tr>
+<tr class="memdesc:a3a75e34852c584885e7517447be240a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a StringVector that contains all the substrings delimited by the characters in the passed <code>delims</code> argument.  <a href="#a3a75e34852c584885e7517447be240a8"></a><br/></td></tr>
+<tr class="memitem:ae7d022d18a89fd90e6487204c734ef53"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_vector.html">Vector</a>&lt; <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#ae7d022d18a89fd90e6487204c734ef53">tokenise</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;delims=&quot;\t\n &quot;, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;doubleDelims=&quot;\&quot;&quot;, unsigned int maxSplits=0)</td></tr>
+<tr class="memdesc:ae7d022d18a89fd90e6487204c734ef53"><td class="mdescLeft">&#160;</td><td class="mdescRight"><pre class="fragment">    Returns a StringVector that contains all the substrings delimited
+</pre><p> by the characters in the passed <code>delims</code> argument, or in the <code>doubleDelims</code> argument, which is used to include (normal) delimeters in the tokenised string.  <a href="#ae7d022d18a89fd90e6487204c734ef53"></a><br/></td></tr>
 <tr class="memitem:a48ff6649694300c0ce6dac9bacc913d2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#a48ff6649694300c0ce6dac9bacc913d2">toLowerCase</a> (<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str)</td></tr>
 <tr class="memdesc:a48ff6649694300c0ce6dac9bacc913d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lower-cases all the characters in the string.  <a href="#a48ff6649694300c0ce6dac9bacc913d2"></a><br/></td></tr>
 <tr class="memitem:a5b1cb50fb4641491a6e22ce63f22dc49"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_string_utils.html#a5b1cb50fb4641491a6e22ce63f22dc49">toUpperCase</a> (<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;str)</td></tr>
@@ -249,7 +249,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a12ff50a185da83d573eec337f82c2f76"></a>
+<a class="anchor" id="a3a75e34852c584885e7517447be240a8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -257,7 +257,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::vector&lt;<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&gt; omicron::StringUtils::split </td>
+          <td class="memname">static <a class="el" href="classomicron_1_1_vector.html">Vector</a>&lt;<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&gt; omicron::StringUtils::split </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em>, </td>
@@ -509,7 +509,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a471db5b7ad18f685c90b005a2fdf775b"></a>
+<a class="anchor" id="ae7d022d18a89fd90e6487204c734ef53"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -517,7 +517,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::vector&lt;<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&gt; omicron::StringUtils::tokenise </td>
+          <td class="memname">static <a class="el" href="classomicron_1_1_vector.html">Vector</a>&lt;<a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a>&gt; omicron::StringUtils::tokenise </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em>, </td>

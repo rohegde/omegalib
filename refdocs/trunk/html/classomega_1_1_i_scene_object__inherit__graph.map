@@ -1,11 +1,7 @@
 <map id="omega::ISceneObject" name="omega::ISceneObject">
-<area shape="rect" id="node3" href="$classomega_osg_1_1_osg_scene_object.html" title="omegaOsg::OsgSceneObject" alt="" coords="182,71,343,95"/>
-<area shape="rect" id="node5" href="$classomega_toolkit_1_1_renderable_scene_object.html" title="omegaToolkit::Renderable\lSceneObject" alt="" coords="189,119,337,155"/>
-<area shape="rect" id="node19" href="$classomega_vtk_1_1_vtk_attach_point.html" title="omegaVtk::VtkAttachPoint" alt="" coords="189,180,337,204"/>
-<area shape="rect" id="node7" href="$classomega_toolkit_1_1_billboard.html" title="omegaToolkit::Billboard" alt="" coords="411,5,544,29"/>
-<area shape="rect" id="node9" href="$classomega_toolkit_1_1_bounding_sphere.html" title="omegaToolkit::BoundingSphere" alt="" coords="392,53,563,77"/>
-<area shape="rect" id="node11" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="422,101,533,125"/>
-<area shape="rect" id="node13" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="418,149,537,173"/>
-<area shape="rect" id="node15" href="$classomega_toolkit_1_1_reference_box.html" title="omegaToolkit::ReferenceBox" alt="" coords="397,197,558,221"/>
-<area shape="rect" id="node17" href="$classomega_toolkit_1_1_textured_quad.html" title="omegaToolkit::TexturedQuad" alt="" coords="396,245,559,269"/>
+<area shape="rect" id="node3" href="$classomega_osg_1_1_osg_scene_object.html" title="omegaOsg::OsgSceneObject" alt="" coords="182,5,343,29"/>
+<area shape="rect" id="node5" href="$classomega_toolkit_1_1_renderable_scene_object.html" title="omegaToolkit::Renderable\lSceneObject" alt="" coords="189,54,337,90"/>
+<area shape="rect" id="node11" href="$classomega_vtk_1_1_vtk_attach_point.html" title="omegaVtk::VtkAttachPoint" alt="" coords="189,115,337,139"/>
+<area shape="rect" id="node7" href="$classomega_toolkit_1_1_box.html" title="omegaToolkit::Box" alt="" coords="397,36,507,60"/>
+<area shape="rect" id="node9" href="$classomega_toolkit_1_1_mesh.html" title="omegaToolkit::Mesh" alt="" coords="393,84,511,108"/>
 </map>

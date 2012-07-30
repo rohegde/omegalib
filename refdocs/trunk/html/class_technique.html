@@ -69,11 +69,11 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a4645412479f9cd45251b4334563d52bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcyclops_1_1_program_asset.html">ProgramAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a4645412479f9cd45251b4334563d52bd">getProgram</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;variant=&quot;&quot;)</td></tr>
+<tr class="memitem:a5dd28d76f68e6557c15e5c17bb8ac9a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcyclops_1_1_program_asset.html">ProgramAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a5dd28d76f68e6557c15e5c17bb8ac9a3">getProgram</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;variant=&quot;&quot;, bool vertexShaderVariant=false)</td></tr>
 <tr class="memitem:a0dfe543ec5abfa283e310b47b3a2baa2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a0dfe543ec5abfa283e310b47b3a2baa2">define_passes</a> ()</td></tr>
-<tr class="memitem:ac059d15b0a8847e797bc732b7905dc17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#ac059d15b0a8847e797bc732b7905dc17">define_passes_colored</a> ()</td></tr>
-<tr class="memitem:a47ae8e8abe75c553057d05d0e40ef4cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a47ae8e8abe75c553057d05d0e40ef4cd">define_passes_textured</a> ()</td></tr>
-<tr class="memitem:a8b40ae47d811902ff34da63d4d7fd5f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a8b40ae47d811902ff34da63d4d7fd5f2">define_passes_bump</a> ()</td></tr>
+<tr class="memitem:a808426af3226bb4c982528902c02f672"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a808426af3226bb4c982528902c02f672">define_passes_colored</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;def)</td></tr>
+<tr class="memitem:a206c942860e80280d0cc75c21534395e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a206c942860e80280d0cc75c21534395e">define_passes_textured</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;def)</td></tr>
+<tr class="memitem:a83c06c783f7de665fc27a348711b5ecc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_technique.html#a83c06c783f7de665fc27a348711b5ecc">define_passes_bump</a> (const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;def)</td></tr>
 </table>
 <h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3ff9968a6146de9adf9ffa0208874a58"></a>
@@ -124,7 +124,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8b40ae47d811902ff34da63d4d7fd5f2"></a>
+<a class="anchor" id="a83c06c783f7de665fc27a348711b5ecc"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -134,7 +134,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void Technique::define_passes_bump </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -147,7 +148,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac059d15b0a8847e797bc732b7905dc17"></a>
+<a class="anchor" id="a808426af3226bb4c982528902c02f672"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -157,7 +158,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void Technique::define_passes_colored </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -170,7 +172,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a47ae8e8abe75c553057d05d0e40ef4cd"></a>
+<a class="anchor" id="a206c942860e80280d0cc75c21534395e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -180,7 +182,8 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void Technique::define_passes_textured </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -193,7 +196,7 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4645412479f9cd45251b4334563d52bd"></a>
+<a class="anchor" id="a5dd28d76f68e6557c15e5c17bb8ac9a3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -210,7 +213,13 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td>
-          <td class="paramname"><em>variant</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>variant</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>vertexShaderVariant</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
