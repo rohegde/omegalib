@@ -28,7 +28,7 @@
 #include "omega/SceneQuery.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/ControllerManipulator.h"
-#include "omegaToolkit/BoundingSphere.h"
+//#include "omegaToolkit/BoundingSphere.h"
 #include "omegaToolkit/ToolkitUtils.h"
 
 using namespace omegaToolkit;
@@ -39,13 +39,7 @@ EditableObject::EditableObject(SceneNode* node, SceneEditorModule* editor):
 	mySceneNode(node), myEditor(editor)
 {
 	mySceneNode = node;
-
-	mySelectionSphere = new BoundingSphere();
-	mySelectionSphere->setDrawOnSelected(false);
-	mySelectionSphere->setVisible(true);
 	mySceneNode->setSelectable(true);
-	//mySceneNode->addObject(mySelectionSphere);
-	//mySceneNode->setBoundingBoxVisible(true);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

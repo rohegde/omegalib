@@ -30,10 +30,13 @@
 #include "omega/ServerEngine.h"
 #include "omega/Application.h"
 #include "omega/Actor.h"
-#include "omegaToolkit/BoundingSphere.h"
+#include "omega/SceneNode.h"
+#include "omegaToolkitConfig.h"
+//#include "omegaToolkit/BoundingSphere.h"
 
 namespace omegaToolkit
 {
+	using namespace omega;
 	class SceneEditorModule;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,13 +45,11 @@ namespace omegaToolkit
 	public:
 		EditableObject(SceneNode* node, SceneEditorModule* editor);
 
-		SceneNode* getSceneNode() { return mySceneNode; }
-		BoundingSphere* getBoundingSphere() { return mySelectionSphere; }
+		omega::SceneNode* getSceneNode() { return mySceneNode; }
 		SceneEditorModule* getEditor() { return myEditor; }
 
 	private:
 		SceneNode* mySceneNode;
-		BoundingSphere* mySelectionSphere;
 		SceneEditorModule* myEditor;
 		String myName;
 	};
