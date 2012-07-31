@@ -250,6 +250,9 @@ void EqualizerDisplaySystem::generateEqConfig()
 				up = orientation * up;
 				right = orientation * right;
 
+				// Reorient Z.
+				right.z() = - right.z();
+
 				topLeft = center + (up * th / 2) - (right * tw / 2);
 				bottomLeft = center - (up * th / 2) - (right * tw / 2);
 				bottomRight = center - (up * th / 2) + (right * tw / 2);
@@ -259,7 +262,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			tc.bottomLeft = bottomLeft;
 			tc.topLeft = topLeft;
 			tc.bottomRight = bottomRight;
-			tc.center = bottomRight;
+			tc.center = center;
 
 			String tileCfg = "";
 			START_BLOCK(tileCfg, "segment");
