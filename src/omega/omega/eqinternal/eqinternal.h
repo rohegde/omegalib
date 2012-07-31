@@ -119,6 +119,8 @@ private:
 	Timer myGlobalTimer;
 	//! Global fps counter.
 	Stat* myFpsStat;
+
+    Ref<ServerBase> myServer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,9 +132,6 @@ public:
 public:
     NodeImpl( eq::Config* parent );
 
-    //! Returns the application server instance running on this node.
-    ServerBase* getApplicationServer();
-
 protected:
     virtual bool configInit( const eq::uint128_t& initID );
     virtual bool configExit();
@@ -143,10 +142,6 @@ private:
     Ref<ServerBase> myServer;
     //FrameData myFrameData;
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-inline ServerBase* NodeImpl::getApplicationServer()
-{ return myServer.get(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal

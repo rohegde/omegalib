@@ -87,24 +87,30 @@ void EventSharingModule::commitSharedData(SharedOStream& out)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void EventSharingModule::updateSharedData(SharedIStream& in)
 {
+	// Read the events from the network data stream, and send them to the engine for processing.
 	myQueueLock.lock();
 	in >> myQueuedEvents;
 	if(myQueuedEvents != 0)
 	{
-		ServiceManager* sm = getServer()->getServiceManager();
-		sm->lockEvents();
+		ServerEngine* server = getServer();
+		//ServiceManager* sm = getServer()->getServiceManager();
+		//sm->lockEvents();
 		while(myQueuedEvents)
 		{
-			Event* evtHead = sm->writeHead();
-			EventUtils::deserializeEvent(*evtHead, *in.getInternalStream());
+			Event evt;
+			//Event* evtHead = sm->writeHead();
+			EventUtils::deserializeEvent(evt, *in.getInternalStream());
 
-			if(evtHead->isProcessed())
+			if(evt.isProcessed())
 			{
 				owarn("EventSharingModule::updateSharedData: received already-processed event.");
 			}
+
+			server->handleEvent(evt);
+
 			myQueuedEvents--;
 		}
-		sm->unlockEvents();
+		//sm->unlockEvents();
 	}
 	myQueueLock.unlock();
 }
