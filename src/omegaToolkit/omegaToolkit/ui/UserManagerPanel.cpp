@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ServerEngine.h"
+#include "omega/Engine.h"
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/UserManagerPanel.h"
 #include "omegaToolkit/ui/WidgetFactory.h"

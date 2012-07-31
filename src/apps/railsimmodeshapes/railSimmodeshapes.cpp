@@ -47,7 +47,7 @@ String sDefaultScript = "";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class OmegaViewer: public ServerModule, public SceneManagerListener
+class OmegaViewer: public EngineModule, public SceneManagerListener
 {
 public:
 	//Constructor
@@ -399,7 +399,7 @@ void OmegaViewer::handleEvent(const Event& evt)
 //
 void OmegaViewer::update(const UpdateContext& context) 
 {
-//	sceneMngr->getMainLight()->setPosition(getServer()->getDefaultCamera()->getPosition());
+//	sceneMngr->getMainLight()->setPosition(getEngine()->getDefaultCamera()->getPosition());
 //	cout<<context.time<<endl;
 	if(!isFreeFly){
 	camTrans(curpos);
@@ -511,17 +511,17 @@ void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<floa
 void OmegaViewer::camRot( Vector3f pitchYawRoll )
 {
 	//ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
-	getServer()->getDefaultCamera()->setYawPitchRoll(pitchYawRoll);
+	getEngine()->getDefaultCamera()->setYawPitchRoll(pitchYawRoll);
 }
 
 void OmegaViewer::camRot( Quaternion orientation )
 {
 	//ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
-	getServer()->getDefaultCamera()->setOrientation(orientation);
+	getEngine()->getDefaultCamera()->setOrientation(orientation);
 }
 
 Quaternion OmegaViewer::getcamRot(){
-	Quaternion q=getServer()->getDefaultCamera()->getOrientation();
+	Quaternion q=getEngine()->getDefaultCamera()->getOrientation();
 //	Vector3f rotation=Vector3f(q.getPitch(),q.getYaw(),q.getRoll());
 	return q;
 }
@@ -533,13 +533,13 @@ Quaternion OmegaViewer::getcamRot(){
 void OmegaViewer::camTrans( Vector3f pos)
 {
 	//ofwarn("Moving Camera to :: %1%", %pos);
-	getServer()->getDefaultCamera()->setPosition(pos);
+	getEngine()->getDefaultCamera()->setPosition(pos);
 }
 
 Vector3f OmegaViewer::getcamTrans()
 {
 	//ofwarn("Moving Camera to :: %1%", %pos);
-	return getServer()->getDefaultCamera()->getPosition();
+	return getEngine()->getDefaultCamera()->getPosition();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
@@ -556,7 +556,7 @@ void OmegaViewer::camDefault()
 void OmegaViewer::toggleCameraController( )
 {
 	//enable/disable the free fly
-	getServer()->getDefaultCamera()->setControllerEnabled(isFreeFly);
+	getEngine()->getDefaultCamera()->setControllerEnabled(isFreeFly);
 }
 
 Vector3f  OmegaViewer::Lerp(float t, Vector3f start,Vector3f end)

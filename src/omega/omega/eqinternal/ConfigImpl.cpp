@@ -121,7 +121,7 @@ bool ConfigImpl::init()
 	//if(!sys->renderOnMaster())
 	{
 		ApplicationBase* app = sys->getApplication();
-		myServer = app->createMaster();
+		myServer = new Engine(app);
 		myServer->initialize();
 	
 		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();

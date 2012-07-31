@@ -38,7 +38,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public ServerModule, IMenuItemListener, SceneNodeListener
+class HelloApplication: public EngineModule, IMenuItemListener, SceneNodeListener
 {
 public:
 	HelloApplication();

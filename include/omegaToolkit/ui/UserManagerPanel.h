@@ -38,7 +38,7 @@ namespace omegaToolkit { namespace ui {
 	class OTK_API UserManagerPanel: public Container
 	{
 	public:
-		UserManagerPanel(ServerEngine* srv): Container(srv), myDepthImageData(NULL), myDepthImage(NULL) {}
+		UserManagerPanel(Engine* srv): Container(srv), myDepthImageData(NULL), myDepthImage(NULL) {}
 
 		void initialize(Container* owner, const String& openNIServiceName, const String& observerUpdateServiceName);
 	

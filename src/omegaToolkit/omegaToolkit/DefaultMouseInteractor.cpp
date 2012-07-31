@@ -72,7 +72,7 @@ void DefaultMouseInteractor::updateNode()
 	// interactor
 	if(!myPointerEventReceived || myNode == NULL) return;
 
-	//if(getServer()->isMaster())
+	//if(getEngine()->isMaster())
 	//{
 	//ofmsg("MST Ray origin %1% Direction %2%", %myPointerRay.getOrigin() %myPointerRay.getDirection());
 	//}

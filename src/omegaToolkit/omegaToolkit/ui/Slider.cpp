@@ -31,7 +31,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Slider::Slider(ServerEngine* srv):
+Slider::Slider(Engine* srv):
 	Widget(srv),
 	myTicks(100),
 	myValue(0),

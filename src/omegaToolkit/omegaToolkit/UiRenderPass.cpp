@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omegaToolkit/UiRenderPass.h"
 #include "omega/Renderer.h"
-#include "omega/ServerEngine.h"
+#include "omega/Engine.h"
 #include "omega/DrawInterface.h"
 #include "omega/SceneNode.h"
 #include "omegaToolkit/ui/Container.h"

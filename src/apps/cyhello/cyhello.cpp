@@ -35,7 +35,7 @@ using namespace omega;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public ServerModule
+class HelloApplication: public EngineModule
 {
 public:
 	HelloApplication();

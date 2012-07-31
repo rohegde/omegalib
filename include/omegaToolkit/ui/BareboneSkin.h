@@ -61,7 +61,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class BareboneButtonRenderable;
 	public:
-		BareboneButton(ServerEngine* srv): Button(srv) {}
+		BareboneButton(Engine* srv): Button(srv) {}
 		virtual ~BareboneButton() {}
 		virtual Renderable* createRenderable()  { return new BareboneButtonRenderable(this); }
 	};
@@ -71,7 +71,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class BareboneSliderRenderable;
 	public:
-		BareboneSlider(ServerEngine* srv): Slider(srv) {}
+		BareboneSlider(Engine* srv): Slider(srv) {}
 		virtual ~BareboneSlider() {}
 		virtual Renderable* createRenderable() { return new BareboneSliderRenderable(this); }
 	};
@@ -80,11 +80,11 @@ namespace omegaToolkit { namespace ui {
 	class BareboneWidgetFactory: public WidgetFactory
 	{
 	public:
-		BareboneWidgetFactory(ServerEngine* srv): WidgetFactory(srv) {}
+		BareboneWidgetFactory(Engine* srv): WidgetFactory(srv) {}
 
 		virtual Button* createButton(const String& name, Container* container)
 		{
-			Button* button = new BareboneButton(getServer());
+			Button* button = new BareboneButton(getEngine());
 			button->setName(name);
 			button->getLabel()->setText(name);
 			container->addChild(button);
@@ -93,7 +93,7 @@ namespace omegaToolkit { namespace ui {
 
 		virtual Slider* createSlider(const String& name, Container* container)
 		{
-			Slider* slider = new BareboneSlider(getServer());
+			Slider* slider = new BareboneSlider(getEngine());
 			container->addChild(slider);
 			return slider;
 		}

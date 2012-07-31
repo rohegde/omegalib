@@ -39,7 +39,7 @@ namespace omegaToolkit { namespace ui {
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Label(ServerEngine* server);
+		Label(Engine* server);
 		virtual ~Label();
 
 		virtual Renderable* createRenderable();

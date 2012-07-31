@@ -60,7 +60,7 @@ namespace omega {
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class OMEGA_API ServerEngine: public ServerBase
+	class OMEGA_API Engine: public ServerBase
 	{
 	public:
 		typedef List< Ref<Camera> > CameraCollection;
@@ -70,11 +70,11 @@ namespace omega {
 	friend class Renderer;
 	public:
 		static const int MaxActivePointers = 128;
-		static ServerEngine* instance() { return mysInstance; }
+		static Engine* instance() { return mysInstance; }
 
 	public:
-		ServerEngine(ApplicationBase* app, bool master);
-		virtual ~ServerEngine();
+		Engine(ApplicationBase* app);
+		virtual ~Engine();
 
 		ServiceManager* getServiceManager();
 
@@ -138,7 +138,7 @@ namespace omega {
 		//@}
 
 	private:
-		static ServerEngine* mysInstance;
+		static Engine* mysInstance;
 
 		// Engine lock, used when client / server thread synchronization is needed.
 		Lock myLock;
@@ -171,35 +171,35 @@ namespace omega {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Camera* ServerEngine::getDefaultCamera()
+	inline Camera* Engine::getDefaultCamera()
 	{ return myDefaultCamera.get(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ServiceManager* ServerEngine::getServiceManager()
+	inline ServiceManager* Engine::getServiceManager()
 	{ return SystemManager::instance()->getServiceManager(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineClientList& ServerEngine::getClients()
+	inline EngineClientList& Engine::getClients()
 	{ return myClients; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ServerEngine::setDefaultFont(const FontInfo& font)
+	inline void Engine::setDefaultFont(const FontInfo& font)
 	{ myDefaultFont = font;	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const FontInfo& ServerEngine::getDefaultFont()
+	inline const FontInfo& Engine::getDefaultFont()
 	{ return myDefaultFont; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Console* ServerEngine::getConsole()
+	inline Console* Engine::getConsole()
 	{ return myConsole.get();	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline bool ServerEngine::isConsoleEnabled()
+	inline bool Engine::isConsoleEnabled()
 	{ return myConsoleEnabled; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ServerEngine::setConsoleEnabled(bool value)
+	inline void Engine::setConsoleEnabled(bool value)
 	{ myConsoleEnabled = value; }
 }; // namespace omega
 

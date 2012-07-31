@@ -54,7 +54,7 @@ namespace omegaVtk {
 		virtual bool hasBoundingBox();
 
 		virtual bool isInitialized() { return myInitialized; }
-		virtual void initialize(ServerEngine* server) { myInitialized = true; }
+		virtual void initialize(Engine* server) { myInitialized = true; }
 
 		void attachProp(vtkProp3D* prop);
 		void detachProp(vtkProp3D* prop);

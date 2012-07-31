@@ -61,7 +61,7 @@ void VtkAttachPoint::detachProp(vtkProp3D* prop)
 void VtkAttachPoint::update(SceneNode* owner)
 {
 	const AffineTransform3& xform =  owner->getFullTransform();
-	const omega::math::matrix<4, 4>& m = xform.matrix();
+	const Matrix4f& m = xform.matrix();
 	for(int i = 0; i < 4; i++)
 	{
 		for(int j = 0; j < 4; j++)

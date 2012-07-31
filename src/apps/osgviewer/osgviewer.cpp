@@ -45,7 +45,7 @@ String sModelName;
 float sModelSize = 1.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OsgViewer: public ServerModule
+class OsgViewer: public EngineModule
 {
 public:
 	OsgViewer()
@@ -122,11 +122,11 @@ void OsgViewer::initialize()
 	// Create an omegalib scene node and attach the osg node to it. This is used to interact with the 
 	// osg object through omegalib interactors.
 	OsgSceneObject* oso = new OsgSceneObject(node);
-	mySceneNode = new SceneNode(getServer());
+	mySceneNode = new SceneNode(getEngine());
 	mySceneNode->addObject(oso);
 	mySceneNode->setBoundingBoxVisible(true);
-	getServer()->getScene()->addChild(mySceneNode);
-	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
+	getEngine()->getScene()->addChild(mySceneNode);
+	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());
 
     // Set the interactor style used to manipulate meshes.
 	if(SystemManager::settingExists("config/interactor"))

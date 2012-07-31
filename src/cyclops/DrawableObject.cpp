@@ -45,7 +45,7 @@ DrawableObject::DrawableObject(SceneManager* scene):
 {
 	myEffect = new EffectNode();
 	
-	ServerEngine* engine = mySceneManager->getEngine();
+	Engine* engine = mySceneManager->getEngine();
 	engine->getScene()->addChild(this);
 }
 
@@ -57,7 +57,7 @@ void DrawableObject::initialize(osg::Node* node)
 	// Create an omegalib scene node. The scene node will be used to manipulate some of this drawable object basic
 	// properties like transform and visibility. The scene node also gives access to the object bounding sphere and
 	// allows for simple hit tests.
-	//ServerEngine* engine = mySceneManager->getEngine();
+	//Engine* engine = mySceneManager->getEngine();
 	//mySceneNode = new SceneNode(engine);
 	//engine->getScene()->addChild(mySceneNode);
 

@@ -33,7 +33,7 @@ using namespace omegaToolkit;
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class StructureViewer: public ServerModule, ui::IMenuItemListener
+class StructureViewer: public EngineModule, ui::IMenuItemListener
 {
 public:
 	enum ControlMode { ControlEntity, ControlCamera, ControlLight };
@@ -199,7 +199,7 @@ void StructureViewer::handleEvent(const Event& evt)
 			if(evt.isFlagSet(Event::Button1))
 			{
 				Ray r;
-				if(getServer()->getDisplaySystem()->getViewRayFromEvent(evt, r))
+				if(getEngine()->getDisplaySystem()->getViewRayFromEvent(evt, r))
 				{
 					myLight->setPosition(r.getPoint(myLightDistance));
 				}

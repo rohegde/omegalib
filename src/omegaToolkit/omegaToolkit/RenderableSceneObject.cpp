@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/SceneNode.h"
 #include "omegaToolkit/RenderableSceneObject.h"
-#include "omega/ServerEngine.h"
+#include "omega/Engine.h"
 
 using namespace omega;
 using namespace omegaToolkit;

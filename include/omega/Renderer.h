@@ -34,7 +34,7 @@
 
 namespace omega {
 	class RenderPass;
-	class ServerEngine;
+	class Engine;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Renderer: public RendererBase
@@ -42,7 +42,7 @@ namespace omega {
 	public:
 		Renderer(ServerBase* server);
 
-		ServerEngine* getServer();
+		Engine* getEngine();
 
 		void addRenderPass(RenderPass* pass, bool addToFront);
 		void removeRenderPass(RenderPass* pass);
@@ -63,7 +63,7 @@ namespace omega {
 		void innerDraw(const DrawContext& context);
 
 	private:
-		Ref<ServerEngine> myServer;
+		Ref<Engine> myServer;
 		Ref<DrawInterface> myRenderer;
 		List<RenderPass*> myRenderPassList;
 		Queue<IRendererCommand*> myRenderableCommands;
@@ -74,7 +74,7 @@ namespace omega {
 	{ return myRenderer.get(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ServerEngine* Renderer::getServer()
+	inline Engine* Renderer::getEngine()
 	{ return myServer.get(); }
 }; // namespace omega
 

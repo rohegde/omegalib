@@ -44,7 +44,7 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 	if(!sys->isMaster())
 	{
 		// This is the not master node. Create a standard server instance.
-		myServer = app->createServer();
+		myServer = new Engine(app);
 	}
 }
 

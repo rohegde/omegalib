@@ -27,7 +27,7 @@
 #ifndef __SCENE_EDITOR_MODULE_H__
 #define __SCENE_EDITOR_MODULE_H__
 
-#include "omega/ServerEngine.h"
+#include "omega/Engine.h"
 #include "omega/Application.h"
 #include "omega/Actor.h"
 #include "omega/SceneNode.h"
@@ -54,7 +54,7 @@ namespace omegaToolkit
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API SceneEditorModule: public ServerModule
+	class OTK_API SceneEditorModule: public EngineModule
 	{
 	public:
 		enum InteractorStyle { MouseInteractorStyle, ControllerInteractorStyle };
