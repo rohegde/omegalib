@@ -33,7 +33,7 @@ That's pretty much it. A basic example of an 'empty' openGL application looks li
 		}
 	};
 
-	class HelloApplication: public ServerModule
+	class HelloApplication: public EngineModule
 	{
 	public:
 		HelloApplication() {}

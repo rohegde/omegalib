@@ -29,7 +29,7 @@ Now let's go back to the main topic and take a look at the basic omega/osg appli
 	using namespace omega;
 	using namespace omegaOsg;
 
-	class OsgViewer: public ServerModule
+	class OsgViewer: public EngineModule
 	{
 	public:
 		OsgViewer()

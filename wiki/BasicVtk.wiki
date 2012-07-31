@@ -29,7 +29,7 @@ But GPU-bound objects like mappers and actors require a graphics context to run.
 	using namespace omegaToolkit;
 	using namespace omegaVtk;
 
-	class VtkScene: public ServerModule
+	class VtkScene: public EngineModule
 	{
 	public:
 		VtkScene();

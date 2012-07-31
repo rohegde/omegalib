@@ -23,7 +23,7 @@ The following code illustrates a basic cyclops application:
 	using namespace omega;
 	using namespace cyclops;
 
-	class HelloApplication: public ServerModule
+	class HelloApplication: public EngineModule
 	{
 	public:
 		HelloApplication(): mySceneManager(NULL) {}
