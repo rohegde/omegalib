@@ -41,7 +41,7 @@ namespace omegaToolkit { namespace ui {
     friend class Container;
     friend class WidgetRenderable;
     public:
-        Widget(ServerEngine* server);
+        Widget(Engine* server);
         virtual ~Widget();
 
         virtual Renderable* createRenderable();
@@ -191,7 +191,7 @@ namespace omegaToolkit { namespace ui {
         bool myStereo;
         bool myInitialized;
 
-        ServerEngine* myServer;
+        Engine* myServer;
 
         static NameGenerator mysNameGenerator;
 

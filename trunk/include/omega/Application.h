@@ -38,11 +38,11 @@ namespace omega {
 	class RenderPass;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ApplicationNode: public ServerModule
-	{
-	public:
-		bool isMaster() { return SystemManager::instance()->isMaster(); }
-	};
+	//class ApplicationNode: public EngineModule
+	//{
+	//public:
+	//	bool isMaster() { return SystemManager::instance()->isMaster(); }
+	//};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! a convenience application class to create omegaToolkit applications
@@ -63,15 +63,6 @@ namespace omega {
 			ModuleServices::addModule(new EventSharingModule());
 			ModuleServices::addModule(new T());
 		}
-
-		virtual RendererBase* createClient(ServerBase* server)
-		{ return new Renderer(server); }
-		
-		virtual ServerBase* createServer()
-		{ return new ServerEngine(this, false); }		
-		
-		virtual ServerBase* createMaster()
-		{ return new ServerEngine(this, true); }		
 
 	private:
 		String myAppName;

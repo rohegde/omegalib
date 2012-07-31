@@ -30,7 +30,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
-#include "omega/ServerEngine.h"
+#include "omega/Engine.h"
 #include "omegaToolkit/SceneEditorModule.h"
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/ui/MenuManager.h"

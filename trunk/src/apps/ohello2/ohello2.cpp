@@ -52,7 +52,7 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public ServerModule
+class HelloApplication: public EngineModule
 {
 public:
 	HelloApplication() {}
@@ -156,7 +156,7 @@ void HelloApplication::handleEvent(const Event& evt)
 	{
 		// Normalize the mouse position using the total display resolution, 
 		// then multiply to get 180 degree rotations
-		DisplaySystem* ds = getServer()->getDisplaySystem();
+		DisplaySystem* ds = getEngine()->getDisplaySystem();
 		Vector2i resolution = ds->getCanvasSize();
 		myYaw = (evt.getPosition(0) / resolution[0]) * 180;
 		myPitch = (evt.getPosition(1) / resolution[1]) * 180;

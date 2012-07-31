@@ -32,7 +32,7 @@
 #include "IRendererCommand.h"
 
 namespace omega {
-	class ServerEngine;
+	class Engine;
 	class Renderable;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,12 +82,12 @@ namespace omega {
 		RenderableFactory();
 		virtual ~RenderableFactory();
 		virtual Renderable* createRenderable() = 0;
-		virtual void initialize(ServerEngine* srv);
+		virtual void initialize(Engine* srv);
 		void dispose();
 		void refresh();
 		virtual bool isInitialized();
 		Renderable* getRenderable(Renderer* client);
-		ServerEngine* getServer();
+		Engine* getEngine();
 		List<Renderable*>::ConstRange getRenderables() const;
 
 	protected:
@@ -95,7 +95,7 @@ namespace omega {
 
 	private:
 		bool myInitialized;
-		ServerEngine* myServer;
+		Engine* myServer;
 		List<Renderable*> myRenderables;
 	};
 
@@ -112,7 +112,7 @@ namespace omega {
 	{ return myInitialized; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline ServerEngine* RenderableFactory::getServer()
+	inline Engine* RenderableFactory::getEngine()
 	{ return myServer; }
 
 }; // namespace omega

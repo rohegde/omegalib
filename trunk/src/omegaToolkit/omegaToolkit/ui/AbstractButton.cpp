@@ -31,7 +31,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-AbstractButton::AbstractButton(ServerEngine* server):
+AbstractButton::AbstractButton(Engine* server):
 	Widget(server),
 	myCheckable(false),
 	myChecked(false),

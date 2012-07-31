@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/ServerEngine.h"
+#include "omega/Engine.h"
 #include "omega/Application.h"
 #include "omega/Renderable.h"
 #include "omega/Observer.h"
@@ -37,12 +37,12 @@
 
 using namespace omega;
 
-List<ServerModule*> ModuleServices::mysModules;
-ServerEngine* ServerEngine::mysInstance = NULL;
+List<EngineModule*> ModuleServices::mysModules;
+Engine* Engine::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::ServerEngine(ApplicationBase* app, bool master):
-    ServerBase(app, master),
+Engine::Engine(ApplicationBase* app):
+    ServerBase(app),
     //myActivePointerTimeout(2.0f),
     myDefaultCamera(NULL),
     myConsoleEnabled(false),
@@ -53,14 +53,14 @@ ServerEngine::ServerEngine(ApplicationBase* app, bool master):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::~ServerEngine()
+Engine::~Engine()
 {
     ImageUtils::internalDispose();
 	ModuleServices::cleanup();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::initialize()
+void Engine::initialize()
 {
     myLock.lock();
     ImageUtils::internalInitialize();
@@ -141,7 +141,7 @@ void ServerEngine::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::clientInitialize(Renderer* client)
+void Engine::clientInitialize(Renderer* client)
 {
     myLock.lock();
 	ModuleServices::initializeRenderer(this, client);
@@ -149,7 +149,7 @@ void ServerEngine::clientInitialize(Renderer* client)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::preDraw(Renderer* r, const DrawContext& context)
+void Engine::preDraw(Renderer* r, const DrawContext& context)
 {
     myLock.lock();
 	ModuleServices::preDraw(this, r, context);
@@ -157,7 +157,7 @@ void ServerEngine::preDraw(Renderer* r, const DrawContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::postDraw(Renderer* r, const DrawContext& context)
+void Engine::postDraw(Renderer* r, const DrawContext& context)
 {
     myLock.lock();
 	ModuleServices::postDraw(this, r, context);
@@ -166,14 +166,14 @@ void ServerEngine::postDraw(Renderer* r, const DrawContext& context)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::addClient(Renderer* client)
+void Engine::addClient(Renderer* client)
 {
     oassert(client != NULL);
     myClients.push_back(client);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::refreshPointer(int pointerId, const Event& evt)
+void Engine::refreshPointer(int pointerId, const Event& evt)
 {
 	Pointer* ptr = myPointers[pointerId];
 
@@ -190,13 +190,13 @@ void ServerEngine::refreshPointer(int pointerId, const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-SceneNode* ServerEngine::getScene()
+SceneNode* Engine::getScene()
 {
     return myScene.get();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::handleEvent(const Event& evt)
+void Engine::handleEvent(const Event& evt)
 {
     ModuleServices::handleEvent(this, evt);
 
@@ -228,7 +228,7 @@ void ServerEngine::handleEvent(const Event& evt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::update(const UpdateContext& context)
+void Engine::update(const UpdateContext& context)
 {
     ModuleServices::update(this, context);
 
@@ -242,7 +242,7 @@ void ServerEngine::update(const UpdateContext& context)
     myDefaultCamera->updateObserver(obs);}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const SceneQueryResultList& ServerEngine::querySceneRay(const Ray& ray, uint flags)
+const SceneQueryResultList& Engine::querySceneRay(const Ray& ray, uint flags)
 {
     myRaySceneQuery.clearResults();
 	myRaySceneQuery.setSceneNode(myScene.get());
@@ -251,7 +251,7 @@ const SceneQueryResultList& ServerEngine::querySceneRay(const Ray& ray, uint fla
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::drawPointers(Renderer* client, RenderState* state)
+void Engine::drawPointers(Renderer* client, RenderState* state)
 {
 	if(myDrawPointers)
 	{
@@ -267,7 +267,7 @@ void ServerEngine::drawPointers(Renderer* client, RenderState* state)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Camera* ServerEngine::createCamera(uint flags)
+Camera* Engine::createCamera(uint flags)
 {
     Camera* cam = new Camera(flags);
     myCameras.push_back(cam);
@@ -275,7 +275,7 @@ Camera* ServerEngine::createCamera(uint flags)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ServerEngine::destroyCamera(Camera* cam)
+void Engine::destroyCamera(Camera* cam)
 {
     oassert(cam != NULL);
     myCameras.remove(cam);
@@ -283,13 +283,13 @@ void ServerEngine::destroyCamera(Camera* cam)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::CameraCollection::Range ServerEngine::getCameras()
+Engine::CameraCollection::Range Engine::getCameras()
 {
     return CameraCollection::Range(myCameras.begin(), myCameras.end());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ServerEngine::CameraCollection::ConstRange ServerEngine::getCameras() const
+Engine::CameraCollection::ConstRange Engine::getCameras() const
 {
     return CameraCollection::ConstRange(myCameras.begin(), myCameras.end());
 }

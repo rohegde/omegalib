@@ -91,7 +91,7 @@ SceneManager* SceneManager::createAndInitialize()
 	{
 		mysInstance = new SceneManager();
 		ModuleServices::addModule(mysInstance);
-		mysInstance->doInitialize(ServerEngine::instance());
+		mysInstance->doInitialize(Engine::instance());
 	}
 	return mysInstance;
 }
@@ -137,7 +137,7 @@ void SceneManager::loadConfiguration()
 void SceneManager::initialize()
 {
 	myMainLight = NULL;
-	myEngine = getServer();
+	myEngine = getEngine();
 
 	// Make sure the osg module is initialized.
 	if(!myOsg->isInitialized()) myOsg->initialize();

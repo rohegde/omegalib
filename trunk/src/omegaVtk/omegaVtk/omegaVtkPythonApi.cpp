@@ -56,7 +56,7 @@ static PyObject* moduleEnableVtk(PyObject* self, PyObject* args)
 	ModuleServices::addModule(mod);
 
 	// Force module initialization.
-	mod->doInitialize(ServerEngine::instance());
+	mod->doInitialize(Engine::instance());
 
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -69,7 +69,7 @@ static PyObject* queueInitializeView(PyObject* self, PyObject* args)
 	{
 		sInitializeViewCommand = new InitializeViewCommand();
 	}
-	ServerEngine* engine = ServerEngine::instance();
+	Engine* engine = Engine::instance();
 	foreach(Renderer* r, engine->getClients())
 	{
 		r->queueCommand(sInitializeViewCommand);

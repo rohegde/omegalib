@@ -59,7 +59,7 @@ namespace omegaOsg
 		osg::MatrixTransform* getTransformedNode() { return myTransform; }
 
 		virtual bool isInitialized() { return myInitialized; }
-		virtual void initialize(ServerEngine* server) { myInitialized = true; }
+		virtual void initialize(Engine* server) { myInitialized = true; }
 	private:
 		osg::Node* myNode;
 		osg::MatrixTransform* myTransform;

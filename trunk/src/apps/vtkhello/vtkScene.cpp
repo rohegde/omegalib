@@ -38,7 +38,7 @@ using namespace omegaToolkit;
 using namespace omegaVtk;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class VtkScene: public ServerModule
+class VtkScene: public EngineModule
 {
 public:
 	VtkScene();
@@ -74,10 +74,10 @@ void VtkScene::initialize()
 	mySphere->SetPhiResolution(18);
 
 	// Create an omegalib scene node. We will attach our vtk objects to it.
-	mySceneNode = new SceneNode(getServer(), "vtkRoot");
+	mySceneNode = new SceneNode(getEngine(), "vtkRoot");
 	mySceneNode->setPosition(0, 0, -1);
 	mySceneNode->setBoundingBoxVisible(true);
-	getServer()->getScene()->addChild(mySceneNode);
+	getEngine()->getScene()->addChild(mySceneNode);
 
 	// Create a mouse interactor and associate it with our scene node.
 	myMouseInteractor = new DefaultMouseInteractor();
@@ -85,7 +85,7 @@ void VtkScene::initialize()
 	ModuleServices::addModule(myMouseInteractor);
 
 	// Setup the camera
-	getServer()->getDefaultCamera()->focusOn(getServer()->getScene());
+	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

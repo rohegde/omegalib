@@ -28,7 +28,7 @@
 #include "FlockObject.h" 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class FlockApplication: public ServerModule
+class FlockApplication: public EngineModule
 {
 public:
 	FlockApplication();
@@ -48,7 +48,7 @@ private:
 FlockApplication::FlockApplication()
 {
 	// Read flock settings from the configuration file.
-    Config* cfg = getServer()->getSystemManager()->getAppConfig();
+    Config* cfg = getEngine()->getSystemManager()->getAppConfig();
     if(cfg->exists("config"))
     {
         Setting& sCfg = cfg->lookup("config");

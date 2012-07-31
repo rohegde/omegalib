@@ -203,7 +203,7 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class CY_API SceneManager: public ServerModule
+	class CY_API SceneManager: public EngineModule
 	{
 	friend class DrawableObject;
 	friend class Light;
@@ -230,7 +230,7 @@ namespace cyclops {
 		//! Gets the scene manager listener
 		SceneManagerListener* getListener();
 
-		ServerEngine* getEngine() { return myEngine; }
+		Engine* getEngine() { return myEngine; }
 
 		virtual void initialize();
 		virtual void update(const UpdateContext& context);
@@ -294,7 +294,7 @@ namespace cyclops {
 
 	private:
 		static SceneManager* mysInstance;
-		ServerEngine* myEngine;
+		Engine* myEngine;
 		OsgModule* myOsg;
 
 		// Scene manager listener

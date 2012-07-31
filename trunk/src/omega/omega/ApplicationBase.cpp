@@ -31,7 +31,7 @@
 
 using namespace omega;
 
-NameGenerator ServerModule::mysNameGenerator("Module_");
+NameGenerator EngineModule::mysNameGenerator("Module_");
 		
 ///////////////////////////////////////////////////////////////////////////////////////////////
 void Actor::setSceneNode(SceneNode* node)

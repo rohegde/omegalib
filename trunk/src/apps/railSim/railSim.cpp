@@ -45,7 +45,7 @@ String sDefaultScript = "";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class OmegaViewer: public ServerModule
+class OmegaViewer: public EngineModule
 {
 public:
 	//Constructor
@@ -475,7 +475,7 @@ void OmegaViewer::updateCamera( const vector<float>& pos , const vector<float>& 
 void OmegaViewer::camRot( Vector3f pitchYawRoll )
 {
 	//ofwarn("Rotating Camera to :: %1%", %pitchYawRoll);
-	getServer()->getDefaultCamera()->setYawPitchRoll(pitchYawRoll);
+	getEngine()->getDefaultCamera()->setYawPitchRoll(pitchYawRoll);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -483,7 +483,7 @@ void OmegaViewer::camRot( Vector3f pitchYawRoll )
 void OmegaViewer::camTrans( Vector3f pos)
 {
 	//ofwarn("Moving Camera to :: %1%", %pos);
-	getServer()->getDefaultCamera()->setPosition(pos);
+	getEngine()->getDefaultCamera()->setPosition(pos);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -502,7 +502,7 @@ void OmegaViewer::camDefault()
 void OmegaViewer::toggleCameraController( )
 {
 	//enable/disable the free fly
-	getServer()->getDefaultCamera()->setControllerEnabled(isFreeFly);
+	getEngine()->getDefaultCamera()->setControllerEnabled(isFreeFly);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
