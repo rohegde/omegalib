@@ -40,7 +40,7 @@ SphereShape* SphereShape::create(float radius, int subdivisions)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SphereShape::SphereShape(SceneManager* scene, float radius, int subdivisions, Vector2f tiling):
-	DrawableObject(scene), 
+	Entity(scene), 
 		myRadius(radius),
 		mySubdivisions(subdivisions),
 		myTiling(tiling)
@@ -76,7 +76,7 @@ PlaneShape* PlaneShape::create(float width, float height)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PlaneShape::PlaneShape(SceneManager* scene, float width, float height, Vector2f tiling):
-	DrawableObject(scene), 
+	Entity(scene), 
 		myHeight(height),
 		myWidth(width),
 		myTiling(tiling)

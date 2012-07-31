@@ -55,10 +55,10 @@ public:
 	SceneManager* sceneMngr;						
 
 	//Pointers to the entities in the SceneManger.  These pointers will be assigned later for ease of use.
-	Entity* wheelSetEntity;						
-	Entity* frameEntity;						
-	Entity* railFailEntity;		
-	Entity* modeshape;		
+	AnimatedObject* wheelSetEntity;						
+	AnimatedObject* frameEntity;						
+	AnimatedObject* railFailEntity;		
+	AnimatedObject* modeshape;		
 
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
@@ -75,7 +75,7 @@ public:
 	bool loadData( String configAttr , Vector<float> &dataVector , bool pos );
 
 	//updating a specific entity
-	void updateEntity( Entity* entity , const vector<float>& pos , const vector<float>& rot, int curTimeStep );
+	void updateEntity( AnimatedObject* entity , const vector<float>& pos , const vector<float>& rot, int curTimeStep );
 	void updateCamera( const vector<float>& pos , const vector<float>& rot, int curTimeStep );
 
 	//Animation data that will be filled via files later on
@@ -247,20 +247,20 @@ void OmegaViewer::initialize()
 	//go into the sceneMangr to find the entity 0 as defined by
 	// 	/omegalib/data/railsim/test/railSim.scene under the heading <Entities>
 	//  Assign the pointers to entities so you do not have to constantly look them up later
-	railFailEntity = sceneMngr->getObject<Entity>( "0" );
+	railFailEntity = (AnimatedObject*)sceneMngr->getEntityByName( "0" );
 	if(!railFailEntity) owarn("Rail not loaded");
 	else omsg("Rail loaded");
 
-	wheelSetEntity = sceneMngr->getObject<Entity>( "1" );
+	wheelSetEntity = (AnimatedObject*)sceneMngr->getEntityByName( "1" );
 	if(!wheelSetEntity) owarn("Wheel not loaded");
 	else omsg("Wheel loaded");
 
-	frameEntity = sceneMngr->getObject<Entity>( "2" );
+	frameEntity = (AnimatedObject*)sceneMngr->getEntityByName( "2" );
 	if(!frameEntity) owarn("Frame not loaded");
 	else omsg("Frame loaded");
 
 //	multimodel shape trial.
-	modeshape=sceneMngr->getObject<Entity>( "3" );
+	modeshape= (AnimatedObject*)sceneMngr->getEntityByName( "3" );
 	modeshape->setCurrentModelIndex(1);		
 	mcount=0;
 	shapetime=0.0;
@@ -417,7 +417,7 @@ void OmegaViewer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 //  Updates a given entity based on the position and rot array and the desired index
-void OmegaViewer::updateEntity( Entity* entity , const vector<float>& pos , const vector<float>& rot, int curTimeStep ) 
+void OmegaViewer::updateEntity( AnimatedObject* entity , const vector<float>& pos , const vector<float>& rot, int curTimeStep ) 
 {
 	//getting the actual vector index bc ea. quad is x, y, z, w for a time step
 	int actualVecIndex = curTimeStep * 4;

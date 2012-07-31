@@ -80,7 +80,7 @@ void LineSet::Line::setThickness(float value)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-LineSet::LineSet(SceneManager* sm): DrawableObject(sm)
+LineSet::LineSet(SceneManager* sm): Entity(sm)
 {
 	myLineGroup = new osg::Group();
 	initialize(myLineGroup);

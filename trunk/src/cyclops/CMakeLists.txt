@@ -26,9 +26,9 @@
 ###################################################################################################
 add_definitions( -D_CRT_SECURE_NO_WARNINGS -DCY_EXPORTING)
 set(SRCS 
-		DrawableObject.cpp
-		EffectNode.cpp
 		Entity.cpp
+		EffectNode.cpp
+		AnimatedObject.cpp
 		LineSet.cpp
 		Shapes.cpp
 		SkyBox.cpp
@@ -38,9 +38,9 @@ set(SRCS
 		cyclopsPythonApi.cpp)
     
 set(HEADERS 
-		${CMAKE_SOURCE_DIR}/include/cyclops/DrawableObject.h
-		${CMAKE_SOURCE_DIR}/include/cyclops/EffectNode.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Entity.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/EffectNode.h
+		${CMAKE_SOURCE_DIR}/include/cyclops/AnimatedObject.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/LineSet.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/cyclopsConfig.h
 		${CMAKE_SOURCE_DIR}/include/cyclops/Shapes.h

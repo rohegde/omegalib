@@ -57,15 +57,15 @@ public:
 	SceneManager* sceneMngr;						
 
 	//Pointers to the entities in the SceneManger.  These pointers will be assigned later for ease of use.	
-	Entity* modeshape;		
-	Entity* wheelSetEntity;	
-	Entity* frameEntity;
+	AnimatedObject* modeshape;		
+	AnimatedObject* wheelSetEntity;	
+	AnimatedObject* frameEntity;
 
 	virtual void initialize();
 	virtual void update(const UpdateContext& context);
 	virtual void handleEvent(const Event& evt);
 
-	virtual osg::Node* onObjectAdded(DrawableObject* obj);
+	virtual osg::Node* onObjectAdded(Entity* obj);
 
 	//setup methods for camera behavior
 	void toggleCameraController( );
@@ -81,7 +81,7 @@ public:
 	bool loadData( String configAttr , Vector<float> &dataVector , bool pos );
 
 	//updating a specific entity
-	void updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep );
+	void updateEntity( AnimatedObject* entity , vector<float> pos , vector<float> rot, int curTimeStep );
 	void updateCamera( vector<float> pos , vector<float> rot, int curTimeStep );
 
 	//animation data
@@ -264,18 +264,18 @@ void OmegaViewer::initialize()
 	//  Assign the pointers to entities so you do not have to constantly look them up later
 
 
-	wheelSetEntity = sceneMngr->getObject<Entity>( "1" );
+	wheelSetEntity = AnimatedObject::fromEntity(sceneMngr->getEntityByName( "1" ));
 	if(!wheelSetEntity) owarn("Wheel not loaded");
 	else omsg("Wheel loaded");
 
-	frameEntity = sceneMngr->getObject<Entity>( "2" );
+	frameEntity = AnimatedObject::fromEntity(sceneMngr->getEntityByName( "2" ));
 	if(!frameEntity) owarn("Frame not loaded");
 	else omsg("Frame loaded");
 
 
 
 //	multimodel shape trial.
-	modeshape=sceneMngr->getObject<Entity>("0");
+	modeshape = AnimatedObject::fromEntity(sceneMngr->getEntityByName("0"));
 	modeshape->setCurrentModelIndex(0);		
 	mcount=0;
 	shapetime=0.0;
@@ -468,7 +468,7 @@ void OmegaViewer::update(const UpdateContext& context)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // 
 //  Updates a given entity based on the position and rot array and the desired index
-void OmegaViewer::updateEntity( Entity* entity , vector<float> pos , vector<float> rot, int curTimeStep ) 
+void OmegaViewer::updateEntity( AnimatedObject* entity , vector<float> pos , vector<float> rot, int curTimeStep ) 
 {
 	//getting the actual vector index bc ea. quad is x, y, z, w for a time step
 	int actualVecIndex = curTimeStep * 4;
@@ -610,7 +610,7 @@ Quaternion OmegaViewer::toquaternion(const Vector3f& yawPitchRoll)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-osg::Node* OmegaViewer::onObjectAdded(DrawableObject* obj)
+osg::Node* OmegaViewer::onObjectAdded(Entity* obj)
 {
 	// EXAMPLE: Add wireframe to object
 	omsg("Adding object");

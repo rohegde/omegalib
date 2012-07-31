@@ -24,59 +24,90 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_LINE_SET__
-#define __CY_LINE_SET__
+#ifndef __CY_ENTITY__
+#define __CY_ENTITY__
 
-#include "cyclops/Entity.h"
+#include <osg/Texture2D>
+#include <osg/Light>
+#include <osg/Group>
+#include <osg/Switch>
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/SoftShadowMap>
+#include <osgAnimation/BasicAnimationManager>
 
-#include<osg/PositionAttitudeTransform>
-#include<osg/Material>
+#define OMEGA_NO_GL_HEADERS
+#include <omega.h>
+#include <omegaOsg.h>
+#include <omegaToolkit.h>
+
+#include "cyclopsConfig.h"
+#include "SkyBox.h"
+#include "SceneManager.h"
+#include "Entity.h"
 
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
 
+	class SceneManager;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API LineSet: public Entity
+	struct EntityEventCallbacks
+	{
+		String onAdd;
+		String onUpdate;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API AnimatedObject: public Entity
 	{
 	public:
-		class CY_API Line
-		{
-		public:
-			Line();
-
-			void setStart(const Vector3f& value) { myStartPoint = value; updateTransform(); }
-			void setEnd(const Vector3f& value) { myEndPoint = value; updateTransform(); }
-			osg::Node* getOsgNode() { return myTransform; }
-			void setThickness(float value);
-			float getThickness() { return myThickness; }
-
-
-		private:
-			Vector3f myStartPoint;
-			Vector3f myEndPoint;
-			osg::Geode* myGeode;
-			osg::PositionAttitudeTransform* myTransform;
-			osg::Material* myMaterial;
-			osg::Uniform* myThicknessUniform;
-			float myThickness;
-			float myLength;
-
-		private:
-			void updateTransform();
-		};
+		static AnimatedObject* fromEntity(Entity* dobj);
 
 	public:
-		LineSet(SceneManager* sm);
-		Line* addLine();
-		void removeLine(Line* line);
+		AnimatedObject(SceneManager* mng, const String& modelName, const String& entityName);
+		virtual ~AnimatedObject() {}
+
+		ModelAsset* getModel();
+
+		int getNumModels() { return myModel->numNodes; }
+		void setCurrentModelIndex(int index);
+		int getCurrentModelIndex();
+
+		//! Animation support
+		//@{
+		bool hasAnimations();
+		int getNumAnimations();
+		void playAnimation(int id);
+		void loopAnimation(int id);
+		void pauseAnimation(int id);
+		void stopAllAnimations();
+		//@}
+
+		void setEventCallbacks(const EntityEventCallbacks& eec);
 
 	private:
-		osg::Group* myLineGroup;
+		SceneManager* mySceneManager;
 
-		List<Line*> myActiveLines;
-		List<Line*> myDisposedLines;
+		ModelAsset* myModel;
+		osg::Switch* myOsgSwitch;
+		int myCurrentModelIndex;
+
+		// osg animation stuff
+		osgAnimation::BasicAnimationManager* myAnimationManager;
+		const osgAnimation::AnimationList* myAnimations;
+
+		// Callbacks
+		EntityEventCallbacks myCallbacks;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ModelAsset* AnimatedObject::getModel()
+	{ return myModel; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline AnimatedObject* AnimatedObject::fromEntity(Entity* dobj)
+	{ return dynamic_cast<AnimatedObject*>(dobj); }
 
 };
 

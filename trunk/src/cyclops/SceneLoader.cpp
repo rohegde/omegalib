@@ -29,7 +29,7 @@
 
 #include "cyclops/SceneLoader.h"
 #include "cyclops/EffectNode.h"
-#include "cyclops/Entity.h"
+#include "cyclops/AnimatedObject.h"
 #include "cyclops/StaticObject.h"
 
 using namespace cyclops;
@@ -254,7 +254,7 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 		StringUtils::toLowerCase(objtype);
 
 		// Instantiate a drawable object depending on tag name
-		DrawableObject* obj = NULL;
+		Entity* obj = NULL;
 		if(objtype == "plane")	obj = createPlane(xchild);
 		else if(objtype == "sphere") obj = createSphere(xchild);
 		else if(objtype == "staticobject") obj = createStaticObject(xchild);
@@ -323,25 +323,25 @@ SphereShape* SceneLoader::createSphere(TiXmlElement* xchild)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Entity* SceneLoader::createEntity(TiXmlElement* xchild)
+AnimatedObject* SceneLoader::createEntity(TiXmlElement* xchild)
 {
 	// Create a new entity
 	const char* fileIndex = xchild->Attribute("FileIndex");
 	const char* id = xchild->Attribute("Id");
 
-	static NameGenerator ng("Entity");
+	static NameGenerator ng("AnimatedObject");
 
 	if(fileIndex != NULL)
 	{
-		Entity* e = NULL;
-		if(id == NULL) e = new Entity(mySceneManager, fileIndex, ng.generate());
-		else e = new Entity(mySceneManager, fileIndex, id);
+		AnimatedObject* e = NULL;
+		if(id == NULL) e = new AnimatedObject(mySceneManager, fileIndex, ng.generate());
+		else e = new AnimatedObject(mySceneManager, fileIndex, id);
 
 		return e;
 	}
 	else
 	{
-		owarn("SceneLoader: Entity xml tag is missing FileIndex attribute");
+		owarn("SceneLoader: AnimatedObject xml tag is missing FileIndex attribute");
 	}
 	return NULL;
 }
