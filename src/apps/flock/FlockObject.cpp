@@ -28,7 +28,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 FlockObject::FlockObject(SceneManager* scene, FlockSimulator* simulator, const String& agentModelName, const String& name):
-	DrawableObject(scene),
+	Entity(scene),
 		mySimulator(simulator),
 		myFlockRoot(NULL)
 {

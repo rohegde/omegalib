@@ -36,7 +36,7 @@ StaticObject* StaticObject::create(const String& modelName)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 StaticObject::StaticObject(SceneManager* scene, const String& modelName):
-	DrawableObject(scene)
+	Entity(scene)
 {
 	myModel = scene->getModel(modelName);
 	if(myModel != NULL)

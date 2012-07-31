@@ -31,7 +31,7 @@
 #include <osgAnimation/Animation>
 #include <osgUtil/SmoothingVisitor>
 
-#include "cyclops/Entity.h"
+#include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
 
@@ -174,9 +174,9 @@ void SceneManager::resetEnvMapSettings()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addObject(DrawableObject* obj)
+void SceneManager::addEntity(Entity* obj)
 {
-	myObjectList.push_back(obj);
+	myObjectVector.push_back(obj);
 	myObjectDictionary[obj->getName()] = obj;
 
 	osg::Node* objNode = obj->getOsgNode();

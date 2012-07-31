@@ -38,7 +38,7 @@
 #include <osgShadow/SoftShadowMap>
 #include <osgAnimation/BasicAnimationManager>
 
-#include "cyclops/DrawableObject.h"
+#include "cyclops/Entity.h"
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -51,7 +51,7 @@ namespace cyclops {
 
 	class SceneLoader;
 	class SceneManager;
-	class Entity;
+	class AnimatedObject;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
@@ -194,7 +194,7 @@ namespace cyclops {
 		//! Called when an object is added to the scene manager. By reimplementing this method, 
 		//! users can modify the object before insertion in the scenegraph or insert intermediate osg
 		//! nodes.
-		virtual osg::Node* onObjectAdded(DrawableObject* obj)
+		virtual osg::Node* onObjectAdded(Entity* obj)
 		{
 			return obj->getOsgNode();
 		}
@@ -205,7 +205,7 @@ namespace cyclops {
 	//! PYAPI
 	class CY_API SceneManager: public EngineModule
 	{
-	friend class DrawableObject;
+	friend class Entity;
 	friend class Light;
 	public:
 		typedef Dictionary<String, String> ShaderMacroDictionary;
@@ -265,9 +265,10 @@ namespace cyclops {
 
 		//! Object management
 		//@{
-		template<typename T> T* getObject(const String& name);
-		int getNumObjects();
-		List<DrawableObject*>::Range getObjects();
+		Entity* getEntityByName(const String& name);
+		Entity* getEntityByIndex(int index);
+		int getNumEntities();
+		//List<Entity*>::Range getObjects();
 		//@}
 
 		osg::Texture2D* getTexture(const String& name);
@@ -283,7 +284,7 @@ namespace cyclops {
 		void resetEnvMapSettings();
 		void addLight(Light* l);
 		void removeLight(Light* l);
-		void addObject(DrawableObject* obj);
+		void addEntity(Entity* obj);
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
@@ -311,8 +312,8 @@ namespace cyclops {
 
 		ShaderMacroDictionary myShaderMacros;
 
-		Dictionary<String, DrawableObject*> myObjectDictionary;
-		List<DrawableObject*> myObjectList;
+		Dictionary<String, Entity*> myObjectDictionary;
+		Vector<Entity*> myObjectVector;
 		
 		SkyBox* mySkyBox;
 
@@ -327,13 +328,16 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	template<typename T> 
-	inline  T* SceneManager::getObject(const String& name)
-	{ return dynamic_cast<T*>(myObjectDictionary[name]); }
+	inline  Entity* SceneManager::getEntityByName(const String& name)
+	{ return myObjectDictionary[name]; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int SceneManager::getNumObjects()
-	{ return myObjectList.size(); }
+	inline  Entity* SceneManager::getEntityByIndex(int index)
+	{ return myObjectVector[index]; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline int SceneManager::getNumEntities()
+	{ return myObjectVector.size(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void SceneManager::setListener(SceneManagerListener* listener)
@@ -348,8 +352,8 @@ namespace cyclops {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline List<DrawableObject*>::Range SceneManager::getObjects()
-	{ return List<DrawableObject*>::Range(myObjectList.begin(), myObjectList.end()); }
+	//inline List<Entity*>::Range SceneManager::getObjects()
+	//{ return List<Entity*>::Range(myObjectList.begin(), myObjectList.end()); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int SceneManager::getNumActiveLights()

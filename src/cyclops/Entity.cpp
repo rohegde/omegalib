@@ -36,170 +36,50 @@
 using namespace cyclops;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-struct AnimationManagerFinder : public osg::NodeVisitor 
-{ 
-    osgAnimation::BasicAnimationManager* am; 
-    
-    AnimationManagerFinder(): am(NULL) {setTraversalMode(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN); } 
-    
-    void apply(osg::Node& node) { 
-    
-        if (am != NULL) 
-            return; 
-    
-        if (node.getUpdateCallback()) {        
-            am = dynamic_cast<osgAnimation::BasicAnimationManager*>(node.getUpdateCallback()); 
-            return; 
-        } 
-        
-        traverse(node); 
-    } 
-}; 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Entity::Entity(SceneManager* scene, const String& modelName, const String& entityName):
-	DrawableObject(scene),
-		mySceneManager(scene), 
-		myOsgSwitch(NULL), 
-		myCurrentModelIndex(0),
-		myAnimationManager(NULL),
-		myAnimations(NULL)
+Entity::Entity(SceneManager* scene):
+	SceneNode(scene->getEngine()),
+		mySceneManager(scene),
+		myOsgNode(NULL),
+		myEffect(NULL),
+		myOsgSceneObject(NULL)
 {
-	myModel = scene->getModel(modelName);
-
-	osg::Node* osgRoot = NULL;
-
-	if(myModel != NULL)
-	{
-		if(myModel->numNodes == 1)
-		{
-			// Single model asset
-			osgRoot = myModel->nodes[0];
-		}
-		else
-		{
-			// Multi model asset
-			myOsgSwitch = new osg::Switch();
-			int i = 0;
-			foreach(osg::Node* n, myModel->nodes)
-			{
-				myOsgSwitch->addChild(n);
-				myOsgSwitch->setChildValue(n, i++);
-			}
-			osgRoot = myOsgSwitch;
-		}
-
-		if(entityName != "") setName(entityName);
-
-		initialize(osgRoot);
-	}
-
-	// Traverse this entity hierarchy to find animations.
-	AnimationManagerFinder amf;
-	osgRoot->accept(amf);
-	if(amf.am != NULL)
-	{
-		myAnimationManager = amf.am;
-		myAnimations = &myAnimationManager->getAnimationList();
-		ofmsg("Entity %1%: found %2% animations.", %getName() %getNumAnimations());
-
-		loopAnimation(0);
-	}
+	myEffect = new EffectNode();
+	
+	Engine* engine = mySceneManager->getEngine();
+	engine->getScene()->addChild(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setCurrentModelIndex(int index)
+void Entity::initialize(osg::Node* node)
 {
-	if(myOsgSwitch != NULL && index < getNumModels())
-	{
-		myCurrentModelIndex = index;
-		myOsgSwitch->setSingleChildOn(index);
-	}
+	myOsgNode = node;
+
+	// Create an omegalib scene node. The scene node will be used to manipulate some of this drawable object basic
+	// properties like transform and visibility. The scene node also gives access to the object bounding sphere and
+	// allows for simple hit tests.
+	//Engine* engine = mySceneManager->getEngine();
+	//mySceneNode = new SceneNode(engine);
+	//engine->getScene()->addChild(mySceneNode);
+
+	myOsgSceneObject = new OsgSceneObject(myOsgNode);
+	myEffect->addChild(myOsgSceneObject->getTransformedNode());
+
+	// OsgSceneObject is the 'glue point' between an osg Node and an omegalib scene node.
+	addObject(myOsgSceneObject);
+
+	// Now add this drawable object to the scene.
+	mySceneManager->addEntity(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int Entity::getCurrentModelIndex()
+bool Entity::hasEffect()
 {
-	if(myOsgSwitch != NULL)
-	{
-		return myCurrentModelIndex;
-	}
-	return 0;
+	return (myEffect != NULL);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool Entity::hasAnimations()
+void Entity::setEffect(const String& effectDefinition)
 {
-	return myAnimationManager != NULL;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int Entity::getNumAnimations()
-{
-	if(hasAnimations())
-	{
-		return myAnimations->size();
-	}
-	return 0;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::playAnimation(int id)
-{
-	if(hasAnimations())
-	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			anim->setPlayMode(osgAnimation::Animation::ONCE);
-			myAnimationManager->playAnimation(anim);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::loopAnimation(int id)
-{
-	if(hasAnimations())
-	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			anim->setPlayMode(osgAnimation::Animation::LOOP);
-			myAnimationManager->playAnimation(anim);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::pauseAnimation(int id)
-{
-	if(hasAnimations())
-	{
-		if(id < getNumAnimations())
-		{
-			osgAnimation::Animation* anim = myAnimations->at(id);
-			myAnimationManager->stopAnimation(anim);
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::stopAllAnimations()
-{
-	if(hasAnimations())
-	{
-		myAnimationManager->stopAll();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Entity::setEventCallbacks(const EntityEventCallbacks& eec)
-{
-	//myCallbacks = eec;
-	//if(eec.onAdd != "")
-	//{
-	//	eec.onAdd = ostr(eec.onAdd, %myId);
-	//}
+	myEffect->setDefinition(effectDefinition);
 }
 

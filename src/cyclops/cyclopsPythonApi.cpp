@@ -26,7 +26,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "cyclops/SceneManager.h"
-#include "cyclops/Entity.h"
+#include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneLoader.h"
 
 #ifdef OMEGA_USE_PYTHON
@@ -41,7 +41,7 @@ using namespace cyclops;
 //	int id;
 //	PyArg_ParseTuple(args, "i", &id);
 //
-//	Entity* e = SceneManager::instance()->findEntity(id);
+//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
 //	if(e != NULL)
 //	{
 //		return Py_BuildValue("i", e->getNumAnimations());
@@ -55,7 +55,7 @@ using namespace cyclops;
 //	int id, animationId;
 //	PyArg_ParseTuple(args, "ii", &id, &animationId);
 //
-//	Entity* e = SceneManager::instance()->findEntity(id);
+//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
 //	if(e != NULL)
 //	{
 //		e->playAnimation(animationId);
@@ -71,7 +71,7 @@ using namespace cyclops;
 //	int id, animationId;
 //	PyArg_ParseTuple(args, "i", &id, &animationId);
 //
-//	Entity* e = SceneManager::instance()->findEntity(id);
+//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
 //	if(e != NULL)
 //	{
 //		e->loopAnimation(animationId);
@@ -87,7 +87,7 @@ using namespace cyclops;
 //	int id, animationId;
 //	PyArg_ParseTuple(args, "ii", &id, &animationId);
 //
-//	Entity* e = SceneManager::instance()->findEntity(id);
+//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
 //	if(e != NULL)
 //	{
 //		e->pauseAnimation(animationId);
@@ -103,7 +103,7 @@ using namespace cyclops;
 //	int id;
 //	PyArg_ParseTuple(args, "i", &id);
 //
-//	Entity* e = SceneManager::instance()->findEntity(id);
+//	AnimatedObject* e = SceneManager::instance()->findEntity(id);
 //	if(e != NULL)
 //	{
 //		e->stopAllAnimations();
@@ -128,24 +128,24 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("setBackgroundColor", &SceneManager::setBackgroundColor)
 		;
 
-	// DrawableObject
-	class_<DrawableObject, bases<SceneNode>, boost::noncopyable >("DrawableObject", no_init)
-		.def("hasEffect", &DrawableObject::hasEffect)
-		.def("setEffect", &DrawableObject::setEffect)
+	// Entity
+	class_<Entity, bases<SceneNode>, boost::noncopyable >("Entity", no_init)
+		.def("hasEffect", &Entity::hasEffect)
+		.def("setEffect", &Entity::setEffect)
 		;
 
 	// SphereShape
-	class_<SphereShape, bases<DrawableObject>, boost::noncopyable >("SphereShape", no_init)
+	class_<SphereShape, bases<Entity>, boost::noncopyable >("SphereShape", no_init)
 		.def("create", &SphereShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		;
 
 	// PlaneShape
-	class_<PlaneShape, bases<DrawableObject>, boost::noncopyable >("PlaneShape", no_init)
+	class_<PlaneShape, bases<Entity>, boost::noncopyable >("PlaneShape", no_init)
 		.def("create", &PlaneShape::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		;
 
 	// StaticObject
-	class_<StaticObject, bases<DrawableObject>, boost::noncopyable >("StaticObject", no_init)
+	class_<StaticObject, bases<Entity>, boost::noncopyable >("StaticObject", no_init)
 		.def("create", &StaticObject::create, PYAPI_RETURN_NEW_INSTANCE).staticmethod("create")
 		;
 

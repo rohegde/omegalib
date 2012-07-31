@@ -59,7 +59,7 @@ SceneEditorModule* SceneEditorModule::createAndInitialize()
 	}
 	else
 	{
-		owarn("No interactor specified in configuration: Entity manipulation will be disabled");
+		owarn("No interactor specified in configuration: AnimatedObject manipulation will be disabled");
 	}
 	return instance;
 }

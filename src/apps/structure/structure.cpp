@@ -96,9 +96,10 @@ void StructureViewer::initialize()
 
 	// For each entity in the scene, add a checkbox to the menu, that will be used
 	// to toggle the entity visibility.
-	foreach(DrawableObject* dobj, mySceneManager->getObjects())
+	for(int i = 0; i < mySceneManager->getNumEntities(); i++) 
 	{
-		Entity* e = Entity::fromDrawableObject(dobj);
+		Entity* e = mySceneManager->getEntityByIndex(i);
+		//AnimatedObject* e = AnimatedObject::fromDrawableObject(dobj);
 		if(e != NULL)
 		{
 			ui::MenuItem* mi = viewMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
@@ -125,7 +126,7 @@ void StructureViewer::initialize()
 	myControlCameraButton->setUserTag("control");
 	// control entity button
 	myControlEntityButton = optionsMenu->getSubMenu()->addItem(ui::MenuItem::Checkbox);
-	myControlEntityButton->setText("Control Entity");
+	myControlEntityButton->setText("Control AnimatedObject");
 	myControlEntityButton->setChecked(false);
 	myControlEntityButton->setListener(this);
 	myControlEntityButton->setUserTag("control");
@@ -157,7 +158,7 @@ void StructureViewer::onMenuItemEvent(ui::MenuItem* mi)
 	if(mi->getUserTag() == "visibilityToggle")
 	{
 		// Get the entity associated with the button and toggle its visibility.
-		Entity* e = (Entity*)mi->getUserData();
+		AnimatedObject* e = (AnimatedObject*)mi->getUserData();
 		e->setVisible(mi->isChecked());
 	}
 	else if(mi->getUserTag() == "control")

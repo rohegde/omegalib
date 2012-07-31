@@ -27,7 +27,7 @@
 #ifndef __CY_SHAPES__
 #define __CY_SHAPES__
 
-#include "cyclops/DrawableObject.h"
+#include "cyclops/Entity.h"
 
 namespace cyclops {
 	using namespace omega;
@@ -35,7 +35,7 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class CY_API SphereShape: public DrawableObject
+	class CY_API SphereShape: public Entity
 	{
 	public:
 		//! PYAPI Convenience method for creating SphereShape
@@ -52,7 +52,7 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class CY_API PlaneShape: public DrawableObject
+	class CY_API PlaneShape: public Entity
 	{
 	public:
 		//! PYAPI Convenience method for creating PlaneShape

@@ -32,7 +32,7 @@
 #include "FlockSimulator.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-class FlockObject: public DrawableObject
+class FlockObject: public Entity
 {
 public:
 	FlockObject(SceneManager* scene, FlockSimulator* simulator, const String& agentModelName, const String& name);
