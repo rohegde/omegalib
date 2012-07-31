@@ -32,11 +32,13 @@
 #include "omega/SystemManager.h"
 #include "omega/MouseService.h"
 #include "omega/GpuManager.h"
+#include "omega/CylindricalDisplayConfig.h"
 
 using namespace omega;
 using namespace co::base;
 using namespace std;
 
+// TODO: move thi to osystem (ogetcwd)
 #ifdef OMEGA_OS_WIN
     #include <direct.h>
     #define GetCurrentDir _getcwd
@@ -47,7 +49,6 @@ using namespace std;
 
 // Uncomment to enable swap barrier on compounds (kinda buggy atm)
 //#define EQ_USE_SWAP_BARRIER
-
 
 #define OMEGA_EQ_TMP_FILE "./_eqcfg.eqc"
 
@@ -88,6 +89,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 	DisplayConfig& eqcfg = myDisplayConfig;
 	String indent = "";
 
+	Vector2f lcdSize = eqcfg.tileSize - eqcfg.bezelSize;
+
 	String result = L("#Equalizer 1.0 ascii");
 
 	START_BLOCK(result, "global");
@@ -99,13 +102,6 @@ void EqualizerDisplaySystem::generateEqConfig()
 	END_BLOCK(result);
 
 	START_BLOCK(result, "server");
-
-	// START_BLOCK(result, "connection");
-	// result +=
-		// L("type TCPIP") +
-		// L("hostname \"orion.evl.uic.edu\"") +
-		// L("port 24000");
-	// END_BLOCK(result)
 
 	START_BLOCK(result, "config");
 	result += L("latency 0");
@@ -220,8 +216,12 @@ void EqualizerDisplaySystem::generateEqConfig()
 			String segmentName = ostr("%1%x%2%", %x %y);
 			String viewport = ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight);
 
-			float tw = eqcfg.tileSize[0];
-			float th = eqcfg.tileSize[1];
+			//float tw = eqcfg.tileSize[0];
+			//float th = eqcfg.tileSize[1];
+
+			// Use with and height of lcd panel size without bezels.
+			float tw = lcdSize[0];
+			float th = lcdSize[1];
 
 			Vector3f topLeft;
 			Vector3f bottomLeft;
@@ -241,7 +241,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			{
 				// Compute the display corners for custom display geometries
 				center = tc.center;
-				Quaternion orientation = AngleAxis(tc.yaw, Vector3f::UnitY()) * AngleAxis(tc.pitch, Vector3f::UnitX());
+				Quaternion orientation = AngleAxis(tc.yaw * Math::DegToRad, Vector3f::UnitY()) * AngleAxis(tc.pitch * Math::DegToRad, Vector3f::UnitX());
 				// Define the default display up and right vectors
 				Vector3f up = Vector3f::UnitY();
 				Vector3f right = Vector3f::UnitX();
@@ -370,7 +370,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.referenceTile = Config::getVector2iValue("referenceTile", scfg);
 	cfg.referenceOffset = Config::getVector3fValue("referenceOffset", scfg);
 	cfg.tileSize = Config::getVector2fValue("tileSize", scfg);
-	//cfg.columnYawIncrement = Config::getFloatValue("columnYawIncrement", scfg);
+	cfg.bezelSize = Config::getVector2fValue("bezelSize", scfg);
 	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
@@ -432,6 +432,13 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 			}
 		}
 		cfg.numNodes++;
+	}
+
+	// Parse cylindrical display configurations.
+	if(cfgType == "ConfigCylindrical")
+	{
+		CylindricalDisplayConfig cdc;
+		cdc.buildConfig(cfg, scfg);
 	}
 
 	if(SystemManager::instance()->isMaster())

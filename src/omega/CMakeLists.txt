@@ -39,6 +39,7 @@ SET( srcs
 		omega/ApplicationBase.cpp
 		omega/Camera.cpp
 		omega/CameraController.cpp
+		omega/CylindricalDisplayConfig.cpp
 		omega/Console.cpp
 		omega/DrawInterface.cpp
 		omega/EventSharingModule.cpp
@@ -86,6 +87,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DisplaySystem.h
+		${OmegaLib_SOURCE_DIR}/include/omega/CylindricalDisplayConfig.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawInterface.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ServerEngine.h
