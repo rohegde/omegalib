@@ -49,12 +49,13 @@ namespace omega
 		Vector2i resolution;
 		Vector2i offset;
 		int device;
-		Vector3f topLeft;
-		Vector3f bottomLeft;
-		Vector3f bottomRight;
 		Vector3f center;
 		float yaw;
 		float pitch;
+
+		Vector3f topLeft;
+		Vector3f bottomLeft;
+		Vector3f bottomRight;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +80,7 @@ namespace omega
 		Vector2i referenceTile;
 		Vector3f referenceOffset;
 		Vector2f tileSize;
+		Vector2f bezelSize;
 		bool autoOffsetWindows;
 		Vector2i tileResolution;
 		Vector2i windowOffset;
@@ -93,6 +95,13 @@ namespace omega
 		String nodeLauncher;
 		String nodeKiller;
 		int basePort;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class IDisplayConfigBuilder
+	{
+	public:
+		virtual bool buildConfig(DisplayConfig& cfg, Setting& scfg) = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
