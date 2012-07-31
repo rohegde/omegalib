@@ -71,9 +71,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a460079543442388f05b6166f19bc0bdd"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a460079543442388f05b6166f19bc0bdd">getName</a> ()</td></tr>
 <tr class="memitem:ad94a951867033557cf57f18abeb9ce1a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#ad94a951867033557cf57f18abeb9ce1a">initialize</a> ()</td></tr>
 <tr class="memdesc:ad94a951867033557cf57f18abeb9ce1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called once for entire application initialization tasks.  <a href="#ad94a951867033557cf57f18abeb9ce1a"></a><br/></td></tr>
-<tr class="memitem:a4c83fcc15d87b44f9d30537e3ec2405b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_renderer_base.html">RendererBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a4c83fcc15d87b44f9d30537e3ec2405b">createClient</a> (<a class="el" href="classomega_1_1_server_base.html">ServerBase</a> *server)</td></tr>
-<tr class="memitem:a7873d79b2653df8825e943c6f81c63ff"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_server_base.html">ServerBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a7873d79b2653df8825e943c6f81c63ff">createServer</a> ()</td></tr>
-<tr class="memitem:afc9d7814de715544f770bda2f8cebd34"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_server_base.html">ServerBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#afc9d7814de715544f770bda2f8cebd34">createMaster</a> ()</td></tr>
 <tr class="memitem:a460079543442388f05b6166f19bc0bdd"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a460079543442388f05b6166f19bc0bdd">getName</a> ()</td></tr>
 <tr class="memitem:a1246fdd893628129f1ed00db6a247a05"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_application_server.html">ApplicationServer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_application.html#a1246fdd893628129f1ed00db6a247a05">createServer</a> ()</td></tr>
 <tr class="memdesc:a1246fdd893628129f1ed00db6a247a05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new Channel instance.  <a href="#a1246fdd893628129f1ed00db6a247a05"></a><br/></td></tr>
@@ -115,34 +112,6 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2>Member Function Documentation</h2>
-<a class="anchor" id="a4c83fcc15d87b44f9d30537e3ec2405b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classomega_1_1_renderer_base.html">RendererBase</a>* <a class="el" href="classomega_1_1_application.html">omega::Application</a>&lt; T &gt;::createClient </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classomega_1_1_server_base.html">ServerBase</a> *&#160;</td>
-          <td class="paramname"><em>server</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_base.html#a06aebb7936abdce39aa01c52078d2ad8">omega::ApplicationBase</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a48825c5be75d84ccf95998f66fe2b6a3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -166,60 +135,6 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="afc9d7814de715544f770bda2f8cebd34"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classomega_1_1_server_base.html">ServerBase</a>* <a class="el" href="classomega_1_1_application.html">omega::Application</a>&lt; T &gt;::createMaster </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_base.html#a7c55955640c93aa56d151db54237a4b7">omega::ApplicationBase</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7873d79b2653df8825e943c6f81c63ff"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classomega_1_1_server_base.html">ServerBase</a>* <a class="el" href="classomega_1_1_application.html">omega::Application</a>&lt; T &gt;::createServer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_base.html#a12337acded962eb570cb18a6ef2b4a52">omega::ApplicationBase</a>.</p>
 
 </div>
 </div>
@@ -254,8 +169,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-<p>Reimplemented from <a class="el" href="classomega_1_1_application_base.html#a12337acded962eb570cb18a6ef2b4a52">omega::ApplicationBase</a>.</p>
 
 </div>
 </div>

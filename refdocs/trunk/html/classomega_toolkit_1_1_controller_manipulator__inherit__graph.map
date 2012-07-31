@@ -1,4 +1,4 @@
 <map id="omegaToolkit::ControllerManipulator" name="omegaToolkit::ControllerManipulator">
 <area shape="rect" id="node2" href="$classomega_1_1_actor.html" title="omega::Actor" alt="" coords="31,77,119,101"/>
-<area shape="rect" id="node4" href="$classomega_1_1_server_module.html" title="omega::ServerModule" alt="" coords="11,5,139,29"/>
+<area shape="rect" id="node4" href="$classomega_1_1_engine_module.html" title="omega::EngineModule" alt="" coords="11,5,139,29"/>
 </map>

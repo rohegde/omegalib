@@ -49,12 +49,15 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classcyclops_1_1_entity-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">cyclops::Entity Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  
+ <a href="classcyclops_1_1_entity.html#details">More...</a></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for cyclops::Entity:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -62,59 +65,43 @@
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classcyclops_1_1_entity__inherit__graph.png" border="0" usemap="#cyclops_1_1_entity_inherit__map" alt="Inheritance graph"/></div>
 <map name="cyclops_1_1_entity_inherit__map" id="cyclops_1_1_entity_inherit__map">
-<area shape="rect" id="node2" href="classcyclops_1_1_drawable_object.html" title="PYAPI." alt="" coords="5,77,147,101"/><area shape="rect" id="node4" href="classomega_1_1_scene_node.html" title="PYAPI Represents a node in the omegalib scene graph." alt="" coords="18,5,133,29"/></map>
+<area shape="rect" id="node7" href="classcyclops_1_1_animated_object.html" title="cyclops::AnimatedObject" alt="" coords="449,5,591,29"/><area shape="rect" id="node9" href="classcyclops_1_1_line_set.html" title="cyclops::LineSet" alt="" coords="470,53,570,77"/><area shape="rect" id="node11" href="classcyclops_1_1_plane_shape.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>." alt="" coords="459,101,581,125"/><area shape="rect" id="node13" href="classcyclops_1_1_sphere_shape.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>." alt="" coords="455,149,585,173"/><area shape="rect" id="node15" href="classcyclops_1_1_static_object.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>." alt="" coords="458,197,582,221"/><area shape="rect" id="node2" href="classomega_1_1_scene_node.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Represents a node in the omegalib scene graph." alt="" coords="142,101,258,125"/><area shape="rect" id="node4" href="classomega_1_1_node.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Class representing a general&#45;purpose node in an articulated scene graph." alt="" coords="6,101,93,125"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa88903e4a9fcdc5fd49140493d9b6045"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#aa88903e4a9fcdc5fd49140493d9b6045">Entity</a> (<a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *mng, const String &amp;modelName, const String &amp;entityName)</td></tr>
-<tr class="memitem:a9d9fc9095c8c0c59eab1796ca2fbfba2"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a9d9fc9095c8c0c59eab1796ca2fbfba2">~Entity</a> ()</td></tr>
-<tr class="memitem:a564e10322e2efae18af19031f350fd1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcyclops_1_1_model_asset.html">ModelAsset</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a564e10322e2efae18af19031f350fd1a">getModel</a> ()</td></tr>
-<tr class="memitem:ac76a9f5b3e7c4e3508b41980681859db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#ac76a9f5b3e7c4e3508b41980681859db">getNumModels</a> ()</td></tr>
-<tr class="memitem:a0da7ae1f6b6e5cb9d281625c544df2d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a0da7ae1f6b6e5cb9d281625c544df2d2">setCurrentModelIndex</a> (int index)</td></tr>
-<tr class="memitem:a9d02bda45a7558a1bb532214a53b8f80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a9d02bda45a7558a1bb532214a53b8f80">getCurrentModelIndex</a> ()</td></tr>
-<tr class="memitem:a77413078d888655da53a7b56e1d3999d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a77413078d888655da53a7b56e1d3999d">setEventCallbacks</a> (const <a class="el" href="structcyclops_1_1_entity_event_callbacks.html">EntityEventCallbacks</a> &amp;eec)</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a2b54148b57f145cf1ee0aee3ac9c72bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a2b54148b57f145cf1ee0aee3ac9c72bb">hasAnimations</a> ()</td></tr>
-<tr class="memdesc:a2b54148b57f145cf1ee0aee3ac9c72bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animation support.  <a href="#a2b54148b57f145cf1ee0aee3ac9c72bb"></a><br/></td></tr>
-<tr class="memitem:a6e3bff5d20451cb7dc52bdada725bbd1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a6e3bff5d20451cb7dc52bdada725bbd1">getNumAnimations</a> ()</td></tr>
-<tr class="memitem:a46da0d2f3309ca489693c5fe491bfdd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a46da0d2f3309ca489693c5fe491bfdd2">playAnimation</a> (int id)</td></tr>
-<tr class="memitem:abf5ea914921f7c24ce7e13018598b22b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#abf5ea914921f7c24ce7e13018598b22b">loopAnimation</a> (int id)</td></tr>
-<tr class="memitem:a60742b89312e48ad8507c646f1d425e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a60742b89312e48ad8507c646f1d425e3">pauseAnimation</a> (int id)</td></tr>
-<tr class="memitem:a4e90c731da8350c8742d16245c19bd53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a4e90c731da8350c8742d16245c19bd53">stopAllAnimations</a> ()</td></tr>
-<tr class="inherit_header pub_methods_classcyclops_1_1_drawable_object"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classcyclops_1_1_drawable_object')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classcyclops_1_1_drawable_object.html">cyclops::DrawableObject</a></td></tr>
-<tr class="memitem:a6320259f6107110341de5a8c6dbe4b6c inherit pub_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#a6320259f6107110341de5a8c6dbe4b6c">DrawableObject</a> (<a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *scene)</td></tr>
-<tr class="memitem:a36d56fa1c98f3bfb0a7b20934130d5b5 inherit pub_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">osg::Node *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#a36d56fa1c98f3bfb0a7b20934130d5b5">getOsgNode</a> ()</td></tr>
-<tr class="memitem:a587e0ffbfd69428c8c93c0e19eec5d48 inherit pub_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#a587e0ffbfd69428c8c93c0e19eec5d48">setTag</a> (const String &amp;value)</td></tr>
-<tr class="memitem:ad724a72625a508380146ea142a93784a inherit pub_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">const String &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#ad724a72625a508380146ea142a93784a">getTag</a> ()</td></tr>
-<tr class="memitem:a2802cd8bc1b57986b64bdca67be086ac inherit pub_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#a2802cd8bc1b57986b64bdca67be086ac">hasEffect</a> ()</td></tr>
-<tr class="memdesc:a2802cd8bc1b57986b64bdca67be086ac inherit pub_methods_classcyclops_1_1_drawable_object"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#a2802cd8bc1b57986b64bdca67be086ac"></a><br/></td></tr>
-<tr class="memitem:a5934c268e46530b456c1042a5a52b290 inherit pub_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#a5934c268e46530b456c1042a5a52b290">setEffect</a> (const String &amp;effectDefinition)</td></tr>
-<tr class="memdesc:a5934c268e46530b456c1042a5a52b290 inherit pub_methods_classcyclops_1_1_drawable_object"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#a5934c268e46530b456c1042a5a52b290"></a><br/></td></tr>
+<tr class="memitem:ac18bb1444d50f5a57618a7bef3914193"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#ac18bb1444d50f5a57618a7bef3914193">Entity</a> (<a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *scene)</td></tr>
+<tr class="memitem:a060443b0de489b064eb3c07f281e8e9b"><td class="memItemLeft" align="right" valign="top">osg::Node *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a060443b0de489b064eb3c07f281e8e9b">getOsgNode</a> ()</td></tr>
+<tr class="memitem:a11068596296c9d627760de5f99e50c58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a11068596296c9d627760de5f99e50c58">setTag</a> (const String &amp;value)</td></tr>
+<tr class="memitem:ac78f5daa69396314b0b1c7dc53ed8c0a"><td class="memItemLeft" align="right" valign="top">const String &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#ac78f5daa69396314b0b1c7dc53ed8c0a">getTag</a> ()</td></tr>
+<tr class="memitem:ad2e770f00ba45945d6f0fc30e30d899c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#ad2e770f00ba45945d6f0fc30e30d899c">hasEffect</a> ()</td></tr>
+<tr class="memdesc:ad2e770f00ba45945d6f0fc30e30d899c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#ad2e770f00ba45945d6f0fc30e30d899c"></a><br/></td></tr>
+<tr class="memitem:ac511a779fb0949664caf22240c6acb20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#ac511a779fb0949664caf22240c6acb20">setEffect</a> (const String &amp;effectDefinition)</td></tr>
+<tr class="memdesc:ac511a779fb0949664caf22240c6acb20"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#ac511a779fb0949664caf22240c6acb20"></a><br/></td></tr>
 <tr class="inherit_header pub_methods_classomega_1_1_scene_node"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classomega_1_1_scene_node')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="classomega_1_1_scene_node.html">omega::SceneNode</a></td></tr>
-<tr class="memitem:ab60d753f7e69e9820533f2c9da74c878 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ab60d753f7e69e9820533f2c9da74c878">SceneNode</a> (<a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a> *server)</td></tr>
-<tr class="memitem:afa5a37326a4420156c652f584cb1b750 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#afa5a37326a4420156c652f584cb1b750">SceneNode</a> (<a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a> *server, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name)</td></tr>
-<tr class="memitem:a2d6103d697a77d5a6440a1dd6038994c inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_server_engine.html">ServerEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a2d6103d697a77d5a6440a1dd6038994c">getServer</a> ()</td></tr>
+<tr class="memitem:a27a37c0775c898414fd73fc6787116a3 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a27a37c0775c898414fd73fc6787116a3">SceneNode</a> (<a class="el" href="classomega_1_1_engine.html">Engine</a> *server)</td></tr>
+<tr class="memitem:ac67d1fc07855ab61b9b7c9823bb5d7cc inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ac67d1fc07855ab61b9b7c9823bb5d7cc">SceneNode</a> (<a class="el" href="classomega_1_1_engine.html">Engine</a> *server, const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;name)</td></tr>
+<tr class="memitem:aae5281702465aa6dfe8cd805a75d937b inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_engine.html">Engine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aae5281702465aa6dfe8cd805a75d937b">getEngine</a> ()</td></tr>
 <tr class="memitem:aff1cf1db475f27e14065e8a9f209b97b inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aff1cf1db475f27e14065e8a9f209b97b">hit</a> (const <a class="el" href="classomicron_1_1_ray.html">Ray</a> &amp;ray, <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> *hitPoint, <a class="el" href="classomega_1_1_scene_node.html#ad5215802413a8141d732b05718bca18f">HitType</a> type)</td></tr>
 <tr class="memdesc:aff1cf1db475f27e14065e8a9f209b97b inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hit test.  <a href="#aff1cf1db475f27e14065e8a9f209b97b"></a><br/></td></tr>
 <tr class="memitem:aa01f6997768b5007a99630353f114aa6 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aa01f6997768b5007a99630353f114aa6">update</a> (bool updateChildren, bool parentHasChanged)</td></tr>
-<tr class="memdesc:aa01f6997768b5007a99630353f114aa6 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal method to update the <a class="el" href="classomega_1_1_node.html" title="PYAPI Class representing a general-purpose node in an articulated scene graph.">Node</a>.  <a href="#aa01f6997768b5007a99630353f114aa6"></a><br/></td></tr>
+<tr class="memdesc:aa01f6997768b5007a99630353f114aa6 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal method to update the <a class="el" href="classomega_1_1_node.html" title="<img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Class representing a general-purpose node in an articulated scene graph.">Node</a>.  <a href="#aa01f6997768b5007a99630353f114aa6"></a><br/></td></tr>
 <tr class="memitem:a8ce2f7336b6b07ed56cd4d3a60682c5d inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a8ce2f7336b6b07ed56cd4d3a60682c5d">draw</a> (<a class="el" href="structomega_1_1_render_state.html">RenderState</a> *state)</td></tr>
 <tr class="memitem:adae9d36a4fcc05751239f068f6e15fb1 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#adae9d36a4fcc05751239f068f6e15fb1">addObject</a> (<a class="el" href="classomega_1_1_i_scene_object.html">ISceneObject</a> *o)</td></tr>
 <tr class="memitem:a39777dfaf5e0a997cbc14a21f4f5ff08 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a39777dfaf5e0a997cbc14a21f4f5ff08">getNumObjects</a> ()</td></tr>
 <tr class="memitem:ab2d6bc24a610576acc50257c0717fc18 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ab2d6bc24a610576acc50257c0717fc18">removeObject</a> (<a class="el" href="classomega_1_1_i_scene_object.html">ISceneObject</a> *o)</td></tr>
 <tr class="memitem:a2bf6784b9bd2f0a688db01626d608db5 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a2bf6784b9bd2f0a688db01626d608db5">isSelectable</a> ()</td></tr>
-<tr class="memdesc:a2bf6784b9bd2f0a688db01626d608db5 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#a2bf6784b9bd2f0a688db01626d608db5"></a><br/></td></tr>
+<tr class="memdesc:a2bf6784b9bd2f0a688db01626d608db5 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#a2bf6784b9bd2f0a688db01626d608db5"></a><br/></td></tr>
 <tr class="memitem:adee53f2681122c93ba4646c82f966921 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#adee53f2681122c93ba4646c82f966921">setSelectable</a> (bool value)</td></tr>
-<tr class="memdesc:adee53f2681122c93ba4646c82f966921 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#adee53f2681122c93ba4646c82f966921"></a><br/></td></tr>
+<tr class="memdesc:adee53f2681122c93ba4646c82f966921 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#adee53f2681122c93ba4646c82f966921"></a><br/></td></tr>
 <tr class="memitem:a3227c4c7570c917f1edb5a40d3b46ec9 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a3227c4c7570c917f1edb5a40d3b46ec9">isVisible</a> ()</td></tr>
-<tr class="memdesc:a3227c4c7570c917f1edb5a40d3b46ec9 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#a3227c4c7570c917f1edb5a40d3b46ec9"></a><br/></td></tr>
+<tr class="memdesc:a3227c4c7570c917f1edb5a40d3b46ec9 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#a3227c4c7570c917f1edb5a40d3b46ec9"></a><br/></td></tr>
 <tr class="memitem:ad859ebcb8dc5f8ab39ff6d60e8d3584a inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ad859ebcb8dc5f8ab39ff6d60e8d3584a">setVisible</a> (bool value)</td></tr>
-<tr class="memdesc:ad859ebcb8dc5f8ab39ff6d60e8d3584a inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#ad859ebcb8dc5f8ab39ff6d60e8d3584a"></a><br/></td></tr>
+<tr class="memdesc:ad859ebcb8dc5f8ab39ff6d60e8d3584a inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#ad859ebcb8dc5f8ab39ff6d60e8d3584a"></a><br/></td></tr>
 <tr class="memitem:a364d1a2ca7e4cdeb6de1aaa5c0794019 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#a364d1a2ca7e4cdeb6de1aaa5c0794019">setSelected</a> (bool value)</td></tr>
-<tr class="memdesc:a364d1a2ca7e4cdeb6de1aaa5c0794019 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#a364d1a2ca7e4cdeb6de1aaa5c0794019"></a><br/></td></tr>
+<tr class="memdesc:a364d1a2ca7e4cdeb6de1aaa5c0794019 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#a364d1a2ca7e4cdeb6de1aaa5c0794019"></a><br/></td></tr>
 <tr class="memitem:adf28d9323010ced3d70d35bbd49688f5 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#adf28d9323010ced3d70d35bbd49688f5">isSelected</a> ()</td></tr>
-<tr class="memdesc:adf28d9323010ced3d70d35bbd49688f5 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI.  <a href="#adf28d9323010ced3d70d35bbd49688f5"></a><br/></td></tr>
+<tr class="memdesc:adf28d9323010ced3d70d35bbd49688f5 inherit pub_methods_classomega_1_1_scene_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>.  <a href="#adf28d9323010ced3d70d35bbd49688f5"></a><br/></td></tr>
 <tr class="memitem:aa649f7623662b7293555dab357880cbd inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomicron_1_1_aligned_box3.html">AlignedBox3</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aa649f7623662b7293555dab357880cbd">getBoundingBox</a> ()</td></tr>
 <tr class="memitem:aef783eecf594f5bdb3fad7c40e680427 inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classomicron_1_1_sphere.html">Sphere</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#aef783eecf594f5bdb3fad7c40e680427">getBoundingSphere</a> ()</td></tr>
 <tr class="memitem:ad18d1a2d283110c3b4a54e7181d9831d inherit pub_methods_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ad18d1a2d283110c3b4a54e7181d9831d">isBoundingBoxVisible</a> ()</td></tr>
@@ -130,9 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abc80390991fd1d39a91fc242ef48acff inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, should only be called by parent, not directly.  <a href="#abc80390991fd1d39a91fc242ef48acff"></a><br/></td></tr>
 <tr class="memitem:aa0840c3cb5c7159be6d992adecd2097c inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#aa0840c3cb5c7159be6d992adecd2097c">~Node</a> ()</td></tr>
 <tr class="memitem:ae4c4b3e59bd1bb71938bc2d9dd03d854 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceomicron.html#a0657a7841c566e83c90abacbd7992a6f">String</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ae4c4b3e59bd1bb71938bc2d9dd03d854">getName</a> (void) const </td></tr>
-<tr class="memdesc:ae4c4b3e59bd1bb71938bc2d9dd03d854 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Returns the name of the node.  <a href="#ae4c4b3e59bd1bb71938bc2d9dd03d854"></a><br/></td></tr>
+<tr class="memdesc:ae4c4b3e59bd1bb71938bc2d9dd03d854 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Returns the name of the node.  <a href="#ae4c4b3e59bd1bb71938bc2d9dd03d854"></a><br/></td></tr>
 <tr class="memitem:a6bbbaa13612a795cf99c6f4cdd749ab2 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classomega_1_1_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a6bbbaa13612a795cf99c6f4cdd749ab2">getParent</a> (void) const </td></tr>
-<tr class="memdesc:a6bbbaa13612a795cf99c6f4cdd749ab2 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Gets this node's parent (NULL if this is the root).  <a href="#a6bbbaa13612a795cf99c6f4cdd749ab2"></a><br/></td></tr>
+<tr class="memdesc:a6bbbaa13612a795cf99c6f4cdd749ab2 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Gets this node's parent (NULL if this is the root).  <a href="#a6bbbaa13612a795cf99c6f4cdd749ab2"></a><br/></td></tr>
 <tr class="memitem:a283ad23df5d5f242124ddde24978b750 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a283ad23df5d5f242124ddde24978b750">getOrientation</a> () const </td></tr>
 <tr class="memdesc:a283ad23df5d5f242124ddde24978b750 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a quaternion representing the nodes orientation.  <a href="#a283ad23df5d5f242124ddde24978b750"></a><br/></td></tr>
 <tr class="memitem:a13ab180dc837777519e338bc4d03f9b0 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a13ab180dc837777519e338bc4d03f9b0">setOrientation</a> (const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;q)</td></tr>
@@ -140,15 +127,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7cc8794fe7a3c0f9dc45415aaeed8b12 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a7cc8794fe7a3c0f9dc45415aaeed8b12">setOrientation</a> (float w, float x, float y, float z)</td></tr>
 <tr class="memdesc:a7cc8794fe7a3c0f9dc45415aaeed8b12 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the orientation of this node via quaternion parameters.  <a href="#a7cc8794fe7a3c0f9dc45415aaeed8b12"></a><br/></td></tr>
 <tr class="memitem:aa51b83655c10fc6286043e389c2d8164 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#aa51b83655c10fc6286043e389c2d8164">resetOrientation</a> (void)</td></tr>
-<tr class="memdesc:aa51b83655c10fc6286043e389c2d8164 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Resets the nodes orientation (local axes as world axes, no rotation).  <a href="#aa51b83655c10fc6286043e389c2d8164"></a><br/></td></tr>
+<tr class="memdesc:aa51b83655c10fc6286043e389c2d8164 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Resets the nodes orientation (local axes as world axes, no rotation).  <a href="#aa51b83655c10fc6286043e389c2d8164"></a><br/></td></tr>
 <tr class="memitem:ac1003c7557c52ec7577a83f582bd493d inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ac1003c7557c52ec7577a83f582bd493d">setPosition</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;pos)</td></tr>
-<tr class="memdesc:ac1003c7557c52ec7577a83f582bd493d inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Sets the position of the node relative to it's parent.  <a href="#ac1003c7557c52ec7577a83f582bd493d"></a><br/></td></tr>
+<tr class="memdesc:ac1003c7557c52ec7577a83f582bd493d inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Sets the position of the node relative to it's parent.  <a href="#ac1003c7557c52ec7577a83f582bd493d"></a><br/></td></tr>
 <tr class="memitem:ad9899110e543c6b16997512e47c142c9 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ad9899110e543c6b16997512e47c142c9">setPosition</a> (float x, float y, float z)</td></tr>
 <tr class="memdesc:ad9899110e543c6b16997512e47c142c9 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the node relative to it's parent.  <a href="#ad9899110e543c6b16997512e47c142c9"></a><br/></td></tr>
 <tr class="memitem:aa622e5d30fda76de12196213a991dbc5 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#aa622e5d30fda76de12196213a991dbc5">getPosition</a> (void) const </td></tr>
-<tr class="memdesc:aa622e5d30fda76de12196213a991dbc5 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Gets the position of the node relative to it's parent.  <a href="#aa622e5d30fda76de12196213a991dbc5"></a><br/></td></tr>
+<tr class="memdesc:aa622e5d30fda76de12196213a991dbc5 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Gets the position of the node relative to it's parent.  <a href="#aa622e5d30fda76de12196213a991dbc5"></a><br/></td></tr>
 <tr class="memitem:a6769cc1b09a34b9b8ab7b49b2232b1cb inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a6769cc1b09a34b9b8ab7b49b2232b1cb">setScale</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;<a class="el" href="classomega_1_1_node.html#a76397bf505156bfa7f0f6daf072446b4">scale</a>)</td></tr>
-<tr class="memdesc:a6769cc1b09a34b9b8ab7b49b2232b1cb inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Sets the scaling factor applied to this node.  <a href="#a6769cc1b09a34b9b8ab7b49b2232b1cb"></a><br/></td></tr>
+<tr class="memdesc:a6769cc1b09a34b9b8ab7b49b2232b1cb inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Sets the scaling factor applied to this node.  <a href="#a6769cc1b09a34b9b8ab7b49b2232b1cb"></a><br/></td></tr>
 <tr class="memitem:a125dcc8deb6d08a2f7b6794453c47e9a inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a125dcc8deb6d08a2f7b6794453c47e9a">setScale</a> (float x, float y, float z)</td></tr>
 <tr class="memdesc:a125dcc8deb6d08a2f7b6794453c47e9a inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the scaling factor applied to this node.  <a href="#a125dcc8deb6d08a2f7b6794453c47e9a"></a><br/></td></tr>
 <tr class="memitem:a3b96c4807eb588ca98501ba9e55bb102 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a3b96c4807eb588ca98501ba9e55bb102">getScale</a> (void) const </td></tr>
@@ -174,11 +161,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a55dab67b1ccce531bf19d0c51181f4e6 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a55dab67b1ccce531bf19d0c51181f4e6">translate</a> (const <a class="el" href="namespaceomicron.html#afa904a5c11be921305cabc6d5ec0f6e6">Matrix3f</a> &amp;axes, float x, float y, float z, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea07dbdb8a6f0c166978209d424ce11f0f">TransformParent</a>)</td></tr>
 <tr class="memdesc:a55dab67b1ccce531bf19d0c51181f4e6 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the node along arbitrary axes.  <a href="#a55dab67b1ccce531bf19d0c51181f4e6"></a><br/></td></tr>
 <tr class="memitem:a6e3b4139e301abd98e0f34d026797db5 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a6e3b4139e301abd98e0f34d026797db5">roll</a> (const float &amp;angle, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5">TransformLocal</a>)</td></tr>
-<tr class="memdesc:a6e3b4139e301abd98e0f34d026797db5 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Rotate the node around the Z-axis.  <a href="#a6e3b4139e301abd98e0f34d026797db5"></a><br/></td></tr>
+<tr class="memdesc:a6e3b4139e301abd98e0f34d026797db5 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Rotate the node around the Z-axis.  <a href="#a6e3b4139e301abd98e0f34d026797db5"></a><br/></td></tr>
 <tr class="memitem:adf779c06f0bbe3616c4515ddc6856db2 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#adf779c06f0bbe3616c4515ddc6856db2">pitch</a> (const float &amp;angle, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5">TransformLocal</a>)</td></tr>
-<tr class="memdesc:adf779c06f0bbe3616c4515ddc6856db2 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Rotate the node around the X-axis.  <a href="#adf779c06f0bbe3616c4515ddc6856db2"></a><br/></td></tr>
+<tr class="memdesc:adf779c06f0bbe3616c4515ddc6856db2 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Rotate the node around the X-axis.  <a href="#adf779c06f0bbe3616c4515ddc6856db2"></a><br/></td></tr>
 <tr class="memitem:a5849b42a4239ff95574e5910b25aa6a5 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a5849b42a4239ff95574e5910b25aa6a5">yaw</a> (const float &amp;angle, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5">TransformLocal</a>)</td></tr>
-<tr class="memdesc:a5849b42a4239ff95574e5910b25aa6a5 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">PYAPI Rotate the node around the Y-axis.  <a href="#a5849b42a4239ff95574e5910b25aa6a5"></a><br/></td></tr>
+<tr class="memdesc:a5849b42a4239ff95574e5910b25aa6a5 inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight"><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/> Rotate the node around the Y-axis.  <a href="#a5849b42a4239ff95574e5910b25aa6a5"></a><br/></td></tr>
 <tr class="memitem:a3f60558c0dab25655e8c6a0f3d2c26ab inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a3f60558c0dab25655e8c6a0f3d2c26ab">rotate</a> (const <a class="el" href="namespaceomicron.html#ae90b984d7551a7357f03d3e9cfa0f5aa">Vector3f</a> &amp;axis, const float &amp;angle, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5">TransformLocal</a>)</td></tr>
 <tr class="memdesc:a3f60558c0dab25655e8c6a0f3d2c26ab inherit pub_methods_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotate the node around an arbitrary axis.  <a href="#a3f60558c0dab25655e8c6a0f3d2c26ab"></a><br/></td></tr>
 <tr class="memitem:af5c1c904284aa895e1631ac3f9a226c7 inherit pub_methods_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#af5c1c904284aa895e1631ac3f9a226c7">rotate</a> (const <a class="el" href="namespaceomicron.html#abe495230fb99452e2ea1b9d237a98885">Quaternion</a> &amp;q, <a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56e">TransformSpace</a> relativeTo=<a class="el" href="classomega_1_1_node.html#ad9947aad6bf25513fe6807761cb4d56ea52b3eed17fdeae2ecd5652d33dbb04d5">TransformLocal</a>)</td></tr>
@@ -236,20 +223,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a67ee43bd869da4325f4fc86a74c7dee5 inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a67ee43bd869da4325f4fc86a74c7dee5">ReferenceType</a> ()</td></tr>
 <tr class="memitem:a4b8526fb1b60859c3d898d24ab2d78fb inherit pub_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a4b8526fb1b60859c3d898d24ab2d78fb">~ReferenceType</a> ()</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5f80207ae8d7f207e2cbd7a14bd59ecf"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcyclops_1_1_entity.html">Entity</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a5f80207ae8d7f207e2cbd7a14bd59ecf">fromDrawableObject</a> (<a class="el" href="classcyclops_1_1_drawable_object.html">DrawableObject</a> *dobj)</td></tr>
-<tr class="memdesc:a5f80207ae8d7f207e2cbd7a14bd59ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to convert a drawable object instance into an entity instance. Returns null if the cast fails.  <a href="#a5f80207ae8d7f207e2cbd7a14bd59ecf"></a><br/></td></tr>
+<tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a16f58bb3a810b902137333b6a12f0e3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_entity.html#a16f58bb3a810b902137333b6a12f0e3f">initialize</a> (osg::Node *node)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classomega_1_1_scene_node"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classomega_1_1_scene_node')"><img src="closed.png" alt="-"/>&nbsp;Public Types inherited from <a class="el" href="classomega_1_1_scene_node.html">omega::SceneNode</a></td></tr>
 <tr class="memitem:ad5215802413a8141d732b05718bca18f inherit pub_types_classomega_1_1_scene_node"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_scene_node.html#ad5215802413a8141d732b05718bca18f">HitType</a> { <a class="el" href="classomega_1_1_scene_node.html#ad5215802413a8141d732b05718bca18fa055860837b4c6dc833b6ea83f5430be7">HitBoundingSphere</a>
  }</td></tr>
+<tr class="inherit_header pub_static_methods_classomicron_1_1_reference_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classomicron_1_1_reference_type')"><img src="closed.png" alt="-"/>&nbsp;Static Public Member Functions inherited from <a class="el" href="classomicron_1_1_reference_type.html">omicron::ReferenceType</a></td></tr>
+<tr class="memitem:a2ab483ab6db3edcca6495fe9465d72d2 inherit pub_static_methods_classomicron_1_1_reference_type"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomicron_1_1_reference_type.html#a2ab483ab6db3edcca6495fe9465d72d2">printObjCounts</a> ()</td></tr>
 <tr class="inherit_header pro_types_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classomega_1_1_node')"><img src="closed.png" alt="-"/>&nbsp;Protected Types inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
 <tr class="memitem:ab0850c08e1d9cafb238135f24185420d inherit pro_types_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">typedef std::set&lt; <a class="el" href="classomega_1_1_node.html">Node</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#ab0850c08e1d9cafb238135f24185420d">ChildUpdateSet</a></td></tr>
-<tr class="inherit_header pro_methods_classcyclops_1_1_drawable_object"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classcyclops_1_1_drawable_object')"><img src="closed.png" alt="-"/>&nbsp;Protected Member Functions inherited from <a class="el" href="classcyclops_1_1_drawable_object.html">cyclops::DrawableObject</a></td></tr>
-<tr class="memitem:a32cf43f617b72f72fcaacfca2658525e inherit pro_methods_classcyclops_1_1_drawable_object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcyclops_1_1_drawable_object.html#a32cf43f617b72f72fcaacfca2658525e">initialize</a> (osg::Node *node)</td></tr>
 <tr class="inherit_header pro_attribs_classomega_1_1_node"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classomega_1_1_node')"><img src="closed.png" alt="-"/>&nbsp;Protected Attributes inherited from <a class="el" href="classomega_1_1_node.html">omega::Node</a></td></tr>
 <tr class="memitem:a57b356ddb1064f676c943fecf0a3aa8a inherit pro_attribs_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classomega_1_1_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a57b356ddb1064f676c943fecf0a3aa8a">mParent</a></td></tr>
 <tr class="memdesc:a57b356ddb1064f676c943fecf0a3aa8a inherit pro_attribs_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Children begin iterator.  <a href="#a57b356ddb1064f676c943fecf0a3aa8a"></a><br/></td></tr>
@@ -292,8 +278,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a36abee23a90b97fa3b833ed1fd39bf44 inherit pro_static_attribs_classomega_1_1_node"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classomicron_1_1_name_generator.html">NameGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classomega_1_1_node.html#a36abee23a90b97fa3b833ed1fd39bf44">msNameGenerator</a></td></tr>
 <tr class="memdesc:a36abee23a90b97fa3b833ed1fd39bf44 inherit pro_static_attribs_classomega_1_1_node"><td class="mdescLeft">&#160;</td><td class="mdescRight">Incremented count for next name extension.  <a href="#a36abee23a90b97fa3b833ed1fd39bf44"></a><br/></td></tr>
 </table>
-<h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa88903e4a9fcdc5fd49140493d9b6045"></a>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>. </p>
+</div><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ac18bb1444d50f5a57618a7bef3914193"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -301,55 +289,16 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">Entity::Entity </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classcyclops_1_1_scene_manager.html">SceneManager</a> *&#160;</td>
-          <td class="paramname"><em>mng</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
-          <td class="paramname"><em>modelName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const String &amp;&#160;</td>
-          <td class="paramname"><em>entityName</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9d9fc9095c8c0c59eab1796ca2fbfba2"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual cyclops::Entity::~Entity </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><em>scene</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
 <h2>Member Function Documentation</h2>
-<a class="anchor" id="a5f80207ae8d7f207e2cbd7a14bd59ecf"></a>
+<a class="anchor" id="a060443b0de489b064eb3c07f281e8e9b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -357,48 +306,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classcyclops_1_1_entity.html">Entity</a> * cyclops::Entity::fromDrawableObject </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classcyclops_1_1_drawable_object.html">DrawableObject</a> *&#160;</td>
-          <td class="paramname"><em>dobj</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tries to convert a drawable object instance into an entity instance. Returns null if the cast fails. </p>
-
-</div>
-</div>
-<a class="anchor" id="a9d02bda45a7558a1bb532214a53b8f80"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Entity::getCurrentModelIndex </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a564e10322e2efae18af19031f350fd1a"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structcyclops_1_1_model_asset.html">ModelAsset</a> * cyclops::Entity::getModel </td>
+          <td class="memname">osg::Node* cyclops::Entity::getOsgNode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -413,22 +321,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6e3bff5d20451cb7dc52bdada725bbd1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Entity::getNumAnimations </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ac76a9f5b3e7c4e3508b41980681859db"></a>
+<a class="anchor" id="ac78f5daa69396314b0b1c7dc53ed8c0a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -436,7 +329,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int cyclops::Entity::getNumModels </td>
+          <td class="memname">const String&amp; cyclops::Entity::getTag </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -451,12 +344,12 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a2b54148b57f145cf1ee0aee3ac9c72bb"></a>
+<a class="anchor" id="ad2e770f00ba45945d6f0fc30e30d899c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Entity::hasAnimations </td>
+          <td class="memname">bool Entity::hasEffect </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -464,101 +357,72 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Animation support. </p>
+<p><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>. </p>
 
 </div>
 </div>
-<a class="anchor" id="abf5ea914921f7c24ce7e13018598b22b"></a>
+<a class="anchor" id="a16f58bb3a810b902137333b6a12f0e3f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Entity::initialize </td>
+          <td>(</td>
+          <td class="paramtype">osg::Node *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac511a779fb0949664caf22240c6acb20"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Entity::loopAnimation </td>
+          <td class="memname">void Entity::setEffect </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>effectDefinition</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a class="anchor" id="a60742b89312e48ad8507c646f1d425e3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Entity::pauseAnimation </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p><img src="python-logo.gif" alt="Supported in the python API" title="Supported in the python API"/>. </p>
 
 </div>
 </div>
-<a class="anchor" id="a46da0d2f3309ca489693c5fe491bfdd2"></a>
+<a class="anchor" id="a11068596296c9d627760de5f99e50c58"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Entity::playAnimation </td>
+          <td class="memname">void cyclops::Entity::setTag </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a0da7ae1f6b6e5cb9d281625c544df2d2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Entity::setCurrentModelIndex </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a77413078d888655da53a7b56e1d3999d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Entity::setEventCallbacks </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structcyclops_1_1_entity_event_callbacks.html">EntityEventCallbacks</a> &amp;&#160;</td>
-          <td class="paramname"><em>eec</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a4e90c731da8350c8742d16245c19bd53"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Entity::stopAllAnimations </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
