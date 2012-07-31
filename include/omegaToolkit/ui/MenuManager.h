@@ -161,7 +161,6 @@ namespace omegaToolkit { namespace ui {
 		static MenuManager* createAndInitialize();
 		static MenuManager* instance();
 
-		Engine* getEngine() { return myEngine; }
 		UiModule* getUiModule() { return myUiModule; }
 
 		virtual void initialize();
@@ -199,8 +198,6 @@ namespace omegaToolkit { namespace ui {
 		bool myAutoPlaceEnabled;
 		float myAutoPlaceDistance;
 		float myMenu3dScale;
-
-		Engine* myEngine;
 	};
 }; };
 

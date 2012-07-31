@@ -137,7 +137,7 @@ void SceneManager::loadConfiguration()
 void SceneManager::initialize()
 {
 	myMainLight = NULL;
-	myEngine = getEngine();
+	//myEngine = getEngine();
 
 	// Make sure the osg module is initialized.
 	if(!myOsg->isInitialized()) myOsg->initialize();
@@ -519,7 +519,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::setBackgroundColor(const Color& color)
 {
-	myEngine->getDisplaySystem()->setBackgroundColor(color);
+	getEngine()->getDisplaySystem()->setBackgroundColor(color);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

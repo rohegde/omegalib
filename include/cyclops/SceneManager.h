@@ -230,8 +230,6 @@ namespace cyclops {
 		//! Gets the scene manager listener
 		SceneManagerListener* getListener();
 
-		Engine* getEngine() { return myEngine; }
-
 		virtual void initialize();
 		virtual void update(const UpdateContext& context);
 		virtual void handleEvent(const Event& evt);
@@ -294,7 +292,6 @@ namespace cyclops {
 
 	private:
 		static SceneManager* mysInstance;
-		Engine* myEngine;
 		OsgModule* myOsg;
 
 		// Scene manager listener
