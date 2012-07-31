@@ -90,6 +90,8 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 		myServer->update(uc);
 	}
 
+	if(!getClient()->isConnected()) getClient()->exitLocal();
+
 	Node::frameStart(frameID, frameNumber);
 }
 

@@ -39,6 +39,15 @@
 #define Sleep(x) usleep((x)*1000)
 #endif
 
+// TODO: move thi to osystem (ogetcwd)
+#ifdef OMEGA_OS_WIN
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+ #endif
+
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,8 +73,18 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	extern "C" void abortHandler(int signal_number)
+	{
+		// Just exit.
+		exit(-1);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
+		// register the abort handler.
+		signal(SIGABRT, &abortHandler);
+
 #ifdef OMEGA_ENABLE_VLD
 		// Mark everything before this point as already reported to avoid reporting static global objects as leaks.
 		// This makes the report less precise but gets rid of a lot of noise.
@@ -270,5 +289,13 @@ namespace omega
 				break;
 		}
 #endif
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	String ogetcwd()
+	{
+		char cCurrentPath[FILENAME_MAX];
+		GetCurrentDir(cCurrentPath, sizeof(cCurrentPath));
+		return cCurrentPath;
 	}
 }

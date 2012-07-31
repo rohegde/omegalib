@@ -87,6 +87,9 @@ namespace omega
 
 	//! Stops the current thread for the specified number of milliseconds.
 	OMEGA_API void osleep(uint msecs);
+
+	//! Returns the current working directory.
+	OMEGA_API String ogetcwd();
 };
 
 #endif
