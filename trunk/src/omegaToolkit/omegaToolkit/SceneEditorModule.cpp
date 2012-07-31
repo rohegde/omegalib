@@ -28,7 +28,6 @@
 #include "omega/SceneQuery.h"
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/ControllerManipulator.h"
-//#include "omegaToolkit/BoundingSphere.h"
 #include "omegaToolkit/ToolkitUtils.h"
 
 using namespace omegaToolkit;

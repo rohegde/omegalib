@@ -41,12 +41,7 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 	SystemManager* sys = SystemManager::instance();
 
 	ApplicationBase* app = sys->getApplication();
-	if(sys->isMaster())
-	{
-		// This is the master node. Create the master server instance.
-		myServer = app->createMaster();
-	}
-	else
+	if(!sys->isMaster())
 	{
 		// This is the not master node. Create a standard server instance.
 		myServer = app->createServer();
@@ -58,32 +53,24 @@ bool NodeImpl::configInit( const eq::uint128_t& initID )
 {
 	ofmsg("[EQ] NodeImpl::configInit %1%", %initID);
 
+	SystemManager* sys = SystemManager::instance();
+	if(!sys->isMaster())
+	{
+		ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
+		config->mapSharedData(initID);
 
-	// Map the frame data object.
-	omsg("NodeImpl::configInit - registering shared data object...");
+		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+		eqds->finishInitialize(config);
 
-	ConfigImpl* config = static_cast<ConfigImpl*>( getConfig());
-	config->mapSharedData(initID);
-	
-	EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
-	eqds->finishInitialize(config);
+		myServer->initialize();
+	}
 
-	myServer->initialize();
-
-	//const bool mapped = config->mapObject( &myFrameData, config->getFrameData().getID() );
-	//oassert( mapped );
 	return Node::configInit(initID);
-	//return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool NodeImpl::configExit()
 {
-	omsg("[EQ] NodeImpl::configExit");
-
-	eq::Config* config = getConfig();
-	//config->unmapObject( &myFrameData );
-
 	return Node::configExit();
 }
 
@@ -92,32 +79,16 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 {
 	DEBUG_EQ_FLOW("NodeImpl::frameStart %1% %2%", %frameID %frameNumber);
 
-	SystemManager* sys = SystemManager::instance();
-
-	ConfigImpl* config = (ConfigImpl*)getConfig();
-	config->updateSharedData();
-	const UpdateContext& uc = config->getUpdateContext();
-
-
-	ServiceManager* im = SystemManager::instance()->getServiceManager();
-	if(!myServer->isMaster()) im->poll();
-
-	// Process events.
-	int av = im->getAvailableEvents();
-	if(av != 0)
+	// If server is not NULL (only on slave nodes) call update here
+	// on the master node, update is invoked in ConfigImpl.
+	if(myServer != NULL)
 	{
-    	im->lockEvents();
-    	// Dispatch events to application server.
-    	for( int evtNum = 0; evtNum < av; evtNum++)
-    	{
-    		Event* evt = im->getEvent(evtNum);
-    		myServer->handleEvent(*evt);
-    	}
-    	im->unlockEvents();
-	}
-	im->clearEvents();
+		ConfigImpl* config = (ConfigImpl*)getConfig();
+		config->updateSharedData();
 
-	myServer->update(uc);
+		const UpdateContext& uc = config->getUpdateContext();
+		myServer->update(uc);
+	}
 
 	Node::frameStart(frameID, frameNumber);
 }

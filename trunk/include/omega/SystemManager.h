@@ -105,6 +105,9 @@ namespace omega
 		bool isMaster() { return myIsMaster; }
 		const String& getHostname() { return myHostname; }
 
+		bool renderOnMaster() { return myRenderOnMaster; }
+		void setRenderOnMaster(bool value) { myRenderOnMaster = value; }
+
 		PythonInterpreter* getScriptInterpreter() { return myInterpreter; }
 
 		MissionControlServer* getMissionControlServer() { return myMissionControlServer; }
@@ -134,6 +137,8 @@ namespace omega
 		PythonInterpreter* myInterpreter;
 		
 		bool myIsMaster;
+		bool myRenderOnMaster;
+
 		String myHostname;
 		String myProgramName;
 

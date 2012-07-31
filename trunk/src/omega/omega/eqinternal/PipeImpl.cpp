@@ -53,7 +53,7 @@ bool PipeImpl::configInit(const uint128_t& initID)
 	ApplicationBase* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		myClient = app->createClient(myNode->getApplicationServer());
+		myClient = app->createClient(ServerEngine::instance());
 		myGpu = new GpuManager();
 		myGpu->initialize();
 		myGpuContext = new GpuContext(myGpu.get());

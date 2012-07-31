@@ -391,6 +391,9 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 
 	const Setting& sTiles = scfg["tiles"];
 	cfg.numNodes = 0;
+
+	bool renderOnMaster = false;
+
 	for(int i = 0; i < sTiles.getLength(); i++)
 	{
 		const Setting& sTileHost = sTiles[i];
@@ -405,6 +408,7 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 		}
 		else
 		{
+			renderOnMaster = true;
 			ncfg.isRemote = false;
 		}
 		ncfg.port = Config::getIntValue("port", sTileHost);
@@ -443,6 +447,8 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 		CylindricalDisplayConfig cdc;
 		cdc.buildConfig(cfg, scfg);
 	}
+
+	SystemManager::instance()->setRenderOnMaster(renderOnMaster);
 
 	if(SystemManager::instance()->isMaster())
 	{
@@ -538,21 +544,7 @@ void EqualizerDisplaySystem::killCluster()
 void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 {
 	myConfig = config;
-	//int numObservers = myConfig->getObservers().size();
-	//for( unsigned int i = 0; i < numObservers; i++) myObservers.push_back(new Observer());
-
-
-	//initLayers();
-	initObservers();
-
-	omsg(":: Equalizer initialization DONE ::");
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void EqualizerDisplaySystem::initObservers()
-{
 	ofmsg("Initializing %1% observer(s).", %myObservers.size());
-
 	if(mySetting->exists("observers"))
 	{
 		Setting& stObservers = (*mySetting)["observers"];
@@ -563,6 +555,7 @@ void EqualizerDisplaySystem::initObservers()
 			obs->load(stObserver);
 		}
 	}
+	omsg(":: Equalizer initialization DONE ::");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

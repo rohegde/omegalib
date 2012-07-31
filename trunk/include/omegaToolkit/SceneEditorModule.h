@@ -32,7 +32,6 @@
 #include "omega/Actor.h"
 #include "omega/SceneNode.h"
 #include "omegaToolkitConfig.h"
-//#include "omegaToolkit/BoundingSphere.h"
 
 namespace omegaToolkit
 {

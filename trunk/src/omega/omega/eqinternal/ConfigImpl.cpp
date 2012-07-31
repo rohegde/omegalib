@@ -116,10 +116,23 @@ bool ConfigImpl::init()
 	registerObject(&mySharedData);
 	//mySharedData.setAutoObsolete(getLatency());
 
+	SystemManager* sys = SystemManager::instance();
+	
+	//if(!sys->renderOnMaster())
+	{
+		ApplicationBase* app = sys->getApplication();
+		myServer = app->createMaster();
+		myServer->initialize();
+	
+		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
+		eqds->finishInitialize(this);
+	}
+
 	StatsManager* sm = SystemManager::instance()->getStatsManager();
 	myFpsStat = sm->createStat("fps");
 
 	myGlobalTimer.start();
+
 
 	return eq::Config::init(mySharedData.getID());
 }
@@ -250,13 +263,17 @@ uint32_t ConfigImpl::startFrame( const uint128_t& version )
 				{
 					EventSharingModule::share(*evt);
 				}
+				myServer->handleEvent(*evt);
     		}
     		im->unlockEvents();
 		}
+		im->clearEvents();
 	}
 
 	// Send shared data.
 	mySharedData.commit();
+
+	myServer->update(uc);
 
     return eq::Config::startFrame( version );
 }
@@ -307,11 +324,4 @@ uint32_t ConfigImpl::finishFrame()
 
     return eq::Config::finishFrame();
 }
-
-    
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//const FrameData& ConfigImpl::getFrameData() 
-//{ 
-//    return myFrameData; 
-//}
 

@@ -100,7 +100,8 @@ SystemManager::SystemManager():
 	myIsMaster(true),
 	myMissionControlServer(NULL),
 	myMissionControlEnabled(false),
-	myMissionControlPort(22500)
+	myMissionControlPort(22500),
+	myRenderOnMaster(true)
 {
 	myDataManager = DataManager::getInstance();
 	myInterpreter = new PythonInterpreter();

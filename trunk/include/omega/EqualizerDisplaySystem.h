@@ -102,7 +102,6 @@ public:
 	void exitConfig();
 
 private:
-	void initObservers();
 	void generateEqConfig();
 	void setupEqInitArgs(int& numArgs, const char** argv);
 
