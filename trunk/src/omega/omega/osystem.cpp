@@ -159,25 +159,49 @@ namespace omega
 			SystemManager* sys = SystemManager::instance();
 			DataManager* dm = sys->getDataManager();
 			
-			// Add some default filesystem search paths: the default omegalib data path, an empty search path for absolute paths, and the
-			// current program directory path.
+			omsg("omegalib data search paths:");
+			String cwd = ogetcwd();
+			ofmsg("::: %1%", %cwd);
+
+			// Add some default filesystem search paths: 
+			// - an empty search path for absolute paths
+			// - the current directory
+			// - the omegalib applications root path (if exists)
+			// - the default omegalib data path
 			dm->addSource(new FilesystemDataSource("./"));
 			dm->addSource(new FilesystemDataSource(""));
+#ifdef OMEGA_APPROOT_DIRECTORY
+			dm->addSource(new FilesystemDataSource(OMEGA_APPROOT_DIRECTORY));
+			ofmsg("::: %1%", %OMEGA_APPROOT_DIRECTORY);
+#endif
 			dm->addSource(new FilesystemDataSource(dataPath));
+			ofmsg("::: %1%", %dataPath);
 
+
+			omsg("omegalib application config lookup:");
+			String curCfgFilename = ostr("%1%/%2%", %app.getName() %configFilename);
+			ofmsg("::: trying %1%", %curCfgFilename);
 			String path;
-			if(!DataManager::findFile(configFilename, path))
+			if(!DataManager::findFile(curCfgFilename, path))
 			{
-				ofmsg("Could not find %1%, trying to load default.cfg", %configFilename);
-				configFilename = "default.cfg";
-				if(!DataManager::findFile(configFilename, path))
+				curCfgFilename = configFilename;
+				ofmsg("::: not found, trying %1%", %curCfgFilename);
+
+				if(!DataManager::findFile(curCfgFilename, path))
 				{
-					oerror("FATAL: Could not load default.cfg. Aplication will exit now.");
-					return -1;
+					curCfgFilename = "default.cfg";
+					ofmsg("::: not found, trying %1%", %curCfgFilename);
+					if(!DataManager::findFile(curCfgFilename, path))
+					{
+						oerror("FATAL: Could not load default.cfg. Aplication will exit now.");
+						return -1;
+					}
 				}
 			}
 
-			Config* cfg = new Config(configFilename);
+			ofmsg("::: found config: %1%", %curCfgFilename);
+
+			Config* cfg = new Config(curCfgFilename);
 		
 			sys->setApplication(&app);
 			if(remote)

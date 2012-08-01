@@ -84,9 +84,6 @@ include_directories(
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
-if(OMEGA_BUILD_TUTORIALS)
-	omega_add_tutorial(tutorial4)
-endif(OMEGA_BUILD_TUTORIALS)
 
 add_subdirectory(omegaToolkit)
 
@@ -105,11 +102,7 @@ if(OMEGA_BUILD_OSG_LIB)
 	add_subdirectory(cyclops)
 	add_subdirectory(apps/cyhello)
 	add_subdirectory(apps/cyhello2)
-	add_subdirectory(apps/railSim)
-	add_subdirectory(apps/railsimmodeshapes)
-	add_subdirectory(apps/flock)
 	add_subdirectory(apps/osgviewer)
-	add_subdirectory(apps/structure)
 endif()
 
 # vtk configuration, libraries and applications
@@ -122,11 +115,17 @@ if(OMEGA_BUILD_VTK_LIB)
 	
 	add_subdirectory(omegaVtk)
 	add_subdirectory(apps/vtkhello)
-	add_subdirectory(apps/geoView)
-	if(OMEGA_BUILD_TUTORIALS)
-		omega_add_tutorial(vtkScene) 
-	endif()
 endif(OMEGA_BUILD_VTK_LIB)
+
+# Sets the path to the omega applications source root (if present)
+set(OMEGA_APP_DIR CACHE PATH "omegalib application directory")
+if(OMEGA_APP_DIR)
+	add_subdirectory(${OMEGA_APP_DIR} ${CMAKE_BINARY_DIR}/apps)
+	
+	# Set the OMEGA_APPROOT_DIRECTORY to the app directory root
+	# (it will be used to set a data lookup path)
+	add_definitions(-DOMEGA_APPROOT_DIRECTORY="${OMEGA_APP_DIR}")
+endif()
 
 # Add the core omega project
 add_subdirectory(omega)
@@ -140,4 +139,5 @@ configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/UseOmegalib.cmake.in ${CMAKE_BIN
 if(WIN32)
 	configure_file(${CMAKE_SOURCE_DIR}/MakeDistro.bat.in ${CMAKE_BINARY_DIR}/MakeDistro.bat)
 endif()
+
 

@@ -27,7 +27,7 @@
 add_executable(cyhello
 	cyhello.cpp)
 
-set_target_properties(cyhello PROPERTIES FOLDER apps)
+set_target_properties(cyhello PROPERTIES FOLDER examples)
 
 target_link_libraries(cyhello
 	omega 

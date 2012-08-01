@@ -35,7 +35,7 @@ set(SRCS
 ###################################################################################################
 # Setup compile info
 add_executable(osgviewer ${SRCS})
-set_target_properties(osgviewer PROPERTIES FOLDER apps)
+set_target_properties(osgviewer PROPERTIES FOLDER examples)
 target_link_libraries(osgviewer
 	omega 
 	omegaToolkit
