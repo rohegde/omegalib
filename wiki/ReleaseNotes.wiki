@@ -2,10 +2,38 @@
 #sidebar Sidebar
 
 = omegalib v2.1 (*current developer version*) =
-*Initial Revision*: 
+*Initial Revision*: 1631
+*Branch-out Revision*: 1837
 == Summary ==
-== Change Log ==
+	Omegalib 2.1 is mostly a bookkeeping / work-in-progress tag, before some refactoring work for omegalib 3.0
+== Major Changes ==
+	* omega
+		* Added support for headless master nodes on cluster configs
+		* Improved equalizer code for cluster configs
+		* Added preliminary support for cylindrical display configs
+		* Python API redesigned to more closely match the C++ API (using boost::python)
+			* Python API integrated pyEuclid for math fnctionality
+		* system configuration does not need to be in app config file anymore. It is now looked up from default.cfg
+		* current working dir support in clustered launcher
+		* orun works without osg / vtk support
+		* MouseCameraController (control camera just using mouse, useful for SAGEPointer-based control of remote displays)
+		* Added support for skybox, environment mapped shaders
+		* Custom display geometry in config files
+	* omicron
+		* Cleaned up math library
+	* cyclops
+		* Major improvements in effects support
+		* Added cyclops LineSet class
+		* Support for multilight shaders
+		* Shadows can be enabled / disabled at runtime
+		* Normals can be generated and / or normalized for loaded models
+	* misc.
+		* Added prepackaged binary build for windows (work in progress)
+	* MissionControl
+		* Basic tool implemented
+		* Basic statistics support
 
+------------------------------------------------------------------------
 = omegalib v2.0 =
 *Initial Revision*: 1306
 *Branch-out Revision*: 1627
