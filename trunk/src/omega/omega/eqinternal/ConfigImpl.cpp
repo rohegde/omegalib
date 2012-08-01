@@ -307,21 +307,6 @@ uint32_t ConfigImpl::finishFrame()
         om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
         getObservers().at(i)->setHeadMatrix(om);
     }
-
-    // Process exit requests.
-    if(SystemManager::instance()->isExitRequested())
-    {
-        const char* ereason = SystemManager::instance()->getExitReason().c_str();
-        if(this->exit())
-        {
-            ofmsg("ApplicationBase exit request (reason: %1%) successful", %ereason);
-        }
-        else
-        {
-            oferror("ApplicationBase exit request (reason: %1%) FAILED!", %ereason);
-        }
-    }
-
     return eq::Config::finishFrame();
 }
 
