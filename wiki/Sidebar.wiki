@@ -1,7 +1,7 @@
 [http://ombase.1067372.n5.nabble.com/ Support Forum]
 	
 
-* [GettingStarted Getting Started with omegalib]
+ * [GettingStarted Getting Started with omegalib]
 	* [ConfigReference Configuration files]
 	* [http://omegalib.googlecode.com/svn/refdocs/trunk/html/index.html API reference (trunk)]
 	* [HowTos How-tos & FAQ]
