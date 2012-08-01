@@ -1,0 +1,750 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 24.04.2012 18:37:11
+
+newmtl Default
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.7000 0.7000 0.7000
+	Kd 0.7000 0.7000 0.7000
+	Ks 0.7070 0.7070 0.7070
+	Ke 0.0000 0.0000 0.0000
+
+newmtl topexterior
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl topinterior
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__416
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\EXHAUSTP.JPG
+	map_Kd C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\EXHAUSTP.JPG
+
+newmtl _viewfinder
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0431 0.0431 0.0039
+	Kd 0.0275 0.0431 0.0863
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl driverhatch
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl antena
+	Ns 18.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0196 0.0196 0.0196
+	Kd 0.0196 0.0196 0.0196
+	Ks 0.1347 0.1347 0.1347
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__3271
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__3281
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__263
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__262
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl m2
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl weel1
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.4278 0.4278 0.4278
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+
+newmtl wood_5
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.4198 0.4198 0.4198
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BULLET.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BULLET.JPG
+
+newmtl weel21
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.4278 0.4278 0.4278
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+
+newmtl dirtammoboxes
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__288
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\AMMOBOXE.JPG
+	map_Kd C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\AMMOBOXE.JPG
+
+newmtl weel22
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.4278 0.4278 0.4278
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+
+newmtl wood_4
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0941 0.0980 0.0000
+	Kd 0.3137 0.3216 0.0235
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl dirtammoboxes1
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl shells
+	Ns 13.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+	map_Ks C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+
+newmtl bullet
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.4198 0.4198 0.4198
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BULLET.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BULLET.JPG
+
+newmtl ammobelt
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+
+newmtl hullinterior
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl front
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl hullblack
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0314 0.0314 0.0314
+	Kd 0.0314 0.0314 0.0314
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl greenback
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__373
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__292
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__293
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__310
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__311
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__368
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl frontlight1
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl frontlight2
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl taillight
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl ammoboxes
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\AMMOBOXE.JPG
+	map_Kd C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\AMMOBOXE.JPG
+
+newmtl shells1
+	Ns 13.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+	map_Ks C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\SHELS.JPG
+
+newmtl Material__327
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__328
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl tracksteel1
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl trackrubber1
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl 05___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl interiorfloor
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5255 0.5255 0.5255
+	Kd 0.5255 0.5255 0.5255
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl enginebackwall
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl leftwall
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5529 0.5529 0.5529
+	Kd 0.5529 0.5529 0.5529
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl blackinterior
+	Ns 23.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0275 0.0275 0.0275
+	Kd 0.0275 0.0275 0.0275
+	Ks 0.5862 0.5862 0.5862
+	Ke 0.0000 0.0000 0.0000
+
+newmtl blackinterior1
+	Ns 23.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0275 0.0275 0.0275
+	Kd 0.0275 0.0275 0.0275
+	Ks 0.5862 0.5862 0.5862
+	Ke 0.0000 0.0000 0.0000
+
+newmtl levars
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5529 0.5529 0.5529
+	Kd 0.5529 0.5529 0.5529
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__253
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__256
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__2531
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__2561
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__257
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\AMMOBOXE.JPG
+	map_Kd C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\2012\assetlibrary_base.fbm\M-113ROK_textures\AMMOBOXE.JPG
+
+newmtl weel2
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.4278 0.4278 0.4278
+	Ke 0.0459 0.0459 0.0459
+	map_Ka C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+	map_Kd C:\Users\Koracas\Desktop\Apc\000540469_M-113ROK_3ds\M-113ROK_3ds\M-113ROK_textures\BELT.JPG
+
+newmtl sitefenders
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__432
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl dirtammoboxes2
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__342
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__341
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3059 0.3059 0.3059
+	Kd 0.3059 0.3059 0.3059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000

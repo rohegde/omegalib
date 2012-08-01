@@ -1,0 +1,31 @@
+newmtl red
+ 	Ka  0.1986  0.0000  0.0000
+        Kd  0.5922  0.0166  0.0000
+        Ks  0.5974  0.2084  0.2084
+        illum 2
+        Ns 100.2237
+   
+newmtl green
+        Ka  0.5 0.5 0.5
+        Kd  0.5 0.5 0.5
+        Ks  0.5 0.5 0.5
+        illum 2
+        Ns 100.2237
+
+newmtl blue
+        Ka  0.1 0.1 0.1
+        Kd  0.1 0.1 0.1
+        Ks  0.1 0.1 0.1
+        illum 2
+        Ns 100.2237   
+   
+
+newmtl sleepers
+        Ka  0.6 0.5 0.4
+        Kd  0.6 0.5 0.4
+
+
+newmtl rails
+	Ka  0.50 0.530 0.750
+        Kd  0.50 0.530 0.750
+
