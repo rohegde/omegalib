@@ -37,7 +37,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class ImageRenderable;
 	public:
-		Image(Engine* srv);
+		Image(ServerEngine* srv);
 		virtual ~Image();
 
 		Renderable* createRenderable();

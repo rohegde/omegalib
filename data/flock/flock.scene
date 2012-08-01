@@ -1,0 +1,12 @@
+<Scene>
+	<Files>
+		<File Id="FlockAgent" Path="flock/ambly.fbx" Size="1"/>
+	</Files>
+
+	<Objects>
+	</Objects>
+	<Entities>
+	</Entities>
+	<Primitives>
+	</Primitives>
+</Scene>

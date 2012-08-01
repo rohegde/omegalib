@@ -38,7 +38,7 @@
 #include <osgShadow/SoftShadowMap>
 #include <osgAnimation/BasicAnimationManager>
 
-#include "cyclops/Entity.h"
+#include "cyclops/DrawableObject.h"
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -51,7 +51,7 @@ namespace cyclops {
 
 	class SceneLoader;
 	class SceneManager;
-	class AnimatedObject;
+	class Entity;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
@@ -194,7 +194,7 @@ namespace cyclops {
 		//! Called when an object is added to the scene manager. By reimplementing this method, 
 		//! users can modify the object before insertion in the scenegraph or insert intermediate osg
 		//! nodes.
-		virtual osg::Node* onObjectAdded(Entity* obj)
+		virtual osg::Node* onObjectAdded(DrawableObject* obj)
 		{
 			return obj->getOsgNode();
 		}
@@ -203,9 +203,9 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class CY_API SceneManager: public EngineModule
+	class CY_API SceneManager: public ServerModule
 	{
-	friend class Entity;
+	friend class DrawableObject;
 	friend class Light;
 	public:
 		typedef Dictionary<String, String> ShaderMacroDictionary;
@@ -229,6 +229,8 @@ namespace cyclops {
 		void setListener(SceneManagerListener* listener);
 		//! Gets the scene manager listener
 		SceneManagerListener* getListener();
+
+		ServerEngine* getEngine() { return myEngine; }
 
 		virtual void initialize();
 		virtual void update(const UpdateContext& context);
@@ -265,10 +267,9 @@ namespace cyclops {
 
 		//! Object management
 		//@{
-		Entity* getEntityByName(const String& name);
-		Entity* getEntityByIndex(int index);
-		int getNumEntities();
-		//List<Entity*>::Range getObjects();
+		template<typename T> T* getObject(const String& name);
+		int getNumObjects();
+		List<DrawableObject*>::Range getObjects();
 		//@}
 
 		osg::Texture2D* getTexture(const String& name);
@@ -284,7 +285,7 @@ namespace cyclops {
 		void resetEnvMapSettings();
 		void addLight(Light* l);
 		void removeLight(Light* l);
-		void addEntity(Entity* obj);
+		void addObject(DrawableObject* obj);
 		void updateLights();
 		void loadConfiguration();
 		void loadShader(osg::Shader* shader, const String& name);
@@ -293,6 +294,7 @@ namespace cyclops {
 
 	private:
 		static SceneManager* mysInstance;
+		ServerEngine* myEngine;
 		OsgModule* myOsg;
 
 		// Scene manager listener
@@ -312,8 +314,8 @@ namespace cyclops {
 
 		ShaderMacroDictionary myShaderMacros;
 
-		Dictionary<String, Entity*> myObjectDictionary;
-		Vector<Entity*> myObjectVector;
+		Dictionary<String, DrawableObject*> myObjectDictionary;
+		List<DrawableObject*> myObjectList;
 		
 		SkyBox* mySkyBox;
 
@@ -328,16 +330,13 @@ namespace cyclops {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline  Entity* SceneManager::getEntityByName(const String& name)
-	{ return myObjectDictionary[name]; }
+	template<typename T> 
+	inline  T* SceneManager::getObject(const String& name)
+	{ return dynamic_cast<T*>(myObjectDictionary[name]); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline  Entity* SceneManager::getEntityByIndex(int index)
-	{ return myObjectVector[index]; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int SceneManager::getNumEntities()
-	{ return myObjectVector.size(); }
+	inline int SceneManager::getNumObjects()
+	{ return myObjectList.size(); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void SceneManager::setListener(SceneManagerListener* listener)
@@ -352,8 +351,8 @@ namespace cyclops {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//inline List<Entity*>::Range SceneManager::getObjects()
-	//{ return List<Entity*>::Range(myObjectList.begin(), myObjectList.end()); }
+	inline List<DrawableObject*>::Range SceneManager::getObjects()
+	{ return List<DrawableObject*>::Range(myObjectList.begin(), myObjectList.end()); }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline int SceneManager::getNumActiveLights()

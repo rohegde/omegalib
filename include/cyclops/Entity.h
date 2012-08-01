@@ -24,18 +24,26 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_DRAWABLE_OBJECT__
-#define __CY_DRAWABLE_OBJECT__
+#ifndef __CY_ENTITY__
+#define __CY_ENTITY__
 
-#include "cyclopsConfig.h"
-#include "EffectNode.h"
-
+#include <osg/Texture2D>
+#include <osg/Light>
 #include <osg/Group>
+#include <osg/Switch>
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/SoftShadowMap>
+#include <osgAnimation/BasicAnimationManager>
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
 #include <omegaOsg.h>
 #include <omegaToolkit.h>
+
+#include "cyclopsConfig.h"
+#include "SkyBox.h"
+#include "SceneManager.h"
+#include "DrawableObject.h"
 
 namespace cyclops {
 	using namespace omega;
@@ -44,37 +52,64 @@ namespace cyclops {
 	class SceneManager;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//! PYAPI
-	class CY_API Entity: public SceneNode
+	struct EntityEventCallbacks
+	{
+		String onAdd;
+		String onUpdate;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API Entity: public DrawableObject
 	{
 	public:
-		Entity(SceneManager* scene);
+		//! Tries to convert a drawable object instance into an entity instance. Returns null if the cast fails
+		static Entity* fromDrawableObject(DrawableObject* dobj);
 
-		osg::Node* getOsgNode() { return myEffect; }
-		//SceneNode* getSceneNode() { return mySceneNode; }
+	public:
+		Entity(SceneManager* mng, const String& modelName, const String& entityName);
+		virtual ~Entity() {}
 
-		void setTag(const String& value) { myTag = value; }
-		const String& getTag() { return myTag; } 
+		ModelAsset* getModel();
 
-		//!PYAPI
-		bool hasEffect();
-		//! PYAPI
-		void setEffect(const String& effectDefinition);
+		int getNumModels() { return myModel->numNodes; }
+		void setCurrentModelIndex(int index);
+		int getCurrentModelIndex();
 
-	protected:
-		void initialize(osg::Node* node);
+		//! Animation support
+		//@{
+		bool hasAnimations();
+		int getNumAnimations();
+		void playAnimation(int id);
+		void loopAnimation(int id);
+		void pauseAnimation(int id);
+		void stopAllAnimations();
+		//@}
+
+		void setEventCallbacks(const EntityEventCallbacks& eec);
 
 	private:
 		SceneManager* mySceneManager;
 
-		String myTag;
+		ModelAsset* myModel;
+		osg::Switch* myOsgSwitch;
+		int myCurrentModelIndex;
 
-		osg::Node* myOsgNode;
-		//SceneNode* mySceneNode;
-		OsgSceneObject* myOsgSceneObject;
+		// osg animation stuff
+		osgAnimation::BasicAnimationManager* myAnimationManager;
+		const osgAnimation::AnimationList* myAnimations;
 
-		EffectNode* myEffect;
+		// Callbacks
+		EntityEventCallbacks myCallbacks;
 	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline ModelAsset* Entity::getModel()
+	{ return myModel; }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline Entity* Entity::fromDrawableObject(DrawableObject* dobj)
+	{ return dynamic_cast<Entity*>(dobj); }
+
 };
 
 #endif

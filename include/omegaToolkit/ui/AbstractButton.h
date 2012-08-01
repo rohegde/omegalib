@@ -34,7 +34,7 @@ namespace omegaToolkit { namespace ui {
 	class OTK_API AbstractButton: public Widget
 	{
 	public:
-		AbstractButton(Engine* srv);
+		AbstractButton(ServerEngine* srv);
 		virtual ~AbstractButton();
 
 		virtual void update(const omega::UpdateContext& context);

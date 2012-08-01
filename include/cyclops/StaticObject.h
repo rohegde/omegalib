@@ -27,7 +27,7 @@
 #ifndef __CY_STATIC_OBJECT__
 #define __CY_STATIC_OBJECT__
 
-#include "cyclops/Entity.h"
+#include "cyclops/DrawableObject.h"
 #include "cyclops/SceneManager.h"
 
 namespace cyclops {
@@ -36,7 +36,7 @@ namespace cyclops {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
-	class CY_API StaticObject: public Entity
+	class CY_API StaticObject: public DrawableObject
 	{
 	public:
 		//! PYAPI Convenience method for creating SphereShape

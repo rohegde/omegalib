@@ -36,14 +36,14 @@ UiModule* UiModule::mysInstance = NULL;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
-	EngineModule("UiModule"),
+	ServerModule("UiModule"),
 	myWidgetFactory(NULL),
 	myPointerInteractionEnabled(true),
 	myGamepadInteractionEnabled(false),
 	myActiveWidget(NULL)
 {
 	// This kodule has high priority. It will receive events before modules with lower priority.
-	setPriority(EngineModule::PriorityHigh);
+	setPriority(ServerModule::PriorityHigh);
 
 	mysInstance = this;
 
@@ -61,12 +61,12 @@ void UiModule::initialize()
 {
 	omsg("UiModule initializing...");
 
-	myWidgetFactory = new ui::DefaultWidgetFactory(getEngine());
-	myUi = new ui::Container(getEngine());
+	myWidgetFactory = new ui::DefaultWidgetFactory(getServer());
+	myUi = new ui::Container(getServer());
 	myUi->setLayout(ui::Container::LayoutFree);
-	myUi->setUIEventHandler(getEngine());
+	myUi->setUIEventHandler(getServer());
 
-    Config* cfg = getEngine()->getSystemManager()->getAppConfig();
+    Config* cfg = getServer()->getSystemManager()->getAppConfig();
 	myLocalEventsEnabled = cfg->getBoolValue("config/ui/enableLocalEvents", true);
 	if(cfg->exists("config/ui/images"))
 	{

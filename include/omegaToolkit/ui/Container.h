@@ -60,7 +60,7 @@ namespace omegaToolkit { namespace ui {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OTK_API Container: public Widget
 	{
-	//friend class Engine;
+	//friend class ServerEngine;
 	friend class ContainerRenderable;
 	friend class UiRenderPass;
 	public:
@@ -69,7 +69,7 @@ namespace omegaToolkit { namespace ui {
 		enum VerticalAlign { AlignTop, AlignMiddle, AlignBottom};
 
 	public:
-		Container(Engine* server);
+		Container(ServerEngine* server);
 		virtual ~Container();
 
 		virtual Renderable* createRenderable();

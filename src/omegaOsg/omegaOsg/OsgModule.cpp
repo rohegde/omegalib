@@ -44,7 +44,7 @@ OsgModule* OsgModule::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 OsgModule::OsgModule():
-	EngineModule("OsgModule"),
+	ServerModule("OsgModule"),
     myRepresentationSize(0.4)
 {
     mysInstance = this;

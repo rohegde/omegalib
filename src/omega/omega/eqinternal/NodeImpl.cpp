@@ -44,7 +44,7 @@ NodeImpl::NodeImpl( eq::Config* parent ):
 	if(!sys->isMaster())
 	{
 		// This is the not master node. Create a standard server instance.
-		myServer = new Engine(app);
+		myServer = app->createServer();
 	}
 }
 
@@ -89,8 +89,6 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 		const UpdateContext& uc = config->getUpdateContext();
 		myServer->update(uc);
 	}
-
-	if(!getClient()->isConnected()) getClient()->exitLocal();
 
 	Node::frameStart(frameID, frameNumber);
 }

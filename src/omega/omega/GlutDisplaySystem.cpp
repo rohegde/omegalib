@@ -26,8 +26,6 @@
  *************************************************************************************************/
 #include "omega/ApplicationBase.h"
 #include "omega/SystemManager.h"
-#include "omega/Engine.h"
-#include "omega/Renderer.h"
 #include "omega/GlutDisplaySystem.h"
 
 #define GLEW_MX
@@ -206,8 +204,8 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 	ApplicationBase* app = SystemManager::instance()->getApplication();
 	if(app)
 	{
-		myAppServer = new Engine(app);
-		myAppClient = new Renderer(myAppServer);
+		myAppServer = app->createServer();
+		myAppClient = app->createClient(myAppServer);
 
 		myAppServer->initialize();
 

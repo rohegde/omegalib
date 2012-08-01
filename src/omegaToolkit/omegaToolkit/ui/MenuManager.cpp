@@ -248,7 +248,7 @@ void Menu::show()
 	//myContainer->setVisible(true);
 	UiModule::instance()->activateWidget(myContainer);
 	UiModule::instance()->setGamepadInteractionEnabled(true);
-	Engine::instance()->getDefaultCamera()->setControllerEnabled(false);
+	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(false);
 
 	myContainer->get3dSettings().alpha = 0.0f;
 	my3dSettings.alpha = 1.0f;
@@ -266,7 +266,7 @@ void Menu::hide()
 
 	UiModule::instance()->activateWidget(NULL);
 	UiModule::instance()->setGamepadInteractionEnabled(false);
-	Engine::instance()->getDefaultCamera()->setControllerEnabled(true);
+	ServerEngine::instance()->getDefaultCamera()->setControllerEnabled(true);
 
 	my3dSettings.alpha = 0.0f;
 	my3dSettings.scale = myManager->getMenu3dScale() / 2;
@@ -308,7 +308,7 @@ MenuManager* MenuManager::createAndInitialize()
 	{
 		mysInstance = new MenuManager();
 		ModuleServices::addModule(mysInstance);
-		mysInstance->doInitialize(Engine::instance());
+		mysInstance->doInitialize(ServerEngine::instance());
 	}
 	return mysInstance;
 }
@@ -336,7 +336,7 @@ void MenuManager::initialize()
 		myUiModule = new UiModule();
 		ModuleServices::addModule(myUiModule);
 		// Force uimodule init.
-		myUiModule->doInitialize(getEngine());
+		myUiModule->doInitialize(getServer());
 	}
 
 	// Read configuration parameters from system config

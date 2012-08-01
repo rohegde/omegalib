@@ -33,7 +33,7 @@ EventSharingModule* EventSharingModule::mysInstance = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 EventSharingModule::EventSharingModule():
-	EngineModule("EventSharingModule"),
+	ServerModule("EventSharingModule"),
 	myQueuedEvents(0)
 {
 	mysInstance = this;
@@ -44,13 +44,13 @@ void EventSharingModule::share(const Event& evt)
 {
 	if(mysInstance != NULL)
 	{
-		if(mysInstance->getEngine() == NULL) 
+		if(mysInstance->getServer() == NULL) 
 		{
 			owarn("EventSharingModule::share: server not initialized yet. Ignoring call.");
 			return;
 		}
 	
-		if(!SystemManager::instance()->isMaster())
+		if(!mysInstance->getServer()->isMaster())
 		{
 			owarn("EventSharingModule::share: can be called only from master server. Ignoring call.");
 		}
@@ -92,8 +92,8 @@ void EventSharingModule::updateSharedData(SharedIStream& in)
 	in >> myQueuedEvents;
 	if(myQueuedEvents != 0)
 	{
-		Engine* server = getEngine();
-		//ServiceManager* sm = getEngine()->getServiceManager();
+		ServerEngine* server = getServer();
+		//ServiceManager* sm = getServer()->getServiceManager();
 		//sm->lockEvents();
 		while(myQueuedEvents)
 		{

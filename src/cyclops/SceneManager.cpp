@@ -31,7 +31,7 @@
 #include <osgAnimation/Animation>
 #include <osgUtil/SmoothingVisitor>
 
-#include "cyclops/AnimatedObject.h"
+#include "cyclops/Entity.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
 
@@ -91,7 +91,7 @@ SceneManager* SceneManager::createAndInitialize()
 	{
 		mysInstance = new SceneManager();
 		ModuleServices::addModule(mysInstance);
-		mysInstance->doInitialize(Engine::instance());
+		mysInstance->doInitialize(ServerEngine::instance());
 	}
 	return mysInstance;
 }
@@ -137,7 +137,7 @@ void SceneManager::loadConfiguration()
 void SceneManager::initialize()
 {
 	myMainLight = NULL;
-	//myEngine = getEngine();
+	myEngine = getServer();
 
 	// Make sure the osg module is initialized.
 	if(!myOsg->isInitialized()) myOsg->initialize();
@@ -174,9 +174,9 @@ void SceneManager::resetEnvMapSettings()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::addEntity(Entity* obj)
+void SceneManager::addObject(DrawableObject* obj)
 {
-	myObjectVector.push_back(obj);
+	myObjectList.push_back(obj);
 	myObjectDictionary[obj->getName()] = obj;
 
 	osg::Node* objNode = obj->getOsgNode();
@@ -519,7 +519,7 @@ void SceneManager::recompileShaders(ProgramAsset* program, const String& variati
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::setBackgroundColor(const Color& color)
 {
-	getEngine()->getDisplaySystem()->setBackgroundColor(color);
+	myEngine->getDisplaySystem()->setBackgroundColor(color);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

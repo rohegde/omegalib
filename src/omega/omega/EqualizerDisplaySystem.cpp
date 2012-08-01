@@ -38,6 +38,15 @@ using namespace omega;
 using namespace co::base;
 using namespace std;
 
+// TODO: move thi to osystem (ogetcwd)
+#ifdef OMEGA_OS_WIN
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+ #endif
+
 // Uncomment to enable swap barrier on compounds (kinda buggy atm)
 //#define EQ_USE_SWAP_BARRIER
 
@@ -494,7 +503,8 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				executable = StringUtils::replaceAll(executable, "%h", nc.hostname);
 				
 				// Substitute %d with current working directory
-				String cCurrentPath = ogetcwd();
+				char cCurrentPath[FILENAME_MAX];
+				GetCurrentDir(cCurrentPath, sizeof(cCurrentPath));
 				executable = StringUtils::replaceAll(executable, "%d", cCurrentPath);
 				
 				int port = myDisplayConfig.basePort + nc.port;

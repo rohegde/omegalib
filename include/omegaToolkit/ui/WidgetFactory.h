@@ -37,9 +37,9 @@ namespace omegaToolkit { namespace ui
 	class WidgetFactory
 	{
 	public:
-		WidgetFactory(Engine* server): myServer(server) {}
+		WidgetFactory(ServerEngine* server): myServer(server) {}
 
-		Engine* getEngine() { return myServer; }
+		ServerEngine* getServer() { return myServer; }
 
 		virtual Widget* createWidget(const String& name, Container* container)
 		{
@@ -94,7 +94,7 @@ namespace omegaToolkit { namespace ui
 		}
 
 	private:
-		Engine* myServer;
+		ServerEngine* myServer;
 	};
 }; // namespace ui
 }; // namespace omega

@@ -34,11 +34,11 @@ namespace omega {
 	class SceneNode;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Actor: public EngineModule
+	class OMEGA_API Actor: public ServerModule
 	{
 	public:
-		Actor(const String& name): EngineModule(name), myNode(NULL)  {}
-		Actor(): EngineModule(), myNode(NULL) {}
+		Actor(const String& name): ServerModule(name), myNode(NULL)  {}
+		Actor(): ServerModule(), myNode(NULL) {}
 
 		void setSceneNode(SceneNode* node);
 		SceneNode* getSceneNode();

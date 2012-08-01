@@ -28,7 +28,7 @@
 #define __OSG_MODULE_H__
 
 #include "omegaOsg/oosgbase.h"
-#include "omega/Engine.h"
+#include "omega/ServerEngine.h"
 #include "omega/Application.h"
 
 //! Vector conversion macros
@@ -49,7 +49,7 @@ namespace omegaOsg
 	class OsgSceneObject;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OOSG_API OsgModule: public EngineModule
+	class OOSG_API OsgModule: public ServerModule
 	{
 	public:
 		static OsgModule* instance() { return mysInstance; }

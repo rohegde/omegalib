@@ -43,7 +43,7 @@ SET( srcs
 		omega/Console.cpp
 		omega/DrawInterface.cpp
 		omega/EventSharingModule.cpp
-		omega/Engine.cpp
+		omega/ServerEngine.cpp
 		omega/Font.cpp
 		omega/GpuBuffer.cpp
 		omega/GpuManager.cpp
@@ -90,7 +90,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/CylindricalDisplayConfig.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawContext.h
 		${OmegaLib_SOURCE_DIR}/include/omega/DrawInterface.h
-		${OmegaLib_SOURCE_DIR}/include/omega/Engine.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ServerEngine.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Font.h
 		${OmegaLib_SOURCE_DIR}/include/omega/glheaders.h
 		${OmegaLib_SOURCE_DIR}/include/omega/GpuBuffer.h

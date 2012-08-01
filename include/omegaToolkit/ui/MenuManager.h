@@ -155,12 +155,13 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API MenuManager: public EngineModule
+	class OTK_API MenuManager: public ServerModule
 	{
 	public:
 		static MenuManager* createAndInitialize();
 		static MenuManager* instance();
 
+		ServerEngine* getEngine() { return myEngine; }
 		UiModule* getUiModule() { return myUiModule; }
 
 		virtual void initialize();
@@ -198,6 +199,8 @@ namespace omegaToolkit { namespace ui {
 		bool myAutoPlaceEnabled;
 		float myAutoPlaceDistance;
 		float myMenu3dScale;
+
+		ServerEngine* myEngine;
 	};
 }; };
 

@@ -39,15 +39,6 @@
 #define Sleep(x) usleep((x)*1000)
 #endif
 
-// TODO: move thi to osystem (ogetcwd)
-#ifdef OMEGA_OS_WIN
-    #include <direct.h>
-    #define GetCurrentDir _getcwd
-#else
-    #include <unistd.h>
-    #define GetCurrentDir getcwd
- #endif
-
 namespace omega
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,18 +64,8 @@ namespace omega
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
-	extern "C" void abortHandler(int signal_number)
-	{
-		// Just exit.
-		exit(-1);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
 	int omain(omega::ApplicationBase& app, int argc, char** argv)
 	{
-		// register the abort handler.
-		signal(SIGABRT, &abortHandler);
-
 #ifdef OMEGA_ENABLE_VLD
 		// Mark everything before this point as already reported to avoid reporting static global objects as leaks.
 		// This makes the report less precise but gets rid of a lot of noise.
@@ -159,49 +140,25 @@ namespace omega
 			SystemManager* sys = SystemManager::instance();
 			DataManager* dm = sys->getDataManager();
 			
-			omsg("omegalib data search paths:");
-			String cwd = ogetcwd();
-			ofmsg("::: %1%", %cwd);
-
-			// Add some default filesystem search paths: 
-			// - an empty search path for absolute paths
-			// - the current directory
-			// - the omegalib applications root path (if exists)
-			// - the default omegalib data path
+			// Add some default filesystem search paths: the default omegalib data path, an empty search path for absolute paths, and the
+			// current program directory path.
 			dm->addSource(new FilesystemDataSource("./"));
 			dm->addSource(new FilesystemDataSource(""));
-#ifdef OMEGA_APPROOT_DIRECTORY
-			dm->addSource(new FilesystemDataSource(OMEGA_APPROOT_DIRECTORY));
-			ofmsg("::: %1%", %OMEGA_APPROOT_DIRECTORY);
-#endif
 			dm->addSource(new FilesystemDataSource(dataPath));
-			ofmsg("::: %1%", %dataPath);
 
-
-			omsg("omegalib application config lookup:");
-			String curCfgFilename = ostr("%1%/%2%", %app.getName() %configFilename);
-			ofmsg("::: trying %1%", %curCfgFilename);
 			String path;
-			if(!DataManager::findFile(curCfgFilename, path))
+			if(!DataManager::findFile(configFilename, path))
 			{
-				curCfgFilename = configFilename;
-				ofmsg("::: not found, trying %1%", %curCfgFilename);
-
-				if(!DataManager::findFile(curCfgFilename, path))
+				ofmsg("Could not find %1%, trying to load default.cfg", %configFilename);
+				configFilename = "default.cfg";
+				if(!DataManager::findFile(configFilename, path))
 				{
-					curCfgFilename = "default.cfg";
-					ofmsg("::: not found, trying %1%", %curCfgFilename);
-					if(!DataManager::findFile(curCfgFilename, path))
-					{
-						oerror("FATAL: Could not load default.cfg. Aplication will exit now.");
-						return -1;
-					}
+					oerror("FATAL: Could not load default.cfg. Aplication will exit now.");
+					return -1;
 				}
 			}
 
-			ofmsg("::: found config: %1%", %curCfgFilename);
-
-			Config* cfg = new Config(curCfgFilename);
+			Config* cfg = new Config(configFilename);
 		
 			sys->setApplication(&app);
 			if(remote)
@@ -313,13 +270,5 @@ namespace omega
 				break;
 		}
 #endif
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	String ogetcwd()
-	{
-		char cCurrentPath[FILENAME_MAX];
-		GetCurrentDir(cCurrentPath, sizeof(cCurrentPath));
-		return cCurrentPath;
 	}
 }

@@ -29,7 +29,7 @@
 
 #include "osystem.h"
 //#include "Renderer.h"
-#include "Engine.h"
+#include "ServerEngine.h"
 //#include "omega/ApplicationBase.h"
 //#include "omega/SystemManager.h"
 #include "omega/SharedDataServices.h"
@@ -39,14 +39,14 @@ namespace omega {
 	class Renderer;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API EngineModule: public SharedObject
+	class OMEGA_API ServerModule: public SharedObject
 	{
 	public:
 		enum Priority { PriorityLow = 0, PriorityNormal = 1, PriorityHigh = 2 };
 
 	public:
-		EngineModule(const String& name): myInitialized(false), myEngine(NULL), myName(name), myPriority(PriorityNormal) {}
-		EngineModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()), myPriority(PriorityNormal) {}
+		ServerModule(const String& name): myInitialized(false), myEngine(NULL), myName(name), myPriority(PriorityNormal) {}
+		ServerModule(): myInitialized(false), myEngine(NULL), myName(mysNameGenerator.generate()), myPriority(PriorityNormal) {}
 
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
@@ -58,7 +58,7 @@ namespace omega {
 		virtual void preDraw(Renderer*, const DrawContext& context) {}
 		virtual void postDraw(Renderer*, const DrawContext& context) {}
 
-		void doInitialize(Engine* server) 
+		void doInitialize(ServerEngine* server) 
 		{ 
 			myEngine = server; 
 			if(!myInitialized) 
@@ -76,7 +76,7 @@ namespace omega {
 
 		virtual bool isInitialized() { return myInitialized; }
 
-		Engine* getEngine() { return myEngine; }
+		ServerEngine* getServer() { return myEngine; }
 
 		Priority getPriority() { return myPriority; }
 		void setPriority(Priority value) { myPriority = value; }
@@ -85,7 +85,7 @@ namespace omega {
 		String myName;
 		Priority myPriority;
 		bool myInitialized;
-		Engine* myEngine;
+		ServerEngine* myEngine;
 		static NameGenerator mysNameGenerator;
 	};
 
@@ -93,30 +93,30 @@ namespace omega {
 	class OMEGA_API ModuleServices
 	{
 	public:
-		static void addModule(EngineModule* module)
+		static void addModule(ServerModule* module)
 		{ 
 			mysModules.push_back(module); 
 		}
 
-		static List<EngineModule*>::ConstRange getModules() 
+		static List<ServerModule*>::ConstRange getModules() 
 		{ 
-			return List<EngineModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
+			return List<ServerModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
 		}
 
-		static void update(Engine* srv, const UpdateContext& context)
+		static void update(ServerEngine* srv, const UpdateContext& context)
 		{
-			foreach(EngineModule* module, mysModules)
+			foreach(ServerModule* module, mysModules)
 			{
 				module->doInitialize(srv);
 				module->update(context);
 			}
 		}
 
-		static void handleEvent(Engine* srv, const Event& evt)
+		static void handleEvent(ServerEngine* srv, const Event& evt)
 		{
-			for(int i = EngineModule::PriorityHigh; i >= EngineModule::PriorityLow; i--)
+			for(int i = ServerModule::PriorityHigh; i >= ServerModule::PriorityLow; i--)
 			{
-				foreach(EngineModule* module, mysModules)
+				foreach(ServerModule* module, mysModules)
 				{
 					if(module->getPriority() == i)
 					{
@@ -127,27 +127,27 @@ namespace omega {
 			}
 		}
 
-		static void initializeRenderer(Engine* srv, Renderer* r)
+		static void initializeRenderer(ServerEngine* srv, Renderer* r)
 		{
-			foreach(EngineModule* module, mysModules)
+			foreach(ServerModule* module, mysModules)
 			{
 				//module->doInitialize(srv);
 				//module->initializeRenderer(r);
 			}
 		}
 
-		static void preDraw(Engine* srv, Renderer* r, const DrawContext& context)
+		static void preDraw(ServerEngine* srv, Renderer* r, const DrawContext& context)
 		{
-			foreach(EngineModule* module, mysModules)
+			foreach(ServerModule* module, mysModules)
 			{
 				module->doInitialize(srv);
 				module->preDraw(r, context);
 			}
 		}
 
-		static void postDraw(Engine* srv, Renderer* r, const DrawContext& context)
+		static void postDraw(ServerEngine* srv, Renderer* r, const DrawContext& context)
 		{
-			foreach(EngineModule* module, mysModules)
+			foreach(ServerModule* module, mysModules)
 			{
 				module->doInitialize(srv);
 				module->postDraw(r, context);
@@ -156,7 +156,7 @@ namespace omega {
 
 		static void cleanup()
 		{
-			foreach(EngineModule* module, mysModules)
+			foreach(ServerModule* module, mysModules)
 			{
 				delete module;
 			}
@@ -164,7 +164,7 @@ namespace omega {
 		}
 
 	private:
-		static List<EngineModule*> mysModules;
+		static List<ServerModule*> mysModules;
 	};
 
 }; // namespace omega

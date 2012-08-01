@@ -32,7 +32,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Button::Button(Engine* srv):
+Button::Button(ServerEngine* srv):
 	AbstractButton(srv),
 	myLabel(srv)
 {

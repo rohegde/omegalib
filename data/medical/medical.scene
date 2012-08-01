@@ -1,0 +1,13 @@
+<Scene>
+	<Files>
+		<File Id="0" Path="./personanim2.fbx" Effect="textured" Size="4"/>
+	</Files>
+	
+   <Objects>
+		<Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="Medical1" WorldPos="0 0.5 0"/>
+   </Objects>
+	<Primitives>
+		<Plane Active="true" StartCorner="-1 0 -1" EndCorner="1 0 1" ID="1" Effect="colored -d gray" Name="Plane_1" Rotation="0 0 0" Scale="40 1 40" Tiling="40 40" WorldPos="0 0 0" />
+	</Primitives>
+	<SkyBox Path="cubemaps/gradient1" Extension="png"/>
+</Scene>

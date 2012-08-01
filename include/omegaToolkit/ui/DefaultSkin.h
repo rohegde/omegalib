@@ -73,7 +73,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class DefaultButtonRenderable;
 	public:
-		DefaultButton(Engine* srv): Button(srv) {}
+		DefaultButton(ServerEngine* srv): Button(srv) {}
 		virtual ~DefaultButton() {}
 		virtual Renderable* createRenderable()  { return new DefaultButtonRenderable(this); }
 	};
@@ -83,7 +83,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class DefaultSliderRenderable;
 	public:
-		DefaultSlider(Engine* srv): Slider(srv) {}
+		DefaultSlider(ServerEngine* srv): Slider(srv) {}
 		virtual ~DefaultSlider() {}
 		virtual Renderable* createRenderable() { return new DefaultSliderRenderable(this); }
 	};
@@ -93,7 +93,7 @@ namespace omegaToolkit { namespace ui {
 	{
 	friend class DefaultPanelRenderable;
 	public:
-		DefaultPanel(Engine* srv): Container(srv) {}
+		DefaultPanel(ServerEngine* srv): Container(srv) {}
 		virtual ~DefaultPanel() {}
 		virtual Renderable* createRenderable() { return new DefaultPanelRenderable(this); }
 	};
@@ -102,11 +102,11 @@ namespace omegaToolkit { namespace ui {
 	class DefaultWidgetFactory: public WidgetFactory
 	{
 	public:
-		DefaultWidgetFactory(Engine* srv): WidgetFactory(srv) {}
+		DefaultWidgetFactory(ServerEngine* srv): WidgetFactory(srv) {}
 
 		virtual Button* createButton(const String& name, Container* container)
 		{
-			Button* button = new DefaultButton(getEngine());
+			Button* button = new DefaultButton(getServer());
 			button->setName(name);
 			button->getLabel()->setText(name);
 			container->addChild(button);
@@ -115,14 +115,14 @@ namespace omegaToolkit { namespace ui {
 
 		virtual Slider* createSlider(const String& name, Container* container)
 		{
-			Slider* slider = new DefaultSlider(getEngine());
+			Slider* slider = new DefaultSlider(getServer());
 			container->addChild(slider);
 			return slider;
 		}
 
 		virtual Container* createPanel(String name, Container* container)
 		{
-			Container* panel = new DefaultPanel(getEngine());
+			Container* panel = new DefaultPanel(getServer());
 			panel->setLayout(Container::LayoutVertical);
 			container->addChild(panel);
 			return panel;

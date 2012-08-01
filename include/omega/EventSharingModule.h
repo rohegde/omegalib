@@ -33,7 +33,7 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API EventSharingModule: public EngineModule
+	class OMEGA_API EventSharingModule: public ServerModule
 	{
 	public:
 		//! Max number of events.

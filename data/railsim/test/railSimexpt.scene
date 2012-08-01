@@ -1,0 +1,30 @@
+<Scene>
+	<Files>
+
+
+		<File Id="0" Path="railsim/test/modeshape/shape0.obj" Maxcount="50" GenerateNormals="true" NormalizeNormals="true" />
+            <File Id="1" Path="railsim/test/Wheelset/theWheelSet.obj" />
+            <File Id="2" Path="railsim/test/Frame/FrameAltered.obj"/>	
+
+
+		</Files>
+
+		<StaticObjects>
+                    
+			<!-- This is the railstation -->
+		</StaticObjects>
+          
+            <Entities>
+           		<Entity FileIndex="0" Id="0" Rotation="0 0 0" Scale="1 1 1" Tag="modeshape" WorldPos="0 0 0" />
+				
+		<!-- This is the wheel -->  
+                <Entity FileIndex="1" Id="1" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+                
+		<!-- This is the frame -->
+                <Entity FileIndex="2" Id="2" Rotation="0 0 0" Scale="1 1 1" Tag="" WorldPos="0 0 0" />
+
+               
+            </Entities>
+             <Primitives>
+		 </Primitives>
+</Scene>

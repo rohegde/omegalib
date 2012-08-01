@@ -93,7 +93,7 @@ const char* TabletGuiElement::getDef()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PortholeTabletService::PortholeTabletService():
-EngineModule("PortholeTabletService"),
+ServerModule("PortholeTabletService"),
 myAutoUpdateInterval(0.5f), myEngine(NULL), myEnabled(true), myTabletService(NULL), myEventFlags(Event::Left)
 {
 	setPollPriority(Service::PollLast);
@@ -120,7 +120,7 @@ void PortholeTabletService::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void PortholeTabletService::initialize(Engine* engine)
+void PortholeTabletService::initialize(ServerEngine* engine)
 {
 	myEngine = engine;
 

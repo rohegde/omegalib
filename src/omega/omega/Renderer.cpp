@@ -25,7 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omega/Renderer.h"
-#include "omega/Engine.h"
+#include "omega/ServerEngine.h"
 #include "omega/PortholeTabletService.h"
 
 #include "omega/DisplaySystem.h"
@@ -45,7 +45,7 @@ Renderer::Renderer(ServerBase* server):
 	RendererBase(server)
 {
 	myRenderer = new DrawInterface();
-	myServer = (Engine*)server;
+	myServer = (ServerEngine*)server;
 	myServer->addClient(this);
 }
 
@@ -220,7 +220,7 @@ void Renderer::innerDraw(const DrawContext& context)
 		getRenderer()->beginDraw3D(context);
 
 		// Run the draw method on scene nodes (was previously in DefaultRenderPass)
-		SceneNode* node = getEngine()->getScene();
+		SceneNode* node = getServer()->getScene();
 		node->draw(&state);
 
 		// Draw 3d pointers.

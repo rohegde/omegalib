@@ -39,7 +39,7 @@
 #include "SceneManager.h"
 #include "cyclops/Shapes.h"
 #include "cyclops/StaticObject.h"
-#include "cyclops/AnimatedObject.h"
+#include "cyclops/Entity.h"
 
 namespace cyclops {
 	using namespace omega;
@@ -76,7 +76,7 @@ namespace cyclops {
 		PlaneShape* createPlane(TiXmlElement* xPlane);
 		SphereShape* createSphere(TiXmlElement* xchild);
 		StaticObject* createStaticObject(TiXmlElement* xchild);
-		AnimatedObject* createEntity(TiXmlElement* xchild);
+		Entity* createEntity(TiXmlElement* xchild);
 
 	private:
 		String myPath;

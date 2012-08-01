@@ -38,7 +38,7 @@ namespace co
 namespace omega
 {
 	class SharedData;
-	class EngineModule;
+	class ServerModule;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
     class OMEGA_API SharedOStream

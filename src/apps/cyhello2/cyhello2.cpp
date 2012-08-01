@@ -38,7 +38,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class HelloApplication: public EngineModule, IMenuItemListener, SceneNodeListener
+class HelloApplication: public ServerModule, IMenuItemListener, SceneNodeListener
 {
 public:
 	HelloApplication();
@@ -74,7 +74,7 @@ void HelloApplication::initialize()
 	// Create and initialize the cyclops scene manager.
 	mySceneManager = SceneManager::createAndInitialize();
 
-	mySceneManager->createSkyBox("cubemaps/gradient1", "png");
+	mySceneManager->createSkyBox("demos/common/brightday1", "png");
 
 	// Load some basic model from the omegalib meshes folder.
 	// Force the size of the object to be 0.8 meters
@@ -101,7 +101,7 @@ void HelloApplication::initialize()
 	PlaneShape* plane = new PlaneShape(mySceneManager, 100, 100, Vector2f(50, 50));
 	plane->setName("ground");
 	//plane->setEffect("textured -d cyclops/test/checker2.jpg -s 20 -g 1 -v envmap");
-	plane->setEffect("textured -d cubemaps/gradient1/negy.png");
+	plane->setEffect("textured -d demos/common/brightday1/negy.png");
 	plane->pitch(-90 * Math::DegToRad);
 	plane->setPosition(0, -1, -2);
 

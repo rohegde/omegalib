@@ -33,7 +33,7 @@ using namespace omegaToolkit;
 using namespace omegaToolkit::ui;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Label::Label(Engine* srv):
+Label::Label(ServerEngine* srv):
 	Widget(srv),
 	myColor(255, 255, 255),
 	myVerticalAlign(AlignMiddle),

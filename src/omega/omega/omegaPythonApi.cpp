@@ -30,7 +30,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
-#include "omega/Engine.h"
+#include "omega/ServerEngine.h"
 
 #ifdef OMEGA_USE_PYTHON
 
@@ -94,7 +94,7 @@ static PyObject* rendererQueueCommand(PyObject* self, PyObject* args)
 		sScriptRendererCommand = new ScriptRendererCommand();
 	}
 	sScriptRendererCommand->setStatement(statement);
-	Engine* engine = Engine::instance();
+	ServerEngine* engine = ServerEngine::instance();
 	foreach(Renderer* r, engine->getClients())
 	{
 		r->queueCommand(sScriptRendererCommand);
@@ -246,7 +246,7 @@ static PyMethodDef omegaMethods[] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-Engine* getEngine() { return Engine::instance(); }
+ServerEngine* getServer() { return ServerEngine::instance(); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void printChildrenHelper(Node* n, int depth, const String& prefix, const String& indentString)
@@ -478,12 +478,12 @@ BOOST_PYTHON_MODULE(omega)
 		.def("getServiceType", &Event::getServiceType)
 		;
 
-	// Engine 
-	class_<Engine, boost::noncopyable>("Engine", no_init)
-		.def("isConsoleEnabled", &Engine::isConsoleEnabled)
-		.def("setConsoleEnabled", &Engine::setConsoleEnabled)
-		.def("getScene", &Engine::getScene, PYAPI_RETURN_POINTER)
-		.def("getDefaultCamera", &Engine::getDefaultCamera, PYAPI_RETURN_POINTER)
+	// ServerEngine 
+	class_<ServerEngine, boost::noncopyable>("ServerEngine", no_init)
+		.def("isConsoleEnabled", &ServerEngine::isConsoleEnabled)
+		.def("setConsoleEnabled", &ServerEngine::setConsoleEnabled)
+		.def("getScene", &ServerEngine::getScene, PYAPI_RETURN_POINTER)
+		.def("getDefaultCamera", &ServerEngine::getDefaultCamera, PYAPI_RETURN_POINTER)
 		;
 
 	// Node
@@ -538,7 +538,7 @@ BOOST_PYTHON_MODULE(omega)
 	class_<Color>("Color", init<String>());
 
 	// Free Functions
-	def("getEngine", getEngine, PYAPI_RETURN_POINTER);
+	def("getServer", getServer, PYAPI_RETURN_POINTER);
 	def("printChildren", &printChildren);
 	def("printObjCounts", &printObjCounts);
 };

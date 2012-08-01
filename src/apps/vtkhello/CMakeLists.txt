@@ -34,7 +34,7 @@
 
 ###################################################################################################
 add_executable(vtkhello vtkScene.cpp)
-set_target_properties(vtkhello PROPERTIES FOLDER examples)
+set_target_properties(vtkhello PROPERTIES FOLDER apps)
 target_link_libraries(vtkhello
 	omega 
 	omegaToolkit

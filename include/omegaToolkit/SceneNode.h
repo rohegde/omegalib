@@ -78,7 +78,7 @@ namespace oengine {
 			myEffect(NULL)
 			{}
 
-		EngineServer* getEngine();
+		EngineServer* getServer();
 
 		// Object
 		//@{
@@ -173,7 +173,7 @@ namespace oengine {
 	{ myBoundingBoxColor = color; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline EngineServer* SceneNode::getEngine()
+	inline EngineServer* SceneNode::getServer()
 	{ return myServer; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

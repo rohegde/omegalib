@@ -27,7 +27,7 @@
 #ifndef __UI_MODULE_H__
 #define __UI_MODULE_H__
 
-#include "omega/Engine.h"
+#include "omega/ServerEngine.h"
 #include "omega/Application.h"
 //#include "omegaToolkit/BoundingSphere.h"
 #include "ui/Container.h"
@@ -36,7 +36,7 @@
 namespace omegaToolkit
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API UiModule: public EngineModule
+	class OTK_API UiModule: public ServerModule
 	{
 	friend class ui::Widget;
 	public:

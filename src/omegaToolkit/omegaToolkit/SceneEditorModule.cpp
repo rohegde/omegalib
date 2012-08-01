@@ -46,7 +46,7 @@ SceneEditorModule* SceneEditorModule::createAndInitialize()
 {
 	SceneEditorModule* instance = new SceneEditorModule();
 	ModuleServices::addModule(instance);
-	instance->doInitialize(Engine::instance());
+	instance->doInitialize(ServerEngine::instance());
 	if(SystemManager::settingExists("config/interactor"))
 	{
 		Setting& sinteractor = SystemManager::settingLookup("config/interactor");
@@ -59,14 +59,14 @@ SceneEditorModule* SceneEditorModule::createAndInitialize()
 	}
 	else
 	{
-		owarn("No interactor specified in configuration: AnimatedObject manipulation will be disabled");
+		owarn("No interactor specified in configuration: Entity manipulation will be disabled");
 	}
 	return instance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SceneEditorModule::SceneEditorModule():
-	EngineModule("SceneEditorModule"),
+	ServerModule("SceneEditorModule"),
 	myInteractor(NULL), mySelectedObject(NULL), myEnabled(true)
 {
 }
@@ -114,7 +114,7 @@ SceneNode* SceneEditorModule::getSelectedNode()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneEditorModule::updateSelection(const Ray& ray)
 {
-	const SceneQueryResultList& sqrl = getEngine()->querySceneRay(ray);
+	const SceneQueryResultList& sqrl = getServer()->querySceneRay(ray);
 	if(sqrl.size() != 0)
 	{
 		// The ray intersected with something.

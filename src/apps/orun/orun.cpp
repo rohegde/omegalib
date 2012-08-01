@@ -49,7 +49,7 @@ using namespace cyclops;
 String sDefaultScript = "";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class OmegaViewer: public EngineModule
+class OmegaViewer: public ServerModule
 {
 public:
 	OmegaViewer();

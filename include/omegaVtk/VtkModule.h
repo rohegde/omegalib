@@ -33,7 +33,7 @@
 
 #include "omega/osystem.h"
 //#include "omega/Renderer.h"
-#include "omega/Engine.h"
+#include "omega/ServerEngine.h"
 #include "omega/Application.h"
 
 namespace omegaVtk
@@ -41,7 +41,7 @@ namespace omegaVtk
 	using namespace omega;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OVTK_API VtkModule: public EngineModule
+	class OVTK_API VtkModule: public ServerModule
 	{
 	friend class VtkAttachPoint;
 	public:
@@ -55,7 +55,7 @@ namespace omegaVtk
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
 
-		Engine* getEngine() { return myEngine; }
+		ServerEngine* getEngine() { return myEngine; }
 
 		//! Client-side API
 		//@{
@@ -69,7 +69,7 @@ namespace omegaVtk
 
 		Dictionary<SceneNode*, VtkAttachPoint*> myAttachPoints;
 
-		Engine* myEngine;
+		ServerEngine* myEngine;
 		Lock myClientLock;
 		VtkRenderPass* myActiveRenderPass;
 		Renderer* myActiveClient;

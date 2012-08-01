@@ -27,7 +27,7 @@
 #ifndef __CY_LINE_SET__
 #define __CY_LINE_SET__
 
-#include "cyclops/Entity.h"
+#include "cyclops/DrawableObject.h"
 
 #include<osg/PositionAttitudeTransform>
 #include<osg/Material>
@@ -37,7 +37,7 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API LineSet: public Entity
+	class CY_API LineSet: public DrawableObject
 	{
 	public:
 		class CY_API Line

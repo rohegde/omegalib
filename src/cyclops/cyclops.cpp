@@ -55,12 +55,12 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Cyclops::initialize()
 {
-	Config* cfg = getEngine()->getSystemManager()->getAppConfig();
+	Config* cfg = getServer()->getSystemManager()->getAppConfig();
 
-	getEngine()->removeAllRenderPasses();
+	getServer()->removeAllRenderPasses();
 
 	mySceneManager = new SceneManager();
-	mySceneManager->initialize(getEngine());
+	mySceneManager->initialize(getServer());
 
 	myCenter = Vector3f::Zero();
 

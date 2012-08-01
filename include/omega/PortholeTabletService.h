@@ -89,7 +89,7 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Implements an interface to tablet device applications using the Porthole protocol.
-	class OMEGA_API PortholeTabletService: public Service, public EngineModule
+	class OMEGA_API PortholeTabletService: public Service, public ServerModule
 	{
 	public:
 		static const int MaxGuiDefSize = 1024;
@@ -105,7 +105,7 @@ namespace omega {
 		void processEvent(Event* evt);
 
 		virtual void initialize();
-		virtual void initialize(Engine* engine);
+		virtual void initialize(ServerEngine* engine);
 		void update(const UpdateContext& context);
 		void handleEvent(const Event& evt);
 
@@ -126,7 +126,7 @@ namespace omega {
 		void sendMessage(TabletConnection* conn, const char* header, void* data, int size);
 
 	private:
-		Engine* myEngine;
+		ServerEngine* myEngine;
 
 		// Config properties
 		bool myHires;
