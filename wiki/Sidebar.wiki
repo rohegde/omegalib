@@ -1,4 +1,4 @@
-[http://ombase.1067372.n5.nabble.com/ Support Forum]
+*[http://ombase.1067372.n5.nabble.com/ Support Forum]*
 	
 
  * [GettingStarted Getting Started with omegalib]
