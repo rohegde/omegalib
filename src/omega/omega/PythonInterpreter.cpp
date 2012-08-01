@@ -75,6 +75,12 @@ public:
 #ifdef OMEGA_READLINE_FOUND
 			String prompt = ostr("%1%>>", %SystemManager::instance()->getApplication()->getName());
 			char *inp_c = readline(prompt.c_str()); //Instead of getline()
+			
+			// THE COMMAND OF DEATH
+			if(inp_c[0] == 'D' &&
+				inp_c[1] == 'I' &&
+				inp_c[2] == 'E') exit(-1);
+			
 			line = (const char *)(inp_c); //Because C strings stink
 			if(strlen(inp_c) != 0)
 			{
