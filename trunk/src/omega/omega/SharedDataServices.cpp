@@ -44,6 +44,7 @@ SharedOStream& SharedOStream::operator<< ( const String& str )
 	if ( nElems > 0 )
 		write( str.c_str(), nElems );
 
+		
 	return *this;
 }
 
@@ -58,6 +59,11 @@ SharedIStream& SharedIStream::operator>> ( String& str )
 { 
 	uint64_t nElems = 0;
 	read( &nElems, sizeof( nElems ));
+	if(nElems > myStream->getRemainingBufferSize())
+	{
+	   oferror("SHaredDataServices: nElems(%1%) > getRemainingBufferSize(%2%)",
+	   %nElems %myStream->getRemainingBufferSize());
+	}
 	oassert( nElems <= myStream->getRemainingBufferSize());
 	if( nElems == 0 )
 		str.clear();
