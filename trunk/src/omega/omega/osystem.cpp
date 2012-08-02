@@ -247,10 +247,27 @@ namespace omega
 #endif
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	void olaunch(const String& command)
+	#ifndef OMEGA_OS_WIN
+	// the signal handler for SIGCHILD
+	static void sigChildHandler( int /*signal*/ )
 	{
-		if( command.empty( )) return;
+		// Get exit status to avoid zombies
+		int status;
+		::wait( &status );
+
+		// DO NOT USE cout/cerr: signal handler might be called while another cout
+		//            is in progress, which will cause a deadlock due to a double
+		//            flockfile() 
+    
+		// Re-install signal handler
+		signal( SIGCHLD, sigChildHandler );
+	}
+	#endif
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	bool olaunch(const String& command)
+	{
+		if( command.empty( )) return false;
 
 #ifdef OMEGA_OS_WIN
 		STARTUPINFO         startupInfo;
@@ -275,10 +292,12 @@ namespace omega
 		//WaitForInputIdle( procInfo.hProcess, 1000 );
 		CloseHandle( procInfo.hProcess );
 		CloseHandle( procInfo.hThread );
+
+		return true;
 #else
 		std::vector<std::string> commandLine = StringUtils::split(command, " ");
 
-		//signal( SIGCHLD, sigChildHandler );
+		signal( SIGCHLD, sigChildHandler );
 		const int result = fork();
 		switch( result )
 		{
@@ -286,8 +305,10 @@ namespace omega
 				break;
 
 			case -1: // error
+				ofwarn("Launching command %1% failed.", %command);
+				return false;
 			default: // parent
-				return;
+				return true;
 		}
 
 		// child
@@ -303,15 +324,21 @@ namespace omega
 
 		argv[argc] = 0;
 
-		int nTries = 1;
+		ofmsg("Executing: %1%", %command);
+		int nTries = 10;
 		while( nTries-- )
 		{
 			execvp( argv[0], argv );
+			ofwarn("Error executing %1%", %command);
 			// EQWARN << "Error executing '" << argv[0] << "': " << sysError
 				   // << std::endl;
 			if( errno != ETXTBSY )
 				break;
 		}
+
+		// Launch failed. Crash and burn.
+		exit(-1);
+		return false;
 #endif
 	}
 
