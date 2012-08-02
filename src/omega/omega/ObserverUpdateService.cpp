@@ -31,7 +31,7 @@
 using namespace omega;
 
 // Define to enable a simple version of the service with no update threshold and separate orientation support.
-#define OMEGA_SIMPLE_OBSERVER_UPDATE
+//#define OMEGA_SIMPLE_OBSERVER_UPDATE
 //#define OMEGA_USE_THRESHOLD
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,6 +174,8 @@ void ObserverUpdateService::poll()
 					//ofmsg("mvth: %1%", %myCurrentMovementThreshold);
 					myObserver->updateHead(myLastPosition, q);
 #else
+					q = Quaternion::Identity();
+					//ofmsg("%1% %2% %3% %4%", %q.x() %q.y() %q.z() %q.w());
 					myObserver->updateHead(pos, q);
 #endif
 				}

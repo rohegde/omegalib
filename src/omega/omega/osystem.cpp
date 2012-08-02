@@ -36,6 +36,7 @@
 #include <windows.h> // needed for Sleep 
 #else
 #include <unistd.h>
+#include<sys/wait.h>
 #define Sleep(x) usleep((x)*1000)
 #endif
 
