@@ -118,10 +118,13 @@ namespace omega {
 			{
 				foreach(EngineModule* module, mysModules)
 				{
-					if(module->getPriority() == i)
+					// Only send events to initialized modules.
+					if(module->isInitialized())
 					{
-						module->doInitialize(srv);
-						module->handleEvent(evt);
+						if(module->getPriority() == i)
+						{
+							module->handleEvent(evt);
+						}
 					}
 				}
 			}

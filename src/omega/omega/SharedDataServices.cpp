@@ -117,6 +117,10 @@ void SharedData::applyInstanceData( co::DataIStream& is )
 		{
 			obj->updateSharedData(in);
 		}
+		else
+		{
+			oferror("FATAL ERROR: SharedDataServices::applyInstanceData: could not find object key %1%", %objId);
+		}
 
 		numObjects--;
 	};
