@@ -83,7 +83,8 @@ namespace omega
 	OMEGA_API int omain(omega::ApplicationBase& app, int argc, char** argv);
 
 	//! Runs the specified command in a separate process.
-	OMEGA_API void olaunch(const String& command);
+	//! @return true if the command launched succesfully, false otherwise.
+	OMEGA_API bool olaunch(const String& command);
 
 	//! Stops the current thread for the specified number of milliseconds.
 	OMEGA_API void osleep(uint msecs);
