@@ -184,6 +184,7 @@ void PortholeTabletService::poll()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// Per la free interaction area
 void PortholeTabletService::processEvent(Event* evt)
 {
 	if(myTabletService != NULL)

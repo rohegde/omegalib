@@ -81,6 +81,12 @@ include_directories(
   ${OmegaLib_BINARY_DIR}/FreeImage/Source/
 )
 
+# PORTHOLE Add websockets lib and zlib if on windows
+if(OMEGA_OS_WIN)
+    add_subdirectory(3rdparty/zlib)
+endif(OMEGA_OS_WIN)
+add_subdirectory(3rdparty/websockets)
+
 add_subdirectory(3rdparty/glew)
 add_subdirectory(apps/ohello)
 add_subdirectory(apps/ohello2)
