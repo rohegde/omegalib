@@ -1,7 +1,11 @@
 #summary This page contains release notes for omegalib starting from version 0.8
 #sidebar Sidebar
 
-= omegalib v2.1 (*current developer version*) =
+= omegalib v3.0 (*current developer version*) =
+*Initial Revision*: 1839
+
+------------------------------------------------------------------------
+= omegalib v2.1 =
 *Initial Revision*: 1631
 *Branch-out Revision*: 1837
 == Summary ==
