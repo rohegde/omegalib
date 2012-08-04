@@ -72,6 +72,7 @@ SET( srcs
 		omega/SystemManager.cpp
 		omega/Texture.cpp
 		omega/WandEmulationService.cpp
+		omega/PortholeService.cpp
         )
 		
 ###################################################################################################
@@ -124,6 +125,7 @@ SET( headers
         ${OmegaLib_SOURCE_DIR}/include/omega/StatsManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Texture.h
 		${OmegaLib_SOURCE_DIR}/include/omega/WandEmulationService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/PortholeService.h
 		)
         
 ###################################################################################################
@@ -267,6 +269,19 @@ if(OMEGA_USE_PYTHON)
 		endif(READLINE_FOUND)
 	endif()
 endif()
+
+###################################################################################################
+# Link against websockets library
+target_link_libraries(omega websockets)
+include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
+if (OMEGA_OS_WIN)
+    include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/win32helpers)
+endif()
+target_link_libraries(omega zlib)
+include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
+
+# Boost includes
+include_directories(${CMAKE_BINARY_DIR}/omicron/omicron/include/boost)
 
 ###################################################################################################
 configure_file(omega/omegaConfig.h.in ${CMAKE_BINARY_DIR}/include/omegaConfig.h)

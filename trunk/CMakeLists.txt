@@ -91,7 +91,8 @@ endif(CMAKE_GENERATOR STREQUAL "Visual Studio 9 2008")
 set(OMEGA_DATA_PATH "${OmegaLib_SOURCE_DIR}/data")
 
 if(OMEGA_OS_WIN)
-	add_definitions(-D_WIN32_WINNT=0x0501)
+	add_definitions(-D_WIN32_WINNT=0x0600)
+	add_definitions(-DWINNT=0x600)
 endif(OMEGA_OS_WIN)
 
 ###################################################################################################

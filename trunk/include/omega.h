@@ -42,5 +42,6 @@
 #include "omega/PythonInterpreter.h"
 #include "omega/Texture.h"
 #include "omega/ImageUtils.h"
+#include "omega/PortholeService.h"
 
 #endif
