@@ -276,9 +276,9 @@ target_link_libraries(omega websockets)
 include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
 if (OMEGA_OS_WIN)
     include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/win32helpers)
+    target_link_libraries(omega zlib)
+    include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
 endif()
-target_link_libraries(omega zlib)
-include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/zlib)
 
 # Boost includes
 include_directories(${CMAKE_BINARY_DIR}/omicron/omicron/include/boost)

@@ -31,14 +31,17 @@
 // Path to resources, such as html files
 #define LOCAL_RESOURCE_PATH INSTALL_DATADIR"/"
 
+#include "osystem.h"
 #include <string.h>
 #include <omicron.h>
+#include "websockets/libwebsockets.h"
 
 using namespace std;
+using namespace omicron;
 
 namespace omega {
 
-	class OMEGA_API ServerThread: public omicron::Thread{
+	class OMEGA_API ServerThread: public Thread{
 
 	public:
 
@@ -92,7 +95,7 @@ namespace omega {
 		~PortholeService();
 
 		// Setup and poll
-		virtual void setup(Setting& settings);
+		virtual void setup(omicron::Setting& settings);
 		void start(); // Start the server and listen to port
 		virtual void poll();
 

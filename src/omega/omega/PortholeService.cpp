@@ -27,12 +27,11 @@
 
 // Implementation of the HTML5 based interfaces service for handled devices
 
-#include <libwebsockets.h>
 #include "omega/PortholeService.h"
 #include <iostream>
 
 using namespace omega;
-
+using namespace omicron;
 
 /*
  * This demo server shows how to use libwebsockets for one or more
