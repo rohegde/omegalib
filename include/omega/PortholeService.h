@@ -29,7 +29,7 @@
 #define __PORTHOLE_SERVICE_H__
 
 // Path to resources, such as html files
-#define LOCAL_RESOURCE_PATH INSTALL_DATADIR"/"
+#define LOCAL_RESOURCE_PATH "./"
 
 #include "osystem.h"
 #include <string.h>
