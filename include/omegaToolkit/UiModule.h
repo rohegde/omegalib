@@ -43,6 +43,10 @@ namespace omegaToolkit
 		static const int MaxWidgets = 16384;
 	public:
 		static UiModule* instance() { return mysInstance; }
+		static void setConfirmButton(Event::Flags button) { mysConfirmButton = button; }
+		static void setCancelButton(Event::Flags button) { mysCancelButton = button; }
+		static Event::Flags getConfirmButton() { return mysConfirmButton; }
+		static Event::Flags getCancelButton() { return mysCancelButton; }
 
 	public:
 		UiModule();
@@ -81,6 +85,9 @@ namespace omegaToolkit
 
 	private:
 		static UiModule* mysInstance;
+
+		static Event::Flags mysConfirmButton;
+		static Event::Flags mysCancelButton;
 
 		bool myGamepadInteractionEnabled;
 		bool myPointerInteractionEnabled;

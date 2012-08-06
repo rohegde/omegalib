@@ -165,32 +165,71 @@ void EqualizerDisplaySystem::generateEqConfig()
 		END_BLOCK(result);
 	}
 
-	// observer
-	result += 
-		L("observer { name \"observer0\" }");
+	// If orientObserverToTile is set, we need to create one observer per tile.
+	if(eqcfg.orientObserverToTile)
+	{
+		// observers
+		START_BLOCK(result, "observer");
+		for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		{
+			for(int y = 0; y < eqcfg.numTiles[1]; y++)
+			{
+				// observer
+				result += 
+					L(ostr("observer { name \"observer%1%x%2%\"", %x %y));
+			}
+		}
+		END_BLOCK(result)
+	}
+	else
+	{
+		// observer
+		result += 
+			L("observer { name \"observer0\" }");
+	}
 
 	// layout
 	START_BLOCK(result, "layout");
 	result += 
 		L("name \"layout\"");
-	START_BLOCK(result, "view");
-
-	result += 
-		L("name \"main\"") +
-		L("observer \"observer0\"") +
-		L("viewport [0 0 1 1]");
-	
-	END_BLOCK(result)
-	END_BLOCK(result)
-
-	START_BLOCK(result, "canvas");
-	result += 
-		L("layout \"layout\"");
 
 	float tileViewportWidth = 1.0f / eqcfg.numTiles[0];
 	float tileViewportHeight = 1.0f / eqcfg.numTiles[1];
 	float tileViewportX = 0.0f;
 	float tileViewportY = 0.0f;
+
+	// If orientObserverToTile is set, we need to create one view per tile, and link it to the relative observer.
+	if(eqcfg.orientObserverToTile)
+	{
+		//for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		//{
+		//	for(int y = 0; y < eqcfg.numTiles[1]; y++)
+		//	{
+		//		START_BLOCK(result, "view");
+		//		// observer
+		//		result += 
+		//			L(ostr("name \"view%1%x%2%\"", %x %y) +
+		//			L(ostr("observer \"observer%1%x%2%\"", %x %y));
+		//		END_BLOCK(result)
+		//	}
+		//}
+	}
+	else
+	{
+		START_BLOCK(result, "view");
+
+		result += 
+			L("name \"main\"") +
+			L("observer \"observer0\"") +
+			L("viewport [0 0 1 1]");
+	
+		END_BLOCK(result)
+	}
+	END_BLOCK(result)
+
+	START_BLOCK(result, "canvas");
+	result += 
+		L("layout \"layout\"");
 
 	Vector3f canvasTopLeft = Vector3f(
 		-eqcfg.referenceTile[0] * eqcfg.tileSize[0] - eqcfg.tileSize[0] / 2,
@@ -368,8 +407,10 @@ void EqualizerDisplaySystem::setup(Setting& scfg)
 	cfg.autoOffsetWindows = Config::getBoolValue("autoOffsetWindows", scfg);
 	cfg.tileResolution = Config::getVector2iValue("tileResolution", scfg);
 	cfg.windowOffset = Config::getVector2iValue("windowOffset", scfg);
+
 	cfg.interleaved = Config::getBoolValue("interleaved", scfg);
 	cfg.fullscreen = Config::getBoolValue("fullscreen", scfg);
+	cfg.orientObserverToTile = Config::getBoolValue("orientObserverToTile", scfg);
 
 	cfg.displayResolution = cfg.tileResolution.cwiseProduct(cfg.numTiles);
 	ofmsg("Total display resolution: %1%", %cfg.displayResolution);

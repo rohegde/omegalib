@@ -136,7 +136,7 @@ void Engine::initialize()
 		myPointers[i] = new Pointer();
 		myPointers[i]->initialize(this);
 	}
-	
+
 	myLock.unlock();
 }
 

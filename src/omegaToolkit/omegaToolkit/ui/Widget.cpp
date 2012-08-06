@@ -137,65 +137,68 @@ void Widget::handleEvent(const Event& evt)
 		}
 	}
 
-	Vector2f pos2d = Vector2f(evt.getPosition(0), evt.getPosition(1));
-	if(myActive)
+	if(isPointerInteractionEnabled())
 	{
-		//if(evt.getType() == Event::Zoom)
-		//{
-		//	float val = evt.getExtraDataInt(0);
-		//	if(val != 0)
-		//	{
-		//		float sc = 0.0f;
-		//		if(val < 0) sc = 0.9f;
-		//		else sc = 1.1f;
-
-		//		float width = mySize[0] * sc;
-		//		float height = mySize[1] * sc;
-
-		//		setSize(Vector2f(width, height));
-		//	}
-		//}
-	}
-	if(hitTest(transformPoint(pos2d)))
-	{
-		if(!evt.isProcessed())
+		Vector2f pos2d = Vector2f(evt.getPosition(0), evt.getPosition(1));
+		if(myActive)
 		{
-			// Some kind of pointer event happened over this widget: make it active.
-			if(!isActive())
-			{
-				ui->activateWidget(this);
-			}
+			//if(evt.getType() == Event::Zoom)
+			//{
+			//	float val = evt.getExtraDataInt(0);
+			//	if(val != 0)
+			//	{
+			//		float sc = 0.0f;
+			//		if(val < 0) sc = 0.9f;
+			//		else sc = 1.1f;
 
-			if(myUserMoveEnabled)
-			{
-				if(evt.getType() == Event::Down)
-				{
-					myUserMovePosition = pos2d;
-					evt.setProcessed();
-					myMoving = true;
-					myActive = true;
-				}
-				else if(evt.getType() == Event::Move && myMoving)
-				{
-					Vector2f delta = pos2d - myUserMovePosition;
-					myUserMovePosition = pos2d;
+			//		float width = mySize[0] * sc;
+			//		float height = mySize[1] * sc;
 
-					myPosition += delta;
-					evt.setProcessed();
-				}
-				else if(myMoving && evt.getType() == Event::Up)
+			//		setSize(Vector2f(width, height));
+			//	}
+			//}
+		}
+		if(hitTest(transformPoint(pos2d)))
+		{
+			if(!evt.isProcessed())
+			{
+				// Some kind of pointer event happened over this widget: make it active.
+				if(!isActive())
 				{
-					myMoving = false;
-					myActive = false;
-					evt.setProcessed();
+					ui->activateWidget(this);
+				}
+
+				if(myUserMoveEnabled)
+				{
+					if(evt.getType() == Event::Down)
+					{
+						myUserMovePosition = pos2d;
+						evt.setProcessed();
+						myMoving = true;
+						myActive = true;
+					}
+					else if(evt.getType() == Event::Move && myMoving)
+					{
+						Vector2f delta = pos2d - myUserMovePosition;
+						myUserMovePosition = pos2d;
+
+						myPosition += delta;
+						evt.setProcessed();
+					}
+					else if(myMoving && evt.getType() == Event::Up)
+					{
+						myMoving = false;
+						myActive = false;
+						evt.setProcessed();
+					}
 				}
 			}
 		}
-	}
-	else
-	{
-		myMoving = false;
-		//myActive = false;
+		else
+		{
+			myMoving = false;
+			//myActive = false;
+		}
 	}
 }
 

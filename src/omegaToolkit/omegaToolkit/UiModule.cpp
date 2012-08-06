@@ -33,6 +33,8 @@ using namespace omegaToolkit;
 using namespace omega;
 
 UiModule* UiModule::mysInstance = NULL;
+Event::Flags UiModule::mysConfirmButton = Event::Button3;
+Event::Flags UiModule::mysCancelButton = Event::Button4;
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UiModule::UiModule():
@@ -67,11 +69,23 @@ void UiModule::initialize()
 	myUi->setUIEventHandler(getEngine());
 
     Config* cfg = getEngine()->getSystemManager()->getAppConfig();
-	myLocalEventsEnabled = cfg->getBoolValue("config/ui/enableLocalEvents", true);
-	if(cfg->exists("config/ui/images"))
+
+	//myLocalEventsEnabled = cfg->getBoolValue("config/ui/enableLocalEvents", true);
+	myLocalEventsEnabled = true;
+
+	//if(cfg->exists("config/ui/images"))
+	//{
+	//	const Setting& stImages = cfg->lookup("config/ui/images");
+	//	initImages(stImages);
+	//}
+
+	if(SystemManager::settingExists("config/ui"))
 	{
-		const Setting& stImages = cfg->lookup("config/ui/images");
-		initImages(stImages);
+		Setting& sUi = SystemManager::settingLookup("config/ui");
+		mysConfirmButton = Event::parseButtonName(Config::getStringValue("confirmButton", sUi, "Button3"));
+		mysCancelButton = Event::parseButtonName(Config::getStringValue("cancelButton", sUi, "Button4"));
+		myGamepadInteractionEnabled = Config::getBoolValue("gamepadInteractionEnabled", sUi, myGamepadInteractionEnabled);
+		myPointerInteractionEnabled = Config::getBoolValue("pointerInteractionEnabled", sUi, myPointerInteractionEnabled);
 	}
 
 	omsg("UiModule initialization OK");

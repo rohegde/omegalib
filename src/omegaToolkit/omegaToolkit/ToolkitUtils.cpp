@@ -28,6 +28,7 @@
 #include "omegaToolkit/DefaultMouseInteractor.h"
 #include "omegaToolkit/ControllerManipulator.h"
 #include "omegaToolkit/DefaultTwoHandsInteractor.h"
+#include "omegaToolkit/WandManipulator.h"
 
 using namespace omega;
 using namespace omegaToolkit;
@@ -51,6 +52,11 @@ Actor* ToolkitUtils::createInteractor(const Setting& s)
     else if(interactorStyle == "controller")
     {
         ControllerManipulator* interactor = new ControllerManipulator();
+        return interactor;
+    }
+    else if(interactorStyle == "wand")
+    {
+        WandManipulator* interactor = new WandManipulator();
         return interactor;
     }
     else if(interactorStyle == "twohands")

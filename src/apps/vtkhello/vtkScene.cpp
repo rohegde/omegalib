@@ -48,7 +48,7 @@ public:
 private:
 	VtkModule* myVtkModule;
 	SceneNode* mySceneNode;
-	DefaultMouseInteractor* myMouseInteractor;
+	//DefaultMouseInteractor* myMouseInteractor;
 	vtkSphereSource* mySphere;
 
 	// Client objecs.
@@ -80,9 +80,9 @@ void VtkScene::initialize()
 	getEngine()->getScene()->addChild(mySceneNode);
 
 	// Create a mouse interactor and associate it with our scene node.
-	myMouseInteractor = new DefaultMouseInteractor();
-	myMouseInteractor->setSceneNode(mySceneNode);
-	ModuleServices::addModule(myMouseInteractor);
+	//myMouseInteractor = new DefaultMouseInteractor();
+	//myMouseInteractor->setSceneNode(mySceneNode);
+	//ModuleServices::addModule(myMouseInteractor);
 
 	// Setup the camera
 	getEngine()->getDefaultCamera()->focusOn(getEngine()->getScene());

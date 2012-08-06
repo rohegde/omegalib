@@ -70,34 +70,75 @@ namespace omega
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//! Stores omegalib display configuration data.
 	struct DisplayConfig
 	{
+		// UGLY CONSTANTS.
 		static const int MaxTiles = 64;
 		static const int MaxNodes = 64;
-		enum ConfigType {ConfigPlanar, ConfigCustom};
+
+		// ! Configuration type enum
+		enum ConfigType {
+			//! Planar configuration: the display tiles are on the same plane. The user won't have to
+			//! Specify position and rotation for each tile.
+			ConfigPlanar, 
+			//! Custom configuration. The user will have to manually specify position and rotation for each tile,
+			//! or they will be provided by a custom DisplayConfigBuilder.
+			ConfigCustom};
+		//! Display configuration type.
 		ConfigType type;
+
+		//! Number of horizontal / vertical tiles in the display system
 		Vector2i numTiles;
+
+		//! (Used only for planar configurtions) Index of the tile whose center will be used as the origin of the display system geometry.
 		Vector2i referenceTile;
+		//! Offset of reference tile center wrt world origin.
 		Vector3f referenceOffset;
+
+		//! Size of tile in meters.
 		Vector2f tileSize;
+		//! Size of tile bezel in meters.
 		Vector2f bezelSize;
-		bool autoOffsetWindows;
+
+		//! Tile resolution in pixels.
 		Vector2i tileResolution;
+
+		//! When set to true, window positions will be computed automatically in a multiwindow setting.
+		bool autoOffsetWindows;
+		//! Offset of the first window in pixels (valid for multiwindow settings)
 		Vector2i windowOffset;
-		Vector2i displayResolution;
-		DisplayTileConfig tiles[MaxTiles][MaxTiles];
-		int numNodes;
-		DisplayNodeConfig nodes[MaxNodes];
+
+		//! Enable interleaved stereo rendering.
 		bool interleaved;
+		//! Enable fullscreen rendering.
 		bool fullscreen;
 
+		//! When set to true, observer orientation will be kept aligned to each tile normal.
+		bool orientObserverToTile;
+		
+		//! Tile configurations.
+		DisplayTileConfig tiles[MaxTiles][MaxTiles];
+
+		//! Total display resolution. Will be computed automatically during the setup process, users should leave this blank.
+		Vector2i displayResolution;
+
+		//! Number of nodes for a multimachine display system.
+		int numNodes;
+		//! Node configurations for a multimachine display system.
+		DisplayNodeConfig nodes[MaxNodes];
+		//! Interval in milliseconds between node launcher commands
 		int launcherInterval; 
+		//! Node launcher command.
 		String nodeLauncher;
+		//! Node killer command.
 		String nodeKiller;
+		//! Default port used to connect to nodes
 		int basePort;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Provides custom display configurations
 	class IDisplayConfigBuilder
 	{
 	public:

@@ -127,10 +127,15 @@ namespace omegaToolkit { namespace ui {
 
 		MenuItem* addItem(MenuItem::Type type);
 
+		void focus();
 		void show();
 		void hide();
 		void toggle();
 		bool isVisible();
+
+		void setActiveSubMenu(Menu* submenu);
+		Menu* getTopActiveSubMenu();
+		Menu* getParent() { return myParent; }
 
 		void update(const UpdateContext& context);
 
@@ -139,14 +144,20 @@ namespace omegaToolkit { namespace ui {
 
 	private:
 		Menu(const String& name, MenuManager* manager);
+		void onPopMenuStack();
+		void onPushMenuStack();
 
 	private:
 		MenuManager* myManager;
 		MenuItem* myRootItem;
 		String myName;
 
+		// Menu placement
+		Vector3f menuPosition;
+
 		List<MenuItem*> myMenuItems;
 		Menu* myActiveSubMenu;
+		Menu* myParent;
 
 		bool myVisible;
 
@@ -172,20 +183,19 @@ namespace omegaToolkit { namespace ui {
 		void setMainMenu(Menu* menu) { myMainMenu = menu; }
 		Menu* getMainMenu() { return myMainMenu; }
 
-		bool isMenu3dEnabled() { return myMenu3dEnabled; }
+		void autoPlaceMenu(Menu* menu, const Event& evt);
 
-		bool isAutoPlaceEnabled() { return myAutoPlaceEnabled; }
-		void setAutoPlaceEnabled(bool value) { myAutoPlaceEnabled = value; }
+		float getDefaultMenuScale() { return myDefaultMenuScale; }
 
-		float getAutoPlaceDistance() { return myAutoPlaceDistance; }
-		void setAutoPlaceDistance(float value) { myAutoPlaceDistance = value; }
-		
-		float getMenu3dScale() { return myMenu3dScale; }
+		// Specifies whether camera navigation should be disabled when inside a menu
+		void setNavigationSuspended(bool value) { myNavigationSuspended = value; }
+		//! see setNavigationSuspended
+		bool getNavigationSuspended() { return myNavigationSuspended; }
 
 	private:
 		MenuManager();
 
-		void autoPlaceMenu(Menu* menu, const Event& evt);
+		//void autoPlaceMenu(Menu* menu, const Event& evt);
 
 	private:
 		static MenuManager* mysInstance;
@@ -194,10 +204,23 @@ namespace omegaToolkit { namespace ui {
 		List<Menu*> myMenuList;
 		Menu* myMainMenu;
 
-		bool myMenu3dEnabled;
-		bool myAutoPlaceEnabled;
-		float myAutoPlaceDistance;
-		float myMenu3dScale;
+		// Input
+		uint myMenuToggleButton;
+		uint myMenuConfirmButton;
+		uint myMenuCancelButton;
+
+		bool myRayPlaceEnabled;
+		Vector3f myDefaultMenuPosition;
+		float myDefaultMenuScale;
+
+		// options
+		bool myNavigationSuspended;
+		bool myNavigationState;
+
+		//bool myMenu3dEnabled;
+		//bool myAutoPlaceEnabled;
+		//float myAutoPlaceDistance;
+		//float myMenu3dScale;
 	};
 }; };
 

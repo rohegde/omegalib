@@ -25,6 +25,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
 #include "omegaToolkit/ui/Button.h"
+#include "omegaToolkit/UiModule.h"
 //#include "omegaToolkit/ui/DefaultSkin.h"
 
 using namespace omega;
@@ -101,7 +102,7 @@ void Button::handleEvent(const Event& evt)
 	{
 		if(isActive())
 		{
-			if(evt.isButtonDown(Event::Button1))
+			if(evt.isButtonDown(UiModule::getConfirmButton()))
 			{
 				myPressed = false;
 				myPressedStateChanged = true;
