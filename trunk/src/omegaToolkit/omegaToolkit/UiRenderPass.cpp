@@ -55,6 +55,11 @@ void UiRenderPass::render(Renderer* client, const DrawContext& context)
 		client->getRenderer()->beginDraw3D(context);
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
 
+		// This is a bit of a hack. DIsable depth testing for ui stuff. We will take care of ordering.
+		// This may lead to depth inconsistencies wrt the background scene when drawing 3d menus, but we want te
+		// menus to always be visible and unoccluded by geometry.
+		glDisable(GL_DEPTH_TEST);
+
 		ui::Container* ui = UiModule::instance()->getUi();
 		Renderable* uiRenderable = ui->getRenderable(client);
 		if(uiRenderable != NULL)

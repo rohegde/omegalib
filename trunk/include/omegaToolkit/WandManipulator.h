@@ -24,35 +24,61 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OTK_H__
-#define __OTK_H__
+#ifndef __WAND_MANIPULATOR__
+#define __WAND_MANIPULATOR__
 
-#include "omegaToolkit/omegaToolkitConfig.h"
-#include "omegaToolkit/ControllerManipulator.h"
-#include "omegaToolkit/WandManipulator.h"
-#include "omegaToolkit/MouseManipulator.h"
-#include "omegaToolkit/DefaultMouseInteractor.h"
-#include "omegaToolkit/DefaultTwoHandsInteractor.h"
-#include "omegaToolkit/Mesh.h"
-#include "omegaToolkit/MeshData.h"
-#include "omegaToolkit/SceneEditorModule.h"
-#include "omegaToolkit/ToolkitUtils.h"
-#include "omegaToolkit/UiModule.h"
-#include "omegaToolkit/UiScriptCommand.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Actor.h"
 
-#include "omegaToolkit/ui/AbstractButton.h"
-#include "omegaToolkit/ui/BareboneSkin.h"
-#include "omegaToolkit/ui/Button.h"
-#include "omegaToolkit/ui/Container.h"
-#include "omegaToolkit/ui/Image.h"
-#include "omegaToolkit/ui/Label.h"
-#include "omegaToolkit/ui/MenuManager.h"
-#include "omegaToolkit/ui/DefaultSkin.h"
-#include "omegaToolkit/ui/Slider.h"
-#include "omegaToolkit/ui/Widget.h"
-#include "omegaToolkit/ui/WidgetFactory.h"
-#include "omegaToolkit/ui/UserManagerPanel.h"
+namespace omegaToolkit {
 
-OTK_API void omegaToolkitPythonApiInit();
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//! Implements a wand node manipulator. Uses the wand ray to pick and move objects. Assumes the
+	//! wand has additional analog axes to control object rotation.
+	class OTK_API WandManipulator: public Actor
+	{
+	public:
+		WandManipulator():
+		    Actor("WandManipulator"),
+			myMoveButtonFlag(Event::Left),
+			myRotateButtonFlag(Event::Right),
+			myButton1Pressed(false),
+			myButton2Pressed(false),
+			myXAxis(0),
+			myYAxis(0),
+			myNodeSelected(false) {}
+
+		virtual void handleEvent(const Event& evt);
+		virtual void update(const UpdateContext& conext);
+
+		Event::Flags getMoveButtonFlag() { return myMoveButtonFlag; }
+		void setMoveButtonFlag(Event::Flags value) { myMoveButtonFlag = value; }
+
+		Event::Flags getRotateButtonFlag() { return myRotateButtonFlag; }
+		void setRotateButtonFlag(Event::Flags value) { myRotateButtonFlag = value; }
+
+	private:
+		Event::Flags myMoveButtonFlag;
+		Event::Flags myRotateButtonFlag;
+
+		float myHandleDistance;
+		Vector3f myHandlePosition;
+		Sphere myStartBSphere;
+
+		// pointer event data.
+		bool myPointerEventReceived;
+		Vector2f myPointerPosition;
+		Ray myPointerRay;
+		Event::Type myPointerEventType;
+		int myPointerEventData;
+
+		bool myNodeSelected;
+		bool myButton1Pressed;
+		bool myButton2Pressed;
+
+		float myXAxis;
+		float myYAxis;
+	};
+}; // namespace omegaToolkit
 
 #endif

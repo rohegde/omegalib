@@ -273,6 +273,13 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			obj->yaw(rotation[1] * Math::DegToRad);
 			obj->roll(rotation[2] * Math::DegToRad);
 
+			// Add name if there is one in the xml
+			const char* name = xchild->Attribute("name");
+			if(name != NULL)
+			{
+				obj->setName(name);
+			}
+
 			// Add tag if there is one in the xml
 			const char* tag = xchild->Attribute("Tag");
 			if(tag != NULL)

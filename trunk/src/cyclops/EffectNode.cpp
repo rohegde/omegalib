@@ -132,6 +132,10 @@ protected:
 					ss->setAttribute(bf);
 				}
 			}
+			else
+			{
+				ss->setMode(GL_BLEND, osg::StateAttribute::OFF);
+			}
 		}
 
 

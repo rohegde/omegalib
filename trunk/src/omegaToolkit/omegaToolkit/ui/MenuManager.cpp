@@ -161,24 +161,7 @@ void MenuItem::handleEvent(const Event& evt)
 		if(myListener != NULL) myListener->onMenuItemEvent(this);
 		if(myType == SubMenu && evt.getType() == Event::Click)
 		{
-			mySubMenu->get3dSettings() = myMenu->get3dSettings();
-
-			// Compute the submenu position (place it at the side of the main menu).
-			Vector3f normal = mySubMenu->get3dSettings().normal;
-			Vector3f up = -mySubMenu->get3dSettings().up;
-			Vector3f size = normal.cross(up);
-			Vector3f menuPos = mySubMenu->get3dSettings().position;
-			menuPos += size * myWidget->getWidth() * mySubMenu->get3dSettings().scale;
-			mySubMenu->get3dSettings().position = menuPos;
-
-			mySubMenu->show();
-
-			if(myMenu->myActiveSubMenu != NULL)
-			{
-				myMenu->myActiveSubMenu->hide();
-				myMenu->myActiveSubMenu = NULL;
-			}
-			myMenu->myActiveSubMenu = mySubMenu;
+			myMenu->setActiveSubMenu(mySubMenu);
 		}
 	}
 }
@@ -187,14 +170,15 @@ void MenuItem::handleEvent(const Event& evt)
 Menu::Menu(const String& name, MenuManager* manager): 
 	myName(name),
 	myManager(manager),
-	myActiveSubMenu(NULL)
+	myActiveSubMenu(NULL),
+	myParent(NULL)
 {
 	UiModule* ui = UiModule::instance();
 	WidgetFactory* wf = ui->getWidgetFactory();
 	myContainer = wf->createPanel("container", ui->getUi());
 	myContainer->setPosition(Vector2f(10, 10));
 
-	my3dSettings.enable3d = MenuManager::instance()->isMenu3dEnabled();
+	my3dSettings.enable3d = true; //MenuManager::instance()->isMenu3dEnabled();
 	myContainer->setAutosize(true);
 }
 
@@ -239,22 +223,96 @@ void Menu::update(const UpdateContext& context)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::setActiveSubMenu(Menu* submenu)
+{
+	if(submenu == NULL)
+	{
+		// Hide current active submenu
+		if(myActiveSubMenu != NULL)
+		{
+			onPopMenuStack();
+			myActiveSubMenu->hide();
+			myActiveSubMenu->myParent = NULL;
+		}
+		myActiveSubMenu = NULL;
+	}
+	else
+	{
+		submenu->get3dSettings() = my3dSettings;
+		submenu->show();
+
+		// Hide current active submenu
+		if(myActiveSubMenu != NULL)
+		{
+			myActiveSubMenu->hide();
+			myActiveSubMenu->myParent = NULL;
+			myActiveSubMenu = submenu;
+			myActiveSubMenu->myParent = this;
+		}
+		else
+		{
+			myActiveSubMenu = submenu;
+			myActiveSubMenu->myParent = this;
+			onPushMenuStack();
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::onPopMenuStack()
+{
+	if(myActiveSubMenu != NULL)
+	{
+		if(myParent != NULL)
+		{
+			myParent->onPopMenuStack();
+		}
+		my3dSettings = myActiveSubMenu->get3dSettings();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::onPushMenuStack()
+{
+	if(myActiveSubMenu != NULL)
+	{
+		if(myParent != NULL)
+		{
+			myParent->onPushMenuStack();
+		}
+
+		const Container3dSettings& subc3ds = myActiveSubMenu->get3dSettings();
+
+		my3dSettings.position += subc3ds.normal * (-0.3f);
+		my3dSettings.alpha = myActiveSubMenu->get3dSettings().alpha / 3;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+Menu* Menu::getTopActiveSubMenu()
+{
+	if(myActiveSubMenu != NULL) return myActiveSubMenu->getTopActiveSubMenu();
+	return this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void Menu::focus()
+{
+	UiModule::instance()->activateWidget(myContainer);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 void Menu::show()
 {
-	//omsg("Menu show");
-
 	myVisible = true;
 
-	//myContainer->setVisible(true);
-	UiModule::instance()->activateWidget(myContainer);
-	UiModule::instance()->setGamepadInteractionEnabled(true);
-	Engine::instance()->getDefaultCamera()->setControllerEnabled(false);
+	focus();
 
 	myContainer->get3dSettings().alpha = 0.0f;
 	my3dSettings.alpha = 1.0f;
 
-	myContainer->get3dSettings().scale = myManager->getMenu3dScale() / 2;
-	my3dSettings.scale = myManager->getMenu3dScale();
+	myContainer->get3dSettings().scale = myManager->getDefaultMenuScale() / 2;
+	my3dSettings.scale = myManager->getDefaultMenuScale();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,11 +323,9 @@ void Menu::hide()
 	myVisible = false;
 
 	UiModule::instance()->activateWidget(NULL);
-	UiModule::instance()->setGamepadInteractionEnabled(false);
-	Engine::instance()->getDefaultCamera()->setControllerEnabled(true);
 
 	my3dSettings.alpha = 0.0f;
-	my3dSettings.scale = myManager->getMenu3dScale() / 2;
+	my3dSettings.scale = myManager->getDefaultMenuScale() / 2;
 
 	if(myActiveSubMenu != NULL)
 	{
@@ -316,9 +372,10 @@ MenuManager* MenuManager::createAndInitialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 MenuManager::MenuManager():
 	myMainMenu(NULL),
-	myAutoPlaceDistance(0.5f),
-	myAutoPlaceEnabled(true),
-	myMenu3dScale(0.002f)
+	myDefaultMenuPosition(-1.0, -0.5, -2.0),
+	myDefaultMenuScale(1.0f),
+	myNavigationSuspended(true),
+	myRayPlaceEnabled(true)
 {
 	mysInstance = this;
 }
@@ -339,15 +396,25 @@ void MenuManager::initialize()
 		myUiModule->doInitialize(getEngine());
 	}
 
-	// Read configuration parameters from system config
-	Setting& sSysCfg = SystemManager::instance()->getSystemConfig()->lookup("config");
-	myMenu3dEnabled = Config::getBoolValue("menu3dEnabled", sSysCfg, false);
-	if(myMenu3dEnabled)
+	if(SystemManager::settingExists("config/ui"))
 	{
-		myAutoPlaceEnabled = true;
-		myAutoPlaceDistance = Config::getFloatValue("menu3dDistance", sSysCfg, myAutoPlaceDistance);
-		myMenu3dScale = Config::getFloatValue("menu3dScale", sSysCfg, myMenu3dScale);
+		Setting& sUi = SystemManager::settingLookup("config/ui");
+		myRayPlaceEnabled = Config::getBoolValue("menuRayPlaceEnabled", sUi, myRayPlaceEnabled);
+		myDefaultMenuPosition = Config::getVector3fValue("menuDefaultPosition", sUi, myDefaultMenuPosition);
+		myDefaultMenuScale = Config::getFloatValue("menuDefaultScale", sUi, myDefaultMenuScale);
+		myDefaultMenuScale *= 0.001;
 	}
+
+	// Read configuration parameters from system config
+	//Setting& sSysCfg = SystemManager::instance()->getSystemConfig()->lookup("config");
+	//myMenu3dEnabled = Config::getBoolValue("menu3dEnabled", sSysCfg, false);
+	//myMenu3dEnabled = true;
+	//if(myMenu3dEnabled)
+	//{
+	//	myAutoPlaceEnabled = true;
+	//	myAutoPlaceDistance = Config::getFloatValue("menu3dDistance", sSysCfg, myAutoPlaceDistance);
+	//	myMenu3dScale = Config::getFloatValue("menu3dScale", sSysCfg, myMenu3dScale);
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -364,17 +431,42 @@ void MenuManager::handleEvent(const Event& evt)
 {
 	if(!evt.isProcessed())
 	{
-		if(evt.getType() == Event::Down && evt.isFlagSet(Event::Button3))
+		if(myMainMenu != NULL)
 		{
-			if(myMainMenu != NULL)
+			if(!myMainMenu->isVisible())
 			{
-				myMainMenu->toggle();
-
-				// If menu autoplace is enabled, place menu along the pointer or wand ray, at
-				// the distance specified by myAutoPlaceDistance.
-				if(myMainMenu->isVisible() && myAutoPlaceEnabled)
+				if(evt.isButtonDown(UiModule::getConfirmButton()))
 				{
+					myMainMenu->show();
 					autoPlaceMenu(myMainMenu, evt);
+					if(myNavigationSuspended)
+					{
+						Camera* cam = getEngine()->getDefaultCamera();
+						myNavigationState = cam->isControllerEnabled();
+						cam->setControllerEnabled(false);
+					}
+				}
+			}
+			else
+			{
+				if(evt.isButtonDown(UiModule::getCancelButton()))
+				{
+					Menu* topMostMenu = myMainMenu->getTopActiveSubMenu();
+					if(topMostMenu == myMainMenu) 
+					{
+						myMainMenu->hide();
+						if(myNavigationSuspended)
+						{
+							Camera* cam = getEngine()->getDefaultCamera();
+							cam->setControllerEnabled(myNavigationState);
+						}
+					}
+					else
+					{
+						Menu* parent = topMostMenu->getParent();
+						parent->setActiveSubMenu(NULL);
+						parent->focus();
+					}
 				}
 			}
 		}
@@ -384,17 +476,39 @@ void MenuManager::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 {
-	Ray ray;
-	if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
+	if(myRayPlaceEnabled)
 	{
-		Vector3f pos = ray.getPoint(myAutoPlaceDistance);
+		Ray ray;
+		if(SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, ray))
+		{
+			Vector3f pos = ray.getPoint(myDefaultMenuPosition[2]);
+
+			Container3dSettings& c3ds = menu->get3dSettings();
+			Widget* menuWidget = menu->getContainer();
+			Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
+			c3ds.position = pos - offset;
+			//c3ds.normal = -ray.getDirection();
+			c3ds.normal = Vector3f(0, 0, 1);
+			c3ds.scale = myDefaultMenuScale;
+		}
+	}
+	else
+	{
+		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+		Observer* obs = ds->getObserver(0);
+
+		Vector3f obsForward = obs->getWorldOrientation() * Vector3f(0, 0, -1);
+		Vector3f menuPosition = obs->getWorldHeadPosition() + obs->getWorldOrientation() * myDefaultMenuPosition;
 
 		Container3dSettings& c3ds = menu->get3dSettings();
 		Widget* menuWidget = menu->getContainer();
+
+		c3ds.scale = myDefaultMenuScale;
 		Vector3f offset = Vector3f(0, menuWidget->getHeight() * c3ds.scale, 0);
-		c3ds.position = pos - offset;
-		c3ds.normal = -ray.getDirection();
-		c3ds.scale = myMenu3dScale;
+		c3ds.position = menuPosition - offset;
+
+		c3ds.normal = -obsForward;
+		c3ds.scale = myDefaultMenuScale;
 	}
 }
 
