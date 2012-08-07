@@ -28,32 +28,24 @@
 // Implementation of the HTML5 based interfaces service for handled devices
 
 #include "omega/PortholeService.h"
+#include "omega/Camera.h"
+#include "omega/Application.h"
+#include "omega/ImageUtils.h"
+
 #include <iostream>
 
 using namespace omega;
 using namespace omicron;
 
-/*
- * This demo server shows how to use libwebsockets for one or more
- * websocket protocols in the same server
- *
- * It defines the following websocket protocols:
- *
- *  dumb-increment-protocol:  once the socket is opened, an incrementing
- *				ascii string is sent down it every 50ms.
- *				If you send "reset\n" on the websocket, then
- *				the incrementing number is reset to 0.
- *
- *  lws-mirror-protocol: copies any received packet to every connection also
- *				using this protocol, including the sender
- */
+// Utils functions definition
+std::string base64_encode(unsigned char const* , unsigned int len);
+std::string base64_decode(std::string const& s);
 
 enum demo_protocols {
 	/* always first */
 	PROTOCOL_HTTP = 0,
 
-	PROTOCOL_DUMB_INCREMENT,
-	PROTOCOL_LWS_MIRROR,
+	PROTOCOL_WEBSOCKET,
 
 	/* always last */
 	DEMO_PROTOCOL_COUNT
@@ -67,7 +59,7 @@ enum demo_protocols {
  */
 void ServerThread::dump_handshake_info(struct lws_tokens *lwst)
 {
-	int n;
+	//int n;
 	static const char *token_names[WSI_TOKEN_COUNT] = {
 		/*[WSI_TOKEN_GET_URI]		=*/ "GET URI",
 		/*[WSI_TOKEN_HOST]		=*/ "Host",
@@ -95,12 +87,14 @@ void ServerThread::dump_handshake_info(struct lws_tokens *lwst)
 		/*[WSI_TOKEN_MUXURL]	=*/ "MuxURL",
 	};
 
+	//TESTING FUNCTION
+	/*
 	for (n = 0; n < WSI_TOKEN_COUNT; n++) {
 		if (lwst[n].token == NULL)
 			continue;
-
 		fprintf(stderr, "    %s = %s\n", token_names[n], lwst[n].token);
 	}
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,14 +124,9 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			fprintf(stderr, "Failed to send HTTP file\n");
 		break;
 
-	/*
-	 * callback for confirming to continue with client IP appear in
-	 * protocol 0 callback since no websocket protocol has been agreed
-	 * yet.  You can just ignore this if you won't filter on client IP
-	 * since the default uhandled callback return is 0 meaning let the
-	 * connection continue.
-	 */
-
+	/* On connection, we could add any filtering function
+	*  Now it's: accept any
+	*/
 	case LWS_CALLBACK_FILTER_NETWORK_CONNECTION:
 
 		libwebsockets_get_peer_addresses((int)(long)user, client_name,
@@ -156,82 +145,124 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 	return 0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/* websocket protocol */
 
-/* dumb_increment protocol */
-
-/*
- * one of these is auto-created for each connection and a pointer to the
- * appropriate instance is passed to the callback in the user parameter
- *
- * for this example protocol we use it to individualize the count for each
- * connection.
- */
-
-struct per_session_data__dumb_increment {
-	int number;
+// Struct of data to be passed across the entire session
+struct per_session_data {
+	Camera* sessionCamera;
+	PixelData* sessionCanvasPixel;
+	ByteArray* sessionPng;
+	int i;
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-int ServerThread::callback_dumb_increment(struct libwebsocket_context *context,
+// Struct of a socket message: payload and its length
+struct a_message {
+	void *payload;
+	size_t len;
+};
+
+int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			struct libwebsocket *wsi,
 			enum libwebsocket_callback_reasons reason,
-					       void *user, void *in, size_t len)
-{
+					       void *user, void *in, size_t len){
+
 	int n;
-	unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 512 +
-						  LWS_SEND_BUFFER_POST_PADDING];
-	unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
-	struct per_session_data__dumb_increment *pss = (per_session_data__dumb_increment*)user;
+	struct per_session_data *data = (per_session_data*) user;
 
 	switch (reason) {
 
+	/* On connection estabilished */
 	case LWS_CALLBACK_ESTABLISHED:
-		fprintf(stderr, "callback_dumb_increment: "
-						 "LWS_CALLBACK_ESTABLISHED\n");
-		pss->number = 0;
-		break;
+	{
+		fprintf(stderr, "callback_websocket: LWS_CALLBACK_ESTABLISHED\n");
+		/* Camera initialization */
+		Engine* myEngine = Engine::instance();
 
-	/*
-	 * in this protocol, we just use the broadcast action as the chance to
-	 * send our own connection-specific data and ignore the broadcast info
-	 * that is available in the 'in' parameter
-	 */
+		// TODO check dimensions
+		data->sessionCanvasPixel = new PixelData(PixelData::FormatRgb, 840, 480);
+
+		uint flags = Camera::ForceMono | Camera::DrawScene;
+		//if(myOffscreen) flags |= Camera::Offscreen;
+
+		data->sessionCamera = myEngine->createCamera(flags);
+		data->sessionCamera->setProjection(60, 1, 0.1f, 100);
+		data->sessionCamera->setAutoAspect(true);
+
+		// Initialize the tablet camera position to be the same as the main camera.
+		Camera* defaultCamera = myEngine->getDefaultCamera();
+		data->sessionCamera->setPosition(defaultCamera->getPosition());
+
+		//Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
+		//myTabletCamera->setOrientation(o);
+		data->sessionCamera->getOutput(0)->setReadbackTarget(data->sessionCanvasPixel);
+		data->sessionCamera->getOutput(0)->setEnabled(true);
+
+		//// TEST send an image
+		//data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
+
+		// Message
+		//a_message myMsg;
+		//myMsg.payload = malloc(LWS_SEND_BUFFER_PRE_PADDING + data->sessionPng->getSize() +
+		//				  LWS_SEND_BUFFER_POST_PADDING);
+		//myMsg.len = LWS_SEND_BUFFER_PRE_PADDING + data->sessionPng->getSize() + LWS_SEND_BUFFER_POST_PADDING;
+
+		//// Fill message
+		//memcpy((char *)myMsg.payload + LWS_SEND_BUFFER_PRE_PADDING, 
+		//	data->sessionPng->getData(), data->sessionPng->getSize());
+
+		//n = libwebsocket_write(wsi, (unsigned char*)myMsg.payload + LWS_SEND_BUFFER_PRE_PADDING, 
+		//	data->sessionPng->getSize(), LWS_WRITE_TEXT);
+
+		////// Free mem
+		//delete[] myMsg.payload;
+
+		break;
+	}
+
+	case LWS_CALLBACK_SERVER_WRITEABLE:
+
+		break;
 
 	case LWS_CALLBACK_BROADCAST:
-		n = sprintf((char *)p, "%d", pss->number++);
+	{
+		
+		// TEST send an image
+		data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
+
+		std::string base64image = base64_encode(data->sessionPng->getData(),data->sessionPng->getSize());
+
+		cout << base64image << endl;
+		cout << "Size is: " << base64image.length() << endl;
+	
+		unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 4096 +
+						  LWS_SEND_BUFFER_POST_PADDING];
+		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
+
+		n = sprintf((char *)p, "%s",base64image.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
-		if (n < 0) {
-			fprintf(stderr, "ERROR writing to socket");
-			return 1;
-		}
-		break;
+
+	}
 
 	case LWS_CALLBACK_RECEIVE:
-		fprintf(stderr, "rx %d\n", (int)len);
-		if (len < 6)
-			break;
-		if (strcmp((char*)in, "reset\n") == 0)
-			pss->number = 0;
+
 		break;
-	/*
-	 * this just demonstrates how to use the protocol filter. If you won't
-	 * study and reject connections based on header content, you don't need
-	 * to handle this callback
-	 */
 
 	case LWS_CALLBACK_FILTER_PROTOCOL_CONNECTION:
-		ServerThread::dump_handshake_info((struct lws_tokens *)(long)user);
+		//dump_handshake_info((struct lws_tokens *)(long)user);
 		/* you could return non-zero here and kill the connection */
+		break;
+
+	case LWS_CALLBACK_CLOSED:
 		break;
 
 	default:
 		break;
 	}
-
 	return 0;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /* list of supported protocols and callbacks */
 struct libwebsocket_protocols protocols[] = {
 
@@ -244,9 +275,9 @@ struct libwebsocket_protocols protocols[] = {
 
 	/* websocket enabled protocol */
 	{
-		"dumb-increment-protocol",
-		ServerThread::callback_dumb_increment,
-		sizeof(struct per_session_data__dumb_increment),
+		"porthole_websocket",
+		ServerThread::callback_websocket,
+		sizeof(struct per_session_data),
 	},
 
 	/* End of list */
@@ -257,9 +288,9 @@ struct libwebsocket_protocols protocols[] = {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ServerThread::ServerThread():
-port(80), use_ssl(0), opts(0), n(0)
+port(4080), use_ssl(0), opts(0), n(0)
 {
-	interface="";
+	minterface="";
 
 	//setPollPriority(Service::PollLast);
 
@@ -271,6 +302,7 @@ port(80), use_ssl(0), opts(0), n(0)
 		cert_path = LOCAL_RESOURCE_PATH"/server.pem";
 		key_path = LOCAL_RESOURCE_PATH"/server.key.pem";
 	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,13 +315,14 @@ void ServerThread::threadProc(){
 	cout << ">> !! Porthole initialization" << endl;
 
 	// Initialize the websockets context
-	context = libwebsocket_create_context(port, interface, protocols,
+	context = libwebsocket_create_context(port, minterface, protocols,
 				libwebsocket_internal_extensions,
 				cert_path, key_path, -1, -1, opts);
 
 	if (context == NULL) {
 		fprintf(stderr, "libwebsocket init failed\n");
 		// TODO Delete service from global service manager
+		return;
 	}
 
 	// A dumb buffer to keep socket alive
@@ -305,7 +338,7 @@ void ServerThread::threadProc(){
 
 		/*
 		 * This broadcasts to all dumb-increment-protocol connections
-		 * at 20Hz.
+		 * at 2Hz.
 		 *
 		 * We're just sending a character 'x', in these examples the
 		 * callbacks send their own per-connection content.
@@ -316,9 +349,9 @@ void ServerThread::threadProc(){
 		 * We take care of pre-and-post padding allocation.
 		 */
 
-		if (((unsigned int)tv.tv_usec - oldus) > 50000) {
+		if (((unsigned int)tv.tv_usec - oldus) > 500000) {
 			libwebsockets_broadcast(
-					&protocols[PROTOCOL_DUMB_INCREMENT],
+					&protocols[PROTOCOL_WEBSOCKET],
 					&buf[LWS_SEND_BUFFER_PRE_PADDING], 1);
 			oldus = tv.tv_usec;
 		}
@@ -372,3 +405,102 @@ void PortholeService::poll(){
 //	cout << ">> !! Poll called" << endl;
 	
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//                                         BASE64 ENC/DEC                                        //
+///////////////////////////////////////////////////////////////////////////////////////////////////
+static const std::string base64_chars =
+             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+             "abcdefghijklmnopqrstuvwxyz"
+             "0123456789+/";
+
+
+static inline bool is_base64(unsigned char c) {
+  return (isalnum(c) || (c == '+') || (c == '/'));
+}
+
+std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+  std::string ret;
+  int i = 0;
+  int j = 0;
+  unsigned char char_array_3[3];
+  unsigned char char_array_4[4];
+
+  while (in_len--) {
+    char_array_3[i++] = *(bytes_to_encode++);
+    if (i == 3) {
+      char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+      char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+      char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+      char_array_4[3] = char_array_3[2] & 0x3f;
+
+      for(i = 0; (i <4) ; i++)
+        ret += base64_chars[char_array_4[i]];
+      i = 0;
+    }
+  }
+
+  if (i)
+  {
+    for(j = i; j < 3; j++)
+      char_array_3[j] = '\0';
+
+    char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+    char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+    char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+    char_array_4[3] = char_array_3[2] & 0x3f;
+
+    for (j = 0; (j < i + 1); j++)
+      ret += base64_chars[char_array_4[j]];
+
+    while((i++ < 3))
+      ret += '=';
+
+  }
+
+  return ret;
+
+}
+
+std::string base64_decode(std::string const& encoded_string) {
+  int in_len = encoded_string.size();
+  int i = 0;
+  int j = 0;
+  int in_ = 0;
+  unsigned char char_array_4[4], char_array_3[3];
+  std::string ret;
+
+  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
+    char_array_4[i++] = encoded_string[in_]; in_++;
+    if (i ==4) {
+      for (i = 0; i <4; i++)
+        char_array_4[i] = base64_chars.find(char_array_4[i]);
+
+      char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+      char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+      for (i = 0; (i < 3); i++)
+        ret += char_array_3[i];
+      i = 0;
+    }
+  }
+
+  if (i) {
+    for (j = i; j <4; j++)
+      char_array_4[j] = 0;
+
+    for (j = 0; j <4; j++)
+      char_array_4[j] = base64_chars.find(char_array_4[j]);
+
+    char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+    char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+    char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+    for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+  }
+
+  return ret;
+}
+

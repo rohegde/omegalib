@@ -85,7 +85,7 @@
 #define DEBUG
 #endif
 
-#ifdef DEBUG
+#ifdef VERBOSE
 #ifdef WIN32
 static
 #else

@@ -73,7 +73,7 @@ int libwebsocket_parse(struct libwebsocket *wsi, unsigned char c)
 	case WSI_TOKEN_HTTP:
 	case WSI_TOKEN_MUXURL:
 
-		debug("WSI_TOKEN_(%d) '%c'\n", wsi->parser_state, c);
+		//debug("WSI_TOKEN_(%d) '%c'\n", wsi->parser_state, c);
 
 		/* collect into malloc'd buffers */
 		/* optional space swallow */
@@ -166,7 +166,7 @@ int libwebsocket_parse(struct libwebsocket *wsi, unsigned char c)
 
 		/* collecting and checking a name part */
 	case WSI_TOKEN_NAME_PART:
-		debug("WSI_TOKEN_NAME_PART '%c'\n", c);
+		//debug("WSI_TOKEN_NAME_PART '%c'\n", c);
 
 		if (wsi->name_buffer_pos == sizeof(wsi->name_buffer) - 1) {
 			/* name bigger than we can handle, skip until next */
@@ -247,12 +247,12 @@ int libwebsocket_parse(struct libwebsocket *wsi, unsigned char c)
 
 		/* skipping arg part of a name we didn't recognize */
 	case WSI_TOKEN_SKIPPING:
-		debug("WSI_TOKEN_SKIPPING '%c'\n", c);
+		//debug("WSI_TOKEN_SKIPPING '%c'\n", c);
 		if (c == '\x0d')
 			wsi->parser_state = WSI_TOKEN_SKIPPING_SAW_CR;
 		break;
 	case WSI_TOKEN_SKIPPING_SAW_CR:
-		debug("WSI_TOKEN_SKIPPING_SAW_CR '%c'\n", c);
+		//debug("WSI_TOKEN_SKIPPING_SAW_CR '%c'\n", c);
 		if (c == '\x0a')
 			wsi->parser_state = WSI_TOKEN_NAME_PART;
 		else
@@ -261,7 +261,7 @@ int libwebsocket_parse(struct libwebsocket *wsi, unsigned char c)
 		break;
 		/* we're done, ignore anything else */
 	case WSI_PARSING_COMPLETE:
-		debug("WSI_PARSING_COMPLETE '%c'\n", c);
+		//debug("WSI_PARSING_COMPLETE '%c'\n", c);
 		break;
 
 	default:	/* keep gcc happy */
@@ -1540,7 +1540,7 @@ lws_issue_raw_ext_access(struct libwebsocket *wsi,
 		ret = 0;
 	}
 
-	debug("written %d bytes to client\n", eff_buf.token_len);
+//	debug("written %d bytes to client\n", eff_buf.token_len);
 
 	return 0;
 }
