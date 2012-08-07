@@ -33,8 +33,8 @@
 
 #include "osystem.h"
 #include <string.h>
-#include <omicron.h>
 #include "websockets/libwebsockets.h"
+#include "omega/Engine.h"
 
 using namespace std;
 using namespace omicron;
@@ -60,8 +60,8 @@ namespace omega {
 			enum libwebsocket_callback_reasons reason, void *user,
 							   void *in, size_t len);
 
-		// websocket enabled protocol
-		static int callback_dumb_increment(struct libwebsocket_context *context,
+		// websocket callback
+		static int callback_websocket(struct libwebsocket_context *context,
 			struct libwebsocket *wsi,
 			enum libwebsocket_callback_reasons reason,
 					       void *user, void *in, size_t len);
@@ -73,7 +73,7 @@ namespace omega {
 		int opts;
 		int n;
 		unsigned int oldus;
-		char* interface;
+		char* minterface;
 
 		// SSL vars - NOT TESTED
 		int use_ssl;
