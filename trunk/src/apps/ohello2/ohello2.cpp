@@ -129,6 +129,7 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 		glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(0.0f, 0.0f, 1.0f).data());
 
 		// Draw a rotating teapot.
+		glTranslatef(0, 2, -2); 
 		glRotatef(10, 1, 0, 0);
 		glRotatef(myApplication->getYaw(), 0, 1, 0);
 		glRotatef(myApplication->getPitch(), 1, 0, 0);

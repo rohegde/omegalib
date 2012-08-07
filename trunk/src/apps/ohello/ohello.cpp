@@ -112,7 +112,8 @@ void HelloRenderPass::render(Renderer* client, const DrawContext& context)
 		glLightfv(GL_LIGHT0, GL_COLOR, Color(1.0, 1.0, 1.0).data());
 		glLightfv(GL_LIGHT0, GL_POSITION, Vector3f(0.0f, 0.0f, 1.0f).data());
 
-		// Draw a rotating teapot.
+		// Draw a rotating cube.
+		glTranslatef(0, 2, -2); 
 		glRotatef(10, 1, 0, 0);
 		glRotatef((float)context.frameNum * 0.1f, 0, 1, 0);
 		glRotatef((float)context.frameNum * 0.2f, 1, 0, 0);
