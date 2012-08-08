@@ -28,8 +28,7 @@
 #ifndef __PORTHOLE_SERVICE_H__
 #define __PORTHOLE_SERVICE_H__
 
-// Path to resources, such as html files
-#define LOCAL_RESOURCE_PATH "./"
+#define PORT 4080
 
 #include "osystem.h"
 #include <string.h>
@@ -40,6 +39,9 @@ using namespace std;
 using namespace omicron;
 
 namespace omega {
+
+	// Path to resources, such as html files
+	static string DATA_PATH; 
 
 	class OMEGA_API ServerThread: public Thread{
 
@@ -66,8 +68,13 @@ namespace omega {
 			enum libwebsocket_callback_reasons reason,
 					       void *user, void *in, size_t len);
 
+		// Base64 encode/decode functions
+		static string base64_encode(unsigned char const* , unsigned int len);
+		static string base64_decode(string const& s);
+
 	private:
 
+		// Server params
 		int port;
 		struct libwebsocket_context *context; 
 		int opts;
@@ -77,8 +84,8 @@ namespace omega {
 
 		// SSL vars - NOT TESTED
 		int use_ssl;
-		char* cert_path;
-		char* key_path;
+		const char* cert_path;
+		const char* key_path;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -1528,7 +1528,7 @@ lws_issue_raw_ext_access(struct libwebsocket *wsi,
 			/* no we could add more */
 			continue;
 
-		debug("choked\n");
+		//debug("choked\n");
 
 		/*
 		 * Yes, he's choked.  Don't spill the rest now get a callback
