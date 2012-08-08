@@ -296,17 +296,57 @@ const UpdateContext& ConfigImpl::getUpdateContext()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 uint32_t ConfigImpl::finishFrame()
 {
-    DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
+    EqualizerDisplaySystem* ds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 
-    // update observer head matrices.
-    for( unsigned int i = 0; i < getObservers().size(); i++) 
-    {
-        Observer* obs  = ds->getObserver(i);
-        eq::fabric::Matrix4f om;
-        const AffineTransform3& ht = obs->getHeadTransform();
-        om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
-        getObservers().at(i)->setHeadMatrix(om);
-    }
+	if(ds->getDisplayConfig().orientObserverToTile)
+	{
+		// if orientObserverToTile is enabled, we assume the observer orientation is always normal
+		// to the tile. Only the observer position is updated.
+		// This works only for ONE actual, tracked observer. So we just get observer 0 from the observer list.
+		Observer* obs  = ds->getObserver(0);
+		int numObservers = getObservers().size();
+		for(int i = 0; i < numObservers; i++)
+		{
+			eq::Observer* eqo = getObservers().at(i);
+			ObserverTileData& otd = myObserverTileData[i];
+			// If the observer data has not been initialized yet, do it now.
+			if(otd.observer == NULL)
+			{
+				otd.observer = eqo;
+				// Get the tile index from the observer name.
+				sscanf(eqo->getName().c_str(), "observer%dx%d", &otd.x, &otd.y);
+				const DisplayTileConfig& dtc = ds->getDisplayConfig().tiles[otd.x][otd.y];
+
+				// Compute the tile normal, and compute the orientation that would bring the observer from the default
+				// look-at vector (0, 0, -1) to the tile normal.
+				//Vector3f tileNormal = Math::calculateBasicFaceNormal(dtc.bottomLeft, dtc.topLeft, dtc.bottomRight);
+				//otd.orientation = Math::buildRotation(-Vector3f::UnitZ(), tileNormal, Vector3f::UnitY());
+
+				// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
+				otd.yaw = dtc.yaw;
+			}
+
+			// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
+			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
+			Vector3f& pos = obs->getHeadPosition();
+			eq::fabric::Matrix4f om; // = eq::fabric::Matrix4f::IDENTITY;
+			om.rotate_y(otd.yaw);
+			om.set_translation(pos[0], pos[1], pos[2]);
+			eqo->setHeadMatrix(om);
+		}
+	}
+	else
+	{
+		// update observer head matrices the normal way
+		for( unsigned int i = 0; i < getObservers().size(); i++) 
+		{
+			Observer* obs  = ds->getObserver(i);
+			eq::fabric::Matrix4f om;
+			const AffineTransform3& ht = obs->getHeadTransform();
+			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
+			getObservers().at(i)->setHeadMatrix(om);
+		}
+	}
     return eq::Config::finishFrame();
 }
 
