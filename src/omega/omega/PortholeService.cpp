@@ -37,10 +37,6 @@
 using namespace omega;
 using namespace omicron;
 
-// Utils functions definition
-std::string base64_encode(unsigned char const* , unsigned int len);
-std::string base64_decode(std::string const& s);
-
 enum demo_protocols {
 	/* always first */
 	PROTOCOL_HTTP = 0,
@@ -108,11 +104,11 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 
 	switch (reason) {
 	case LWS_CALLBACK_HTTP:
-		fprintf(stderr, "serving HTTP URI %s\n", (char *)in);
+		//fprintf(stderr, "serving HTTP URI %s\n", (char *)in);
 
 		if (in && strcmp((char*)in, "/favicon.ico") == 0) {
 			if (libwebsockets_serve_http_file(wsi,
-			     LOCAL_RESOURCE_PATH"/favicon.ico", "image/x-icon"))
+			     (DATA_PATH+"/favicon.ico").c_str(), "image/x-icon"))
 				fprintf(stderr, "Failed to send favicon\n");
 			break;
 		}
@@ -120,7 +116,7 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 		/* send the script... when it runs it'll start websockets */
 
 		if (libwebsockets_serve_http_file(wsi,
-				  LOCAL_RESOURCE_PATH"/test.html", "text/html"))
+				  (DATA_PATH+"/index.html").c_str(), "text/html"))
 			fprintf(stderr, "Failed to send HTTP file\n");
 		break;
 
@@ -198,25 +194,6 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		data->sessionCamera->getOutput(0)->setReadbackTarget(data->sessionCanvasPixel);
 		data->sessionCamera->getOutput(0)->setEnabled(true);
 
-		//// TEST send an image
-		//data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
-
-		// Message
-		//a_message myMsg;
-		//myMsg.payload = malloc(LWS_SEND_BUFFER_PRE_PADDING + data->sessionPng->getSize() +
-		//				  LWS_SEND_BUFFER_POST_PADDING);
-		//myMsg.len = LWS_SEND_BUFFER_PRE_PADDING + data->sessionPng->getSize() + LWS_SEND_BUFFER_POST_PADDING;
-
-		//// Fill message
-		//memcpy((char *)myMsg.payload + LWS_SEND_BUFFER_PRE_PADDING, 
-		//	data->sessionPng->getData(), data->sessionPng->getSize());
-
-		//n = libwebsocket_write(wsi, (unsigned char*)myMsg.payload + LWS_SEND_BUFFER_PRE_PADDING, 
-		//	data->sessionPng->getSize(), LWS_WRITE_TEXT);
-
-		////// Free mem
-		//delete[] myMsg.payload;
-
 		break;
 	}
 
@@ -232,15 +209,18 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 
 		std::string base64image = base64_encode(data->sessionPng->getData(),data->sessionPng->getSize());
 
-		cout << base64image << endl;
-		cout << "Size is: " << base64image.length() << endl;
-	
-		unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 4096 +
-						  LWS_SEND_BUFFER_POST_PADDING];
+		//cout << base64image << endl;
+		//cout << "Size is: " << base64image.length() << endl;
+
+		unsigned char* buf;
+		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + base64image.length() + LWS_SEND_BUFFER_POST_PADDING];
+
 		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
 
 		n = sprintf((char *)p, "%s",base64image.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
+
+		delete[] buf;
 
 	}
 
@@ -288,8 +268,17 @@ struct libwebsocket_protocols protocols[] = {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ServerThread::ServerThread():
-port(4080), use_ssl(0), opts(0), n(0)
+port(PORT), use_ssl(0), opts(0), n(0)
 {
+
+	// Set DATA FOLDER PATH
+	string fullPath;
+	DataManager::findFile("porthole/index.html", fullPath);
+
+	DATA_PATH = fullPath.substr(0,fullPath.find_last_of("/\\"));
+
+	cout << "Path is: " << DATA_PATH << endl; 
+
 	minterface="";
 
 	//setPollPriority(Service::PollLast);
@@ -299,8 +288,8 @@ port(4080), use_ssl(0), opts(0), n(0)
 		key_path = "";
 	}
 	else{
-		cert_path = LOCAL_RESOURCE_PATH"/server.pem";
-		key_path = LOCAL_RESOURCE_PATH"/server.key.pem";
+		cert_path = (DATA_PATH+"/server.pem").c_str();
+		key_path = (DATA_PATH+"/server.key.pem").c_str();
 	}
 
 }
@@ -328,7 +317,7 @@ void ServerThread::threadProc(){
 	// A dumb buffer to keep socket alive
 	buf[LWS_SEND_BUFFER_PRE_PADDING] = 'x';
 
-	fprintf(stderr, " Using no-fork service loop\n");
+	//fprintf(stderr, " Using no-fork service loop\n");
 	oldus = 0;
 	n = 0;
 	while (n >= 0) {
@@ -338,7 +327,7 @@ void ServerThread::threadProc(){
 
 		/*
 		 * This broadcasts to all dumb-increment-protocol connections
-		 * at 2Hz.
+		 * at 50Hz.
 		 *
 		 * We're just sending a character 'x', in these examples the
 		 * callbacks send their own per-connection content.
@@ -349,7 +338,7 @@ void ServerThread::threadProc(){
 		 * We take care of pre-and-post padding allocation.
 		 */
 
-		if (((unsigned int)tv.tv_usec - oldus) > 500000) {
+		if (((unsigned int)tv.tv_usec - oldus) > 20000) {
 			libwebsockets_broadcast(
 					&protocols[PROTOCOL_WEBSOCKET],
 					&buf[LWS_SEND_BUFFER_PRE_PADDING], 1);
@@ -420,7 +409,7 @@ static inline bool is_base64(unsigned char c) {
   return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+std::string ServerThread::base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
   std::string ret;
   int i = 0;
   int j = 0;
@@ -463,7 +452,7 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
 
 }
 
-std::string base64_decode(std::string const& encoded_string) {
+std::string ServerThread::base64_decode(std::string const& encoded_string) {
   int in_len = encoded_string.size();
   int i = 0;
   int j = 0;
