@@ -92,12 +92,28 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+//! @internal Keeps observer per-tile data
+struct ObserverTileData
+{
+	ObserverTileData(): observer(NULL)
+	{}
+
+	eq::Observer* observer;
+	int x;
+	int y;
+
+	// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
+	float yaw;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //! @internal
 class ConfigImpl: public eq::Config
 {
 public:
     //EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     static const int MaxCanvasChannels = 128;
+	static const int MaxTiles = 4096;
 public:
     ConfigImpl( co::base::RefPtr< eq::Server > parent);
 	virtual ~ConfigImpl();
@@ -119,6 +135,8 @@ private:
 	Timer myGlobalTimer;
 	//! Global fps counter.
 	Stat* myFpsStat;
+
+	ObserverTileData myObserverTileData[MaxTiles];
 
     Ref<ServerBase> myServer;
 };

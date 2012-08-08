@@ -169,7 +169,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 	if(eqcfg.orientObserverToTile)
 	{
 		// observers
-		START_BLOCK(result, "observer");
+		//START_BLOCK(result, "observer");
 		for(int x = 0; x < eqcfg.numTiles[0]; x++)
 		{
 			for(int y = 0; y < eqcfg.numTiles[1]; y++)
@@ -179,7 +179,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 					L(ostr("observer { name \"observer%1%x%2%\"", %x %y));
 			}
 		}
-		END_BLOCK(result)
+		//END_BLOCK(result)
 	}
 	else
 	{
@@ -201,18 +201,22 @@ void EqualizerDisplaySystem::generateEqConfig()
 	// If orientObserverToTile is set, we need to create one view per tile, and link it to the relative observer.
 	if(eqcfg.orientObserverToTile)
 	{
-		//for(int x = 0; x < eqcfg.numTiles[0]; x++)
-		//{
-		//	for(int y = 0; y < eqcfg.numTiles[1]; y++)
-		//	{
-		//		START_BLOCK(result, "view");
-		//		// observer
-		//		result += 
-		//			L(ostr("name \"view%1%x%2%\"", %x %y) +
-		//			L(ostr("observer \"observer%1%x%2%\"", %x %y));
-		//		END_BLOCK(result)
-		//	}
-		//}
+		for(int x = 0; x < eqcfg.numTiles[0]; x++)
+		{
+			for(int y = 0; y < eqcfg.numTiles[1]; y++)
+			{
+				START_BLOCK(result, "view");
+				// observer
+				result += 
+					L(ostr("name \"view%1%x%2%\"", %x %y)) +
+					L(ostr("observer \"observer%1%x%2%\"", %x %y)) +
+					L(ostr("viewport [%1% %2% %3% %4%]", %tileViewportX %tileViewportY %tileViewportWidth %tileViewportHeight) );
+				END_BLOCK(result);
+				tileViewportY += tileViewportHeight;
+			}
+			tileViewportY = 0.0f;
+			tileViewportX += tileViewportWidth;
+		}
 	}
 	else
 	{
@@ -238,6 +242,8 @@ void EqualizerDisplaySystem::generateEqConfig()
 
 
 
+	tileViewportX = 0.0f;
+	tileViewportY = 0.0f;
 	for(int x = 0; x < eqcfg.numTiles[0]; x++)
 	{
 		for(int y = 0; y < eqcfg.numTiles[1]; y++)
