@@ -176,7 +176,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			{
 				// observer
 				result += 
-					L(ostr("observer { name \"observer%1%x%2%\"", %x %y));
+					L(ostr("observer { name \"observer%1%x%2%\" }", %x %y));
 			}
 		}
 		//END_BLOCK(result)
