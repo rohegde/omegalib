@@ -49,6 +49,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     //if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
 	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImage(file, false);
+	img->setDeleteDisabled(true);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
 
     //unsigned char *imageData = NULL;
@@ -80,7 +81,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
         pixelFormat,
         dataType,
 		img->lockData(),
-        osg::Image::NO_DELETE);
+		osg::Image::USE_MALLOC_FREE);
 
 	img->unlockData();
 

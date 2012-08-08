@@ -34,7 +34,8 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 	myWidth(width),
 	myHeight(height),
 	myFormat(fmt),
-	mySize(0)
+	mySize(0),
+	myDeleteDisabled(false)
 {
 	if(myData == NULL)
 	{
@@ -57,6 +58,11 @@ PixelData::PixelData(Format fmt, int width, int height, byte* data):
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 PixelData::~PixelData()
 {
+	if(!myDeleteDisabled)
+	{
+		ofmsg("PixelData::~PixelData: deleting %1%x%2% image", %myWidth %myHeight);
+		free(myData);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
