@@ -45,6 +45,7 @@ set( srcs
 		omegaToolkit/RenderableSceneObject.cpp
 		omegaToolkit/SceneEditorModule.cpp
 		omegaToolkit/SceneRenderable.cpp
+		omegaToolkit/TrackedObject.cpp
 		omegaToolkit/UiModule.cpp
 		omegaToolkit/UiRenderPass.cpp
 		omegaToolkit/UiScriptCommand.cpp
@@ -81,6 +82,7 @@ set( headers
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/RenderableSceneObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneEditorModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/SceneRenderable.h
+		${CMAKE_SOURCE_DIR}/include/omegaToolkit/TrackedObject.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiModule.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiRenderPass.h
 		${CMAKE_SOURCE_DIR}/include/omegaToolkit/UiScriptCommand.h

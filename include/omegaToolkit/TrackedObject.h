@@ -24,46 +24,49 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __PIXEL_DATA_H__
-#define __PIXEL_DATA_H__
+#ifndef __TRACKED_OBJECT__
+#define __TRACKED_OBJECT__
 
-#include "osystem.h"
+#include "omegaToolkitConfig.h"
+#include "omega/Actor.h"
 
-namespace omega {
+namespace omegaToolkit {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	struct OMEGA_API PixelData: public ReferenceType
+	class OTK_API TrackedObject: public Actor
 	{
 	public:
-		enum Format { FormatRgb, FormatRgba, FormatMonochrome};
-	public:
-		PixelData(Format fmt, int width, int height, byte* data = NULL);
-		virtual ~PixelData();
+		TrackedObject();
+		virtual ~TrackedObject();
 
-		byte* lockData();
-		void unlockData();
+		virtual void handleEvent(const Event& evt);
+		virtual void update(const UpdateContext& context);
 
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
-		Format getFormat() { return myFormat; }
-		size_t getSize() { return mySize; }
+		void setTrackingOffset(Vector3f value) { myTrackingOffset = value; }
+		Vector3f getTrackingOffset() { return myTrackingOffset; }
 
-		int getPitch();
-		int getBpp();
+		void setPositionTrackingEnabled(bool value) { myPositionTrackingEnabled = value; }
+		bool isPositionTrackingEnabled() { return myPositionTrackingEnabled; }
 
-		uint getRedMask();
-		uint getGreenMask();
-		uint getBlueMask();
-		uint getAlphaMask();
+		void setOrientationTrackingEnabled(bool value) { myOrientationTrackingEnabled = value; }
+		bool isOrientationTrackingEnabled() { return myOrientationTrackingEnabled; }
+
+		void setTrackableServiceType(Event::ServiceType value) { myTrackableServiceType = value; }
+		Event::ServiceType getTrackableServiceType() { return myTrackableServiceType; }
+
+		void setTrackableSourceId(int value) { myTrackableSourceId = value; }
+		int getTrackableSourceId() { return myTrackableSourceId; }
 
 	private:
-		Lock myLock;
-		Format myFormat;
-		byte* myData;
-		int myWidth;
-		int myHeight;
-		size_t mySize;
+		Vector3f myTrackedPosition;
+		Quaternion myTrackedOrientation;
 
+		bool myPositionTrackingEnabled;
+		bool myOrientationTrackingEnabled;
+		Vector3f myTrackingOffset;
+
+		Event::ServiceType myTrackableServiceType;
+		int myTrackableSourceId;
 	};
-}; // namespace omega
+}; // namespace omegaToolkit
 
 #endif

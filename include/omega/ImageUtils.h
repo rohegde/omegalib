@@ -32,25 +32,6 @@
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ImageData
-	{
-	public:
-		ImageData(const String& filename, int width, int height);
-
-		PixelData* getPixels();
-		void setPixels(PixelData* pixels);
-
-		int getWidth() { return myWidth; }
-		int getHeight() { return myHeight; }
-
-	private:
-		PixelData* myPixels;
-		int myWidth;
-		int myHeight;
-		String myFilename;
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! Loads and manages image data.
 	class OMEGA_API ImageUtils
 	{
@@ -58,7 +39,7 @@ namespace omega {
 		enum ImageFormat { FormatPng };
 	public:
 		//! Load an image from a file.
-		static ImageData* loadImage(const String& filename, bool hasFullPath = false);
+		static Ref<PixelData> loadImage(const String& filename, bool hasFullPath = false);
 		static ByteArray* encode(PixelData* data, ImageFormat format);
 
 		static void internalInitialize();
@@ -67,10 +48,6 @@ namespace omega {
 	private:
 		ImageUtils() {}
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline PixelData* ImageData::getPixels() 
-	{ return myPixels; }
 }; // namespace omega
 
 #endif

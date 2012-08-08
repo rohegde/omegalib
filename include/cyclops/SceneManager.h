@@ -252,6 +252,7 @@ namespace cyclops {
 		void load(const String& file);
 		//! #PYAPI
 		void createSkyBox(const String& cubeMapDir, const String& cubeMapExt);
+		void setSkyBox(SkyBox* skyBox);
 		//@}
 
 		//! Light management methods

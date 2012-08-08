@@ -48,7 +48,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     //std::string fileName = osgDB::findDataFile( file, options );
     //if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
 
-	omega::ImageData* img = omega::ImageUtils::loadImage(file, false);
+	omega::Ref<omega::PixelData> img = omega::ImageUtils::loadImage(file, false);
 	if(img == NULL) return ReadResult::FILE_NOT_FOUND;
 
     //unsigned char *imageData = NULL;
@@ -64,7 +64,7 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
     int t = img->getHeight();
     int r = 1;
 
-    int internalFormat = img->getPixels()->getBpp() / 8;
+    int internalFormat = img->getBpp() / 8;
 
     unsigned int pixelFormat =
         internalFormat == 1 ? GL_LUMINANCE :
@@ -79,9 +79,10 @@ ReaderWriter::ReadResult ReaderFreeImage::readImage(const std::string& file, con
         internalFormat,
         pixelFormat,
         dataType,
-		img->getPixels()->lockData(),
+		img->lockData(),
         osg::Image::NO_DELETE);
-	img->getPixels()->unlockData();
+
+	img->unlockData();
 
     ReadResult rr(pOsgImage);
     if(rr.validImage()) rr.getImage()->setFileName(file);
