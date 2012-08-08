@@ -55,6 +55,9 @@ namespace omega {
 		uint getBlueMask();
 		uint getAlphaMask();
 
+		void setDeleteDisabled(bool value) { myDeleteDisabled = value; }
+		bool isDeleteDisabled() { return myDeleteDisabled; }
+
 	private:
 		Lock myLock;
 		Format myFormat;
@@ -62,7 +65,7 @@ namespace omega {
 		int myWidth;
 		int myHeight;
 		size_t mySize;
-
+		bool myDeleteDisabled;
 	};
 }; // namespace omega
 
