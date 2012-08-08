@@ -328,7 +328,7 @@ uint32_t ConfigImpl::finishFrame()
 
 			// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
 			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
-			Vector3f& pos = obs->getHeadPosition();
+			const Vector3f& pos = obs->getHeadPosition();
 			eq::fabric::Matrix4f om; // = eq::fabric::Matrix4f::IDENTITY;
 			om.rotate_y(otd.yaw);
 			om.set_translation(pos[0], pos[1], pos[2]);
