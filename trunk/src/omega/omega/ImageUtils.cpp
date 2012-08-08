@@ -31,30 +31,6 @@
 using namespace omega;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ImageData::ImageData(const String& filename, int width, int height):
-	myFilename(filename), myWidth(width), myHeight(height)
-{
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void ImageData::setPixels(PixelData* pixels) 
-{
-	if(pixels == NULL) 
-	{
-		owarn("ImageData::setPixels: pixels = NULL");
-	}
-	else if(pixels->getWidth() != myWidth || pixels->getHeight() != myHeight)
-	{
-		ofwarn("ImageData::setPixels: wrong size. Expected %1%x%2%, got %3%x%4%", 
-			%myWidth %myHeight %pixels->getWidth() %pixels->getHeight());
-	}
-	else
-	{
-		myPixels = pixels; 
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void ImageUtils::internalInitialize()
 {
 	FreeImage_Initialise();
@@ -67,7 +43,7 @@ void ImageUtils::internalDispose()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-ImageData* ImageUtils::loadImage(const String& filename, bool hasFullPath)
+Ref<PixelData> ImageUtils::loadImage(const String& filename, bool hasFullPath)
 {
 	String path;
 	if(!hasFullPath)
@@ -97,11 +73,11 @@ ImageData* ImageUtils::loadImage(const String& filename, bool hasFullPath)
 	int width = FreeImage_GetWidth(image);
 	int height = FreeImage_GetHeight(image);
 
-	ImageData* imageData = new ImageData(filename, width, height);
+	Ref<PixelData> pixelData = new PixelData(PixelData::FormatRgba, width, height);
 
 	ofmsg("Image loaded: %1%. Size: %2%x%3%", %filename %width %height);
 	
-	byte* data = new byte[4 * width * height];
+	byte* data = pixelData->lockData();
 	char* pixels = (char*)FreeImage_GetBits(image);
 	
 	for(int j= 0; j < width * height ; j++)
@@ -111,12 +87,11 @@ ImageData* ImageUtils::loadImage(const String& filename, bool hasFullPath)
 		data[j*4+2]= pixels[j*4+0];
 		data[j*4+3]= pixels[j*4+3];
 	}
+	pixelData->unlockData();
 	
 	FreeImage_Unload(image);
 
-	imageData->setPixels(new PixelData(PixelData::FormatRgba, width, height, data));
-
-	return imageData;
+	return pixelData;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

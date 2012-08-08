@@ -24,54 +24,48 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_SKY_BOX__
-#define __CY_SKY_BOX__
+#include "omegaToolkit/TrackedObject.h"
 
-#include <osg/TextureCubeMap>
+using namespace omegaToolkit;
 
-#include "cyclopsConfig.h"
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TrackedObject::TrackedObject(): 
+	Actor(),
+		myTrackableServiceType(Event::ServiceTypeMocap),
+		myTrackableSourceId(0),
+		myOrientationTrackingEnabled(true),
+		myPositionTrackingEnabled(true)
 
-#define OMEGA_NO_GL_HEADERS
-#include <omega.h>
-#include <omegaOsg.h>
-#include <omegaToolkit.h>
+{
+}
 
-namespace cyclops {
-	using namespace omega;
-	using namespace omegaOsg;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+TrackedObject::~TrackedObject()
+{
+}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API SkyBox
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TrackedObject::handleEvent(const Event& evt)
+{
+	if(evt.getServiceType() == myTrackableServiceType && evt.getSourceId() == myTrackableSourceId)
 	{
-	public:
-		enum Type { CubeMap, Pano };
+		myTrackedPosition = evt.getPosition();
+		myTrackedOrientation = evt.getOrientation();
+	}
+}
 
-	public:
-		SkyBox();
-
-		void initialize(osg::StateSet* rootStateSet);
-
-		//! Loads cube map images from the specified directory.
-		//! Images must be named posx, negx, posy, negy, posz, negz and have the specified file extension.
-		bool loadCubeMap(const String& cubemapDir, const String& extension);
-
-		bool loadPano(const String& panoName);
-
-		osg::Node* getNode() { return myNode; }
-		Type getType() { return myType; }
-
-	private:
-		osg::Node* createSkyBox();
-
-	private:
-		osg::StateSet* myRootStateSet;
-
-		osg::Texture* myTexture;
-
-		osg::Node* myNode;
-
-		Type myType;
-	};
-};
-
-#endif
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void TrackedObject::update(const UpdateContext& context)
+{
+	if(myNode != NULL)
+	{
+		if(myPositionTrackingEnabled)
+		{
+			myNode->setPosition(myTrackedPosition + myTrackingOffset);
+		}
+		if(myOrientationTrackingEnabled)
+		{
+			myNode->setOrientation(myTrackedOrientation);
+		}
+	}
+}

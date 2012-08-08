@@ -628,6 +628,13 @@ void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapE
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setSkyBox(SkyBox* skyBox)
+{
+	mySkyBox = skyBox;
+	resetEnvMapSettings();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 const ShadowSettings& SceneManager::getCurrentShadowSettings()
 {
 	return myShadowSettings;

@@ -37,6 +37,7 @@
 #include "omegaToolkit/MeshData.h"
 #include "omegaToolkit/SceneEditorModule.h"
 #include "omegaToolkit/ToolkitUtils.h"
+#include "omegaToolkit/TrackedObject.h"
 #include "omegaToolkit/UiModule.h"
 #include "omegaToolkit/UiScriptCommand.h"
 

@@ -34,45 +34,17 @@
 #include <osg/TexMat>
 #include <osg/PolygonMode>
 #include <osgDB/ReadFile>
+#include <osgwTools/Shapes.h>
 
 using namespace cyclops;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Update texture matrix for cubemaps
-struct TexMatCallback : public osg::NodeCallback
-{
-public:
-
-    TexMatCallback(osg::TexMat& tm) :
-        _texMat(tm)
-    {
-    }
-
-    virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
-    {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
-        if (cv)
-        {
-            const osg::Matrix& MV = *(cv->getModelViewMatrix());
-            const osg::Matrix R = osg::Matrix::rotate( osg::DegreesToRadians(112.0f), 0.0f,0.0f,1.0f)*
-                                  osg::Matrix::rotate( osg::DegreesToRadians(0.0f), 1.0f,0.0f,0.0f);
-
-            osg::Quat q = MV.getRotate();
-            const osg::Matrix C = osg::Matrix::rotate( q.inverse() );
-
-            _texMat.setMatrix( C*R );
-        }
-
-        traverse(node,nv);
-    }
-
-    osg::TexMat& _texMat;
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MoveSkyWithEyePointTransform : public osg::Transform
 {
 public:
+	float pitch;
+public:
+
     /** Get the transformation matrix which moves from local coords to world coords.*/
     virtual bool computeLocalToWorldMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const 
     {
@@ -81,6 +53,7 @@ public:
         {
             osg::Vec3 eyePointLocal = cv->getEyeLocal();
             matrix.preMultTranslate(eyePointLocal);
+			matrix.preMultRotate(osg::Quat(pitch, osg::Vec3(1, 0, 0)));
         }
         return true;
     }
@@ -100,14 +73,14 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SkyBox::SkyBox():
-	myCubeMap(NULL), myNode(NULL), myRootStateSet(NULL)
+	myTexture(NULL), myNode(NULL), myRootStateSet(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SkyBox::initialize(osg::StateSet* rootStateSet)
 {
-	if(myCubeMap != NULL && myNode == NULL)
+	if(myTexture != NULL && myNode == NULL)
 	{
 		myRootStateSet = rootStateSet;
 		myNode = createSkyBox();
@@ -115,8 +88,31 @@ void SkyBox::initialize(osg::StateSet* rootStateSet)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool SkyBox::loadPano(const String& panoName)
+{
+	myType = Pano;
+	osg::Image* pano = osgDB::readImageFile(panoName);
+	if(pano)
+	{
+		osg::Texture2D* panoTex = new osg::Texture2D();
+		panoTex->setImage(pano);
+		myTexture = panoTex;
+       myTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
+        myTexture->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
+        myTexture->setWrap(osg::Texture::WRAP_R, osg::Texture::CLAMP_TO_EDGE);
+
+        myTexture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR_MIPMAP_LINEAR);
+        myTexture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);		
+		return true;
+	}
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool SkyBox::loadCubeMap(const String& cubemapDir, const String& extension)
 {
+	myType = CubeMap;
+
     osg::TextureCubeMap* cubemap = new osg::TextureCubeMap;
 
     osg::Image* imagePosX = osgDB::readImageFile(cubemapDir + "/posx." + extension);
@@ -142,7 +138,7 @@ bool SkyBox::loadCubeMap(const String& cubemapDir, const String& extension)
         cubemap->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR_MIPMAP_LINEAR);
         cubemap->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);
 
-		myCubeMap = cubemap;
+		myTexture = cubemap;
 
 		return true;
     }
@@ -153,17 +149,18 @@ bool SkyBox::loadCubeMap(const String& cubemapDir, const String& extension)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 osg::Node* SkyBox::createSkyBox()
 {
-	if(myCubeMap != NULL)
+	if(myTexture != NULL)
 	{
 		osg::StateSet* stateset = new osg::StateSet();
 
 		osg::TexEnv* te = new osg::TexEnv;
-		te->setMode(osg::TexEnv::REPLACE);
-		stateset->setTextureAttributeAndModes(0, te, osg::StateAttribute::ON);
+		//te->setMode(osg::TexEnv::REPLACE);
+		//stateset->setTextureAttributeAndModes(0, te, osg::StateAttribute::ON);
 
 		osg::TexGen *tg = new osg::TexGen;
-		tg->setMode(osg::TexGen::NORMAL_MAP);
-		stateset->setTextureAttributeAndModes(0, tg, osg::StateAttribute::ON);
+		//tg->setMode(osg::TexGen::SPHERE_MAP);
+		//tg->setMode(osg::TexGen::EYE_LINEAR);
+		//stateset->setTextureAttributeAndModes(0, tg, osg::StateAttribute::ON);
 		
 		// Uncomment to draw wireframe skybox.
 		//osg::PolygonMode* pm = new osg::PolygonMode();
@@ -172,13 +169,21 @@ osg::Node* SkyBox::createSkyBox()
 
 		// Setup the root state set to apply the environment map to scene objects.
 		// Use Texture stage 3 for the environment map (0-2 reserved for object textures, 4,5 reserved for shadow maps)
-		myRootStateSet->setTextureAttributeAndModes(3, myCubeMap, osg::StateAttribute::ON);
-		myRootStateSet->addUniform( new osg::Uniform("unif_CubeMap", 3) );
+		myRootStateSet->setTextureAttributeAndModes(3, myTexture, osg::StateAttribute::ON);
+		if(myType == CubeMap)
+		{
+			myRootStateSet->addUniform( new osg::Uniform("unif_CubeMap", 3) );
+		}
+		else if(myType == Pano)
+		{
+			myRootStateSet->addUniform( new osg::Uniform("unif_PanoMap", 3) );
+		}
 
 		//stateset->setTextureAttributeAndModes(0, myCubeMap, osg::StateAttribute::ON);
 
 		stateset->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
 		stateset->setMode( GL_CULL_FACE, osg::StateAttribute::OFF );
+		stateset->setMode( GL_TEXTURE_2D, osg::StateAttribute::ON );
 
 		// clear the depth to the far plane.
 		osg::Depth* depth = new osg::Depth;
@@ -188,33 +193,52 @@ osg::Node* SkyBox::createSkyBox()
 
 		stateset->setRenderBinDetails(-1,"RenderBin");
 
-		osg::Drawable* drawable = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),0.1f));
+		osg::Geometry* geometry = osgwTools::makeAltAzSphere(1.0, 24, 24);
+		//osg::Geometry* geometry = osgwTools::makeGeodesicSphere(0.1f, 8);
+		//osg::Geometry* geometry = osgwTools::makeBox(osg::Vec3(0.1f, 0.1f, 0.1f));
 
 		osg::Geode* geode = new osg::Geode;
 		geode->setCullingActive(false);
 		geode->setStateSet( stateset );
-		geode->addDrawable(drawable);
+		geode->addDrawable(geometry);
 
-		ProgramAsset* cubeMapProgram = SceneManager::instance()->getProgram(
-			"skybox", 
-			"cyclops/common/SkyBox.vert", 
-			"cyclops/common/SkyBox.frag");
+
+		ProgramAsset* cubeMapProgram = NULL;
+		if(myType == CubeMap)
+		{
+			cubeMapProgram = SceneManager::instance()->getProgram(
+				"skybox-cube", 
+				"cyclops/common/SkyBox.vert", 
+				"cyclops/common/SkyBox.frag");
+		}
+		else if(myType == Pano)
+		{
+			cubeMapProgram = SceneManager::instance()->getProgram(
+				"skybox-pano", 
+				"cyclops/common/SkyBox-pano.vert", 
+				"cyclops/common/SkyBox-pano.frag");
+		}
 
 		if(cubeMapProgram != NULL)
 		{
 			stateset->setAttributeAndModes(cubeMapProgram->program, osg::StateAttribute::ON);
-			//stateset->addUniform( new osg::Uniform("unif_CubeMap", 0) );
 		}
 
 		MoveSkyWithEyePointTransform* transform = new MoveSkyWithEyePointTransform;
-		//transform->_texMat = tm;
+		if(myType == CubeMap)
+		{
+			transform->pitch = 0.0f;
+		}
+		else if(myType == Pano)
+		{
+			transform->pitch = -Math::Pi / 2;
+		}
+
 		transform->setCullingActive(false);
 		transform->addChild(geode);
 
 		osg::ClearNode* clearNode = new osg::ClearNode;
-		clearNode->setClearColor(osg::Vec4(1.0, 1.0, 1.0, 1.0));
-	  //clearNode->setRequiresClear(false);
-		//clearNode->setCullCallback(new TexMatCallback(*tm));
+		clearNode->setClearColor(osg::Vec4(0.0, 1.0, 1.0, 1.0));
 		clearNode->addChild(transform);
 		return clearNode;
 	}

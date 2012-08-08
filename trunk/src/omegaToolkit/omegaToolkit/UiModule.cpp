@@ -99,34 +99,34 @@ void UiModule::initializeRenderer(Renderer* r)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void UiModule::initImages(const Setting& images)
-{
-	for(int i = 0; i < images.getLength(); i++)
-	{
-		Setting& imageSetting = images[i];
-
-		String fileName = Config::getStringValue("source", imageSetting, "");
-		if(fileName != "")
-		{
-			ui::Image* img = myWidgetFactory->createImage("img", myUi);
-
-			bool stereo = Config::getBoolValue("stereo", imageSetting, false);
-
-			img->setStereo(stereo);
-			ImageData* imgData = ImageUtils::loadImage(fileName);
-			img->setData(imgData->getPixels());
-
-			Vector2f position = Config::getVector2fValue("position", imageSetting, Vector2f(0, 0));
-			Vector2f size = Config::getVector2fValue("size", imageSetting, 
-				Vector2f(imgData->getWidth() / (stereo ? 2 : 1), imgData->getHeight()));
-			float scale = Config::getFloatValue("scale", imageSetting, 1);
-
-			img->setPosition(position);
-			img->setSize(size * scale);
-			img->setUserMoveEnabled(true);
-		}
-	}
-}
+//void UiModule::initImages(const Setting& images)
+//{
+//	for(int i = 0; i < images.getLength(); i++)
+//	{
+//		Setting& imageSetting = images[i];
+//
+//		String fileName = Config::getStringValue("source", imageSetting, "");
+//		if(fileName != "")
+//		{
+//			ui::Image* img = myWidgetFactory->createImage("img", myUi);
+//
+//			bool stereo = Config::getBoolValue("stereo", imageSetting, false);
+//
+//			img->setStereo(stereo);
+//			Ref<PixelData> imgData = ImageUtils::loadImage(fileName);
+//			img->setData(imgData->getPixels());
+//
+//			Vector2f position = Config::getVector2fValue("position", imageSetting, Vector2f(0, 0));
+//			Vector2f size = Config::getVector2fValue("size", imageSetting, 
+//				Vector2f(imgData->getWidth() / (stereo ? 2 : 1), imgData->getHeight()));
+//			float scale = Config::getFloatValue("scale", imageSetting, 1);
+//
+//			img->setPosition(position);
+//			img->setSize(size * scale);
+//			img->setUserMoveEnabled(true);
+//		}
+//	}
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void UiModule::update(const UpdateContext& context)
