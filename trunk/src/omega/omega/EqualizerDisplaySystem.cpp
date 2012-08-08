@@ -541,9 +541,10 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 				int port = myDisplayConfig.basePort + nc.port;
 				String cmd = ostr("%1% %2%@%3%:%4%", %executable %SystemManager::instance()->getAppConfig()->getFilename() %nc.hostname %port);
 				olaunch(cmd);
-				osleep(myDisplayConfig.launcherInterval);
+				//osleep(myDisplayConfig.launcherInterval);
 			}
 		}
+		osleep(myDisplayConfig.launcherInterval);
 	}
 
 	myObservers.push_back(new Observer());
