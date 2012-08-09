@@ -62,7 +62,7 @@ void HelloApplication::initialize()
 
 	SphereShape* sphere = new SphereShape(mySceneManager, 0.5f);
 	sphere->setEffect("colored -d red");
-	sphere->setPosition(0, 2, -5);
+	sphere->setPosition(0, 2, -2);
 
 	PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
 	plane->setEffect("colored -d green");

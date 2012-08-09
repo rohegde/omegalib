@@ -103,7 +103,7 @@ void HelloApplication::initialize()
 	//plane->setEffect("textured -d cyclops/test/checker2.jpg -s 20 -g 1 -v envmap");
 	plane->setEffect("textured -d cubemaps/gradient1/negy.png");
 	plane->pitch(-90 * Math::DegToRad);
-	plane->setPosition(0, -1, -2);
+	plane->setPosition(0, 0, -2);
 
 	// Setup a light for the scene.
 	Light* light = new Light(mySceneManager);
@@ -157,7 +157,7 @@ void HelloApplication::update(const UpdateContext& context)
 	// If we are not in editing mode, Animate our loaded object.
 	if(!myEditor->isEnabled())
 	{
-		myObject->setPosition(0, Math::sin(context.time) * 0.5f + 0.5f, -2);
+		myObject->setPosition(0, 2 + Math::sin(context.time) * 0.5f + 0.5f, -2);
 		myObject->pitch(context.dt);
 		myObject->yaw(context.dt);
 	}
