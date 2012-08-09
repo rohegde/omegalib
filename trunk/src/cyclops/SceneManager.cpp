@@ -714,9 +714,13 @@ void SceneManager::displayWand(uint wandId, uint trackableId)
 		myWandTracker = new omegaToolkit::TrackedObject();
 		ModuleServices::addModule(myWandTracker);
 
-		myWandEntity = new CylinderShape(this, 1, 1, 0.01);
+		myWandEntity = new CylinderShape(this, 1, 1, 1);
 		myWandTracker->setSceneNode(myWandEntity);
 		myWandTracker->setTrackableSourceId(wandId);
+		myWandTracker->setTrackableServiceType(Event::ServiceTypeWand);
+
+		setWandSize(0.1f, 10);
+		myWandEntity->setEffect("colored -d red");
 	}
 }
 
