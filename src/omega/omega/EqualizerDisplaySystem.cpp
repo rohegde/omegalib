@@ -600,9 +600,6 @@ void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 		}
 	}
 
-	// Initialize the default camera using the 
-	Engine::instance()->getDefaultCamera()->setPosition(myObservers[0]->getHeadPosition());
-
 	omsg(":: Equalizer initialization DONE ::");
 }
 

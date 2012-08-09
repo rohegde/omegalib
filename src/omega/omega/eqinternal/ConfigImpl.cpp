@@ -122,10 +122,11 @@ bool ConfigImpl::init()
 	{
 		ApplicationBase* app = sys->getApplication();
 		myServer = new Engine(app);
-		myServer->initialize();
 	
 		EqualizerDisplaySystem* eqds = (EqualizerDisplaySystem*)SystemManager::instance()->getDisplaySystem();
 		eqds->finishInitialize(this);
+
+		myServer->initialize();
 	}
 
 	StatsManager* sm = SystemManager::instance()->getStatsManager();
