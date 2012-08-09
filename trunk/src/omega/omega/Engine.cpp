@@ -137,6 +137,10 @@ void Engine::initialize()
 		myPointers[i]->initialize(this);
 	}
 
+	// Initialize the default camera using the 
+	Observer* obs = getDisplaySystem()->getObserver(0);
+	myDefaultCamera->setPosition(obs->getHeadPosition());
+
 	myLock.unlock();
 }
 
