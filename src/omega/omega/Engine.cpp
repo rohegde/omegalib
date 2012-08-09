@@ -47,7 +47,8 @@ Engine::Engine(ApplicationBase* app):
     myDefaultCamera(NULL),
     myConsoleEnabled(false),
 	//myPointerMode(PointerModeWand)
-	myDrawPointers(false)
+	myDrawPointers(false),
+	myDebugWand(false)
 {
     mysInstance = this;
 }
@@ -202,6 +203,14 @@ SceneNode* Engine::getScene()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::handleEvent(const Event& evt)
 {
+	if(myDebugWand)
+	{
+		if(evt.getServiceType() == Event::ServiceTypeWand)
+		{
+			ofmsg("|Wand position: %1% flags %2%", %evt.getPosition() %evt.getFlags());
+		}
+	}
+
     ModuleServices::handleEvent(this, evt);
 
 	getSystemManager()->getScriptInterpreter()->handleEvent(evt);

@@ -120,6 +120,9 @@ namespace omega {
 		void setConsoleEnabled(bool value);
 		//@}
 
+		void setDebugWandEnabled(float value) { myDebugWand = value; }
+		bool isDebugWandEnabled() { return myDebugWand; }
+
 		virtual void initialize();
 		//! Internal method.
 		void clientInitialize(Renderer* client);
@@ -168,6 +171,8 @@ namespace omega {
 		// Cameras.
 		Ref<Camera> myDefaultCamera;
 		CameraCollection myCameras;
+
+		bool myDebugWand;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
