@@ -16,6 +16,9 @@
 		<td id=wsdi_statustd align=center><div id=wsdi_status>Not initialized</div></td>
 	</tr>
 </table>
+
+<!--<img src="" id="frame" style="width:840px;height:480px"/>-->
+
 <script>
 
     //////////////////////////////////////////////////////////////////////////////
@@ -152,6 +155,10 @@
     _body.appendChild(canvas);
     var img = new Image();
 
+//    // img tag test
+//    var frame;
+    //    frame = document.getElementById("frame");
+
     //////////////////////////////////////////////////////////////////////////////
     function get_appropriate_ws_url() {
         /*
@@ -197,12 +204,11 @@
         }
 
         socket_di.onmessage = function got_packet(msg) {
-//            document.getElementById("porthole_drawing").textContent = msg.data + "\n";
+            //            document.getElementById("porthole_drawing").textContent = msg.data + "\n";
 
             image = "data:image/png;base64," + msg.data;
             img.src = image;
             ctx.drawImage(img, 0, 0);
-
         }
 
         socket_di.onclose = function () {
