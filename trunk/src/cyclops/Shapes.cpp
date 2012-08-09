@@ -1,7 +1,7 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
@@ -31,6 +31,44 @@
 #include <osgwTools/Shapes.h>
 
 using namespace cyclops;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+CylinderShape* CylinderShape::create(float length, float radius1, float radius2, int subdivisions, int sides, Vector2f tiling)
+{
+	return new CylinderShape(SceneManager::instance(), length, radius1, radius2, subdivisions, sides, tiling);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+CylinderShape::CylinderShape(SceneManager* scene, float length, float radius1, float radius2, int subdivisions, int sides, Vector2f tiling):
+	Entity(scene),
+	myLength(length),
+	myRadius1(radius1),
+	myRadius2(radius2),
+	mySubdivisions(subdivisions),
+	mySides(sides)
+{
+	osg::Geode* node = new osg::Geode();
+
+	osg::Geometry* sphere = osgwTools::makeClosedCylinder(length, radius1, radius2, true, true, osg::Vec2s(subdivisions, sides));
+	sphere->setColorArray(NULL);
+	sphere->setColorBinding(osg::Geometry::BIND_OFF);
+
+	//osgUtil::TangentSpaceGenerator* tsg = new osgUtil::TangentSpaceGenerator();
+	//tsg->generate(sphere, 0);
+	//osg::Vec4Array* a_tangent = tsg->getTangentArray();
+	//sphere->setVertexAttribArray (6, a_tangent);
+	//sphere->setVertexAttribBinding (6, osg::Geometry::BIND_PER_VERTEX);
+
+	osg::StateSet* fx = node->getOrCreateStateSet();
+	fx->addUniform(new osg::Uniform("unif_TextureTiling", osg::Vec2(tiling[0], tiling[1])));
+
+	node->addDrawable(sphere);
+	sphere->setStateSet(fx);
+
+	//tsg->unref();
+
+	initialize(node);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 SphereShape* SphereShape::create(float radius, int subdivisions)

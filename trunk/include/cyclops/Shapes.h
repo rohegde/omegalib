@@ -1,7 +1,7 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
@@ -32,6 +32,26 @@
 namespace cyclops {
 	using namespace omega;
 	using namespace omegaOsg;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API CylinderShape: public Entity
+	{
+	public:
+		//! Convenience method for creating SphereShape
+		static CylinderShape* create(float length = 1.0f, float radius1 = 1.0f, float radius2 = 1.0f, int subdivisions = 1, int sides = 8, Vector2f tiling = Vector2f::Ones());
+
+	public:
+		CylinderShape(SceneManager* scene, float length = 1.0f, float radius1 = 1.0f, float radius2 = 1.0f, int subdivisions = 1, int sides = 8, Vector2f tiling = Vector2f::Ones());
+
+	private:
+		float myLength;
+		float myRadius1;
+		float myRadius2;
+
+		int mySubdivisions;
+		int mySides;
+		Vector2f myTiling;
+	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI

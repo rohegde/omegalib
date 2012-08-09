@@ -98,7 +98,8 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     memcpy(mw.data(), getPerspectiveTransform().begin(), 16 * sizeof(float));
     memcpy(context->projection.data(), getPerspective().compute_matrix().begin(), 16 * sizeof(float));
 
-    context->modelview = mw * ds->getObserver(0)->getWorldTransform();
+    //context->modelview = mw * ds->getObserver(0)->getWorldTransform();
+    context->modelview = ds->getObserver(0)->getWorldTransform();
 	
 	
 	//context->modelview.translate(ds->getObserver(0)->getHeadPosition());

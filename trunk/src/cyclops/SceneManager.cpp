@@ -34,6 +34,7 @@
 #include "cyclops/AnimatedObject.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/SceneLoader.h"
+#include "cyclops/Shapes.h"
 
 using namespace cyclops;
 
@@ -103,7 +104,9 @@ SceneManager::SceneManager():
 	mySoftShadowMap(NULL),
 	mySkyBox(NULL),
 	myListener(NULL),
-	myNumActiveLights(0)
+	myNumActiveLights(0),
+	myWandTracker(NULL),
+	myWandEntity(NULL)
 {
 #ifdef OMEGA_USE_PYTHON
 	cyclopsPythonApiInit();
@@ -701,3 +704,39 @@ void SceneManager::recompileShaders()
 		recompileShaders(item.getValue(), myShaderVariationName);
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::displayWand(uint wandId, uint trackableId)
+{
+	// Simple single-wand implementation: we ignore wandId
+	if(myWandTracker == NULL)
+	{
+		myWandTracker = new omegaToolkit::TrackedObject();
+		ModuleServices::addModule(myWandTracker);
+
+		myWandEntity = new CylinderShape(this, 1, 1, 0.01);
+		myWandTracker->setSceneNode(myWandEntity);
+		myWandTracker->setTrackableSourceId(wandId);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setWandEffect(uint wandId, const String& effect)
+{
+	// Simple single-wand implementation: we ignore wandId
+	if(myWandEntity != NULL)
+	{
+		myWandEntity->setEffect(effect);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::setWandSize(float width, float length)
+{
+	// Simple single-wand implementation: we ignore wandId
+	if(myWandEntity != NULL)
+	{
+		myWandEntity->setScale(width, width, length);
+	}
+}
+

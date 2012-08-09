@@ -52,6 +52,7 @@ namespace cyclops {
 	class SceneLoader;
 	class SceneManager;
 	class AnimatedObject;
+	class CylinderShape;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
@@ -244,6 +245,12 @@ namespace cyclops {
 		const List<ModelAsset*>& getModels();
 		//@}
 
+		//! Wand Management
+		//@{
+		void displayWand(uint wandId, uint trackableId);
+		void setWandEffect(uint wandId, const String& effect);
+		void setWandSize(float width, float length);
+		//@}
 
 		//! Scene creation methods
 		//@{
@@ -326,6 +333,10 @@ namespace cyclops {
 		ShadowSettings myShadowSettings;
 		int myNumActiveLights;
 		String myShaderVariationName;
+
+		// Wand
+		omegaToolkit::TrackedObject* myWandTracker;
+		CylinderShape* myWandEntity;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
