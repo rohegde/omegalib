@@ -137,6 +137,10 @@ void Engine::initialize()
 		myPointers[i]->initialize(this);
 	}
 
+	// Initialize the default camera using the 
+    Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
+	myDefaultCamera->setPosition(obs->getHeadPosition());
+
 	myLock.unlock();
 }
 
@@ -239,7 +243,8 @@ void Engine::update(const UpdateContext& context)
     // Update the default camera and use it to update the default omegalib observer.
     myDefaultCamera->update(context);
     Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
-    myDefaultCamera->updateObserver(obs);}
+    myDefaultCamera->updateObserver(obs);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const SceneQueryResultList& Engine::querySceneRay(const Ray& ray, uint flags)
