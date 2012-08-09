@@ -338,13 +338,19 @@ void EqualizerDisplaySystem::generateEqConfig()
 		{
 			DisplayTileConfig& tc = eqcfg.tiles[x][y];
 			String segmentName = ostr("%1%x%2%", %x %y);
+			String viewName = "main";
+
+			if(eqcfg.orientObserverToTile)
+			{
+				viewName = ostr("view%1%x%2%", %x %y);
+			}
 
 			if(eqcfg.interleaved)
 			{
 				String tileCfg = "";
 				START_BLOCK(tileCfg, "compound");
 				tileCfg += 
-					L("channel ( segment \"" + segmentName + "\" layout \"layout\" view 0 )") +
+					L("channel ( segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )") +
 					L("eye [LEFT RIGHT]") +
 					L("attributes { stereo_mode PASSIVE }");
 				START_BLOCK(tileCfg, "compound");
@@ -372,7 +378,7 @@ void EqualizerDisplaySystem::generateEqConfig()
 			}
 			else
 			{
-				String tileCfg = "\t\tchannel ( segment \"" + segmentName + "\" layout \"layout\" view 0 )\n";
+				String tileCfg = "\t\tchannel ( segment \"" + segmentName + "\" layout \"layout\" view \"" + viewName +"\" )\n";
 				result += tileCfg;
 			}
 		}
