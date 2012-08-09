@@ -34,7 +34,8 @@ TrackedObject::TrackedObject():
 		myTrackableServiceType(Event::ServiceTypeMocap),
 		myTrackableSourceId(0),
 		myOrientationTrackingEnabled(true),
-		myPositionTrackingEnabled(true)
+		myPositionTrackingEnabled(true),
+		myTrackingOffset(0, 0, 0)
 
 {
 }
@@ -66,6 +67,7 @@ void TrackedObject::update(const UpdateContext& context)
 		if(myOrientationTrackingEnabled)
 		{
 			myNode->setOrientation(myTrackedOrientation);
+			myNode->yaw(Math::Pi);
 		}
 	}
 }
