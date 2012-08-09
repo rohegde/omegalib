@@ -149,7 +149,7 @@ struct per_session_data {
 	Camera* sessionCamera;
 	PixelData* sessionCanvasPixel;
 	ByteArray* sessionPng;
-	int i;
+	unsigned int oldus; // Last message sent timestamp
 };
 
 // Struct of a socket message: payload and its length
@@ -172,6 +172,9 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	case LWS_CALLBACK_ESTABLISHED:
 	{
 		fprintf(stderr, "callback_websocket: LWS_CALLBACK_ESTABLISHED\n");
+
+		data->oldus = 0;
+
 		/* Camera initialization */
 		Engine* myEngine = Engine::instance();
 
@@ -179,7 +182,6 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		data->sessionCanvasPixel = new PixelData(PixelData::FormatRgb, 840, 480);
 
 		uint flags = Camera::ForceMono | Camera::DrawScene;
-		//if(myOffscreen) flags |= Camera::Offscreen;
 
 		data->sessionCamera = myEngine->createCamera(flags);
 		data->sessionCamera->setProjection(60, 1, 0.1f, 100);
@@ -189,43 +191,55 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 		Camera* defaultCamera = myEngine->getDefaultCamera();
 		data->sessionCamera->setPosition(defaultCamera->getPosition());
 
-		//Quaternion o = AngleAxis(-Math::HalfPi, Vector3f::UnitX());
-		//myTabletCamera->setOrientation(o);
 		data->sessionCamera->getOutput(0)->setReadbackTarget(data->sessionCanvasPixel);
 		data->sessionCamera->getOutput(0)->setEnabled(true);
+
+		// Ask for the first available slot on this channel
+		libwebsocket_callback_on_writable(context, wsi);
 
 		break;
 	}
 
 	case LWS_CALLBACK_SERVER_WRITEABLE:
-
-		break;
-
-	case LWS_CALLBACK_BROADCAST:
 	{
-		
-		// TEST send an image
-		data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
+		// Write at 50Hz, so just pass the token and return "ok" if it's too early for us
+		struct timeval tv;
+		gettimeofday(&tv, NULL);
+		if (((unsigned int)tv.tv_usec - data->oldus) < 20000) {
+			libwebsocket_callback_on_writable(context, wsi);
+			return 0;
+		}
 
+		// Get camera image as PNG and base64 encode it, because only simple strings could be sent via websockets  
+		data->sessionPng = ImageUtils::encode(data->sessionCanvasPixel, ImageUtils::FormatPng);
 		std::string base64image = base64_encode(data->sessionPng->getData(),data->sessionPng->getSize());
 
 		//cout << base64image << endl;
 		//cout << "Size is: " << base64image.length() << endl;
 
+		// Send the base64 image
 		unsigned char* buf;
 		buf = new unsigned char[LWS_SEND_BUFFER_PRE_PADDING + base64image.length() + LWS_SEND_BUFFER_POST_PADDING];
-
 		unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
-
 		n = sprintf((char *)p, "%s",base64image.c_str());
 		n = libwebsocket_write(wsi, p, n, LWS_WRITE_TEXT);
+		if (n < 0) {
+			fprintf(stderr, "ERROR writing to socket");
+			return 1;
+		}
 
+		// Free the buffer
 		delete[] buf;
 
+		// Save new timestamp
+		data->oldus = tv.tv_usec;
+
+		libwebsocket_callback_on_writable(context, wsi);
+
+		break;
 	}
 
 	case LWS_CALLBACK_RECEIVE:
-
 		break;
 
 	case LWS_CALLBACK_FILTER_PROTOCOL_CONNECTION:
@@ -277,7 +291,7 @@ port(PORT), use_ssl(0), opts(0), n(0)
 
 	DATA_PATH = fullPath.substr(0,fullPath.find_last_of("/\\"));
 
-	cout << "Path is: " << DATA_PATH << endl; 
+	// cout << "Path is: " << DATA_PATH << endl; 
 
 	minterface="";
 
@@ -338,12 +352,13 @@ void ServerThread::threadProc(){
 		 * We take care of pre-and-post padding allocation.
 		 */
 
-		if (((unsigned int)tv.tv_usec - oldus) > 20000) {
-			libwebsockets_broadcast(
-					&protocols[PROTOCOL_WEBSOCKET],
-					&buf[LWS_SEND_BUFFER_PRE_PADDING], 1);
-			oldus = tv.tv_usec;
-		}
+		// WE DO NOT USE BROADCAST TO ALL DEVICES, EACH GET IT'S OWN CAMERA STREAM
+		//if (((unsigned int)tv.tv_usec - oldus) > 20000) {
+		//	libwebsockets_broadcast(
+		//			&protocols[PROTOCOL_WEBSOCKET],
+		//			&buf[LWS_SEND_BUFFER_PRE_PADDING], 1);
+		//	oldus = tv.tv_usec;
+		//}
 
 		/*
 		 * This example server does not fork or create a thread for
