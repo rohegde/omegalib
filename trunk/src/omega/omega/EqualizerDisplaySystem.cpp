@@ -599,6 +599,10 @@ void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 			obs->load(stObserver);
 		}
 	}
+
+	// Initialize the default camera using the 
+	Engine::instance()->getDefaultCamera()->setPosition(myObservers[0]->getHeadPosition());
+
 	omsg(":: Equalizer initialization DONE ::");
 }
 
