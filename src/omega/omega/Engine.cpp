@@ -111,7 +111,6 @@ void Engine::initialize()
 
 	// Read draw pointers option.
 	myDrawPointers = syscfg->getBoolValue("config/drawPointers", myDrawPointers);
-	myDrawPointers = cfg->getBoolValue("config/drawPointers", myDrawPointers);
 
     myDefaultCamera = new Camera();
 
