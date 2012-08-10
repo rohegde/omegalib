@@ -193,7 +193,8 @@ osg::Node* SkyBox::createSkyBox()
 
 		stateset->setRenderBinDetails(-1,"RenderBin");
 
-		osg::Geometry* geometry = osgwTools::makeAltAzSphere(1.0, 24, 24);
+		
+		osg::Geometry* geometry = osgwTools::makeAltAzSphere(10.0, 24, 24);
 		//osg::Geometry* geometry = osgwTools::makeGeodesicSphere(0.1f, 8);
 		//osg::Geometry* geometry = osgwTools::makeBox(osg::Vec3(0.1f, 0.1f, 0.1f));
 

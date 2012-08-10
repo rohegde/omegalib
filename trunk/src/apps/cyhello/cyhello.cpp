@@ -60,9 +60,9 @@ void HelloApplication::initialize()
 	// Create and initialize the cyclops scene manager.
 	mySceneManager = SceneManager::createAndInitialize();
 
-	SphereShape* sphere = new SphereShape(mySceneManager, 0.5f);
+	SphereShape* sphere = new SphereShape(mySceneManager, 0.1f);
 	sphere->setEffect("colored -d red");
-	sphere->setPosition(0, 2, -2);
+	sphere->setPosition(0, 1.57, -3.24);
 
 	PlaneShape* plane = new PlaneShape(mySceneManager, 4, 4);
 	plane->setEffect("colored -d green");

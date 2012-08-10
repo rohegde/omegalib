@@ -496,10 +496,15 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
 		Observer* obs = ds->getObserver(0);
+		
+		ofmsg("World head position: %1%", %obs->getWorldHeadPosition());
 
 		Vector3f obsForward = obs->getWorldOrientation() * Vector3f(0, 0, -1);
-		Vector3f menuPosition = obs->getWorldHeadPosition() + obs->getWorldOrientation() * myDefaultMenuPosition;
+		Vector3f menuPosition = obs->getWorldHeadPosition() + obs->getHeadOrientation() * myDefaultMenuPosition;
+		//menuPosition = Vector3f(0, 1, -3);
 
+		ofmsg("Menu position, offset: %1% %2%", %menuPosition %myDefaultMenuPosition);
+		
 		Container3dSettings& c3ds = menu->get3dSettings();
 		Widget* menuWidget = menu->getContainer();
 

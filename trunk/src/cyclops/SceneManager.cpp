@@ -719,8 +719,8 @@ void SceneManager::displayWand(uint wandId, uint trackableId)
 		myWandTracker->setTrackableSourceId(wandId);
 		myWandTracker->setTrackableServiceType(Event::ServiceTypeWand);
 
-		setWandSize(0.05f, 2);
-		myWandEntity->setEffect("colored -d #606060");
+		setWandSize(0.01f, 2);
+		myWandEntity->setEffect("colored -d white");
 	}
 }
 
