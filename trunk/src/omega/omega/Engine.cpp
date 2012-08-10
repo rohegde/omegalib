@@ -139,8 +139,9 @@ void Engine::initialize()
 	}
 
 	// Initialize the default camera using the 
-	Observer* obs = getDisplaySystem()->getObserver(0);
-	myDefaultCamera->setPosition(obs->getHeadPosition());
+	//Observer* obs = getDisplaySystem()->getObserver(0);
+	//myDefaultCamera->setPosition(obs->getHeadPosition());
+	myDefaultCamera->setPosition(Vector3f::Zero());
 
 	myLock.unlock();
 }

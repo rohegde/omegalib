@@ -35,8 +35,9 @@ TrackedObject::TrackedObject():
 		myTrackableSourceId(0),
 		myOrientationTrackingEnabled(true),
 		myPositionTrackingEnabled(true),
-		myTrackingOffset(0, 0, 0)
-
+		myTrackingOffset(0, 0, 0),
+		myTrackedPosition(0, 0, 0),
+		myTrackedOrientation(Quaternion::Identity())
 {
 }
 
