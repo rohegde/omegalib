@@ -40,6 +40,7 @@ namespace omega
 		void setWorldPosition(const Vector3f& value);
 		Vector3f getWorldPosition();
 		const Quaternion& getWorldOrientation() { return myWorldOrientation; }
+		const Quaternion& getHeadOrientation() { return myHeadOrientation; }
 
 		AffineTransform3 getWorldTransform();
 		const AffineTransform3& getHeadTransform();
