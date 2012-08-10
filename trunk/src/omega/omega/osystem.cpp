@@ -101,6 +101,8 @@ namespace omega
 			bool kill = false;
 			bool help = false;
 
+			bool logRemoteNodes = false;
+
 			sArgs.newOptionalString(
 				"config", 
 				ostr("configuration file to use with this application (default: %1% or default.cfg if the previous is not found)", %configFilename).c_str(),
@@ -149,8 +151,17 @@ namespace omega
 				remote = true;
 				masterHostname = args[1];
 			
-				String hostLogFilename = masterHostname + "-" + logFilename;
-				ologopen(hostLogFilename.c_str());
+				// If logging on remote nodes is enabled, set up an output file using the app + node name.
+				// otherwise, disable logging.
+				if(logRemoteNodes)
+				{
+					String hostLogFilename = masterHostname + "-" + logFilename;
+					ologopen(hostLogFilename.c_str());
+				}
+				else
+				{
+					ologdisable();
+				}
 			}
 			else
 			{
