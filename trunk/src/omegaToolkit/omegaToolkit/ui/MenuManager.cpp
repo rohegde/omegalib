@@ -498,7 +498,7 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 		Observer* obs = ds->getObserver(0);
 
 		Vector3f obsForward = obs->getWorldOrientation() * Vector3f(0, 0, -1);
-		Vector3f menuPosition = obs->getWorldPosition() + obs->getWorldOrientation() * myDefaultMenuPosition;
+		Vector3f menuPosition = obs->getWorldHeadPosition() + obs->getWorldOrientation() * myDefaultMenuPosition;
 
 		Container3dSettings& c3ds = menu->get3dSettings();
 		Widget* menuWidget = menu->getContainer();
