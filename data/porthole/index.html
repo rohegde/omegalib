@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
  <meta charset=utf-8 />
+ <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>-->
+ <meta name="apple-mobile-web-app-capable" content="yes"/>
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+ <script src="./hammer.js"></script>
+ <script src="./jquery.specialevent.hammer.js"></script>
  <title>Porthole</title>
 </head>
 
@@ -140,10 +145,13 @@
 
     };
     BrowserDetect.init();
+
     
     // JUST FOR TEST
     document.getElementById("brow").textContent = " " + BrowserDetect.browser + " "
 	+ BrowserDetect.version + " " + BrowserDetect.OS + " ";
+
+    ////////////////// WEBSCOKET AND CANVAS ////////////////////////////
 
     var canvas = document.createElement('canvas');
     ctx = canvas.getContext("2d");
@@ -155,11 +163,6 @@
     _body.appendChild(canvas);
     var img = new Image();
 
-//    // img tag test
-//    var frame;
-    //    frame = document.getElementById("frame");
-
-    //////////////////////////////////////////////////////////////////////////////
     function get_appropriate_ws_url() {
         /*
         * We open the websocket encrypted if this page came on an
@@ -182,10 +185,6 @@
         return pcol + u[0];
     }
 
-
-    //document.getElementById("number").textContent = get_appropriate_ws_url();
-
-    /* dumb increment protocol */
     var socket_di;
 
     if (BrowserDetect.browser == "Firefox" && BrowserDetect.version < 12) {
@@ -208,7 +207,9 @@
 
             image = "data:image/png;base64," + msg.data;
             img.src = image;
+
             ctx.drawImage(img, 0, 0);
+
         }
 
         socket_di.onclose = function () {
@@ -223,6 +224,34 @@
         socket_di.send("reset\n");
     }
 
+    ////////////////////////////////////////////////////////////////////
+
+    ////////////////// MULTITOUCH ////////////////////////////
+
+    // Prevent scrolling
+//    document.body.addEventListener('touchmove', function (event) {
+//        event.preventDefault();
+//    }, false);
+
+    // Initialize hammer
+    var hammer = new Hammer(canvas);
+
+    hammer.ondragstart = function (ev) { };
+    hammer.ondrag = function (ev) { };
+    hammer.ondragend = function (ev) { };
+    hammer.onswipe = function (ev) { };
+
+    hammer.ontap = function (ev) {};
+    hammer.ondoubletap = function (ev) { };
+    hammer.onhold = function (ev) { };
+
+    hammer.ontransformstart = function (ev) { };
+    hammer.ontransform = function (ev) { };
+    hammer.ontransformend = function (ev) { };
+
+    hammer.onrelease = function (ev) { };
+
+    ///////////////////////////////////////////////////////////
 
 </script>
 

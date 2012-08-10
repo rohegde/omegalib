@@ -113,7 +113,27 @@ int ServerThread::callback_http(struct libwebsocket_context *context,
 			break;
 		}
 
-		/* send the script... when it runs it'll start websockets */
+		/* Multitouch scripts */
+		else if (in && strcmp((char*)in, "/hammer.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/hammer.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send hammer.js\n");
+			break;
+		}
+		else if (in && strcmp((char*)in, "/jquery.hammer.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/jquery.hammer.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send jquery.hammer.js\n");
+			break;
+		}
+		else if (in && strcmp((char*)in, "/jquery.specialevent.hammer.js") == 0) {
+			if (libwebsockets_serve_http_file(wsi,
+			     (DATA_PATH+"/jquery.specialevent.hammer.js").c_str(), "application/javascript"))
+				fprintf(stderr, "Failed to send jquery.specialevent.hammer.js\n");
+			break;
+		}
+
+		/* send the HTML page... when it runs it'll start websockets */
 
 		if (libwebsockets_serve_http_file(wsi,
 				  (DATA_PATH+"/index.html").c_str(), "text/html"))
