@@ -272,6 +272,7 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 			obj->pitch(rotation[0] * Math::DegToRad);
 			obj->yaw(rotation[1] * Math::DegToRad);
 			obj->roll(rotation[2] * Math::DegToRad);
+			obj->scale(scale);
 
 			// Add name if there is one in the xml
 			const char* name = xchild->Attribute("name");
