@@ -40,12 +40,13 @@ namespace omegaToolkit {
 	public:
 		WandManipulator():
 		    Actor("WandManipulator"),
-			myMoveButtonFlag(Event::Left),
-			myRotateButtonFlag(Event::Right),
+			myMoveButtonFlag(Event::Button6),
+			myRotateButtonFlag(Event::Button5),
 			myButton1Pressed(false),
 			myButton2Pressed(false),
 			myXAxis(0),
 			myYAxis(0),
+			myZAxis(0),
 			myNodeSelected(false) {}
 
 		virtual void handleEvent(const Event& evt);
@@ -78,6 +79,7 @@ namespace omegaToolkit {
 
 		float myXAxis;
 		float myYAxis;
+		float myZAxis;
 	};
 }; // namespace omegaToolkit
 
