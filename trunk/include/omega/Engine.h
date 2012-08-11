@@ -132,6 +132,10 @@ namespace omega {
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
 
+		Vector3f sensorToWorldPosition(const Vector3f& position);
+		Quaternion sensorToWorldOrientation(const Quaternion& orientation);
+
+
 	private:
 		//! Pointer Management
 		//@{
