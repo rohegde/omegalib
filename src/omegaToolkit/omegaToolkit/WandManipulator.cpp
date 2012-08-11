@@ -54,11 +54,24 @@ void WandManipulator::handleEvent(const Event& evt)
 		
 		SystemManager::instance()->getDisplaySystem()->getViewRayFromEvent(evt, myPointerRay);
 
-		if(evt.getExtraDataItems() >= 2 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
+		if(evt.getExtraDataItems() >= 4 && evt.getExtraDataType() == Event::ExtraDataFloatArray)
 		{
-			float n = 1;
-			myXAxis = evt.getExtraDataFloat(0) / n;
-			myYAxis = evt.getExtraDataFloat(1) / n;
+			myXAxis = evt.getExtraDataFloat(0);
+			myYAxis = evt.getExtraDataFloat(1);
+			
+			// Simulate Button 1 presses using Z Axis.
+			float pressThresh = 0.5;
+			if(evt.getExtraDataFloat(4) > pressThresh)
+			{			
+				myButton1Pressed = true;
+				if(myZAxis <= pressThresh) myPointerEventType = Event::Down;
+			}
+			else
+			{
+				myButton1Pressed = false;
+				if(myZAxis > pressThresh) myPointerEventType = Event::Up;
+			}
+			myZAxis = evt.getExtraDataFloat(4);
 		}
 	}
 }
