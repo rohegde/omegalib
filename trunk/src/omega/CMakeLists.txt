@@ -181,6 +181,16 @@ if(OMEGA_USE_DISPLAY_EQUALIZER)
 		omega/eqinternal/eqinternal.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EqualizerDisplaySystem.h) 
 endif(OMEGA_USE_DISPLAY_EQUALIZER)
+
+# A tiny JSON library
+set( srcs ${srcs}
+			omega/vjson/block_allocator.cpp
+			omega/vjson/json.cpp
+	)
+set( headers ${headers} 
+            omega/vjson/block_allocator.h
+            omega/vjson/json.h
+    )
 	
 # Glut Display Module
 if( WIN32 )
@@ -206,6 +216,7 @@ endif(OMEGA_USE_OPENCL)
 source_group(omega REGULAR_EXPRESSION omega/)		
 source_group(eqinternal REGULAR_EXPRESSION eqinternal/)		
 source_group(boostPython REGULAR_EXPRESSION boostPython/)		
+source_group(vjson REGULAR_EXPRESSION vjson/)
 
 ###################################################################################################
 # Create the library with the provided sources and headers
@@ -271,6 +282,10 @@ if(OMEGA_USE_PYTHON)
 endif()
 
 ###################################################################################################
+#
+# PORTHOLE
+#
+
 # Link against websockets library
 target_link_libraries(omega websockets)
 include_directories(${OmegaLib_SOURCE_DIR}/src/3rdparty/websockets/include)
