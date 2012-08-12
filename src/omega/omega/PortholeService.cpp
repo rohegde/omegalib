@@ -31,6 +31,7 @@
 #include "omega/Camera.h"
 #include "omega/Application.h"
 #include "omega/ImageUtils.h"
+#include "vjson/json.h"
 
 #include <iostream>
 
@@ -178,6 +179,42 @@ struct a_message {
 	size_t len;
 };
 
+// JSON simple print
+#define IDENT(n) for (int i = 0; i < n; ++i) printf("    ")
+void print(json_value *value, int ident = 0)
+{
+	IDENT(ident);
+	if (value->name) printf("\"%s\" = ", value->name);
+	switch(value->type)
+	{
+	case JSON_NULL:
+		printf("null\n");
+		break;
+	case JSON_OBJECT:
+	case JSON_ARRAY:
+		printf(value->type == JSON_OBJECT ? "{\n" : "[\n");
+		for (json_value *it = value->first_child; it; it = it->next_sibling)
+		{
+			print(it, ident + 1);
+		}
+		IDENT(ident);
+		printf(value->type == JSON_OBJECT ? "}\n" : "]\n");
+		break;
+	case JSON_STRING:
+		printf("\"%s\"\n", value->string_value);
+		break;
+	case JSON_INT:
+		printf("%d\n", value->int_value);
+		break;
+	case JSON_FLOAT:
+		printf("%f\n", value->float_value);
+		break;
+	case JSON_BOOL:
+		printf(value->int_value ? "true\n" : "false\n");
+		break;
+	}
+}
+
 int ServerThread::callback_websocket(struct libwebsocket_context *context,
 			struct libwebsocket *wsi,
 			enum libwebsocket_callback_reasons reason,
@@ -260,8 +297,24 @@ int ServerThread::callback_websocket(struct libwebsocket_context *context,
 	}
 
 	case LWS_CALLBACK_RECEIVE:
-		break;
+	{
+		//cout << (char *)in <<endl;
+		char *errorPos = 0;
+		char *errorDesc = 0;
+		int errorLine = 0;
+		block_allocator allocator(1 << 10); // 1 KB per block
+        
+		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
 
+		for (json_value *it = root->first_child; it; it = it->next_sibling)
+		json_value *root = json_parse((char*)in, &errorPos, &errorDesc, &errorLine, &allocator);
+		if (root)
+		{
+			print(root);
+		}
+
+		break;
+	}
 	case LWS_CALLBACK_FILTER_PROTOCOL_CONNECTION:
 		//dump_handshake_info((struct lws_tokens *)(long)user);
 		/* you could return non-zero here and kill the connection */

@@ -1309,7 +1309,7 @@ int libwebsocket_interpret_incoming_packet(struct libwebsocket *wsi,
 {
 	int n;
 
-#ifdef DEBUG
+#if 0
 	fprintf(stderr, "received %d byte packet\n", (int)len);
 	for (n = 0; n < len; n++)
 		fprintf(stderr, "%02X ", buf[n]);

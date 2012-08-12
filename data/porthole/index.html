@@ -224,7 +224,7 @@
         socket_di.send("reset\n");
     }
 
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
 
     ////////////////// MULTITOUCH ////////////////////////////
 
@@ -237,7 +237,23 @@
     var hammer = new Hammer(canvas);
 
     hammer.ondragstart = function (ev) { };
-    hammer.ondrag = function (ev) { };
+
+    hammer.ondrag = function (ev) {
+
+        var JSONOEvent = { 
+            "event_type": "drag",
+            "positionX": ev.position.x,
+            "positionY": parseInt(ev.position.y), // y is floating by default, so cast it
+            "distanceX": ev.distanceX,
+            "distanceY": ev.distanceY
+        };
+
+//        document.getElementById("porthole_drawing").textContent = JSON.stringify(JSONOEvent);
+
+        socket_di.send(JSON.stringify(JSONOEvent));
+
+    };
+
     hammer.ondragend = function (ev) { };
     hammer.onswipe = function (ev) { };
 
