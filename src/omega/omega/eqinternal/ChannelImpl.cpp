@@ -98,12 +98,10 @@ void ChannelImpl::setupDrawContext(DrawContext* context, const co::base::uint128
     memcpy(mw.data(), getPerspectiveTransform().begin(), 16 * sizeof(float));
     memcpy(context->projection.data(), getPerspective().compute_matrix().begin(), 16 * sizeof(float));
 
-    context->modelview = mw * ds->getObserver(0)->getWorldTransform();
-	// WRONG
-    //context->modelview = ds->getObserver(0)->getWorldTransform();
-	
-	
-	//context->modelview.translate(ds->getObserver(0)->getHeadPosition());
+
+	Camera* cam = Engine::instance()->getDefaultCamera();
+
+    context->modelview = mw * cam->getViewTransform();
 
     // Setup draw buffer
     if(myDrawBuffer == NULL)

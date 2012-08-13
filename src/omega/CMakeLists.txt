@@ -39,6 +39,7 @@ SET( srcs
 		omega/ApplicationBase.cpp
 		omega/Camera.cpp
 		omega/CameraController.cpp
+		omega/CameraOutput.cpp
 		omega/CylindricalDisplayConfig.cpp
 		omega/Console.cpp
 		omega/DrawInterface.cpp
@@ -53,8 +54,8 @@ SET( srcs
 		omega/MouseService.cpp
 		omega/MissionControl.cpp
 		omega/Node.cpp
-        omega/Observer.cpp
 		omega/ObserverUpdateService.cpp
+		omega/ObserverUpdateServiceExt.cpp
         omega/osystem.cpp
 		omega/PixelData.cpp
 		omega/Pointer.cpp
@@ -84,6 +85,7 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ApplicationBase.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Camera.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CameraController.h
+		${OmegaLib_SOURCE_DIR}/include/omega/CameraOutput.h
 		${OmegaLib_SOURCE_DIR}/include/omega/EventSharingModule.h
 		${OmegaLib_SOURCE_DIR}/include/omega/CLManager.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Console.h
@@ -105,8 +107,8 @@ SET( headers
 		${OmegaLib_SOURCE_DIR}/include/omega/ModuleServices.h
 		${OmegaLib_SOURCE_DIR}/include/omega/MouseService.h
 		${OmegaLib_SOURCE_DIR}/include/omega/Node.h
-        ${OmegaLib_SOURCE_DIR}/include/omega/Observer.h
 		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateService.h
+		${OmegaLib_SOURCE_DIR}/include/omega/ObserverUpdateServiceExt.h
 		${OmegaLib_SOURCE_DIR}/include/omega/osystem.h
         ${OmegaLib_SOURCE_DIR}/include/omega/otypes.h
 		${OmegaLib_SOURCE_DIR}/include/omega/PixelData.h

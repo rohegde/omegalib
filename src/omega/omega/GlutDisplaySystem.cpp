@@ -79,9 +79,11 @@ void displayCallback(void)
 
 	ds->updateProjectionMatrix();
 
+	Camera* cam = Engine::instance()->getDefaultCamera();
+
 	// Push observer matrix.
 	glPushMatrix();
-	AffineTransform3 mat = ds->getObserver(0)->getWorldTransform();
+	AffineTransform3 mat = cam->getViewTransform();
 	glLoadIdentity();
 	glLoadMatrixf(mat.data());
 
@@ -179,8 +181,6 @@ void GlutDisplaySystem::initialize(SystemManager* sys)
 {
 	mySys = sys;
 
-	initObservers();
-
 	char* argv = "";
 	int argcp = 1;
 
@@ -229,18 +229,3 @@ void GlutDisplaySystem::run()
 void GlutDisplaySystem::cleanup()
 {
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GlutDisplaySystem::initObservers()
-{
-	if(mySetting->exists("observers"))
-	{
-		Setting& stObservers = (*mySetting)["observers"];
-		for(int i = 0; i < stObservers.getLength(); i++)
-		{
-			Setting& stObserver = stObservers[i];
-			myObserver.load(stObserver);
-		}
-	}
-}
-

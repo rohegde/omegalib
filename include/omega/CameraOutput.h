@@ -24,66 +24,47 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OBSERVER_H__
-#define __OBSERVER_H__
+#ifndef __CAMERA_OUTPUT_H__
+#define __CAMERA_OUTPUT_H__
 
 #include "osystem.h"
+#include "omega/ApplicationBase.h"
+#include "omega/SceneNode.h"
+#include "omega/RenderTarget.h"
 
-namespace omega
-{
+namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API Observer: public ReferenceType
+	class OMEGA_API CameraOutput: public ReferenceType
 	{
 	public:
-		Observer();
+		CameraOutput(bool offscreen = false): myEnabled(false), myRenderTarget(NULL), myOffscreen(offscreen),
+			myReadbackColorTarget(NULL), myReadbackDepthTarget(NULL)
+		{}
 
-		void setWorldPosition(const Vector3f& value);
-		Vector3f getWorldPosition();
-		const Quaternion& getWorldOrientation() { return myWorldOrientation; }
-		const Quaternion& getHeadOrientation() { return myHeadOrientation; }
+		void beginDraw(const DrawContext& context);
+		void endDraw(const DrawContext& context);
+		void startFrame(const FrameInfo& frame);
+		void finishFrame(const FrameInfo& frame);
 
-		AffineTransform3 getWorldTransform();
-		const AffineTransform3& getHeadTransform();
+		bool isEnabled() { return myEnabled; }
+		void setEnabled(bool value) { myEnabled = value; }
 
-		void updateHead(const Vector3f& position, const Quaternion& orientation);
-		void updateWorld(const Vector3f& position, const Quaternion& orientation);
-		void load(Setting& setting);
+		void setReadbackTarget(PixelData* color, PixelData* depth = NULL);
+		void setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport);
 
-		Vector3f getWorldHeadPosition() { return myHeadPosition + myWorldPosition; }
-		Vector3f getHeadPosition() { return myHeadPosition; }
+		const Rect& getReadbackViewport() { return myReadbackViewport; }
+
+		RenderTarget* getRenderTarget() { return myRenderTarget; }
 
 	private:
-		//! Current view transform
-		AffineTransform3 myWorldTransform;
-		AffineTransform3 myHeadTransform;
-		
-		//Vector3f myReferencePosition;
+		bool myEnabled;
+		bool myOffscreen;
+		RenderTarget* myRenderTarget;
 
-		//! Observer current position.
-		Vector3f myHeadPosition;
-		//! Observer current rotation.
-		Quaternion myHeadOrientation;
-
-		//! Position of observer reference frame wrt world origin.
-		Vector3f myWorldPosition;
-		Quaternion myWorldOrientation;
+		PixelData* myReadbackColorTarget;
+		PixelData* myReadbackDepthTarget;
+		Rect myReadbackViewport;
 	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void Observer::setWorldPosition(const Vector3f& value) 
-	{ myWorldPosition = value; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline Vector3f Observer::getWorldPosition() 
-	{ return myWorldPosition; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline AffineTransform3 Observer::getWorldTransform() 
-	{ return myWorldTransform; }
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline const AffineTransform3& Observer::getHeadTransform() 
-	{ return myHeadTransform; }
 }; // namespace omega
 
 #endif

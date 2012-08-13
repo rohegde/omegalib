@@ -27,7 +27,6 @@
 #include "omega/Engine.h"
 #include "omega/Application.h"
 #include "omega/Renderable.h"
-#include "omega/Observer.h"
 #include "omega/SystemManager.h"
 #include "omega/DisplaySystem.h"
 #include "omega/ImageUtils.h"
@@ -243,6 +242,8 @@ void Engine::handleEvent(const Event& evt)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void Engine::update(const UpdateContext& context)
 {
+	myDefaultCamera->update(context);
+
     ModuleServices::update(this, context);
 
 	getSystemManager()->getScriptInterpreter()->update(context);
@@ -250,9 +251,9 @@ void Engine::update(const UpdateContext& context)
     myScene->update(false, false);
 
     // Update the default camera and use it to update the default omegalib observer.
-    myDefaultCamera->update(context);
-    Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
-    myDefaultCamera->updateObserver(obs);
+    //myDefaultCamera->update(context);
+    //Observer* obs = getSystemManager()->getDisplaySystem()->getObserver(0);
+    //myDefaultCamera->updateObserver(obs);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
