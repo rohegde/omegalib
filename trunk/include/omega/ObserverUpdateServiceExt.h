@@ -24,8 +24,8 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __OBSERVER_UPDATE_SERVICE_H__
-#define __OBSERVER_UPDATE_SERVICE_H__
+#ifndef __OBSERVER_UPDATE_SERVICE__EXT_H__
+#define __OBSERVER_UPDATE_SERVICE__EXT_H__
 
 #include "omega/osystem.h"
 #include "omega/Camera.h"
@@ -33,14 +33,15 @@
 namespace omega
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class ObserverUpdateService: public Service
+	class ObserverUpdateServiceExt: public Service
 	{
 	public:
+		enum DynamicSourceTokenAttachPoint { AttachHead, AttachLeftHand, AttachRightHand };
 		// Allocator function
-		static ObserverUpdateService* New() { return new ObserverUpdateService(); }
+		static ObserverUpdateServiceExt* New() { return new ObserverUpdateServiceExt(); }
 
 	public:
-		ObserverUpdateService();
+		ObserverUpdateServiceExt();
 
 		virtual void setup(Setting& settings);
 		virtual void initialize();
@@ -50,20 +51,41 @@ namespace omega
 		void setSourceId(int value); 
 
 	private:
+		void updateDynamicSource(Event* evt);
+
+	private:
 		Camera* myObserver;
 		int mySourceId;
-
+		int myOrientationSourceId;
+		bool myEnableOrientationSource;
+		Quaternion myLastOrientation;
+		Vector3f myLastPosition;
+		Vector3f myLookAt;
+		bool myEnableLookAt;
 		bool myDebug;
+		bool myUseHeadPointId;
+
+		// Dynamic source stuff.
+		bool myUseDynamicSource;
+		int myDynamicSourceTokenId;
+		DynamicSourceTokenAttachPoint myDynamicSourceTokenAttachPoint;
+		float myDynamicSourceActivationDistance;
+		Vector3f myLastTokenPosition;
+
+		// Movement smoothing
+		float myCurrentMovementThreshold;
+		float myMovementThresholdTarget;
+		float myMovementThresholdCoeff;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline int ObserverUpdateService::getSourceId()
+	inline int ObserverUpdateServiceExt::getSourceId()
 	{
 		return mySourceId;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	inline void ObserverUpdateService::setSourceId(int value)
+	inline void ObserverUpdateServiceExt::setSourceId(int value)
 	{
 		mySourceId = value;
 	}

@@ -402,7 +402,7 @@ void MenuManager::initialize()
 		myRayPlaceEnabled = Config::getBoolValue("menuRayPlaceEnabled", sUi, myRayPlaceEnabled);
 		myDefaultMenuPosition = Config::getVector3fValue("menuDefaultPosition", sUi, myDefaultMenuPosition);
 		myDefaultMenuScale = Config::getFloatValue("menuDefaultScale", sUi, myDefaultMenuScale);
-		myDefaultMenuScale *= 0.001;
+		myDefaultMenuScale *= 0.001f;
 	}
 
 	// Read configuration parameters from system config
@@ -495,12 +495,13 @@ void MenuManager::autoPlaceMenu(Menu* menu, const Event& evt)
 	else
 	{
 		DisplaySystem* ds = SystemManager::instance()->getDisplaySystem();
-		Observer* obs = ds->getObserver(0);
+		Camera* cam = Engine::instance()->getDefaultCamera();
 		
-		ofmsg("MENU World head position: %1%", %obs->getWorldHeadPosition());
+		//ofmsg("MENU World head position: %1%", %obs->getWorldHeadPosition());
 
-		Vector3f obsForward = obs->getWorldOrientation() * Vector3f(0, 0, -1);
-		Vector3f menuPosition = obs->getWorldHeadPosition() + obs->getHeadOrientation() * myDefaultMenuPosition;
+		Vector3f obsForward = cam->getOrientation() * Vector3f(0, 0, -1);
+		Vector3f headWorldPos = cam->getPosition() + cam->getHeadOffset();
+		Vector3f menuPosition = headWorldPos + cam->getHeadOrientation() * myDefaultMenuPosition;
 		//menuPosition = Vector3f(0, 1, -3);
 
 		ofmsg("MENU Menu position, offset: %1% %2%", %menuPosition %myDefaultMenuPosition);

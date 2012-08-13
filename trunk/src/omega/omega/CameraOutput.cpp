@@ -24,72 +24,77 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "omega/Observer.h"
+#include "omega/CameraOutput.h"
+#include "omega/Camera.h"
 
 using namespace omega;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-Observer::Observer()
+///////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth)
 {
-	myWorldPosition = Vector3f::Zero();
-	//myReferencePosition = Vector3f::Zero();
-	myWorldTransform = AffineTransform3::Identity();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::load(Setting& setting)
-{
-	//if(setting.exists("referencePosition"))
-	//{
-	//	Setting& st = setting["referencePosition"];
-	//	myReferencePosition.x() = (float)st[0];
-	//	myReferencePosition.y() = (float)st[1];
-	//	myReferencePosition.z() = (float)st[2];
-	//}
-
-	Vector3f position = Vector3f::Zero();
-	if(setting.exists("position"))
+	myReadbackColorTarget = color;
+	myReadbackDepthTarget = depth;
+	if(myReadbackColorTarget != NULL)
 	{
-		Setting& st = setting["position"];
-		position.x() = (float)st[0];
-		position.y() = (float)st[1];
-		position.z() = (float)st[2];
+		myReadbackViewport = Rect(
+			0, 0, 
+			myReadbackColorTarget->getWidth(), myReadbackColorTarget->getHeight());
 	}
+}
 
-	// Set observer initial position, neutral orientation.
-	updateHead(position, Quaternion::Identity());
+///////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport)
+{
+	setReadbackTarget(color, depth);
+	myReadbackViewport = readbackViewport;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::updateHead(const Vector3f& position, const Quaternion& orientation)
+void CameraOutput::beginDraw(const DrawContext& context)
 {
-	myHeadPosition = position;
-	myHeadOrientation = orientation;
-	//myHeadTransform = Math::makeViewMatrix(position, orientation);
-	myHeadTransform = AffineTransform3::Identity();
-
-	myHeadTransform.translate(position);
-	myHeadTransform.rotate(orientation);
-	//AffineTransform3 w2e = AffineTransform3::Identity();
-	//w2e.translate(myReferencePosition);
-	//myHeadTransform = w2e * myHeadTransform;
+	if(myRenderTarget == NULL)
+	{
+		if(myOffscreen) 
+		{
+			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOffscreen);
+		}
+		else
+		{
+			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOnscreen);
+		}
+	}
+	myRenderTarget->setReadbackTarget(myReadbackColorTarget, myReadbackDepthTarget, myReadbackViewport);
+	myRenderTarget->bind();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Observer::updateWorld(const Vector3f& position, const Quaternion& orientation)
+void CameraOutput::endDraw(const DrawContext& context)
 {
-	myWorldPosition = position;
-	myWorldOrientation = orientation;
-	
-	myWorldTransform = Math::makeViewMatrix(myWorldPosition, myWorldOrientation);
-	//myWorldTransform = AffineTransform3::Identity();
-	
-	//myWorldTransform.translate(position);
-	//myWorldTransform.rotate(orientation);
-	//Vector3f pivot = myHeadPosition + myReferencePosition;
-	//myWorldTransform.translate(pivot);
-	//myWorldTransform.rotate(orientation);
-	//myWorldTransform.translate(-pivot);
-	//myWorldTransform.translate(-position);
-	//myViewTransform = myViewTransform.inverse();
+	if(myRenderTarget != NULL)
+	{
+		// HACK
+		myRenderTarget->readback();
+
+		myRenderTarget->unbind();
+	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::startFrame(const FrameInfo& frame)
+{
+	if(myRenderTarget != NULL)
+	{
+		myRenderTarget->clear();
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void CameraOutput::finishFrame(const FrameInfo& frame)
+{
+	if(myRenderTarget != NULL)
+	{
+		// HACK
+		//myRenderTarget->readback();
+	}
+}
+

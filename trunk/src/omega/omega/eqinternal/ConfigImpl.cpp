@@ -27,7 +27,6 @@
 #include "omega/EqualizerDisplaySystem.h"
 #include "omega/MouseService.h"
 #include "omega/KeyboardService.h"
-#include "omega/Observer.h"
 #include "omega/EventSharingModule.h"
 
 #include "eqinternal.h"
@@ -304,7 +303,8 @@ uint32_t ConfigImpl::finishFrame()
 		// if orientObserverToTile is enabled, we assume the observer orientation is always normal
 		// to the tile. Only the observer position is updated.
 		// This works only for ONE actual, tracked observer. So we just get observer 0 from the observer list.
-		Observer* obs  = ds->getObserver(0);
+		Camera* cam = Engine::instance()->getDefaultCamera();
+
 		int numObservers = getObservers().size();
 		for(int i = 0; i < numObservers; i++)
 		{
@@ -329,7 +329,7 @@ uint32_t ConfigImpl::finishFrame()
 
 			// Update the tile-observer head matrix, using the observer position and the per-tile orientation.
 			// CAVE2 SIMPLIFICATION: We are just interested in adjusting the observer yaw
-			const Vector3f& pos = obs->getHeadPosition();
+			const Vector3f& pos = cam->getHeadOffset();
 			eq::fabric::Matrix4f om; // = eq::fabric::Matrix4f::IDENTITY;
 			om.rotate_y(otd.yaw);
 			om.set_translation(pos[0], pos[1], pos[2]);
@@ -341,9 +341,9 @@ uint32_t ConfigImpl::finishFrame()
 		// update observer head matrices the normal way
 		for( unsigned int i = 0; i < getObservers().size(); i++) 
 		{
-			Observer* obs  = ds->getObserver(i);
+			Camera* cam = Engine::instance()->getDefaultCamera();
 			eq::fabric::Matrix4f om;
-			const AffineTransform3& ht = obs->getHeadTransform();
+			const AffineTransform3& ht = cam->getHeadTransform();
 			om.set(ht.data(), ht.data() + 16 * sizeof(float), false);
 			getObservers().at(i)->setHeadMatrix(om);
 		}

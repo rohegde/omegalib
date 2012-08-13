@@ -50,8 +50,6 @@ namespace omega
 
 		void updateProjectionMatrix();
 
-		virtual Observer* getObserver(int index) { return &myObserver; }
-
 		DisplaySystemType getId() { return DisplaySystem::Glut; }
 
 		ServerBase* getApplicationServer() { return myAppServer; }
@@ -64,13 +62,9 @@ namespace omega
 		GpuContext* getGpuContext() { return myGpuContext; }
 
 	private:
-		void initObservers();
-
-	private:
 		// Display config
 		Setting* mySetting;
 		Vector2i myResolution;
-		Observer myObserver;
 		int myFov;
 		float myAspect;
 		double myNearz;

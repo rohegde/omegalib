@@ -33,7 +33,6 @@
 #include "omega/GpuBuffer.h"
 #include "omega/GpuManager.h"
 #include "omega/GpuProgram.h"
-#include "omega/Observer.h"
 #include "omega/RenderTarget.h"
 #include "omega/RenderTarget.h"
 #include "omega/SystemManager.h"

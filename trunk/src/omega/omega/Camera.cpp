@@ -26,78 +26,10 @@
  *************************************************************************************************/
 #include "omega/RenderTarget.h"
 #include "omega/Camera.h"
+#include "omega/CameraOutput.h"
 
 using namespace omega;
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth)
-{
-	myReadbackColorTarget = color;
-	myReadbackDepthTarget = depth;
-	if(myReadbackColorTarget != NULL)
-	{
-		myReadbackViewport = Rect(
-			0, 0, 
-			myReadbackColorTarget->getWidth(), myReadbackColorTarget->getHeight());
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-void CameraOutput::setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport)
-{
-	setReadbackTarget(color, depth);
-	myReadbackViewport = readbackViewport;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraOutput::beginDraw(const DrawContext& context)
-{
-	if(myRenderTarget == NULL)
-	{
-		if(myOffscreen) 
-		{
-			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOffscreen);
-		}
-		else
-		{
-			myRenderTarget = new RenderTarget(context.gpuContext, RenderTarget::RenderOnscreen);
-		}
-	}
-	myRenderTarget->setReadbackTarget(myReadbackColorTarget, myReadbackDepthTarget, myReadbackViewport);
-	myRenderTarget->bind();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraOutput::endDraw(const DrawContext& context)
-{
-	if(myRenderTarget != NULL)
-	{
-		// HACK
-		myRenderTarget->readback();
-
-		myRenderTarget->unbind();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraOutput::startFrame(const FrameInfo& frame)
-{
-	if(myRenderTarget != NULL)
-	{
-		myRenderTarget->clear();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void CameraOutput::finishFrame(const FrameInfo& frame)
-{
-	if(myRenderTarget != NULL)
-	{
-		// HACK
-		//myRenderTarget->readback();
-	}
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Camera::Camera(uint flags):
@@ -156,6 +88,15 @@ void Camera::setup(Setting& s)
 			setControllerEnabled(true);
 		}
 	}
+
+	Vector3f position = Vector3f::Zero();
+	if(s.exists("headOffset"))
+	{
+		Setting& st = s["headOffset"];
+		myHeadOffset.x() = (float)st[0];
+		myHeadOffset.y() = (float)st[1];
+		myHeadOffset.z() = (float)st[2];
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,6 +115,14 @@ void Camera::update(const UpdateContext& context)
 	{
 		myController->update(context);
 	}
+
+	// Update the view transform
+	myHeadTransform = AffineTransform3::Identity();
+	myHeadTransform.translate(myHeadOffset);
+	myHeadTransform.rotate(myHeadOrientation);
+
+	// Update view transform.
+	myViewTransform = Math::makeViewMatrix(myPosition, myOrientation);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,13 +131,6 @@ void Camera::focusOn(SceneNode* node)
 	const Sphere& bs = node->getBoundingSphere();
 	myOrientation = Quaternion::Identity();
 	myPosition = bs.getCenter() + Vector3f(0, 0, bs.getRadius());
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::updateObserver(Observer* obs)
-{
-	//obs->updateHead(-myProjectionOffset, Quaternion::Identity());
-	obs->updateWorld(myPosition, myOrientation);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,7 +163,7 @@ const DrawContext& Camera::beginDraw(const DrawContext& context)
 	DrawContext& dc = myDrawContext[context.gpuContext->getId()];
 
 	dc = context;
-	dc.modelview = myModelView;
+	dc.modelview = myViewTransform;
 	dc.viewport = output->getReadbackViewport();
 	if(myAutoAspect)
 	{
@@ -261,14 +203,6 @@ void Camera::finishFrame(const FrameInfo& frame)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-void Camera::setModelView(const Vector3f& position, const Quaternion& orientation)
-{
-	myPosition = position;
-	myOrientation = orientation;
-	myModelView = Math::makeViewMatrix(position, orientation);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
 void Camera::setProjection(float fov, float aspect, float nearZ, float farZ)
 {
 	myProjection = Math::makePerspectiveMatrix(fov * Math::DegToRad, aspect, nearZ, farZ);
@@ -284,5 +218,5 @@ Ray Camera::getViewRay(const Vector2f& normalizedPoint)
 	Vector2f pt(
 		normalizedPoint[0] * 2.0f - 1.0f,
 		normalizedPoint[1] * 2.0f - 1.0f);
-	return Math::unprojectNormalized(pt, myModelView, myProjection);
+	return Math::unprojectNormalized(pt, myViewTransform, myProjection);
 }

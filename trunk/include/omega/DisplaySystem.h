@@ -26,7 +26,6 @@
 #define __DISPLAY_SYSTEM_H__
 
 #include "osystem.h"
-#include "Observer.h"
 #include "ApplicationBase.h"
 //#include "Color.h"
 
@@ -56,8 +55,6 @@ public:
 	// exit request to the system manager.
 	virtual void run() = 0;
 
-	virtual Observer* getObserver(int observerId) { return NULL; }
-	
 	virtual void cleanup() {}
 
 	virtual DisplaySystemType getId() { return Invalid; }

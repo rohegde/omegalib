@@ -558,8 +558,6 @@ void EqualizerDisplaySystem::initialize(SystemManager* sys)
 		}
 		osleep(myDisplayConfig.launcherInterval);
 	}
-
-	myObservers.push_back(new Observer());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -588,7 +586,7 @@ void EqualizerDisplaySystem::killCluster()
 void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 {
 	myConfig = config;
-	ofmsg("Initializing %1% observer(s).", %myObservers.size());
+	/*ofmsg("Initializing %1% observer(s).", %myObservers.size());
 	if(mySetting->exists("observers"))
 	{
 		Setting& stObservers = (*mySetting)["observers"];
@@ -599,7 +597,7 @@ void EqualizerDisplaySystem::finishInitialize(ConfigImpl* config)
 			obs->load(stObserver);
 		}
 	}
-
+	*/
 	omsg(":: Equalizer initialization DONE ::");
 }
 
@@ -666,13 +664,6 @@ void EqualizerDisplaySystem::cleanup()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Observer* EqualizerDisplaySystem::getObserver(int observerId)
-{
-	oassert(myObservers.size() > observerId);
-	return myObservers[observerId];
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Vector2i EqualizerDisplaySystem::getCanvasSize()
 {
 	return myDisplayConfig.displayResolution;
@@ -702,15 +693,17 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position)
 	return getViewRay(Vector2i(x, y), channelX, channelY);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int channelY)
 {
 	int x = position[0];
 	int y = position[1];
 
 	DisplayTileConfig& dtc = myDisplayConfig.tiles[channelX][channelY];
-	Observer* o = myObservers.at(0);
-	Vector3f head = o->getHeadPosition();
+
+	Camera* camera = Engine::instance()->getDefaultCamera();
+
+	Vector3f head = camera->getHeadOffset();
 
 	float px = (float)x / dtc.resolution[0];
 	float py = 1 - (float)y / dtc.resolution[1];
@@ -726,10 +719,10 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	Vector3f direction = p - head;
 
 	
-	p = o->getWorldOrientation() * p;
-	p += o->getWorldPosition();
+	p = camera->getOrientation() * p;
+	p += camera->getPosition();
 	
-	direction = o->getWorldOrientation() * direction;
+	direction = camera->getOrientation() * direction;
 	direction.normalize();
 
 	//ofmsg("channel: %1%,%2% pixel:%3%,%4% pos: %5% dir %6%", %channelX %channelY %x %y %p %direction);
@@ -737,12 +730,13 @@ Ray EqualizerDisplaySystem::getViewRay(Vector2i position, int channelX, int chan
 	return Ray(p, direction);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 bool EqualizerDisplaySystem::getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords)
 {
 	if(evt.getServiceType() == Service::Wand)
 	{
-		Observer* o = myObservers.at(0);
-		Vector3f pos = evt.getPosition() + o->getWorldPosition();
+		Camera* camera = Engine::instance()->getDefaultCamera();
+		Vector3f pos = evt.getPosition() + camera->getPosition();
 		Vector3f dir = evt.getOrientation() * (-Vector3f::UnitZ());
 		ray.setOrigin(pos);
 		ray.setDirection(dir);

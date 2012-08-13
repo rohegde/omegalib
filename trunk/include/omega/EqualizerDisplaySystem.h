@@ -30,100 +30,93 @@
 
 namespace omega
 {
-//typedef co::base::uint128_t uint128_t;
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// Forward Declarations.
+	class EqualizerNodeFactory;
+	class ViewImpl;
+	class ConfigImpl;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Forward Declarations.
-class EqualizerNodeFactory;
-class ViewImpl;
-class ConfigImpl;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// This class is used to route equalizer log into the omega log system.
-class EqualizerLogStreamBuf: public std::streambuf
-{
-protected:
-	virtual int overflow ( int c = EOF )
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	// This class is used to route equalizer log into the omega log system.
+	class EqualizerLogStreamBuf: public std::streambuf
 	{
-		if(c == '\n')
+	protected:
+		virtual int overflow ( int c = EOF )
 		{
-			omsg(myStringStream.str().c_str());
-			myStringStream.str(""); 
+			if(c == '\n')
+			{
+				omsg(myStringStream.str().c_str());
+				myStringStream.str(""); 
+			}
+			else
+			{
+				myStringStream << (char)c;
+			}
+			return 0;
 		}
-		else
-		{
-			myStringStream << (char)c;
-		}
-		return 0;
-	}
-private:
-	std::ostringstream myStringStream;
-};
+	private:
+		std::ostringstream myStringStream;
+	};
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class OMEGA_API EqualizerDisplaySystem: public DisplaySystem
-{
-public:
-	EqualizerDisplaySystem();
-	virtual ~EqualizerDisplaySystem();
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	class OMEGA_API EqualizerDisplaySystem: public DisplaySystem
+	{
+	public:
+		EqualizerDisplaySystem();
+		virtual ~EqualizerDisplaySystem();
 
-	// sets up the display system. Called before initalize.
-	void setup(Setting& setting);
+		// sets up the display system. Called before initalize.
+		void setup(Setting& setting);
 
-	void initialize(SystemManager* sys); 
-	void run(); 
-	void cleanup(); 
+		void initialize(SystemManager* sys); 
+		void run(); 
+		void cleanup(); 
 
-	Observer* getObserver(int observerId);
+		virtual void killCluster();
+		virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
+		bool isDebugMouseEnabled() { return myDebugMouse; }
 
-	virtual void killCluster();
-	virtual DisplaySystemType getId() { return DisplaySystem::Equalizer; }
-	bool isDebugMouseEnabled() { return myDebugMouse; }
+		//! Returns the size of the display canvas.
+		virtual Vector2i getCanvasSize();
+		//! Returns a view ray given a global (canvas) pointer position in pixel coordinates
+		virtual Ray getViewRay(Vector2i position);
+		//! Returns a view ray given a local pointer positon and a tile index.
+		Ray	getViewRay(Vector2i position, int tileX, int tileY);
+		//! Computes a view ray from a pointer or wand event. Returns true if the ray has been generated succesfully, 
+		//! false otherwise (i.e. because the event is not a wand or pointer event)
+		virtual bool getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords = false);
 
-	//! Returns the size of the display canvas.
-	virtual Vector2i getCanvasSize();
-	//! Returns a view ray given a global (canvas) pointer position in pixel coordinates
-	virtual Ray getViewRay(Vector2i position);
-	//! Returns a view ray given a local pointer positon and a tile index.
-	Ray	getViewRay(Vector2i position, int tileX, int tileY);
-	//! Computes a view ray from a pointer or wand event. Returns true if the ray has been generated succesfully, 
-	//! false otherwise (i.e. because the event is not a wand or pointer event)
-	virtual bool getViewRayFromEvent(const Event& evt, Ray& ray, bool normalizedPointerCoords = false);
+		const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
 
-	const DisplayConfig& getDisplayConfig() { return myDisplayConfig; }
+		//! @internal Finish equalizer display system initialization.
+		//! This method is called from the node init function. Performs observer initialization.
+		void finishInitialize(ConfigImpl* config);
 
-	//! @internal Finish equalizer display system initialization.
-	//! This method is called from the node init function. Performs observer initialization.
-	void finishInitialize(ConfigImpl* config);
+		bool isDrawFpsEnabled() { return myDrawFps; }
+		bool isDrawStatisticsEnabled() { return myDrawStatistics; }
 
-	bool isDrawFpsEnabled() { return myDrawFps; }
-	bool isDrawStatisticsEnabled() { return myDrawStatistics; }
+		void exitConfig();
 
-	void exitConfig();
+	private:
+		void generateEqConfig();
+		void setupEqInitArgs(int& numArgs, const char** argv);
 
-private:
-	void generateEqConfig();
-	void setupEqInitArgs(int& numArgs, const char** argv);
+	private:
+		SystemManager* mySys;
 
-private:
-	SystemManager* mySys;
+		// Configuration
+		Setting* mySetting;
+		DisplayConfig myDisplayConfig;
 
-	// Configuration
-	Setting* mySetting;
-	DisplayConfig myDisplayConfig;
+		// Equalizer stuff.
+		EqualizerNodeFactory* myNodeFactory;
+		ConfigImpl* myConfig;
 
-	// Equalizer stuff.
-	EqualizerNodeFactory* myNodeFactory;
-	ConfigImpl* myConfig;
-
-	// Observers.
-	std::vector<Observer*> myObservers;
-
-	// Debug
-	bool myDebugMouse;
-	bool myDrawFps;
-	bool myDrawStatistics;
-};
+		// Debug
+		bool myDebugMouse;
+		bool myDrawFps;
+		bool myDrawStatistics;
+	};
 
 }; // namespace omega
 

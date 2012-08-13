@@ -31,43 +31,10 @@
 #include "omega/ApplicationBase.h"
 #include "omega/SceneNode.h"
 #include "omega/RenderTarget.h"
-#include "omega/Observer.h"
 #include "omega/CameraController.h"
+#include "omega/CameraOutput.h"
 
 namespace omega {
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OMEGA_API CameraOutput: public ReferenceType
-	{
-	public:
-		CameraOutput(bool offscreen = false): myEnabled(false), myRenderTarget(NULL), myOffscreen(offscreen),
-			myReadbackColorTarget(NULL), myReadbackDepthTarget(NULL)
-		{}
-
-		void beginDraw(const DrawContext& context);
-		void endDraw(const DrawContext& context);
-		void startFrame(const FrameInfo& frame);
-		void finishFrame(const FrameInfo& frame);
-
-		bool isEnabled() { return myEnabled; }
-		void setEnabled(bool value) { myEnabled = value; }
-
-		void setReadbackTarget(PixelData* color, PixelData* depth = NULL);
-		void setReadbackTarget(PixelData* color, PixelData* depth, const Rect& readbackViewport);
-
-		const Rect& getReadbackViewport() { return myReadbackViewport; }
-
-		RenderTarget* getRenderTarget() { return myRenderTarget; }
-
-	private:
-		bool myEnabled;
-		bool myOffscreen;
-		RenderTarget* myRenderTarget;
-
-		PixelData* myReadbackColorTarget;
-		PixelData* myReadbackDepthTarget;
-		Rect myReadbackViewport;
-	};
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	class OMEGA_API Camera: public ReferenceType
 	{
@@ -105,8 +72,9 @@ namespace omega {
 		//! PYAPI
 		void setPosition(const Vector3f& value);
 
+		const AffineTransform3& getViewTransform();
+
 		void setProjection(float fov, float aspect, float nearZ, float farZ);
-		void setModelView(const Vector3f& position, const Quaternion& orientation);
 
 		//! Returns a view ray given an origin point in normalized coordinates.
 		//! @param normalizedPoint - the origin point for the ray in normalized ([0, 1]) coordinates
@@ -130,10 +98,17 @@ namespace omega {
 
 		void focusOn(SceneNode* node);
 
-		void updateObserver(Observer* obs);
-
 		//! Returns true if this camera is enabled in the specified draw context.
 		bool isEnabled(const DrawContext& context);
+
+		//! Observer control
+		//@{
+		void setHeadOffset(const Vector3f& value) { myHeadOffset = value; }
+		void setHeadOrientation(const Quaternion& value) { myHeadOrientation = value; }
+		const Vector3f& getHeadOffset() { return myHeadOffset; }
+		const Quaternion& getHeadOrientation() { return myHeadOrientation; }
+		const AffineTransform3& getHeadTransform();
+		//@}
 
 		void endDraw(const DrawContext& context);
 		const DrawContext& beginDraw(const DrawContext& context);
@@ -141,29 +116,27 @@ namespace omega {
 		void finishFrame(const FrameInfo& frame);
 
 	private:
-		//! Current view transform
-		AffineTransform3 myModelView;
-		Transform3 myProjection;
-
-		//! Observer current position.
+		//! View position.
 		Vector3f myPosition;
-
-		//! Observer current rotation.
+		//! View orientation.
 		Quaternion myOrientation;
+		//! View transform
+		AffineTransform3 myViewTransform;
+
+		//! Observer head offset (wrt camera position).
+		Vector3f myHeadOffset;
+		//! Observer head orientation (wrt camera position).
+		Quaternion myHeadOrientation;
+		//! Observer head transform
+		AffineTransform3 myHeadTransform;
+
+		Transform3 myProjection;
 
 		//! Field of view (in radians)
 		float myFov;
 		float myAspect;
 		float myNearZ;
 		float myFarZ;
-
-		//! Projection plane offset.
-		//! this is the position of the center of the projection plane when using a head tracked system + off-axis projection. 
-		//! When omegalib is using head tracking, usually the observer update service takes care of setting this value
-		//! directly in the Observer class, so this value is ignored. On desktop system, the user can set this value
-		//! manually to test off-axis projection.
-		//Vector3f myProjectionOffset;
-
 		//! When set to true, the aspect is computed depending on the height & width of the camera render target.
 		bool myAutoAspect;
 
@@ -176,22 +149,6 @@ namespace omega {
 		CameraController* myController;
 		bool myControllerEnabled;
 	};
-	
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline const AffineTransform3& Camera::getViewTransform() 
-	//{ return myView; }
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline const AffineTransform3& Camera::getProjectionTransform()
-	//{ return myProjection; }
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline void Camera::setProjectionTransform(const AffineTransform3& value)
-	//{ myProjection = value; }
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	//inline void Camera::setViewTransform(const AffineTransform3& value)
-	//{ myView = value; }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline bool Camera::getAutoAspect()
@@ -209,9 +166,7 @@ namespace omega {
 	inline void Camera::setOrientation(const Quaternion& value, bool resetController)
 	{ 
 		myOrientation = value; 
-		setModelView(myPosition, myOrientation);
-
-		if( resetController && myController != NULL) myController->reset();
+		if(resetController && myController != NULL) myController->reset();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,13 +175,24 @@ namespace omega {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setPosition(const Vector3f& value) 
-	{ myPosition = value; setModelView(myPosition, myOrientation); }
+	{ myPosition = value; }
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	inline void Camera::setYawPitchRoll(const Vector3f& yawPitchRoll) 
 	{ 
-		Quaternion orientation =   AngleAxis(yawPitchRoll[0]*Math::DegToRad, Vector3f::UnitX()) * AngleAxis(yawPitchRoll[1]*Math::DegToRad, Vector3f::UnitY()) * AngleAxis(yawPitchRoll[2]*Math::DegToRad, Vector3f::UnitZ());
+		Quaternion orientation = AngleAxis(yawPitchRoll[0] * Math::DegToRad, Vector3f::UnitX()) * 
+			AngleAxis(yawPitchRoll[1]*Math::DegToRad, Vector3f::UnitY()) * 
+			AngleAxis(yawPitchRoll[2]*Math::DegToRad, Vector3f::UnitZ());
 		setOrientation(orientation);
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const AffineTransform3& Camera::getHeadTransform()
+	{ return myHeadTransform;	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	inline const AffineTransform3& Camera::getViewTransform()
+	{ return myViewTransform; }
 }; // namespace omega
 
 #endif
