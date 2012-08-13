@@ -134,6 +134,18 @@ void SceneManager::loadConfiguration()
 	ofmsg(":: Shadow resolution ratio: %1%", %myShadowSettings.shadowResolutionRatio);
 
 	myScene = new osg::Group();
+
+	// Set the default texture and attach it to the scene root.
+	String defaultTextureName = "cyclops/common/defaultTexture.png";
+	osg::Texture2D* defaultTexture = getTexture(defaultTextureName);
+	if(defaultTexture != NULL)
+	{
+		myScene->getOrCreateStateSet()->setTextureAttribute(0, defaultTexture);
+	}
+	else
+	{
+		ofwarn("Could not load default texture %1%", %defaultTexture);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
