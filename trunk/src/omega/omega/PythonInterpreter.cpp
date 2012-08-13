@@ -30,6 +30,7 @@
  *************************************************************************************************/
 #include "omega/PythonInterpreter.h"
 #include "omega/SystemManager.h"
+#include "omega/ModuleServices.h"
 
 using namespace omega;
 
@@ -60,15 +61,9 @@ class PythonInteractiveThread: public Thread
 public:
 	virtual void threadProc()
 	{
-		//PyEval_AcquireLock();
-		//PyInterpreterState* interpState = sMainThreadState->interp;
-		//PyThreadState* threadState = PyThreadState_New(interpState);
-		//PyEval_ReleaseLock();
-
 		PythonInterpreter* interp = SystemManager::instance()->getScriptInterpreter();
 
-		// Not sure this is helping with safe init but let's try.
-		while(true)	
+		while(!SystemManager::instance()->isExitRequested())	
 		{
 			osleep(100);
 			String line;
@@ -94,15 +89,8 @@ public:
 			//ofmsg("line read: %1%", %line);
 
 			interp->queueInteractiveCommand(line);
-
-			//PyEval_AcquireLock();
-			//PyThreadState_Swap(threadState);
-
-			//PyRun_SimpleString(buf);
-
-			//PyThreadState_Swap(NULL);
-			//PyEval_ReleaseLock();
 		}
+		omsg("Ending console interactive thread");
 	}
 };
 
@@ -178,10 +166,6 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize interpreter.
 	Py_Initialize();
 
-	//PyEval_InitThreads();
-	//sMainThreadState = PyThreadState_Get();
-	//PyEval_ReleaseLock();
-
 	// HACK: Calling PyRun_SimpleString for the first time for some reason results in
 	// a "\n" message being generated which is causing the error dialog to
 	// popup. So we flush that message out of the system before setting up the
@@ -212,14 +196,7 @@ void PythonInterpreter::initialize(const char* programName)
 	// Initialize internal Apis
 	omegaPythonApiInit();
 
-	//PyEval_AcquireLock();
-	//PyThreadState_Swap(sMainThreadState);
-
-	// Not sure this is helping with safe init but let's try.
-	//osleep(1000);
 	PyRun_SimpleString("from omega import *");
-	//PyThreadState_Swap(NULL);
-	//PyEval_ReleaseLock();
 	
 	omsg("Python Interpreter initialized.");
 }
@@ -235,9 +212,6 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const Dictionary<String, int> intConstants, const Dictionary<String, String> stringConstants)
 {
-	//PyEval_AcquireLock();
-	//PyThreadState_Swap(sMainThreadState);
-
 	PyObject* module = Py_InitModule(name, methods);
 
 	typedef Dictionary<String, int>::Item IntConstantItem;
@@ -272,16 +246,11 @@ void PythonInterpreter::addModule(const char* name, PyMethodDef* methods, const 
 		cur++;
 	}
 #endif
-	//PyThreadState_Swap(NULL);
-	//PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::eval(const String& script, const char* format, ...)
 {
-	//PyEval_AcquireLock();
-	//PyThreadState_Swap(sMainThreadState);
-
 	char* str = const_cast<char*>(script.c_str());
 	if(format == NULL)
 	{
@@ -307,9 +276,6 @@ void PythonInterpreter::eval(const String& script, const char* format, ...)
 			va_end(args);
 		}
 	}
-
-	//PyThreadState_Swap(NULL);
-	//PyEval_ReleaseLock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -332,7 +298,7 @@ void PythonInterpreter::runFile(const String& filename)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 {
-	// BLAGH
+	// BLAGH cast
 	PyObject* pyCallback =(PyObject*)callback;
 	if(callback != NULL)
 	{
@@ -352,9 +318,6 @@ void PythonInterpreter::registerCallback(void* callback, CallbackType type)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 void PythonInterpreter::update(const UpdateContext& context) 
 {
-	//PyEval_AcquireLock();
-	//PyThreadState_Swap(sMainThreadState);
-
 	// Execute queued interactive commands first
 	if(myInteractiveCommandNeedsExecute)
 	{
@@ -362,7 +325,18 @@ void PythonInterpreter::update(const UpdateContext& context)
 		{
 			ofmsg("running %1%", %myInteractiveCommand);
 		}
-		PyRun_SimpleString(myInteractiveCommand.c_str());
+
+		// Handle special 'shortcut' commands. Commands starting with a ':' won't be interpreted
+		// using the python interpreter. Instead, we will dispatch them to EngineModule::handleCommand 
+		// methods.
+		if(myInteractiveCommand[0] == ':')
+		{
+			ModuleServices::handleCommand(myInteractiveCommand.substr(1, myInteractiveCommand.length() - 1));
+		}
+		else
+		{
+			PyRun_SimpleString(myInteractiveCommand.c_str());
+		}
 		myInteractiveCommandNeedsExecute = false;
 	}
 	
@@ -372,14 +346,11 @@ void PythonInterpreter::update(const UpdateContext& context)
 
 	foreach(void* cb, myUpdateCallbacks)
 	{
-		// BLAGH
+		// BLAGH cast
 		PyObject* pyCallback =(PyObject*)cb;
 		PyObject_CallObject(pyCallback, arglist);
 
 	}
-
-	//PyThreadState_Swap(NULL);
-	//PyEval_ReleaseLock();
 
 	Py_DECREF(arglist);
 }

@@ -51,6 +51,7 @@ SET( srcs
 		omega/GpuProgram.cpp
 		omega/ImageUtils.cpp
 		omega/KeyboardService.cpp
+		omega/ModuleServices.cpp
 		omega/MouseService.cpp
 		omega/MissionControl.cpp
 		omega/Node.cpp

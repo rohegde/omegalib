@@ -125,7 +125,7 @@ void MenuItem::setCommand(const String& command)
 	if(myCommand == NULL)
 	{
 		myCommand = new UiScriptCommand(command);
-		myWidget->setUIEventHandler(myCommand);
+		myWidget->setUIEventHandler(myCommand.get());
 	}
 	else
 	{

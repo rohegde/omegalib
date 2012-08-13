@@ -98,7 +98,7 @@ void Renderer::initialize()
 		myRenderer->setDefaultFont(fnt);
 	}
 
-	myServer->clientInitialize(this);
+	//myServer->clientInitialize(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

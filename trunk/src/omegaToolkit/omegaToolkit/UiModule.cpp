@@ -44,7 +44,7 @@ UiModule::UiModule():
 	myGamepadInteractionEnabled(false),
 	myActiveWidget(NULL)
 {
-	// This kodule has high priority. It will receive events before modules with lower priority.
+	// This module has high priority. It will receive events before modules with lower priority.
 	setPriority(EngineModule::PriorityHigh);
 
 	mysInstance = this;

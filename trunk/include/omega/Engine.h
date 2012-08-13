@@ -125,9 +125,9 @@ namespace omega {
 
 		virtual void initialize();
 		//! Internal method.
-		void clientInitialize(Renderer* client);
-		void preDraw(Renderer* r, const DrawContext& context);
-		void postDraw(Renderer* r, const DrawContext& context);
+		//void clientInitialize(Renderer* client);
+		//void preDraw(Renderer* r, const DrawContext& context);
+		//void postDraw(Renderer* r, const DrawContext& context);
 
 		virtual void handleEvent(const Event& evt);
 		virtual void update(const UpdateContext& context);
