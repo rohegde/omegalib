@@ -145,28 +145,28 @@ void Engine::initialize()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Engine::clientInitialize(Renderer* client)
-{
-    myLock.lock();
-	ModuleServices::initializeRenderer(this, client);
-    myLock.unlock();
-}
+//void Engine::clientInitialize(Renderer* client)
+//{
+//    myLock.lock();
+//	ModuleServices::initializeRenderer(this, client);
+//    myLock.unlock();
+//}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void Engine::preDraw(Renderer* r, const DrawContext& context)
-{
-    myLock.lock();
-	ModuleServices::preDraw(this, r, context);
-    myLock.unlock();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void Engine::postDraw(Renderer* r, const DrawContext& context)
-{
-    myLock.lock();
-	ModuleServices::postDraw(this, r, context);
-    myLock.unlock();
-}
+//void Engine::preDraw(Renderer* r, const DrawContext& context)
+//{
+//    myLock.lock();
+//	ModuleServices::preDraw(this, r, context);
+//    myLock.unlock();
+//}
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//void Engine::postDraw(Renderer* r, const DrawContext& context)
+//{
+//    myLock.lock();
+//	ModuleServices::postDraw(this, r, context);
+//    myLock.unlock();
+//}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@ void Engine::handleEvent(const Event& evt)
 		}
 	}
 
-    ModuleServices::handleEvent(this, evt);
+    ModuleServices::handleEvent(evt);
 
 	getSystemManager()->getScriptInterpreter()->handleEvent(evt);
 

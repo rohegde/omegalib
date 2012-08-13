@@ -32,7 +32,7 @@
 namespace omegaToolkit
 {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API UiScriptCommand: public IEventListener
+	class OTK_API UiScriptCommand: public IEventListener, ReferenceType
 	{
 	public:
 		UiScriptCommand(const String& command);

@@ -1,7 +1,7 @@
 /**************************************************************************************************
  * THE OMEGA LIB PROJECT
  *-------------------------------------------------------------------------------------------------
- * Copyright 2010-2011		Electronic Visualization Laboratory, University of Illinois at Chicago
+ * Copyright 2010-2012		Electronic Visualization Laboratory, University of Illinois at Chicago
  * Authors:										
  *  Alessandro Febretti		febret@gmail.com
  *-------------------------------------------------------------------------------------------------
@@ -51,28 +51,15 @@ namespace omega {
 		virtual void initialize() {}
 		virtual void update(const UpdateContext& context) {}
 		virtual void handleEvent(const Event& evt) {}
+		virtual void handleCommand(const String& cmd) {}
 		virtual void commitSharedData(SharedOStream& out) {}
 		virtual void updateSharedData(SharedIStream& in) {}
 
 		virtual void initializeRenderer(Renderer*) {}
-		virtual void preDraw(Renderer*, const DrawContext& context) {}
-		virtual void postDraw(Renderer*, const DrawContext& context) {}
+		//virtual void preDraw(Renderer*, const DrawContext& context) {}
+		//virtual void postDraw(Renderer*, const DrawContext& context) {}
 
-		void doInitialize(Engine* server) 
-		{ 
-			myEngine = server; 
-			if(!myInitialized) 
-			{
-				initialize(); 
-				foreach(Renderer* r, server->getClients())
-				{
-					initializeRenderer(r);
-				}
-
-				SharedDataServices::registerObject(this, myName);
-				myInitialized = true; 
-			}
-		}
+		void doInitialize(Engine* server);
 
 		virtual bool isInitialized() { return myInitialized; }
 
@@ -93,83 +80,17 @@ namespace omega {
 	class OMEGA_API ModuleServices
 	{
 	public:
-		static void addModule(EngineModule* module)
-		{ 
-			mysModules.push_back(module); 
-		}
-
-		static List<EngineModule*>::ConstRange getModules() 
-		{ 
-			return List<EngineModule*>::ConstRange(mysModules.begin(), mysModules.end()); 
-		}
-
-		static void update(Engine* srv, const UpdateContext& context)
-		{
-			foreach(EngineModule* module, mysModules)
-			{
-				module->doInitialize(srv);
-				module->update(context);
-			}
-		}
-
-		static void handleEvent(Engine* srv, const Event& evt)
-		{
-			for(int i = EngineModule::PriorityHigh; i >= EngineModule::PriorityLow; i--)
-			{
-				foreach(EngineModule* module, mysModules)
-				{
-					// Only send events to initialized modules.
-					if(module->isInitialized())
-					{
-						if(module->getPriority() == i)
-						{
-							module->handleEvent(evt);
-						}
-					}
-				}
-			}
-		}
-
-		static void initializeRenderer(Engine* srv, Renderer* r)
-		{
-			foreach(EngineModule* module, mysModules)
-			{
-				//module->doInitialize(srv);
-				//module->initializeRenderer(r);
-			}
-		}
-
-		static void preDraw(Engine* srv, Renderer* r, const DrawContext& context)
-		{
-			foreach(EngineModule* module, mysModules)
-			{
-				module->doInitialize(srv);
-				module->preDraw(r, context);
-			}
-		}
-
-		static void postDraw(Engine* srv, Renderer* r, const DrawContext& context)
-		{
-			foreach(EngineModule* module, mysModules)
-			{
-				module->doInitialize(srv);
-				module->postDraw(r, context);
-			}
-		}
-
-		static void cleanup()
-		{
-			foreach(EngineModule* module, mysModules)
-			{
-				delete module;
-			}
-			mysModules.clear();
-		}
+		static void addModule(EngineModule* module);
+		static List<EngineModule*>::ConstRange getModules();
+		static void update(Engine* srv, const UpdateContext& context);
+		static void handleEvent(const Event& evt);
+		static void handleCommand(const String& cmd);
+		//static void initializeRenderer(Engine* srv, Renderer* r);
+		static void cleanup();
 
 	private:
 		static List<EngineModule*> mysModules;
 	};
-
 }; // namespace omega
 
 #endif

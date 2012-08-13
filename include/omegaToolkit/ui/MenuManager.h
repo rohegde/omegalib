@@ -101,7 +101,7 @@ namespace omegaToolkit { namespace ui {
 		MenuItem* myParent;
 		Type myType;
 
-		UiScriptCommand* myCommand;
+		Ref<UiScriptCommand> myCommand;
 		IMenuItemListener* myListener;
 
 
