@@ -11,7 +11,7 @@ uniform float unif_Gloss;
 SurfaceData getSurfaceData(void)
 {
 	SurfaceData sd;
-    sd.albedo = texture2D(unif_DiffuseMap, var_TexCoord);
+    sd.albedo = gl_Color * texture2D(unif_DiffuseMap, var_TexCoord);
 	sd.emissive = vec4(0, 0, 0, 0);
 	sd.shininess = unif_Shininess;
 	sd.gloss = unif_Gloss;
