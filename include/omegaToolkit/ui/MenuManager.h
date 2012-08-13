@@ -48,7 +48,7 @@ namespace omegaToolkit { namespace ui {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class OTK_API MenuItem: public ReferenceType, IEventListener
+	class OTK_API MenuItem: public ReferenceType, public IEventListener
 	{
 	friend class Menu;
 	public:
