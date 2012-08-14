@@ -99,7 +99,11 @@ void SceneLoader::startLoading(SceneManager* sm)
 			}
 			else
 			{
-				mySceneManager->createSkyBox(dir, ext);
+				Skybox* skybox = new Skybox();
+				if(skybox->loadCubeMap(dir, ext))
+				{
+					mySceneManager->setSkyBox(skybox);
+				}
 			}
 		}
 	}

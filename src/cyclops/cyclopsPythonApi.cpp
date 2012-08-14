@@ -124,7 +124,6 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def("setMainLight", &SceneManager::setMainLight)
 		.def("getMainLight", &SceneManager::getMainLight, PYAPI_RETURN_POINTER)
 		.def("loadModel", &SceneManager::loadModel)
-		.def("createSkyBox", &SceneManager::createSkyBox)
 		.def("setBackgroundColor", &SceneManager::setBackgroundColor)
 		;
 
@@ -170,7 +169,6 @@ BOOST_PYTHON_MODULE(cyclops)
 		.def_readwrite("path", &ModelInfo::path)
 		.def_readwrite("size", &ModelInfo::size)
 		;
-
 
 	// Free Functions
 	def("getSceneManager", getSceneManager, PYAPI_RETURN_POINTER);
