@@ -522,7 +522,7 @@ bool Container::rayToPointerEvent(const Event& inEvt, Event& outEvt)
 void Container::handleEvent(const Event& evt)
 {
 	// Only handle events if the container is visible.
-	if(isVisible())
+	if(isVisible() && isEnabled())
 	{
 		// Container is displayed in 3d mode. Convert pointer rays and wand rays into 
 		// standard pointer events.

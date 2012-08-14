@@ -70,7 +70,7 @@ void SceneLoader::startLoading(SceneManager* sm)
 			loadAssets(xEntityFiles, SceneManager::ModelAssetType);
 		}
 
-		// We are looking for objects under variousy-named tags, for compatibility reasons.
+		// We may look for objects under variousy-named tags, for compatibility reasons.
 		const char* sectionNames[] = {
 			"Objects",
 			"StaticObjects",
@@ -258,7 +258,7 @@ void SceneLoader::createObjects(osg::Group* root, TiXmlElement* xObjects)
 		if(objtype == "plane")	obj = createPlane(xchild);
 		else if(objtype == "sphere") obj = createSphere(xchild);
 		else if(objtype == "staticobject") obj = createStaticObject(xchild);
-		else if(objtype == "entity") obj = createEntity(xchild);
+		else if(objtype == "entity" || objtype == "animatedobject" ) obj = createEntity(xchild);
 
 		if(obj != NULL)
 		{

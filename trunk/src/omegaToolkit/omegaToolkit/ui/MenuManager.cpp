@@ -235,6 +235,7 @@ void Menu::setActiveSubMenu(Menu* submenu)
 			myActiveSubMenu->myParent = NULL;
 		}
 		myActiveSubMenu = NULL;
+		myContainer->setEnabled(true);
 	}
 	else
 	{
@@ -276,6 +277,9 @@ void Menu::onPushMenuStack()
 {
 	if(myActiveSubMenu != NULL)
 	{
+		// I have an active submenu: I am disabled.
+		myContainer->setEnabled(false);
+
 		if(myParent != NULL)
 		{
 			myParent->onPushMenuStack();
@@ -305,6 +309,7 @@ void Menu::focus()
 void Menu::show()
 {
 	myVisible = true;
+	myContainer->setEnabled(true);
 
 	focus();
 
@@ -321,6 +326,7 @@ void Menu::hide()
 	//omsg("Menu hide");
 
 	myVisible = false;
+	myContainer->setEnabled(false);
 
 	UiModule::instance()->activateWidget(NULL);
 
@@ -375,7 +381,9 @@ MenuManager::MenuManager():
 	myDefaultMenuPosition(-1.0, -0.5, -2.0),
 	myDefaultMenuScale(1.0f),
 	myNavigationSuspended(true),
-	myRayPlaceEnabled(true)
+	myRayPlaceEnabled(true),
+	myMenuToggleButton(Event::User),
+	myUseMenuToggleButton(false)
 {
 	mysInstance = this;
 }
@@ -402,6 +410,15 @@ void MenuManager::initialize()
 		myRayPlaceEnabled = Config::getBoolValue("menuRayPlaceEnabled", sUi, myRayPlaceEnabled);
 		myDefaultMenuPosition = Config::getVector3fValue("menuDefaultPosition", sUi, myDefaultMenuPosition);
 		myDefaultMenuScale = Config::getFloatValue("menuDefaultScale", sUi, myDefaultMenuScale);
+
+		// Parse menu toggle button name (if present)
+		String toggleButtonName = Config::getStringValue("menuToggleButton", sUi, "");
+		if(toggleButtonName != "")
+		{
+			myMenuToggleButton = Event::parseButtonName(toggleButtonName);
+			myUseMenuToggleButton = true;
+		}
+
 		myDefaultMenuScale *= 0.001f;
 	}
 
@@ -435,7 +452,11 @@ void MenuManager::handleEvent(const Event& evt)
 		{
 			if(!myMainMenu->isVisible())
 			{
-				if(evt.isButtonDown(UiModule::getConfirmButton()))
+				bool showMenuButtonPressed = 
+					(myUseMenuToggleButton && evt.isButtonDown(myMenuToggleButton)) ||
+					(!myUseMenuToggleButton && evt.isButtonDown(UiModule::getConfirmButton()));
+
+				if(showMenuButtonPressed)
 				{
 					myMainMenu->show();
 					autoPlaceMenu(myMainMenu, evt);
@@ -449,7 +470,11 @@ void MenuManager::handleEvent(const Event& evt)
 			}
 			else
 			{
-				if(evt.isButtonDown(UiModule::getCancelButton()))
+				bool hideMenuButtonPressed = 
+					(myUseMenuToggleButton && evt.isButtonDown(myMenuToggleButton)) ||
+					(!myUseMenuToggleButton && evt.isButtonDown(UiModule::getCancelButton()));
+
+				if(hideMenuButtonPressed)
 				{
 					Menu* topMostMenu = myMainMenu->getTopActiveSubMenu();
 					if(topMostMenu == myMainMenu) 
