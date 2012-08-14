@@ -138,7 +138,7 @@ private:
 
 	ObserverTileData myObserverTileData[MaxTiles];
 
-    Ref<ServerBase> myServer;
+    omicron::Ref<ServerBase> myServer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ protected:
 
 private:
     //bool myInitialized;
-    Ref<ServerBase> myServer;
+    omicron::Ref<ServerBase> myServer;
     //FrameData myFrameData;
 };
 
@@ -179,9 +179,9 @@ protected:
     virtual void frameFinish( const uint128_t& frameID, const uint32_t frameNumber );
 private:
 	NodeImpl* myNode;
-    Ref<RendererBase> myClient;
-    Ref<GpuManager> myGpu;
-    Ref<GpuContext> myGpuContext;
+    omicron::Ref<RendererBase> myClient;
+    omicron::Ref<GpuManager> myGpu;
+    omicron::Ref<GpuContext> myGpuContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,7 +232,7 @@ private:
     omicron::Lock myLock;
     DrawContext myDC;
     uint128_t myLastFrame;
-    Ref<RenderTarget> myDrawBuffer;
+    omicron::Ref<RenderTarget> myDrawBuffer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

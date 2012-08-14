@@ -113,7 +113,7 @@ bool Skybox::loadCubeMap(const String& cubemapDir, const String& extension)
 {
 	myType = CubeMap;
 
-    osg::TextureCubeMap* cubemap = new osg::TextureCubeMap;
+    Ref<osg::TextureCubeMap> cubemap = new osg::TextureCubeMap;
 
 	Ref<osg::Image> imagePosX = osgDB::readImageFile(cubemapDir + "/posx." + extension);
     Ref<osg::Image> imageNegX = osgDB::readImageFile(cubemapDir + "/negx." + extension);
@@ -122,7 +122,9 @@ bool Skybox::loadCubeMap(const String& cubemapDir, const String& extension)
     Ref<osg::Image> imagePosZ = osgDB::readImageFile(cubemapDir + "/posz." + extension);
     Ref<osg::Image> imageNegZ = osgDB::readImageFile(cubemapDir + "/negz." + extension);
 
-    if (imagePosX && imageNegX && imagePosY && imageNegY && imagePosZ && imageNegZ)
+    if (!imagePosX.isNull() && !imageNegX.isNull() && 
+		!imagePosY.isNull() && !imageNegY.isNull() && 
+		!imagePosZ.isNull() && !imageNegZ.isNull())
     {
         cubemap->setImage(osg::TextureCubeMap::POSITIVE_X, imagePosX.get());
         cubemap->setImage(osg::TextureCubeMap::NEGATIVE_X, imageNegX.get());
@@ -153,11 +155,11 @@ osg::Node* Skybox::createSkyBox()
 	{
 		osg::StateSet* stateset = new osg::StateSet();
 
-		osg::TexEnv* te = new osg::TexEnv;
+		//osg::TexEnv* te = new osg::TexEnv;
 		//te->setMode(osg::TexEnv::REPLACE);
 		//stateset->setTextureAttributeAndModes(0, te, osg::StateAttribute::ON);
 
-		osg::TexGen *tg = new osg::TexGen;
+		//osg::TexGen *tg = new osg::TexGen;
 		//tg->setMode(osg::TexGen::SPHERE_MAP);
 		//tg->setMode(osg::TexGen::EYE_LINEAR);
 		//stateset->setTextureAttributeAndModes(0, tg, osg::StateAttribute::ON);
@@ -186,7 +188,7 @@ osg::Node* Skybox::createSkyBox()
 		stateset->setMode( GL_TEXTURE_2D, osg::StateAttribute::ON );
 
 		// clear the depth to the far plane.
-		osg::Depth* depth = new osg::Depth;
+		Ref<osg::Depth> depth = new osg::Depth;
 		depth->setFunction(osg::Depth::ALWAYS);
 		depth->setRange(1.0,1.0);   
 		stateset->setAttributeAndModes(depth, osg::StateAttribute::ON );
@@ -244,4 +246,9 @@ osg::Node* Skybox::createSkyBox()
 		return clearNode;
 	}
 	return NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void updateSkyBox()
+{
 }

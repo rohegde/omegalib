@@ -24,53 +24,35 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#ifndef __CY_SKY_BOX__
-#define __CY_SKY_BOX__
+#ifndef __SKYBOX_SWITCHER_H__
+#define __SKYBOX_SWITCHER_H__
 
-#include <osg/TextureCubeMap>
+#include "cyclops/SceneManager.h"
 
-#include "cyclopsConfig.h"
-
-#define OMEGA_NO_GL_HEADERS
-#include <omega.h>
-#include <omegaOsg.h>
-#include <omegaToolkit.h>
-
-namespace cyclops {
-	using namespace omega;
-	using namespace omegaOsg;
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API Skybox: public ReferenceType
+namespace cyclops
+{
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	class CY_API SkyboxSwitcher: public EngineModule
 	{
 	public:
-		enum Type { CubeMap, Pano };
+		static SkyboxSwitcher* createAndInitialize(SceneManager* sceneManager);
+		virtual ~SkyboxSwitcher();
 
-	public:
-		Skybox();
+		void initialize();
+		void update(const UpdateContext& context);
+		void handleEvent(const Event& evt);
+		void handleCommand(const String& cmd);
 
-		void initialize(osg::StateSet* rootStateSet);
-
-		//! Loads cube map images from the specified directory.
-		//! Images must be named posx, negx, posy, negy, posz, negz and have the specified file extension.
-		bool loadCubeMap(const String& cubemapDir, const String& extension);
-
-		bool loadPano(const String& panoName);
-
-		osg::Node* getNode() { return myNode; }
-		Type getType() { return myType; }
+		void setActiveSkybox(int index);
+		int getActiveSkybox();
+		int numSkyboxes();
 
 	private:
-		osg::Node* createSkyBox();
-		void updateSkyBox();
+		SceneManager* mySceneManager;
+		Skybox* mySkyBox;
 
 	private:
-		Ref<osg::StateSet> myRootStateSet;
-		Ref<osg::Texture> myTexture;
-		Ref<osg::Node> myNode;
-
-		Type myType;
+		SkyboxSwitcher(SceneManager* sceneMng);
 	};
 };
-
 #endif
