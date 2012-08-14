@@ -81,7 +81,7 @@ void NodeImpl::frameStart( const eq::uint128_t& frameID, const uint32_t frameNum
 
 	// If server is not NULL (only on slave nodes) call update here
 	// on the master node, update is invoked in ConfigImpl.
-	if(myServer == NULL)
+	if(myServer != NULL)
 	{
 		ConfigImpl* config = (ConfigImpl*)getConfig();
 		config->updateSharedData();

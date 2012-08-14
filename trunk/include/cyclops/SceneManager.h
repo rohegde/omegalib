@@ -29,6 +29,7 @@
 
 #include "cyclopsConfig.h"
 #include "Skybox.h"
+#include "Shapes.h"
 
 #include <osg/Texture2D>
 #include <osg/Light>
@@ -37,8 +38,6 @@
 #include <osgShadow/ShadowedScene>
 #include <osgShadow/SoftShadowMap>
 #include <osgAnimation/BasicAnimationManager>
-
-#include "cyclops/Entity.h"
 
 #define OMEGA_NO_GL_HEADERS
 #include <omega.h>
@@ -52,7 +51,6 @@ namespace cyclops {
 	class SceneLoader;
 	class SceneManager;
 	class AnimatedObject;
-	class CylinderShape;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//! PYAPI
@@ -257,8 +255,6 @@ namespace cyclops {
 		void load(SceneLoader* loader);
 		//! Utility method: loads a scene file using the standard cyclops scene loader.
 		void load(const String& file);
-		//! #PYAPI
-		void createSkyBox(const String& cubeMapDir, const String& cubeMapExt);
 		void setSkyBox(Skybox* skyBox);
 		//@}
 
@@ -289,7 +285,6 @@ namespace cyclops {
 	private:
 		SceneManager();
 
-		void resetEnvMapSettings();
 		void addLight(Light* l);
 		void removeLight(Light* l);
 		void addEntity(Entity* obj);
@@ -308,7 +303,7 @@ namespace cyclops {
 
 		// The scene root. This may be linked directly to myRoot or have some intermediate nodes inbetween
 		// (i.e. for shadow map management)
-		osg::Group* myScene;
+		Ref<osg::Group> myScene;
 
 		// Model data (stored as dictionary and list for convenience)
 		Dictionary<String, ModelAsset*> myModelDictionary;
@@ -323,20 +318,21 @@ namespace cyclops {
 		Dictionary<String, Entity*> myObjectDictionary;
 		Vector<Entity*> myObjectVector;
 		
-		Skybox* mySkyBox;
+		Ref<Skybox> mySkyBox;
 
 		// Lights and shadows
 		List<Light*> myLights;
 		Light* myMainLight;
-		osgShadow::ShadowedScene* myShadowedScene;
-		osgShadow::SoftShadowMap* mySoftShadowMap;
+		
+		Ref<osgShadow::ShadowedScene> myShadowedScene;
+		Ref<osgShadow::SoftShadowMap> mySoftShadowMap;
 		ShadowSettings myShadowSettings;
 		int myNumActiveLights;
 		String myShaderVariationName;
 
 		// Wand
-		omegaToolkit::TrackedObject* myWandTracker;
-		CylinderShape* myWandEntity;
+		Ref<omegaToolkit::TrackedObject> myWandTracker;
+		Ref<CylinderShape> myWandEntity;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

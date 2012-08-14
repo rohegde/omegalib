@@ -163,29 +163,10 @@ void SceneManager::initialize()
 	setShaderMacroToFile("surfaceShader", "cyclops/common/forward/default.frag");
 	setShaderMacroToFile("vertexShader", "cyclops/common/forward/default.vert");
 
-	resetEnvMapSettings();
+	setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
+	setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
+
 	resetShadowSettings(myShadowSettings);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::resetEnvMapSettings()
-{
-	if(mySkyBox != NULL)
-	{
-		setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/cubeEnvMap.vert");
-		setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/cubeEnvMap.frag");
-		omsg("Environment cube map shaders enabled");
-		mySkyBox->initialize(myScene->getOrCreateStateSet());
-		myScene->addChild(mySkyBox->getNode());
-	}
-	else
-	{
-		setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
-		setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
-		omsg("Environment cube map shaders disabled");
-	}
-
-	recompileShaders();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -626,27 +607,31 @@ const List<ModelAsset*>& SceneManager::getModels()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapExt)
-{
-	if(mySkyBox == NULL)
-	{
-		mySkyBox = new Skybox();
-		if(!mySkyBox->loadCubeMap(cubeMapDir, cubeMapExt))
-		{
-			ofwarn("SceneManager::createSkyBox: could not create skybox %1% (ext: %2%)", %cubeMapDir %cubeMapExt);
-		}
-		else
-		{
-			resetEnvMapSettings();
-		}
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::setSkyBox(Skybox* skyBox)
 {
+	// If a skybox is currently active, remove it.
+	if(mySkyBox != NULL)
+	{
+		myScene->removeChild(mySkyBox->getNode());
+	}
+
 	mySkyBox = skyBox;
-	resetEnvMapSettings();
+	if(mySkyBox != NULL)
+	{
+		setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/cubeEnvMap.vert");
+		setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/cubeEnvMap.frag");
+		omsg("Environment cube map shaders enabled");
+		mySkyBox->initialize(myScene->getOrCreateStateSet());
+		myScene->addChild(mySkyBox->getNode());
+	}
+	else
+	{
+		setShaderMacroToFile("vsinclude envMap", "cyclops/common/envMap/noEnvMap.vert");
+		setShaderMacroToFile("fsinclude envMap", "cyclops/common/envMap/noEnvMap.frag");
+		omsg("Environment cube map shaders disabled");
+	}
+
+	recompileShaders();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
