@@ -41,7 +41,7 @@
 #include <omegaToolkit.h>
 
 #include "cyclopsConfig.h"
-#include "SkyBox.h"
+#include "Skybox.h"
 #include "SceneManager.h"
 #include "Entity.h"
 

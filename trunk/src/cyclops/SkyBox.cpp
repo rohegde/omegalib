@@ -24,7 +24,7 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *************************************************************************************************/
-#include "cyclops/SkyBox.h"
+#include "cyclops/Skybox.h"
 #include "cyclops/SceneManager.h"
 #include "cyclops/EffectNode.h"
 
@@ -72,13 +72,13 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-SkyBox::SkyBox():
+Skybox::Skybox():
 	myTexture(NULL), myNode(NULL), myRootStateSet(NULL)
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SkyBox::initialize(osg::StateSet* rootStateSet)
+void Skybox::initialize(osg::StateSet* rootStateSet)
 {
 	if(myTexture != NULL && myNode == NULL)
 	{
@@ -88,7 +88,7 @@ void SkyBox::initialize(osg::StateSet* rootStateSet)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SkyBox::loadPano(const String& panoName)
+bool Skybox::loadPano(const String& panoName)
 {
 	myType = Pano;
 	osg::Image* pano = osgDB::readImageFile(panoName);
@@ -109,27 +109,27 @@ bool SkyBox::loadPano(const String& panoName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SkyBox::loadCubeMap(const String& cubemapDir, const String& extension)
+bool Skybox::loadCubeMap(const String& cubemapDir, const String& extension)
 {
 	myType = CubeMap;
 
     osg::TextureCubeMap* cubemap = new osg::TextureCubeMap;
 
-    osg::Image* imagePosX = osgDB::readImageFile(cubemapDir + "/posx." + extension);
-    osg::Image* imageNegX = osgDB::readImageFile(cubemapDir + "/negx." + extension);
-    osg::Image* imagePosY = osgDB::readImageFile(cubemapDir + "/negy." + extension);
-    osg::Image* imageNegY = osgDB::readImageFile(cubemapDir + "/posy." + extension);
-    osg::Image* imagePosZ = osgDB::readImageFile(cubemapDir + "/posz." + extension);
-    osg::Image* imageNegZ = osgDB::readImageFile(cubemapDir + "/negz." + extension);
+	Ref<osg::Image> imagePosX = osgDB::readImageFile(cubemapDir + "/posx." + extension);
+    Ref<osg::Image> imageNegX = osgDB::readImageFile(cubemapDir + "/negx." + extension);
+    Ref<osg::Image> imagePosY = osgDB::readImageFile(cubemapDir + "/negy." + extension);
+    Ref<osg::Image> imageNegY = osgDB::readImageFile(cubemapDir + "/posy." + extension);
+    Ref<osg::Image> imagePosZ = osgDB::readImageFile(cubemapDir + "/posz." + extension);
+    Ref<osg::Image> imageNegZ = osgDB::readImageFile(cubemapDir + "/negz." + extension);
 
     if (imagePosX && imageNegX && imagePosY && imageNegY && imagePosZ && imageNegZ)
     {
-        cubemap->setImage(osg::TextureCubeMap::POSITIVE_X, imagePosX);
-        cubemap->setImage(osg::TextureCubeMap::NEGATIVE_X, imageNegX);
-        cubemap->setImage(osg::TextureCubeMap::POSITIVE_Y, imagePosY);
-        cubemap->setImage(osg::TextureCubeMap::NEGATIVE_Y, imageNegY);
-        cubemap->setImage(osg::TextureCubeMap::POSITIVE_Z, imagePosZ);
-        cubemap->setImage(osg::TextureCubeMap::NEGATIVE_Z, imageNegZ);
+        cubemap->setImage(osg::TextureCubeMap::POSITIVE_X, imagePosX.get());
+        cubemap->setImage(osg::TextureCubeMap::NEGATIVE_X, imageNegX.get());
+        cubemap->setImage(osg::TextureCubeMap::POSITIVE_Y, imagePosY.get());
+        cubemap->setImage(osg::TextureCubeMap::NEGATIVE_Y, imageNegY.get());
+        cubemap->setImage(osg::TextureCubeMap::POSITIVE_Z, imagePosZ.get());
+        cubemap->setImage(osg::TextureCubeMap::NEGATIVE_Z, imageNegZ.get());
 
         cubemap->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
         cubemap->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
@@ -147,7 +147,7 @@ bool SkyBox::loadCubeMap(const String& cubemapDir, const String& extension)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-osg::Node* SkyBox::createSkyBox()
+osg::Node* Skybox::createSkyBox()
 {
 	if(myTexture != NULL)
 	{
@@ -209,15 +209,15 @@ osg::Node* SkyBox::createSkyBox()
 		{
 			cubeMapProgram = SceneManager::instance()->getProgram(
 				"skybox-cube", 
-				"cyclops/common/SkyBox.vert", 
-				"cyclops/common/SkyBox.frag");
+				"cyclops/common/Skybox.vert", 
+				"cyclops/common/Skybox.frag");
 		}
 		else if(myType == Pano)
 		{
 			cubeMapProgram = SceneManager::instance()->getProgram(
 				"skybox-pano", 
-				"cyclops/common/SkyBox-pano.vert", 
-				"cyclops/common/SkyBox-pano.frag");
+				"cyclops/common/Skybox-pano.vert", 
+				"cyclops/common/Skybox-pano.frag");
 		}
 
 		if(cubeMapProgram != NULL)

@@ -35,23 +35,6 @@
 
 namespace omega {
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//class Node;
-	//template<typename T>
-	//class ChildNode: public std::pair<String, T*>
-	//{
-	//public:
-	//	ChildNode(const String& k, Node* v): std::pair<String, T*>(k, v) {}
-	//	ChildNode(std::pair<String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
-	//	ChildNode(std::pair<String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
-	//	ChildNode(std::pair<const String, Node*> src): std::pair<String, T*>(src.first, (T*)src.second) {}
-	//	ChildNode(std::pair<const String, Ref<Node> > src): std::pair<String, T*>(src.first, (T*)src.second.get()) {}
-	//	const String& getName() { return this->first; }
-	//	T* getNode() { return this->second; }
-	//	T* operator->() { return this->second; }
-	//};
-
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	/** PYAPI Class representing a general-purpose node in an articulated scene graph.
         @remarks
             A node in the scene graph is a node in a structured tree. A node contains

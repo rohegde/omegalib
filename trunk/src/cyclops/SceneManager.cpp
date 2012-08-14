@@ -380,11 +380,11 @@ osg::Texture2D* SceneManager::getTexture(const String& name)
 	{
 		//ofmsg("Loading texture file %1%", %filename);
 
-        osg::ref_ptr< osg::Image > image;
+        Ref<osg::Image> image;
 
 		image = osgDB::readRefImageFile(path);
 
-        if ( image.valid() )
+        if ( image != NULL )
         {
             osg::Texture2D* texture = new osg::Texture2D( image.get() );
             osg::Texture::WrapMode textureWrapMode;
@@ -630,7 +630,7 @@ void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapE
 {
 	if(mySkyBox == NULL)
 	{
-		mySkyBox = new SkyBox();
+		mySkyBox = new Skybox();
 		if(!mySkyBox->loadCubeMap(cubeMapDir, cubeMapExt))
 		{
 			ofwarn("SceneManager::createSkyBox: could not create skybox %1% (ext: %2%)", %cubeMapDir %cubeMapExt);
@@ -643,7 +643,7 @@ void SceneManager::createSkyBox(const String& cubeMapDir, const String& cubeMapE
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::setSkyBox(SkyBox* skyBox)
+void SceneManager::setSkyBox(Skybox* skyBox)
 {
 	mySkyBox = skyBox;
 	resetEnvMapSettings();

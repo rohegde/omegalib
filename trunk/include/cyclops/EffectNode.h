@@ -62,7 +62,7 @@ namespace cyclops {
 		void setDefinition(const String& definition);
 
 	private:
-		osg::ref_ptr<osgFX::Technique> myCurrentTechnique;
+		Ref<osgFX::Technique> myCurrentTechnique;
 		String myDefinition;
 	};
 };
