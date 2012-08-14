@@ -204,11 +204,6 @@ namespace omegaToolkit { namespace ui {
 		List<Menu*> myMenuList;
 		Menu* myMainMenu;
 
-		// Input
-		uint myMenuToggleButton;
-		uint myMenuConfirmButton;
-		uint myMenuCancelButton;
-
 		bool myRayPlaceEnabled;
 		Vector3f myDefaultMenuPosition;
 		float myDefaultMenuScale;
@@ -216,6 +211,8 @@ namespace omegaToolkit { namespace ui {
 		// options
 		bool myNavigationSuspended;
 		bool myNavigationState;
+		bool myUseMenuToggleButton;
+		Event::Flags myMenuToggleButton;
 
 		//bool myMenu3dEnabled;
 		//bool myAutoPlaceEnabled;

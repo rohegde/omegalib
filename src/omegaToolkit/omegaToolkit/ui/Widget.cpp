@@ -49,6 +49,7 @@ Widget::Widget(Engine* server):
 	myEventHandler(NULL),
 	myContainer(NULL),
 	myVisible(true),
+	myEnabled(true),
 	myDebugModeColor(255, 0, 255),
 	myDebugModeEnabled(false),
 	myAutosize(false),

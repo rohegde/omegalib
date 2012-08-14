@@ -121,6 +121,9 @@ namespace omegaToolkit { namespace ui {
 
         bool isVisible();
         void setVisible(bool value);
+		
+		bool isEnabled() { return myEnabled; }
+		void setEnabled(bool value) { myEnabled = value; }
 
 		bool isActive() { return myActive; }
 		void setActive(bool value) 
@@ -217,7 +220,11 @@ namespace omegaToolkit { namespace ui {
         bool myMoving;
         omega::Vector2f myUserMovePosition;
 
+		// When true, the widget is visible.
         bool myVisible;
+		// When true, the widget is enabled, i.e. it can receive input events.
+		bool myEnabled;
+		// When true, the widget has active focus, i.e. it has processing priority over input events.
         bool myActive;
 
         // Size constraints.
