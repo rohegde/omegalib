@@ -28,7 +28,7 @@
 #define __CY_SCENE_MANAGER__
 
 #include "cyclopsConfig.h"
-#include "SkyBox.h"
+#include "Skybox.h"
 
 #include <osg/Texture2D>
 #include <osg/Light>
@@ -259,7 +259,7 @@ namespace cyclops {
 		void load(const String& file);
 		//! #PYAPI
 		void createSkyBox(const String& cubeMapDir, const String& cubeMapExt);
-		void setSkyBox(SkyBox* skyBox);
+		void setSkyBox(Skybox* skyBox);
 		//@}
 
 		//! Light management methods
@@ -323,7 +323,7 @@ namespace cyclops {
 		Dictionary<String, Entity*> myObjectDictionary;
 		Vector<Entity*> myObjectVector;
 		
-		SkyBox* mySkyBox;
+		Skybox* mySkyBox;
 
 		// Lights and shadows
 		List<Light*> myLights;

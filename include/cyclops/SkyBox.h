@@ -41,13 +41,13 @@ namespace cyclops {
 	using namespace omegaOsg;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	class CY_API SkyBox
+	class CY_API Skybox
 	{
 	public:
 		enum Type { CubeMap, Pano };
 
 	public:
-		SkyBox();
+		Skybox();
 
 		void initialize(osg::StateSet* rootStateSet);
 

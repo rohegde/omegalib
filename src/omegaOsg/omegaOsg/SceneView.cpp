@@ -144,7 +144,7 @@ void SceneView::setSceneData(osg::Node* node)
 {
     // take a temporary reference to node to prevent the possibility
     // of it getting deleted when when we do the camera clear of children. 
-    osg::ref_ptr<osg::Node> temporaryRefernce = node;
+    omega::Ref<osg::Node> temporaryRefernce = node;
     
     // remove pre existing children
     _camera->removeChildren(0, _camera->getNumChildren());

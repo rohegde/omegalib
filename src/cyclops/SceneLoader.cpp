@@ -88,14 +88,14 @@ void SceneLoader::startLoading(SceneManager* sm)
 		}
 
 		// If a skybox tag exist, create a skybox for the scene.
-		TiXmlElement* xSkyBox = xMapContents->FirstChildElement("SkyBox");
+		TiXmlElement* xSkyBox = xMapContents->FirstChildElement("Skybox");
 		if(xSkyBox != NULL)
 		{
 			const char* dir = xSkyBox->Attribute("Path");
 			const char* ext = xSkyBox->Attribute("Extension");
 			if(dir == NULL || ext == NULL)
 			{
-				owarn("SceneLoader: scene SkyBox tag missing Path or Extension attribute. No skybox will be created");
+				owarn("SceneLoader: scene Skybox tag missing Path or Extension attribute. No skybox will be created");
 			}
 			else
 			{
