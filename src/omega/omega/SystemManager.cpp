@@ -29,6 +29,7 @@
 // Display system
 #include "omega/DisplaySystem.h"
 #include "omega/ObserverUpdateService.h"
+#include "omega/ObserverUpdateServiceExt.h"
 #include "omega/ViewRayService.h"
 #include "omega/WandEmulationService.h"
 #include "omega/PythonInterpreter.h"
@@ -204,6 +205,7 @@ void SystemManager::setupServiceManager()
 	myServiceManager->registerService("MouseService", (ServiceAllocator)MouseService::New);
 	myServiceManager->registerService("KeyboardService", (ServiceAllocator)KeyboardService::New);
 	myServiceManager->registerService("ObserverUpdateService", (ServiceAllocator)ObserverUpdateService::New);
+	myServiceManager->registerService("ObserverUpdateServiceExt", (ServiceAllocator)ObserverUpdateServiceExt::New);
 	myServiceManager->registerService("ViewRayService", (ServiceAllocator)ViewRayService::New);
 	myServiceManager->registerService("WandEmulationService", (ServiceAllocator)WandEmulationService::New);
 
